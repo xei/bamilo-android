@@ -184,8 +184,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public static KeyboardState currentAdjustState;
 
     private TabLayout mTabLayout;
+    private TabLayout mCheckoutTabLayout;
 
     private AppBarLayout mAppBarLayout;
+
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -447,9 +449,15 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void setupTabBarLayout() {
         // Get tab layout
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mCheckoutTabLayout = (TabLayout) findViewById(R.id.checkout_tabs);
         TabLayoutUtils.fillTabLayout(mTabLayout, this);
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
+        // Checkout Tab
+        TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
+        mCheckoutTabLayout.setOnTabSelectedListener(mCheckoutOnTabSelectedListener);
     }
+
+
 
     private void setAppBarLayout(NavigationAction oldNavAction, NavigationAction newNavAction) {
         try {
@@ -539,6 +547,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));
+
         } catch(IllegalStateException ex){
             Print.e(TAG, ex.getLocalizedMessage(), ex);
         }
@@ -896,7 +905,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
          */
         // mSearchAutoComplete.clearTextChangedListeners();
         mSearchAutoComplete.addTextChangedListener(new TextWatcher() {
-            private Handler handle = new Handler();
+            private final Handler handle = new Handler();
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -1055,10 +1064,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      *
      * @author sergiopereira
      */
-    private Runnable run = new Runnable() {
+    private final Runnable run = new Runnable() {
         @Override
         public void run() {
-            Print.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchAutoComplete.getText().toString());
+            Print.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchAutoComplete.getText());
             getSuggestions();
         }
     };
@@ -1593,36 +1602,23 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     public boolean setCheckoutHeader(int checkoutStep) {
         Print.d(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
-
         int visibility = View.VISIBLE;
         boolean result = true;
         switch (checkoutStep) {
             case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-                selectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_ABOUT_YOU);
                 updateBaseComponentsInCheckout(visibility);
                 break;
             case ConstantsCheckout.CHECKOUT_BILLING:
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-                selectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_BILLING);
                 updateBaseComponentsInCheckout(visibility);
                 break;
             case ConstantsCheckout.CHECKOUT_SHIPPING:
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
-                selectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_SHIPPING);
                 updateBaseComponentsInCheckout(visibility);
                 break;
             case ConstantsCheckout.CHECKOUT_PAYMENT:
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_BILLING);
-                unSelectCheckoutStep(ConstantsCheckout.CHECKOUT_SHIPPING);
-                selectCheckoutStep(ConstantsCheckout.CHECKOUT_PAYMENT);
+                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_PAYMENT);
                 updateBaseComponentsInCheckout(visibility);
                 break;
             case ConstantsCheckout.CHECKOUT_ORDER:
@@ -1657,8 +1653,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void updateBaseComponentsOutCheckout(int visibility) {
         Print.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
         // Set header visibility
-        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
-        findViewById(R.id.checkout_header).setVisibility(visibility);
+        mCheckoutTabLayout.setVisibility(visibility);
+//        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
+//        findViewById(R.id.checkout_header).setVisibility(visibility);
     }
 
     /**
@@ -1667,93 +1664,47 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void updateBaseComponentsInCheckout(int visibility) {
         Print.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
         // Set header visibility
-        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
-        findViewById(R.id.checkout_header).setVisibility(visibility);
-    }
-
-    /**
-     * Unselect the a checkout step
-     */
-    private void unSelectCheckoutStep(int step) {
-        switch (step) {
-            case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-                unSelectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
-                break;
-            case ConstantsCheckout.CHECKOUT_BILLING:
-                unSelectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
-                break;
-            case ConstantsCheckout.CHECKOUT_SHIPPING:
-                unSelectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
-                break;
-            case ConstantsCheckout.CHECKOUT_PAYMENT:
-                unSelectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
-                break;
-            default:
-                break;
-        }
+        mCheckoutTabLayout.setVisibility(visibility);
+//        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
+//        findViewById(R.id.checkout_header).setVisibility(visibility);
     }
 
     /**
      * Set the selected checkout step
      */
     private void selectCheckoutStep(int step) {
-        switch (step) {
-            case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-                selectStep(R.id.checkout_header_step_1, R.id.checkout_header_step_1_icon, R.id.checkout_header_step_1_text);
-                break;
-            case ConstantsCheckout.CHECKOUT_BILLING:
-                selectStep(R.id.checkout_header_step_2, R.id.checkout_header_step_2_icon, R.id.checkout_header_step_2_text);
-                break;
-            case ConstantsCheckout.CHECKOUT_SHIPPING:
-                selectStep(R.id.checkout_header_step_3, R.id.checkout_header_step_3_icon, R.id.checkout_header_step_3_text);
-                break;
-            case ConstantsCheckout.CHECKOUT_PAYMENT:
-                selectStep(R.id.checkout_header_step_4, R.id.checkout_header_step_4_icon, R.id.checkout_header_step_4_text);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     * Set a step selected
-     */
-    private void selectStep(int main, int icon, int text) {
-        findViewById(main).setSelected(true);
-        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_selected_width);
-        findViewById(icon).setSelected(true);
-        findViewById(text).setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Set a step unselected
-     */
-    private void unSelectStep(int main, int icon, int text) {
-        findViewById(main).setSelected(false);
-        findViewById(main).getLayoutParams().width = getResources().getDimensionPixelSize(R.dimen.checkout_header_step_width);
-        findViewById(icon).setSelected(false);
-        findViewById(text).setVisibility(View.GONE);
+        mCheckoutTabLayout.getTabAt(step).select();
     }
 
     /**
      * Checkout header click listener associated to each item on layout
      */
-    public void onCheckoutHeaderClickListener(View view) {
-        Print.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER");
-        int id = view.getId();
-        /*
-        // CHECKOUT_ABOUT_YOU
-        if (id == R.id.checkout_header_step_1 && !view.isSelected()) {
-            // Uncomment if you want click on about you step
-            // removeCheckoutEntries();
-            // onSwitchFragment(FragmentType.ABOUT_YOU,
-            // FragmentController.NO_BUNDLE,
-            // FragmentController.ADD_TO_BACK_STACK);
+    public void onCheckoutHeaderClickListener(int step) {
+        Print.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER " + step);
+        // CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
+
+        // CHECKOUT_BILLING  - step == 1
+        // If selected tab is CHECKOUT_SHIPPING or CHECKOUT_PAYMENT, allow click
+        if (step == 1 && mCheckoutTabLayout.getSelectedTabPosition() > 1) {
+            selectCheckoutStep(step);
         }
-        else
-        */
-        // CHECKOUT_BILLING
-        if (id == R.id.checkout_header_step_2 && !view.isSelected()) {
+        // CHECKOUT_SHIPPING  - step == 2
+        // If selected tab is the CHECKOUT_PAYMENT, allow click
+        else if (step == 2 && mCheckoutTabLayout.getSelectedTabPosition() > 2) {
+            selectCheckoutStep(step);
+        }
+        // CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
+    }
+
+    /**
+     * When user changes checkout step.
+     * @param step - selected position on header.
+     */
+    public void onCheckoutHeaderSelectedListener(int step) {
+        // CHECKOUT_ABOUT_YOU - step == 0
+
+        // CHECKOUT_BILLING - step == 1
+        if (step == 1) {
             // Validate back stack
             if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) && fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
                 removeAllNativeCheckoutFromBackStack();
@@ -1765,13 +1716,44 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             }
 
         }
-        // CHECKOUT_SHIPPING
-        else if (id == R.id.checkout_header_step_3 && !view.isSelected()) {
+        // CHECKOUT_SHIPPING - step == 2
+        else if (step == 2 ) {
             // Validate back stack
             popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
         }
-        // CHECKOUT_PAYMENT IS THE LAST
+        // CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
     }
+
+    /**
+     * Handles changes on Checkout tabs.
+     */
+    final TabLayout.OnTabSelectedListener mCheckoutOnTabSelectedListener = new android.support.design.widget.TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(android.support.design.widget.TabLayout.Tab tab) {
+            onCheckoutHeaderSelectedListener(tab.getPosition());
+        }
+
+        @Override
+        public void onTabUnselected(android.support.design.widget.TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(android.support.design.widget.TabLayout.Tab tab) {
+
+        }
+    };
+
+    /**
+     * Handles clicks on Checkout Header
+     * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
+     */
+    final android.view.View.OnClickListener mCheckoutOnClickListener = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            onCheckoutHeaderClickListener((int) v.getTag());
+        }
+    };
 
     /**
      * Method used to remove all native checkout entries from the back stack on the Fragment Controller
