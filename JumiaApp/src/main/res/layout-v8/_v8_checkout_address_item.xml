@@ -36,11 +36,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/checkout_address_item_btn_edit"
-            android:layout_toEndOf="@+id/checkout_address_item_btn_edit"
             android:layout_toLeftOf="@+id/checkout_address_item_radio_btn"
-            android:layout_toStartOf="@+id/checkout_address_item_radio_btn"
             android:layout_marginLeft="@dimen/dimen_20px"
-            android:layout_marginStart="@dimen/dimen_20px"
             android:orientation="vertical"
             >
             <com.mobile.components.customfontviews.TextView

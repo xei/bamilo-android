@@ -99,11 +99,6 @@
         <!--<item name="android:listChoiceIndicatorMultiple">@drawable/_gen_selector_check_box</item>-->
         <item name="android:button">@drawable/_gen_selector_check_box</item>
     </style>
-    <style name="Widget.Jumia.CheckBox.Rtl" parent="android:Widget.CompoundButton.CheckBox">
-        <!--<item name="android:listChoiceIndicatorMultiple">@drawable/_gen_selector_check_box</item>-->
-        <item name="android:button">@null</item>
-        <item name="android:drawableRight">@drawable/_gen_selector_check_box</item>
-    </style>
 
     <!-- List View -->
     <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">
