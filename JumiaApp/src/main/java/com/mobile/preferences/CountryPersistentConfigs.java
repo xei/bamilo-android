@@ -3,8 +3,6 @@ package com.mobile.preferences;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
@@ -84,6 +82,8 @@ public class CountryPersistentConfigs {
 
         saveMoreInfo(mEditor, countryConfigs.getMobileAbout());
 
+        //has_cart_popup
+        mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, countryConfigs.hasCartPopup());
         mEditor.apply();
     }
 
@@ -238,5 +238,11 @@ public class CountryPersistentConfigs {
     public static boolean hasLanguages(Context context){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return hasLanguages(sharedPrefs);
+    }
+
+    public static boolean hasCartPopup(Context context){
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, false);
+
     }
 }
