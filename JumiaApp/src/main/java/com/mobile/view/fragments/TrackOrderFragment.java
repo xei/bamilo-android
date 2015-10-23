@@ -33,7 +33,7 @@ import java.util.ArrayList;
  * @author Manuel Silva
  * 
  */
-public class TrackOrderFragment extends BaseFragment {
+public class TrackOrderFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = TrackOrderFragment.class.getSimpleName();
 
@@ -138,7 +138,8 @@ public class TrackOrderFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        setupView();
+        triggerGetTrackOrder(order_number);
+     //   setupView();
     }
 
     /*
@@ -408,6 +409,48 @@ public class TrackOrderFragment extends BaseFragment {
             outState.putParcelable("track",mOrderTracker);
         }
         super.onSaveInstanceState(outState);
+
+    }
+
+
+
+    /**
+     * Proceses the trigger to get the order detailed info (order status)
+     * @param orderNumber - The order's number
+     * */
+    private void triggerGetTrackOrder(String orderNumber) {
+        triggerContentEventProgress(new GetTrackOrderHelper(), GetTrackOrderHelper.createBundle(orderNumber), this);
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Print.d(TAG, "ON SUCCESS EVENT");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        // Hide dialog progress
+        hideActivityProgress();
+
+        if(super.handleSuccessEvent(baseResponse))
+            return;
+
+        onSuccessEvent(baseResponse);
+
+
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        // Hide dialog progress
+        hideActivityProgress();
+
+        if(super.handleSuccessEvent(baseResponse))
+            return;
+
+        onErrorEvent(baseResponse);
 
     }
 }
