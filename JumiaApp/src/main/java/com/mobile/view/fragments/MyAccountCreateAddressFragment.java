@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.Button;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -74,13 +74,14 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Set total bar
+        CheckoutStepManager.setTotalBarForMyAccount(view);
 
         View orderSummaryLayout = view.findViewById(super.ORDER_SUMMARY_CONTAINER);
         if(orderSummaryLayout != null){
             orderSummaryLayout.setVisibility(View.GONE);
         }
 
-        ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.save_label));
     }
 
     @Override

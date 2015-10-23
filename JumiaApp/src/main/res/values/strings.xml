@@ -437,4 +437,5 @@
     <string name="error_invalid_email">Invalid E-mail</string>
     <string name="create_label">Create</string>
     <string name="continue_without_log_in">Continue without log in</string>
+    <string name="format_discount_value">-%s</string>
 </resources>

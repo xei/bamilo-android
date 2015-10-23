@@ -3,17 +3,17 @@ package com.mobile.utils;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
+import android.widget.LinearLayout;
 
 import com.mobile.components.customfontviews.AutoResizeTextView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.TextViewUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -83,49 +83,44 @@ public class CheckoutStepManager {
     }
 
     /**
-     * Method used for showing checkout total at checkout steps.
-     *
-     * @param view View with TextView (checkout_total_label).
-     * @param value Value to show on checkout total
+     * Method used to set the total bar for MyAccount.
      */
-    public static void showCheckoutTotal(View view, String value){
-
-        if(!TextUtils.isEmpty(value) && view != null){
-            Resources resources = view.getResources();
-            final String title = resources.getString(R.string.order_summary_total_label);
-            final String finalValue = CurrencyFormatter.formatCurrency(value).replaceAll("\\s","");
-            final int greyColor = resources.getColor(R.color.grey_middledark);
-            final int redColor = resources.getColor(R.color.red_cc0000);
-            final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
-            titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
-            titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue,
-                    greyColor, redColor));
-
-            titleTextView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if(titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES){
-                        titleTextView.setText(TextViewUtils.setSpan(title + "\n", finalValue, greyColor, redColor));
-                    }
-                }
-            });
-
-        }
+    public static void setTotalBarForMyAccount(View view) {
+        // Hide total view
+        view.findViewById(R.id.checkout_total_label).setVisibility(View.GONE);
+        // Set next label
+        TextView textView =  (TextView) view.findViewById(R.id.checkout_button_enter);
+        textView.setText(view.getContext().getResources().getString(R.string.save_label));
+        float weight = ((LinearLayout.LayoutParams) textView.getLayoutParams()).weight;
+        // Set the view group with the same text weight
+        ((LinearLayout) view.findViewById(R.id.checkout_button_container)).setWeightSum(weight);
     }
 
     /**
      * Method used for showing checkout total at checkout steps.
      *
-     * @param viewStub ViewStub or View with TextView (checkout_total_label).
+     * @param view ViewStub or View with TextView (checkout_total_label).
      * @param purchaseEntity OrderSummary to get total
      */
-    public static void showCheckoutTotal(View viewStub, PurchaseEntity purchaseEntity){
-        String value = "" + purchaseEntity.getTotal();
-        if(!TextUtils.isEmpty(value) && viewStub != null){
-            if(viewStub instanceof ViewStub){
-                viewStub = ((ViewStub) viewStub).inflate();
-            }
-            showCheckoutTotal(viewStub,value);
+    public static void setTotalBar(@NonNull View view, @NonNull PurchaseEntity purchaseEntity){
+        double value = purchaseEntity.getTotal();
+        if(value > 0){
+            Resources resources = view.getResources();
+            final String title = resources.getString(R.string.order_summary_total_label);
+            final String finalValue = CurrencyFormatter.formatCurrency(value).replaceAll("\\s","");
+            final int color1 = resources.getColor(R.color.black);
+            final int color2 = resources.getColor(R.color.black_800);
+            final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
+            titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
+            titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue, color1, color2));
+            titleTextView.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
+                        titleTextView.setText(TextViewUtils.setSpan(title + "\n", finalValue, color1, color2));
+                    }
+                }
+            });
         }
     }
 
@@ -137,16 +132,17 @@ public class CheckoutStepManager {
             Set<String> priceRulesKeys = priceRules.keySet();
             for (String key : priceRulesKeys) {
                 View priceRuleElement = mLayoutInflater.inflate(R.layout.price_rules_element, priceRulesContainer, false);
+                // Set label
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
-                // TODO Use place holder
-                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText("-" + CurrencyFormatter.formatCurrency(priceRules.get(key)));
+                // Set value
+                String text = String.format(context.getString(R.string.format_discount_value), CurrencyFormatter.formatCurrency(priceRules.get(key)));
+                ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText(text);
                 priceRulesContainer.addView(priceRuleElement);
             }
         } else {
             priceRulesContainer.setVisibility(View.GONE);
         }
     }
-
 
     /**
      * Method used to validate the next after log in.
@@ -166,6 +162,9 @@ public class CheckoutStepManager {
         }
     }
 
+    /**
+     * Method used to switch the step
+     */
     private static void goToNextStepFromParent(BaseActivity activity, FragmentType nextStepFromParent) {
         // Validate the next step
         if (nextStepFromParent != null && nextStepFromParent != FragmentType.UNKNOWN) {

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/checkout_button_container"
-        android:layout_alignParentTop="true" >
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,16 +24,12 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- NEXT BUTTON -->
+    <!-- DIVIDER -->
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey_light"
-        android:layout_above="@+id/checkout_button_container"
-        android:layout_marginLeft="@dimen/dimen_30px"
-        android:layout_marginRight="@dimen/dimen_30px"/>
+    <View style="@style/divider_horizontal.Black700"/>
+
+    <!-- NEXT BUTTON -->
 
     <include layout="@layout/checkout_total_layout"/>
 
-</RelativeLayout>
+</LinearLayout>

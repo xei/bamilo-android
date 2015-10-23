@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 
 import com.mobile.controllers.PickupStationsAdapter;
 import com.mobile.forms.ShippingMethod;
@@ -65,93 +64,67 @@ public class ShippingRadioGroupList extends RadioGroup {
             e.printStackTrace();
         }
 
+        // Get size
         int numberItems = mItems.size();
         for (int idx = 0; idx < numberItems; idx++) {
+            Print.i(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
+            // Get main container
+            final LinearLayout container = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, this, false);
+            // Get info container
+            final LinearLayout extras = (LinearLayout) container.findViewById(R.id.extras);
 
-            Print.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
-
-            /**
-             * Global Container
-             */
-            final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, this, false);
-
-            // Hide first divider
-            if (idx == 0) {
-                mLinearLayout.findViewById(R.id.radio_divider).setVisibility(View.GONE);
-            }
-
-            /**
-             * Button Container
-             */
-            final LinearLayout buttonContainer = (LinearLayout) mLinearLayout.findViewById(R.id.radio_container);
-
-            /**
-             * Extras Container
-             */
-            final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.extras);
-            
-            RelativeLayout.LayoutParams mParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
+            // For each element verify if it has extras if so add them to the view
             ArrayList<ShippingMethodSubForm> tmpSubForms = new ArrayList<>();
-
-            /**
-             * For each element verify if it has extras if so add them to the view
-             */
             for (int i = 0; i < mForm.shippingMethodsSubForms.size(); i++) {
                 // Get sub form
                 ShippingMethodSubForm shippingSubForm = new ShippingMethodSubForm();
                 shippingSubForm.shippingMethodSubFormHolder = mForm.shippingMethodsSubForms.get(i);
-
                 Print.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.scenario);
-
                 if (shippingSubForm.shippingMethodSubFormHolder.scenario.equalsIgnoreCase(mItems.get(idx))) {
                     Print.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.name);
-
-
                     tmpSubForms.add(shippingSubForm);
-
-                    // Validate number of options
-                    if(shippingSubForm.shippingMethodSubFormHolder.options.size() > 0){
-                        shippingSubForm.generateForm(getContext(), extras);
-                    } else{
+                    // Create shipping PUS option
+                    if(CollectionUtils.isNotEmpty(shippingSubForm.shippingMethodSubFormHolder.options)){
+                        shippingSubForm.generateForm(extras);
+                    }
+                    // Create shipping PUS dummy option
+                    else{
                         shippingSubForm.dataControl = new View(getContext());
                     }
                 }
             }
-
+            // Case shipping PUS option
             if (CollectionUtils.isNotEmpty(tmpSubForms)) {
                 subForms.put(mItems.get(idx), tmpSubForms);
-            } else {
+            }
+            // Case shipping regular option
+            else {
                 ShippingMethod shippingMethod = new ShippingMethod();
                 shippingMethod.shippingMethodHolder = mForm.optionsShippingMethod.get(mItems.get(idx));
-                View view = shippingMethod.generateForm(getContext());
-                if(view != null){
-                    extras.addView(view);
-                }
+                shippingMethod.generateForm(extras);
             }
 
-            mLinearLayout.setId(idx);
-            mLinearLayout.setLayoutParams(mParams);
-
-            final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, buttonContainer, false);
-            button.setId(idx);
-            ShippingMethod optionLabel = new ShippingMethod();
-            optionLabel.shippingMethodHolder = mForm.optionsShippingMethod.get(mItems.get(idx));
-            //Log.i(TAG, "options jsonobject label: " + optionLabel);
-            button.setText(!TextUtils.isEmpty(optionLabel.getLabel()) ? optionLabel.getLabel() : mItems.get(idx));
-            RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
-            
+            // Get divider
+            container.findViewById(R.id.radio_divider).setVisibility(idx == 0 ? View.GONE : View.VISIBLE);
+            // Get radio button
+            RadioButton button = (RadioButton) container.findViewById(R.id.radio_shipping);
+            // Get label
+            String label1 = mForm.optionsShippingMethod.get(mItems.get(idx)).label;
+            String label2 = mItems.get(idx);
+            // Set id used for click selection
+            container.setId(idx);
+            // Set text
+            button.setText(!TextUtils.isEmpty(label1) ? label1 : label2);
+            // Set click
             button.setOnClickListener(new OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    onClickCheckBox((RadioButton) v, extras, mLinearLayout);
+                public void onClick(View view) {
+                    onClickCheckBox((RadioButton) view, extras, container);
                 }
             });
+            // Add the shipping view
+            this.addView(container);
 
-            buttonContainer.addView(button, layoutParams);
-
-            this.addView(mLinearLayout);
-            
             // Put the selected radio button from server or default 0
             if (mItems.get(idx).equalsIgnoreCase(mDefaultSelected) || idx == 0) {
                 // Save selected position
@@ -159,22 +132,20 @@ public class ShippingRadioGroupList extends RadioGroup {
                 // Set as checked
                 button.setChecked(true);
                 // Process the click to show the extras if exist
-                onClickCheckBox(button, extras, mLinearLayout);
+                onClickCheckBox(button, extras, container);
             }
-            
         }
-
     }
  
     /**
      * Process the click on radio button
      */
-    private void onClickCheckBox(RadioButton button, View extras, View mLinearLayout) {
+    private void onClickCheckBox(RadioButton button, View extras, View container) {
         if (button.isChecked()) {
             extras.setVisibility(View.VISIBLE);
-            if (subForms.get(mItems.get(button.getId())) != null) {
-                if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
-                    for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
+            if (subForms.get(mItems.get(container.getId())) != null) {
+                if (mItems.get(container.getId()).equalsIgnoreCase("pickupstation")) {
+                    for (ShippingMethodSubForm element : subForms.get(mItems.get(container.getId()))) {
                         element.dataControl.setVisibility(View.VISIBLE);
                     }
                 }
@@ -182,17 +153,17 @@ public class ShippingRadioGroupList extends RadioGroup {
             }
         } else {
             extras.setVisibility(View.GONE);
-            if (subForms.get(mItems.get(button.getId())) != null) {
-                if (mItems.get(button.getId()).equalsIgnoreCase("pickupstation")) {
-                    for (ShippingMethodSubForm element : subForms.get(mItems.get(button.getId()))) {
+            if (subForms.get(mItems.get(container.getId())) != null) {
+                if (mItems.get(container.getId()).equalsIgnoreCase("pickupstation")) {
+                    for (ShippingMethodSubForm element : subForms.get(mItems.get(container.getId()))) {
                         element.dataControl.setVisibility(View.GONE);
                     }
                 }
                 
             }
         }
-        setSelection(mLinearLayout.getId());
-        this.check(mLinearLayout.getId());
+        setSelection(container.getId());
+        this.check(container.getId());
     }
 
 
@@ -212,15 +183,31 @@ public class ShippingRadioGroupList extends RadioGroup {
 //        return mItems.get(idx);
 //    }
 
-    public void setSelection(int idx) {
+    public void setSelection(final int idx) {
         if (idx >= 0) {
             Print.i(TAG, "code1selection : id is : " + idx);
-            if (this.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
-                RadioButton button = (RadioButton) this.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx);
-                button.setChecked(true);
+            //View view = this.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx);
+            View view = this.getChildAt(idx).findViewById(R.id.radio_shipping);
+            if (view instanceof RadioButton) {
+                ((RadioButton) view).setChecked(true);
                 Print.i(TAG, "code1selection : id is : " + idx + " second");
             }
             cleanOtherSelections(idx);
+        }
+    }
+
+    private void cleanOtherSelections(int idx) {
+        Print.i(TAG, "code1selection : id is : " + idx + " cleaning");
+        for (int i = 0; i < this.getChildCount(); i++) {
+            if (i != idx) {
+                //View view = this.getChildAt(i).findViewById(R.id.radio_container).findViewById(i);
+                View view = this.getChildAt(i).findViewById(R.id.radio_shipping);
+                if (view instanceof RadioButton) {
+                    ((RadioButton) view).setChecked(false);
+                    this.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
+                    Print.i(TAG, "code1selection : id is : " + idx + " cleaning 2 : " + i);
+                }
+            }
         }
     }
     
@@ -246,19 +233,6 @@ public class ShippingRadioGroupList extends RadioGroup {
         return -1;
     }
 
-    private void cleanOtherSelections(int idx) {
-        Print.i(TAG, "code1selection : id is : " + idx + " cleaning");
-        for (int i = 0; i < this.getChildCount(); i++) {
-            if (i != idx) {
-                if (this.getChildAt(i).findViewById(R.id.radio_container).findViewById(i) instanceof RadioButton) {
-                    RadioButton button = (RadioButton) this.getChildAt(i).findViewById(R.id.radio_container).findViewById(i);
-                    button.setChecked(false);
-                    this.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
-                    Print.i(TAG, "code1selection : id is : " + idx + " cleaning 2 : " + i);
-                }
-            }
-        }
-    }
 
 //    public boolean validateSelected() {
 //        boolean result = false;

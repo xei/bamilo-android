@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.Button;
@@ -152,13 +151,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         buttonEnterLayout = view.findViewById(R.id.checkout_button_container);
         //checkout total view
         if(!DeviceInfoHelper.isTabletInLandscape(getActivity())) {
-            checkoutTotalView = view.findViewById(R.id.total_view_stub);
-            ((ViewStub) checkoutTotalView).setOnInflateListener(new ViewStub.OnInflateListener() {
-                @Override
-                public void onInflate(ViewStub stub, View inflated) {
-                    checkoutTotalView = inflated;
-                }
-            });
+            checkoutTotalView = view.findViewById(R.id.checkout_button_container);
+//            ((ViewStub) checkoutTotalView).setOnInflateListener(new ViewStub.OnInflateListener() {
+//                @Override
+//                public void onInflate(ViewStub stub, View inflated) {
+//                    checkoutTotalView = inflated;
+//                }
+//            });
         }
 
         // Get and show addresses
@@ -460,7 +459,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             CheckoutFormPayment responseData = (CheckoutFormPayment) baseResponse.getMetadata().getData();
             orderSummary = responseData.getOrderSummary();
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
-            CheckoutStepManager.showCheckoutTotal(checkoutTotalView, orderSummary);
+            CheckoutStepManager.setTotalBar(checkoutTotalView, orderSummary);
             if(orderSummary != null && orderSummary.getTotal() == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;

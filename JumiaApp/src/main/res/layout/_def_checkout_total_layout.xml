@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     android:id="@+id/checkout_button_container"
-    style="@style/button_container"
-    android:layout_alignParentBottom="true"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
     android:orientation="horizontal"
-    android:padding="@dimen/dimen_30px"
-    android:paddingBottom="0dp">
+    android:weightSum="5">
 
-    <ViewStub
-        android:id="@+id/total_view_stub"
+    <com.mobile.components.customfontviews.AutoResizeTextView
+        android:id="@+id/checkout_total_label"
+        style="@style/TextList_1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:visibility="gone"
-        android:layout="@layout/cart_total"
-        android:layout_marginLeft="@dimen/dimen_48px"
-        android:layout_marginStart="@dimen/dimen_48px"
-        android:layout_marginEnd="@dimen/dimen_10px"
-        android:layout_marginRight="@dimen/dimen_10px"/>
+        android:layout_weight="3"
+        android:ellipsize="none"
+        android:gravity="start|center_vertical"
+        android:text="@string/order_summary_total_label" />
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_button_enter"
-        style="@style/button_orange_bottom"
+        style="@style/AigButton.Active"
         android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_weight="2"
         android:text="@string/next_button" />
+
 </LinearLayout>

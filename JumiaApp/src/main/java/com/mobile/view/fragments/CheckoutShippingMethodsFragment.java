@@ -357,7 +357,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         loadFulfillment(fulfillmentList);
 
         //Total price
-        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
+        CheckoutStepManager.setTotalBar(getView().findViewById(R.id.checkout_button_container), orderSummary);
     }
 
     public void onSuccessSetShippingMethods(BaseResponse baseResponse){

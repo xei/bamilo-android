@@ -86,7 +86,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
 
-        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
+        CheckoutStepManager.setTotalBar(getView().findViewById(R.id.checkout_button_container), orderSummary);
     }
 
     @Override
