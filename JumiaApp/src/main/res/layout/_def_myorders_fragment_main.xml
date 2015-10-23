@@ -50,7 +50,12 @@
         android:id="@+id/orders_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:divider="@color/black_300"
+        android:dividerHeight="1dp"
         ></ListView>
+
+    <View
+       style="@style/HorizontalListDivider" />
 
 
 
