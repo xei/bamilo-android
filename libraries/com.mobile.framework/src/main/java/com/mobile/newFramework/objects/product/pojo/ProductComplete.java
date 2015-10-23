@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.BundleList;
+import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.Seller;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -29,7 +30,7 @@ public class ProductComplete extends ProductMultiple {
 
     private String mDescription;
     private String mShortDescription;
-    private ArrayList<String> mImageList;
+     private ArrayList<ImageUrls> mImageList;
     private BundleList mProductBundle;
     private boolean hasBundle;
     private Seller mSeller;
@@ -80,8 +81,9 @@ public class ProductComplete extends ProductMultiple {
             if (imageArray != null && imageArray.length() > 0) {
                 mImageList = new ArrayList<>();
                 for (int i = 0; i < imageArray.length(); ++i) {
-                    JSONObject imageJsonObject = imageArray.getJSONObject(i);
-                    mImageList.add(imageJsonObject.getString(RestConstants.URL));
+                    ImageUrls imageUrls = new ImageUrls();
+                    imageUrls.initialize(imageArray.getJSONObject(i));
+                    mImageList.add(imageUrls);
                 }
             }
             // Seller
@@ -153,7 +155,8 @@ public class ProductComplete extends ProductMultiple {
         return null;
     }
 
-    public ArrayList<String> getImageList() {
+
+    public ArrayList<ImageUrls> getImageList() {
         return mImageList;
     }
 

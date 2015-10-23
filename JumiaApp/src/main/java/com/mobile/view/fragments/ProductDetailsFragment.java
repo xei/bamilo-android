@@ -38,6 +38,7 @@ import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.BundleList;
+import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -660,7 +661,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (fragment == null) {
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
 
-            ArrayList<String> images;
+            ArrayList<ImageUrls> images;
             if(ShopSelector.isRtl()){
                 images = new ArrayList<>(mProduct.getImageList());
                 Collections.reverse(images);
@@ -669,7 +670,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
             // Create bundle with images
             Bundle args = new Bundle();
-            args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, images);
+            args.putParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST, images);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
             args.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, verifyOutOfStock());
