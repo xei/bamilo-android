@@ -111,8 +111,11 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
     }
 
 
-    private void setEmptyScreenState(boolean isToShow){
-
+    /**
+     * If true, shows the order list, if false shows empty screen
+     * */
+    private void showListOrders(boolean isToShow)
+    {
         if(isToShow)
         {
             ordersListView.setVisibility(View.GONE);
@@ -127,10 +130,12 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
             else
                 ordersAdapter.updateOrders(ordersList);
             ordersListView.setAdapter(ordersAdapter);
-            Print.w(TAG, "------------ LAYOUT BUILD ENDED -------------- ");
 
         }
     }
+
+
+
 
     /*
      * (non-Javadoc)
@@ -195,46 +200,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-      //  onSuccessEvent(baseResponse);
-        Print.d(TAG, "ON SUCCESS EVENT");
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-
-        // Hide dialog progress
-        hideActivityProgress();
-        Print.w(TAG, "------------ ACTIVITY PROGRESS HIDDEN -------------- ");
-
-        if(super.handleSuccessEvent(baseResponse))
-            return;
-
-
-        EventType eventType = baseResponse.getEventType();
-
-        switch (eventType) {
-            case GET_MY_ORDERS_LIST_EVENT:
-                MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
-
-                ordersList =  orders.getOrders();
-
-                if(CollectionUtils.isEmpty(ordersList)){
-                    Print.w(TAG, "------------ ORDERS LIST EMPTY -------------- ");
-                    // show error/empty screen
-                    setEmptyScreenState(true);
-                    //    showProductsLoading(false);
-
-                }else
-                {
-                    Print.w(TAG, "------------ ORDERS LIST NOT EMPTY -------------- ");
-                    setEmptyScreenState(false);
-                }
-                break;
-
-            default:
-                break;
-        }
+        onSuccessEvent(baseResponse);
     }
 
 
@@ -249,7 +215,6 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
 
         // Hide dialog progress
         hideActivityProgress();
-        Print.w(TAG, "------------ ACTIVITY PROGRESS HIDDEN -------------- ");
 
         if(super.handleSuccessEvent(baseResponse))
             return;
@@ -264,15 +229,12 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
                 ordersList =  orders.getOrders();
 
                 if(CollectionUtils.isEmpty(ordersList)){
-                    Print.w(TAG, "------------ ORDERS LIST EMPTY -------------- ");
                     // show error/empty screen
-                    setEmptyScreenState(true);
+                    showListOrders(true);
                 //    showProductsLoading(false);
 
-                }else
-                {
-                    Print.w(TAG, "------------ ORDERS LIST NOT EMPTY -------------- ");
-                    setEmptyScreenState(false);
+                }else {
+                    showListOrders(false);
                 }
                 break;
 
@@ -334,12 +296,12 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
                                 }
                             }
                             if(!isNotLoggedIn){
-                                setEmptyScreenState(true);
-                                showProductsLoading(false);
+                                showListOrders(true);
+                              //  showProductsLoading(false);
                             }
                         } catch (ClassCastException | NullPointerException e){
-                            setEmptyScreenState(true);
-                            showProductsLoading(false);
+                            showListOrders(true);
+                         //   showProductsLoading(false);
                         }
                     }
                 } else {
@@ -369,7 +331,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback 
         } else {
             bundle.putInt(GetMyOrdersListHelper.PAGE_NUMBER, pageIndex);
             bundle.putInt(GetMyOrdersListHelper.PER_PAGE, NUM_ORDERS);
-            triggerContentEvent(new GetMyOrdersListHelper(), bundle, this);
+       //     triggerContentEvent(new GetMyOrdersListHelper(), bundle, this);
+            triggerContentEventProgress(new GetMyOrdersListHelper(), bundle, this);
         }
 
     }
