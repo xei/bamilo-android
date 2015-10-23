@@ -80,6 +80,7 @@
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_v8_pdv_fragment_seller_info</item>
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_v8_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_v8_pdv_fragment_related_item_price</item>
+    <item name="config_confirmation_msg" 	            type="layout">@layout/_v8_config_confirmation_msg</item>
     <!-- MY ORDERS -->
     <!--<item name="track_order_fragment"                   type="layout">@layout/_v8_track_order_fragment</item>-->
     <!--<item name="order_history_main"                     type="layout">@layout/_v8_order_history_main</item>-->
