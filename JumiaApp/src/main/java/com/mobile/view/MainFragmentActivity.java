@@ -58,6 +58,7 @@ import com.mobile.view.fragments.SessionLoginMainFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
+import com.mobile.view.fragments.TrackOrderFragment;
 import com.mobile.view.fragments.VariationsFragment;
 import com.mobile.view.fragments.WishListFragment;
 
@@ -395,6 +396,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case VARIATIONS:
                 fragment = VariationsFragment.getInstance(bundle);
+                break;
+            case ORDER_STATUS:
+                fragment = TrackOrderFragment.getInstance(bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
