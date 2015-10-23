@@ -1132,7 +1132,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
                 else{
                     //show regular message add item to cart
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+                    showInfoAddToShoppingCartCompleted();
                 }
                 break;
             case GET_PRODUCT_DETAIL:

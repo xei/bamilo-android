@@ -2,6 +2,7 @@ package com.mobile.utils.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.mobile.components.customfontviews.Button;
@@ -47,7 +48,7 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
  * @param context - Base Activity context
  *
  * */
-    public ConfirmationCartMessageView(View mConfigurablecartViewBar, Context context){
+    public ConfirmationCartMessageView(@NonNull View mConfigurablecartViewBar,@NonNull Context context){
 
             this.mContext = context;
             this.mConfigurablecartViewBar = mConfigurablecartViewBar;
