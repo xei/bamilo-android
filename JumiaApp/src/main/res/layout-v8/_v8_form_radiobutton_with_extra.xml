@@ -2,48 +2,92 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <!-- DIVIDER -->
 
     <View
         android:id="@+id/radio_divider"
-        style="@style/divider_horizontal" />
+        style="@style/divider_horizontal.Black700" />
 
-    <LinearLayout
-        android:id="@+id/radio_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" />
+    <!-- RADIO BUTTON -->
+
+    <com.mobile.components.customfontviews.RadioButton
+        android:id="@+id/radio_shipping"
+        style="@style/FormRadioButton"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
+
+    <!-- EXTRA CONTAINER -->
 
     <LinearLayout
         android:id="@+id/radio_extras_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/form_radiobutton_shipping_margin"
-        android:paddingRight="@dimen/form_radiobutton_shipping_margin"
-        android:visibility="gone" >
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="12dp"
+        android:visibility="gone">
+
+        <!-- PAYMENT -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/payment_text"
-            style="@style/text_normal"
-            android:layout_height="wrap_content"
-            android:ellipsize="none"
-            android:fontFamily="roboto_light"
-            android:gravity="right|center_vertical"
-            android:layout_gravity="right"
-            android:paddingBottom="@dimen/margin_20px"
-            android:paddingTop="@dimen/margin_20px"
-            android:singleLine="false"
+            style="@style/MultiLineStyle"
             android:visibility="gone" />
 
-        <ImageView
-            android:id="@+id/payment_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+        <!-- SHIPPING INFO -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/shipping_time_label_and_value"
+            style="@style/TextCaption"
             android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/shipping_fee_label_and_value"
+            style="@style/TextCaption"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/shipping_fee_info"
+            style="@style/TextInfo_2"
+            android:text="@string/shipping_fee_info"
+            android:visibility="gone" />
+
+        <Space
+            android:id="@+id/shipping_info_space"
+            android:layout_width="wrap_content"
+            android:layout_height="12dp"
+            android:visibility="gone"/>
+
+        <!-- SHIPPING PUS -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pickup_stations_title"
+            style="@style/TextList_2"
+            android:text="@string/select_city"
+            android:visibility="gone" />
+
+        <com.mobile.components.absspinner.IcsSpinner
+            android:id="@android:id/custom"
+            style="@style/FormButtonSpinner.DropDown"
+            android:visibility="gone" />
+
+        <com.mobile.utils.PickUpStationListView
+            android:id="@+id/pickup_stations_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:divider="@color/black_700"
+            android:dividerHeight="1dp"
+            android:visibility="gone" />
+
+        <!--
+            https://code.google.com/p/android/issues/detail?id=2254
+            FIXED only showing 2 lines
+            by setting android:ellipsize="none" after being set up as end by style="@style/text_normal"
+        -->
     </LinearLayout>
 
 </LinearLayout>

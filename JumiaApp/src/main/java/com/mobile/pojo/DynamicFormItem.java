@@ -1754,11 +1754,9 @@ public class DynamicFormItem {
                     if ( view != null) {
                         if (i != checkedId) {
                             view.setVisibility(View.GONE);
-//                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container).findViewById(i)).setChecked(false);
                             ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_shipping)).setChecked(false);
                         } else {
                             view.setVisibility(View.VISIBLE);
-//                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container).findViewById(i)).setChecked(true);
                             ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_shipping)).setChecked(true);
                         }
                     }

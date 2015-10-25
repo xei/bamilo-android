@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -38,7 +35,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -84,9 +80,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     private String paymentName = "";
 
-    private View checkoutTotalView;
+    private View mCheckoutTotalBar;
 
-    private View buttonEnterLayout;
+    private View mCheckoutButtonNext;
     
     /**
      * Get new instance of CheckoutPaymentMethodsFragment.
@@ -148,18 +144,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
-        buttonEnterLayout = view.findViewById(R.id.checkout_total_bar);
-        //checkout total view
-        if(!DeviceInfoHelper.isTabletInLandscape(getActivity())) {
-            checkoutTotalView = view.findViewById(R.id.checkout_total_bar);
-//            ((ViewStub) checkoutTotalView).setOnInflateListener(new ViewStub.OnInflateListener() {
-//                @Override
-//                public void onInflate(ViewStub stub, View inflated) {
-//                    checkoutTotalView = inflated;
-//                }
-//            });
-        }
-
+        // Checkout total view
+        mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
+        mCheckoutButtonNext = view.findViewById(R.id.checkout_button_enter);
         // Get and show addresses
         triggerGetPaymentMethods();
     }
@@ -261,8 +248,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     /**
      * Load the dynamic form
-     * 
-     * @param form
      */
     private void loadForm(Form form) {
         Print.i(TAG, "LOAD FORM");
@@ -273,12 +258,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer.refreshDrawableState();
         prepareCouponView();
 
+        // TODO Validate this
         if(getView().findViewById(R.id.text_information) == null) {
             getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.VISIBLE);
-            buttonEnterLayout.setVisibility(View.VISIBLE);
+            mCheckoutButtonNext.setVisibility(View.VISIBLE);
         } else {
             getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.GONE);
-            buttonEnterLayout.setVisibility(View.GONE);
+            mCheckoutButtonNext.setVisibility(View.GONE);
         }
 
         showFragmentContentContainer();
@@ -286,9 +272,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     /**
      * Load the saved values and update the form
-     * @param savedValues
-     * @param iter
-     * @author sergiopereira
      */
     private void loadSavedValues(ContentValues savedValues, Iterator<DynamicFormItem> iter){
         // Load save state
@@ -371,17 +354,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
      */
+    // Process the click on retry button.
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        onClickRetryButton();
-    }
-    
-    /**
-     * Process the click on retry button.
-     * @author paulo
-     */
-    private void onClickRetryButton() {
         Bundle bundle = new Bundle();
         if(null != JumiaApplication.CUSTOMER){
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
@@ -390,7 +366,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
-    
     
     private void onClickSubmitPaymentButton() {
         Print.i(TAG, "ON CLICK: Submit Payment Method");
@@ -413,8 +388,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
     /**
      * Fill Coupon field if orderSummary has discountCouponCode
-     * 
-     * @param orderSummary
      */
     private void updateVoucher(PurchaseEntity orderSummary) {
         if (orderSummary != null) {
@@ -460,8 +433,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             orderSummary = responseData.getOrderSummary();
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
             // Set the checkout total bar
-            CheckoutStepManager.setTotalBar(checkoutTotalView, orderSummary);
-            //
+            CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
+            // Validate
             if(orderSummary != null && orderSummary.getTotal() == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;

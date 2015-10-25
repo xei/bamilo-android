@@ -26,7 +26,7 @@ public class ShippingMethodSubForm {
 
 	public final static String TAG = ShippingMethodSubForm.class.getSimpleName();
 
-	private int lastID = 0x7f096000;
+//	private int lastID = 0x7f096000;
 
     public View dataControl;
 
@@ -81,7 +81,6 @@ public class ShippingMethodSubForm {
 
         HoloFontLoader.applyDefaultFont(icsSpinner);
         // Listeners
-
         icsSpinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
 
             @Override

@@ -16,7 +16,7 @@ import com.mobile.view.R;
 
 /**
  * Created by alexandrapires on 10/19/15.
- * <p/>
+ *
  * This class allows to show a configurable confirmation message when an item is added to cart if the flag hasCartPopup = true
  * (depending of country configurations)
  */
@@ -36,7 +36,7 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
 
 
     /**
-     * Contructor
+     * Constructor
      *
      * @param cartViewBar - view corresponding to the message
      * @param context     - Base Activity context

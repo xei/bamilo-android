@@ -292,6 +292,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         itemRemoved_quantity = item.getQuantity();
         itemRemoved_rating = -1d;
 
+        // TODO Validate this
         if (TextUtils.isEmpty(cartValue)) {
             TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
             itemRemoved_cart_value = totalValue.toString();

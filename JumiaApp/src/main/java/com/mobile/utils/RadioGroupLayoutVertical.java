@@ -109,12 +109,10 @@ public class RadioGroupLayoutVertical extends RadioGroup {
      * @param addInnerForm used to indicate if a inner Form should be created inside the <code>extras LinearLayout</code>
      */
     private void createRadioButton(int idx, HashMap<String, PaymentInfo> paymentsInfoList, boolean addInnerForm) {
-        final LinearLayout mLinearLayout = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, null, false);
-//        final LinearLayout buttonContainer = (LinearLayout) mLinearLayout.findViewById(R.id.radio_container);
-        final LinearLayout extras = (LinearLayout) mLinearLayout.findViewById(R.id.radio_extras_container);
-
-//        final RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton_shipping, null, false);
-        final RadioButton button = (RadioButton) mLinearLayout.findViewById(R.id.radio_shipping);
+        // Get views
+        final LinearLayout container = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, null, false);
+        final LinearLayout extras = (LinearLayout) container.findViewById(R.id.radio_extras_container);
+        final RadioButton button = (RadioButton) container.findViewById(R.id.radio_shipping);
 
         if (addInnerForm) {
             Print.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
@@ -131,19 +129,17 @@ public class RadioGroupLayoutVertical extends RadioGroup {
             extras.addView(formGenerator.getContainer());
 
             Print.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
-        } else {
-            Print.i(TAG, "code1subForms updateRadioGroup does not contains : " + mItems.get(idx));
         }
 
         // Hide first divider
         if (idx == 0) {
-            mLinearLayout.findViewById(R.id.radio_divider).setVisibility(View.GONE);
+            container.findViewById(R.id.radio_divider).setVisibility(View.GONE);
         }
 
         RelativeLayout.LayoutParams mParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
-        mLinearLayout.setId(idx);
-        mLinearLayout.setLayoutParams(mParams);
+        container.setId(idx);
+        container.setLayoutParams(mParams);
         
         if (paymentsInfoList != null && paymentsInfoList.size() > 0 && paymentsInfoList.containsKey(mItems.get(idx))) {
             TextView mTextView = (TextView) extras.findViewById(R.id.payment_text);
@@ -152,23 +148,13 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 mTextView.setText(paymentText);
                 mTextView.setVisibility(View.VISIBLE);
             }
-
-            // Show image
-//            ArrayList<String> paymentImages = paymentsInfoList.get(mItems.get(idx)).getImages();
-//            if(paymentImages != null && paymentImages.size() > 0){
-//                ImageView mImageView = (ImageView) extras.findViewById(R.id.payment_img);
-//                RocketImageLoader.instance.loadImage(paymentImages.get(0), mImageView);
-//            }
         }
 
-
-        //button.setId(idx);
         button.setText(mItems.get(idx));
         RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.checkout_shipping_item_height));
         layoutParams.setMargins(0, 0, getResources().getDimensionPixelSize(R.dimen.form_radiobutton_shipping_margin), 0);
         button.setText(mItems.get(idx));
         button.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 try {
@@ -180,19 +166,15 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 } catch (StackOverflowError e) {
                     e.printStackTrace();
                 }
-                setSelection(mLinearLayout.getId());
-                mGroup.check(mLinearLayout.getId());
+                setSelection(container.getId());
+                mGroup.check(container.getId());
             }
         });
 
-        if (idx == mDefaultSelected){
-            button.setChecked(true);
-        }
-
-
-//        buttonContainer.addView(button, layoutParams);
-
-        mGroup.addView(mLinearLayout);
+        // Set default
+        button.setChecked(idx == mDefaultSelected);
+        // Add radio option
+        mGroup.addView(container);
     }
 
     public int getSelectedIndex() {
@@ -217,7 +199,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 RadioButton button = (RadioButton) mGroup.getChildAt(idx);
                 button.setChecked(true);
             }
-//            else if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
             else if (mGroup.getChildAt(idx).findViewById(R.id.radio_shipping) instanceof RadioButton) {
                 RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_shipping);
                 button.setChecked(true);
@@ -233,7 +214,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                 setSelection(idx);
                 mGroup.check(idx);
             }
-//            else if (mGroup.getChildAt(idx).findViewById(R.id.radio_container).findViewById(idx) instanceof RadioButton) {
             else if (mGroup.getChildAt(idx).findViewById(R.id.radio_shipping) instanceof RadioButton) {
                 RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_shipping);
                 button.setChecked(true);
@@ -264,13 +244,11 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         if (generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null) {
             result = generatedForms.get(mGroup.getCheckedRadioButtonId()).save();
         }
-
         return result;
     }
 
     public String getSelectedFieldName() {
-        String result = mItems.get(mGroup.getCheckedRadioButtonId());
-        return result;
+        return mItems.get(mGroup.getCheckedRadioButtonId());
     }
 
 }

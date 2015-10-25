@@ -76,12 +76,11 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         super.onViewCreated(view, savedInstanceState);
         // Set total bar
         CheckoutStepManager.setTotalBarForMyAccount(view);
-
+        // Validate order summary
         View orderSummaryLayout = view.findViewById(super.ORDER_SUMMARY_CONTAINER);
         if(orderSummaryLayout != null){
             orderSummaryLayout.setVisibility(View.GONE);
         }
-
     }
 
     @Override

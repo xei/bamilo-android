@@ -14,7 +14,7 @@
 
     <com.mobile.components.customfontviews.RadioButton
         android:id="@+id/radio_shipping"
-        style="@style/AigRadioButton"
+        style="@style/FormRadioButton"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
 

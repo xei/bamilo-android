@@ -154,7 +154,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE");
-        // TODO VALIDATE THIS
         if(mFormResponse == null) 
             return;
         int itemId = mFormResponse.getSelectionId(0);

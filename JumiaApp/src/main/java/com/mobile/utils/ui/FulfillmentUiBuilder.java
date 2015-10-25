@@ -14,7 +14,8 @@ import com.mobile.view.R;
 import java.util.List;
 
 /**
- * Created by rsoares on 9/25/15.
+ * FulfillmentUiBuilder.
+ * @author rsoares
  */
 public class FulfillmentUiBuilder {
 
