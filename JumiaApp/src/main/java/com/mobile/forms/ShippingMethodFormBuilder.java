@@ -2,14 +2,18 @@ package com.mobile.forms;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.checkout.ShippingMethodFormBuilderHolder;
 import com.mobile.newFramework.objects.checkout.ShippingMethodFormHolder;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.utils.ShippingRadioGroupList;
 
@@ -19,7 +23,7 @@ public class ShippingMethodFormBuilder implements Parcelable  {
 
     public final static String TAG = ShippingMethodFormBuilder.class.getName();
 
-    private ArrayList<ShippingRadioGroupList> groupList;
+    private ShippingRadioGroupList mRadioGroup;
 
     public ShippingMethodFormBuilderHolder shippingMethodFormBuilderHolder;
 
@@ -28,7 +32,6 @@ public class ShippingMethodFormBuilder implements Parcelable  {
      */
     public ShippingMethodFormBuilder(){
         super();
-        this.groupList = new ArrayList<>();
     }
 
     /**
@@ -36,47 +39,45 @@ public class ShippingMethodFormBuilder implements Parcelable  {
      */
     public View generateForm(Context context, ViewGroup parent) {
         if (CollectionUtils.isNotEmpty(shippingMethodFormBuilderHolder.fields)) {
-            for (int i = 0; i < shippingMethodFormBuilderHolder.fields.size(); i++) {
-                ShippingMethodForm field = new ShippingMethodForm(shippingMethodFormBuilderHolder.fields.get(i));
-                ShippingRadioGroupList mGroup = field.generateForm(context);
-                groupList.add(mGroup);
-                parent.addView(mGroup);
-                shippingMethodFormBuilderHolder.fields.remove(i);
-                shippingMethodFormBuilderHolder.fields.add(i, field);
-            }
+            int i = IntConstants.DEFAULT_POSITION;
+            ShippingMethodForm field = new ShippingMethodForm(shippingMethodFormBuilderHolder.fields.get(i));
+            mRadioGroup = field.generateForm(context);
+            parent.addView(mRadioGroup);
+            shippingMethodFormBuilderHolder.fields.remove(i);
+            shippingMethodFormBuilderHolder.fields.add(i, field);
         }
         return parent;
     }
-    
-    
-    public int getSelectionId(int groupId){
+
+    public void saveSelectedPosition(@NonNull Bundle bundle) {
         try {
-            return groupList.get(groupId).getSelectedIndex();
-        } catch (Exception e) {
-            return -1;
-        }
-    }
-    
-    public int getSubSelectionId(int groupId, int itemId){
-        try {
-            return groupList.get(groupId).getSubSelection(itemId);
-        } catch (Exception e) {
-            return -1;
+            // Get selected position from group
+            int itemId = mRadioGroup.getSelectedIndex();
+            // Validate selection
+            if (itemId != IntConstants.INVALID_POSITION) {
+                // Save it
+                bundle.putInt(ConstantsIntentExtra.ARG_1, itemId);
+                // Case PUS get sub selection
+                int subItemId = mRadioGroup.getSubSelection(itemId);
+                bundle.putInt(ConstantsIntentExtra.ARG_2, subItemId);
+            }
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            // ...
         }
     }
 
-    public void setSelections(int groupId, int itemId, int subItemId) {
+    public void loadSavedPosition(@Nullable Bundle bundle) {
         try {
-            View view = groupList.get(groupId).findViewById(itemId);
-            if ( view instanceof RadioButton) {
-                view.performClick();
-                if (subItemId != -1)
-                    groupList.get(groupId).setSubSelection(itemId, subItemId);
+            if (bundle != null) {
+                int selection = bundle.getInt(ConstantsIntentExtra.ARG_1, IntConstants.INVALID_POSITION);
+                int subSelection = bundle.getInt(ConstantsIntentExtra.ARG_2, IntConstants.INVALID_POSITION);
+                mRadioGroup.setSelection(selection, subSelection);
             }
-        } catch (Exception ignored) {
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            // ...
         }
     }
-    
+
     public ContentValues getValues(){
         ContentValues values = new ContentValues();
         for (ShippingMethodFormHolder element : shippingMethodFormBuilderHolder.fields) {

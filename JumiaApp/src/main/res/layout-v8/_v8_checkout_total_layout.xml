@@ -13,7 +13,7 @@
         android:layout_weight="2"
         android:text="@string/next_button" />
 
-    <com.mobile.components.customfontviews.AutoResizeTextViewNew
+    <com.mobile.components.customfontviews.AutoResizeTextView
         android:id="@+id/checkout_total_label"
         style="@style/TextList_1"
         android:layout_width="0dp"

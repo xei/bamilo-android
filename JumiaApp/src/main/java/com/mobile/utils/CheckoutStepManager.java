@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.mobile.components.customfontviews.AutoResizeTextViewNew;
+import com.mobile.components.customfontviews.AutoResizeTextView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -110,7 +110,7 @@ public class CheckoutStepManager {
             final String finalValue = CurrencyFormatter.formatCurrency(value).replaceAll("\\s","");
             final int color1 = resources.getColor(R.color.black);
             final int color2 = resources.getColor(R.color.black_800);
-            final AutoResizeTextViewNew titleTextView = ((AutoResizeTextViewNew) view.findViewById(R.id.checkout_total_label));
+            final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
             titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
             titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue, color1, color2));
             titleTextView.post(new Runnable() {

@@ -15,6 +15,7 @@ import com.mobile.forms.ShippingMethod;
 import com.mobile.forms.ShippingMethodForm;
 import com.mobile.forms.ShippingMethodSubForm;
 import com.mobile.newFramework.forms.PickUpStationObject;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
@@ -164,7 +165,6 @@ public class ShippingRadioGroupList extends RadioGroup {
         this.check(container.getId());
     }
 
-
     public int getSelectedIndex() {
         int radioButtonID = this.getCheckedRadioButtonId();
         View radioButton = this.findViewById(radioButtonID);
@@ -173,7 +173,7 @@ public class ShippingRadioGroupList extends RadioGroup {
         return idx;
     }
 
-    public void setSelection(final int idx) {
+    private void setSelection(final int idx) {
         if (idx >= 0) {
             Print.i(TAG, "code1selection : id is : " + idx);
             View view = this.getChildAt(idx).findViewById(R.id.radio_shipping);
@@ -198,9 +198,28 @@ public class ShippingRadioGroupList extends RadioGroup {
             }
         }
     }
-    
-    
-    public void setSubSelection(int groupId, int subId) throws NullPointerException, IndexOutOfBoundsException {
+
+    /**
+     * Set the selected radio button.
+     * @param selection - The radio button position
+     * @param subSelection - The PUS selection
+     */
+    public void setSelection(int selection, int subSelection) {
+        // Validate parent position
+        if(selection != IntConstants.INVALID_POSITION) {
+            // Get radio button
+            View view = this.getChildAt(selection).findViewById(R.id.radio_shipping);
+            if (view instanceof RadioButton) {
+                view.performClick();
+                // Validate sub position
+                if (subSelection != IntConstants.INVALID_POSITION) {
+                    setSubSelection(selection, subSelection);
+                }
+            }
+        }
+    }
+
+    private void setSubSelection(int groupId, int subId) throws NullPointerException, IndexOutOfBoundsException {
         if (subForms.containsKey(mItems.get(groupId)) && subForms.get(mItems.get(groupId)).size() > 0) {
             for (ShippingMethodSubForm element : subForms.get(mItems.get(groupId))) {
                 if (element.shippingMethodSubFormHolder.options != null && element.shippingMethodSubFormHolder.options.size() > 0) {

@@ -43,19 +43,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
 
     private static final String TAG = CheckoutShippingMethodsFragment.class.getSimpleName();
 
-    private static final String SELECTION_STATE = "selection";
-
-    private static final String SUB_SELECTION_STATE = "sub_selection";
-
     private ViewGroup mShippingContainer;
 
     private ShippingMethodFormBuilder mFormResponse;
 
-    private int mSelectionSaved = -1;
-
-    private int mSubSelectionSaved = -1;
-
     private View mCheckoutTotalBar;
+
+    private Bundle mSavedState;
 
     /**
      * Get instance
@@ -97,13 +91,9 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        // Validate the saved values 
-        if(savedInstanceState != null) {
-            mSelectionSaved = savedInstanceState.getInt(SELECTION_STATE, -1);
-            mSubSelectionSaved = savedInstanceState.getInt(SUB_SELECTION_STATE, -1);
-        } else{
-            Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
-        }
+        // Validate the saved values
+        mSavedState = savedInstanceState;
+        // Tracking
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_SHIPPING);
     }
     
@@ -117,10 +107,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         Print.i(TAG, "ON VIEW CREATED");
         // Get container
         mShippingContainer = (ViewGroup) view.findViewById(R.id.checkout_shipping_methods_container);
-        // Buttons
-        view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
         // Get total bar
         mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
+        // Buttons
+        mCheckoutTotalBar.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
         // Get and show addresses
         triggerGetShippingMethods();
     }
@@ -154,14 +144,9 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE");
-        if(mFormResponse == null) 
-            return;
-        int itemId = mFormResponse.getSelectionId(0);
-        if (itemId != -1)
-            outState.putInt(SELECTION_STATE, itemId);
-        int subItemId = mFormResponse.getSubSelectionId(0, itemId);
-        if (itemId != -1 && subItemId != -1)
-            outState.putInt(SUB_SELECTION_STATE, subItemId);
+        if (mFormResponse != null) {
+            mFormResponse.saveSelectedPosition(outState);
+        }
     }
 
     /*
@@ -220,20 +205,23 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      */
     private void loadForm(ShippingMethodFormBuilder form) {
         Print.i(TAG, "LOAD FORM");
+        // Save form reponse
         mFormResponse = form;
-
-        // mShippingContainer.removeAllViews();
+        // Create form layout
         mFormResponse.generateForm(getBaseActivity(), mShippingContainer);
-        //mShippingContainer.refreshDrawableState();
-
         // Set the saved selection
-        if(mSelectionSaved != -1) mFormResponse.setSelections(0, mSelectionSaved, mSubSelectionSaved);
-        
-        showFragmentContentContainer();
+        mFormResponse.loadSavedPosition(mSavedState);
+//        mShippingContainer.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                mFormResponse.loadSavedPosition(mSavedState);
+//            }
+//        });
     }
 
 
     private void loadFulfillment(ArrayList<Fulfillment> fulfillmentList) {
+        Print.i(TAG, "LOAD FULFILLMENT");
         if(CollectionUtils.isNotEmpty(fulfillmentList)){
             FulfillmentUiBuilder.addToView(this.getActivity(), mShippingContainer, fulfillmentList);
         }
@@ -351,12 +339,13 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         PurchaseEntity orderSummary = shippingMethodsForm.getOrderSummary();
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
         // Form
-        ShippingMethodFormBuilder form = shippingMethodsForm.getFormBuilder();
-        loadForm(form);
-        ArrayList<Fulfillment> fulfillmentList = shippingMethodsForm.getmFulfillmentList();
-        loadFulfillment(fulfillmentList);
+        loadForm(shippingMethodsForm.getFormBuilder());
+        // Set fulfillment
+        loadFulfillment(shippingMethodsForm.getmFulfillmentList());
         // Set the checkout total bar
         CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
+        // Show
+        showFragmentContentContainer();
     }
 
     public void onSuccessSetShippingMethods(BaseResponse baseResponse){
