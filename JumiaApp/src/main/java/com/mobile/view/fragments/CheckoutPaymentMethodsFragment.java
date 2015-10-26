@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -64,16 +63,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private static final String TAG = CheckoutPaymentMethodsFragment.class.getSimpleName();
 
     private static final String SAVED_STATE = "saved_state";
-
+    EditText voucherCode;
     private ViewGroup paymentMethodsContainer;
-    
     private DynamicForm formGenerator;
-
     //Voucher
-    private Button couponButton;
+    private TextView couponButton;
     // private View voucherDivider;
     private TextView voucherError;
-    EditText voucherCode;
     private String mVoucher = null;
     private boolean noPaymentNeeded = false;
     
@@ -90,14 +86,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private View buttonEnterLayout;
     
     /**
-     * Get new instance of CheckoutPaymentMethodsFragment.
-     * @return CheckoutPaymentMethodsFragment
-     */
-    public static CheckoutPaymentMethodsFragment getInstance() {
-        return new CheckoutPaymentMethodsFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public CheckoutPaymentMethodsFragment() {
@@ -107,6 +95,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 R.string.checkout_label,
                 KeyboardState.ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_PAYMENT);
+    }
+
+    /**
+     * Get new instance of CheckoutPaymentMethodsFragment.
+     * @return CheckoutPaymentMethodsFragment
+     */
+    public static CheckoutPaymentMethodsFragment getInstance() {
+        return new CheckoutPaymentMethodsFragment();
     }
 
     /*
@@ -190,24 +186,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Save the current selected item
-        try {
-            ContentValues values = formGenerator.save();
-            if(values.size() > 0)
-                outState.putParcelable(SAVED_STATE, values);
-        } catch (Exception e) {
-            Print.w(TAG, "TRY SAVE FORM BUT IS NULL");
-        } 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
@@ -215,14 +194,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         super.onPause();
         Print.i(TAG, "ON PAUSE");
         if(formGenerator != null){
-            JumiaApplication.INSTANCE.lastPaymentSelected = formGenerator.getSelectedValueIndex();    
+            JumiaApplication.INSTANCE.lastPaymentSelected = formGenerator.getSelectedValueIndex();
         }
-        
+
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStop()
      */
     @Override
@@ -230,7 +209,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         super.onStop();
         Print.i(TAG, "ON STOP");
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
@@ -251,6 +230,34 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         Print.i(TAG, "ON DESTROY");
     }
     
+    /**
+     * ############# CLICK LISTENER #############
+     */
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        // Get view id
+        int id = view.getId();
+        // Submit
+        if(id == R.id.checkout_button_enter){
+            onClickSubmitPaymentButton();
+            getBaseActivity().hideKeyboard();
+        }
+        // Case Unknown
+        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
+     */
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        onClickRetryButton();
+    }
+    
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
@@ -260,9 +267,26 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         super.onActivityResult(requestCode, resultCode, data);
     }
     
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save the current selected item
+        try {
+            ContentValues values = formGenerator.save();
+            if(values.size() > 0)
+                outState.putParcelable(SAVED_STATE, values);
+        } catch (Exception e) {
+            Print.w(TAG, "TRY SAVE FORM BUT IS NULL");
+        }
+    }
+    
     /**
      * Load the dynamic form
-     * 
+     *
      * @param form
      */
     private void loadForm(Form form) {
@@ -284,7 +308,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
         showFragmentContentContainer();
     }
-    
+
     /**
      * Load the saved values and update the form
      * @param savedValues
@@ -304,8 +328,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             }
         }
     }
-    
-    
+
     private void generateNoPayment(){
         paymentMethodsContainer.removeAllViews();
         LayoutInflater mLayoutInflater = LayoutInflater.from(getBaseActivity());
@@ -315,7 +338,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer.refreshDrawableState();
         showFragmentContentContainer();
     }
-
+    
     private void prepareCouponView() {
         voucherCode = (EditText) getView().findViewById(R.id.voucher_name);
         if (!TextUtils.isEmpty(mVoucher)) {
@@ -324,7 +347,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
         // voucherDivider = getView().findViewById(R.id.voucher_divider);
         voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
-        couponButton = (Button) getView().findViewById(R.id.voucher_btn);
+        couponButton = (TextView) getView().findViewById(R.id.voucher_btn);
         if (removeVoucher) {
             couponButton.setText(getString(R.string.voucher_remove));
         }
@@ -347,35 +370,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 }
             }
         });
-    }
-
-    
-    /**
-     * ############# CLICK LISTENER #############
-     */
-    
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        // Get view id
-        int id = view.getId();
-        // Submit
-        if(id == R.id.checkout_button_enter){
-            onClickSubmitPaymentButton(); 
-            getBaseActivity().hideKeyboard();
-        }
-        // Case Unknown
-        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        onClickRetryButton();
     }
     
     /**
@@ -524,7 +518,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         // Get event type and error
         EventType eventType = baseResponse.getEventType();
         ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Validate event type
         switch (eventType) {
         case GET_PAYMENT_METHODS_EVENT:

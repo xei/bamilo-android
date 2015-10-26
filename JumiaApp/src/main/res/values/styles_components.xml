@@ -150,6 +150,13 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
+    <style name="AigButton.WhiteWithBlack_800" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/black_800</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
 
 

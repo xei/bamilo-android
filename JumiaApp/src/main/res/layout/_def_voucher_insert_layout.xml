@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/voucher_container"
-    style="@style/rounded_box"
+<LinearLayout android:id="@+id/voucher_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="0dp"
     android:layout_marginTop="@dimen/rounded_margin_small"
     android:orientation="vertical">
@@ -9,70 +10,41 @@
     <!-- TITLE -->
 
     <com.mobile.components.customfontviews.TextView
-        style="@style/rounded_box_title_grey"
+        style="@style/HeaderStyle"
         android:text="@string/my_order_coupon_label" />
-
-    <!-- DIVIDER -->
-
-    <View style="@style/divider_horizontal_orange" />
 
     <!-- CONTAINER -->
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/checkout_voucher_box_height"
-        android:layout_gravity="center_horizontal">
-
-        <!-- RIGHT BUTTON -->
-
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/voucher_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/button_big_height"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/rounded_margin_mid"
-            android:layout_marginLeft="@dimen/login_margin_medium"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:layout_marginStart="@dimen/login_margin_medium"
-            android:background="@drawable/btn_grey"
-            android:ellipsize="marquee"
-            android:gravity="center"
-            android:paddingEnd="@dimen/margin_30px"
-            android:paddingLeft="@dimen/margin_30px"
-            android:paddingRight="@dimen/margin_30px"
-            android:paddingStart="@dimen/margin_30px"
-            android:singleLine="true"
-            android:text="@string/voucher_use"
-            android:textColor="@color/grey_dark"
-            android:textSize="@dimen/text_title" />
+        android:layout_marginEnd="@dimen/dimen_60px"
+        android:layout_marginLeft="@dimen/dimen_60px"
+        android:layout_marginRight="@dimen/dimen_60px"
+        android:layout_marginStart="@dimen/dimen_60px"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        >
 
         <!-- EDIT TEXT -->
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_toLeftOf="@id/voucher_btn"
-            android:layout_toStartOf="@id/voucher_btn"
+            android:layout_weight="0.65"
             android:focusableInTouchMode="true"
+            android:gravity="left|start|center_vertical"
             android:orientation="vertical">
 
             <com.mobile.components.customfontviews.EditText
                 android:id="@+id/voucher_name"
                 style="@style/TextField"
-                android:layout_marginEnd="@dimen/rounded_margin_mid"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:layout_marginStart="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/login_margin_medium"
                 android:hint="@string/voucher_message_hint"
                 android:textDirection="locale" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/voucher_error_message"
-                style="@style/text_normal"
+                style="@style/TextField"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginStart="@dimen/rounded_margin_mid"
@@ -80,6 +52,22 @@
                 android:textColor="@color/red_middle"
                 android:visibility="gone" />
         </LinearLayout>
-    </RelativeLayout>
+
+        <!-- RIGHT BUTTON -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/voucher_btn"
+            style="@style/AigButton.WhiteWithBlack_800"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="left|start|center_vertical"
+            android:layout_weight="0.35"
+            android:ellipsize="marquee"
+            android:gravity="left|start|center_vertical"
+            android:singleLine="true"
+            android:text="@string/voucher_use"
+            />
+
+    </LinearLayout>
 
 </LinearLayout>
