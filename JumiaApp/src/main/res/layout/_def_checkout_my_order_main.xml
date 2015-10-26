@@ -15,82 +15,54 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
             android:orientation="vertical" >
 
             <!-- PRODUCTS -->
 
             <include
+                layout="@layout/checkout_my_order_products"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/rounded_margin_small"
-                layout="@layout/checkout_my_order_products" />
+                android:layout_height="wrap_content" />
 
             <!-- SUB TOTAL -->
 
             <include
+                layout="@layout/shopping_basket_subtotal_element"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/rounded_margin_small"
-                layout="@layout/shopping_basket_subtotal_element" />
+                android:layout_marginTop="@dimen/rounded_margin_small" />
 
             <!-- SHIPPING ADDRESS -->
 
             <include
+                layout="@layout/checkout_my_order_shipping_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/rounded_margin_small"
-                layout="@layout/checkout_my_order_shipping_address" />
+                android:layout_marginTop="@dimen/rounded_margin_small" />
 
             <!-- BILLING ADDRESS -->
 
             <include
+                layout="@layout/checkout_my_order_billing_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/rounded_margin_small"
-                layout="@layout/checkout_my_order_billing_address" />
+                android:layout_marginTop="@dimen/rounded_margin_small" />
 
             <!-- SHIPPING METHOD -->
 
             <include
+                layout="@layout/checkout_my_order_shipping_method"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/rounded_margin_small"
-                layout="@layout/checkout_my_order_shipping_method" />
+                android:layout_marginTop="@dimen/rounded_margin_small" />
 
             <!-- PAYMENT OPTIONS -->
 
             <include
+                layout="@layout/checkout_my_order_payment_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="0dp"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="0dp"
-                android:layout_marginStart="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/rounded_margin_small"
-                layout="@layout/checkout_my_order_payment_options" />
+                android:layout_marginTop="@dimen/rounded_margin_small" />
         </LinearLayout>
     </ScrollView>
 
