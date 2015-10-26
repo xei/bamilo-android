@@ -46,10 +46,10 @@
     <string name="categories_toplevel_title">All Categories</string>
     <string name="category_filter_error">It was not possible to apply category filter</string>
     <string name="checkout_button_text">Proceed to Checkout</string>
-    <string name="checkout_header_step_1">1. About you</string>
-    <string name="checkout_header_step_2">2. Address</string>
-    <string name="checkout_header_step_3">3. Shipping</string>
-    <string name="checkout_header_step_4">4. Payment</string>
+    <string name="checkout_header_step_1">Login</string>
+    <string name="checkout_header_step_2">Address</string>
+    <string name="checkout_header_step_3">Shipping</string>
+    <string name="checkout_header_step_4">Payment</string>
     <string name="checkout_label">Checkout</string>
     <string name="clear_all_uppercase_label">CLEAR ALL</string>
     <string name="clear_uppercase_label">CLEAR</string>
