@@ -122,6 +122,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 case "radio":
                     mInputType = FormInputType.radioGroup;
                     break;
+                case "choice":
                 case "list":
                 case "select":
                     mInputType = FormInputType.list;
