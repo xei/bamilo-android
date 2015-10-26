@@ -561,23 +561,17 @@ public class DynamicFormItem {
             case relatedNumber:
             case number:
                 String text = inStat.getString(getKey());
-
                 ((EditText) this.dataControl).setText(text);
                 this.errorControl.setVisibility(View.GONE);
-
                 if (TextUtils.isEmpty(text)) {
                     if (this.mandatoryControl != null) {
-                        this.mandatoryControl
-                                .setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                                        : View.GONE);
+                        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
                     }
                 } else {
                     if (this.mandatoryControl != null) {
                         this.mandatoryControl.setVisibility(View.GONE);
                     }
-
                 }
-
                 break;
             case hide:
                 String text1 = inStat.getString(getKey());

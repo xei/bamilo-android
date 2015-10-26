@@ -33,6 +33,19 @@
         <item name="android:fontFamily">roboto_regular</item>
     </style>
 
+    <!-- TextField error message -->
+    <style name="TextErrorField" parent="TextInfo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/red_basic</item>
+        <item name="android:paddingLeft">@dimen/form_padding</item>
+        <item name="android:paddingStart">@dimen/form_padding</item>
+        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:drawableLeft">@drawable/indicator_input_error</item>
+        <item name="android:drawableStart">@drawable/indicator_input_error</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+
     <!-- Single line item -->
     <style name="SingleLineStyle" parent="@style/TextList_2">
         <item name="android:layout_width">match_parent</item>
@@ -41,16 +54,6 @@
         <item name="android:paddingStart">20dp</item>
         <item name="android:textColor">@color/black</item>
     </style>
-
-    <!-- Single line item -->
-    <style name="FormRadioButton.SingleLineStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingStart">20dp</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
 
     <!-- Sub list item -->
     <style name="SubListItemStyle" parent="@style/TextCaption">
@@ -171,7 +174,6 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
-    <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
     <!-- RADIO BUTTON -->
 
     <style name="FormRadioButton" parent="SingleLineStyle">

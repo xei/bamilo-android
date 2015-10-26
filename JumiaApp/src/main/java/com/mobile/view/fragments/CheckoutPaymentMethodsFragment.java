@@ -58,14 +58,19 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private static final String TAG = CheckoutPaymentMethodsFragment.class.getSimpleName();
 
     private static final String SAVED_STATE = "saved_state";
+
     EditText voucherCode;
+
     private ViewGroup paymentMethodsContainer;
+
     private DynamicForm formGenerator;
-    //Voucher
+
     private TextView couponButton;
-    // private View voucherDivider;
+
     private TextView voucherError;
+
     private String mVoucher = null;
+
     private boolean noPaymentNeeded = false;
     
     private boolean removeVoucher = false;
@@ -215,35 +220,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
     }
-    
-    /**
-     * ############# CLICK LISTENER #############
-     */
 
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        // Get view id
-        int id = view.getId();
-        // Submit
-        if(id == R.id.checkout_button_enter){
-            onClickSubmitPaymentButton();
-            getBaseActivity().hideKeyboard();
-        }
-        // Case Unknown
-        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        onClickRetryButton();
-    }
-    
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
@@ -272,8 +249,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     /**
      * Load the dynamic form
-     *
-     * @param form
      */
     private void loadForm(Form form) {
         Print.i(TAG, "LOAD FORM");
@@ -355,15 +330,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             }
         });
     }
-    
+
     /**
-     * Process the click on retry button.
-     * @author paulo
-     */
-    private void onClickRetryButton() {
      * ############# CLICK LISTENER #############
      */
-    
+
     @Override
     public void onClick(View view) {
         super.onClick(view);
