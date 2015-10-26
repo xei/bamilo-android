@@ -28,12 +28,6 @@
             layout="@layout/checkout_summary_shipping_method"
             android:visibility="gone" />
 
-        <!-- TOTAL -->
-
-        <include
-            android:id="@+id/checkout_summary_include_total"
-            layout="@layout/checkout_summary_total"
-            android:visibility="gone" />
     </LinearLayout>
 
 </ScrollView>
