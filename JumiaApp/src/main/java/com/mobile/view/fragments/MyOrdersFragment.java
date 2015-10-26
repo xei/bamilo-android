@@ -5,6 +5,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -54,16 +55,11 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
     private View emptyOrdersView;
 
-   // private static final int NUM_ORDERS = 25;
-
-   private static final int NUM_ORDERS = 5;
-
+    private static final int NUM_ORDERS = 25;
 
     private int pageIndex = 1;
 
-    int mCurrentScrollState;
-
-    int mCurrentVisibleItemCount;
+    boolean mIsLoadingMore;
 
 
     /**
@@ -180,7 +176,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     {
         if(ordersAdapter != null) {
             ordersAdapter.appendOrders(ordersList);
-            //update
+            //update the orders list here
+            ordersList = ordersAdapter.getOrders();
         }
     }
 
@@ -299,14 +296,15 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                 MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
                 ordersList =  orders.getOrders();
 
-                if(CollectionUtils.isEmpty(ordersList) && pageIndex != 1){
+                if(CollectionUtils.isEmpty(ordersList) && pageIndex == 1){
                     // show error/empty screen
                     showEmptyScreen();
-                //    showProductsLoading(false);
 
                 }else {
-                    if(pageIndex > 1)
+                    if(pageIndex > 1) {
                         appendToList();
+                        mIsLoadingMore = false;
+                    }
                     else
                         showListOrders();
                 }
@@ -392,7 +390,6 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         } else {
             bundle.putInt(GetMyOrdersListHelper.PAGE_NUMBER, pageIndex);
             bundle.putInt(GetMyOrdersListHelper.PER_PAGE, NUM_ORDERS);
-       //     triggerContentEvent(new GetMyOrdersListHelper(), bundle, this);
             triggerContentEventProgress(new GetMyOrdersListHelper(), bundle, this);
         }
 
@@ -457,36 +454,26 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         @Override
         public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-            mCurrentScrollState = scrollState;
-
-            if (mCurrentVisibleItemCount > 0 && mCurrentScrollState == SCROLL_STATE_IDLE) {
-                pageIndex++;
-                getMoreProducts();
-            }
-
         }
 
         @Override
         public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
 
-            mCurrentVisibleItemCount = visibleItemCount;
-
-
             // Sample calculation to determine if the last item is fully
             // visible.
-     /*       if (totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount) {
+            if (totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount) {
                 if (!mIsLoadingMore) {
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
                             mIsLoadingMore = true;
                             Print.w("ORDER", "LOAD MORE");
-                          //  showProductsLoading(true);
+                            pageIndex++;
                             getMoreProducts();
                         }
                     });
                 }
-            }*/
+            }
         }
     };
 
