@@ -28,7 +28,7 @@ public class OrdersListAdapterNew extends BaseAdapter {
 
     public OrdersListAdapterNew(Context context, ArrayList<Order> orders) {
         this.context = context;
-        this.orders = orders;
+        this.setOrders(orders);
     }
 
 
@@ -36,16 +36,16 @@ public class OrdersListAdapterNew extends BaseAdapter {
     @Override
     public int getCount() {
 
-        if(CollectionUtils.isNotEmpty(orders))
-            return orders.size();
+        if(CollectionUtils.isNotEmpty(getOrders()))
+            return getOrders().size();
         return 0;
     }
 
 
     @Override
     public Order getItem(int position) {
-        if(CollectionUtils.isNotEmpty(orders))
-            return orders.get(position);
+        if(CollectionUtils.isNotEmpty(getOrders()))
+            return getOrders().get(position);
         return null;
     }
 
@@ -62,7 +62,7 @@ public class OrdersListAdapterNew extends BaseAdapter {
         if(convertView == null)
             convertView = LayoutInflater.from(context).inflate(R.layout.myorders_pending_list_item, parent, false);
 
-        Order order = orders.get(position);
+        Order order = getOrders().get(position);
 
         TextView mOrderPrice = (TextView) convertView.findViewById(R.id.order_price);
         mOrderPrice.setText(order.getmOrderTotal());
@@ -85,21 +85,30 @@ public class OrdersListAdapterNew extends BaseAdapter {
      *            The array list containing the orders
      */
     public void updateOrders(ArrayList<Order> orders) {
-        this.orders = orders;
+        this.setOrders(orders);
         this.notifyDataSetChanged();
     }
 
     public void clearProducts() {
-        orders.clear();
+        getOrders().clear();
         notifyDataSetChanged();
     }
 
     public void appendOrders(Collection<? extends Order> newOrders) {
         for (Order order : newOrders) {
-            if (!orders.contains(order)) {
-                orders.add(order);
+            if (!getOrders().contains(order)) {
+                getOrders().add(order);
             }
         }
         notifyDataSetChanged();
+    }
+
+
+    public ArrayList<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(ArrayList<Order> orders) {
+        this.orders = orders;
     }
 }
