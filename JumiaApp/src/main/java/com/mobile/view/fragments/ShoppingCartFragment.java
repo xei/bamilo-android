@@ -73,67 +73,38 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private static final String TAG = ShoppingCartFragment.class.getSimpleName();
 
     private final static String ID_CHANGE_QUANTITY = "id_change_quantity";
-
+    private static final String cartValue = "";
     private long mBeginRequestMillis;
-
     private List<PurchaseCartItem> items;
-
     private LinearLayout lView;
-
     private Button checkoutButton;
-
     private Button mCallToOrderButton;
-
     private DialogListFragment dialogList;
-
-    private Button couponButton;
-
+    private TextView couponButton;
     private TextView voucherError;
-
     private EditText voucherCode;
-
     private String mVoucher = null;
-
     private boolean removeVoucher = false;
-
     private String itemRemoved_sku;
-
     private String itemRemoved_price;
-
     private String mPhone2Call = "";
-
     private boolean isCallInProgress = false;
-
     private boolean isRemovingAllItems = false; // Flag used to remove all items after call to order
-
     private double itemRemoved_price_tracking = 0d;
-
     private long itemRemoved_quantity;
-
     private double itemRemoved_rating;
-
     private String itemRemoved_cart_value;
-
-    private static String cartValue = "";
-
     private String mItemsToCartDeepLink;
 
-    public static class CartItemValues {
-        public Boolean is_checked;
-        public String product_name;
-        public String price;
-        public String price_disc;
-        public Integer product_id;
-        public long quantity;
-        public String image;
-        public Double discount_value;
-        public Integer min_delivery_time;
-        public Integer max_delivery_time;
-        public Map<String, String> simpleData;
-        public String variation;
-        public String productUrl;
-        public int maxQuantity;
-        public String productSku;
+    /**
+     * Empty constructor
+     */
+    public ShoppingCartFragment() {
+        super(EnumSet.of( MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.Basket,
+                R.layout.shopping_basket,
+                IntConstants.ACTION_BAR_NO_TITLE,
+                KeyboardState.ADJUST_CONTENT);
     }
 
     /**
@@ -145,17 +116,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         ShoppingCartFragment fragment = new ShoppingCartFragment();
         fragment.setArguments(bundle);
         return fragment;
-    }
-
-    /**
-     * Empty constructor
-     */
-    public ShoppingCartFragment() {
-        super(EnumSet.of( MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Basket,
-                R.layout.shopping_basket,
-                IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.ADJUST_CONTENT);
     }
 
     @Override
@@ -211,12 +171,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
@@ -234,6 +188,22 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
+     */
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
     }
 
     /**
@@ -345,7 +315,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mCallToOrderButton = (Button) view.findViewById(R.id.checkout_call_to_order);
         voucherCode = (EditText) view.findViewById(R.id.voucher_name);
         voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
-        couponButton = (Button) view.findViewById(R.id.voucher_btn);
+        couponButton = (TextView) view.findViewById(R.id.voucher_btn);
         prepareCouponView();
     }
 
@@ -800,44 +770,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         totalMain.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * A representation of each item on the list
-     */
-    private static class Item {
-
-        public TextView itemName;
-        public TextView priceView;
-        public Button quantityBtn;
-        public ImageView productView;
-        public View pBar;
-        public TextView discountPercentage;
-        public TextView priceDisc;
-        public TextView variancesContainer;
-        public Button deleteBtn;
-        public CartItemValues itemValues;
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.lang.Object#finalize()
-         */
-        @Override
-        protected void finalize() throws Throwable {
-            itemValues = null;
-            itemName = null;
-            priceView = null;
-            quantityBtn = null;
-            productView = null;
-            pBar = null;
-            discountPercentage = null;
-            priceDisc = null;
-            variancesContainer = null;
-            deleteBtn = null;
-
-            super.finalize();
-        }
-    }
-
     public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
 
         View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
@@ -1062,7 +994,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(), bundle, this);
     }
 
-
     private void prepareCouponView() {
         if (!TextUtils.isEmpty(mVoucher)) {
             voucherCode.setText(mVoucher);
@@ -1096,15 +1027,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         });
     }
 
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
     @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        onResume();
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
     @Override
@@ -1112,9 +1037,60 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         onErrorEvent(baseResponse);
     }
 
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
+    public static class CartItemValues {
+        public Boolean is_checked;
+        public String product_name;
+        public String price;
+        public String price_disc;
+        public Integer product_id;
+        public long quantity;
+        public String image;
+        public Double discount_value;
+        public Integer min_delivery_time;
+        public Integer max_delivery_time;
+        public Map<String, String> simpleData;
+        public String variation;
+        public String productUrl;
+        public int maxQuantity;
+        public String productSku;
+    }
+
+    /**
+     * A representation of each item on the list
+     */
+    private static class Item {
+
+        public TextView itemName;
+        public TextView priceView;
+        public Button quantityBtn;
+        public ImageView productView;
+        public View pBar;
+        public TextView discountPercentage;
+        public TextView priceDisc;
+        public TextView variancesContainer;
+        public Button deleteBtn;
+        public CartItemValues itemValues;
+
+        /*
+         * (non-Javadoc)
+         *
+         * @see java.lang.Object#finalize()
+         */
+        @Override
+        protected void finalize() throws Throwable {
+            itemValues = null;
+            itemName = null;
+            priceView = null;
+            quantityBtn = null;
+            productView = null;
+            pBar = null;
+            discountPercentage = null;
+            priceDisc = null;
+            variancesContainer = null;
+            deleteBtn = null;
+
+            super.finalize();
+        }
     }
 
 }
