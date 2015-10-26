@@ -202,7 +202,7 @@ public class CountryPersistentConfigs {
     public static void saveLanguages(Context context, Languages languages){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sharedPrefs.edit();
-        saveLanguages(mEditor,languages);
+        saveLanguages(mEditor, languages);
         mEditor.apply();
     }
 
