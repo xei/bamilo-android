@@ -433,7 +433,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        bundle.putBoolean(ConstantsIntentExtra.REMOVE_ENTRIES, false);
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
