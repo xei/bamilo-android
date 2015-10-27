@@ -102,6 +102,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="gone" />
 
+
         </RelativeLayout>
 
     </android.support.design.widget.CoordinatorLayout>

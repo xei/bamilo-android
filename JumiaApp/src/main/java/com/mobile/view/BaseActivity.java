@@ -188,6 +188,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     private AppBarLayout mAppBarLayout;
 
+
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
@@ -546,6 +547,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));
+
         } catch(IllegalStateException ex){
             Print.e(TAG, ex.getLocalizedMessage(), ex);
         }

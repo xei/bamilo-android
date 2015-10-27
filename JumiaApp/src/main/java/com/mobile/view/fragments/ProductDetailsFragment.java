@@ -36,7 +36,9 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.BundleList;
+import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -53,6 +55,7 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -64,6 +67,7 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.ImageHolder;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderLoadImagesListener;
 import com.mobile.utils.pdv.RelatedProductsAdapter;
+import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ToastManager;
 import com.mobile.utils.ui.WarningFactory;
@@ -144,6 +148,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private View mOffersContainer;
 
     boolean isFromBuyButton;
+
+    public ConfirmationCartMessageView mConfirmationCartMessageView;
 
     /**
      * Empty constructor
@@ -233,6 +239,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
         // Offers
         mOffersContainer = view.findViewById(R.id.pdv_other_sellers_button);
+        mConfirmationCartMessageView =  new ConfirmationCartMessageView(view.findViewById(R.id.configurableCartView),getBaseActivity());
         // Bottom Buy Bar
         view.findViewById(R.id.pdv_button_share).setOnClickListener(this);
         view.findViewById(R.id.pdv_button_call).setOnClickListener(this);
@@ -291,6 +298,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onDestroyView() {
         super.onDestroyView();
         Print.d(TAG, "ON DESTROY VIEW");
+        mConfirmationCartMessageView.hideMessage();
     }
 
     /*
@@ -653,7 +661,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (fragment == null) {
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
 
-            ArrayList<String> images;
+            ArrayList<ImageUrls> images;
             if(ShopSelector.isRtl()){
                 images = new ArrayList<>(mProduct.getImageList());
                 Collections.reverse(images);
@@ -662,7 +670,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
             // Create bundle with images
             Bundle args = new Bundle();
-            args.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, images);
+            args.putParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST, images);
             args.putBoolean(ConstantsIntentExtra.IS_ZOOM_AVAILABLE, false);
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
             args.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, verifyOutOfStock());
@@ -1118,7 +1126,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+                //if has cart popup, show configurable confirmation message with cart total price
+                if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
+                    PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
+                    mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
+                }
+                else{
+                    //show regular message add item to cart
+                    showInfoAddToShoppingCartCompleted();
+                }
                 break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();

@@ -627,10 +627,18 @@
         <item name="android:background">@color/black_300</item>
     </style>
 
+    <style name="HorizontalListDivider_black400" parent="HorizontalListDivider">
+        <item name="android:background">@color/black_400</item>
+    </style>
+
     <style name="VerticalListDivider">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">1dp</item>
         <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="VerticalListDivider_black_400" parent="VerticalListDivider">
+        <item name="android:background">@color/black_400</item>
     </style>
 
     <!-- CUSTOM TEXT STYLES -->
