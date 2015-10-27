@@ -154,7 +154,7 @@ public class WarningFactory {
     private void showWarningAddedItemToCart(){
         if(actualWarning != ADDED_ITEM_TO_CART) {
         new Builder().setText(R.string.added_to_shop_cart_dialog_text)
-                .setBackground(R.color.green_warning)
+                .setBackground(R.color.green1)
                 .setImageVisibility(false)
                 .setAnimationDuration(_5_SECONDS)
                 .startAnimation();
@@ -168,7 +168,7 @@ public class WarningFactory {
         if(actualWarning != ADDED_ITEMS_TO_CART) {
 
         new Builder().setText(R.string.added_bundle_to_shop_cart_dialog_text)
-                .setBackground(R.color.green_warning)
+                .setBackground(R.color.green1)
                 .setImageVisibility(false)
                 .setAnimationDuration(_5_SECONDS)
                 .startAnimation();
@@ -222,7 +222,7 @@ public class WarningFactory {
     private void showWarningAddedItemToSaved(){
         if(actualWarning != ADDED_TO_SAVED) {
             new Builder().setText(R.string.products_added_saved)
-                    .setBackground(R.color.green_warning)
+                    .setBackground(R.color.green1)
                     .setImageVisibility(false)
                     .setAnimationDuration(_5_SECONDS)
                     .startAnimation();
@@ -235,7 +235,7 @@ public class WarningFactory {
     private void showWarningRemovedItemFromSaved(){
         if(actualWarning != REMOVE_FROM_SAVED) {
             new Builder().setText(R.string.products_removed_saved)
-                    .setBackground(R.color.green_warning)
+                    .setBackground(R.color.green1)
                     .setImageVisibility(false)
                     .setAnimationDuration(_5_SECONDS)
                     .startAnimation();
