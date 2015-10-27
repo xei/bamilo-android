@@ -33,6 +33,14 @@
         <item name="android:fontFamily">roboto_regular</item>
     </style>
 
+    <style name="HeaderStyleCenter" parent="@style/TextHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@color/black_200</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <!-- TextField error message -->
     <style name="TextErrorField" parent="TextInfo">
         <item name="android:layout_width">match_parent</item>
