@@ -1,17 +1,13 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
 
@@ -98,16 +94,7 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
-        switch(view.getId())
-        {
-            case R.id.tx_cart_total_price:
-                hideMessage();
-                ((BaseActivity) ConfirmationCartMessageView.this.mContext).onSwitchFragment(FragmentType.SHOPPING_CART, new Bundle(), FragmentController.ADD_TO_BACK_STACK);
-                break;
-
-            default: hideMessage();
-                break;
-        }
+            hideMessage();
 
     }
 }
