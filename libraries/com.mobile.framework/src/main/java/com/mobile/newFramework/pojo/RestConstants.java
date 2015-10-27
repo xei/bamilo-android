@@ -49,6 +49,7 @@ public class RestConstants {
     // FormData Tags
     public static final String JSON_ACTION_TAG = "action";
     public static final String URL = "url";
+    public static final String ZOOM = "zoom";
 
     // Form Tags
     public static final String JSON_FORM_TAG = "form";
@@ -364,6 +365,7 @@ public class RestConstants {
     public static final String JSON_COUNTRY_CS_EMAIL = "cs_email";
     public static final String JSON_FACEBOOK_IS_AVAILABLE = "facebook_is_available";
     public static final String JSON_COUNTRY_GTM_ID = "gtm_android";
+    public static final String JSON_COUNTRY_HAS_CART_POPUP = "has_cart_popup";
 
     public static final String JSON_ITEM_TAG = "item";
     public static final String JSON_RELEVANCE_TAG = "relevance";
@@ -451,4 +453,8 @@ public class RestConstants {
     public static final String EXIST = "exist";
     public static final String IS_DEFAULT = "is_default";
     public static final String POSITION = "position";
+
+    public static final String TARGET = "target";
+
+    public static final String MOBILE_ABOUT = "mobile_about_cms";
 }
