@@ -26,6 +26,8 @@ public class OrdersListAdapterNew extends BaseAdapter {
 
     private Context context;
 
+    private int selectedPosition = -1;
+
     public OrdersListAdapterNew(Context context, ArrayList<Order> orders) {
         this.context = context;
         this.setOrders(orders);
@@ -67,7 +69,7 @@ public class OrdersListAdapterNew extends BaseAdapter {
         TextView mOrderPrice = (TextView) convertView.findViewById(R.id.order_price);
         mOrderPrice.setText(order.getmOrderTotal());
 
-        TextView mOrderNumber = (TextView) convertView.findViewById(R.id.order_number_label);
+        TextView mOrderNumber = (TextView) convertView.findViewById(R.id.order_number);
         mOrderNumber.setText(order.getmOrderNumber());
 
         TextView mOrderDate = (TextView) convertView.findViewById(R.id.order_date);
@@ -89,10 +91,7 @@ public class OrdersListAdapterNew extends BaseAdapter {
         this.notifyDataSetChanged();
     }
 
-    public void clearProducts() {
-        getOrders().clear();
-        notifyDataSetChanged();
-    }
+
 
     public void appendOrders(Collection<? extends Order> newOrders) {
         for (Order order : newOrders) {
@@ -101,6 +100,14 @@ public class OrdersListAdapterNew extends BaseAdapter {
             }
         }
         notifyDataSetChanged();
+    }
+
+    public void setSelectedPosition(int position){
+        selectedPosition = position;
+    }
+
+    public int getSelectedPosition(){
+        return selectedPosition;
     }
 
 
