@@ -7,7 +7,7 @@
     <!-- MY ORDERS SECTION -->
     <com.mobile.components.customfontviews.TextView
         style="@style/HeaderStyle"
-        android:text="My orders"
+        android:text="@string/my_order_history_label"
         />
 
     <!-- empty orders screen -->
