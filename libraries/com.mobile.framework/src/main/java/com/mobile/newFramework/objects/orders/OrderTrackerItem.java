@@ -35,6 +35,7 @@ public class OrderTrackerItem implements IJSONSerializable, Parcelable{
     private String status;
     private String status_update;
 
+
     /**
      * OrderTrackerItem empty constructor.
      */

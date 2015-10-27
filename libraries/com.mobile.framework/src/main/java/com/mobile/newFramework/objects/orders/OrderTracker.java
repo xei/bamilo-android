@@ -36,7 +36,17 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     private String creation_date;
     private String payment_method;
     private String last_order_update;
-    private ArrayList<OrderTrackerItem> orderTracketItems;
+
+	private String order_number;
+	private String date;
+	private String grand_total;
+	private int total_products;
+
+
+
+
+
+	private ArrayList<OrderTrackerItem> orderTracketItems;
 
 
     /**
@@ -45,11 +55,14 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 	@SuppressWarnings("unused")
     public OrderTracker() {
     	order_id = "";
-    	creation_date = "";
-    	payment_method = "";
-    	last_order_update = "";
+    	setCreation_date("");
+    	setPayment_method("");
+    	setLast_order_update("");
     	orderTracketItems = new ArrayList<>();
     }
+
+
+
 
 //    /**
 //     * OrderTracker constructor
@@ -79,11 +92,11 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     }
 
     public String getDate(){
-    	return this.creation_date;
+    	return this.getCreation_date();
     }
 
     public String getPaymentMethod(){
-    	return this.payment_method;
+    	return this.getPayment_method();
     }
 
 //    public String getLastUpdateDate(){
@@ -102,12 +115,18 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-		order_id = jsonObject.optString(RestConstants.JSON_ORDER_ID_TAG);
-        creation_date = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
-        payment_method = jsonObject.optString(RestConstants.PAYMENT_METHOD);
-        last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
-		JSONArray items = jsonObject.optJSONArray(RestConstants.PRODUCTS);
+//		order_id = jsonObject.optString(RestConstants.JSON_ORDER_ID_TAG);
+        setCreation_date(jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG));
+        setPayment_method(jsonObject.optJSONObject(RestConstants.PAYMENT).optString("label"));
+        setLast_order_update(jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG));
 
+		setOrder_number(jsonObject.optString(RestConstants.JSON_ORDER_NUMBER));
+		setDate(jsonObject.optString(RestConstants.JSON_COMMENT_DATE_TAG));
+		setGrand_total(jsonObject.optString(RestConstants.JSON_GRAND_TOTAL));
+		setTotal_products(jsonObject.optInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG));
+
+
+		JSONArray items = jsonObject.optJSONArray(RestConstants.PRODUCTS);
 		for(int i = 0 ; i<items.length();i++){
 			OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
 			try {
@@ -170,9 +189,9 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
 	    dest.writeString(order_id);
-	    dest.writeString(creation_date);
-	    dest.writeString(payment_method);
-	    dest.writeString(last_order_update);
+	    dest.writeString(getCreation_date());
+	    dest.writeString(getPayment_method());
+	    dest.writeString(getLast_order_update());
 	    dest.writeList(orderTracketItems);
 	}
 
@@ -181,9 +200,9 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 	 */
 	private OrderTracker(Parcel in) {
     	order_id = in.readString();
-    	creation_date = in.readString();
-    	payment_method = in.readString();
-    	last_order_update = in.readString();
+    	setCreation_date(in.readString());
+    	setPayment_method(in.readString());
+    	setLast_order_update(in.readString());
     	orderTracketItems = new ArrayList<>();
     	in.readList(orderTracketItems, OrderTrackerItem.class.getClassLoader());
     }
@@ -201,4 +220,55 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
         }
     };
 
+	public String getCreation_date() {
+		return creation_date;
+	}
+
+	public void setCreation_date(String creation_date) {
+		this.creation_date = creation_date;
+	}
+
+	public String getPayment_method() {
+		return payment_method;
+	}
+
+	public void setPayment_method(String payment_method) {
+		this.payment_method = payment_method;
+	}
+
+	public String getLast_order_update() {
+		return last_order_update;
+	}
+
+	public void setLast_order_update(String last_order_update) {
+		this.last_order_update = last_order_update;
+	}
+
+	public String getOrder_number() {
+		return order_number;
+	}
+
+	public void setOrder_number(String order_number) {
+		this.order_number = order_number;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public String getGrand_total() {
+		return grand_total;
+	}
+
+	public void setGrand_total(String grand_total) {
+		this.grand_total = grand_total;
+	}
+
+	public int getTotal_products() {
+		return total_products;
+	}
+
+	public void setTotal_products(int total_products) {
+		this.total_products = total_products;
+	}
 }
