@@ -44,7 +44,7 @@
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_button_enter"
-                style="@style/button_orange_landscape"
+                style="@style/AigButton.Active"
                 android:layout_width="@dimen/inner_container_width"
                 android:text="@string/next_button" />
         </LinearLayout>
