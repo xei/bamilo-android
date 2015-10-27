@@ -204,7 +204,7 @@ public class ShippingRadioGroupList extends RadioGroup {
      * @param selection - The radio button position
      * @param subSelection - The PUS selection
      */
-    public void setSelection(int selection, int subSelection) {
+    public void setSelection(int selection, int subSelection) throws NullPointerException, IndexOutOfBoundsException {
         // Validate parent position
         if(selection != IntConstants.INVALID_POSITION) {
             // Get radio button
