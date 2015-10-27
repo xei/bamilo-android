@@ -28,6 +28,7 @@ import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -60,6 +61,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     private int pageIndex = 1;
 
     boolean mIsLoadingMore;
+
+    private OrderStatusFragment fragment;
 
 
     /**
@@ -126,7 +129,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         if(savedInstanceState != null) {
             if(savedInstanceState.containsKey("orders"))
                 ordersList = savedInstanceState.getParcelableArrayList("orders");
-            //Print.i("ORDER", "ON LOAD SAVED STATE ordersList size:" + ordersList.size());
+
         }
 
         loadViews(view);
@@ -155,23 +158,35 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     /**
      * If true, shows the order list
      * */
-    private void showListOrders()
-    {
+    private void showListOrders() {
 
         emptyOrdersView.setVisibility(View.GONE);
         ordersListView.setVisibility(View.VISIBLE);
 
-        if(ordersAdapter == null)
-            ordersAdapter = new OrdersListAdapterNew(this.getBaseActivity().getApplicationContext(),ordersList) ;
-        else
+        if (ordersAdapter == null) {
+            ordersAdapter = new OrdersListAdapterNew(this.getBaseActivity().getApplicationContext(), ordersList);
+
+        } else
             ordersAdapter.updateOrders(ordersList);
 
         ordersListView.setAdapter(ordersAdapter);
 
+        if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
+
+            //shows the first position
+            ordersAdapter.setSelectedPosition(0);
+            //update order details view in landscape
+            getOrderStatus(0);
+
+        }
+
+
     }
 
 
-
+    /**
+     * appends an array list to the adapter when scrooling
+     * */
     private void appendToList()
     {
         if(ordersAdapter != null) {
@@ -395,22 +410,6 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
     }
 
-/*
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        // Get view id
-        int id = view.getId();
-        // Next button
-//        if(id == R.id.checkout_edit_button_enter) onClickEditAddressButton();
-            // Next button
-//        else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
-            // Unknown view
-//        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
-    }*/
-
-
-
 
 
 
@@ -447,7 +446,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     }
 
     /**
-     * listview listener in order to load more products when last item is visible
+     * scroll listener in order to load more products when scroolls
      */
     private OnScrollListener onScrollListener = new OnScrollListener() {
 
@@ -477,16 +476,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         }
     };
 
-    /**
-     * control if the loading more view is shown or not
-     * @param isToShow
-     */
-    private void showProductsLoading(boolean isToShow){
-//        if(isToShow)
-//            loadMore.setVisibility(View.VISIBLE);
-//        else
-//            loadMore.setVisibility(View.GONE);
-    }
+
 
     /**
      * function that gets more products when the user is scrooling
@@ -508,13 +498,40 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Order selectedOrder =  ordersAdapter.getItem(position);
-
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR,selectedOrder.getmOrderNumber());
-        getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getOrderStatus(position);
 
     }
+
+
+
+
+    /**
+     * Goes to Order Status fragment
+     * */
+    private void getOrderStatus(int selectedPosition)
+    {
+        Order selectedOrder =  ordersAdapter.getItem(selectedPosition);
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR,selectedOrder.getmOrderNumber());
+
+        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
+
+            getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+        else
+        {
+            //update order details view in landscape
+            fragment = new OrderStatusFragment();
+            fragment.setArguments(bundle);
+
+            FragmentController.addChildFragment(this,R.id.myOrderStatusFragment, fragment, OrderStatusFragment.TAG);
+        }
+
+    }
+
+
+
+
 
 
 }
