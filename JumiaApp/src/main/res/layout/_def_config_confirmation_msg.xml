@@ -26,50 +26,58 @@
             />
 
 
-        <ImageView
-            android:id="@+id/im_check"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_check_success_message"
-            />
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_centerInParent="true"
-            android:layout_toRightOf="@id/im_check"
-            android:layout_toEndOf="@id/im_check"
-            android:layout_marginLeft="@dimen/confirm_msg_padding"
-            android:layout_marginStart="@dimen/confirm_msg_padding"
-            android:gravity="left|start"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toLeftOf="@id/cta_button_view_cart"
+            android:layout_toStartOf="@id/cta_button_view_cart"
             >
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/tx_informational_text"
+            <ImageView
+                android:id="@+id/im_check"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextHeader"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:text="@string/informational_text"
-                />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/tx_cart_total_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextCaption"
-                android:textColor="@color/white"
-                android:text="@string/informational_text"
-
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/tx_informational_text"
+                android:src="@drawable/ic_check_success_message"
                 />
 
 
-        </LinearLayout>
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/tx_informational_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toRightOf="@+id/im_check"
+                    android:layout_toEndOf="@+id/im_check"
+                    android:layout_marginLeft="@dimen/confirm_msg_padding"
+                    android:layout_marginStart="@dimen/confirm_msg_padding"
+                    style="@style/TextHeader"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:text="@string/informational_text"
+                    />
 
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/tx_cart_total_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/tx_informational_text"
+                    android:layout_alignStart="@id/tx_informational_text"
+                    android:layout_below="@id/tx_informational_text"
+                    style="@style/TextCaption"
+                    android:textColor="@color/white"
+                    android:text="@string/informational_text"
+
+                    />
+
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

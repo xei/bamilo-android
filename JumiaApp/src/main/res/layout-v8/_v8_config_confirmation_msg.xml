@@ -23,30 +23,32 @@
             android:text="@string/cta_button_view_cart"
             />
 
-        <ImageView
-            android:id="@+id/im_check"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/ic_check_success_message_rtl"
-            />
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/im_check"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
             android:layout_toRightOf="@id/cta_button_view_cart"
-            android:layout_marginRight="@dimen/confirm_msg_padding"
-            android:gravity="right"
             >
+
+            <ImageView
+                android:id="@+id/im_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/tx_informational_text"
+                android:src="@drawable/ic_check_success_message"
+                />
+
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/tx_informational_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/im_check"
+                android:layout_marginRight="@dimen/confirm_msg_padding"
                 style="@style/TextHeader"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -57,14 +59,16 @@
                 android:id="@+id/tx_cart_total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignRight="@id/tx_informational_text"
+                android:layout_below="@id/tx_informational_text"
                 style="@style/TextCaption"
                 android:textColor="@color/white"
                 android:text="@string/informational_text"
 
                 />
 
-            </LinearLayout>
 
+        </RelativeLayout>
 
 
     </RelativeLayout>
