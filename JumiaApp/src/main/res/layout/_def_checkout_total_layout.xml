@@ -28,6 +28,7 @@
     <com.mobile.components.customfontviews.Button
         android:id="@+id/checkout_button_enter"
         style="@style/AigButton.Active"
+        android:textStyle="bold"
         android:layout_weight="1"
         android:text="@string/next_button" />
 </LinearLayout>
