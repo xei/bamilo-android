@@ -19,6 +19,8 @@
 
     <dimen name="combo_bundle_item_with">140dp</dimen>
 
+    <dimen name="my_account_gen_dimen">48dp</dimen>
+
     <!--LOGIN-->
     <dimen name="login_main_container_width">370dp</dimen>
     <dimen name="login_email_container_width">370dp</dimen>

@@ -92,6 +92,7 @@
     <item name="bottom_combo" 	                        type="layout">@layout/_def_bottom_combo</item>
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_def_pdv_fragment_related_item_price</item>
+    <item name="config_confirmation_msg" 	            type="layout">@layout/_def_config_confirmation_msg</item>
 
     <!-- REVIEWS DESCRIPTION SPECIFICATIONS -->
     <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>
@@ -145,7 +146,8 @@
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"          type="layout">@layout/_def_my_account_user_data_fragment</item>
     <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
-    <item name="my_account_list_item"                   type="layout">@layout/_def_my_account_list_item</item>
+    <item name="my_account_app_version"                   type="layout">@layout/_def_my_account_app_version</item>
+    <item name="my_account_fragment"                   type="layout">@layout/_def_my_account_fragment</item>
 
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>

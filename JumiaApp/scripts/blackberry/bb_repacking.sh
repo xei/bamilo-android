@@ -24,7 +24,7 @@ Script used to repacking an .apk into a .bar file.
 > sh $0 [-h] [-f bb_flavor] [-t build_type]
 Where:
     -h  show this help text
-    -f  blackberry flavor
+    -f  blackberry flavor directory name (jumiaBlackberry)
     -t  build type, release or debug (default:release)"
 
 # VALIDATE NUMBER OF ARGUMENTS

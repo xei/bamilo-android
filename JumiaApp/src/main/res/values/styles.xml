@@ -628,10 +628,18 @@
         <item name="android:background">@color/black_300</item>
     </style>
 
+    <style name="HorizontalListDivider_black400" parent="HorizontalListDivider">
+        <item name="android:background">@color/black_400</item>
+    </style>
+
     <style name="VerticalListDivider">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">1dp</item>
         <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="VerticalListDivider_black_400" parent="VerticalListDivider">
+        <item name="android:background">@color/black_400</item>
     </style>
 
     <!-- CUSTOM TEXT STYLES -->
@@ -760,6 +768,13 @@
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:background">@null</item>
         <item name="android:src">@drawable/ic_overseas_corner</item>
+    </style>
+
+    <!-- MY ACCOUNT -->
+
+    <style name="HeaderMyAccountStyle" parent="HeaderStyle">
+        <item name="android:paddingLeft">@dimen/my_account_gen_dimen</item>
+        <item name="android:paddingStart">@dimen/my_account_gen_dimen</item>
     </style>
 
     <!-- MATERIAL BOTTOM SHEET -->

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- MORE SETTINGS -->
+
+            <LinearLayout
+                android:id="@+id/more_info_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical" >
+
+                <com.mobile.components.customfontviews.TextView
+                    style="@style/HeaderMyAccountStyle"
+                    android:text="@string/more" />
+            </LinearLayout>
+
+
+            <!-- SHARE SETTINGS -->
+
+            <LinearLayout
+                android:id="@+id/middle_app_sharing_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical" >
+
+                <com.mobile.components.customfontviews.TextView
+                    style="@style/HeaderMyAccountStyle"
+                    android:text="@string/app_social" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- ACCOUNT SETTINGS -->
+
+            <LinearLayout
+                android:id="@+id/middle_myaccount_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <com.mobile.components.customfontviews.TextView
+                    style="@style/HeaderMyAccountStyle"
+                    android:text="@string/section_title_account" />
+            </LinearLayout>
+
+            <!-- NOTIFICATION SETTINGS -->
+
+            <com.mobile.components.customfontviews.TextView
+                style="@style/HeaderMyAccountStyle"
+                android:text="@string/section_title_notification" />
+            <FrameLayout
+                android:id="@+id/account_preferences_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <!-- LANGUAGE SETTINGS -->
+
+            <LinearLayout
+                android:id="@+id/language_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical" >
+
+                <com.mobile.components.customfontviews.TextView
+                    style="@style/HeaderMyAccountStyle"
+                    android:text="@string/choose_language" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
