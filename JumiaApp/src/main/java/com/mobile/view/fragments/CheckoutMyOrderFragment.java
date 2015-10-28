@@ -363,7 +363,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         boolean first = true;
         // Show products
         for (PurchaseCartItem item : mOrderFinish.getCartItems()) {
-            View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(com.mobile.view.R.layout.checkout_my_order_product_item, mProductsContainer, false);
+            View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_my_order_product_item, mProductsContainer, false);
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
             RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
