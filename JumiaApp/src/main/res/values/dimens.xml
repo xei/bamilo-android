@@ -515,4 +515,7 @@
     <dimen name="login_email_container_width">@dimen/match_parent</dimen>
     <dimen name="register_container_width">@dimen/match_parent</dimen>
 
+    <integer name="config_add_cart_anim_duration">500</integer>
+
+    <dimen name="confirm_msg_padding">6dp</dimen>
 </resources>
