@@ -6,9 +6,7 @@
 
     <!-- TITLE -->
 
-
-
-        <com.mobile.components.customfontviews.TextView
+    <com.mobile.components.customfontviews.TextView
             style="@style/HeaderStyle"
             android:text="@string/shipping" />
 

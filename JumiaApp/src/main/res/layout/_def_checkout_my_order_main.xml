@@ -9,7 +9,7 @@
         android:id="@+id/checkout_my_order_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/checkout_my_order_button_container"
+        android:layout_above="@+id/checkout_my_order_button_enter"
         android:layout_alignParentTop="true" >
 
         <LinearLayout
@@ -62,21 +62,17 @@
                 layout="@layout/checkout_my_order_payment_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/rounded_margin_small" />
+                />
         </LinearLayout>
     </ScrollView>
 
-    <!-- NEXT STEP BUTTON -->
+    <!-- BUTTON -->
 
-    <LinearLayout
-        android:id="@id/checkout_my_order_button_container"
-        style="@style/button_container"
-        android:layout_alignParentBottom="true" >
-
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/checkout_my_order_button_enter"
-            style="@style/button_orange_bottom"
-            android:text="@string/my_order_confirm_button" />
-    </LinearLayout>
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/checkout_my_order_button_enter"
+        style="@style/AigButton.Active"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@string/login_button_description"
+        android:text="@string/my_order_confirm_button" />
 
 </RelativeLayout>
