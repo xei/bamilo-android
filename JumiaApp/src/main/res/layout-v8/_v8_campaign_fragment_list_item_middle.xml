@@ -95,7 +95,7 @@
             android:layout_height="match_parent"
             android:layout_alignTop="@id/campaign_item_size_label"
             android:layout_toLeftOf="@id/campaign_item_size_label"
-            android:background="@drawable/spinnerbutton_background_holo_light"
+            android:background="@drawable/spinner_background_holo_orange"
             android:ellipsize="end"
             android:singleLine="true"
             android:text="@string/product_variant_placeholder"

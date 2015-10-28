@@ -50,7 +50,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -79,10 +78,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     private static final String BILLING_CITY_POS = "save_billing_ct_position";
 
-    private static final String SHIPPING_STATE = "shipping_values";
-
-    private static final String BILLING_STATE = "billing_values";
-
     private static final int IS_DEFAULT_SHIPPING_ADDRESS = 1;
 
     protected static final int IS_DEFAULT_BILLING_ADDRESS = 1;
@@ -108,12 +103,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected TextView mShippingTitle;
 
     protected Boolean oneAddressCreated = false;
-    protected ContentValues mShippingSavedValues;
-    protected ContentValues mBillingSavedValues;
+//    protected ContentValues mShippingSavedValues;
+//    protected ContentValues mBillingSavedValues;
     protected boolean isCityIdAnEditText = false;
     protected ScrollView mScrollViewContainer;
 
     protected PurchaseEntity orderSummary;
+
+    private Bundle mBillingFormSavedState;
+
+    private Bundle mShippingFormSavedState;
+
+    private static final String SHIPPING_SAVED_STATE = "shippingSavedStateBundle";
+
+    private static final String BILLING_SAVED_STATE = "billingSavedStateBundle";
 
 
     public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
@@ -147,11 +150,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Validate the saved values
         if (savedInstanceState != null) {
             // Get the ship content values
-            mShippingSavedValues = savedInstanceState.getParcelable(SHIPPING_STATE);
+            mShippingFormSavedState = savedInstanceState.getParcelable(SHIPPING_SAVED_STATE);
             // Get the bill content values
-            mBillingSavedValues = savedInstanceState.getParcelable(BILLING_STATE);
-            //Log.d(TAG, "SAVED CONTENT VALUES: " + mShippingSavedValues.toString());
-            //Log.d(TAG, "SAVED CONTENT VALUES: " + ((mBillingSavedValues!= null) ? mBillingSavedValues.toString() : "IS NULL") );
+            mBillingFormSavedState = savedInstanceState.getParcelable(BILLING_SAVED_STATE);
         } else {
             Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
@@ -216,17 +217,19 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         try {
             // Validate check
             if (mIsSameCheckBox.isChecked()) {
-                ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-                Print.d(TAG, "CONTENT SHIP VALUES: " + mContentValues.toString());
-                outState.putParcelable(SHIPPING_STATE, mContentValues);
-            } else {
-                ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
-                Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues.toString());
-                ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-                Print.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());
+                Bundle shippingSavedStateBundle = new Bundle();
+                shippingFormGenerator.saveFormState(shippingSavedStateBundle);
+                outState.putParcelable(SHIPPING_SAVED_STATE,shippingSavedStateBundle);
 
-                outState.putParcelable(SHIPPING_STATE, mShipValues);
-                outState.putParcelable(BILLING_STATE, mBillValues);
+            } else {
+                Bundle shippingSavedStateBundle = new Bundle();
+                shippingFormGenerator.saveFormState(shippingSavedStateBundle);
+                outState.putParcelable(SHIPPING_SAVED_STATE, shippingSavedStateBundle);
+
+                Bundle billingSavedStateBundle = new Bundle();
+                billingFormGenerator.saveFormState(billingSavedStateBundle);
+                outState.putParcelable(BILLING_SAVED_STATE, billingSavedStateBundle);
+
             }
         } catch (ClassCastException e) {
             Print.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
@@ -245,6 +248,26 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
+        // Case goes to back stack save the state
+        if (mIsSameCheckBox.isChecked()) {
+            if(shippingFormGenerator != null) {
+                Bundle shippingSavedStateBundle = new Bundle();
+                shippingFormGenerator.saveFormState(shippingSavedStateBundle);
+                mShippingFormSavedState = shippingSavedStateBundle;
+            }
+        } else {
+            if(shippingFormGenerator != null) {
+                Bundle shippingSavedStateBundle = new Bundle();
+                shippingFormGenerator.saveFormState(shippingSavedStateBundle);
+                mShippingFormSavedState = shippingSavedStateBundle;
+            }
+            if(billingFormGenerator != null) {
+                Bundle billingSavedStateBundle = new Bundle();
+                billingFormGenerator.saveFormState(billingSavedStateBundle);
+                mBillingFormSavedState = billingSavedStateBundle;
+            }
+        }
+
     }
 
     /*
@@ -338,29 +361,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
         }
         // Load the saved shipping values
-        loadSavedValues(mShippingSavedValues, shippingFormGenerator);
-        loadSavedValues(mBillingSavedValues, billingFormGenerator);
+        shippingFormGenerator.loadSaveFormState(mShippingFormSavedState);
+        billingFormGenerator.loadSaveFormState(mBillingFormSavedState);
     }
 
-    /**
-     * Load the saved values to the respective form
-     */
-    private void loadSavedValues(ContentValues savedValues, DynamicForm dynamicForm) {
-        // Validate values
-        if (savedValues != null) {
-            // Get dynamic form and update
-            Iterator<DynamicFormItem> iter = dynamicForm.getIterator();
-            while (iter.hasNext()) {
-                DynamicFormItem item = iter.next();
-                try {
-                    item.loadState(savedValues);
-                    //Log.d(TAG, "CURRENT ITEM: " + item.getControl().getId());
-                } catch (NullPointerException e) {
-                    Print.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
-                }
-            }
-        }
-    }
 
     /**
      * Hide the default check boxes
@@ -422,6 +426,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         setSavedSelectedRegionPos(spinner, tag, defaultPosition);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
+        v.setEditControl(spinner);
         group.addView(spinner);
         showFragmentContentContainer(); // Show to trigger
     }
@@ -430,25 +435,27 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Load and set the saved region position
      */
     private void setSavedSelectedRegionPos(IcsSpinner spinner, String tag, int defaultPosition) {
+        // FIXME it will be created a ticket in order to change the implementation of the regions/cities/postalCodes
+        // FIXME  to a similar approach as the same in user edit with the phone prefixs
         // Get saved value
-        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_REGION_POS)) {
-            int pos = mShippingSavedValues.getAsInteger(SHIPPING_REGION_POS);
-            if (pos > 0 && pos < regions.size()) {
-                spinner.setSelection(pos);
-            } else {
-                spinner.setSelection(defaultPosition);
-            }
-        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_REGION_POS)) {
-            int pos = mBillingSavedValues.getAsInteger(BILLING_REGION_POS);
-            //Log.d(TAG, "SAVED BILLING REGION VALUE: " + pos);
-            if (pos > 0 && pos < regions.size()) {
-                spinner.setSelection(pos);
-            } else {
-                spinner.setSelection(defaultPosition);
-            }
-        } else {
-            spinner.setSelection(defaultPosition);
-        }
+//        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_REGION_POS)) {
+//            int pos = mShippingSavedValues.getAsInteger(SHIPPING_REGION_POS);
+//            if (pos > 0 && pos < regions.size()) {
+//                spinner.setSelection(pos);
+//            } else {
+//                spinner.setSelection(defaultPosition);
+//            }
+//        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_REGION_POS)) {
+//            int pos = mBillingSavedValues.getAsInteger(BILLING_REGION_POS);
+//            //Log.d(TAG, "SAVED BILLING REGION VALUE: " + pos);
+//            if (pos > 0 && pos < regions.size()) {
+//                spinner.setSelection(pos);
+//            } else {
+//                spinner.setSelection(defaultPosition);
+//            }
+//        } else {
+//            spinner.setSelection(defaultPosition);
+//        }
     }
 
     /**
@@ -494,6 +501,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         setSavedSelectedCityPos(spinner, cities, tag);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
+        v.setEditControl(spinner);
         group.addView(spinner);
     }
 
@@ -516,6 +524,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         setSavedSelectedPostalCodePos(spinner, postalCodes, tag);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
+        v.setEditControl(spinner);
         group.addView(spinner);
     }
 
@@ -523,24 +532,26 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Load and set the saved city position one time
      */
     private void setSavedSelectedCityPos(IcsSpinner spinner, ArrayList<AddressCity> array, String tag) {
+        // FIXME it will be created a ticket in order to change the implementation of the regions/cities/postalCodes
+        // FIXME  to a similar approach as the same in user edit with the phone prefixs
         // Get saved value
-        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_CITY_POS)) {
-            int pos = mShippingSavedValues.getAsInteger(SHIPPING_CITY_POS);
-            //Log.d(TAG, "SAVED SHIPPING CITY VALUE: " + pos);
-            if (pos > 0 && pos < array.size()) {
-                spinner.setSelection(pos);
-            }
-            // Clean the saved city pos
-            mShippingSavedValues.remove(SHIPPING_CITY_POS);
-        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_CITY_POS)) {
-            int pos = mBillingSavedValues.getAsInteger(BILLING_CITY_POS);
-            //Log.d(TAG, "SAVED BILLING CITY VALUE: " + pos);
-            if (pos > 0 && pos < array.size()) {
-                spinner.setSelection(pos);
-            }
-            // Clean the saved city pos
-            mBillingSavedValues.remove(BILLING_CITY_POS);
-        }
+//        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_CITY_POS)) {
+//            int pos = mShippingSavedValues.getAsInteger(SHIPPING_CITY_POS);
+//            //Log.d(TAG, "SAVED SHIPPING CITY VALUE: " + pos);
+//            if (pos > 0 && pos < array.size()) {
+//                spinner.setSelection(pos);
+//            }
+//            // Clean the saved city pos
+//            mShippingSavedValues.remove(SHIPPING_CITY_POS);
+//        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_CITY_POS)) {
+//            int pos = mBillingSavedValues.getAsInteger(BILLING_CITY_POS);
+//            //Log.d(TAG, "SAVED BILLING CITY VALUE: " + pos);
+//            if (pos > 0 && pos < array.size()) {
+//                spinner.setSelection(pos);
+//            }
+//            // Clean the saved city pos
+//            mBillingSavedValues.remove(BILLING_CITY_POS);
+//        }
     }
 
     /**
@@ -548,25 +559,26 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      *
      */
     private void setSavedSelectedPostalCodePos(IcsSpinner spinner, ArrayList<AddressPostalCode> array, String tag) {
-        //FIXME
+        // FIXME it will be created a ticket in order to change the implementation of the regions/cities/postalCodes
+        // FIXME  to a similar approach as the same in user edit with the phone prefixs
         // Get saved value
-        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_CITY_POS)) {
-            int pos = mShippingSavedValues.getAsInteger(SHIPPING_CITY_POS);
-            //Log.d(TAG, "SAVED SHIPPING CITY VALUE: " + pos);
-            if (pos > 0 && pos < array.size()) {
-                spinner.setSelection(pos);
-            }
-            // Clean the saved city pos
-            mShippingSavedValues.remove(SHIPPING_CITY_POS);
-        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_CITY_POS)) {
-            int pos = mBillingSavedValues.getAsInteger(BILLING_CITY_POS);
-            //Log.d(TAG, "SAVED BILLING CITY VALUE: " + pos);
-            if (pos > 0 && pos < array.size()) {
-                spinner.setSelection(pos);
-            }
-            // Clean the saved city pos
-            mBillingSavedValues.remove(BILLING_CITY_POS);
-        }
+//        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_CITY_POS)) {
+//            int pos = mShippingSavedValues.getAsInteger(SHIPPING_CITY_POS);
+//            //Log.d(TAG, "SAVED SHIPPING CITY VALUE: " + pos);
+//            if (pos > 0 && pos < array.size()) {
+//                spinner.setSelection(pos);
+//            }
+//            // Clean the saved city pos
+//            mShippingSavedValues.remove(SHIPPING_CITY_POS);
+//        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_CITY_POS)) {
+//            int pos = mBillingSavedValues.getAsInteger(BILLING_CITY_POS);
+//            //Log.d(TAG, "SAVED BILLING CITY VALUE: " + pos);
+//            if (pos > 0 && pos < array.size()) {
+//                spinner.setSelection(pos);
+//            }
+//            // Clean the saved city pos
+//            mBillingSavedValues.remove(BILLING_CITY_POS);
+//        }
     }
 
     /**

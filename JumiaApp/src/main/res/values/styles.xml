@@ -290,8 +290,9 @@
         <item name="android:layout_marginEnd">@dimen/margin_30px</item>
         <item name="android:layout_gravity">top</item>
         <item name="android:button">@null</item>
-        <item name="android:drawableLeft">@drawable/btn_radio_holo_orange</item>
-        <item name="android:drawableStart">@drawable/btn_radio_holo_orange</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:drawableLeft">@drawable/_gen_selector_radio_button</item>
+        <item name="android:drawableStart">@drawable/_gen_selector_radio_button</item>
     </style>
 
     <style name="starRatingBarSmall" parent="@android:style/Widget.RatingBar">
@@ -584,7 +585,7 @@
 
     <!-- CUSTOM SPINNER STYLE -->
     <style name="Widget.Jumia.Spinner.Style" parent="Widget">
-        <item name="android:background">@drawable/custom_spinner_light</item>
+        <item name="android:background">@drawable/spinner_background_holo_orange</item>
         <item name="android:dropDownSelector">@drawable/custom_list_selector_holo_dark</item>
         <item name="android:popupBackground">@drawable/custom_menu_dropdown_panel_holo_light</item>
         <item name="android:dropDownVerticalOffset">0dip</item>

@@ -41,6 +41,11 @@ public class WarningFactory {
     public static final int ERROR_ADD_PRODUCTS_TO_CART = 8;
     public static final int ADDED_TO_SAVED = 9;
     public static final int REMOVE_FROM_SAVED = 10;
+    public static final int CHANGE_PASSWORD_VALIDATION = 11;
+    public static final int USER_DATA_VALIDATION = 12;
+    public static final int USER_DATA_SUCCESS = 13;
+    public static final int CHANGE_PASSWORD_SUCCESS = 14;
+    public static final int LOGIN_SUCCESS = 15;
 
     /**
      * The last warning that was built and might be re-used.
@@ -48,6 +53,8 @@ public class WarningFactory {
     protected int actualWarning;
 
     protected View mWarningBar;
+
+    private String mWarningMessage;
 
     /**
      * Create a new instance of WarningFactory.
@@ -73,9 +80,19 @@ public class WarningFactory {
     }
 
     /**
+     * constructor where the label to show can be dynamic
+     * @param warning
+     * @param warningMessage
+     */
+    public void showWarning(int warning, String warningMessage){
+        mWarningMessage = warningMessage;
+        showWarning(warning);
+    }
+
+    /**
      * Constructs warning bar.
      *
-     * @param warning The warning desired.
+     * @param warning The warning desiredt.
      */
     public void showWarning(int warning){
         switch (warning){
@@ -109,8 +126,80 @@ public class WarningFactory {
             case REMOVE_FROM_SAVED:
                 showWarningRemovedItemFromSaved();
                 break;
+            case CHANGE_PASSWORD_VALIDATION:
+                showErrorFormGeneric(warning);
+                break;
+            case USER_DATA_VALIDATION:
+                showErrorFormGeneric(warning);
+                break;
+            case CHANGE_PASSWORD_SUCCESS:
+                showWarningChangedPassword();
+                break;
+            case USER_DATA_SUCCESS:
+                showWarningEditedUserData();
+                break;
+            case LOGIN_SUCCESS:
+                showWarningLoginSuccess();
+                break;
         }
     }
+
+    private void showWarningLoginSuccess(){
+        if(actualWarning != LOGIN_SUCCESS) {
+            new Builder().setText(R.string.succes_login)
+                    .setBackground(R.color.green_warning)
+                    .setImageVisibility(false)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = LOGIN_SUCCESS;
+        } else {
+            new Builder().startAnimation();
+        }
+    }
+
+    private void showWarningChangedPassword(){
+        if(actualWarning != CHANGE_PASSWORD_SUCCESS) {
+            new Builder().setText(R.string.password_changed)
+                    .setBackground(R.color.green_warning)
+                    .setImageVisibility(false)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = CHANGE_PASSWORD_SUCCESS;
+        } else {
+            new Builder().startAnimation();
+        }
+    }
+
+    private void showWarningEditedUserData(){
+        if(actualWarning != USER_DATA_SUCCESS) {
+            new Builder().setText(R.string.edit_user_success)
+                    .setBackground(R.color.green_warning)
+                    .setImageVisibility(false)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = USER_DATA_SUCCESS;
+        } else {
+            new Builder().startAnimation();
+        }
+    }
+
+    /**
+     * show dynamic error message, associated with form validation
+     * @param warning
+     */
+    private void showErrorFormGeneric(int warning) {
+        if(actualWarning != warning){
+            new Builder().setText(mWarningMessage)
+                    .setBackground(R.color.red_warning)
+                    .setImageVisibility(true)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = warning;
+        } else {
+            new Builder().startAnimation();
+        }
+    }
+
 
     private void showErrorAddProductsToCart() {
         if(actualWarning != ERROR_ADD_PRODUCTS_TO_CART){
@@ -261,6 +350,11 @@ public class WarningFactory {
         private int animationLength = _5_SECONDS;
 
         Builder setText(int message){
+            ((TextView)mWarningBar.findViewById(R.id.warning_text)).setText(message);
+            return this;
+        }
+
+        Builder setText(String message){
             ((TextView)mWarningBar.findViewById(R.id.warning_text)).setText(message);
             return this;
         }

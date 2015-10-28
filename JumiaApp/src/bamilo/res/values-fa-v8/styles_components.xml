@@ -57,20 +57,6 @@
 
     <!-- FORM TODO : UPDATE v2.8 -->
 
-    <style name="form_edittext_style" parent="form_style">
-        <item name="android:layout_height">@dimen/form_item_height</item>
-        <item name="android:background">@drawable/selector_edittext_bottomline</item>
-        <item name="android:textColorHint">@color/form_text_hint</item>
-        <item name="android:cursorVisible">true</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-        <item name="android:paddingRight">@dimen/form_padding</item>
-        <item name="android:textCursorDrawable" targetApi="12">@null</item>
-        <item name="android:inputType">text</item>
-        <item name="android:gravity">right</item>
-        <item name="android:fontFamily">roboto_regular</item>
-    </style>
-
     <style name="FormButtonSpinner">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

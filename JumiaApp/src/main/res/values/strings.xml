@@ -436,5 +436,8 @@
     <string name="com_facebook_loginview_log_in_button_long">Continue with Facebook</string>
     <string name="error_invalid_email">Invalid E-mail</string>
     <string name="create_label">Create</string>
+    <string name="change_password">Change password</string>
     <string name="continue_without_log_in">Continue without log in</string>
+    <string name="edit_user_success">User Data edit with success</string>
+    <string name="password">Password</string>
 </resources>

@@ -322,6 +322,12 @@ public interface AigApiInterface {
      * ## SESSION
      */
 
+    @FormUrlEncoded
+    @POST("/")
+    void setUserData(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    String setUserData = "setUserData";
+
     @GET("/")
     void logoutCustomer(Callback<BaseResponse<Void>> callback);
 

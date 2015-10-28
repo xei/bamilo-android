@@ -132,7 +132,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="@dimen/rounded_margin_small"
-        android:background="@drawable/spinnerbutton_background_holo_light"
+        android:background="@drawable/spinner_background_holo_orange"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/product_variant_placeholder"
