@@ -50,7 +50,7 @@ public class ProductRegular extends ProductBase {
         // Mandatory
         mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
         mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-        mBrandId = jsonObject.optInt(RestConstants.JSON_BRAND_ID_TAG, 0);
+        mBrandId = jsonObject.optInt(RestConstants.JSON_BRAND_ID_TAG);
         // Optional TODO FIX THIS
         mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
         if(TextUtils.isEmpty(mImageUrl)) {
@@ -129,15 +129,8 @@ public class ProductRegular extends ProductBase {
 
     public String getCategoryId() {
         if(TextUtils.isNotEmpty(mCategories)){
-            if(mCategories.contains(",")){
-                int startPos = mCategories.indexOf(",");
-                if(startPos != -1){
-                    return mCategories.substring(0,startPos);
-                }
-            } else {
-                return mCategories;
-            }
-
+            String[] categories = mCategories.split(",");
+            return categories[0];
         }
         return "";
     }
