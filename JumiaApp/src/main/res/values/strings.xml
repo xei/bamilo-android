@@ -46,10 +46,10 @@
     <string name="categories_toplevel_title">All Categories</string>
     <string name="category_filter_error">It was not possible to apply category filter</string>
     <string name="checkout_button_text">Proceed to Checkout</string>
-    <string name="checkout_header_step_1">1. About you</string>
-    <string name="checkout_header_step_2">2. Address</string>
-    <string name="checkout_header_step_3">3. Shipping</string>
-    <string name="checkout_header_step_4">4. Payment</string>
+    <string name="checkout_header_step_1">Login</string>
+    <string name="checkout_header_step_2">Address</string>
+    <string name="checkout_header_step_3">Shipping</string>
+    <string name="checkout_header_step_4">Payment</string>
     <string name="checkout_label">Checkout</string>
     <string name="clear_all_uppercase_label">CLEAR ALL</string>
     <string name="clear_uppercase_label">CLEAR</string>
@@ -368,7 +368,7 @@
     <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
     <string name="kickout_page_text2">We want to provide you with the best possible shopping experience, so we would like to ask you to try again later.</string>
     <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
-    <string name="com_facebook_loginview_log_in_button_long">Login with Facebook</string>
+
     <string name="review_plural">%d review</string>
     <string name="reviews_plural">%d reviews</string>
     <string name="open">open</string>
@@ -424,4 +424,26 @@
     <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">The host name does not match the certificate: %s</string>
     <string name="ssl_error_generic">An SSL error occurred: %s</string>
+    <string name="save_for_later">Save for later</string>
+    <string name="remove_from_saved">Remove from saved</string>
+    <string name="continue_label">Continue</string>
+    <string name="login_main_info">Log in to your %s account to access your profile, saved favorites, order info, and more.</string>
+    <string name="welcome_back_label">Welcome Back</string>
+    <string name="login_email_info">Enter your password to continue</string>
+    <string name="welcome_label">Welcome</string>
+    <string name="register_info">Looks like you\'re new to %s.\nWe need just a bit more details to create your account.</string>
+    <string name="email_address">Email address</string>
+    <string name="com_facebook_loginview_log_in_button_long">Continue with Facebook</string>
+    <string name="error_invalid_email">Invalid E-mail</string>
+    <string name="create_label">Create</string>
+    <string name="continue_without_log_in">Continue without log in</string>
+    <string name="more">More</string>
+    <string name="app_version">App version</string>
+    <string name="update_now">Update Now</string>
+    <string name="informational_text">Item added to Cart</string>
+    <string name="cart_total_price">Your Cart total is %s</string>
+    <string name="cta_button_view_cart">View Cart</string>
+    <string name="cta_link_continue_shopping">Continue Shopping</string>
+
+    <string name="order_track_check">You can check your order status visiting the My Orders area</string>
 </resources>

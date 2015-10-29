@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
 
 import com.mobile.controllers.NormalizingViewPagerWrapper.IPagerAdapter;
+import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.photoview.PhotoView;
@@ -23,13 +24,13 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     private static final String TAG = GalleryPagerAdapter.class.getSimpleName();
     
     private final static int MIN_NUM_OF_IMAGES = 3;
-    
-    private ArrayList<String> mImageUrls;
+
+    private ArrayList<ImageUrls> mImageUrls;
     private LayoutInflater mInflater;
     private boolean isZoomAvailable = false;
     private View primaryView;
 
-    public GalleryPagerAdapter(Context context, ArrayList<String> imageUrls, boolean zoomAvailable) {
+    public GalleryPagerAdapter(Context context, ArrayList<ImageUrls> imageUrls, boolean zoomAvailable){
         mImageUrls = imageUrls;
         mInflater = LayoutInflater.from(context);
         isZoomAvailable = zoomAvailable;
@@ -61,7 +62,8 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         return arg0 == arg1;
     }
 
-    public void replaceAll(ArrayList<String> images) {
+
+    public void replaceAll(ArrayList<ImageUrls> images) {
         this.mImageUrls = images;
         notifyDataSetChanged();
         Print.d(TAG, "replaceAll: done - notfied");
@@ -92,8 +94,11 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
                 view = mInflater.inflate(R.layout.image_loadable, container, false);
             }
 
-            String imageUrl = mImageUrls.get(position);
-            setImageToLoad(imageUrl, view);
+            ImageUrls imageUrls =  mImageUrls.get(position);
+            if(imageUrls.hasZoom() && this.isZoomAvailable)
+                setImageToLoad(imageUrls.getZoom(), view);
+            else
+                setImageToLoad(imageUrls.getUrl(), view);
             container.addView(view);
         } catch (InflateException | IndexOutOfBoundsException e) {
             e.printStackTrace();

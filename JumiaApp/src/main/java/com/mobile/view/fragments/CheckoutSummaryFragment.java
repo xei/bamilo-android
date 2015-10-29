@@ -244,7 +244,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             return;
         }
 
-        Print.i(TAG, "ORDER SUMMARY: " + mOrderSummary.toString());
+        Print.i(TAG, "ORDER SUMMARY: " + mOrderSummary);
 
         // Validate the current checkout step
         switch (mCheckoutStep) {
@@ -347,7 +347,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(shippingAddress.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText("" + shippingAddress.getPhone());
-        shippingAddressView.findViewById(R.id.checkout_address_item_btn_container).setVisibility(View.GONE);
         mShippingAddressList.addView(shippingAddressView);
         mShippingAddressView.setVisibility(View.VISIBLE);
     }
@@ -614,7 +613,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         }
 
         ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {
 //        case GET_SHOPPING_CART_ITEMS_EVENT:

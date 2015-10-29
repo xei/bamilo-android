@@ -29,7 +29,7 @@ public class RestConstants {
     // Customer Tags
     public static final String FIRST_NAME = "first_name";
     public static final String LAST_NAME = "last_name";
-    public static final String JSON_EMAIL_TAG = "email";
+    public static final String EMAIL = "email";
     public static final String JSON_BIRTHDAY_TAG = "birthday";
     public static final String JSON_GENDER_TAG = "gender";
 
@@ -49,6 +49,7 @@ public class RestConstants {
     // FormData Tags
     public static final String JSON_ACTION_TAG = "action";
     public static final String URL = "url";
+    public static final String ZOOM = "zoom";
 
     // Form Tags
     public static final String JSON_FORM_TAG = "form";
@@ -66,7 +67,7 @@ public class RestConstants {
     public static final String JSON_SCENARIO_TAG = "scenario";
     public static final String JSON_TERMS_TAG = "terms";
     public static final String JSON_LINK_TEXT_TAG = "link_text";
-    public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "newsletter_categories_subscribed";
+    public static final String JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG = "register[newsletter_categories_subscribed]";
     public static final String DELIVERY_TIME = "delivery_time";
     public static final String RELATED_DATA = "related_data";
     public static final String CHECKED = "checked";
@@ -362,6 +363,7 @@ public class RestConstants {
     public static final String JSON_COUNTRY_CS_EMAIL = "cs_email";
     public static final String JSON_FACEBOOK_IS_AVAILABLE = "facebook_is_available";
     public static final String JSON_COUNTRY_GTM_ID = "gtm_android";
+    public static final String JSON_COUNTRY_HAS_CART_POPUP = "has_cart_popup";
 
     public static final String JSON_ITEM_TAG = "item";
     public static final String JSON_RELEVANCE_TAG = "relevance";
@@ -446,4 +448,11 @@ public class RestConstants {
 
 
     public static final String PRICE_RANGE = "price_range";
+    public static final String EXIST = "exist";
+    public static final String IS_DEFAULT = "is_default";
+    public static final String POSITION = "position";
+
+    public static final String TARGET = "target";
+
+    public static final String MOBILE_ABOUT = "mobile_about_cms";
 }

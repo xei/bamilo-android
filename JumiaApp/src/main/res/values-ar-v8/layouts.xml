@@ -80,6 +80,7 @@
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_v8_pdv_fragment_seller_info</item>
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_v8_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_v8_pdv_fragment_related_item_price</item>
+    <item name="config_confirmation_msg" 	            type="layout">@layout/_v8_config_confirmation_msg</item>
     <!-- MY ORDERS -->
     <!--<item name="track_order_fragment"                   type="layout">@layout/_v8_track_order_fragment</item>-->
     <!--<item name="order_history_main"                     type="layout">@layout/_v8_order_history_main</item>-->
@@ -104,10 +105,11 @@
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"          type="layout">@layout/_v8_my_account_user_data_fragment</item>
     <item name="country_settings_list_item"             type="layout">@layout/_v8_country_settings_list_item</item>
-    <item name="my_account_list_item"                   type="layout">@layout/_v8_my_account_list_item</item>
+    <item name="my_account_app_version"                 type="layout">@layout/_v8_my_account_app_version</item>
 
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_v8_form_checkbox_terms</item>
+    <item name="gen_form_text_field"                    type="layout">@layout/_v8_gen_form_text_field</item>
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_v8_dialog_list_item</item>
@@ -130,7 +132,7 @@
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_v8_reviews_fragment_rating_samlltype_item</item>
     <item name="product_offers_main"                    type="layout">@layout/_v8_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_v8_campaign_spinner_item</item>
-    <item name="form_checkbox"                          type="layout">@layout/_v8_form_checkbox</item>
+    <item name="_gen_form_check_box"                          type="layout">@layout/_v8_form_checkbox</item>
     <item name="login_remember_checkbox"                type="layout">@layout/_v8_login_remember_checkbox</item>
     <item name="form_spinner_dropdown_item"             type="layout">@layout/_v8_form_spinner_dropdown_item</item>
     <item name="order_history_item"                     type="layout">@layout/_v8_order_history_item</item>

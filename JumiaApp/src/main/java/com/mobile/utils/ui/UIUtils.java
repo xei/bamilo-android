@@ -2,11 +2,13 @@ package com.mobile.utils.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 import com.mobile.view.R;
 
@@ -95,6 +97,52 @@ public class UIUtils {
      */
     public static boolean isAnimating(View view) {
         return view != null && view.getAnimation() != null && (view.getAnimation().hasStarted() || !view.getAnimation().hasEnded());
+    }
+
+    public static void showViewFadeIn(@NonNull View view) {
+        if (view.getVisibility() != View.VISIBLE) {
+            Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.abc_fade_in);
+            view.startAnimation(animation);
+            view.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public static void setDrawableByString(ImageView imageView, String name) {
+        Context context = imageView.getContext();
+        int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+        imageView.setImageResource(id);
+    }
+
+
+
+/**
+ * Animate a view sliding from down to top
+ * @param context -  fragment context
+ * @param animatedView -  the animated view
+ * */
+    public static void animateSlideUp(Context context, View animatedView)
+    {
+        animatedView.clearAnimation();
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_up);
+        animatedView.startAnimation(animation);
+        animatedView.setVisibility(View.GONE);
+
+    }
+
+
+    /**
+     * Animate a view sliding from top to down
+     * @param context -  fragment context
+     * @param animatedView -  the animated view
+     * */
+
+    public static void animateSlideDown(Context context, View animatedView)
+    {
+        animatedView.clearAnimation();
+        animatedView.setVisibility(View.VISIBLE);
+        Animation animation = AnimationUtils.loadAnimation(context, R.anim.slide_down);
+        animatedView.startAnimation(animation);
+
     }
     
 }

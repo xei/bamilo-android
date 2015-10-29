@@ -29,7 +29,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -43,7 +42,6 @@ import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -382,7 +380,8 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
-        shippingAddressView.findViewById(R.id.checkout_address_item_btn_container).setVisibility(View.GONE);
+        shippingAddressView.findViewById(R.id.checkout_address_item_radio_btn).setVisibility(View.GONE);
+        shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
         container.addView(shippingAddressView);
     }
 
@@ -641,7 +640,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
 
 
         ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {
             case CHECKOUT_FINISH_EVENT:

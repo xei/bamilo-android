@@ -106,7 +106,7 @@
 
     <!-- dimen name="fragment_root_text_size">27sp</dimen -->
 
-    <dimen name="form_item_height">45dp</dimen>
+    <!--<dimen name="form_item_height">48dp</dimen>-->
     <dimen name="form_date_width">190dp</dimen>
 
     <dimen name="login_margin_small">15dp</dimen>
@@ -193,5 +193,6 @@
 
     <dimen name="ratings_average_with">260dp</dimen>
     <dimen name="specs_column_with">220dp</dimen>
+
 
 </resources>

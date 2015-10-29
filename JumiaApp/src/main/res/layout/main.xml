@@ -40,6 +40,15 @@
                 app:tabGravity="fill"
                 app:tabMode="fixed" />
 
+            <android.support.design.widget.TabLayout
+                android:id="@+id/checkout_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/tabBar"
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                android:visibility="gone"/>
+
         </android.support.design.widget.AppBarLayout>
 
         <!-- SCROLLABLE CONTAINER -->
@@ -92,6 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:visibility="gone" />
+
 
         </RelativeLayout>
 
