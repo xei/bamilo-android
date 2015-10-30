@@ -9,10 +9,6 @@
  */
 package com.mobile.newFramework.objects.orders;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -74,6 +70,10 @@ public class OrderTrackerItem extends ProductRegular{
     	return this.status;
     }
 
+    public String getStatusUpdate(){
+        return this.status_update;
+    }
+
 //    public String getUpdateDate(){
 //    	return this.status_update;
 //    }
@@ -114,6 +114,7 @@ public class OrderTrackerItem extends ProductRegular{
 
             jsonObject.put(RestConstants.JSON_QUANTITY_TAG, quantity);
             jsonObject.put(RestConstants.JSON_ORDER_STATUS_TAG, status);
+            jsonObject.put(RestConstants.UPDATED_AT, status_update);
 
         } catch (JSONException e) {
             e.printStackTrace();

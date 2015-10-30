@@ -46,7 +46,7 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         // Mandatory
         mSku = jsonObject.getString(RestConstants.SKU);
         mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
-        mPriceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
+        mPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
         // Optional
         mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
         mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);

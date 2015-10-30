@@ -280,6 +280,7 @@ public class RestConstants {
      */
     public static final String JSON_ORDER_NR_TAG = "orderNr";
     public static final String JSON_GRAND_TOTAL_TAG = "grandTotal";
+    public static final String JSON_GRAND_TOTAL = "grand_total";
     public static final String JSON_GRAND_TOTAL_CONVERTED_TAG = "grandTotal_converted";
 
     public static final String JSON_ORDER_ID_TAG = "order_id";

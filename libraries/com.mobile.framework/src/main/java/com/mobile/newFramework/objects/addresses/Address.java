@@ -46,9 +46,9 @@ public class Address implements IJSONSerializable, Parcelable {
         // Mandatory
         // TODO ID
         id = dataObject.optInt(RestConstants.CUSTOMER_ADDRESS_ID);
-        if (id == 0) {
+   /*     if (id == 0) {
             id = dataObject.getInt(RestConstants.ID);
-        }
+        }*/
         firstName = dataObject.getString(RestConstants.FIRST_NAME);
         lastName = dataObject.getString(RestConstants.LAST_NAME);
         address1 = dataObject.getString(RestConstants.ADDRESS_1);
@@ -142,7 +142,7 @@ public class Address implements IJSONSerializable, Parcelable {
     /**
      * Parcel constructor
      */
-    private Address(Parcel in) {
+    public Address(Parcel in) {
         id = in.readInt();
         firstName = in.readString();
         lastName = in.readString();

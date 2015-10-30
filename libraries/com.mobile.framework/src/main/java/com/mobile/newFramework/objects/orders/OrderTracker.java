@@ -14,6 +14,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
@@ -37,6 +38,10 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     private String payment_method;
     private String last_order_update;
     private ArrayList<OrderTrackerItem> orderTrackerItems;
+	private int total_products;
+	private String grand_total;
+	private Address shippingAddress;
+	private Address billingAddress;
 
 
     /**
@@ -51,30 +56,15 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     	orderTrackerItems = new ArrayList<>();
     }
 
-//    /**
-//     * OrderTracker constructor
-//     *
-//     * @param o order_id
-//     *            	of the order
-//     * @param d creation_date
-//     *            	of the order
-//     * @param oI order tracker items
-//     * 			  	of the order
-//     * @param p payment method
-//     * 				of the order
-//     * @param l last order status update
-//     * 				of the order
-//     */
-//    public OrderTracker(String o, String d, String p, String l, ArrayList<OrderTrackerItem> oI) {
-//    	this.order_id = o;
-//    	this.creation_date = d;
-//    	this.payment_method = p;
-//    	this.last_order_update = l;
-//    	this.orderTrackerItems = oI;
-//    }
+	/**
+	 * Create parcelable
+	 */
+	public static Creator<OrderTracker> getCREATOR() {
+		return CREATOR;
+	}
 
 
-    public String getId(){
+	public String getId(){
     	return this.order_id;
     }
 
@@ -102,22 +92,53 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-		order_id = jsonObject.optString(RestConstants.ORDER_NUMBER);
-        creation_date = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
-        payment_method = jsonObject.optString(RestConstants.PAYMENT_METHOD);
-        last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
-		JSONArray items = jsonObject.optJSONArray(RestConstants.PRODUCTS);
+		try {
 
-		for(int i = 0 ; i<items.length();i++){
-			OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
-			try {
-				mOrderTrackerItem.initialize(items.getJSONObject(i));
-			} catch (JSONException e) {
-				e.printStackTrace();
+			order_id = jsonObject.optString(RestConstants.ORDER_NUMBER);
+			creation_date = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
+			JSONObject paymentObject = jsonObject.optJSONObject(RestConstants.PAYMENT);
+
+			if (paymentObject != null)
+				payment_method = paymentObject.optString(RestConstants.LABEL);
+
+			total_products = jsonObject.optInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
+			grand_total = jsonObject.optString(RestConstants.JSON_GRAND_TOTAL);
+
+			JSONObject billingAddressObject = jsonObject.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
+			if (billingAddressObject != null) {
+				billingAddress = new Address();
+				billingAddress.initialize(billingAddressObject);
 			}
-			orderTrackerItems.add(mOrderTrackerItem);
+
+
+			JSONObject shippingAddressObject = jsonObject.optJSONObject(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG);
+			if (shippingAddressObject != null) {
+				shippingAddress = new Address();
+				shippingAddress.initialize(shippingAddressObject);
+			}
+
+			// last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
+			JSONArray items = jsonObject.optJSONArray(RestConstants.PRODUCTS);
+
+			for (int i = 0; i < items.length(); i++) {
+				OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
+				try {
+					mOrderTrackerItem.initialize(items.getJSONObject(i));
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				orderTrackerItems.add(mOrderTrackerItem);
+			}
+
+
+
+			return true;
+
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
-        return true;
+
+		return false;
     }
 
     /*
@@ -163,6 +184,79 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 		return 0;
 	}
 
+
+	public String getOrder_id() {
+		return order_id;
+	}
+
+	public void setOrder_id(String order_id) {
+		this.order_id = order_id;
+	}
+
+	public String getCreation_date() {
+		return creation_date;
+	}
+
+	public void setCreation_date(String creation_date) {
+		this.creation_date = creation_date;
+	}
+
+	public String getPayment_method() {
+		return payment_method;
+	}
+
+	public void setPayment_method(String payment_method) {
+		this.payment_method = payment_method;
+	}
+
+	public String getLast_order_update() {
+		return last_order_update;
+	}
+
+	public void setLast_order_update(String last_order_update) {
+		this.last_order_update = last_order_update;
+	}
+
+	public void setOrderTrackerItems(ArrayList<OrderTrackerItem> orderTrackerItems) {
+		this.orderTrackerItems = orderTrackerItems;
+	}
+
+	public int getTotal_products() {
+		return total_products;
+	}
+
+	public void setTotal_products(int total_products) {
+		this.total_products = total_products;
+	}
+
+	public String getGrand_total() {
+		return grand_total;
+	}
+
+	public void setGrand_total(String grand_total) {
+		this.grand_total = grand_total;
+	}
+
+	public Address getShippingAddress() {
+		return shippingAddress;
+	}
+
+	public void setShippingAddress(Address shippingAddress) {
+		this.shippingAddress = shippingAddress;
+	}
+
+	public Address getBillingAddress() {
+		return billingAddress;
+	}
+
+	public void setBillingAddress(Address billingAddress) {
+		this.billingAddress = billingAddress;
+	}
+
+
+
+
+
 	/*
 	 * (non-Javadoc)
 	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
@@ -174,6 +268,10 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
 	    dest.writeString(payment_method);
 	    dest.writeString(last_order_update);
 	    dest.writeList(orderTrackerItems);
+		dest.writeInt(total_products);
+		dest.writeString(grand_total);
+		dest.writeParcelable(shippingAddress,flags);
+		dest.writeParcelable(billingAddress,flags);
 	}
 
 	/**
@@ -186,12 +284,13 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     	last_order_update = in.readString();
     	orderTrackerItems = new ArrayList<>();
     	in.readList(orderTrackerItems, OrderTrackerItem.class.getClassLoader());
+		total_products = in.readInt();
+		grand_total = in.readString();
+		shippingAddress = new Address(in);
+		billingAddress = new Address(in);
     }
 
-	/**
-	 * Create parcelable
-	 */
-	public static final Creator<OrderTracker> CREATOR = new Creator<OrderTracker>() {
+	private static final Creator<OrderTracker> CREATOR = new Creator<OrderTracker>() {
         public OrderTracker createFromParcel(Parcel in) {
             return new OrderTracker(in);
         }
@@ -200,5 +299,6 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
             return new OrderTracker[size];
         }
     };
+
 
 }
