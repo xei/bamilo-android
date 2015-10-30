@@ -30,7 +30,7 @@ public class ProductComplete extends ProductMultiple {
 
     private String mDescription;
     private String mShortDescription;
-     private ArrayList<ImageUrls> mImageList;
+    private ArrayList<ImageUrls> mImageList;
     private BundleList mProductBundle;
     private boolean hasBundle;
     private Seller mSeller;

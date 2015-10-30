@@ -222,7 +222,7 @@ public class AdjustTracker {
         String appToken = context.getString(R.string.adjust_app_token);
         // Get adjust environment and log level
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
-        LogLevel logLevel = LogLevel.INFO;
+        LogLevel logLevel = LogLevel.VERBOSE;
         if(!context.getResources().getBoolean(R.bool.adjust_is_production_env)) {
             environment = AdjustConfig.ENVIRONMENT_SANDBOX;
             //logLevel = LogLevel.VERBOSE;
@@ -357,27 +357,6 @@ public class AdjustTracker {
             eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, String.valueOf(prod.getPriceForTracking()));
             eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, prod.getSku());
             eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, prod.getSku());
-
-            //FIXME
-//            eventPDVScreenFB = getFBBaseParameters(eventPDVScreenFB, bundle);
-//            eventPDVScreenFB.addCallbackParameter(AdjustKeys.SKU, prod.getSku());
-//            eventPDVScreenFB.addPartnerParameter(AdjustKeys.SKU, prod.getSku());
-//            eventPDVScreenFB.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-//            eventPDVScreenFB.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-//            eventPDVScreenFB.addCallbackParameter(AdjustKeys.DISCOUNT, prod.hasDiscount() ? "y" : "n");
-//            eventPDVScreenFB.addPartnerParameter(AdjustKeys.DISCOUNT, prod.hasDiscount() ? "y" : "n");
-//            eventPDVScreenFB.addCallbackParameter(AdjustKeys.BRAND, prod.getBrand());
-//            eventPDVScreenFB.addPartnerParameter(AdjustKeys.BRAND, prod.getBrand());
-//            eventPDVScreenFB.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(prod.getPriceForTracking()));
-//            eventPDVScreenFB.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(prod.getPriceForTracking()));
-//            if (bundle.containsKey(AdjustTracker.PRODUCT_SIZE) && !TextUtils.isEmpty(bundle.getString(AdjustTracker.PRODUCT_SIZE))){
-//                eventPDVScreenFB.addCallbackParameter(AdjustKeys.SIZE, bundle.getString(AdjustTracker.PRODUCT_SIZE));
-//                eventPDVScreenFB.addPartnerParameter(AdjustKeys.SIZE, bundle.getString(AdjustTracker.PRODUCT_SIZE));
-//            }
-//            if (bundle.containsKey(TREE) && !TextUtils.isEmpty(bundle.getString(TREE))){
-//                eventPDVScreenFB.addCallbackParameter(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
-//                eventPDVScreenFB.addPartnerParameter(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
-//            }
             Adjust.trackEvent(eventPDVScreenFB);
             
             break;
@@ -435,26 +414,9 @@ public class AdjustTracker {
             eventCatalogSortedFB.addPartnerParameter(AdjustKeys.APP_VERSION, getAppVersion());
             eventCatalogSortedFB.addCallbackParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
             eventCatalogSortedFB.addPartnerParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
-            eventCatalogSortedFB.addCallbackParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(CATEGORY)); //FIXME
+            eventCatalogSortedFB.addCallbackParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(CATEGORY));
             eventCatalogSortedFB.addPartnerParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(CATEGORY));
 
-            //FIXME
-//            eventCatalogSortedFB = getFBBaseParameters(eventCatalogSortedFB, bundle);
-//            if(!TextUtils.isEmpty(bundle.getString(CATEGORY))){
-//                eventCatalogSortedFB.addCallbackParameter(AdjustKeys.CATEGORY, bundle.getString(CATEGORY));
-//                eventCatalogSortedFB.addPartnerParameter(AdjustKeys.CATEGORY, bundle.getString(CATEGORY));
-//            }
-//
-//            eventCatalogSortedFB.addCallbackParameter(AdjustKeys.SKUS, sbSkus.toString());
-//            eventCatalogSortedFB.addPartnerParameter(AdjustKeys.SKUS, sbSkus.toString());
-//            if (bundle.containsKey(CATEGORY_ID) && !TextUtils.isEmpty(bundle.getString(CATEGORY_ID))){
-//                eventCatalogSortedFB.addCallbackParameter(AdjustKeys.CATEGORY_ID, bundle.getString(CATEGORY_ID));
-//                eventCatalogSortedFB.addPartnerParameter(AdjustKeys.CATEGORY_ID, bundle.getString(CATEGORY_ID));
-//            }
-//            if (bundle.containsKey(TREE) && !TextUtils.isEmpty(bundle.getString(TREE))){
-//                eventCatalogSortedFB.addCallbackParameter(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
-//                eventCatalogSortedFB.addPartnerParameter(AdjustKeys.CATEGORY_TREE, bundle.getString(TREE));
-//            }
             Adjust.trackEvent(eventCatalogSortedFB);
             break;
             
@@ -650,32 +612,6 @@ public class AdjustTracker {
                         eventTransaction.addPartnerParameter(AdjustKeys.PRODUCT + countString, json.toString());
                         countString = String.valueOf(++productCount);
 
-                        //FIXME
-//                        //FB - Transaction
-//                        eventTransactionFB = getFBBaseParameters(eventTransactionFB, bundle);
-//
-//                        eventTransactionFB.addCallbackParameter(AdjustKeys.SKU, item.sku);
-//                        eventTransactionFB.addPartnerParameter(AdjustKeys.SKU, item.sku);
-//                        eventTransactionFB.addCallbackParameter(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
-//                        eventTransactionFB.addPartnerParameter(AdjustKeys.CURRENCY_CODE, bundle.getString(CURRENCY_ISO));
-//                        eventTransactionFB.addCallbackParameter(AdjustKeys.QUANTITY, String.valueOf(item.quantity));
-//                        eventTransactionFB.addPartnerParameter(AdjustKeys.QUANTITY, String.valueOf(item.quantity));
-//                        eventTransactionFB.addCallbackParameter(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER)));
-//                        eventTransactionFB.addPartnerParameter(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER)));
-//
-//                        if (item.getPriceForTracking() > 0d) {
-//                            eventTransactionFB.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
-//                            eventTransactionFB.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
-//                            eventTransactionFB.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-//                            eventTransactionFB.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-//                        }
-//
-//
-//                        eventTransactionFB.addCallbackParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
-//                        eventTransactionFB.addPartnerParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
-//                        eventTransactionFB.addCallbackParameter(AdjustKeys.TOTAL_TRANSACTION, String.valueOf(bundle.getDouble(TRANSACTION_VALUE)));
-//                        eventTransactionFB.addPartnerParameter(AdjustKeys.TOTAL_TRANSACTION, String.valueOf(bundle.getDouble(TRANSACTION_VALUE)));
-//                        Adjust.trackEvent(eventTransactionFB);
                     }
                     Adjust.trackEvent(eventTransaction);
 
@@ -709,8 +645,7 @@ public class AdjustTracker {
                 }
                 Adjust.trackEvent(eventAddToCart);
 
-                //FIXME
-                AdjustEvent eventAddToCartFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_transaction_confirmation));
+                AdjustEvent eventAddToCartFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_add_to_cart));
 
                 eventAddToCartFB = getFBTrackerBaseParameters(eventAddToCartFB, bundle);
                 eventAddToCartFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, String.valueOf(bundle.getDouble(VALUE)));
