@@ -26,7 +26,9 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
 
     protected static final String TAG = CatalogPage.class.getSimpleName();
 
-    private String mId;
+    private String mCategoryId;
+
+    private String mBrandId;
 
     private String mName;
 
@@ -70,7 +72,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
         // Get data
-        mId = metadataObject.optString(RestConstants.JSON_CATEGORIES_TAG);
+        mCategoryId = metadataObject.optString(RestConstants.JSON_CATEGORIES_TAG);
+        mBrandId = metadataObject.optString(RestConstants.JSON_BRANDS_TAG);
         mName = metadataObject.optString(RestConstants.JSON_TITLE_TAG);
         mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
         mTotal = metadataObject.optInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
@@ -296,15 +299,25 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
      * @return String
      */
     public String getCategoryId(){
-        return mId;
+        return mCategoryId;
     }
+
+    /**
+     * Get brand id
+     * @return String
+     */
+    public String getBrandId(){
+        return mBrandId;
+    }
+
 
     /*
      * ############### Parcelable ###############
      */
 
     protected CatalogPage(Parcel in) {
-        mId = in.readString();
+        mCategoryId = in.readString();
+        mBrandId = in.readString();
         mName = in.readString();
         mTotal = in.readInt();
         mPage = in.readInt();
@@ -332,7 +345,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mId);
+        dest.writeString(mCategoryId);
+        dest.writeString(mBrandId);
         dest.writeString(mName);
         dest.writeInt(mTotal);
         dest.writeInt(mPage);

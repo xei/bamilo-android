@@ -73,6 +73,7 @@ public class AdjustTracker {
     public static final String DEVICE = "device";
     public static final String CATEGORY = "category";
     public static final String CATEGORY_ID = "categoryId";
+    public static final String BRAND_ID = "brand_id";
     public static final String TREE = "tree";
     public static final String FAVORITES = "favorites";
     public static final String PRODUCT_SIZE = "size";
@@ -133,7 +134,6 @@ public class AdjustTracker {
         public static final String FB_CONTENT_CATEGORY = "content_category";
 
     }
-
     
     private static final String TABLET = "Tablet";
     private static final String PHONE = "Phone";
@@ -334,7 +334,18 @@ public class AdjustTracker {
 //            parameters.put(AdjustKeys.SKU, prod.getSku());
             eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, prod.getSku());
             eventPDVScreen.addPartnerParameter(AdjustKeys.PRODUCT, prod.getSku());
-            
+
+            // Add category ID
+            eventPDVScreen.addCallbackParameter(AdjustKeys.CATEGORY_ID, prod.getCategoryId());
+            eventPDVScreen.addPartnerParameter(AdjustKeys.CATEGORY_ID, prod.getCategoryId());
+
+            // Add brand ID
+            if(prod.getBrandId() != 0){
+                eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(prod.getBrandId()));
+                eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(prod.getBrandId()));
+            }
+
+
             Adjust.trackEvent(eventPDVScreen);
             
             // FB - View Product
@@ -383,6 +394,19 @@ public class AdjustTracker {
                     eventCatalogSorted.addPartnerParameter(AdjustKeys.GENDER, gender);
                 }
             }
+
+            if(bundle.containsKey(AdjustKeys.CATEGORY_ID)){
+                // Add category ID
+                eventCatalogSorted.addCallbackParameter(AdjustKeys.CATEGORY_ID, bundle.getString(AdjustKeys.CATEGORY_ID));
+                eventCatalogSorted.addPartnerParameter(AdjustKeys.CATEGORY_ID, bundle.getString(AdjustKeys.CATEGORY_ID));
+            }
+            if(bundle.containsKey(BRAND_ID) ){
+                // Add brand ID
+                eventCatalogSorted.addCallbackParameter(BRAND_ID, bundle.getString(BRAND_ID));
+                eventCatalogSorted.addPartnerParameter(BRAND_ID, bundle.getString(BRAND_ID));
+            }
+
+
             ArrayList<ProductRegular> skus = bundle.getParcelableArrayList(TRANSACTION_ITEM_SKUS);
             StringBuilder sbSkus;
             sbSkus = new StringBuilder();

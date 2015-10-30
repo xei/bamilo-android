@@ -10,6 +10,7 @@ import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.JumiaViewPagerWithZoom;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
+import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
@@ -32,7 +33,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
 
     private GalleryPagerAdapter galleryAdapter;
 
-    private ArrayList<String> mImagesList;
+    private ArrayList<ImageUrls> mImagesList;
 
  //   private InfiniteCirclePageIndicator mViewPagerIndicator;
 
@@ -51,11 +52,11 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
 
         Intent intent = getIntent();
         if(intent != null) {
-            mImagesList = intent.getStringArrayListExtra(ConstantsIntentExtra.IMAGE_LIST);
+            mImagesList = intent.getParcelableArrayListExtra(ConstantsIntentExtra.IMAGE_LIST);
         }
         // Restore state after rotation
         if (savedInstanceState != null) {
-            mImagesList = savedInstanceState.getStringArrayList(ConstantsIntentExtra.IMAGE_LIST);
+            mImagesList = savedInstanceState.getParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST);
         }
         setContent();
     }
@@ -145,7 +146,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
         // Setted in order to show the no image placeholder on PDV view
         if (CollectionUtils.isEmpty(mImagesList)) {
             mImagesList = new ArrayList<>();
-            mImagesList.add("");
+            mImagesList.add(new ImageUrls());
         }
 
         // Validate current adapter
@@ -193,7 +194,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE");
-        outState.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, mImagesList);
+        outState.putParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST, mImagesList);
     }
 
     @Override

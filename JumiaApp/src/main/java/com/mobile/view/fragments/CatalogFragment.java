@@ -39,7 +39,6 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
@@ -81,8 +80,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private final static int FIRST_POSITION = 0;
 
-    private final static int EMPTY_CATALOG = 0;
-
     private HeaderFooterGridView mGridView;
 
     private TextView mSortButton;
@@ -113,7 +110,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
 
-    private String mCategoryId; // Verify if catalog page was open via navigation drawer
+//    private String mCategoryId; // Verify if catalog page was open via navigation drawer
 
     private String mCategoryTree;
 
@@ -178,7 +175,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Url and parameters
             mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             // This lines are ment to support opening url through a complete url.
-            // Its remvoe the parameters, saved on the query values, and then clear the parameters from the
+            // Its remove the parameters, saved on the query values, and then clear the parameters from the
             // the complete url, so it ca be used in the new parameter the user may choose
             if (!TextUtils.isEmpty(mCompleteUrl)) {
                 mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteUrl)));
@@ -193,7 +190,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 }
             }
             // Verify if catalog page was open via navigation drawer
-            mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
+//            mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
         }
 
@@ -212,8 +209,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     /**
-     * Function that removes the parameters from the url in order to have the complete url without parameteres
-     * @param builder
+     * Function that removes the parameters from the url in order to have the complete url without parameters
      */
     private void removeParametersFromQuery(final Uri.Builder builder){
         builder.clearQuery();
@@ -922,8 +918,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Bundle bundle = new Bundle();
         // Query parameters
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
-        // validate if is to use complete URL or not
-        if (validateURL()) {
+        // Validate if is to use complete URL or not
+        if (TextUtils.isNotEmpty(mCompleteUrl)) {
             bundle.putString(GetCatalogPageHelper.URL, mCompleteUrl);
         }
         // Case initial request or load more
@@ -1043,7 +1039,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFilterNoResult();
         }
         // Case error on request data without filters
-        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && catalog.getFeaturedBox() != null) {
+        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && catalog != null && catalog.getFeaturedBox() != null) {
             Print.i(TAG, "ON SHOW NO RESULT");
             // Get feature box
             FeaturedBox featuredBox = catalog.getFeaturedBox();
@@ -1071,7 +1067,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     /**
      * Process the error code
-     *
      */
     private void onLoadingMoreRequestError(BaseResponse baseResponse) {
         // Mark error on loading more
@@ -1123,15 +1118,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.QUERY);
         }
         return mSearchQuery;
-    }
-
-    /**
-     * only use complete Url request if Category and Query parameters are not present, and complete url is not empty
-     *
-     * @return
-     */
-    private boolean validateURL() {
-        return !mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !TextUtils.isEmpty(mCompleteUrl);
     }
 
     /**
