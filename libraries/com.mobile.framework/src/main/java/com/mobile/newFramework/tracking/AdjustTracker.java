@@ -73,6 +73,7 @@ public class AdjustTracker {
     public static final String DEVICE = "device";
     public static final String CATEGORY = "category";
     public static final String CATEGORY_ID = "categoryId";
+    public static final String BRAND_ID = "brand_id";
     public static final String TREE = "tree";
     public static final String FAVORITES = "favorites";
     public static final String PRODUCT_SIZE = "size";
@@ -124,34 +125,8 @@ public class AdjustTracker {
         public static final String APP_PRE_INSTALL = Constants.INFO_PRE_INSTALL;
 //        public static final String INFO_BRAND = Constants.INFO_BRAND;
         public static final String DEVICE_SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
-                
-    }
 
-//    protected static class AdjustEvents {
-//        public static final String LAUNCH = "Launch";
-//        public static final String LOGIN = "Login";
-//        public static final String LOGOUT = "Logout";
-//        public static final String SIGNUP = "Signup";
-//        public static final String SIGNUPNEWSLETTER = "SignupNewsletter";
-//        public static final String CUSTOMER = "Customer";
-//        public static final String SALE = "Sale";
-//        public static final String FBCONNECTLOGIN = "FBConnectLogin";
-//        public static final String FBCONNECTSIGNUP = "FBConnectSignup";
-//        public static final String ADDTOWISHLIST = "AddtoWishlist";
-//        public static final String REMOVEFROMWISHLIST = "RemoveFromWishlist";
-//        public static final String FILTERS = "PersonalisedFeed";
-//        public static final String SHARE = "SocialShare";
-//        public static final String ADDREVIEWASBUYER = "RateSeller";
-//        public static final String ADDREVIEWASSELLER = "RateBuyer";
-//        public static final String LISTINGADDTITLE = "CreateListingStarted";
-//        public static final String LISTINGCREATION = "CreateListing";
-//        public static final String MESSAGESUBMITTOSELLER = "MessageToSeller";
-//        public static final String MESSAGESUBMIT = "Message";
-//        public static final String SEARCH = "Search";
-//        public static final String PERSONALISEDFEED = "PersonalisedFeed";
-//        public static final String CALL = "Call";
-//
-//    }
+    }
     
     private static final String TABLET = "Tablet";
     private static final String PHONE = "Phone";
@@ -351,7 +326,18 @@ public class AdjustTracker {
 //            parameters.put(AdjustKeys.SKU, prod.getSku());
             eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, prod.getSku());
             eventPDVScreen.addPartnerParameter(AdjustKeys.PRODUCT, prod.getSku());
-            
+
+            // Add category ID
+            eventPDVScreen.addCallbackParameter(AdjustKeys.CATEGORY_ID, prod.getCategoryId());
+            eventPDVScreen.addPartnerParameter(AdjustKeys.CATEGORY_ID, prod.getCategoryId());
+
+            // Add brand ID
+            if(prod.getBrandId() != 0){
+                eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(prod.getBrandId()));
+                eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(prod.getBrandId()));
+            }
+
+
             Adjust.trackEvent(eventPDVScreen);
             
             // FB - View Product
@@ -395,6 +381,19 @@ public class AdjustTracker {
                     eventCatalogSorted.addPartnerParameter(AdjustKeys.GENDER, gender);
                 }
             }
+
+            if(bundle.containsKey(AdjustKeys.CATEGORY_ID)){
+                // Add category ID
+                eventCatalogSorted.addCallbackParameter(AdjustKeys.CATEGORY_ID, bundle.getString(AdjustKeys.CATEGORY_ID));
+                eventCatalogSorted.addPartnerParameter(AdjustKeys.CATEGORY_ID, bundle.getString(AdjustKeys.CATEGORY_ID));
+            }
+            if(bundle.containsKey(BRAND_ID) ){
+                // Add brand ID
+                eventCatalogSorted.addCallbackParameter(BRAND_ID, bundle.getString(BRAND_ID));
+                eventCatalogSorted.addPartnerParameter(BRAND_ID, bundle.getString(BRAND_ID));
+            }
+
+
             ArrayList<ProductRegular> skus = bundle.getParcelableArrayList(TRANSACTION_ITEM_SKUS);
             StringBuilder sbSkus;
             sbSkus = new StringBuilder();
