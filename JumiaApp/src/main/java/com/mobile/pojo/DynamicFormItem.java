@@ -1996,6 +1996,13 @@ public class DynamicFormItem {
         ImageView icon = (ImageView) container.findViewById(R.id.text_field_icon);
         // Get password eye
         CheckBox box = (CheckBox) container.findViewById(R.id.text_field_password_check_box);
+        // Set disabled
+        if(this.parent.getForm().getType() == FormConstants.USER_DATA_FORM && this.entry.isDisabledField()){
+            text.setEnabled(false);
+            text.setClickable(false);
+            text.setFocusable(false);
+            text.setTextColor(R.color.black_200);
+        }
         // Set icon
         if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
                 || this.parent.getForm().getType() == FormConstants.LOGIN_FORM

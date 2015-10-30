@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -509,7 +510,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void hideKeyboard() {
         Print.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        try {
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (NullPointerException e){
+            // DO NOTHING
+        }
+
     }
 
     public void setActivity(BaseActivity activity) {
