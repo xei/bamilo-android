@@ -20,6 +20,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
     // Data
     public TextView name;
     public TextView brand;
+    public TextView quantity;
     public ImageView image;
     public View progress;
     public ViewGroup ratingContainer;
@@ -54,6 +55,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
         headerImage = (ImageView) view.findViewById(R.id.catalog_header_image);
         verticalDivider = view.findViewById(R.id.vdivider);
         ratingContainer = (ViewGroup)view.findViewById(R.id.rating_container);
+        quantity = (TextView) view.findViewById(R.id.item_quantity);
     }
 }
 
