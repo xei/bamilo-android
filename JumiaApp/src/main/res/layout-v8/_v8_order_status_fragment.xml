@@ -13,16 +13,30 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:id="@+id/line1"
+        android:orientation="horizontal"
         >
+
+        <!-- Order status -->
+
+        <include layout="@layout/delivered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:layout_gravity="center"
+            android:layout_marginRight="@dimen/margin_60px"
+            />
+
+        <!-- divider -->
+        <View
+            style="@style/VerticalListDivider" />
 
         <!-- ORDER SUMMARY -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_60px"
-            android:layout_weight="@integer/order_status_left_side_weight"
+            android:layout_weight="2"
             >
 
             <com.mobile.components.customfontviews.TextView
@@ -33,16 +47,16 @@
                 android:text="2 Items"
                 android:textColor="@color/black"
                 android:textStyle="bold"
+                android:layout_alignParentRight="true"
                 />
 
             <com.mobile.components.customfontviews.TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/total_products"
                 style="@style/TextBody_3"
                 android:id="@+id/grand_total"
-                android:text=" RS: 1548"
-                android:layout_toRightOf="@id/total_products"
-                android:layout_toEndOf="@id/total_products"
+                android:text="RS: 1548 "
                 android:textColor="@color/black"
                 />
 
@@ -53,39 +67,29 @@
                 android:src="@drawable/ico_dropdown_order"
                 android:layout_below="@id/total_products"
                 android:id="@+id/im_order"
+                android:layout_alignParentRight="true"
                 />
 
             <com.mobile.components.customfontviews.TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/confirm_msg_padding"
+                android:layout_marginRight="@dimen/confirm_msg_padding"
                 android:layout_alignBottom="@id/im_order"
                 style="@style/TextInfo_2"
                 android:textColor="@color/black_700"
                 android:id="@+id/delivery"
                 android:text="3-8 business days"
-                android:layout_toRightOf="@id/im_order"
-                android:layout_toEndOf="@id/im_order"
+                android:layout_toLeftOf="@id/im_order"
                 android:layout_below="@id/grand_total"
                 />
 
+
+
         </RelativeLayout>
 
-        <!-- divider -->
-        <View
-            style="@style/VerticalListDivider" />
 
-        <!-- Order status -->
 
-        <include layout="@layout/delivered"
-            android:id="@+id/order_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="@integer/order_status_right_side_weight"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_60px"
-            android:layout_marginStart="@dimen/margin_60px"
-            />
+
 
     </LinearLayout>
 
@@ -102,13 +106,62 @@
         android:id="@+id/line2"
         >
 
+        <!-- payment details -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="3"
+            android:layout_marginTop="@dimen/margin_60px"
+            android:layout_marginRight="@dimen/margin_60px"
+            android:gravity="right"
+            >
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextInfo_2"
+                android:textColor="@color/black_700"
+                android:text="@string/checkout_header_step_4"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextHeader"
+                android:id="@+id/payment_type"
+                android:text="Payment type"
+                android:layout_below="@+id/shipping_delivery"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextCaption"
+                android:id="@+id/payment_detail"
+                android:text="Bank x"
+                android:textColor="@color/black"
+                />
+
+
+        </LinearLayout>
+
+
+        <!-- divider -->
+        <View
+            style="@style/VerticalListDivider" />
+
+
         <!-- SHIPPING -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_margin="@dimen/margin_60px"
-            android:layout_weight="@integer/order_status_left_side_weight"
+            android:layout_weight="2"
+            android:gravity="right"
             >
 
             <com.mobile.components.customfontviews.TextView
@@ -154,52 +207,9 @@
 
         </LinearLayout>
 
-        <!-- divider -->
-        <View
-            style="@style/VerticalListDivider" />
 
 
-        <!-- payment details -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="@integer/order_status_right_side_weight"
-            android:layout_marginTop="@dimen/margin_60px"
-            android:layout_marginLeft="@dimen/margin_60px"
-            android:layout_marginStart="@dimen/margin_60px"
-            >
 
-            <com.mobile.components.customfontviews.TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextInfo_2"
-                android:textColor="@color/black_700"
-                android:text="@string/checkout_header_step_4"
-                />
-
-            <com.mobile.components.customfontviews.TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextHeader"
-                android:id="@+id/payment_type"
-                android:text="Payment type"
-                android:layout_below="@+id/shipping_delivery"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                />
-
-            <com.mobile.components.customfontviews.TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextCaption"
-                android:id="@+id/payment_detail"
-                android:text="Bank x"
-                android:textColor="@color/black"
-                />
-
-
-        </LinearLayout>
 
     </LinearLayout>
 
@@ -214,6 +224,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/productsList" />
+
 
 
 </LinearLayout>

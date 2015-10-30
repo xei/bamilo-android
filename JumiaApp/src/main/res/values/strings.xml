@@ -448,4 +448,8 @@
     <string name="order_track_check">You can check your order status visiting the My Orders area</string>
     <string name="items_in_your_order">Items in your order</string>
     <string name="delivered_label">Delivered</string>
+    <string name="order_number_header">ORDER NRº %s</string>
+    <string name="delivery_label">Delivery</string>
+    <string name="delivery_shipping_label">Shipping/Delivery</string>
+    <string name="order_pending">Order Pending</string>
 </resources>

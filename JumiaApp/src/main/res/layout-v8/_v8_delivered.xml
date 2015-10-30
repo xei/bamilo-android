@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
   >
@@ -11,15 +10,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/checkbox_selected"
-        android:layout_marginRight="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_centerVertical="true"/>
+        android:layout_marginLeft="16dp"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/delivery_info"
+        />
     <LinearLayout
-        android:id="@+id/delivery_info"
+        android:id="@id/delivery_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/image"
-        android:layout_toEndOf="@id/image"
         android:layout_centerVertical="true"
         android:orientation="vertical">
 
@@ -47,6 +45,8 @@
         android:text="@string/order_pending"
         android:textColor="@color/orange_f68b1e"
         android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
         android:visibility="gone"
+
         />
 </RelativeLayout>

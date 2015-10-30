@@ -216,5 +216,10 @@
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
     <item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>
 
+    <!--order status -->
+    <item name="order_status_fragment"                  type="layout">@layout/_def_order_status_fragment</item>
+    <item name="delivered"                              type="layout">@layout/_def_delivered</item>
+    <item name="ordered_product"                        type="layout">@layout/_def_ordered_product</item>
+
 </resources>
 
