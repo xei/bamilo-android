@@ -36,6 +36,8 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
     private static final String TAG = CheckoutCreateAddressFragment.class.getSimpleName();
 
+    private View mCheckoutTotalBar;
+
     /**
      * Fragment used to create an address
      * @return CheckoutCreateAddressFragment
@@ -66,6 +68,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
     }
 
     @Override
@@ -85,8 +88,8 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         super.loadCreateAddressForm(formShipping,formBilling);
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
-
-        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
+        // Set the checkout total bar
+        CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
     }
 
     @Override

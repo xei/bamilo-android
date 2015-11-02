@@ -12,6 +12,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.FacebookTextView;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
@@ -66,6 +67,8 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
 
     private boolean isInCheckoutProcess;
 
+    private TextView mErrorMessage;
+
     /**
      * Get new instance
      */
@@ -114,6 +117,10 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
             mNextStepFromParent = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
             isInCheckoutProcess = arguments.getBoolean(ConstantsIntentExtra.IS_IN_CHECKOUT_PROCESS);
         }
+        // Show checkout tab layout
+        if(isInCheckoutProcess) {
+            checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
+        }
     }
 
     /*
@@ -131,10 +138,13 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         ((TextView) view.findViewById(R.id.login_text_info)).setText(text);
         // Get and set FB button
         FacebookTextView mFacebookButton = (FacebookTextView) view.findViewById(R.id.login_button_facebook);
-        FacebookHelper.showOrHideFacebookButton(this, mFacebookButton);
+        View divider = view.findViewById(R.id.login_divider);
+        FacebookHelper.showOrHideFacebookButton(this, mFacebookButton, divider);
         mFacebookButton.registerCallback(mFacebookCallbackManager, this);
         // Get email
         mEmailView = (EditText) view.findViewById(R.id.login_text_email);
+        // Get error message
+        mErrorMessage = (TextView) view.findViewById(R.id.login_text_error_message);
         // Get continue button
         view.findViewById(R.id.login_button_continue).setOnClickListener(this);
         // Get and set guest button
@@ -297,8 +307,10 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         // Trigger to check email
         if(TextUtils.isNotEmpty(mCustomerEmail) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
             triggerGuestLogin(mCustomerEmail);
+            mErrorMessage.setVisibility(View.GONE);
         } else {
-            ToastManager.show(getBaseActivity().getApplicationContext(), ToastManager.ERROR_INVALID_EMAIL);
+            mErrorMessage.setText(getString(R.string.error_invalid_email));
+            mErrorMessage.setVisibility(View.VISIBLE);
         }
     }
 
@@ -309,8 +321,10 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         // Trigger to check email
         if(TextUtils.isNotEmpty(mCustomerEmail) && Patterns.EMAIL_ADDRESS.matcher(mCustomerEmail).matches()) {
             triggerEmailCheck(mCustomerEmail);
+            mErrorMessage.setVisibility(View.GONE);
         } else {
-            ToastManager.show(getBaseActivity().getApplicationContext(), ToastManager.ERROR_INVALID_EMAIL);
+            mErrorMessage.setText(getString(R.string.error_invalid_email));
+            mErrorMessage.setVisibility(View.VISIBLE);
         }
     }
 
@@ -371,6 +385,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 // Go to next login step
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.DATA, mCustomerEmail);
+                bundle.putBoolean(ConstantsIntentExtra.FLAG_1, isInCheckoutProcess);
                 getBaseActivity().onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
                 break;
             case GUEST_LOGIN_EVENT:

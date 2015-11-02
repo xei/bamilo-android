@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentTop="true"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/email_notifications_title"
+        style="@style/HeaderStyle"
+        android:layout_alignParentTop="true"
+        android:text="@string/newsletters_label"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:id="@+id/email_notifications_scroll"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
+        android:layout_above="@+id/email_notifications_save"
+        android:layout_below="@+id/email_notifications_title"
         android:orientation="vertical">
 
-        <RelativeLayout
-            style="@style/rounded_box"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
             android:orientation="vertical">
 
-            <!-- TITLE -->
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/text"
-                style="@style/rounded_box_title_grey"
-                android:text="@string/newsletters_label" />
 
             <!-- NEWSLETTERS -->
 
@@ -36,16 +36,19 @@
                 android:orientation="vertical"
                 android:paddingBottom="@dimen/rounded_margin_small" />
 
-            <!-- DIVIDER -->
 
-            <View
-                style="@style/divider_horizontal_orange"
-                android:layout_below="@id/text" />
-        </RelativeLayout>
+        </LinearLayout>
 
-        <!-- BUTTONS -->
+    </ScrollView>
 
-        <include layout="@layout/my_account_bottom_buttons" />
-    </LinearLayout>
+    <!-- BUTTONS -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/email_notifications_save"
+                style="@style/AigButton.Active"
+                android:layout_alignParentBottom="true"
+                android:contentDescription="@string/myaccount_save_description"
+                android:text="@string/save_label" />
 
-</ScrollView>
+
+
+</RelativeLayout>
