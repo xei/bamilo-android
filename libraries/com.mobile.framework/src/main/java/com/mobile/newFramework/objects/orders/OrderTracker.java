@@ -1,16 +1,8 @@
-/**
- * @author Manuel Silva
- *
- * @version 1.1
- *
- * 2013/10/22
- *
- * Copyright (c) Rocket Internet All Rights Reserved
- */
 package com.mobile.newFramework.objects.orders;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
@@ -26,72 +18,41 @@ import java.util.ArrayList;
  * Class that represents an Order Tracked
  *
  * @author manuelsilva
- *
+ * @modified sergio pereira
  */
 public class OrderTracker implements IJSONSerializable, Parcelable {
 
-	public final static String TAG = OrderTracker.class.getSimpleName();
+    public final static String TAG = OrderTracker.class.getSimpleName();
 
-    private String order_id;
-    private String creation_date;
-    private String payment_method;
-    private String last_order_update;
-    private ArrayList<OrderTrackerItem> orderTrackerItems;
+    private String mId;
+    private String mDate;
+    private String mPaymentMethod;
+    private String mLastUpdate;
+    private ArrayList<OrderTrackerItem> mOrderTrackerItems;
 
 
     /**
      * OrderTracker empty constructor.
      */
-	@SuppressWarnings("unused")
+    @SuppressWarnings("unused")
     public OrderTracker() {
-    	order_id = "";
-    	creation_date = "";
-    	payment_method = "";
-    	last_order_update = "";
-    	orderTrackerItems = new ArrayList<>();
+        // ...
     }
 
-//    /**
-//     * OrderTracker constructor
-//     *
-//     * @param o order_id
-//     *            	of the order
-//     * @param d creation_date
-//     *            	of the order
-//     * @param oI order tracker items
-//     * 			  	of the order
-//     * @param p payment method
-//     * 				of the order
-//     * @param l last order status update
-//     * 				of the order
-//     */
-//    public OrderTracker(String o, String d, String p, String l, ArrayList<OrderTrackerItem> oI) {
-//    	this.order_id = o;
-//    	this.creation_date = d;
-//    	this.payment_method = p;
-//    	this.last_order_update = l;
-//    	this.orderTrackerItems = oI;
-//    }
-
-
-    public String getId(){
-    	return this.order_id;
+    public String getId() {
+        return this.mId;
     }
 
-    public String getDate(){
-    	return this.creation_date;
+    public String getDate() {
+        return this.mDate;
     }
 
-    public String getPaymentMethod(){
-    	return this.payment_method;
+    public String getPaymentMethod() {
+        return this.mPaymentMethod;
     }
 
-//    public String getLastUpdateDate(){
-//    	return this.last_order_update;
-//    }
-
-    public ArrayList<OrderTrackerItem> getOrderTrackerItems(){
-    	return this.orderTrackerItems;
+    public @Nullable ArrayList<OrderTrackerItem> getOrderTrackerItems() {
+        return this.mOrderTrackerItems;
     }
 
     /*
@@ -100,23 +61,22 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
-
-		order_id = jsonObject.optString(RestConstants.ORDER_NUMBER);
-        creation_date = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
-        payment_method = jsonObject.optString(RestConstants.PAYMENT_METHOD);
-        last_order_update = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
-		JSONArray items = jsonObject.optJSONArray(RestConstants.PRODUCTS);
-
-		for(int i = 0 ; i<items.length();i++){
-			OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
-			try {
-				mOrderTrackerItem.initialize(items.getJSONObject(i));
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-			orderTrackerItems.add(mOrderTrackerItem);
-		}
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        mId = jsonObject.optString(RestConstants.ORDER_NUMBER);
+        mDate = jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG);
+        mPaymentMethod = jsonObject.optString(RestConstants.PAYMENT_METHOD);
+        mLastUpdate = jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG);
+        // Get items
+        JSONArray items = jsonObject.optJSONArray(RestConstants.PRODUCTS);
+        if (items != null && items.length() > 0) {
+            mOrderTrackerItems = new ArrayList<>();
+            int size = items.length();
+            for (int i = 0; i < size; i++) {
+                OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
+                mOrderTrackerItem.initialize(items.getJSONObject(i));
+                mOrderTrackerItems.add(mOrderTrackerItem);
+            }
+        }
         return true;
     }
 
@@ -127,71 +87,56 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
      */
     @Override
     public JSONObject toJSON() {
-
         return new JSONObject();
-//        try {
-//
-//            jsonObject.put(RestConstants.JSON_ORDER_ID_TAG, order_id);
-//            jsonObject.put(RestConstants.JSON_ORDER_CREATION_DATE_TAG, creation_date);
-//            jsonObject.put(RestConstants.JSON_COUPON_CODE_TAG, coupon_code);
-//            jsonObject.put(RestConstants.JSON_TERMS_CONDITIONS_TAG, terms_conditions);
-//            jsonObject.put(RestConstants.JSON_END_DATE_TAG, end_date);
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        return jsonObject;
     }
 
-	@Override
-	public RequiredJson getRequiredJson() {
-		return RequiredJson.METADATA;
-	}
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
+    }
 
-
-	/**
+    /**
      * ########### Parcelable ###########
-     * @author sergiopereira
      */
 
     /*
      * (non-Javadoc)
      * @see android.os.Parcelable#describeContents()
      */
-	@Override
-	public int describeContents() {
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
-	 */
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-	    dest.writeString(order_id);
-	    dest.writeString(creation_date);
-	    dest.writeString(payment_method);
-	    dest.writeString(last_order_update);
-	    dest.writeList(orderTrackerItems);
-	}
-
-	/**
-	 * Parcel constructor
-	 */
-	private OrderTracker(Parcel in) {
-    	order_id = in.readString();
-    	creation_date = in.readString();
-    	payment_method = in.readString();
-    	last_order_update = in.readString();
-    	orderTrackerItems = new ArrayList<>();
-    	in.readList(orderTrackerItems, OrderTrackerItem.class.getClassLoader());
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-	/**
-	 * Create parcelable
-	 */
-	public static final Creator<OrderTracker> CREATOR = new Creator<OrderTracker>() {
+    /*
+     * (non-Javadoc)
+     * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mId);
+        dest.writeString(mDate);
+        dest.writeString(mPaymentMethod);
+        dest.writeString(mLastUpdate);
+        dest.writeList(mOrderTrackerItems);
+    }
+
+    /**
+     * Parcel constructor
+     */
+    private OrderTracker(Parcel in) {
+        mId = in.readString();
+        mDate = in.readString();
+        mPaymentMethod = in.readString();
+        mLastUpdate = in.readString();
+        mOrderTrackerItems = new ArrayList<>();
+        in.readList(mOrderTrackerItems, OrderTrackerItem.class.getClassLoader());
+    }
+
+    /**
+     * Create parcelable
+     */
+    public static final Creator<OrderTracker> CREATOR = new Creator<OrderTracker>() {
         public OrderTracker createFromParcel(Parcel in) {
             return new OrderTracker(in);
         }
