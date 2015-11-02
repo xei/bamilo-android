@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -81,19 +82,35 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     }
 
 
+    /*
+   * (non-Javadoc)
+   *
+   * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+   */
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Print.i(TAG, "ON ATTACH");
+    }
+
+
+
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Print.d(TAG, "ON CREATE");
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null){
+   /*     if(savedInstanceState == null){
             triggerOrder(getArguments().getString(ORDER));
+
         } else {
             if(mOrderTracker == null){
                 mOrderTracker = savedInstanceState.getParcelable((MyOrder.class.getSimpleName()));
-                loadViews();
             }
+        }*/
+        if(mOrderTracker == null) {
+            triggerOrder(getArguments().getString(ORDER));
         }
     }
 
@@ -103,6 +120,16 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Print.d(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
+
+   /*     if(savedInstanceState != null)
+        {
+            if(mOrderTracker == null){
+                mOrderTracker = savedInstanceState.getParcelable((MyOrder.class.getSimpleName()));
+                loadViews();
+                return;
+            }
+        }*/
+
         //load header title
         mOrderNumberTitle = (TextView) view.findViewById(R.id.order_number_title);
         mTotalProducts = (TextView) view.findViewById(R.id.total_products);
@@ -130,7 +157,71 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
         }
 
+        if (mOrderTracker != null){
+            loadViews();
+            return;
+        }
+
     }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Print.i(TAG, "ON START");
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Print.i(TAG, "ON RESUME");
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.mobile.view.fragments.MyFragment#onPause()
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        Print.i(TAG, "ON PAUSE");
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.mobile.view.fragments.MyFragment#onStop()
+     */
+    @Override
+    public void onStop() {
+        super.onStop();
+        Print.i(TAG, "ON STOP");
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.Fragment#onDestroyView()
+     */
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Print.i(TAG, "ON DESTROY VIEW");
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Print.i(TAG, "ON DESTROY");
+    }
+
+
+
+
+
 
 
     /**
@@ -196,13 +287,26 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
 
 
-
+/**
+ * Get Order details
+ * @param orderNr - Order number
+ * */
     private void triggerOrder(String orderNr) {
-        triggerContentEvent(new GetTrackOrderHelper(), GetTrackOrderHelper.createBundle(orderNr), this);
+        if (mOrderTracker == null) {
+            triggerContentEventProgress(new GetTrackOrderHelper(), GetTrackOrderHelper.createBundle(orderNr), this);
+        }else {
+            loadViews();
+        }
     }
+
+
+
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
+
+
+        hideActivityProgress();
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
@@ -227,6 +331,8 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
+
+        hideActivityProgress();
 
         // Specific errors
         EventType eventType = baseResponse.getEventType();
