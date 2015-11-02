@@ -5,13 +5,6 @@
     android:layout_height="48dp"
     android:orientation="horizontal"
     android:weightSum="5">
-    android:paddingEnd="@dimen/dimen_30px"
-    android:paddingRight="@dimen/dimen_30px"
-    android:paddingStart="@dimen/dimen_30px"
-    android:paddingLeft="@dimen/dimen_30px"
-    android:paddingTop="@dimen/dimen_30px"
-    android:layout_marginBottom="@dimen/dimen_30px"
-    android:paddingBottom="0dp">
 
     <com.mobile.components.customfontviews.AutoResizeTextView
         android:id="@+id/checkout_total_label"
