@@ -438,6 +438,7 @@
     <string name="create_label">Create</string>
     <string name="change_password">Change password</string>
     <string name="continue_without_log_in">Continue without log in</string>
+    <string name="format_discount_value">-%s</string>
     <string name="edit_user_success">User data edit with success</string>
     <string name="password">Password</string>
     <string name="more">More</string>
@@ -448,4 +449,5 @@
     <string name="cta_button_view_cart">View Cart</string>
     <string name="cta_link_continue_shopping">Continue Shopping</string>
     <string name="order_track_check">You can check your order status visiting the My Orders area</string>
+    <string name="select_city">Please Select City</string>
 </resources>

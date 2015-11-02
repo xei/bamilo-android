@@ -3,7 +3,6 @@
     <!-- ########################## DEF LANDSCAPE ########################## -->
     
     <!-- CHECKOUT -->
-    <item name="checkout_about_you_main" 		type="layout">@layout/_def_checkout_about_you_main</item>
     <item name="checkout_create_address_main" 	type="layout">@layout/_def_checkout_create_address_main</item>
     <item name="checkout_edit_address_main" 	type="layout">@layout/_def_checkout_edit_address_main</item>
     <item name="checkout_my_addresses" 			type="layout">@layout/_def_checkout_my_addresses</item>

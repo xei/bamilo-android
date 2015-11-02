@@ -1778,15 +1778,15 @@ public class DynamicFormItem {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 for (int i = 0; i < group.getChildCount(); i++) {
-                    if (i != checkedId) {
-                        if (group.getChildAt(i).findViewById(R.id.extras) != null) {
-                            group.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
-                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container).findViewById(i)).setChecked(false);
-                        }
-                    } else {
-                        if (group.getChildAt(i).findViewById(R.id.extras) != null) {
-                            group.getChildAt(i).findViewById(R.id.extras).setVisibility(View.VISIBLE);
-                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container).findViewById(i)).setChecked(true);
+                    // Get extras
+                    View view = group.getChildAt(i).findViewById(R.id.radio_extras_container);
+                    if ( view != null) {
+                        if (i != checkedId) {
+                            view.setVisibility(View.GONE);
+                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_shipping)).setChecked(false);
+                        } else {
+                            view.setVisibility(View.VISIBLE);
+                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_shipping)).setChecked(true);
                         }
                     }
                 }

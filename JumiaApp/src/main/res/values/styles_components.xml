@@ -41,6 +41,19 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <!-- TextField error message -->
+    <style name="TextErrorField" parent="TextInfo">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/red_basic</item>
+        <item name="android:paddingLeft">@dimen/form_padding</item>
+        <item name="android:paddingStart">@dimen/form_padding</item>
+        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:drawableLeft">@drawable/indicator_input_error</item>
+        <item name="android:drawableStart">@drawable/indicator_input_error</item>
+        <item name="android:drawablePadding">5dp</item>
+    </style>
+
     <!-- Single line item -->
     <style name="SingleLineStyle" parent="@style/TextList_2">
         <item name="android:layout_width">match_parent</item>
@@ -120,6 +133,10 @@
         <item name="android:gravity">left|start|center_vertical</item>
     </style>
 
+    <style name="FormButtonSpinner.DropDown">
+        <item name="android:spinnerMode">dropdown</item>
+    </style>
+
     <!-- BUTTONS -->
 
     <style name="AigButton" parent="TextButton">
@@ -165,7 +182,14 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
-    <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
+    <!-- RADIO BUTTON -->
 
+    <style name="FormRadioButton" parent="SingleLineStyle">
+        <item name="android:background">@null</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingStart">16dp</item>
+    </style>
+
+    <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
 
 </resources>

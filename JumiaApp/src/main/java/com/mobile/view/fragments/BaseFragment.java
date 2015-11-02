@@ -87,7 +87,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected int titleResId;
 
-    private int checkoutStep;
+    protected int checkoutStep;
 
     protected Boolean isNestedFragment = false;
 
@@ -237,8 +237,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = view.findViewById(ORDER_SUMMARY_CONTAINER) != null;
-//        // Get content layout
-//        mContentView = view.findViewById(R.id.content_container);
         // Get loading layout
         mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
         mLoadingView.setOnInflateListener(this);
@@ -251,11 +249,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get maintenance layout
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
-//        // Hide search component for change country
-//        if (this.action == NavigationAction.Country) {
-//            // Hide search component
-//            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
-//        }
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
@@ -263,7 +256,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             // Method used to set a bottom margin
             TabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
-
     }
 
     /**

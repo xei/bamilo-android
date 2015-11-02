@@ -10,7 +10,6 @@
         android:id="@+id/dialog_filter_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:divider="@color/black_400"
         android:dividerHeight="1dp"
         android:footerDividersEnabled="true"

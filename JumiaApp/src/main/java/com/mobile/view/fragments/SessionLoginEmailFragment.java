@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -60,6 +61,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
 
     private String mCustomerEmail;
 
+    private boolean isInCheckoutProcess;
+
     /**
      * Get new instance
      */
@@ -103,12 +106,18 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         // Saved form state
         mFormSavedState = savedInstanceState;
         // Get arguments
-        Bundle arguments = getArguments();
+        Bundle arguments = savedInstanceState == null ? getArguments() : savedInstanceState;
         if (arguments != null) {
             // Get customer email
             mCustomerEmail = arguments.getString(ConstantsIntentExtra.DATA);
+            // Get checkout flag
+            isInCheckoutProcess = arguments.getBoolean(ConstantsIntentExtra.FLAG_1);
             // Force load form if comes from deep link
             nextFragmentType = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
+        }
+        // Show checkout tab layout
+        if(isInCheckoutProcess) {
+            checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
     }
 
@@ -179,6 +188,10 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         if (mDynamicForm != null) {
             mDynamicForm.saveFormState(outState);
         }
+        // Save data
+        outState.putString(ConstantsIntentExtra.DATA, mCustomerEmail);
+        // Save checkout flag
+        outState.putBoolean(ConstantsIntentExtra.FLAG_1, isInCheckoutProcess);
     }
 
     /*

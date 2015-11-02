@@ -17,7 +17,6 @@
         android:layout_height="match_parent"
         android:layout_above="@id/catalog_loading_more"
         android:layout_marginTop="@dimen/catalog_tool_bar_margin"
-        android:background="@color/white"
         android:clipToPadding="false"
         android:scrollbars="vertical" />
 

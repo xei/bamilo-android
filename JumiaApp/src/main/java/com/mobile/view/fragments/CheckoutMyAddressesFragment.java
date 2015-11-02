@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.Button;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -48,6 +47,8 @@ import java.util.Map;
 public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     private static final String TAG = CheckoutMyAddressesFragment.class.getSimpleName();
+
+    private View mCheckoutTotalBar;
 
     /**
      * Get instance
@@ -100,7 +101,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.next_button));
+        mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
     }
     
     /*
@@ -200,9 +201,8 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         // Get order summary
         PurchaseEntity orderSummary = billingForm.getOrderSummary();
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
-
-        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
-
+        // Set the checkout total bar
+        CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
     }
 
     protected void onSetBillingAddressErrorEvent(BaseResponse baseResponse) {
