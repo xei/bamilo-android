@@ -133,7 +133,6 @@
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"          type="layout">@layout/_def_my_account_user_data_fragment</item>
     <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
-    <item name="my_account_list_item"                   type="layout">@layout/_def_my_account_list_item</item>
 
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>
