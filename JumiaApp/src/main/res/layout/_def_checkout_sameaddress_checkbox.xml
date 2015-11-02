@@ -6,16 +6,17 @@
     android:layout_marginLeft="@dimen/dimen_48px"
     android:layout_marginRight="@dimen/dimen_48px"
     android:layout_marginStart="@dimen/dimen_48px"
-    android:paddingBottom="@dimen/dimen_48px" >
+    android:paddingBottom="@dimen/dimen_48px"
+    android:paddingTop="@dimen/dimen_48px">
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/checkout_address_billing_checkbox"
-        android:layout_height="wrap_content"
         style="@style/TextCaption"
+        android:layout_height="wrap_content"
         android:layout_gravity="left|start|center_vertical"
+        android:drawablePadding="@dimen/form_check_padding"
         android:paddingLeft="@dimen/form_check_padding"
         android:paddingStart="@dimen/form_check_padding"
-        android:drawablePadding="@dimen/form_check_padding"
         android:text="@string/billing_same_label" />
 
 </LinearLayout>

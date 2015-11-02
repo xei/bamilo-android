@@ -14,11 +14,15 @@
 
     <com.mobile.utils.GenericRadioGroup
         android:id="@+id/checkout_addresses_other_container"
-        android:layout_width="@dimen/inner_container_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="vertical" />
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black_300"/>
     <!-- ADD NEW ADDRESS -->
 
     <LinearLayout

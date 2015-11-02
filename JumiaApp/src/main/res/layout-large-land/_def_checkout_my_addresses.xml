@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:baselineAligned="false"
+    android:orientation="horizontal"
     >
 
     <RelativeLayout
@@ -17,7 +17,7 @@
             android:id="@+id/checkout_addresses_one_scroll"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/checkout_addresses_button_container"
+            android:layout_above="@+id/checkout_button_container"
             android:layout_alignParentTop="true" >
 
             <LinearLayout
@@ -37,17 +37,9 @@
 
         <!-- NEXT BUTTON -->
 
-        <LinearLayout
-            android:id="@id/checkout_addresses_button_container"
-            style="@style/button_container"
-            android:layout_alignParentBottom="true" >
-
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/checkout_button_enter"
-                style="@style/button_orange_landscape"
-                android:layout_width="@dimen/inner_container_width"
-                android:text="@string/next_button" />
-        </LinearLayout>
+        <include android:id="@+id/checkout_button_container"
+                 layout="@layout/checkout_total_layout"
+            />
     </RelativeLayout>
 
     <!-- ORDER SUMMARY -->
