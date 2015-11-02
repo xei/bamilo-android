@@ -1,87 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/dimen_340px"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/dimen_50px"
-    android:paddingTop="@dimen/dimen_50px">
-
-    <com.mobile.components.customfontviews.RadioButton
-        android:id="@+id/pickup_station_radio_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:button="@drawable/btn_radio_holo_orange" />
-
-    <ImageView
-        android:id="@+id/pickup_station_image"
-        android:layout_width="@dimen/dimen_160px"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="@dimen/dimen_50px"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+    android:paddingBottom="12dp"
+    android:paddingTop="12dp">
 
     <LinearLayout
         android:id="@+id/pickup_station_details_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/pickup_station_image"
-        android:layout_toRightOf="@id/pickup_station_radio_button"
+        android:layout_weight="1"
         android:gravity="center|right"
         android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/TextCaption"
             android:textColor="@color/black"
-            android:gravity="right"
-            android:singleLine="false"
-            android:textSize="@dimen/text_subtitle" />
+            android:singleLine="false" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/TextCaption"
             android:textColor="@color/black"
-            android:gravity="right"
-            android:singleLine="false"
-            android:textSize="@dimen/text_subtitle" />
+            android:singleLine="false" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_opening_hours"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/TextCaption"
             android:textColor="@color/black"
-            android:gravity="right"
-            android:singleLine="false"
-            android:textSize="@dimen/text_subtitle" />
+            android:singleLine="false" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_shipping_fee"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/TextCaption"
             android:textColor="@color/black"
-            android:gravity="right"
             android:singleLine="false"
-            android:textSize="@dimen/text_subtitle"
             android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_shipping_fee_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            style="@style/TextCaption"
             android:textColor="@color/black"
-            android:gravity="right"
             android:singleLine="false"
-            android:textSize="@dimen/text_info"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/pickup_station_image"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:layout_marginLeft="16dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/checkout_label"/>
+
+    <com.mobile.components.customfontviews.RadioButton
+        android:id="@+id/pickup_station_radio_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp" />
+
+</LinearLayout>
