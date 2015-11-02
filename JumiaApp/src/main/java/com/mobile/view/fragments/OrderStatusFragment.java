@@ -14,11 +14,13 @@ import com.mobile.helpers.checkout.GetTrackOrderHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.Order;
 import com.mobile.newFramework.objects.orders.OrderTracker;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -52,7 +54,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
     //payment details
     private TextView mpaymentType;
-    private TextView mpaymentDetail;
 
     //products list
     private OrderedProductAdapter mOrderedProductAdapter;
@@ -89,7 +90,10 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         if(savedInstanceState == null){
             triggerOrder(getArguments().getString(ORDER));
         } else {
-
+            if(mOrderTracker == null){
+                mOrderTracker = savedInstanceState.getParcelable((MyOrder.class.getSimpleName()));
+                loadViews();
+            }
         }
     }
 
@@ -114,7 +118,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
         //payment details
         mpaymentType = (TextView) view.findViewById(R.id.payment_type);
-        mpaymentDetail = (TextView) view.findViewById(R.id.payment_detail);
 
         //products
         recyclerListProducts = (RecyclerView) view.findViewById(R.id.productsList);
@@ -122,12 +125,8 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         //reverse order of child in linear horizontal layouts for inverting the weight proportions
         if(ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
 
-            LinearLayout line1 = (LinearLayout) view.findViewById(R.id.line1);
-            LinearLayout line2 = (LinearLayout) view.findViewById(R.id.line2);
-
-            reverseLayoutChildsIfRTL(line1);
-            reverseLayoutChildsIfRTL(line2);
-
+            LinearLayout lineShipping = (LinearLayout) view.findViewById(R.id.lineShipping);
+            reverseLayoutChildsIfRTL(lineShipping);
 
         }
 
@@ -162,8 +161,8 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
             mTotalProducts.setText(getResources().getString(R.string.plurals_items, mOrderTracker.getTotal_products()));
         }
 
-        mGrandTotal.setText(mOrderTracker.getGrand_total());
-      //  mDelivery.setText("");      //delivery ?
+
+        mGrandTotal.setText(CurrencyFormatter.formatCurrency(String.valueOf(mOrderTracker.getGrand_total())));
 
         Address shippingAddress = mOrderTracker.getShippingAddress();
         mAddress.setText(shippingAddress.getAddress()+"\n"+shippingAddress.getCity()+"\n"+shippingAddress.getRegion());
@@ -173,15 +172,14 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
         //payment
         mpaymentType.setText(mOrderTracker.getPayment_method());
-        mpaymentDetail.setVisibility(View.GONE);    //if doesn't have detail
-
 
         if(mOrderedProductAdapter == null) {
             mOrderedProductAdapter = new OrderedProductAdapter((List) mOrderTracker.getOrderTrackerItems());
             mOrderedProductAdapter.setResources(getResources());
         }
 
-
+        //update delivery info with first product delivery?
+        mDelivery.setText(mOrderTracker.getOrderTrackerItems().get(0).getDelivery());
 
         recyclerListProducts.setNestedScrollingEnabled(false);
         recyclerListProducts.setHasFixedSize(true);
@@ -222,6 +220,10 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         }
     }
 
+
+
+
+
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
@@ -245,5 +247,12 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
             case TRACK_ORDER_EVENT:
                 break;
         }
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(MyOrder.class.getSimpleName(), mOrderTracker);
     }
 }
