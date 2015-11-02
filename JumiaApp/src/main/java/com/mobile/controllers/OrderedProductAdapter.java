@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.utils.ui.OrderedProductListViewHolder;
 import com.mobile.utils.ui.ProductListViewHolder;
@@ -15,6 +16,7 @@ import java.util.List;
 
 /**
  * Created by rsoares on 10/22/15.
+ * Adapter for order tracker items in orderStatus
  */
 public class OrderedProductAdapter extends ProductListAdapter {
 
@@ -23,15 +25,36 @@ public class OrderedProductAdapter extends ProductListAdapter {
     }
 
     @Override
-    public ProductListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new OrderedProductListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout._def_ordered_product, parent, false));
+    public OrderedProductListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new OrderedProductListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.ordered_product, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ProductListViewHolder holder, int position) {
+
+        OrderedProductListViewHolder newHolder = (OrderedProductListViewHolder) holder;
         super.onBindViewHolder(holder, position);
-        OrderedProductListViewHolder orderedHolder = (OrderedProductListViewHolder)holder;
+
+        //check status
+        OrderTrackerItem item = (OrderTrackerItem) mDataSet.get(position);
+        String status = item.getStatus();
+
+            if(status.contains(resources.getString(R.string.pending))) {   //delivered status
+                newHolder.orderStatus.setVisibility(View.GONE);
+                newHolder.image.setVisibility(View.VISIBLE);
+                newHolder.deliveryInfo.setVisibility(View.VISIBLE);
+                newHolder.productDeliveredDate.setText(item.getStatusUpdate().split(" ")[0]);  //just date
+
+            }else{
+                //pending status: validate how to distinguish this: info coming from API is not translated yet
+                newHolder.orderStatus.setVisibility(View.VISIBLE);
+                newHolder.image.setVisibility(View.GONE);
+                newHolder.deliveryInfo.setVisibility(View.GONE);
+            }
+
     }
+
+
 
     @Override
     protected void setFavourite(ProductListViewHolder holder, ProductRegular item, int position) {
