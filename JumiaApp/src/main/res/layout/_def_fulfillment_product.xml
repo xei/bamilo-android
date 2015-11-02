@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/fulfillment_product_qty"
-        android:fontFamily = "regular_light"
-        android:textSize="12sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/grey_middle"
-        android:text="@string/my_order_qty"/>
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/fulfillment_product_name"
-        style="@style/TextBody_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/grey_middledark"
-        android:text="Product"
-        android:layout_marginBottom="20dp"/>
+        style="@style/TextCaption"
+        android:textColor="@color/black" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/fulfillment_product_qty"
+        style="@style/TextCaption"
+        android:textColor="@color/black_700" />
+
 </LinearLayout>

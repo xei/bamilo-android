@@ -14,7 +14,8 @@ import com.mobile.view.R;
 import java.util.List;
 
 /**
- * Created by rsoares on 9/25/15.
+ * FulfillmentUiBuilder.
+ * @author rsoares
  */
 public class FulfillmentUiBuilder {
 
@@ -31,7 +32,6 @@ public class FulfillmentUiBuilder {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup fulfillmentMain = (ViewGroup) inflater.inflate(R.layout.fulfillment_main, null, false);
         TextView fulfillmentWho = (TextView)fulfillmentMain.findViewById(R.id.fulfillment_seller_name);
-
 
         GlobalSeller seller = fulfillment.getGlobalSeller();
 
@@ -52,7 +52,7 @@ public class FulfillmentUiBuilder {
         }
 
 
-        ViewGroup fulfillmentProductsLayout = (ViewGroup)fulfillmentMain.findViewById(R.id.fulfillment_products_layout);
+        ViewGroup fulfillmentProductsLayout = (ViewGroup) fulfillmentMain.findViewById(R.id.fulfillment_products_layout);
 
         List<PurchaseCartItem> purchaseCartItemList = fulfillment.getProducts();
         for(PurchaseCartItem purchaseCartItem : purchaseCartItemList){
@@ -65,10 +65,8 @@ public class FulfillmentUiBuilder {
     public static View getProductView(Context context, PurchaseCartItem purchaseCartItem){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup fulfillmentProduct = (ViewGroup) inflater.inflate(R.layout.fulfillment_product, null, false);
-
         ((TextView)fulfillmentProduct.findViewById(R.id.fulfillment_product_qty)).setText(String.format(context.getString(R.string.qty_placeholder), purchaseCartItem.getQuantity()));
         ((TextView)fulfillmentProduct.findViewById(R.id.fulfillment_product_name)).setText(purchaseCartItem.getName());
-
         return fulfillmentProduct;
     }
 

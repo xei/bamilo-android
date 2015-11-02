@@ -561,23 +561,17 @@ public class DynamicFormItem {
             case relatedNumber:
             case number:
                 String text = inStat.getString(getKey());
-
                 ((EditText) this.dataControl).setText(text);
                 this.errorControl.setVisibility(View.GONE);
-
                 if (TextUtils.isEmpty(text)) {
                     if (this.mandatoryControl != null) {
-                        this.mandatoryControl
-                                .setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                                        : View.GONE);
+                        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
                     }
                 } else {
                     if (this.mandatoryControl != null) {
                         this.mandatoryControl.setVisibility(View.GONE);
                     }
-
                 }
-
                 break;
             case hide:
                 String text1 = inStat.getString(getKey());
@@ -1749,15 +1743,15 @@ public class DynamicFormItem {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 for (int i = 0; i < group.getChildCount(); i++) {
-                    if (i != checkedId) {
-                        if (group.getChildAt(i).findViewById(R.id.extras) != null) {
-                            group.getChildAt(i).findViewById(R.id.extras).setVisibility(View.GONE);
-                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container).findViewById(i)).setChecked(false);
-                        }
-                    } else {
-                        if (group.getChildAt(i).findViewById(R.id.extras) != null) {
-                            group.getChildAt(i).findViewById(R.id.extras).setVisibility(View.VISIBLE);
-                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_container).findViewById(i)).setChecked(true);
+                    // Get extras
+                    View view = group.getChildAt(i).findViewById(R.id.radio_extras_container);
+                    if ( view != null) {
+                        if (i != checkedId) {
+                            view.setVisibility(View.GONE);
+                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_shipping)).setChecked(false);
+                        } else {
+                            view.setVisibility(View.VISIBLE);
+                            ((RadioButton) group.getChildAt(i).findViewById(R.id.radio_shipping)).setChecked(true);
                         }
                     }
                 }

@@ -2,8 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="@color/white">
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,6 +43,7 @@
         <!-- DIVIDER -->
 
         <RelativeLayout
+            android:id="@+id/login_divider"
             android:layout_width="@dimen/login_main_container_width"
             android:layout_height="wrap_content">
 
@@ -54,7 +54,7 @@
             <com.mobile.components.customfontviews.TextView
                 style="@style/text_header"
                 android:layout_centerInParent="true"
-                android:background="@color/white"
+                android:background="@color/window_background_color"
                 android:paddingLeft="@dimen/login_margin_small"
                 android:paddingRight="@dimen/login_margin_small"
                 android:text="@string/or_text"
@@ -74,6 +74,13 @@
             android:hint="@string/email_address"
             android:imeOptions="actionDone" />
 
+        <!-- ERROR MESSAGE -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/login_text_error_message"
+            style="@style/TextErrorField"
+            android:visibility="gone"/>
+
         <Space
             android:layout_width="wrap_content"
             android:layout_height="16dp" />
@@ -83,10 +90,10 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_button_guest"
             style="@style/TextCaption"
+            android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="@string/continue_without_log_in"
-            android:layout_marginBottom="16dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <!-- BUTTON -->
 
