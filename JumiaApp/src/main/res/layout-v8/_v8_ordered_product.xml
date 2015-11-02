@@ -2,16 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/catalog_list_item_height">
+    android:layout_height="@dimen/catalog_list_item_height"
+    >
     <include
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:id="@+id/delivered_status"
-        layout="@layout/_v8_delivered"
+        layout="@layout/delivered"
         android:layout_marginBottom="@dimen/margin_60px"
         android:layout_marginLeft="@dimen/margin_60px"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/reorderButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/orange_f68b1e"
+        android:textStyle="bold"
+        android:text="REORDER"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:layout_marginTop="@dimen/dimen_66px"
         />
 
     <include
