@@ -14,6 +14,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:layout_centerVertical="true"/>
+
     <LinearLayout
         android:id="@+id/delivery_info"
         android:layout_width="wrap_content"
@@ -25,11 +26,15 @@
 
             <com.mobile.components.customfontviews.TextView
             style="@style/TextHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
             android:text="@string/delivered_label"
             android:textColor="@color/black"
                 />
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/delivered_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 style="@style/TextCaption"
                 android:textColor="@color/black"
                 android:text="2015-09-03"
@@ -41,7 +46,6 @@
     <com.mobile.components.customfontviews.TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
         style="@style/TextHeader"
         android:id="@+id/order_status"
         android:text="@string/order_pending"
