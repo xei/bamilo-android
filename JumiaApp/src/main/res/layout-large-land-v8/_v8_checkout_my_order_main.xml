@@ -16,7 +16,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/checkout_my_order_button_container"
+        android:layout_above="@+id/checkout_my_order_button_enter"
         android:layout_alignLeft="@id/center_point"
         android:layout_alignParentRight="true"
         android:scrollbars="none" >
@@ -24,7 +24,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
             android:orientation="vertical" >
 
             <!-- PRODUCTS -->
@@ -34,12 +33,12 @@
             <!-- SUB TOTAL -->
 
             <include
+                layout="@layout/shopping_basket_subtotal_element"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
                 android:layout_marginRight="0dp"
-                android:layout_marginTop="@dimen/rounded_margin_small"
-                layout="@layout/shopping_basket_subtotal_element" />
+                android:layout_marginTop="@dimen/rounded_margin_small" />
         </LinearLayout>
     </ScrollView>
 
@@ -48,7 +47,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/checkout_my_order_button_container"
+        android:layout_above="@+id/checkout_my_order_button_enter"
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@id/center_point"
         android:scrollbars="none" >
@@ -57,8 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingRight="@dimen/rounded_margin_mid"
-            android:paddingTop="@dimen/rounded_margin_small" >
+            >
 
             <!-- SHIPPING ADDRESS -->
 
@@ -78,19 +76,14 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- NEXT STEP BUTTON -->
 
-    <LinearLayout
-        android:id="@id/checkout_my_order_button_container"
-        style="@style/button_container"
-        android:layout_alignParentBottom="true" >
+    <!-- BUTTON -->
 
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/checkout_my_order_button_enter"
-            style="@style/button_orange_landscape"
-            android:layout_width="@dimen/inner_container_width"
-            android:contentDescription="@string/login_button_description"
-            android:text="@string/my_order_confirm_button" />
-    </LinearLayout>
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/checkout_my_order_button_enter"
+        style="@style/AigButton.Active"
+        android:layout_alignParentBottom="true"
+        android:contentDescription="@string/login_button_description"
+        android:text="@string/my_order_confirm_button" />
 
 </RelativeLayout>

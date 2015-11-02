@@ -23,7 +23,8 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
 
     private ShippingMethodFormBuilderHolder mForm;
 
-    private ArrayList<Fulfillment> fulfillmentList;
+    private ArrayList<Fulfillment> mFulfillmentList;
+
     /**
      * Empty constructor
      */
@@ -35,6 +36,7 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
     public CheckoutFormShipping(CheckoutFormShipping shippingMethodsForm) {
         mOrderSummary = shippingMethodsForm.mOrderSummary;
         mForm = shippingMethodsForm.mForm;
+        mFulfillmentList = shippingMethodsForm.mFulfillmentList;
     }
 
     /*
@@ -51,12 +53,12 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
         // Order
         mOrderSummary = new PurchaseEntity();
         mOrderSummary.initialize(jsonObject);
-
+        // Get fulfilment
         JSONArray fulfillmentArray = jsonObject.getJSONObject(RestConstants.CART_ENTITY).optJSONArray(RestConstants.FULFILLMENT);
         if(fulfillmentArray != null) {
-            fulfillmentList = new ArrayList<>();
+            mFulfillmentList = new ArrayList<>();
             for (int i = 0; i < fulfillmentArray.length(); i++) {
-                fulfillmentList.add(new Fulfillment(fulfillmentArray.getJSONObject(i)));
+                mFulfillmentList.add(new Fulfillment(fulfillmentArray.getJSONObject(i)));
             }
         }
         return true;
@@ -89,11 +91,24 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(mOrderSummary);
-
+        dest.writeValue(mForm);
+        if (mFulfillmentList == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mFulfillmentList);
+        }
     }
 
     private CheckoutFormShipping(Parcel in) {
         mOrderSummary = (PurchaseEntity) in.readValue(PurchaseEntity.class.getClassLoader());
+        mForm = (ShippingMethodFormBuilderHolder) in.readValue(ShippingMethodFormBuilderHolder.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            mFulfillmentList = new ArrayList<>();
+            in.readList(mFulfillmentList, Fulfillment.class.getClassLoader());
+        } else {
+            mFulfillmentList = null;
+        }
     }
 
     public static final Creator<CheckoutFormShipping> CREATOR = new Creator<CheckoutFormShipping>() {
@@ -106,7 +121,7 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
         }
     };
 
-    public ArrayList<Fulfillment> getFulfillmentList() {
-        return fulfillmentList;
+    public ArrayList<Fulfillment> getmFulfillmentList() {
+        return mFulfillmentList;
     }
 }

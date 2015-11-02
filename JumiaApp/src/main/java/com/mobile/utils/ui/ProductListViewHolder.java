@@ -49,7 +49,6 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
         discount = (TextView) view.findViewById(R.id.item_discount);
         percentage = (TextView) view.findViewById(R.id.discount_percentage);
         reviews = (TextView) view.findViewById(R.id.item_reviews);
-        brand = (TextView) view.findViewById(R.id.item_brand);
         recent = (ImageView) view.findViewById(R.id.image_is_new);
         favourite = (ImageView) view.findViewById(R.id.image_is_favourite);
         headerImage = (ImageView) view.findViewById(R.id.catalog_header_image);
