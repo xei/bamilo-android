@@ -18,5 +18,6 @@
     <item type="drawable" name="img_newarrival">@drawable/img_newarrival_urdu</item>
     <item type="drawable" name="ic_overseas_corner">@drawable/ic_overseas_corner_rtl</item>
     <item type="drawable" name="ic_check_success_message">@drawable/ic_check_success_message_rtl</item>
+    <item type="drawable" name="ic_my_orders">@drawable/ic_my_orders_rtl</item>
 
 </resources>
