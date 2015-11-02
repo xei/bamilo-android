@@ -10,33 +10,12 @@
         />
 
     <!-- ORDER_SUMMARY -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/line1"
-        android:orientation="horizontal"
-        >
 
-        <!-- Order status -->
-
-        <include layout="@layout/delivered"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:layout_gravity="center"
-            android:layout_marginRight="@dimen/margin_60px"
-            />
-
-        <!-- divider -->
-        <View
-            style="@style/VerticalListDivider" />
-
-        <!-- ORDER SUMMARY -->
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_60px"
-            android:layout_weight="2"
+
             >
 
             <com.mobile.components.customfontviews.TextView
@@ -44,7 +23,6 @@
                 android:layout_height="wrap_content"
                 style="@style/TextBody_1"
                 android:id="@+id/total_products"
-                android:text="2 Items"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_alignParentRight="true"
@@ -56,7 +34,6 @@
                 android:layout_toLeftOf="@id/total_products"
                 style="@style/TextBody_3"
                 android:id="@+id/grand_total"
-                android:text="RS: 1548 "
                 android:textColor="@color/black"
                 />
 
@@ -64,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/confirm_msg_padding"
-                android:src="@drawable/ico_dropdown_order"
+                android:src="@drawable/ic_my_orders"
                 android:layout_below="@id/total_products"
                 android:id="@+id/im_order"
                 android:layout_alignParentRight="true"
@@ -74,11 +51,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/confirm_msg_padding"
-                android:layout_alignBottom="@id/im_order"
+                android:layout_marginTop="@dimen/confirm_msg_padding"
                 style="@style/TextInfo_2"
                 android:textColor="@color/black_700"
                 android:id="@+id/delivery"
-                android:text="3-8 business days"
                 android:layout_toLeftOf="@id/im_order"
                 android:layout_below="@id/grand_total"
                 />
@@ -87,11 +63,6 @@
 
         </RelativeLayout>
 
-
-
-
-
-    </LinearLayout>
 
     <!-- divider -->
     <View
@@ -103,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/line2"
+        android:id="@+id/lineShipping"
         >
 
         <!-- payment details -->
@@ -130,19 +101,9 @@
                 android:layout_height="wrap_content"
                 style="@style/TextHeader"
                 android:id="@+id/payment_type"
-                android:text="Payment type"
                 android:layout_below="@+id/shipping_delivery"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                />
-
-            <com.mobile.components.customfontviews.TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/TextCaption"
-                android:id="@+id/payment_detail"
-                android:text="Bank x"
-                android:textColor="@color/black"
                 />
 
 
@@ -180,7 +141,6 @@
                 android:layout_height="wrap_content"
                 style="@style/TextHeader"
                 android:id="@+id/customer_name"
-                android:text="Customer name"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 />
@@ -191,7 +151,6 @@
                 android:layout_height="wrap_content"
                 style="@style/TextCaption"
                 android:id="@+id/shipping_address"
-                android:text="shgdajdxfffffffffgdggdfgdggadddddddddddddddddddd"
                 android:singleLine="false"
                 android:textColor="@color/black"
                 />
@@ -201,7 +160,6 @@
                 android:layout_height="wrap_content"
                 style="@style/TextCaption"
                 android:id="@+id/customer_phone"
-                android:text="+234 8379479"
                 android:textColor="@color/black"
                 />
 
