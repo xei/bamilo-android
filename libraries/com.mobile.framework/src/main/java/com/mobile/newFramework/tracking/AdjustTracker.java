@@ -222,7 +222,7 @@ public class AdjustTracker {
         String appToken = context.getString(R.string.adjust_app_token);
         // Get adjust environment and log level
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
-        LogLevel logLevel = LogLevel.VERBOSE;
+        LogLevel logLevel = LogLevel.INFO;
         if(!context.getResources().getBoolean(R.bool.adjust_is_production_env)) {
             environment = AdjustConfig.ENVIRONMENT_SANDBOX;
             //logLevel = LogLevel.VERBOSE;
