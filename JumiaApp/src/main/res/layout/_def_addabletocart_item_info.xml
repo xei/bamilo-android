@@ -1,132 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
-
-    <View
-        android:id="@+id/top_spacer"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/catalog_item_vertical_padding" />
+    android:layout_height="wrap_content">
 
     <!-- DELETE BUTTON -->
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_delete"
         android:layout_width="@dimen/delete_button_size"
         android:layout_height="@dimen/delete_button_size"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/top_spacer"
+        android:layout_alignParentTop="true"
         android:layout_margin="@dimen/delete_button_margin"
-        android:background="@drawable/selector_btn_remove_item"
+        android:background="@drawable/ic_filter_clear"
         android:contentDescription="@string/shoppingcart_item_btn_delete" />
 
     <!-- BRAND -->
-
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
-        style="@style/text_title"
+        style="@style/TextCaption"
         android:layout_width="wrap_content"
-        android:layout_below="@id/top_spacer"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_marginEnd="@dimen/product_item_text_right_margin"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
         android:gravity="center_vertical|left|start"
+        android:lines="1"
         android:text="BRAND"
-        android:visibility="visible" />
+        android:textColor="@color/black_800" />
 
     <!-- NAME -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/text_subtitle"
-        android:layout_width="match_parent"
+        style="@style/TextList_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@id/item_brand"
         android:layout_marginEnd="@dimen/product_item_text_right_margin"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
         android:gravity="center_vertical|left|start"
-        android:text="Name" />
+        android:lines="1"
+        android:text="Name"
+        android:textColor="@color/black" />
 
-    <!-- DISCOUNT -->
+    <!-- PRICE -->
 
-    <RelativeLayout
-        android:id="@+id/price_container"
-        android:layout_width="match_parent"
+    <include
+        android:id="@+id/price_section"
+        layout="@layout/pdv_small_price_tag"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="left|center_vertical|start"
         android:layout_alignLeft="@id/item_name"
         android:layout_alignStart="@id/item_name"
-        android:layout_below="@id/item_name" >
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/item_discount"
-            style="@style/text_price"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginEnd="4dp"
-            android:layout_marginRight="4dp"
-            android:text="Discount" />
-
-        <!-- PRICE -->
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/item_regprice"
-            style="@style/text_price"
-            android:layout_alignTop="@id/item_discount"
-            android:layout_toRightOf="@id/item_discount"
-            android:layout_toEndOf="@id/item_discount"
-            android:text="Price"
-            android:textColor="@color/grey_light"/>
-    </RelativeLayout>
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/item_percentage"
-        style="@style/PdvBadgeStyle"
-        android:layout_width="wrap_content"
-        android:layout_gravity="left|start"
-        android:visibility="gone"
-        android:layout_below="@id/price_container"/>
-
-    <!-- WARNINGS -->
-    <RelativeLayout
-        android:id="@+id/warning_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/item_percentage"
-        android:layout_marginEnd="@dimen/rounded_margin_small"
-        android:layout_marginRight="@dimen/rounded_margin_small"
-        android:layout_toLeftOf="@+id/button_shop"
-        android:layout_toStartOf="@+id/button_shop" >
-
-        <!-- DUMMY -->
-
-        <com.mobile.components.customfontviews.TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/product_outof_stock"
-            android:textColor="@color/transparent"
-            android:textSize="@dimen/text_subtitle"
-            android:visibility="invisible" />
-
-        <!-- STOCK WARNING -->
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/error_stock"
-            style="@style/text_subtitle"
-            android:layout_width="match_parent"
-            android:text="@string/product_outof_stock"
-            android:textColor="@color/blue_basic"
-            android:visibility="gone" />
-
-        <!-- CHOOSE WARNING -->
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/error_variant"
-            style="@style/text_subtitle"
-            android:layout_width="match_parent"
-            android:text="@string/product_variance_choose_error"
-            android:textColor="@color/red_basic"
-            android:visibility="gone" />
-    </RelativeLayout>
+        android:layout_below="@id/item_name"
+        android:gravity="left|center_vertical|start" />
 
     <!-- VARIATION BUTTON -->
 
@@ -134,48 +63,45 @@
         android:id="@+id/button_variant"
         android:layout_width="@dimen/product_item_addtocart_variation_width"
         android:layout_height="@dimen/product_item_button_height"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="@dimen/rounded_margin_small"
-        android:background="@drawable/spinnerbutton_background_holo_light"
-        android:ellipsize="end"
-        android:singleLine="true"
+        android:layout_below="@id/price_section"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="5dp"
+        style="@style/FormButtonSpinner"
+        android:layout_alignBottom="@+id/button_shop"
         android:text="@string/product_variant_placeholder"
-        android:textColor="@color/grey_middle"
-        android:textSize="@dimen/text_subtitle"
+        android:visibility="visible" />
+
+
+    <!-- PERCENTAGE -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_alignBottom="@+id/price_section"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right|end"
         android:visibility="visible" />
 
     <!-- ADD BUTTON -->
 
-    <com.mobile.components.customfontviews.Button
-        android:id="@id/button_shop"
-        style="@style/button_orange_style"
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/button_shop"
+        style="@style/AigButton.Active"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/product_item_button_height"
-        android:layout_above="@+id/bottom_spacer"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="0dp"
-        android:layout_marginTop="0dp"
+        android:layout_below="@id/price_section"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/button_variant"
+        android:layout_toRightOf="@+id/button_variant"
         android:contentDescription="@string/productdetail_addcart_description"
-        android:fontFamily="roboto_bold"
-        android:paddingEnd="@dimen/rounded_margin_mid"
-        android:paddingLeft="@dimen/rounded_margin_mid"
-        android:paddingRight="@dimen/rounded_margin_mid"
-        android:paddingStart="@dimen/rounded_margin_mid"
-        android:singleLine="true"
         android:text="@string/add_to_shopping_cart"
-        android:textColor="@color/grey_dark"
-        android:textSize="@dimen/text_subtitle"
+        android:textColor="@color/white"
         android:textStyle="bold" />
 
-    <View
-        android:id="@id/bottom_spacer"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/rounded_margin_mid"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true" />
 
 </RelativeLayout>

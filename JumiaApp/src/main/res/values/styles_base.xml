@@ -14,6 +14,10 @@
         <item name="android:background">@null</item>
     </style>
 
+    <style name="TextDisplay_2" parent="text_base">
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <style name="TextDisplay_1" parent="text_base">
         <item name="android:textSize">34sp</item>
     </style>

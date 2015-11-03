@@ -41,6 +41,7 @@ public class WarningFactory {
     public static final int ERROR_ADD_PRODUCTS_TO_CART = 8;
     public static final int ADDED_TO_SAVED = 9;
     public static final int REMOVE_FROM_SAVED = 10;
+    public static final int ERROR_OUT_OF_STOCK = 13;
 
     /**
      * The last warning that was built and might be re-used.
@@ -109,6 +110,22 @@ public class WarningFactory {
             case REMOVE_FROM_SAVED:
                 showWarningRemovedItemFromSaved();
                 break;
+            case ERROR_OUT_OF_STOCK:
+                showErrorOutOfStock();
+                break;
+        }
+    }
+
+    private void showErrorOutOfStock() {
+        if(actualWarning != ERROR_OUT_OF_STOCK){
+            new Builder().setText(R.string.product_outof_stock)
+                    .setBackground(R.color.red_warning)
+                    .setImageVisibility(true)
+                    .setAnimationDuration(_5_SECONDS)
+                    .startAnimation();
+            actualWarning = ERROR_OUT_OF_STOCK;
+        } else {
+            new Builder().startAnimation();
         }
     }
 

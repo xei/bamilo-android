@@ -133,13 +133,11 @@ public class ErrorLayoutFactory {
 
     private void buildNoFavouritesLayout(){
         new Builder()
-                .setImage(R.drawable.img_nofavourites)
-                .setPrincipalMessage(R.string.save_no_saved)
-    //                    .setDetailMessage(R.string.server_error)
-                .setDetailMessageVisible(false)
-                .setButtonMessage(R.string.continue_shopping)
-                .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
+                .setImage(R.drawable.ic_saved_empty)
+                .setPrincipalMessage(R.string.no_saved_items)
+                .setDetailMessage(R.string.no_saved_items_subtitle)
+                .setButtonVisible(false)
+                .setRotationVisible(false);
         actualError = NO_FAVOURITES_LAYOUT;
     }
 
@@ -147,23 +145,19 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.ic_recentsearches_empty)
                 .setPrincipalMessage(R.string.recentsearch_no_searches)
-                .setDetailMessage(R.string.recent_searches_empty)
-                .setDetailMessageVisible(false)
-                .setButtonMessage(R.string.continue_shopping)
-                .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
+                .setDetailMessage(R.string.server_error)
+                .setButtonVisible(false)
+                .setRotationVisible(false);
         actualError = NO_RECENT_SEARCHES_LAYOUT;
     }
 
     private void buildNoRecentlyViewedLayout(){
         new Builder()
-                .setImage(R.drawable.img_norecentview)
-                .setPrincipalMessage(R.string.recentlyview_no_searches)
-//                    .setDetailMessage(R.string.server_error)
-                .setDetailMessageVisible(false)
-                .setButtonMessage(R.string.continue_shopping)
-                .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
+                .setImage(R.drawable.ic_recentlyviewed_empty)
+                .setPrincipalMessage(R.string.no_recently_viewed_items)
+                .setDetailMessage(R.string.no_recently_viewed_items_subtitle)
+                .setButtonVisible(false)
+                .setRotationVisible(false);
         actualError = NO_RECENTLY_VIEWED_LAYOUT;
     }
 
@@ -241,6 +235,12 @@ public class ErrorLayoutFactory {
             mErrorLayout.findViewById(R.id.fragment_root_error_button).setBackgroundResource(background);
             return this;
         }
+
+        Builder setButtonVisible(boolean isToShow){
+            mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(isToShow ? View.VISIBLE : View.GONE);
+            return this;
+        }
+
 
         Builder setImage(@DrawableRes int image){
             View imageView = mErrorLayout.findViewById(R.id.fragment_root_error_image);
