@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/checkout_address_item_content"
         android:layout_width="@dimen/match_parent"
@@ -14,8 +14,7 @@
             android:id="@+id/checkout_address_item_radio_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            />
+            android:layout_alignParentTop="true" />
 
 
         <!-- EDIT BUTTON -->
@@ -34,34 +33,35 @@
             android:id="@+id/checkout_address_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/checkout_address_item_radio_btn"
-            android:layout_toLeftOf="@+id/checkout_address_item_btn_edit"
             android:layout_marginLeft="@dimen/dimen_20px"
-            android:orientation="vertical"
-            >
+            android:layout_toLeftOf="@+id/checkout_address_item_btn_edit"
+            android:layout_toRightOf="@+id/checkout_address_item_radio_btn"
+            android:orientation="vertical">
+
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_name"
-                android:textColor="@color/black"
-                style="@style/TextCaption" />
+                style="@style/TextCaption"
+                android:textColor="@color/black" />
+
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_street"
-                android:textColor="@color/black_700"
-                style="@style/TextCaption" />
+                style="@style/TextCaption"
+                android:textColor="@color/black_700" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_region"
-                android:textColor="@color/black_700"
-                style="@style/TextCaption"  />
+                style="@style/TextCaption"
+                android:textColor="@color/black_700" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_postcode"
-                android:textColor="@color/black_700"
-                style="@style/TextCaption"  />
+                style="@style/TextCaption"
+                android:textColor="@color/black_700" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_phone"
-                android:textColor="@color/black_700"
-                style="@style/TextCaption"  />
+                style="@style/TextCaption"
+                android:textColor="@color/black_700" />
 
         </LinearLayout>
 

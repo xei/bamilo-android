@@ -17,8 +17,6 @@ import com.mobile.newFramework.utils.EventType;
  */
 public class GetOrderStatusHelper extends SuperBaseHelper {
 
-//    public static String TAG = GetOrderStatusHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
         return EventType.TRACK_ORDER_EVENT;

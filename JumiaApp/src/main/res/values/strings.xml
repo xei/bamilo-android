@@ -288,7 +288,7 @@
     <string name="some_products_not_added">Unfortunately, some products were not added to cart.</string>
     <string name="splash_slogan">The biggest online shopping mall in Africa</string>
     <string name="splash_slogan_daraz">The only online shopping destination you will need!</string>
-    <string name="splash_slogan_powered_by"/>
+    <string name="splash_slogan_powered_by" />
     <string name="stale_warning">Lost connection</string>
     <string name="string_appearance">Appearance</string>
     <string name="string_price">Price</string>
@@ -417,9 +417,9 @@
     <string name="rat_rev">Ratings Reviews</string>
     <string name="fulfilled_by">Fulfilled by %s</string>
     <string name="qty_placeholder">Qty: %d</string>
-    <string name="shipment" formatted="false">Shipment %d of %d</string>
     <string name="policy">Policy</string>
-    <string name="delivery_time_placeholder" formatted="false">Delivery time: %d - %d days</string>
+    <string name="shipment">Shipment %1$d of %2$d</string>
+    <string name="delivery_time_placeholder">Delivery time: %1$d - %2$d days</string>
     <string name="product_specifications">Product Specifications</string>
     <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">The host name does not match the certificate: %s</string>
@@ -449,4 +449,7 @@
     <string name="select_city">Please Select City</string>
     <string name="items_in_your_order">Items in your order</string>
     <string name="delivered_label">Delivered</string>
+    <string name="order_number">Order N.º %s</string>
+    <string name="billing">Billing</string>
+    <string name="first_and_second">%1$s %2$s</string>
 </resources>

@@ -848,7 +848,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 return true;
             case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
-                JumiaApplication.INSTANCE.setLoggedIn(true);
                 // TODO VALIDATE IF THIS IS NECESSARY
                 // getBaseActivity().triggerGetShoppingCartItemsHelper();
                 return true;

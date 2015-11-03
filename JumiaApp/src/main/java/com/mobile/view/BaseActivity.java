@@ -347,7 +347,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
     /*
@@ -359,7 +358,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
         // Tracking
         TrackerDelegator.trackCloseApp();
     }
@@ -1823,15 +1821,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             @Override
             public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
-                JumiaApplication.INSTANCE.setLoggedIn(false);
                 JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
             }
 
             @Override
             public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
-                // Set logged in
-                JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
                 Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin

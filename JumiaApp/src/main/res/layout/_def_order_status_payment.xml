@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.mobile.components.customfontviews.TextView
+        style="@style/TextInfo_2"
+        android:text="@string/payment"
+        android:textColor="@color/black_800" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/order_status_payment_type"
+        style="@style/TextHeader"
+        android:textColor="@color/black" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/order_status_payment_name"
+        style="@style/TextCaption"
+        android:textColor="@color/black_700" />
+
+</LinearLayout>

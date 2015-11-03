@@ -30,7 +30,7 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
     private String mPaymentMethod;
     private Address mBillingAddress;
     private Address mShippingAddress;
-    private ArrayList<OrderTrackerItem> mOrderTrackerItems;
+    private ArrayList<OrderTrackerItem> mItems;
 
     /**
      * OrderTracker empty constructor.
@@ -71,12 +71,12 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
         // Get order items
         JSONArray items = jsonObject.optJSONArray(RestConstants.PRODUCTS);
         if (items != null && items.length() > 0) {
-            mOrderTrackerItems = new ArrayList<>();
+            mItems = new ArrayList<>();
             int size = items.length();
             for (int i = 0; i < size; i++) {
                 OrderTrackerItem mOrderTrackerItem = new OrderTrackerItem();
                 mOrderTrackerItem.initialize(items.getJSONObject(i));
-                mOrderTrackerItems.add(mOrderTrackerItem);
+                mItems.add(mOrderTrackerItem);
             }
         }
         return true;
@@ -101,12 +101,24 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
         return this.mPaymentMethod;
     }
 
-    public @Nullable ArrayList<OrderTrackerItem> getOrderTrackerItems() {
-        return this.mOrderTrackerItems;
+    public @Nullable ArrayList<OrderTrackerItem> getItems() {
+        return this.mItems;
     }
 
     public int getTotalProducts() {
-        return CollectionUtils.isNotEmpty(mOrderTrackerItems) ? mOrderTrackerItems.size() : 0;
+        return CollectionUtils.isNotEmpty(mItems) ? mItems.size() : 0;
+    }
+
+    public Address getBillingAddress() {
+        return mBillingAddress;
+    }
+
+    public Address getShippingAddress() {
+        return mShippingAddress;
+    }
+
+    public double getTotal() {
+        return mTotal;
     }
 
     /**
@@ -131,11 +143,11 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
         dest.writeString(mId);
         dest.writeDouble(mTotal);
         dest.writeString(mPaymentMethod);
-        if (mOrderTrackerItems == null) {
+        if (mItems == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(mOrderTrackerItems);
+            dest.writeList(mItems);
         }
         dest.writeValue(mBillingAddress);
         dest.writeValue(mShippingAddress);
@@ -149,10 +161,10 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
         mTotal = in.readDouble();
         mPaymentMethod = in.readString();
         if (in.readByte() == 0x01) {
-            mOrderTrackerItems = new ArrayList<>();
-            in.readList(mOrderTrackerItems, OrderTrackerItem.class.getClassLoader());
+            mItems = new ArrayList<>();
+            in.readList(mItems, OrderTrackerItem.class.getClassLoader());
         } else {
-            mOrderTrackerItems = null;
+            mItems = null;
         }
         mBillingAddress = (Address) in.readValue(Address.class.getClassLoader());
         mShippingAddress = (Address) in.readValue(Address.class.getClassLoader());

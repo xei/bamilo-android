@@ -64,7 +64,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Set favourite data
         holder.favourite.setTag(R.id.position, position);
         holder.favourite.setSelected(item.isWishList());
-//        holder.favourite.setOnClickListener(this);
     }
 
     /**
@@ -73,7 +72,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
      * @param item - the product
      */
     protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
-
         ProductUtils.setPriceRules(item, holder.price, holder.discount);
         // Case discount
         ProductUtils.setDiscountRules(item, holder.percentage);
@@ -92,7 +90,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
                 holder.rating.setRating((float) item.getAvgRating());
                 holder.rating.setVisibility(View.VISIBLE);
                 int count = item.getTotalRatings();
-//                String string = mContext.getResources().getQuantityString(R.plurals.numberOfRatings, count, count);
                 String string = "("+count+")";
                 holder.reviews.setText(string);
             }

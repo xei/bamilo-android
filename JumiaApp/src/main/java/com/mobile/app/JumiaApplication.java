@@ -62,7 +62,7 @@ public class JumiaApplication extends A4SApplication {
     // Account variables
     public static Customer CUSTOMER;
     private PersistentSessionStore mCustomerUtils;
-    private boolean loggedIn = false;
+//    private boolean loggedIn = false;
 
     /**
      * General Persistent Variables
@@ -255,24 +255,6 @@ public class JumiaApplication extends A4SApplication {
      */
     public void setFormDataRegistry(HashMap<String, FormData> formDataRegistry) {
         this.formDataRegistry = formDataRegistry;
-    }
-
-    /**
-     * @return the loggedIn
-     * @deprecated This flag is not persisted on rotation.
-     */
-    @Deprecated
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    /**
-     * @param loggedIn
-     *            the loggedIn to set
-     */
-    @Deprecated
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
     }
 
     /**
