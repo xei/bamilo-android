@@ -1,26 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/rounded_box"
-    android:layout_marginBottom="0dp"
-    android:layout_marginEnd="0dp"
-    android:layout_marginRight="0dp"
-    android:layout_marginTop="@dimen/rounded_margin_small"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical" >
 
     <!-- TITLE -->
+    <com.mobile.components.customfontviews.TextView
+        style="@style/HeaderStyle"
+        android:text="@string/billing_billing_label" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_box_height"
-        android:layout_margin="@dimen/rounded_margin_mid"
-        android:gravity="left|start|center"
+        android:layout_height="wrap_content"
         android:orientation="horizontal" >
-
-        <com.mobile.components.customfontviews.TextView
-            style="@style/rounded_box_title_grey"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:text="@string/billing_billing_label" />
 
         <ImageView
             android:id="@+id/checkout_my_order_billing_address_btn_edit"
@@ -28,35 +20,28 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginEnd="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginEnd="@dimen/dimen_60px"
+            android:layout_marginRight="@dimen/dimen_60px"
+            android:layout_marginTop="@dimen/dimen_60px"
             android:src="@drawable/selector_btn_edit" />
+
+        <!-- ADDRESS -->
+
+        <LinearLayout
+            android:id="@+id/checkout_my_order_billing_address_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- SAME ADDRESS -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_my_order_billing_address_is_same"
+            style="@style/SubListItemStyle"
+            android:layout_marginLeft="@dimen/dimen_60px"
+            android:layout_marginStart="@dimen/dimen_60px"
+            android:text="@string/my_order_is_same" />
     </RelativeLayout>
 
-    <View style="@style/divider_horizontal_orange" />
-
-    <!-- ADDRESS -->
-
-    <LinearLayout
-        android:id="@+id/checkout_my_order_billing_address_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" />
-
-    <!-- SAME ADDRESS -->
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/checkout_my_order_billing_address_is_same"
-        style="@style/text_normal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_40px"
-        android:layout_marginEnd="@dimen/rounded_margin_mid"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginStart="@dimen/rounded_margin_mid"
-        android:layout_marginTop="@dimen/margin_40px"
-        android:gravity="left|center_vertical|start"
-        android:text="@string/my_order_is_same" />
 
 </LinearLayout>

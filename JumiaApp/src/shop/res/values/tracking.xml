@@ -34,6 +34,7 @@
     <string name="adjust_token_fb_search">rgxffg</string>
     <string name="adjust_token_fb_view_wishlist">fu0073</string>
     <string name="adjust_token_fb_view_cart">gvs5vc</string>
+    <string name="adjust_token_fb_add_to_cart">kkp0q9</string>
     <string name="adjust_token_fb_transaction_confirmation">gztrmz</string>
 
     <!-- End of Adjust Tracking Parameters -->
