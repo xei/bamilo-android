@@ -23,7 +23,10 @@
     <color name="green_basic">#47b638</color>
 
 
+    <!-- old color
     <color name="green_warning">#7dcb7d</color>
+    -->
+    <color name="green_warning">#a3cf62</color>
     <color name="red_warning">#e77979</color>
 
     <!-- The color used in the divider -->
@@ -74,7 +77,6 @@
     <color name="circle_background">#cdd5ec</color>
 
     <!-- NEW BASE COLORS: JUMIA v2.7 -->
-    <color name="green1">#a3cf62</color>
     <color name="blue1">#416998</color>
     <color name="black_900">#202020</color>
     <color name="black_800">#808080</color>
