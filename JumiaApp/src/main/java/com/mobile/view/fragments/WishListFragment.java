@@ -23,7 +23,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -32,7 +31,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ToastManager;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -514,7 +512,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_REMOVED_FAVOURITE);
+                getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED);
                 break;
             case GET_WISH_LIST:
             default:
@@ -546,7 +544,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 if (!super.handleErrorEvent(baseResponse)) {
-                    ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
+                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_OUT_OF_STOCK);
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:

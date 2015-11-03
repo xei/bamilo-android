@@ -16,4 +16,5 @@
     <string name="productdetail_order_button_description">Call to order</string>
     <string name="shopping_cart_button_description">Proceed to checkout</string>
     <string name="checkout_continue_button_description">Continue Shopping</string>
+    <string name="clear_recently_viewed_button_description">Clear ecently viewed</string>
 </resources>
