@@ -3,7 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/rounded_margin_small"
+    android:paddingLeft="@dimen/padding_recent_search_item"
+    android:paddingStart="@dimen/padding_recent_search_item"
+    android:paddingRight="@dimen/padding_recent_search_item"
+    android:paddingEnd="@dimen/padding_recent_search_item"
     android:background="@drawable/selector_listitem_rounded_margin_highlight"
     android:layoutDirection="ltr"
     android:orientation="horizontal">
@@ -11,22 +14,21 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_suggestion"
         style="@style/text_header"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/item_height_normal"
         android:layout_marginLeft="@dimen/margin_mid"
         android:layout_weight="1"
         android:gravity="right|center_vertical"
-        android:paddingRight="@dimen/margin_large"
+        android:paddingRight="10dp"
         android:text="Search suggestion"
-        android:textColor="@color/grey_dark"
+        android:textColor="@color/black_800"
         tools:ignore="HardcodedText" />
 
     <ImageView
         android:id="@+id/item_img"
-        android:layout_width="30dp"
-        android:layout_height="@dimen/item_height_normal"
-        android:contentDescription="@string/recent_searches"
-        android:gravity="center_vertical"
-        android:paddingRight="@dimen/margin_large"
-        android:src="@drawable/ic_recentsearch" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingRight="10dp"
+        android:src="@drawable/ic_recentsearches" />
 </LinearLayout>

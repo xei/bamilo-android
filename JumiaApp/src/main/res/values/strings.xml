@@ -448,4 +448,5 @@
 
     <string name="order_track_check">You can check your order status visiting the My Orders area</string>
     <string name="select_city">Please Select City</string>
+    <string name="recent_searches_empty">You dont have yet any Recent Searches</string>
 </resources>
