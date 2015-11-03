@@ -62,21 +62,19 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     private ViewGroup mShippingMethodView;
 
-    private ViewGroup mTotalView;
-
     private PurchaseEntity mOrderSummary;
 
     private ViewGroup mShippingAddressList;
 
     private TextView mShippingMethodText;
 
-    private TextView mTotal;
-
     private int mCheckoutStep;
 
     private ViewGroup mVoucherView;
 
     private TextView mVoucherValue;
+
+    private LinearLayout mPriceRules;
 
     /**
      * Get instance
@@ -142,6 +140,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         mSubTotal = (TextView) view.findViewById(R.id.checkout_summary_products_text_subtotal);
         mExtraCosts = (TextView) view.findViewById(R.id.checkout_summary_extra_costs_value);
         mExtraCostsContainer = (LinearLayout) view.findViewById(R.id.checkout_summary_extra_costs_container);
+        // Price rules
+        mPriceRules = (LinearLayout) view.findViewById(R.id.checkout_summary_price_rules_container);
         // Shipping Address
         mShippingAddressView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_address);
         mShippingAddressList = (ViewGroup) view.findViewById(R.id.checkout_summary_shipping_address_list);
@@ -150,13 +150,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         mShippingMethodView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_method);
         mShippingMethodText = (TextView) view.findViewById(R.id.checkout_summary_shipping_method_text);
         view.findViewById(R.id.checkout_summary_shipping_method_btn_edit).setOnClickListener(this);
-        // Total
-        mTotalView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_total);
-        mTotal = (TextView) view.findViewById(R.id.checkout_summary_total_text);
         // Get saved order summary
-        Bundle  args = savedInstanceState;
-        if(args != null && args.containsKey(ConstantsIntentExtra.ORDER_SUMMARY)){
-            mOrderSummary = args.getParcelable(ConstantsIntentExtra.ORDER_SUMMARY);
+        if(savedInstanceState != null && savedInstanceState.containsKey(ConstantsIntentExtra.ORDER_SUMMARY)){
+            mOrderSummary = savedInstanceState.getParcelable(ConstantsIntentExtra.ORDER_SUMMARY);
             // Show order summary
             showOrderSummary();
         } else {
@@ -261,8 +257,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                 if (mOrderSummary.hasShippingAddress()) {
                     showShippingAddress(mOrderSummary.getShippingAddress());
                 }
-                // Validate total
-                showTotal(mOrderSummary.getTotal());
                 // continue
             case ConstantsCheckout.CHECKOUT_BILLING:
                 // Voucher
@@ -272,7 +266,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             default:
                 // Show cart
                 showCart();
-                CheckoutStepManager.showPriceRules(getBaseActivity(), (LinearLayout) getView().findViewById(R.id.checkout_summary_price_rules_container), mOrderSummary.getPriceRules());
+                CheckoutStepManager.showPriceRules(getBaseActivity(), mPriceRules, mOrderSummary.getPriceRules());
                 break;
         }
 
@@ -346,7 +340,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(regionString.toString());
 
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(shippingAddress.getPostcode());
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText("" + shippingAddress.getPhone());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(shippingAddress.getPhone());
         mShippingAddressList.addView(shippingAddressView);
         mShippingAddressView.setVisibility(View.VISIBLE);
     }
@@ -361,23 +355,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         mShippingMethodView.setVisibility(View.VISIBLE);
     }
 
-//    /**
-//     * Show the shipping fee
-//     *
-//     * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.newFramework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
-//     * @author sergiopereira
-//     */
-//    @Deprecated
-//    private void showShippingFees() {
-//        if(!mCart.hasSumCosts()){
-//            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(String.valueOf(mOrderSummary.getShippingAmount())));
-//        } else {
-//            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mCart.getSumCostsValue()));
-//        }
-//
-//        mShippingFeeView.setVisibility(View.VISIBLE);
-//    }
-
     /**
      * Show voucher
      *
@@ -389,16 +366,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderSummary.getCouponDiscount()));
             mVoucherView.setVisibility(View.VISIBLE);
         }
-    }
-
-    /**
-     * Show the current total
-     *
-     * @author sergiopereira
-     */
-    private void showTotal(double total) {
-        mTotal.setText(CurrencyFormatter.formatCurrency(total));
-        mTotalView.setVisibility(View.VISIBLE);
     }
 
     /**

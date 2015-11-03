@@ -30,7 +30,7 @@ public class ProductComplete extends ProductMultiple {
 
     private String mDescription;
     private String mShortDescription;
-     private ArrayList<ImageUrls> mImageList;
+    private ArrayList<ImageUrls> mImageList;
     private BundleList mProductBundle;
     private boolean hasBundle;
     private Seller mSeller;
@@ -255,7 +255,7 @@ public class ProductComplete extends ProductMultiple {
     private ProductComplete(Parcel in) {
         super(in);
         mImageList = new ArrayList<>();
-        in.readList(mImageList, null);
+        in.readList(mImageList, ImageUrls.class.getClassLoader());
         mDescription = in.readString();
         hasBundle = in.readByte() == 1;
         mSeller = in.readParcelable(Seller.class.getClassLoader());

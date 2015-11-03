@@ -8,8 +8,7 @@
     <RelativeLayout
         android:id="@+id/offers_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white" >
+        android:layout_height="wrap_content">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_product_name"
