@@ -455,6 +455,8 @@ public class RestConstants {
     public static final String TARGET = "target";
 
     public static final String MOBILE_ABOUT = "mobile_about_cms";
-    public static final String UPDATED_AT = "updated_at";
     public static final String ORDER_NUMBER = "order_number";
+    public static final String ORDER_NR = "ordernr";
+
+
 }

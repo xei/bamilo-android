@@ -41,7 +41,6 @@ import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
-import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
@@ -312,7 +311,8 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountUserDataFragment.getInstance();
                 break;
             case MY_ORDERS:
-                fragment = MyOrdersFragment.getInstance(bundle);
+//                fragment = MyOrdersFragment.getInstance(bundle);
+                fragment = OrderStatusFragment.getInstance(bundle);
                 break;
             case ORDER_STATUS:
                 fragment = OrderStatusFragment.getInstance(bundle);

@@ -216,7 +216,7 @@ public class MyOrdersFragment extends BaseFragment {
         protected Fragment createNewFragment(int position) {
             return (titlesPageInt.get(position) == R.string.my_order_history_label) ?
                     OrderHistoryFragment.getInstance() :
-                    TrackOrderFragment.getInstance(getArguments());
+                    OrderStatusFragment.getInstance(getArguments());
         }
 
         @Override

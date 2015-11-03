@@ -39,9 +39,9 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
@@ -529,7 +529,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
         
         selectedProduct = selectedProd;
         Bundle bundle = new Bundle();
-        bundle.putString(OrderStatusFragment.ORDER, order.getmOrderNumber());
+        bundle.putString(ConstantsIntentExtra.ARG_1, order.getmOrderNumber());
         getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
 
 //        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);

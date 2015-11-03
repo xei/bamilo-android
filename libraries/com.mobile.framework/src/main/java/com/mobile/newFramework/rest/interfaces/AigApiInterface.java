@@ -28,7 +28,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.orders.MyOrder;
-import com.mobile.newFramework.objects.orders.OrderTracker;
+import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
@@ -454,7 +454,7 @@ public interface AigApiInterface {
     * ## ORDERS
     */
     @GET("/")
-    void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderTracker>> callback);
+    void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderStatus>> callback);
 
     String trackOrder = "trackOrder";
 

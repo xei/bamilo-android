@@ -1,14 +1,15 @@
 package com.mobile.view.fragments;
 
 import android.os.Bundle;
+import android.view.View;
 
-import com.mobile.helpers.checkout.GetTrackOrderHelper;
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.helpers.checkout.GetOrderStatusHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.orders.Order;
-import com.mobile.newFramework.objects.orders.OrderTracker;
+import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -17,15 +18,16 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 
 /**
- * Created by rsoares on 10/20/15.
+ * Class used ...
+ * @author spereira
  */
 public class OrderStatusFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = OrderStatusFragment.class.getSimpleName();
 
-    public final static String ORDER = Order.class.getSimpleName();
+    private OrderStatus mOrderTracker;
 
-    private OrderTracker mOrderTracker;
+    private String mOrderNumber;
 
     /**
      * Get instance
@@ -50,57 +52,100 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(savedInstanceState == null){
-            triggerOrder(getArguments().getString(ORDER));
-        } else {
+        Print.i(TAG, "ON CREATE");
+        // Get data
+        savedInstanceState = savedInstanceState == null ? getArguments() : savedInstanceState;
+        if (savedInstanceState != null) {
+            mOrderNumber = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
+        }
 
+        mOrderNumber = "300065329";
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Print.i(TAG, "ON VIEW CREATED");
+        // Validate the sate
+        if (TextUtils.isNotEmpty(mOrderNumber)) {
+            triggerOrder(mOrderNumber);
+        } else {
+            showFragmentErrorRetry();
         }
     }
 
-    private void triggerOrder(String orderNr) {
-        triggerContentEvent(new GetTrackOrderHelper(), GetTrackOrderHelper.createBundle(orderNr), this);
+    @Override
+    public void onResume() {
+        super.onResume();
+        Print.i(TAG, "ON RESUME");
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE SATE");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Print.i(TAG, "ON PAUSE");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Print.i(TAG, "ON DESTROY VIEW");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Print.i(TAG, "ON DESTROY");
+    }
+
+    /*
+     * ###### TRIGGERS ######
+     */
+
+    private void triggerOrder(String orderNr) {
+        triggerContentEvent(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNr), this);
+    }
+
+    /*
+     * ###### RESPONSES ######
+     */
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
-        switch (eventType){
-            case TRACK_ORDER_EVENT:
-                mOrderTracker = (OrderTracker) baseResponse.getMetadata().getData();
-                break;
-        }
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        // Get order status
+        mOrderTracker = (OrderStatus) baseResponse.getMetadata().getData();
+        // Show order
+        // Show container
+        showFragmentContentContainer();
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR EVENT");
-
         // Specific errors
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
-        // Generic errors
-        if (super.handleErrorEvent(baseResponse)) {
-            return;
-        }
-
-        switch (eventType){
-            case TRACK_ORDER_EVENT:
-                break;
+        Print.i(TAG, "ON ERROR EVENT: " + eventType);
+        // Validate generic errors
+        if (!super.handleErrorEvent(baseResponse)) {
+            // Show retry
+            showFragmentErrorRetry();
         }
     }
 }

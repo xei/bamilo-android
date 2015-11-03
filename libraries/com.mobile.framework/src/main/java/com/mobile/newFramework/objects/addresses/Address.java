@@ -47,7 +47,10 @@ public class Address implements IJSONSerializable, Parcelable {
         // TODO ID
         id = dataObject.optInt(RestConstants.CUSTOMER_ADDRESS_ID);
         if (id == 0) {
-            id = dataObject.getInt(RestConstants.ID);
+            id = dataObject.optInt(RestConstants.ID);
+        }
+        if (id == 0) {
+            id = dataObject.getInt("id_sales_order_address");
         }
         firstName = dataObject.getString(RestConstants.FIRST_NAME);
         lastName = dataObject.getString(RestConstants.LAST_NAME);
