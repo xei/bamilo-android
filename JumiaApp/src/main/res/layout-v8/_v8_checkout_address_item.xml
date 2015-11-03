@@ -1,70 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-    <RelativeLayout
-        android:id="@+id/checkout_address_item_content"
-        android:layout_width="@dimen/match_parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/dimen_48px"
+    >
+
+    <!-- SELECTION RADIOBUTTON -->
+
+
+    <com.mobile.components.customfontviews.RadioButton
+        android:id="@+id/checkout_address_item_radio_btn"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_48px">
-        <!-- SELECTION RADIOBUTTON -->
-
-        <com.mobile.components.customfontviews.RadioButton
-            android:id="@+id/checkout_address_item_radio_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            />
+        android:layout_alignParentTop="true"
+        android:gravity="top|right"
+        android:layout_alignParentRight="true"
+        />
 
 
-        <!-- EDIT BUTTON -->
 
-        <ImageView
-            android:id="@+id/checkout_address_item_btn_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:src="@drawable/selector_btn_edit" />
+    <!-- EDIT BUTTON -->
 
-        <!-- ITEM -->
+    <ImageView
+        android:id="@+id/checkout_address_item_btn_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/selector_btn_edit" />
 
-        <LinearLayout
-            android:id="@+id/checkout_address_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/checkout_address_item_btn_edit"
-            android:layout_toLeftOf="@+id/checkout_address_item_radio_btn"
-            android:layout_marginLeft="@dimen/dimen_20px"
-            android:orientation="vertical"
-            >
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/checkout_address_item_name"
-                android:textColor="@color/black"
-                style="@style/TextCaption" />
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/checkout_address_item_street"
-                android:textColor="@color/black_700"
-                style="@style/TextCaption" />
+    <!-- ITEM -->
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/checkout_address_item_region"
-                android:textColor="@color/black_700"
-                style="@style/TextCaption"  />
+    <LinearLayout
+        android:id="@+id/checkout_address_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/checkout_address_item_btn_edit"
+        android:layout_toLeftOf="@+id/checkout_address_item_radio_btn"
+        android:layout_marginRight="@dimen/dimen_20px"
+        android:orientation="vertical"
+        >
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_item_name"
+            android:textColor="@color/black"
+            style="@style/TextCaption" />
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_item_street"
+            android:textColor="@color/black_700"
+            style="@style/TextCaption" />
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/checkout_address_item_postcode"
-                android:textColor="@color/black_700"
-                style="@style/TextCaption"  />
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_item_region"
+            android:textColor="@color/black_700"
+            style="@style/TextCaption"  />
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/checkout_address_item_phone"
-                android:textColor="@color/black_700"
-                style="@style/TextCaption"  />
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_item_postcode"
+            android:textColor="@color/black_700"
+            style="@style/TextCaption"  />
 
-        </LinearLayout>
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_item_phone"
+            android:textColor="@color/black_700"
+            style="@style/TextCaption"  />
 
-    </RelativeLayout>
+    </LinearLayout>
+
+
 </RelativeLayout>
