@@ -146,8 +146,8 @@ public class ErrorLayoutFactory {
     private void buildNoRecentSearchesLayout(){
         new Builder()
                 .setImage(R.drawable.ic_recentsearches_empty)
-                .setPrincipalMessage(R.string.recent_searches_empty)
-//                    .setDetailMessage(R.string.server_error)
+                .setPrincipalMessage(R.string.recentsearch_no_searches)
+                .setDetailMessage(R.string.recent_searches_empty)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
                 .setRotationVisible(false)
