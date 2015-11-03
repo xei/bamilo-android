@@ -228,7 +228,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             params.putString(TrackerDelegator.COUPON_KEY, String.valueOf(JumiaApplication.INSTANCE.getCart().getCouponDiscount()));
             params.putInt(TrackerDelegator.CART_COUNT, JumiaApplication.INSTANCE.getCart().getCartCount());
             params.putDouble(TrackerDelegator.GRAND_TOTAL, mGrandTotalValue);
-                        
+
             if(!TextUtils.isEmpty(orderShipping) && !TextUtils.isEmpty(orderTax) && !TextUtils.isEmpty(paymentMethod)){
                 params.putString(TrackerDelegator.SHIPPING_KEY, orderShipping);
                 params.putString(TrackerDelegator.TAX_KEY, orderTax);
