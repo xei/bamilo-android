@@ -464,11 +464,6 @@ public class TrackerDelegator {
         // Create external order
         ExternalOrder order = new ExternalOrder(result);
 
-        ArrayList<String> skus = new ArrayList<>();
-        for (PurchaseItem item : order.items) {
-            skus.add(item.sku);
-        }
-
         // GA
         AnalyticsGoogle.get().trackPurchase(order.number, order.valueConverted, order.items);
         // AD4
@@ -491,7 +486,7 @@ public class TrackerDelegator {
         String paymentMethod = params.getString(PAYMENT_METHOD_KEY);
         GTMManager.get().gtmTrackTransaction(order.items, EUR_CURRENCY, order.value, order.number, order.coupon, paymentMethod, "", "");
         // FB
-        FacebookTracker.get(sContext).trackCheckoutFinished(skus, order.valueConverted, JumiaApplication.SHOP_ID, appVersion);
+        FacebookTracker.get(sContext).trackCheckoutFinished(order.skus, order.valueConverted, JumiaApplication.SHOP_ID, appVersion);
     }
 
     private static void trackNativeCheckoutPurchase(Bundle params, ArrayList<PurchaseCartItem> mItems, String attributeIdList) {

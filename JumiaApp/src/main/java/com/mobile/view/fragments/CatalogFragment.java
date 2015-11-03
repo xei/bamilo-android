@@ -1112,14 +1112,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    private String getCatalogCategory() {
-        String mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.CATEGORY);
-        if (!TextUtils.isEmpty(mSearchQuery)) {
-            mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.QUERY);
-        }
-        return mSearchQuery;
-    }
-
     /**
      * switch the icon and type of catalog view depending on the previous one
      */
