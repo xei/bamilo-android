@@ -110,7 +110,7 @@ public class ErrorLayoutFactory {
 
     private void buildUnexpectedErrorLayout(){
         new Builder()
-                .setImage(R.drawable.img_warning)
+                .setImage(R.drawable.ic_warning2)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setRotationVisible(true)
@@ -163,7 +163,7 @@ public class ErrorLayoutFactory {
 
     private void buildContinueShoppingLayout() {
         new Builder()
-                .setImage(R.drawable.img_warning)
+                .setImage(R.drawable.ic_warning2)
 //                    .setPrincipalMessage(R.string.recentlyview_no_searches)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
