@@ -16,7 +16,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
@@ -71,7 +70,7 @@ import java.util.List;
  * @author sergiopereira
  */
 @Tag(name = "MainActivity")
-public class MainFragmentActivity extends BaseActivity implements OnPreferenceAttachedListener {
+public class MainFragmentActivity extends BaseActivity {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
 
@@ -482,11 +481,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         popBackStackUntilTag(tag);
         // Get the current fragment
         fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
-    }
-
-    // ####################### MY ACCOUNT FRAGMENT #######################
-    @Override
-    public void onPreferenceAttached() {
     }
 
     public boolean isInMaintenance() {
