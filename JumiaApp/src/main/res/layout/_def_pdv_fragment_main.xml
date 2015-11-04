@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
-
-
-
+    android:layout_height="match_parent">
 
     <!-- SCROLL CONTAINER -->
 
@@ -13,18 +9,14 @@
         android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:fillViewport="true"
         android:layout_above="@+id/buy_bar"
-        >
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/white"
             android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
-
 
             <!--PDV PRODUCT MAIN: TITLES AND SLIDE SHOW -->
 
@@ -101,24 +93,11 @@
 
     <!-- BUTTON BAR -->
 
-    <include layout="@layout/pdv_fragment_buy_bar"
+    <include
+        android:id="@id/buy_bar"
+        layout="@layout/pdv_fragment_buy_bar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/buy_bar_height"
-       android:layout_alignParentBottom="true"
-        android:id="@id/buy_bar"
-        />
-
-    <!--CONFIGURABLE CART VIEW -->
-
-    <include
-        android:id="@+id/configurableCartView"
-        layout="@layout/config_confirmation_msg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:visibility="gone" />
-
-
-
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

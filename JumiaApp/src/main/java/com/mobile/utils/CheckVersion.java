@@ -88,11 +88,7 @@ public class CheckVersion {
         if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
             sNeedsToShowDialog = true;
         } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE) {
-            if (getRemindMeLater()) {
-                sNeedsToShowDialog = false;
-            } else {
-                sNeedsToShowDialog = true;
-            }
+            sNeedsToShowDialog = !getRemindMeLater();
         } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE_IGNORED) {
             sNeedsToShowDialog = false;
         } else {
@@ -285,8 +281,8 @@ public class CheckVersion {
             }
 
         }
-    };
-    
+    }
+
     private static class ForceUpdateClickListener implements View.OnClickListener {
         private Activity mActivity;
         
@@ -308,5 +304,5 @@ public class CheckVersion {
                 goShop(mActivity);
             }
         }
-    };
+    }
 }

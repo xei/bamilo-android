@@ -118,6 +118,14 @@
         <item name="android:background">@color/black_300</item>
     </style>
 
+    <style name="divider_horizontal.Black700">
+        <item name="android:background">@color/black_700</item>
+    </style>
+
+    <style name="divider_vertical.Black700">
+        <item name="android:background">@color/black_700</item>
+    </style>
+
     <style name="divider_vertical">
         <item name="android:layout_width">@dimen/divider_height</item>
         <item name="android:layout_height">match_parent</item>

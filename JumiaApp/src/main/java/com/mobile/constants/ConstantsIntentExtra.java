@@ -118,6 +118,9 @@ public class ConstantsIntentExtra {
     public static final String DATA = mPackage + "data";
     public static final String FLAG_1 = mPackage + "flag1";
     public static final String FLAG_2 = mPackage + "flag2";
+    public static final String ARG_1 = mPackage + "arg1";
+    public static final String ARG_2 = mPackage + "arg2";
+
 
 
 }

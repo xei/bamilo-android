@@ -40,6 +40,12 @@
     <!-- SHARE -->
 	<string-array name="app_sharing_array">
         <item>@string/share_the_app</item>
+        <item>@string/rate_the_app</item>
+    </string-array>
+
+    <!-- SHARE -->
+    <string-array name="app_notification_array">
+        <item>@string/notifications</item>
     </string-array>
 
     <!-- ARTICLES -->

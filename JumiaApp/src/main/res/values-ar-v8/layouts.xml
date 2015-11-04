@@ -17,7 +17,7 @@
     <item name="checkout_summary_products"              type="layout">@layout/_v8_checkout_summary_products</item>
     <item name="checkout_summary_shipping_address"      type="layout">@layout/_v8_checkout_summary_shipping_address</item>
     <item name="checkout_summary_shipping_method"       type="layout">@layout/_v8_checkout_summary_shipping_method</item>
-    <item name="checkout_summary_total"                 type="layout">@layout/_v8_checkout_summary_total</item>
+    <!--<item name="checkout_summary_total"                 type="layout">@layout/_v8_checkout_summary_total</item>-->
     <item name="checkout_payment_methods"               type="layout">@layout/_v8_checkout_payment_methods</item>
     <item name="checkout_address_item"                  type="layout">@layout/_v8_checkout_address_item</item>
     <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_v8_checkout_sameaddress_checkbox</item>
@@ -38,7 +38,6 @@
     <item name="fulfillment_product"                    type="layout">@layout/_v8_fulfillment_product</item>
 
     <!-- FORMS -->
-    <item name="form_radiobutton_shipping"              type="layout">@layout/_v8_form_radiobutton_shipping</item>
     <item name="form_radiobutton_with_extra"            type="layout">@layout/_v8_form_radiobutton_with_extra</item>
     <item name="form_radiobutton"                       type="layout">@layout/_v8_form_radiobutton</item>
     <item name="form_radiogroup"                        type="layout">@layout/_v8_form_radiogroup</item>
@@ -106,6 +105,7 @@
     <item name="my_account_user_data_fragment"          type="layout">@layout/_v8_my_account_user_data_fragment</item>
     <item name="country_settings_list_item"             type="layout">@layout/_v8_country_settings_list_item</item>
     <item name="my_account_app_version"                 type="layout">@layout/_v8_my_account_app_version</item>
+    <item name="my_account_notification_item"           type="layout">@layout/_v8_my_account_notification_item</item>
 
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_v8_form_checkbox_terms</item>

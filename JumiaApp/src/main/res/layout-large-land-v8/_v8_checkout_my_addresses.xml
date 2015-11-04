@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
+    android:layout_height="match_parent"
     android:baselineAligned="false"
-    >
+    android:orientation="horizontal">
 
     <!-- ORDER SUMMARY -->
 
@@ -14,26 +14,27 @@
         android:layout_height="match_parent"
         android:layout_weight="@dimen/checkout_order_summary" />
 
-    <!-- ADDRESSES -->
-    
-    <RelativeLayout
+    <!-- CONTENT -->
+
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="@dimen/checkout_main_container" >
+        android:layout_weight="@dimen/checkout_main_container"
+        android:orientation="vertical"
+        app:showDividers="middle">
 
         <!-- CONTENT -->
 
         <ScrollView
             android:id="@+id/checkout_addresses_one_scroll"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/checkout_addresses_button_container"
-            android:layout_alignParentTop="true" >
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <!-- TOP ADDRESSES -->
 
@@ -45,19 +46,15 @@
             </LinearLayout>
         </ScrollView>
 
+        <!-- DIVIDER -->
+        <View
+            android:id="@+id/divider_horizontal"
+            style="@style/divider_horizontal.Black700" />
+
         <!-- NEXT BUTTON -->
 
-        <LinearLayout
-            android:id="@id/checkout_addresses_button_container"
-            style="@style/button_container"
-            android:layout_alignParentBottom="true" >
+        <include layout="@layout/checkout_total_layout" />
 
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/checkout_button_enter"
-                style="@style/button_orange_landscape"
-                android:layout_width="@dimen/inner_container_width"
-                android:text="@string/next_button" />
-        </LinearLayout>
-    </RelativeLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
 
 </LinearLayout>

@@ -437,6 +437,7 @@
     <string name="error_invalid_email">Invalid E-mail</string>
     <string name="create_label">Create</string>
     <string name="continue_without_log_in">Continue without log in</string>
+    <string name="format_discount_value">-%s</string>
     <string name="more">More</string>
     <string name="app_version">App version</string>
     <string name="update_now">Update Now</string>
@@ -444,6 +445,8 @@
     <string name="cart_total_price">Your Cart total is %s</string>
     <string name="cta_button_view_cart">View Cart</string>
     <string name="cta_link_continue_shopping">Continue Shopping</string>
-
+    <string name="up_to_date">Up to date</string>
+    <string name="rate_the_app">Rate the App</string>
     <string name="order_track_check">You can check your order status visiting the My Orders area</string>
+    <string name="select_city">Please Select City</string>
 </resources>

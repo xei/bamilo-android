@@ -29,8 +29,11 @@ public class ShippingMethod {
         this.shippingMethodHolder.label = label;
     }
 
-    public View generateForm(final Context context) {
-        View view = View.inflate(context, R.layout.checkout_shipping_fee_time, null);
+    public View generateForm(View view) {
+        // Get context
+        Context context = view.getContext();
+        // Show bottom space
+        view.findViewById(R.id.shipping_info_space).setVisibility(View.VISIBLE);
         // Show shipping time
         if (TextUtils.isNotEmpty(shippingMethodHolder.deliveryTime)) {
             String shippingTime = context.getString(R.string.shipping_time, android.text.TextUtils.htmlEncode(shippingMethodHolder.deliveryTime));
