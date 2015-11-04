@@ -57,7 +57,7 @@
     <style name="activity_sectionheader_divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/grey_highlight</item>
+        <item name="android:background">@color/black_300</item>
         <item name="android:layout_marginTop">@dimen/margin_large</item>
         <item name="android:layout_marginLeft">6dp</item>
         <item name="android:layout_marginRight">6dp</item>
@@ -115,25 +115,25 @@
     <style name="divider_horizontal">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/black_400</item>
+        <item name="android:background">@color/black_300</item>
     </style>
 
     <style name="divider_vertical">
         <item name="android:layout_width">@dimen/divider_height</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/black_400</item>
+        <item name="android:background">@color/black_300</item>
     </style>
 
     <style name="divider_horizontal_campaign">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1.33dp</item>
-        <item name="android:background">@color/grey_highlight</item>
+        <item name="android:background">@color/black_300</item>
     </style>
 
     <style name="divider_vertival_campaign">
         <item name="android:layout_width">1.33dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/grey_highlight</item>
+        <item name="android:background">@color/black_300</item>
     </style>
 
     <style name="shadow">
