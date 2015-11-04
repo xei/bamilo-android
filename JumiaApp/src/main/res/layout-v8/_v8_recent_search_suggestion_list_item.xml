@@ -4,9 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/padding_recent_search_item"
-    android:paddingStart="@dimen/padding_recent_search_item"
     android:paddingRight="@dimen/padding_recent_search_item"
-    android:paddingEnd="@dimen/padding_recent_search_item"
     android:background="@drawable/selector_listitem_rounded_margin_highlight"
     android:layoutDirection="ltr"
     android:orientation="horizontal">
