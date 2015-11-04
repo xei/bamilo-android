@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <view
+        android:id="@+id/divider"
+        style="@style/divider_horizontal"
+        android:layout_alignParentTop="true"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/phone_label"
+        style="@style/TextList_2"
+        android:text="Phone:"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/buy_bar_height"
+        android:textColor="@color/black_800"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/divider"
+        android:paddingLeft="20dp"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/phone_text"
+        style="@style/TextList_2"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/buy_bar_height"
+        android:textColor="@color/black_900"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingRight="20dp"
+        android:paddingEnd="20dp"
+        android:layout_below="@id/divider"
+        android:text="0000000"
+        />
+
+    <view
+        android:id="@+id/divider1"
+        style="@style/divider_horizontal"
+        android:layout_below="@id/phone_label"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/email_label"
+        style="@style/TextList_2"
+        android:text="Email:"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/buy_bar_height"
+        android:textColor="@color/black_800"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/divider1"
+        />
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/email_text"
+        style="@style/TextList_2"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/buy_bar_height"
+        android:textColor="@color/black_900"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/divider1"
+        android:text="help@jumia.com"
+        />
+
+    <view
+        android:id="@+id/divider2"
+        style="@style/divider_horizontal"
+        android:layout_below="@id/email_label"
+        />
+
+
+</RelativeLayout>

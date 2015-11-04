@@ -19,6 +19,9 @@
 
         <include
             layout="@layout/error_button_layout" />
+
+        <!-- CONTACTS INFO IN CASE OF SSL ERROR -->
+        <include layout="@layout/_def_jumia_contacts_info" />
     </LinearLayout>
 
 </ScrollView>
