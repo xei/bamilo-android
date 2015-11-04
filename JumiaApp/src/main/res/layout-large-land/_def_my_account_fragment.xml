@@ -7,6 +7,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="none"
         android:layout_weight="0.5">
 
         <LinearLayout
@@ -25,6 +26,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/section_title_account" />
             </LinearLayout>
 
@@ -32,13 +34,14 @@
 
             <LinearLayout
                 android:id="@+id/notification_list"
-                android:layout_width="@dimen/inner_container_width"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical" >
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/section_title_notification" />
 
             </LinearLayout>
@@ -54,6 +57,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/choose_language" />
             </LinearLayout>
         </LinearLayout>
@@ -62,6 +66,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:scrollbars="none"
         android:layout_weight="0.5">
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,6 +84,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/more" />
             </LinearLayout>
 
@@ -94,6 +100,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/app_social" />
             </LinearLayout>
 
