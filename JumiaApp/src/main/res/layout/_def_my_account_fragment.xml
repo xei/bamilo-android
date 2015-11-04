@@ -24,15 +24,18 @@
 
         <!-- NOTIFICATION SETTINGS -->
 
+    <LinearLayout
+        android:id="@+id/notification_list"
+        android:layout_width="@dimen/inner_container_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
         <com.mobile.components.customfontviews.TextView
             style="@style/HeaderMyAccountStyle"
             android:text="@string/section_title_notification" />
 
-            <FrameLayout
-                android:id="@+id/account_preferences_frame"
-                android:layout_width="@dimen/inner_container_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+        </LinearLayout>
 
         <!-- LANGUAGE SETTINGS -->
 
@@ -75,6 +78,7 @@
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
                     android:text="@string/app_social" />
+
             </LinearLayout>
 
     </LinearLayout>

@@ -100,14 +100,4 @@
         android:layout_height="@dimen/buy_bar_height"
         android:layout_alignParentBottom="true" />
 
-    <!--CONFIGURABLE CART VIEW -->
-
-    <include
-        android:id="@+id/configurableCartView"
-        layout="@layout/config_confirmation_msg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:visibility="gone" />
-
 </RelativeLayout>

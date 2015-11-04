@@ -17,7 +17,7 @@
     <item name="checkout_summary_products"              type="layout">@layout/_v8_checkout_summary_products</item>
     <item name="checkout_summary_shipping_address"      type="layout">@layout/_v8_checkout_summary_shipping_address</item>
     <item name="checkout_summary_shipping_method"       type="layout">@layout/_v8_checkout_summary_shipping_method</item>
-    <item name="checkout_summary_total"                 type="layout">@layout/_v8_checkout_summary_total</item>
+    <!--<item name="checkout_summary_total"                 type="layout">@layout/_v8_checkout_summary_total</item>-->
     <item name="checkout_payment_methods"               type="layout">@layout/_v8_checkout_payment_methods</item>
     <item name="checkout_address_item"                  type="layout">@layout/_v8_checkout_address_item</item>
     <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_v8_checkout_sameaddress_checkbox</item>
