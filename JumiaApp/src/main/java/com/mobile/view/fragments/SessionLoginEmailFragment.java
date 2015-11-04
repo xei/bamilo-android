@@ -34,8 +34,6 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.utils.ui.ToastManager;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -347,7 +345,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
                 // Notify user
-                getBaseActivity().warningFactory.showWarning(WarningFactory.LOGIN_SUCCESS);
+                showLoginSuccess();
                 // Finish
                 getActivity().onBackPressed();
                 return;

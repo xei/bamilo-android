@@ -657,7 +657,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET);
+        getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET, getString(R.string.no_internet_access_warning_title));
         hideActivityProgress();
         showFragmentContentContainer();
     }
@@ -670,13 +670,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public void showInfoAddToShoppingCartCompleted() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART, getString(R.string.added_to_shop_cart_dialog_text));
         }
     }
 
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART, getString(R.string.error_add_to_shopping_cart));
+        }
+    }
+
+    public void showLoginSuccess() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.LOGIN_SUCCESS, getString(R.string.succes_login));
         }
     }
 

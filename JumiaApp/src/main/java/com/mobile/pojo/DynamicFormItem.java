@@ -98,7 +98,7 @@ public class DynamicFormItem {
     public final static String RELATED_RADIO_GROUP_TAG = "related_radio_group";
     public final static String RELATED_LIST_GROUP_TAG = "related_list_group";
     public final static String RELATED_GROUP_SEPARATOR = "::";
-    private int mPreSelectedPosition = -1;
+    private int mPreSelectedPosition = IntConstants.INVALID_POSITION;
 
     private static final String ICON_PREFIX = "ic_form_";
 
@@ -376,7 +376,7 @@ public class DynamicFormItem {
         // Create container
         LinearLayout container = new LinearLayout(this.context);
         container.setOrientation(LinearLayout.VERTICAL);
-        (this.control).addView(container);
+        this.control.addView(container);
         // Create text field
         buildEditableTextField(container);
         // Create radio group
@@ -581,13 +581,10 @@ public class DynamicFormItem {
                 break;
             case email:
             case text:
+            case password:
             case number:
                 String text = inStat.getString(getKey());
                 ((EditText) this.dataControl).setText(text);
-                break;
-            case password:
-                String password = inStat.getString(getKey());
-                ((EditText) this.dataControl).setText(password);
                 break;
             case relatedNumber:
                 String relatedValue = inStat.getString(getKey());
@@ -796,11 +793,8 @@ public class DynamicFormItem {
                 outState.putBoolean(getKey(), ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked());
                 break;
             case list:
-                Print.i(TAG, "SAVE LIST");
-//                int selectedItem = ((IcsSpinner)this.control.findViewWithTag(SPINNER_LIST_TAG)).getSelectedItemPosition();
                 int selectedItem = ((IcsSpinner) this.dataControl).getSelectedItemPosition();
                 Print.i(TAG,"SAVE LIST:"+selectedItem);
-//                Print.i(TAG,"SAVE LISTt:"+selectedItemt);
                 outState.putInt(getKey(), selectedItem);
                 break;
             case radioGroup:
@@ -1233,7 +1227,7 @@ public class DynamicFormItem {
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
         params.rightMargin = formPadding;
-        this.dataControl = View.inflate(this.context, R.layout._gen_form_check_box, null);
+        this.dataControl = View.inflate(this.context, R.layout.gen_form_check_box, null);
         this.dataControl.setId(parent.getNextId());
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -1873,7 +1867,7 @@ public class DynamicFormItem {
             params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
 
-        CheckBox checkWriteFull = (CheckBox) View.inflate(this.context, R.layout._gen_form_check_box, null);
+        CheckBox checkWriteFull = (CheckBox) View.inflate(this.context, R.layout.gen_form_check_box, null);
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         params.height = context.getResources().getDimensionPixelOffset(R.dimen.checkbox_rating_height);

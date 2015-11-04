@@ -216,16 +216,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "ON SAVE SATE");
         try {
             // Validate check
-            if (mIsSameCheckBox.isChecked()) {
-                Bundle shippingSavedStateBundle = new Bundle();
-                shippingFormGenerator.saveFormState(shippingSavedStateBundle);
-                outState.putParcelable(SHIPPING_SAVED_STATE,shippingSavedStateBundle);
-
-            } else {
-                Bundle shippingSavedStateBundle = new Bundle();
-                shippingFormGenerator.saveFormState(shippingSavedStateBundle);
-                outState.putParcelable(SHIPPING_SAVED_STATE, shippingSavedStateBundle);
-
+            Bundle shippingSavedStateBundle = new Bundle();
+            shippingFormGenerator.saveFormState(shippingSavedStateBundle);
+            outState.putParcelable(SHIPPING_SAVED_STATE, shippingSavedStateBundle);
+            if (!mIsSameCheckBox.isChecked()) {
                 Bundle billingSavedStateBundle = new Bundle();
                 billingFormGenerator.saveFormState(billingSavedStateBundle);
                 outState.putParcelable(BILLING_SAVED_STATE, billingSavedStateBundle);
@@ -249,18 +243,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         super.onPause();
         Print.i(TAG, "ON PAUSE");
         // Case goes to back stack save the state
-        if (mIsSameCheckBox.isChecked()) {
-            if(shippingFormGenerator != null) {
-                Bundle shippingSavedStateBundle = new Bundle();
-                shippingFormGenerator.saveFormState(shippingSavedStateBundle);
-                mShippingFormSavedState = shippingSavedStateBundle;
-            }
-        } else {
-            if(shippingFormGenerator != null) {
-                Bundle shippingSavedStateBundle = new Bundle();
-                shippingFormGenerator.saveFormState(shippingSavedStateBundle);
-                mShippingFormSavedState = shippingSavedStateBundle;
-            }
+
+        if(shippingFormGenerator != null) {
+            Bundle shippingSavedStateBundle = new Bundle();
+            shippingFormGenerator.saveFormState(shippingSavedStateBundle);
+            mShippingFormSavedState = shippingSavedStateBundle;
+        }
+        if (!mIsSameCheckBox.isChecked()) {
             if(billingFormGenerator != null) {
                 Bundle billingSavedStateBundle = new Bundle();
                 billingFormGenerator.saveFormState(billingSavedStateBundle);

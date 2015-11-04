@@ -305,13 +305,14 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             else if (control != null && control.getType() == FormInputType.relatedNumber ) {
                 // Get number
                 String number = control.getValue();
-                model.put(control.getName(), number);
-                // Get related option
-                IFormField related = control.getEntry().getRelatedField();
-                // Validate related type
-                FormInputType relatedType = related.getInputType();
-                // Only send the related info if the main is filled
                 if (TextUtils.isNotEmpty(number)) {
+                    model.put(control.getName(), number);
+                    // Get related option
+                    IFormField related = control.getEntry().getRelatedField();
+                    // Validate related type
+                    FormInputType relatedType = related.getInputType();
+                    // Only send the related info if the main is filled
+
                     if(relatedType == FormInputType.radioGroup) {
                         RadioGroupLayout group = (RadioGroupLayout) control.getControl().findViewWithTag(DynamicFormItem.RELATED_RADIO_GROUP_TAG);
                         // Get selected position

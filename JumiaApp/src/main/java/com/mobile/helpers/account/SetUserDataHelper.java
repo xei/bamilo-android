@@ -31,7 +31,7 @@ public class SetUserDataHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.NORMAL_TASK;
+        return EventTask.SMALL_TASK;
     }
 
     @Override
@@ -55,4 +55,9 @@ public class SetUserDataHelper extends SuperBaseHelper {
         super.postSuccess(baseResponse);
     }
 
+    public static Bundle createBundle(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
+    }
 }

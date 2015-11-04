@@ -22,7 +22,6 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -136,7 +135,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      */
     private void init() {
         triggerGetChangePasswordForm();
-        triggerGetuserDataForm();
+        triggerGetUserDataForm();
     }
 
     /*
@@ -246,127 +245,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         mChangePasswordForm.loadSaveFormState(mFormSavedState);
         mChangePasswordFormContainer.addView(mChangePasswordForm.getContainer());
     }
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON SUCCESS EVENT");
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return false;
-        }
-
-        switch (eventType) {
-            case GET_CHANGE_PASSWORD_FORM_EVENT:
-                Form passwordForm = (Form)baseResponse.getMetadata().getData();
-                fillChangePasswordForm(passwordForm);
-                Print.i(TAG, "GET CHANGE PASSWORD FORM");
-                return true;
-            case EDIT_USER_DATA_FORM_EVENT:
-                Form userForm = (Form)baseResponse.getMetadata().getData();
-                fillUserDataForm(userForm);
-                showFragmentContentContainer();
-                Print.i(TAG, "GET USER DATA FORM");
-                return true;
-            case CHANGE_PASSWORD_EVENT:
-                Print.d(TAG, "changePasswordEvent: Password changed with success");
-                if (null != getActivity()) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.CHANGE_PASSWORD_SUCCESS);
-                    showFragmentContentContainer();
-                }
-                return true;
-            case EDIT_USER_DATA_EVENT:
-                Print.d(TAG, "editUserEvent: user data edit with success fsdfsdffd ");
-                if (null != getActivity()) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.USER_DATA_SUCCESS);
-                    showFragmentContentContainer();
-                }
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR EVENT");
-        EventType eventType = baseResponse.getEventType();
-        // Validate fragment visibility
-        if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return false;
-        }
-
-        if (super.handleErrorEvent(baseResponse)) {
-            return true;
-        }
-
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-
-        switch (eventType) {
-            case GET_CHANGE_PASSWORD_FORM_EVENT:
-                onErrorFormEvent();
-                return true;
-            case EDIT_USER_DATA_FORM_EVENT:
-                onErrorFormEvent();
-                return true;
-            case CHANGE_PASSWORD_EVENT:
-                Print.d(TAG, "changePasswordEvent: Password changed was not successful");
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                    if (errorMessages == null) {
-                        return false;
-                    }
-                    showFragmentContentContainer();
-
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                    }
-
-                    String errorMessage;
-                    if (validateMessages.size() == 0) {
-                        return false;
-                    }
-                    errorMessage = validateMessages.get(0);
-                    displayErrorHint(errorMessage, false);
-                    showFragmentContentContainer();
-                    return true;
-
-                }
-                return false;
-            case EDIT_USER_DATA_EVENT:
-                Print.d(TAG, "EditUserData: Edit user was not successful");
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                    if (errorMessages == null) {
-                        return false;
-                    }
-                    showFragmentContentContainer();
-
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                    }
-
-                    String errorMessage;
-                    if (validateMessages.size() == 0) {
-                        return false;
-                    }
-                    errorMessage = validateMessages.get(0);
-                    displayErrorHint(errorMessage, true);
-                    showFragmentContentContainer();
-                    return true;
-
-                }
-                return false;
-            default:
-                return false;
-        }
-    }
-
-    protected void onErrorFormEvent() {
-        showFragmentErrorRetry();
-    }
 
     @Override
     protected void onClickRetryButton(View view) {
@@ -386,9 +264,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     private void triggerChangeUserData() {
         if (mUserDataForm.validate()) {
             ContentValues values = mUserDataForm.save();
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-            triggerContentEvent(new SetUserDataHelper(), bundle, this);
+            triggerContentEvent(new SetUserDataHelper(), SetUserDataHelper.createBundle(values), this);
         }
     }
 
@@ -397,9 +273,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      */
     public void triggerChangePassword() {
         if (mChangePasswordForm.validate()) {
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mChangePasswordForm.save());
-            triggerContentEvent(new SetChangePasswordHelper(), bundle, this);
+            triggerContentEvent(new SetChangePasswordHelper(), SetUserDataHelper.createBundle(mChangePasswordForm.save()), this);
         }
     }
 
@@ -407,7 +281,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         triggerContentEvent(new GetChangePasswordFormHelper(), null, this);
     }
 
-    private void triggerGetuserDataForm(){
+    private void triggerGetUserDataForm(){
         triggerContentEvent(new GetUserDataFormHelper(), null, this);
     }
     /**
@@ -429,13 +303,120 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
+        EventType eventType = baseResponse.getEventType();
+        Print.d(TAG, "ON SUCCESS EVENT");
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess || eventType == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        switch (eventType) {
+            case GET_CHANGE_PASSWORD_FORM_EVENT:
+                Form passwordForm = (Form)baseResponse.getMetadata().getData();
+                fillChangePasswordForm(passwordForm);
+                Print.i(TAG, "GET CHANGE PASSWORD FORM");
+                break;
+            case EDIT_USER_DATA_FORM_EVENT:
+                Form userForm = (Form)baseResponse.getMetadata().getData();
+                fillUserDataForm(userForm);
+                showFragmentContentContainer();
+                Print.i(TAG, "GET USER DATA FORM");
+                break;
+            case CHANGE_PASSWORD_EVENT:
+                Print.d(TAG, "changePasswordEvent: Password changed with success");
+                if (null != getActivity()) {
+                    getBaseActivity().warningFactory.showWarning(WarningFactory.CHANGE_PASSWORD_SUCCESS, getString(R.string.password_changed));
+                    showFragmentContentContainer();
+                }
+                break;
+            case EDIT_USER_DATA_EVENT:
+                Print.d(TAG, "editUserEvent: user data edit with success fsdfsdffd ");
+                if (null != getActivity()) {
+                    getBaseActivity().warningFactory.showWarning(WarningFactory.USER_DATA_SUCCESS, getString(R.string.edit_user_success));
+                    showFragmentContentContainer();
+                }
+                break;
+            default:
+                break;
+        }
 
     }
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-        onErrorEvent(baseResponse);
+        Print.i(TAG, "ON ERROR EVENT");
+        EventType eventType = baseResponse.getEventType();
+        // Validate fragment visibility
+        if (isOnStoppingProcess || eventType == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        if (super.handleErrorEvent(baseResponse)) {
+            return;
+        }
+
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+
+        switch (eventType) {
+            case GET_CHANGE_PASSWORD_FORM_EVENT:
+                showFragmentErrorRetry();
+                break;
+            case EDIT_USER_DATA_FORM_EVENT:
+                showFragmentErrorRetry();
+                break;
+            case CHANGE_PASSWORD_EVENT:
+                Print.d(TAG, "changePasswordEvent: Password changed was not successful");
+                if (errorCode == ErrorCode.REQUEST_ERROR) {
+                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
+                    if (errorMessages == null) {
+                        return;
+                    }
+                    showFragmentContentContainer();
+
+                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                    if (validateMessages == null || validateMessages.isEmpty()) {
+                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                    }
+
+                    String errorMessage;
+                    if (validateMessages.size() == 0) {
+                        return;
+                    }
+                    errorMessage = validateMessages.get(0);
+                    displayErrorHint(errorMessage, false);
+                    showFragmentContentContainer();
+                }
+                break;
+            case EDIT_USER_DATA_EVENT:
+                Print.d(TAG, "EditUserData: Edit user was not successful");
+                if (errorCode == ErrorCode.REQUEST_ERROR) {
+                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
+                    if (errorMessages == null) {
+                        return;
+                    }
+                    showFragmentContentContainer();
+
+                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
+                    if (validateMessages == null || validateMessages.isEmpty()) {
+                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                    }
+
+                    String errorMessage;
+                    if (validateMessages.size() == 0) {
+                        return;
+                    }
+                    errorMessage = validateMessages.get(0);
+                    displayErrorHint(errorMessage, true);
+                    showFragmentContentContainer();
+
+                }
+                break;
+            default:
+                break;
+        }
 
     }
 
