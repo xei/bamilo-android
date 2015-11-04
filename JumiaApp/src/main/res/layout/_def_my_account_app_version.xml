@@ -14,7 +14,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:textColor="@color/black"
-        android:paddingTop="@dimen/rounded_margin_mid"
+        android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/my_account_gen_dimen"
         android:layout_marginRight="@dimen/my_account_gen_dimen" />
 

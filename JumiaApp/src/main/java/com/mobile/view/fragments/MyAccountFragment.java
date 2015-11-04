@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.AdapterBuilder;
 import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.controllers.MyAccountMoreInfoAdapter;
+import com.mobile.controllers.MyAccountNotificationsAdapter;
 import com.mobile.controllers.MyAccountSettingsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -26,6 +28,7 @@ import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -61,19 +64,22 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     
     public final static int POSITION_SHARE_APP = 0;
 
+    public final static int POSITION_RATE_APP = 1;
+
     public final static int POSITION_COUNTRY = 0;
 
     public final static int POSITION_LANGUAGE = 1;
-    
+
+    public final static int NOTIFICATION_STATUS = 0;
     private ViewGroup optionsList;
     
-    private ViewGroup appSharingList;
+    private ViewGroup appSocialList;
 
     private ViewGroup chooseLanguageList;
 
     private ViewGroup moreInfoContainer;
 
-    private MyAccountPushPreferences mPreferencesFragment;
+    private ViewGroup notificationList;
 
     private ArrayList<TargetHelper> targets;
 
@@ -135,7 +141,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         Print.i(TAG, "ON VIEW CREATED");
 
         showMyAccount(view);
-        showPreferences();
+        showPreferences(view);
         showAppSharing(view);
         showChooseLanguage(view);
 
@@ -207,8 +213,6 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     public void onDestroyView() {
         Log.i(TAG, "ON DESTROY VIEW");
         super.onDestroyView();
-        // Remove PreferencesFragment
-        FragmentController.removeChildFragmentById(this, mPreferencesFragment.getId());
     }
 
     @Override
@@ -239,19 +243,21 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     /**
      * Shows user preferences
      */
-    private void showPreferences() {
-        mPreferencesFragment = new MyAccountPushPreferences();
-        FragmentController.addChildFragment(this, R.id.account_preferences_frame, mPreferencesFragment);
+    private void showPreferences(View view) {
+        notificationList = (ViewGroup)view.findViewById(R.id.notification_list);
+        MyAccountNotificationsAdapter notificationSettingsAdapter = new MyAccountNotificationsAdapter(getActivity(), getResources().getStringArray(R.array.app_notification_array));
+
+        new AdapterBuilder(notificationList, notificationSettingsAdapter, this).buildLayout();
     }
     
     /**
      * Shows app sharing options
      */
     private void showAppSharing(View view) {
-        appSharingList = (ViewGroup)view.findViewById(R.id.middle_app_sharing_list);
+        appSocialList = (ViewGroup)view.findViewById(R.id.middle_app_sharing_list);
         MyAccountSettingsAdapter appSharingSettingsAdapter = new MyAccountSettingsAdapter(getActivity(), getResources().getStringArray(R.array.app_sharing_array));
 
-        new AdapterBuilder(appSharingList, appSharingSettingsAdapter, this).buildLayout();
+        new AdapterBuilder(appSocialList, appSharingSettingsAdapter, this).buildLayout();
     }
 
     private void showChooseLanguage(View view) {
@@ -318,22 +324,45 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     /**
      *  Handles the item click of childs of app sharing list.
      */
-    private void handleOnAppSharingListItemClick(int position) {
+    private void handleOnAppSocialListItemClick(int position) {
         switch (position) {
-        case POSITION_SHARE_APP:
-            String text;
-            String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
-            if(ShopSelector.isRtl()){
-                text = getString(R.string.share_app_link) + " " + preText;
-            } else {
-                text = preText + " " + getString(R.string.share_app_link);
-            }
-            ActivitiesWorkFlow.startActivitySendString(getBaseActivity(), getString(R.string.share_the_app), text) ;
+            case POSITION_SHARE_APP:
+                String text;
+                String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
+                if(ShopSelector.isRtl()){
+                    text = getString(R.string.share_app_link) + " " + preText;
+                } else {
+                    text = preText + " " + getString(R.string.share_app_link);
+                }
+                ActivitiesWorkFlow.startActivitySendString(getBaseActivity(), getString(R.string.share_the_app), text);
+                AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId() + "" : "");
             break;
+            case POSITION_RATE_APP:
+                goToAppPage();
+                break;
         default:
             break;
         }
-        AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId() + "" : "");
+    }
+
+    /**
+     *  Handles the item click of childs of app sharing list.
+     */
+    private void handleOnNotifcationListItemClick(ViewGroup parent, int position) {
+        switch (position) {
+            case NOTIFICATION_STATUS:
+                boolean isEnabled = Ad4PushTracker.getActiveAd4Push(getActivity().getApplicationContext());
+                if(isEnabled){
+                    Ad4PushTracker.setActiveAd4Push(getActivity().getApplicationContext(), !isEnabled);
+                    ((CheckBox)parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG)).setChecked(!isEnabled);
+                } else {
+                    Ad4PushTracker.setActiveAd4Push(getActivity().getApplicationContext(), !isEnabled);
+                    ((CheckBox)parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG)).setChecked(!isEnabled);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -361,8 +390,10 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         // Validate item
         if(parent == this.optionsList){
             handleOnOptionsListItemClick(position);
-        } else if(parent == this.appSharingList){
-            handleOnAppSharingListItemClick(position);
+        } else if(parent == this.notificationList){
+            handleOnNotifcationListItemClick(parent, position);
+        } else if(parent == this.appSocialList){
+            handleOnAppSocialListItemClick(position);
         } else if(parent == this.chooseLanguageList){
             handleOnChooseLanguageItemClick(parent, position);
         } else if(parent == this.moreInfoContainer){
@@ -372,11 +403,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     private void handleOnMoreInfoItemClick(int position) {
         if(position == MyAccountMoreInfoAdapter.APP_VERSION_POSITION){
-            try {
-                ActivitiesWorkFlow.startMarketActivity(getActivity());
-            } catch(android.content.ActivityNotFoundException ex){
-                ActivitiesWorkFlow.startActivityWebLink(getActivity(), R.string.share_app_link);
-            }
+            goToAppPage();
         } else {
             TargetHelper targetHelper = targets.get(position - 1);
             if(targetHelper.getTargetType() == ITargeting.TargetType.SHOP) {
@@ -439,6 +466,17 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
                     this.targets.add(targetHelper);
                 }
             }
+        }
+    }
+
+    /**
+     * Method that re directs to app market or web page
+     */
+    private void goToAppPage(){
+        try {
+            ActivitiesWorkFlow.startMarketActivity(getActivity());
+        } catch(android.content.ActivityNotFoundException ex){
+            ActivitiesWorkFlow.startActivityWebLink(getActivity(), R.string.share_app_link);
         }
     }
 }

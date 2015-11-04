@@ -78,10 +78,9 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
 
             if(CheckVersion.needsToShowDialog()) {
                 updateLabel.setText(R.string.update_now);
-                updateLabel.setVisibility(View.VISIBLE);
                 view.setEnabled(true);
             } else {
-                updateLabel.setVisibility(View.GONE);
+                updateLabel.setText(R.string.up_to_date);
                 view.setEnabled(false);
             }
 
