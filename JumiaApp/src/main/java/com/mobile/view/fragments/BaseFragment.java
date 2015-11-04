@@ -680,6 +680,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
+    public void showInfoAddToSaved() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED);
+        }
+    }
+
+
+
+
     /**
      * Set the inflated stub
      * @param stub The view stub

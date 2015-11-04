@@ -33,7 +33,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -522,7 +521,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
-                getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED);
+                showInfoAddToSaved();
                 break;
             case GET_WISH_LIST:
             default:
