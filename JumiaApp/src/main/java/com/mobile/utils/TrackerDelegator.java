@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.text.TextUtils;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -30,6 +29,7 @@ import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -97,6 +97,8 @@ public class TrackerDelegator {
     public static final String GRAND_TOTAL = "grandTotal";
 
     private final static int MAX_RATE_VALUE = 5;
+
+    public static final String APP_VERSION_KEY = "appVersion";
 
     private static final Context sContext = JumiaApplication.INSTANCE.getApplicationContext();
 
@@ -233,7 +235,7 @@ public class TrackerDelegator {
         //GTM
         GTMManager.get().gtmTrackSearch(criteria, results);
         // FB
-        FacebookTracker.get(sContext).trackSearched(criteria);
+//        FacebookTracker.get(sContext).trackSearched(criteria);
     }
 
 
@@ -326,7 +328,7 @@ public class TrackerDelegator {
                 // GA
                 AnalyticsGoogle.get().trackRateProduct(sContext, product.getSku(), pairs.getValue(), pairs.getKey());
                 // FB
-                FacebookTracker.get(sContext).trackRated(product.getSku(), pairs.getKey(), pairs.getValue(), MAX_RATE_VALUE);
+//                FacebookTracker.get(sContext).trackRated(product.getSku(), pairs.getKey(), pairs.getValue(), MAX_RATE_VALUE);
             }
         }
         //Adjust
@@ -437,6 +439,7 @@ public class TrackerDelegator {
     private static void trackPurchaseInt(Bundle params) {
         Print.i(TAG, "TRACK SALE: STARTED");
         JSONObject result = null;
+        String appVersion = DeviceInfoHelper.getVersionName(sContext);
         try {
             result = new JSONObject(params.getString(PURCHASE_KEY));
         } catch (JSONException e) {
@@ -483,7 +486,7 @@ public class TrackerDelegator {
         String paymentMethod = params.getString(PAYMENT_METHOD_KEY);
         GTMManager.get().gtmTrackTransaction(order.items, EUR_CURRENCY, order.value, order.number, order.coupon, paymentMethod, "", "");
         // FB
-        FacebookTracker.get(sContext).trackCheckoutFinished(order.number, order.valueConverted, order.items.size());
+        FacebookTracker.get(sContext).trackCheckoutFinished(order.skus, order.valueConverted, JumiaApplication.SHOP_ID, appVersion);
     }
 
     private static void trackNativeCheckoutPurchase(Bundle params, ArrayList<PurchaseCartItem> mItems, String attributeIdList) {
@@ -495,7 +498,8 @@ public class TrackerDelegator {
         String paymentMethod = params.getString(PAYMENT_METHOD_KEY);
         String shippingAmount = params.getString(SHIPPING_KEY);
         String taxAmount = params.getString(TAX_KEY);
-        
+        String appVersion =DeviceInfoHelper.getVersionName(sContext);
+
         int numberOfItems = params.getInt(TrackerDelegator.CART_COUNT);
 
         Double averageValue;
@@ -549,7 +553,7 @@ public class TrackerDelegator {
         //GTM
         GTMManager.get().gtmTrackTransaction(items, EUR_CURRENCY, cartValue, orderNr, coupon, paymentMethod, shippingAmount, taxAmount);
         // FB
-        FacebookTracker.get(sContext).trackCheckoutFinished(orderNr, cartValue, numberOfItems);
+        FacebookTracker.get(sContext).trackCheckoutFinished(skus, cartValue, JumiaApplication.SHOP_ID, appVersion);
     }
 
 //    public static void storeSignupProcess(Customer customer) {
@@ -617,7 +621,7 @@ public class TrackerDelegator {
         // GTM
         GTMManager.get().gtmTrackStartCheckout(cartQt, cartValue, EUR_CURRENCY);
         // FB
-        FacebookTracker.get(sContext).trackCheckoutStarted(userId, cartValue, cartQt);
+//        FacebookTracker.get(sContext).trackCheckoutStarted(userId, cartValue, cartQt);
     }
 
     /**
@@ -706,6 +710,7 @@ public class TrackerDelegator {
         String sku = bundle.getString(SKU_KEY);
         String name = bundle.getString(NAME_KEY);
         String location = bundle.getString(LOCATION_KEY);
+        String appVersion = DeviceInfoHelper.getVersionName(sContext);
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_CART, sku, (long) price);
         // AD4Push
@@ -727,7 +732,7 @@ public class TrackerDelegator {
         //GTM
         GTMManager.get().gtmTrackAddToCart(sku, price, brand, EUR_CURRENCY, discount, rating, category, subCategory, location);
         // FB
-        FacebookTracker.get(sContext).trackAddedToCart(sku, price, category);
+        FacebookTracker.get(sContext).trackAddedToCart(sku, price, JumiaApplication.SHOP_ID, appVersion);
         //GA Banner Flow
         if (bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null) {
             JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE));
@@ -770,13 +775,15 @@ public class TrackerDelegator {
         double discount = bundle.getDouble(DISCOUNT_KEY);
         double rating = bundle.getDouble(RATING_KEY);
         Boolean isRelatedItem = bundle.getBoolean(RELATED_ITEM, false);
+        String appVersion = DeviceInfoHelper.getVersionName(sContext);
+
         TrackingEvent event = !isRelatedItem ? TrackingEvent.SHOW_PRODUCT_DETAIL : TrackingEvent.SHOW_RELATED_PRODUCT_DETAIL;
         // GA
         AnalyticsGoogle.get().trackProduct(event, prefix, path, name, sku, price);
         //GTM
         GTMManager.get().gtmTrackViewProduct(sku, price, brand, EUR_CURRENCY, discount, rating, category, subCategory);
         // FB
-        FacebookTracker.get(sContext).trackProduct(sku, price, category);
+        FacebookTracker.get(sContext).trackProduct(sku, price, JumiaApplication.SHOP_ID, appVersion);
         // Ad4push
         Ad4PushTracker.get().trackTopBrand();
     }
@@ -840,7 +847,7 @@ public class TrackerDelegator {
         GTMManager.get().gtmTrackAddToWishList(productSku, productBrand, productPrice, averageRating,
                 productDiscount, CurrencyFormatter.getCurrencyCode(),location, categories, "");
         // FB
-        FacebookTracker.get(sContext).trackAddedToWishlist(productSku, productPrice, categories);
+//        FacebookTracker.get(sContext).trackAddedToWishlist(productSku, productPrice, categories);
     }
 
     /**
@@ -1231,7 +1238,7 @@ public class TrackerDelegator {
      * Track catalog page
      * Fire the track catalog page for Adjust Tracker
      */
-    public static void trackCatalogPageContent(CatalogPage catalogPage, String categoryTree, String searchQuery) {
+    public static void trackCatalogPageContent(CatalogPage catalogPage, String categoryTree) {
 
         if (catalogPage != null) {
             // Track Adjust screen
@@ -1260,6 +1267,8 @@ public class TrackerDelegator {
             if (!TextUtils.isEmpty(catalogPage.getSearchTerm())) {
                 TrackerDelegator.trackCatalogSearch(catalogPage);
             }
+            //FB
+            FacebookTracker.get(sContext).trackCatalogView(catalogPage.getName(),JumiaApplication.SHOP_ID, DeviceInfoHelper.getVersionName(sContext));
         }
     }
 

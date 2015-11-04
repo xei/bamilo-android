@@ -544,7 +544,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 if (!super.handleErrorEvent(baseResponse)) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_OUT_OF_STOCK);
+                    showInfoAddToShoppingCartOOS();
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
