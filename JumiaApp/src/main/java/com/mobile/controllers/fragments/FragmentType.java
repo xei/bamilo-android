@@ -63,8 +63,12 @@ public enum FragmentType {
     VARIATIONS,
     WRITE_REVIEW_SELLER,
     FILTERS,
-    COMBO_PAGE,
-    LOGIN_EMAIL;
+    COMBOPAGE,
+    ORDER_STATUS,
+    LOGIN_EMAIL
+    ;
+
+
 
     private int id;
     private final static String DIVIDER = ":";

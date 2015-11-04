@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:padding="@dimen/margin_60px"
+    >
+
+
+    <!-- price -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/order_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        style="@style/TextBody_3"
+        android:textColor="@color/black"
+        android:text="NGN 12542"
+        android:singleLine="false"
+        android:maxLines="2"
+        />
+
+    <!-- number and date -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:orientation="vertical"
+        android:gravity="right"
+        >
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/TextBody_1"
+            android:textColor="@color/black"
+            android:text="ORDER NO. 1231234234"/>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            style="@style/TextInfo_2"
+            android:textColor="@color/black_700"
+            android:text="ORDER NO. 1231234234"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

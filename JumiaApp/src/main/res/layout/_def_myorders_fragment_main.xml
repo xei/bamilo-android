@@ -1,28 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
+    <!-- MY ORDERS SECTION -->
+    <com.mobile.components.customfontviews.TextView
+        style="@style/HeaderStyle"
+        android:text="@string/my_order_history_label"
+        />
 
-    <!-- TABS -->
+    <!-- empty orders screen -->
+    <RelativeLayout
+        android:id="@+id/empty_orders_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_400">
 
-    <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
-        android:id="@+id/my_orders_pager_tab"
+        <ImageView
+            android:id="@+id/empty_orders_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/img_warning"/>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/empty_orders_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_700"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/empty_orders_image"
+            android:gravity="center_vertical"
+            android:text="No Orders Found"/>
+        <com.mobile.components.customfontviews.Button
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="START SHOPPING"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/empty_orders_label"
+            android:background="@color/color_accent"
+            />
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/orders_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/tabBar"
-        app:stsBottomBorderThickness="0dp"
-        app:stsIndicatorColor="@color/orange_tab_bar"
-        app:stsIndicatorThickness="@dimen/sliding_tab_inidicator_thickness"
-        android:layoutDirection="ltr"/>
+        android:divider="@color/black_300"
+        android:dividerHeight="1dp"
+        ></ListView>
 
-    <!-- CONTENT -->
+    <View
+       style="@style/HorizontalListDivider" />
 
-    <com.mobile.components.viewpager.RtlViewPager
-        android:id="@+id/my_orders_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+
 
 </LinearLayout>

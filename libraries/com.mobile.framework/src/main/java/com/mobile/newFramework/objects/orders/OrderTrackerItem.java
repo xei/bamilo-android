@@ -24,6 +24,7 @@ public class OrderTrackerItem extends ProductRegular {
     private String quantity;
     private String status;
 
+
     /**
      * OrderTrackerItem empty constructor.
      */

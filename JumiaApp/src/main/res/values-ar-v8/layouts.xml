@@ -81,6 +81,7 @@
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_v8_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_v8_config_confirmation_msg</item>
     <!-- MY ORDERS -->
+    <item name="myorders_pending_list_item"             type="layout">@layout/_v8_myorders_pending_list_item</item>
     <!--<item name="track_order_fragment"                   type="layout">@layout/_v8_track_order_fragment</item>-->
     <!--<item name="order_history_main"                     type="layout">@layout/_v8_order_history_main</item>-->
 

@@ -35,18 +35,16 @@ import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.utils.MyMenuItem;
-import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -103,11 +101,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
      * Empty constructor
      */
     public OrderHistoryFragment() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
-                R.layout.order_history_main,
-                R.string.my_orders_label,
-                KeyboardState.ADJUST_CONTENT);
+        super(IS_NESTED_FRAGMENT, R.layout.order_history_main);
     }
 
     /*
@@ -302,8 +296,7 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                 }
                 
                 pageIndex = orders.getCurrentPage();
-                totalPages = orders.getNumPages();
-
+                totalPages = orders.getTotalOrders();
                 if(pageIndex <= totalPages){
                     mIsLoadingMore = false;
                     
@@ -336,10 +329,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
                     showProductsLoading(false);
                     mIsLoadingMore = true;
                     return false;
-                }
-
-                if(orders.getTotalOrders() <= NUM_ORDERS){
-                    mIsLoadingMore = true;
                 }
             }
             
@@ -517,7 +506,6 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
-        bundle.putInt(ConstantsIntentExtra.MY_ORDER_POS, ShopSelector.isRtl() ? 0 : 1);
         getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -528,12 +516,9 @@ public class OrderHistoryFragment extends BaseFragment implements OnSelectedOrde
     public void SelectedOrder(Order order, ViewGroup productsContainer, boolean toShowInnerProds, int selectedProd) {
         
         selectedProduct = selectedProd;
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.ARG_1, order.getmOrderNumber());
-        getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-//        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);
-//        else setOrderProducts(order,productsLandscapeContainer,toShowInnerProds);
+        
+        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())) setOrderProducts(order,productsContainer, toShowInnerProds);
+        else setOrderProducts(order,productsLandscapeContainer,toShowInnerProds);
         
     }
     

@@ -30,7 +30,7 @@ public class LoadingBarView extends ImageView {
 
 	final Handler mHandler = new Handler();
 
-	//public static final int MAX_RUNNING_FRAMES = 50;
+	public static final int MAX_RUNNING_FRAMES = 50;
 
 	private Thread mThread;
 
@@ -117,8 +117,7 @@ public class LoadingBarView extends ImageView {
 				final int n = mGifDecoder.getFrameCount();
 				final int ntimes = mGifDecoder.getLoopCount();
 				int repetitionCounter = 0;
-			//	int runningFrames = 0;
-
+				int runningFrames = 0;
 				do {
 					for (int i = 0; i < n; i++) {
 						if (Thread.interrupted()) {
@@ -133,13 +132,13 @@ public class LoadingBarView extends ImageView {
 							return;
 						}
 					}
-			/*		if (ntimes != 0) {
+					if (ntimes != 0) {
 						repetitionCounter++;
 					}
 
 					if (++runningFrames == MAX_RUNNING_FRAMES) {
 						return;
-					}*/
+					}
 
 				} while (repetitionCounter <= ntimes);
 			}

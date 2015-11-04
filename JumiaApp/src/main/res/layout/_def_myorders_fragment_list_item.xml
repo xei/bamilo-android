@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/black_800"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/order_number_label"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textColor="@color/black_300"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:ellipsize="end"
+        android:text="ORDER NO. 1231234234"/>
+    <View
+        android:id="@+id/view_separator"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@id/order_number_label"
+        android:layout_alignLeft="@id/order_number_label"
+        android:layout_alignRight="@id/order_number_label"
+        android:background="@color/black_700" />
+    <RelativeLayout
+        android:id="@+id/order_item_info"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_separator"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@+id/order_product_image"
+            android:layout_width="wrap_content"
+            android:background="@drawable/no_image_small"
+            android:layout_height="wrap_content" />
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_products_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_300"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:layout_alignTop="@id/order_product_image"
+            android:layout_toRightOf="@id/order_product_image"
+            android:layout_toEndOf="@id/order_product_image"
+            android:ellipsize="end"
+            android:text="3 items"/>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_300"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:layout_alignTop="@id/order_product_image"
+            android:layout_toRightOf="@id/order_products_number"
+            android:layout_toEndOf="@id/order_products_number"
+            android:ellipsize="end"
+            android:text="220.000"/>
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_delivery_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_300"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:drawableLeft="@drawable/ico_delivery"
+            android:drawableStart="@drawable/ico_delivery"
+            android:layout_toRightOf="@id/order_product_image"
+            android:layout_toEndOf="@id/order_product_image"
+            android:layout_below="@id/order_products_number"
+            android:ellipsize="end"
+            android:drawablePadding="5dp"
+            android:text="3-8 business days"/>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_delivery_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_300"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:layout_toRightOf="@id/order_product_image"
+            android:layout_toEndOf="@id/order_product_image"
+            android:layout_below="@id/order_delivery_time"
+            android:ellipsize="end"
+            android:drawablePadding="5dp"
+            android:text="DELIVERED 2015-08-23"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content" android:background="@drawable/ic_arrow_combo"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
