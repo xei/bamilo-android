@@ -83,6 +83,7 @@ import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.social.FacebookHelper;
+import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment;
@@ -187,6 +188,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private TabLayout mCheckoutTabLayout;
 
     private AppBarLayout mAppBarLayout;
+
+    public ConfirmationCartMessageView mConfirmationCartMessageView;
+
 
 
     /**
@@ -547,7 +551,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));
-
+            //view for configurable confirmation message when adding to carte, in case of hasCartPopup = true
+            mConfirmationCartMessageView = new ConfirmationCartMessageView(findViewById(R.id.configurableCartView),this);
         } catch(IllegalStateException ex){
             Print.e(TAG, ex.getLocalizedMessage(), ex);
         }
