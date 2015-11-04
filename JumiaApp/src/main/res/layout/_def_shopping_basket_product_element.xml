@@ -39,12 +39,12 @@
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/changequantity_button"
+            style="@style/FormButtonSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/item_regprice"
             android:layout_toStartOf="@id/item_regprice"
-            android:background="@drawable/spinnerbutton_background_holo_light"
             android:gravity="bottom|center_horizontal|right|end"
             android:text="@string/shoppingcart_quantity"
             android:textColor="@color/black"
