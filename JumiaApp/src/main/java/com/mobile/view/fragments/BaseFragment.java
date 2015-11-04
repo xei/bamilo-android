@@ -680,7 +680,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    public void showLoginSuccess() {
+    public void showInfoLoginSuccess() {
         if(getBaseActivity() != null) {
             getBaseActivity().warningFactory.showWarning(WarningFactory.LOGIN_SUCCESS, getString(R.string.succes_login));
         }

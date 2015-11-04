@@ -345,7 +345,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
                 // Notify user
-                showLoginSuccess();
+                showInfoLoginSuccess();
                 // Finish
                 getActivity().onBackPressed();
                 return;

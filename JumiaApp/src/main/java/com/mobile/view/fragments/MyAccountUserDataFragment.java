@@ -362,8 +362,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
         switch (eventType) {
             case GET_CHANGE_PASSWORD_FORM_EVENT:
-                showFragmentErrorRetry();
-                break;
             case EDIT_USER_DATA_FORM_EVENT:
                 showFragmentErrorRetry();
                 break;
