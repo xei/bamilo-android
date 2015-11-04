@@ -50,11 +50,10 @@
 
     <include
         android:id="@+id/price_section"
-        layout="@layout/pdv_small_price_tag"
+        layout="@layout/addable_small_price_tag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-
         android:layout_alignRight="@id/item_name"
         android:layout_below="@id/item_name"
         android:gravity="right|center_vertical" />

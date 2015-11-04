@@ -124,8 +124,8 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             item.image = (ImageView) itemView.findViewById(R.id.item_image);
             item.name = (TextView) itemView.findViewById(R.id.item_name);
             item.brand = (TextView) itemView.findViewById(R.id.item_brand);
-            item.price = (TextView) itemView.findViewById(R.id.pdv_text_price);
-            item.discount = (TextView) itemView.findViewById(R.id.pdv_text_special_price);
+            item.price = (TextView) itemView.findViewById(R.id.item_regprice);
+            item.discount = (TextView) itemView.findViewById(R.id.item_discount);
             item.percentage = (TextView) itemView.findViewById(R.id.item_percentage);
             item.varianceButton = (Button) itemView.findViewById(R.id.button_variant);
             item.addToCartButton = itemView.findViewById(R.id.button_shop);

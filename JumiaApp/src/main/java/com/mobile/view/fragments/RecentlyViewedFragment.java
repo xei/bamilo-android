@@ -26,7 +26,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -358,7 +357,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         } catch (IndexOutOfBoundsException e) {
             Print.w(TAG, "WARNING: IOB ON ADD ITEM TO CART", e);
             if(mAdapter != null) mAdapter.notifyDataSetChanged();
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
+            showInfoAddToShoppingCartFailed();
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON ADD ITEM TO CART", e);
             view.setEnabled(false);
@@ -499,7 +498,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.d(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 hideActivityProgress();
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_OUT_OF_STOCK);
+                showInfoAddToShoppingCartOOS();
                 break;
             case VALIDATE_PRODUCTS:
                 Print.d(TAG, "ON RESPONSE ERROR: VALIDATE_PRODUCTS");

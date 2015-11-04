@@ -56,8 +56,8 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
             image = (ImageView) itemView.findViewById(R.id.item_image);
             name = (TextView) itemView.findViewById(R.id.item_name);
             brand = (TextView) itemView.findViewById(R.id.item_brand);
-            price = (TextView) itemView.findViewById(R.id.pdv_text_price);
-            discount = (TextView) itemView.findViewById(R.id.pdv_text_special_price);
+            price = (TextView) itemView.findViewById(R.id.item_regprice);
+            discount = (TextView) itemView.findViewById(R.id.item_discount);
             percentage = (TextView) itemView.findViewById(R.id.item_percentage);
             varianceButton = (Button) itemView.findViewById(R.id.button_variant);
             addToCartButton = itemView.findViewById(R.id.button_shop);
