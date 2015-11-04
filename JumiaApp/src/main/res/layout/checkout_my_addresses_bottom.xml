@@ -25,7 +25,9 @@
         android:layout_width="@dimen/inner_container_width"
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:orientation="vertical" >
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical"
+        >
 
         <include
             android:id="@+id/checkout_addresses_other_add"

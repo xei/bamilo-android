@@ -13,7 +13,6 @@
         android:layout_height="match_parent"
         android:layout_weight="@dimen/checkout_main_container"
         android:orientation="vertical"
-        app:divider="@drawable/divider_black_700"
         app:showDividers="middle">
 
         <!-- CONTENT -->
@@ -38,6 +37,11 @@
                 <include layout="@layout/checkout_my_addresses_bottom" />
             </LinearLayout>
         </ScrollView>
+
+        <!-- DIVIDER -->
+        <View
+            android:id="@+id/divider_horizontal"
+            style="@style/divider_horizontal.Black700" />
 
         <!-- NEXT BUTTON -->
 
