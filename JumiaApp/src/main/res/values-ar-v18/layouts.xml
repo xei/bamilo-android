@@ -91,6 +91,7 @@
     <item name="config_confirmation_msg" 	            type="layout">@layout/_def_config_confirmation_msg</item>
 
     <!-- MY ORDERS -->
+    <item name="my_orders_list_item"                    type="layout">@layout/_def_my_orders_list_item</item>
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
     <item name="order_history_main"                     type="layout">@layout/_def_order_history_main</item>
     <item name="order_status_fragment"                  type="layout">@layout/_def_order_status_fragment</item>

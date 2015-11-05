@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.orders.Order;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
@@ -19,15 +20,17 @@ import java.util.Collection;
  * Created by alexandrapires on 10/22/15.
  * simplified adapter for My Orders list
  */
-public class OrdersListAdapterNew extends BaseAdapter {
+public class OrdersAdapter extends BaseAdapter {
 
-    public final static String TAG = OrdersListAdapterNew.class.getSimpleName();
+    public final static String TAG = OrdersAdapter.class.getSimpleName();
 
     private ArrayList<Order> orders;
 
     private Context context;
 
-    public OrdersListAdapterNew(Context context, ArrayList<Order> orders) {
+    private int selectedPosition = IntConstants.INVALID_POSITION;
+
+    public OrdersAdapter(Context context, ArrayList<Order> orders) {
         this.context = context;
         this.orders = orders;
     }
@@ -53,9 +56,12 @@ public class OrdersListAdapterNew extends BaseAdapter {
             convertView = LayoutInflater.from(context).inflate(R.layout.my_orders_list_item, parent, false);
         }
         Order order = getOrders().get(position);
+        // Set data
         ((TextView) convertView.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(order.getTotal()));
         ((TextView) convertView.findViewById(R.id.order_item_number)).setText(String.valueOf(order.getNumber()));
         ((TextView) convertView.findViewById(R.id.order_item_date)).setText(order.getDate());
+        // Show item as selected
+        convertView.findViewById(R.id.order_item_container).setActivated(position == selectedPosition);
         return convertView;
     }
 
@@ -85,5 +91,13 @@ public class OrdersListAdapterNew extends BaseAdapter {
 
     public void setOrders(ArrayList<Order> orders) {
         this.orders = orders;
+    }
+
+    /**
+     * Set the selected item to show the selector associated.
+     */
+    public void notifySelectedData(int selected) {
+        this.selectedPosition = selected;
+        notifyDataSetChanged();
     }
 }

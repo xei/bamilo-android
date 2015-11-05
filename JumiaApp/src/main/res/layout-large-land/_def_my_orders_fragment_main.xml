@@ -11,8 +11,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:orientation="vertical"
-        android:background="@drawable/drop_shadow_right">
+        android:background="@drawable/drop_shadow_right"
+        android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
             style="@style/HeaderStyle"
@@ -22,9 +22,10 @@
             android:id="@+id/orders_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:divider="@color/black_300"
+            android:divider="@color/black_700"
             android:dividerHeight="1dp"
-            android:scrollbars="none"/>
+            android:listSelector="@drawable/_gen_selector_group_selected"
+            android:scrollbars="none" />
 
     </LinearLayout>
 

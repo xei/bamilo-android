@@ -44,7 +44,7 @@ public class AigGetOrdersListTest extends AigTestCase {
         MyOrder superOrder = (MyOrder) response.getMetadata().getData();
 
         assertNotNull("Orders List is null", superOrder);
-        assertNotNull("Orders List Nr Pages is null", superOrder.getNumPages());
+        assertNotNull("Orders List Nr Pages is null", superOrder.getTotalPages());
 
         for (Order order : superOrder.getOrders()){
             assertNotNull("Order is null", order);

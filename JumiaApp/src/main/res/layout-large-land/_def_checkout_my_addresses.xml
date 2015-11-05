@@ -12,8 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="@dimen/checkout_main_container"
+        android:background="@drawable/drop_shadow_right"
         android:orientation="vertical"
-        app:divider="@drawable/divider_horizontal_black_700"
         app:showDividers="middle">
 
         <!-- CONTENT -->
@@ -22,7 +22,8 @@
             android:id="@+id/checkout_addresses_one_scroll"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,6 +39,11 @@
                 <include layout="@layout/checkout_my_addresses_bottom" />
             </LinearLayout>
         </ScrollView>
+
+        <!-- DIVIDER -->
+        <View
+            android:id="@+id/divider_horizontal"
+            style="@style/divider_horizontal.Black700" />
 
         <!-- NEXT BUTTON -->
 

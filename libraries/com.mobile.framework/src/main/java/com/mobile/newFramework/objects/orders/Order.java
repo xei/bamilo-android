@@ -23,7 +23,6 @@ public class Order implements IJSONSerializable, Parcelable {
 
     private double mTotal;
 
-
     /**
      * Order empty constructor.
      */

@@ -12,6 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="@dimen/checkout_main_container"
+        android:background="@drawable/drop_shadow_right"
         android:orientation="vertical"
         app:divider="@drawable/divider_horizontal_black_700"
         app:showDividers="middle">

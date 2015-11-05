@@ -2,7 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -12,7 +12,7 @@ import android.widget.ListView;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.LogOut;
-import com.mobile.controllers.OrdersListAdapterNew;
+import com.mobile.controllers.OrdersAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.account.GetMyOrdersListHelper;
@@ -49,13 +49,17 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
     private ListView mOrdersListView;
 
-    private OrdersListAdapterNew mOrdersAdapter;
+    private OrdersAdapter mOrdersAdapter;
 
     private int mPageIndex = IntConstants.FIRST_PAGE;
 
     boolean isLoadingMore;
 
     private View mOrderStatusContainer;
+
+    private int mMaxPages;
+
+    private boolean isErrorOnLoadingMore;
 
     /**
      * Empty constructor
@@ -87,6 +91,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         if (savedInstanceState != null) {
             mOrdersList = savedInstanceState.getParcelableArrayList(RestConstants.ORDERS);
             mPageIndex = savedInstanceState.getInt(RestConstants.PAGE);
+            mMaxPages = savedInstanceState.getInt(RestConstants.TOTAL_PAGES);
         }
     }
 
@@ -127,6 +132,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         // Save the state
         outState.putParcelableArrayList(RestConstants.ORDERS, mOrdersList);
         outState.putInt(RestConstants.PAGE, mPageIndex);
+        outState.putInt(RestConstants.TOTAL_PAGES, mMaxPages);
     }
 
     @Override
@@ -191,7 +197,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         mOrdersListView.setOnScrollListener(this);
         mOrdersListView.setOnItemClickListener(this);
         if (mOrdersAdapter == null) {
-            mOrdersAdapter = new OrdersListAdapterNew(this.getBaseActivity().getApplicationContext(), mOrdersList);
+            mOrdersAdapter = new OrdersAdapter(this.getBaseActivity().getApplicationContext(), mOrdersList);
         } else {
             mOrdersAdapter.updateOrders(mOrdersList);
         }
@@ -227,23 +233,23 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+        // ...
     }
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        // Sample calculation to determine if the last item is fully visible.
-        if (totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount) {
-            if (!isLoadingMore) {
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        isLoadingMore = true;
-                        Print.w("ORDER", "LOAD MORE");
-                        triggerGetOrderList(mPageIndex++);
-                    }
-                });
-            }
+        // Force scroll to up until one row to disable error flag
+        boolean isScrollingUp = totalItemCount != 0 && firstVisibleItem + visibleItemCount <= totalItemCount;
+        if (isErrorOnLoadingMore && isScrollingUp) {
+            isErrorOnLoadingMore = false;
+        }
+        // Bottom reached
+        boolean isBottomReached = totalItemCount != 0 && visibleItemCount + 1 == totalItemCount;
+        // Validate
+        if (isBottomReached && !isLoadingMore && mPageIndex < mMaxPages) {
+            Log.i(TAG, "LOADING MORE DATA");
+            isLoadingMore = true;
+            triggerGetOrderList(mPageIndex + 1);
         }
     }
 
@@ -253,7 +259,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Create bundle with info
-        Order selectedOrder = (Order) parent.getAdapter().getItem(position);
+        OrdersAdapter adapter = (OrdersAdapter) parent.getAdapter();
+        Order selectedOrder = adapter.getItem(position);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.ARG_1, String.valueOf(selectedOrder.getNumber()));
         bundle.putString(ConstantsIntentExtra.ARG_2, selectedOrder.getDate());
@@ -261,6 +268,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         if (mOrderStatusContainer == null) {
             getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
+            adapter.notifySelectedData(position);
             FragmentController.addChildFragment(this, mOrderStatusContainer.getId(), OrderStatusFragment.getNestedInstance(bundle), OrderStatusFragment.TAG);
         }
     }
@@ -297,6 +305,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
             case GET_MY_ORDERS_LIST_EVENT:
                 MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
                 ArrayList<Order> orderList = orders.getOrders();
+                // Get max pages
+                mMaxPages = orders.getTotalPages();
                 // Validate
                 if (CollectionUtils.isEmpty(orderList) && mPageIndex == 1) {
                     showErrorFragment(ErrorLayoutFactory.NO_ORDERS_LAYOUT, this);
@@ -330,6 +340,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         switch (eventType) {
             case GET_MY_ORDERS_LIST_EVENT:
                 Print.w("ORDER", "ERROR Visible");
+                isErrorOnLoadingMore = true;
                 //used for when the user session expires on the server side
                 try {
                     if (errorCode == ErrorCode.REQUEST_ERROR) {

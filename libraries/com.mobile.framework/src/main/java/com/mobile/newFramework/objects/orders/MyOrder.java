@@ -21,7 +21,7 @@ public class MyOrder implements IJSONSerializable {
     public static final String TAG = MyOrder.class.getSimpleName();
 
     private int currentPage = 0;
-    private int numPages = 0;
+    private int totalPages = 0;
     private ArrayList<Order> orders;
 
 
@@ -41,7 +41,7 @@ public class MyOrder implements IJSONSerializable {
         try {
             JSONObject paginationObject = jsonObject.optJSONObject(RestConstants.PAGINATION);
             currentPage = paginationObject.optInt(RestConstants.CURRENT_PAGE, 0);
-            numPages = paginationObject.optInt(RestConstants.TOTAL_PAGES, 0);
+            totalPages = paginationObject.optInt(RestConstants.TOTAL_PAGES, 0);
 
             int totalOrders = jsonObject.optInt(RestConstants.JSON_ORDER_TOTAL_NUM_TAG, -1);
             Print.d( "ORDERS TOTAL: " + totalOrders);
@@ -81,8 +81,8 @@ public class MyOrder implements IJSONSerializable {
         return currentPage;
     }
 
-    public int getNumPages() {
-        return numPages;
+    public int getTotalPages() {
+        return totalPages;
     }
 
     public ArrayList<Order> getOrders() {

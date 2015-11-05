@@ -394,7 +394,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
     /*
@@ -406,7 +405,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
         // Tracking
         TrackerDelegator.trackCloseApp();
     }
@@ -442,26 +440,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /*
      * ############## ACTION BAR ##############
      */
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Print.i(TAG, "ON STOP");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onNewIntent(android.content.Intent )
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
-        // Tracking
-        TrackerDelegator.trackCloseApp();
-    }
 
     /*
      * (non-Javadoc)

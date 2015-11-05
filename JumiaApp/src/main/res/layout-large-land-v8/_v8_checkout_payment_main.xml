@@ -22,12 +22,14 @@
         android:layout_weight="@dimen/checkout_main_container"
         android:orientation="vertical"
         app:divider="@drawable/divider_horizontal_black_700"
-        app:showDividers="middle">
+        app:showDividers="middle"
+        android:background="@drawable/drop_shadow_right">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"

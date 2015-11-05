@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin_60px">
+    android:background="@drawable/_gen_selector_group_selected"
+    android:padding="20dp">
 
     <!-- price -->
 
@@ -18,7 +20,6 @@
         android:layout_marginRight="8dp"
         android:maxLines="2"
         android:singleLine="false"
-        android:text="NGN 12542"
         android:textColor="@color/black" />
 
     <!-- number and date -->
@@ -36,7 +37,6 @@
             style="@style/TextBody_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1231234234"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
@@ -45,7 +45,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="1231234234"
             android:textColor="@color/black_700" />
 
     </LinearLayout>
