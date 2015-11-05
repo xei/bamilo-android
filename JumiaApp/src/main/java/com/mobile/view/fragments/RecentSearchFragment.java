@@ -153,10 +153,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
      * @author Andre Lopes
      */
     protected void showEmpty() {
-        showErrorFragment(ErrorLayoutFactory.NO_RECENT_SEARCHES_LAYOUT, this,
-                getString(R.string.recentsearch_no_searches),
-                getString(R.string.server_error),
-                R.drawable.img_norecentsearch);
+        showErrorFragment(ErrorLayoutFactory.NO_RECENT_SEARCHES_LAYOUT, this);
     }
 
     /**

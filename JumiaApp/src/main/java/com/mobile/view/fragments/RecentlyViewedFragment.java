@@ -207,10 +207,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         getBaseActivity().warningFactory.hideWarning();
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(null);
-        showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this,
-                getString(R.string.no_recently_viewed_items),
-                getString(R.string.no_recently_viewed_items_subtitle),
-                R.drawable.ic_recentlyviewed_empty);
+        showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this);
     }
 
     /**
