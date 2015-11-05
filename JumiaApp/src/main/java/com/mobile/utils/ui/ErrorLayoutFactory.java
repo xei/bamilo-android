@@ -48,7 +48,6 @@ public class ErrorLayoutFactory {
     /**
      * Create a new instance of ErrorLayoutFactory.
      *
-     * @param errorLayout
      * @throws java.lang.IllegalStateException If layout is null.
      */
     public ErrorLayoutFactory(ViewGroup errorLayout){
@@ -148,7 +147,7 @@ public class ErrorLayoutFactory {
 
     private void buildNoOrdersLayout(){
         new Builder()
-                .setImage(R.drawable.img_nofavourites)
+                .setImage(R.drawable.ic_orders_empty)
                 .setPrincipalMessage(R.string.no_orders)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
@@ -161,7 +160,6 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.img_norecentsearch)
                 .setPrincipalMessage(R.string.recentsearch_no_searches)
-//                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
                 .setRotationVisible(false)
@@ -173,7 +171,6 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.img_norecentview)
                 .setPrincipalMessage(R.string.recentlyview_no_searches)
-//                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
                 .setRotationVisible(false)
@@ -184,7 +181,6 @@ public class ErrorLayoutFactory {
     private void buildContinueShoppingLayout() {
         new Builder()
                 .setImage(R.drawable.img_warning)
-//                    .setPrincipalMessage(R.string.recentlyview_no_searches)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)
@@ -197,7 +193,6 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.img_filternoresults)
                 .setPrincipalMessage(R.string.catalog_no_results)
-//                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
@@ -209,7 +204,6 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.img_filternoresults)
                 .setPrincipalMessage(R.string.server_error)
-//                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
@@ -228,11 +222,11 @@ public class ErrorLayoutFactory {
     /**
      * Class used for building the layout.
      */
+    @SuppressWarnings("unused")
     private class Builder{
 
-        Builder(){
-//            setImage(0);
-
+        Builder() {
+            // ...
         }
 
         Builder setRotationVisible(boolean isToShow){

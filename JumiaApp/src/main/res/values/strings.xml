@@ -461,5 +461,5 @@
     <string name="reorder_label">Reorder</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b>\n%2$s</string>
     <string name="order_pending">Order Pending</string>
-    <string name="no_orders">You have no orders at the moment</string>
+    <string name="no_orders">You don\'t have yet any Orders.</string>
 </resources>
