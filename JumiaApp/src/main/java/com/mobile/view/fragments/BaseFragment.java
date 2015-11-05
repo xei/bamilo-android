@@ -603,8 +603,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
 
 
-/**
- * Show error with jumia contact info if ssl errr
+/**or
  * */
     protected void showSSLError() {
         Print.i(TAG, "ON SHOW SSL ERROR LAYOUT");
@@ -616,11 +615,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             ((ViewStub) mErrorView).inflate();
 
             mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup) mErrorView);
-            mErrorLayoutFactory.showSSLErrorLayout(CountryPersistentConfigs.getCountryEmail(getBaseActivity().getApplicationContext()), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity().getApplicationContext()));
+            mErrorLayoutFactory.buildSSLErrorLayout(ErrorLayoutFactory.SSL_ERROR, CountryPersistentConfigs.getCountryEmail(getBaseActivity().getApplicationContext()), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity().getApplicationContext()));
 
         } else {
 
-            mErrorLayoutFactory.showSSLErrorLayout(CountryPersistentConfigs.getCountryEmail(getBaseActivity().getApplicationContext()), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity().getApplicationContext()));
+            mErrorLayoutFactory.buildSSLErrorLayout(ErrorLayoutFactory.SSL_ERROR,CountryPersistentConfigs.getCountryEmail(getBaseActivity().getApplicationContext()), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity().getApplicationContext()));
         }
 
 

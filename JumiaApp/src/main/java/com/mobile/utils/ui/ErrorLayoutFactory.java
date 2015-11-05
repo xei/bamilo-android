@@ -127,11 +127,11 @@ public class ErrorLayoutFactory {
 
 
     /**
-     * Show error layout with jumia contact info in case of ssl errors
+     * Show error layout with contact info in case of ssl errors
      * @param email - country contact email
      * @param phone - country contact phone
      * */
-    public void showSSLErrorLayout(String email, String phone){
+    public void buildSSLErrorLayout(int error, String email, String phone){
 
         if(this.mErrorLayout != null){
 
@@ -147,8 +147,7 @@ public class ErrorLayoutFactory {
 
         }
 
-        buildSSLErrorLayout();
-        show();
+        showGenericError(error,R.drawable.ic_warning2,R.string.an_error_occurred,R.string.customer_service_info);
 
     }
 
