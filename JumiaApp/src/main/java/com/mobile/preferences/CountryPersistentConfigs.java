@@ -121,6 +121,17 @@ public class CountryPersistentConfigs {
     }
 
     /**
+     * Function used to get the shop country email.
+     * @param context The application context
+     */
+    public static String getCountryEmail(Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String mEmail = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null);
+        Print.i(TAG, "SHOP COUNTRY EMAIL: " + mEmail);
+        return mEmail;
+    }
+
+    /**
      * Get the value for Facebook.
      * @param context The application context
      * @return true or false
