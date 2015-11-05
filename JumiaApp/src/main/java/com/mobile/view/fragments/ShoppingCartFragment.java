@@ -781,7 +781,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
         prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
-        prodItem.quantityBtn = (Button) view.findViewById(R.id.changequantity_button);
+        prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
 
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
 
@@ -1063,7 +1063,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         public TextView itemName;
         public TextView priceView;
-        public Button quantityBtn;
+        public TextView quantityBtn;
         public ImageView productView;
         public View pBar;
 //        public TextView discountPercentage;

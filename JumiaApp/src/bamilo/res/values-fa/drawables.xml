@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="drawable" name="img_instructions_right_tap">@drawable/img_instructions_right_tap_rtl</item>
-    <item type="drawable" name="img_instructions_tap">@drawable/img_instructions_tap_rtl</item>
-    <item type="drawable" name="img_emptycart">@drawable/img_emptycart_rtl</item>
-    <item type="drawable" name="img_stepinactive">@drawable/img_stepinactive_rtl</item>
-    <item type="drawable" name="img_stepactive">@drawable/img_stepactive_rtl</item>
-    <item type="drawable" name="arrow_side">@drawable/arrow_side_rtl</item>
-    <item type="drawable" name="black_arrow_right">@drawable/black_arrow_right_rtl</item>
-    <item type="drawable" name="ic_menu_cart_pressed">@drawable/ic_menu_cart_pressed_rtl</item>
-    <item type="drawable" name="ic_menu_cart">@drawable/ic_menu_cart_rtl</item>
-    <item type="drawable" name="spinner_default">@drawable/spinner_default_rtl</item>
-    <item type="drawable" name="spinner_activated">@drawable/spinner_activated_rtl</item>
-    <item type="drawable" name="img_newarrival">@drawable/img_newarrival_ar</item>
-    <item type="drawable" name="ic_overseas_corner">@drawable/ic_overseas_corner_rtl</item>
-    <item type="drawable" name="ic_check_success_message">@drawable/ic_check_success_message_rtl</item>
-    <item type="drawable" name="btn_edit_active">@drawable/btn_edit_active_rtl</item>
-    <item type="drawable" name="btn_edit">@drawable/btn_edit_rtl</item>
+    <item name="img_instructions_right_tap" type="drawable">@drawable/img_instructions_right_tap_rtl</item>
+    <item name="img_instructions_tap" type="drawable">@drawable/img_instructions_tap_rtl</item>
+    <item name="img_emptycart" type="drawable">@drawable/img_emptycart_rtl</item>
+    <item name="img_stepinactive" type="drawable">@drawable/img_stepinactive_rtl</item>
+    <item name="img_stepactive" type="drawable">@drawable/img_stepactive_rtl</item>
+    <item name="arrow_side" type="drawable">@drawable/arrow_side_rtl</item>
+    <item name="black_arrow_right" type="drawable">@drawable/black_arrow_right_rtl</item>
+    <item name="ic_menu_cart_pressed" type="drawable">@drawable/ic_menu_cart_pressed_rtl</item>
+    <item name="ic_menu_cart" type="drawable">@drawable/ic_menu_cart_rtl</item>
+    <item name="spinner_default" type="drawable">@drawable/spinner_default_rtl</item>
+    <item name="spinner_activated" type="drawable">@drawable/spinner_activated_rtl</item>
+    <item name="img_newarrival" type="drawable">@drawable/img_newarrival_ar</item>
+    <item name="ic_overseas_corner" type="drawable">@drawable/ic_overseas_corner_rtl</item>
+    <item name="ic_check_success_message" type="drawable">@drawable/ic_check_success_message_rtl</item>
+    <item name="btn_edit_active" type="drawable">@drawable/btn_edit_active_rtl</item>
+    <item name="btn_edit" type="drawable">@drawable/btn_edit_rtl</item>
 
 </resources>

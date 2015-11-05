@@ -211,11 +211,11 @@ public class WarningFactory {
      */
     private class Builder {
 
+        private int animationLength = _5_SECONDS;
+
         Builder(){
             mWarningBar.clearAnimation();
         }
-
-        private int animationLength = _5_SECONDS;
 
         Builder setText(int message){
             ((TextView)mWarningBar.findViewById(R.id.warning_text)).setText(message);

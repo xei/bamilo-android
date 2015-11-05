@@ -31,16 +31,29 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dimen_60px"
             android:text="Price"
-            android:textColor="@color/black_800" />
+            android:textColor="@color/black_800"
+            android:textSize="@dimen/text_s"/>
 
-        <com.mobile.components.customfontviews.Button
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/changequantity_label"
+            style="@style/TextCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/shoppingcart_quantity"
+            android:textColor="@color/black_700"
+            android:textSize="@dimen/text_s"
+            android:visibility="visible"/>
+
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/changequantity_button"
             style="@style/FormButtonSpinner"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/item_regprice"
-            android:gravity="bottom|center_horizontal|left"
+            android:layout_toLeftOf="@id/changequantity_label"
             android:text="@string/shoppingcart_quantity"
             android:textColor="@color/black"
             android:textSize="@dimen/text_s"

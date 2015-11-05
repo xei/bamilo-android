@@ -131,11 +131,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public ActionBarDrawerToggle mDrawerToggle;
     public MenuItem mSearchMenuItem;
     public WarningFactory warningFactory;
+    public ConfirmationCartMessageView mConfirmationCartMessageView;
     protected DialogFragment dialog;
     protected SearchView mSearchView;
     protected SearchAutoComplete mSearchAutoComplete;
     protected boolean isSearchComponentOpened = false;
-
     //private final int contentLayoutId;
     // REMOVED FINAL ATTRIBUTE
     private NavigationAction action;
@@ -287,8 +287,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     };
     private TabLayout mCheckoutTabLayout;
     /**
-     * Handles clicks on Checkout Header
-     * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
+     * Handles clicks on Checkout Header Verifies if click is available for this header position, if so, will select position and then
+     * mCheckoutOnTabSelectedListener will handle next steps.
      */
     final android.view.View.OnClickListener mCheckoutOnClickListener = new android.view.View.OnClickListener() {
         @Override
@@ -297,8 +297,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
     };
     private AppBarLayout mAppBarLayout;
-
-    public ConfirmationCartMessageView mConfirmationCartMessageView;
 
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
@@ -851,9 +849,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         } else {
             Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
         }
-    }    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-        // ...
     }
 
     /**
@@ -869,15 +864,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             Print.i(TAG, "NO SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
-    }    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
         // ...
     }
-    
-    
-    /*
-     * ############### SEARCH COMPONENT #################
-     */
 
     /**
      * Set the share menu item
@@ -927,9 +919,14 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        TabLayoutUtils.tabSelected(this, tab, action);
+    public void onTabReselected(TabLayout.Tab tab) {
+        // ...
     }
+    
+    
+    /*
+     * ############### SEARCH COMPONENT #################
+     */
 
     /**
      * Method used to set the search bar in the Action bar.
@@ -1105,6 +1102,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        TabLayoutUtils.tabSelected(this, tab, action);
+    }
+
     /**
      * Execute search
      * @author sergiopereira
@@ -1122,10 +1124,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
         onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-
-    /*
-     * ############### SEARCH TRIGGER #################
-     */
 
     /**
      * set all menu items visibility to <code>visible</code>
@@ -1167,10 +1165,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     /**
-     * ############### SEARCH RESPONSES #################
-     */
-
-    /**
      * Hide only the search bar, used by ChangeCountryFragment
      * @author sergiopereira
      */
@@ -1180,6 +1174,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         updateActionForCountry(NavigationAction.Country);
         invalidateOptionsMenu();
     }
+
+    /*
+     * ############### SEARCH TRIGGER #################
+     */
 
     /**
      * Get suggestions and recent queries
@@ -1199,7 +1197,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     @Override
                     public void onRequestComplete(BaseResponse baseResponse) {
                         processSuccessSearchEvent(baseResponse);
-                    }                    @Override
+                    }
+
+                    @Override
                     public void onRequestError(BaseResponse baseResponse) {
                         processErrorSearchEvent(baseResponse);
                     }
@@ -1207,23 +1207,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
                 });
     }
-
-    /**
-     * #################### SHARE #####################
-     */
-
-    /**
-     * Called to update the share intent
-     *
-     * @param shareIntent
-     *            the intent to be stored
-     */
-    /*-public void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareHistoryFileName(null);
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
-    }*/
 
     /**
      * Process the search error event
@@ -1234,7 +1217,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processErrorSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
 
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct) baseResponse.getMetadata().getData();
 
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
@@ -1273,6 +1256,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     /**
+     * ############### SEARCH RESPONSES #################
+     */
+
+    /**
      * Process success search event
      *
      * @param baseResponse
@@ -1281,7 +1268,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processSuccessSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct) baseResponse.getMetadata().getData();
 
 //        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
         // Get query
@@ -1330,6 +1317,23 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         updateCartInfoInActionBar();
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
     }
+
+    /**
+     * #################### SHARE #####################
+     */
+
+    /**
+     * Called to update the share intent
+     *
+     * @param shareIntent
+     *            the intent to be stored
+     */
+    /*-public void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareHistoryFileName(null);
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }*/
 
     /**
      * ################# MY PROFILE #################
@@ -1418,15 +1422,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSupportActionBar.setTitle(title);
     }
 
-//    private void setAppContentLayout() {
-//        if (contentLayoutId == 0) {
-//            return;
-//        }
-//        ViewStub stub = (ViewStub) findViewById(R.id.stub_app_content);
-//        stub.setLayoutResource(contentLayoutId);
-//        contentContainer = stub.inflate();
-//    }
-
     /**
      * Hide title on actionbar
      */
@@ -1464,14 +1459,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
     }
 
-//    public void showKeyboard() {
-//        // Log.d( TAG, "showKeyboard" );
-//        Print.i(TAG, "code1here showKeyboard");
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
-//        // use the above as the method below does not always work
-//        // imm.showSoftInput(getSlidingMenu().getCurrentFocus(),
-//        // InputMethodManager.SHOW_IMPLICIT);
+//    private void setAppContentLayout() {
+//        if (contentLayoutId == 0) {
+//            return;
+//        }
+//        ViewStub stub = (ViewStub) findViewById(R.id.stub_app_content);
+//        stub.setLayoutResource(contentLayoutId);
+//        contentContainer = stub.inflate();
 //    }
 
     public void hideKeyboard() {
@@ -1501,13 +1495,19 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     /**
-     * ############### FRAGMENTS #################
-     */
-
-    /**
      * This method should be implemented by fragment activity to manage the work flow for fragments. Each fragment should call this method.
      */
     public abstract void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack);
+
+//    public void showKeyboard() {
+//        // Log.d( TAG, "showKeyboard" );
+//        Print.i(TAG, "code1here showKeyboard");
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
+//        // use the above as the method below does not always work
+//        // imm.showSoftInput(getSlidingMenu().getCurrentFocus(),
+//        // InputMethodManager.SHOW_IMPLICIT);
+//    }
 
     /**
      * Method used to switch fragment on UI with/without back stack support
@@ -1524,6 +1524,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void fragmentManagerBackPressed() {
         fragmentController.fragmentBackPressed(this);
     }
+
+    /**
+     * ############### FRAGMENTS #################
+     */
 
     /**
      * Pop back stack until tag, FC and FM are affected.
@@ -1585,10 +1589,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // Finish MainFragmentActivity
         finish();
     }
-
-    /*
-     * ########## CHECKOUT HEADER ##########
-     */
 
     /**
      * Set the current checkout step otherwise return false
@@ -1676,6 +1676,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 //        findViewById(R.id.checkout_header).setVisibility(visibility);
     }
 
+    /*
+     * ########## CHECKOUT HEADER ##########
+     */
+
     /**
      * Set the selected checkout step
      */
@@ -1713,7 +1717,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // CHECKOUT_BILLING - step == 1
         if (step == 1) {
             // Validate back stack
-            if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) && fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
+            if (!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) && fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())) {
                 removeAllNativeCheckoutFromBackStack();
 
                 Bundle bundle = new Bundle();
@@ -1724,7 +1728,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
         }
         // CHECKOUT_SHIPPING - step == 2
-        else if (step == 2 ) {
+        else if (step == 2) {
             // Validate back stack
             popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
         }
@@ -1736,7 +1740,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Note: This method must be updated in case of adding more screens to native checkout.
      * @author ricardosoares
      */
-    public void removeAllNativeCheckoutFromBackStack(){
+    public void removeAllNativeCheckoutFromBackStack() {
         // Remove all native checkout tags
         FragmentController.getInstance().removeAllEntriesWithTag(CheckoutStepManager.getAllNativeCheckout());
     }
@@ -1783,10 +1787,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         });
     }
 
-    /*
-     * ##### REQUESTS TO RECOVER #####
-     */
-
     /**
      * Auto login
      */
@@ -1809,7 +1809,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
-                Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
+                Customer customer = ((CheckoutStepLogin) ((NextStepStruct) baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin
                 ContentValues credentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
                 boolean isFBLogin = credentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
@@ -1834,17 +1834,18 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
     }
 
-    public boolean communicateBetweenFragments(String tag, Bundle bundle){
-        Fragment fragment =  getSupportFragmentManager().findFragmentByTag(tag);
-        if(fragment != null){
-            ((BaseFragment)fragment).notifyFragment(bundle);
+    public boolean communicateBetweenFragments(String tag, Bundle bundle) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment != null) {
+            ((BaseFragment) fragment).notifyFragment(bundle);
             return true;
         }
         return false;
     }
 
-
-
+    /*
+     * ##### REQUESTS TO RECOVER #####
+     */
 
 
 //    /**

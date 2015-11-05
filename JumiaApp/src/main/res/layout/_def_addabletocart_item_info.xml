@@ -52,10 +52,10 @@
         android:id="@+id/price_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="left|center_vertical|start"
         android:layout_alignLeft="@id/item_name"
         android:layout_alignStart="@id/item_name"
-        android:layout_below="@id/item_name" >
+        android:layout_below="@id/item_name"
+        android:gravity="left|center_vertical|start">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_discount"
@@ -72,8 +72,8 @@
             android:id="@+id/item_regprice"
             style="@style/text_price"
             android:layout_alignTop="@id/item_discount"
-            android:layout_toRightOf="@id/item_discount"
             android:layout_toEndOf="@id/item_discount"
+            android:layout_toRightOf="@id/item_discount"
             android:text="Price"
             android:textColor="@color/grey_light"/>
     </RelativeLayout>
@@ -82,9 +82,9 @@
         android:id="@+id/item_percentage"
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
+        android:layout_below="@id/price_container"
         android:layout_gravity="left|start"
-        android:visibility="gone"
-        android:layout_below="@id/price_container"/>
+        android:visibility="gone"/>
 
     <!-- WARNINGS -->
     <RelativeLayout

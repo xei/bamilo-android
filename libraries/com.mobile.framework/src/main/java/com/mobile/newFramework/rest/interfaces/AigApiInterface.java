@@ -56,6 +56,394 @@ import retrofit.http.QueryMap;
 public interface AigApiInterface {
 
     Map<String, Method> methods = new HashMap<>();
+    String getAvailableCountries = "getAvailableCountries";
+
+    /*
+     * ## CONFIGS
+     */
+    String getCountryConfigurations = "getCountryConfigurations";
+    String getApiInformation = "getApiInformation";
+    String getImageResolutions = "getImageResolutions";
+    String getTermsAndConditions = "getTermsAndConditions";
+    String getLoginForm = "getLoginForm";
+    String getFormsIndex = "getFormsIndex";
+    String getRatingForm = "getRatingForm";
+    String getReviewForm = "getReviewForm";
+    String getSellerReviewForm = "getSellerReviewForm";
+    String getRegisterForm = "getRegisterForm";
+
+    /*
+     * ## FORMS
+     */
+    String getSignUpForm = "getSignUpForm";
+    String getForgotPasswordForm = "getForgotPasswordForm";
+    String getCreateAddressForm = "getCreateAddressForm";
+    String getEditAddressForm = "getEditAddressForm";
+    String getNewsletterForm = "getNewsletterForm";
+    String getShippingMethodsForm = "getShippingMethodsForm";
+    String getPaymentMethodsForm = "getPaymentMethodsForm";
+    String getUserDataForm = "getUserDataForm";
+    String getCatalogFiltered = "getCatalogFiltered";
+    String searchSku = "searchSku";
+    String getCategoriesPaginated = "getCategoriesPaginated";
+    String getHome = "getHome";
+    String getShopInShop = "getShopInShop";
+    String getCampaign = "getCampaign";
+    String getProductDetail = "getProductDetail";
+    String getProductBundle = "getProductBundle";
+    String getProductOffers = "getProductOffers";
+    String validateProducts = "validateProducts";
+    String getSearchSuggestions = "getSearchSuggestions";
+    String getShoppingCart = "getShoppingCart";
+    String addItemShoppingCart = "addItemShoppingCart";
+    String addBundleShoppingCart = "addBundleShoppingCart";
+    String addMultipleItemsShoppingCart = "addMultipleItemsShoppingCart";
+    String updateQuantityShoppingCart = "updateQuantityShoppingCart";
+    String removeAllShoppingCart = "removeAllShoppingCart";
+    String removeItemShoppingCart = "removeItemShoppingCart";
+    String addVoucher = "addVoucher";
+    String removeVoucher = "removeVoucher";
+
+    /*
+     * ## CATALOG
+     */
+    String setUserData = "setUserData";
+    String logoutCustomer = "logoutCustomer";
+    String loginCustomer = "loginCustomer";
+    String loginFacebookCustomer = "loginFacebookCustomer";
+
+    /*
+     * ## CATEGORIES
+     */
+    String signUpCustomer = "signUpCustomer";
+    String registerCustomer = "registerCustomer";
+
+    /*
+     * ## HOME
+     */
+    String forgotPassword = "forgotPassword";
+    String changePassword = "changePassword";
+
+    /*
+     * ## SHOP IN SHOP
+     */
+    String subscribeNewsletter = "subscribeNewsletter";
+    String getCustomerDetails = "getCustomerDetails";
+
+    /*
+     * ## CAMPAIGN
+     */
+    String getAddressesList = "getAddressesList";
+    String createAddress = "createAddress";
+
+    /*
+     * ## PRODUCT
+     */
+    String editAddress = "editAddress";
+    String setDefaultShippingAddress = "setDefaultShippingAddress";
+    String setDefaultBillingAddress = "setDefaultBillingAddress";
+    String getBillingAddressForm = "getBillingAddressForm";
+    String setBillingAddress = "setBillingAddress";
+    String getRegions = "getRegions";
+    String getCities = "getCities";
+    String getPostalCodes = "getPostalCodes";
+
+    /*
+     * ## SEARCH SUGGESTIONS
+     */
+    String getProductReviews = "getProductReviews";
+    String setRatingReview = "setRatingReview";
+
+    /*
+     * ## CART
+     */
+    String setSellerReview = "setSellerReview";
+    String getSellerReviews = "getSellerReviews";
+    String trackOrder = "trackOrder";
+    String getOrdersList = "getOrdersList";
+    String setShippingMethod = "setShippingMethod";
+    String setPaymentMethod = "setPaymentMethod";
+    String checkoutFinish = "checkoutFinish";
+    String getChangePasswordForm = "getChangePasswordForm";
+    String getWishList = "getWishList";
+    String addToWishList = "addToWishList";
+    String removeFromWishList = "removeFromWishList";
+    String emailCheck = "emailCheck";
+    String getPhonePrefixes = "getPhonePrefixes";
+    String getFaqTerms = "getFaqTerms";
+
+    /*
+     * ## VOUCHER
+     */
+
+    @GET("/")
+    void getAvailableCountries(Callback<BaseResponse<AvailableCountries>> callback);
+
+    @GET("/")
+    void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
+
+    @GET("/")
+    void getApiInformation(Callback<BaseResponse<ApiInformation>> callback);
+
+    @GET("/")
+    void getImageResolutions(Callback<BaseResponse> callback);
+
+    /*
+     * ## SESSION
+     */
+
+    @GET("/")
+    void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticTermsConditions>> callback);
+
+    @GET("/")
+    void getLoginForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getFormsIndex(Callback<BaseResponse<FormsIndex>> callback);
+
+    @GET("/")
+    void getRatingForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getReviewForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getSellerReviewForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getRegisterForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getSignUpForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getForgotPasswordForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getCreateAddressForm(Callback<BaseResponse<AddressForms>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void getEditAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getNewsletterForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getShippingMethodsForm(Callback<BaseResponse<CheckoutFormShipping>> callback);
+
+    @GET("/")
+    void getPaymentMethodsForm(Callback<BaseResponse<CheckoutFormPayment>> callback);
+
+    @GET("/")
+    void getUserDataForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
+
+    @GET("/")
+    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
+
+    @GET("/")
+    void getCategoriesPaginated(Callback<BaseResponse<Categories>> callback);
+
+    @GET("/")
+    void getHome(Callback<BaseResponse<HomePageObject>> callback);
+
+    @GET("/")
+    void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticPage>> callback);
+
+    @GET("/")
+    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
+
+    @GET("/")
+    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
+
+    @GET("/")
+    void getProductBundle(Callback<BaseResponse<BundleList>> callback);
+
+    @GET("/")
+    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<OfferList>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<ValidProductList>> callback);
+
+    @GET("/")
+    void getSearchSuggestions(@QueryMap Map<String, String> data, Callback<BaseResponse<Suggestions>> callback);
+
+    @GET("/")
+    void getShoppingCart(Callback<BaseResponse<PurchaseEntity>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
+    @GET("/")
+    void removeVoucher(Callback<BaseResponse<PurchaseEntity>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setUserData(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @GET("/")
+    void logoutCustomer(Callback<BaseResponse<Void>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void loginFacebookCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void registerCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void forgotPassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void changePassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void subscribeNewsletter(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @GET("/")
+    void getCustomerDetails(Callback<BaseResponse<Customer>> callback);
+
+    @GET("/")
+    void getAddressesList(Callback<BaseResponse<Addresses>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepObject>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void editAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @GET("/")
+    void getBillingAddressForm(Callback<BaseResponse<CheckoutFormBilling>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SetBillingAddress>> callback);
+
+    /*
+    * ## CHECKOUT
+    */
+
+    @GET("/")
+    void getRegions(Callback<BaseResponse<AddressRegions>> callback);
+
+    @GET("/")
+    void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressCities>> callback);
+
+    @GET("/")
+    void getPostalCodes(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressPostalCodes>> callback);
+
+    /*
+     * ## RATINGS/REVIEWS
+     */
+    @GET("/")
+    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setRatingReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @GET("/")
+    void getSellerReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
+
+    /*
+    * ## ORDERS
+    */
+    @GET("/")
+    void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderTracker>> callback);
+
+    @GET("/")
+    void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<MyOrder>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setShippingMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetShippingMethod>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void setPaymentMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetPaymentMethod>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void checkoutFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutFinish>> callback);
+
+    @GET("/")
+    void getChangePasswordForm(Callback<BaseResponse<Form>> callback);
+
+    @GET("/")
+    void getWishList(@QueryMap Map<String, String> data, Callback<BaseResponse<WishList>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void addToWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    @FormUrlEncoded
+    @POST("/")
+    void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
+
+    @GET("/")
+    void getPhonePrefixes(Callback<BaseResponse<PhonePrefixes>> callback);
+
+    @GET("/")
+    void getFaqTerms(Callback<BaseResponse<MobileAbout>> callback);
 
     class Service {
         public static void init() {
@@ -70,460 +458,4 @@ public interface AigApiInterface {
             return methods.get(name);
         }
     }
-
-    /*
-     * ## CONFIGS
-     */
-
-    @GET("/")
-    void getAvailableCountries(Callback<BaseResponse<AvailableCountries>> callback);
-
-    String getAvailableCountries = "getAvailableCountries";
-
-    @GET("/")
-    void getCountryConfigurations(Callback<BaseResponse<CountryConfigs>> callback);
-
-    String getCountryConfigurations = "getCountryConfigurations";
-
-    @GET("/")
-    void getApiInformation(Callback<BaseResponse<ApiInformation>> callback);
-
-    String getApiInformation = "getApiInformation";
-
-    @GET("/")
-    void getImageResolutions(Callback<BaseResponse> callback);
-
-    String getImageResolutions = "getImageResolutions";
-
-    @GET("/")
-    void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticTermsConditions>> callback);
-
-    String getTermsAndConditions = "getTermsAndConditions";
-
-    /*
-     * ## FORMS
-     */
-
-    @GET("/")
-    void getLoginForm(Callback<BaseResponse<Form>> callback);
-
-    String getLoginForm = "getLoginForm";
-
-    @GET("/")
-    void getFormsIndex(Callback<BaseResponse<FormsIndex>> callback);
-
-    String getFormsIndex = "getFormsIndex";
-
-    @GET("/")
-    void getRatingForm(Callback<BaseResponse<Form>> callback);
-
-    String getRatingForm = "getRatingForm";
-
-    @GET("/")
-    void getReviewForm(Callback<BaseResponse<Form>> callback);
-
-    String getReviewForm = "getReviewForm";
-
-    @GET("/")
-    void getSellerReviewForm(Callback<BaseResponse<Form>> callback);
-
-    String getSellerReviewForm = "getSellerReviewForm";
-
-    @GET("/")
-    void getRegisterForm(Callback<BaseResponse<Form>> callback);
-
-    String getRegisterForm = "getRegisterForm";
-
-    @GET("/")
-    void getSignUpForm(Callback<BaseResponse<Form>> callback);
-
-    String getSignUpForm = "getSignUpForm";
-
-    @GET("/")
-    void getForgotPasswordForm(Callback<BaseResponse<Form>> callback);
-
-    String getForgotPasswordForm = "getForgotPasswordForm";
-
-    @GET("/")
-    void getCreateAddressForm(Callback<BaseResponse<AddressForms>> callback);
-
-    String getCreateAddressForm = "getCreateAddressForm";
-
-    @FormUrlEncoded
-    @POST("/")
-    void getEditAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
-
-    String getEditAddressForm = "getEditAddressForm";
-
-    @GET("/")
-    void getNewsletterForm(Callback<BaseResponse<Form>> callback);
-
-    String getNewsletterForm = "getNewsletterForm";
-
-    @GET("/")
-    void getShippingMethodsForm(Callback<BaseResponse<CheckoutFormShipping>> callback);
-
-    String getShippingMethodsForm = "getShippingMethodsForm";
-
-    @GET("/")
-    void getPaymentMethodsForm(Callback<BaseResponse<CheckoutFormPayment>> callback);
-
-    String getPaymentMethodsForm = "getPaymentMethodsForm";
-
-    @GET("/")
-    void getUserDataForm(Callback<BaseResponse<Form>> callback);
-
-    String getUserDataForm = "getUserDataForm";
-
-    /*
-     * ## CATALOG
-     */
-
-    @GET("/")
-    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
-
-    String getCatalogFiltered = "getCatalogFiltered";
-
-    @GET("/")
-    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
-
-    String searchSku = "searchSku";
-
-    /*
-     * ## CATEGORIES
-     */
-
-    @GET("/")
-    void getCategoriesPaginated(Callback<BaseResponse<Categories>> callback);
-
-    String getCategoriesPaginated = "getCategoriesPaginated";
-
-    /*
-     * ## HOME
-     */
-
-    @GET("/")
-    void getHome(Callback<BaseResponse<HomePageObject>> callback);
-
-    String getHome = "getHome";
-
-    /*
-     * ## SHOP IN SHOP
-     */
-
-    @GET("/")
-    void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticPage>> callback);
-
-    String getShopInShop = "getShopInShop";
-
-    /*
-     * ## CAMPAIGN
-     */
-
-    @GET("/")
-    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
-
-    String getCampaign = "getCampaign";
-
-    /*
-     * ## PRODUCT
-     */
-
-    @GET("/")
-    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
-
-    String getProductDetail = "getProductDetail";
-
-    @GET("/")
-    void getProductBundle(Callback<BaseResponse<BundleList>> callback);
-
-    String getProductBundle = "getProductBundle";
-
-    @GET("/")
-    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<OfferList>> callback);
-
-    String getProductOffers = "getProductOffers";
-
-    @FormUrlEncoded
-    @POST("/")
-    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<ValidProductList>> callback);
-
-    String validateProducts = "validateProducts";
-
-    /*
-     * ## SEARCH SUGGESTIONS
-     */
-
-    @GET("/")
-    void getSearchSuggestions(@QueryMap Map<String, String> data, Callback<BaseResponse<Suggestions>> callback);
-
-    String getSearchSuggestions = "getSearchSuggestions";
-
-    /*
-     * ## CART
-     */
-
-    @GET("/")
-    void getShoppingCart(Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String getShoppingCart = "getShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
-    void addItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String addItemShoppingCart = "addItemShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
-    void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String addBundleShoppingCart = "addBundleShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
-    void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String addMultipleItemsShoppingCart = "addMultipleItemsShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
-    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String updateQuantityShoppingCart = "updateQuantityShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
-    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String removeAllShoppingCart = "removeAllShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
-    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String removeItemShoppingCart = "removeItemShoppingCart";
-
-    /*
-     * ## VOUCHER
-     */
-
-    @FormUrlEncoded
-    @POST("/")
-    void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String addVoucher = "addVoucher";
-
-    @GET("/")
-    void removeVoucher(Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String removeVoucher = "removeVoucher";
-
-    /*
-     * ## SESSION
-     */
-
-    @FormUrlEncoded
-    @POST("/")
-    void setUserData(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
-
-    String setUserData = "setUserData";
-
-    @GET("/")
-    void logoutCustomer(Callback<BaseResponse<Void>> callback);
-
-    String logoutCustomer = "logoutCustomer";
-
-    @FormUrlEncoded
-    @POST("/")
-    void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
-    String loginCustomer = "loginCustomer";
-
-    @FormUrlEncoded
-    @POST("/")
-    void loginFacebookCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
-
-    String loginFacebookCustomer = "loginFacebookCustomer";
-
-    @FormUrlEncoded
-    @POST("/")
-    void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
-
-    String signUpCustomer = "signUpCustomer";
-
-
-    @FormUrlEncoded
-    @POST("/")
-    void registerCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
-
-    String registerCustomer = "registerCustomer";
-
-    @FormUrlEncoded
-    @POST("/")
-    void forgotPassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
-
-    String forgotPassword = "forgotPassword";
-
-    @FormUrlEncoded
-    @POST("/")
-    void changePassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
-
-    String changePassword = "changePassword";
-
-    @FormUrlEncoded
-    @POST("/")
-    void subscribeNewsletter(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
-    String subscribeNewsletter = "subscribeNewsletter";
-
-    @GET("/")
-    void getCustomerDetails(Callback<BaseResponse<Customer>> callback);
-
-    String getCustomerDetails = "getCustomerDetails";
-
-    @GET("/")
-    void getAddressesList(Callback<BaseResponse<Addresses>> callback);
-
-    String getAddressesList = "getAddressesList";
-
-    @FormUrlEncoded
-    @POST("/")
-    void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepObject>> callback);
-
-    String createAddress = "createAddress";
-
-    @FormUrlEncoded
-    @POST("/")
-    void editAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
-    String editAddress = "editAddress";
-
-    @FormUrlEncoded
-    @POST("/")
-    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
-    String setDefaultShippingAddress = "setDefaultShippingAddress";
-
-    @FormUrlEncoded
-    @POST("/")
-    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
-    String setDefaultBillingAddress = "setDefaultBillingAddress";
-
-    @GET("/")
-    void getBillingAddressForm(Callback<BaseResponse<CheckoutFormBilling>> callback);
-
-    String getBillingAddressForm = "getBillingAddressForm";
-
-    @FormUrlEncoded
-    @POST("/")
-    void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SetBillingAddress>> callback);
-
-    String setBillingAddress = "setBillingAddress";
-
-    @GET("/")
-    void getRegions(Callback<BaseResponse<AddressRegions>> callback);
-
-    String getRegions = "getRegions";
-
-    @GET("/")
-    void getCities(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressCities>> callback);
-
-    String getCities = "getCities";
-
-    @GET("/")
-    void getPostalCodes(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressPostalCodes>> callback);
-
-    String getPostalCodes = "getPostalCodes";
-
-    /*
-     * ## RATINGS/REVIEWS
-     */
-    @GET("/")
-    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
-
-    String getProductReviews = "getProductReviews";
-
-    @FormUrlEncoded
-    @POST("/")
-    void setRatingReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
-    String setRatingReview = "setRatingReview";
-
-    @FormUrlEncoded
-    @POST("/")
-    void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
-    String setSellerReview = "setSellerReview";
-
-    @GET("/")
-    void getSellerReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
-
-    String getSellerReviews = "getSellerReviews";
-
-    /*
-    * ## ORDERS
-    */
-    @GET("/")
-    void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderTracker>> callback);
-
-    String trackOrder = "trackOrder";
-
-    @GET("/")
-    void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<MyOrder>> callback);
-
-    String getOrdersList = "getOrdersList";
-
-    /*
-    * ## CHECKOUT
-    */
-
-    @FormUrlEncoded
-    @POST("/")
-    void setShippingMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetShippingMethod>> callback);
-
-    String setShippingMethod = "setShippingMethod";
-
-    @FormUrlEncoded
-    @POST("/")
-    void setPaymentMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetPaymentMethod>> callback);
-
-    String setPaymentMethod = "setPaymentMethod";
-
-    @FormUrlEncoded
-    @POST("/")
-    void checkoutFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutFinish>> callback);
-
-    String checkoutFinish = "checkoutFinish";
-
-    @GET("/")
-    void getChangePasswordForm(Callback<BaseResponse<Form>> callback);
-    String getChangePasswordForm = "getChangePasswordForm";
-
-    @GET("/")
-    void getWishList(@QueryMap Map<String, String> data, Callback<BaseResponse<WishList>> callback);
-    String getWishList = "getWishList";
-
-    @FormUrlEncoded
-    @POST("/")
-    void addToWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-    String addToWishList = "addToWishList";
-
-    @FormUrlEncoded
-    @POST("/")
-    void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-    String removeFromWishList = "removeFromWishList";
-
-    @FormUrlEncoded
-    @POST("/")
-    void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
-    String emailCheck = "emailCheck";
-
-    @GET("/")
-    void getPhonePrefixes(Callback<BaseResponse<PhonePrefixes>> callback);
-    String getPhonePrefixes = "getPhonePrefixes";
-
-    @GET("/")
-    void getFaqTerms(Callback<BaseResponse<MobileAbout>> callback);
-    String getFaqTerms = "getFaqTerms";
 }

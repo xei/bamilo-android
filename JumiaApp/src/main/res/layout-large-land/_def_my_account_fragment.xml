@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="horizontal">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,8 +26,8 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
-                    android:textStyle="bold"
-                    android:text="@string/section_title_account" />
+                    android:text="@string/section_title_account"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <!-- NOTIFICATION SETTINGS -->
@@ -41,8 +41,8 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
-                    android:textStyle="bold"
-                    android:text="@string/section_title_notification" />
+                    android:text="@string/section_title_notification"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 
@@ -57,8 +57,8 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
-                    android:textStyle="bold"
-                    android:text="@string/choose_language" />
+                    android:text="@string/choose_language"
+                    android:textStyle="bold"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -66,8 +66,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="none"
-        android:layout_weight="0.5">
+        android:layout_weight="0.5"
+        android:scrollbars="none">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,8 +84,8 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
-                    android:textStyle="bold"
-                    android:text="@string/more" />
+                    android:text="@string/more"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
 
@@ -100,8 +100,8 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
-                    android:textStyle="bold"
-                    android:text="@string/app_social" />
+                    android:text="@string/app_social"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
         </LinearLayout>

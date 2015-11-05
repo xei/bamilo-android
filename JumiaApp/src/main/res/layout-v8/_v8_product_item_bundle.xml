@@ -2,8 +2,9 @@
 
 <!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width. -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:id="@+id/item_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_list_item_highlight"
@@ -13,10 +14,10 @@
 
     <include
         android:id="@+id/item_image_loadable"
+        layout="@layout/image_loadable"
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_banners_brands_list_height"
         android:layout_centerHorizontal="true"
-        layout="@layout/image_loadable"
         android:background="@color/red_basic" />
 
     <com.mobile.components.customfontviews.TextView

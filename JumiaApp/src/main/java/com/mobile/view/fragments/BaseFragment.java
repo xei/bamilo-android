@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -67,60 +66,32 @@ import java.util.Set;
  */
 public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction, OnClickListener, ViewStub.OnInflateListener {
 
-    protected static final String TAG = BaseFragment.class.getSimpleName();
-
     public static final int RESTART_FRAGMENTS_DELAY = 500;
-
     public static final Boolean IS_NESTED_FRAGMENT = true;
-
     public static final Boolean IS_NOT_NESTED_FRAGMENT = false;
-
     public static final int NO_INFLATE_LAYOUT = 0;
-
-    private NavigationAction action;
-
+    protected static final String TAG = BaseFragment.class.getSimpleName();
     protected DialogFragment dialog;
-
-    private Set<MyMenuItem> enabledMenuItems;
-
-    private int mInflateLayoutResId = NO_INFLATE_LAYOUT;
-
     protected int titleResId;
-
     protected int checkoutStep;
-
     protected Boolean isNestedFragment = false;
-
-    private boolean isOrderSummaryPresent;
-
     protected int ORDER_SUMMARY_CONTAINER = R.id.order_summary_container;
-
     protected boolean isOnStoppingProcess = true;
-
-    private BaseActivity mainActivity;
-
-    private ViewStub mLoadingView;
-
-    private View mErrorView;
-
-    private View mContentView;
-
-    private ViewStub mFallBackView;
-
-    private ViewStub mMaintenanceView;
-
     protected long mLoadTime = 0l; // For tacking
-
-    private Locale mLocale;
-
-    public enum KeyboardState {NO_ADJUST_CONTENT, ADJUST_CONTENT}
-
-    private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
-
     protected TeaserGroupType mGroupType;
-
+    private NavigationAction action;
+    private Set<MyMenuItem> enabledMenuItems;
+    private int mInflateLayoutResId = NO_INFLATE_LAYOUT;
+    private boolean isOrderSummaryPresent;
+    private BaseActivity mainActivity;
+    private ViewStub mLoadingView;
+    private View mErrorView;
+    private View mContentView;
+    private ViewStub mFallBackView;
+    private ViewStub mMaintenanceView;
+    private Locale mLocale;
+    private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
     private int mDeepLinkOrigin = DeepLinkManager.FROM_UNKNOWN;
-
     private ErrorLayoutFactory mErrorLayoutFactory;
 
     /**
@@ -145,17 +116,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
-//    /**
-//     * Constructor used only by PDV fragments
-//     */
-//    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
-//        this.enabledMenuItems = enabledMenuItems;
-//        this.action = action;
-//        this.titleResId = titleResId;
-//        this.adjustState = adjust_state;
-//        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-//    }
-
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
@@ -168,13 +128,24 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.checkoutStep = titleCheckout;
     }
 
+//    /**
+//     * Constructor used only by PDV fragments
+//     */
+//    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+//        this.enabledMenuItems = enabledMenuItems;
+//        this.action = action;
+//        this.titleResId = titleResId;
+//        this.adjustState = adjust_state;
+//        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
+//    }
+
     /**
      * #### LIFE CICLE ####
      */
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -185,7 +156,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -201,7 +172,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
      * android.view.ViewGroup, android.os.Bundle)
      */
@@ -224,7 +195,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onViewCreated(android.view.View, android.os.Bundle)
      */
     @Override
@@ -251,33 +222,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mMaintenanceView.setOnInflateListener(this);
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
-            Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
+            Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems + " " + action);
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
             // Method used to set a bottom margin
             TabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
     }
 
-    /**
-     * Show the summary order if the view is present
-     *
-     * @author sergiopereira
-     */
-    public void showOrderSummaryIfPresent(int checkoutStep, PurchaseEntity orderSummary) {
-        // Get order summary
-        if (isOrderSummaryPresent) {
-            Print.i(TAG, "ORDER SUMMARY IS PRESENT");
-            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.replace(ORDER_SUMMARY_CONTAINER, CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary));
-            ft.commit();
-        } else {
-            Print.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
-        }
-    }
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -287,7 +241,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.app.Activity#onResume()
      */
     @Override
@@ -318,22 +272,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
     public void onPause() {
         super.onPause();
         /**
-         * Restore locale if called the forceInputAlignToLeft(). 
-         * Fix the input text align to right 
+         * Restore locale if called the forceInputAlignToLeft().
+         * Fix the input text align to right
          */
         restoreInputLocale();
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStop()
      */
     @Override
@@ -345,7 +299,22 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
+     * @see android.support.v4.app.Fragment#onLowMemory()
+     */
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Print.i(TAG, "ON LOW MEMORY");
+//        // TODO - Validate this is necessary
+//        if (getView() != null && isHidden()) {
+//            unbindDrawables(getView());
+//        }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
     @Override
@@ -356,7 +325,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onDestroy()
      */
     @Override
@@ -370,6 +339,23 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
+     * Show the summary order if the view is present
+     *
+     * @author sergiopereira
+     */
+    public void showOrderSummaryIfPresent(int checkoutStep, PurchaseEntity orderSummary) {
+        // Get order summary
+        if (isOrderSummaryPresent) {
+            Print.i(TAG, "ORDER SUMMARY IS PRESENT");
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.replace(ORDER_SUMMARY_CONTAINER, CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary));
+            ft.commit();
+        } else {
+            Print.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
+        }
+    }
+
+    /**
      * #### MEMORY ####
      */
 
@@ -377,7 +363,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * This method should be used when we known that the system clean data of application
      */
     public void restartAllFragments() {
-        Print.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity.toString());
+        Print.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity);
         final BaseActivity activity = getBaseActivity();
         // wait 500ms before switching to HOME, to be sure all fragments ended any visual processing pending
         if (activity != null) {
@@ -392,19 +378,23 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
+    /**
+     * #### BACK PRESSED ####
+     */
+
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onLowMemory()
+     *
+     * @see com.mobile.utils.BaseActivity.OnActivityFragmentInteraction#allowBackPressed()
      */
     @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        Print.i(TAG, "ON LOW MEMORY");
-//        // TODO - Validate this is necessary
-//        if (getView() != null && isHidden()) {
-//            unbindDrawables(getView());
-//        }
+    public boolean allowBackPressed() {
+        if (mDeepLinkOrigin == DeepLinkManager.FROM_URI && getBaseActivity() != null) {
+            getBaseActivity().finish();
+            return true;
+        }
+        // No intercept the back pressed
+        return false;
     }
 
 //    /**
@@ -439,22 +429,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 //    }
 
     /**
-     * #### BACK PRESSED ####
+     * Receive an update from other fragment
      */
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.utils.BaseActivity.OnActivityFragmentInteraction#allowBackPressed()
-     */
-    @Override
-    public boolean allowBackPressed() {
-        if (mDeepLinkOrigin == DeepLinkManager.FROM_URI && getBaseActivity() != null) {
-            getBaseActivity().finish();
-            return true;
-        }
-        // No intercept the back pressed
-        return false;
+    public void notifyFragment(Bundle bundle) {
+        //...
     }
 
     /**
@@ -487,13 +465,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
         // Request
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
-    }
-
-    /**
-     * Receive an update from other fragment
-     */
-    public void notifyFragment(Bundle bundle) {
-        //...
     }
 
     /**
@@ -556,10 +527,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    /*
-     * ########### ROOT VIEWS ###########
-     */
-
     /**
      * Validate if is to inflate a fragment layout into root layout
      * @return true/false
@@ -568,6 +535,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private boolean hasLayoutToInflate() {
         return mInflateLayoutResId > NO_INFLATE_LAYOUT;
     }
+
+    /*
+     * ########### ROOT VIEWS ###########
+     */
 
     /**
      * Show the content fragment from the root layout
@@ -654,7 +625,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void hideActivityProgress() {
         getBaseActivity().dismissProgress();
     }
-
 
     protected void showNoNetworkWarning() {
         getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET, getString(R.string.no_internet_access_warning_title));
@@ -795,10 +765,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         UIUtils.showOrHideViews(View.GONE, mContentView, mErrorView, mFallBackView, mLoadingView);
     }
 
-    /*
-     * ########### INPUT FORMS ###########
-     */
-
     /**
      * Force input align to left
      *
@@ -813,6 +779,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             Locale.setDefault(Locale.US);
         }
     }
+
+    /*
+     * ########### INPUT FORMS ###########
+     */
 
     /**
      * Restore the saved locale {@link #onResume()} if not null.
@@ -833,10 +803,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected long getLoadTime() {
         return mLoadTime;
     }
-
-    /*
-     * ########### RESPONSE ###########
-     */
 
     /**
      * Handle success response
@@ -870,6 +836,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return false;
     }
 
+    /*
+     * ########### RESPONSE ###########
+     */
+
     /**
      * Handle error response.
      * @param baseResponse The error bundle
@@ -890,7 +860,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             return false;
         }
 
-        Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
+        Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
                 case IO:
@@ -980,6 +950,23 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return false;
     }
 
+    private void checkErrorButtonBehavior(View view) {
+        if (view.getId() == R.id.fragment_root_error_button) {
+            int error = (int) view.getTag(R.id.fragment_root_error_button);
+
+            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT) {
+                // Case retry button from network
+                onClickRetryNoNetwork(view);
+            } else if (error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT) {
+                // Case retry button from error
+                onClickRetryUnexpectedError(view);
+            } else {
+                // Case continue button
+                onClickContinueButton();
+            }
+        }
+    }
+
 //    protected void clearCredentials() {
 //        JumiaApplication.INSTANCE.setLoggedIn(false);
 //        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
@@ -989,7 +976,23 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * ########### LISTENERS ###########
      */
 
-    /*
+    /**
+     * Process the click on retry button in no network.
+     *
+     * @param view The clicked view
+     */
+    protected void onClickRetryNoNetwork(View view) {
+        try {
+            Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
+            View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
+            retrySpinning.clearAnimation();
+            retrySpinning.setAnimation(animation);
+        } catch (NullPointerException e) {
+            Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
+        }
+        // Common method for retry buttons
+        onClickRetryButton(view);
+    }    /*
      * (non-Javadoc)
      * 
      * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -1013,40 +1016,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         else {
             Print.w(TAG, "WARNING: UNKNOWN CLICK EVENT");
         }
-    }
-
-    private void checkErrorButtonBehavior(View view) {
-        if(view.getId() == R.id.fragment_root_error_button){
-            int error = (int)view.getTag(R.id.fragment_root_error_button);
-
-            if(error == ErrorLayoutFactory.NO_NETWORK_LAYOUT){
-                // Case retry button from network
-                onClickRetryNoNetwork(view);
-            } else if(error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT){
-                // Case retry button from error
-                onClickRetryUnexpectedError(view);
-            } else {
-                // Case continue button
-                onClickContinueButton();
-            }
-        }
-    }
-
-    /**
-     * Process the click on retry button in no network.
-     * @param view The clicked view
-     */
-    protected void onClickRetryNoNetwork(View view) {
-        try {
-            Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
-            retrySpinning.clearAnimation();
-            retrySpinning.setAnimation(animation);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
-        }
-        // Common method for retry buttons
-        onClickRetryButton(view);
     }
 
     /**
@@ -1104,10 +1073,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    /*
-     * ########### ALERT DIALOGS ###########
-     */
-
     /**
      * Dismiss the current dialog
      */
@@ -1132,6 +1097,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             Print.i(TAG, "WARNING: URL IS NULL");
         }
     }
+
+    /*
+     * ########### ALERT DIALOGS ###########
+     */
 
     /**
      * Process the click on shops in shop
@@ -1174,6 +1143,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         campaigns.add(campaign);
         return campaigns;
     }
+
+    public enum KeyboardState {NO_ADJUST_CONTENT, ADJUST_CONTENT}
+
+
 
 
 

@@ -64,28 +64,19 @@ import java.util.Set;
  */
 public abstract class CreateAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
-    private static final String TAG = CreateAddressFragment.class.getSimpleName();
-
     protected static final String SHIPPING_FORM_TAG = "shipping";
-
     protected static final String BILLING_FORM_TAG = "billing";
-
-    private static final String SHIPPING_REGION_POS = "save_shipping_rg_position";
-
-    private static final String BILLING_REGION_POS = "save_billing_rg_position";
-
-    private static final String SHIPPING_CITY_POS = "save_shipping_ct_position";
-
-    private static final String BILLING_CITY_POS = "save_billing_ct_position";
-
-    private static final int IS_DEFAULT_SHIPPING_ADDRESS = 1;
-
     protected static final int IS_DEFAULT_BILLING_ADDRESS = 1;
-
     protected static final int ISNT_DEFAULT_SHIPPING_ADDRESS = 0;
-
+    private static final String TAG = CreateAddressFragment.class.getSimpleName();
+    private static final String SHIPPING_REGION_POS = "save_shipping_rg_position";
+    private static final String BILLING_REGION_POS = "save_billing_rg_position";
+    private static final String SHIPPING_CITY_POS = "save_shipping_ct_position";
+    private static final String BILLING_CITY_POS = "save_billing_ct_position";
+    private static final int IS_DEFAULT_SHIPPING_ADDRESS = 1;
     private static final int ISNT_DEFAULT_BILLING_ADDRESS = 0;
-
+    private static final String SHIPPING_SAVED_STATE = "shippingSavedStateBundle";
+    private static final String BILLING_SAVED_STATE = "billingSavedStateBundle";
     protected ViewGroup mShippingFormContainer;
     protected DynamicForm shippingFormGenerator;
   //  protected Form mFormResponse;
@@ -101,22 +92,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected String selectedCityOnBilling = "";
     protected CheckBox mIsSameCheckBox;
     protected TextView mShippingTitle;
-
     protected Boolean oneAddressCreated = false;
 //    protected ContentValues mShippingSavedValues;
 //    protected ContentValues mBillingSavedValues;
     protected boolean isCityIdAnEditText = false;
     protected ScrollView mScrollViewContainer;
-
     protected PurchaseEntity orderSummary;
-
     private Bundle mBillingFormSavedState;
-
     private Bundle mShippingFormSavedState;
-
-    private static final String SHIPPING_SAVED_STATE = "shippingSavedStateBundle";
-
-    private static final String BILLING_SAVED_STATE = "billingSavedStateBundle";
 
 
     public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
@@ -208,33 +191,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /*
      * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Print.d(TAG, "ON SAVE SATE");
-        try {
-            // Validate check
-            Bundle shippingSavedStateBundle = new Bundle();
-            shippingFormGenerator.saveFormState(shippingSavedStateBundle);
-            outState.putParcelable(SHIPPING_SAVED_STATE, shippingSavedStateBundle);
-            if (!mIsSameCheckBox.isChecked()) {
-                Bundle billingSavedStateBundle = new Bundle();
-                billingFormGenerator.saveFormState(billingSavedStateBundle);
-                outState.putParcelable(BILLING_SAVED_STATE, billingSavedStateBundle);
-
-            }
-        } catch (ClassCastException e) {
-            Print.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "SOME VIEW IS NULL", e);
-        }
-
-    }
-
-    /*
-     * (non-Javadoc)
      *
      * @see android.support.v4.app.Fragment#onPause()
      */
@@ -294,6 +250,65 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         mFormBilling = null;
     }
 
+    /**
+     * ############# CLICK LISTENER #############
+     */
+
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        // Get view id
+        int id = view.getId();
+        // Next button
+        if (id == R.id.checkout_button_enter) {
+            onClickCreateAddressButton();
+        }
+        // Unknown view
+        else {
+            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
+     */
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        onClickRetryButton();
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.d(TAG, "ON SAVE SATE");
+        try {
+            // Validate check
+            Bundle shippingSavedStateBundle = new Bundle();
+            shippingFormGenerator.saveFormState(shippingSavedStateBundle);
+            outState.putParcelable(SHIPPING_SAVED_STATE, shippingSavedStateBundle);
+            if (!mIsSameCheckBox.isChecked()) {
+                Bundle billingSavedStateBundle = new Bundle();
+                billingFormGenerator.saveFormState(billingSavedStateBundle);
+                outState.putParcelable(BILLING_SAVED_STATE, billingSavedStateBundle);
+
+            }
+        } catch (ClassCastException e) {
+            Print.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
+        } catch (NullPointerException e) {
+            Print.w(TAG, "SOME VIEW IS NULL", e);
+        }
+
+    }
 
     /**
      * Load the dynamic form
@@ -353,7 +368,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         shippingFormGenerator.loadSaveFormState(mShippingFormSavedState);
         billingFormGenerator.loadSaveFormState(mBillingFormSavedState);
     }
-
 
     /**
      * Hide the default check boxes
@@ -571,39 +585,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     /**
-     * ############# CLICK LISTENER #############
-     */
-
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        // Get view id
-        int id = view.getId();
-        // Next button
-        if (id == R.id.checkout_button_enter) {
-            onClickCreateAddressButton();
-        }
-        // Unknown view
-        else {
-            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        onClickRetryButton();
-    }
-
-    /**
      * Process the click on retry button.
      *
      * @author paulo
@@ -648,12 +629,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (mIsSameCheckBox.isChecked()) {
             Print.i(TAG, "CREATE ADDRESS: IS SHIPPING AND IS BILLING TOO");
             ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT VALUES: " + mContentValues.toString());
+            Print.d(TAG, "CONTENT VALUES: " + mContentValues);
             triggerCreateAddress(mContentValues, false);
         } else {
             Print.i(TAG, "CREATE ADDRESS: SHIPPING AND BILLING");
             ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues.toString());
+            Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues);
             triggerCreateAddress(mShipValues, false);
             // only to be fired if the first succeds
 //            ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
@@ -705,17 +686,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
         // return the new content values
         return mContentValues;
-    }
-
-    /**
-     * ########### ON ITEM SELECTED LISTENER ###########
-     */
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.mobile.components.absspinner.IcsAdapterView)
-     */
-    @Override
-    public void onNothingSelected(IcsAdapterView<?> parent) {
     }
 
     /*
@@ -770,6 +740,17 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 }
             }
         }
+    }
+
+    /**
+     * ########### ON ITEM SELECTED LISTENER ###########
+     */
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.mobile.components.absspinner.IcsAdapterView)
+     */
+    @Override
+    public void onNothingSelected(IcsAdapterView<?> parent) {
     }
 
     /**
@@ -881,6 +862,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(url, city, tag), this);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
+    }
+
     /**
      * ########### RESPONSE LISTENER ###########
      */
@@ -893,18 +883,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         onErrorEvent(baseResponse);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
-     */
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-    }
-
     /**
      * ############# RESPONSE #############
      */
+
     /**
      * Filter the success response
      *

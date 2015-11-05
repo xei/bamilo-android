@@ -47,9 +47,9 @@
         android:id="@+id/price_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right|center_vertical"
         android:layout_alignRight="@id/item_name"
-        android:layout_below="@id/item_name" >
+        android:layout_below="@id/item_name"
+        android:gravity="right|center_vertical">
 
         <!-- DISCOUNT -->
 
@@ -58,8 +58,8 @@
             style="@style/text_price"
             android:layout_alignParentRight="true"
             android:layout_marginLeft="4dp"
-            android:visibility="visible"
-            android:text="Discount" />
+            android:text="Discount"
+            android:visibility="visible"/>
 
         <!-- PRICE -->
 
@@ -68,8 +68,8 @@
             style="@style/text_price"
             android:layout_alignTop="@id/item_discount"
             android:layout_alignWithParentIfMissing="true"
-            android:gravity="right|center_vertical"
             android:layout_toLeftOf="@id/item_discount"
+            android:gravity="right|center_vertical"
             android:text="Price"
             android:textColor="@color/grey_light"/>
     </RelativeLayout>
@@ -79,8 +79,8 @@
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
-        android:layout_below="@id/price_container"/>
+        android:layout_below="@id/price_container"
+        android:visibility="gone"/>
 
     <!-- WARNINGS -->
 
