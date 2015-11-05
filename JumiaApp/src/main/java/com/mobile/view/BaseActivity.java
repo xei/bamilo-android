@@ -121,947 +121,58 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private static final int SEARCH_EDIT_SIZE = 2;
 
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
-
-    // REMOVED FINAL ATTRIBUTE
-    private NavigationAction action;
+    public static KeyboardState currentAdjustState;
 
     //protected View contentContainer;
-
-    private Set<MyMenuItem> menuItems;
-
     private final int activityLayoutId;
-
-    protected DialogFragment dialog;
-
-    private DialogProgressFragment baseActivityProgressDialog;
-
-    private DialogGenericFragment dialogLogout;
-
-    private boolean backPressedOnce = false;
-
+    private final int titleResId;
     public View mDrawerNavigation;
+    public DrawerLayout mDrawerLayout;
+    public ActionBarDrawerToggle mDrawerToggle;
+    public MenuItem mSearchMenuItem;
+    public WarningFactory warningFactory;
+    protected DialogFragment dialog;
+    protected SearchView mSearchView;
+    protected SearchAutoComplete mSearchAutoComplete;
+    protected boolean isSearchComponentOpened = false;
+
+    //private final int contentLayoutId;
+    // REMOVED FINAL ATTRIBUTE
+    private NavigationAction action;
+    private Set<MyMenuItem> menuItems;
+    private DialogProgressFragment baseActivityProgressDialog;
+    private DialogGenericFragment dialogLogout;
+    private boolean backPressedOnce = false;
     /**
      * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
      * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this -action-after-onsaveinstancestate-h
      */
     private Intent mOnActivityResultIntent = null;
-
-    public DrawerLayout mDrawerLayout;
-
-    public ActionBarDrawerToggle mDrawerToggle;
-
-    private final int titleResId;
-
-    //private final int contentLayoutId;
-
     private TextView mActionCartCount;
-
     private MyProfileActionProvider myProfileActionProvider;
-
     private FragmentController fragmentController;
+    /**
+     * Handles changes on Checkout tabs.
+     */
+    final TabLayout.OnTabSelectedListener mCheckoutOnTabSelectedListener = new android.support.design.widget.TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(android.support.design.widget.TabLayout.Tab tab) {
+            onCheckoutHeaderSelectedListener(tab.getPosition());
+        }
 
+        @Override
+        public void onTabUnselected(android.support.design.widget.TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(android.support.design.widget.TabLayout.Tab tab) {
+
+        }
+    };
     private boolean initialCountry = false;
-
     private Menu mCurrentMenu;
-
     private long beginInMillis;
-
-    protected SearchView mSearchView;
-
-    protected SearchAutoComplete mSearchAutoComplete;
-
-    protected boolean isSearchComponentOpened = false;
-
-    private ActionBar mSupportActionBar;
-
-    private boolean isBackButtonEnabled = false;
-
-    private long mLaunchTime;
-
-    public MenuItem mSearchMenuItem;
-
-    public WarningFactory warningFactory;
-
-    public static KeyboardState currentAdjustState;
-
-    private TabLayout mTabLayout;
-    private TabLayout mCheckoutTabLayout;
-
-    private AppBarLayout mAppBarLayout;
-
-    public ConfirmationCartMessageView mConfirmationCartMessageView;
-
-    /**
-     * Constructor used to initialize the navigation list component and the autocomplete handler
-     */
-    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
-        this(R.layout.main, action, enabledMenuItems, userEvents, titleResId, contentLayoutId);
-    }
-
-    /**
-     * Constructor
-     */
-    public BaseActivity(int activityLayoutId, NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
-        this.activityLayoutId = activityLayoutId;
-        //this.userEvents = userEvents;
-        this.action = action != null ? action : NavigationAction.Unknown;
-        this.menuItems = enabledMenuItems;
-        this.titleResId = titleResId;
-        //this.contentLayoutId = contentLayoutId;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
-     */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Print.d(TAG, "ON CREATE");
-        /*
-         * In case of rotation the activity is restarted and the locale too.<br>
-         * These method forces the right locale used before the rotation.
-         * @author spereira
-         */
-        ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
-        // In case app is killed in background needs to restore font type
-        HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
-        // Get fragment controller
-        fragmentController = FragmentController.getInstance();
-        // Set content
-        setContentView(activityLayoutId);
-        // Set action bar
-        setupAppBarLayout();
-        // Set navigation
-        setupDrawerNavigation();
-        // Set content view
-        setupContentViews();
-        // Update the content view if initial country selection
-        updateContentViewsIfInitialCountrySelection();
-        // Set main layout
-        //setAppContentLayout();
-        // Set title in AB or TitleBar
-        setTitle(titleResId);
-        // For tracking
-        mLaunchTime = System.currentTimeMillis();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.FragmentActivity#onNewIntent(android.content.Intent )
-     */
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Print.i(TAG, "ON NEW INTENT");
-        ActivitiesWorkFlow.addStandardTransition(this);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.triggerContentEventProgressapp.FragmentActivity#onStart()
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.FragmentActivity#onResume()
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        Print.i(TAG, "ON RESUME");
-
-        // Disabled for Samsung and Blackberry (check_version_enabled)
-        CheckVersion.run(getApplicationContext());
-
-        /**
-         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-         * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
-         *           -can-not-perform -this-action-after-onsaveinstancestate-h
-         */
-        if (mOnActivityResultIntent != null && getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
-            mOnActivityResultIntent = null;
-        }
-
-        // Get the cart and perform auto login
-        recoverUserDataFromBackground();
-        AdjustTracker.onResume();
-
-        TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
-    }
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        /**
-         * Validate current version to show the upgrade dialog.
-         * Disabled for Samsung and Blackberry (check_version_enabled).
-         */
-        if (CheckVersion.needsToShowDialog()) {
-            CheckVersion.showDialog(this);
-        }
-    }
-
-    /**
-     * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception -can-not-perform-this -action-after-onsaveinstancestate-h
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data != null) {
-            mOnActivityResultIntent = data;
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.FragmentActivity#onPause()
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        Print.i(TAG, "ON PAUSE");
-        // Hide search component
-        hideSearchComponent();
-        // Dispatch saved hits
-        AnalyticsGoogle.get().dispatchHits();
-
-        AdjustTracker.onPause();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onStop()
-     */
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Print.i(TAG, "ON STOP");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onDestroy()
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Print.i(TAG, "ON DESTROY");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
-        // Tracking
-        TrackerDelegator.trackCloseApp();
-    }
-
-    /**
-     * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and onConfigurationChanged()...
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onPostCreate(android.os.Bundle)
-     */
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        Print.i(TAG, "ON POST CREATE: DRAWER");
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v7.app.ActionBarActivity#onConfigurationChanged(android.content.res.Configuration)
-     */
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Print.i(TAG, "ON CONFIGURATION CHANGED");
-        // Pass any configuration change to the drawer toggles
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    /*
-     * ############## ACTION BAR ##############
-     */
-
-    /**
-     * Method used to update the sliding menu and items on action bar. Called from BaseFragment
-     */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction newNavAction, int actionBarTitleResId, int checkoutStep) {
-        Print.i(TAG, "ON UPDATE BASE COMPONENTS");
-        // Update the app bar layout
-        setAppBarLayout(this.action, newNavAction);
-        // Update options menu and search bar
-        menuItems = enabledMenuItems;
-        hideKeyboard();
-        invalidateOptionsMenu();
-        // Update the sliding menu
-        this.action = newNavAction != null ? newNavAction : NavigationAction.Unknown;
-        // Select step on Checkout
-        setCheckoutHeader(checkoutStep);
-        // Set actionbarTitle
-        setActionTitle(actionBarTitleResId);
-    }
-
-    /**
-     *
-     */
-    public void updateActionForCountry(NavigationAction action) {
-        this.action = action != null ? action : NavigationAction.Unknown;
-    }
-
-    /**
-     * Set the Action bar style
-     *
-     * @modified sergiopereira
-     */
-    public void setupAppBarLayout() {
-        // Get tab layout
-        mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
-        // Get tool bar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        mSupportActionBar = getSupportActionBar();
-        if(mSupportActionBar != null) {
-            mSupportActionBar.setDisplayHomeAsUpEnabled(true);
-            mSupportActionBar.setHomeButtonEnabled(true);
-            mSupportActionBar.setDisplayShowTitleEnabled(true);
-            mSupportActionBar.setElevation(0);
-            mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
-        }
-        // Set tab layout
-        setupTabBarLayout();
-    }
-
-    public void setupTabBarLayout() {
-        // Get tab layout
-        mTabLayout = (TabLayout) findViewById(R.id.tabs);
-        mCheckoutTabLayout = (TabLayout) findViewById(R.id.checkout_tabs);
-        TabLayoutUtils.fillTabLayout(mTabLayout, this);
-        TabLayoutUtils.updateTabCartInfo(mTabLayout);
-        // Checkout Tab
-        TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
-        mCheckoutTabLayout.setOnTabSelectedListener(mCheckoutOnTabSelectedListener);
-    }
-
-
-
-    private void setAppBarLayout(NavigationAction oldNavAction, NavigationAction newNavAction) {
-        try {
-            // Case action without tab layout
-            if (!TabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
-                mTabLayout.setVisibility(View.GONE);
-                mAppBarLayout.setExpanded(true, true);
-            }
-            // Case action with tab layout
-            else {
-                // Case from other tab
-                if (!TabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
-                    mTabLayout.setVisibility(View.VISIBLE);
-                    mAppBarLayout.setExpanded(true, true);
-                }
-                //noinspection ConstantConditions
-                mTabLayout.getTabAt(TabLayoutUtils.getTabPosition(newNavAction)).select();
-            }
-        } catch (NullPointerException e) {
-            // ...
-        }
-    }
-
-
-
-    /**
-     * Set Action bar title
-     */
-    private void setActionTitle(int actionBarTitleResId) {
-        // Case hide all
-        if (actionBarTitleResId == IntConstants.ACTION_BAR_NO_TITLE) {
-            hideActionBarTitle();
-        }
-        // Case to set title
-        else {
-            setActionBarTitle(actionBarTitleResId);
-        }
-    }
-
-    /*
-     * ############## NAVIGATION ##############
-     */
-
-    /**
-     * Set the navigation drawer.
-     *
-     * @modified sergiopereira
-     */
-    private void setupDrawerNavigation() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerNavigation = findViewById(R.id.fragment_navigation);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                hideKeyboard();
-            }
-
-        };
-
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-    }
-
-    /**
-     * Close the navigation drawer if open.
-     *
-     * @modified sergiopereira
-     */
-    public void closeNavigationDrawer() {
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
-        }
-    }
-    
-    /*
-     * ############## CONTENT VIEWS ##############
-     */
-
-    /**
-     *
-     */
-    private void setupContentViews() {
-        Print.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
-        // Get the application horizontalListView
-        //contentContainer = findViewById(R.id.rocket_app_content);
-        // Warning layout
-        try {
-            warningFactory = new WarningFactory(findViewById(R.id.warning));
-            //view for configurable confirmation message when adding to carte, in case of hasCartPopup = true
-            mConfirmationCartMessageView = new ConfirmationCartMessageView(findViewById(R.id.configurableCartView),this);
-        } catch(IllegalStateException ex){
-            Print.e(TAG, ex.getLocalizedMessage(), ex);
-        }
-    }
-    
-    /*
-     * ############## INITIAL COUNTRY SELECTION ##############
-     */
-
-    /**
-     * Updated the action bar and the navigation for initial country selection
-     *
-     * @author sergiopereira
-     */
-    private void updateContentViewsIfInitialCountrySelection() {
-        /**
-         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-         * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
-         *           -can-not-perform -this-action-after-onsaveinstancestate-h
-         */
-        if (getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
-            mOnActivityResultIntent = null;
-        }
-
-        /**
-         * Set the action bar and navigation drawer for initialCountry
-         *
-         * @author sergiopereira
-         */
-        if (initialCountry) {
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-            mSupportActionBar.setDisplayHomeAsUpEnabled(false);
-            mSupportActionBar.setDisplayShowCustomEnabled(true);
-            mSupportActionBar.setCustomView(R.layout.action_bar_initial_logo_layout);
-        } else {
-            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-            mSupportActionBar.setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    /**
-     * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link com.mobile.view.fragments.HomePageFragment#onCreate(Bundle)}.
-     *
-     * @return true or false
-     * @author sergiopereira
-     */
-    public boolean isInitialCountry() {
-        return initialCountry;
-    }
-
-    /*
-     * ############### OPTIONS MENU #################
-     */
-
-    /**
-     * When a user selects an option of the menu that is on the action bar. The centralization of this in this activity, prevents all the activities to have to
-     * handle this events
-     *
-     * @param item The menu item that was pressed
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onOptionsItemSelected
-     * (android.view.MenuItem )
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Print.d(TAG, "ON OPTION ITEM SELECTED: " + item.getTitle());
-        // Get item id
-        int itemId = item.getItemId();
-        // CASE BACK ARROW
-        if (itemId == android.R.id.home && isBackButtonEnabled) {
-            onBackPressed();
-            return true;
-        }
-        // CASE HOME (BURGUER)
-        else if (mDrawerToggle.onOptionsItemSelected(item)) {
-            // Toggle between opened and closed drawer
-            return true;
-        }
-        // CASE CART ACTION
-        else if (itemId == R.id.menu_basket) {
-            // Goto cart
-            onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            return true;
-        }
-        // DEFAULT:
-        else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-     */
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Print.d(TAG, "ON OPTIONS MENU: CREATE");
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        // Save the current menu
-        mCurrentMenu = menu;
-        // Flag used to show action bar as default
-        int showActionBar = View.VISIBLE;
-        // Flag to show home or back button
-        isBackButtonEnabled = false;
-        // Setting Menu Options
-        for (MyMenuItem item : menuItems) {
-            switch (item) {
-                case HIDE_AB:
-                    showActionBar = View.GONE;
-                    break;
-                case UP_BUTTON_BACK:
-                    isBackButtonEnabled = true;
-                    break;
-                case SEARCH_VIEW:
-                    setActionSearch(menu);
-                    break;
-                case BASKET:
-                    setActionCart(menu);
-                    break;
-                case MY_PROFILE:
-                    setActionProfile(menu);
-                    break;
-                default:
-                    menu.findItem(item.resId).setVisible(true);
-                    break;
-            }
-        }
-
-        // Set AB UP button
-        setActionBarUpButton();
-        // Set AB visibility
-        setActionBarVisibility(showActionBar);
-        // Return current menu
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    /*
-     * ############### ACTION BAR MENU ITEMS #################
-     */
-
-    /**
-     * Change actionBar visibility if necessary
-     */
-    public void setActionBarVisibility(int showActionBar) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar == null) {
-            Print.w(TAG, "WARNING: AB IS NULL");
-            return;
-        }
-        // Validate flag
-        if (showActionBar == View.VISIBLE) {
-            if (!actionBar.isShowing()) {
-                actionBar.show();
-            }
-        } else if (showActionBar == View.GONE) {
-            actionBar.hide();
-        } else {
-            Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
-        }
-    }
-
-//    /**
-//     * Change actionBar visibility if necessary and executes runnable
-//     */
-//    public void setActionBarVisibility(int showActionBar, Runnable onChangeRunnable, int onChangePostDelay) {
-//        boolean actionBarVisible = getSupportActionBar().isShowing();
-//        setActionBarVisibility(showActionBar);
-//
-//        if (getSupportActionBar().isShowing() != actionBarVisible) {
-//            new Handler().postDelayed(onChangeRunnable, onChangePostDelay);
-//        }
-//    }
-
-    /**
-     * Set the up button in ActionBar
-     *
-     * @author sergiopereira
-     */
-    private void setActionBarUpButton() {
-        if (isBackButtonEnabled) {
-            Print.i(TAG, "SHOW UP BUTTON");
-            mDrawerToggle.setDrawerIndicatorEnabled(false);
-        } else {
-            Print.i(TAG, "NO SHOW UP BUTTON");
-            mDrawerToggle.setDrawerIndicatorEnabled(true);
-        }
-    }
-
-
-    /**
-     * Set the share menu item
-     *
-     * @modified sergiopereira
-     */
-    @SuppressWarnings("unused")
-    private void setActionShare() {
-        //menu.findItem(MyMenuItem.BASKET.resId).setVisible(true);
-        //menu.findItem(item.resId).setEnabled(true);
-        //mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId).getActionProvider();
-        //mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
-        //            @Override
-        //            public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
-        //                getApplicationContext().startActivity(intent);
-        //                TrackerDelegator.trackItemShared(getApplicationContext(), intent);
-        //                return true;
-        //            }
-        //        });
-        //mShareActionProvider.setShareHistoryFileName(null);
-        //mShareActionProvider.setShareIntent(shareIntent);
-        //setShareIntent(createShareIntent());
-    }
-
-    /**
-     * Set the cart menu item
-     */
-    private void setActionCart(final Menu menu) {
-        MenuItem basket = menu.findItem(MyMenuItem.BASKET.resId);
-        // Validate country
-        if (!initialCountry) {
-            basket.setVisible(true);
-            basket.setEnabled(true);
-            View actionCartView = MenuItemCompat.getActionView(basket);
-            mActionCartCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
-            View actionCartImage = actionCartView.findViewById(R.id.action_cart_image);
-            actionCartImage.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    menu.performIdentifierAction(MyMenuItem.BASKET.resId, 0);
-                }
-            });
-            updateCartInfoInActionBar();
-        } else {
-            basket.setVisible(false);
-        }
-    }
-
-     /*
-     * ########### TAB LAYOUT LISTENER ###########
-     */
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        TabLayoutUtils.tabSelected(this, tab, action);
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-        // ...
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-        // ...
-    }
-    
-    
-    /*
-     * ############### SEARCH COMPONENT #################
-     */
-
-    /**
-     * Method used to set the search bar in the Action bar.
-     * @author Andre Lopes
-     * @modified sergiopereira
-     */
-    private void setActionSearch(Menu menu) {
-        Print.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
-        // Get search menu item
-        mSearchMenuItem = menu.findItem(R.id.menu_search);
-        // Get search action view
-        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
-        mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
-        // Get edit text
-        mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
-        //#RTL
-        if (ShopSelector.isRtl()) {
-            mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
-        }
-        // Set font
-        HoloFontLoader.applyDefaultFont(mSearchView);
-        HoloFontLoader.applyDefaultFont(mSearchAutoComplete);
-        // Set the ime options
-        mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        // Set text color for old android versions
-        mSearchAutoComplete.setTextColor(getResources().getColor(R.color.search_edit_color));
-        mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.search_hint_color));
-        // Initial state
-        MenuItemCompat.collapseActionView(mSearchMenuItem);
-        // Calculate the max width to fill action bar
-        setSearchWidthToFillOnExpand();
-        // Set search
-        setActionBarSearchBehavior(mSearchMenuItem);
-        // Set visibility
-        mSearchMenuItem.setVisible(true);
-    }
-
-
-    private void setSearchWidthToFillOnExpand() {
-        // Get the width of main content
-        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
-        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
-        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
-        // Calculate the search width
-        int searchComponentWidth = mainContentWidth - genericIconWidth;
-        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
-        // Set measures
-        mSearchView.setMaxWidth(searchComponentWidth);
-        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
-    }
-
-    /**
-     * Set the search component
-     */
-    public void setActionBarSearchBehavior(final MenuItem mSearchMenuItem) {
-        Print.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
-        if (mSearchAutoComplete == null) {
-            Print.w(TAG, "SEARCH COMPONENT IS NULL");
-            return;
-        }
-        
-        /*
-         * Set on item click listener
-         */
-        mSearchAutoComplete.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
-                // Get suggestion
-                Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
-                // Get text suggestion
-                String text = selectedSuggestion.getResult();
-                // Clean edit text
-                mSearchAutoComplete.setText("");
-                mSearchAutoComplete.dismissDropDown();
-                // Collapse search view
-                MenuItemCompat.collapseActionView(mSearchMenuItem);
-                // Save query
-                GetSearchSuggestionsHelper.saveSearchQuery(text);
-                // Show query
-                showSearchCategory(text);
-                if (JumiaApplication.INSTANCE != null) {
-                    JumiaApplication.INSTANCE.trackSearch = true;
-                }
-            }
-        });
-
-        /*
-         * Clear and add text listener
-         */
-        // mSearchAutoComplete.clearTextChangedListeners();
-        mSearchAutoComplete.addTextChangedListener(new TextWatcher() {
-            private final Handler handle = new Handler();
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                handle.removeCallbacks(run);
-                if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened) {
-                    handle.postDelayed(run, SEARCH_EDIT_DELAY);
-                }
-            }
-        });
-
-        /*
-         * Set IME action listener
-         */
-        mSearchAutoComplete.setOnEditorActionListener(new OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
-                    String searchTerm = textView.getText().toString();
-                    Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
-                    if (TextUtils.isEmpty(searchTerm)) {
-                        return false;
-                    }
-                    // Clean edit text
-                    textView.setText("");
-                    // Collapse search view
-                    MenuItemCompat.collapseActionView(mSearchMenuItem);
-                    // Save query
-                    GetSearchSuggestionsHelper.saveSearchQuery(searchTerm);
-                    // Show query
-                    showSearchCategory(searchTerm);
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        /*
-         * Set expand listener
-         */
-        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                Print.d(TAG, "SEARCH ON EXPAND");
-                closeNavigationDrawer();
-                isSearchComponentOpened = true;
-                setActionMenuItemsVisibility(false);
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                Print.d(TAG, "SEARCH ON COLLAPSE");
-                isSearchComponentOpened = false;
-                setActionMenuItemsVisibility(true);
-                return true;
-            }
-        });
-        
-        /*
-         * Set focus listener, for back pressed with IME
-         */
-        mSearchAutoComplete.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    MenuItemCompat.collapseActionView(mSearchMenuItem);
-                    setActionMenuItemsVisibility(true);
-                }
-            }
-        });
-
-    }
-
-    /**
-     * Execute search
-     * @author sergiopereira
-     */
-    protected void showSearchCategory(String searchText) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
-        // Tracking
-        JumiaApplication.INSTANCE.trackSearchCategory = true;
-        TrackerDelegator.trackSearchSuggestions(searchText);
-        // Data
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
-        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-        onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * set all menu items visibility to <code>visible</code>
-     */
-    protected void setActionMenuItemsVisibility(boolean visible) {
-        for (MyMenuItem item : menuItems) {
-            if (item != MyMenuItem.SEARCH_VIEW && item.resId != -1) {
-                MenuItem view = mCurrentMenu.findItem(item.resId);
-                if (view != null) {
-                    view.setVisible(visible);
-                }
-            }
-        }
-    }
-
-    /**
-     * Hide the search component
-     *
-     * @author sergiopereira
-     */
-    public void hideSearchComponent() {
-        Print.d(TAG, "SEARCH COMPONENT: HIDE");
-        try {
-            // Validate if exist search icon and bar
-            if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
-                // Hide search bar
-                MenuItemCompat.collapseActionView(mSearchMenuItem);
-                // Clean autocomplete
-                mSearchAutoComplete.setText("");
-                // Show hidden items
-                setActionMenuItemsVisibility(true);
-                // Forced the IME option on collapse
-                mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-                mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-            }
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT");
-        }
-    }
-
-    /**
-     * Hide only the search bar, used by ChangeCountryFragment
-     * @author sergiopereira
-     */
-    public void hideActionBarItemsForChangeCountry(EnumSet<MyMenuItem> enumSet) {
-        this.menuItems = enumSet;
-        this.action = NavigationAction.Country;
-        updateActionForCountry(NavigationAction.Country);
-        invalidateOptionsMenu();
-    }
-
-    /*
-     * ############### SEARCH TRIGGER #################
-     */
-
     /**
      * Runnable to get suggestions
      *
@@ -1074,220 +185,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             getSuggestions();
         }
     };
-
-    /**
-     * Get suggestions and recent queries
-     *
-     * @author sergiopereira
-     */
-    private void getSuggestions() {
-        beginInMillis = System.currentTimeMillis();
-        String text = mSearchAutoComplete.getText().toString();
-        Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
-
-        Bundle bundle = new Bundle();
-        bundle.putString(GetSearchSuggestionsHelper.SEACH_PARAM, text);
-        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), bundle,
-                new IResponseCallback() {
-
-                    @Override
-                    public void onRequestError(BaseResponse baseResponse) {
-                        processErrorSearchEvent(baseResponse);
-                    }
-
-                    @Override
-                    public void onRequestComplete(BaseResponse baseResponse) {
-                        processSuccessSearchEvent(baseResponse);
-                    }
-                });
-    }
-
-    /**
-     * ############### SEARCH RESPONSES #################
-     */
-
-    /**
-     * Process the search error event
-     *
-     * @param baseResponse
-     * @author sergiopereira
-     */
-    private void processErrorSearchEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
-
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
-
-        // Get query
-        String requestQuery = suggestionsStruct.getSearchParam();
-        Print.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
-        // Validate current search component
-        if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
-            Print.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
-            return;
-        }
-        if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) {
-            return;
-        }
-        // Hide dropdown
-        mSearchAutoComplete.dismissDropDown();
-        
-        /*-- // Show no network dialog
-        if(!NetworkConnectivity.isConnected(getApplicationContext())) {
-            if(dialog != null) dialog.dismissAllowingStateLoss();
-            // Show
-            dialog = DialogGenericFragment.createNoNetworkDialog(this, new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismissAllowingStateLoss();
-                    if(mSearchAutoComplete != null) getSuggestions();
-                }
-            }, 
-            new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismissAllowingStateLoss();
-                }
-            }, false);
-            dialog.show(getSupportFragmentManager(), null);
-        }
-         */
-    }
-
-    /**
-     * Process success search event
-     *
-     * @param baseResponse
-     * @author sergiopereira
-     */
-    private void processSuccessSearchEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
-        // Get suggestions
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
-
-//        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
-        // Get query
-        String requestQuery = suggestionsStruct.getSearchParam();
-        Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
-
-        // Validate current objects
-        if (menuItems == null || mCurrentMenu == null || mSearchAutoComplete == null) {
-            return;
-        }
-        // Validate current menu items
-        if (!menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
-            return;
-        }
-        MenuItem searchMenuItem = mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId);
-        if (searchMenuItem != null && !searchMenuItem.isVisible()) {
-            return;
-        }
-        // Validate current search
-        if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE
-                || !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
-            Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
-            return;
-        }
-        // Show suggestions
-        Print.i(TAG, "SEARCH: SHOW DATA FOR QUERY " + requestQuery);
-        Bundle params = new Bundle();
-        params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
-        params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
-        TrackerDelegator.trackLoadTiming(params);
-        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct, requestQuery);
-        mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
-        mSearchAutoComplete.showDropDown();
-    }
-
-    /**
-     * #################### SHARE #####################
-     */
-
-    /**
-     * Called to update the share intent
-     *
-     * @param shareIntent
-     *            the intent to be stored
-     */
-    /*-public void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareHistoryFileName(null);
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
-    }*/
-
-    /**
-     * Displays the number of items that are currently on the shopping cart as well as its value. This information is displayed on the navigation list
-     */
-    public void updateCartInfo() {
-        Print.d(TAG, "ON UPDATE CART INFO");
-//        if (JumiaApplication.INSTANCE.getCart() != null) {
-//            Log.d(TAG, "updateCartInfo value = "
-//                    + JumiaApplication.INSTANCE.getCart().getCartValue() + " quantity = "
-//                    + JumiaApplication.INSTANCE.getCart().getCartCount());
-//        }
-        updateCartInfoInActionBar();
-        TabLayoutUtils.updateTabCartInfo(mTabLayout);
-    }
-
-    public void updateCartInfoInActionBar() {
-        Print.d(TAG, "ON UPDATE CART IN ACTION BAR");
-        if (mActionCartCount == null) {
-            Print.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
-            return;
-        }
-
-        PurchaseEntity currentCart = JumiaApplication.INSTANCE.getCart();
-        // Show 0 while the cart is not updated
-        final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
-
-        mActionCartCount.post(new Runnable() {
-            @Override
-            public void run() {
-                mActionCartCount.setText(quantity);
-            }
-        });
-
-    }
-
-
-
-
-    /**
-     * Create the share intent to be used to store the needed information
-     *
-     * @return The created intent
-     */
-    public Intent createShareIntent(String extraSubject, String extraText) {
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject);
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, extraText);
-        return sharingIntent;
-    }
-
-    /**
-     * ################# MY PROFILE #################
-     */
-
-    /**
-     * Method used to set the myProfile Menu
-     *
-     * @author Andre Lopes
-     * @modified sergiopereira
-     */
-    private void setActionProfile(Menu menu) {
-        MenuItem myProfile = menu.findItem(MyMenuItem.MY_PROFILE.resId);
-        // Validate
-        if (myProfile != null) {
-            myProfile.setVisible(true);
-            myProfile.setEnabled(true);
-            myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
-            myProfileActionProvider.setFragmentNavigationAction(action);
-            myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
-        }
-    }
-
+    private ActionBar mSupportActionBar;
+    private boolean isBackButtonEnabled = false;
+    private long mLaunchTime;
+    private TabLayout mTabLayout;
     OnClickListener myProfileClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -1384,6 +285,1107 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             }
         }
     };
+    private TabLayout mCheckoutTabLayout;
+    /**
+     * Handles clicks on Checkout Header
+     * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
+     */
+    final android.view.View.OnClickListener mCheckoutOnClickListener = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            onCheckoutHeaderClickListener((int) v.getTag());
+        }
+    };
+    private AppBarLayout mAppBarLayout;
+
+    public ConfirmationCartMessageView mConfirmationCartMessageView;
+
+    /**
+     * Constructor used to initialize the navigation list component and the autocomplete handler
+     */
+    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
+        this(R.layout.main, action, enabledMenuItems, userEvents, titleResId, contentLayoutId);
+    }
+
+    /**
+     * Constructor
+     */
+    public BaseActivity(int activityLayoutId, NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
+        this.activityLayoutId = activityLayoutId;
+        //this.userEvents = userEvents;
+        this.action = action != null ? action : NavigationAction.Unknown;
+        this.menuItems = enabledMenuItems;
+        this.titleResId = titleResId;
+        //this.contentLayoutId = contentLayoutId;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Print.d(TAG, "ON CREATE");
+        /*
+         * In case of rotation the activity is restarted and the locale too.<br>
+         * These method forces the right locale used before the rotation.
+         * @author spereira
+         */
+        ShopSelector.setLocaleOnOrientationChanged(getApplicationContext());
+        // In case app is killed in background needs to restore font type
+        HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
+        // Get fragment controller
+        fragmentController = FragmentController.getInstance();
+        // Set content
+        setContentView(activityLayoutId);
+        // Set action bar
+        setupAppBarLayout();
+        // Set navigation
+        setupDrawerNavigation();
+        // Set content view
+        setupContentViews();
+        // Update the content view if initial country selection
+        updateContentViewsIfInitialCountrySelection();
+        // Set main layout
+        //setAppContentLayout();
+        // Set title in AB or TitleBar
+        setTitle(titleResId);
+        // For tracking
+        mLaunchTime = System.currentTimeMillis();
+    }
+
+    /**
+     * Using the ActionBarDrawerToggle, you must call it during onPostCreate() and onConfigurationChanged()...
+     */
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onPostCreate(android.os.Bundle)
+     */
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        Print.i(TAG, "ON POST CREATE: DRAWER");
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v7.app.ActionBarActivity#onConfigurationChanged(android.content.res.Configuration)
+     */
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Print.i(TAG, "ON CONFIGURATION CHANGED");
+        // Pass any configuration change to the drawer toggles
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onStop()
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Print.i(TAG, "ON STOP");
+        JumiaApplication.INSTANCE.setLoggedIn(false);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onDestroy()
+     */
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Print.i(TAG, "ON DESTROY");
+        JumiaApplication.INSTANCE.setLoggedIn(false);
+        // Tracking
+        TrackerDelegator.trackCloseApp();
+    }
+
+    /**
+     * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+     * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception -can-not-perform-this -action-after-onsaveinstancestate-h
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data != null) {
+            mOnActivityResultIntent = data;
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onPause()
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        Print.i(TAG, "ON PAUSE");
+        // Hide search component
+        hideSearchComponent();
+        // Dispatch saved hits
+        AnalyticsGoogle.get().dispatchHits();
+
+        AdjustTracker.onPause();
+    }
+
+    /*
+     * ############## ACTION BAR ##############
+     */
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.FragmentActivity#onNewIntent(android.content.Intent )
+     */
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Print.i(TAG, "ON NEW INTENT");
+        ActivitiesWorkFlow.addStandardTransition(this);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.FragmentActivity#onResume()
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        Print.i(TAG, "ON RESUME");
+
+        // Disabled for Samsung and Blackberry (check_version_enabled)
+        CheckVersion.run(getApplicationContext());
+
+        /**
+         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+         * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
+         *           -can-not-perform -this-action-after-onsaveinstancestate-h
+         */
+        if (mOnActivityResultIntent != null && getIntent().getExtras() != null) {
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            mOnActivityResultIntent = null;
+        }
+
+        // Get the cart and perform auto login
+        recoverUserDataFromBackground();
+        AdjustTracker.onResume();
+
+        TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        /**
+         * Validate current version to show the upgrade dialog.
+         * Disabled for Samsung and Blackberry (check_version_enabled).
+         */
+        if (CheckVersion.needsToShowDialog()) {
+            CheckVersion.showDialog(this);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.triggerContentEventProgressapp.FragmentActivity#onStart()
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Print.i(TAG, "ON START");
+    }
+
+    /**
+     * Method used to update the sliding menu and items on action bar. Called from BaseFragment
+     */
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction newNavAction, int actionBarTitleResId, int checkoutStep) {
+        Print.i(TAG, "ON UPDATE BASE COMPONENTS");
+        // Update the app bar layout
+        setAppBarLayout(this.action, newNavAction);
+        // Update options menu and search bar
+        menuItems = enabledMenuItems;
+        hideKeyboard();
+        invalidateOptionsMenu();
+        // Update the sliding menu
+        this.action = newNavAction != null ? newNavAction : NavigationAction.Unknown;
+        // Select step on Checkout
+        setCheckoutHeader(checkoutStep);
+        // Set actionbarTitle
+        setActionTitle(actionBarTitleResId);
+    }
+
+    /**
+     *
+     */
+    public void updateActionForCountry(NavigationAction action) {
+        this.action = action != null ? action : NavigationAction.Unknown;
+    }
+
+    /*
+     * ############## NAVIGATION ##############
+     */
+
+    /**
+     * Set the Action bar style
+     *
+     * @modified sergiopereira
+     */
+    public void setupAppBarLayout() {
+        // Get tab layout
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        // Get tool bar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        mSupportActionBar = getSupportActionBar();
+        if(mSupportActionBar != null) {
+            mSupportActionBar.setDisplayHomeAsUpEnabled(true);
+            mSupportActionBar.setHomeButtonEnabled(true);
+            mSupportActionBar.setDisplayShowTitleEnabled(true);
+            mSupportActionBar.setElevation(0);
+            mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
+        }
+        // Set tab layout
+        setupTabBarLayout();
+    }
+
+    public void setupTabBarLayout() {
+        // Get tab layout
+        mTabLayout = (TabLayout) findViewById(R.id.tabs);
+        mCheckoutTabLayout = (TabLayout) findViewById(R.id.checkout_tabs);
+        mCheckoutTabLayout.setVisibility(android.view.View.VISIBLE);
+        TabLayoutUtils.fillTabLayout(mTabLayout, this);
+        TabLayoutUtils.updateTabCartInfo(mTabLayout);
+        // Checkout Tab
+
+        TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
+        mCheckoutTabLayout.setOnTabSelectedListener(mCheckoutOnTabSelectedListener);
+        android.view.ViewGroup.LayoutParams mParams = mTabLayout.getLayoutParams();
+        mCheckoutTabLayout.getLayoutParams().width = mParams.width;
+    }
+    
+    /*
+     * ############## CONTENT VIEWS ##############
+     */
+
+    private void setAppBarLayout(NavigationAction oldNavAction, NavigationAction newNavAction) {
+        try {
+            // Case action without tab layout
+            if (!TabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
+                mTabLayout.setVisibility(View.GONE);
+                mAppBarLayout.setExpanded(true, true);
+            }
+            // Case action with tab layout
+            else {
+                // Case from other tab
+                if (!TabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
+                    mTabLayout.setVisibility(View.VISIBLE);
+                    mAppBarLayout.setExpanded(true, true);
+                }
+                //noinspection ConstantConditions
+                mTabLayout.getTabAt(TabLayoutUtils.getTabPosition(newNavAction)).select();
+            }
+        } catch (NullPointerException e) {
+            // ...
+        }
+    }
+    
+    /*
+     * ############## INITIAL COUNTRY SELECTION ##############
+     */
+
+    /**
+     * Set Action bar title
+     */
+    private void setActionTitle(int actionBarTitleResId) {
+        // Case hide all
+        if (actionBarTitleResId == IntConstants.ACTION_BAR_NO_TITLE) {
+            hideActionBarTitle();
+        }
+        // Case to set title
+        else {
+            setActionBarTitle(actionBarTitleResId);
+        }
+    }
+
+    /**
+     * Set the navigation drawer.
+     *
+     * @modified sergiopereira
+     */
+    private void setupDrawerNavigation() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerNavigation = findViewById(R.id.fragment_navigation);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                hideKeyboard();
+            }
+
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+    }
+
+    /*
+     * ############### OPTIONS MENU #################
+     */
+
+    /**
+     * Close the navigation drawer if open.
+     *
+     * @modified sergiopereira
+     */
+    public void closeNavigationDrawer() {
+        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation)) {
+            mDrawerLayout.closeDrawer(mDrawerNavigation);
+        }
+    }
+
+    /**
+     *
+     */
+    private void setupContentViews() {
+        Print.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
+        // Get the application horizontalListView
+        //contentContainer = findViewById(R.id.rocket_app_content);
+        // Warning layout
+        try {
+            warningFactory = new WarningFactory(findViewById(R.id.warning));
+            //view for configurable confirmation message when adding to carte, in case of hasCartPopup = true
+            mConfirmationCartMessageView = new ConfirmationCartMessageView(findViewById(R.id.configurableCartView),this);
+        } catch(IllegalStateException ex){
+            Print.e(TAG, ex.getLocalizedMessage(), ex);
+        }
+    }
+
+    /*
+     * ############### ACTION BAR MENU ITEMS #################
+     */
+
+    /**
+     * Updated the action bar and the navigation for initial country selection
+     *
+     * @author sergiopereira
+     */
+    private void updateContentViewsIfInitialCountrySelection() {
+        /**
+         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+         * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
+         *           -can-not-perform -this-action-after-onsaveinstancestate-h
+         */
+        if (getIntent().getExtras() != null) {
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            mOnActivityResultIntent = null;
+        }
+
+        /**
+         * Set the action bar and navigation drawer for initialCountry
+         *
+         * @author sergiopereira
+         */
+        if (initialCountry) {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            mSupportActionBar.setDisplayHomeAsUpEnabled(false);
+            mSupportActionBar.setDisplayShowCustomEnabled(true);
+            mSupportActionBar.setCustomView(R.layout.action_bar_initial_logo_layout);
+        } else {
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            mSupportActionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+//    /**
+//     * Change actionBar visibility if necessary and executes runnable
+//     */
+//    public void setActionBarVisibility(int showActionBar, Runnable onChangeRunnable, int onChangePostDelay) {
+//        boolean actionBarVisible = getSupportActionBar().isShowing();
+//        setActionBarVisibility(showActionBar);
+//
+//        if (getSupportActionBar().isShowing() != actionBarVisible) {
+//            new Handler().postDelayed(onChangeRunnable, onChangePostDelay);
+//        }
+//    }
+
+    /**
+     * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link com.mobile.view.fragments.HomePageFragment#onCreate(Bundle)}.
+     *
+     * @return true or false
+     * @author sergiopereira
+     */
+    public boolean isInitialCountry() {
+        return initialCountry;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Print.d(TAG, "ON OPTIONS MENU: CREATE");
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        // Save the current menu
+        mCurrentMenu = menu;
+        // Flag used to show action bar as default
+        int showActionBar = View.VISIBLE;
+        // Flag to show home or back button
+        isBackButtonEnabled = false;
+        // Setting Menu Options
+        for (MyMenuItem item : menuItems) {
+            switch (item) {
+                case HIDE_AB:
+                    showActionBar = View.GONE;
+                    break;
+                case UP_BUTTON_BACK:
+                    isBackButtonEnabled = true;
+                    break;
+                case SEARCH_VIEW:
+                    setActionSearch(menu);
+                    break;
+                case BASKET:
+                    setActionCart(menu);
+                    break;
+                case MY_PROFILE:
+                    setActionProfile(menu);
+                    break;
+                default:
+                    menu.findItem(item.resId).setVisible(true);
+                    break;
+            }
+        }
+
+        // Set AB UP button
+        setActionBarUpButton();
+        // Set AB visibility
+        setActionBarVisibility(showActionBar);
+        // Return current menu
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /**
+     * When a user selects an option of the menu that is on the action bar. The centralization of this in this activity, prevents all the activities to have to
+     * handle this events
+     *
+     * @param item The menu item that was pressed
+     */
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onOptionsItemSelected
+     * (android.view.MenuItem )
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Print.d(TAG, "ON OPTION ITEM SELECTED: " + item.getTitle());
+        // Get item id
+        int itemId = item.getItemId();
+        // CASE BACK ARROW
+        if (itemId == android.R.id.home && isBackButtonEnabled) {
+            onBackPressed();
+            return true;
+        }
+        // CASE HOME (BURGUER)
+        else if (mDrawerToggle.onOptionsItemSelected(item)) {
+            // Toggle between opened and closed drawer
+            return true;
+        }
+        // CASE CART ACTION
+        else if (itemId == R.id.menu_basket) {
+            // Goto cart
+            onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            return true;
+        }
+        // DEFAULT:
+        else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+     /*
+     * ########### TAB LAYOUT LISTENER ###########
+     */
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.app.Activity#setTitle(int)
+     */
+    @Override
+    public void setTitle(int titleId) {
+        if (titleId != 0) {
+            setTitle(getString(titleId));
+        }
+    }
+
+    /**
+     * Change actionBar visibility if necessary
+     */
+    public void setActionBarVisibility(int showActionBar) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar == null) {
+            Print.w(TAG, "WARNING: AB IS NULL");
+            return;
+        }
+        // Validate flag
+        if (showActionBar == View.VISIBLE) {
+            if (!actionBar.isShowing()) {
+                actionBar.show();
+            }
+        } else if (showActionBar == View.GONE) {
+            actionBar.hide();
+        } else {
+            Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
+        }
+    }    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+        // ...
+    }
+
+    /**
+     * Set the up button in ActionBar
+     *
+     * @author sergiopereira
+     */
+    private void setActionBarUpButton() {
+        if (isBackButtonEnabled) {
+            Print.i(TAG, "SHOW UP BUTTON");
+            mDrawerToggle.setDrawerIndicatorEnabled(false);
+        } else {
+            Print.i(TAG, "NO SHOW UP BUTTON");
+            mDrawerToggle.setDrawerIndicatorEnabled(true);
+        }
+    }    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+        // ...
+    }
+    
+    
+    /*
+     * ############### SEARCH COMPONENT #################
+     */
+
+    /**
+     * Set the share menu item
+     *
+     * @modified sergiopereira
+     */
+    @SuppressWarnings("unused")
+    private void setActionShare() {
+        //menu.findItem(MyMenuItem.BASKET.resId).setVisible(true);
+        //menu.findItem(item.resId).setEnabled(true);
+        //mShareActionProvider = (ShareActionProvider) menu.findItem(item.resId).getActionProvider();
+        //mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener() {
+        //            @Override
+        //            public boolean onShareTargetSelected(ShareActionProvider source, Intent intent) {
+        //                getApplicationContext().startActivity(intent);
+        //                TrackerDelegator.trackItemShared(getApplicationContext(), intent);
+        //                return true;
+        //            }
+        //        });
+        //mShareActionProvider.setShareHistoryFileName(null);
+        //mShareActionProvider.setShareIntent(shareIntent);
+        //setShareIntent(createShareIntent());
+    }
+
+    /**
+     * Set the cart menu item
+     */
+    private void setActionCart(final Menu menu) {
+        MenuItem basket = menu.findItem(MyMenuItem.BASKET.resId);
+        // Validate country
+        if (!initialCountry) {
+            basket.setVisible(true);
+            basket.setEnabled(true);
+            View actionCartView = MenuItemCompat.getActionView(basket);
+            mActionCartCount = (TextView) actionCartView.findViewById(R.id.action_cart_count);
+            View actionCartImage = actionCartView.findViewById(R.id.action_cart_image);
+            actionCartImage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    menu.performIdentifierAction(MyMenuItem.BASKET.resId, 0);
+                }
+            });
+            updateCartInfoInActionBar();
+        } else {
+            basket.setVisible(false);
+        }
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        TabLayoutUtils.tabSelected(this, tab, action);
+    }
+
+    /**
+     * Method used to set the search bar in the Action bar.
+     * @author Andre Lopes
+     * @modified sergiopereira
+     */
+    private void setActionSearch(Menu menu) {
+        Print.i(TAG, "ON OPTIONS MENU: CREATE SEARCH VIEW");
+        // Get search menu item
+        mSearchMenuItem = menu.findItem(R.id.menu_search);
+        // Get search action view
+        mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
+        mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
+        // Get edit text
+        mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
+        //#RTL
+        if (ShopSelector.isRtl()) {
+            mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
+        }
+        // Set font
+        HoloFontLoader.applyDefaultFont(mSearchView);
+        HoloFontLoader.applyDefaultFont(mSearchAutoComplete);
+        // Set the ime options
+        mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        // Set text color for old android versions
+        mSearchAutoComplete.setTextColor(getResources().getColor(R.color.search_edit_color));
+        mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.search_hint_color));
+        // Initial state
+        MenuItemCompat.collapseActionView(mSearchMenuItem);
+        // Calculate the max width to fill action bar
+        setSearchWidthToFillOnExpand();
+        // Set search
+        setActionBarSearchBehavior(mSearchMenuItem);
+        // Set visibility
+        mSearchMenuItem.setVisible(true);
+    }
+
+    private void setSearchWidthToFillOnExpand() {
+        // Get the width of main content
+        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
+        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
+        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
+        // Calculate the search width
+        int searchComponentWidth = mainContentWidth - genericIconWidth;
+        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
+        // Set measures
+        mSearchView.setMaxWidth(searchComponentWidth);
+        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
+    }
+
+    /**
+     * Set the search component
+     */
+    public void setActionBarSearchBehavior(final MenuItem mSearchMenuItem) {
+        Print.d(TAG, "SEARCH MODE: NEW BEHAVIOUR");
+        if (mSearchAutoComplete == null) {
+            Print.w(TAG, "SEARCH COMPONENT IS NULL");
+            return;
+        }
+
+        /*
+         * Set on item click listener
+         */
+        mSearchAutoComplete.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+                Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
+                // Get suggestion
+                Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
+                // Get text suggestion
+                String text = selectedSuggestion.getResult();
+                // Clean edit text
+                mSearchAutoComplete.setText("");
+                mSearchAutoComplete.dismissDropDown();
+                // Collapse search view
+                MenuItemCompat.collapseActionView(mSearchMenuItem);
+                // Save query
+                GetSearchSuggestionsHelper.saveSearchQuery(text);
+                // Show query
+                showSearchCategory(text);
+                if (JumiaApplication.INSTANCE != null) {
+                    JumiaApplication.INSTANCE.trackSearch = true;
+                }
+            }
+        });
+
+        /*
+         * Clear and add text listener
+         */
+        // mSearchAutoComplete.clearTextChangedListeners();
+        mSearchAutoComplete.addTextChangedListener(new TextWatcher() {
+            private final Handler handle = new Handler();
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                handle.removeCallbacks(run);
+                if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened) {
+                    handle.postDelayed(run, SEARCH_EDIT_DELAY);
+                }
+            }
+        });
+
+        /*
+         * Set IME action listener
+         */
+        mSearchAutoComplete.setOnEditorActionListener(new OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_GO) {
+                    String searchTerm = textView.getText().toString();
+                    Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
+                    if (TextUtils.isEmpty(searchTerm)) {
+                        return false;
+                    }
+                    // Clean edit text
+                    textView.setText("");
+                    // Collapse search view
+                    MenuItemCompat.collapseActionView(mSearchMenuItem);
+                    // Save query
+                    GetSearchSuggestionsHelper.saveSearchQuery(searchTerm);
+                    // Show query
+                    showSearchCategory(searchTerm);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        /*
+         * Set expand listener
+         */
+        MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                Print.d(TAG, "SEARCH ON EXPAND");
+                closeNavigationDrawer();
+                isSearchComponentOpened = true;
+                setActionMenuItemsVisibility(false);
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                Print.d(TAG, "SEARCH ON COLLAPSE");
+                isSearchComponentOpened = false;
+                setActionMenuItemsVisibility(true);
+                return true;
+            }
+        });
+
+        /*
+         * Set focus listener, for back pressed with IME
+         */
+        mSearchAutoComplete.setOnFocusChangeListener(new OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    MenuItemCompat.collapseActionView(mSearchMenuItem);
+                    setActionMenuItemsVisibility(true);
+                }
+            }
+        });
+
+    }
+
+    /**
+     * Execute search
+     * @author sergiopereira
+     */
+    protected void showSearchCategory(String searchText) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
+        // Tracking
+        JumiaApplication.INSTANCE.trackSearchCategory = true;
+        TrackerDelegator.trackSearchSuggestions(searchText);
+        // Data
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
+        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+        onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /*
+     * ############### SEARCH TRIGGER #################
+     */
+
+    /**
+     * set all menu items visibility to <code>visible</code>
+     */
+    protected void setActionMenuItemsVisibility(boolean visible) {
+        for (MyMenuItem item : menuItems) {
+            if (item != MyMenuItem.SEARCH_VIEW && item.resId != -1) {
+                MenuItem view = mCurrentMenu.findItem(item.resId);
+                if (view != null) {
+                    view.setVisible(visible);
+                }
+            }
+        }
+    }
+
+    /**
+     * Hide the search component
+     *
+     * @author sergiopereira
+     */
+    public void hideSearchComponent() {
+        Print.d(TAG, "SEARCH COMPONENT: HIDE");
+        try {
+            // Validate if exist search icon and bar
+            if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
+                // Hide search bar
+                MenuItemCompat.collapseActionView(mSearchMenuItem);
+                // Clean autocomplete
+                mSearchAutoComplete.setText("");
+                // Show hidden items
+                setActionMenuItemsVisibility(true);
+                // Forced the IME option on collapse
+                mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+                mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+            }
+        } catch (NullPointerException e) {
+            Print.w(TAG, "WARNING NPE ON HIDE SEARCH COMPONENT");
+        }
+    }
+
+    /**
+     * ############### SEARCH RESPONSES #################
+     */
+
+    /**
+     * Hide only the search bar, used by ChangeCountryFragment
+     * @author sergiopereira
+     */
+    public void hideActionBarItemsForChangeCountry(EnumSet<MyMenuItem> enumSet) {
+        this.menuItems = enumSet;
+        this.action = NavigationAction.Country;
+        updateActionForCountry(NavigationAction.Country);
+        invalidateOptionsMenu();
+    }
+
+    /**
+     * Get suggestions and recent queries
+     *
+     * @author sergiopereira
+     */
+    private void getSuggestions() {
+        beginInMillis = System.currentTimeMillis();
+        String text = mSearchAutoComplete.getText().toString();
+        Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(GetSearchSuggestionsHelper.SEACH_PARAM, text);
+        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), bundle,
+                new IResponseCallback() {
+
+                    @Override
+                    public void onRequestComplete(BaseResponse baseResponse) {
+                        processSuccessSearchEvent(baseResponse);
+                    }                    @Override
+                    public void onRequestError(BaseResponse baseResponse) {
+                        processErrorSearchEvent(baseResponse);
+                    }
+
+
+                });
+    }
+
+    /**
+     * #################### SHARE #####################
+     */
+
+    /**
+     * Called to update the share intent
+     *
+     * @param shareIntent
+     *            the intent to be stored
+     */
+    /*-public void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareHistoryFileName(null);
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }*/
+
+    /**
+     * Process the search error event
+     *
+     * @param baseResponse
+     * @author sergiopereira
+     */
+    private void processErrorSearchEvent(BaseResponse baseResponse) {
+        Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
+
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+
+        // Get query
+        String requestQuery = suggestionsStruct.getSearchParam();
+        Print.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
+        // Validate current search component
+        if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+            Print.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
+            return;
+        }
+        if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) {
+            return;
+        }
+        // Hide dropdown
+        mSearchAutoComplete.dismissDropDown();
+
+        /*-- // Show no network dialog
+        if(!NetworkConnectivity.isConnected(getApplicationContext())) {
+            if(dialog != null) dialog.dismissAllowingStateLoss();
+            // Show
+            dialog = DialogGenericFragment.createNoNetworkDialog(this, new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismissAllowingStateLoss();
+                    if(mSearchAutoComplete != null) getSuggestions();
+                }
+            },
+            new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismissAllowingStateLoss();
+                }
+            }, false);
+            dialog.show(getSupportFragmentManager(), null);
+        }
+         */
+    }
+
+    /**
+     * Process success search event
+     *
+     * @param baseResponse
+     * @author sergiopereira
+     */
+    private void processSuccessSearchEvent(BaseResponse baseResponse) {
+        Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
+        // Get suggestions
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+
+//        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
+        // Get query
+        String requestQuery = suggestionsStruct.getSearchParam();
+        Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
+
+        // Validate current objects
+        if (menuItems == null || mCurrentMenu == null || mSearchAutoComplete == null) {
+            return;
+        }
+        // Validate current menu items
+        if (!menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
+            return;
+        }
+        MenuItem searchMenuItem = mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId);
+        if (searchMenuItem != null && !searchMenuItem.isVisible()) {
+            return;
+        }
+        // Validate current search
+        if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE
+                || !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+            Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
+            return;
+        }
+        // Show suggestions
+        Print.i(TAG, "SEARCH: SHOW DATA FOR QUERY " + requestQuery);
+        Bundle params = new Bundle();
+        params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
+        params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
+        TrackerDelegator.trackLoadTiming(params);
+        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct, requestQuery);
+        mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
+        mSearchAutoComplete.showDropDown();
+    }
+
+    /**
+     * Displays the number of items that are currently on the shopping cart as well as its value. This information is displayed on the navigation list
+     */
+    public void updateCartInfo() {
+        Print.d(TAG, "ON UPDATE CART INFO");
+//        if (JumiaApplication.INSTANCE.getCart() != null) {
+//            Log.d(TAG, "updateCartInfo value = "
+//                    + JumiaApplication.INSTANCE.getCart().getCartValue() + " quantity = "
+//                    + JumiaApplication.INSTANCE.getCart().getCartCount());
+//        }
+        updateCartInfoInActionBar();
+        TabLayoutUtils.updateTabCartInfo(mTabLayout);
+    }
+
+    /**
+     * ################# MY PROFILE #################
+     */
+
+    public void updateCartInfoInActionBar() {
+        Print.d(TAG, "ON UPDATE CART IN ACTION BAR");
+        if (mActionCartCount == null) {
+            Print.w(TAG, "updateCartInfoInActionBar: cant find quantity in actionbar");
+            return;
+        }
+
+        PurchaseEntity currentCart = JumiaApplication.INSTANCE.getCart();
+        // Show 0 while the cart is not updated
+        final String quantity = currentCart == null ? "0" : String.valueOf(currentCart.getCartCount());
+
+        mActionCartCount.post(new Runnable() {
+            @Override
+            public void run() {
+                mActionCartCount.setText(quantity);
+            }
+        });
+
+    }
+
+    /**
+     * Create the share intent to be used to store the needed information
+     *
+     * @return The created intent
+     */
+    public Intent createShareIntent(String extraSubject, String extraText) {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, extraSubject);
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, extraText);
+        return sharingIntent;
+    }
+
+    /**
+     * Method used to set the myProfile Menu
+     *
+     * @author Andre Lopes
+     * @modified sergiopereira
+     */
+    private void setActionProfile(Menu menu) {
+        MenuItem myProfile = menu.findItem(MyMenuItem.MY_PROFILE.resId);
+        // Validate
+        if (myProfile != null) {
+            myProfile.setVisible(true);
+            myProfile.setEnabled(true);
+            myProfileActionProvider = (MyProfileActionProvider) MenuItemCompat.getActionProvider(myProfile);
+            myProfileActionProvider.setFragmentNavigationAction(action);
+            myProfileActionProvider.setAdapterOnClickListener(myProfileClickListener);
+        }
+    }
 
     /**
      * @return the action
@@ -1392,16 +1394,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         return action;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.app.Activity#setTitle(int)
+    /**
+     * Set action
      */
-    @Override
-    public void setTitle(int titleId) {
-        if (titleId != 0) {
-            setTitle(getString(titleId));
-        }
+    public void setAction(NavigationAction action) {
+        this.action = action;
     }
 
     /**
@@ -1421,6 +1418,15 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSupportActionBar.setTitle(title);
     }
 
+//    private void setAppContentLayout() {
+//        if (contentLayoutId == 0) {
+//            return;
+//        }
+//        ViewStub stub = (ViewStub) findViewById(R.id.stub_app_content);
+//        stub.setLayoutResource(contentLayoutId);
+//        contentContainer = stub.inflate();
+//    }
+
     /**
      * Hide title on actionbar
      */
@@ -1431,15 +1437,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         mSupportActionBar.setTitle("");
     }
-
-//    private void setAppContentLayout() {
-//        if (contentLayoutId == 0) {
-//            return;
-//        }
-//        ViewStub stub = (ViewStub) findViewById(R.id.stub_app_content);
-//        stub.setLayoutResource(contentLayoutId);
-//        contentContainer = stub.inflate();
-//    }
 
     /**
      * Show progress.
@@ -1467,6 +1464,16 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
     }
 
+//    public void showKeyboard() {
+//        // Log.d( TAG, "showKeyboard" );
+//        Print.i(TAG, "code1here showKeyboard");
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
+//        // use the above as the method below does not always work
+//        // imm.showSoftInput(getSlidingMenu().getCurrentFocus(),
+//        // InputMethodManager.SHOW_IMPLICIT);
+//    }
+
     public void hideKeyboard() {
         Print.i(TAG, "HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -1478,16 +1485,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
         }
     }
-
-//    public void showKeyboard() {
-//        // Log.d( TAG, "showKeyboard" );
-//        Print.i(TAG, "code1here showKeyboard");
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
-//        // use the above as the method below does not always work
-//        // imm.showSoftInput(getSlidingMenu().getCurrentFocus(),
-//        // InputMethodManager.SHOW_IMPLICIT);
-//    }
 
     public void onLogOut() {
         /*
@@ -1501,13 +1498,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         // Hide progress
         dismissProgress();
-    }
-
-    /**
-     * Set action
-     */
-    public void setAction(NavigationAction action) {
-        this.action = action;
     }
 
     /**
@@ -1653,10 +1643,16 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Update the base components out checkout
      */
-    private void updateBaseComponentsOutCheckout(int visibility) {
+    private void updateBaseComponentsOutCheckout(final int visibility) {
         Print.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
         // Set header visibility
-        mCheckoutTabLayout.setVisibility(visibility);
+        mCheckoutTabLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mCheckoutTabLayout.setVisibility(visibility);
+            }
+        }, 50);
+
 //        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
 //        findViewById(R.id.checkout_header).setVisibility(visibility);
     }
@@ -1666,8 +1662,16 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     private void updateBaseComponentsInCheckout(int visibility) {
         Print.d(TAG, "SET BASE FOR CHECKOUT: SHOW");
+        mCheckoutTabLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(android.view.View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                mCheckoutTabLayout.removeOnLayoutChangeListener(this);
+            }
+
+        });
         // Set header visibility
         mCheckoutTabLayout.setVisibility(visibility);
+
 //        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
 //        findViewById(R.id.checkout_header).setVisibility(visibility);
     }
@@ -1728,37 +1732,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     /**
-     * Handles changes on Checkout tabs.
-     */
-    final TabLayout.OnTabSelectedListener mCheckoutOnTabSelectedListener = new android.support.design.widget.TabLayout.OnTabSelectedListener() {
-        @Override
-        public void onTabSelected(android.support.design.widget.TabLayout.Tab tab) {
-            onCheckoutHeaderSelectedListener(tab.getPosition());
-        }
-
-        @Override
-        public void onTabUnselected(android.support.design.widget.TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onTabReselected(android.support.design.widget.TabLayout.Tab tab) {
-
-        }
-    };
-
-    /**
-     * Handles clicks on Checkout Header
-     * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
-     */
-    final android.view.View.OnClickListener mCheckoutOnClickListener = new android.view.View.OnClickListener() {
-        @Override
-        public void onClick(android.view.View v) {
-            onCheckoutHeaderClickListener((int) v.getTag());
-        }
-    };
-
-    /**
      * Method used to remove all native checkout entries from the back stack on the Fragment Controller
      * Note: This method must be updated in case of adding more screens to native checkout.
      * @author ricardosoares
@@ -1767,10 +1740,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // Remove all native checkout tags
         FragmentController.getInstance().removeAllEntriesWithTag(CheckoutStepManager.getAllNativeCheckout());
     }
-
-    /*
-     * ##### REQUESTS TO RECOVER #####
-     */
 
     /**
      * Recover the user data when comes from background.
@@ -1813,6 +1782,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             }
         });
     }
+
+    /*
+     * ##### REQUESTS TO RECOVER #####
+     */
 
     /**
      * Auto login
@@ -1869,6 +1842,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
         return false;
     }
+
+
+
+
 
 //    /**
 //     * Shows server overload page
