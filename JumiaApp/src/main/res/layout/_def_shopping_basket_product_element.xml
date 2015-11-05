@@ -101,7 +101,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginRight="-5dp"
         android:layout_marginEnd="-5dp"
-        android:background="@drawable/spinnerbutton_background_holo_light"
+        android:background="@drawable/spinner_background"
         android:gravity="bottom|center_horizontal|right|end"
         android:text="Press"
         android:textSize="@dimen/text_s"

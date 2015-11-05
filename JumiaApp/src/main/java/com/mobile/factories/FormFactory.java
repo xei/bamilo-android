@@ -121,6 +121,7 @@ public class FormFactory {
                 parent = createLoginForm(context, form, ctrlParams);
                 break;
             case FormConstants.REGISTRATION_FORM:
+            case FormConstants.USER_DATA_FORM:
                 form.setType(formType);  // Used to show icons
                 parent = createRegistrationForm(context, form, ctrlParams);
                 break;

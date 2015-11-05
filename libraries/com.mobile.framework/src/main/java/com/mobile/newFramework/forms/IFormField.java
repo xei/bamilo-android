@@ -50,4 +50,6 @@ public interface IFormField {
     boolean isDefaultSelection();
 
     boolean isPrefixField();
+
+    boolean isDisabledField();
 }

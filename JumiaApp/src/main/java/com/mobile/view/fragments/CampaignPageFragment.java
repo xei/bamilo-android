@@ -562,7 +562,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             isAddingProductToCart = false;
             hideActivityProgress();
             if(getBaseActivity() != null) {
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART, getString(R.string.added_to_shop_cart_dialog_text));
             }
             break;
         default:
