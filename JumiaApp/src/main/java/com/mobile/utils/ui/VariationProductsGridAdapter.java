@@ -1,6 +1,5 @@
 package com.mobile.utils.ui;
 
-import android.content.Context;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,7 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.mobile.interfaces.OnProductListViewHolderClickListener;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -25,21 +24,15 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
 
     private ArrayList<Variation> mDataSet;
 
-    private Context mContext;
-
-    private OnProductListViewHolderClickListener mOnViewHolderClicked;
+    private OnProductViewHolderClickListener mOnViewHolderClicked;
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
-     * @param context - the application context
      * @param data - list of product regular data
      */
-    public VariationProductsGridAdapter(Context context, ArrayList<Variation> data) {
-        mContext = context;
+    public VariationProductsGridAdapter(ArrayList<Variation> data) {
         mDataSet = data;
     }
-
-
 
     /*
      * (non-Javadoc)
@@ -47,7 +40,6 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
      */
     @Override
     public ProductListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         return new ProductListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.gen_product_list, parent, false));
     }
     
@@ -137,7 +129,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
      * Set the listener the click on view holder.
      * @param listener - the listener
      */
-    public void setOnViewHolderClickListener(OnProductListViewHolderClickListener listener) {
+    public void setOnViewHolderClickListener(OnProductViewHolderClickListener listener) {
         this.mOnViewHolderClicked = listener;
     }
 

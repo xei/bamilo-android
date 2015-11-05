@@ -10,7 +10,7 @@ import com.mobile.view.R;
  *
  * @author spereira
  */
-public class OrderedProductListViewHolder extends ProductListViewHolder {
+public class OrderedProductViewHolder extends ProductListViewHolder {
 
     public TextView quantity;
     public View reorder;
@@ -22,7 +22,7 @@ public class OrderedProductListViewHolder extends ProductListViewHolder {
      *
      * @param view -  the view holder
      */
-    public OrderedProductListViewHolder(View view) {
+    public OrderedProductViewHolder(View view) {
         super(view);
         quantity = (TextView) view.findViewById(R.id.item_quantity);
         delivery = (TextView) view.findViewById(R.id.item_delivery);

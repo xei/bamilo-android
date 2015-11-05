@@ -11,7 +11,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.interfaces.OnProductListViewHolderClickListener;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
@@ -43,7 +43,7 @@ import java.util.Map;
  * This class represents the page for bundle products in a combo. It allows to add checked combo products to cart at once
  * @author alexandrapires
  */
-public class ComboFragment extends BaseFragment implements IResponseCallback, OnProductListViewHolderClickListener, DialogSimpleListFragment.OnDialogListListener {
+public class ComboFragment extends BaseFragment implements IResponseCallback, OnProductViewHolderClickListener, DialogSimpleListFragment.OnDialogListListener {
 
     private BundleList bundleList;
     private String productSku;

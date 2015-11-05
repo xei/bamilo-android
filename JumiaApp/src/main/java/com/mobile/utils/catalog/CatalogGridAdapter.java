@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.mobile.interfaces.OnProductListViewHolderClickListener;
+import com.mobile.controllers.ProductListAdapter;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.catalog.Banner;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.controllers.ProductListAdapter;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.view.R;
 
@@ -52,7 +52,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
     
     private int mLastPosition = -1;
 
-    private OnProductListViewHolderClickListener mOnViewHolderClicked;
+    private OnProductViewHolderClickListener mOnViewHolderClicked;
 
     private String mBannerImage;
 
@@ -206,7 +206,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
      */
     protected void setFavourite(ProductListViewHolder holder, ProductRegular item, int position) {
         // Set favourite data
-        super.setFavourite(holder,item,position);
+        super.setFavourite(holder, item, position);
         holder.favourite.setOnClickListener(this);
     }
 
@@ -267,7 +267,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
      * Set the listener the click on view holder.
      * @param listener - the listener
      */
-    public void setOnViewHolderClickListener(OnProductListViewHolderClickListener listener) {
+    public void setOnViewHolderClickListener(OnProductViewHolderClickListener listener) {
         this.mOnViewHolderClicked = listener;
     }
 

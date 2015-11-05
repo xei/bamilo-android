@@ -14,6 +14,8 @@ public class RestConstants {
     public final static String JSON_SESSION_TAG = "session";
     public final static String JSON_MD5_TAG = "md5";
     public final static String JSON_IS_WISH_LIST_TAG = "is_wishlist";
+    public final static String OTHER_ADDRESS_ID = "id_sales_order_address";
+
 
     // ConfigurationService Tags
     public static final String JSON_METADATA_TAG = "metadata";

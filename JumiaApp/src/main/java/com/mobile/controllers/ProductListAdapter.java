@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
@@ -44,12 +43,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         holder.brand.setText(item.getBrand());
         // Set is new image
         holder.recent.setSelected(item.isNew());
-        //Set quantity if exists
-        if(item instanceof OrderTrackerItem && !((OrderTrackerItem) item).getQuantity().equals("")) {
-            holder.quantity.setText(resources.getString(R.string.my_order_quantity_label) + " " + ((OrderTrackerItem) item).getQuantity());
-            holder.quantity.setVisibility(View.VISIBLE);
-        }
-
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image

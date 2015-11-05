@@ -7,7 +7,7 @@ import android.view.View;
  * Interface to be used like on item click listener with RecyclerView.
  * @author sergiopereira
  */
-public interface OnProductListViewHolderClickListener {
+public interface OnProductViewHolderClickListener {
 
     void onHeaderClick(String targetType, String url, String title);
 

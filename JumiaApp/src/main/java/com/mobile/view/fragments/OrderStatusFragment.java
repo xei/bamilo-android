@@ -26,7 +26,7 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.OrderedProductListViewHolder;
+import com.mobile.utils.ui.OrderedProductViewHolder;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
@@ -219,7 +219,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
             for (OrderTrackerItem item : items) {
                 // Create new layout item
-                OrderedProductListViewHolder holder = new OrderedProductListViewHolder(inflater.inflate(R.layout._def_gen_order_list, group, false));
+                OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout._def_gen_order_list, group, false));
                 // Set image
                 RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
                 // Set name

@@ -456,10 +456,6 @@ public interface AigApiInterface {
 
     String setSellerReview = "setSellerReview";
 
-//    @GET("/")
-//    void getSellerReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
-//    String getSellerReviews = "getSellerReviews";
-
     /*
     * ## ORDERS
     */
