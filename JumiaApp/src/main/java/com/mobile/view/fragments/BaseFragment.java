@@ -41,6 +41,7 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
@@ -593,6 +594,31 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void showContinueShopping() {
         Print.i(TAG, "ON SHOW CONTINUE LAYOUT");
         showErrorFragment(ErrorLayoutFactory.CONTINUE_SHOPPING_LAYOUT, this);
+    }
+
+
+
+/**
+ * Show error with jumia contact info if ssl errr
+ * */
+    protected void showSSLError() {
+        Print.i(TAG, "ON SHOW SSL ERROR LAYOUT");
+        if(mErrorView instanceof ViewStub){
+            // If not inflated yet
+            mErrorView.setTag(mErrorView.getId(), ErrorLayoutFactory.SSL_ERROR);
+            mErrorView.setTag(R.id.stub_listener, this);
+
+            ((ViewStub) mErrorView).inflate();
+
+            mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup) mErrorView);
+            mErrorLayoutFactory.showSSLErrorLayout(CountryPersistentConfigs.getCountryEmail(getBaseActivity().getApplicationContext()), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity().getApplicationContext()));
+
+        } else {
+
+            mErrorLayoutFactory.showSSLErrorLayout(CountryPersistentConfigs.getCountryEmail(getBaseActivity().getApplicationContext()), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity().getApplicationContext()));
+        }
+
+
     }
 
     /**

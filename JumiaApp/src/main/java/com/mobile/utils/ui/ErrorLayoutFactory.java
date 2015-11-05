@@ -39,6 +39,8 @@ public class ErrorLayoutFactory {
 
     public static final int CATALOG_UNEXPECTED_ERROR = 9;
 
+    public static final int SSL_ERROR = 9;
+
     private View mErrorLayout;
 
     private int actualError;
@@ -97,6 +99,33 @@ public class ErrorLayoutFactory {
         show();
     }
 
+
+    /**
+     * Show error layout with jumia contact info in case of ssl errors
+     * @param email - country contact email
+     * @param phone - country contact phone
+     * */
+    public void showSSLErrorLayout(String email, String phone){
+
+        if(this.mErrorLayout != null){
+
+            //set contact info
+            View contactsInfo =  mErrorLayout.findViewById(R.id.contacts_info);
+            contactsInfo.setVisibility(View.VISIBLE);
+
+            com.mobile.components.customfontviews.TextView mEmailText = (com.mobile.components.customfontviews.TextView) contactsInfo.findViewById(R.id.email_text);
+            mEmailText.setText(email);
+
+            com.mobile.components.customfontviews.TextView mPhoneText = (com.mobile.components.customfontviews.TextView) contactsInfo.findViewById(R.id.phone_text);
+            mPhoneText.setText(phone);
+
+        }
+
+        buildSSLErrorLayout();
+        show();
+
+    }
+
     private void buildNoNetworkLayout() {
         new Builder()
                 .setImage(R.drawable.img_connect)
@@ -117,6 +146,17 @@ public class ErrorLayoutFactory {
                 .setButtonMessage(R.string.try_again_retry)
                 .setButtonBackground(R.drawable.btn_grey);
         actualError = UNEXPECTED_ERROR_LAYOUT;
+    }
+
+
+    private void buildSSLErrorLayout(){
+        new Builder()
+                .setImage(R.drawable.ic_warning2)
+                .setPrincipalMessage(R.string.an_error_occurred)
+                .setDetailMessage(R.string.customer_service_info)
+                .setButtonVisible(false)
+                .setRotationVisible(false);
+        actualError = SSL_ERROR;
     }
 
     private void buildCartEmptyLayout(){

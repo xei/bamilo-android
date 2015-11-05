@@ -35,7 +35,6 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -406,7 +405,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Print.d(TAG, "onPageFinished: page was saved failed page");
                 wasLoadingErrorPage = true;
                 getBaseActivity().removeAllNativeCheckoutFromBackStack();
-                showContinueShopping();
+              //  showContinueShopping();
+                showSSLError();
             } else if (isRequestedPage) {
                 showFragmentContentContainer();
                 isRequestedPage = false;
@@ -487,14 +487,14 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_GENERIC, error);
             }
 
-            if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
+        /*    if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
                 handler.proceed();
-            } else {
+            } else {*/
                 String url = view.getUrl();
                 NewRelicTracker.noticeFailureTransaction(url, beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
                 onReceivedError(view, error.getPrimaryError(), error.toString(), url);
                 handler.cancel();
-            }
+    //        }
 
         }
     }
