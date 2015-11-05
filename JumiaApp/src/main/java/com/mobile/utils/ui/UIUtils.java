@@ -107,10 +107,11 @@ public class UIUtils {
         }
     }
 
-    public static void setDrawableByString(ImageView imageView, String name) {
+    public static void setDrawableByString(@NonNull ImageView imageView, String name) {
         Context context = imageView.getContext();
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
         imageView.setImageResource(id);
+
     }
 
 

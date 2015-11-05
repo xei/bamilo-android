@@ -5,7 +5,7 @@
         android:id="@android:id/custom"
         style="@style/form_style"
         android:layout_height="@dimen/checkout_shipping_item_height"
-        android:background="@drawable/spinner_background_holo_orange"
+        android:background="@drawable/spinner_background"
         android:clickable="true"
         android:spinnerMode="dropdown"
         android:visibility="gone" />

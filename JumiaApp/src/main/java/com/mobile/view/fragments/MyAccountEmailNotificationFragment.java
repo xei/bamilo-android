@@ -24,6 +24,7 @@ import com.mobile.newFramework.forms.NewsletterOption;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -296,14 +297,26 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             // Validate the current newsletter form
             ContentValues values = new ContentValues();
             boolean isSubscribed = false;
+            String dummyKey ="";
             for (NewsletterOption option : mNewsletterOptions) {
+                dummyKey = option.name;
                 if (option.isSubscrided) {
                     values.put(option.name, option.value);
                     isSubscribed = true;
                 }
             }
-            // Trigger
-            Print.d(TAG, "VALUES: " + values.toString());
+            //TODO
+            //FIXME
+            /**
+             * This Form needs to be changed on the API side, because the way they detect if we want to unselected a notification,
+             * is by not sending that, so if we want to unselect all newsletters, we have to send and empty request, and the way
+             * our framework is built does not support that kind of action.
+             * So in order to be able to send the request we have to put some dummy data so the event isn't really empty
+             */
+            if(CollectionUtils.isEmpty(values)){
+                values.put(dummyKey, "");
+            }
+
             triggerSubscribeNewsletters(values);
             // Tracking subscritption
             TrackerDelegator.trackNewsletterSubscription(isSubscribed, GTMValues.MYACCOUNT);
