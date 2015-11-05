@@ -4,9 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 
+import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
@@ -115,7 +115,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
             prodItem.varianceButton.setText(simpleVariationValue);
             prodItem.varianceButton.setVisibility(View.VISIBLE);
         } else {
-            prodItem.varianceButton.setVisibility(View.GONE);
+            prodItem.varianceButton.setVisibility(View.INVISIBLE);
         }
     }
 

@@ -233,7 +233,6 @@
     <string name="recent_searches">Recent Searches</string>
     <string name="recently_viewed">Recently Viewed</string>
     <string name="recentlyview_clear_viewed">Clear Recently Viewed</string>
-    <string name="recentlyview_no_searches">No Recently Viewed Products Here</string>
     <string name="recentsearch_clear_searches">Clear Recent Searches</string>
     <string name="recentsearch_no_searches">No Recent Searches</string>
     <string name="register_birthday">Birthday</string>
@@ -368,7 +367,6 @@
     <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
     <string name="kickout_page_text2">We want to provide you with the best possible shopping experience, so we would like to ask you to try again later.</string>
     <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
-
     <string name="review_plural">%d review</string>
     <string name="reviews_plural">%d reviews</string>
     <string name="open">open</string>
@@ -395,7 +393,6 @@
     <string name="buy_the_look">BUY THE LOOK</string>
     <string name="pdv_size">Size</string>
     <string name="buy_now_button">BUY NOW</string>
-    <string name="save_no_saved">You have no saved items at the moment</string>
     <string name="saved">Saved</string>
     <string name="products_added_saved">Item added to Saved</string>
     <string name="products_removed_saved">Item removed from Saved</string>
@@ -452,6 +449,10 @@
     <string name="rate_the_app">Rate the App</string>
     <string name="order_track_check">You can check your order status visiting the My Orders area</string>
     <string name="select_city">Please Select City</string>
+    <string name="no_saved_items">No Saved Items</string>
+    <string name="no_saved_items_subtitle">You don\'t have any saved items.</string>
+    <string name="no_recently_viewed_items">No Recently Viewed Items</string>
+    <string name="no_recently_viewed_items_subtitle">You don\'t have any recently viewed items.</string>
     <string name="items_in_your_order">Items in your order</string>
     <string name="delivered_label">Delivered</string>
     <string name="order_number">Order N.º %s</string>
