@@ -88,6 +88,8 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_delivery"
             style="@style/TextInfo_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignLeft="@id/center_view"
             android:layout_alignStart="@id/center_view"
             android:layout_below="@id/item_discount"
