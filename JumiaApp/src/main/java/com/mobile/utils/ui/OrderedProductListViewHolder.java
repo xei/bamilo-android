@@ -6,11 +6,16 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.view.R;
 
 /**
- * Created by rsoares on 10/22/15.
+ * Class used to represent an order item.
+ *
+ * @author spereira
  */
 public class OrderedProductListViewHolder extends ProductListViewHolder {
 
-    public TextView productDeliveredDate;
+    public TextView quantity;
+    public View reorder;
+    public TextView status;
+    public TextView delivery;
 
     /**
      * Constructor
@@ -19,6 +24,9 @@ public class OrderedProductListViewHolder extends ProductListViewHolder {
      */
     public OrderedProductListViewHolder(View view) {
         super(view);
-        productDeliveredDate = (TextView)view.findViewById(R.id.delivered_date);
+        quantity = (TextView) view.findViewById(R.id.item_quantity);
+        delivery = (TextView) view.findViewById(R.id.item_delivery);
+        reorder = view.findViewById(R.id.order_status_item_button_reorder);
+        status = (TextView) view.findViewById(R.id.order_status_item_text_delivered);
     }
 }

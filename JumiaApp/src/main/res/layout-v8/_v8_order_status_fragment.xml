@@ -16,20 +16,18 @@
             android:layout_height="wrap_content">
 
             <com.mobile.components.customfontviews.TextView
+                android:id="@+id/order_status_title_date"
+                style="@style/TextInfo_2"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:paddingBottom="12dp"
+                android:textColor="@color/black_800" />
+
+            <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_title_nr"
                 style="@style/HeaderStyle"
                 android:text="@string/order_number" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/order_status_title_date"
-                style="@style/TextInfo_2"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
-                android:textColor="@color/black_800"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:paddingBottom="12dp" />
 
         </RelativeLayout>
 
@@ -42,21 +40,21 @@
             app:divider="@drawable/divider_vertical_black_700"
             app:showDividers="middle">
 
-            <!-- INFO -->
-
-            <include
-                android:id="@+id/order_status_info"
-                layout="@layout/_def_order_status_info"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:layout_weight="1" />
-
             <!-- PAYMENT -->
 
             <include
                 android:id="@+id/order_status_payment"
                 layout="@layout/_def_order_status_payment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_weight="1" />
+
+            <!-- INFO -->
+
+            <include
+                android:id="@+id/order_status_info"
+                layout="@layout/_def_order_status_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
@@ -77,20 +75,20 @@
             app:divider="@drawable/divider_vertical_black_700"
             app:showDividers="middle">
 
-            <!-- SHIPPING ADDRESS -->
+            <!-- BILLING ADDRESS -->
 
             <include
-                android:id="@+id/order_status_address_shipping"
+                android:id="@+id/order_status_address_billing"
                 layout="@layout/_def_order_status_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:layout_weight="1" />
 
-            <!-- BILLING ADDRESS -->
+            <!-- SHIPPING ADDRESS -->
 
             <include
-                android:id="@+id/order_status_address_billing"
+                android:id="@+id/order_status_address_shipping"
                 layout="@layout/_def_order_status_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -113,7 +111,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:divider="@drawable/divider_horizontal_black_700"
-            app:showDividers="middle"/>
+            app:showDividers="middle" />
 
     </LinearLayout>
 

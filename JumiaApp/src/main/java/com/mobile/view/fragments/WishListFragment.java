@@ -23,7 +23,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -252,7 +251,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Show the wish list container as first time.
      */
     protected void showWishListContainer(WishList wishList) {
-        WishListGridAdapter listAdapter = new WishListGridAdapter(this.getActivity(), wishList.getProducts(), new OnWishListViewHolderClickListener() {
+        WishListGridAdapter listAdapter = new WishListGridAdapter(wishList.getProducts(), new OnWishListViewHolderClickListener() {
             @Override
             public void onItemClick(View view) {
                 WishListFragment.this.onItemClick(view);

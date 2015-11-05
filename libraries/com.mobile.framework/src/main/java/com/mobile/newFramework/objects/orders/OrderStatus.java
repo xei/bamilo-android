@@ -27,10 +27,12 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
 
     private String mId;
     private double mTotal;
-    private String mPaymentMethod;
+    private String mPaymentName;
+    private String mPaymentType;
     private Address mBillingAddress;
     private Address mShippingAddress;
     private ArrayList<OrderTrackerItem> mItems;
+    private String mDate;
 
     /**
      * OrderTracker empty constructor.
@@ -49,12 +51,15 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get id
         mId = jsonObject.getString(RestConstants.ORDER_NUMBER);
+        // Get date
+        mDate = jsonObject.getString(RestConstants.CREATION_DATE);
         // Get total
         mTotal = jsonObject.getDouble("grand_total"); // RestConstants.TOTAL
         // Get payment method
-        JSONObject jsonPay = jsonObject.optJSONObject(RestConstants.PAYMENT_METHOD);
+        JSONObject jsonPay = jsonObject.optJSONObject(RestConstants.PAYMENT);
         if (jsonPay != null) {
-            mPaymentMethod = jsonPay.optString(RestConstants.LABEL);
+            mPaymentName = jsonPay.optString(RestConstants.LABEL);
+            mPaymentType = jsonPay.optString(RestConstants.TYPE);
         }
         // Get billing address
         JSONObject jsonBilAddress = jsonObject.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
@@ -92,13 +97,16 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
         return RequiredJson.METADATA;
     }
 
-
     public String getId() {
         return this.mId;
     }
 
-    public String getPaymentMethod() {
-        return this.mPaymentMethod;
+    public String getPaymentName() {
+        return this.mPaymentName;
+    }
+
+    public String getPaymentType() {
+        return this.mPaymentType;
     }
 
     public @Nullable ArrayList<OrderTrackerItem> getItems() {
@@ -119,6 +127,10 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
 
     public double getTotal() {
         return mTotal;
+    }
+
+    public String getDate() {
+        return mDate;
     }
 
     /**
@@ -142,7 +154,9 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mId);
         dest.writeDouble(mTotal);
-        dest.writeString(mPaymentMethod);
+        dest.writeString(mDate);
+        dest.writeString(mPaymentName);
+        dest.writeString(mPaymentType);
         if (mItems == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -159,7 +173,9 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
     private OrderStatus(Parcel in) {
         mId = in.readString();
         mTotal = in.readDouble();
-        mPaymentMethod = in.readString();
+        mDate = in.readString();
+        mPaymentName = in.readString();
+        mPaymentType = in.readString();
         if (in.readByte() == 0x01) {
             mItems = new ArrayList<>();
             in.readList(mItems, OrderTrackerItem.class.getClassLoader());

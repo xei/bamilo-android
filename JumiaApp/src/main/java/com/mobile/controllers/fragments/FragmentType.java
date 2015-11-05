@@ -63,8 +63,7 @@ public enum FragmentType {
     VARIATIONS,
     WRITE_REVIEW_SELLER,
     FILTERS,
-    COMBOPAGE,
-    ORDER_STATUS,
+    COMBO_PAGE,
     LOGIN_EMAIL
     ;
 

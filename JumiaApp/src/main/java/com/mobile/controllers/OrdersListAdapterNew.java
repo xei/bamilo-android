@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.orders.Order;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -26,71 +27,47 @@ public class OrdersListAdapterNew extends BaseAdapter {
 
     private Context context;
 
-    private int selectedPosition = -1;
-
     public OrdersListAdapterNew(Context context, ArrayList<Order> orders) {
         this.context = context;
-        this.setOrders(orders);
+        this.orders = orders;
     }
-
-
 
     @Override
     public int getCount() {
-
-        if(CollectionUtils.isNotEmpty(getOrders()))
-            return getOrders().size();
-        return 0;
+        return CollectionUtils.isNotEmpty(orders) ? orders.size() : 0;
     }
-
 
     @Override
     public Order getItem(int position) {
-        if(CollectionUtils.isNotEmpty(getOrders()))
-            return getOrders().get(position);
-        return null;
+        return orders.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return orders.get(position).getNumber();
     }
-
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        if(convertView == null)
-            convertView = LayoutInflater.from(context).inflate(R.layout.myorders_pending_list_item, parent, false);
-
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.my_orders_list_item, parent, false);
+        }
         Order order = getOrders().get(position);
-
-        TextView mOrderPrice = (TextView) convertView.findViewById(R.id.order_price);
-        mOrderPrice.setText(order.getmOrderTotal());
-
-        TextView mOrderNumber = (TextView) convertView.findViewById(R.id.order_number);
-        mOrderNumber.setText(order.getmOrderNumber());
-
-        TextView mOrderDate = (TextView) convertView.findViewById(R.id.order_date);
-        mOrderDate.setText(order.getmDate());
-
+        ((TextView) convertView.findViewById(R.id.order_item_price)).setText(CurrencyFormatter.formatCurrency(order.getTotal()));
+        ((TextView) convertView.findViewById(R.id.order_item_number)).setText(String.valueOf(order.getNumber()));
+        ((TextView) convertView.findViewById(R.id.order_item_date)).setText(order.getDate());
         return convertView;
     }
-
-
 
     /**
      * Updates the Orders array list
      *
-     * @param orders
-     *            The array list containing the orders
+     * @param orders The array list containing the orders
      */
     public void updateOrders(ArrayList<Order> orders) {
         this.setOrders(orders);
         this.notifyDataSetChanged();
     }
-
 
 
     public void appendOrders(Collection<? extends Order> newOrders) {
@@ -101,15 +78,6 @@ public class OrdersListAdapterNew extends BaseAdapter {
         }
         notifyDataSetChanged();
     }
-
-    public void setSelectedPosition(int position){
-        selectedPosition = position;
-    }
-
-    public int getSelectedPosition(){
-        return selectedPosition;
-    }
-
 
     public ArrayList<Order> getOrders() {
         return orders;

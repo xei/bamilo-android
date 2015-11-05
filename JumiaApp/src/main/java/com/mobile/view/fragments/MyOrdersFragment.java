@@ -10,8 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.LogOut;
 import com.mobile.controllers.OrdersListAdapterNew;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -25,13 +25,14 @@ import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -39,28 +40,22 @@ import java.util.Map;
 
 /**
  * @author Paulo Carvalho
- *
  */
-public class MyOrdersFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener {
+public class MyOrdersFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnScrollListener {
 
     private static final String TAG = MyOrdersFragment.class.getSimpleName();
 
-    private ArrayList<Order> ordersList = new ArrayList<>();
+    private ArrayList<Order> mOrdersList;
 
-    private ListView ordersListView;
+    private ListView mOrdersListView;
 
-    OrdersListAdapterNew ordersAdapter;
+    private OrdersListAdapterNew mOrdersAdapter;
 
-    private View emptyOrdersView;
+    private int mPageIndex = IntConstants.FIRST_PAGE;
 
-    private static final int NUM_ORDERS = 25;
+    boolean isLoadingMore;
 
-    private int pageIndex = 1;
-
-    boolean mIsLoadingMore;
-
-    private OrderStatusFragment fragment;
-
+    private View mOrderStatusContainer;
 
     /**
      * Empty constructor
@@ -68,30 +63,16 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     public MyOrdersFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyOrders,
-                R.layout.myorders_fragment_main,
-                IntConstants.ACTION_BAR_NO_TITLE,
+                R.layout.my_orders_fragment_main,
+                R.string.my_orders_label,
                 KeyboardState.NO_ADJUST_CONTENT);
     }
-
 
     /**
      * Get instance
      */
     public static MyOrdersFragment getInstance() {
-        MyOrdersFragment fragment = new MyOrdersFragment();
-        return fragment;
-    }
-
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
-     */
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
+        return new MyOrdersFragment();
     }
 
     /*
@@ -103,13 +84,10 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        
-        if(savedInstanceState != null) {
-            if(savedInstanceState.containsKey("orders"))
-                ordersList = savedInstanceState.getParcelableArrayList("orders");
-            //Print.i("ORDER", "ON LOAD SAVED STATE ordersList size:" + ordersList.size());
+        if (savedInstanceState != null) {
+            mOrdersList = savedInstanceState.getParcelableArrayList(RestConstants.ORDERS);
+            mPageIndex = savedInstanceState.getInt(RestConstants.PAGE);
         }
-
     }
 
     /*
@@ -122,146 +100,52 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-
-        if(savedInstanceState != null) {
-            if(savedInstanceState.containsKey("orders"))
-                ordersList = savedInstanceState.getParcelableArrayList("orders");
-
-        }
-
-        loadViews(view);
-
+        // Get views
+        mOrdersListView = (ListView) view.findViewById(R.id.orders_list);
+        // Get container order status
+        mOrderStatusContainer = view.findViewById(R.id.my_orders_frame_order_status);
     }
 
-
-    /**
-     * Load views
-     * */
-    private void loadViews(View view)
-    {
-        ordersListView = (ListView) view.findViewById(R.id.orders_list);
-        ordersListView.setOnScrollListener(onScrollListener);
-        ordersListView.setOnItemClickListener(this);
-        emptyOrdersView = view.findViewById(R.id.empty_orders_layout);
-
-        if(CollectionUtils.isEmpty(ordersList)) {
-           triggerGetOrderList();
-        }else {
-            showListOrders();
-        }
-    }
-
-
-    /**
-     * If true, shows the order list
-     * */
-    private void showListOrders() {
-
-        emptyOrdersView.setVisibility(View.GONE);
-        ordersListView.setVisibility(View.VISIBLE);
-
-        if (ordersAdapter == null) {
-            ordersAdapter = new OrdersListAdapterNew(this.getBaseActivity().getApplicationContext(), ordersList);
-
-        } else
-            ordersAdapter.updateOrders(ordersList);
-
-        ordersListView.setAdapter(ordersAdapter);
-
-        if (DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
-
-            //shows the first position
-            ordersAdapter.setSelectedPosition(0);
-            //update order details view in landscape
-            getOrderStatus(0);
-
-        }
-
-
-    }
-
-
-    /**
-     * appends an array list to the adapter when scrooling
-     * */
-    private void appendToList()
-    {
-        if(ordersAdapter != null) {
-            ordersAdapter.appendOrders(ordersList);
-            //update the orders list here
-            ordersList = ordersAdapter.getOrders();
-        }
-    }
-
-
-    /**
-     * Shows empty screen
-     * */
-    private void showEmptyScreen()
-    {
-        ordersListView.setVisibility(View.GONE);
-        emptyOrdersView.setVisibility(View.VISIBLE);
-    }
-
-
-
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onStart()
-     */
     @Override
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+        // Validate the state
+        onValidateDataState();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onResume()
-     */
     @Override
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        triggerGetOrderList();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.view.fragments.MyFragment#onPause()
-     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE STATE");
+        // Save the state
+        outState.putParcelableArrayList(RestConstants.ORDERS, mOrdersList);
+        outState.putInt(RestConstants.PAGE, mPageIndex);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.view.fragments.MyFragment#onStop()
-     */
     @Override
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onDestroyView()
-     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY VIEW");
     }
-
 
     @Override
     public void onDestroy() {
@@ -269,146 +153,70 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON DESTROY");
     }
 
-
-
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        onErrorEvent(baseResponse);
-    }
-
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-    }
-
-
-
-
-
-    protected void onSuccessEvent(BaseResponse baseResponse) {
-
-        Print.d(TAG, "ON SUCCESS EVENT");
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-
-        // Hide dialog progress
-        hideActivityProgress();
-
-        if(super.handleSuccessEvent(baseResponse))
-            return;
-
-        EventType eventType = baseResponse.getEventType();
-
-        switch (eventType) {
-            case GET_MY_ORDERS_LIST_EVENT:
-                MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
-                ordersList =  orders.getOrders();
-
-                if(CollectionUtils.isEmpty(ordersList) && pageIndex == 1){
-                    // show error/empty screen
-                    showEmptyScreen();
-
-                }else {
-                    if(pageIndex > 1) {
-                        appendToList();
-                        mIsLoadingMore = false;
-                    }
-                    else
-                        showListOrders();
-                }
-                break;
-
-            default:
-                //show empty screen by default
-                showEmptyScreen();
-                break;
-        }
-
-    }
-
-
-
-
-
-    protected void onErrorEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "ON ERROR EVENT");
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-        }
-
-        boolean errorHandled = false;
-        if(super.handleErrorEvent(baseResponse))
-            errorHandled = true;
-
-
-        EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        switch (eventType) {
-            case GET_MY_ORDERS_LIST_EVENT:
-                if(!errorHandled){
-                    Print.w("ORDER", "ERROR Visible");
-                    if(null == JumiaApplication.CUSTOMER){
-                        triggerLogin();
-                    } else {
-                        Print.w("ORDER", "ERROR Visible");
-                        //used for when the user session expires on the server side
-                        try{
-                            boolean isNotLoggedIn = false;
-                            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                                Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                                if (errorMessages != null) {
-                                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
-                                        triggerLogin();
-                                        isNotLoggedIn =true;
-                                    }
-                                }
-                            }
-                            if(!isNotLoggedIn){
-                                showEmptyScreen();
-                              //  showProductsLoading(false);
-                            }
-                        } catch (ClassCastException | NullPointerException e){
-                            showEmptyScreen();
-                         //   showProductsLoading(false);
-                        }
-                    }
-                } else {
-                    Print.w("ORDER", "ERROR notVisible");
-                }
-                break;
-            default:
-                break;
-        }
-
-    }
-
+    /*
+     * ######### LAYOUT #########
+     */
 
     /**
-     * trigger request for the list order or update d adapter
+     * Method used to validate the current state.<br>
+     * - Case logged in or not<br>
+     * - Case first page<br>
+     * - Case restore saved state<br>
      */
-    private void triggerGetOrderList() {
-        Bundle bundle = new Bundle();
-        if(ordersList != null && ordersList.size() > 0) {
-            if (JumiaApplication.CUSTOMER == null) {
-                triggerLogin();
-                return;
-            }
-
-        } else {
-            bundle.putInt(GetMyOrdersListHelper.PAGE_NUMBER, pageIndex);
-            bundle.putInt(GetMyOrdersListHelper.PER_PAGE, NUM_ORDERS);
-            triggerContentEventProgress(new GetMyOrdersListHelper(), bundle, this);
+    private void onValidateDataState() {
+        Print.i(TAG, "ON VALIDATE DATA STATE");
+        // Validate customer is logged in
+        if (!JumiaApplication.isCustomerLoggedIn()) {
+            // Remove this entry from back stack
+            FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ORDERS.toString());
+            // Goto Login and next WishList
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ORDERS);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
-
+        // Case first time
+        else if (CollectionUtils.isEmpty(mOrdersList)) {
+            triggerGetOrderList(mPageIndex);
+        }
+        // Case recover saved state
+        else {
+            showOrders(mOrdersList);
+        }
     }
 
+    /**
+     * If true, shows the order list
+     */
+    private void showOrders(ArrayList<Order> mOrdersList) {
+        mOrdersListView.setOnScrollListener(this);
+        mOrdersListView.setOnItemClickListener(this);
+        if (mOrdersAdapter == null) {
+            mOrdersAdapter = new OrdersListAdapterNew(this.getBaseActivity().getApplicationContext(), mOrdersList);
+        } else {
+            mOrdersAdapter.updateOrders(mOrdersList);
+        }
+        mOrdersListView.setAdapter(mOrdersAdapter);
+        // Case frame for order status
+        if(mOrderStatusContainer != null) {
+            mOrdersListView.performItemClick(null, 0, mOrdersAdapter.getItemId(0));
+        }
+        // Show container
+        showFragmentContentContainer();
+    }
 
+    /**
+     * appends an array list to the adapter when scrooling
+     */
+    private void appendToList(ArrayList<Order> orders) {
+        if (mOrdersAdapter != null) {
+            mOrdersAdapter.appendOrders(orders);
+            mOrdersList = mOrdersAdapter.getOrders();
+        }
+    }
 
+    /*
+     * ######### LISTENERS #########
+     */
 
     @Override
     protected void onClickRetryButton(View view) {
@@ -417,118 +225,129 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    /**
-     * re-direct to login view
-     */
-    private void triggerLogin(){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ORDERS);
-        bundle.putInt(ConstantsIntentExtra.MY_ORDER_POS, 1);
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-
-
-
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Print.i(TAG, "onSaveInstanceState");
-
-        if(ordersList != null && ordersList.size() > 0)
-            outState.putParcelableArrayList("orders",ordersList );
-
-
-    }
-
-    /**
-     * scroll listener in order to load more products when scroolls
-     */
-    private OnScrollListener onScrollListener = new OnScrollListener() {
-
-        @Override
-        public void onScrollStateChanged(AbsListView view, int scrollState) {
-
-        }
-
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-            // Sample calculation to determine if the last item is fully
-            // visible.
-            if (totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount) {
-                if (!mIsLoadingMore) {
-                    new Handler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mIsLoadingMore = true;
-                            Print.w("ORDER", "LOAD MORE");
-                            pageIndex++;
-                            getMoreProducts();
-                        }
-                    });
-                }
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        // Sample calculation to determine if the last item is fully visible.
+        if (totalItemCount != 0 && firstVisibleItem + visibleItemCount == totalItemCount) {
+            if (!isLoadingMore) {
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        isLoadingMore = true;
+                        Print.w("ORDER", "LOAD MORE");
+                        triggerGetOrderList(mPageIndex++);
+                    }
+                });
             }
         }
-    };
-
-
-
-    /**
-     * function that gets more products when the user is scrooling
-     */
-    private void getMoreProducts(){
-
-        Bundle bundle = new Bundle();
-        bundle.putInt(GetMyOrdersListHelper.PAGE_NUMBER, pageIndex + 1);
-        bundle.putInt(GetMyOrdersListHelper.PER_PAGE, NUM_ORDERS);
-        triggerContentEventNoLoading(new GetMyOrdersListHelper(), bundle, this);
-
     }
 
-
-
-/**
- * Clicking on an list item allows to get the order status
- * */
+    /**
+     * Clicking on an list item allows to get the order status
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        getOrderStatus(position);
-
-    }
-
-
-
-
-    /**
-     * Goes to Order Status fragment
-     * */
-    private void getOrderStatus(int selectedPosition)
-    {
-        Order selectedOrder =  ordersAdapter.getItem(selectedPosition);
+        // Create bundle with info
+        Order selectedOrder = (Order) parent.getAdapter().getItem(position);
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR,selectedOrder.getmOrderNumber());
-
-        if (!DeviceInfoHelper.isTabletInLandscape(getBaseActivity())){
-
+        bundle.putString(ConstantsIntentExtra.ARG_1, String.valueOf(selectedOrder.getNumber()));
+        bundle.putString(ConstantsIntentExtra.ARG_2, selectedOrder.getDate());
+        // Validate if frame order status
+        if (mOrderStatusContainer == null) {
             getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            FragmentController.addChildFragment(this, mOrderStatusContainer.getId(), OrderStatusFragment.getNestedInstance(bundle), OrderStatusFragment.TAG);
         }
-        else
-        {
-            //update order details view in landscape
-            fragment = new OrderStatusFragment();
-            fragment.setArguments(bundle);
-
-            FragmentController.addChildFragment(this,R.id.myOrderStatusFragment, fragment, OrderStatusFragment.TAG);
-        }
-
     }
 
+    /*
+     * ######### TRIGGERS #########
+     */
 
+    private void triggerGetOrderList(int page) {
+        if (page == IntConstants.FIRST_PAGE) {
+            triggerContentEvent(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
+        } else {
+            triggerContentEventNoLoading(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
+        }
+    }
 
+    /*
+     * ######### RESPONSES #########
+     */
 
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Print.i(TAG, "ON SUCCESS EVENT");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Hide dialog progress
+        hideActivityProgress();
+        // Validate event
+        EventType eventType = baseResponse.getEventType();
+        switch (eventType) {
+            case GET_MY_ORDERS_LIST_EVENT:
+                MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
+                ArrayList<Order> orderList = orders.getOrders();
+                // Validate
+                if (CollectionUtils.isEmpty(orderList) && mPageIndex == 1) {
+                    showErrorFragment(ErrorLayoutFactory.NO_ORDERS_LAYOUT, this);
+                } else {
+                    if (mPageIndex > 1) {
+                        appendToList(orderList);
+                        isLoadingMore = false;
+                    } else
+                        showOrders(orderList);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Print.d(TAG, "ON ERROR EVENT");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+        }
+
+        if (super.handleErrorEvent(baseResponse)) {
+            return;
+        }
+
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        switch (eventType) {
+            case GET_MY_ORDERS_LIST_EVENT:
+                Print.w("ORDER", "ERROR Visible");
+                //used for when the user session expires on the server side
+                try {
+                    if (errorCode == ErrorCode.REQUEST_ERROR) {
+                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
+                        if (errorMessages != null) {
+                            if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
+                                LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
+                                onValidateDataState();
+                            }
+                        }
+                    }
+                } catch (ClassCastException | NullPointerException e) {
+                    showFragmentErrorRetry();
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
 }

@@ -39,6 +39,8 @@ public class ErrorLayoutFactory {
 
     public static final int CATALOG_UNEXPECTED_ERROR = 9;
 
+    public static final int NO_ORDERS_LAYOUT = 10;
+
     private View mErrorLayout;
 
     private int actualError;
@@ -91,6 +93,9 @@ public class ErrorLayoutFactory {
                 case CATALOG_UNEXPECTED_ERROR:
                     buildCatalogUnexpectedErrorLayout();
                     break;
+                case NO_ORDERS_LAYOUT:
+                    buildNoOrdersLayout();
+                    break;
             }
         }
         //show
@@ -123,7 +128,6 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.img_emptycart)
                 .setPrincipalMessage(R.string.order_no_items)
-//                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
                 .setRotationVisible(false)
@@ -135,12 +139,22 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.img_nofavourites)
                 .setPrincipalMessage(R.string.save_no_saved)
-    //                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
                 .setRotationVisible(false)
                 .setButtonBackground(R.drawable.btn_orange);
         actualError = NO_FAVOURITES_LAYOUT;
+    }
+
+    private void buildNoOrdersLayout(){
+        new Builder()
+                .setImage(R.drawable.img_nofavourites)
+                .setPrincipalMessage(R.string.no_orders)
+                .setDetailMessageVisible(false)
+                .setButtonMessage(R.string.continue_shopping)
+                .setRotationVisible(false)
+                .setButtonBackground(R.drawable.btn_orange);
+        actualError = NO_ORDERS_LAYOUT;
     }
 
     private void buildNoRecentSearchesLayout(){

@@ -28,7 +28,8 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_postcode"
         style="@style/TextCaption"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        android:visibility="gone"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_phone"

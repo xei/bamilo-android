@@ -14,6 +14,7 @@ import com.mobile.newFramework.utils.EventType;
 
 /**
  * Order status helper
+ * @author spereira
  */
 public class GetOrderStatusHelper extends SuperBaseHelper {
 
@@ -23,20 +24,16 @@ public class GetOrderStatusHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.SMALL_TASK;
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.trackOrder);
     }
 
-    public static Bundle createBundle(String orderNr) {
+    public static Bundle createBundle(String orderNr, EventTask task) {
         ContentValues values = new ContentValues();
         values.put(RestConstants.ORDER_NR, orderNr);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, task);
         return bundle;
     }
 }

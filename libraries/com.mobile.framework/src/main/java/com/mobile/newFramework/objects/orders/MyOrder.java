@@ -22,7 +22,6 @@ public class MyOrder implements IJSONSerializable {
 
     private int currentPage = 0;
     private int numPages = 0;
-    private int totalOrders = 0;
     private ArrayList<Order> orders;
 
 
@@ -44,16 +43,14 @@ public class MyOrder implements IJSONSerializable {
             currentPage = paginationObject.optInt(RestConstants.CURRENT_PAGE, 0);
             numPages = paginationObject.optInt(RestConstants.TOTAL_PAGES, 0);
 
-            totalOrders = jsonObject.optInt(RestConstants.JSON_ORDER_TOTAL_NUM_TAG, -1);
+            int totalOrders = jsonObject.optInt(RestConstants.JSON_ORDER_TOTAL_NUM_TAG, -1);
             Print.d( "ORDERS TOTAL: " + totalOrders);
             orders = new ArrayList<>();
             // Get order history
-            JSONArray ordersArray = jsonObject.optJSONArray(RestConstants.JSON_ORDERS_TAG);
+            JSONArray ordersArray = jsonObject.optJSONArray(RestConstants.ORDERS);
             if (null != ordersArray && ordersArray.length() > 0)
                 for (int i = 0; i < ordersArray.length(); i++) {
                     Order order = new Order(ordersArray.getJSONObject(i));
-                    if (totalOrders > 0)
-                        order.setTotalOrdersHistory(totalOrders);
                     orders.add(order);
                 }
 
@@ -86,10 +83,6 @@ public class MyOrder implements IJSONSerializable {
 
     public int getNumPages() {
         return numPages;
-    }
-
-    public int getTotalOrders() {
-        return totalOrders;
     }
 
     public ArrayList<Order> getOrders() {

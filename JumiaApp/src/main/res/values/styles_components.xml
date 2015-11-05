@@ -182,6 +182,15 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
+    <style name="AigButton.TextOrange" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/accent</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+    </style>
+
     <!-- RADIO BUTTON -->
 
     <style name="FormRadioButton" parent="SingleLineStyle">

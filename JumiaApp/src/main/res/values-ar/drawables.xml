@@ -19,4 +19,6 @@
     <item type="drawable" name="ic_overseas_corner">@drawable/ic_overseas_corner_rtl</item>
     <item type="drawable" name="ic_arrow_combo">@drawable/ic_arrow_combo_rtl</item>
     <item type="drawable" name="ic_check_success_message">@drawable/ic_check_success_message_rtl</item>
+    <item type="drawable" name="drop_shadow_right">@drawable/drop_shadow_left</item>
+    <item type="drawable" name="drop_shadow_left">@drawable/drop_shadow_right</item>
 </resources>

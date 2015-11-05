@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:layout_weight="@dimen/checkout_main_container"
         android:orientation="vertical"
-        app:divider="@drawable/divider_black_700"
+        app:divider="@drawable/divider_horizontal_black_700"
         app:showDividers="middle">
 
         <!-- CONTENT -->

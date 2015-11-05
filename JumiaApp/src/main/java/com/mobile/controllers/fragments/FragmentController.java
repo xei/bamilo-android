@@ -249,7 +249,6 @@ public class FragmentController {
             }
             @Override
             public void run() {
-//                Log.e(TAG, "Doing work: addEntryToBackStack");
                 removeAllEntriesWithTag(tag);
                 addToBackStack(tag);
             }

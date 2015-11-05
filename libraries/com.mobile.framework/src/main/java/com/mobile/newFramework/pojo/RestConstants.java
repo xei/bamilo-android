@@ -268,7 +268,7 @@ public class RestConstants {
     /**
      * Order History TAGS
      */
-    public static final String JSON_ORDERS_TAG = "orders";
+    public static final String ORDERS = "orders";
     public static final String JSON_ORDER_DATE_TAG = "date";
     public static final String JSON_ORDER_TOTAL_TAG = "total";
     public static final String JSON_ORDER_CONF_SKU_TAG = "config_sku";
@@ -285,7 +285,7 @@ public class RestConstants {
 
     public static final String JSON_ORDER_ID_TAG = "order_id";
     public static final String JSON_ORDER_NUMBER_TAG = "order_nr";
-    public static final String JSON_ORDER_CREATION_DATE_TAG = "creation_date";
+    public static final String CREATION_DATE = "creation_date";
     public static final String JSON_ORDER_LAST_UPDATE_TAG = "last_order_update";
     public static final String PAYMENT_METHOD = "payment_method";
     public static final String PAYMENT = "payment";
@@ -460,6 +460,7 @@ public class RestConstants {
     public static final String MOBILE_ABOUT = "mobile_about_cms";
     public static final String ORDER_NUMBER = "order_number";
     public static final String ORDER_NR = "ordernr";
+    public static final String UPDATE_AT = "updated_at";
 
 
 }

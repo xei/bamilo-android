@@ -23,6 +23,7 @@ public class OrderTrackerItem extends ProductRegular {
     private String delivery;
     private String quantity;
     private String status;
+    private String updateDate;
 
 
     /**
@@ -44,11 +45,15 @@ public class OrderTrackerItem extends ProductRegular {
         return delivery;
     }
 
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
     /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
-     */
+         * (non-Javadoc)
+         *
+         * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+         */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
@@ -56,6 +61,7 @@ public class OrderTrackerItem extends ProductRegular {
 		quantity = jsonObject.getString(RestConstants.JSON_QUANTITY_TAG);
         JSONObject statusObject = jsonObject.getJSONObject(RestConstants.JSON_ORDER_STATUS_TAG);
         status = statusObject.optString(RestConstants.LABEL);
+        updateDate = statusObject.optString(RestConstants.UPDATE_AT);
         return true;
     }
 
@@ -96,6 +102,7 @@ public class OrderTrackerItem extends ProductRegular {
         dest.writeString(delivery);
         dest.writeString(quantity);
         dest.writeString(status);
+        dest.writeString(updateDate);
     }
 
     protected OrderTrackerItem(Parcel in) {
@@ -103,6 +110,7 @@ public class OrderTrackerItem extends ProductRegular {
         delivery = in.readString();
         quantity = in.readString();
         status = in.readString();
+        updateDate = in.readString();
     }
 
     @SuppressWarnings("unused")

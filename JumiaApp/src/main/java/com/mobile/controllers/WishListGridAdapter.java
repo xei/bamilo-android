@@ -1,6 +1,5 @@
 package com.mobile.controllers;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,23 +18,17 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 
 /**
- * Created by rsoares on 10/2/15.
+ *
+ * @author rsoares
  */
 public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapter.WishListProductViewHolder> implements View.OnClickListener {
 
     private ArrayList<ProductMultiple> products;
-    private Context context;
     private OnWishListViewHolderClickListener listener;
 
-    public WishListGridAdapter(Context context, ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
+    public WishListGridAdapter(ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
         this.products = products;
-        this.context = context;
         this.listener = listener;
-    }
-
-    public WishListGridAdapter(Context context, ArrayList<ProductMultiple> products) {
-        this.context = context;
-        this.products = products;
     }
 
     /**
@@ -177,14 +170,13 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         if (listener != null) {
             // Get view id
             int id = view.getId();
-
             // Case delete
             if (id == R.id.button_delete) listener.onClickDeleteItem(view);
-                // Case add to cart
+            // Case add to cart
             else if (id == R.id.button_shop) listener.onClickAddToCart(view);
-                // Case simple
+            // Case simple
             else if (id == R.id.button_variant) listener.onClickVariation(view);
-
+            //
             else if(id == R.id.addabletocart_item_container) listener.onItemClick(view);
         }
     }

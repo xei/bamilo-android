@@ -116,7 +116,7 @@ public class OrderTracker implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
 
 //		order_id = jsonObject.optString(RestConstants.JSON_ORDER_ID_TAG);
-        setCreation_date(jsonObject.optString(RestConstants.JSON_ORDER_CREATION_DATE_TAG));
+        setCreation_date(jsonObject.optString(RestConstants.CREATION_DATE));
         setPayment_method(jsonObject.optJSONObject(RestConstants.PAYMENT).optString("label"));
         setLast_order_update(jsonObject.optString(RestConstants.JSON_ORDER_LAST_UPDATE_TAG));
 

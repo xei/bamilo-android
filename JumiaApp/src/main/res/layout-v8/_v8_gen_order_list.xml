@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/grid_row_style"
+    android:layout_height="150dp"
+    android:baselineAligned="false"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="20dp">
+
+    <!-- STATUS INFO -->
+
+    <include layout="@layout/_def_delivered" />
+
+    <!-- ITEM INFO -->
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <View
+            android:id="@+id/center_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_centerVertical="true" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_brand"
+            style="@style/TextCaption"
+            android:layout_width="wrap_content"
+            android:layout_alignRight="@id/center_view"
+            android:textColor="@color/black_800" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_name"
+            style="@style/TextBody_1"
+            android:layout_alignRight="@id/center_view"
+            android:layout_below="@id/item_brand"
+            android:maxLines="2"
+            android:singleLine="false"
+            android:textColor="@color/black" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_quantity"
+            style="@style/TextBody_3"
+            android:layout_alignRight="@id/center_view"
+            android:layout_below="@id/item_name"
+            android:maxLines="2"
+            android:singleLine="false"
+            android:textColor="@color/black_800" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_discount"
+            style="@style/TextBody_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/center_view"
+            android:layout_below="@id/item_quantity"
+            android:layout_marginLeft="4dp"
+            android:textColor="@color/black" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_regprice"
+            style="@style/TextBody_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/item_discount"
+            android:layout_toLeftOf="@id/item_discount"
+            android:textColor="@color/black_800" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_delivery"
+            style="@style/TextInfo_2"
+            android:layout_alignRight="@id/center_view"
+            android:layout_below="@id/item_discount"
+            android:layout_marginTop="6dp"
+            android:drawableRight="@drawable/ic_order_delivery"
+            android:drawablePadding="6dp"
+            android:textColor="@color/black_700" />
+
+    </RelativeLayout>
+
+    <!-- IMAGE -->
+
+    <include
+        android:id="@+id/image_loadable"
+        layout="@layout/image_loadable"
+        android:layout_width="@dimen/catalog_list_item_image_width"
+        android:layout_height="@dimen/catalog_list_item_image_height"
+        android:layout_marginLeft="@dimen/margin_60px"
+        android:background="@color/color_accent" />
+
+
+</LinearLayout>
