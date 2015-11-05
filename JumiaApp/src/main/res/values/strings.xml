@@ -453,4 +453,8 @@
     <string name="no_saved_items_subtitle">You don\'t have any saved items.</string>
     <string name="no_recently_viewed_items">No Recently Viewed Items</string>
     <string name="no_recently_viewed_items_subtitle">You don\'t have any recently viewed items.</string>
+    <string name="an_error_occurred">An Error Occurred</string>
+    <string name="customer_service_info">Please, try to contact our Customer Service for more info.</string>
+    <string name="phone_contact">Phone:</string>
+    <string name="email_contact">Email:</string>
 </resources>
