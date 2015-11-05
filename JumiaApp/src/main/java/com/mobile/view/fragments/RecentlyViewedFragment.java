@@ -36,7 +36,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -208,7 +207,10 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         getBaseActivity().warningFactory.hideWarning();
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(null);
-        showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this);
+        showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this,
+                getString(R.string.no_recently_viewed_items),
+                getString(R.string.no_recently_viewed_items_subtitle),
+                R.drawable.ic_recentlyviewed_empty);
     }
 
     /**

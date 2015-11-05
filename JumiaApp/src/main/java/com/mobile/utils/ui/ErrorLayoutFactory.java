@@ -43,6 +43,22 @@ public class ErrorLayoutFactory {
 
     private int actualError;
 
+    private String mPrincipalMessage;
+
+    private String mDetailsMessage;
+
+    private int mImageMessage;
+
+    /**
+     * constructor where the label to show can be dynamic
+     */
+    public void showErrorLayout(int error, int errorImage, String principalMessage, String detailMessage){
+        mPrincipalMessage = principalMessage;
+        mDetailsMessage = detailMessage;
+        mImageMessage = errorImage;
+        showErrorLayout(error);
+    }
+
     /**
      * Create a new instance of ErrorLayoutFactory.
      *
@@ -73,15 +89,6 @@ public class ErrorLayoutFactory {
                 case CART_EMPTY_LAYOUT:
                     buildCartEmptyLayout();
                     break;
-                case NO_FAVOURITES_LAYOUT:
-                    buildNoFavouritesLayout();
-                    break;
-                case NO_RECENT_SEARCHES_LAYOUT:
-                    buildNoRecentSearchesLayout();
-                    break;
-                case NO_RECENTLY_VIEWED_LAYOUT:
-                    buildNoRecentlyViewedLayout();
-                    break;
                 case CONTINUE_SHOPPING_LAYOUT:
                     buildContinueShoppingLayout();
                     break;
@@ -91,10 +98,61 @@ public class ErrorLayoutFactory {
                 case CATALOG_UNEXPECTED_ERROR:
                     buildCatalogUnexpectedErrorLayout();
                     break;
+                // Generic Error layout
+                case NO_FAVOURITES_LAYOUT:
+                case NO_RECENT_SEARCHES_LAYOUT:
+                case NO_RECENTLY_VIEWED_LAYOUT:
+                    showGenericError(error);
+                    break;
             }
         }
         //show
         show();
+    }
+
+//    private void buildNoFavouritesLayout(){
+//        new Builder()
+//                .setImage(R.drawable.ic_saved_empty)
+//                .setPrincipalMessage(R.string.no_saved_items)
+//                .setDetailMessage(R.string.no_saved_items_subtitle)
+//                .setButtonVisible(false)
+//                .setRotationVisible(false);
+//        actualError = NO_FAVOURITES_LAYOUT;
+//    }
+//
+//    private void buildNoRecentSearchesLayout(){
+//        new Builder()
+//                .setImage(R.drawable.img_norecentsearch)
+//                .setPrincipalMessage(R.string.recentsearch_no_searches)
+//                .setDetailMessage(R.string.server_error)
+//                .setButtonVisible(false)
+//                .setRotationVisible(false);
+//        actualError = NO_RECENT_SEARCHES_LAYOUT;
+//    }
+//
+//    private void buildNoRecentlyViewedLayout(){
+//        new Builder()
+//                .setImage(R.drawable.ic_recentlyviewed_empty)
+//                .setPrincipalMessage(R.string.no_recently_viewed_items)
+//                .setDetailMessage(R.string.no_recently_viewed_items_subtitle)
+//                .setButtonVisible(false)
+//                .setRotationVisible(false);
+//        actualError = NO_RECENTLY_VIEWED_LAYOUT;
+//    }
+
+
+
+    /**
+     * show dynamic error message
+     */
+    private void showGenericError(int error) {
+        new Builder()
+                .setImage(mImageMessage)
+                .setPrincipalMessage(mPrincipalMessage)
+                .setDetailMessage(mDetailsMessage)
+                .setButtonVisible(false)
+                .setRotationVisible(false);
+        actualError = error;
     }
 
     private void buildNoNetworkLayout() {
@@ -129,36 +187,6 @@ public class ErrorLayoutFactory {
                 .setRotationVisible(false)
                 .setButtonBackground(R.drawable.btn_orange);
         actualError = CART_EMPTY_LAYOUT;
-    }
-
-    private void buildNoFavouritesLayout(){
-        new Builder()
-                .setImage(R.drawable.ic_saved_empty)
-                .setPrincipalMessage(R.string.no_saved_items)
-                .setDetailMessage(R.string.no_saved_items_subtitle)
-                .setButtonVisible(false)
-                .setRotationVisible(false);
-        actualError = NO_FAVOURITES_LAYOUT;
-    }
-
-    private void buildNoRecentSearchesLayout(){
-        new Builder()
-                .setImage(R.drawable.img_norecentsearch)
-                .setPrincipalMessage(R.string.recentsearch_no_searches)
-                .setDetailMessage(R.string.server_error)
-                .setButtonVisible(false)
-                .setRotationVisible(false);
-        actualError = NO_RECENT_SEARCHES_LAYOUT;
-    }
-
-    private void buildNoRecentlyViewedLayout(){
-        new Builder()
-                .setImage(R.drawable.ic_recentlyviewed_empty)
-                .setPrincipalMessage(R.string.no_recently_viewed_items)
-                .setDetailMessage(R.string.no_recently_viewed_items_subtitle)
-                .setButtonVisible(false)
-                .setRotationVisible(false);
-        actualError = NO_RECENTLY_VIEWED_LAYOUT;
     }
 
     private void buildContinueShoppingLayout() {
@@ -261,12 +289,26 @@ public class ErrorLayoutFactory {
             return this;
         }
 
+        Builder setPrincipalMessage(@StringRes String message){
+            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_label);
+            messageView.setVisibility(View.VISIBLE);
+            ((TextView)messageView).setText(message);
+            return this;
+        }
+
         Builder setPrincipalMessageVisible(boolean isToShow){
             mErrorLayout.findViewById(R.id.fragment_root_error_label).setVisibility(isToShow ? View.VISIBLE : View.GONE);
             return this;
         }
 
         Builder setDetailMessage(@StringRes int message){
+            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
+            messageView.setVisibility(View.VISIBLE);
+            ((TextView)messageView).setText(message);
+            return this;
+        }
+
+        Builder setDetailMessage(@StringRes String message){
             View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
             messageView.setVisibility(View.VISIBLE);
             ((TextView)messageView).setText(message);

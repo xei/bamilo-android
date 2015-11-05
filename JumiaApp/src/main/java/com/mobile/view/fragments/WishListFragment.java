@@ -233,7 +233,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON SHOW CONTENT");
         // Case empty
         if (wishList == null || !wishList.hasProducts()) {
-            showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
+            showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this,
+                    getString(R.string.no_saved_items),
+                    getString(R.string.no_saved_items_subtitle),
+                    R.drawable.ic_saved_empty);
         }
         // Case first time
         else if(mWishList == null || wishList.getPage() == IntConstants.FIRST_PAGE) {
@@ -302,7 +305,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             // Case empty
             if(adapter.isEmpty()) {
                 mWishList = null;
-                showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
+                showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this,
+                        getString(R.string.no_saved_items),
+                        getString(R.string.no_saved_items_subtitle),
+                        R.drawable.ic_saved_empty);
             }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             Log.i(TAG, "WARNING: EXCEPTION ON REMOVE SELECTED POSITION: " + mSelectedPositionToDelete);

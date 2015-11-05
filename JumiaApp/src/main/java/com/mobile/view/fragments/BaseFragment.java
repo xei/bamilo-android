@@ -628,6 +628,24 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
+     * Show error layout based on type. if the view is not inflated, it will be in first place.
+     */
+    protected final void showErrorFragment(int type, OnClickListener listener, @NonNull String principalMessage, @NonNull String detailMessage, @NonNull int errorImage){
+        if(mErrorView instanceof ViewStub){
+            // If not inflated yet
+            mErrorView.setTag(mErrorView.getId(), type);
+            mErrorView.setTag(R.id.stub_listener, listener);
+            ((ViewStub) mErrorView).inflate();
+        } else {
+            //If already inflated
+            View retryButton = mErrorView.findViewById(R.id.fragment_root_error_button);
+            retryButton.setOnClickListener(listener);
+            retryButton.setTag(R.id.fragment_root_error_button, type);
+            mErrorLayoutFactory.showErrorLayout(type, errorImage, principalMessage, detailMessage);
+        }
+    }
+
+    /**
      * Show the fall back view from the root layout
      */
     protected void showFragmentFallBack() {
@@ -688,13 +706,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public void showInfoAddToShoppingCartOOS() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_OUT_OF_STOCK);
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_OUT_OF_STOCK, getString(R.string.product_outof_stock));
         }
     }
 
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED);
+            getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED, getString(R.string.products_removed_saved));
         }
     }
 

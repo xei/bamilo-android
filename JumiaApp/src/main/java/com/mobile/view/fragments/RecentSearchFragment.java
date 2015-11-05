@@ -22,7 +22,6 @@ import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -154,8 +153,10 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
      * @author Andre Lopes
      */
     protected void showEmpty() {
-//        showFragmentEmpty(R.string.recentsearch_no_searches, R.drawable.img_norecentsearch, R.string.continue_shopping, this);
-        showErrorFragment(ErrorLayoutFactory.NO_RECENT_SEARCHES_LAYOUT, this);
+        showErrorFragment(ErrorLayoutFactory.NO_RECENT_SEARCHES_LAYOUT, this,
+                getString(R.string.recentsearch_no_searches),
+                getString(R.string.server_error),
+                R.drawable.img_norecentsearch);
     }
 
     /**
