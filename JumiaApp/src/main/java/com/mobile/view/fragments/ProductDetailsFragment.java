@@ -36,7 +36,6 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
@@ -55,7 +54,6 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -1124,15 +1122,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                //if has cart popup, show configurable confirmation message with cart total price
-                if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
-                    PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
-                    getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
-                }
-                else{
-                    //show regular message add item to cart
-                    showInfoAddToShoppingCartCompleted();
-                }
+                showAddToCartCompleteMessage(baseResponse);
                 break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();

@@ -29,6 +29,7 @@ import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
@@ -42,6 +43,7 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
@@ -1175,7 +1177,21 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return campaigns;
     }
 
-
+    /**
+     * validate if it show regular warning or confirmation cart message
+     * @param baseResponse
+     */
+    protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
+        //if has cart popup, show configurable confirmation message with cart total price
+        if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
+            PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
+            getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
+        }
+        else{
+            //show regular message add item to cart
+            showInfoAddToShoppingCartCompleted();
+        }
+    }
 
 
 }

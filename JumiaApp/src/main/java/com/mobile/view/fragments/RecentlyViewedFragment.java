@@ -18,7 +18,6 @@ import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.LastViewedTableHelper;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -30,7 +29,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -460,15 +458,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT");
-                //if has cart popup, show configurable confirmation message with cart total price
-                if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
-                    PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
-                    getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
-                }
-                else{
-                    //show regular message add item to cart
-                    showInfoAddToShoppingCartCompleted();
-                }
+                showAddToCartCompleteMessage(baseResponse);
                 int position = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getCurrentPos();
                 updateLayoutAfterAction(position);
                 break;
