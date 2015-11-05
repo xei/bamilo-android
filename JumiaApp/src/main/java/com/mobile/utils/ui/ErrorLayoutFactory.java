@@ -51,14 +51,11 @@ public class ErrorLayoutFactory {
      * @throws java.lang.IllegalStateException If layout is null.
      */
     public ErrorLayoutFactory(ViewGroup errorLayout){
-
         if(errorLayout  == null){
             throw new IllegalStateException("Error Layout not initialized");
         }
-
         actualError = -1;
-
-        this.mErrorLayout = errorLayout;
+        mErrorLayout = errorLayout;
     }
 
     public void showErrorLayout(int error) {
@@ -93,7 +90,7 @@ public class ErrorLayoutFactory {
                     buildNoRecentlyViewedLayout(error);
                     break;
                 case NO_ORDERS_LAYOUT:
-                    buildNoOrdersLayout();
+                    buildNoOrdersLayout(error);
                     break;
             }
         }
@@ -113,7 +110,9 @@ public class ErrorLayoutFactory {
         showGenericError(error, R.drawable.ic_recentlyviewed_empty, R.string.no_recently_viewed_items, R.string.no_recently_viewed_items_subtitle);
     }
 
-
+    private void buildNoOrdersLayout(int error){
+        showGenericError(error, R.drawable.ic_orders_empty, R.string.no_orders_message, R.string.no_orders);
+    }
 
     /**
      * show dynamic error message
@@ -246,7 +245,7 @@ public class ErrorLayoutFactory {
             return this;
         }
 
-        Builder setImageVisibible(boolean isToShow){
+        Builder setImageVisibility(boolean isToShow){
             mErrorLayout.findViewById(R.id.fragment_root_error_image).setVisibility(isToShow ? View.VISIBLE : View.GONE);
             return this;
         }
