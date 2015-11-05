@@ -24,6 +24,7 @@ import com.mobile.newFramework.forms.NewsletterOption;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -304,7 +305,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             }
             // Trigger
             Print.d(TAG, "VALUES: " + values.toString());
-            triggerSubscribeNewsletters(values);
+            if(CollectionUtils.isNotEmpty(values))
+                triggerSubscribeNewsletters(values);
             // Tracking subscritption
             TrackerDelegator.trackNewsletterSubscription(isSubscribed, GTMValues.MYACCOUNT);
         } catch (NullPointerException e) {

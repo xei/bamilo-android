@@ -19,6 +19,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/HeaderMyAccountStyle"
+                android:textStyle="bold"
                 android:text="@string/section_title_account" />
         </LinearLayout>
 
@@ -33,6 +34,7 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/HeaderMyAccountStyle"
+            android:textStyle="bold"
             android:text="@string/section_title_notification" />
 
         </LinearLayout>
@@ -48,6 +50,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/HeaderMyAccountStyle"
+                android:textStyle="bold"
                 android:text="@string/choose_language" />
         </LinearLayout>
 
@@ -62,6 +65,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/more" />
             </LinearLayout>
 
@@ -77,6 +81,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/app_social" />
 
             </LinearLayout>
