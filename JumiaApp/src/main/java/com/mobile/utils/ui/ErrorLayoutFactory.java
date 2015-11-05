@@ -102,7 +102,7 @@ public class ErrorLayoutFactory {
     }
 
     private void buildNoRecentSearchesLayout(int error){
-        showGenericError(error, R.drawable.img_norecentsearch, R.string.recentsearch_no_searches, R.string.server_error);
+        showGenericError(error, R.drawable.img_norecentsearch, R.string.recentsearch_no_searches, R.string.recent_searches_empty);
     }
 
     private void buildNoRecentlyViewedLayout(int error){
