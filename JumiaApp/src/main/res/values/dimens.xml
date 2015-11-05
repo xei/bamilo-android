@@ -518,4 +518,8 @@
     <integer name="config_add_cart_anim_duration">500</integer>
 
     <dimen name="confirm_msg_padding">6dp</dimen>
+
+    <integer name="order_status_left_side_weight">2</integer>
+    <integer name="order_status_right_side_weight">3</integer>
+
 </resources>
