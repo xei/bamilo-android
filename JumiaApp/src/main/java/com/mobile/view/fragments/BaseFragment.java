@@ -686,6 +686,21 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
+    public void showInfoAddToShoppingCartOOS() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_OUT_OF_STOCK, getString(R.string.product_outof_stock));
+        }
+    }
+
+    public void showInfoAddToSaved() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED, getString(R.string.products_removed_saved));
+        }
+    }
+
+
+
+
     /**
      * Set the inflated stub
      * @param stub The view stub

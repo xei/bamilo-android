@@ -73,15 +73,6 @@ public class ErrorLayoutFactory {
                 case CART_EMPTY_LAYOUT:
                     buildCartEmptyLayout();
                     break;
-                case NO_FAVOURITES_LAYOUT:
-                    buildNoFavouritesLayout();
-                    break;
-                case NO_RECENT_SEARCHES_LAYOUT:
-                    buildNoRecentSearchesLayout();
-                    break;
-                case NO_RECENTLY_VIEWED_LAYOUT:
-                    buildNoRecentlyViewedLayout();
-                    break;
                 case CONTINUE_SHOPPING_LAYOUT:
                     buildContinueShoppingLayout();
                     break;
@@ -91,10 +82,46 @@ public class ErrorLayoutFactory {
                 case CATALOG_UNEXPECTED_ERROR:
                     buildCatalogUnexpectedErrorLayout();
                     break;
+                case NO_FAVOURITES_LAYOUT:
+                    buildNoFavouritesLayout(error);
+                    break;
+                case NO_RECENT_SEARCHES_LAYOUT:
+                    buildNoRecentSearchesLayout(error);
+                    break;
+                case NO_RECENTLY_VIEWED_LAYOUT:
+                    buildNoRecentlyViewedLayout(error);
+                    break;
             }
         }
         //show
         show();
+    }
+
+    private void buildNoFavouritesLayout(int error){
+        showGenericError(error, R.drawable.ic_saved_empty, R.string.no_saved_items, R.string.no_saved_items_subtitle);
+    }
+
+    private void buildNoRecentSearchesLayout(int error){
+        showGenericError(error, R.drawable.img_norecentsearch, R.string.recentsearch_no_searches, R.string.server_error);
+    }
+
+    private void buildNoRecentlyViewedLayout(int error){
+        showGenericError(error, R.drawable.ic_recentlyviewed_empty, R.string.no_recently_viewed_items, R.string.no_recently_viewed_items_subtitle);
+    }
+
+
+
+    /**
+     * show dynamic error message
+     */
+    private void showGenericError(int error, int image, int principalMessage, int detailMessage) {
+        new Builder()
+                .setImage(image)
+                .setPrincipalMessage(principalMessage)
+                .setDetailMessage(detailMessage)
+                .setButtonVisible(false)
+                .setRotationVisible(false);
+        actualError = error;
     }
 
     private void buildNoNetworkLayout() {
@@ -129,42 +156,6 @@ public class ErrorLayoutFactory {
                 .setRotationVisible(false)
                 .setButtonBackground(R.drawable.btn_orange);
         actualError = CART_EMPTY_LAYOUT;
-    }
-
-    private void buildNoFavouritesLayout(){
-        new Builder()
-                .setImage(R.drawable.img_nofavourites)
-                .setPrincipalMessage(R.string.save_no_saved)
-    //                    .setDetailMessage(R.string.server_error)
-                .setDetailMessageVisible(false)
-                .setButtonMessage(R.string.continue_shopping)
-                .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
-        actualError = NO_FAVOURITES_LAYOUT;
-    }
-
-    private void buildNoRecentSearchesLayout(){
-        new Builder()
-                .setImage(R.drawable.img_norecentsearch)
-                .setPrincipalMessage(R.string.recentsearch_no_searches)
-//                    .setDetailMessage(R.string.server_error)
-                .setDetailMessageVisible(false)
-                .setButtonMessage(R.string.continue_shopping)
-                .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
-        actualError = NO_RECENT_SEARCHES_LAYOUT;
-    }
-
-    private void buildNoRecentlyViewedLayout(){
-        new Builder()
-                .setImage(R.drawable.img_norecentview)
-                .setPrincipalMessage(R.string.recentlyview_no_searches)
-//                    .setDetailMessage(R.string.server_error)
-                .setDetailMessageVisible(false)
-                .setButtonMessage(R.string.continue_shopping)
-                .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
-        actualError = NO_RECENTLY_VIEWED_LAYOUT;
     }
 
     private void buildContinueShoppingLayout() {
@@ -241,6 +232,12 @@ public class ErrorLayoutFactory {
             mErrorLayout.findViewById(R.id.fragment_root_error_button).setBackgroundResource(background);
             return this;
         }
+
+        Builder setButtonVisible(boolean isToShow){
+            mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(isToShow ? View.VISIBLE : View.GONE);
+            return this;
+        }
+
 
         Builder setImage(@DrawableRes int image){
             View imageView = mErrorLayout.findViewById(R.id.fragment_root_error_image);

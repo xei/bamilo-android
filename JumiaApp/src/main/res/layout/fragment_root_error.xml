@@ -13,7 +13,7 @@
 
         <include
             android:layout_width="match_parent"
-            android:layout_height="@dimen/retry_layout_height"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_20px"
             layout="@layout/error_info_layout" />
 
