@@ -62,7 +62,6 @@ public class JumiaApplication extends A4SApplication {
     // Account variables
     public static Customer CUSTOMER;
     private PersistentSessionStore mCustomerUtils;
-//    private boolean loggedIn = false;
 
     /**
      * General Persistent Variables

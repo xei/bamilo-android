@@ -38,13 +38,8 @@ public class RestConstants {
     public static final String JSON_CODE_TAG = "code";
     public static final String JSON_NUMBER_TAG = "number";
     public static final String JSON_VAL_TAG = "val";
-    public static final String JSON_PRODUCTS_COUNT_TAG = "products_count";
     public static final String JSON_HEX_VALUE_TAG = "hex_value";
     public static final String JSON_INTERVAL_TAG = "interval";
-
-    public static final String JSON_IS_SELECTED_TAG = "is_selected";
-    public static final String JSON_IS_SECTION_BRAND_TAG = "is_section_brand";
-
 
     // FormData Tags
     public static final String JSON_ACTION_TAG = "action";
@@ -170,9 +165,7 @@ public class RestConstants {
     public static final String JSON_CHILDREN_TAG = "children";
     public static final String JSON_API_URL_TAG = "api_url";
     public static final String JSON_CATEGORY_URL_TAG = URL;
-    public static final String JSON_HAS_CHILDREN = "has_children";
-    public static final String JSON_CATEGORY_VERTICAL = "vertical";
-    
+
     // ShoppingCart Tags
     public static final String CART = "cart";
     public static final String TOTAL_PRODUCTS = "total_products";
@@ -274,7 +267,6 @@ public class RestConstants {
     public static final String JSON_ORDER_TOTAL_TAG = "total";
     public static final String JSON_ORDER_CONF_SKU_TAG = "config_sku";
     public static final String JSON_ORDER_UNIT_PRICE_TAG = "unit_price";
-    public static final String JSON_ORDER_PAYMENT_TAG = "payment";
     public static final String JSON_ORDER_TOTAL_NUM_TAG = "total_orders";
 
     /**
@@ -282,26 +274,19 @@ public class RestConstants {
      */
     public static final String JSON_ORDER_NR_TAG = "orderNr";
     public static final String JSON_GRAND_TOTAL_TAG = "grandTotal";
-    public static final String JSON_GRAND_TOTAL = "grand_total";
     public static final String JSON_GRAND_TOTAL_CONVERTED_TAG = "grandTotal_converted";
 
-    public static final String JSON_ORDER_ID_TAG = "order_id";
     public static final String JSON_ORDER_NUMBER_TAG = "order_nr";
     public static final String CREATION_DATE = "creation_date";
-    public static final String JSON_ORDER_LAST_UPDATE_TAG = "last_order_update";
     public static final String PAYMENT_METHOD = "payment_method";
     public static final String PAYMENT = "payment";
     public static final String PAYMENT_METHOD_FORM = "paymentMethodForm";
     public static final String JSON_ORDER_STATUS_TAG = "status";
-    public static final String JSON_ORDER_ITEM_STATUS_TAG = "item_status";
-    public static final String JSON_ORDER_ITEM_STATUS_UPDATE_TAG = "last_status_change";
     public static final String SHIPPING_METHOD = "shipping_method";
     public static final String JSON_ORDER_BIL_ADDRESS_TAG = "billing_address";
     public static final String JSON_ORDER_SHIP_ADDRESS_TAG = "shipping_address";
     public static final String JSON_ORDER_COUPON_CODE_TAG = "coupon_code";
 
-    public static final String JSON_ORDER_NUMBER = "order_number";
-    public static final String JSON_GRAND_TOTAL = "grand_total";
 
     /**
      * Address
@@ -379,7 +364,6 @@ public class RestConstants {
      */
 
     public static final String JSON_BUNDLE_ID = "bundle_id";
-    public static final String JSON_BUNDLE_NAME = "bundle_name";
     public static final String JSON_BUNDLE_PRICE = "bundle_price";
     public static final String JSON_BUNDLE_PRICE_CONVERTED = "bundle_price_converted";
     public static final String JSON_BUNDLE_LEADER_POS = "bundle_leader_config_position";

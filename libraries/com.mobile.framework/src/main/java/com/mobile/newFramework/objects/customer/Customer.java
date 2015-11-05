@@ -49,10 +49,10 @@ public class Customer implements IJSONSerializable, Parcelable {
             // Entity
             jsonObject = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY_TAG);
             // Data
-            id = jsonObject.optString(RestConstants.ID);
+            id = jsonObject.getString(RestConstants.ID);
             firstName = jsonObject.getString(RestConstants.FIRST_NAME);
             lastName = jsonObject.getString(RestConstants.LAST_NAME);
-            email = jsonObject.optString(RestConstants.EMAIL);
+            email = jsonObject.getString(RestConstants.EMAIL);
             gender = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
             birthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG);
             // Get wish list products
