@@ -24,6 +24,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/more" />
             </LinearLayout>
 
@@ -39,6 +40,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/app_social" />
             </LinearLayout>
 
@@ -66,19 +68,25 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/section_title_account" />
             </LinearLayout>
 
             <!-- NOTIFICATION SETTINGS -->
 
-            <com.mobile.components.customfontviews.TextView
-                style="@style/HeaderMyAccountStyle"
-                android:text="@string/section_title_notification" />
-            <FrameLayout
-                android:id="@+id/account_preferences_frame"
+            <LinearLayout
+                android:id="@+id/notification_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:orientation="vertical" >
+
+                <com.mobile.components.customfontviews.TextView
+                    style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
+                    android:text="@string/section_title_notification" />
+
+            </LinearLayout>
 
             <!-- LANGUAGE SETTINGS -->
 
@@ -91,6 +99,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
+                    android:textStyle="bold"
                     android:text="@string/choose_language" />
             </LinearLayout>
         </LinearLayout>

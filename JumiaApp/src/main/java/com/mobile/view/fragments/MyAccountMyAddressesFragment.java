@@ -86,6 +86,9 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
         if (orderSummaryLayout != null) {
             orderSummaryLayout.setVisibility(View.GONE);
         }
+
+        //hide horizontal divider in this case
+        view.findViewById(R.id.divider_horizontal).setVisibility(View.GONE);
     }
 
     @Override

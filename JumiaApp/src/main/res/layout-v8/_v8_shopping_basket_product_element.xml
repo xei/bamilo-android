@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/bottom_spacer"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/spinnerbutton_background_holo_light"
+        android:background="@drawable/spinner_background"
         android:gravity="bottom|center_horizontal|left"
         android:text="Press"
         android:textSize="@dimen/text_s"

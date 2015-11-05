@@ -385,7 +385,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case catalog was recover
         else {
             onRecoverCatalogContainer(mCatalogPage);
-            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
+            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree);
         }
     }
 
@@ -978,7 +978,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
             onUpdateCatalogContainer(catalogPage);
             if (catalogPage.getPage() == 1) {
-                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, getCatalogCategory());
+                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree);
             }
         }
         // Case invalid success response
@@ -1110,14 +1110,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
         bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, 0);
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    private String getCatalogCategory() {
-        String mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.CATEGORY);
-        if (!TextUtils.isEmpty(mSearchQuery)) {
-            mSearchQuery = mQueryValues.getAsString(GetCatalogPageHelper.QUERY);
-        }
-        return mSearchQuery;
     }
 
     /**

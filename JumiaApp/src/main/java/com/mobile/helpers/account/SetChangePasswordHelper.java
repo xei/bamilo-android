@@ -65,4 +65,9 @@ public class SetChangePasswordHelper extends SuperBaseHelper {
         Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
     }
 
+    public static Bundle createBundle(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
+    }
 }
