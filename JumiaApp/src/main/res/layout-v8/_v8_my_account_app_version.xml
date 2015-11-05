@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/app_version_label"
+        android:layout_below="@id/app_version_label"
         android:layout_marginLeft="@dimen/my_account_gen_dimen"
         android:textColor="@color/black_800" />
 
