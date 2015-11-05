@@ -21,8 +21,8 @@
         android:text="Rs.399"
         android:layout_marginLeft="5dp"
         android:layout_marginStart="5dp"
-        android:layout_toRightOf="@id/pdv_text_special_price"
-        android:layout_toEndOf="@id/pdv_text_special_price"
+        android:layout_toRightOf="@id/item_discount"
+        android:layout_toEndOf="@id/item_discount"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content" />
 

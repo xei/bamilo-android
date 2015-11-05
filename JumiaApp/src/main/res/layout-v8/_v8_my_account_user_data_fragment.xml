@@ -3,136 +3,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
-    android:layoutDirection="ltr"
     android:orientation="vertical">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/user_data_title"
+            style="@style/HeaderStyle"
+            android:layout_alignParentTop="true"
+            android:text="@string/personal_data_label"
+            android:textStyle="bold"/>
 
         <LinearLayout
-            style="@style/rounded_box"
+            android:id="@+id/user_data_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
+            android:layout_below="@id/user_data_title"
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginRight="@dimen/rounded_margin_mid"
             android:orientation="vertical"
             android:paddingBottom="@dimen/rounded_margin_mid">
 
-            <com.mobile.components.customfontviews.TextView
-                style="@style/rounded_box_title_grey"
-                android:gravity="right|center_vertical"
-                android:paddingLeft="@dimen/rounded_margin_small"
-                android:paddingRight="@dimen/rounded_margin_small"
-                android:text="@string/personal_data_label" />
-
-            <View style="@style/divider_horizontal_orange" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/margin_mid">
-
-                <RelativeLayout
-                    android:id="@+id/name_wrapper"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginLeft="@dimen/rounded_margin_small"
-                    android:orientation="horizontal">
-
-                    <com.mobile.components.customfontviews.TextView
-                        android:id="@+id/clientFirstName"
-                        style="@style/text_normal"
-                        android:layout_width="match_parent"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginRight="5dp"
-                        android:layout_toLeftOf="@+id/clientLastName"
-                        android:focusable="false"
-                        android:gravity="right"
-                        android:text="last" />
-
-                    <com.mobile.components.customfontviews.TextView
-                        android:id="@+id/clientLastName"
-                        style="@style/text_normal"
-                        android:layout_width="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:focusable="false"
-                        android:gravity="right"
-                        android:text="first" />
-                </RelativeLayout>
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/clientEmail"
-                    style="@style/text_normal"
-                    android:layout_width="match_parent"
-                    android:layout_below="@id/name_wrapper"
-                    android:layout_marginLeft="@dimen/rounded_margin_small"
-                    android:focusable="false"
-                    android:gravity="right"
-                    android:text="email" />
-            </RelativeLayout>
         </LinearLayout>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/user_data_save_button"
+            style="@style/AigButton.Active"
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginBottom="@dimen/rounded_margin_mid"
+            android:layout_below="@id/user_data_container"
+            android:text="@string/save_label" />
+
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/change_password_title"
+            style="@style/HeaderStyle"
+            android:layout_below="@id/user_data_save_button"
+            android:text="@string/password"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/new_password_layout"
-            style="@style/rounded_box"
+            android:id="@+id/change_password_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="0dp"
-            android:orientation="vertical">
+            android:layout_below="@+id/change_password_title"
+            android:layout_marginBottom="@dimen/rounded_margin_mid"
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:orientation="horizontal" />
 
-            <com.mobile.components.customfontviews.TextView
-                style="@style/rounded_box_title_grey"
-                android:gravity="right|center_vertical"
-                android:paddingLeft="@dimen/rounded_margin_small"
-                android:paddingRight="@dimen/rounded_margin_small"
-                android:text="@string/new_password_label" />
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/change_password_save_button"
+            style="@style/AigButton.Active"
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_below="@+id/change_password_layout"
+            android:contentDescription="@string/myaccount_save_description"
+            android:text="@string/change_password" />
 
-            <View style="@style/divider_horizontal_orange" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_below="@id/change_password_save_button"
+            android:layout_height="@dimen/rounded_margin_mid" />
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/passwordErrorHint"
-                style="@style/text_normal"
-                android:layout_width="match_parent"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:layout_marginTop="@dimen/margin_mid"
-                android:gravity="right"
-                android:singleLine="false"
-                android:textColor="@color/red_basic"
-                android:visibility="gone" />
 
-            <LinearLayout
-                android:id="@+id/changePasswordLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/rounded_margin_mid"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:orientation="horizontal" />
-
-        </LinearLayout>
-
-        <LinearLayout style="@style/button_container">
-
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/button_save"
-                style="@style/button_orange_bottom"
-                android:layout_marginRight="@dimen/margin_x_small"
-                android:layout_weight="1"
-                android:contentDescription="@string/myaccount_save_description"
-                android:text="@string/save_label" />
-
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/button_cancel"
-                style="@style/button_grey_bottom"
-                android:layout_marginLeft="@dimen/margin_x_small"
-                android:layout_weight="1"
-                android:text="@string/cancel_label" />
-        </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 </ScrollView>

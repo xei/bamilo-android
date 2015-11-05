@@ -1,70 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/dimen_48px"
-    >
-
-    <!-- SELECTION RADIOBUTTON -->
-
-
-    <com.mobile.components.customfontviews.RadioButton
-        android:id="@+id/checkout_address_item_radio_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:gravity="top|right"
-        android:layout_alignParentRight="true"
-        />
-
-
-
-    <!-- EDIT BUTTON -->
-
-    <ImageView
-        android:id="@+id/checkout_address_item_btn_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/selector_btn_edit" />
-
-    <!-- ITEM -->
-
-    <LinearLayout
-        android:id="@+id/checkout_address_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+    <RelativeLayout
+        android:id="@+id/checkout_address_item_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/checkout_address_item_btn_edit"
-        android:layout_toLeftOf="@+id/checkout_address_item_radio_btn"
-        android:layout_marginRight="@dimen/dimen_20px"
-        android:orientation="vertical"
-        >
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/checkout_address_item_name"
-            android:textColor="@color/black"
-            style="@style/TextCaption" />
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/checkout_address_item_street"
-            android:textColor="@color/black_700"
-            style="@style/TextCaption" />
+        android:layout_marginLeft="@dimen/dimen_48px"
+        android:layout_marginRight="@dimen/dimen_48px"
+        android:layout_marginTop="@dimen/dimen_48px"
+        android:paddingBottom="@dimen/dimen_48px">
+        <!-- SELECTION RADIOBUTTON -->
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/checkout_address_item_region"
-            android:textColor="@color/black_700"
-            style="@style/TextCaption"  />
+        <com.mobile.components.customfontviews.RadioButton
+            android:id="@+id/checkout_address_item_radio_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            />
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/checkout_address_item_postcode"
-            android:textColor="@color/black_700"
-            style="@style/TextCaption"  />
+        <!-- EDIT BUTTON -->
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/checkout_address_item_phone"
-            android:textColor="@color/black_700"
-            style="@style/TextCaption"  />
+        <ImageView
+            android:id="@+id/checkout_address_item_btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/selector_btn_edit" />
 
-    </LinearLayout>
+        <!-- ITEM -->
 
+        <LinearLayout
+            android:id="@+id/checkout_address_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dimen_20px"
+            android:layout_toLeftOf="@+id/checkout_address_item_radio_btn"
+            android:layout_toRightOf="@+id/checkout_address_item_btn_edit"
+            android:orientation="vertical"
+            >
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/checkout_address_item_name"
+                style="@style/TextCaption"
+                android:textColor="@color/black" />
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/checkout_address_item_street"
+                style="@style/TextCaption"
+                android:textColor="@color/black_700" />
 
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/checkout_address_item_region"
+                style="@style/TextCaption"
+                android:textColor="@color/black_700"  />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/checkout_address_item_postcode"
+                style="@style/TextCaption"
+                android:textColor="@color/black_700"  />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/checkout_address_item_phone"
+                style="@style/TextCaption"
+                android:textColor="@color/black_700"  />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/black_300"/>
 </RelativeLayout>

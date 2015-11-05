@@ -26,7 +26,7 @@
         android:layout_marginRight="16dp"
         android:layout_toEndOf="@id/text_field_icon"
         android:layout_toRightOf="@id/text_field_icon"
-        android:background="@drawable/spinner_background_holo_orange"
+        android:background="@drawable/spinner_background"
         android:clickable="true"
         android:spinnerMode="dropdown"
         android:visibility="gone" />
@@ -83,7 +83,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:background="@drawable/spinner_background_holo_orange"
+        android:background="@drawable/spinner_background"
         android:clickable="true"
         android:spinnerMode="dropdown"
         android:visibility="gone" />

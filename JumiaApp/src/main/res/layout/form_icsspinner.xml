@@ -2,6 +2,6 @@
 <com.mobile.components.absspinner.IcsSpinner xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/custom"
     style="@style/form_style"
-    android:background="@drawable/spinner_background_holo_orange"
+    android:background="@drawable/spinner_background"
     android:clickable="true"
     android:spinnerMode="dropdown" />
