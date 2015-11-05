@@ -194,5 +194,7 @@
     <dimen name="ratings_average_with">260dp</dimen>
     <dimen name="specs_column_with">220dp</dimen>
 
+    <dimen name="padding_recent_search_item">24dp</dimen>
+
 
 </resources>

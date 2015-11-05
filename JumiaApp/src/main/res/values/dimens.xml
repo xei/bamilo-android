@@ -518,4 +518,6 @@
     <integer name="config_add_cart_anim_duration">500</integer>
 
     <dimen name="confirm_msg_padding">6dp</dimen>
+
+    <dimen name="padding_recent_search_item">20dp</dimen>
 </resources>
