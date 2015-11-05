@@ -221,6 +221,48 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         Print.i(TAG, "ON DESTROY");
     }
 
+    /**
+     * ############# CLICK LISTENER #############
+     */
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        // Get view id
+        int id = view.getId();
+        // Submit
+        if(id == R.id.checkout_button_enter){
+            if(!voucherCode.getText().toString().isEmpty() && !couponButton.getText().toString().equalsIgnoreCase(getString(R.string.voucher_remove))){
+                validateCoupon();
+
+            } else {
+                onClickSubmitPaymentButton();
+            }
+
+
+            getBaseActivity().hideKeyboard();
+        }
+        // Case Unknown
+        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+    
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
+     */
+    // Process the click on retry button.
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        Bundle bundle = new Bundle();
+        if(null != JumiaApplication.CUSTOMER){
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+    
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
@@ -229,7 +271,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
-    
+
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
@@ -246,7 +288,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             Print.w(TAG, "TRY SAVE FORM BUT IS NULL");
         }
     }
-    
+
     /**
      * Load the dynamic form
      */
@@ -261,16 +303,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
         // TODO Validate this
         if(getView().findViewById(R.id.text_information) == null) {
-            getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.VISIBLE);
             mCheckoutButtonNext.setVisibility(View.VISIBLE);
         } else {
-            getView().findViewById(R.id.checkout_payment_methods_title_mandatory).setVisibility(View.GONE);
             mCheckoutButtonNext.setVisibility(View.GONE);
         }
 
         showFragmentContentContainer();
     }
-
+    
     /**
      * Load the saved values and update the form
      */
@@ -297,7 +337,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         paymentMethodsContainer.refreshDrawableState();
         showFragmentContentContainer();
     }
-    
+
     private void prepareCouponView() {
         voucherCode = (EditText) getView().findViewById(R.id.voucher_name);
         if (!TextUtils.isEmpty(mVoucher)) {
@@ -313,56 +353,25 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         couponButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mVoucher = voucherCode.getText().toString();
-                getBaseActivity().hideKeyboard();
-                if (!TextUtils.isEmpty(mVoucher)) {
-                    Print.i(TAG, "code1coupon : " + mVoucher);
-                    if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
-                        ContentValues mContentValues = new ContentValues();
-                        mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
-                        triggerSubmitVoucher(mContentValues);
-                    } else {
-                        triggerRemoveVoucher();
-                    }
-                } else {
-                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
-                }
+                validateCoupon();
             }
         });
     }
-
-    /**
-     * ############# CLICK LISTENER #############
-     */
-
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        // Get view id
-        int id = view.getId();
-        // Submit
-        if(id == R.id.checkout_button_enter){
-            onClickSubmitPaymentButton(); 
-            getBaseActivity().hideKeyboard();
-        }
-        // Case Unknown
-        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
-    }
     
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
-    // Process the click on retry button.
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    private void validateCoupon(){
+        mVoucher = voucherCode.getText().toString();
+        getBaseActivity().hideKeyboard();
+        if (!TextUtils.isEmpty(mVoucher)) {
+            Print.i(TAG, "code1coupon : " + mVoucher);
+            if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
+                ContentValues mContentValues = new ContentValues();
+                mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
+                triggerSubmitVoucher(mContentValues);
+            } else {
+                triggerRemoveVoucher();
+            }
         } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+            Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
         }
     }
     
