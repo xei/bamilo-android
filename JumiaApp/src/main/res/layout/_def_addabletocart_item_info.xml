@@ -138,7 +138,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="@dimen/rounded_margin_small"
-        android:background="@drawable/spinnerbutton_background_holo_light"
+        android:background="@drawable/spinner_background"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/product_variant_placeholder"

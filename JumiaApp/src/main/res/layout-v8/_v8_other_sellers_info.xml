@@ -73,7 +73,7 @@
         android:layout_width="@dimen/product_item_addtocart_variation_width"
         android:layout_height="@dimen/product_item_button_height"
         android:layout_marginBottom="@dimen/rounded_margin_small"
-        android:background="@drawable/spinnerbutton_background_holo_light"
+        android:background="@drawable/spinner_background"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/product_variant_placeholder"

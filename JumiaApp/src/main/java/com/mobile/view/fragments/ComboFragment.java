@@ -397,7 +397,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
 
     private void executeAddToShoppingCartCompleted() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+        getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART, getString(R.string.added_to_shop_cart_dialog_text));
     }
 
 

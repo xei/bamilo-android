@@ -82,7 +82,7 @@
             android:layout_height="match_parent"
             android:layout_toEndOf="@id/bundle_size_text"
             android:layout_toRightOf="@id/bundle_size_text"
-            android:background="@drawable/spinner_background_holo_orange"
+            android:background="@drawable/spinner_background"
             android:clickable="true"
             android:minWidth="@dimen/campaign_size_spinner_width"
             android:textColor="@color/grey_middle"
