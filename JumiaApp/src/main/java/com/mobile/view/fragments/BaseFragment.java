@@ -144,17 +144,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
-//    /**
-//     * Constructor used only by PDV fragments
-//     */
-//    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
-//        this.enabledMenuItems = enabledMenuItems;
-//        this.action = action;
-//        this.titleResId = titleResId;
-//        this.adjustState = adjust_state;
-//        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-//    }
-
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
@@ -190,7 +179,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle arguments = getArguments();
         if(arguments != null){
             mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
@@ -309,9 +297,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         if (null != getBaseActivity()) {
             getBaseActivity().hideSearchComponent();
-//            if(action != null){
-//                getBaseActivity().updateNavigationMenu(action);
-//            }
         }
     }
 
@@ -361,11 +346,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        // TODO - Validate this is necessary
-//        // Recycle bitmaps
-//        if (getView() != null) {
-//            unbindDrawables(getView());
-//        }
     }
 
     /**
@@ -697,9 +677,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-
-
-
     /**
      * Set the inflated stub
      * @param stub The view stub
@@ -813,20 +790,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * ########### INPUT FORMS ###########
      */
 
-    /**
-     * Force input align to left
-     *
-     * @author sergiopereira
-     * @see {@link CheckoutAboutYouFragment#onResume()} <br> {@link SessionLoginFragment#onResume()}
-     */
-    protected void forceInputAlignToLeft() {
-        if (getBaseActivity() != null && !ShopSelector.isRtl()) {
-            // Save the default locale
-            mLocale = Locale.getDefault();
-            // Force align to left
-            Locale.setDefault(Locale.US);
-        }
-    }
+//    /**
+//     * Force input align to left
+//     *
+//     * @author sergiopereira
+//     * @see {@link CheckoutAboutYouFragment#onResume()} <br> {@link SessionLoginFragment#onResume()}
+//     */
+//    protected void forceInputAlignToLeft() {
+//        if (getBaseActivity() != null && !ShopSelector.isRtl()) {
+//            // Save the default locale
+//            mLocale = Locale.getDefault();
+//            // Force align to left
+//            Locale.setDefault(Locale.US);
+//        }
+//    }
 
     /**
      * Restore the saved locale {@link #onResume()} if not null.
@@ -992,11 +969,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         return false;
     }
-
-//    protected void clearCredentials() {
-//        JumiaApplication.INSTANCE.setLoggedIn(false);
-//        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-//    }
 
     /*
      * ########### LISTENERS ###########

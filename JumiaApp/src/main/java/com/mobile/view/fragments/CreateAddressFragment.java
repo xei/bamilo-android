@@ -70,14 +70,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected static final String BILLING_FORM_TAG = "billing";
 
-    private static final String SHIPPING_REGION_POS = "save_shipping_rg_position";
-
-    private static final String BILLING_REGION_POS = "save_billing_rg_position";
-
-    private static final String SHIPPING_CITY_POS = "save_shipping_ct_position";
-
-    private static final String BILLING_CITY_POS = "save_billing_ct_position";
-
     private static final int IS_DEFAULT_SHIPPING_ADDRESS = 1;
 
     protected static final int IS_DEFAULT_BILLING_ADDRESS = 1;
@@ -88,7 +80,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected ViewGroup mShippingFormContainer;
     protected DynamicForm shippingFormGenerator;
-  //  protected Form mFormResponse;
     protected Form mFormShipping;
     protected Form mFormBilling;
     protected ViewGroup mBillingIncludeContainer;
@@ -103,8 +94,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected TextView mShippingTitle;
 
     protected Boolean oneAddressCreated = false;
-//    protected ContentValues mShippingSavedValues;
-//    protected ContentValues mBillingSavedValues;
     protected boolean isCityIdAnEditText = false;
     protected ScrollView mScrollViewContainer;
 
@@ -223,7 +212,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 Bundle billingSavedStateBundle = new Bundle();
                 billingFormGenerator.saveFormState(billingSavedStateBundle);
                 outState.putParcelable(BILLING_SAVED_STATE, billingSavedStateBundle);
-
             }
         } catch (ClassCastException e) {
             Print.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
@@ -243,7 +231,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         super.onPause();
         Print.i(TAG, "ON PAUSE");
         // Case goes to back stack save the state
-
         if(shippingFormGenerator != null) {
             Bundle shippingSavedStateBundle = new Bundle();
             shippingFormGenerator.saveFormState(shippingSavedStateBundle);
@@ -827,8 +814,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected void triggerCreateAddress(ContentValues values, boolean isBilling) {
         Print.i(TAG, "TRIGGER: CREATE ADDRESS");
         Bundle bundle = new Bundle();
-        // TODO Validate if this is necessary
-        //values.put("showGender", true);
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putBoolean(CreateAddressHelper.IS_BILLING, isBilling);
         triggerContentEvent(new CreateAddressHelper(), bundle, this);
