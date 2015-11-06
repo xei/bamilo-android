@@ -18,7 +18,6 @@ import com.mobile.helpers.wishlist.GetWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -26,7 +25,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -509,15 +507,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                //if has cart popup, show configurable confirmation message with cart total price
-                if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
-                    PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
-                    getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
-                }
-                else{
-                    //show regular message add item to cart
-                    showInfoAddToShoppingCartCompleted();
-                }
+                showAddToCartCompleteMessage(baseResponse);
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
