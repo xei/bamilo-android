@@ -414,8 +414,8 @@
     <string name="rat_rev">Notes</string>
     <string name="fulfilled_by">Expédié par %s</string>
     <string name="qty_placeholder">Qté: %d</string>
-    <string name="shipment" formatted="false">Colis %d sur %d</string>
+    <string name="shipment" formatted="false">Colis %1$d sur %2$d</string>
     <string name="policy">Politique</string>
-    <string name="delivery_time_placeholder" formatted="false">Temps de livraison : %d à %d jours</string>
+    <string name="delivery_time_placeholder" formatted="false">Temps de livraison : %1$d à %2$d jours</string>
     <string name="product_specifications">Caractéristiques</string>
 </resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order_item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/_gen_selector_group_selected"
+    android:padding="20dp">
+
+    <!-- price -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/order_item_price"
+        style="@style/TextBody_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:maxLines="2"
+        android:singleLine="false"
+        android:textColor="@color/black" />
+
+    <!-- number and date -->
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:orientation="vertical">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_item_number"
+            style="@style/TextBody_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_item_date"
+            style="@style/TextInfo_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/black_700" />
+
+    </LinearLayout>
+
+</RelativeLayout>

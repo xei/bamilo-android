@@ -51,13 +51,6 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
         super(enabledMenuItems, action, layoutResId, titleResId, adjust_state);
     }
 
-    /**
-     * Constructor for checkout
-     */
-    public BaseExternalLoginFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
-        super(enabledMenuItems, action, layoutResId, titleResId, adjust_state, titleCheckout);
-    }
-
     /*
      * ###### LIFE CYCLE ######
      */

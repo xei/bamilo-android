@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/order_status_number_of_items"
+        style="@style/TextBody_1"
+        android:textColor="@color/black" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/order_status_total"
+        style="@style/TextBody_3"
+        android:textColor="@color/black" />
+
+</LinearLayout>

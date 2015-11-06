@@ -39,6 +39,8 @@ public class ErrorLayoutFactory {
 
     public static final int CATALOG_UNEXPECTED_ERROR = 9;
 
+    public static final int NO_ORDERS_LAYOUT = 10;
+
     private View mErrorLayout;
 
     private int actualError;
@@ -46,18 +48,14 @@ public class ErrorLayoutFactory {
     /**
      * Create a new instance of ErrorLayoutFactory.
      *
-     * @param errorLayout
      * @throws java.lang.IllegalStateException If layout is null.
      */
     public ErrorLayoutFactory(ViewGroup errorLayout){
-
         if(errorLayout  == null){
             throw new IllegalStateException("Error Layout not initialized");
         }
-
         actualError = -1;
-
-        this.mErrorLayout = errorLayout;
+        mErrorLayout = errorLayout;
     }
 
     public void showErrorLayout(int error) {
@@ -91,6 +89,9 @@ public class ErrorLayoutFactory {
                 case NO_RECENTLY_VIEWED_LAYOUT:
                     buildNoRecentlyViewedLayout(error);
                     break;
+                case NO_ORDERS_LAYOUT:
+                    buildNoOrdersLayout(error);
+                    break;
             }
         }
         //show
@@ -109,7 +110,9 @@ public class ErrorLayoutFactory {
         showGenericError(error, R.drawable.ic_recentlyviewed_empty, R.string.no_recently_viewed_items, R.string.no_recently_viewed_items_subtitle);
     }
 
-
+    private void buildNoOrdersLayout(int error){
+        showGenericError(error, R.drawable.ic_orders_empty, R.string.no_orders_message, R.string.no_orders);
+    }
 
     /**
      * show dynamic error message
@@ -150,7 +153,6 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.img_emptycart)
                 .setPrincipalMessage(R.string.order_no_items)
-//                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
                 .setRotationVisible(false)
@@ -161,7 +163,6 @@ public class ErrorLayoutFactory {
     private void buildContinueShoppingLayout() {
         new Builder()
                 .setImage(R.drawable.img_warning)
-//                    .setPrincipalMessage(R.string.recentlyview_no_searches)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)
@@ -174,7 +175,6 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.img_filternoresults)
                 .setPrincipalMessage(R.string.catalog_no_results)
-//                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
@@ -186,7 +186,6 @@ public class ErrorLayoutFactory {
         new Builder()
                 .setImage(R.drawable.img_filternoresults)
                 .setPrincipalMessage(R.string.server_error)
-//                    .setDetailMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
@@ -205,11 +204,11 @@ public class ErrorLayoutFactory {
     /**
      * Class used for building the layout.
      */
+    @SuppressWarnings("unused")
     private class Builder{
 
-        Builder(){
-//            setImage(0);
-
+        Builder() {
+            // ...
         }
 
         Builder setRotationVisible(boolean isToShow){
@@ -246,7 +245,7 @@ public class ErrorLayoutFactory {
             return this;
         }
 
-        Builder setImageVisibible(boolean isToShow){
+        Builder setImageVisibility(boolean isToShow){
             mErrorLayout.findViewById(R.id.fragment_root_error_image).setVisibility(isToShow ? View.VISIBLE : View.GONE);
             return this;
         }
