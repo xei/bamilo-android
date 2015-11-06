@@ -111,21 +111,6 @@ public class ErrorLayoutFactory {
     }
 
 
-
-    /**
-     * show dynamic error message
-     */
-    private void showGenericError(int error, int image, int principalMessage, int detailMessage) {
-        new Builder()
-                .setImage(image)
-                .setPrincipalMessage(principalMessage)
-                .setDetailMessage(detailMessage)
-                .setButtonVisible(false)
-                .setRotationVisible(false);
-        actualError = error;
-    }
-
-
     /**
      * Show error layout with contact info in case of ssl errors
      * @param email - country contact email
@@ -151,6 +136,23 @@ public class ErrorLayoutFactory {
 
     }
 
+
+    /**
+     * show dynamic error message
+     */
+    private void showGenericError(int error, int image, int principalMessage, int detailMessage) {
+        new Builder()
+                .setImage(image)
+                .setPrincipalMessage(principalMessage)
+                .setDetailMessage(detailMessage)
+                .setButtonVisible(false)
+                .setRotationVisible(false);
+        actualError = error;
+    }
+
+
+
+
     private void buildNoNetworkLayout() {
         new Builder()
                 .setImage(R.drawable.img_connect)
@@ -173,16 +175,6 @@ public class ErrorLayoutFactory {
         actualError = UNEXPECTED_ERROR_LAYOUT;
     }
 
-
-    private void buildSSLErrorLayout(){
-        new Builder()
-                .setImage(R.drawable.ic_warning2)
-                .setPrincipalMessage(R.string.an_error_occurred)
-                .setDetailMessage(R.string.customer_service_info)
-                .setButtonVisible(false)
-                .setRotationVisible(false);
-        actualError = SSL_ERROR;
-    }
 
     private void buildCartEmptyLayout(){
         new Builder()
