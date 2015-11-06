@@ -478,6 +478,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * This method was created because the method on BaseActivity not working with dynamic forms
      */
+    @SuppressWarnings("ConstantConditions")
     protected void hideKeyboard() {
         Print.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -556,6 +557,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         UIUtils.showOrHideViews(View.GONE, mLoadingView, mErrorView, mFallBackView, mMaintenanceView);
     }
 
+    /**
+     * This method is used to set the fragment content invisible to recalculate the view and trigger the view listener<br>
+     * Used by CreateAddressFragment
+     */
+    protected void showGhostFragmentContentContainer() {
+        UIUtils.showOrHideViews(View.INVISIBLE, mContentView);
+    }
     /**
      * Show the retry view from the root layout
      * @author sergiopereira
@@ -790,21 +798,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * ########### INPUT FORMS ###########
      */
 
-//    /**
-//     * Force input align to left
-//     *
-//     * @author sergiopereira
-//     * @see {@link CheckoutAboutYouFragment#onResume()} <br> {@link SessionLoginFragment#onResume()}
-//     */
-//    protected void forceInputAlignToLeft() {
-//        if (getBaseActivity() != null && !ShopSelector.isRtl()) {
-//            // Save the default locale
-//            mLocale = Locale.getDefault();
-//            // Force align to left
-//            Locale.setDefault(Locale.US);
-//        }
-//    }
-
     /**
      * Restore the saved locale {@link #onResume()} if not null.
      *
@@ -849,10 +842,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 Print.i(TAG, "LOGOUT EVENT");
                 getBaseActivity().onLogOut();
                 return true;
+            case GUEST_LOGIN_EVENT:
             case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
-                // TODO VALIDATE IF THIS IS NECESSARY
-                // getBaseActivity().triggerGetShoppingCartItemsHelper();
+                // TODO ADD HERE COMMON METHODS
                 return true;
             default:
                 break;

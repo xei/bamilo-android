@@ -12,19 +12,6 @@
         android:gravity="right|center_vertical"
         android:text="@string/payment" />
 
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/checkout_payment_methods_title_mandatory"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dimen_144px"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@id/checkout_payment_methods_title"
-        android:layout_marginLeft="33dp"
-        android:gravity="center_vertical"
-        android:text="*"
-        android:textColor="@color/color_accent"
-        android:textSize="@dimen/text_title" />
-
     <!-- PAYMENT METHODS -->
 
     <LinearLayout

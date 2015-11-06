@@ -404,7 +404,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         spinner.setOnItemSelectedListener(this);
         v.setEditControl(spinner);
         group.addView(spinner);
-        showFragmentContentContainer(); // Show to trigger
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**
