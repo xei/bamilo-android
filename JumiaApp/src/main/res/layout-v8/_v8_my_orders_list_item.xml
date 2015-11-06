@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/order_item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/_gen_selector_group_selected"
@@ -8,7 +9,7 @@
     <!-- price -->
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/order_price"
+        android:id="@+id/order_item_price"
         style="@style/TextBody_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,14 +29,14 @@
         android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/order_number"
+            android:id="@+id/order_item_number"
             style="@style/TextBody_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/order_date"
+            android:id="@+id/order_item_date"
             style="@style/TextInfo_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

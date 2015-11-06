@@ -219,7 +219,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
             for (OrderTrackerItem item : items) {
                 // Create new layout item
-                OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout._def_gen_order_list, group, false));
+                OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
                 // Set image
                 RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
                 // Set name

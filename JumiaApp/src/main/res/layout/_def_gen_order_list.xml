@@ -104,7 +104,7 @@
     <!-- STATUS INFO -->
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -113,8 +113,9 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_item_button_reorder"
             style="@style/AigButton.TextOrange"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:gravity="right|end"
             android:text="@string/reorder_label" />
 
         <!-- ORDER DELIVERY -->
@@ -122,7 +123,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_item_text_delivered"
             style="@style/TextHeader"
-            android:layout_width="100dp"
+            android:layout_width="wrap_content"
             android:layout_alignParentBottom="true"
             android:singleLine="false"
             android:textColor="@color/black" />
