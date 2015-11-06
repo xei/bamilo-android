@@ -465,4 +465,8 @@
     <string name="order_pending">Order Pending</string>
     <string name="no_orders_message">You don\'t have yet any Orders.</string>
     <string name="no_orders">No Orders</string>
+    <string name="an_error_occurred">An Error Occurred</string>
+    <string name="customer_service_info">Please, try to contact our Customer Service for more info.</string>
+    <string name="phone_contact">Phone:</string>
+    <string name="email_contact">Email:</string>
 </resources>
