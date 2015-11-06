@@ -232,7 +232,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         int id = view.getId();
         // Submit
         if(id == R.id.checkout_button_enter){
-            if(!voucherCode.getText().toString().isEmpty() && !couponButton.getText().toString().equalsIgnoreCase(getString(R.string.voucher_remove))){
+            if (!TextUtils.isEmpty(voucherCode.getText()) && !couponButton.getText().toString().equalsIgnoreCase(getString(R.string.voucher_remove))) {
                 validateCoupon();
 
             } else {
@@ -362,7 +362,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         mVoucher = voucherCode.getText().toString();
         getBaseActivity().hideKeyboard();
         if (!TextUtils.isEmpty(mVoucher)) {
-            Print.i(TAG, "code1coupon : " + mVoucher);
             if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                 ContentValues mContentValues = new ContentValues();
                 mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
@@ -371,7 +370,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 triggerRemoveVoucher();
             }
         } else {
-            Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
+            getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.ERROR_VOUCHER, getString(R.string.voucher_error_message));
         }
     }
     
