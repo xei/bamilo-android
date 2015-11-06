@@ -15,7 +15,7 @@ import android.widget.GridView;
  * @see http://stackoverflow.com/questions/4523609/grid-of-images-inside-scrollview 
  * 
  */
-public class ExpandableGridViewComponent extends GridView {
+public class ExpandedGridViewComponent extends GridView {
 
 	boolean expanded = false;
 	int bottomMargin = 0;
@@ -23,21 +23,21 @@ public class ExpandableGridViewComponent extends GridView {
 	/**
 	 * Class Constructor
 	 */
-	public ExpandableGridViewComponent(Context context) {
+	public ExpandedGridViewComponent(Context context) {
 		super(context);
 	}
 
 	/**
 	 * Class Constructor
 	 */
-	public ExpandableGridViewComponent(Context context, AttributeSet attrs) {
+	public ExpandedGridViewComponent(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
 	/**
 	 * Class Constructor
 	 */
-	public ExpandableGridViewComponent(Context context, AttributeSet attrs, int defStyle) {
+	public ExpandedGridViewComponent(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 

@@ -415,8 +415,7 @@
     <string name="rat_rev">သံုးသပ္ခ်က္မ်ား  </string>
     <string name="fulfilled_by">Fulfilled by%s</string>
     <string name="qty_placeholder">Qty: %d</string>
-    <string name="shipment" formatted="false">Shipment %d of %d</string>
+    <string name="shipment" formatted="false">Shipment %1$d of %2$d</string>
     <string name="policy">Policy</string>
-    <string name="delivery_time_placeholder" formatted="false">Delivery time %d - %d days</string>
-    <string name="product_specifications">သီးျခားသတ္မွတ္ခ်က္</string>
+    <string name="delivery_time_placeholder" formatted="false">Delivery time %1$d - %2$d days</string>
 </resources>
