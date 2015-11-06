@@ -64,6 +64,12 @@
             android:contentDescription="@string/myaccount_save_description"
             android:text="@string/change_password" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_below="@id/change_password_save_button"
+            android:layout_height="@dimen/rounded_margin_mid" />
+
+
     </RelativeLayout>
 
 </ScrollView>

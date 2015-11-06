@@ -46,6 +46,7 @@ public class WarningFactory {
     public static final int USER_DATA_SUCCESS = 13;
     public static final int CHANGE_PASSWORD_SUCCESS = 14;
     public static final int LOGIN_SUCCESS = 15;
+    public static final int ERROR_OUT_OF_STOCK = 16;
 
     /**
      * The last warning that was built and might be re-used.
@@ -111,6 +112,7 @@ public class WarningFactory {
             case ERROR_ADD_TO_CART:
             case ERROR_ADD_PRODUCTS_TO_CART:
             case CHANGE_PASSWORD_VALIDATION:
+            case ERROR_OUT_OF_STOCK:
             case USER_DATA_VALIDATION:
                 showWarningError(warning);
                 break;

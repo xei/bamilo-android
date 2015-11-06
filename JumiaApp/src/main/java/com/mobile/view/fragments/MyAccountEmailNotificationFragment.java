@@ -57,8 +57,18 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     private ArrayList<NewsletterOption> mNewsletterOptionsSaved;
 
     /**
+     * Create new instance
+     * 
+     * @return MyAccountEmailNotificationFragment
+     * @author sergiopereira
+     */
+    public static MyAccountEmailNotificationFragment newInstance() {
+        return new MyAccountEmailNotificationFragment();
+    }
+
+    /**
      * Empty constructor
-     *
+     * 
      * @author sergiopereira
      */
     public MyAccountEmailNotificationFragment() {
@@ -67,16 +77,6 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
                 R.layout.my_account_email_notification_fragment,
                 R.string.myaccount_email_notifications,
                 KeyboardState.NO_ADJUST_CONTENT);
-    }
-
-    /**
-     * Create new instance
-     *
-     * @return MyAccountEmailNotificationFragment
-     * @author sergiopereira
-     */
-    public static MyAccountEmailNotificationFragment newInstance() {
-        return new MyAccountEmailNotificationFragment();
     }
 
     /*
@@ -155,7 +155,19 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     /*
      * (non-Javadoc)
-     *
+     * 
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE STATE: NEWSLETTER FORM");
+        outState.putParcelableArrayList(TAG, mNewsletterOptions);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
@@ -166,7 +178,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see android.support.v4.app.Fragment#onStop()
      */
     @Override
@@ -177,7 +189,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see com.mobile.view.fragments.BaseFragment#onDestroyView()
      */
     @Override
@@ -188,7 +200,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see com.mobile.view.fragments.BaseFragment#onDestroy()
      */
     @Override
@@ -198,49 +210,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     }
 
     /**
-     * ############# CLICK LISTENER #############
-     */
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        // Get view id
-        int id = view.getId();
-        // Next button
-        if (id == R.id.email_notifications_save) {
-            onClickSaveButton();
-        }
-        // Unknown view
-        else {
-            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
-        }
-    }
-
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        onClickRetryButton();
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE: NEWSLETTER FORM");
-        outState.putParcelableArrayList(TAG, mNewsletterOptions);
-    }
-
-    /**
      * Show the newsletter form
-     *
+     * 
      * @author sergiopereira
      */
     private void showNewslettersForm() {
@@ -278,6 +249,31 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             newsletterList.addView(view);
         }
     }
+
+    /**
+     * ############# CLICK LISTENER #############
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        // Get view id
+        int id = view.getId();
+        // Next button
+        if (id == R.id.email_notifications_save) onClickSaveButton();
+        // Unknown view
+        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        onClickRetryButton();
+    }
     
     /**
      * Process the click on retry button.
@@ -301,16 +297,27 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             // Validate the current newsletter form
             ContentValues values = new ContentValues();
             boolean isSubscribed = false;
+            String dummyKey ="";
             for (NewsletterOption option : mNewsletterOptions) {
+                dummyKey = option.name;
                 if (option.isSubscrided) {
                     values.put(option.name, option.value);
                     isSubscribed = true;
                 }
             }
-            // Trigger
-            Print.d(TAG, "VALUES: " + values);
-            if(CollectionUtils.isNotEmpty(values))
-                triggerSubscribeNewsletters(values);
+            //TODO
+            //FIXME
+            /**
+             * This Form needs to be changed on the API side, because the way they detect if we want to unselected a notification,
+             * is by not sending that, so if we want to unselect all newsletters, we have to send and empty request, and the way
+             * our framework is built does not support that kind of action.
+             * So in order to be able to send the request we have to put some dummy data so the event isn't really empty
+             */
+            if(CollectionUtils.isEmpty(values)){
+                values.put(dummyKey, "");
+            }
+
+            triggerSubscribeNewsletters(values);
             // Tracking subscritption
             TrackerDelegator.trackNewsletterSubscription(isSubscribed, GTMValues.MYACCOUNT);
         } catch (NullPointerException e) {
@@ -412,7 +419,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         showFragmentContentContainer();
 
         ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
             Print.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
@@ -440,26 +447,26 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     }
 
     /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle )
-     */
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-    }
-
-    /*
      * ########### RESPONSE LISTENER ###########
      */
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         onErrorEvent(baseResponse);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle )
+     */
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
     /*
