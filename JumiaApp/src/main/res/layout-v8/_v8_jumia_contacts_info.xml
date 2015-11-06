@@ -18,7 +18,7 @@
         android:textColor="@color/black_800"
         android:layout_alignParentRight="true"
         android:layout_below="@id/divider"
-        android:paddingRight="20dp"
+        android:paddingRight="@dimen/padding_recent_search_item"
         />
 
     <com.mobile.components.customfontviews.TextView
@@ -28,7 +28,7 @@
         android:layout_height="@dimen/buy_bar_height"
         android:textColor="@color/black_900"
         android:layout_alignParentLeft="true"
-        android:paddingLeft="20dp"
+        android:paddingLeft="@dimen/padding_recent_search_item"
         android:layout_below="@id/divider"
         android:text="0000000"
         />
@@ -47,7 +47,7 @@
         android:layout_height="@dimen/buy_bar_height"
         android:textColor="@color/black_800"
         android:layout_alignParentRight="true"
-        android:paddingRight="20dp"
+        android:paddingRight="@dimen/padding_recent_search_item"
         android:layout_below="@id/divider1"
         />
 
@@ -59,7 +59,7 @@
         android:layout_height="@dimen/buy_bar_height"
         android:textColor="@color/black_900"
         android:layout_alignParentLeft="true"
-        android:paddingLeft="20dp"
+        android:paddingLeft="@dimen/padding_recent_search_item"
         android:layout_below="@id/divider1"
         android:text="help@jumia.com"
         />
