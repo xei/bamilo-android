@@ -12,18 +12,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" >
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/shoppingcart_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-
-            <LinearLayout
-                android:id="@+id/shoppingcart_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-            </LinearLayout>
-        </RelativeLayout>
+            android:orientation="vertical">
+        </LinearLayout>
     </com.mobile.components.widget.NestedScrollView>
 
     <com.mobile.components.widget.NestedScrollView

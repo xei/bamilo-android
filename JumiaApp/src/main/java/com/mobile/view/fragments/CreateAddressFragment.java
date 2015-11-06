@@ -66,7 +66,7 @@ import java.util.Set;
 public abstract class CreateAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = CreateAddressFragment.class.getSimpleName();
-    
+
     private static final int IS_DEFAULT_SHIPPING_ADDRESS = 1;
 
     protected static final int IS_DEFAULT_BILLING_ADDRESS = 1;
@@ -234,6 +234,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Method that saves the selected positions of the regions/cities/postalCode
+     *
      * @param tag
      * @param addressSavedStateBundle
      * @param listPositions
@@ -425,11 +426,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private void setSavedSelectedRegionPos(IcsSpinner spinner, String tag) {
         // Get saved value
         int position = IntConstants.INVALID_POSITION;
-        if(mSavedRegionCitiesPositions != null)
-            position = mSavedRegionCitiesPositions.getInt(tag+RestConstants.REGION);
+        if (mSavedRegionCitiesPositions != null) {
+            position = mSavedRegionCitiesPositions.getInt(tag + RestConstants.REGION);
+        }
 
-        if(position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 ){
-            if(tag.equals(SHIPPING_TAG)){
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0) {
+            if (tag.equals(SHIPPING_TAG)) {
                 spinner.setSelection(position);
             } else {
                 spinner.setSelection(position);
@@ -512,11 +514,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     private void setSavedSelectedCityPos(IcsSpinner spinner, String tag) {
         int position = IntConstants.INVALID_POSITION;
-        if(mSavedRegionCitiesPositions != null)
-            position = mSavedRegionCitiesPositions.getInt(tag+RestConstants.CITY);
+        if (mSavedRegionCitiesPositions != null) {
+            position = mSavedRegionCitiesPositions.getInt(tag + RestConstants.CITY);
+        }
 
-        if(position != IntConstants.INVALID_POSITION && spinner.getCount() > 0){
-            if(tag.equals(SHIPPING_TAG)){
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0) {
+            if (tag.equals(SHIPPING_TAG)) {
                 spinner.setSelection(position);
             } else {
                 spinner.setSelection(position);
@@ -530,11 +533,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     private void setSavedSelectedPostalCodePos(IcsSpinner spinner, String tag) {
         int position = IntConstants.INVALID_POSITION;
-        if(mSavedRegionCitiesPositions != null)
-            position = mSavedRegionCitiesPositions.getInt(tag+RestConstants.POSTCODE);
+        if (mSavedRegionCitiesPositions != null) {
+            position = mSavedRegionCitiesPositions.getInt(tag + RestConstants.POSTCODE);
+        }
 
-        if( position != IntConstants.INVALID_POSITION && spinner.getCount() > 0){
-            if(tag.equals(SHIPPING_TAG)){
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0) {
+            if (tag.equals(SHIPPING_TAG)) {
                 spinner.setSelection(position);
             } else {
                 spinner.setSelection(position);
@@ -621,12 +625,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (mIsSameCheckBox.isChecked()) {
             Print.i(TAG, "CREATE ADDRESS: IS SHIPPING AND IS BILLING TOO");
             ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT VALUES: " + mContentValues.toString());
+            Print.d(TAG, "CONTENT VALUES: " + mContentValues);
             triggerCreateAddress(mContentValues, false);
         } else {
             Print.i(TAG, "CREATE ADDRESS: SHIPPING AND BILLING");
             ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues.toString());
+            Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues);
             triggerCreateAddress(mShipValues, false);
             // only to be fired if the first succeds
 //            ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);

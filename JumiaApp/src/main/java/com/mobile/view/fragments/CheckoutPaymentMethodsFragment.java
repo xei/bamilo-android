@@ -231,7 +231,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         // Get view id
         int id = view.getId();
         // Submit
-        if(id == R.id.checkout_button_enter){
+        if (id == R.id.checkout_button_enter) {
             if (!TextUtils.isEmpty(voucherCode.getText()) && !couponButton.getText().toString().equalsIgnoreCase(getString(R.string.voucher_remove))) {
                 validateCoupon();
 
@@ -243,7 +243,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             getBaseActivity().hideKeyboard();
         }
         // Case Unknown
-        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        else {
+            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        }
     }
     
     /*
@@ -255,14 +257,14 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
         Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
+        if (null != JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
-    
+
     /*
      * (non-Javadoc)
      * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
@@ -310,7 +312,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
         showFragmentContentContainer();
     }
-    
+
     /**
      * Load the saved values and update the form
      */
@@ -357,8 +359,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             }
         });
     }
-    
-    private void validateCoupon(){
+
+    private void validateCoupon() {
         mVoucher = voucherCode.getText().toString();
         getBaseActivity().hideKeyboard();
         if (!TextUtils.isEmpty(mVoucher)) {

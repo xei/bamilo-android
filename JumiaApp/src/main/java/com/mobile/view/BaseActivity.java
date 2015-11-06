@@ -843,7 +843,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         } else {
             Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
         }
-    }    @Override
+    }
+
+    @Override
     public void onTabUnselected(TabLayout.Tab tab) {
         // ...
     }
@@ -861,7 +863,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             Print.i(TAG, "NO SHOW UP BUTTON");
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
-    }    @Override
+    }
+
+    @Override
     public void onTabReselected(TabLayout.Tab tab) {
         // ...
     }
@@ -1211,7 +1215,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processErrorSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
 
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct) baseResponse.getMetadata().getData();
 
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
@@ -1236,7 +1240,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processSuccessSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct) baseResponse.getMetadata().getData();
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
@@ -1628,7 +1632,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     private void selectCheckoutStep(int step) {
         TabLayout.Tab tab = mCheckoutTabLayout.getTabAt(step);
-        if(tab != null) {
+        if (tab != null) {
             tab.select();
         }
     }
@@ -1664,7 +1668,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString());
         }
         // CASE TAB_CHECKOUT_SHIPPING
-        else if (step == ConstantsCheckout.TAB_CHECKOUT_SHIPPING ) {
+        else if (step == ConstantsCheckout.TAB_CHECKOUT_SHIPPING) {
             popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
         }
         // CASE TAB_CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
@@ -1675,7 +1679,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Note: This method must be updated in case of adding more screens to native checkout.
      * @author ricardosoares
      */
-    public void removeAllNativeCheckoutFromBackStack(){
+    public void removeAllNativeCheckoutFromBackStack() {
         // Remove all native checkout tags
         FragmentController.getInstance().removeAllEntriesWithTag(CheckoutStepManager.getAllNativeCheckout());
     }
@@ -1748,7 +1752,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 // Set logged in
                 JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
-                Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
+                Customer customer = ((CheckoutStepLogin) ((NextStepStruct) baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin
                 ContentValues credentialValues = JumiaApplication.INSTANCE.getCustomerUtils().getCredentials();
                 boolean isFBLogin = credentialValues.getAsBoolean(CustomerUtils.INTERNAL_FACEBOOK_FLAG);
@@ -1773,17 +1777,14 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
     }
 
-    public boolean communicateBetweenFragments(String tag, Bundle bundle){
-        Fragment fragment =  getSupportFragmentManager().findFragmentByTag(tag);
-        if(fragment != null){
-            ((BaseFragment)fragment).notifyFragment(bundle);
+    public boolean communicateBetweenFragments(String tag, Bundle bundle) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment != null) {
+            ((BaseFragment) fragment).notifyFragment(bundle);
             return true;
         }
         return false;
     }
-
-
-
 
 
 //    /**

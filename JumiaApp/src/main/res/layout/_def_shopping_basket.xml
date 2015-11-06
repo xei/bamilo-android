@@ -8,36 +8,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/shoppingcart_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-
-            <!--<com.mobile.components.customfontviews.TextView-->
-                <!--android:id="@+id/shoppingcart_title"-->
-                <!--style="@style/rounded_box_title_grey"-->
-                <!--android:text="@string/shoppingcart_items" />-->
-
-            <!--<com.mobile.components.customfontviews.TextView-->
-                <!--style="@style/text_normal"-->
-                <!--android:layout_alignBaseline="@+id/shoppingcart_title"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_alignParentRight="true"-->
-                <!--android:layout_marginEnd="@dimen/rounded_margin_mid"-->
-                <!--android:layout_marginRight="@dimen/rounded_margin_mid"-->
-                <!--android:text="@string/shoppingcart_quantity"-->
-                <!--android:textColor="@color/grey_middlelight" />-->
-
-            <LinearLayout
-                android:id="@+id/shoppingcart_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"/>
-
-            <!--<View-->
-                <!--style="@style/divider_horizontal_orange"-->
-                <!--android:layout_below="@id/shoppingcart_title" />-->
-        </RelativeLayout>
+            android:orientation="vertical"/>
 
         <include layout="@layout/voucher_insert_layout" />
 

@@ -250,7 +250,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mMaintenanceView.setOnInflateListener(this);
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
-            Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
+            Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems + " " + action);
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
             // Method used to set a bottom margin
             TabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
@@ -376,7 +376,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * This method should be used when we known that the system clean data of application
      */
     public void restartAllFragments() {
-        Print.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity.toString());
+        Print.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity);
         final BaseActivity activity = getBaseActivity();
         // wait 500ms before switching to HOME, to be sure all fragments ended any visual processing pending
         if (activity != null) {
@@ -584,6 +584,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void showGhostFragmentContentContainer() {
         UIUtils.showOrHideViews(View.INVISIBLE, mContentView);
     }
+
     /**
      * Show the retry view from the root layout
      * @author sergiopereira
@@ -896,7 +897,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             return false;
         }
 
-        Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode.toString());
+        Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
         if (errorCode.isNetworkError()) {
             switch (errorCode) {
                 case IO:
@@ -1022,13 +1023,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     private void checkErrorButtonBehavior(View view) {
-        if(view.getId() == R.id.fragment_root_error_button){
-            int error = (int)view.getTag(R.id.fragment_root_error_button);
+        if (view.getId() == R.id.fragment_root_error_button) {
+            int error = (int) view.getTag(R.id.fragment_root_error_button);
 
-            if(error == ErrorLayoutFactory.NO_NETWORK_LAYOUT){
+            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT) {
                 // Case retry button from network
                 onClickRetryNoNetwork(view);
-            } else if(error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT){
+            } else if (error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT) {
                 // Case retry button from error
                 onClickRetryUnexpectedError(view);
             } else {
