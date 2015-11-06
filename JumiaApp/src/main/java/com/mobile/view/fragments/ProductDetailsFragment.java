@@ -146,6 +146,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private View mOffersContainer;
 
+    private String mCompleteUrl;
+
     boolean isFromBuyButton;
 
     /**
@@ -184,6 +186,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (arguments != null) {
             // Get sku
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
+            // Url and parameters
+            mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             // Categories
             categoryTree = arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME) ? arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV" : "";
 
@@ -330,11 +334,26 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (TextUtils.isNotEmpty(mCompleteProductSku)) {
             triggerLoadProduct(mCompleteProductSku);
         }
+        // Case get Complete Url
+        else if (TextUtils.isNotEmpty(mCompleteUrl)) {
+            retrieveSku(mCompleteUrl);
+        }
         // Case error
         else {
             ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_NOT_RETRIEVED);
             getBaseActivity().onBackPressed();
         }
+    }
+
+    /**
+     * temporary method to get the sku parameter from the complete URL
+     * @param completeUrl
+     */
+    private void retrieveSku(String completeUrl){
+        mCompleteProductSku = Uri.parse(completeUrl).getQueryParameter(RestConstants.SKU);
+        if(TextUtils.isEmpty(mCompleteProductSku))
+            return;
+        triggerLoadProduct(mCompleteProductSku);
     }
 
     private void restoreParams(Bundle bundle) {
@@ -1073,9 +1092,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * ############## TRIGGERS ##############
      */
 
-    private void triggerLoadProduct(String sku) {
+    private void triggerLoadProduct(String pathToProduct) {
         mBeginRequestMillis = System.currentTimeMillis();
-        triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku), this);
+        triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(pathToProduct), this);
     }
 
     private void triggerAddItemToCart(String sku, String simpleSKU) {

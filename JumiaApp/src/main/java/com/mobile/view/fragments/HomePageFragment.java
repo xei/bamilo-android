@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,7 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
@@ -395,6 +395,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         String targetTitle = (String) view.getTag(R.id.target_title);
         // Get origin id
         int origin = (int) view.getTag(R.id.target_teaser_origin);
+        // Get Sku
+        String targetSku = (String) view.getTag(R.id.target_sku);
         // Get teaser group type
         TeaserGroupType originGroupType = TeaserGroupType.values()[origin];
         if(view.getTag(R.id.target_list_position) != null){
@@ -415,7 +417,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 gotoStaticPage(targetTitle, targetUrl, originGroupType);
                 break;
             case PRODUCT_DETAIL:
-                gotoProductDetail((String) view.getTag(R.id.target_sku), originGroupType);
+                if(TextUtils.isNotEmpty(targetSku)){
+                    gotoProductDetail(targetSku, originGroupType);
+                } else {
+                    gotoProductDetail(targetTitle, targetUrl, originGroupType);
+                }
                 break;
             case UNKNOWN:
             default:
@@ -444,14 +450,27 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     }
 
     /**
-     * Goto product detail
+     * Goto product detail using Sku
      */
     private void gotoProductDetail(String sku, TeaserGroupType groupType) {
         Print.i(TAG, "GOTO PRODUCT DETAIL: " + sku);
-        // TODO: SHOULD RECEIVE SKU
-        if(!TextUtils.isEmpty(sku)) {
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+    }
+
+    /**
+     * Goto product detail using url
+     */
+    private void gotoProductDetail(String title, String url, TeaserGroupType groupType) {
+        Print.i(TAG, "GOTO PRODUCT DETAIL: " + title + " " + url);
+        if(TextUtils.isNotEmpty(url)){
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
+            bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
