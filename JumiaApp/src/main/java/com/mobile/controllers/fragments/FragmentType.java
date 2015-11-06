@@ -56,6 +56,7 @@ public enum FragmentType {
     RECENT_SEARCHES_LIST,
     RECENTLY_VIEWED_LIST,
     MY_ORDERS,
+    ORDER_STATUS,
     PRODUCT_SIZE_GUIDE,
     PRODUCT_OFFERS,
     INNER_SHOP,
@@ -63,7 +64,10 @@ public enum FragmentType {
     WRITE_REVIEW_SELLER,
     FILTERS,
     COMBO_PAGE,
-    LOGIN_EMAIL;
+    LOGIN_EMAIL
+    ;
+
+
 
     private int id;
     private final static String DIVIDER = ":";

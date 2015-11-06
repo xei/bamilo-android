@@ -29,16 +29,6 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
         // ...
     }
 
-    /**
-     * ############### IJSON ###############
-     */
-
-    @Override
-    public RequiredJson getRequiredJson() {
-        return RequiredJson.METADATA;
-    }
-
-
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // For each item
@@ -53,6 +43,25 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
             add(prefix);
         }
         return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
+     */
+    @Override
+    public JSONObject toJSON() {
+        return null;
+    }
+
+    /**
+     * ############### IJSON ###############
+     */
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
     }
 
     public int getDefaultPosition() {
@@ -73,16 +82,6 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
             }
         }
         return IntConstants.INVALID_POSITION;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
-     */
-    @Override
-    public JSONObject toJSON() {
-        return null;
     }
 
 }

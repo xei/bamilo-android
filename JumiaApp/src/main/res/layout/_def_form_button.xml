@@ -8,11 +8,11 @@
         android:id="@+id/button_field_icon"
         android:layout_width="25dp"
         android:layout_height="25dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="5dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_marginRight="5dp"
         android:contentDescription="@string/app_name"
         android:visibility="gone" />
@@ -20,8 +20,8 @@
     <com.mobile.components.customfontviews.Button
         android:id="@+id/form_button"
         style="@style/FormButtonSpinner"
-        android:layout_toRightOf="@+id/button_field_icon"
         android:layout_toEndOf="@+id/button_field_icon"
+        android:layout_toRightOf="@+id/button_field_icon"
         android:paddingBottom="5dp" />
 
     <!-- MANDATORY -->
@@ -30,14 +30,14 @@
         android:id="@+id/button_field_mandatory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:paddingEnd="5dp"
         android:paddingRight="5dp"
         android:text="*"
-        android:visibility="gone"
         android:textColor="@color/accent"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:visibility="gone"/>
 
 </RelativeLayout>

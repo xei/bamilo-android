@@ -68,6 +68,10 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     public void onStart() {
         super.onStart();
+        initializeFormData();
+    }
+
+    private void initializeFormData() {
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
             triggerInitForm();
@@ -88,11 +92,11 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     protected void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
+        if (null == JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+            initializeFormData();
         }
     }
 

@@ -3,7 +3,7 @@ package com.mobile.utils.home.holder;
 import android.content.Context;
 import android.view.View;
 
-import com.mobile.components.ExpandableGridViewComponent;
+import com.mobile.components.ExpandedGridViewComponent;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
@@ -17,14 +17,14 @@ public class HomeFeaturedTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    public ExpandableGridViewComponent container;
+    public ExpandedGridViewComponent container;
 
     /**
      * Constructor
      */
     public HomeFeaturedTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
-        container = (ExpandableGridViewComponent) view.findViewById(R.id.home_teaser_featured_stores_container_grid);
+        container = (ExpandedGridViewComponent) view.findViewById(R.id.home_teaser_featured_stores_container_grid);
     }
 
     @Override

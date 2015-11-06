@@ -28,15 +28,26 @@ import java.util.Map;
  */
 public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
+    /**
+     * Create parcelable
+     */
+    public static final Creator<FormField> CREATOR = new Creator<FormField>() {
+        public FormField createFromParcel(Parcel in) {
+            return new FormField(in);
+        }
+
+        public FormField[] newArray(int size) {
+            return new FormField[size];
+        }
+    };
     protected final static String TAG = FormField.class.getSimpleName();
-
-
-    @SuppressWarnings("unused")
-    public interface OnDataSetReceived {
-        void DataSetReceived(Map<String, String> dataSet);
-    }
-
-    private Form mParent;
+    private final Form mParent;
+    private final LinkedHashMap<String, String> mDataSetRating;
+    private final LinkedHashMap<String, String> mDataSet;
+    private final String mDataSetSource;
+    private final HashMap<String, String> mDataCalls;
+    private final LinkedHashMap<Object,Object> mExtrasValues;
+    private final HashMap<String,PaymentInfo> mPaymentInfoList;
     private String mId;
     private String mKey;
     private String mName;
@@ -44,19 +55,13 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String mLabel;
     private String mLinkText;
     private String mFormat;
-    private LinkedHashMap<String, String> mDataSetRating;
     private String mScenario;
-    private LinkedHashMap<String, String> mDataSet;
     private ArrayList<IFormField> mOptions;
-    private String mDataSetSource;
     private OnDataSetReceived mDataSetListener;
     private FieldValidation mValidation;
     private String mValue;
-    private HashMap<String, String> mDataCalls;
     private HashMap<String, Form>  mPaymentFields;
-    private LinkedHashMap<Object,Object> mExtrasValues;
     private ArrayList<NewsletterOption> mNewsletterOptions;
-    private HashMap<String,PaymentInfo> mPaymentInfoList;
     private IFormField mChildFormField;
     private IFormField mParentFormField;
     private boolean isChecked;
@@ -88,6 +93,47 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mPaymentInfoList = new HashMap<>();
         this.mFormat = "dd-MM-yyyy";
         this.isDisabled = false;
+    }
+
+    /**
+     * Parcel constructor
+     */
+    @SuppressWarnings("unchecked")
+    private FormField(Parcel in) {
+        mParent = (Form) in.readValue(Form.class.getClassLoader());
+        mId = in.readString();
+        mKey = in.readString();
+        mName = in.readString();
+        mInputType = (FormInputType) in.readValue(FormInputType.class.getClassLoader());
+        mLabel = in.readString();
+        mLinkText = in.readString();
+        mDataSetRating = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
+        mScenario = in.readString();
+        mDataSet = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            mOptions = new ArrayList<>();
+            in.readList(mOptions, IFormField.class.getClassLoader());
+        } else {
+            mOptions = null;
+        }
+        mDataSetSource = in.readString();
+        mDataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
+        mValidation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
+        mValue = in.readString();
+        mDataCalls = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mPaymentFields = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mExtrasValues = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            mNewsletterOptions = new ArrayList<>();
+            in.readList(mNewsletterOptions, NewsletterOption.class.getClassLoader());
+        } else {
+            mNewsletterOptions = null;
+        }
+        mPaymentInfoList = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mChildFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
+        mParentFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
+        mFormat = in.readString();
+        isPrefixField = in.readByte() == 1;
     }
 
     /*
@@ -406,56 +452,25 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     @Override
+    public String getLinkText() {
+        return this.mLinkText;
+    }
+
+    @Override
+    public String getFormat() {
+        return this.mFormat;
+    }
+
+    @Override
     public LinkedHashMap<String, String> getDataSet() {
         return mDataSet;
     }
 
-    @Override
-    public ArrayList<IFormField> getOptions() {
-        return mOptions;
-    }
-
-    @Override
-    public boolean isDefaultSelection() {
-        return isChecked;
-    }
-
-    @Override
-    public boolean isDisabledField() {
-        return isDisabled;
-    }
-
-    @Override
-    public boolean isPrefixField() {
-        return isPrefixField;
-    }
-
-    @Override
-    public IFormField getRelatedField() {
-        return mChildFormField;
-    }
-
-    @Override
-    public IFormField getParentField() {
-        return mParentFormField;
-    }
-
-    @Override
-    public void setParentField(IFormField formField) {
-        mParentFormField = formField;
-    }
-
-    public HashMap<String, Form> getPaymentMethodsField(){
-        return this.mPaymentFields;
-    }
-
-    public void setPaymentMethodsField(HashMap<String, Form> pFields){
-        this.mPaymentFields = pFields;
-    }
-
-    @Override
-    public Map<String, String> getDataCalls() {
-        return mDataCalls;
+    /**
+     * Listener used when the data set is received.
+     */
+    public void setOnDataSetReceived(OnDataSetReceived listener) {
+        mDataSetListener = listener;
     }
 
     @Override
@@ -477,14 +492,61 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     @Override
-    public String getLinkText() {
-        return this.mLinkText;
+    public Map<String, String> getDataCalls() {
+        return mDataCalls;
     }
 
     @Override
     public Map<String, String> getDateSetRating() {
         return mDataSetRating;
     }
+
+    @Override
+    public IFormField getRelatedField() {
+        return mChildFormField;
+    }
+
+    @Override
+    public IFormField getParentField() {
+        return mParentFormField;
+    }
+
+    @Override
+    public void setParentField(IFormField formField) {
+        mParentFormField = formField;
+    }
+
+    @Override
+    public ArrayList<IFormField> getOptions() {
+        return mOptions;
+    }
+
+    @Override
+    public boolean isDefaultSelection() {
+        return isChecked;
+    }
+
+    @Override
+    public boolean isPrefixField() {
+        return isPrefixField;
+    }
+
+    @Override
+    public boolean isDisabledField() {
+        return isDisabled;
+    }
+
+    public HashMap<String, Form> getPaymentMethodsField(){
+        return this.mPaymentFields;
+    }
+
+    public void setPaymentMethodsField(HashMap<String, Form> pFields){
+        this.mPaymentFields = pFields;
+    }
+
+    /*
+     * ########### PARCELABLE ###########
+     */
 
     public ArrayList<NewsletterOption> getNewsletterOptions() {
         return mNewsletterOptions;
@@ -493,17 +555,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public HashMap<String, PaymentInfo> getPaymentInfoList() {
         return mPaymentInfoList;
     }
-
-    /**
-     * Listener used when the data set is received.
-     */
-    public void setOnDataSetReceived(OnDataSetReceived listener) {
-        mDataSetListener = listener;
-    }
-
-    /*
-     * ########### PARCELABLE ###########
-     */
 
     @Override
     public int describeContents() {
@@ -548,63 +599,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeByte((byte) (isPrefixField ? 1 : 0));
     }
 
-    /**
-     * Parcel constructor
-     */
-    @SuppressWarnings("unchecked")
-    private FormField(Parcel in) {
-        mParent = (Form) in.readValue(Form.class.getClassLoader());
-        mId = in.readString();
-        mKey = in.readString();
-        mName = in.readString();
-        mInputType = (FormInputType) in.readValue(FormInputType.class.getClassLoader());
-        mLabel = in.readString();
-        mLinkText = in.readString();
-        mDataSetRating = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
-        mScenario = in.readString();
-        mDataSet = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
-        if (in.readByte() == 0x01) {
-            mOptions = new ArrayList<>();
-            in.readList(mOptions, IFormField.class.getClassLoader());
-        } else {
-            mOptions = null;
-        }
-        mDataSetSource = in.readString();
-        mDataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
-        mValidation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
-        mValue = in.readString();
-        mDataCalls = (HashMap) in.readValue(HashMap.class.getClassLoader());
-        mPaymentFields = (HashMap) in.readValue(HashMap.class.getClassLoader());
-        mExtrasValues = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
-        if (in.readByte() == 0x01) {
-            mNewsletterOptions = new ArrayList<>();
-            in.readList(mNewsletterOptions, NewsletterOption.class.getClassLoader());
-        } else {
-            mNewsletterOptions = null;
-        }
-        mPaymentInfoList = (HashMap) in.readValue(HashMap.class.getClassLoader());
-        mChildFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
-        mParentFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
-        mFormat = in.readString();
-        isPrefixField = in.readByte() == 1;
-    }
-
-    /**
-     * Create parcelable
-     */
-    public static final Creator<FormField> CREATOR = new Creator<FormField>() {
-        public FormField createFromParcel(Parcel in) {
-            return new FormField(in);
-        }
-
-        public FormField[] newArray(int size) {
-            return new FormField[size];
-        }
-    };
-
-    @Override
-    public String getFormat() {
-        return this.mFormat;
+    @SuppressWarnings("unused")
+    public interface OnDataSetReceived {
+        void DataSetReceived(Map<String, String> dataSet);
     }
 
 
