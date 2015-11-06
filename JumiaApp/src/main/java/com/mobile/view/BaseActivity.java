@@ -90,7 +90,6 @@ import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
 import java.lang.ref.WeakReference;
-import java.util.EnumSet;
 import java.util.Set;
 
 /**
@@ -525,13 +524,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
         setActionTitle(actionBarTitleResId);
-    }
-
-    /**
-     *
-     */
-    public void updateActionForCountry(NavigationAction action) {
-        this.action = action != null ? action : NavigationAction.Unknown;
     }
 
     /*
@@ -1171,17 +1163,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
 
     /**
-     * Hide only the search bar, used by ChangeCountryFragment
-     * @author sergiopereira
-     */
-    public void hideActionBarItemsForChangeCountry(EnumSet<MyMenuItem> enumSet) {
-        this.menuItems = enumSet;
-        this.action = NavigationAction.Country;
-        updateActionForCountry(NavigationAction.Country);
-        invalidateOptionsMenu();
-    }
-
-    /**
      * Get suggestions and recent queries
      *
      * @author sergiopereira
@@ -1190,21 +1171,18 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         beginInMillis = System.currentTimeMillis();
         String text = mSearchAutoComplete.getText().toString();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
-
         Bundle bundle = new Bundle();
         bundle.putString(GetSearchSuggestionsHelper.SEACH_PARAM, text);
         JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), bundle,
                 new IResponseCallback() {
-
                     @Override
                     public void onRequestComplete(BaseResponse baseResponse) {
                         processSuccessSearchEvent(baseResponse);
-                    }                    @Override
+                    }
+                    @Override
                     public void onRequestError(BaseResponse baseResponse) {
                         processErrorSearchEvent(baseResponse);
                     }
-
-
                 });
     }
 
@@ -1212,23 +1190,22 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * #################### SHARE #####################
      */
 
-    /**
-     * Called to update the share intent
-     *
-     * @param shareIntent
-     *            the intent to be stored
-     */
-    /*-public void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareHistoryFileName(null);
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
-    }*/
+//    /**
+//     * Called to update the share intent
+//     *
+//     * @param shareIntent
+//     *            the intent to be stored
+//     */
+//    /*-public void setShareIntent(Intent shareIntent) {
+//        if (mShareActionProvider != null) {
+//            mShareActionProvider.setShareHistoryFileName(null);
+//            mShareActionProvider.setShareIntent(shareIntent);
+//        }
+//    }*/
 
     /**
      * Process the search error event
      *
-     * @param baseResponse
      * @author sergiopereira
      */
     private void processErrorSearchEvent(BaseResponse baseResponse) {
@@ -1241,7 +1218,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         Print.d(TAG, "RECEIVED SEARCH ERROR EVENT: " + requestQuery);
         // Validate current search component
         if (mSearchAutoComplete != null && !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
-            Print.w(TAG, "SEARCH ERROR: WAS DISCARTED FOR QUERY " + requestQuery);
+            Print.w(TAG, "SEARCH ERROR: WAS DISCARDED FOR QUERY " + requestQuery);
             return;
         }
         if (!mCurrentMenu.findItem(MyMenuItem.SEARCH_VIEW.resId).isVisible()) {
@@ -1249,41 +1226,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
         // Hide dropdown
         mSearchAutoComplete.dismissDropDown();
-
-        /*-- // Show no network dialog
-        if(!NetworkConnectivity.isConnected(getApplicationContext())) {
-            if(dialog != null) dialog.dismissAllowingStateLoss();
-            // Show
-            dialog = DialogGenericFragment.createNoNetworkDialog(this, new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismissAllowingStateLoss();
-                    if(mSearchAutoComplete != null) getSuggestions();
-                }
-            },
-            new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    dialog.dismissAllowingStateLoss();
-                }
-            }, false);
-            dialog.show(getSupportFragmentManager(), null);
-        }
-         */
     }
 
     /**
      * Process success search event
      *
-     * @param baseResponse
      * @author sergiopereira
      */
     private void processSuccessSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
         GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
-
-//        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)suggestions;
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
@@ -1652,9 +1605,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 mCheckoutTabLayout.setVisibility(visibility);
             }
         }, 50);
-
-//        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
-//        findViewById(R.id.checkout_header).setVisibility(visibility);
     }
 
     /**
@@ -1671,16 +1621,16 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         });
         // Set header visibility
         mCheckoutTabLayout.setVisibility(visibility);
-
-//        findViewById(R.id.checkout_header_main_step).setVisibility(visibility);
-//        findViewById(R.id.checkout_header).setVisibility(visibility);
     }
 
     /**
      * Set the selected checkout step
      */
     private void selectCheckoutStep(int step) {
-        mCheckoutTabLayout.getTabAt(step).select();
+        TabLayout.Tab tab = mCheckoutTabLayout.getTabAt(step);
+        if(tab != null) {
+            tab.select();
+        }
     }
 
     /**
@@ -1692,12 +1642,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
         // CHECKOUT_BILLING  - step == 1
         // If selected tab is CHECKOUT_SHIPPING or CHECKOUT_PAYMENT, allow click
-        if (step == 1 && mCheckoutTabLayout.getSelectedTabPosition() > 1) {
+        if (step == ConstantsCheckout.TAB_CHECKOUT_BILLING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.TAB_CHECKOUT_BILLING) {
             selectCheckoutStep(step);
         }
         // CHECKOUT_SHIPPING  - step == 2
         // If selected tab is the CHECKOUT_PAYMENT, allow click
-        else if (step == 2 && mCheckoutTabLayout.getSelectedTabPosition() > 2) {
+        else if (step == ConstantsCheckout.TAB_CHECKOUT_SHIPPING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.TAB_CHECKOUT_SHIPPING) {
             selectCheckoutStep(step);
         }
         // CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
@@ -1708,27 +1658,16 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * @param step - selected position on header.
      */
     public void onCheckoutHeaderSelectedListener(int step) {
-        // CHECKOUT_ABOUT_YOU - step == 0
-
-        // CHECKOUT_BILLING - step == 1
-        if (step == 1) {
-            // Validate back stack
-            if(!popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString()) && fragmentController.hasEntry(FragmentType.CREATE_ADDRESS.toString())){
-                removeAllNativeCheckoutFromBackStack();
-
-                Bundle bundle = new Bundle();
-                bundle.putBoolean(ConstantsIntentExtra.FLAG_1, true);
-                onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-            }
-
+        // CASE TAB_CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
+        // CASE TAB_CHECKOUT_BILLING
+        if (step == ConstantsCheckout.TAB_CHECKOUT_BILLING) {
+            popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString());
         }
-        // CHECKOUT_SHIPPING - step == 2
-        else if (step == 2 ) {
-            // Validate back stack
+        // CASE TAB_CHECKOUT_SHIPPING
+        else if (step == ConstantsCheckout.TAB_CHECKOUT_SHIPPING ) {
             popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
         }
-        // CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
+        // CASE TAB_CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
     }
 
     /**

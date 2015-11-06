@@ -310,15 +310,10 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     }
 
     private void processOnClickMyAddresses() {
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ACCOUNT_MY_ADDRESSES);
-//        getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES_LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-//
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, FragmentType.MY_ACCOUNT);
-        bundle.putBoolean(ConstantsIntentExtra.IS_IN_CHECKOUT_PROCESS, true);
+        bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
         getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-
     }
 
     /**

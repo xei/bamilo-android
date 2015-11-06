@@ -70,14 +70,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected static final String BILLING_FORM_TAG = "billing";
 
-    private static final String SHIPPING_REGION_POS = "save_shipping_rg_position";
-
-    private static final String BILLING_REGION_POS = "save_billing_rg_position";
-
-    private static final String SHIPPING_CITY_POS = "save_shipping_ct_position";
-
-    private static final String BILLING_CITY_POS = "save_billing_ct_position";
-
     private static final int IS_DEFAULT_SHIPPING_ADDRESS = 1;
 
     protected static final int IS_DEFAULT_BILLING_ADDRESS = 1;
@@ -417,7 +409,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         spinner.setOnItemSelectedListener(this);
         v.setEditControl(spinner);
         group.addView(spinner);
-        showFragmentContentContainer(); // Show to trigger
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**
