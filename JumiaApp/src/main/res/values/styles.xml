@@ -57,7 +57,7 @@
     <style name="activity_sectionheader_divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/grey_highlight</item>
+        <item name="android:background">@color/black_300</item>
         <item name="android:layout_marginTop">@dimen/margin_large</item>
         <item name="android:layout_marginLeft">6dp</item>
         <item name="android:layout_marginRight">6dp</item>
@@ -115,25 +115,33 @@
     <style name="divider_horizontal">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/black_800</item>
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="divider_horizontal.Black700">
+        <item name="android:background">@color/black_700</item>
+    </style>
+
+    <style name="divider_vertical.Black700">
+        <item name="android:background">@color/black_700</item>
     </style>
 
     <style name="divider_vertical">
         <item name="android:layout_width">@dimen/divider_height</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/black_800</item>
+        <item name="android:background">@color/black_300</item>
     </style>
 
     <style name="divider_horizontal_campaign">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1.33dp</item>
-        <item name="android:background">@color/grey_highlight</item>
+        <item name="android:background">@color/black_300</item>
     </style>
 
     <style name="divider_vertival_campaign">
         <item name="android:layout_width">1.33dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/grey_highlight</item>
+        <item name="android:background">@color/black_300</item>
     </style>
 
     <style name="shadow">
@@ -290,8 +298,9 @@
         <item name="android:layout_marginEnd">@dimen/margin_30px</item>
         <item name="android:layout_gravity">top</item>
         <item name="android:button">@null</item>
-        <item name="android:drawableLeft">@drawable/btn_radio_holo_orange</item>
-        <item name="android:drawableStart">@drawable/btn_radio_holo_orange</item>
+        <item name="android:drawablePadding">8dp</item>
+        <item name="android:drawableLeft">@drawable/_gen_selector_radio_button</item>
+        <item name="android:drawableStart">@drawable/_gen_selector_radio_button</item>
     </style>
 
     <style name="starRatingBarSmall" parent="@android:style/Widget.RatingBar">
@@ -584,7 +593,7 @@
 
     <!-- CUSTOM SPINNER STYLE -->
     <style name="Widget.Jumia.Spinner.Style" parent="Widget">
-        <item name="android:background">@drawable/custom_spinner_light</item>
+        <item name="android:background">@drawable/spinner_background</item>
         <item name="android:dropDownSelector">@drawable/custom_list_selector_holo_dark</item>
         <item name="android:popupBackground">@drawable/custom_menu_dropdown_panel_holo_light</item>
         <item name="android:dropDownVerticalOffset">0dip</item>
@@ -627,10 +636,18 @@
         <item name="android:background">@color/black_300</item>
     </style>
 
+    <style name="HorizontalListDivider_black400" parent="HorizontalListDivider">
+        <item name="android:background">@color/black_400</item>
+    </style>
+
     <style name="VerticalListDivider">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">1dp</item>
         <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="VerticalListDivider_black_400" parent="VerticalListDivider">
+        <item name="android:background">@color/black_400</item>
     </style>
 
     <!-- CUSTOM TEXT STYLES -->
@@ -759,6 +776,13 @@
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:background">@null</item>
         <item name="android:src">@drawable/ic_overseas_corner</item>
+    </style>
+
+    <!-- MY ACCOUNT -->
+
+    <style name="HeaderMyAccountStyle" parent="HeaderStyle">
+        <item name="android:paddingLeft">@dimen/my_account_gen_dimen</item>
+        <item name="android:paddingStart">@dimen/my_account_gen_dimen</item>
     </style>
 
     <!-- MATERIAL BOTTOM SHEET -->

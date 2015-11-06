@@ -15,7 +15,15 @@ import com.mobile.view.R;
 import com.mobile.view.fragments.MyAccountFragment;
 
 /**
- * Created by rsoares on 8/25/15.
+ * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
+ *
+ * Unauthorized copying of this file, via any medium is strictly prohibited
+ * Proprietary and confidential.
+ *
+ * @author ricardosoares
+ * @version 1.0
+ * @date 2015/08/25
+ *
  */
 public class CountrySettingsAdapter extends BaseAdapter{
 
@@ -53,7 +61,7 @@ public class CountrySettingsAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if(convertView == null){
-            view = mInflater.inflate((position == MyAccountFragment.POSITION_COUNTRY) ? R.layout.country_settings_list_item : R.layout.my_account_list_item, parent, false);
+            view = mInflater.inflate((position == MyAccountFragment.POSITION_COUNTRY) ? R.layout.country_settings_list_item : R.layout._def_my_account_language_item, parent, false);
         } else {
             view = convertView;
         }
@@ -66,7 +74,7 @@ public class CountrySettingsAdapter extends BaseAdapter{
             info.setText(countryObject.countryName);
             ImageView flag = (ImageView)view.findViewById(R.id.flag);
             RocketImageLoader.instance.loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_small);
-            view.setEnabled(false);
+//            view.setEnabled(false);
             if(ShopSelector.isSingleShopCountry()) {
                 view.setOnClickListener(null);
             }

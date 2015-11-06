@@ -17,7 +17,7 @@
     <item name="checkout_summary_products"              type="layout">@layout/_def_checkout_summary_products</item>
     <item name="checkout_summary_shipping_address"      type="layout">@layout/_def_checkout_summary_shipping_address</item>
     <item name="checkout_summary_shipping_method"       type="layout">@layout/_def_checkout_summary_shipping_method</item>
-    <item name="checkout_summary_total"                 type="layout">@layout/_def_checkout_summary_total</item>
+    <!--<item name="checkout_summary_total"                 type="layout">@layout/_def_checkout_summary_total</item>-->
     <item name="checkout_payment_methods"               type="layout">@layout/_def_checkout_payment_methods</item>
     <item name="checkout_address_item"                  type="layout">@layout/_def_checkout_address_item</item>
     <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_def_checkout_sameaddress_checkbox</item>
@@ -29,7 +29,7 @@
     <item name="checkout_create_address_main" 	        type="layout">@layout/_def_checkout_create_address_main</item>
     <!--<item name="checkout_edit_address_main" 	        type="layout">@layout/_def_checkout_edit_address_main</item>-->
     <!--<item name="checkout_my_addresses" 			        type="layout">@layout/_def_checkout_my_addresses</item>-->
-    <item name="checkout_shipping_main" 		        type="layout">@layout/_def_checkout_shipping_main</item>
+    <!--<item name="checkout_shipping_main" 		        type="layout">@layout/_def_checkout_shipping_main</item>-->
     <!--<item name="checkout_payment_main" 			        type="layout">@layout/_def_checkout_payment_main</item>-->
     <item name="checkout_total_layout" 			        type="layout">@layout/_def_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_def_price</item>
@@ -38,7 +38,6 @@
     <item name="fulfillment_product"                    type="layout">@layout/_def_fulfillment_product</item>
 
     <!-- FORMS -->
-    <item name="form_radiobutton_shipping"              type="layout">@layout/_def_form_radiobutton_shipping</item>
     <item name="form_radiobutton_with_extra"            type="layout">@layout/_def_form_radiobutton_with_extra</item>
     <item name="form_radiobutton"                       type="layout">@layout/_def_form_radiobutton</item>
     <item name="form_radiogroup"                        type="layout">@layout/_def_form_radiogroup</item>
@@ -89,6 +88,7 @@
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_def_pdv_fragment_seller_info</item>
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_def_pdv_fragment_related_item_price</item>
+    <item name="config_confirmation_msg" 	            type="layout">@layout/_def_config_confirmation_msg</item>
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
@@ -132,7 +132,9 @@
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"          type="layout">@layout/_def_my_account_user_data_fragment</item>
     <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
-    <item name="my_account_list_item"                   type="layout">@layout/_def_my_account_list_item</item>
+    <item name="my_account_app_version"                 type="layout">@layout/_def_my_account_app_version</item>
+    <item name="my_account_notification_item"           type="layout">@layout/_def_my_account_notification_item</item>
+
 
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>
@@ -161,7 +163,9 @@
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
     <item name="product_offers_main"                    type="layout">@layout/_def_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_def_campaign_spinner_item</item>
-    <item name="_gen_form_check_box"                          type="layout">@layout/_def_form_checkbox</item>
+    <item name="gen_form_check_box"                     type="layout">@layout/_def_form_checkbox</item>
+    <item name="form_button"                            type="layout">@layout/_def_form_button</item>
+    <item name="form_radiolayout"                       type="layout">@layout/_def_form_radiolayout</item>
     <item name="login_remember_checkbox"                type="layout">@layout/_def_login_remember_checkbox</item>
     <!--<item name="form_spinner_dropdown_item"             type="layout">@layout/_v8_form_spinner_dropdown_item</item>-->
     <item name="order_history_item"                     type="layout">@layout/_def_order_history_item</item>

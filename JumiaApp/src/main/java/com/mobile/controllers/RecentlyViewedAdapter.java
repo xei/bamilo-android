@@ -48,11 +48,9 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         private TextView brand;
         private View isNew;
         private Button varianceButton;
-        private View variantChooseError;
         private View addToCartButton;
         private View deleteButton;
         private View container;
-        private View stockError;
     }
 
     /**
@@ -95,8 +93,6 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         setTextContent(prodItem, addableToCart);
         // Set variation
         setVariationContent(prodItem, addableToCart);
-        // Set warnings
-        setWarnings(prodItem, addableToCart);
         // Set clickable views
         setClickableViews(position, prodItem.container, prodItem.addToCartButton, prodItem.varianceButton);
         // Return view
@@ -132,8 +128,6 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             item.discount = (TextView) itemView.findViewById(R.id.item_discount);
             item.percentage = (TextView) itemView.findViewById(R.id.item_percentage);
             item.varianceButton = (Button) itemView.findViewById(R.id.button_variant);
-            item.variantChooseError = itemView.findViewById(R.id.error_variant);
-            item.stockError = itemView.findViewById(R.id.error_stock);
             item.addToCartButton = itemView.findViewById(R.id.button_shop);
             item.deleteButton = itemView.findViewById(R.id.button_delete);
             itemView.setTag(R.id.recycled_view, item);
@@ -141,19 +135,6 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             item = (Item) itemView.getTag(R.id.recycled_view);
         }
         return item;
-    }
-
-    /**
-     * Set warnings, stock and variation
-     * @param prodItem
-     * @param addableToCart
-     * @author sergiopereira
-     */
-    private void setWarnings(Item prodItem, ProductMultiple addableToCart) {
-//        // Set variation error visibility
-//        prodItem.variantChooseError.setVisibility(addableToCart.showChooseVariationWarning() ? View.VISIBLE : View.GONE);
-//        // Set stock error visibility
-//        prodItem.stockError.setVisibility(addableToCart.showStockVariationWarning() ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -183,7 +164,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             prodItem.varianceButton.setText(simpleVariationValue);
             prodItem.varianceButton.setVisibility(View.VISIBLE);
         } else {
-            prodItem.varianceButton.setVisibility(View.GONE);
+            prodItem.varianceButton.setVisibility(View.INVISIBLE);
         }
     }
 

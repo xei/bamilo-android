@@ -8,7 +8,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.GridView;
 
-import com.mobile.components.customfontviews.Button;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.RecentlyViewedAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -18,6 +18,7 @@ import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -29,14 +30,12 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ToastManager;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -53,15 +52,13 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     protected final static String RECENT_LIST = "recentlyViewedList";
 
-    private Button mClearAllButton;
+    private TextView mClearAllButton;
 
     private RecentlyViewedAdapter mAdapter;
 
     private ArrayList<ProductMultiple> mProducts;
 
     private GridView mGridView;
-
-    private Button mAddAllToCartButton;
 
     private View mClickedBuyButton;
 
@@ -111,11 +108,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         // Get grid view
         mGridView = (GridView) view.findViewById(R.id.recentlyviewed_grid);
         // Get clear all button
-        mClearAllButton = (Button) view.findViewById(R.id.recentlyviewed_button_grey);
+        mClearAllButton = (TextView) view.findViewById(R.id.recentlyviewed_button_grey);
         mClearAllButton.setOnClickListener(this);
-        // Get add to cart button
-        mAddAllToCartButton = (Button) view.findViewById(R.id.button_shop_all);
-        mAddAllToCartButton.setVisibility(View.GONE);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(RECENT_LIST)) {
             list = savedInstanceState.getStringArrayList(RECENT_LIST);
@@ -213,8 +207,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         getBaseActivity().warningFactory.hideWarning();
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(null);
-        mAddAllToCartButton.setVisibility(View.GONE);
-        mAddAllToCartButton.setOnClickListener(null);
         showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this);
     }
 
@@ -366,7 +358,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         } catch (IndexOutOfBoundsException e) {
             Print.w(TAG, "WARNING: IOB ON ADD ITEM TO CART", e);
             if(mAdapter != null) mAdapter.notifyDataSetChanged();
-            Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+            showInfoAddToShoppingCartFailed();
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON ADD ITEM TO CART", e);
             view.setEnabled(false);
@@ -459,7 +451,15 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT");
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+                //if has cart popup, show configurable confirmation message with cart total price
+                if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
+                    PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
+                    getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
+                }
+                else{
+                    //show regular message add item to cart
+                    showInfoAddToShoppingCartCompleted();
+                }
                 int position = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getCurrentPos();
                 updateLayoutAfterAction(position);
                 break;
@@ -507,7 +507,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.d(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 hideActivityProgress();
-                ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
+                showInfoAddToShoppingCartOOS();
                 break;
             case VALIDATE_PRODUCTS:
                 Print.d(TAG, "ON RESPONSE ERROR: VALIDATE_PRODUCTS");

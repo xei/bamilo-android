@@ -52,11 +52,15 @@ public enum EventType {
 
     GET_CHANGE_PASSWORD_FORM_EVENT("http:/forms/changepassword/", AigRestContract.MAX_CACHE_TIME),
 
-    CHANGE_PASSWORD_EVENT("https:/customer/changepass/", AigRestContract.NO_CACHE),
+    CHANGE_PASSWORD_EVENT("https:/customer/changepassword/", AigRestContract.NO_CACHE),
 
     GET_FORGET_PASSWORD_FORM_EVENT("forgotpassword", AigRestContract.MAX_CACHE_TIME),
 
     GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/forgotpassword/", AigRestContract.MAX_CACHE_TIME),
+
+    EDIT_USER_DATA_FORM_EVENT("http:/forms/edit/", AigRestContract.NO_CACHE),
+
+    EDIT_USER_DATA_EVENT("http:/customer/edit/", AigRestContract.NO_CACHE),
 
     FORGET_PASSWORD_EVENT("https:/customer/forgotpassword/", AigRestContract.NO_CACHE),
 
@@ -184,7 +188,9 @@ public enum EventType {
 
     REMOVE_PRODUCT_FROM_WISH_LIST("http:/wishlist/removeproduct/", AigRestContract.NO_CACHE),
 
-    GET_WISH_LIST("http:/wishlist/getproducts/", AigRestContract.NO_CACHE);
+    GET_WISH_LIST("http:/wishlist/getproducts/", AigRestContract.NO_CACHE),
+
+    GET_FAQ_TERMS("http:/main/getfaqandterms/", AigRestContract.MAX_CACHE_TIME);
 
 
     public final String action;

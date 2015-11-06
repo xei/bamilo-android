@@ -1,6 +1,7 @@
 package com.mobile.utils.catalog.filters;
 
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -247,7 +248,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         processOnClickClean();
     }
 
-    protected void setIntervalText(int minValue, int maxValue){
+    protected void setIntervalText(@IntRange(from=0) int minValue, int maxValue){
         mRangeValues.setText( CurrencyFormatter.formatCurrencyPattern(minValue + " - " + maxValue));
     }
 }

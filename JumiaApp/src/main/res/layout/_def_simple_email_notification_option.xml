@@ -1,41 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_centerVertical="true"
-    android:layout_gravity="center_vertical"
-    android:gravity="center_vertical">
+    android:layout_height="48dp">
 
     <View
-        style="@style/line_grey_style"
         android:id="@+id/newsletter_line"
-        android:layout_below="@+id/myaccount_newsletter_checkbox"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:visibility="visible" />
+        style="@style/line_grey_style"
+        android:layout_alignParentBottom="true" />
+
 
     <com.mobile.components.customfontviews.CheckBox
-        android:id="@+id/myaccount_newsletter_checkbox"
+        android:id="@+id/newsletter_option"
         style="@style/form_checkbox_style"
         android:layout_width="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_gravity="right|end"
-        android:background="@drawable/selector_clickableitem_highlight"
-        android:button="@null"
-        android:drawableEnd="@drawable/selector_btn_check_holo_green"
-        android:drawableRight="@drawable/selector_btn_check_holo_green"
-        android:padding="@dimen/rounded_margin_mid" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/myaccount_newslleter_option"
-        style="@style/text_form"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:gravity="center_vertical"
-        android:padding="@dimen/rounded_margin_mid"/>
+        android:layout_gravity="left|start|center_vertical"
+        android:button="@null"
+        android:drawableLeft="@drawable/_gen_selector_check_box"
+        android:drawableStart="@drawable/_gen_selector_check_box"
+        android:drawablePadding="10dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:gravity="left|start|center_vertical" />
+
 
 </RelativeLayout>

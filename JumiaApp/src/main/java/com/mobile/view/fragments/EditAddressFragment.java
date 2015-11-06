@@ -27,8 +27,8 @@ import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressPostalCode;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
-import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
+import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -47,7 +47,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -84,6 +83,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
     protected boolean isCityIdAnEditText = false;
 
+    private Bundle mFormSavedState;
+
     public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
         super(enabledMenuItems, action, R.layout.checkout_edit_address_main, titleResId, adjust_state);
     }
@@ -101,6 +102,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        // Saved form state
+        mFormSavedState = savedInstanceState;
         // Get arguments
         Bundle arguments = getArguments() != null ? getArguments() : savedInstanceState;
         if (arguments != null) {
@@ -159,6 +162,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         super.onSaveInstanceState(outState);
         Print.d(TAG, "ON SAVE SATE");
         outState.putInt(EditAddressFragment.SELECTED_ADDRESS, mAddressId);
+        if(mEditFormGenerator != null){
+            mEditFormGenerator.saveFormState(outState);
+        }
     }
 
     /*
@@ -170,6 +176,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
+        // Case goes to back stack save the state
+        Bundle bundle = new Bundle();
+        if(mEditFormGenerator != null) {
+            mEditFormGenerator.saveFormState(bundle);
+        }
+        mFormSavedState = bundle;
+
     }
 
     /*
@@ -213,6 +226,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Edit form
         mEditFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
         mEditFormContainer.removeAllViews();
+        mEditFormGenerator.loadSaveFormState(mFormSavedState);
         mEditFormContainer.addView(mEditFormGenerator.getContainer());
         mEditFormContainer.refreshDrawableState();
         // Validate Regions

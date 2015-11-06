@@ -107,10 +107,36 @@ public class UIUtils {
         }
     }
 
-    public static void setDrawableByString(ImageView imageView, String name) {
+    public static void setDrawableByString(@NonNull ImageView imageView, String name) {
         Context context = imageView.getContext();
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
         imageView.setImageResource(id);
+
     }
 
+
+
+    /**
+     * Animate a view sliding from down to top
+     * @param animatedView -  the animated view
+     * */
+    public static void animateSlideUp(@NonNull View animatedView) {
+        animatedView.clearAnimation();
+        Animation animation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_up);
+        animatedView.startAnimation(animation);
+        animatedView.setVisibility(View.GONE);
+    }
+
+
+    /**
+     * Animate a view sliding from top to down
+     * @param animatedView -  the animated view
+     * */
+    public static void animateSlideDown(@NonNull View animatedView) {
+        animatedView.clearAnimation();
+        animatedView.setVisibility(View.VISIBLE);
+        Animation animation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_down);
+        animatedView.startAnimation(animation);
+    }
+    
 }

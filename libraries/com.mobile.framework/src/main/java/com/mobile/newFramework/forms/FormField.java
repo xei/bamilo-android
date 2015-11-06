@@ -61,6 +61,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private IFormField mParentFormField;
     private boolean isChecked;
     private boolean isPrefixField;
+    private boolean isDisabled;
 
     /**
      * FormField param constructor
@@ -86,6 +87,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mDataSetRating = new LinkedHashMap<>();
         this.mPaymentInfoList = new HashMap<>();
         this.mFormat = "dd-MM-yyyy";
+        this.isDisabled = false;
     }
 
     /*
@@ -160,6 +162,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mScenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
             mLinkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
             isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
+            isDisabled = jsonObject.optBoolean(RestConstants.DISABLED);
             mFormat = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
             isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), "before");
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
@@ -415,6 +418,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     @Override
     public boolean isDefaultSelection() {
         return isChecked;
+    }
+
+    @Override
+    public boolean isDisabledField() {
+        return isDisabled;
     }
 
     @Override

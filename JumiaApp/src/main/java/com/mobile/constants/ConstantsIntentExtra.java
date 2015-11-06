@@ -102,7 +102,7 @@ public class ConstantsIntentExtra {
 
     // ########### BACKSTACK ##############
     public static final String BACK_STACK = mPackage + "backstack";
-    public static final String REMOVE_ENTRIES = mPackage + "removeEntries";
+    public static final String REMOVE_OLD_BACK_STACK_ENTRIES = mPackage + "removeEntries";
 
     // ########### MY ORDER ##############
     public static final String MY_ORDER_POS = "position";
@@ -118,6 +118,9 @@ public class ConstantsIntentExtra {
     public static final String DATA = mPackage + "data";
     public static final String FLAG_1 = mPackage + "flag1";
     public static final String FLAG_2 = mPackage + "flag2";
+    public static final String ARG_1 = mPackage + "arg1";
+    public static final String ARG_2 = mPackage + "arg2";
+
 
 
 }

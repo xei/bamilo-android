@@ -1,6 +1,8 @@
 package com.mobile.newFramework.objects.catalog;
 
 
+import com.mobile.newFramework.utils.TextUtils;
+
 /**
  * Interface that specifies the target of the teaser.
  *
@@ -32,7 +34,7 @@ public interface ITargeting {
 
         public static TargetType byValue(String value) {
             for (TargetType type : TargetType.values()) {
-                if (type.value.equals(value)) {
+                if (TextUtils.equals(type.value, value)) {
                     return type;
                 }
             }
@@ -40,7 +42,7 @@ public interface ITargeting {
         }
     }
 
-    String getTargetUrl();
+    String getTargetValue();
 
     TargetType getTargetType();
 

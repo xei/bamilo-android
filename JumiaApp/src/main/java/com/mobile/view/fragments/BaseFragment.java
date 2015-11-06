@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -85,7 +86,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected int titleResId;
 
-    private int checkoutStep;
+    protected int checkoutStep;
 
     protected Boolean isNestedFragment = false;
 
@@ -124,7 +125,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -136,7 +137,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor used only by nested fragments
      */
-    public BaseFragment(Boolean isNestedFragment, int layoutResId) {
+    public BaseFragment(Boolean isNestedFragment, @LayoutRes int layoutResId) {
         this.isNestedFragment = isNestedFragment;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = 0;
@@ -157,7 +158,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state, int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
@@ -235,8 +236,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         isOnStoppingProcess = false;
         // Exist order summary
         isOrderSummaryPresent = view.findViewById(ORDER_SUMMARY_CONTAINER) != null;
-//        // Get content layout
-//        mContentView = view.findViewById(R.id.content_container);
         // Get loading layout
         mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
         mLoadingView.setOnInflateListener(this);
@@ -249,11 +248,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get maintenance layout
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
-//        // Hide search component for change country
-//        if (this.action == NavigationAction.Country) {
-//            // Hide search component
-//            getBaseActivity().hideActionBarItemsForChangeCountry(EnumSet.noneOf(MyMenuItem.class));
-//        }
         // Update base components, like items on action bar
         if (!isNestedFragment && enabledMenuItems != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems.toString() + " " + action.toString());
@@ -261,7 +255,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             // Method used to set a bottom margin
             TabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
-
     }
 
     /**
@@ -508,7 +501,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void hideKeyboard() {
         Print.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        try {
+            imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        } catch (NullPointerException e){
+            // DO NOTHING
+        }
+
     }
 
     public void setActivity(BaseActivity activity) {
@@ -658,7 +656,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET);
+        getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET, getString(R.string.no_internet_access_warning_title));
         hideActivityProgress();
         showFragmentContentContainer();
     }
@@ -671,15 +669,36 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public void showInfoAddToShoppingCartCompleted() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART, getString(R.string.added_to_shop_cart_dialog_text));
         }
     }
 
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART);
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART, getString(R.string.error_add_to_shopping_cart));
         }
     }
+
+    public void showInfoLoginSuccess() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.LOGIN_SUCCESS, getString(R.string.succes_login));
+        }
+    }
+
+    public void showInfoAddToShoppingCartOOS() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_OUT_OF_STOCK, getString(R.string.product_outof_stock));
+        }
+    }
+
+    public void showInfoAddToSaved() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED, getString(R.string.products_removed_saved));
+        }
+    }
+
+
+
 
     /**
      * Set the inflated stub

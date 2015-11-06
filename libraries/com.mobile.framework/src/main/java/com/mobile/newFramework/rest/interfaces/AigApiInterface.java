@@ -36,6 +36,7 @@ import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.search.Suggestions;
+import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.objects.statics.StaticTermsConditions;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -168,6 +169,11 @@ public interface AigApiInterface {
     void getPaymentMethodsForm(Callback<BaseResponse<CheckoutFormPayment>> callback);
 
     String getPaymentMethodsForm = "getPaymentMethodsForm";
+
+    @GET("/")
+    void getUserDataForm(Callback<BaseResponse<Form>> callback);
+
+    String getUserDataForm = "getUserDataForm";
 
     /*
      * ## CATALOG
@@ -316,6 +322,12 @@ public interface AigApiInterface {
     /*
      * ## SESSION
      */
+
+    @FormUrlEncoded
+    @POST("/")
+    void setUserData(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    String setUserData = "setUserData";
 
     @GET("/")
     void logoutCustomer(Callback<BaseResponse<Void>> callback);
@@ -511,4 +523,7 @@ public interface AigApiInterface {
     void getPhonePrefixes(Callback<BaseResponse<PhonePrefixes>> callback);
     String getPhonePrefixes = "getPhonePrefixes";
 
+    @GET("/")
+    void getFaqTerms(Callback<BaseResponse<MobileAbout>> callback);
+    String getFaqTerms = "getFaqTerms";
 }

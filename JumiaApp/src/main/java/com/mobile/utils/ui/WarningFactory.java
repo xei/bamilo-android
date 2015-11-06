@@ -41,6 +41,12 @@ public class WarningFactory {
     public static final int ERROR_ADD_PRODUCTS_TO_CART = 8;
     public static final int ADDED_TO_SAVED = 9;
     public static final int REMOVE_FROM_SAVED = 10;
+    public static final int CHANGE_PASSWORD_VALIDATION = 11;
+    public static final int USER_DATA_VALIDATION = 12;
+    public static final int USER_DATA_SUCCESS = 13;
+    public static final int CHANGE_PASSWORD_SUCCESS = 14;
+    public static final int LOGIN_SUCCESS = 15;
+    public static final int ERROR_OUT_OF_STOCK = 16;
 
     /**
      * The last warning that was built and might be re-used.
@@ -48,6 +54,8 @@ public class WarningFactory {
     protected int actualWarning;
 
     protected View mWarningBar;
+
+    private String mWarningMessage;
 
     /**
      * Create a new instance of WarningFactory.
@@ -73,29 +81,44 @@ public class WarningFactory {
     }
 
     /**
+     * constructor where the label to show can be dynamic
+     * @param warning
+     * @param warningMessage
+     */
+    public void showWarning(int warning, String warningMessage){
+        mWarningMessage = warningMessage;
+        showWarning(warning);
+    }
+
+    /**
      * Constructs warning bar.
      *
-     * @param warning The warning desired.
+     * @param warning The warning desiredt.
      */
     public void showWarning(int warning){
         switch (warning){
+            // Success cases
+            case ADDED_ITEM_TO_CART:
+            case ADDED_ITEMS_TO_CART:
+            case ADDED_TO_SAVED:
+            case REMOVE_FROM_SAVED:
+            case CHANGE_PASSWORD_SUCCESS:
+            case USER_DATA_SUCCESS:
+            case LOGIN_SUCCESS:
+                showWarningSuccess(warning);
+                break;
+            // Error cases
+            case NO_INTERNET:
+            case ERROR_ADD_TO_CART:
+            case ERROR_ADD_PRODUCTS_TO_CART:
+            case CHANGE_PASSWORD_VALIDATION:
+            case ERROR_OUT_OF_STOCK:
+            case USER_DATA_VALIDATION:
+                showWarningError(warning);
+                break;
+            // Specific cases
             case CHOOSE_ONE_SIZE:
                 showWarningChooseOneSize();
-                break;
-            case ADDED_ITEM_TO_CART:
-                showWarningAddedItemToCart();
-                break;
-            case ADDED_ITEMS_TO_CART:
-                showWarningAddedItemsToCart();
-                break;
-            case NO_INTERNET:
-                showWarningNoInternet();
-                break;
-            case ERROR_ADD_TO_CART:
-                showErrorAddToCart();
-                break;
-            case ERROR_ADD_PRODUCTS_TO_CART:
-                showErrorAddProductsToCart();
                 break;
             case PROBLEM_FETCHING_DATA:
                 showWarningProblemFetchingData(false);
@@ -103,36 +126,37 @@ public class WarningFactory {
             case PROBLEM_FETCHING_DATA_ANIMATION:
                 showWarningProblemFetchingData(true);
                 break;
-            case ADDED_TO_SAVED:
-                showWarningAddedItemToSaved();
-                break;
-            case REMOVE_FROM_SAVED:
-                showWarningRemovedItemFromSaved();
-                break;
         }
     }
-
-    private void showErrorAddProductsToCart() {
-        if(actualWarning != ERROR_ADD_PRODUCTS_TO_CART){
-            new Builder().setText(R.string.some_products_not_added)
-                    .setBackground(R.color.red_warning)
-                    .setImageVisibility(true)
+    /**
+     * show dynamic success message
+     * @param warning
+     */
+    private void showWarningSuccess(int warning){
+        if(actualWarning != warning){
+            new Builder().setText(mWarningMessage)
+                    .setBackground(R.color.green_warning)
+                    .setImageVisibility(false)
                     .setAnimationDuration(_5_SECONDS)
                     .startAnimation();
-            actualWarning = ERROR_ADD_PRODUCTS_TO_CART;
+            actualWarning = warning;
         } else {
             new Builder().startAnimation();
         }
     }
 
-    private void showErrorAddToCart() {
-        if(actualWarning != ERROR_ADD_TO_CART){
-            new Builder().setText(R.string.error_add_to_shopping_cart)
+    /**
+     * show dynamic error message
+     * @param warning
+     */
+    private void showWarningError(int warning) {
+        if(actualWarning != warning){
+            new Builder().setText(mWarningMessage)
                     .setBackground(R.color.red_warning)
                     .setImageVisibility(true)
                     .setAnimationDuration(_5_SECONDS)
                     .startAnimation();
-            actualWarning = ERROR_ADD_TO_CART;
+            actualWarning = warning;
         } else {
             new Builder().startAnimation();
         }
@@ -148,46 +172,6 @@ public class WarningFactory {
             actualWarning = CHOOSE_ONE_SIZE;
         } else {
             new Builder().show();
-        }
-    }
-
-    private void showWarningAddedItemToCart(){
-        if(actualWarning != ADDED_ITEM_TO_CART) {
-        new Builder().setText(R.string.added_to_shop_cart_dialog_text)
-                .setBackground(R.color.green_warning)
-                .setImageVisibility(false)
-                .setAnimationDuration(_5_SECONDS)
-                .startAnimation();
-            actualWarning = ADDED_ITEM_TO_CART;
-        } else {
-            new Builder().startAnimation();
-        }
-    }
-
-    private void showWarningAddedItemsToCart(){
-        if(actualWarning != ADDED_ITEMS_TO_CART) {
-
-        new Builder().setText(R.string.added_bundle_to_shop_cart_dialog_text)
-                .setBackground(R.color.green_warning)
-                .setImageVisibility(false)
-                .setAnimationDuration(_5_SECONDS)
-                .startAnimation();
-            actualWarning = ADDED_ITEMS_TO_CART;
-        } else {
-            new Builder().startAnimation();
-        }
-    }
-
-    private void showWarningNoInternet(){
-        if(actualWarning != NO_INTERNET) {
-            new Builder().setText(R.string.no_internet_access_warning_title)
-                    .setBackground(R.color.red_warning)
-                    .setImageVisibility(true)
-                    .setAnimationDuration(_5_SECONDS)
-                    .startAnimation();
-            actualWarning = NO_INTERNET;
-        } else {
-            new Builder().startAnimation();
         }
     }
 
@@ -219,31 +203,6 @@ public class WarningFactory {
         }
     }
 
-    private void showWarningAddedItemToSaved(){
-        if(actualWarning != ADDED_TO_SAVED) {
-            new Builder().setText(R.string.products_added_saved)
-                    .setBackground(R.color.green_warning)
-                    .setImageVisibility(false)
-                    .setAnimationDuration(_5_SECONDS)
-                    .startAnimation();
-            actualWarning = ADDED_TO_SAVED;
-        } else {
-            new Builder().startAnimation();
-        }
-    }
-
-    private void showWarningRemovedItemFromSaved(){
-        if(actualWarning != REMOVE_FROM_SAVED) {
-            new Builder().setText(R.string.products_removed_saved)
-                    .setBackground(R.color.green_warning)
-                    .setImageVisibility(false)
-                    .setAnimationDuration(_5_SECONDS)
-                    .startAnimation();
-            actualWarning = REMOVE_FROM_SAVED;
-        } else {
-            new Builder().startAnimation();
-        }
-    }
 
     public void hideWarning(){
         new Builder().hide();
@@ -261,6 +220,11 @@ public class WarningFactory {
         private int animationLength = _5_SECONDS;
 
         Builder setText(int message){
+            ((TextView)mWarningBar.findViewById(R.id.warning_text)).setText(message);
+            return this;
+        }
+
+        Builder setText(String message){
             ((TextView)mWarningBar.findViewById(R.id.warning_text)).setText(message);
             return this;
         }
