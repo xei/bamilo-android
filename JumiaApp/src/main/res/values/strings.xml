@@ -453,6 +453,7 @@
     <string name="no_saved_items_subtitle">You don\'t have any saved items.</string>
     <string name="no_recently_viewed_items">No Recently Viewed Items</string>
     <string name="no_recently_viewed_items_subtitle">You don\'t have any recently viewed items.</string>
+    <string name="recent_searches_empty">You don\'t have yet any recent searches.</string>
     <string name="items_in_your_order">Items in your order</string>
     <string name="delivered_label">Delivered</string>
     <string name="order_number">Order N.º %s</string>

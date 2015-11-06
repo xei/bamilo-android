@@ -519,4 +519,6 @@
 
     <dimen name="confirm_msg_padding">6dp</dimen>
 
+    <dimen name="padding_recent_search_item">20dp</dimen>
+
 </resources>
