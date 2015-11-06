@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
     android:layout_height="150dp"
+    android:baselineAligned="false"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="20dp"
-    android:baselineAligned="false">
+    android:padding="20dp">
 
     <!-- IMAGE -->
 
@@ -96,12 +96,37 @@
             android:layout_marginTop="6dp"
             android:drawableLeft="@drawable/ic_order_delivery"
             android:drawablePadding="6dp"
+            android:drawableStart="@drawable/ic_order_delivery"
             android:textColor="@color/black_700" />
 
     </RelativeLayout>
 
     <!-- STATUS INFO -->
 
-    <include layout="@layout/_def_delivered" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- REORDER -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_status_item_button_reorder"
+            style="@style/AigButton.TextOrange"
+            android:layout_alignParentTop="true"
+            android:gravity="right|end"
+            android:text="@string/reorder_label" />
+
+        <!-- ORDER DELIVERY -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_status_item_text_delivered"
+            style="@style/TextHeader"
+            android:layout_width="100dp"
+            android:layout_alignParentBottom="true"
+            android:singleLine="false"
+            android:textColor="@color/black" />
+
+    </RelativeLayout>
 
 </LinearLayout>
