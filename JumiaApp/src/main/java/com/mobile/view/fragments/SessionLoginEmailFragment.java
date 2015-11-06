@@ -46,29 +46,15 @@ import java.util.Map;
 public class SessionLoginEmailFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = SessionLoginEmailFragment.class.getSimpleName();
-
-    private ViewGroup mFormContainer;
-
-    private Form mForm;
-
-    private DynamicForm mDynamicForm;
-
     protected FragmentType nextFragmentType;
-
+    private ViewGroup mFormContainer;
+    private Form mForm;
+    private DynamicForm mDynamicForm;
     private Bundle mFormSavedState;
 
     private String mCustomerEmail;
 
     private boolean isInCheckoutProcess;
-
-    /**
-     * Get new instance
-     */
-    public static SessionLoginEmailFragment getInstance(Bundle bundle) {
-        SessionLoginEmailFragment fragment = new SessionLoginEmailFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
     /**
      * Empty constructor
@@ -79,6 +65,15 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 R.layout.session_login_email_fragment,
                 R.string.login_label,
                 KeyboardState.ADJUST_CONTENT);
+    }
+
+    /**
+     * Get new instance
+     */
+    public static SessionLoginEmailFragment getInstance(Bundle bundle) {
+        SessionLoginEmailFragment fragment = new SessionLoginEmailFragment();
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     /*
@@ -139,20 +134,9 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         onValidateState();
     }
 
-    private void onValidateState() {
-        // Case form is empty
-        if (mForm == null) {
-            triggerLoginForm();
-        }
-        // Case load form
-        else {
-            loadForm(mForm);
-        }
-    }
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -163,7 +147,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -176,25 +160,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
 
     /*
      * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Case rotation save state
-        if (mDynamicForm != null) {
-            mDynamicForm.saveFormState(outState);
-        }
-        // Save data
-        outState.putString(ConstantsIntentExtra.DATA, mCustomerEmail);
-        // Save checkout flag
-        outState.putBoolean(ConstantsIntentExtra.FLAG_1, isInCheckoutProcess);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onPause()
      */
     @Override
@@ -211,7 +177,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStop()
      */
     @Override
@@ -240,28 +206,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         Print.i(TAG, "ON DESTROY");
     }
 
-    /**
-     *
-     */
-    private void loadForm(Form form) {
-        // Create form view
-        mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getActivity(), form);
-        // Load saved state
-        mDynamicForm.loadSaveFormState(mFormSavedState);
-        // Set initial value
-        if (TextUtils.isNotEmpty(mCustomerEmail)) {
-            mDynamicForm.setInitialValue(FormInputType.email, mCustomerEmail);
-        }
-        // Add form view
-        mFormContainer.addView(mDynamicForm.getContainer());
-        // Show
-        showFragmentContentContainer();
-    }
-
-     /*
-     * ################ LISTENERS ################
-     */
-
     @Override
     public void onClick(View view) {
         // Get id
@@ -280,6 +224,67 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
+     */
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        onValidateState();
+    }
+
+    private void onValidateState() {
+        // Case form is empty
+        if (mForm == null) {
+            triggerLoginForm();
+        }
+        // Case load form
+        else {
+            loadForm(mForm);
+        }
+    }
+
+     /*
+     * ################ LISTENERS ################
+     */
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Case rotation save state
+        if (mDynamicForm != null) {
+            mDynamicForm.saveFormState(outState);
+        }
+        // Save data
+        outState.putString(ConstantsIntentExtra.DATA, mCustomerEmail);
+        // Save checkout flag
+        outState.putBoolean(ConstantsIntentExtra.FLAG_1, isInCheckoutProcess);
+    }
+
+    /**
+     *
+     */
+    private void loadForm(Form form) {
+        // Create form view
+        mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getActivity(), form);
+        // Load saved state
+        mDynamicForm.loadSaveFormState(mFormSavedState);
+        // Set initial value
+        if (TextUtils.isNotEmpty(mCustomerEmail)) {
+            mDynamicForm.setInitialValue(FormInputType.email, mCustomerEmail);
+        }
+        // Add form view
+        mFormContainer.addView(mDynamicForm.getContainer());
+        // Show
+        showFragmentContentContainer();
+    }
+
     private void onClickForgotPassword() {
         getBaseActivity().onSwitchFragment(FragmentType.FORGOT_PASSWORD, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -293,16 +298,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         else {
             TrackerDelegator.trackLoginFailed(TrackerDelegator.ISNT_AUTO_LOGIN, GTMValues.LOGIN, GTMValues.EMAILAUTH);
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        onValidateState();
     }
 
     /*
@@ -371,7 +366,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         // Validate error
         EventType eventType = baseResponse.getEventType();
         ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Case login form
         if (eventType == EventType.GET_LOGIN_FORM_EVENT) {
             showFragmentErrorRetry();

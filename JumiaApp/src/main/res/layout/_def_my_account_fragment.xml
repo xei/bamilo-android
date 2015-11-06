@@ -19,8 +19,8 @@
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/HeaderMyAccountStyle"
-                android:textStyle="bold"
-                android:text="@string/section_title_account" />
+                android:text="@string/section_title_account"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <!-- NOTIFICATION SETTINGS -->
@@ -34,8 +34,8 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/HeaderMyAccountStyle"
-            android:textStyle="bold"
-            android:text="@string/section_title_notification" />
+            android:text="@string/section_title_notification"
+            android:textStyle="bold"/>
 
         </LinearLayout>
 
@@ -50,8 +50,8 @@
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/HeaderMyAccountStyle"
-                android:textStyle="bold"
-                android:text="@string/choose_language" />
+                android:text="@string/choose_language"
+                android:textStyle="bold"/>
         </LinearLayout>
 
         <!-- MORE SETTINGS -->
@@ -65,8 +65,8 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
-                    android:textStyle="bold"
-                    android:text="@string/more" />
+                    android:text="@string/more"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
 
@@ -81,8 +81,8 @@
 
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
-                    android:textStyle="bold"
-                    android:text="@string/app_social" />
+                    android:text="@string/app_social"
+                    android:textStyle="bold"/>
 
             </LinearLayout>
 

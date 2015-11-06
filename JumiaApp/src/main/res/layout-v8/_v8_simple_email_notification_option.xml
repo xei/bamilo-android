@@ -16,11 +16,11 @@
         android:layout_centerVertical="true"
         android:layout_gravity="right|center_vertical"
         android:button="@null"
-        android:textColor="@color/black"
-        android:textSize="16sp"
         android:drawablePadding="10dp"
         android:drawableRight="@drawable/_gen_selector_check_box"
-        android:gravity="right|center_vertical" />
+        android:gravity="right|center_vertical"
+        android:textColor="@color/black"
+        android:textSize="16sp"/>
 
 
 </RelativeLayout>

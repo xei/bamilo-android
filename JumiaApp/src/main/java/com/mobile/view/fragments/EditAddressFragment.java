@@ -162,7 +162,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         super.onSaveInstanceState(outState);
         Print.d(TAG, "ON SAVE SATE");
         outState.putInt(EditAddressFragment.SELECTED_ADDRESS, mAddressId);
-        if(mEditFormGenerator != null){
+        if (mEditFormGenerator != null) {
             mEditFormGenerator.saveFormState(outState);
         }
     }
@@ -260,7 +260,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        if(mFormSavedState != null){
+        if (mFormSavedState != null) {
             spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
         } else {
             spinner.setSelection(getDefaultPosition(formItem, regions));
@@ -287,7 +287,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        if(mFormSavedState != null){
+        if (mFormSavedState != null) {
             spinner.setSelection(mFormSavedState.getInt(RestConstants.CITY));
         } else {
             spinner.setSelection(getDefaultPosition(formItem, cities));
@@ -313,7 +313,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        if(mFormSavedState != null){
+        if (mFormSavedState != null) {
             spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
         } else {
             spinner.setSelection(getDefaultPosition(formItem, postalCodes));
@@ -355,11 +355,17 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Get view id
         int id = view.getId();
         // Next button
-        if(id == R.id.checkout_edit_button_enter) onClickEditAddressButton();
-            // Next button
-        else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
-            // Unknown view
-        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        if (id == R.id.checkout_edit_button_enter) {
+            onClickEditAddressButton();
+        }
+        // Next button
+        else if (id == R.id.checkout_edit_button_cancel) {
+            onClickCancelAddressButton();
+        }
+        // Unknown view
+        else {
+            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        }
     }
 
     @Override
@@ -414,7 +420,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.mobile.components.absspinner.IcsAdapterView)
      */
     @Override
-    public void onNothingSelected(IcsAdapterView<?> parent) { }
+    public void onNothingSelected(IcsAdapterView<?> parent) {
+    }
 
     /*
      * (non-Javadoc)
@@ -604,7 +611,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
 
         ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {
             case INIT_FORMS:

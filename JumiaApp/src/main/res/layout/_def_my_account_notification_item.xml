@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:gravity="center_vertical" >
+                android:gravity="center_vertical"
+                android:orientation="vertical">
 
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/option_name"
         style="@style/TextCaption"
-        android:text="Title"
-        android:layout_marginLeft="@dimen/my_account_gen_dimen"
-        android:layout_marginStart="@dimen/my_account_gen_dimen"
-        android:textColor="@color/black"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginLeft="@dimen/my_account_gen_dimen"
+        android:layout_marginStart="@dimen/my_account_gen_dimen"
+        android:layout_marginTop="16dp"
+        android:text="Title"
+        android:textColor="@color/black"/>
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/notification_checkbox"
         style="@style/form_checkbox_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="@dimen/my_account_gen_dimen"
-        android:layout_marginEnd="@dimen/my_account_gen_dimen"
-        android:gravity="center"
-        android:button="@null"
-        android:drawableRight="@drawable/_gen_selector_check_box"
-        android:drawableEnd="@drawable/_gen_selector_check_box"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:layout_centerVertical="true" />
+        android:layout_marginEnd="@dimen/my_account_gen_dimen"
+        android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:button="@null"
+        android:drawableEnd="@drawable/_gen_selector_check_box"
+        android:drawableRight="@drawable/_gen_selector_check_box"
+        android:gravity="center"/>
 
 
     <View
