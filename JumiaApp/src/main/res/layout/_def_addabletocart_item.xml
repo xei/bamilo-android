@@ -40,7 +40,6 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginStart="@dimen/rounded_margin_mid"
-
         android:layout_toEndOf="@id/item_image_container"
         android:layout_toRightOf="@id/item_image_container" />
 
