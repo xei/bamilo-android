@@ -20,6 +20,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
     // Data
     public TextView name;
     public TextView brand;
+    public TextView quantity;
     public ImageView image;
     public View progress;
     public ViewGroup ratingContainer;

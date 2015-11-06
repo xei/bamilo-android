@@ -297,7 +297,7 @@
     <dimen name="button_double_container_height">109.67dp</dimen>
     <dimen name="button_landscape_width">426.67dp</dimen>
     <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
-    <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
+    <dimen name="product_item_addtocart_variation_width">89dp</dimen>
     <dimen name="product_item_text_right_margin">50dp</dimen>
     <dimen name="title_box_height">18.67dp</dimen>
 
@@ -518,4 +518,7 @@
     <integer name="config_add_cart_anim_duration">500</integer>
 
     <dimen name="confirm_msg_padding">6dp</dimen>
+
+    <dimen name="padding_recent_search_item">20dp</dimen>
+
 </resources>

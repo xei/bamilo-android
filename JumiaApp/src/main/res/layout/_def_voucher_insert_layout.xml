@@ -48,6 +48,8 @@
                 android:layout_width="match_parent"
                 android:layout_marginLeft="@dimen/rounded_margin_mid"
                 android:layout_marginStart="@dimen/rounded_margin_mid"
+                android:background="@null"
+                android:singleLine="false"
                 android:text="@string/voucher_error_message"
                 android:textColor="@color/red_middle"
                 android:visibility="gone" />

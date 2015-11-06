@@ -31,10 +31,10 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/user_data_save_button"
             style="@style/AigButton.Active"
+            android:layout_below="@id/user_data_container"
+            android:layout_marginBottom="@dimen/rounded_margin_mid"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:layout_marginBottom="@dimen/rounded_margin_mid"
-            android:layout_below="@id/user_data_container"
             android:text="@string/save_label" />
 
 
@@ -59,12 +59,16 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/change_password_save_button"
             style="@style/AigButton.Active"
+            android:layout_below="@+id/change_password_layout"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:layout_below="@+id/change_password_layout"
             android:contentDescription="@string/myaccount_save_description"
             android:text="@string/change_password" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_below="@id/change_password_save_button"
+            android:layout_height="@dimen/rounded_margin_mid" />
     </RelativeLayout>
 
 </ScrollView>

@@ -31,7 +31,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -250,7 +249,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Show the wish list container as first time.
      */
     protected void showWishListContainer(WishList wishList) {
-        WishListGridAdapter listAdapter = new WishListGridAdapter(this.getActivity(), wishList.getProducts(), new OnWishListViewHolderClickListener() {
+        WishListGridAdapter listAdapter = new WishListGridAdapter(wishList.getProducts(), new OnWishListViewHolderClickListener() {
             @Override
             public void onItemClick(View view) {
                 WishListFragment.this.onItemClick(view);
@@ -512,7 +511,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_REMOVED_FAVOURITE);
+                showInfoAddToSaved();
                 break;
             case GET_WISH_LIST:
             default:
@@ -544,7 +543,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 if (!super.handleErrorEvent(baseResponse)) {
-                    ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
+                    showInfoAddToShoppingCartOOS();
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:

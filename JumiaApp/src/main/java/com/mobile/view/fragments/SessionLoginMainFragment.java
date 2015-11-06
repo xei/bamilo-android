@@ -115,10 +115,10 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
             // Force load form if comes from deep link
             mParentFragmentType = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE);
             mNextStepFromParent = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE);
-            isInCheckoutProcess = arguments.getBoolean(ConstantsIntentExtra.IS_IN_CHECKOUT_PROCESS);
+            isInCheckoutProcess = arguments.getBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API);
         }
         // Show checkout tab layout
-        if(isInCheckoutProcess) {
+        if (isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT) {
             checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
     }
@@ -213,7 +213,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         super.onSaveInstanceState(outState);
         outState.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
         outState.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, mNextStepFromParent);
-        outState.putBoolean(ConstantsIntentExtra.IS_IN_CHECKOUT_PROCESS, isInCheckoutProcess);
+        outState.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, isInCheckoutProcess);
     }
 
     /*
@@ -375,7 +375,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         super.handleSuccessEvent(baseResponse);
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType.toString());
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
                 // Get value
@@ -404,7 +404,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 }
                 // Validate the next step
                 CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
-                return;
+                break;
             default:
                 break;
         }
@@ -423,7 +423,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         }
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType.toString());
+        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
                 ToastManager.show(getBaseActivity().getApplicationContext(), ToastManager.ERROR_INVALID_EMAIL);

@@ -11,7 +11,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
@@ -43,7 +43,7 @@ import java.util.Map;
  * This class represents the page for bundle products in a combo. It allows to add checked combo products to cart at once
  * @author alexandrapires
  */
-public class ComboFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, DialogSimpleListFragment.OnDialogListListener {
+public class ComboFragment extends BaseFragment implements IResponseCallback, OnProductViewHolderClickListener, DialogSimpleListFragment.OnDialogListListener {
 
     private BundleList bundleList;
     private String productSku;
@@ -56,17 +56,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     private int countMultipleProcessed = 0;
 
     /**
-     * Create and return a new instance.
-     *
-     * @param bundle - arguments
-     */
-    public static ComboFragment getInstance(Bundle bundle) {
-        ComboFragment comboFragment = new ComboFragment();
-        comboFragment.setArguments(bundle);
-        return comboFragment;
-    }
-
-    /**
      * Empty constructor
      */
     public ComboFragment() {
@@ -75,6 +64,17 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                 R.layout.pdv_combos_page,
                 R.string.combos_label,
                 KeyboardState.NO_ADJUST_CONTENT);
+    }
+
+    /**
+     * Create and return a new instance.
+     *
+     * @param bundle - arguments
+     */
+    public static ComboFragment getInstance(Bundle bundle) {
+        ComboFragment comboFragment = new ComboFragment();
+        comboFragment.setArguments(bundle);
+        return comboFragment;
     }
 
      /*
@@ -92,7 +92,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Get data from arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ARGUMENTS: " + arguments.toString());
+            Print.i(TAG, "ARGUMENTS: " + arguments);
             bundleList = arguments.getParcelable(RestConstants.JSON_BUNDLE_PRODUCTS);
             productSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
         }
@@ -119,6 +119,21 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         view.findViewById(R.id.btBuyCombo).setOnClickListener(this);
     }
 
+    /**
+     * Click events
+     */
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        Print.i(TAG, "ON CLICK VIEW");
+        // Get id
+        int id = view.getId();
+        // Case sort button
+        if (id == R.id.btBuyCombo) {
+            Print.i(TAG, "ADD CART CLICKED");
+            addComboToCart();
+        }
+    }
 
     /**
      * separates bundle products in two lists: one with one simple variation e others with multiple variations to choose
@@ -141,7 +156,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             }
         }
     }
-
 
     /**
      * Add selected combo products to chart
@@ -177,7 +191,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         TrackerDelegator.trackProductAddedToCart(productBundle, simpleSku, mGroupType);
     }
 
-
     /**
      * add to cart a product with an only simples
      *
@@ -198,7 +211,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         onClickSimpleVariationsButton(productBundle.getName());
     }
 
-
     /**
      * show dialog to choose the variation simples
      */
@@ -215,7 +227,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
         }
     }
-
 
     /**
      * choose the simple and add to cart
@@ -245,17 +256,14 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public void onDialogListDismiss() {
     }
 
-
     private void triggerAddItemToCart(String sku, String simpleSKU) {
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSKU), this);
     }
-
 
     @Override
     public void onHeaderClick(String targetType, String url, String title) {
 
     }
-
 
     /**
      * updates the combo total price in checking/unchecking bundle
@@ -275,24 +283,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
 
     }
-
-
-    /**
-     * Click events
-     */
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        Print.i(TAG, "ON CLICK VIEW");
-        // Get id
-        int id = view.getId();
-        // Case sort button
-        if (id == R.id.btBuyCombo) {
-            Print.i(TAG, "ADD CART CLICKED");
-            addComboToCart();
-        }
-    }
-
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {

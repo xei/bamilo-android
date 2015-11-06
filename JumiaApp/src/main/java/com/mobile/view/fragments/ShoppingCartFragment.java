@@ -331,9 +331,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                         if (items != null && items.size() > 0) {
                             TrackerDelegator.trackCheckout(items);
 
-
                             Bundle bundle = new Bundle();
-                            bundle.putBoolean(ConstantsIntentExtra.IS_IN_CHECKOUT_PROCESS, true);
+                            bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
                             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
 
                         } else {
@@ -781,15 +780,15 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
         prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
-        prodItem.quantityBtn = (Button) view.findViewById(R.id.changequantity_button);
+        prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
 
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
 
         prodItem.pBar = view.findViewById(R.id.image_loading_progress);
-        prodItem.discountPercentage = (TextView) view.findViewById(R.id.item_percentage);
-        prodItem.priceDisc = (TextView) view.findViewById(R.id.item_discount);
-        prodItem.variancesContainer = (TextView) view.findViewById(R.id.variances_container);
-        prodItem.deleteBtn = (Button) view.findViewById(R.id.button_delete);
+//        prodItem.discountPercentage = (TextView) view.findViewById(R.id.item_percentage);
+//        prodItem.priceDisc = (TextView) view.findViewById(R.id.item_discount);
+//        prodItem.variancesContainer = (TextView) view.findViewById(R.id.variances_container);
+        prodItem.deleteBtn = (TextView) view.findViewById(R.id.button_delete);
         view.setTag(prodItem);
 
         prodItem.itemName.setText(prodItem.itemValues.product_name);
@@ -801,36 +800,36 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 R.drawable.no_image_small);
 
         if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
-            prodItem.priceDisc.setText(prodItem.itemValues.price_disc);
-            prodItem.priceDisc.setVisibility(View.VISIBLE);
+            prodItem.priceView.setText(prodItem.itemValues.price_disc);
+            prodItem.priceView.setVisibility(View.VISIBLE);
 
             prodItem.priceView.setText(prodItem.itemValues.price);
             prodItem.priceView.setVisibility(View.VISIBLE);
-            prodItem.priceView.setPaintFlags(prodItem.priceView.getPaintFlags()
-                    | Paint.STRIKE_THRU_TEXT_FLAG);
-            prodItem.priceView.setTextColor(getResources().getColor(R.color.grey_middlelight));
+//            prodItem.priceView.setPaintFlags(prodItem.priceView.getPaintFlags()
+//                    | Paint.STRIKE_THRU_TEXT_FLAG);
+//            prodItem.priceView.setTextColor(getResources().getColor(R.color.grey_middlelight));
 
-            prodItem.discountPercentage.setText("-" + prodItem.itemValues.discount_value.intValue()
-                    + "%");
-            prodItem.discountPercentage.setVisibility(View.VISIBLE);
+//            prodItem.discountPercentage.setText("-" + prodItem.itemValues.discount_value.intValue()
+//                    + "%");
+//            prodItem.discountPercentage.setVisibility(View.VISIBLE);
         } else {
-            prodItem.priceDisc.setText(prodItem.itemValues.price);
-            prodItem.priceView.setVisibility(View.INVISIBLE);
-            prodItem.discountPercentage.setVisibility(View.GONE);
+            prodItem.priceView.setText(prodItem.itemValues.price);
+            prodItem.priceView.setVisibility(android.view.View.VISIBLE);
+//            prodItem.discountPercentage.setVisibility(View.GONE);
         }
-        prodItem.variancesContainer.setVisibility(View.GONE);
-        if (prodItem.itemValues.variation != null) {
-            // Map<String, String> simpleData = prodItem.itemValues.simpleData;
-            String variation = prodItem.itemValues.variation;
-            if (variation.length() > 0
-                    && !variation.equals("1")
-                    && !variation.equals(",")
-                    && !variation.equals("...")
-                    && !variation.equals(".")) {
-                prodItem.variancesContainer.setVisibility(View.VISIBLE);
-                prodItem.variancesContainer.setText(variation);
-            }
-        }
+//        prodItem.variancesContainer.setVisibility(View.GONE);
+//        if (prodItem.itemValues.variation != null) {
+//            // Map<String, String> simpleData = prodItem.itemValues.simpleData;
+//            String variation = prodItem.itemValues.variation;
+//            if (variation.length() > 0
+//                    && !variation.equals("1")
+//                    && !variation.equals(",")
+//                    && !variation.equals("...")
+//                    && !variation.equals(".")) {
+//                prodItem.variancesContainer.setVisibility(View.VISIBLE);
+//                prodItem.variancesContainer.setText(variation);
+//            }
+//        }
         prodItem.deleteBtn.setTag(R.id.position, position);
         prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -1063,13 +1062,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         public TextView itemName;
         public TextView priceView;
-        public Button quantityBtn;
+        public TextView quantityBtn;
         public ImageView productView;
         public View pBar;
-        public TextView discountPercentage;
-        public TextView priceDisc;
-        public TextView variancesContainer;
-        public Button deleteBtn;
+//        public TextView discountPercentage;
+//        public TextView priceDisc;
+//        public TextView variancesContainer;
+        public TextView deleteBtn;
         public CartItemValues itemValues;
 
         /*
@@ -1085,9 +1084,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             quantityBtn = null;
             productView = null;
             pBar = null;
-            discountPercentage = null;
-            priceDisc = null;
-            variancesContainer = null;
+//            discountPercentage = null;
+//            priceDisc = null;
+//            variancesContainer = null;
             deleteBtn = null;
 
             super.finalize();

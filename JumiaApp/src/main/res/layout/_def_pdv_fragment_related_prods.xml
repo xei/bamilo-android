@@ -15,7 +15,7 @@
 
     <!-- CONTENT -->
 
-    <com.mobile.components.ExpandableGridViewComponent
+    <com.mobile.components.ExpandedGridViewComponent
         android:id="@+id/pdv_related_grid_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
