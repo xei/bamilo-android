@@ -393,7 +393,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
     /*
@@ -405,7 +404,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
         // Tracking
         TrackerDelegator.trackCloseApp();
     }
@@ -441,18 +439,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /*
      * ############## ACTION BAR ##############
      */
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onNewIntent(android.content.Intent )
-     */
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        Print.i(TAG, "ON NEW INTENT");
-        ActivitiesWorkFlow.addStandardTransition(this);
-    }
 
     /*
      * (non-Javadoc)
@@ -1738,15 +1724,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             @Override
             public void onRequestError(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST ERROR: AUTO LOGIN");
-                JumiaApplication.INSTANCE.setLoggedIn(false);
                 JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
             }
 
             @Override
             public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "ON REQUEST COMPLETE: AUTO LOGIN");
-                // Set logged in
-                JumiaApplication.INSTANCE.setLoggedIn(true);
                 // Get customer
                 Customer customer = ((CheckoutStepLogin)((NextStepStruct)baseResponse.getMetadata().getData()).getCheckoutStepObject()).getCustomer();
                 // Get origin
@@ -1781,10 +1764,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
         return false;
     }
-
-
-
-
 
 //    /**
 //     * Shows server overload page

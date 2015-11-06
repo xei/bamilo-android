@@ -93,22 +93,19 @@ import java.util.regex.Pattern;
  *          2012/06/15
  */
 public class DynamicFormItem {
-    private final static String TAG = DynamicFormItem.class.getSimpleName();
-
     public final static String RELATED_RADIO_GROUP_TAG = "related_radio_group";
     public final static String RELATED_LIST_GROUP_TAG = "related_list_group";
     public final static String RELATED_GROUP_SEPARATOR = "::";
-    private int mPreSelectedPosition = IntConstants.INVALID_POSITION;
-
+    private final static String TAG = DynamicFormItem.class.getSimpleName();
     private static final String ICON_PREFIX = "ic_form_";
-
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
     private final static int MANDATORYSIGNALMARGIN = 15;
     private static String DATE_FORMAT = "dd-MM-yyyy";
-
-    private Context context;
-    private DynamicForm parent;
+    private final Context context;
+    private final DynamicForm parent;
+    private final int errorColor;
+    private int mPreSelectedPosition = IntConstants.INVALID_POSITION;
     private float scale = 1;
     private IFormField entry = null;
     private View errorControl;
@@ -124,7 +121,6 @@ public class DynamicFormItem {
     private int selectedYear;
     private int selectedMonthOfYear;
     private int selectedDayOfMoth;
-    private int errorColor;
     //private ArrayList<DynamicForm> childDynamicForm;
     private SharedPreferences mSharedPrefs;
 
@@ -416,96 +412,6 @@ public class DynamicFormItem {
         container.addView(group);
     }
 
-    /**
-     * Stores the value inputed by the user on the control and acts accordingly
-     *
-     * @param value The value to fill the control with
-     */
-    public void setValue(Object value) {
-
-        switch (this.entry.getInputType()) {
-            case checkBox:
-                boolean checked = false;
-                if (null != value) {
-                    if (value instanceof String) {
-                        checked = value.equals("1");
-                    } else if (value instanceof Boolean) {
-                        checked = (Boolean) value;
-                    } else if (value instanceof Integer) {
-                        checked = ((Integer) value) == 1;
-                    }
-                }
-                ((CheckBox) this.dataControl).setChecked(checked);
-
-                break;
-
-            case radioGroup:
-                int position = findPositionForKey(value);
-
-                if (this.dataControl instanceof IcsSpinner) {
-                    int selection;
-                    if (position == -1)
-                        selection = IcsSpinner.INVALID_POSITION;
-                    else
-                        selection = position;
-
-                    ((IcsSpinner) this.dataControl).setSelection(selection);
-                } else {
-                    int selection;
-                    if (position == -1)
-                        selection = RadioGroupLayout.NO_DEFAULT_SELECTION;
-                    else
-                        selection = position;
-                    if (this.dataControl instanceof RadioGroupLayoutVertical) {
-                        ((RadioGroupLayoutVertical) this.dataControl).setSelection(selection);
-                    } else {
-                        ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).setSelection(selection);
-                    }
-
-                }
-                break;
-            case metadata:
-            case date:
-                String date = (String) value;
-                setDialogDate(date);
-                break;
-            case email:
-            case text:
-            case password:
-            case relatedNumber:
-            case number:
-                String text = null == value ? "" : (String) value;
-                ((EditText) this.dataControl).setText(text);
-
-                // TODO: VALIDATE IF THIS IS NECESSARY
-//                //java.lang.NoSuchMethodError: com.mobile.components.customfontviews.EditText.setLayoutDirection
-//                try {
-//                    //#RTL
-//                    int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-//                    if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                        this.dataControl.setLayoutDirection(LayoutDirection.LOCALE);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-
-                this.errorControl.setVisibility(View.GONE);
-                this.dataControl.setContentDescription(this.entry.getId());
-                if (text.length() == 0) {
-                    this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
-                } else {
-                    this.mandatoryControl.setVisibility(View.GONE);
-                }
-                break;
-            case hide:
-                break;
-            case rating:
-                break;
-            default:
-                break;
-        }
-    }
-
     private int findPositionForKey(Object value) {
         if (value == null)
             return -1;
@@ -775,6 +681,98 @@ public class DynamicFormItem {
                 break;
         }
         return result;
+    }
+
+    /**
+     * Stores the value inputed by the user on the control and acts accordingly
+     *
+     * @param value The value to fill the control with
+     */
+    public void setValue(Object value) {
+
+        switch (this.entry.getInputType()) {
+            case checkBox:
+                boolean checked = false;
+                if (null != value) {
+                    if (value instanceof String) {
+                        checked = value.equals("1");
+                    } else if (value instanceof Boolean) {
+                        checked = (Boolean) value;
+                    } else if (value instanceof Integer) {
+                        checked = ((Integer) value) == 1;
+                    }
+                }
+                ((CheckBox) this.dataControl).setChecked(checked);
+
+                break;
+
+            case radioGroup:
+                int position = findPositionForKey(value);
+
+                if (this.dataControl instanceof IcsSpinner) {
+                    int selection;
+                    if (position == -1) {
+                        selection = IcsSpinner.INVALID_POSITION;
+                    } else {
+                        selection = position;
+                    }
+
+                    ((IcsSpinner) this.dataControl).setSelection(selection);
+                } else {
+                    int selection;
+                    if (position == -1) {
+                        selection = RadioGroupLayout.NO_DEFAULT_SELECTION;
+                    } else {
+                        selection = position;
+                    }
+                    if (this.dataControl instanceof RadioGroupLayoutVertical) {
+                        ((RadioGroupLayoutVertical) this.dataControl).setSelection(selection);
+                    } else {
+                        ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).setSelection(selection);
+                    }
+
+                }
+                break;
+            case metadata:
+            case date:
+                String date = (String) value;
+                setDialogDate(date);
+                break;
+            case email:
+            case text:
+            case password:
+            case relatedNumber:
+            case number:
+                String text = null == value ? "" : (String) value;
+                ((EditText) this.dataControl).setText(text);
+
+                // TODO: VALIDATE IF THIS IS NECESSARY
+//                //java.lang.NoSuchMethodError: com.mobile.components.customfontviews.EditText.setLayoutDirection
+//                try {
+//                    //#RTL
+//                    int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+//                    if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//                        this.dataControl.setLayoutDirection(LayoutDirection.LOCALE);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+
+                this.errorControl.setVisibility(View.GONE);
+                this.dataControl.setContentDescription(this.entry.getId());
+                if (text.length() == 0) {
+                    this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+                } else {
+                    this.mandatoryControl.setVisibility(View.GONE);
+                }
+                break;
+            case hide:
+                break;
+            case rating:
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -1733,7 +1731,7 @@ public class DynamicFormItem {
             if (this.parent.getForm().getFields() != null && this.parent.getForm().getFields().size() > 0) {
                 HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getPaymentMethodsField();
                 if (paymentMethodsField != null) {
-                    Print.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField.toString());
+                    Print.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField);
                     if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubForms().size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));
                     }

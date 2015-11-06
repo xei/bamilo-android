@@ -9,7 +9,7 @@
         style="@style/HeaderTeaser"
         android:text="@string/featured_stores" />
 
-    <com.mobile.components.ExpandableGridViewComponent
+    <com.mobile.components.ExpandedGridViewComponent
         android:id="@+id/home_teaser_featured_stores_container_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

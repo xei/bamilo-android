@@ -118,7 +118,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
             isInCheckoutProcess = arguments.getBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API);
         }
         // Show checkout tab layout
-        if(isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT) {
+        if (isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT) {
             checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
     }
@@ -375,7 +375,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         super.handleSuccessEvent(baseResponse);
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType.toString());
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
                 // Get value
@@ -404,7 +404,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 }
                 // Validate the next step
                 CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
-                return;
+                break;
             default:
                 break;
         }
@@ -423,7 +423,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         }
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType.toString());
+        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
                 ToastManager.show(getBaseActivity().getApplicationContext(), ToastManager.ERROR_INVALID_EMAIL);

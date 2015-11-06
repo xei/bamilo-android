@@ -4,5 +4,5 @@
     android:layout_height="@dimen/form_item_height"
     android:background="@android:color/white"
     android:gravity="left|start|center_vertical"
-    android:paddingLeft="10dp"
-    android:paddingStart="10dp" />
+                                                android:paddingLeft="10dp"
+                                                android:paddingStart="10dp"/>

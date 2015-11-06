@@ -57,13 +57,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     private Bundle mFormSavedState;
     /**
-     * Get instance
-     */
-    public static MyAccountUserDataFragment getInstance() {
-        return new MyAccountUserDataFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public MyAccountUserDataFragment() {
@@ -72,6 +65,13 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
                 R.layout.my_account_user_data_fragment,
                 R.string.myaccount_userdata,
                 KeyboardState.ADJUST_CONTENT);
+    }
+
+    /**
+     * Get instance
+     */
+    public static MyAccountUserDataFragment getInstance() {
+        return new MyAccountUserDataFragment();
     }
 
     /*
@@ -116,31 +116,9 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         }
     }
 
-    /**
-     * Inflates this activity layout into the main template layout
-     */
-    public void setAppContentLayout(View mainView) {
-
-        mUserDataFormContainer = (LinearLayout) mainView.findViewById(R.id.user_data_container);
-        mChangePasswordFormContainer =(LinearLayout) mainView.findViewById(R.id.change_password_layout);
-
-        mSaveUserDataButton = (TextView) mainView.findViewById(R.id.change_password_save_button);
-        mSaveUserDataButton.setOnClickListener(this);
-        mSavePasswordButton = (TextView) mainView.findViewById(R.id.user_data_save_button);
-        mSavePasswordButton.setOnClickListener(this);
-    }
-
-    /**
-     * call methods to fill layout with forms
-     */
-    private void init() {
-        triggerGetChangePasswordForm();
-        triggerGetUserDataForm();
-    }
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -151,7 +129,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -162,7 +140,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onPause()
      */
     @Override
@@ -182,7 +160,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onStop()
      */
     @Override
@@ -193,13 +171,63 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         Print.i(TAG, "ON DESTROY");
+    }
+
+    /**
+     * CALLBACK
+     */
+
+
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        int id = view.getId();
+        hideKeyboard();
+        // Cancel button
+        if (id == R.id.user_data_save_button) {
+            triggerChangeUserData();
+        }
+        // Save button
+        else if (id == R.id.change_password_save_button) {
+            triggerChangePassword();
+        }
+    }
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * Inflates this activity layout into the main template layout
+     */
+    public void setAppContentLayout(View mainView) {
+
+        mUserDataFormContainer = (LinearLayout) mainView.findViewById(R.id.user_data_container);
+        mChangePasswordFormContainer = (LinearLayout) mainView.findViewById(R.id.change_password_layout);
+
+        mSaveUserDataButton = (TextView) mainView.findViewById(R.id.change_password_save_button);
+        mSaveUserDataButton.setOnClickListener(this);
+        mSavePasswordButton = (TextView) mainView.findViewById(R.id.user_data_save_button);
+        mSavePasswordButton.setOnClickListener(this);
+    }
+
+    /**
+     * call methods to fill layout with forms
+     */
+    private void init() {
+        triggerGetChangePasswordForm();
+        triggerGetUserDataForm();
     }
 
     @Override
@@ -213,7 +241,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
             mChangePasswordForm.saveFormState(outState);
         }
     }
-
 
     /**
      * Method responsible for showing warning bar with error validation message
@@ -236,6 +263,10 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     }
 
     /**
+     * TRIGGERS
+     **/
+
+    /**
      * function used to fill the layout section with the change password form
      * @param passwordForm
      */
@@ -245,18 +276,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         mChangePasswordForm.loadSaveFormState(mFormSavedState);
         mChangePasswordFormContainer.addView(mChangePasswordForm.getContainer());
     }
-
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * TRIGGERS
-     **/
 
     /**
      *  method that changes the user data
@@ -284,22 +303,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     private void triggerGetUserDataForm(){
         triggerContentEvent(new GetUserDataFormHelper(), null, this);
     }
-    /**
-     * CALLBACK
-     */
-
-
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        int id = view.getId();
-        hideKeyboard();
-        // Cancel button
-        if (id == R.id.user_data_save_button) triggerChangeUserData();
-            // Save button
-        else if (id == R.id.change_password_save_button) triggerChangePassword();
-    }
-
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {

@@ -16,6 +16,11 @@ public class GetUserDataFormHelper extends SuperBaseHelper {
     protected static String TAG = GetUserDataFormHelper.class.getSimpleName();
 
     @Override
+    protected void onRequest(RequestBundle requestBundle) {
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getUserDataForm);
+    }
+
+    @Override
     public EventType getEventType() {
         return EventType.EDIT_USER_DATA_FORM_EVENT;
     }
@@ -23,11 +28,6 @@ public class GetUserDataFormHelper extends SuperBaseHelper {
     @Override
     protected EventTask setEventTask() {
         return EventTask.SMALL_TASK;
-    }
-
-    @Override
-    protected void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getUserDataForm);
     }
 
 }
