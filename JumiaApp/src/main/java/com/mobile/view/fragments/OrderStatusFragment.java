@@ -28,7 +28,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.OrderedProductViewHolder;
 import com.mobile.utils.ui.ProductUtils;
-import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -303,7 +302,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                showInfoAddToShoppingCartCompleted();
+                showAddToCartCompleteMessage(baseResponse);
                 break;
             case TRACK_ORDER_EVENT:
                 // Get order status
@@ -335,7 +334,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
+                showInfoAddToShoppingCartOOS();
                 break;
             case TRACK_ORDER_EVENT:
                 showFragmentErrorRetry();
