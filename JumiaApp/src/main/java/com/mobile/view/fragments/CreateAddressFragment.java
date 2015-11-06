@@ -66,7 +66,7 @@ import java.util.Set;
 public abstract class CreateAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = CreateAddressFragment.class.getSimpleName();
-
+    
     private static final int IS_DEFAULT_SHIPPING_ADDRESS = 1;
 
     protected static final int IS_DEFAULT_BILLING_ADDRESS = 1;
@@ -415,7 +415,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         spinner.setOnItemSelectedListener(this);
         v.setEditControl(spinner);
         group.addView(spinner);
-        showFragmentContentContainer(); // Show to trigger
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**
