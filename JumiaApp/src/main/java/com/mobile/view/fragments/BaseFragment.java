@@ -144,17 +144,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
-//    /**
-//     * Constructor used only by PDV fragments
-//     */
-//    public BaseFragment(EnumSet<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
-//        this.enabledMenuItems = enabledMenuItems;
-//        this.action = action;
-//        this.titleResId = titleResId;
-//        this.adjustState = adjust_state;
-//        this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
-//    }
-
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
@@ -190,7 +179,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle arguments = getArguments();
         if(arguments != null){
             mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
@@ -309,9 +297,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         if (null != getBaseActivity()) {
             getBaseActivity().hideSearchComponent();
-//            if(action != null){
-//                getBaseActivity().updateNavigationMenu(action);
-//            }
         }
     }
 
@@ -361,11 +346,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onDestroy() {
         super.onDestroy();
-//        // TODO - Validate this is necessary
-//        // Recycle bitmaps
-//        if (getView() != null) {
-//            unbindDrawables(getView());
-//        }
     }
 
     /**
@@ -579,7 +559,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * This method is used to set the fragment content invisible to recalculate the view and trigger the view listener<br>
-     * Used by @#{CreateAddressFragment}
+     * Used by CreateAddressFragment
      */
     protected void showGhostFragmentContentContainer() {
         UIUtils.showOrHideViews(View.INVISIBLE, mContentView);
@@ -705,9 +685,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED, getString(R.string.products_removed_saved));
         }
     }
-
-
-
 
     /**
      * Set the inflated stub
@@ -986,11 +963,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         return false;
     }
-
-//    protected void clearCredentials() {
-//        JumiaApplication.INSTANCE.setLoggedIn(false);
-//        JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
-//    }
 
     /*
      * ########### LISTENERS ###########

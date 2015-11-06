@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/open_orders_label"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/red_basic"
+        android:textColor="@color/white"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:drawableLeft="@drawable/ic_warranty"
+        android:drawableStart="@drawable/ic_warranty"
+        android:gravity="center_vertical"
+        android:text=" you have 2 open Order"/>
+    <LinearLayout
+        android:id="@+id/open_orders_container"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="50dp">
+
+    </LinearLayout>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/order_history_label"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@android:color/transparent"
+        android:textColor="@color/black_700"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:drawableLeft="@drawable/ico_dropdown_order"
+        android:drawableStart="@drawable/ico_dropdown_order"
+        android:gravity="center_vertical"
+        android:text=" ORDER HISTORY"/>
+
+</LinearLayout>

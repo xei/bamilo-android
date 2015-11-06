@@ -404,7 +404,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 }
                 // Validate the next step
                 CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
-                return;
+                break;
             default:
                 break;
         }

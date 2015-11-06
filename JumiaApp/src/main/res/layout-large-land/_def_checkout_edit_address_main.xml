@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    android:orientation="horizontal">
 
     <!-- EDIT ADDRESS -->
 
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="@dimen/checkout_main_container" >
+        android:layout_weight="@dimen/checkout_main_container"
+        android:background="@drawable/drop_shadow_right">
 
         <!-- CONTENT -->
 
@@ -18,11 +19,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/checkout_my_order_buttons"
-            android:layout_alignParentTop="true" >
+            android:layout_alignParentTop="true"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <!-- FORM -->
 
@@ -38,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_edit_address_required_text"
@@ -50,13 +52,13 @@
 
             <LinearLayout
                 style="@style/button_container"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <com.mobile.components.customfontviews.Button
                     android:id="@+id/checkout_edit_button_cancel"
                     style="@style/button_grey_bottom"
-                    android:layout_marginRight="@dimen/margin_x_small"
                     android:layout_marginEnd="@dimen/margin_x_small"
+                    android:layout_marginRight="@dimen/margin_x_small"
                     android:layout_weight="1"
                     android:text="@string/cancel_label" />
 

@@ -13,7 +13,7 @@ import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -39,7 +39,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     private String mProductSku;
 
-    private OnViewHolderClickListener mOnViewHolderClicked;
+    private OnProductViewHolderClickListener mOnViewHolderClicked;
 
 
     /**
@@ -249,7 +249,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      *
      * @param listener - the listener
      */
-    public void setOnViewHolderClickListener(OnViewHolderClickListener listener) {
+    public void setOnViewHolderClickListener(OnProductViewHolderClickListener listener) {
         this.mOnViewHolderClicked = listener;
     }
 

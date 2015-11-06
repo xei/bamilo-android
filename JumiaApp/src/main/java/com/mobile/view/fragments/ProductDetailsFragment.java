@@ -19,7 +19,7 @@ import android.widget.RatingBar;
 import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.ExpandableGridViewComponent;
+import com.mobile.components.ExpandedGridViewComponent;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -739,7 +739,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setRelatedItems() {
         if (CollectionUtils.isNotEmpty(mProduct.getRelatedProducts())) {
-            ExpandableGridViewComponent relatedGridView = (ExpandableGridViewComponent) mRelatedProductsView.findViewById(R.id.pdv_related_grid_view);
+            ExpandedGridViewComponent relatedGridView = (ExpandedGridViewComponent) mRelatedProductsView.findViewById(R.id.pdv_related_grid_view);
             relatedGridView.setExpanded(true);
             relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, mProduct.getRelatedProducts()));
             relatedGridView.setOnItemClickListener(this);
