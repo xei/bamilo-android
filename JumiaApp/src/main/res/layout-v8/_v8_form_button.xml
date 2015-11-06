@@ -6,18 +6,18 @@
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/form_button"
-        android:layout_toLeftOf="@+id/button_field_icon"
         style="@style/FormButtonSpinner"
+        android:layout_toLeftOf="@+id/button_field_icon"
         android:paddingBottom="5dp" />
 
     <ImageView
         android:id="@+id/button_field_icon"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="5dp"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
         android:contentDescription="@string/app_name"
         android:visibility="visible" />
 
@@ -31,9 +31,9 @@
         android:layout_centerVertical="true"
         android:paddingLeft="5dp"
         android:text="*"
-        android:visibility="visible"
         android:textColor="@color/accent"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:visibility="visible"/>
 
 
 </RelativeLayout>

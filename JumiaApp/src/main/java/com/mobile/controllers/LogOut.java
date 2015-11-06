@@ -85,7 +85,6 @@ public class LogOut {
         WishListCache.clean();
         // Clean cart
         JumiaApplication.INSTANCE.setCart(new PurchaseEntity());
-        JumiaApplication.INSTANCE.setLoggedIn(false);
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         // Update layouts to clean cart info
         baseActivity.updateCartInfo();

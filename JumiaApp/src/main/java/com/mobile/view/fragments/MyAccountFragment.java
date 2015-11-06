@@ -306,7 +306,6 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         default:
             break;
         }
-        
     }
 
     private void processOnClickMyAddresses() {

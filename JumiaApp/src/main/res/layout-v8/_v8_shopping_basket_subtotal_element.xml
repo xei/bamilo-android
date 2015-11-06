@@ -50,7 +50,7 @@
             style="@style/TextBody_3"
             android:layout_width="wrap_content"
             android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_toLeftOf="@+id/price_total"
+            android:layout_toRightOf="@+id/price_total"
             android:ellipsize="none"
             android:textColor="@color/black_800"
             />

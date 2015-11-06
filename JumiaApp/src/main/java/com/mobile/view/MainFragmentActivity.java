@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
 import com.ad4screen.sdk.Tag;
-import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -41,6 +40,7 @@ import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
+import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -211,7 +211,6 @@ public class MainFragmentActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
     /*
@@ -310,7 +309,10 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = MyAccountUserDataFragment.getInstance();
                 break;
             case MY_ORDERS:
-                fragment = MyOrdersFragment.getInstance(bundle);
+                fragment = MyOrdersFragment.getInstance();
+                break;
+            case ORDER_STATUS:
+                fragment = OrderStatusFragment.getInstance(bundle);
                 break;
             case CHOOSE_COUNTRY:
                 fragment = ChooseCountryFragment.getInstance();
