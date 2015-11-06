@@ -37,6 +37,10 @@ import com.mobile.view.R;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import android.widget.ImageView;
+
+import com.mobile.utils.imageloader.RocketImageLoader;
+
 /**
  * Class used to show the order summary in the checkout process
  *
@@ -282,13 +286,20 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         ArrayList<PurchaseCartItem> mShopList = new ArrayList<>(mOrderSummary.getCartItems());
         mProductList.removeAllViews();
         for (PurchaseCartItem item : mShopList) {
-            View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
+            View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.shopping_cart_product_container, mProductList, false);
             // Name
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_name)).setText(item.getName());
+            ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
+
+            String imageUrl = item.getImageUrl();
+            ImageView mImageView = (ImageView) cartItemView.findViewById(R.id.image_view);
+            View pBar = cartItemView.findViewById(R.id.image_loading_progress);
+            RocketImageLoader.instance.loadImage(imageUrl, mImageView, pBar,
+                    R.drawable.no_image_small);
+
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_quantity)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
+            ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
             if (variation != null &&
@@ -330,6 +341,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, mShippingAddressList, false);
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
+        shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
+        shippingAddressView.findViewById(R.id.checkout_address_item_radio_btn).setVisibility(View.GONE);
 
         // Only use region if is available
         StringBuilder regionString = new StringBuilder();
