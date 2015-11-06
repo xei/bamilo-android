@@ -63,9 +63,12 @@ import java.util.Set;
  */
 public abstract class EditAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener {
 
-    public static final String SELECTED_ADDRESS = "selected_address";
-    public static final int INVALID_ADDRESS_ID = -1;
     private static final String TAG = EditAddressFragment.class.getSimpleName();
+
+    public static final String SELECTED_ADDRESS = "selected_address";
+
+    public static final int INVALID_ADDRESS_ID = -1;
+
     protected ViewGroup mEditFormContainer;
 
     protected DynamicForm mEditFormGenerator;
@@ -152,6 +155,20 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
     /*
      * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.d(TAG, "ON SAVE SATE");
+        outState.putInt(EditAddressFragment.SELECTED_ADDRESS, mAddressId);
+        if(mEditFormGenerator != null){
+            mEditFormGenerator.saveFormState(outState);
+        }
+    }
+
+    /*
+     * (non-Javadoc)
      *
      * @see android.support.v4.app.Fragment#onPause()
      */
@@ -201,52 +218,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     /**
-     * ############# CLICK LISTENER #############
-     */
-    /*
-     * (non-Javadoc)
-     * @see android.view.View.OnClickListener#onClick(android.view.View)
-     */
-    @Override
-    public void onClick(View view) {
-        super.onClick(view);
-        // Get view id
-        int id = view.getId();
-        // Next button
-        if (id == R.id.checkout_edit_button_enter) {
-            onClickEditAddressButton();
-        }
-        // Next button
-        else if (id == R.id.checkout_edit_button_cancel) {
-            onClickCancelAddressButton();
-        }
-        // Unknown view
-        else {
-            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
-        }
-    }
-
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        onClickRetryButton();
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Print.d(TAG, "ON SAVE SATE");
-        outState.putInt(EditAddressFragment.SELECTED_ADDRESS, mAddressId);
-        if (mEditFormGenerator != null) {
-            mEditFormGenerator.saveFormState(outState);
-        }
-    }
-
-    /**
      * Load the dynamic form
      */
     protected void loadEditAddressForm(Form form) {
@@ -289,8 +260,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getDefaultPosition(formItem, regions));
+        if(mFormSavedState != null){
+            spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
+        } else {
+            spinner.setSelection(getDefaultPosition(formItem, regions));
+        }
         spinner.setOnItemSelectedListener(this);
+        formItem.setEditControl(spinner);
         group.addView(spinner);
         showFragmentContentContainer(); // Show to trigger
     }
@@ -311,8 +287,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getDefaultPosition(formItem, cities));
+        if(mFormSavedState != null){
+            spinner.setSelection(mFormSavedState.getInt(RestConstants.CITY));
+        } else {
+            spinner.setSelection(getDefaultPosition(formItem, cities));
+        }
         spinner.setOnItemSelectedListener(this);
+        formItem.setEditControl(spinner);
         group.addView(spinner);
     }
 
@@ -332,8 +313,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getDefaultPosition(formItem, postalCodes));
+        if(mFormSavedState != null){
+            spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
+        } else {
+            spinner.setSelection(getDefaultPosition(formItem, postalCodes));
+        }
         spinner.setOnItemSelectedListener(this);
+        formItem.setEditControl(spinner);
         group.addView(spinner);
     }
 
@@ -354,6 +340,32 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
         }
         return 0;
+    }
+
+    /**
+     * ############# CLICK LISTENER #############
+     */
+    /*
+     * (non-Javadoc)
+     * @see android.view.View.OnClickListener#onClick(android.view.View)
+     */
+    @Override
+    public void onClick(View view) {
+        super.onClick(view);
+        // Get view id
+        int id = view.getId();
+        // Next button
+        if(id == R.id.checkout_edit_button_enter) onClickEditAddressButton();
+            // Next button
+        else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
+            // Unknown view
+        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+    }
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        onClickRetryButton();
     }
 
     /**
@@ -393,6 +405,16 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Save content values
         return dynamicForm.save();
     }
+
+    /**
+     * ########### ON ITEM SELECTED LISTENER ###########
+     */
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.mobile.components.absspinner.IcsAdapterView)
+     */
+    @Override
+    public void onNothingSelected(IcsAdapterView<?> parent) { }
 
     /*
      * (non-Javadoc)
@@ -436,20 +458,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     /**
-     * ########### ON ITEM SELECTED LISTENER ###########
-     */
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.mobile.components.absspinner.IcsAdapterView)
-     */
-    @Override
-    public void onNothingSelected(IcsAdapterView<?> parent) {
-    }
-
-    /**
      * ############# REQUESTS #############
      */
-
     /**
      * Trigger to edit an address
      */
@@ -594,7 +604,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
 
         ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch (eventType) {
             case INIT_FORMS:
@@ -646,15 +656,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
-     */
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-    }
-
     /**
      * ########### RESPONSE LISTENER ###########
      */
@@ -667,10 +668,18 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         onErrorEvent(baseResponse);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
+     */
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
+    }
+
     /**
      * ########### DIALOGS ###########
      */
-
     /**
      * Dialog used to show an error
      */
