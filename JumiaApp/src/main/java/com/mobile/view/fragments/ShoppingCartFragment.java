@@ -333,7 +333,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
 
                             Bundle bundle = new Bundle();
-                            bundle.putBoolean(ConstantsIntentExtra.IS_IN_CHECKOUT_PROCESS, true);
+                            bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
                             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
 
                         } else {
