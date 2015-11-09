@@ -419,6 +419,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 gotoStaticPage(targetTitle, targetUrl, originGroupType);
                 break;
             case PRODUCT_DETAIL:
+                //TODO this validation is only temporary, and should be removed in next release
                 if(TextUtils.isEmpty(targetSku))
                     targetSku = getSkuFromUrl(targetUrl);
                 gotoProductDetail(targetSku, originGroupType);

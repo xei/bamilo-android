@@ -1067,9 +1067,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * ############## TRIGGERS ##############
      */
 
-    private void triggerLoadProduct(String pathToProduct) {
+    private void triggerLoadProduct(String sku) {
         mBeginRequestMillis = System.currentTimeMillis();
-        triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(pathToProduct), this);
+        triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku), this);
     }
 
     private void triggerAddItemToCart(String sku, String simpleSKU) {
