@@ -40,6 +40,7 @@ public class FormFactory {
      * The constructor is private to prevent the creation of the object
      */
     private FormFactory() {
+        // ...
     }
 
     /**
@@ -273,19 +274,8 @@ public class FormFactory {
         parent.setLayoutParams(frmParams);
 
         DynamicForm userForm = new DynamicForm(parent);
-        userForm.setForm( form );
+        userForm.setForm(form);
 
-        // Used for dates with day/month/year
-        LinearLayout groupLayout = new LinearLayout(context);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        //#RTL
-        if(ShopSelector.isRtl()){
-            groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-        }
-
-        groupLayout.setId(userForm.getNextId());
-        groupLayout.setOrientation(LinearLayout.HORIZONTAL);
-        groupLayout.setLayoutParams(params);
 
         for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
@@ -298,6 +288,18 @@ public class FormFactory {
             } else if ( ! ctrl.isDatePart() ) {
                 userForm.addControl(ctrl, ctrlParams);
             } else {
+                // Used for dates with day/month/year
+                LinearLayout groupLayout = new LinearLayout(context);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                //#RTL
+                if(ShopSelector.isRtl()){
+                    groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+                }
+
+                groupLayout.setId(userForm.getNextId());
+                groupLayout.setOrientation(LinearLayout.HORIZONTAL);
+                groupLayout.setLayoutParams(params);
+
                 userForm.addGroupedControl(groupLayout, ctrl, ctrlParams);
             }
 

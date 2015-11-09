@@ -817,7 +817,6 @@ public class DynamicFormItem {
                     }
                     outState.putString(getKey(), value);
                 }
-
                 break;
             case rating:
                 break;

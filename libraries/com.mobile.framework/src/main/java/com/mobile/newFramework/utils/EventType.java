@@ -54,9 +54,7 @@ public enum EventType {
 
     CHANGE_PASSWORD_EVENT("https:/customer/changepassword/", AigRestContract.NO_CACHE),
 
-    GET_FORGET_PASSWORD_FORM_EVENT("forgotpassword", AigRestContract.MAX_CACHE_TIME),
-
-    GET_FORGET_PASSWORD_FORM_FALLBACK_EVENT("http:/forms/forgotpassword/", AigRestContract.MAX_CACHE_TIME),
+    GET_FORGET_PASSWORD_FORM_EVENT("http:/forms/forgotpassword/", AigRestContract.MAX_CACHE_TIME),
 
     EDIT_USER_DATA_FORM_EVENT("http:/forms/edit/", AigRestContract.NO_CACHE),
 
