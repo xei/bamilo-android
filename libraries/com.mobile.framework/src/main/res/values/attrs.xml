@@ -61,8 +61,8 @@
             <enum name="roboto_light" value="4" />
             <enum name="roboto_medium" value="5" />
         </attr>
-        <attr name="strikethrough" format="boolean" />
-        <attr name="autofittext" format="boolean" />
+        <attr name="strikeThrough" format="boolean" />
+        <attr name="autoFitText" format="boolean" />
     </declare-styleable>
 
     <!-- PREVIEW VIEW PAGER -->
@@ -72,6 +72,12 @@
             <enum name="none" value="0" />
             <enum name="fade" value="1" />
         </attr>
+    </declare-styleable>
+
+
+    <!-- EXPANDED GRID VIEW -->
+    <declare-styleable name="ExpandedGridViewStyleable">
+        <attr name="expand" format="boolean" />
     </declare-styleable>
     
 </resources>

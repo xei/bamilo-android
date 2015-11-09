@@ -20,13 +20,13 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:orientation="vertical"
-        app:divider="@drawable/divider_horizontal_black_700"
+        app:divider="@drawable/divider_horizontal_black_300"
         app:showDividers="middle" />
 
     <!-- DIVIDER -->
 
     <View
-        style="@style/divider_horizontal.Black700"
+        style="@style/divider_horizontal.Black300"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
 

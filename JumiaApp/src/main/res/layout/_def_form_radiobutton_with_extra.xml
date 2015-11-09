@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -8,7 +9,7 @@
 
     <View
         android:id="@+id/radio_divider"
-        style="@style/divider_horizontal.Black700" />
+        style="@style/divider_horizontal.Black300" />
 
     <!-- RADIO BUTTON -->
 
@@ -62,7 +63,7 @@
             android:id="@+id/shipping_info_space"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <!-- SHIPPING PUS -->
 
@@ -77,14 +78,17 @@
             style="@style/FormButtonSpinner.DropDown"
             android:visibility="gone" />
 
-        <com.mobile.utils.PickUpStationListView
+        <com.mobile.components.ExpandedGridViewComponent
             android:id="@+id/pickup_stations_list_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:divider="@color/black_700"
-            android:dividerHeight="1dp"
-            android:visibility="gone" />
+            android:background="@color/black_300"
+            android:horizontalSpacing="1dp"
+            android:numColumns="1"
+            android:verticalSpacing="1dp"
+            android:visibility="gone"
+            app:expand="true" />
 
         <!--
             https://code.google.com/p/android/issues/detail?id=2254
