@@ -58,8 +58,7 @@ public class FullSizeListView extends ListView implements OnTouchListener, OnScr
                     View listItem = listAdapter.getView(listPosition, null, this);
                     //now it will not throw a NPE if listItem is a ViewGroup instance
                     if (listItem instanceof ViewGroup) {
-                        listItem.setLayoutParams(new LayoutParams(
-                                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                        listItem.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
                     }
                     listItem.measure(widthMeasureSpec, heightMeasureSpec);
                     newHeight += listItem.getMeasuredHeight();

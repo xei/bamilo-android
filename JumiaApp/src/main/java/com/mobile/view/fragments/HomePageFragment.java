@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +25,14 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
@@ -395,6 +397,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         String targetTitle = (String) view.getTag(R.id.target_title);
         // Get origin id
         int origin = (int) view.getTag(R.id.target_teaser_origin);
+        // Get Sku
+        String targetSku = (String) view.getTag(R.id.target_sku);
         // Get teaser group type
         TeaserGroupType originGroupType = TeaserGroupType.values()[origin];
         if(view.getTag(R.id.target_list_position) != null){
@@ -415,7 +419,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 gotoStaticPage(targetTitle, targetUrl, originGroupType);
                 break;
             case PRODUCT_DETAIL:
-                gotoProductDetail((String) view.getTag(R.id.target_sku), originGroupType);
+                //TODO this validation is only temporary, and should be removed in next release
+                if(TextUtils.isEmpty(targetSku))
+                    targetSku = getSkuFromUrl(targetUrl);
+                gotoProductDetail(targetSku, originGroupType);
                 break;
             case UNKNOWN:
             default:
@@ -444,12 +451,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     }
 
     /**
-     * Goto product detail
+     * Goto product detail using Sku
      */
     private void gotoProductDetail(String sku, TeaserGroupType groupType) {
         Print.i(TAG, "GOTO PRODUCT DETAIL: " + sku);
-        // TODO: SHOULD RECEIVE SKU
-        if(!TextUtils.isEmpty(sku)) {
+        if(TextUtils.isNotEmpty(sku)){
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
@@ -458,6 +464,16 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         } else {
             ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
         }
+    }
+
+    /**
+     * Goto product detail using url
+     */
+    private String getSkuFromUrl(String url) {
+        if(TextUtils.isNotEmpty(url)){
+            return RestUrlUtils.getQueryValue(url, RestConstants.SKU);
+        }
+        return null;
     }
 
     /**
