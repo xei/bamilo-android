@@ -175,6 +175,7 @@
 
     <item name="product_item_bundle"                    type="layout">@layout/_def_product_item_bundle</item>
     <item name="shopping_basket_product_element"        type="layout">@layout/_def_shopping_basket_product_element</item>
+    <item name="checkout_summary_product_element" type="layout">@layout/_def_checkout_summary_product_element</item>
     <item name="tip_share_layout"                       type="layout">@layout/_def_tip_share_layout</item>
     <item name="dialog_list_content"                    type="layout">@layout/_def_dialog_list_content</item>
     <item name="reviews_fragment_item"                  type="layout">@layout/_def_reviews_fragment_item</item>
