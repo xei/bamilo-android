@@ -72,19 +72,6 @@ public class FormFactory {
     }
 
 
-    private DynamicForm createChangePasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if (null == ctrlParams) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM =0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-
-        return createGenericForm(context, form, ctrlParams);
-    }
-
     /**
      * Creates the form for a given type using a definition provided from the framework
      *
@@ -132,6 +119,19 @@ public class FormFactory {
                 break;
         }
         return parent;
+    }
+
+    private DynamicForm createChangePasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
+        if (null == ctrlParams) {
+            final int CTRLMARGIN_LEFT = 0;
+            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
+            final int CTRLMARGIN_RIGHT = 0;
+            final int CTRLMARGIN_BOTTOM =0;
+
+            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
+        }
+
+        return createGenericForm(context, form, ctrlParams);
     }
 
     /**
