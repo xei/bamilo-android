@@ -35,6 +35,8 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/payment_text"
             style="@style/MultiLineStyle"
+            android:paddingTop="0dp"
+            android:paddingRight="0dp"
             android:visibility="gone" />
 
         <!-- SHIPPING INFO -->
