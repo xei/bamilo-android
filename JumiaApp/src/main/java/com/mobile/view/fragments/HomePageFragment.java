@@ -25,6 +25,8 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -417,11 +419,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
                 gotoStaticPage(targetTitle, targetUrl, originGroupType);
                 break;
             case PRODUCT_DETAIL:
-                if(TextUtils.isNotEmpty(targetSku)){
-                    gotoProductDetail(targetSku, originGroupType);
-                } else {
-                    gotoProductDetail(targetTitle, targetUrl, originGroupType);
-                }
+                if(TextUtils.isEmpty(targetSku))
+                    targetSku = getSkuFromUrl(targetUrl);
+                gotoProductDetail(targetSku, originGroupType);
                 break;
             case UNKNOWN:
             default:
@@ -454,29 +454,25 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void gotoProductDetail(String sku, TeaserGroupType groupType) {
         Print.i(TAG, "GOTO PRODUCT DETAIL: " + sku);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-
-    }
-
-    /**
-     * Goto product detail using url
-     */
-    private void gotoProductDetail(String title, String url, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO PRODUCT DETAIL: " + title + " " + url);
-        if(TextUtils.isNotEmpty(url)){
+        if(TextUtils.isNotEmpty(sku)){
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
         }
+    }
+
+    /**
+     * Goto product detail using url
+     */
+    private String getSkuFromUrl(String url) {
+        if(TextUtils.isNotEmpty(url)){
+            return RestUrlUtils.getQueryValue(url, RestConstants.SKU);
+        }
+        return null;
     }
 
     /**
