@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.mobile.components.customfontviews.Button;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.SearchSuggestionsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -50,7 +50,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     
     private ListView mRecentSearchesList;
     
-    private Button mClearAllButton;
+    private TextView mClearAllButton;
 
     /**
      * Empty constructor
@@ -119,7 +119,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
 
         mRecentSearchesList = (ListView) mainView.findViewById(R.id.recentsearch_list);
 
-        mClearAllButton = (Button) mainView.findViewById(R.id.recentsearch_clear_all);
+        mClearAllButton = (TextView) mainView.findViewById(R.id.recentsearch_clear_all);
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -172,6 +172,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
         getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
