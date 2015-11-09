@@ -295,8 +295,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             View pBar = cartItemView.findViewById(R.id.image_loading_progress);
             RocketImageLoader.instance.loadImage(imageUrl, mImageView, pBar,
                     R.drawable.no_image_small);
-            cartItemView.findViewById(com.mobile.view.R.id.changequantity_label).setVisibility(View.GONE);
-            cartItemView.findViewById(com.mobile.view.R.id.changequantity_button).setVisibility(View.GONE);
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
@@ -308,8 +306,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                     !variation.equalsIgnoreCase(",") &&
                     !variation.equalsIgnoreCase("...") &&
                     !variation.equalsIgnoreCase(".")) {
-                ((TextView) cartItemView.findViewById(R.id.order_summary_item_variation)).setText(variation);
-                cartItemView.findViewById(R.id.order_summary_item_variation).setVisibility(View.VISIBLE);
+                ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(variation + " " + item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             }
             // Buttons
             View deleteButton = cartItemView.findViewById(R.id.button_delete);

@@ -6,8 +6,8 @@
     <!-- CONTAINER -->
 
     <RelativeLayout
-        style="@style/list_row_style"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center">
 
         <!-- IMAGE CONTAINER -->
@@ -26,13 +26,15 @@
         <!-- INFO CONTAINER -->
 
         <include
-            layout="@layout/shopping_basket_product_element"
+            layout="@layout/checkout_summary_product_element"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toEndOf="@id/item_image_container"
             android:layout_toRightOf="@id/item_image_container"/>
     </RelativeLayout>
 
-    <View style="@style/line_grey_style"/>
+    <View
+        android:layout_alignParentBottom="true"
+        style="@style/line_grey_style"/>
 
 </RelativeLayout>

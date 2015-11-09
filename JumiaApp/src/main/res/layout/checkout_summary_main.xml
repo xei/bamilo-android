@@ -17,13 +17,6 @@
         <!-- SHIPPING ADDRESS -->
 
         <include
-            android:id="@+id/checkout_summary_include_billing_address"
-            layout="@layout/checkout_summary_shipping_address"
-            android:visibility="gone"/>
-
-        <!-- SHIPPING ADDRESS -->
-
-        <include
             android:id="@+id/checkout_summary_include_shipping_address"
             layout="@layout/checkout_summary_shipping_address"
             android:visibility="gone" />
