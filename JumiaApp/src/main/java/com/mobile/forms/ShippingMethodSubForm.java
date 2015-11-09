@@ -2,8 +2,8 @@ package com.mobile.forms;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
@@ -26,13 +26,11 @@ public class ShippingMethodSubForm {
 
 	public final static String TAG = ShippingMethodSubForm.class.getSimpleName();
 
-//	private int lastID = 0x7f096000;
-
     public View dataControl;
 
     public IcsSpinner icsSpinner;
 
-    public ListView pickupStationsListView;
+    public AbsListView pickupStationsListView;
 
     public ShippingMethodSubFormHolder shippingMethodSubFormHolder;
 
@@ -85,7 +83,7 @@ public class ShippingMethodSubForm {
 
             @Override
             public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
-                pickupStationsListView = (ListView) dataControl.findViewById(R.id.pickup_stations_list_view);
+                pickupStationsListView = (AbsListView) dataControl.findViewById(R.id.pickup_stations_list_view);
                 if (pickupStationByRegion.get(icsSpinner.getItemAtPosition(position)).size() > 0) {
                     pickupStationsListView.setVisibility(View.VISIBLE);
                     pickupStationsListView.setAdapter(new PickupStationsAdapter(view.getContext(), pickupStationByRegion.get(icsSpinner.getItemAtPosition(position))));

@@ -118,6 +118,10 @@
         <item name="android:background">@color/black_300</item>
     </style>
 
+    <style name="divider_horizontal.Black300">
+        <item name="android:background">@color/black_300</item>
+    </style>
+
     <style name="divider_horizontal.Black700">
         <item name="android:background">@color/black_700</item>
     </style>

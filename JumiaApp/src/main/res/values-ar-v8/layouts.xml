@@ -34,7 +34,7 @@
     <item name="checkout_total_layout" 			        type="layout">@layout/_v8_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_v8_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_v8_price_rules_element</item>
-    <item name="fulfillment_main"                       type="layout">@layout/_v8_fulfillment_main</item>
+    <!--<item name="fulfillment_main"                       type="layout">@layout/_v8_fulfillment_main</item>-->
     <item name="fulfillment_product"                    type="layout">@layout/_v8_fulfillment_product</item>
 
     <!-- FORMS -->

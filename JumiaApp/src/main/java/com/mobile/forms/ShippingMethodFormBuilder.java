@@ -49,7 +49,7 @@ public class ShippingMethodFormBuilder implements Parcelable  {
         return parent;
     }
 
-    public void saveSelectedPosition(@NonNull Bundle bundle) {
+    public void saveState(@NonNull Bundle bundle) {
         try {
             // Get selected position from group
             int itemId = mRadioGroup.getSelectedIndex();
@@ -66,7 +66,7 @@ public class ShippingMethodFormBuilder implements Parcelable  {
         }
     }
 
-    public void loadSavedPosition(@Nullable Bundle bundle) {
+    public void loadSavedState(@Nullable Bundle bundle) {
         try {
             if (bundle != null) {
                 int selection = bundle.getInt(ConstantsIntentExtra.ARG_1, IntConstants.INVALID_POSITION);
