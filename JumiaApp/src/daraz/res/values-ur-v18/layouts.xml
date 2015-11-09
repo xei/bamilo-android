@@ -38,7 +38,7 @@
     <item name="fulfillment_product"                    type="layout">@layout/_def_fulfillment_product</item>
 
     <!-- FORMS -->
-    <item name="form_radiobutton_shipping"              type="layout">@layout/_def_form_radiobutton_shipping</item>
+    <!--<item name="form_radiobutton_shipping"              type="layout">@layout/_def_form_radiobutton_shipping</item>-->
     <item name="form_radiobutton_with_extra"            type="layout">@layout/_def_form_radiobutton_with_extra</item>
     <item name="form_radiobutton"                       type="layout">@layout/_def_form_radiobutton</item>
     <item name="form_radiogroup"                        type="layout">@layout/_def_form_radiogroup</item>
@@ -93,7 +93,7 @@
 
     <!-- MY ORDERS -->
     <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
-    <item name="myorders_fragment_main"                 type="layout">@layout/_def_myorders_fragment_main</item>
+    <item name="my_orders_fragment_main"                type="layout">@layout/_def_my_orders_fragment_main</item>
     <item name="order_history_main"                     type="layout">@layout/_def_order_history_main</item>
 
     <!-- HOME -->

@@ -58,7 +58,6 @@ import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductUtils;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -547,11 +546,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             Print.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
             isAddingProductToCart = false;
             hideActivityProgress();
-            if(getBaseActivity() != null) {
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART, getString(R.string.added_to_shop_cart_dialog_text));
-            }
+            showAddToCartCompleteMessage(baseResponse);
             break;
-        default:
+            default:
             break;
         }
     }
