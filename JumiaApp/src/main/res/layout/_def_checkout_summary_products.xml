@@ -31,18 +31,11 @@
         android:layout_margin="@dimen/rounded_margin_mid"
         android:orientation="vertical" >
 
-        <!-- PRODUCTS -->
-
-        <com.mobile.components.customfontviews.TextView
-            style="@style/text_normal"
-            android:layout_marginTop="@dimen/margin_40px"
-            android:text="@string/order_track_products" />
 
         <LinearLayout
             android:id="@+id/checkout_summary_products_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
             android:orientation="vertical" />
 
         <!-- Price Rules -->

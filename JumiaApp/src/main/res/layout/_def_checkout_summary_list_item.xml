@@ -1,42 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical" >
+    <!-- CONTAINER -->
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/order_summary_item_name"
+    <RelativeLayout
+        style="@style/list_row_style"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <!-- IMAGE CONTAINER -->
+
+        <include
+            android:id="@+id/item_image_container"
+            layout="@layout/shopping_basket_item_image"
+            android:layout_width="@dimen/myprofile_item_size"
+            android:layout_height="@dimen/myprofile_item_size"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            />
+
+        <!-- INFO CONTAINER -->
+
+        <include
+            layout="@layout/shopping_basket_product_element"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left|center_vertical|start"
-            style="@style/text_normal" />
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/item_image_container"
+            android:layout_toRightOf="@id/item_image_container"/>
+    </RelativeLayout>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/order_summary_item_quantity"
-            style="@style/text_normal" />
+    <View style="@style/line_grey_style"/>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/order_summary_item_variation"
-            style="@style/text_normal"
-            android:visibility="gone" />
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/order_summary_item_btn_remove"
-        android:layout_width="@dimen/delete_button_size"
-        android:layout_height="@dimen/delete_button_size"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginEnd="@dimen/rounded_margin_mid"
-        android:src="@drawable/selector_btn_remove_item"
-        android:visibility="gone" />
-
-</LinearLayout>
+</RelativeLayout>

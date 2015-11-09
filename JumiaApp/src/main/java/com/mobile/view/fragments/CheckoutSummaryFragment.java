@@ -286,7 +286,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         ArrayList<PurchaseCartItem> mShopList = new ArrayList<>(mOrderSummary.getCartItems());
         mProductList.removeAllViews();
         for (PurchaseCartItem item : mShopList) {
-            View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.shopping_cart_product_container, mProductList, false);
+            View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
             // Name
             ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
 
@@ -295,7 +295,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             View pBar = cartItemView.findViewById(R.id.image_loading_progress);
             RocketImageLoader.instance.loadImage(imageUrl, mImageView, pBar,
                     R.drawable.no_image_small);
-
+            cartItemView.findViewById(com.mobile.view.R.id.changequantity_label).setVisibility(View.GONE);
+            cartItemView.findViewById(com.mobile.view.R.id.changequantity_button).setVisibility(View.GONE);
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
@@ -311,7 +312,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                 cartItemView.findViewById(R.id.order_summary_item_variation).setVisibility(View.VISIBLE);
             }
             // Buttons
-            View deleteButton = cartItemView.findViewById(R.id.order_summary_item_btn_remove);
+            View deleteButton = cartItemView.findViewById(R.id.button_delete);
             // deleteButton.setVisibility(View.VISIBLE);
             deleteButton.setOnClickListener(this);
             deleteButton.setTag(item.getConfigSimpleSKU());
@@ -429,7 +430,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Ship Address Edit
         else if (id == R.id.checkout_summary_shipping_method_btn_edit) onClickEditMethodButton();
         // Remove
-        else if (id == R.id.order_summary_item_btn_remove) onClickRemoveItemButton(view);
+        else if (id == R.id.button_delete) {
+            onClickRemoveItemButton(view);
+        }
         // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
