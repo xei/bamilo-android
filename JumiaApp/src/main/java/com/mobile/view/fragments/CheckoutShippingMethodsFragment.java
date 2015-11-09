@@ -144,8 +144,9 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE");
+        // Save state case rotation
         if (mFormResponse != null) {
-            mFormResponse.saveSelectedPosition(outState);
+            mFormResponse.saveState(outState);
         }
     }
 
@@ -158,6 +159,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
+        // Save state case next step
+        if (mFormResponse != null) {
+            mSavedState = new Bundle();
+            mFormResponse.saveState(mSavedState);
+        }
     }
 
     /*
@@ -205,18 +211,12 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      */
     private void loadForm(ShippingMethodFormBuilder form) {
         Print.i(TAG, "LOAD FORM");
-        // Save form reponse
+        // Save form response
         mFormResponse = form;
         // Create form layout
         mFormResponse.generateForm(getBaseActivity(), mShippingContainer);
         // Set the saved selection
-        mFormResponse.loadSavedPosition(mSavedState);
-//        mShippingContainer.post(new Runnable() {
-//            @Override
-//            public void run() {
-//                mFormResponse.loadSavedPosition(mSavedState);
-//            }
-//        });
+        mFormResponse.loadSavedState(mSavedState);
     }
 
 
