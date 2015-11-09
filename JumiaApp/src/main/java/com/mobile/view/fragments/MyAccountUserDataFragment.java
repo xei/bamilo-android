@@ -27,6 +27,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -189,7 +190,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     public void onClick(View view) {
         super.onClick(view);
         int id = view.getId();
-        hideKeyboard();
+        // Hide keyboard
+        KeyboardUtils.hide(view);
         // Cancel button
         if (id == R.id.user_data_save_button) {
             triggerChangeUserData();

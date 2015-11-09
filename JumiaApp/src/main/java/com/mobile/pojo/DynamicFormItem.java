@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.LayoutDirection;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
@@ -58,6 +59,7 @@ import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
 import com.mobile.utils.datepicker.DatePickerDialog;
+import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -105,6 +107,7 @@ public class DynamicFormItem {
     private final Context context;
     private final DynamicForm parent;
     private final int errorColor;
+    private final boolean hideAsterisks;
     private int mPreSelectedPosition = IntConstants.INVALID_POSITION;
     private float scale = 1;
     private IFormField entry = null;
@@ -144,6 +147,7 @@ public class DynamicFormItem {
         this.errorText = context.getString(R.string.dynamic_errortext);
         this.scale = context.getResources().getDisplayMetrics().density;
         this.errorColor = context.getResources().getColor(R.color.red_basic);
+        this.hideAsterisks = parent.getForm().isToHideAsterisks();
         buildControl();
     }
 
@@ -199,25 +203,6 @@ public class DynamicFormItem {
     public View getMandatoryControl() {
         return mandatoryControl;
     }
-
-//    /**
-//     * Gets if the control has a mandatory flag, This flag indicates that the user must fill this
-//     * field before submiting the form.
-//     *
-//     * @return true or false depending of the control is mandatory or not
-//     */
-//    public boolean getMandatory() {
-//        return this.entry.getValidation().isRequired();
-//    }
-
-//    /**
-//     * Gets the error text associated to this control
-//     *
-//     * @return the text that is displayed if the control has an error with its filling
-//     */
-//    public String getErrorText() {
-//        return errorText;
-//    }
 
     /**
      * Sets the error text for this control, concerning the input of the user
@@ -299,7 +284,7 @@ public class DynamicFormItem {
                     buildRatingOptionsTerms(params, controlWidth);
                     break;
                 case errorMessage:
-                    buildText(params, controlWidth);
+                    buildText(params);
                     break;
                 default:
                     Print.w(TAG, "buildControl: Field type not supported (" + this.entry.getInputType() + ") - " + this.entry.getInputType());
@@ -363,6 +348,14 @@ public class DynamicFormItem {
                     if(parent.hasResponseCallback()) {
                         parent.getRequestCallBack().get().onRequestError(baseResponse);
                     }
+                }
+            });
+            // Set touch listener
+            spinner.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent event) {
+                    KeyboardUtils.hide(view);
+                    return false;
                 }
             });
         }
@@ -476,9 +469,7 @@ public class DynamicFormItem {
                 } else {
                     ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).setSelection(position);
                 }
-
                 break;
-
             case metadata:
             case date:
                 String date = inStat.getString(getKey());
@@ -494,17 +485,18 @@ public class DynamicFormItem {
                 break;
             case relatedNumber:
                 String relatedValue = inStat.getString(getKey());
-                //eg. 915436837::5
-                String[] values = relatedValue.split(RELATED_GROUP_SEPARATOR);
+                String[] values = !TextUtils.isEmpty(relatedValue) ? relatedValue.split(RELATED_GROUP_SEPARATOR) : new String[]{};
+                // eg. 915436837::5
                 if(values.length == 2) {
                     String main = values[0];
                     int related = Integer.parseInt(values[1]);
                     // set main text
                     ((EditText) this.dataControl).setText(main);
-                    //related field
+                    // Validate related field
                     if (this.entry.getRelatedField() != null && this.entry.getRelatedField().getInputType() != null) {
+                        // Get related field
                         FormInputType type = entry.getRelatedField().getInputType();
-
+                        // Case radio group
                         if (type == FormInputType.radioGroup) {
                             RadioGroupLayout radioGroup = (RadioGroupLayout) control.findViewWithTag(RELATED_RADIO_GROUP_TAG);
                             radioGroup.setSelection(related);
@@ -514,7 +506,6 @@ public class DynamicFormItem {
                         else if (type == FormInputType.list) {
                             mPreSelectedPosition = related;
                             Print.i("VALUE", "LIST GROUP SELECTED POS:" + related);
-
                         }
                     }
                 }
@@ -730,7 +721,6 @@ public class DynamicFormItem {
                     } else {
                         ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).setSelection(selection);
                     }
-
                 }
                 break;
             case metadata:
@@ -745,23 +735,10 @@ public class DynamicFormItem {
             case number:
                 String text = null == value ? "" : (String) value;
                 ((EditText) this.dataControl).setText(text);
-
-                // TODO: VALIDATE IF THIS IS NECESSARY
-//                //java.lang.NoSuchMethodError: com.mobile.components.customfontviews.EditText.setLayoutDirection
-//                try {
-//                    //#RTL
-//                    int currentapiVersion = android.os.Build.VERSION.SDK_INT;
-//                    if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                        this.dataControl.setLayoutDirection(LayoutDirection.LOCALE);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-
                 this.errorControl.setVisibility(View.GONE);
                 this.dataControl.setContentDescription(this.entry.getId());
                 if (text.length() == 0) {
-                    this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+                    this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
                 } else {
                     this.mandatoryControl.setVisibility(View.GONE);
                 }
@@ -809,7 +786,6 @@ public class DynamicFormItem {
                 }
                 break;
             case hide:
-                //
                 break;
             case email:
             case text:
@@ -935,7 +911,7 @@ public class DynamicFormItem {
 
         // SHOP: added empty space to prevent string from being cutted on burmese
         String space = "";
-        if (context != null && context.getResources().getBoolean(R.bool.is_shop_specific))
+        if (context.getResources().getBoolean(R.bool.is_shop_specific))
             space = " ";
 
         // Case empty
@@ -1106,8 +1082,6 @@ public class DynamicFormItem {
         mCheckBox.setTag("checkbox");
         mCheckBox.setContentDescription(this.entry.getKey());
 
-        //    int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
-        //    mCheckBox.setPadding(formPadding, 0, 0, 0);
         mCheckBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
 
         if (this.entry.getValue().equals("1")) {
@@ -1152,7 +1126,7 @@ public class DynamicFormItem {
             this.mandatoryControl.setText("*");
             this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
             this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-            this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+            this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 
             this.control.addView(this.mandatoryControl);
             mCheckBox.setOnClickListener(new OnClickListener() {
@@ -1216,7 +1190,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 
         //Data control
 
@@ -1236,8 +1210,6 @@ public class DynamicFormItem {
         this.dataControl.setFocusableInTouchMode(false);
         ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
 
-   //     formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
-  //      ((CheckBox) this.dataControl).setPadding(formPadding, 0, 0, 0);
         // Set default value
         if (Boolean.parseBoolean(this.entry.getValue())) {
             ((CheckBox) this.dataControl).setChecked(true);
@@ -1328,7 +1300,6 @@ public class DynamicFormItem {
             DATE_FORMAT = this.entry.getFormat();
         }
         dataContainer.addView(this.dataControl);
-        String entryLabel = this.entry.getLabel(), entryKey = this.entry.getKey(); //dialogTitle = entryLabel,
 
         Print.i("ENTERED BIRTHDAY", " HERE ");
         String text = context.getString(R.string.register_birthday);
@@ -1337,6 +1308,8 @@ public class DynamicFormItem {
         spinnerButton.setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
         spinnerButton.setPadding(UIUtils.dpToPx(13, scale), 0, 0, 10);
 
+        // Add *
+        mandatory.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         // Is required
         if (entry.getValidation() != null && entry.getValidation().isRequired()) {
             this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
@@ -1345,9 +1318,8 @@ public class DynamicFormItem {
                 this.errorControl.setLayoutDirection(LayoutDirection.RTL);
             }
             this.control.addView(this.errorControl);
-            // Add *
-            mandatory.setVisibility(View.VISIBLE);
         }
+
         final DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -1368,7 +1340,7 @@ public class DynamicFormItem {
                     String date = DateFormat.format(DATE_FORMAT, d).toString();
                     spinnerButton.setText(date);
                     Print.i(TAG, "code1date : date : " + date);
-                    if(mandatoryControl != null)    //change
+                    if(mandatoryControl != null)
                         DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
 
                     dialogDate.dismiss();
@@ -1408,7 +1380,7 @@ public class DynamicFormItem {
     }
 
 
-    private void buildText(RelativeLayout.LayoutParams params, int controlWidth) {
+    private void buildText(RelativeLayout.LayoutParams params) {
         this.control.setLayoutParams(params);
         this.control.setPadding(0, 10, 0, 10);
         ((RelativeLayout)this.control).setGravity(Gravity.CENTER);
@@ -1417,100 +1389,11 @@ public class DynamicFormItem {
         textView.setText(entry.getValue());
         this.control.addView(textView);
     }
-//
-//    private void buildEditableText(RelativeLayout.LayoutParams params, int controlWidth) {
-//        this.control.setLayoutParams(params);
-//        // Create text
-//        //ViewGroup dataContainer = createTextDataContainer(controlWidth);
-//        ViewGroup dataContainer = buildEditableTextField();
-//
-//        int dataControlId = dataContainer.getId();
-//        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-//
-//        if (hasRules()) {
-//            this.errorControl = createErrorControl(dataControlId, controlWidth);
-//
-//            //#RTL
-//            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
-//            }
-//            ((ViewGroup) this.control).addView(this.errorControl);
-//        }
-//        //#RTL
-//        if (ShopSelector.isRtl() && currentApiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            ((EditText) this.dataControl).setGravity(Gravity.RIGHT);
-//        }
-//
-//        ((ViewGroup) this.control).addView(dataContainer);
-//
-//        this.dataControl.setContentDescription(this.entry.getKey());
-//        // Listeners
-//
-//        //TODO
-//        //FIXME to be fixed on previous rating reform, uncomment crashes app
-//
-////        this.dataControl.setOnFocusChangeListener(new OnFocusChangeListener() {
-////
-////            @Override
-////            public void onFocusChange(View v, boolean hasFocus) {
-////                EditText dataCtrl = (EditText) v;
-////                if (hasFocus) {
-////                    errorControl.setVisibility(View.GONE);
-////                    mandatoryControl.setVisibility(View.GONE);
-////                    // Uncomment the below line if you want hide the hint when the focus changes
-////                    // dataCtrl.setHint(" ");
-////                    dataCtrl.setCursorVisible(true);
-////                } else {
-////                    if (entry.getValidation().isRequired()) {
-////                        mandatoryControl
-////                                .setVisibility(dataCtrl.getText().toString().length() == 0 ? View.VISIBLE
-////                                        : View.GONE);
-////                    }
-////                    if (dataCtrl.getHint().toString().equals(" ")) {
-////                        dataCtrl.setHint(editText);
-////                    }
-////
-////                }
-////
-////                if (null != editFocusListener) {
-////                    editFocusListener.onFocusChange(v, hasFocus);
-////
-////                }
-////            }
-////        });
-////
-////        ((EditText) this.dataControl).addTextChangedListener(new TextWatcher() {
-////
-////            @Override
-////            public void afterTextChanged(Editable s) {
-////                if (null != textWatcher) {
-////                    textWatcher.afterTextChanged(s);
-////                }
-////            }
-////
-////            @Override
-////            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-////                if (null != textWatcher) {
-////                    textWatcher.beforeTextChanged(s, start, count, after);
-////                }
-////            }
-////
-////            @Override
-////            public void onTextChanged(CharSequence s, int start, int before, int count) {
-////                if (null != textWatcher) {
-////                    textWatcher.onTextChanged(s, start, before, count);
-////                }
-////            }
-////
-////        });
-//
-//    }
 
     /**
      * Creates the control with hidden value
      */
     private void buildHide() {
-        // TODO Validate if this is necessary
         // Don't allow an hidden control to take visual space
         this.control.setVisibility(View.GONE);
     }
@@ -1546,8 +1429,7 @@ public class DynamicFormItem {
 
         this.dataControl.setVisibility(View.VISIBLE);
 
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.MATCH_PARENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         //#RTL
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
@@ -1563,8 +1445,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE
-                : View.GONE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
 
@@ -1572,49 +1453,42 @@ public class DynamicFormItem {
 
         HoloFontLoader.applyDefaultFont(dataContainer);
         // Listeners
-        ((IcsSpinner) this.dataControl)
-                .setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+        ((IcsSpinner) this.dataControl).setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
+                if (entry.getValidation().isRequired()) {
+                    mandatoryControl.setVisibility(position == Spinner.INVALID_POSITION ? View.VISIBLE : View.GONE);
+                }
+                if (null != spinnerSelectedListener) {
+                    spinnerSelectedListener.onItemSelected(parent, view, position, id);
+                }
+            }
 
-                    @Override
-                    public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
-                        if (entry.getValidation().isRequired()) {
-                            mandatoryControl
-                                    .setVisibility(position == Spinner.INVALID_POSITION ? View.VISIBLE
-                                            : View.GONE);
-                        }
+            @Override
+            public void onNothingSelected(IcsAdapterView<?> parent) {
+                if (entry.getValidation().isRequired()) {
+                    mandatoryControl.setVisibility(View.VISIBLE);
+                }
 
-                        if (null != spinnerSelectedListener) {
-                            spinnerSelectedListener.onItemSelected(parent, view, position, id);
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(IcsAdapterView<?> parent) {
-                        if (entry.getValidation().isRequired()) {
-                            mandatoryControl.setVisibility(View.VISIBLE);
-                        }
-
-                        if (null != spinnerSelectedListener) {
-                            spinnerSelectedListener.onNothingSelected(parent);
-                        }
-                    }
-                });
+                if (null != spinnerSelectedListener) {
+                    spinnerSelectedListener.onNothingSelected(parent);
+                }
+            }
+        });
 
         this.entry.setOnDataSetReceived(new FormField.OnDataSetReceived() {
 
             @Override
             public void DataSetReceived(Map<String, String> dataSet) {
                 if (dataSet.size() > 0) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
-                            R.layout.form_spinner_item, new ArrayList<>(dataSet.values()));
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<>(dataSet.values()));
                     adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
                     ((IcsSpinner) dataControl).setAdapter(adapter);
 
                 } else {
                     ArrayList<String> default_string = new ArrayList<>();
                     default_string.add("Empty");
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
-                            R.layout.form_spinner_item, default_string);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
                     adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
                     ((IcsSpinner) dataControl).setAdapter(adapter);
                 }
@@ -1693,7 +1567,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setText("*");
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
 
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -1758,7 +1632,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setText("*");
         this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 
         // in order to position the mandatory signal on the payment method screen in the requested position, we don't inflate the dynamic form mandatory sign,
         // we use a hardcode mandatory signal since the  payment method is always a mandatory section        
@@ -1905,7 +1779,6 @@ public class DynamicFormItem {
             int month = cal.get(Calendar.MONTH) + 1;
             int day = cal.get(Calendar.DAY_OF_MONTH);
 
-//            model.put(this.entry.getId(), String.valueOf(day)+"-"+ String.valueOf(month)+"-"+String.valueOf(year));
             model.put(this.entry.getId(), dateString);
             Print.d(TAG, "setDate: " + this.entry.getId() + "->" + String.valueOf(day) + "-" + String.valueOf(month) + "-" + String.valueOf(year));
 
@@ -1993,7 +1866,7 @@ public class DynamicFormItem {
             text.setEnabled(false);
             text.setClickable(false);
             text.setFocusable(false);
-            text.setTextColor(R.color.black_200);
+            text.setTextColor(context.getResources().getColor(R.color.black_200));
         }
         // Set icon
         if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
@@ -2035,7 +1908,7 @@ public class DynamicFormItem {
                 break;
         }
         // Set mandatory
-        mandatory.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+        mandatory.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         // Set next id to parent
         container.setId(parent.getNextId());
         // Set error control
@@ -2092,63 +1965,6 @@ public class DynamicFormItem {
         });
     }
 
-
-
-//    private RelativeLayout createTextDataContainer(int controlWidth) {
-//
-//        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        RelativeLayout dataContainer = new RelativeLayout(this.context);
-//        dataContainer.setId(parent.getNextId());
-//        dataContainer.setLayoutParams(params);
-//
-//        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        this.dataControl = createTextDataControl();
-//        this.dataControl.setId(parent.getNextId());
-//        this.dataControl.setLayoutParams(params);
-//        int formPadding = context.getResources().getDimensionPixelSize(R.dimen.form_padding);
-//        this.dataControl.setPadding(formPadding, 0, formPadding, 0);
-//
-//        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-//        params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//        params.addRule(RelativeLayout.CENTER_VERTICAL);
-//        params.rightMargin = MANDATORYSIGNALMARGIN;
-//        //#RTL
-//        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-//        if (ShopSelector.isRtl()) {
-//            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                params.addRule(RelativeLayout.ALIGN_PARENT_END);
-//                params.setMarginEnd(MANDATORYSIGNALMARGIN);
-//            } else {
-//                //<4.2
-//                params.leftMargin = MANDATORYSIGNALMARGIN;
-//                params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-//            }
-//        }
-//
-//        this.mandatoryControl = new TextView(this.context);
-//        this.mandatoryControl.setLayoutParams(params);
-//        this.mandatoryControl.setText("*");
-//        this.mandatoryControl.setTextColor(context.getResources().getColor(R.color.orange_f68b1e));
-//        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-//        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
-//
-//        dataContainer.addView(this.dataControl);
-//        dataContainer.addView(this.mandatoryControl);
-//        //#RTL
-//        if (ShopSelector.isRtl()) {
-//            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//                dataContainer.setLayoutDirection(LayoutDirection.RTL);
-//            }
-//        }
-//
-//        if (isDatePart()) {
-//            dataContainer.setPadding(0, 0, 10, 0);
-//        }
-//
-//        return dataContainer;
-//    }
-
-
     /**
      * Determines if this field is a part of a date
      *
@@ -2197,7 +2013,6 @@ public class DynamicFormItem {
 
     /**
      * Function that sets date on the date dialog picker
-     * @param date
      */
     private void setDialogDate(String date){
 

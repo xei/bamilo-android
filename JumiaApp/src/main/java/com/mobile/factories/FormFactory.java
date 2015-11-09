@@ -37,23 +37,6 @@ public class FormFactory {
     private static FormFactory factory = null;
 
     /**
-     * TODO: To implement if re-use is necessary.
-     * ATTENCION: Must remove from current parent view in order to re-use in another view : ((ViewGroup) userForm.getContainer().getParent()).removeView(userForm.getContainer());
-     *
-    *        private DynamicForm addressForm = null;
-             private DynamicForm addressEditForm = null;
-             private DynamicForm loginForm = null;
-             private DynamicForm paymentForm = null;
-             private DynamicForm registerForm = null;
-             private DynamicForm pollForm = null;
-             private DynamicForm ratingForm = null;
-             private DynamicForm signupForm;
-     */
-
-
-    private float scale = 1;
-
-    /**
      * The constructor is private to prevent the creation of the object
      */
     private FormFactory() {
@@ -68,7 +51,6 @@ public class FormFactory {
         if (null == factory) {
             factory = new FormFactory();
         }
-
         return factory;
     }
 
@@ -89,6 +71,19 @@ public class FormFactory {
     }
 
 
+    private DynamicForm createChangePasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
+        if (null == ctrlParams) {
+            final int CTRLMARGIN_LEFT = 0;
+            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
+            final int CTRLMARGIN_RIGHT = 0;
+            final int CTRLMARGIN_BOTTOM =0;
+
+            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
+        }
+
+        return createGenericForm(context, form, ctrlParams);
+    }
+
     /**
      * Creates the form for a given type using a definition provided from the framework
      *
@@ -105,9 +100,6 @@ public class FormFactory {
      */
     public DynamicForm CreateForm(int formType, Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
         DynamicForm parent = null;
-        if (context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null) {
-            scale = context.getResources().getDisplayMetrics().density;
-        }
         Print.i(TAG, "code1register CREATING FORM : " + formType);
         switch (formType) {
             case FormConstants.ADDRESS_FORM:
@@ -118,48 +110,27 @@ public class FormFactory {
                 break;
             case FormConstants.LOGIN_FORM:
                 form.setType(formType); // Used to show icons
+                form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
                 parent = createLoginForm(context, form, ctrlParams);
                 break;
             case FormConstants.REGISTRATION_FORM:
+                form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
             case FormConstants.USER_DATA_FORM:
                 form.setType(formType);  // Used to show icons
                 parent = createRegistrationForm(context, form, ctrlParams);
                 break;
             case FormConstants.FORGET_PASSWORD_FORM:
+                form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
                 parent = createForgetPasswordForm(context, form, ctrlParams);
-                break;
-            case FormConstants.POLL_FORM:
-                parent = createPollForm(context, form, ctrlParams);
-                break;
-            case FormConstants.SIGNUP_FORM:
-                parent = createSignupForm(context, form, ctrlParams);
                 break;
             case FormConstants.PAYMENT_DETAILS_FORM:
                 parent = createPaymentMethodsForm(context, form, ctrlParams);
-                break;
-            case FormConstants.REVIEW_FORM:
-            case FormConstants.RATING_FORM:
-            case FormConstants.REVIEW_SELLER_FORM:
-                parent = createRatingReviewOptionsForm(context, form, ctrlParams);
                 break;
             case FormConstants.CHANGE_PASSWORD_FORM:
                 parent = createChangePasswordForm(context,form, ctrlParams);
                 break;
         }
         return parent;
-    }
-
-    private DynamicForm createChangePasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if (null == ctrlParams) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM =0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-
-        return createGenericForm(context, form, ctrlParams);
     }
 
     /**
@@ -239,27 +210,11 @@ public class FormFactory {
             final int CTRLMARGIN_RIGHT = 0;
             final int CTRLMARGIN_BOTTOM = 0;
 
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
+            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
         }
 
         return createGenericForm(context, form, ctrlParams);
     }
-
-    /**
-     * create the write seller review form
-     */
-    private DynamicForm createRatingReviewOptionsForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
-    }
-
 
     /**
      * Create the user registration form
@@ -288,47 +243,6 @@ public class FormFactory {
      * @return An instance of a DynamicForm with the form representation implemented
      */
     private DynamicForm createForgetPasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
-    }
-
-    /**
-     * Create the poll form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    // Validate this method for poll
-    private DynamicForm createPollForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = (int) (5 * scale);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
-    }
-
-
-    /**
-     * Create the signup form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    // Validate this method for signup
-    private DynamicForm createSignupForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
         if(ctrlParams == null) {
             final int CTRLMARGIN_LEFT = 0;
             final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
