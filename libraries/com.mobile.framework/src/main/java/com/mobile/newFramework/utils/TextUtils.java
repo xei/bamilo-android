@@ -1,5 +1,7 @@
 package com.mobile.newFramework.utils;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -23,6 +25,16 @@ public class TextUtils {
      */
     public static boolean isNotEmpty(CharSequence str) {
         return !isEmpty(str);
+    }
+
+    /**
+     * Returns true if the sub string is part of string.
+     * @param str the string to be examined
+     * @param sub the sub string to find
+     * @return true if str is not null and zero length
+     */
+    public static boolean contains(@Nullable String str, @NonNull String sub) {
+        return !isEmpty(str) && str.contains(sub);
     }
 
     /**

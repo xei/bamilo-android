@@ -466,12 +466,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
 
                 // verify if "Call to Order" was used
-                if (isCallInProgress) {
-                    isCallInProgress = false;
-                    askToRemoveProductsAfterOrder(purchaseEntity);
-                } else {
+//                if (isCallInProgress) {
+//                    isCallInProgress = false;
+//                    askToRemoveProductsAfterOrder(purchaseEntity);
+//                } else {
                     displayShoppingCart(purchaseEntity);
-                }
+//                }
 
                 return true;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
@@ -851,6 +851,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             });
         } else {
             prodItem.quantityBtn.setEnabled(false);
+            prodItem.quantityBtn.setBackground(null);
         }
 
         // Save the position to process the click on item

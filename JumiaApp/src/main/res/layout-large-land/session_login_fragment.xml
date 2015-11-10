@@ -49,12 +49,9 @@
 
             <RelativeLayout
                 android:id="@+id/login_divider"
-                android:layout_width="wrap_content"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="20dp">
+                android:layout_margin="20dp">
 
                 <View
                     style="@style/divider_vertical"
