@@ -17,5 +17,6 @@
     <item type="drawable" name="btn_edit_active">@drawable/btn_edit_active_rtl</item>
     <item type="drawable" name="btn_edit">@drawable/btn_edit_rtl</item>
     <item type="drawable" name="ic_my_orders">@drawable/ic_my_orders_rtl</item>
+    <item type="drawable" name="ic_success_checkout">@drawable/ic_success_checkout_rtl</item>
 
 </resources>

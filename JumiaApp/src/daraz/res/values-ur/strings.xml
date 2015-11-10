@@ -424,4 +424,5 @@
     <string name="policy">پالیسی</string>
     <string name="delivery_time_placeholder" formatted="false">ڈلیوری وقت: %d - %d  دن</string>
     <string name="product_specifications">ادائیگی کے بعد نردجیکرن</string>
+    <string name="order_track_check">يمكنك متابعة الطلب بفحص\nحالة الطلب في هذا التطبيق</string>
 </resources>
