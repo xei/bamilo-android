@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.http.SslError;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.SslErrorHandler;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ScrollView;
@@ -28,15 +31,19 @@ import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
+import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
+import com.newrelic.agent.android.util.NetworkFailure;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -67,6 +74,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     private ScrollView mScrollView;
 
     private int mWebViewScrollPosition = 0;
+
+    private String failedPageRequest;
 
     /**
      * Get a instance of InnerShopFragment.
@@ -338,24 +347,35 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private WebViewClient mInnerShopWebClient = new WebViewClient() {
 
+        private long beginTransaction;
+
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
             Print.i(TAG, "ON PAGE STARTED: " + url);
+
+            beginTransaction = System.currentTimeMillis();
         }
 
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             Print.i(TAG, "ON PAGE FINISHED: " + url);
+            //ssl error
+            if(url.equals(failedPageRequest)){
+                Print.d(TAG, "onPageFinished: page was saved failed page");
+                showSSLError();
+            }
         }
 
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
             Print.i(TAG, "ON PAGE RECEIVED ERROR: " + failingUrl);
+            failedPageRequest = failingUrl;
+            mWebView.stopLoading();
+            mWebView.clearView();
           //  showContinueShopping();
-            showSSLError();
 
         }
 
@@ -366,6 +386,33 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             processDeepLink(url);
             // Return link processed
             return true;
+        }
+
+        /*
+        * (non-Javadoc)
+        *
+        * @see android.webkit.WebViewClient#onReceivedSslError(android.webkit.WebView ,
+        * android.webkit.SslErrorHandler, android.net.http.SslError)
+        */
+        @Override
+        public void onReceivedSslError(WebView view, @NonNull SslErrorHandler handler, SslError error) {
+            Print.i(TAG, "code1payment : onReceivedSslError : " + error);
+            Print.w(TAG, "Received ssl error: " + error);
+            if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
+                ToastManager.show(InnerShopFragment.this.getContext(), ToastManager.ERROR_SSL_SSL_HOST_MISMATCH, error);
+            } else {
+                ToastManager.show(InnerShopFragment.this.getContext(), ToastManager.ERROR_SSL_GENERIC, error);
+            }
+
+            if(HockeyStartup.isSplashRequired(InnerShopFragment.this.getContext())){
+                handler.proceed();
+            } else {
+                String url = view.getUrl();
+                NewRelicTracker.noticeFailureTransaction(url, beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
+                onReceivedError(view, error.getPrimaryError(), error.toString(), url);
+                handler.cancel();
+            }
+
         }
     };
 
