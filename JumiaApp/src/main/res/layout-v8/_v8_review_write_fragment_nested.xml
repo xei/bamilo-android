@@ -5,7 +5,8 @@
 
     <RelativeLayout
         android:id="@+id/product_rating_container"
-        style="@style/rounded_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/shadow"
         android:layout_marginBottom="0dp"
         android:layout_marginTop="@dimen/rounded_margin_small"
@@ -14,7 +15,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/write_title"
-            style="@style/text_normal"
+            style="@style/TextCaption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_100px"
@@ -38,7 +39,7 @@
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/send_review"
-        style="@style/button_orange_bottom"
+        style="@style/AigButton.Active"
         android:layout_below="@+id/product_rating_container"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"

@@ -132,7 +132,6 @@
 
     <item name="reviews_fragment_rating_bigtype_item"   type="layout">@layout/_v8_reviews_fragment_rating_bigtype_item</item>
     <item name="dialog_filter_header"                   type="layout">@layout/_v8_dialog_filter_header</item>
-    <item name="track_order_form"                       type="layout">@layout/_v8_track_order_form</item>
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_v8_reviews_fragment_rating_samlltype_item</item>
     <item name="product_offers_main"                    type="layout">@layout/_v8_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_v8_campaign_spinner_item</item>
@@ -166,7 +165,6 @@
 
     <item name="shopping_cart_product_container"        type="layout">@layout/_v8_shopping_basket_product_element_container</item>
     <item name="campaign_spinner_dropdown_item"         type="layout">@layout/_v8_campaign_spinner_dropdown_item</item>
-    <item name="track_order_status"                     type="layout">@layout/_v8_track_order_status</item>
     <item name="offers_item"                            type="layout">@layout/_v8_offers_item</item>
     <item name="dialog_list_header_item"                type="layout">@layout/_v8_dialog_list_header_item</item>
     <item name="loading_bar_no_box"                     type="layout">@layout/_v8_loading_bar_no_box</item>

@@ -20,8 +20,4 @@
     <!-- PDV -->
     <item name="pdv_fragment_main" 	             type="layout">@layout/_def_pdv_fragment_main</item>
 
-    <!-- MY ORDERS -->
-    <item name="track_order_fragment"           type="layout">@layout/_def_track_order_fragment</item>
-    <item name="order_history_main"             type="layout">@layout/_def_order_history_main</item>
-
 </resources>
