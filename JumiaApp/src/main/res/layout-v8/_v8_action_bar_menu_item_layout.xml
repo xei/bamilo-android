@@ -4,7 +4,8 @@
     android:layout_height="@dimen/myprofile_item_size"
     android:background="@drawable/selector_myprofile_highlight"
     android:gravity="right|center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:layoutDirection="ltr">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/menu_item_title"

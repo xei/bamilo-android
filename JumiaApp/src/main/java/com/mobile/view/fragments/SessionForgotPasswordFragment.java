@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.mobile.components.customfontviews.EditText;
@@ -31,7 +30,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +49,8 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     private Form formResponse;
 
     private Bundle savedInstanceState;
+
+    private View mButton;
 
     /**
      * 
@@ -94,9 +94,16 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         dynamicForm = null;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Get button
+        mButton = view.findViewById(R.id.submit_button);
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -178,15 +185,11 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * Inflates the required layout for this activity into the main activity template
      */
     private void setAppContentLayout() {
-        Button buttons = (Button) getView().findViewById(R.id.submit_button);
-        buttons.setOnClickListener(new OnClickListener() {
+        mButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.submit_button) {
-                    if (dynamicForm.validate()) {
-                        requestPassword();
-                    }
+                if (dynamicForm.validate()) {
+                    requestPassword();
                 }
             }
         });

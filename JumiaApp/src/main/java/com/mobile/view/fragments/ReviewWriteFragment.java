@@ -44,6 +44,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
@@ -370,7 +371,8 @@ public class ReviewWriteFragment extends BaseFragment {
                             if (ratingForm != null) {
                                 formValues = dynamicRatingForm.save();
                                 JumiaApplication.setRatingReviewValues(formValues);
-                                hideKeyboard();
+                                // Hide keyboard
+                                KeyboardUtils.hide(getView());
                                 saveTextReview(dynamicRatingForm);
                                 isShowingRatingForm = true;
                                 setRatingLayout(ratingForm);
