@@ -663,6 +663,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     voucherLabel.setText(getString(R.string.my_order_voucher_label) + " " + voucherCode.getText());
                 } else {
                     voucherContainer.setVisibility(View.GONE);
+                    couponButton.setText(getString(R.string.voucher_use));
                     // Clean Voucher
                     removeVoucher();
                 }
