@@ -543,7 +543,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // Get tab layout
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mCheckoutTabLayout = (TabLayout) findViewById(R.id.checkout_tabs);
-        mCheckoutTabLayout.setVisibility(android.view.View.INVISIBLE);
+//        mCheckoutTabLayout.setVisibility(android.view.View.INVISIBLE);
         TabLayoutUtils.fillTabLayout(mTabLayout, this);
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
         // Checkout Tab
@@ -1585,12 +1585,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void updateBaseComponentsOutCheckout(final int visibility) {
         Print.d(TAG, "SET BASE FOR NON CHECKOUT: HIDE");
         // Set header visibility
-        mCheckoutTabLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
+//        mCheckoutTabLayout.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
                 mCheckoutTabLayout.setVisibility(visibility);
-            }
-        }, 50);
+//            }
+//        }, 50);
     }
 
     /**
