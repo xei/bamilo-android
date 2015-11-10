@@ -415,8 +415,8 @@
     <string name="fulfilled_by">Fulfilled by%s</string>
     <string name="qty_placeholder">Qty: %d</string>
     <string name="policy">Policy</string>
-    <string name="shipment">Shipment %1d of %2d</string>
-    <string name="delivery_time_placeholder">Delivery time %1d - %2d days</string>
+    <string name="shipment">Shipment %1$d of %2$d</string>
+    <string name="delivery_time_placeholder">Delivery time %1$d - %2$d days</string>
     <string name="product_specifications">သီးျခားသတ္မွတ္ခ်က္</string>
     <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">%s ႏွင့္ ကိုက္ညီမွဳ မရွိပါ။</string>

@@ -415,8 +415,8 @@
     <string name="fulfilled_by">تم التوصيل بواسطة %s</string>
     <string name="qty_placeholder">الكمية: %d</string>
     <string name="policy">السياسة</string>
-    <string name="shipment">شحن %2$d لـ %1$d</string>
-    <string name="delivery_time_placeholder">وقت التوصيل: %2$d - %1$d يوم</string>
+    <string name="shipment">شحن %1$d لـ %2$d</string>
+    <string name="delivery_time_placeholder">وقت التوصيل: %1$d - %2$d يوم</string>
     <string name="product_specifications">المواصفات</string>
     <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">اسم المجال لا يطابق الشهادة:%s</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="format_discount_percentage">-%1$s%</string>
+    <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">Mon Compte</string>
     <string name="action_label_add_address">Ajouter une nouvelle adresse</string>
     <string name="action_label_basket">Panier</string>
@@ -272,7 +272,7 @@
     <string name="shoppingcart_instock">En stock</string>
     <string name="shoppingcart_item_btn_delete">Effacer</string>
     <string name="shoppingcart_items">Articles</string>
-    <string name="shoppingcart_minamount">Malheureusement nous ne pouvons pas livrer les commandes qui ne dépassent pas notre quantité de commande minimum de%s.</string>
+    <string name="shoppingcart_minamount">Malheureusement nous ne pouvons pas livrer les commandes qui ne dépassent pas notre quantité de commande minimum de %s.</string>
     <string name="shoppingcart_minamount_waiting">En attente des informations sur la quantité de la commande minimum du serveur.</string>
     <string name="shoppingcart_notinstock">Plus en stock</string>
     <string name="shoppingcart_quantity">Quantité</string>
