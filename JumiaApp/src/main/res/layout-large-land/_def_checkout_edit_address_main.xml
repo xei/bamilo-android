@@ -36,7 +36,7 @@
 
         <LinearLayout
             android:id="@id/checkout_my_order_buttons"
-            android:layout_width="@dimen/inner_container_width"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
@@ -50,26 +50,12 @@
                 android:textColor="@color/red_basic"
                 android:visibility="gone" />
 
-            <LinearLayout
-                style="@style/button_container"
-                android:orientation="horizontal">
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/checkout_edit_button_enter"
+                style="@style/AigButton.Active"
+                android:layout_alignParentBottom="true"
+                android:text="@string/save_changes_label" />
 
-                <com.mobile.components.customfontviews.Button
-                    android:id="@+id/checkout_edit_button_cancel"
-                    style="@style/button_grey_bottom"
-                    android:layout_marginEnd="@dimen/margin_x_small"
-                    android:layout_marginRight="@dimen/margin_x_small"
-                    android:layout_weight="1"
-                    android:text="@string/cancel_label" />
-
-                <com.mobile.components.customfontviews.Button
-                    android:id="@+id/checkout_edit_button_enter"
-                    style="@style/button_orange_bottom"
-                    android:layout_marginLeft="@dimen/margin_x_small"
-                    android:layout_marginStart="@dimen/margin_x_small"
-                    android:layout_weight="1"
-                    android:text="@string/save_changes_label" />
-            </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
 
