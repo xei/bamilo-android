@@ -229,7 +229,7 @@ public class ReviewWriteFragment extends BaseFragment {
         }
         setRatingReviewFlag();
             // load complete product URL
-            if (mCompleteProductSku.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.PRODUCT_SKU)) {
+            if (mCompleteProductSku != null && mCompleteProductSku.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.PRODUCT_SKU)) {
                 String sku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
                 mCompleteProductSku = sku != null ? sku : "";
             }
@@ -827,12 +827,12 @@ public class ReviewWriteFragment extends BaseFragment {
         
         Bundle bundle = new Bundle();
         
-        form.getItemByKey(SKU).setValue(completeProduct.getSku());
+        form.getItemByKey(SKU).getEntry().setValue(completeProduct.getSku());
         
         ContentValues values = form.save();
         
         getRatingFormValues(values,form);
-        
+
         bundle.putString(RatingReviewProductHelper.ACTION, action);
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         
