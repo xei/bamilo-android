@@ -134,7 +134,7 @@ public class ErrorLayoutFactory {
                 .setDetailMessage(R.string.internet_no_connection_details_label)
                 .setRotationVisible(true)
                 .setButtonMessage(R.string.try_again_retry)
-                .setButtonBackground(R.drawable.btn_grey);
+                .setButtonBackground(R.color.black_700);
         actualError = NO_NETWORK_LAYOUT;
     }
 
@@ -145,7 +145,7 @@ public class ErrorLayoutFactory {
                 .setDetailMessage(R.string.server_error)
                 .setRotationVisible(true)
                 .setButtonMessage(R.string.try_again_retry)
-                .setButtonBackground(R.drawable.btn_grey);
+                .setButtonBackground(R.color.black_700);
         actualError = UNEXPECTED_ERROR_LAYOUT;
     }
 
@@ -156,7 +156,7 @@ public class ErrorLayoutFactory {
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
                 .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
+                .setButtonBackground(R.color.color_accent);
         actualError = CART_EMPTY_LAYOUT;
     }
 
@@ -167,7 +167,7 @@ public class ErrorLayoutFactory {
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)
                 .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
+                .setButtonBackground(R.color.color_accent);
         actualError = CONTINUE_SHOPPING_LAYOUT;
     }
 
@@ -178,7 +178,7 @@ public class ErrorLayoutFactory {
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
+                .setButtonBackground(R.color.color_accent);
         actualError = CATALOG_NO_RESULTS;
     }
 
@@ -189,7 +189,7 @@ public class ErrorLayoutFactory {
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
-                .setButtonBackground(R.drawable.btn_orange);
+                .setButtonBackground(R.color.color_accent);
         actualError = CATALOG_UNEXPECTED_ERROR;
     }
 
