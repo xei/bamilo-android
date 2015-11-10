@@ -634,7 +634,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             View shippingContainer = getView().findViewById(R.id.shipping_container);
             TextView shippingValue = (TextView)getView().findViewById(R.id.shipping_value);
             TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
-            View voucherContainer = getView().findViewById(R.id.voucher_info_container);
+            final View voucherContainer = getView().findViewById(R.id.voucher_info_container);
+            View voucherRemove = getView().findViewById(R.id.basket_voucher_remove);
+            TextView voucherLabel = (TextView) getView().findViewById(R.id.basket_voucher_label);
             // Get and set the cart value
             setTotal(cart);
 
@@ -647,8 +649,18 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 if (couponDiscountValue >= 0) {
                     voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
                     voucherContainer.setVisibility(View.VISIBLE);
+
+                    voucherRemove.setOnClickListener(new android.view.View.OnClickListener() {
+                        @Override
+                        public void onClick(android.view.View v) {
+                            voucherContainer.setVisibility(View.GONE);
+                            // Clean Voucher
+                            removeVoucher();
+                        }
+                    });
                     // Change Coupon
                     changeVoucher(cart.getCouponCode());
+                    voucherLabel.setText(getString(R.string.my_order_voucher_label) + " " + voucherCode.getText());
                 } else {
                     voucherContainer.setVisibility(View.GONE);
                     // Clean Voucher

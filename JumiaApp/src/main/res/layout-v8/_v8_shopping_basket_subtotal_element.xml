@@ -129,7 +129,6 @@
             android:layout_alignParentLeft="true"
             android:ellipsize="none" />
     </RelativeLayout>
-
     <!-- VOUCHER -->
 
     <RelativeLayout
@@ -141,22 +140,31 @@
         android:visibility="visible" >
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextList_1"
+            android:id="@+id/basket_voucher_label"
+            style="@style/SingleLineStyle"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
             android:ellipsize="none"
             android:text="@string/my_order_voucher_label"
-            android:textColor="@color/green_basic" />
+            />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/basket_voucher_remove"
+            style="@style/SingleLineStyle"
+            android:layout_width="wrap_content"
+            android:text="@string/voucher_remove"
+            android:textColor="@color/black_800"
+            android:layout_toLeftOf="@id/basket_voucher_label"
+            />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/text_voucher"
-            style="@style/TextList_1"
+            style="@style/SingleLineStyle"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:ellipsize="none"
-            android:textColor="@color/green_basic" />
+            />
     </RelativeLayout>
-
     <!-- TOTAL -->
 
     <RelativeLayout
@@ -193,5 +201,6 @@
             android:textColor="@color/black"
             />
     </RelativeLayout>
+
 
 </LinearLayout>
