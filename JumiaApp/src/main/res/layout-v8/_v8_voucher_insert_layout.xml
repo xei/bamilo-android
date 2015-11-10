@@ -17,7 +17,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/checkout_voucher_box_height"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dimen_60px"
         android:layout_marginRight="@dimen/dimen_60px"
         android:orientation="horizontal"
@@ -30,7 +30,7 @@
             android:id="@+id/voucher_btn"
             style="@style/AigButton.WhiteWithBlack_800"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
             android:layout_weight="0.35"
             android:ellipsize="marquee"
@@ -43,7 +43,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="0.65"
             android:focusableInTouchMode="true"
             android:gravity="right|center_vertical"
@@ -55,18 +55,19 @@
                 android:hint="@string/voucher_message_hint"
                 android:textDirection="locale" />
 
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/voucher_error_message"
-                style="@style/TextField"
-                android:layout_width="match_parent"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:background="@null"
-                android:singleLine="false"
-                android:text="@string/voucher_error_message"
-                android:textColor="@color/red_middle"
-                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>
 
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/voucher_error_message"
+        style="@style/TextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:background="@null"
+        android:ellipsize="marquee"
+        android:text="@string/voucher_error_message"
+        android:textColor="@color/red_middle"
+        android:visibility="gone"/>
 </LinearLayout>
