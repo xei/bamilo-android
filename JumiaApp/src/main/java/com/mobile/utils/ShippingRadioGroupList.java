@@ -49,7 +49,6 @@ public class ShippingRadioGroupList extends RadioGroup {
     }
 
     public void setItems(ShippingMethodForm form, String defaultSelected) {
-        Print.d(TAG, "setItems: items size = " + form.key + " defaultSelected = " + defaultSelected);
         mForm = form;
         mItems = mForm.options;
         mDefaultSelected = defaultSelected;
@@ -68,7 +67,6 @@ public class ShippingRadioGroupList extends RadioGroup {
         // Get size
         int numberItems = mItems.size();
         for (int idx = 0; idx < numberItems; idx++) {
-            Print.i(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
             // Get main container
             final LinearLayout container = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, this, false);
             // Get info container
@@ -80,9 +78,7 @@ public class ShippingRadioGroupList extends RadioGroup {
                 // Get sub form
                 ShippingMethodSubForm shippingSubForm = new ShippingMethodSubForm();
                 shippingSubForm.shippingMethodSubFormHolder = mForm.shippingMethodsSubForms.get(i);
-                Print.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.scenario);
                 if (shippingSubForm.shippingMethodSubFormHolder.scenario.equalsIgnoreCase(mItems.get(idx))) {
-                    Print.i(TAG, "code1generate subForms : " + shippingSubForm.shippingMethodSubFormHolder.name);
                     tmpSubForms.add(shippingSubForm);
                     // Create shipping PUS option
                     if(CollectionUtils.isNotEmpty(shippingSubForm.shippingMethodSubFormHolder.options)){
@@ -240,6 +236,14 @@ public class ShippingRadioGroupList extends RadioGroup {
         return -1;
     }
 
+    public int getSelectedPUS(int pos, int posSub) {
+        return subForms.get(mItems.get(pos)).get(posSub).getSelectedPUS();
+    }
+
+    public void setSelectedPUS(int pos, int posSub, int selected) {
+        subForms.get(mItems.get(pos)).get(posSub).setSelectedPUS(selected);
+    }
+
     public String getSelectedFieldName() {
         String result;
         if (this.getCheckedRadioButtonId() >= 0) {
@@ -251,7 +255,7 @@ public class ShippingRadioGroupList extends RadioGroup {
     }
 
     public ContentValues getValues() {
-        Print.i(TAG, "code1values : adding valeus " + subForms.toString());
+        Print.i(TAG, "code1values : adding valeus " + subForms);
         ContentValues mContentValues = new ContentValues();
         int idx = this.getCheckedRadioButtonId();
         if (idx < 0) {

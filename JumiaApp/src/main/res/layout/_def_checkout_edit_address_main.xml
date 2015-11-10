@@ -8,7 +8,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/checkout_edit_address_button_container"
+        android:layout_above="@+id/checkout_edit_button_enter"
         android:layout_alignParentTop="true">
 
         <LinearLayout
@@ -21,28 +21,13 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- BUTTONS -->
+    <!-- BUTTON -->
 
-    <LinearLayout
-        android:id="@+id/checkout_edit_address_button_container"
-        style="@style/button_container"
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/checkout_edit_button_enter"
+        style="@style/AigButton.Active"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
-
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/checkout_edit_button_cancel"
-            style="@style/button_grey_bottom"
-            android:layout_marginRight="@dimen/margin_x_small"
-            android:layout_weight="1"
-            android:text="@string/cancel_label" />
-
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/checkout_edit_button_enter"
-            style="@style/button_orange_bottom"
-            android:layout_marginLeft="@dimen/margin_x_small"
-            android:layout_weight="1"
-            android:text="@string/save_changes_label" />
-    </LinearLayout>
+        android:text="@string/save_changes_label" />
 
 
 </RelativeLayout>
