@@ -8,13 +8,14 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/option_label"
-        style="@style/text_normal"
+        style="@style/TextList_2"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="6dp"
         android:layout_marginTop="@dimen/margin_midhuge"
         android:ellipsize="end"
+        android:textColor="@color/black"
         android:singleLine="true"
         android:text="@string/rating_quality" />
 
