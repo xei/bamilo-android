@@ -469,4 +469,5 @@
     <string name="customer_service_info">من فضلكم, المرجو الاتصال بمصلحة الزبناء للمزيد من المعلومات,</string>
     <string name="phone_contact">الهاتف :</string>
     <string name="email_contact">البريد الإلكتروني:</string>
+    <string name="order_track_check">يمكنك متابعة الطلب بفحص\nحالة الطلب في هذا التطبيق</string>
 </resources>

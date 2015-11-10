@@ -34,6 +34,7 @@ public class ShippingMethodSubForm {
 
     public ShippingMethodSubFormHolder shippingMethodSubFormHolder;
 
+    private int currentSelected = 0;
     /**
      * Empty constructor
      */
@@ -78,6 +79,7 @@ public class ShippingMethodSubForm {
         this.dataControl.setVisibility(View.GONE);
 
         HoloFontLoader.applyDefaultFont(icsSpinner);
+        currentSelected = 0;
         // Listeners
         icsSpinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
 
@@ -86,7 +88,7 @@ public class ShippingMethodSubForm {
                 pickupStationsListView = (AbsListView) dataControl.findViewById(R.id.pickup_stations_list_view);
                 if (pickupStationByRegion.get(icsSpinner.getItemAtPosition(position)).size() > 0) {
                     pickupStationsListView.setVisibility(View.VISIBLE);
-                    pickupStationsListView.setAdapter(new PickupStationsAdapter(view.getContext(), pickupStationByRegion.get(icsSpinner.getItemAtPosition(position))));
+                    pickupStationsListView.setAdapter(new PickupStationsAdapter(view.getContext(), pickupStationByRegion.get(icsSpinner.getItemAtPosition(position)), currentSelected));
                 } else {
                     pickupStationsListView.setVisibility(View.GONE);
                 }
@@ -99,6 +101,21 @@ public class ShippingMethodSubForm {
         });
 
         return this.dataControl;
+    }
+
+    public int getSelectedPUS() {
+        if (pickupStationsListView.getAdapter() instanceof PickupStationsAdapter) {
+            return ((PickupStationsAdapter) pickupStationsListView.getAdapter()).getPosition(((PickupStationsAdapter) pickupStationsListView.getAdapter()).getSelectedPickupStation());
+
+        }
+        return 0;
+    }
+
+    public void setSelectedPUS(int pos) {
+        currentSelected = pos;
+        if (pickupStationsListView.getAdapter() instanceof PickupStationsAdapter) {
+            ((PickupStationsAdapter) pickupStationsListView.getAdapter()).setSelection(pos);
+        }
     }
 
 }

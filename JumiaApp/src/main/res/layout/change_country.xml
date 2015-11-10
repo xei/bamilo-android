@@ -6,7 +6,6 @@
 
     <ListView
         android:id="@+id/change_country_list"
-        style="@style/rounded_box"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:divider="@color/grey_light"
