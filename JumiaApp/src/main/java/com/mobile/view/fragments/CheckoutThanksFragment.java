@@ -35,7 +35,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -196,9 +195,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
         // Get strings
         String mainText = getString(R.string.order_track_check);
-        if(ShopSelector.isRtl())
-            mainText =  getString(R.string.order_track_success);    //old string, because of "order status"
-
         String text = getString(R.string.order_track_link);
         int index = mainText.indexOf(text);
         if (index == -1) {

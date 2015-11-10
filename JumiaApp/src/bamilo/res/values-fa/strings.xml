@@ -424,4 +424,5 @@
     <string name="policy">قوانین و سیاست ها</string>
     <string name="delivery_time_placeholder" formatted="false">زمان تحویل: %d تا %d روز کاری</string>
     <string name="product_specifications">مشخصات کال</string>
+    <string name="order_track_check">يمكنك متابعة الطلب بفحص\nحالة الطلب في هذا التطبيق</string>
 </resources>
