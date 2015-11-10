@@ -266,7 +266,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         spinner.setOnItemSelectedListener(this);
         formItem.setEditControl(spinner);
         group.addView(spinner);
-        showFragmentContentContainer(); // Show to trigger
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**

@@ -18,7 +18,6 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
@@ -475,21 +474,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public void notifyFragment(Bundle bundle) {
         //...
-    }
-
-    /**
-     * This method was created because the method on BaseActivity not working with dynamic forms
-     */
-    @SuppressWarnings("ConstantConditions")
-    protected void hideKeyboard() {
-        Print.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        try {
-            imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        } catch (NullPointerException e){
-            // DO NOTHING
-        }
-
     }
 
     public void setActivity(BaseActivity activity) {
