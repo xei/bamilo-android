@@ -9,8 +9,7 @@
         android:layout_width="@dimen/delete_button_size"
         android:layout_height="@dimen/delete_button_size"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/delete_button_margin"
+        android:layout_alignBottom="@+id/item_brand"
         android:background="@drawable/ic_filter_clear"
         android:contentDescription="@string/shoppingcart_item_btn_delete" />
 
@@ -23,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_marginLeft="@dimen/product_item_text_right_margin"
         android:gravity="center_vertical|right"
         android:text="BRAND"
+        android:paddingTop="@dimen/rounded_margin_mid"
         android:lines="1"
         android:textColor="@color/black_800"
         android:visibility="visible" />
@@ -37,10 +36,8 @@
         style="@style/TextList_1"
         android:layout_width="wrap_content"
         android:layout_alignParentRight="true"
-
         android:layout_height="wrap_content"
         android:layout_below="@id/item_brand"
-        android:layout_marginLeft="@dimen/product_item_text_right_margin"
         android:lines="1"
         android:textColor="@color/black"
         android:gravity="center_vertical|right"

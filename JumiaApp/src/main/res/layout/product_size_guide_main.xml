@@ -6,7 +6,8 @@
     <!-- CONTAINER -->
 
     <RelativeLayout
-        style="@style/rounded_box"
+    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:padding="@dimen/rounded_margin_mid" >
 
         <com.mobile.utils.photoview.PhotoView

@@ -11,8 +11,7 @@
         android:layout_height="@dimen/delete_button_size"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/delete_button_margin"
+        android:layout_alignBottom="@+id/item_brand"
         android:background="@drawable/ic_filter_clear"
         android:contentDescription="@string/shoppingcart_item_btn_delete" />
 
@@ -20,11 +19,10 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/TextCaption"
+        android:paddingTop="@dimen/rounded_margin_mid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="@dimen/product_item_text_right_margin"
-        android:layout_marginRight="@dimen/product_item_text_right_margin"
         android:gravity="center_vertical|left|start"
         android:lines="1"
         android:text="BRAND"
@@ -38,8 +36,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_brand"
-        android:layout_marginEnd="@dimen/product_item_text_right_margin"
-        android:layout_marginRight="@dimen/product_item_text_right_margin"
         android:gravity="center_vertical|left|start"
         android:lines="1"
         android:text="Name"

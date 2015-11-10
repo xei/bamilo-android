@@ -2,8 +2,8 @@ package com.mobile.forms;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
@@ -26,16 +26,15 @@ public class ShippingMethodSubForm {
 
 	public final static String TAG = ShippingMethodSubForm.class.getSimpleName();
 
-//	private int lastID = 0x7f096000;
-
     public View dataControl;
 
     public IcsSpinner icsSpinner;
 
-    public ListView pickupStationsListView;
+    public AbsListView pickupStationsListView;
 
     public ShippingMethodSubFormHolder shippingMethodSubFormHolder;
 
+    private int currentSelected = 0;
     /**
      * Empty constructor
      */
@@ -80,15 +79,16 @@ public class ShippingMethodSubForm {
         this.dataControl.setVisibility(View.GONE);
 
         HoloFontLoader.applyDefaultFont(icsSpinner);
+        currentSelected = 0;
         // Listeners
         icsSpinner.setOnItemSelectedListener(new IcsAdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
-                pickupStationsListView = (ListView) dataControl.findViewById(R.id.pickup_stations_list_view);
+                pickupStationsListView = (AbsListView) dataControl.findViewById(R.id.pickup_stations_list_view);
                 if (pickupStationByRegion.get(icsSpinner.getItemAtPosition(position)).size() > 0) {
                     pickupStationsListView.setVisibility(View.VISIBLE);
-                    pickupStationsListView.setAdapter(new PickupStationsAdapter(view.getContext(), pickupStationByRegion.get(icsSpinner.getItemAtPosition(position))));
+                    pickupStationsListView.setAdapter(new PickupStationsAdapter(view.getContext(), pickupStationByRegion.get(icsSpinner.getItemAtPosition(position)), currentSelected));
                 } else {
                     pickupStationsListView.setVisibility(View.GONE);
                 }
@@ -101,6 +101,21 @@ public class ShippingMethodSubForm {
         });
 
         return this.dataControl;
+    }
+
+    public int getSelectedPUS() {
+        if (pickupStationsListView.getAdapter() instanceof PickupStationsAdapter) {
+            return ((PickupStationsAdapter) pickupStationsListView.getAdapter()).getPosition(((PickupStationsAdapter) pickupStationsListView.getAdapter()).getSelectedPickupStation());
+
+        }
+        return 0;
+    }
+
+    public void setSelectedPUS(int pos) {
+        currentSelected = pos;
+        if (pickupStationsListView.getAdapter() instanceof PickupStationsAdapter) {
+            ((PickupStationsAdapter) pickupStationsListView.getAdapter()).setSelection(pos);
+        }
     }
 
 }

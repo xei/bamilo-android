@@ -9,10 +9,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/my_account_gen_dimen"
         android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:gravity="left|start"
         android:orientation="vertical"
-        android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:gravity="left|start" >
+        android:paddingTop="16dp">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_name"

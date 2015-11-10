@@ -87,7 +87,7 @@ public class ConstantsIntentExtra {
     // ########### Login ##############
     public static final String NEXT_FRAGMENT_TYPE = mPackage + "NextFragmentType";
     public static final String PARENT_FRAGMENT_TYPE = mPackage + "ParentFragmentType";
-    public static final String IS_IN_CHECKOUT_PROCESS = mPackage + "InCheckoutProcess";
+    public static final String GET_NEXT_STEP_FROM_MOB_API = mPackage + "InCheckoutProcess";
 
     // ########### Terms ##############
     public static final String TERMS_CONDITIONS = mPackage + "TermsConditions";
@@ -120,6 +120,7 @@ public class ConstantsIntentExtra {
     public static final String FLAG_2 = mPackage + "flag2";
     public static final String ARG_1 = mPackage + "arg1";
     public static final String ARG_2 = mPackage + "arg2";
+    public static final String ARG_3 = mPackage + "arg3";
 
 
 

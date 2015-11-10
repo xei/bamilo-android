@@ -23,7 +23,7 @@ import com.mobile.helpers.products.GetCatalogPageHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
@@ -68,7 +68,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class CatalogFragment extends BaseFragment implements IResponseCallback, OnViewHolderClickListener, OnDialogListListener {
+public class CatalogFragment extends BaseFragment implements IResponseCallback, OnProductViewHolderClickListener, OnDialogListListener {
 
     private static final String TAG = CatalogFragment.class.getSimpleName();
 

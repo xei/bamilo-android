@@ -22,18 +22,14 @@ import java.util.Map;
  */
 public class SetChangePasswordHelper extends SuperBaseHelper {
 
-    private static String TAG = SetChangePasswordHelper.class.getSimpleName();
+    private static final String TAG = SetChangePasswordHelper.class.getSimpleName();
 
     private ContentValues mContentValues;
 
-    @Override
-    public EventType getEventType() {
-        return EventType.CHANGE_PASSWORD_EVENT;
-    }
-
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.SMALL_TASK;
+    public static Bundle createBundle(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
     }
 
     @Override
@@ -54,6 +50,11 @@ public class SetChangePasswordHelper extends SuperBaseHelper {
     }
 
     @Override
+    public EventType getEventType() {
+        return EventType.CHANGE_PASSWORD_EVENT;
+    }
+
+    @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
 
@@ -65,9 +66,8 @@ public class SetChangePasswordHelper extends SuperBaseHelper {
         Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
     }
 
-    public static Bundle createBundle(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        return bundle;
+    @Override
+    protected EventTask setEventTask() {
+        return EventTask.SMALL_TASK;
     }
 }

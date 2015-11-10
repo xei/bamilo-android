@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/addabletocart_item_container"
     android:layout_width="match_parent"
-    android:paddingTop="@dimen/rounded_margin_mid"
     android:layout_height="@dimen/catalog_list_item_height"
     android:gravity="center">
 
@@ -40,7 +39,6 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:layout_marginStart="@dimen/rounded_margin_mid"
-
         android:layout_toEndOf="@id/item_image_container"
         android:layout_toRightOf="@id/item_image_container" />
 

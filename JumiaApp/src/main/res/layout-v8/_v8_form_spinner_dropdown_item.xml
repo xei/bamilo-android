@@ -4,4 +4,4 @@
     android:layout_height="@dimen/form_item_height"
     android:background="@android:color/white"
     android:gravity="right|center_vertical"
-    android:paddingRight="@dimen/margin_20px" />
+                                                android:paddingRight="10dp"/>

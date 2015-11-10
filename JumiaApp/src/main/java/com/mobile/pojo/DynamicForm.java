@@ -46,13 +46,13 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
     public final static String TAG = DynamicForm.class.getSimpleName();
 
-    private ViewGroup base;
-    private List<DynamicFormItem> controls;
+    private final ViewGroup base;
+    private final List<DynamicFormItem> controls;
+    private final IcsAdapterView.OnItemSelectedListener itemSelected_listener;
+    private final TextWatcher text_watcher;
     private int lastID = 0x7f096000;
     private Form form;
     private OnFocusChangeListener focus_listener;
-    private IcsAdapterView.OnItemSelectedListener itemSelected_listener;
-    private TextWatcher text_watcher;
     private WeakReference<View.OnClickListener> mClickListener;
     private WeakReference<IResponseCallback> mRequestCallBack;
 
@@ -70,17 +70,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         this.itemSelected_listener = null;
         this.text_watcher = null;
     }
-
-//    /**
-//     * Adds a control to the dynamic form
-//     *
-//     * @param ctrl
-//     *            an instance of a DynamicFormItem to be added to the form
-//     */
-//    public void addControl(DynamicFormItem ctrl) {
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//        addControl(ctrl, params);
-//    }
 
     /**
      * Adds a control to the dynamic form
@@ -504,10 +493,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         }
     }
 
-    public void setRequestCallBack(IResponseCallback requestCallBack) {
-        mRequestCallBack = new WeakReference<>(requestCallBack);
-    }
-
     public boolean hasClickListener() {
         return  mClickListener != null && mClickListener.get() != null;
     }
@@ -522,5 +507,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
     public WeakReference<IResponseCallback> getRequestCallBack() {
         return mRequestCallBack;
+    }
+
+    public void setRequestCallBack(IResponseCallback requestCallBack) {
+        mRequestCallBack = new WeakReference<>(requestCallBack);
     }
 }

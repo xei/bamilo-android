@@ -6,12 +6,12 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/option_name"
         style="@style/TextCaption"
-        android:text="Title"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/my_account_gen_dimen"
         android:layout_marginRight="@dimen/my_account_gen_dimen"
-        android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:layout_centerVertical="true"
+        android:paddingTop="16dp"
+        android:text="Title"
         android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView

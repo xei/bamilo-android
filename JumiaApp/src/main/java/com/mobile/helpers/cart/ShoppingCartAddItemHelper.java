@@ -120,14 +120,6 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
         }
     }
 
-//    @Override
-//    public void postError(BaseResponse baseResponse, Bundle bundle) {
-//        super.postError(baseResponse, bundle);
-//        bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
-//        bundle.putString(PRODUCT_SKU_TAG, mCurrentSku);
-//    }
-
-
     /**
      * Method used to create a request bundle.
      */

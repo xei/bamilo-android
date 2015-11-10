@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,25 +12,39 @@
         android:layout_marginBottom="0dp"
         android:divider="@color/black_300"
         android:dividerHeight="1dp"
-        android:listSelector="@color/transparent" />
+        android:listSelector="@color/transparent"
+        android:layout_above="@+id/bottom_divider"
+        android:layout_alignParentTop="true"
+        />
 
-    <View style="@style/HorizontalListDivider" />
+    <View style="@style/HorizontalListDivider" android:id="@id/bottom_divider"
+        android:layout_above="@+id/recentsearch_clear_all"
+        />
 
-    <com.mobile.components.customfontviews.Button
-        android:id="@+id/recentsearch_clear_all"
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@id/recentsearch_clear_all"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
         style="@style/TextButton"
-        android:textStyle="bold"
-        android:textColor="@color/black_800"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/recentsearch_clear_searches"
+        android:textAllCaps="true"
         android:text="@string/recentsearch_clear_searches"
-     />
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        />
 
+
+
+
+    <!--
     <View style="@style/HorizontalListDivider" />
+    -->
 
 
-</LinearLayout>
+</RelativeLayout>
 
 <!--
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"

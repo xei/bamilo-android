@@ -37,6 +37,10 @@ import com.mobile.view.R;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
+import android.widget.ImageView;
+
+import com.mobile.utils.imageloader.RocketImageLoader;
+
 /**
  * Class used to show the order summary in the checkout process
  *
@@ -284,11 +288,17 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         for (PurchaseCartItem item : mShopList) {
             View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
             // Name
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_name)).setText(item.getName());
+            ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
+
+            String imageUrl = item.getImageUrl();
+            ImageView mImageView = (ImageView) cartItemView.findViewById(R.id.image_view);
+            View pBar = cartItemView.findViewById(R.id.image_loading_progress);
+            RocketImageLoader.instance.loadImage(imageUrl, mImageView, pBar,
+                    R.drawable.no_image_small);
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_quantity)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
+            ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
             if (variation != null &&
@@ -296,11 +306,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                     !variation.equalsIgnoreCase(",") &&
                     !variation.equalsIgnoreCase("...") &&
                     !variation.equalsIgnoreCase(".")) {
-                ((TextView) cartItemView.findViewById(R.id.order_summary_item_variation)).setText(variation);
-                cartItemView.findViewById(R.id.order_summary_item_variation).setVisibility(View.VISIBLE);
+                ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(variation + " " + item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             }
             // Buttons
-            View deleteButton = cartItemView.findViewById(R.id.order_summary_item_btn_remove);
+            View deleteButton = cartItemView.findViewById(R.id.button_delete);
             // deleteButton.setVisibility(View.VISIBLE);
             deleteButton.setOnClickListener(this);
             deleteButton.setTag(item.getConfigSimpleSKU());
@@ -330,6 +339,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, mShippingAddressList, false);
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
+        shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
+        shippingAddressView.findViewById(R.id.checkout_address_item_radio_btn).setVisibility(View.GONE);
 
         // Only use region if is available
         StringBuilder regionString = new StringBuilder();
@@ -416,7 +427,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Ship Address Edit
         else if (id == R.id.checkout_summary_shipping_method_btn_edit) onClickEditMethodButton();
         // Remove
-        else if (id == R.id.order_summary_item_btn_remove) onClickRemoveItemButton(view);
+        else if (id == R.id.button_delete) {
+            onClickRemoveItemButton(view);
+        }
         // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }

@@ -22,10 +22,11 @@ import java.util.List;
 
 public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
 
+    private static final String TAG = PickupStationsAdapter.class.getName();
     private PickUpStationObject pickUpStationObject;
-    private List<PickUpStationObject> objects;
-    private Context context;
-    private boolean[] checks;
+    private final List<PickUpStationObject> objects;
+    private final Context context;
+    private final boolean[] checks;
 
     static class PickupStationViewHolder {
         public TextView address;
@@ -43,6 +44,16 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
         this.context = context;
         this.checks = new boolean[objects.size()];
         this.checks[0] = true;
+        this.pickUpStationObject = objects.get(0);
+    }
+
+    public PickupStationsAdapter(Context context, List<PickUpStationObject> objects, int selected) {
+        super(context, R.layout.checkout_shipping_pickup_station, objects);
+        this.objects = objects;
+        this.context = context;
+        this.checks = new boolean[objects.size()];
+        this.checks[selected] = true;
+        com.mobile.newFramework.utils.output.Print.i(TAG, "code1pus : before PickupStationsAdapter position " + selected);
         this.pickUpStationObject = objects.get(0);
     }
 
@@ -88,6 +99,9 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
         });
         
         pickupStationViewHolder.button.setChecked(checks[position]);
+        if (checks[position]) {
+            PickupStationsAdapter.this.pickUpStationObject = objects.get(position);
+        }
 
         setDetails(pickUpStationObject, pickupStationViewHolder);
 
@@ -132,6 +146,13 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
             } else if (v instanceof ViewGroup) {
                 removeOtherSelections((ViewGroup) v);
             }
+        }
+
+    }
+
+    public void setSelection(int position) {
+        if (checks.length >= position) {
+            checks[position] = true;
         }
 
     }

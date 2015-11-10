@@ -415,13 +415,9 @@
     <string name="rat_rev">تعليقات التقييمات</string>
     <string name="fulfilled_by">تم التوصيل بواسطة %s</string>
     <string name="qty_placeholder">الكمية: %d</string>
-    <string name="shipment" formatted="false">شحن %d لـ %d</string>
+    <string name="shipment">شحن %1$d لـ %2$d</string>
     <string name="policy">السياسة</string>
-    <string name="delivery_time_placeholder" formatted="false">وقت التوصيل: %d - %d يوم</string>
+    <string name="delivery_time_placeholder">وقت التوصيل: %1$d - %2$d يوم</string>
     <string name="product_specifications">المواصفات</string>
-    <!-- NEW 2.8 -->
-    <string name="informational_text">Item added to Cart</string>
-    <string name="cart_total_price">Your Cart total is %s</string>
-    <string name="cta_button_view_cart">View Cart</string>
-    <string name="cta_link_continue_shopping">Continue Shopping</string>
+    <string name="order_track_check">يمكنك متابعة الطلب بفحص\nحالة الطلب في هذا التطبيق</string>
 </resources>

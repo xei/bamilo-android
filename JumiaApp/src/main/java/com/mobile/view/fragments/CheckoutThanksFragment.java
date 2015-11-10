@@ -24,6 +24,7 @@ import android.widget.TextView.BufferType;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
@@ -194,7 +195,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
         // Get strings
         String mainText = getString(R.string.order_track_check);
-        //getString(R.string.order_track_success);
         String text = getString(R.string.order_track_link);
         int index = mainText.indexOf(text);
         if (index == -1) {
@@ -341,10 +341,10 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Validate orderNumber from tag
         String orderNumber = view.getTag() == null ? null : view.getTag().toString();
         if (!TextUtils.isEmpty(orderNumber)) {
-            bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, view.getTag().toString());
+            bundle.putString(ConstantsIntentExtra.ARG_1, view.getTag().toString());
+            getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
-        
-        getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
     }
 
     /*

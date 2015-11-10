@@ -34,7 +34,7 @@
     <item name="checkout_total_layout" 			        type="layout">@layout/_v8_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_v8_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_v8_price_rules_element</item>
-    <item name="fulfillment_main"                       type="layout">@layout/_v8_fulfillment_main</item>
+    <!--<item name="fulfillment_main"                       type="layout">@layout/_v8_fulfillment_main</item>-->
     <item name="fulfillment_product"                    type="layout">@layout/_v8_fulfillment_product</item>
 
     <!-- FORMS -->
@@ -80,9 +80,13 @@
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_v8_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_v8_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_v8_config_confirmation_msg</item>
+
     <!-- MY ORDERS -->
     <!--<item name="track_order_fragment"                   type="layout">@layout/_v8_track_order_fragment</item>-->
     <!--<item name="order_history_main"                     type="layout">@layout/_v8_order_history_main</item>-->
+    <item name="order_status_fragment"                  type="layout">@layout/_v8_order_status_fragment</item>
+    <item name="gen_order_list"                         type="layout">@layout/_v8_gen_order_list</item>
+    <item name="my_orders_list_item"                    type="layout">@layout/_v8_my_orders_list_item</item>
 
     <!-- HOME -->
     <item name="home_teaser_campaign"                   type="layout">@layout/_v8_home_teaser_campaign</item>
@@ -128,7 +132,6 @@
 
     <item name="reviews_fragment_rating_bigtype_item"   type="layout">@layout/_v8_reviews_fragment_rating_bigtype_item</item>
     <item name="dialog_filter_header"                   type="layout">@layout/_v8_dialog_filter_header</item>
-    <item name="track_order_form"                       type="layout">@layout/_v8_track_order_form</item>
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_v8_reviews_fragment_rating_samlltype_item</item>
     <item name="product_offers_main"                    type="layout">@layout/_v8_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_v8_campaign_spinner_item</item>
@@ -142,6 +145,7 @@
 
     <item name="product_item_bundle"                    type="layout">@layout/_v8_product_item_bundle</item>
     <item name="shopping_basket_product_element"        type="layout">@layout/_v8_shopping_basket_product_element</item>
+    <item name="checkout_summary_product_element" type="layout">@layout/_v8_checkout_summary_product_element</item>
     <item name="tip_share_layout"                       type="layout">@layout/_v8_tip_share_layout</item>
     <item name="dialog_list_content"                    type="layout">@layout/_v8_dialog_list_content</item>
     <item name="reviews_fragment_item"                  type="layout">@layout/_v8_reviews_fragment_item</item>
@@ -161,7 +165,6 @@
 
     <item name="shopping_cart_product_container"        type="layout">@layout/_v8_shopping_basket_product_element_container</item>
     <item name="campaign_spinner_dropdown_item"         type="layout">@layout/_v8_campaign_spinner_dropdown_item</item>
-    <item name="track_order_status"                     type="layout">@layout/_v8_track_order_status</item>
     <item name="offers_item"                            type="layout">@layout/_v8_offers_item</item>
     <item name="dialog_list_header_item"                type="layout">@layout/_v8_dialog_list_header_item</item>
     <item name="loading_bar_no_box"                     type="layout">@layout/_v8_loading_bar_no_box</item>
@@ -194,7 +197,6 @@
     <item name="other_sellers_info"                            type="layout">@layout/_v8_other_sellers_info</item>
 
     <item name="jumia_contacts_info"                    type="layout">@layout/_v8_jumia_contacts_info</item>
-
 
 
 </resources>

@@ -23,7 +23,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -34,7 +33,6 @@ import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -283,7 +281,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             getBaseActivity().updateCartInfo();
             hideActivityProgress();
             showFragmentContentContainer();
-            executeAddToShoppingCartCompleted();
+            showAddToCartCompleteMessage(baseResponse);
             break;
         default:
             break;

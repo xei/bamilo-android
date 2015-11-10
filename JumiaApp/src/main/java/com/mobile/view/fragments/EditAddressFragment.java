@@ -124,8 +124,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
         // Next button
         view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener(this);
-        // Cancel button
-        view.findViewById(R.id.checkout_edit_button_cancel).setOnClickListener(this);
         //Validate current address
         if (mAddressId == INVALID_ADDRESS_ID) {
             showFragmentErrorRetry();
@@ -162,7 +160,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         super.onSaveInstanceState(outState);
         Print.d(TAG, "ON SAVE SATE");
         outState.putInt(EditAddressFragment.SELECTED_ADDRESS, mAddressId);
-        if(mEditFormGenerator != null){
+        if (mEditFormGenerator != null) {
             mEditFormGenerator.saveFormState(outState);
         }
     }
@@ -217,7 +215,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         mRegions = null;
     }
 
-
     /**
      * Load the dynamic form
      */
@@ -261,10 +258,16 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getDefaultPosition(formItem, regions));
+        if (mFormSavedState != null) {
+            spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
+        } else {
+            spinner.setSelection(getDefaultPosition(formItem, regions));
+        }
         spinner.setOnItemSelectedListener(this);
+        formItem.setEditControl(spinner);
         group.addView(spinner);
-        showFragmentContentContainer(); // Show to trigger
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**
@@ -283,8 +286,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getDefaultPosition(formItem, cities));
+        if (mFormSavedState != null) {
+            spinner.setSelection(mFormSavedState.getInt(RestConstants.CITY));
+        } else {
+            spinner.setSelection(getDefaultPosition(formItem, cities));
+        }
         spinner.setOnItemSelectedListener(this);
+        formItem.setEditControl(spinner);
         group.addView(spinner);
     }
 
@@ -304,8 +312,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(getDefaultPosition(formItem, postalCodes));
+        if (mFormSavedState != null) {
+            spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
+        } else {
+            spinner.setSelection(getDefaultPosition(formItem, postalCodes));
+        }
         spinner.setOnItemSelectedListener(this);
+        formItem.setEditControl(spinner);
         group.addView(spinner);
     }
 
@@ -341,11 +354,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Get view id
         int id = view.getId();
         // Next button
-        if(id == R.id.checkout_edit_button_enter) onClickEditAddressButton();
-        // Next button
-        else if(id == R.id.checkout_edit_button_cancel) onClickCancelAddressButton();
+        if (id == R.id.checkout_edit_button_enter) {
+            onClickEditAddressButton();
+        }
         // Unknown view
-        else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        else {
+            Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
+        }
     }
 
     @Override
@@ -373,15 +388,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     /**
-     * Process the click on the cancel button
-     */
-    private void onClickCancelAddressButton() {
-        Print.i(TAG, "ON CLICK: CANCEL");
-        getBaseActivity().onBackPressed();
-    }
-
-
-    /**
      * Method used to create the content values
      *
      * @return new content values
@@ -400,7 +406,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      * @see com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener#onNothingSelected(com.mobile.components.absspinner.IcsAdapterView)
      */
     @Override
-    public void onNothingSelected(IcsAdapterView<?> parent) { }
+    public void onNothingSelected(IcsAdapterView<?> parent) {
+    }
 
     /*
      * (non-Javadoc)
@@ -590,7 +597,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
 
         ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {
             case INIT_FORMS:

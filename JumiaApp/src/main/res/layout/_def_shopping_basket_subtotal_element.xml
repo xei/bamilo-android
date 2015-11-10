@@ -23,6 +23,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/articles_count"
             style="@style/TextBody_1"
+            android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:textColor="@color/black"/>
@@ -30,6 +31,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/vat_included_label"
             style="@style/TextBody_3"
+            android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@id/articles_count"
@@ -39,6 +41,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/vat_value"
             style="@style/TextBody_3"
+            android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/articles_count"
@@ -47,6 +50,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
             style="@style/TextBody_3"
+            android:layout_width="wrap_content"
             android:layout_marginEnd="@dimen/dimen_60px"
             android:layout_marginRight="@dimen/dimen_60px"
             android:layout_toLeftOf="@+id/price_total"
@@ -57,6 +61,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_total"
             style="@style/TextBody_3"
+            android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:textColor="@color/black"/>
@@ -92,8 +97,10 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextBody_1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:text="@string/shipping"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_value"
@@ -118,15 +125,16 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextList_1"
+            android:layout_width="wrap_content"
             android:text="@string/extra_costs_label" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/extra_costs_value"
             style="@style/TextList_1"
+            android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
-
     <!-- VOUCHER -->
 
     <RelativeLayout
@@ -134,24 +142,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dimen_60px"
-        android:layout_marginLeft="@dimen/dimen_60px"
         android:layout_marginRight="@dimen/dimen_60px"
-        android:layout_marginStart="@dimen/dimen_60px"
         android:visibility="visible" >
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextList_1"
+            android:id="@+id/basket_voucher_label"
+            style="@style/SingleLineStyle"
+            android:layout_width="wrap_content"
             android:text="@string/my_order_voucher_label"
-            android:textColor="@color/green_basic" />
+            />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/basket_voucher_remove"
+            style="@style/SingleLineStyle"
+            android:layout_width="wrap_content"
+            android:text="@string/voucher_remove"
+            android:textColor="@color/black_800"
+            android:layout_toRightOf="@id/basket_voucher_label"
+            android:layout_toEndOf="@id/basket_voucher_label"
+            />
+
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/text_voucher"
-            style="@style/TextList_1"
+            style="@style/SingleLineStyle"
+            android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textColor="@color/green_basic" />
+            />
     </RelativeLayout>
-
     <!-- TOTAL -->
 
     <RelativeLayout
@@ -163,7 +182,8 @@
         android:layout_marginRight="@dimen/dimen_60px"
         android:layout_marginStart="@dimen/dimen_60px"
         android:layout_marginTop="@dimen/margin_mid"
-        android:visibility="visible" >
+        android:visibility="visible"
+        >
 
         <!-- Divider -->
         <View
@@ -173,6 +193,9 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextList_1"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/my_order_total_label"
             android:textColor="@color/black"/>
@@ -180,11 +203,13 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/total_value"
             style="@style/TextList_1"
+            android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/black_700"
+            android:textColor="@color/black"
              />
     </RelativeLayout>
+
 
 </LinearLayout>

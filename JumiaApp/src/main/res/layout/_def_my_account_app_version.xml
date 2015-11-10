@@ -6,12 +6,12 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/option_name"
         style="@style/TextCaption"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/my_account_gen_dimen"
         android:layout_marginRight="@dimen/my_account_gen_dimen"
-        android:paddingTop="16dp"
         android:paddingBottom="16dp"
+        android:paddingTop="16dp"
         android:text="Title"
-        android:layout_centerVertical="true"
         android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
@@ -19,24 +19,24 @@
         style="@style/TextCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textColor="@color/black"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/my_account_gen_dimen"
-        android:layout_marginRight="@dimen/my_account_gen_dimen" />
+        android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:textColor="@color/black"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/update_label"
         style="@style/TextCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/app_version_label"
-        android:textColor="@color/black_800"
         android:layout_marginEnd="@dimen/my_account_gen_dimen"
-        android:layout_marginRight="@dimen/my_account_gen_dimen"/>
+        android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:textColor="@color/black_800"/>
     <View
         style="@style/divider_horizontal"
         android:layout_alignParentBottom="true"/>

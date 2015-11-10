@@ -2,50 +2,64 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
-import com.mobile.components.androidslidingtabstrip.SlidingTabLayout;
-import com.mobile.components.viewpager.RtlDynamicFragmentAdapter;
-import com.mobile.components.viewpager.RtlViewPager;
+import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.controllers.LogOut;
+import com.mobile.controllers.OrdersAdapter;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.account.GetMyOrdersListHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.orders.MyOrder;
+import com.mobile.newFramework.objects.orders.Order;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
-import java.util.Arrays;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Paulo Carvalho
- *
  */
-public class MyOrdersFragment extends BaseFragment {
+public class MyOrdersFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnScrollListener {
 
     private static final String TAG = MyOrdersFragment.class.getSimpleName();
 
-    private RtlViewPager mMyOrdersPager;
+    private ArrayList<Order> mOrdersList;
 
-    private MyOrdersPagerAdapter mMyOrdersPagerAdapter;
+    private ListView mOrdersListView;
 
-    private SlidingTabLayout mMyOrdersPagerTabStrip;
+    private OrdersAdapter mOrdersAdapter;
 
-    private int mPositionToStart = 0;
+    private int mPageIndex = IntConstants.FIRST_PAGE;
 
-    /**
-     * Get instance
-     */
-    public static MyOrdersFragment getInstance(Bundle bundle) {
-        MyOrdersFragment fragment = new MyOrdersFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
+    boolean isLoadingMore;
+
+    private View mOrderStatusContainer;
+
+    private int mMaxPages;
+
+    private boolean isErrorOnLoadingMore;
 
     /**
      * Empty constructor
@@ -53,20 +67,16 @@ public class MyOrdersFragment extends BaseFragment {
     public MyOrdersFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MyOrders,
-                R.layout.myorders_fragment_main,
+                R.layout.my_orders_fragment_main,
                 R.string.my_orders_label,
-                KeyboardState.ADJUST_CONTENT);
+                KeyboardState.NO_ADJUST_CONTENT);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
+    /**
+     * Get instance
      */
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        Print.i(TAG, "ON ATTACH");
+    public static MyOrdersFragment getInstance() {
+        return new MyOrdersFragment();
     }
 
     /*
@@ -78,22 +88,10 @@ public class MyOrdersFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        // Get arguments
-        Bundle arguments = getArguments();
-
-        if(savedInstanceState != null){
-            mPositionToStart = savedInstanceState.getInt(ConstantsIntentExtra.MY_ORDER_POS,0);
-        } else if (arguments != null) {
-            //If comes from login page, means that it has to go to OrderHistory
-            if(arguments.containsKey(TrackerDelegator.LOGIN_KEY)){
-                mPositionToStart = ShopSelector.isRtl() ? 0 : 1;
-            }
-            if(arguments.containsKey(ConstantsIntentExtra.MY_ORDER_POS)){
-                mPositionToStart = arguments.getInt(ConstantsIntentExtra.MY_ORDER_POS);
-            }
-        } else {
-            // If app is on Rtl mode, the view pager must start from the end
-            mPositionToStart = ShopSelector.isRtl() ? 1: 0;
+        if (savedInstanceState != null) {
+            mOrdersList = savedInstanceState.getParcelableArrayList(RestConstants.ORDERS);
+            mPageIndex = savedInstanceState.getInt(RestConstants.PAGE);
+            mMaxPages = savedInstanceState.getInt(RestConstants.TOTAL_PAGES);
         }
     }
 
@@ -107,137 +105,260 @@ public class MyOrdersFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-
-        // Get view pager
-        mMyOrdersPager = (RtlViewPager) view.findViewById(R.id.my_orders_pager);
-        // Get tab pager
-        mMyOrdersPagerTabStrip = (SlidingTabLayout) view.findViewById(R.id.my_orders_pager_tab);
-
-        int layout = R.layout.tab_simple_half_item;
-        if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
-            layout = R.layout.tab_simple_item;
-        }
-
-        mMyOrdersPagerTabStrip.setCustomTabView(layout, R.id.tab);
-        // Validate the current view
-        mMyOrdersPagerAdapter = (MyOrdersPagerAdapter) mMyOrdersPager.getAdapter();
-
+        // Get views
+        mOrdersListView = (ListView) view.findViewById(R.id.orders_list);
+        // Get container order status
+        mOrderStatusContainer = view.findViewById(R.id.my_orders_frame_order_status);
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onStart()
-     */
     @Override
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+        // Validate the state
+        onValidateDataState();
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onResume()
-     */
     @Override
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        if (mMyOrdersPagerAdapter != null && mMyOrdersPagerAdapter.getCount() > 0) {
-            // Show the pre selection
-            mPositionToStart =  mMyOrdersPager.getCurrentItem();
-            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
-        } else {
-            // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
-            mMyOrdersPagerAdapter = new MyOrdersPagerAdapter(getChildFragmentManager());
-            mMyOrdersPager.setAdapter(mMyOrdersPagerAdapter);
-            if(ShopSelector.isRtl()){
-                mMyOrdersPager.enableRtl();
-            }
-            mMyOrdersPagerTabStrip.setViewPager(mMyOrdersPager);
-            // Show the pre selection
-            mMyOrdersPager.setCurrentItem(mPositionToStart, true);
-        }
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.view.fragments.MyFragment#onPause()
-     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE STATE");
+        // Save the state
+        outState.putParcelableArrayList(RestConstants.ORDERS, mOrdersList);
+        outState.putInt(RestConstants.PAGE, mPageIndex);
+        outState.putInt(RestConstants.TOTAL_PAGES, mMaxPages);
+    }
+
     @Override
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.mobile.view.fragments.MyFragment#onStop()
-     */
     @Override
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
     }
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onDestroyView()
-     */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Print.i(TAG, "ON DESTROY");
-        // mPositionToStart = 0;
-    }
-
-    /**
-     * Class used as an simple pager adapter that represents each fragment
-     *
-     * @author Paulo Carvalho
-     */
-    private class MyOrdersPagerAdapter extends RtlDynamicFragmentAdapter implements RtlViewPager.RtlService{
-
-        /**
-         * Constructor
-         *
-         * @param fm
-         * @author Paulo Carvalho
-         */
-        public MyOrdersPagerAdapter(FragmentManager fm) {
-            super(fm, MyOrdersFragment.this, getFragmentTitleValues());
-        }
-
-        @Override
-        protected Fragment createNewFragment(int position) {
-            return (titlesPageInt.get(position) == R.string.my_order_history_label) ?
-                    OrderHistoryFragment.getInstance() :
-                    TrackOrderFragment.getInstance(getArguments());
-        }
-
-        @Override
-        public void invertItems() {
-            enableRtl(!isRtl);
-        }
-    }
-
-    private List<Integer> getFragmentTitleValues(){
-        Integer[] titles = {R.string.my_order_tracking_label, R.string.my_order_history_label};
-        return Arrays.asList(titles);
+        Print.i(TAG, "ON DESTROY VIEW");
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        Print.i(TAG, "onSaveInstanceState");
-        super.onSaveInstanceState(outState);
-        if(mMyOrdersPager != null) {
-            outState.putInt(ConstantsIntentExtra.MY_ORDER_POS, mMyOrdersPager.getCurrentItem());
+    public void onDestroy() {
+        super.onDestroy();
+        Print.i(TAG, "ON DESTROY");
+    }
+
+    /*
+     * ######### LAYOUT #########
+     */
+
+    /**
+     * Method used to validate the current state.<br>
+     * - Case logged in or not<br>
+     * - Case first page<br>
+     * - Case restore saved state<br>
+     */
+    private void onValidateDataState() {
+        Print.i(TAG, "ON VALIDATE DATA STATE");
+        // Validate customer is logged in
+        if (!JumiaApplication.isCustomerLoggedIn()) {
+            // Remove this entry from back stack
+            FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ORDERS.toString());
+            // Goto Login and next WishList
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ORDERS);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+        // Case first time
+        else if (CollectionUtils.isEmpty(mOrdersList)) {
+            triggerGetOrderList(mPageIndex);
+        }
+        // Case recover saved state
+        else {
+            showOrders(mOrdersList);
+        }
+    }
+
+    /**
+     * If true, shows the order list
+     */
+    private void showOrders(ArrayList<Order> mOrdersList) {
+        mOrdersListView.setOnScrollListener(this);
+        mOrdersListView.setOnItemClickListener(this);
+        if (mOrdersAdapter == null) {
+            mOrdersAdapter = new OrdersAdapter(this.getBaseActivity().getApplicationContext(), mOrdersList);
+        } else {
+            mOrdersAdapter.updateOrders(mOrdersList);
+        }
+        mOrdersListView.setAdapter(mOrdersAdapter);
+        // Case frame for order status
+        if(mOrderStatusContainer != null) {
+            mOrdersListView.performItemClick(null, 0, mOrdersAdapter.getItemId(0));
+        }
+        // Show container
+        showFragmentContentContainer();
+    }
+
+    /**
+     * appends an array list to the adapter when scrooling
+     */
+    private void appendToList(ArrayList<Order> orders) {
+        if (mOrdersAdapter != null) {
+            mOrdersAdapter.appendOrders(orders);
+            mOrdersList = mOrdersAdapter.getOrders();
+        }
+    }
+
+    /*
+     * ######### LISTENERS #########
+     */
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        Bundle bundle = new Bundle();
+        getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        // ...
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        // Force scroll to up until one row to disable error flag
+        boolean isScrollingUp = totalItemCount != 0 && firstVisibleItem + visibleItemCount <= totalItemCount;
+        if (isErrorOnLoadingMore && isScrollingUp) {
+            isErrorOnLoadingMore = false;
+        }
+        // Bottom reached
+        boolean isBottomReached = totalItemCount != 0 && visibleItemCount + 1 == totalItemCount;
+        // Validate
+        if (isBottomReached && !isLoadingMore && mPageIndex < mMaxPages) {
+            Log.i(TAG, "LOADING MORE DATA");
+            isLoadingMore = true;
+            triggerGetOrderList(mPageIndex + 1);
+        }
+    }
+
+    /**
+     * Clicking on an list item allows to get the order status
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        // Create bundle with info
+        OrdersAdapter adapter = (OrdersAdapter) parent.getAdapter();
+        Order selectedOrder = adapter.getItem(position);
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.ARG_1, String.valueOf(selectedOrder.getNumber()));
+        bundle.putString(ConstantsIntentExtra.ARG_2, selectedOrder.getDate());
+        // Validate if frame order status
+        if (mOrderStatusContainer == null) {
+            getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            adapter.notifySelectedData(position);
+            FragmentController.addChildFragment(this, mOrderStatusContainer.getId(), OrderStatusFragment.getNestedInstance(bundle), OrderStatusFragment.TAG);
+        }
+    }
+
+    /*
+     * ######### TRIGGERS #########
+     */
+
+    private void triggerGetOrderList(int page) {
+        if (page == IntConstants.FIRST_PAGE) {
+            triggerContentEvent(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
+        } else {
+            triggerContentEventNoLoading(new GetMyOrdersListHelper(), GetMyOrdersListHelper.createBundle(page), this);
+        }
+    }
+
+    /*
+     * ######### RESPONSES #########
+     */
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Print.i(TAG, "ON SUCCESS EVENT");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Hide dialog progress
+        hideActivityProgress();
+        // Validate event
+        EventType eventType = baseResponse.getEventType();
+        switch (eventType) {
+            case GET_MY_ORDERS_LIST_EVENT:
+                MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
+                ArrayList<Order> orderList = orders.getOrders();
+                // Get max pages
+                mMaxPages = orders.getTotalPages();
+                // Validate
+                if (CollectionUtils.isEmpty(orderList) && mPageIndex == 1) {
+                    showErrorFragment(ErrorLayoutFactory.NO_ORDERS_LAYOUT, this);
+                } else {
+                    if (mPageIndex > 1) {
+                        appendToList(orderList);
+                        isLoadingMore = false;
+                    } else
+                        showOrders(orderList);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Print.d(TAG, "ON ERROR EVENT");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
         }
 
+        if (super.handleErrorEvent(baseResponse)) {
+            return;
+        }
+
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        switch (eventType) {
+            case GET_MY_ORDERS_LIST_EVENT:
+                Print.w("ORDER", "ERROR Visible");
+                isErrorOnLoadingMore = true;
+                //used for when the user session expires on the server side
+                try {
+                    if (errorCode == ErrorCode.REQUEST_ERROR) {
+                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
+                        if (errorMessages != null) {
+                            if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
+                                LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
+                                onValidateDataState();
+                            }
+                        }
+                    }
+                } catch (ClassCastException | NullPointerException e) {
+                    showFragmentErrorRetry();
+                }
+                break;
+            default:
+                break;
+        }
     }
 
 }

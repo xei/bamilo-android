@@ -104,9 +104,10 @@
     <item name="ratings_board"                          type="layout">@layout/_def_ratings_board</item>
 
     <!-- MY ORDERS -->
-    <item name="track_order_fragment"                   type="layout">@layout/_def_track_order_fragment</item>
-    <item name="myorders_fragment_main"                 type="layout">@layout/_def_myorders_fragment_main</item>
-    <item name="order_history_main"                     type="layout">@layout/_def_order_history_main</item>
+    <item name="my_orders_fragment_main"                type="layout">@layout/_def_my_orders_fragment_main</item>
+    <item name="my_orders_list_item"                    type="layout">@layout/_def_my_orders_list_item</item>
+    <item name="order_status_fragment"                  type="layout">@layout/_def_order_status_fragment</item>
+    <item name="gen_order_list"                         type="layout">@layout/_def_gen_order_list</item>
 
     <!-- HOME -->
     <item name="home_fragment_main"                     type="layout">@layout/_def_home_fragment_main</item>
@@ -173,7 +174,6 @@
     <item name="reviews_fragment_rating_bigtype_item"   type="layout">@layout/_def_reviews_fragment_rating_bigtype_item</item>
     <item name="navigation_generic_component"           type="layout">@layout/_def_navigation_generic_component</item>
     <item name="dialog_filter_header"                   type="layout">@layout/_def_dialog_filter_header</item>
-    <item name="track_order_form"                       type="layout">@layout/_def_track_order_form</item>
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
     <item name="product_offers_main"                    type="layout">@layout/_def_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_def_campaign_spinner_item</item>
@@ -186,6 +186,7 @@
     <item name="rating_bar_component"                   type="layout">@layout/_def_rating_bar_component</item>
     <item name="product_item_bundle"                    type="layout">@layout/_def_product_item_bundle</item>
     <item name="shopping_basket_product_element"        type="layout">@layout/_def_shopping_basket_product_element</item>
+    <item name="checkout_summary_product_element"       type="layout">@layout/_def_checkout_summary_product_element</item>
     <item name="tip_share_layout"                       type="layout">@layout/_def_tip_share_layout</item>
     <item name="dialog_list_content"                    type="layout">@layout/_def_dialog_list_content</item>
     <item name="reviews_fragment_item"                  type="layout">@layout/_def_reviews_fragment_item</item>
@@ -205,7 +206,6 @@
 
     <item name="shopping_cart_product_container"        type="layout">@layout/_def_shopping_basket_product_element_container</item>
     <item name="campaign_spinner_dropdown_item"         type="layout">@layout/_def_campaign_spinner_dropdown_item</item>
-    <item name="track_order_status"                     type="layout">@layout/_def_track_order_status</item>
     <item name="offers_item"                            type="layout">@layout/_def_offers_item</item>
     <item name="dialog_list_header_item"                type="layout">@layout/_def_dialog_list_header_item</item>
     <item name="loading_bar_no_box"                     type="layout">@layout/_def_loading_bar_no_box</item>
