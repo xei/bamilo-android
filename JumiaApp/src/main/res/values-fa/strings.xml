@@ -63,7 +63,7 @@
     <string name="create_addresses_success">آدرس ها با موفقیت ثبت شدند.</string>
     <string name="creation_date">تاریخ ایجاد:</string>
     <string name="dialog_to_reviews">بررسی ها</string>
-    <string name="done_label">انجام شد</string>
+    <string name="done_label">اعمال</string>
     <string name="dynamic_errortext">صحیح نمی باشد</string>
     <string name="edit_address">ویرایش نشانی</string>
     <string name="edit_address_success">ویرایش نشانی با موفقیت انجام شد.</string>
@@ -88,7 +88,7 @@
     <string name="fallback_best">بهترین تجربه خرید آنلاین</string>
     <string name="fallback_books">کتاب ها</string>
     <string name="fallback_bottom_text">از همه جا در هر زمان</string>
-    <string name="fallback_bottom_text2">گزینه ها و کالاهای بیشتر برای جستجو و خرید</string>
+    <string name="fallback_bottom_text2">گزینه‌ها و کالاهای بیشتر برای جستجو و خرید</string>
     <string name="fallback_choice">گسترده ترین انتخاب</string>
     <string name="fallback_doorstep">تحویل در خانه شما</string>
     <string name="fallback_fashion">مد و لباس</string>
@@ -227,13 +227,12 @@
     <string name="products_sort_priceup">ارزان تر به گران تر</string>
     <string name="products_tip_swipe_text">انگشت خود را به راست و چپ بکشید تا کالاها بر اساس معیارهای دیگر مرتب سازی شوند.</string>
     <string name="promotion_tip_tap_text">کادر بالا را لمس نموده تا کد در حافظه ذخیره شده و در موقع لزوم از آن استفاده نمایید.</string>
-    <string name="rating_option_error_message">تمامی گزینه های امتیازدهی می بایست تکمیل شود</string>
+    <string name="rating_option_error_message">تمامی گزینه‌های امتیازدهی می بایست تکمیل شود</string>
     <string name="rating_quality">کیفیت</string>
     <string name="rating_question">آیا از این کالا استفاده کرده اید؟ به آن امتیاز دهید.</string>
     <string name="recent_searches">جستجوهای اخیر</string>
     <string name="recently_viewed">کالاهای اخیرا مشاهده شده</string>
     <string name="recentlyview_clear_viewed">پاک کردن کالاهای مشاهده شده</string>
-    <string name="recentlyview_no_searches">هیچ کالای مشاهده شده ای وجود ندارد.</string>
     <string name="recentsearch_clear_searches">پاک کردن جستجوها</string>
     <string name="recentsearch_no_searches">جستجویی وجود ندارد</string>
     <string name="register_birthday">تاریخ تولد</string>
@@ -288,7 +287,6 @@
     <string name="some_products_not_added">متاسفانه برخی از کالاها به سبد خرید اضافه نشدند.</string>
     <string name="splash_slogan">به فروشگاه اینترنتی بامیلو خوش آمدید.</string>
     <string name="splash_slogan_daraz">به فروشگاه اینترنتی بامیلو خوش آمدید.</string>
-    <string name="splash_slogan_powered_by"/>
     <string name="stale_warning">اتصال قطع شده است.</string>
     <string name="string_appearance">تنظیمات ظاهری</string>
     <string name="string_price">قیمت</string>
@@ -337,13 +335,11 @@
     <string name="yes_label">آری</string>
     <string name="your_cart">سبد خرید شم</string>
     <string name="your_order">سفارش شما</string>
-    <!-- Version v2.4 -->
     <string name="install_jumia_android">برنامه  %s Android بامیلو را نصب کنید.</string>
     <string name="share_the_app">برنامه را به اشتراک بگذار</string>
     <string name="can_share_app_with_friends">هم اکنون می توانید برنامه را با دوستان خود به اشتراک بگذارید</string>
     <string name="app_social">آیکون شبکه های اجتماعی</string>
     <string name="sort_by">مرتب سازی بر اساس</string>
-    <!-- PLURALS -->
     <string name="plurals_rating">%d امتیاز</string>
     <string name="plurals_ratings">%d امتیاز</string>
     <string name="plurals_item">%d کالا</string>
@@ -358,7 +354,6 @@
     <string name="dialog_to_product">جزئیات محصول</string>
     <string name="address_creation_failed_title">ثبت نشانی با مشکل مواجه شد.</string>
     <string name="address_creation_failed_main">لطفا تمام موارد را بطورصحیح وارد کنید.</string>
-    <!-- NEW 2.5 -->
     <string name="see_more_offers">پیشنهادات دیگر</string>
     <string name="shops_of_the_week">برندهای برتر</string>
     <string name="featured_stores">مجموعه های منتخب</string>
@@ -370,10 +365,7 @@
     <string name="kickout_page_title">از پیشنهادات ویژه ما استقبال زیادی شده است!</string>
     <string name="kickout_page_text1">به اندازه ای که ظرفیت فروشگاه تکمیل گردیده و امکان خدمت رسانی به مشتریان جدید در این زمان امکان پذیر نمی باشد.</string>
     <string name="kickout_page_text2">ما می خواهیم تجربه ی خریدی دلپذیر را برای شما فراهم آوریم، و به همین دلیل از شما تقاضا می کنیم که دقایقی دیگر مراجعه نمائید.</string>
-    <!-- NEW 2.6 -->
     <string name="facebook_permission">اجازه دسترسی به ایمیل ضروری است. لطفاً اجازه دسترسی را قبول کنید</string>
-    <string name="com_facebook_loginview_log_in_button_long">ورود با فیسبوک</string>
-    <!-- NEW 2.7 -->
     <string name="review_plural">نقد و بررسی ‎%d‎</string>
     <string name="reviews_plural">نقدها و بررسی ها ‎%d‎</string>
     <string name="open">باز کردن</string>
@@ -387,18 +379,19 @@
     <string name="clear_all_lowercase_label">پاک کردن همه</string>
     <string name="apply_label">اعمال</string>
     <string name="see_other_variations">دیگر موارد را مشاهده کنید</string>
+    <string name="variations">تنوع کالا</string>
     <string name="be_first_rate">اولین نفر باشید که این محصول را نقد و بررسی می‌کند</string>
     <string name="seller_info">مشخصات فروشنده</string>
     <string name="read_more">بیشتر بخوانید</string>
     <string name="more_specifications">مشخصات بیشتر</string>
     <string name="delivery_time1">زمان تحویل</string>
     <string name="see_other_colors">سایر رنگ‌ها را ببینید</string>
-    <string name="combo">ترکیبی‌ها</string>
+    <string name="combos_label">بسته‌های ترکیبی</string>
+    <string name="combos">بسته‌های ترکیبی</string>
     <string name="may_like">شاید این موارد را هم دوست داشته باشید</string>
     <string name="buy_the_look">مجموعه پیشنهادی</string>
     <string name="pdv_size">اندازه</string>
     <string name="buy_now_button">خرید کنید</string>
-    <string name="save_no_saved">شما در حال حاضر هیچ کالای ذخیره شده‌ای ندارید</string>
     <string name="saved">ذخیره شد</string>
     <string name="products_added_saved">کالا به موارد ذخیره شده افزوده شد</string>
     <string name="products_removed_saved">کالا از موارد ذخیره شده حذف شد</string>
@@ -420,8 +413,59 @@
     <string name="rat_rev">نظرات و پیشنهادها</string>
     <string name="fulfilled_by">تامین کننده: ‎%s‎</string>
     <string name="qty_placeholder">تعداد: %d</string>
-    <string name="shipment" formatted="false">روش ارسال ‎%d‎ از ‎%d‎</string>
     <string name="policy">قوانین و سیاست ها</string>
-    <string name="delivery_time_placeholder" formatted="false">زمان تحویل: %d تا %d روز کاری</string>
-    <string name="product_specifications">مشخصات کال</string>
+    <string name="shipment">روش ارسال ‎%1$d‎ از ‎%2$d‎</string>
+    <string name="delivery_time_placeholder">زمان تحویل: ‎%1$d‎ - ‎%2$d‎ روز کاری</string>
+    <string name="product_specifications">مشخصات کالا</string>
+    <!-- NEW 2.8 -->
+    <string name="ssl_error_host_mismatch">نام میزبان با گواهینامه SSL مطابقت ندارد: %s</string>
+    <string name="ssl_error_generic">خطای SSL: %s</string>
+    <string name="save_for_later">ذخیره در کالاهای مورد علاقه</string>
+    <string name="remove_from_saved">حذف از کالاهای مورد علاقه</string>
+    <string name="continue_label">ادامه</string>
+    <string name="login_main_info">برای مشاهده اطلاعات کاربری، کالاهای ذخیره‌ شده، مشخصات سفارش و دیگر امکانات به حساب ‎‎%s‎ خود وارد شوید.</string>
+    <string name="welcome_back_label">خوش آمدید.</string>
+    <string name="login_email_info">برای ادامه رمز عبور خود را وارد کنید.</string>
+    <string name="welcome_label">خوش آمدید</string>
+    <string name="register_info">ظاهراً مشتری جدید ‎%s‎ هستید. خواهشمندیم اطلاعات بیشتری برای ساخت حساب کاربری خود ارائه کنید.</string>
+    <string name="email_address">آدرس ایمیل</string>
+    <string name="com_facebook_loginview_log_in_button_long">ورود با فیسبوک</string>
+    <string name="error_invalid_email">ایمیل نامعتبر</string>
+    <string name="create_label">ایجاد</string>
+    <string name="change_password">تغییر رمز عبور</string>
+    <string name="continue_without_log_in">ادامه بدون ورود به حساب کاربری</string>
+    <string name="format_discount_value">-‎%s‎</string>
+    <string name="edit_user_success">ویرایش اطلاعات کاربر موفقیت‌آمیز بود.</string>
+    <string name="password">رمز عبور</string>
+    <string name="more">بیشتر</string>
+    <string name="app_version">نسخه برنامه</string>
+    <string name="update_now">بروزرسانی</string>
+    <string name="informational_text">کالا به سبد خرید شما اضافه شد.</string>
+    <string name="cart_total_price">قیمت کل سبد کالای شما ‎%s‎ است.</string>
+    <string name="cta_button_view_cart">مشاهده سبد کالا</string>
+    <string name="cta_link_continue_shopping">ادامه خرید</string>
+    <string name="up_to_date">برروز شده</string>
+    <string name="rate_the_app">به برنامه امتیاز بدهید</string>
+    <string name="order_track_check">از بخش "سفارشات من" می‌توانید وضعیت سفارش خود را پیگیری کنید.</string>
+    <string name="select_city">لطفاً شهر خود را انتخاب کنید.</string>
+    <string name="no_saved_items">کالای ذخیره‌ شده‌ای وجود ندارد.</string>
+    <string name="no_saved_items_subtitle">شما هیچ کالای ذخیره شده‌ای ندارید.</string>
+    <string name="no_recently_viewed_items">کالایی اخیراً مشاهده نشده است.</string>
+    <string name="no_recently_viewed_items_subtitle">اخیراً هیچ کالایی مشاهده نکرده‌اید.</string>
+    <string name="recent_searches_empty">اخیراً هیچ کالایی جستجو نکرده‌اید.</string>
+    <string name="items_in_your_order">کالاهای سفارش داده شده</string>
+    <string name="delivered_label">تحویل داده شد</string>
+    <string name="order_number">شمار سفارش ‎%s‎</string>
+    <string name="billing">صورت حساب</string>
+    <string name="first_and_second">‎%2$s‎‎ %1$s‎</string>
+    <string name="quantity">تعداد ‎%s‎</string>
+    <string name="reorder_label">سفارش مجدد</string>
+    <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
+    <string name="order_pending">در انتظار بررسی</string>
+    <string name="no_orders_message">شما هیچ سفارشی نداشته‌اید.</string>
+    <string name="no_orders">سفارشی ثبت نشده است.</string>
+    <string name="an_error_occurred">خطایی رخ داده است.</string>
+    <string name="customer_service_info">برای اطلاعات بیشتر، لطفاً با واحد پشتیبانی تماس بگیرید.</string>
+    <string name="phone_contact">شماره تلفن:</string>
+    <string name="email_contact">آدرس ایمیل</string>
 </resources>
