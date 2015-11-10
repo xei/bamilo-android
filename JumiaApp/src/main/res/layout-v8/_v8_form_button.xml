@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/form_button"
         style="@style/FormButtonSpinner"
         android:layout_toLeftOf="@+id/button_field_icon"

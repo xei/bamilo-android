@@ -17,7 +17,7 @@
         android:contentDescription="@string/app_name"
         android:visibility="gone" />
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/form_button"
         style="@style/FormButtonSpinner"
         android:layout_toEndOf="@+id/button_field_icon"
@@ -40,6 +40,6 @@
         android:text="*"
         android:textColor="@color/accent"
         android:textSize="18sp"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -33,7 +33,6 @@ import android.widget.Spinner;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
-import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.HoloFontLoader;
@@ -473,7 +472,7 @@ public class DynamicFormItem {
             case metadata:
             case date:
                 String date = inStat.getString(getKey());
-                ((Button) this.dataControl.findViewById(R.id.form_button)).setText(date);
+                ((TextView) this.dataControl.findViewById(R.id.form_button)).setText(date);
                 setDialogDate(date);
                 break;
             case email:
@@ -568,7 +567,7 @@ public class DynamicFormItem {
             case metadata:
             case date:
                 String date = inStat.getAsString(getKey());
-                ((Button) this.dataControl.findViewById(R.id.form_button)).setText(date);
+                ((TextView) this.dataControl.findViewById(R.id.form_button)).setText(date);
                 setDialogDate(date);
             break;
             case email:
@@ -781,8 +780,8 @@ public class DynamicFormItem {
                 break;
             case metadata:
             case date:
-                if (this.dataControl.findViewById(R.id.form_button) instanceof Button) {
-                    outState.putString(getKey(), ((Button) this.dataControl.findViewById(R.id.form_button)).getText().toString());
+                if (this.dataControl.findViewById(R.id.form_button) instanceof TextView) {
+                    outState.putString(getKey(), ((TextView) this.dataControl.findViewById(R.id.form_button)).getText().toString());
                 }
                 break;
             case hide:
@@ -878,7 +877,7 @@ public class DynamicFormItem {
                 case metadata:
                 case date:
                     if (this.entry.getValidation().isRequired()) {
-                        if (TextUtils.isEmpty(((Button) this.dataControl.findViewById(R.id.form_button)).getText().toString())) {
+                        if (TextUtils.isEmpty(((TextView) this.dataControl.findViewById(R.id.form_button)).getText().toString())) {
                             result = false;
                         }
                     }
@@ -988,7 +987,7 @@ public class DynamicFormItem {
             case metadata:
             case date:
                 if (this.entry.getValidation().isRequired()) {
-                    if (com.mobile.newFramework.utils.TextUtils.isEmpty(((Button) this.dataControl.findViewById(R.id.form_button)).getText().toString())) {
+                    if (com.mobile.newFramework.utils.TextUtils.isEmpty(((TextView) this.dataControl.findViewById(R.id.form_button)).getText().toString())) {
                         result = false;
                     }
                 }
@@ -1283,8 +1282,7 @@ public class DynamicFormItem {
         // Get mandatory
         TextView mandatory = (TextView)  this.dataControl.findViewById(R.id.button_field_mandatory);
 
-        if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
-                || this.parent.getForm().getType() == FormConstants.USER_DATA_FORM) {
+        if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM || this.parent.getForm().getType() == FormConstants.USER_DATA_FORM) {
             UIUtils.setDrawableByString(icon, ICON_PREFIX + this.entry.getKey());
             icon.setVisibility(View.VISIBLE);
         }
@@ -1302,7 +1300,7 @@ public class DynamicFormItem {
 
         Print.i("ENTERED BIRTHDAY", " HERE ");
         String text = context.getString(R.string.register_birthday);
-        final Button spinnerButton = ((Button) this.dataControl.findViewById(R.id.form_button));
+        final TextView spinnerButton = ((TextView) this.dataControl.findViewById(R.id.form_button));
         spinnerButton.setHint(text);
         spinnerButton.setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
         spinnerButton.setPadding(UIUtils.dpToPx(13, scale), 0, 0, 10);
