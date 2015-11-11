@@ -28,7 +28,9 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/selector_btn_edit" />
+            android:src="@drawable/selector_btn_edit"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"/>
 
         <!-- ITEM -->
 
