@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
@@ -283,7 +282,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO TRACK ORDER: " + orderId);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, orderId);
+        bundle.putString(ConstantsIntentExtra.ARG_1, orderId);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.ORDER_STATUS);
         return bundle;
     }
