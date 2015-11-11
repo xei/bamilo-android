@@ -96,6 +96,7 @@ import java.util.regex.Pattern;
 public class DynamicFormItem {
     public final static String RELATED_RADIO_GROUP_TAG = "related_radio_group";
     public final static String RELATED_LIST_GROUP_TAG = "related_list_group";
+    public final static String BIRTHDATE_TAG = "birthday_tag";
     public final static String RELATED_GROUP_SEPARATOR = "::";
     private final static String TAG = DynamicFormItem.class.getSimpleName();
     private static final String ICON_PREFIX = "ic_form_";
@@ -643,15 +644,18 @@ public class DynamicFormItem {
             case metadata:
             case date:
                 // Case selected a date
-                if (selectedYear != 0) {
-                    GregorianCalendar cal = new GregorianCalendar(selectedYear, selectedMonthOfYear, selectedDayOfMoth);
-                    Date d = new Date(cal.getTimeInMillis());
-                //    result = DateFormat.format(DATE_FORMAT, d).toString();
-                    // its necessary because of arabic languages
-                    SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT,Locale.ENGLISH);
-                    result = dateFormat.format(d);
-                } else {
-                    result = "";
+                if(this.dataControl != null && this.dataControl.findViewWithTag(BIRTHDATE_TAG) != null){
+                    String dateValue = ((TextView) this.dataControl.findViewWithTag(BIRTHDATE_TAG)).getText().toString();
+                    if(!TextUtils.isEmpty(dateValue)){
+                        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT,Locale.ENGLISH);
+                        try {
+                            Date date = dateFormat.parse(dateValue);
+                            String dateString = dateFormat.format(date.getTime());
+                            result = dateString;
+                        } catch (IllegalArgumentException | ParseException | NullPointerException e ) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 break;
             case hide:
@@ -1302,6 +1306,7 @@ public class DynamicFormItem {
         String text = context.getString(R.string.register_birthday);
         final TextView spinnerButton = ((TextView) this.dataControl.findViewById(R.id.form_button));
         spinnerButton.setHint(text);
+        spinnerButton.setTag(BIRTHDATE_TAG);
         spinnerButton.setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
         spinnerButton.setPadding(UIUtils.dpToPx(13, scale), 0, 0, 10);
 
@@ -1632,7 +1637,7 @@ public class DynamicFormItem {
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 
         // in order to position the mandatory signal on the payment method screen in the requested position, we don't inflate the dynamic form mandatory sign,
-        // we use a hardcode mandatory signal since the  payment method is always a mandatory section        
+        // we use a hardcode mandatory signal since the  payment method is always a mandatory section
         if (!this.getKey().equalsIgnoreCase("payment_method"))
             dataContainer.addView(this.mandatoryControl);
 
@@ -1863,7 +1868,7 @@ public class DynamicFormItem {
             text.setEnabled(false);
             text.setClickable(false);
             text.setFocusable(false);
-            text.setTextColor(context.getResources().getColor(R.color.black_200));
+            text.setTextColor(context.getResources().getColor(R.color.black_700));
         }
         // Set icon
         if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
