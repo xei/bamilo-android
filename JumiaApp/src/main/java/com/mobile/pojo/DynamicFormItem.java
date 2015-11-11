@@ -646,17 +646,17 @@ public class DynamicFormItem {
                 // Case selected a date
                 if(this.dataControl != null && this.dataControl.findViewWithTag(BIRTHDATE_TAG) != null){
                     String dateValue = ((TextView) this.dataControl.findViewWithTag(BIRTHDATE_TAG)).getText().toString();
-                    result = TextUtils.isEmpty(dateValue) ? "" : dateValue;
-//                    Date date = null;
-//                    if(!TextUtils.isEmpty(dateValue)){
-//                        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT,Locale.ENGLISH);
-//                        try {
-//                            date = dateFormat.parse(dateValue);
-//                            String formatedDate = DateFormat.format(DATE_FORMAT, date).toString();
-//                        } catch (ParseException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
+//                    result = TextUtils.isEmpty(dateValue) ? "" : dateValue;
+                    if(!TextUtils.isEmpty(dateValue)){
+                        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT,Locale.ENGLISH);
+                        try {
+                            Date date = dateFormat.parse(dateValue);
+                            String dateString = dateFormat.format(date.getTime());
+                            result = dateString;
+                        } catch (IllegalArgumentException | ParseException | NullPointerException e ) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
                 break;
             case hide:
