@@ -12,11 +12,11 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_payment_name"
         style="@style/TextCaption"
-        android:textColor="@color/black_700" />
+        android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_payment_type"
         style="@style/TextHeader"
+        android:textStyle="bold"
         android:textColor="@color/black" />
-
 </LinearLayout>
