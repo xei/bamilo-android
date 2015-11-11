@@ -103,6 +103,7 @@
     <color name="form_text">@color/grey_middle</color>
     <color name="form_text_hint">@color/grey_middlelight</color>
     <color name="blue_205081">#205081</color>
+    <color name="blue_104071">#104071</color>
     <color name="red_dd4b39">#dd4b39</color>
 
 </resources>
