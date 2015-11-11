@@ -406,8 +406,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Print.d(TAG, "onPageFinished: page was saved failed page");
                 wasLoadingErrorPage = true;
                 getBaseActivity().removeAllNativeCheckoutFromBackStack();
-              //  showContinueShopping();
-                showSSLError();
+                showFragmentSSLError();
             } else if (isRequestedPage) {
                 showFragmentContentContainer();
                 isRequestedPage = false;
@@ -458,16 +457,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             if (url.equals(failedPageRequest)) {
                 return;
             }
-
             beginTransaction = System.currentTimeMillis();
-
             showFragmentLoading();
-
             if (url.contains(SUCCESS_URL_TAG)) {
                 view.getSettings().setBlockNetworkImage(true);
-                
                 view.getSettings().setBlockNetworkLoads(true);
-
                 view.getSettings().setLoadsImagesAutomatically(false);
             }
         }
@@ -487,7 +481,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             } else {
                 ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_GENERIC, error);
             }
-
+            // Case in dev continue
             if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
                 handler.proceed();
             } else {
@@ -496,7 +490,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 onReceivedError(view, error.getPrimaryError(), error.toString(), url);
                 handler.cancel();
             }
-
         }
     }
 

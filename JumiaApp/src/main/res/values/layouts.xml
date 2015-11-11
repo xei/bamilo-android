@@ -219,7 +219,7 @@
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
     <!--<item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>-->
 
-    <!-- JUMIA CONTACT -->
+    <!--ROOT SSL ERROR CONTACT INFO-->
     <item name="jumia_contacts_info"                    type="layout">@layout/_def_jumia_contacts_info</item>
 
 </resources>

@@ -575,28 +575,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         showErrorFragment(ErrorLayoutFactory.CONTINUE_SHOPPING_LAYOUT, this);
     }
 
-
-
-/**or
- * */
-    protected void showSSLError() {
-        Print.i(TAG, "ON SHOW SSL ERROR LAYOUT");
-        if(mErrorView instanceof ViewStub){
-            // If not inflated yet
-            mErrorView.setTag(mErrorView.getId(), ErrorLayoutFactory.SSL_ERROR);
-            mErrorView.setTag(R.id.stub_listener, this);
-
-            ((ViewStub) mErrorView).inflate();
-
-            mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup) mErrorView);
-            mErrorLayoutFactory.buildSSLErrorLayout(ErrorLayoutFactory.SSL_ERROR, CountryPersistentConfigs.getCountryEmail(getBaseActivity().getApplicationContext()), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity().getApplicationContext()));
-
-        } else {
-
-            mErrorLayoutFactory.buildSSLErrorLayout(ErrorLayoutFactory.SSL_ERROR,CountryPersistentConfigs.getCountryEmail(getBaseActivity().getApplicationContext()), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity().getApplicationContext()));
-        }
-
-
+    /**
+     * Show the retry view from the root layout
+     * @author sergiopereira
+     */
+    protected void showFragmentSSLError() {
+        showErrorFragment(ErrorLayoutFactory.SSL_ERROR_LAYOUT, this);
     }
 
     /**

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
 
 /**
@@ -41,7 +42,7 @@ public class ErrorLayoutFactory {
 
     public static final int NO_ORDERS_LAYOUT = 10;
 
-    public static final int SSL_ERROR = 9;
+    public static final int SSL_ERROR_LAYOUT = 11;
 
     private View mErrorLayout;
 
@@ -64,6 +65,9 @@ public class ErrorLayoutFactory {
         if(actualError != error) {
             //build
             switch (error) {
+                case SSL_ERROR_LAYOUT:
+                    buildSSLErrorLayout();
+                    break;
                 case NO_NETWORK_LAYOUT:
                     buildNoNetworkLayout();
                     break;
@@ -72,7 +76,8 @@ public class ErrorLayoutFactory {
                     break;
                 case CART_EMPTY_LAYOUT:
                     buildCartEmptyLayout();
-                    break;                case CONTINUE_SHOPPING_LAYOUT:
+                    break;
+                case CONTINUE_SHOPPING_LAYOUT:
                     buildContinueShoppingLayout();
                     break;
                 case CATALOG_NO_RESULTS:
@@ -117,29 +122,22 @@ public class ErrorLayoutFactory {
 
     /**
      * Show error layout with contact info in case of ssl errors
-     * @param email - country contact email
-     * @param phone - country contact phone
      * */
-    public void buildSSLErrorLayout(int error, String email, String phone){
-
-        if(this.mErrorLayout != null){
-
-            //set contact info
-            View contactsInfo =  mErrorLayout.findViewById(R.id.contacts_info);
-            contactsInfo.setVisibility(View.VISIBLE);
-
-            com.mobile.components.customfontviews.TextView mEmailText = (com.mobile.components.customfontviews.TextView) contactsInfo.findViewById(R.id.email_text);
-            mEmailText.setText(email);
-
-            com.mobile.components.customfontviews.TextView mPhoneText = (com.mobile.components.customfontviews.TextView) contactsInfo.findViewById(R.id.phone_text);
-            mPhoneText.setText(phone);
-
-        }
-
-        showGenericError(error,R.drawable.ic_warning2,R.string.an_error_occurred,R.string.customer_service_info);
-
+    public void buildSSLErrorLayout(){
+        // Build common
+        new Builder()
+                .setImage(R.drawable.ic_warning)
+                .setPrincipalMessage(R.string.an_error_occurred)
+                .setDetailMessage(R.string.customer_service_info)
+                .setButtonVisible(false);
+        // Set contacts
+        String phone =CountryPersistentConfigs.getCountryPhoneNumber(mErrorLayout.getContext());
+        String email = CountryPersistentConfigs.getCountryEmail(mErrorLayout.getContext());
+        ((TextView)mErrorLayout.findViewById(R.id.phone_text)).setText(phone);
+        ((TextView)mErrorLayout.findViewById(R.id.email_text)).setText(email);
+        // Error
+        actualError = SSL_ERROR_LAYOUT;
     }
-
 
     /**
      * show dynamic error message
@@ -154,9 +152,6 @@ public class ErrorLayoutFactory {
         actualError = error;
     }
 
-
-
-
     private void buildNoNetworkLayout() {
         new Builder()
                 .setImage(R.drawable.img_connect)
@@ -170,7 +165,7 @@ public class ErrorLayoutFactory {
 
     private void buildUnexpectedErrorLayout(){
         new Builder()
-                .setImage(R.drawable.ic_warning2)
+                .setImage(R.drawable.ic_warning)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setRotationVisible(true)
@@ -178,7 +173,6 @@ public class ErrorLayoutFactory {
                 .setButtonBackground(R.color.black_700);
         actualError = UNEXPECTED_ERROR_LAYOUT;
     }
-
 
     private void buildCartEmptyLayout(){
         new Builder()
@@ -193,8 +187,7 @@ public class ErrorLayoutFactory {
 
     private void buildContinueShoppingLayout() {
         new Builder()
-                .setImage(R.drawable.ic_warning2)
-//                    .setPrincipalMessage(R.string.recentlyview_no_searches)
+                .setImage(R.drawable.ic_warning)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)

@@ -43,11 +43,6 @@ public class CountryPersistentConfigs {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, countryConfigs.getCurrencyIso());
         if (!TextUtils.isEmpty(countryConfigs.getCurrencyPosition()) && countryConfigs.getCurrencyPosition().equals(CountryConfigs.CURRENCY_LEFT_POSITION)) {
             mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, CountryConfigs.STRING_START_PLACEHOLDER + countryConfigs.getCurrencySymbol());
-            // #RTL
-            //FIXME TO VALIDATE
-//            if (ShopSelector.isRtl() && Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-//                mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, countryConfigs.getCurrencySymbol() + CountryConfigs.STRING_END_PLACEHOLDER);
-//            }
         } else {
             mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, countryConfigs.getCurrencySymbol() + CountryConfigs.STRING_END_PLACEHOLDER);
         }
@@ -60,7 +55,6 @@ public class CountryPersistentConfigs {
         if(!hasLanguages(sharedPrefs)){
             saveLanguages(mEditor,countryConfigs.getLanguages());
         }
-//        saveLanguages(mEditor, countryConfigs.getLanguages());
         // GA
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, countryConfigs.getGaId());
         // GTM
@@ -87,27 +81,25 @@ public class CountryPersistentConfigs {
         mEditor.apply();
     }
 
-    public static CountryConfigs getCountryConfigsFromPreferences(Context context){
-        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        CountryConfigs countryConfigs = new CountryConfigs();
-//        countryConfigs.setCountryName(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, ""));
-        countryConfigs.setCurrencyIso(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null));
-        countryConfigs.setCurrencySymbol(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, null));
-        countryConfigs.setNoDecimals(sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, -1));
-        countryConfigs.setThousandsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, null));
-        countryConfigs.setDecimalsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, null));
-        countryConfigs.setGaId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null));
-        countryConfigs.setGTMId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, null));
-        countryConfigs.setPhoneNumber(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null));
-        countryConfigs.setCsEmail(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null));
-        countryConfigs.setIsFacebookAvailable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, false));
-        countryConfigs.setIsRatingEnable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, false));
-        countryConfigs.setIsRatingLoginRequired(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, false));
-        countryConfigs.setIsReviewEnable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, false));
-        countryConfigs.setIsReviewLoginRequired(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, false));
-//        countryConfigs.setLanguages(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, ""));
-        return countryConfigs;
-    }
+//    public static CountryConfigs getCountryConfigsFromPreferences(Context context){
+//        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+//        CountryConfigs countryConfigs = new CountryConfigs();
+//        countryConfigs.setCurrencyIso(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null));
+//        countryConfigs.setCurrencySymbol(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, null));
+//        countryConfigs.setNoDecimals(sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, -1));
+//        countryConfigs.setThousandsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, null));
+//        countryConfigs.setDecimalsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, null));
+//        countryConfigs.setGaId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null));
+//        countryConfigs.setGTMId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, null));
+//        countryConfigs.setPhoneNumber(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null));
+//        countryConfigs.setCsEmail(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null));
+//        countryConfigs.setIsFacebookAvailable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, false));
+//        countryConfigs.setIsRatingEnable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, false));
+//        countryConfigs.setIsRatingLoginRequired(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, false));
+//        countryConfigs.setIsReviewEnable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, false));
+//        countryConfigs.setIsReviewLoginRequired(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, false));
+//        return countryConfigs;
+//    }
 
     /**
      * Function used to get the shop country code.
@@ -174,18 +166,17 @@ public class CountryPersistentConfigs {
         editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME);
     }
 
-    public static CountryObject getCountryFromPreferences(Context context){
-        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
-        CountryObject countryObject = new CountryObject();
-        countryObject.setCountryName(settings.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null));
-        countryObject.setCountryUrl(settings.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null));
-        countryObject.setCountryFlag(settings.getString(Darwin.KEY_SELECTED_COUNTRY_FLAG, null));
-        countryObject.setCountryIso(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null));
-        countryObject.setCountryForceHttps(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false));
-        countryObject.setCountryIsLive(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, false));
-//        countryObject.set(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ID,""));
-        return countryObject;
-    }
+//    public static CountryObject getCountryFromPreferences(Context context){
+//        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
+//        CountryObject countryObject = new CountryObject();
+//        countryObject.setCountryName(settings.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null));
+//        countryObject.setCountryUrl(settings.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null));
+//        countryObject.setCountryFlag(settings.getString(Darwin.KEY_SELECTED_COUNTRY_FLAG, null));
+//        countryObject.setCountryIso(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null));
+//        countryObject.setCountryForceHttps(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false));
+//        countryObject.setCountryIsLive(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, false));
+//        return countryObject;
+//    }
 
     public static CountrySettingsAdapter.CountryLanguageInformation getCountryInformation(Context context){
         CountrySettingsAdapter.CountryLanguageInformation countryLanguageInformation = new CountrySettingsAdapter.CountryLanguageInformation();
