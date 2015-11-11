@@ -646,13 +646,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (shippingGenderItem != null && billingGenderItem != null) {
             try {
                 int genderIndex = -1;
-                if (((RadioGroupLayout) shippingGenderItem.getEditControl()).getChildCount() > 0) {
+                RadioGroupLayout group = (RadioGroupLayout) shippingGenderItem.getEditControl().findViewById(R.id.radio_group_container);
+                if (group.getChildCount() > 0) {
                     // Get selected gender index from the shipping form
-                    genderIndex = ((RadioGroupLayout) shippingGenderItem.getEditControl()).getSelectedIndex();
+                    genderIndex = group.getSelectedIndex();
                 }
-                if (((RadioGroupLayout) billingGenderItem.getEditControl()).getChildCount() > 0 && genderIndex != -1) {
+                if (group.getChildCount() > 0 && genderIndex != -1) {
                     // Set the billing gender with the same as the shipping
-                    ((RadioGroupLayout) billingGenderItem.getEditControl()).setSelection(genderIndex);
+                    group.setSelection(genderIndex);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -250,19 +250,19 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return result;
     }
 
-    /**
-     * Checks if all the required fields are filled
-     * 
-     * @return True, if all the required fields are filled; False, if the are
-     *         unfilled required fields
-     */
-    public boolean checkRequired() {
-        boolean result = true;
-        for (DynamicFormItem dynamicFormItem : this) {
-            result &= dynamicFormItem.validateRequired();
-        }
-        return result;
-    }
+//    /**
+//     * Checks if all the required fields are filled
+//     *
+//     * @return True, if all the required fields are filled; False, if the are
+//     *         unfilled required fields
+//     */
+//    public boolean checkRequired() {
+//        boolean result = true;
+//        for (DynamicFormItem dynamicFormItem : this) {
+//            result &= dynamicFormItem.validateRequired();
+//        }
+//        return result;
+//    }
 
     /**
      * Fills a hashmap with the values from the form.
