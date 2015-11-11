@@ -654,8 +654,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                         @Override
                         public void onClick(android.view.View v) {
                             voucherContainer.setVisibility(View.GONE);
+                            triggerRemoveVoucher();
                             // Clean Voucher
                             removeVoucher();
+                            couponButton.setText(getString(R.string.voucher_use));
                         }
                     });
                     // Change Coupon
