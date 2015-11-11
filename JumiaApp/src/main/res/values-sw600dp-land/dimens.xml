@@ -96,4 +96,7 @@
 
     <dimen name="combo_bundle_item_with">140dp</dimen>
 
+    <!-- BOTTOM SHEET -->
+    <integer name="dialog_max_items">4</integer>
+
 </resources>

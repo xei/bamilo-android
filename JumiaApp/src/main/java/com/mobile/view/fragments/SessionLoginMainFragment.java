@@ -429,17 +429,15 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 ToastManager.show(getBaseActivity().getApplicationContext(), ToastManager.ERROR_INVALID_EMAIL);
                 showFragmentContentContainer();
                 break;
-            case GUEST_LOGIN_EVENT:
-                // Tracking
-                TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
             case FACEBOOK_LOGIN_EVENT:
-                // Tracking
-                if(eventType == EventType.FACEBOOK_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.FACEBOOK);
             case LOGIN_EVENT:
-                // Tracking
-                if(eventType == EventType.LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.EMAILAUTH);
                 // Logout
                 LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
+                // Tracking
+                TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, eventType == EventType.LOGIN_EVENT ? GTMValues.EMAILAUTH : GTMValues.FACEBOOK);
+            case GUEST_LOGIN_EVENT:
+                // Tracking
+                if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
                 // Show warning
                 ErrorCode errorCode = baseResponse.getError().getErrorCode();
                 if (errorCode == ErrorCode.REQUEST_ERROR) {

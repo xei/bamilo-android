@@ -654,8 +654,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                         @Override
                         public void onClick(android.view.View v) {
                             voucherContainer.setVisibility(View.GONE);
+                            triggerRemoveVoucher();
                             // Clean Voucher
                             removeVoucher();
+                            couponButton.setText(getString(R.string.voucher_use));
                         }
                     });
                     // Change Coupon
@@ -663,6 +665,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     voucherLabel.setText(getString(R.string.my_order_voucher_label) + " " + voucherCode.getText());
                 } else {
                     voucherContainer.setVisibility(View.GONE);
+                    couponButton.setText(getString(R.string.voucher_use));
                     // Clean Voucher
                     removeVoucher();
                 }
