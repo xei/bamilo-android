@@ -54,6 +54,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     private DynamicForm mDynamicForm;
     private Bundle mFormSavedState;
     private boolean isInCheckoutProcess;
+    private FragmentType mParentFragmentType;
 
     /**
      * Empty constructor
@@ -100,6 +101,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         // Get arguments
         Bundle arguments = savedInstanceState == null ? getArguments() : savedInstanceState;
         if (arguments != null) {
+            mParentFragmentType = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE);
             // Get customer email
             mCustomerEmail = arguments.getString(ConstantsIntentExtra.DATA);
             // Get checkout flag
@@ -114,7 +116,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
             mFormSavedState.putString(FormInputType.email.name(), mCustomerEmail);
         }
         // Show checkout tab layout
-        if(isInCheckoutProcess) {
+        if (isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT) {
             checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
     }
@@ -178,6 +180,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         }
         // Save checkout flag
         outState.putBoolean(ConstantsIntentExtra.FLAG_1, isInCheckoutProcess);
+        outState.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
     }
 
     /*

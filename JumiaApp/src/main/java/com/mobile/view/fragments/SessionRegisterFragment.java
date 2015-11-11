@@ -64,6 +64,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
 
     private boolean isInCheckoutProcess;
 
+    private FragmentType mParentFragmentType;
+
     /**
      * Get new instance of register fragment
      */
@@ -103,13 +105,14 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         // Get arguments
         Bundle arguments = savedInstanceState == null ? getArguments() : savedInstanceState;
         if (arguments != null) {
+            mParentFragmentType = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE);
             // Get customer email
             mCustomerEmail = arguments.getString(ConstantsIntentExtra.DATA);
             // Get checkout flag
             isInCheckoutProcess = arguments.getBoolean(ConstantsIntentExtra.FLAG_1);
         }
         // Show checkout tab layout
-        if(isInCheckoutProcess) {
+        if (isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT) {
             checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
     }
@@ -166,6 +169,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         outState.putString(ConstantsIntentExtra.DATA, mCustomerEmail);
         // Save checkout flag
         outState.putBoolean(ConstantsIntentExtra.FLAG_1, isInCheckoutProcess);
+        outState.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
     }
 
     @Override
