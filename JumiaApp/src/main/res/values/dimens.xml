@@ -506,8 +506,6 @@
     <dimen name="ratings_average_with">160dp</dimen>
     <dimen name="specs_column_with">120dp</dimen>
 
-    <integer name="dialog_max_item">7</integer>
-
     <dimen name="my_account_gen_dimen">16dp</dimen>
 
     <!--LOGIN-->
@@ -520,5 +518,8 @@
     <dimen name="confirm_msg_padding">6dp</dimen>
 
     <dimen name="padding_recent_search_item">20dp</dimen>
+
+    <!-- BOTTOM SHEET -->
+    <integer name="dialog_max_items">5</integer>
 
 </resources>

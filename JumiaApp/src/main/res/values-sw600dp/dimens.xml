@@ -196,5 +196,7 @@
 
     <dimen name="padding_recent_search_item">24dp</dimen>
 
+    <!-- BOTTOM SHEET -->
+    <integer name="dialog_max_items">7</integer>
 
 </resources>
