@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
         style="@style/TextDisplay_2"
+        android:singleLine="false"
         android:gravity="center"
         android:text="@string/error_no_connection"
         android:textColor="@color/black_900" />

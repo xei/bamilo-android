@@ -67,6 +67,7 @@
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:background="@null"
         android:ellipsize="marquee"
+        android:singleLine="false"
         android:text="@string/voucher_error_message"
         android:textColor="@color/red_middle"
         android:visibility="gone"/>

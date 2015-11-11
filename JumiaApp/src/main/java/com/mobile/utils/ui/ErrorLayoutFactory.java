@@ -112,7 +112,7 @@ public class ErrorLayoutFactory {
     }
 
     private void buildNoOrdersLayout(int error){
-        showGenericError(error, R.drawable.ic_orders_empty, R.string.no_orders_message, R.string.no_orders);
+        showGenericError(error, R.drawable.ic_orders_empty,R.string.no_orders,R.string.no_orders_message);
     }
 
     /**

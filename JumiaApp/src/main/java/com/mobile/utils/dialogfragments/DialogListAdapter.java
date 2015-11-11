@@ -31,8 +31,6 @@ public class DialogListAdapter extends BaseAdapter {
 
     protected ArrayList<String> mItemsAvailable;
 
-    public static final int DIALOG_LIST_TYPE = 0;
-
     /**
      * Constructor
      */

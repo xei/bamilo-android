@@ -547,11 +547,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TabLayoutUtils.fillTabLayout(mTabLayout, this);
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
         // Checkout Tab
-
-        TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
-        mCheckoutTabLayout.setOnTabSelectedListener(mCheckoutOnTabSelectedListener);
         android.view.ViewGroup.LayoutParams mParams = mTabLayout.getLayoutParams();
         mCheckoutTabLayout.getLayoutParams().width = mParams.width;
+        TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
+        mCheckoutTabLayout.setOnTabSelectedListener(mCheckoutOnTabSelectedListener);
+
+
     }
     
     /*
@@ -1165,6 +1166,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     public void onRequestComplete(BaseResponse baseResponse) {
                         processSuccessSearchEvent(baseResponse);
                     }
+
                     @Override
                     public void onRequestError(BaseResponse baseResponse) {
                         processErrorSearchEvent(baseResponse);
@@ -1590,7 +1592,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             public void run() {
                 mCheckoutTabLayout.setVisibility(visibility);
             }
-        }, 50);
+        }, 5);
     }
 
     /**

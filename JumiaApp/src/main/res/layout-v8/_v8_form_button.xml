@@ -4,10 +4,11 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/form_button"
         style="@style/FormButtonSpinner"
         android:layout_toLeftOf="@+id/button_field_icon"
+        android:layout_toRightOf="@+id/button_field_mandatory"
         android:paddingBottom="5dp" />
 
     <ImageView
@@ -19,21 +20,22 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
         android:contentDescription="@string/app_name"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <!-- MANDATORY -->
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/button_field_mandatory"
+        android:id="@id/button_field_mandatory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="*"
         android:textColor="@color/accent"
         android:textSize="18sp"
-        android:visibility="visible"/>
+        android:visibility="gone" />
 
 
 </RelativeLayout>

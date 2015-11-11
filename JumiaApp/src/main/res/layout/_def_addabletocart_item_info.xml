@@ -9,9 +9,9 @@
         android:id="@+id/button_delete"
         android:layout_width="@dimen/delete_button_size"
         android:layout_height="@dimen/delete_button_size"
+        android:layout_alignBottom="@+id/item_brand"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignBottom="@+id/item_brand"
         android:background="@drawable/ic_filter_clear"
         android:contentDescription="@string/shoppingcart_item_btn_delete" />
 
@@ -19,12 +19,12 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
         style="@style/TextCaption"
-        android:paddingTop="@dimen/rounded_margin_mid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical|left|start"
         android:lines="1"
+        android:paddingTop="@dimen/rounded_margin_mid"
         android:text="BRAND"
         android:textColor="@color/black_800" />
 
@@ -55,20 +55,19 @@
 
     <!-- VARIATION BUTTON -->
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_variant"
+        style="@style/FormButtonSpinner"
         android:layout_width="@dimen/product_item_addtocart_variation_width"
         android:layout_height="@dimen/product_item_button_height"
+        android:layout_alignBottom="@+id/button_shop"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/price_section"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="5dp"
-        style="@style/FormButtonSpinner"
-        android:layout_alignBottom="@+id/button_shop"
-        android:text="@string/product_variant_placeholder"
-        android:visibility="visible" />
+        android:text="@string/product_variant_placeholder" />
 
 
     <!-- PERCENTAGE -->
