@@ -9,8 +9,8 @@
     <item type="drawable" name="black_arrow_right">@drawable/black_arrow_right_rtl</item>
     <item type="drawable" name="ic_menu_cart_pressed">@drawable/ic_menu_cart_pressed_rtl</item>
     <item type="drawable" name="ic_menu_cart">@drawable/ic_menu_cart_rtl</item>
-    <item type="drawable" name="spinner_default">@drawable/spinner_default_rtl</item>
-    <item type="drawable" name="spinner_activated">@drawable/spinner_activated_rtl</item>
+    <!--<item type="drawable" name="spinner_default">@drawable/spinner_default_rtl</item>-->
+    <!--<item type="drawable" name="spinner_activated">@drawable/spinner_activated_rtl</item>-->
     <item type="drawable" name="img_newarrival">@drawable/img_newarrival_ar</item>
     <item type="drawable" name="ic_overseas_corner">@drawable/ic_overseas_corner_rtl</item>
     <item type="drawable" name="ic_arrow_combo">@drawable/ic_arrow_combo_rtl</item>
