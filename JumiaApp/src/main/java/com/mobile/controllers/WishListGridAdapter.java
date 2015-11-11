@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
@@ -42,7 +41,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         public TextView percentage;
         public TextView brand;
         public View isNew;
-        public Button varianceButton;
+        public TextView varianceButton;
         public View addToCartButton;
         public View deleteButton;
         public View container;
@@ -57,7 +56,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
             price = (TextView) itemView.findViewById(R.id.item_regprice);
             discount = (TextView) itemView.findViewById(R.id.item_discount);
             percentage = (TextView) itemView.findViewById(R.id.item_percentage);
-            varianceButton = (Button) itemView.findViewById(R.id.button_variant);
+            varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
             addToCartButton = itemView.findViewById(R.id.button_shop);
             deleteButton = itemView.findViewById(R.id.button_delete);
         }

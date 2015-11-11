@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
     <!-- DELETE BUTTON -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_delete"
         android:layout_width="@dimen/delete_button_size"
         android:layout_height="@dimen/delete_button_size"
-        android:layout_alignParentLeft="true"
         android:layout_alignBottom="@+id/item_brand"
+        android:layout_alignParentLeft="true"
         android:background="@drawable/ic_filter_clear"
         android:contentDescription="@string/shoppingcart_item_btn_delete" />
 
@@ -20,12 +20,12 @@
         style="@style/TextCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
         android:gravity="center_vertical|right"
-        android:text="BRAND"
-        android:paddingTop="@dimen/rounded_margin_mid"
         android:lines="1"
+        android:paddingTop="@dimen/rounded_margin_mid"
+        android:text="BRAND"
         android:textColor="@color/black_800"
         android:visibility="visible" />
 
@@ -35,13 +35,13 @@
         android:id="@+id/item_name"
         style="@style/TextList_1"
         android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/item_brand"
-        android:lines="1"
-        android:textColor="@color/black"
         android:gravity="center_vertical|right"
-        android:text="Name" />
+        android:lines="1"
+        android:text="Name"
+        android:textColor="@color/black" />
 
     <!-- PRICE -->
 
@@ -57,20 +57,20 @@
 
     <!-- VARIATION BUTTON -->
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_variant"
+        style="@style/FormButtonSpinner"
         android:layout_width="@dimen/product_item_addtocart_variation_width"
         android:layout_height="@dimen/product_item_button_height"
+        android:layout_alignBottom="@+id/button_shop"
         android:layout_alignParentRight="true"
+        android:layout_below="@id/price_section"
         android:layout_marginBottom="@dimen/rounded_margin_small"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="5dp"
         android:background="@drawable/spinner_background"
         android:ellipsize="end"
         android:singleLine="true"
-        style="@style/FormButtonSpinner"
-        android:layout_alignBottom="@+id/button_shop"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/price_section"
         android:text="@string/product_variant_placeholder"
         android:visibility="visible" />
 
@@ -80,9 +80,9 @@
         android:id="@+id/item_percentage"
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
-        android:layout_gravity="left"
-        android:layout_alignParentLeft="true"
         android:layout_alignBottom="@+id/price_section"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="left"
         android:visibility="visible" />
 
     <!-- ADD BUTTON -->
@@ -92,14 +92,13 @@
         style="@style/AigButton.Active"
         android:layout_width="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginTop="5dp"
         android:layout_below="@id/price_section"
+        android:layout_marginTop="5dp"
         android:layout_toLeftOf="@+id/button_variant"
         android:contentDescription="@string/productdetail_addcart_description"
         android:text="@string/add_to_shopping_cart"
         android:textColor="@color/white"
         android:textStyle="bold" />
-
 
 
 </RelativeLayout>

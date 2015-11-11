@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <!-- NAME -->
 
@@ -32,7 +31,7 @@
             android:layout_marginRight="@dimen/dimen_60px"
             android:text="Price"
             android:textColor="@color/black_800"
-            android:textSize="@dimen/text_s"/>
+            android:textSize="@dimen/text_s" />
 
 
         <com.mobile.components.customfontviews.TextView
@@ -45,7 +44,7 @@
             android:text="@string/shoppingcart_quantity"
             android:textColor="@color/black_700"
             android:textSize="@dimen/text_s"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/changequantity_button"
@@ -57,7 +56,7 @@
             android:text="@string/shoppingcart_quantity"
             android:textColor="@color/black"
             android:textSize="@dimen/text_s"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
     </RelativeLayout>
     <!-- Divider -->
@@ -66,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/price_quantity_wrapper"
-        android:background="@color/black_700"/>
+        android:background="@color/black_700" />
 
     <!-- DELETE BUTTON -->
 
@@ -81,6 +80,6 @@
         android:paddingBottom="@dimen/dimen_48px"
         android:paddingTop="@dimen/dimen_48px"
         android:text="@string/voucher_remove"
-        android:textColor="@color/black_800"/>
+        android:textColor="@color/black_800" />
 
 </RelativeLayout>
