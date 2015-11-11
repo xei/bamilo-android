@@ -386,6 +386,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.DATA, mCustomerEmail);
                 bundle.putBoolean(ConstantsIntentExtra.FLAG_1, isInCheckoutProcess);
+                bundle.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
                 getBaseActivity().onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
                 break;
             case GUEST_LOGIN_EVENT:
