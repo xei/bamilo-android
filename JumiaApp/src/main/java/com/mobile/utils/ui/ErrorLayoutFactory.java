@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
 
 /**
@@ -41,6 +42,8 @@ public class ErrorLayoutFactory {
 
     public static final int NO_ORDERS_LAYOUT = 10;
 
+    public static final int SSL_ERROR_LAYOUT = 11;
+
     private View mErrorLayout;
 
     private int actualError;
@@ -62,6 +65,9 @@ public class ErrorLayoutFactory {
         if(actualError != error) {
             //build
             switch (error) {
+                case SSL_ERROR_LAYOUT:
+                    buildSSLErrorLayout();
+                    break;
                 case NO_NETWORK_LAYOUT:
                     buildNoNetworkLayout();
                     break;
@@ -115,6 +121,25 @@ public class ErrorLayoutFactory {
     }
 
     /**
+     * Show error layout with contact info in case of ssl errors
+     * */
+    public void buildSSLErrorLayout(){
+        // Build common
+        new Builder()
+                .setImage(R.drawable.ic_warning)
+                .setPrincipalMessage(R.string.an_error_occurred)
+                .setDetailMessage(R.string.customer_service_info)
+                .setButtonVisible(false);
+        // Set contacts
+        String phone =CountryPersistentConfigs.getCountryPhoneNumber(mErrorLayout.getContext());
+        String email = CountryPersistentConfigs.getCountryEmail(mErrorLayout.getContext());
+        ((TextView)mErrorLayout.findViewById(R.id.phone_text)).setText(phone);
+        ((TextView)mErrorLayout.findViewById(R.id.email_text)).setText(email);
+        // Error
+        actualError = SSL_ERROR_LAYOUT;
+    }
+
+    /**
      * show dynamic error message
      */
     private void showGenericError(int error, int image, int principalMessage, int detailMessage) {
@@ -140,7 +165,7 @@ public class ErrorLayoutFactory {
 
     private void buildUnexpectedErrorLayout(){
         new Builder()
-                .setImage(R.drawable.img_warning)
+                .setImage(R.drawable.ic_warning)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setRotationVisible(true)
@@ -162,7 +187,7 @@ public class ErrorLayoutFactory {
 
     private void buildContinueShoppingLayout() {
         new Builder()
-                .setImage(R.drawable.img_warning)
+                .setImage(R.drawable.ic_warning)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)
