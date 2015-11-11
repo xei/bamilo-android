@@ -2,7 +2,7 @@ require 'nokogiri'
 
 res_path = "JumiaApp/src/main/res"
 
-res_configs = ["fr", "pt", "my", "ar"]
+res_configs = ["fr", "pt", "my", "ar", "fa", "ur"]
 str_filename = "strings.xml"
 files_translated_path = res_configs.map { |config| res_path + "/values-" + config + "/" + str_filename }
 
