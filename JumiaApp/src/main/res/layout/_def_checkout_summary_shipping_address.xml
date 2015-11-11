@@ -21,7 +21,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:src="@drawable/selector_btn_edit" />
+            android:src="@drawable/selector_btn_edit"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"/>
     </RelativeLayout>
 
     <!-- ADDRESS -->

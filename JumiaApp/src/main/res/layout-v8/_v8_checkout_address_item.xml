@@ -29,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/selector_btn_edit" />
+            android:src="@drawable/selector_btn_edit"
+            android:paddingRight="10dp"/>
 
         <!-- ITEM -->
 
