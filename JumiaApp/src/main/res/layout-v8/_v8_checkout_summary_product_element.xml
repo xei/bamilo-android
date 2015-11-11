@@ -21,10 +21,11 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
         style="@style/TextCaption"
+        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_name"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/dimen_60px"
+        android:layout_marginLeft="@dimen/dimen_60px"
         android:text="Price"
         android:textColor="@color/black_800"
         android:textSize="@dimen/text_xs"/>
