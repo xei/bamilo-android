@@ -646,7 +646,6 @@ public class DynamicFormItem {
                 // Case selected a date
                 if(this.dataControl != null && this.dataControl.findViewWithTag(BIRTHDATE_TAG) != null){
                     String dateValue = ((TextView) this.dataControl.findViewWithTag(BIRTHDATE_TAG)).getText().toString();
-//                    result = TextUtils.isEmpty(dateValue) ? "" : dateValue;
                     if(!TextUtils.isEmpty(dateValue)){
                         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT,Locale.ENGLISH);
                         try {
