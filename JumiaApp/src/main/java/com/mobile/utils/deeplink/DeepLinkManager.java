@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
@@ -206,7 +205,7 @@ public class DeepLinkManager {
                     bundle = processSearchTermLink(segments.get(PATH_DATA_POS));
                     break;
                 case ORDER_OVERVIEW_TAG:
-                    bundle = processTrackOrderLink(segments.get(PATH_DATA_POS));
+                    bundle = processOrderStatus(segments.get(PATH_DATA_POS));
                     break;
                 case CAMPAIGN_TAG:
                     bundle = processCampaignLink(segments.get(PATH_DATA_POS));
@@ -279,12 +278,12 @@ public class DeepLinkManager {
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processTrackOrderLink(String orderId) {
+    private static Bundle processOrderStatus(String orderId) {
         Print.i(TAG, "DEEP LINK TO TRACK ORDER: " + orderId);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, orderId);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.MY_ORDERS);
+        bundle.putString(ConstantsIntentExtra.ARG_1, orderId);
+        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.ORDER_STATUS);
         return bundle;
     }
 
@@ -473,7 +472,7 @@ public class DeepLinkManager {
         // case ng/c/womens-dresses&sort=price&dir=asc
         String deeplinkUrl = data.toString();
         if(segments.size() >= MIN_SEGMENTS){
-            String catalogUrlKey = "?category="+segments.get(PATH_DATA_POS).toString();
+            String catalogUrlKey = "?category=" + segments.get(PATH_DATA_POS);
             //String catalogUrlKey = deeplinkUrl.substring(deeplinkUrl.indexOf('?'));
             Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
 
@@ -548,17 +547,13 @@ public class DeepLinkManager {
     /**
      *
      * Function that test if there is already a selected country, and if not validates if theres any from deeplink
-     * @param context
-     * @param intent
-     * @param callback
      * @return true or false if there is a valid country from deeplink
      */
     public static boolean validateCountryDeepLink(Context context,Intent intent,Handler callback ){
         String selectedCountryCode = ShopPreferences.getShopId(context);
-        Print.e(TAG, "selectedCountryCode:"+selectedCountryCode);
+        Print.e(TAG, "selectedCountryCode:" + selectedCountryCode);
         // Validate saved shop id
         if (selectedCountryCode == ShopPreferences.SHOP_NOT_SELECTED) {
-            Print.e(TAG, "selectedCountryCode:"+selectedCountryCode);
             return checkDeepLink(context, intent, callback);
         } else {
             Print.e(TAG, "DEEP LINK CC IS THE SAME");
@@ -569,9 +564,6 @@ public class DeepLinkManager {
     /**
      * validates if the country from the deeplink is a valid one, and set the configurations
      *
-     * @param context
-     * @param intent
-     * @param callback
      * @return true or false if there is a valid country from deeplink
      */
     private static boolean checkDeepLink(Context context, Intent intent, Handler callback){

@@ -61,9 +61,6 @@ public class OffersListAdapterNew extends BaseAdapter {
     /**
      * the constructor for this adapter
      *
-     * @param context
-     * @param offers
-     * @param listener
      */
     public OffersListAdapterNew(Context context, ArrayList<ProductOffer> offers, @NonNull IOffersAdapterService listener) {
         this.context = context.getApplicationContext();
