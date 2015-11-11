@@ -217,7 +217,7 @@
 
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
-    <item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>
+    <!--<item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>-->
 
 </resources>
 

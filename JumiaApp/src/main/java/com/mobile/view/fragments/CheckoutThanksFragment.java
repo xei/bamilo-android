@@ -195,7 +195,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
         // Get strings
         String mainText = getString(R.string.order_track_check);
-        //getString(R.string.order_track_success);
         String text = getString(R.string.order_track_link);
         int index = mainText.indexOf(text);
         if (index == -1) {
