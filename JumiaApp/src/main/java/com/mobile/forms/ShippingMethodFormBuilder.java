@@ -49,7 +49,7 @@ public class ShippingMethodFormBuilder implements Parcelable  {
         return parent;
     }
 
-    public void saveSelectedPosition(@NonNull Bundle bundle) {
+    public void saveState(@NonNull Bundle bundle) {
         try {
             // Get selected position from group
             int itemId = mRadioGroup.getSelectedIndex();
@@ -60,18 +60,23 @@ public class ShippingMethodFormBuilder implements Parcelable  {
                 // Case PUS get sub selection
                 int subItemId = mRadioGroup.getSubSelection(itemId);
                 bundle.putInt(ConstantsIntentExtra.ARG_2, subItemId);
+                // Case PUS get sub selection
+                int pusId = mRadioGroup.getSelectedPUS(itemId, subItemId);
+                bundle.putInt(ConstantsIntentExtra.ARG_3, pusId);
             }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             // ...
         }
     }
 
-    public void loadSavedPosition(@Nullable Bundle bundle) {
+    public void loadSavedState(@Nullable Bundle bundle) {
         try {
             if (bundle != null) {
                 int selection = bundle.getInt(ConstantsIntentExtra.ARG_1, IntConstants.INVALID_POSITION);
                 int subSelection = bundle.getInt(ConstantsIntentExtra.ARG_2, IntConstants.INVALID_POSITION);
+                int pusSelection = bundle.getInt(ConstantsIntentExtra.ARG_3, IntConstants.INVALID_POSITION);
                 mRadioGroup.setSelection(selection, subSelection);
+                mRadioGroup.setSelectedPUS(selection, subSelection, pusSelection);
             }
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             // ...

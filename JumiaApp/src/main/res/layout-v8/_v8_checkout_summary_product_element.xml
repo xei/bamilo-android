@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+    >
+
+    <!-- NAME -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_name"
+        style="@style/TextBody_1"
+        android:layout_marginLeft="@dimen/login_margin_medium"
+        android:layout_marginTop="@dimen/item_margin_top"
+        android:maxLines="2"
+        android:singleLine="false"
+        android:text="Name"
+        android:textColor="@color/black"/>
+
+    <!-- PRICE -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_regprice"
+        style="@style/TextCaption"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/item_name"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dimen_60px"
+        android:text="Price"
+        android:textColor="@color/black_800"
+        android:textSize="@dimen/text_xs"/>
+
+    <!-- Divider -->
+    <View
+        android:id="@+id/delete_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/item_regprice"
+        android:background="@color/black_700"/>
+
+    <!-- DELETE BUTTON -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/button_delete"
+        style="@style/TextBody_1"
+        android:layout_below="@id/delete_divider"
+        android:layout_gravity="center_vertical"
+        android:clickable="true"
+        android:contentDescription="@string/voucher_remove"
+        android:gravity="center_vertical"
+        android:paddingBottom="@dimen/dimen_27px"
+        android:paddingTop="@dimen/dimen_27px"
+        android:text="@string/voucher_remove"
+        android:textColor="@color/black_800"/>
+
+</RelativeLayout>

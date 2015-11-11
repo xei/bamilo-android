@@ -295,7 +295,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             return;
 
         super.handleSuccessEvent(baseResponse);
-        executeAddToShoppingCartCompleted();
+        showAddToCartCompleteMessage(baseResponse);
 
         countMultipleProcessed++;   //count the added bundle with chosen simples
 

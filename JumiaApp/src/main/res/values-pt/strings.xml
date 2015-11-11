@@ -100,8 +100,6 @@
     <string name="fallback_welcome">BEM VINDOS A</string>
     <string name="favourite_add_to_cart">Artigo Adicionado ao Carrinho</string>
     <string name="favourite_addalltocart">Adicionar Todos os Artigos ao Carrinho</string>
-    <string name="save_no_saved">Não existem artigos favoritos no momento.</string>
-    <string name="saved">Meus Favoritos</string>
     <string name="fgt_pass">Esqueceu a Senha?</string>
     <string name="filter_label">Filtrar</string>
     <string name="forgotpass_header">Recuperação de Senha</string>
@@ -213,14 +211,11 @@
     <string name="product_outof_stock">O artigo está esgotado</string>
     <string name="product_sold_by">Vendido por:</string>
     <string name="product_sort_button">Ordenar</string>
-    <string name="specifications">Especificações</string>
     <string name="product_variance_choose">Por favor, selecione</string>
     <string name="product_variance_choose_error">Por favor, selecione entre vários</string>
     <string name="product_variant_placeholder">&#8230;</string>
-    <string name="products_added_saved">Artigo adicionado aos Meus Favoritos</string>
     <string name="products_could_notloaded">O carregamento de mais produtos falhou. Por favor, tente novamente.</string>
     <string name="products_label">Produtos</string>
-    <string name="products_removed_saved">Artigo removido dos Meus Favoritos</string>
     <string name="products_sort_bestrated">Melhor Avaliação</string>
     <string name="products_sort_brand">Marca</string>
     <string name="products_sort_name">Nome</string>
@@ -228,7 +223,6 @@
     <string name="products_sort_popularity">Popularidade</string>
     <string name="products_sort_pricedown">Preço baixo</string>
     <string name="products_sort_priceup">Preço alto</string>
-    <string name="products_tip_saved_text">Clique para adicionar produtos aos Favoritos!</string>
     <string name="products_tip_swipe_text">Deslize para a esquerda ou direita para alterar o tipo de ordenação</string>
     <string name="promotion_tip_tap_text">Toque na caixa acima para copiar o código para a área de transferência e guardá-lo para o check-out</string>
     <string name="rating_option_error_message">Todas as opções de avaliação devem ser preenchidas</string>
@@ -237,7 +231,6 @@
     <string name="recent_searches">Pesquisas Recentes</string>
     <string name="recently_viewed">Visto Recentemente</string>
     <string name="recentlyview_clear_viewed">Limpar Produtos Vistos Recentemente</string>
-    <string name="recentlyview_no_searches">Nenhum Produto Visto Recentemente</string>
     <string name="recentsearch_clear_searches">Limpar Pesquisas Recentes</string>
     <string name="recentsearch_no_searches">Não Existem Pesquisas Recentes</string>
     <string name="register_birthday">Aniversário</string>
@@ -292,7 +285,6 @@
     <string name="some_products_not_added">Infelizmente alguns produtos não foram adicionados ao carrinho.</string>
     <string name="splash_slogan">O maior centro comercial online na África</string>
     <string name="splash_slogan_daraz">O único destino de que necessita para as suas compras online!</string>
-    <string name="splash_slogan_powered_by"/>
     <string name="stale_warning">Perda de ligação</string>
     <string name="string_appearance">Aparência</string>
     <string name="string_price">Preço</string>
@@ -308,7 +300,6 @@
     <string name="teaser_campaign_button_second_line">OFERTAS</string>
     <string name="terms_and_conditions">Termos e Condições</string>
     <string name="thank_you_order_title">Obrigado!</string>
-    <string name="tip_saved_text">Clique para adicionar este produto aos favoritos e ver a lista completa no seu perfil</string>
     <string name="tip_share_text">Clique para compartilhar este produto</string>
     <string name="tip_swipe_text">Deslize para a esquerda ou para a direita para\nver imagens diferentes</string>
     <string name="tip_tap_text">Toque para abrir a galeria de imagens do produto</string>
@@ -373,6 +364,6 @@
     <string name="kickout_page_text1">A loja está atuamente lotada e não poderemos aceitar novos clientes neste momento.</string>
     <string name="kickout_page_text2">Queremos proporcionar-lhe a melhor experiência de compra possível, por isso gostaríamos de lhe pedir para tentar novamente mais tarde.</string>
     <string name="facebook_permission">A autorização por email é obrigatória. Por favor permita-a.</string>
-    <string name="com_facebook_loginview_log_in_button_long">Entrar com o Facebook</string>
     <string name="product_specifications">Especificações</string>
+    <string name="com_facebook_loginview_log_in_button_long">Entrar com o Facebook</string>
 </resources>

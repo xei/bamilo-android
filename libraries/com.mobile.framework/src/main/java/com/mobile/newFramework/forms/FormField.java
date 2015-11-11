@@ -487,6 +487,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return mValue;
     }
 
+    @Override
+    public void setValue(String value) {
+        this.mValue = value;
+    }
+
     public Map<String, IFormField> getSubFormFields() {
         return null;
     }

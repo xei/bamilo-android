@@ -34,7 +34,7 @@
     <item name="checkout_total_layout" 			        type="layout">@layout/_v8_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_v8_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_v8_price_rules_element</item>
-    <item name="fulfillment_main"                       type="layout">@layout/_v8_fulfillment_main</item>
+    <!--<item name="fulfillment_main"                       type="layout">@layout/_v8_fulfillment_main</item>-->
     <item name="fulfillment_product"                    type="layout">@layout/_v8_fulfillment_product</item>
 
     <!-- FORMS -->
@@ -132,7 +132,6 @@
 
     <item name="reviews_fragment_rating_bigtype_item"   type="layout">@layout/_v8_reviews_fragment_rating_bigtype_item</item>
     <item name="dialog_filter_header"                   type="layout">@layout/_v8_dialog_filter_header</item>
-    <item name="track_order_form"                       type="layout">@layout/_v8_track_order_form</item>
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_v8_reviews_fragment_rating_samlltype_item</item>
     <item name="product_offers_main"                    type="layout">@layout/_v8_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_v8_campaign_spinner_item</item>
@@ -146,6 +145,7 @@
 
     <item name="product_item_bundle"                    type="layout">@layout/_v8_product_item_bundle</item>
     <item name="shopping_basket_product_element"        type="layout">@layout/_v8_shopping_basket_product_element</item>
+    <item name="checkout_summary_product_element" type="layout">@layout/_v8_checkout_summary_product_element</item>
     <item name="tip_share_layout"                       type="layout">@layout/_v8_tip_share_layout</item>
     <item name="dialog_list_content"                    type="layout">@layout/_v8_dialog_list_content</item>
     <item name="reviews_fragment_item"                  type="layout">@layout/_v8_reviews_fragment_item</item>
@@ -165,7 +165,6 @@
 
     <item name="shopping_cart_product_container"        type="layout">@layout/_v8_shopping_basket_product_element_container</item>
     <item name="campaign_spinner_dropdown_item"         type="layout">@layout/_v8_campaign_spinner_dropdown_item</item>
-    <item name="track_order_status"                     type="layout">@layout/_v8_track_order_status</item>
     <item name="offers_item"                            type="layout">@layout/_v8_offers_item</item>
     <item name="dialog_list_header_item"                type="layout">@layout/_v8_dialog_list_header_item</item>
     <item name="loading_bar_no_box"                     type="layout">@layout/_v8_loading_bar_no_box</item>

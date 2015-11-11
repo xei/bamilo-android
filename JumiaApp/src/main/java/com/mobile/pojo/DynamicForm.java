@@ -71,17 +71,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         this.text_watcher = null;
     }
 
-//    /**
-//     * Adds a control to the dynamic form
-//     *
-//     * @param ctrl
-//     *            an instance of a DynamicFormItem to be added to the form
-//     */
-//    public void addControl(DynamicFormItem ctrl) {
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//        addControl(ctrl, params);
-//    }
-
     /**
      * Adds a control to the dynamic form
      * 

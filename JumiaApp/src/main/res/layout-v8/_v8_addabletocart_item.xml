@@ -3,7 +3,6 @@
     android:id="@+id/addabletocart_item_container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/catalog_list_item_height"
-    android:paddingTop="@dimen/rounded_margin_mid"
     android:gravity="center">
 
     <!-- IMAGE CONTAINER -->

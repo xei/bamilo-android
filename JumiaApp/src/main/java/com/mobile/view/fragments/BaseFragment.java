@@ -18,7 +18,6 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
@@ -28,6 +27,7 @@ import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
@@ -41,6 +41,7 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
@@ -473,21 +474,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     public void notifyFragment(Bundle bundle) {
         //...
-    }
-
-    /**
-     * This method was created because the method on BaseActivity not working with dynamic forms
-     */
-    @SuppressWarnings("ConstantConditions")
-    protected void hideKeyboard() {
-        Print.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        try {
-            imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        } catch (NullPointerException e){
-            // DO NOTHING
-        }
-
     }
 
     public void setActivity(BaseActivity activity) {
@@ -1154,7 +1140,21 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return campaigns;
     }
 
-
+    /**
+     * validate if it show regular warning or confirmation cart message
+     * @param baseResponse
+     */
+    protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
+        //if has cart popup, show configurable confirmation message with cart total price
+        if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
+            PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
+            getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
+        }
+        else{
+            //show regular message add item to cart
+            showInfoAddToShoppingCartCompleted();
+        }
+    }
 
 
 }

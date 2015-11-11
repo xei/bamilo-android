@@ -12,34 +12,36 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_name"
-        style="@style/text_header"
+        style="@style/TextList_1"
         android:layout_width="wrap_content"
         android:layout_marginEnd="@dimen/margin_huge"
         android:layout_marginRight="@dimen/margin_huge"
         android:gravity="left|center_vertical|start"
         android:maxLines="2"
+        android:textStyle="bold"
+        android:textColor="@color/black"
         android:singleLine="false"
         android:text="Product" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_price_special"
-        style="@style/text_header"
+        style="@style/TextBody_3"
         android:layout_below="@id/product_detail_name"
         android:layout_marginEnd="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
         android:fontFamily="roboto_bold"
         android:text="Discount Price"
-        android:textColor="@color/red_middle" />
+        android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_text_price"
-        style="@style/text_header"
+        style="@style/TextBody_3"
         android:layout_alignBaseline="@+id/product_price_special"
         android:layout_below="@id/product_detail_name"
         android:layout_toEndOf="@+id/product_price_special"
         android:layout_toRightOf="@+id/product_price_special"
         android:text="Normal Price"
-        android:textColor="@color/grey_middlelight" />
+        android:textColor="@color/black_800" />
 
     <!-- RATING -->
 
