@@ -33,8 +33,6 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
 	
 	private static final long DELAY_DISMISS = 250;
 	
-	public static final int NO_INITIAL_POSITION = -1;
-	
 	private String mTitle;
 	
 	private ArrayList<String> mItems;
@@ -197,8 +195,8 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
         setSizeGuide(view);
         // Get list
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
-        // Set Max list size
-        setListSize(list, mItems.size());
+        // Set Max list size with size guide
+        setListSize(list, mItems.size() + (TextUtils.isEmpty(mSizeGuideUrl) ? 0 : 1));
         // Validate adapter
         if(mAdapter == null) {
             mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable);

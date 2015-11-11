@@ -71,17 +71,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         this.text_watcher = null;
     }
 
-//    /**
-//     * Adds a control to the dynamic form
-//     *
-//     * @param ctrl
-//     *            an instance of a DynamicFormItem to be added to the form
-//     */
-//    public void addControl(DynamicFormItem ctrl) {
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//        addControl(ctrl, params);
-//    }
-
     /**
      * Adds a control to the dynamic form
      * 
@@ -261,19 +250,19 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return result;
     }
 
-    /**
-     * Checks if all the required fields are filled
-     * 
-     * @return True, if all the required fields are filled; False, if the are
-     *         unfilled required fields
-     */
-    public boolean checkRequired() {
-        boolean result = true;
-        for (DynamicFormItem dynamicFormItem : this) {
-            result &= dynamicFormItem.validateRequired();
-        }
-        return result;
-    }
+//    /**
+//     * Checks if all the required fields are filled
+//     *
+//     * @return True, if all the required fields are filled; False, if the are
+//     *         unfilled required fields
+//     */
+//    public boolean checkRequired() {
+//        boolean result = true;
+//        for (DynamicFormItem dynamicFormItem : this) {
+//            result &= dynamicFormItem.validateRequired();
+//        }
+//        return result;
+//    }
 
     /**
      * Fills a hashmap with the values from the form.

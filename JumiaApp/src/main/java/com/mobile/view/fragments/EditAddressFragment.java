@@ -124,8 +124,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         mEditFormContainer = (ViewGroup) view.findViewById(R.id.checkout_edit_form_container);
         // Next button
         view.findViewById(R.id.checkout_edit_button_enter).setOnClickListener(this);
-        // Cancel button
-        view.findViewById(R.id.checkout_edit_button_cancel).setOnClickListener(this);
         //Validate current address
         if (mAddressId == INVALID_ADDRESS_ID) {
             showFragmentErrorRetry();
@@ -268,7 +266,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         spinner.setOnItemSelectedListener(this);
         formItem.setEditControl(spinner);
         group.addView(spinner);
-        showFragmentContentContainer(); // Show to trigger
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**
@@ -358,10 +357,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         if (id == R.id.checkout_edit_button_enter) {
             onClickEditAddressButton();
         }
-        // Next button
-        else if (id == R.id.checkout_edit_button_cancel) {
-            onClickCancelAddressButton();
-        }
         // Unknown view
         else {
             Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
@@ -391,15 +386,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             Print.i(TAG, "INVALID FORM");
         }
     }
-
-    /**
-     * Process the click on the cancel button
-     */
-    private void onClickCancelAddressButton() {
-        Print.i(TAG, "ON CLICK: CANCEL");
-        getBaseActivity().onBackPressed();
-    }
-
 
     /**
      * Method used to create the content values

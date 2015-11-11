@@ -207,9 +207,9 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         // Create form view
         mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM, getActivity(), form);
         // Set request callback
-        mDynamicForm.setRequestCallBack(this); // FormInputType.relatedNumber
+        mDynamicForm.setRequestCallBack(this); // Form FormInputType.relatedNumber
         // Set click listener
-        mDynamicForm.setOnClickListener(this); // FormInputType.checkBoxLink
+        mDynamicForm.setOnClickListener(this); // From FormInputType.checkBoxLink
         // Load saved state
         mDynamicForm.loadSaveFormState(mFormSavedState);
         // Set initial value

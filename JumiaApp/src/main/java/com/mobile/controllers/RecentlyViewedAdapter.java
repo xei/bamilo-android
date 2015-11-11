@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
@@ -47,7 +46,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         private TextView percentage;
         private TextView brand;
         private View isNew;
-        private Button varianceButton;
+        private TextView varianceButton;
         private View addToCartButton;
         private View deleteButton;
         private View container;
@@ -127,7 +126,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             item.price = (TextView) itemView.findViewById(R.id.item_regprice);
             item.discount = (TextView) itemView.findViewById(R.id.item_discount);
             item.percentage = (TextView) itemView.findViewById(R.id.item_percentage);
-            item.varianceButton = (Button) itemView.findViewById(R.id.button_variant);
+            item.varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
             item.addToCartButton = itemView.findViewById(R.id.button_shop);
             item.deleteButton = itemView.findViewById(R.id.button_delete);
             itemView.setTag(R.id.recycled_view, item);

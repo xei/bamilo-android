@@ -282,7 +282,8 @@ public class RocketImageLoader {
                             }
                         } else {
                             //imageView.setImageBitmap(null);
-                            imageView.setImageResource(placeHolderImageId);
+                            if(placeHolderImageId != -1)
+                                imageView.setImageResource(placeHolderImageId);
                         }
                     }
                 }, 0, 0/*-, tag*/);

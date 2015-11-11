@@ -520,6 +520,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if(mProduct.getSeller().isGlobal()) {
                 // Set global button
                 mGlobalButton.setVisibility(View.VISIBLE);
+                mGlobalButton.bringToFront();
                 mGlobalButton.setOnClickListener(this);
                 // Delivery Info
                 mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container).setVisibility(View.VISIBLE);

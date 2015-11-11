@@ -23,7 +23,8 @@
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="@dimen/dimen_60px"
             android:layout_marginTop="@dimen/dimen_60px"
-            android:src="@drawable/selector_btn_edit" />
+            android:src="@drawable/selector_btn_edit"
+            android:paddingRight="10dp"/>
 
         <!-- ADDRESS -->
 

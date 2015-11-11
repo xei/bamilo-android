@@ -438,23 +438,19 @@
     </style>
 
     <style name="button_grey_bottom" parent="_parent_button_bottom_container">
-        <item name="android:background">@drawable/btn_grey</item>
+        <item name="android:background">@color/black_700</item>
     </style>
 
     <style name="button_orange_bottom" parent="_parent_button_bottom_container">
-        <item name="android:background">@drawable/btn_orange</item>
+        <item name="android:background">@color/color_accent</item>
     </style>
 
     <style name="button_grey_landscape" parent="button_grey_bottom">
         <item name="android:layout_width">match_parent</item>
     </style>
 
-    <style name="button_orange_landscape" parent="button_orange_bottom">
-        <item name="android:layout_width">match_parent</item>
-    </style>
-
     <style name="button_fallback_retry">
-        <item name="android:background">@drawable/btn_grey</item>
+        <item name="android:background">@drawable/_gen_selector_button_grey</item>
     </style>
 
     <style name="button_facebook">

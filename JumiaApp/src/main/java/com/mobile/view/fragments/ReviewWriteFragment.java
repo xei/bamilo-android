@@ -44,6 +44,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
@@ -228,7 +229,7 @@ public class ReviewWriteFragment extends BaseFragment {
         }
         setRatingReviewFlag();
             // load complete product URL
-            if (mCompleteProductSku.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.PRODUCT_SKU)) {
+            if (mCompleteProductSku != null && mCompleteProductSku.equalsIgnoreCase("") && getArguments() != null && getArguments().containsKey(ConstantsIntentExtra.PRODUCT_SKU)) {
                 String sku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
                 mCompleteProductSku = sku != null ? sku : "";
             }
@@ -370,7 +371,8 @@ public class ReviewWriteFragment extends BaseFragment {
                             if (ratingForm != null) {
                                 formValues = dynamicRatingForm.save();
                                 JumiaApplication.setRatingReviewValues(formValues);
-                                hideKeyboard();
+                                // Hide keyboard
+                                KeyboardUtils.hide(getView());
                                 saveTextReview(dynamicRatingForm);
                                 isShowingRatingForm = true;
                                 setRatingLayout(ratingForm);
@@ -825,12 +827,12 @@ public class ReviewWriteFragment extends BaseFragment {
         
         Bundle bundle = new Bundle();
         
-        form.getItemByKey(SKU).setValue(completeProduct.getSku());
+        form.getItemByKey(SKU).getEntry().setValue(completeProduct.getSku());
         
         ContentValues values = form.save();
         
         getRatingFormValues(values,form);
-        
+
         bundle.putString(RatingReviewProductHelper.ACTION, action);
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         

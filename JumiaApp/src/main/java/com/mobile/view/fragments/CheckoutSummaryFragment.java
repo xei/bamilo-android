@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
@@ -31,15 +32,12 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-
-import android.widget.ImageView;
-
-import com.mobile.utils.imageloader.RocketImageLoader;
 
 /**
  * Class used to show the order summary in the checkout process

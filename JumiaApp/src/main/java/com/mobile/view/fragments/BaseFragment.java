@@ -18,7 +18,6 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
@@ -477,21 +476,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         //...
     }
 
-    /**
-     * This method was created because the method on BaseActivity not working with dynamic forms
-     */
-    @SuppressWarnings("ConstantConditions")
-    protected void hideKeyboard() {
-        Print.d(TAG, "DYNAMIC FORMS: HIDE KEYBOARD");
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        try {
-            imm.hideSoftInputFromWindow(getView().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-        } catch (NullPointerException e){
-            // DO NOTHING
-        }
-
-    }
-
     public void setActivity(BaseActivity activity) {
         mainActivity = activity;
     }
@@ -589,6 +573,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     protected void showContinueShopping() {
         Print.i(TAG, "ON SHOW CONTINUE LAYOUT");
         showErrorFragment(ErrorLayoutFactory.CONTINUE_SHOPPING_LAYOUT, this);
+    }
+
+    /**
+     * Show the retry view from the root layout
+     * @author sergiopereira
+     */
+    protected void showFragmentSSLError() {
+        showErrorFragment(ErrorLayoutFactory.SSL_ERROR_LAYOUT, this);
     }
 
     /**

@@ -31,6 +31,9 @@
             android:orientation="vertical" >
 
             <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
                 layout="@layout/voucher_insert_layout"
                 />
 
@@ -50,7 +53,10 @@
                 <com.mobile.components.customfontviews.Button
                     android:id="@+id/checkout_button"
                     style="@style/AigButton.Active"
-                    android:text="@string/checkout_button_text" />
+                    android:text="@string/checkout_button_text"
+                    android:layout_marginBottom="@dimen/rounded_margin_mid"
+                    android:layout_marginLeft="@dimen/rounded_margin_mid"
+                    android:layout_marginRight="@dimen/rounded_margin_mid"/>
 
                 <com.mobile.components.customfontviews.Button
                     android:id="@+id/checkout_call_to_order"
@@ -58,6 +64,9 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:text="@string/call_to_order"
+                    android:layout_marginBottom="@dimen/rounded_margin_mid"
+                    android:layout_marginLeft="@dimen/rounded_margin_mid"
+                    android:layout_marginRight="@dimen/rounded_margin_mid"
                     android:visibility="visible" />
             </LinearLayout>
         </LinearLayout>

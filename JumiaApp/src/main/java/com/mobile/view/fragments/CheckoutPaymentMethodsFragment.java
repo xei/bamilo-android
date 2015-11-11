@@ -302,15 +302,21 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         loadSavedValues(mSavedState, formGenerator.getIterator());
         paymentMethodsContainer.refreshDrawableState();
         prepareCouponView();
-
-        // TODO Validate this
-        if(getView().findViewById(R.id.text_information) == null) {
-            mCheckoutButtonNext.setVisibility(View.VISIBLE);
-        } else {
-            mCheckoutButtonNext.setVisibility(View.GONE);
-        }
-
+        validatePaymentIsAvailable();
         showFragmentContentContainer();
+    }
+
+    /*
+     * Disable the next button case No payment options available
+     */
+    private void validatePaymentIsAvailable() {
+        try {
+            // Case No payment options available hide button
+            //noinspection ConstantConditions
+            mCheckoutButtonNext.setVisibility(getView().findViewById(R.id.text_information) == null ? View.VISIBLE : View.GONE);
+        } catch (NullPointerException e) {
+            //...
+        }
     }
 
     /**
@@ -444,6 +450,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Set the checkout total bar
             CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
             // Validate
+            // TODO VALIDATE THIS NECESSARY
             if(orderSummary != null && orderSummary.getTotal() == 0){
                 noPaymentNeeded = true;
                 formGenerator = null;
