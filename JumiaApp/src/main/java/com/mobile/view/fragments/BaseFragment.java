@@ -579,6 +579,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Show the retry view from the root layout
      * @author sergiopereira
      */
+    protected void showFragmentSSLError() {
+        showErrorFragment(ErrorLayoutFactory.SSL_ERROR_LAYOUT, this);
+    }
+
+    /**
+     * Show the retry view from the root layout
+     * @author sergiopereira
+     */
     protected void showFragmentErrorRetry() {
         showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
     }

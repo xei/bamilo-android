@@ -609,16 +609,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             }
         }
 
-        /*
-        // Validate spinner
-        ViewGroup mRegionGroup = (ViewGroup) shippingFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
-        // Validate if region group is filled
-        if (!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) {
-            Log.w(TAG, "REGION SPINNER NOT FILL YET");
-            return;
-        }
-        */
-
         // Validate check
         if (mIsSameCheckBox.isChecked()) {
             Print.i(TAG, "CREATE ADDRESS: IS SHIPPING AND IS BILLING TOO");
@@ -630,10 +620,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
             Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues);
             triggerCreateAddress(mShipValues, false);
-            // only to be fired if the first succeds
-//            ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-//            Log.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());
-//            triggerCreateAddress(mBillValues,true);
         }
     }
 
@@ -646,13 +632,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (shippingGenderItem != null && billingGenderItem != null) {
             try {
                 int genderIndex = -1;
-                if (((RadioGroupLayout) shippingGenderItem.getEditControl()).getChildCount() > 0) {
+                RadioGroupLayout group1 = (RadioGroupLayout) shippingGenderItem.getEditControl().findViewById(R.id.radio_group_container);
+                if (group1.getChildCount() > 0) {
                     // Get selected gender index from the shipping form
-                    genderIndex = ((RadioGroupLayout) shippingGenderItem.getEditControl()).getSelectedIndex();
+                    genderIndex = group1.getSelectedIndex();
                 }
-                if (((RadioGroupLayout) billingGenderItem.getEditControl()).getChildCount() > 0 && genderIndex != -1) {
+                RadioGroupLayout group2 = (RadioGroupLayout) billingGenderItem.getEditControl().findViewById(R.id.radio_group_container);
+                if (group2.getChildCount() > 0 && genderIndex != -1) {
                     // Set the billing gender with the same as the shipping
-                    ((RadioGroupLayout) billingGenderItem.getEditControl()).setSelection(genderIndex);
+                    group2.setSelection(genderIndex);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
