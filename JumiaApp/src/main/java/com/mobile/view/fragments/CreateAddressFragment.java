@@ -428,7 +428,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             position = mSavedRegionCitiesPositions.getInt(tag + RestConstants.REGION);
         }
 
-        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0) {
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
             if (tag.equals(SHIPPING_TAG)) {
                 spinner.setSelection(position);
             } else {
@@ -516,7 +516,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             position = mSavedRegionCitiesPositions.getInt(tag + RestConstants.CITY);
         }
 
-        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0) {
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
             if (tag.equals(SHIPPING_TAG)) {
                 spinner.setSelection(position);
             } else {
@@ -535,7 +535,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             position = mSavedRegionCitiesPositions.getInt(tag + RestConstants.POSTCODE);
         }
 
-        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0) {
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
             if (tag.equals(SHIPPING_TAG)) {
                 spinner.setSelection(position);
             } else {

@@ -258,7 +258,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        if (mFormSavedState != null) {
+        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.REGION) <= spinner.getCount()) {
             spinner.setSelection(mFormSavedState.getInt(RestConstants.REGION));
         } else {
             spinner.setSelection(getDefaultPosition(formItem, regions));
@@ -286,7 +286,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        if (mFormSavedState != null) {
+        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.CITY) <= spinner.getCount()) {
             spinner.setSelection(mFormSavedState.getInt(RestConstants.CITY));
         } else {
             spinner.setSelection(getDefaultPosition(formItem, cities));
@@ -312,7 +312,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        if (mFormSavedState != null) {
+        if (mFormSavedState != null && mFormSavedState.getInt(RestConstants.POSTCODE) <= spinner.getCount()) {
             spinner.setSelection(mFormSavedState.getInt(RestConstants.POSTCODE));
         } else {
             spinner.setSelection(getDefaultPosition(formItem, postalCodes));
@@ -426,6 +426,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the cities for this region id
                 int regionId = ((AddressRegion) object).getValue();
+//                // Remove old entries
+//                clearDependenciesSavedValues(RestConstants.REGION);
                 // Get cities
                 triggerGetCities(url, regionId);
             }
@@ -443,6 +445,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the postal codes for this city id
                 int cityId = ((AddressCity) object).getValue();
+//                // Remove old entries
+//                clearDependenciesSavedValues(RestConstants.CITY);
                 // Get postal codes
                 triggerGetPostalCodes(url, cityId);
 
@@ -703,5 +707,21 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
         }
     }
+//
+//    /**
+//     * when selecting a new region or city, remove city and postal code positions
+//     * @param key
+//     */
+//    private void clearDependenciesSavedValues(String key){
+//        if(mFormSavedState != null){
+//            if(key.equals(RestConstants.REGION)){
+//                mFormSavedState.remove(RestConstants.CITY);
+//                mFormSavedState.remove(RestConstants.POSTCODE);
+//            } else {
+//                mFormSavedState.remove(RestConstants.POSTCODE);
+//            }
+//
+//        }
+//    }
 }
 
