@@ -9,17 +9,13 @@
     <item type="drawable" name="black_arrow_right">@drawable/black_arrow_right_rtl</item>
     <item type="drawable" name="ic_menu_cart_pressed">@drawable/ic_menu_cart_pressed_rtl</item>
     <item type="drawable" name="ic_menu_cart">@drawable/ic_menu_cart_rtl</item>
-    <item type="drawable" name="spinner_default_holo_orange">@drawable/spinner_default_holo_orange_rtl</item>
-    <item type="drawable" name="spinner_disabled_holo_orange">@drawable/spinner_disabled_holo_orange_rtl</item>
-    <item type="drawable" name="spinner_focused_holo_orange">@drawable/spinner_focused_holo_orange_rtl</item>
-    <item type="drawable" name="spinner_pressed_holo_orange">@drawable/spinner_pressed_holo_orange_rtl</item>
-    <item type="drawable" name="spinnerbutton_normal_holo_light">@drawable/spinnerbutton_normal_holo_light_rtl</item>
-    <item type="drawable" name="spinnerbutton_pressed_holo_light">@drawable/spinnerbutton_pressed_holo_light_rtl</item>
-    <item type="drawable" name="img_newarrival">@drawable/img_newarrival_urdu</item>
+    <item type="drawable" name="spinner_default">@drawable/spinner_default_rtl</item>
+    <item type="drawable" name="spinner_activated">@drawable/spinner_activated_rtl</item>
+    <item type="drawable" name="img_newarrival">@drawable/img_newarrival_ar</item>
     <item type="drawable" name="ic_overseas_corner">@drawable/ic_overseas_corner_rtl</item>
+    <item type="drawable" name="ic_arrow_combo">@drawable/ic_arrow_combo_rtl</item>
     <item type="drawable" name="ic_check_success_message">@drawable/ic_check_success_message_rtl</item>
-    <item type="drawable" name="btn_edit_active">@drawable/btn_edit_active_rtl</item>
+    <item type="drawable" name="btn_edit_pressed">@drawable/btn_edit_active_rtl</item>
     <item type="drawable" name="btn_edit">@drawable/btn_edit_rtl</item>
-    <item type="drawable" name="ic_my_orders">@drawable/ic_my_orders_rtl</item>
-
+    <item type="drawable" name="drop_shadow_right">@drawable/drop_shadow_right_rtl</item>
 </resources>

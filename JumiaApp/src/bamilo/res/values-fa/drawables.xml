@@ -13,9 +13,9 @@
     <item type="drawable" name="spinner_activated">@drawable/spinner_activated_rtl</item>
     <item type="drawable" name="img_newarrival">@drawable/img_newarrival_ar</item>
     <item type="drawable" name="ic_overseas_corner">@drawable/ic_overseas_corner_rtl</item>
+    <item type="drawable" name="ic_arrow_combo">@drawable/ic_arrow_combo_rtl</item>
     <item type="drawable" name="ic_check_success_message">@drawable/ic_check_success_message_rtl</item>
-    <item type="drawable" name="btn_edit_active">@drawable/btn_edit_active_rtl</item>
+    <item type="drawable" name="btn_edit_pressed">@drawable/btn_edit_active_rtl</item>
     <item type="drawable" name="btn_edit">@drawable/btn_edit_rtl</item>
-    <item type="drawable" name="ic_my_orders">@drawable/ic_my_orders_rtl</item>
-
+    <item type="drawable" name="drop_shadow_right">@drawable/drop_shadow_right_rtl</item>
 </resources>

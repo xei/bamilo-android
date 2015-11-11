@@ -23,5 +23,7 @@
     <!-- MY ORDERS -->
     <item name="track_order_fragment"           type="layout">@layout/_def_track_order_fragment</item>
     <item name="order_history_main"             type="layout">@layout/_def_order_history_main</item>
+    <item name="my_account_fragment"            type="layout">@layout/_def_my_account_fragment</item>
+    <item name="my_orders_fragment_main"        type="layout">@layout/_def_my_orders_fragment_main</item>
 
 </resources>

@@ -38,7 +38,6 @@
     <item name="fulfillment_product"                    type="layout">@layout/_v8_fulfillment_product</item>
 
     <!-- FORMS -->
-    <item name="form_radiobutton_shipping"              type="layout">@layout/_v8_form_radiobutton_shipping</item>
     <item name="form_radiobutton_with_extra"            type="layout">@layout/_v8_form_radiobutton_with_extra</item>
     <item name="form_radiobutton"                       type="layout">@layout/_v8_form_radiobutton</item>
     <item name="form_radiogroup"                        type="layout">@layout/_v8_form_radiogroup</item>
@@ -81,9 +80,13 @@
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_v8_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_v8_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_v8_config_confirmation_msg</item>
+
     <!-- MY ORDERS -->
     <!--<item name="track_order_fragment"                   type="layout">@layout/_v8_track_order_fragment</item>-->
     <!--<item name="order_history_main"                     type="layout">@layout/_v8_order_history_main</item>-->
+    <item name="order_status_fragment"                  type="layout">@layout/_v8_order_status_fragment</item>
+    <item name="gen_order_list"                         type="layout">@layout/_v8_gen_order_list</item>
+    <item name="my_orders_list_item"                    type="layout">@layout/_v8_my_orders_list_item</item>
 
     <!-- HOME -->
     <item name="home_teaser_campaign"                   type="layout">@layout/_v8_home_teaser_campaign</item>
@@ -105,9 +108,12 @@
     <!-- MY ACCOUNT -->
     <item name="my_account_user_data_fragment"          type="layout">@layout/_v8_my_account_user_data_fragment</item>
     <item name="country_settings_list_item"             type="layout">@layout/_v8_country_settings_list_item</item>
+    <item name="my_account_app_version"                 type="layout">@layout/_v8_my_account_app_version</item>
+    <item name="my_account_notification_item"           type="layout">@layout/_v8_my_account_notification_item</item>
 
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_v8_form_checkbox_terms</item>
+    <item name="gen_form_text_field"                    type="layout">@layout/_v8_gen_form_text_field</item>
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_v8_dialog_list_item</item>
@@ -130,7 +136,9 @@
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_v8_reviews_fragment_rating_samlltype_item</item>
     <item name="product_offers_main"                    type="layout">@layout/_v8_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_v8_campaign_spinner_item</item>
-    <item name="form_checkbox"                          type="layout">@layout/_v8_form_checkbox</item>
+    <item name="gen_form_check_box"                     type="layout">@layout/_v8_form_checkbox</item>
+    <item name="form_button"                            type="layout">@layout/_v8_form_button</item>
+    <item name="form_radiolayout"                       type="layout">@layout/_v8_form_radiolayout</item>
     <item name="login_remember_checkbox"                type="layout">@layout/_v8_login_remember_checkbox</item>
     <item name="form_spinner_dropdown_item"             type="layout">@layout/_v8_form_spinner_dropdown_item</item>
     <item name="order_history_item"                     type="layout">@layout/_v8_order_history_item</item>
@@ -188,7 +196,6 @@
     <item name="product_offers_main_new"                       type="layout">@layout/_v8_product_offers_main_new</item>
     <item name="other_sellers_list_item"                       type="layout">@layout/_v8_other_sellers_list_item</item>
     <item name="other_sellers_info"                            type="layout">@layout/_v8_other_sellers_info</item>
-
 
 
 </resources>
