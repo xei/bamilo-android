@@ -242,12 +242,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         /**
          * Constructor
-         * 
-         * @param fm
          * @author Paulo Carvalho
          */
         public ProductInfoPagerAdapter(FragmentManager fm) {
-            super(fm,ProductDetailsInfoFragment.this, getFragmentTitleValues());
+            super(fm, ProductDetailsInfoFragment.this, getFragmentTitleValues());
         }
 
         /*
@@ -262,7 +260,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         @Override
         protected Fragment createNewFragment(int position) {
-
             if(titlesPageInt.get(position).equals(R.string.description) && mHasDesc) {
                 return ProductDetailsSummaryFragment.getInstance(getArguments());
             }

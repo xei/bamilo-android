@@ -213,7 +213,7 @@ android {
     }
 
     lintOptions {
-        disable 'NewApi', 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
+        disable 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
         abortOnError false
         disable 'ExtraTranslation','MissingTranslation'
     }

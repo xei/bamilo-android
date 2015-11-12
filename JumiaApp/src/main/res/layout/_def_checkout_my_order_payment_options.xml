@@ -25,7 +25,9 @@
             android:layout_marginEnd="@dimen/dimen_60px"
             android:layout_marginRight="@dimen/dimen_60px"
             android:layout_marginTop="@dimen/dimen_60px"
-            android:src="@drawable/selector_btn_edit" />
+            android:src="@drawable/selector_btn_edit"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"/>
 
         <!-- OPTIONS -->
 

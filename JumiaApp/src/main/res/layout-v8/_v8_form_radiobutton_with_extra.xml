@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -35,8 +36,8 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/payment_text"
             style="@style/MultiLineStyle"
-            android:paddingTop="0dp"
             android:paddingRight="0dp"
+            android:paddingTop="0dp"
             android:visibility="gone" />
 
         <!-- SHIPPING INFO -->
@@ -61,7 +62,7 @@
             android:id="@+id/shipping_info_space"
             android:layout_width="wrap_content"
             android:layout_height="12dp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <!-- SHIPPING PUS -->
 
@@ -83,7 +84,9 @@
             android:layout_weight="1"
             android:divider="@color/black_700"
             android:dividerHeight="1dp"
-            android:visibility="gone" />
+            android:scrollbars="none"
+            android:visibility="gone"
+            app:expand="true" />
 
         <!--
             https://code.google.com/p/android/issues/detail?id=2254

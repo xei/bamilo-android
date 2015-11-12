@@ -162,6 +162,7 @@
             android:textColor="@color/black_800"
             android:layout_toRightOf="@id/basket_voucher_label"
             android:layout_toEndOf="@id/basket_voucher_label"
+            android:visibility="gone"
             />
 
 
