@@ -1,5 +1,6 @@
 package com.mobile.view.fragments;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -40,6 +41,7 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DarwinRegex;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -867,7 +869,18 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             });
         } else {
             prodItem.quantityBtn.setEnabled(false);
-            prodItem.quantityBtn.setBackground(null);
+            DeviceInfoHelper.executeCodeBasedOnJellyBeanVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+                @Override
+                @SuppressLint("NewApi")
+                public void highVersionCallback() {
+                    prodItem.quantityBtn.setBackground(null);
+                }
+                @Override
+                public void lowerVersionCallback() {
+                    prodItem.quantityBtn.setBackgroundDrawable(null);
+                }
+            });
+
         }
 
         // Save the position to process the click on item
