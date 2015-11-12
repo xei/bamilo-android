@@ -300,7 +300,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         dest.writeDouble(mSumCostsValue);
         dest.writeDouble(mCouponDiscount);
         dest.writeString(mCouponCode);
-        dest.writeValue(mPriceRules);
+        dest.writeMap(mPriceRules);
         if (mCartItems == null) {
             dest.writeByte((byte) (0x00));
         } else {

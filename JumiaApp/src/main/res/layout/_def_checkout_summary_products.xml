@@ -22,7 +22,9 @@
             android:layout_marginEnd="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:src="@drawable/selector_btn_edit"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"/>
     </RelativeLayout>
 
     <LinearLayout

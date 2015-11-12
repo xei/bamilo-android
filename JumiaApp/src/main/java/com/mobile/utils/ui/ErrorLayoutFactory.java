@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
 
 /**
@@ -41,6 +42,10 @@ public class ErrorLayoutFactory {
 
     public static final int NO_ORDERS_LAYOUT = 10;
 
+    public static final int SSL_ERROR_LAYOUT = 11;
+
+    public static final int UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT = 12;
+
     private View mErrorLayout;
 
     private int actualError;
@@ -62,6 +67,12 @@ public class ErrorLayoutFactory {
         if(actualError != error) {
             //build
             switch (error) {
+                case UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT:
+                    buildUnknownCheckoutStepErrorLayout();
+                    break;
+                case SSL_ERROR_LAYOUT:
+                    buildSSLErrorLayout();
+                    break;
                 case NO_NETWORK_LAYOUT:
                     buildNoNetworkLayout();
                     break;
@@ -111,7 +122,47 @@ public class ErrorLayoutFactory {
     }
 
     private void buildNoOrdersLayout(int error){
-        showGenericError(error, R.drawable.ic_orders_empty, R.string.no_orders_message, R.string.no_orders);
+        showGenericError(error, R.drawable.ic_orders_empty,R.string.no_orders,R.string.no_orders_message);
+    }
+
+    /**
+     * Show error layout with contact info in case of ssl errors
+     * */
+    public void buildSSLErrorLayout(){
+        // Build common
+        new Builder()
+                .setImage(R.drawable.ic_warning)
+                .setPrincipalMessage(R.string.an_error_occurred)
+                .setDetailMessage(R.string.customer_service_info)
+                .setButtonVisible(false);
+        // Set contacts
+        String phone =CountryPersistentConfigs.getCountryPhoneNumber(mErrorLayout.getContext());
+        String email = CountryPersistentConfigs.getCountryEmail(mErrorLayout.getContext());
+        mErrorLayout.findViewById(R.id.contacts_info).setVisibility(View.VISIBLE);
+        ((TextView)mErrorLayout.findViewById(R.id.phone_text)).setText(phone);
+        ((TextView)mErrorLayout.findViewById(R.id.email_text)).setText(email);
+        // Error
+        actualError = SSL_ERROR_LAYOUT;
+    }
+
+    /**
+     * Show error layout with contact info in case of unknown checkout next step.
+     * */
+    public void buildUnknownCheckoutStepErrorLayout(){
+        // Build common
+        new Builder()
+                .setImage(R.drawable.ic_warning)
+                .setPrincipalMessage(R.string.an_error_occurred)
+                .setDetailMessage(R.string.customer_service_info)
+                .setButtonVisible(false);
+        // Set contacts
+        String phone =CountryPersistentConfigs.getCountryPhoneNumber(mErrorLayout.getContext());
+        String email = CountryPersistentConfigs.getCountryEmail(mErrorLayout.getContext());
+        mErrorLayout.findViewById(R.id.contacts_info).setVisibility(View.VISIBLE);
+        ((TextView)mErrorLayout.findViewById(R.id.phone_text)).setText(phone);
+        ((TextView)mErrorLayout.findViewById(R.id.email_text)).setText(email);
+        // Error
+        actualError = UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT;
     }
 
     /**
@@ -140,7 +191,7 @@ public class ErrorLayoutFactory {
 
     private void buildUnexpectedErrorLayout(){
         new Builder()
-                .setImage(R.drawable.img_warning)
+                .setImage(R.drawable.ic_warning)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setRotationVisible(true)
@@ -162,7 +213,7 @@ public class ErrorLayoutFactory {
 
     private void buildContinueShoppingLayout() {
         new Builder()
-                .setImage(R.drawable.img_warning)
+                .setImage(R.drawable.ic_warning)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)

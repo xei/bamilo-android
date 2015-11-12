@@ -88,7 +88,8 @@
             android:numColumns="1"
             android:verticalSpacing="1dp"
             android:visibility="gone"
-            app:expand="true" />
+            app:expand="true"
+            android:scrollbars="none"/>
 
         <!--
             https://code.google.com/p/android/issues/detail?id=2254

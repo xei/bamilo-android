@@ -386,6 +386,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.DATA, mCustomerEmail);
                 bundle.putBoolean(ConstantsIntentExtra.FLAG_1, isInCheckoutProcess);
+                bundle.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
                 getBaseActivity().onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
                 break;
             case GUEST_LOGIN_EVENT:
@@ -393,17 +394,25 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
             case LOGIN_EVENT:
                 // Get Customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getMetadata().getData();
-                Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
-                // Tracking
-                if (eventType == EventType.GUEST_LOGIN_EVENT) {
-                    TrackerDelegator.storeFirstCustomer(customer);
-                    TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
-                } else {
-                    TrackerDelegator.trackLoginSuccessful(customer, true, true);
+                // Case valid next step
+                if(nextStepFromApi != FragmentType.UNKNOWN) {
+                    Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
+                    // Tracking
+                    if (eventType == EventType.GUEST_LOGIN_EVENT) {
+                        TrackerDelegator.storeFirstCustomer(customer);
+                        TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
+                    } else {
+                        TrackerDelegator.trackLoginSuccessful(customer, true, true);
+                    }
+                    // Validate the next step
+                    CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
                 }
-                // Validate the next step
-                CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
+                // Case unknown checkout step
+                else {
+                    // Show layout to call to order
+                    showFragmentUnknownCheckoutStepError();
+                }
                 break;
             default:
                 break;

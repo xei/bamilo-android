@@ -288,11 +288,14 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT: ");
 
+        // Validate fragment visibility
+        if (isOnStoppingProcess || getBaseActivity() == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
         // Hide dialog progress
         hideActivityProgress();
-
-        if (getBaseActivity() == null)
-            return;
 
         super.handleSuccessEvent(baseResponse);
         showAddToCartCompleteMessage(baseResponse);
@@ -316,6 +319,12 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
 
+        // Validate fragment visibility
+        if (isOnStoppingProcess || getBaseActivity() == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
         // Hide dialog progress
         hideActivityProgress();
 
@@ -325,7 +334,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
         // Generic errors
         if (super.handleErrorEvent(baseResponse)) {
-            //mBundleButton.setEnabled(true);
             return;
         }
 

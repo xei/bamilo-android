@@ -151,7 +151,7 @@
     </style>
 
     <style name="AigButton.Active" >
-        <item name="android:background">@color/color_accent</item>
+        <item name="android:background">@drawable/_gen_selector_button_active</item>
     </style>
 
     <style name="AigButton.GooglePlus" >
@@ -160,7 +160,7 @@
 
     <style name="AigButton.Facebook" >
         <!--http://stackoverflow.com/questions/29740325/set-login-logout-text-for-button-in-facebook-android-sdk-4-0?answertab=active#tab-top-->
-        <item name="android:background">@color/blue_205081</item>
+        <item name="android:background">@drawable/_gen_selector_button_facebook</item>
         <item name="android:drawableLeft">@drawable/com_facebook_inverse_icon</item>
         <item name="android:drawableStart">@drawable/com_facebook_inverse_icon</item>
         <item name="android:paddingTop">15dp</item>

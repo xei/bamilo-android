@@ -25,7 +25,6 @@ public class GWearManager {
 
     /**
      * Constructor
-     * @param context
      */
     public GWearManager(Context context) {
         JumiaWearableListenerService.connectToWearable(context);
@@ -33,7 +32,6 @@ public class GWearManager {
 
     /**
      * Method responsible for parsing and extracting the information received on the notification.
-     * @param intent
      */
     public void parseLocalNotification(Intent intent) {
         Bundle bundle = intent.getExtras();
@@ -53,9 +51,6 @@ public class GWearManager {
 
     /**
      * method that sends the information extracted from the app notification, to the wear app.
-     *
-     * @param index
-     * @param bundle
      */
     public void informWearOfNotification (int index, Bundle bundle) {
         // Log.i(TAG, "code1wear index : " + index + " name: " + title + " content : " + content);
@@ -63,7 +58,10 @@ public class GWearManager {
         DataMap map = putRequest.getDataMap();
         map.putInt(EXTRA_INDEX, index);
         for (String key : bundle.keySet()) {
-            map.putString(key, bundle.get(key).toString());
+            Object value = bundle.get(key);
+            if (value != null) {
+                map.putString(key, value.toString());
+            }
         }
         new JumiaWearableListenerService.SendFilesTask().execute(putRequest, putRequest);
     }

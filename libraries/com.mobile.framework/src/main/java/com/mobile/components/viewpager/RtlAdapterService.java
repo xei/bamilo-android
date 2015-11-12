@@ -22,7 +22,7 @@ import java.util.List;
  * @version 1.0
  * @date 2015/06/18
  */
-public class RtlAdapterService extends FragmentPagerAdapter{
+public abstract class RtlAdapterService extends FragmentPagerAdapter{
     protected List<Fragment> fragmentList;
     protected List<String> titleList;
     protected boolean isRtl;
@@ -61,8 +61,8 @@ public class RtlAdapterService extends FragmentPagerAdapter{
         isRtl = rtl;
     }
 
-    @Override
-    public Fragment getItem(int position) {
-        return fragmentList != null ? fragmentList.get(position) : null;
-    }
+//    @Override
+//    public Fragment getItem(int position) {
+//        return fragmentList != null ? fragmentList.get(position) : null;
+//    }
 }
