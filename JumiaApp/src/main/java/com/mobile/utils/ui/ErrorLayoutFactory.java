@@ -44,6 +44,8 @@ public class ErrorLayoutFactory {
 
     public static final int SSL_ERROR_LAYOUT = 11;
 
+    public static final int UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT = 12;
+
     private View mErrorLayout;
 
     private int actualError;
@@ -65,6 +67,9 @@ public class ErrorLayoutFactory {
         if(actualError != error) {
             //build
             switch (error) {
+                case UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT:
+                    buildUnknownCheckoutStepErrorLayout();
+                    break;
                 case SSL_ERROR_LAYOUT:
                     buildSSLErrorLayout();
                     break;
@@ -133,10 +138,31 @@ public class ErrorLayoutFactory {
         // Set contacts
         String phone =CountryPersistentConfigs.getCountryPhoneNumber(mErrorLayout.getContext());
         String email = CountryPersistentConfigs.getCountryEmail(mErrorLayout.getContext());
+        mErrorLayout.findViewById(R.id.contacts_info).setVisibility(View.VISIBLE);
         ((TextView)mErrorLayout.findViewById(R.id.phone_text)).setText(phone);
         ((TextView)mErrorLayout.findViewById(R.id.email_text)).setText(email);
         // Error
         actualError = SSL_ERROR_LAYOUT;
+    }
+
+    /**
+     * Show error layout with contact info in case of unknown checkout next step.
+     * */
+    public void buildUnknownCheckoutStepErrorLayout(){
+        // Build common
+        new Builder()
+                .setImage(R.drawable.ic_warning)
+                .setPrincipalMessage(R.string.an_error_occurred)
+                .setDetailMessage(R.string.customer_service_info)
+                .setButtonVisible(false);
+        // Set contacts
+        String phone =CountryPersistentConfigs.getCountryPhoneNumber(mErrorLayout.getContext());
+        String email = CountryPersistentConfigs.getCountryEmail(mErrorLayout.getContext());
+        mErrorLayout.findViewById(R.id.contacts_info).setVisibility(View.VISIBLE);
+        ((TextView)mErrorLayout.findViewById(R.id.phone_text)).setText(phone);
+        ((TextView)mErrorLayout.findViewById(R.id.email_text)).setText(email);
+        // Error
+        actualError = UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT;
     }
 
     /**
