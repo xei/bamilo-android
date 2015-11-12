@@ -584,6 +584,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
+     * Show the layout to call to order info
+     * @author sergiopereira
+     */
+    protected void showFragmentUnknownCheckoutStepError() {
+        showErrorFragment(ErrorLayoutFactory.UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT, this);
+    }
+
+    /**
      * Show the retry view from the root layout
      * @author sergiopereira
      */

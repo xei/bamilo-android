@@ -1,5 +1,7 @@
 package com.mobile.helpers;
 
+import android.support.annotation.Nullable;
+
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
 import com.mobile.utils.CheckoutStepManager;
@@ -14,9 +16,13 @@ public class NextStepStruct {
     public NextStepStruct() {
     }
 
-    public NextStepStruct(CheckoutStepObject checkoutStepObject) {
+    public NextStepStruct(@Nullable CheckoutStepObject checkoutStepObject) {
         this.checkoutStepObject = checkoutStepObject;
-        fragmentType = CheckoutStepManager.getNextFragment(checkoutStepObject.getNextStep());
+        if(checkoutStepObject != null) {
+            fragmentType = CheckoutStepManager.getNextFragment(checkoutStepObject.getNextStep());
+        } else {
+            fragmentType = FragmentType.UNKNOWN;
+        }
     }
 
     public CheckoutStepObject getCheckoutStepObject() {
