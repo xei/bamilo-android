@@ -148,7 +148,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         // Get continue button
         view.findViewById(R.id.login_button_continue).setOnClickListener(this);
         // Get and set guest button
-        setGuestButton(view.findViewById(R.id.login_button_guest), isInCheckoutProcess);
+        setGuestButton(view.findViewById(R.id.login_button_guest), isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT);
     }
 
     /*
