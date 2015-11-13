@@ -36,9 +36,11 @@ import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -1113,6 +1115,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             Print.i(TAG, "WARNING: URL IS NULL");
         }
     }
+
+    /**
+     * Get sku parameter from a product detail complete URL
+     */
+    protected String getSkuFromUrl(String url) {
+        if(TextUtils.isNotEmpty(url)){
+            return RestUrlUtils.getQueryValue(url, RestConstants.SKU);
+        }
+        return null;
+    }
+
 
     /**
      * Process the click on shops in shop

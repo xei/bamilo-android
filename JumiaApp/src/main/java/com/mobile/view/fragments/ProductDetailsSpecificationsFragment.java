@@ -267,7 +267,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * @param parent
      */
     private void addSpecTableRow(Map.Entry pair, final LinearLayout parent){
-        View theInflatedView = inflater.inflate(R.layout._def_product_specs_container_item, parent, false);
+        View theInflatedView = inflater.inflate(R.layout.product_specs_container_item, parent, false);
         TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
         TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
 
