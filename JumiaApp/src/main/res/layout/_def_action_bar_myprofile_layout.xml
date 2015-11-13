@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" >
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/image_myprofile"
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:clickable="true"
-        android:src="@drawable/selector_navigation_overflow" />
+        android:src="@drawable/selector_navigation_overflow"/>
 
     <com.mobile.components.widget.DismissibleSpinner
         android:id="@+id/spinner_myprofile"
@@ -22,6 +22,6 @@
         android:layout_alignStart="@id/image_myprofile"
         android:popupBackground="@drawable/menu_dropdown_panel_without_margin"
         android:spinnerMode="dropdown"
-        android:visibility="invisible" />
+        android:visibility="invisible"/>
 
 </RelativeLayout>
