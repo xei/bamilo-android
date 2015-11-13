@@ -23,17 +23,12 @@ import java.util.Map.Entry;
 public class Errors implements Parcelable {
 	private final static String TAG = Errors.class.getSimpleName();
 
-	public final static String CODE_LOGIN_FAILED = "CUSTOMER_LOGIN_FAILED";
-	public final static String CODE_LOGIN_CHECK_PASSWORD = "CUSTOMER_LOGIN_CHECK_EMAIL_PASSWORD";
-	public final static String CODE_LOGOUT_FAILED = "CUSTOMER_LOGOUT_FAILED";
 	public final static String CODE_CUSTOMER_NOT_LOGGED_IN = "CUSTOMER_NOT_LOGGED_IN";
 	public final static String CODE_REGISTER_CUSTOMEREXISTS = "CUSTOMER_CREATE_FAILED_EXISTS";
-	public final static String CODE_FORGOTPW_NOSUCH_CUSTOMER = "CUSTOMER_SET_PASSWORD_RESTORE_DATA_FAILURE";
 	public final static String CODE_ORDER_PRODUCT_SOLD_OUT = "ORDER_PRODUCT_SOLD_OUT";
-	public final static String CODE_FORM_VALIDATION_FAILED = "FORM_VALIDATION_FAILED";
 	public final static String CODE_PRODUCT_ADD_OVERQUANTITY = "SR_ORDER_PRODUCT_ERROR_ADDING_STOCK_ABOVE_ALLOWED_QUANTITY";
 	public final static String CODE_ORDER_PRODUCT_ERROR_ADDING = "ORDER_PRODUCT_ERROR_ADDING";
-	public final static String CODE_ALREADY_LOGGED_IN = "CUSTOMER_ALREADY_LOGGED_IN";
+	public final static String CODE_ERROR_ADDING_ITEM = "ERROR_ADDING_ITEM";
 	
 
 	private static List<String> errorMessages;
