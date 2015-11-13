@@ -1307,8 +1307,6 @@ public class DynamicFormItem {
         final TextView spinnerButton = ((TextView) this.dataControl.findViewById(R.id.form_button));
         spinnerButton.setHint(text);
         spinnerButton.setTag(BIRTHDATE_TAG);
-        spinnerButton.setHintTextColor(context.getResources().getColor(R.color.form_text_hint));
-        spinnerButton.setPadding(UIUtils.dpToPx(13, scale), 0, 0, 10);
 
         // Add *
         mandatory.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
