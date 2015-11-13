@@ -1092,7 +1092,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 onClickCampaign(url, title, bundle);
                 break;
             case PRODUCT:
-                onClickProduct(url, bundle);
+                onClickProduct(getSkuFromUrl(url), bundle);
                 break;
             case SHOP:
                 onClickInnerShop(url, title, bundle);
