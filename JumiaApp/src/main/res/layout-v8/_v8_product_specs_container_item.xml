@@ -12,6 +12,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/specs_item_value"
+        android:width="@dimen/specs_column_with"
         style="@style/text_normal"
         android:minHeight="26dp"
         android:textColor="@color/black"

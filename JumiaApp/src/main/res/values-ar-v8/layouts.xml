@@ -46,6 +46,7 @@
     <item name="shopping_basket_subtotal_element"       type="layout">@layout/_v8_shopping_basket_subtotal_element</item>
 
     <!-- ACTION BAR -->
+    <item name="action_bar_myprofile_layout" type="layout">@layout/_v8_action_bar_myprofile_layout</item>
     <item name="action_bar_menu_item_layout"            type="layout">@layout/_v8_action_bar_menu_item_layout</item>
     <item name="recent_search_suggestion_list_item"     type="layout">@layout/_v8_recent_search_suggestion_list_item</item>
     <item name="search_suggestion_list_item"            type="layout">@layout/_v8_search_suggestion_list_item</item>

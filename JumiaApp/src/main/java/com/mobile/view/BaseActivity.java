@@ -547,8 +547,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TabLayoutUtils.fillTabLayout(mTabLayout, this);
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
         // Checkout Tab
-        android.view.ViewGroup.LayoutParams mParams = mTabLayout.getLayoutParams();
-        mCheckoutTabLayout.getLayoutParams().width = mParams.width;
         TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
         mCheckoutTabLayout.setOnTabSelectedListener(mCheckoutOnTabSelectedListener);
 

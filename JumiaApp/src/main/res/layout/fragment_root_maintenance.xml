@@ -149,6 +149,8 @@
             android:id="@+id/fragment_root_retry_maintenance"
             style="@style/AigButton.Active"
             android:contentDescription="@string/try_again"
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginRight="@dimen/rounded_margin_mid"
             android:text="@string/try_again" />
 
         <com.mobile.components.customfontviews.Button
@@ -158,6 +160,8 @@
             android:layout_marginTop="0dp"
             android:layout_width="match_parent"
             android:contentDescription="@string/try_again"
+            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginRight="@dimen/rounded_margin_mid"
             android:text="@string/nav_country"
             android:visibility="gone" />
     </LinearLayout>
