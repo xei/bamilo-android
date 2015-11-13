@@ -20,7 +20,7 @@
     <!--<item name="checkout_summary_total"                 type="layout">@layout/_def_checkout_summary_total</item>-->
     <item name="checkout_payment_methods"               type="layout">@layout/_def_checkout_payment_methods</item>
     <item name="checkout_address_item"                  type="layout">@layout/_def_checkout_address_item</item>
-    <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_def_checkout_sameaddress_checkbox</item>
+    <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_v18_checkout_sameaddress_checkbox</item>
     <item name="checkout_my_addresses_add_new"          type="layout">@layout/_def_checkout_my_addresses_add_new</item>
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_def_checkout_shipping_pickup_station</item>
     <item name="checkout_shipping_fee_time"             type="layout">@layout/_def_checkout_shipping_fee_time</item>
@@ -46,6 +46,7 @@
     <item name="shopping_basket_subtotal_element"       type="layout">@layout/_def_shopping_basket_subtotal_element</item>
 
     <!-- ACTION BAR -->
+    <item name="action_bar_myprofile_layout"            type="layout">@layout/_def_action_bar_myprofile_layout</item>
     <item name="action_bar_menu_item_layout"            type="layout">@layout/_def_action_bar_menu_item_layout</item>
     <item name="recent_search_suggestion_list_item"     type="layout">@layout/_def_recent_search_suggestion_list_item</item>
     <item name="search_suggestion_list_item"            type="layout">@layout/_def_search_suggestion_list_item</item>
@@ -77,7 +78,7 @@
     <!-- PDV -->
     <item name="product_specs_fragment"                 type="layout">@layout/_def_product_specs_fragment</item>
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
-    
+
     <item name="pdv_price_tag"                          type="layout">@layout/_def_pdv_price_tag</item>
     <item name="sublist" 	                            type="layout">@layout/_def_sublist</item>
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
@@ -89,6 +90,8 @@
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_def_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_def_config_confirmation_msg</item>
+    <item name="pdv_fragment_combo_item"                type="layout">@layout/_def_pdv_fragment_combo_item</item>
+    <item name="pdv_fragment_combos"                    type="layout">@layout/_def_pdv_fragment_combos</item>
 
     <!-- MY ORDERS -->
     <item name="my_orders_list_item"                    type="layout">@layout/_def_my_orders_list_item</item>
@@ -133,7 +136,7 @@
     <item name="my_account_user_data_fragment"          type="layout">@layout/_def_my_account_user_data_fragment</item>
     <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
     <item name="my_account_app_version"                 type="layout">@layout/_def_my_account_app_version</item>
-    <item name="my_account_notification_item"           type="layout">@layout/_def_my_account_notification_item</item>
+    <item name="my_account_notification_item"           type="layout">@layout/_v18_my_account_notification_item</item>
 
 
     <!-- DYNAMIC -->
@@ -200,7 +203,7 @@
     <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
     <!--<item name="form_spinner_item"                      type="layout">@layout/_v8_form_spinner_item</item>-->
     <item name="review_fragment"                        type="layout">@layout/_def_review_fragment</item>
-    <item name="simple_email_notification_option"       type="layout">@layout/_def_simple_email_notification_option</item>
+    <item name="simple_email_notification_option"       type="layout">@layout/_v18_simple_email_notification_option</item>
 
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
