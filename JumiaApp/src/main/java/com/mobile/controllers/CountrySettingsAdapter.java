@@ -74,7 +74,6 @@ public class CountrySettingsAdapter extends BaseAdapter{
             info.setText(countryObject.countryName);
             ImageView flag = (ImageView)view.findViewById(R.id.flag);
             RocketImageLoader.instance.loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_small);
-//            view.setEnabled(false);
             if(ShopSelector.isSingleShopCountry()) {
                 view.setOnClickListener(null);
             }
