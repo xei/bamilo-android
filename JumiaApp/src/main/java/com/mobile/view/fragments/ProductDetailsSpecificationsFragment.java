@@ -209,7 +209,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         Print.i(TAG, "ON DESTROY");
         mainView = null;
         mCompleteProduct = null;
-        System.gc();
     }
     
     private void getViews(){
