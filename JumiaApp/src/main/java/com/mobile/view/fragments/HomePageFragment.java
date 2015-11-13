@@ -25,8 +25,6 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -464,16 +462,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         } else {
             ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
         }
-    }
-
-    /**
-     * Goto product detail using url
-     */
-    private String getSkuFromUrl(String url) {
-        if(TextUtils.isNotEmpty(url)){
-            return RestUrlUtils.getQueryValue(url, RestConstants.SKU);
-        }
-        return null;
     }
 
     /**
