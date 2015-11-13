@@ -5,6 +5,9 @@
     <!-- GENERIC -->
     <item name="fragment_loading_more"                  type="layout">@layout/_def_loading_more</item>
 
+    <!-- CHOOSE COUNTRY -->
+    <item name="change_country_row"                     type="layout">@layout/_def_change_country_row</item>
+
     <!-- CHECKOUT -->
     <item name="checkout_my_order_billing_address"      type="layout">@layout/_def_checkout_my_order_billing_address</item>
     <item name="checkout_my_order_payment_options"      type="layout">@layout/_def_checkout_my_order_payment_options</item>

@@ -2,8 +2,7 @@
 <com.mobile.utils.CheckableRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/item_height_normal"
-    android:background="@drawable/selector_listitem_rounded_margin_highlight"
-    android:layoutDirection="ltr">
+    android:background="@drawable/selector_listitem_rounded_margin_highlight">
 
     <ImageView
         android:id="@+id/flag"
@@ -11,6 +10,7 @@
         android:layout_height="@dimen/item_height_normal"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_huge"
+        android:layout_marginStart="@dimen/margin_huge"
         android:padding="@dimen/margin_mid"
         android:src="@mipmap/ic_launcher" />
 
@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/flag"
+        android:layout_toEndOf="@id/flag"
         android:fontFamily="roboto_light"
         android:text="@string/app_name"
         android:textColor="@color/grey_dark"
