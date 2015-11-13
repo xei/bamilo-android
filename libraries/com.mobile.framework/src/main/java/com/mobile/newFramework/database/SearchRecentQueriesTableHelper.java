@@ -72,7 +72,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @return true or false
      * @author sergiopereira
      */
-    public static synchronized boolean insertQuery(String query) {
+    public static synchronized boolean insertQuery(String query) throws InterruptedException, NullPointerException {
     	Print.d(TAG, "INSERT INTO SEARCH RECENT: " + query);
     	// Validate arguments
     	if(query == null) return false;

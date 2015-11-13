@@ -308,7 +308,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     /**
      * Load the dynamic form
      */
-    protected void loadCreateAddressForm(Form mFormShipping,Form mFormBilling) {
+    protected void loadCreateAddressForm(Form mFormShipping, Form mFormBilling) {
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
         // Shipping form
         if(shippingFormGenerator == null){
@@ -919,12 +919,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         orderSummary = JumiaApplication.INSTANCE.getCart();
         // Save and load form
-
         AddressForms form = (AddressForms)baseResponse.getMetadata().getData();
         mFormShipping = form.getShippingForm();
         mFormBilling = form.getBillingForm();
         // Load form, get regions
-        loadCreateAddressForm(mFormShipping,mFormBilling);
+        loadCreateAddressForm(mFormShipping, mFormBilling);
     }
 
     protected void onGetRegionsSuccessEvent(BaseResponse baseResponse) {

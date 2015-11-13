@@ -876,6 +876,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void onClickBuyProduct() {
         Log.i(TAG, "ON CLICK BUY BUTTON");
+        if (mProduct == null) {
+            showUnexpectedErrorWarning();
+            return;
+        }
         // Validate has simple variation selected
         ProductSimple simple = mProduct.getSelectedSimple();
         // Case add item to cart
@@ -1130,7 +1134,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Save product
                 mProduct = product;
 
-                sSharedSelectedPosition = !ShopSelector.isRtl() ? IntConstants.DEFAULT_POSITION : mProduct.getImageList().size()-1;
+                if(CollectionUtils.isNotEmpty(mProduct.getImageList())){
+                    sSharedSelectedPosition = !ShopSelector.isRtl() ? IntConstants.DEFAULT_POSITION : mProduct.getImageList().size()-1;
+                } else {
+                    sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
+                }
 
                 // Show product or update partial
                 displayProduct(mProduct);
