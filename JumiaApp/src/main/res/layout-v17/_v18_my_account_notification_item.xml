@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -30,6 +30,9 @@
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/my_account_gen_dimen"
         android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:button="@null"
+        android:drawableEnd="@drawable/_gen_selector_check_box"
+        android:drawableRight="@drawable/_gen_selector_check_box"
         android:gravity="center"/>
 
 
