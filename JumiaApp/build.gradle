@@ -163,7 +163,7 @@ android {
             versionName "1.6"
             versionCode getAppVersionCode(10)
             signingConfig signingConfigs.shopSigning
-            resConfigs "my"
+            resConfigs "en", "my"
         }
 
         shopPreInstall {
@@ -171,7 +171,7 @@ android {
             versionName "1.6"
             versionCode 10
             signingConfig signingConfigs.shopSigning
-            resConfigs "my"
+            resConfigs "en", "my"
             android.sourceSets {
                 shopPreInstall.res.srcDirs = ['src/shop/res', 'src/shopRelease/res', 'src/shopPreInstall/res']
             }
