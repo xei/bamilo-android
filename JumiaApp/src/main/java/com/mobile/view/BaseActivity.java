@@ -1397,9 +1397,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     public final void dismissProgress() {
-        if (baseActivityProgressDialog != null) {
-            baseActivityProgressDialog.dismissAllowingStateLoss();
-            baseActivityProgressDialog = null;
+        try {
+            if (baseActivityProgressDialog != null) {
+                baseActivityProgressDialog.dismissAllowingStateLoss();
+                baseActivityProgressDialog = null;
+            }
+        } catch (IllegalStateException e) {
+            // ...
         }
     }
 

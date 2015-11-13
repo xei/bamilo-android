@@ -21,9 +21,7 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.account.GetCustomerHelper;
-import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -32,7 +30,6 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.HockeyStartup;
@@ -64,7 +61,7 @@ import java.util.Set;
  *
  * @author Manuel Silva
  */
-public class CheckoutExternalPaymentFragment extends BaseFragment {
+public class CheckoutExternalPaymentFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = CheckoutExternalPaymentFragment.class.getSimpleName();
 
@@ -140,27 +137,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        triggerGetCustomer();
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
     }
-
-    private void triggerGetCustomer() {
-        triggerContentEventNoLoading(new GetCustomerHelper(), null, mCallback);
-    }
-
-    IResponseCallback mCallback = new IResponseCallback() {
-
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-            CheckoutExternalPaymentFragment.super.handleErrorEvent(baseResponse);
-        }
-
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-            onSuccessEvent(baseResponse);
-
-        }
-    };
 
     /*
      * (non-Javadoc)
@@ -173,6 +151,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         webview = (WebView) view.findViewById(R.id.webview);
+        // TODO VALIDATE IF THIS TRIGGER IS NECESSARY
+        triggerGetCustomer();
     }
 
     /*
@@ -502,12 +482,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Print.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
-
-                    // Defining event as having no priority
-                    Bundle args = new Bundle();
-                    args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-                    triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
-
+                    // TODO VALIDATE IF THIS TRIGGER IS NECESSARY
+                    triggerGetCustomer();
                     // Measure to escape the web view thread
                     handler.post(new Runnable() {
                         @Override
@@ -540,7 +516,17 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         }
     }
 
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+    private void triggerGetCustomer() {
+        triggerContentEventNoLoading(new GetCustomerHelper(), null, this);
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        CheckoutExternalPaymentFragment.super.handleErrorEvent(baseResponse);
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_CUSTOMER:
@@ -552,7 +538,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             default:
                 break;
         }
-        return false;
     }
 
     /*
