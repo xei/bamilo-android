@@ -39,7 +39,6 @@ public class GetWishListHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        
         // Save new wish list
         WishListCache.set(((WishList) baseResponse.getMetadata().getData()).getWishListCache());
     }
