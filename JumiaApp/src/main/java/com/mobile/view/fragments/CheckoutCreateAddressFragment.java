@@ -75,7 +75,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
         } else if(mFormShipping != null &&  mFormBilling!= null && orderSummary != null && regions != null){
-            loadCreateAddressForm(mFormShipping,mFormBilling);
+            loadCreateAddressForm(mFormShipping, mFormBilling);
         } else {
             triggerCreateAddressForm();
         }

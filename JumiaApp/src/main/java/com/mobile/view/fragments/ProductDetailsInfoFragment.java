@@ -134,8 +134,8 @@ public class ProductDetailsInfoFragment extends BaseFragment {
             if(ShopSelector.isRtl()){
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     mProductInfoPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                    mProductInfoPager.enableRtl();
                 }
+                mProductInfoPager.enableRtl();
             }
             setPagerPosition(getFragmentPosition(mPositionToStart));
             mProductInfoTabStrip.setViewPager(mProductInfoPager);

@@ -32,6 +32,7 @@
             android:id="@+id/checkout_my_order_shipping_method_name"
             style="@style/SubListItemStyle"
             android:layout_width="wrap_content"
+            android:paddingRight="@dimen/dimen_60px"
             android:gravity="right|center_vertical" />
     </RelativeLayout>
 
