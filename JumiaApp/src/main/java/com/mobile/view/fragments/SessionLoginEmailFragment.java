@@ -137,6 +137,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         view.findViewById(R.id.login_email_button_password).setOnClickListener(this);
         // Get continue button
         view.findViewById(R.id.login_email_button_create).setOnClickListener(this);
+        // Validate state
+        onValidateState();
     }
 
     /*
@@ -148,8 +150,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
-        // Validate state
-        onValidateState();
     }
 
     /*

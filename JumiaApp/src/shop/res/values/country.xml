@@ -7,7 +7,7 @@
     <string name="single_shop_country_url">www.shop.com.mm</string>
     <string name="single_shop_country_flag">""</string>
     <string name="single_shop_country_iso">MM</string>
-    <bool name="single_shop_country_force_https">false</bool>
+    <bool name="single_shop_country_force_https">true</bool>
     <bool name="single_shop_country_is_live">true</bool>
     <bool name="is_single_shop_country">true</bool>
     
