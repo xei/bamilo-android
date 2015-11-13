@@ -820,9 +820,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
             prodItem.priceView.setText(prodItem.itemValues.price_disc);
             prodItem.priceView.setVisibility(View.VISIBLE);
-
-            prodItem.priceView.setText(prodItem.itemValues.price);
-            prodItem.priceView.setVisibility(View.VISIBLE);
 //            prodItem.priceView.setPaintFlags(prodItem.priceView.getPaintFlags()
 //                    | Paint.STRIKE_THRU_TEXT_FLAG);
 //            prodItem.priceView.setTextColor(getResources().getColor(R.color.grey_middlelight));
