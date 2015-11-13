@@ -1187,7 +1187,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         // Generic errors
         if (super.handleErrorEvent(baseResponse)) {
-            //mBundleButton.setEnabled(true);
             return;
         }
 
@@ -1198,7 +1197,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Hide dialog progress
                 hideActivityProgress();
                 // Validate error
-                if (!super.handleErrorEvent(baseResponse)) {
+                try {
+                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
+                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN) ||
+                            errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ERROR_ADDING_ITEM)) {
+                        // Auto Login
+                        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                    } else {
+                        showUnexpectedErrorWarning();
+                    }
+                } catch (ClassCastException | NullPointerException e) {
                     showUnexpectedErrorWarning();
                 }
                 break;

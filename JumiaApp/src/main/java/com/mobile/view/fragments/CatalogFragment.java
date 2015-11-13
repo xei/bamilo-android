@@ -32,7 +32,9 @@ import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -62,6 +64,8 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Catalog fragment.
@@ -1010,7 +1014,18 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 hideActivityProgress();
                 // Validate error
                 if (!super.handleErrorEvent(baseResponse)) {
-                    showUnexpectedErrorWarning();
+                    try {
+                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
+                        if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN) ||
+                            errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ERROR_ADDING_ITEM)) {
+                            // Auto Login
+                            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        } else {
+                            showUnexpectedErrorWarning();
+                        }
+                    } catch (ClassCastException | NullPointerException e) {
+                        showUnexpectedErrorWarning();
+                    }
                 }
                 break;
             case GET_PRODUCTS_EVENT:
