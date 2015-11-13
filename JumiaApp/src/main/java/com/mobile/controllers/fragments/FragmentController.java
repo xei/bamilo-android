@@ -489,7 +489,7 @@ public class FragmentController {
     @Deprecated
     public void popBackStackUntilTag(BaseActivity activity, String tag) {
         try {
-            activity.getSupportFragmentManager().popBackStackImmediate(tag, 0);
+            activity.getSupportFragmentManager().popBackStackImmediate(tag, POP_BACK_STACK_NO_INCLUSIVE);
         } catch (IllegalStateException | NullPointerException e) {
             Print.w(TAG, "WARNING ON POP BACK STACK", e);
         }
