@@ -156,9 +156,8 @@ public class JumiaApplication extends A4SApplication {
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
         Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
-        // Disabled for Samsung and Blackberry (check_version_enabled)
+        // Initialize check version, disabled for Samsung (check_version_enabled)
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
-        // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.init(getApplicationContext());
         //
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
@@ -166,11 +165,6 @@ public class JumiaApplication extends A4SApplication {
 
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
         Print.d(TAG, "ON HANDLE");
-        // isInitializing = false;
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
-
         Print.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = new BaseResponse<>(eventType, errorType);
