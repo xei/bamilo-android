@@ -109,7 +109,7 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.8.2"
+            versionName "2.9"
             versionCode getAppVersionCode(58)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
@@ -117,7 +117,7 @@ android {
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.8.2"
+            versionName "2.9"
             versionCode 58
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
@@ -128,7 +128,7 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.8.2"
+            versionName "2.9"
             versionCode 58
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "ar"
