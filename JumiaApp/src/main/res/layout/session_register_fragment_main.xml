@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:background="@color/white">
+    android:gravity="center_horizontal">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -56,16 +55,20 @@
 
             <!--<include layout="@layout/login_remember_checkbox"/>-->
 
+            <!-- BUTTON -->
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/register_button_create"
+                style="@style/AigButton.Active"
+                android:layout_width="@dimen/register_container_width"
+                android:text="@string/create_label" />
+
         </LinearLayout>
 
     </ScrollView>
-
-    <!-- BUTTON -->
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/register_button_create"
-        style="@style/AigButton.Active"
-        android:layout_width="@dimen/register_container_width"
-        android:text="@string/create_label" />
 
 </LinearLayout>

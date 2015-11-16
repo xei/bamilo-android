@@ -2,7 +2,9 @@ package com.mobile.newFramework.objects.addresses;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,16 +29,6 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
         // ...
     }
 
-    /**
-     * ############### IJSON ###############
-     */
-
-    @Override
-    public int getRequiredJson() {
-        return RequiredJson.METADATA;
-    }
-
-
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // For each item
@@ -53,10 +45,6 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
         return true;
     }
 
-    public int getDefaultPosition() {
-        return defaultPosition;
-    }
-
     /*
      * (non-Javadoc)
      *
@@ -65,6 +53,35 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
     @Override
     public JSONObject toJSON() {
         return null;
+    }
+
+    /**
+     * ############### IJSON ###############
+     */
+
+    @Override
+    public RequiredJson getRequiredJson() {
+        return RequiredJson.METADATA;
+    }
+
+    public int getDefaultPosition() {
+        return defaultPosition;
+    }
+
+    /**
+     * return a prefix position by knowing it's value
+     * @param value
+     * @return
+     */
+    public int getPositionFromValue(String value) {
+        if(TextUtils.isNotEmpty(value)){
+            for (int i = 0; i < this.size() ; i++) {
+                if(this.get(i).getValue() == Integer.parseInt(value)){
+                    return i;
+                }
+            }
+        }
+        return IntConstants.INVALID_POSITION;
     }
 
 }

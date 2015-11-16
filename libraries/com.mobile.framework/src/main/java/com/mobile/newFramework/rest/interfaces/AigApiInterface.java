@@ -28,7 +28,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.orders.MyOrder;
-import com.mobile.newFramework.objects.orders.OrderTracker;
+import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
@@ -169,6 +169,11 @@ public interface AigApiInterface {
     void getPaymentMethodsForm(Callback<BaseResponse<CheckoutFormPayment>> callback);
 
     String getPaymentMethodsForm = "getPaymentMethodsForm";
+
+    @GET("/")
+    void getUserDataForm(Callback<BaseResponse<Form>> callback);
+
+    String getUserDataForm = "getUserDataForm";
 
     /*
      * ## CATALOG
@@ -318,6 +323,12 @@ public interface AigApiInterface {
      * ## SESSION
      */
 
+    @FormUrlEncoded
+    @POST("/")
+    void setUserData(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    String setUserData = "setUserData";
+
     @GET("/")
     void logoutCustomer(Callback<BaseResponse<Void>> callback);
 
@@ -445,16 +456,11 @@ public interface AigApiInterface {
 
     String setSellerReview = "setSellerReview";
 
-    @GET("/")
-    void getSellerReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
-
-    String getSellerReviews = "getSellerReviews";
-
     /*
     * ## ORDERS
     */
     @GET("/")
-    void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderTracker>> callback);
+    void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderStatus>> callback);
 
     String trackOrder = "trackOrder";
 

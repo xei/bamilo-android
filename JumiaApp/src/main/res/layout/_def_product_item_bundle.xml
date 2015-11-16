@@ -2,24 +2,25 @@
 
 <!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width. -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
     android:id="@+id/item_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingStart="@dimen/margin_mid"
     android:paddingEnd="@dimen/margin_mid"
     android:paddingLeft="@dimen/margin_mid"
-    android:paddingRight="@dimen/margin_mid">
+    android:paddingRight="@dimen/margin_mid"
+    android:paddingStart="@dimen/margin_mid">
 
     <!-- android:background="@drawable/selector_listitem_highlight" -->
 
     <include
         android:id="@+id/item_image_loadable"
+        layout="@layout/image_loadable"
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_banners_brands_list_height"
-        android:layout_centerHorizontal="true"
-        layout="@layout/image_loadable" />
+        android:layout_centerHorizontal="true"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
@@ -82,7 +83,7 @@
             android:layout_height="match_parent"
             android:layout_toEndOf="@id/bundle_size_text"
             android:layout_toRightOf="@id/bundle_size_text"
-            android:background="@drawable/spinner_background_holo_orange"
+            android:background="@drawable/spinner_background"
             android:clickable="true"
             android:minWidth="@dimen/campaign_size_spinner_width"
             android:textColor="@color/grey_middle"

@@ -33,6 +33,7 @@ public class Form implements IJSONSerializable, Parcelable {
     private ArrayList<FormField> fields;
     private Map<String, Form> subForms;
     private Map<String, FormField> mFieldKeyMap;
+    private boolean hideAsterisks;
 
     @Override
     public @RequiredJson.JsonStruct
@@ -75,13 +76,21 @@ public class Form implements IJSONSerializable, Parcelable {
         return this.mType;
     }
 
+    public void hideAsterisks() {
+        hideAsterisks = true;
+    }
+
+    public boolean isToHideAsterisks() {
+        return hideAsterisks;
+    }
+
     /*
-         * (non-Javadoc)
-         *
-         * @see
-         * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-         * )
-         */
+     * (non-Javadoc)
+     *
+     * @see
+     * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+     * )
+     */
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
@@ -194,4 +203,5 @@ public class Form implements IJSONSerializable, Parcelable {
             return new Form[size];
         }
     };
+
 }

@@ -230,7 +230,7 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
         hasUniqueSize = in.readByte() != 0x00;
         mRemainingTime = in.readInt();
         if (in.readByte() == 0x01) {
-            mSizes = new ArrayList<CampaignItemSize>();
+            mSizes = new ArrayList<>();
             in.readList(mSizes, CampaignItemSize.class.getClassLoader());
         } else {
             mSizes = null;

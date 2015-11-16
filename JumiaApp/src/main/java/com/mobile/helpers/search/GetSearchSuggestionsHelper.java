@@ -160,10 +160,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
             Print.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
 
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EVENT_TYPE);
-//        bundle.putSerializable(Constants.BUNDLE_RESPONSE_KEY, suggestions);
-
         BaseResponse baseResponse = new BaseResponse();
         super.postSuccess(baseResponse);
         SuggestionsStruct suggestionsStruct = new SuggestionsStruct(suggestions);
@@ -184,7 +180,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
             public void run() {
                 try {
                     SearchRecentQueriesTableHelper.insertQuery(query);
-                } catch (IllegalStateException e){
+                } catch (Exception e){
                     // ...
                 }
             }

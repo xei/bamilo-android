@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/rounded_box"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:layout_marginBottom="0dp"
-    android:layout_marginEnd="@dimen/rounded_margin_mid"
-    android:layout_marginLeft="0dp"
-    android:layout_marginRight="@dimen/rounded_margin_mid"
-    android:layout_marginStart="0dp"
     android:orientation="vertical" >
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/title_box_height"
-        android:layout_margin="@dimen/rounded_margin_mid"
-        android:gravity="left|start|center"
-        android:orientation="horizontal" >
+        android:layout_height="48dp">
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/rounded_box_title_grey"
-            android:layout_height="wrap_content"
-            android:layout_margin="0dp"
+            style="@style/HeaderStyle"
             android:text="@string/order_summary_label" />
 
         <ImageView
@@ -30,10 +22,10 @@
             android:layout_marginEnd="@dimen/rounded_margin_mid"
             android:layout_marginRight="@dimen/rounded_margin_mid"
             android:src="@drawable/selector_btn_edit"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:paddingLeft="10dp"
+            android:paddingStart="10dp"/>
     </RelativeLayout>
-
-    <View style="@style/divider_horizontal_orange" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -41,19 +33,13 @@
         android:layout_margin="@dimen/rounded_margin_mid"
         android:orientation="vertical" >
 
-        <!-- PRODUCTS -->
-
-        <com.mobile.components.customfontviews.TextView
-            style="@style/text_normal"
-            android:layout_marginTop="@dimen/margin_40px"
-            android:text="@string/order_track_products" />
 
         <LinearLayout
             android:id="@+id/checkout_summary_products_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_large"
             android:orientation="vertical" />
+
         <!-- Price Rules -->
 
         <LinearLayout

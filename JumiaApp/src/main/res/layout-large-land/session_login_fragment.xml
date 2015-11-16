@@ -48,12 +48,10 @@
             <!-- DIVIDER -->
 
             <RelativeLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/login_divider"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="20dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                android:layout_marginTop="20dp">
+                android:layout_margin="20dp">
 
                 <View
                     style="@style/divider_vertical"
@@ -82,6 +80,13 @@
                     android:hint="@string/email_address"
                     android:imeOptions="actionDone" />
 
+                <!-- ERROR MESSAGE -->
+
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/login_text_error_message"
+                    style="@style/TextErrorField"
+                    android:visibility="gone" />
+
                 <Space
                     android:layout_width="wrap_content"
                     android:layout_height="16dp" />
@@ -92,9 +97,9 @@
                     android:id="@+id/login_button_guest"
                     style="@style/TextCaption"
                     android:layout_gravity="center"
-                    android:text="@string/continue_without_log_in"
                     android:layout_marginBottom="16dp"
-                    android:visibility="gone"/>
+                    android:text="@string/continue_without_log_in"
+                    android:visibility="gone" />
 
                 <!-- BUTTON -->
 

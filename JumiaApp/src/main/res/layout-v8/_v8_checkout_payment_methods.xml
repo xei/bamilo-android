@@ -1,34 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/rounded_box"
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_marginBottom="0dp" >
 
     <!-- TITLE mandatoryControl -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_payment_methods_title"
-        style="@style/rounded_box_title_grey"
+        style="@style/HeaderStyle"
         android:layout_alignParentRight="true"
         android:gravity="right|center_vertical"
         android:text="@string/payment" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/checkout_payment_methods_title_mandatory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignTop="@id/checkout_payment_methods_title"
-        android:layout_marginLeft="33dp"
-        android:text="*"
-        android:textColor="@color/color_accent"
-        android:textSize="@dimen/text_title" />
-
-    <!-- DIVIDER -->
-
-    <View
-        android:id="@+id/checkout_payment_methods_divider"
-        style="@style/divider_horizontal_orange"
-        android:layout_below="@id/checkout_payment_methods_title" />
 
     <!-- PAYMENT METHODS -->
 
@@ -36,9 +20,7 @@
         android:id="@+id/checkout_payment_methods_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/checkout_payment_methods_divider"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_below="@id/checkout_payment_methods_title"
         android:orientation="vertical" />
 
 </RelativeLayout>

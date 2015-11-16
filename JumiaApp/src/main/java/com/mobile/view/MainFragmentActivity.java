@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
 import com.ad4screen.sdk.Tag;
-import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -16,7 +15,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
@@ -42,6 +40,7 @@ import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
+import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -71,7 +70,7 @@ import java.util.List;
  * @author sergiopereira
  */
 @Tag(name = "MainActivity")
-public class MainFragmentActivity extends BaseActivity implements OnPreferenceAttachedListener {
+public class MainFragmentActivity extends BaseActivity {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
 
@@ -212,7 +211,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     protected void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
     /*
@@ -270,9 +268,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = HomePageFragment.newInstance(bundle);
                 break;
             case CATALOG:
-                if(CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_ENTRIES)){
-                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_ENTRIES);
-                    bundle.remove(ConstantsIntentExtra.REMOVE_ENTRIES);
+                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
+                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
+                    bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 } else {
                     removeEntries = true;
                 }
@@ -311,7 +309,10 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountUserDataFragment.getInstance();
                 break;
             case MY_ORDERS:
-                fragment = MyOrdersFragment.getInstance(bundle);
+                fragment = MyOrdersFragment.getInstance();
+                break;
+            case ORDER_STATUS:
+                fragment = OrderStatusFragment.getInstance(bundle);
                 break;
             case CHOOSE_COUNTRY:
                 fragment = ChooseCountryFragment.getInstance();
@@ -482,11 +483,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         popBackStackUntilTag(tag);
         // Get the current fragment
         fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
-    }
-
-    // ####################### MY ACCOUNT FRAGMENT #######################
-    @Override
-    public void onPreferenceAttached() {
     }
 
     public boolean isInMaintenance() {

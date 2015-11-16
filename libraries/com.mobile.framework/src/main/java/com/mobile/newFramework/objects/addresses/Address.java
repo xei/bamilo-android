@@ -44,10 +44,13 @@ public class Address implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject dataObject) throws JSONException {
         // Mandatory
-        // TODO ID
+        // TODO VALIDATE THIS
         id = dataObject.optInt(RestConstants.CUSTOMER_ADDRESS_ID);
         if (id == 0) {
-            id = dataObject.getInt(RestConstants.ID);
+            id = dataObject.optInt(RestConstants.ID);
+        }
+        if (id == 0) {
+            id = dataObject.getInt(RestConstants.OTHER_ADDRESS_ID);
         }
         firstName = dataObject.getString(RestConstants.FIRST_NAME);
         lastName = dataObject.getString(RestConstants.LAST_NAME);

@@ -50,6 +50,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private boolean isFacebookAvailable;
     private Languages languages;
     private List<TargetHelper> mobileAbout;
+    private boolean hasCartPopup;
 
     /**
      * Empty constructor
@@ -70,6 +71,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         isRatingLoginRequired = false;
         isReviewLoginRequired = false;
         isFacebookAvailable = false;
+        hasCartPopup = false;
     }
 
     /**
@@ -100,7 +102,8 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
                 "\nrating: " + isRatingEnable +
                 "\nrating_login: " + isRatingLoginRequired +
                 "\nreview: " + isReviewEnable +
-                "\nreview_login: " + isReviewLoginRequired
+                "\nhas_cart_popup: " + hasCartPopup
+
                 ;
     }
 
@@ -148,6 +151,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         } catch (JSONException ex) {
         }
 
+        hasCartPopup = jsonObject.optBoolean(RestConstants.JSON_COUNTRY_HAS_CART_POPUP);
         return true;
     }
 
@@ -184,6 +188,10 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     public String getDecimalsSep() {
         return mDecimalsSep;
+    }
+
+    public boolean hasCartPopup() {
+        return hasCartPopup;
     }
 
     public void setCurrencyIso(String mCurrencyIso) {
@@ -294,6 +302,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         isRatingLoginRequired = in.readByte() != 0x00;
         isReviewLoginRequired = in.readByte() != 0x00;
         isFacebookAvailable = in.readByte() != 0x00;
+        hasCartPopup = in.readByte() != 0x00;
     }
 
     @Override
@@ -318,6 +327,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         dest.writeByte((byte) (isRatingLoginRequired ? 0x01 : 0x00));
         dest.writeByte((byte) (isReviewLoginRequired ? 0x01 : 0x00));
         dest.writeByte((byte) (isFacebookAvailable ? 0x01 : 0x00));
+        dest.writeByte((byte) (hasCartPopup ? 0x01 : 0x00));
     }
 
     @SuppressWarnings("unused")

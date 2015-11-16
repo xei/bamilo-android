@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:background="@color/campaign_info_background"
     android:orientation="horizontal"
+              android:layoutDirection="ltr"
     android:padding="@dimen/margin_large" >
 
  

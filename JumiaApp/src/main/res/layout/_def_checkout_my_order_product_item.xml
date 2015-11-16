@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/checkout_myorder_item_height" >
+                android:layout_height="wrap_content">
 
     <View
         android:id="@+id/my_order_item_divider"
@@ -13,43 +13,64 @@
         android:layout_height="@dimen/catalog_list_item_image_height"
         android:layout_below="@id/my_order_item_divider"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginStart="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/catalog_list_item_image_padding"
         android:layout_marginEnd="@dimen/catalog_list_item_image_padding"
+        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginRight="@dimen/catalog_list_item_image_padding"
+        android:layout_marginStart="@dimen/rounded_margin_mid"
         android:adjustViewBounds="false"
         android:background="@android:color/white"
         android:scaleType="fitCenter"
         android:src="@drawable/no_image_small" />
 
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/my_order_item_brand"
+        style="@style/TextCaption"
+        android:layout_width="wrap_content"
+        android:layout_marginEnd="@dimen/product_item_text_right_margin"
+        android:layout_marginRight="@dimen/product_item_text_right_margin"
+        android:layout_marginTop="@dimen/margin_30px"
+        android:layout_toEndOf="@id/image_view"
+        android:layout_toRightOf="@id/image_view"
+        android:text="BRAND"
+        android:textColor="@color/black_800" />
+
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_name"
-        style="@style/text_normal"
-        android:layout_marginBottom="@dimen/margin_60px"
-        android:layout_marginTop="@dimen/margin_30px"
-        android:layout_toRightOf="@+id/image_view"
-        android:layout_toEndOf="@+id/image_view" />
+        style="@style/TextBody_1"
+        android:layout_below="@id/my_order_item_brand"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_toEndOf="@id/image_view"
+        android:layout_toRightOf="@id/image_view"
+        android:maxLines="2"
+        android:singleLine="false"
+        android:text="Name"
+        android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_quantity"
-        style="@style/text_normal"
+        style="@style/TextBody_3"
         android:layout_alignLeft="@id/my_order_item_name"
         android:layout_alignStart="@id/my_order_item_name"
-        android:layout_below="@id/my_order_item_name" />
+        android:layout_below="@id/my_order_item_name"
+        android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_price"
-        style="@style/text_normal"
+        style="@style/TextBody_3"
         android:layout_alignLeft="@id/my_order_item_name"
         android:layout_alignStart="@id/my_order_item_name"
-        android:layout_below="@id/my_order_item_quantity" />
+        android:layout_below="@id/my_order_item_quantity"
+        android:textColor="@color/black_800" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_variation"
-        style="@style/text_normal"
+        style="@style/TextBody_3"
         android:layout_alignLeft="@id/my_order_item_name"
         android:layout_alignStart="@id/my_order_item_name"
         android:layout_below="@id/my_order_item_price"
+        android:textColor="@color/black"
         android:visibility="gone" />
 
 </RelativeLayout>

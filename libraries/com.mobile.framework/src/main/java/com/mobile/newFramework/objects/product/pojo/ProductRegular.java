@@ -26,6 +26,7 @@ public class ProductRegular extends ProductBase {
     protected double mAvgRating;
     protected int mTotalReviews;
     protected int mTotalRatings;
+    private int mBrandId;
 
     /**
      * Empty constructor
@@ -49,6 +50,7 @@ public class ProductRegular extends ProductBase {
         // Mandatory
         mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
         mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
+        mBrandId = jsonObject.optInt(RestConstants.JSON_BRAND_ID_TAG);
         // Optional TODO FIX THIS
         mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
         if(TextUtils.isEmpty(mImageUrl)) {
@@ -93,6 +95,10 @@ public class ProductRegular extends ProductBase {
         return mBrand;
     }
 
+    public int getBrandId() {
+        return mBrandId;
+    }
+
     public String getImageUrl() {
         return mImageUrl;
     }
@@ -121,6 +127,13 @@ public class ProductRegular extends ProductBase {
         return mCategories;
     }
 
+    public String getCategoryId() {
+        if(TextUtils.isNotEmpty(mCategories)){
+            String[] categories = mCategories.split(",");
+            return categories[0];
+        }
+        return "";
+    }
 
 
     /*
@@ -131,6 +144,7 @@ public class ProductRegular extends ProductBase {
         super(in);
         mName = in.readString();
         mBrand = in.readString();
+        mBrandId = in.readInt();
         mImageUrl = in.readString();
         mCategories = in.readString();
         isNew = in.readByte() != 0x00;
@@ -144,6 +158,7 @@ public class ProductRegular extends ProductBase {
         super.writeToParcel(dest, flags);
         dest.writeString(mName);
         dest.writeString(mBrand);
+        dest.writeInt(mBrandId);
         dest.writeString(mImageUrl);
         dest.writeString(mCategories);
         dest.writeByte((byte) (isNew ? 0x01 : 0x00));

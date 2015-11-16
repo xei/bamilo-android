@@ -46,13 +46,12 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         // Mandatory
         mSku = jsonObject.getString(RestConstants.SKU);
         mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
-        mPriceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
         // Optional
+        mPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
         mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
         mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
         mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
-
-        mPriceRange = jsonObject.optString(RestConstants.PRICE_RANGE, null);
+        mPriceRange = jsonObject.optString(RestConstants.PRICE_RANGE);
         return true;
     }
 
@@ -98,6 +97,10 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
     }
 
+    public String getPriceRange() {
+        return mPriceRange;
+    }
+
     /*
 	 * ############ PARCELABLE ############
 	 */
@@ -138,7 +141,4 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         }
     };
 
-    public String getPriceRange() {
-        return mPriceRange;
-    }
 }

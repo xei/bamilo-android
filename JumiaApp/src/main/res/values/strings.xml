@@ -46,10 +46,10 @@
     <string name="categories_toplevel_title">All Categories</string>
     <string name="category_filter_error">It was not possible to apply category filter</string>
     <string name="checkout_button_text">Proceed to Checkout</string>
-    <string name="checkout_header_step_1">1. About you</string>
-    <string name="checkout_header_step_2">2. Address</string>
-    <string name="checkout_header_step_3">3. Shipping</string>
-    <string name="checkout_header_step_4">4. Payment</string>
+    <string name="checkout_header_step_1">Login</string>
+    <string name="checkout_header_step_2">Address</string>
+    <string name="checkout_header_step_3">Shipping</string>
+    <string name="checkout_header_step_4">Payment</string>
     <string name="checkout_label">Checkout</string>
     <string name="clear_all_uppercase_label">CLEAR ALL</string>
     <string name="clear_uppercase_label">CLEAR</string>
@@ -233,7 +233,6 @@
     <string name="recent_searches">Recent Searches</string>
     <string name="recently_viewed">Recently Viewed</string>
     <string name="recentlyview_clear_viewed">Clear Recently Viewed</string>
-    <string name="recentlyview_no_searches">No Recently Viewed Products Here</string>
     <string name="recentsearch_clear_searches">Clear Recent Searches</string>
     <string name="recentsearch_no_searches">No Recent Searches</string>
     <string name="register_birthday">Birthday</string>
@@ -368,7 +367,6 @@
     <string name="kickout_page_text1">So much that the shop is currently full, and we cannot welcome new customers at the moment.</string>
     <string name="kickout_page_text2">We want to provide you with the best possible shopping experience, so we would like to ask you to try again later.</string>
     <string name="facebook_permission">Email permission is mandatory. Please allow it.</string>
-
     <string name="review_plural">%d review</string>
     <string name="reviews_plural">%d reviews</string>
     <string name="open">open</string>
@@ -395,7 +393,6 @@
     <string name="buy_the_look">BUY THE LOOK</string>
     <string name="pdv_size">Size</string>
     <string name="buy_now_button">BUY NOW</string>
-    <string name="save_no_saved">You have no saved items at the moment</string>
     <string name="saved">Saved</string>
     <string name="products_added_saved">Item added to Saved</string>
     <string name="products_removed_saved">Item removed from Saved</string>
@@ -417,9 +414,9 @@
     <string name="rat_rev">Ratings Reviews</string>
     <string name="fulfilled_by">Fulfilled by %s</string>
     <string name="qty_placeholder">Qty: %d</string>
-    <string name="shipment" formatted="false">Shipment %d of %d</string>
     <string name="policy">Policy</string>
-    <string name="delivery_time_placeholder" formatted="false">Delivery time: %d - %d days</string>
+    <string name="shipment">Shipment %1$d of %2$d</string>
+    <string name="delivery_time_placeholder">Delivery time: %1$d - %2$d days</string>
     <string name="product_specifications">Product Specifications</string>
     <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">The host name does not match the certificate: %s</string>
@@ -436,8 +433,40 @@
     <string name="com_facebook_loginview_log_in_button_long">Continue with Facebook</string>
     <string name="error_invalid_email">Invalid E-mail</string>
     <string name="create_label">Create</string>
+    <string name="change_password">Change password</string>
     <string name="continue_without_log_in">Continue without log in</string>
+    <string name="format_discount_value">-%s</string>
+    <string name="edit_user_success">User data edit with success</string>
+    <string name="password">Password</string>
     <string name="more">More</string>
     <string name="app_version">App version</string>
     <string name="update_now">Update Now</string>
+    <string name="informational_text">Item added to Cart</string>
+    <string name="cart_total_price">Your Cart total is %s</string>
+    <string name="cta_button_view_cart">View Cart</string>
+    <string name="cta_link_continue_shopping">Continue Shopping</string>
+    <string name="up_to_date">Up to date</string>
+    <string name="rate_the_app">Rate the App</string>
+    <string name="order_track_check">You can check your order status visiting the My Orders area</string>
+    <string name="select_city">Please Select City</string>
+    <string name="no_saved_items">No Saved Items</string>
+    <string name="no_saved_items_subtitle">You don\'t have any saved items.</string>
+    <string name="no_recently_viewed_items">No Recently Viewed Items</string>
+    <string name="no_recently_viewed_items_subtitle">You don\'t have any recently viewed items.</string>
+    <string name="recent_searches_empty">You don\'t have yet any recent searches.</string>
+    <string name="items_in_your_order">Items in your order</string>
+    <string name="delivered_label">Delivered</string>
+    <string name="order_number">Order N.º %s</string>
+    <string name="billing">Billing</string>
+    <string name="first_and_second">%1$s %2$s</string>
+    <string name="quantity">Qty %s</string>
+    <string name="reorder_label">Reorder</string>
+    <string name="order_status_date">&lt;b>%1$s&lt;/b>\n%2$s</string>
+    <string name="order_pending">Order Pending</string>
+    <string name="no_orders_message">You don\'t have yet any Orders.</string>
+    <string name="no_orders">No Orders</string>
+    <string name="an_error_occurred">An Error Occurred</string>
+    <string name="customer_service_info">Please, try to contact our Customer Service for more info.</string>
+    <string name="phone_contact">Phone:</string>
+    <string name="email_contact">Email:</string>
 </resources>

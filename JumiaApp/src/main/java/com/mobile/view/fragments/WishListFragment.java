@@ -22,8 +22,9 @@ import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -32,11 +33,11 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ToastManager;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * WishList fragment with pagination.
@@ -206,12 +207,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
         if (!JumiaApplication.isCustomerLoggedIn()) {
-            // Pop entries until home
-            getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
-            // Goto Login and next WishList
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            switchToLoginFragment();
         }
         // Case first time
         else if (mWishList == null || sForceReloadWishListFromNetwork) {
@@ -252,7 +248,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Show the wish list container as first time.
      */
     protected void showWishListContainer(WishList wishList) {
-        WishListGridAdapter listAdapter = new WishListGridAdapter(this.getActivity(), wishList.getProducts(), new OnWishListViewHolderClickListener() {
+        WishListGridAdapter listAdapter = new WishListGridAdapter(wishList.getProducts(), new OnWishListViewHolderClickListener() {
             @Override
             public void onItemClick(View view) {
                 WishListFragment.this.onItemClick(view);
@@ -284,12 +280,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Update content
         WishListGridAdapter adapter = (WishListGridAdapter) mListView.getAdapter();
         adapter.notifyDataSetChanged();
-        //if (adapter != null) {
-        //    adapter.notifyDataSetChanged();
-        //} else {
-        //    WishListAdapter listAdapter = new WishListAdapter(getBaseActivity(), mWishList.getProducts(), this);
-        //    mListView.setAdapter(listAdapter);
-        //}
     }
 
     /**
@@ -467,6 +457,18 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         }
     }
 
+    /**
+     * Request login
+     */
+    private void switchToLoginFragment() {
+        // Pop entries until home
+        getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
+        // Goto Login and next WishList
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
     /*
      * ############## TRIGGERS ##############
      */
@@ -510,11 +512,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+                showAddToCartCompleteMessage(baseResponse);
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_REMOVED_FAVOURITE);
+                showInfoAddToSaved();
                 break;
             case GET_WISH_LIST:
             default:
@@ -546,7 +548,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 if (!super.handleErrorEvent(baseResponse)) {
-                    ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
+                    showInfoAddToShoppingCartOOS();
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
@@ -558,7 +560,16 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             default:
                 // Validate error
                 if (!super.handleErrorEvent(baseResponse)) {
-                    showContinueShopping();
+                    try {
+                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
+                        if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
+                            switchToLoginFragment();
+                        } else {
+                            showContinueShopping();
+                        }
+                    } catch (ClassCastException | NullPointerException e) {
+                        showContinueShopping();
+                    }
                 }
                 isErrorOnLoadingMore = isLoadingMoreData;
                 setLoadingMore(false);

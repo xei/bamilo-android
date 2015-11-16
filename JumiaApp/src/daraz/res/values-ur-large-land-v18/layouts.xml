@@ -3,7 +3,6 @@
     <!-- ########################## DEF LANDSCAPE ########################## -->
     
     <!-- CHECKOUT -->
-    <item name="checkout_about_you_main" 		type="layout">@layout/_def_checkout_about_you_main</item>
     <item name="checkout_create_address_main" 	type="layout">@layout/_def_checkout_create_address_main</item>
     <item name="checkout_edit_address_main" 	type="layout">@layout/_def_checkout_edit_address_main</item>
     <item name="checkout_my_addresses" 			type="layout">@layout/_def_checkout_my_addresses</item>
@@ -22,7 +21,7 @@
     <item name="pdv_fragment_main" 	             type="layout">@layout/_def_pdv_fragment_main</item>
 
     <!-- MY ORDERS -->
-    <item name="track_order_fragment"           type="layout">@layout/_def_track_order_fragment</item>
-    <item name="order_history_main"             type="layout">@layout/_def_order_history_main</item>
+    <item name="my_account_fragment"            type="layout">@layout/_def_my_account_fragment</item>
+    <item name="my_orders_fragment_main"        type="layout">@layout/_def_my_orders_fragment_main</item>
 
 </resources>

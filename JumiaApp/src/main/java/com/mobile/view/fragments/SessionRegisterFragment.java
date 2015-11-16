@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -61,6 +62,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
 
     private String mCustomerEmail;
 
+    private boolean isInCheckoutProcess;
+
+    private FragmentType mParentFragmentType;
+
     /**
      * Get new instance of register fragment
      */
@@ -98,10 +103,17 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         // Saved form state
         mFormSavedState = savedInstanceState;
         // Get arguments
-        Bundle arguments = getArguments();
+        Bundle arguments = savedInstanceState == null ? getArguments() : savedInstanceState;
         if (arguments != null) {
+            mParentFragmentType = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE);
             // Get customer email
             mCustomerEmail = arguments.getString(ConstantsIntentExtra.DATA);
+            // Get checkout flag
+            isInCheckoutProcess = arguments.getBoolean(ConstantsIntentExtra.FLAG_1);
+        }
+        // Show checkout tab layout
+        if (isInCheckoutProcess && mParentFragmentType != FragmentType.MY_ACCOUNT) {
+            checkoutStep = ConstantsCheckout.CHECKOUT_ABOUT_YOU;
         }
     }
 
@@ -153,6 +165,11 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         if (mDynamicForm != null) {
             mDynamicForm.saveFormState(outState);
         }
+        // Save data
+        outState.putString(ConstantsIntentExtra.DATA, mCustomerEmail);
+        // Save checkout flag
+        outState.putBoolean(ConstantsIntentExtra.FLAG_1, isInCheckoutProcess);
+        outState.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, mParentFragmentType);
     }
 
     @Override
@@ -194,9 +211,9 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         // Create form view
         mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM, getActivity(), form);
         // Set request callback
-        mDynamicForm.setRequestCallBack(this); // FormInputType.relatedNumber
+        mDynamicForm.setRequestCallBack(this); // Form FormInputType.relatedNumber
         // Set click listener
-        mDynamicForm.setOnClickListener(this); // FormInputType.checkBoxLink
+        mDynamicForm.setOnClickListener(this); // From FormInputType.checkBoxLink
         // Load saved state
         mDynamicForm.loadSaveFormState(mFormSavedState);
         // Set initial value

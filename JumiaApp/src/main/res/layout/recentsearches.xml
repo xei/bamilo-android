@@ -1,7 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <ListView
+        android:id="@+id/recentsearch_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="0dp"
+        android:divider="@color/black_300"
+        android:dividerHeight="1dp"
+        android:listSelector="@color/transparent"
+        android:layout_above="@+id/bottom_divider"
+        android:layout_alignParentTop="true"
+        />
+
+    <View style="@style/HorizontalListDivider" android:id="@id/bottom_divider"
+        android:layout_above="@+id/recentsearch_clear_all"
+        />
+
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@id/recentsearch_clear_all"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        style="@style/TextButton"
+        android:contentDescription="@string/recentsearch_clear_searches"
+        android:textAllCaps="true"
+        android:text="@string/recentsearch_clear_searches"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        />
+
+
+
+
+    <!--
+    <View style="@style/HorizontalListDivider" />
+    -->
+
+
+</RelativeLayout>
+
+<!--
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
 
     <LinearLayout
         android:id="@+id/recentsearch_container"
@@ -11,11 +60,10 @@
 
         <ListView
             android:id="@+id/recentsearch_list"
-            style="@style/rounded_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
-            android:divider="@color/grey_highlight"
+            android:divider="@color/black_300"
             android:dividerHeight="1dp"
             android:listSelector="@color/transparent" />
     </LinearLayout>
@@ -31,3 +79,4 @@
     </LinearLayout>
 
 </RelativeLayout>
+-->

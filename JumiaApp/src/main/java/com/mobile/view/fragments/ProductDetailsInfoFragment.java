@@ -134,8 +134,8 @@ public class ProductDetailsInfoFragment extends BaseFragment {
             if(ShopSelector.isRtl()){
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     mProductInfoPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-                    mProductInfoPager.enableRtl();
                 }
+                mProductInfoPager.enableRtl();
             }
             setPagerPosition(getFragmentPosition(mPositionToStart));
             mProductInfoTabStrip.setViewPager(mProductInfoPager);
@@ -242,12 +242,10 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         /**
          * Constructor
-         * 
-         * @param fm
          * @author Paulo Carvalho
          */
         public ProductInfoPagerAdapter(FragmentManager fm) {
-            super(fm,ProductDetailsInfoFragment.this, getFragmentTitleValues());
+            super(fm, ProductDetailsInfoFragment.this, getFragmentTitleValues());
         }
 
         /*
@@ -262,7 +260,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         @Override
         protected Fragment createNewFragment(int position) {
-
             if(titlesPageInt.get(position).equals(R.string.description) && mHasDesc) {
                 return ProductDetailsSummaryFragment.getInstance(getArguments());
             }

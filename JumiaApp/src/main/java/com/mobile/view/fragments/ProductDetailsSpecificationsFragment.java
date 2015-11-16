@@ -40,7 +40,7 @@ import java.util.Map;
  * @author Paulo Carvalho
  * 
  */
-public class ProductDetailsSpecificationsFragment extends BaseFragment {
+public class ProductDetailsSpecificationsFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = ProductDetailsSpecificationsFragment.class.getSimpleName();
 
@@ -151,7 +151,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
             values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
             Bundle bundle = new Bundle();
             bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-            triggerContentEvent(new GetProductHelper(), bundle, responseCallback);
+            triggerContentEvent(new GetProductHelper(), bundle, this);
         } else {
             showFragmentErrorRetry();
         }
@@ -209,7 +209,6 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         Print.i(TAG, "ON DESTROY");
         mainView = null;
         mCompleteProduct = null;
-        System.gc();
     }
     
     private void getViews(){
@@ -268,7 +267,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
      * @param parent
      */
     private void addSpecTableRow(Map.Entry pair, final LinearLayout parent){
-        View theInflatedView = inflater.inflate(R.layout._def_product_specs_container_item, parent, false);
+        View theInflatedView = inflater.inflate(R.layout.product_specs_container_item, parent, false);
         TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
         TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
 
@@ -293,21 +292,12 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
 
     }
 
-    IResponseCallback responseCallback = new IResponseCallback() {
 
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-            onErrorEvent(baseResponse);
-        }
 
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-            onSuccessEvent(baseResponse);
-        }
-    };
 
-    public void onSuccessEvent(BaseResponse baseResponse) {
-
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -321,31 +311,36 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "onSuccessEvent: type = " + eventType);
         switch (eventType) {
-        case GET_PRODUCT_DETAIL:
-            if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
-                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-                getActivity().onBackPressed();
-                return;
-            } else {
-                mCompleteProduct = (ProductComplete) baseResponse.getMetadata().getData();
-                getViews();
-                displaySpecification();
-                // Waiting for the fragment comunication
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showFragmentContentContainer();
-                    }
-                }, 300);
-            }          
+            case GET_PRODUCT_DETAIL:
+                if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
+                    Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                    getActivity().onBackPressed();
+                    return;
+                } else {
+                    mCompleteProduct = (ProductComplete) baseResponse.getMetadata().getData();
+                    getViews();
+                    displaySpecification();
+                    // Waiting for the fragment comunication
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showFragmentContentContainer();
+                        }
+                    }, 300);
+                }
 
-            break;
-        default:
-            break;
+                break;
+            default:
+                break;
         }
     }
 
-    public void onErrorEvent(BaseResponse baseResponse) {
+
+
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Print.i(TAG, "ON ERROR EVENT");
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -356,27 +351,30 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment {
         if (super.handleErrorEvent(baseResponse)) {
             return;
         }
+
         EventType eventType = baseResponse.getEventType();
         ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "onErrorEvent: type = " + eventType);
+        Print.d(TAG, "onErrorEvent: type = " + eventType + " code = "+ errorCode);
         switch (eventType) {
 
-        case GET_PRODUCT_DETAIL:
-            if (!errorCode.isNetworkError()) {
-                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+            case GET_PRODUCT_DETAIL:
+                if (!errorCode.isNetworkError()) {
+                    Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 
-                showFragmentContentContainer();
+                    showFragmentContentContainer();
 
-                try {
-                    getBaseActivity().onBackPressed();
-                } catch (IllegalStateException e) {
-                    getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+                    try {
+                        getBaseActivity().onBackPressed();
+                    } catch (IllegalStateException e) {
+                        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+                    }
+                    return;
                 }
-                return;
-            }
-        default:
-            break;
+            default:
+                break;
         }
     }
+
+
 
 }

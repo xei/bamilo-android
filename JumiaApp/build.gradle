@@ -48,13 +48,6 @@ android {
             keyPassword "jumia123"
         }
 
-        jumiaBlackberrySigning {
-            storeFile file("keystores/jumia_blackberry.keystore")
-            storePassword "jumiablackberry"
-            keyAlias "jumia_blackberry"
-            keyPassword "jumiablackberry"
-        }
-
         jumiaMtnngSigning {
             storeFile file("keystores/jumia_mtnng.keystore")
             storePassword "jumiamtnng"
@@ -116,16 +109,16 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.8"
-            versionCode getAppVersionCode(56)
+            versionName "2.9"
+            versionCode getAppVersionCode(58)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
         }
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.8"
-            versionCode 56
+            versionName "2.9"
+            versionCode 58
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -135,7 +128,7 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.8"
+            versionName "2.9"
             versionCode 58
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "ar"
@@ -144,34 +137,23 @@ android {
             }
         }
 
-        jumiaBlackberry {
-            applicationId "com.jumia.blackberry"
-            versionName "2.8"
-            versionCode 12
-            signingConfig signingConfigs.jumiaBlackberrySigning
-            resConfigs "en", "fr", "ar"
-            android.sourceSets {
-                jumiaBlackberry.res.srcDirs = ['src/jumia/res', 'src/jumiaBlackberry/res']
-            }
-        }
-
         /**
          * #################### SHOP ####################
          */
         shop {
             applicationId "com.shop.android"
-            versionName "1.6"
-            versionCode getAppVersionCode(10)
+            versionName "1.6.1"
+            versionCode getAppVersionCode(11)
             signingConfig signingConfigs.shopSigning
-            resConfigs "my"
+            resConfigs "en", "my"
         }
 
         shopPreInstall {
             applicationId "com.shop.android"
-            versionName "1.6"
-            versionCode 10
+            versionName "1.6.1"
+            versionCode 11
             signingConfig signingConfigs.shopSigning
-            resConfigs "my"
+            resConfigs "en", "my"
             android.sourceSets {
                 shopPreInstall.res.srcDirs = ['src/shop/res', 'src/shopRelease/res', 'src/shopPreInstall/res']
             }
@@ -182,16 +164,16 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.6"
-            versionCode getAppVersionCode(11)
+            versionName "1.6.1"
+            versionCode getAppVersionCode(12)
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
         }
 
         darazPreInstall {
             applicationId "com.daraz.android"
-            versionName "1.6"
-            versionCode 11
+            versionName "1.6.1"
+            versionCode 12
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
             android.sourceSets {
@@ -204,8 +186,8 @@ android {
          */
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "1.8"
-            versionCode getAppVersionCode(13)
+            versionName "1.8.1"
+            versionCode getAppVersionCode(14)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }
@@ -213,7 +195,7 @@ android {
     }
 
     lintOptions {
-        disable 'NewApi', 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
+        disable 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
         abortOnError false
         disable 'ExtraTranslation','MissingTranslation'
     }

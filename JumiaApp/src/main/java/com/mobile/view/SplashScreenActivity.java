@@ -115,8 +115,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         shouldHandleEvent = true;
         // Initialize application
         JumiaApplication.INSTANCE.init(initializationHandler);
-        // Check DeepLink
-//        checkDeepLink();
     }
 
     /*

@@ -13,7 +13,6 @@ import org.json.JSONObject;
  */
 public class TeaserTopSellerObject extends BaseTeaserObject {
 
-    private String mSku;
     private String mBrand;
     //private int mMaxSavingPercentage;
     private double mPrice;
@@ -112,7 +111,6 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeString(this.mSku);
         dest.writeString(this.mBrand);
 //        dest.writeInt(this.mMaxSavingPercentage);
         dest.writeDouble(this.mPrice);
@@ -123,7 +121,6 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
 
     private TeaserTopSellerObject(Parcel in) {
         super(in);
-        this.mSku = in.readString();
         this.mBrand = in.readString();
 //        this.mMaxSavingPercentage = in.readInt();
         this.mPrice = in.readDouble();

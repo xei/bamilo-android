@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.mobile.components.customfontviews.EditText;
@@ -31,7 +30,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +38,7 @@ import java.util.Map;
  * @author sergiopereira
  * 
  */
-public class SessionForgotPasswordFragment extends BaseFragment {
+public class SessionForgotPasswordFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = SessionForgotPasswordFragment.class.getSimpleName();
 
@@ -51,6 +49,8 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     private Form formResponse;
 
     private Bundle savedInstanceState;
+
+    private View mButton;
 
     /**
      * 
@@ -94,9 +94,16 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         dynamicForm = null;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Get button
+        mButton = view.findViewById(R.id.submit_button);
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -178,15 +185,11 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * Inflates the required layout for this activity into the main activity template
      */
     private void setAppContentLayout() {
-        Button buttons = (Button) getView().findViewById(R.id.submit_button);
-        buttons.setOnClickListener(new OnClickListener() {
+        mButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.submit_button) {
-                    if (dynamicForm.validate()) {
-                        requestPassword();
-                    }
+                if (dynamicForm.validate()) {
+                    requestPassword();
                 }
             }
         });
@@ -230,68 +233,105 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         }
     }
 
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+
+
+    /**
+     * TRIGGERS
+     * 
+     * @author sergiopereira
+     */
+    private void triggerForgotForm() {
+        triggerContentEvent(new GetForgotPasswordFormHelper(), null, this);
+    }
+
+    private void triggerForgot(ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        triggerContentEvent(new SetForgotPasswordHelper(), bundle, this);
+        getBaseActivity().hideKeyboard();
+    }
+
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
+     */
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        onResume();
+    }
+
+
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.d(TAG, "ON SUCCESS EVENT");
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         showFragmentContentContainer();
         EventType eventType = baseResponse.getEventType();
-
+        Print.i(TAG, "onSuccessEvent eventType : " + eventType);
         switch (eventType) {
-        case INIT_FORMS:
-        case GET_FORGET_PASSWORD_FORM_EVENT:
-            Print.d(TAG, "FORGET_PASSWORD_FORM");
-            Form form = (Form)baseResponse.getMetadata().getData();
-            if (null != form) {
-                this.formResponse = form;
-                displayForm(form);
-            }
-            break;
-        case FORGET_PASSWORD_EVENT:
-            Print.i(TAG, "FORGET_PASSWORD_EVENT successful");
-            dialog = DialogGenericFragment.newInstance(
-                    true, false,
-                    getString(R.string.forgotten_password_resulttitle),
-                    getString(R.string.forgotten_password_successtext), 
-                    getString(R.string.ok_label), 
-                    "",
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = v.getId();
-                            if (id == R.id.button1) {
-                                dismissDialogFragment();
+            case INIT_FORMS:
+            case GET_FORGET_PASSWORD_FORM_EVENT:
+                Print.d(TAG, "FORGET_PASSWORD_FORM");
+                Form form = (Form)baseResponse.getMetadata().getData();
+                if (null != form) {
+                    this.formResponse = form;
+                    displayForm(form);
+                }
+                break;
+            case FORGET_PASSWORD_EVENT:
+                Print.i(TAG, "FORGET_PASSWORD_EVENT successful");
+                dialog = DialogGenericFragment.newInstance(
+                        true, false,
+                        getString(R.string.forgotten_password_resulttitle),
+                        getString(R.string.forgotten_password_successtext),
+                        getString(R.string.ok_label),
+                        "",
+                        new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                int id = v.getId();
+                                if (id == R.id.button1) {
+                                    dismissDialogFragment();
+                                }
                             }
-                        }
-                    });
-            dialog.show(getActivity().getSupportFragmentManager(), null);
-            break;
-        default:
-            break;
+                        });
+                dialog.show(getActivity().getSupportFragmentManager(), null);
+                break;
+            default:
+                break;
         }
-        return true;
+
     }
 
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
+
+
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
         Print.d(TAG, "ON ERROR EVENT");
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         if (super.handleErrorEvent(baseResponse)) {
-            return true;
+            return;
         }
 
         EventType eventType = baseResponse.getEventType();
         // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        Print.d(TAG, "onErrorEvent: type = " + eventType);
 
         if (eventType == EventType.FORGET_PASSWORD_EVENT) {
             Print.d(TAG, "FORGET_PASSWORD_EVENT");
@@ -318,53 +358,9 @@ public class SessionForgotPasswordFragment extends BaseFragment {
                             }
                         });
                 dialog.show(getActivity().getSupportFragmentManager(), null);
-                return true;
+
             }
         }
-        return false;
+
     }
-
-    /**
-     * TRIGGERS
-     * 
-     * @author sergiopereira
-     */
-    private void triggerForgotForm() {
-        triggerContentEvent(new GetForgotPasswordFormHelper(), null, mCallBack);
-    }
-
-    private void triggerForgot(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new SetForgotPasswordHelper(), bundle, mCallBack);
-        getBaseActivity().hideKeyboard();
-    }
-
-    /**
-     * CALLBACK
-     * 
-     * @author sergiopereira
-     */
-    IResponseCallback mCallBack = new IResponseCallback() {
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-            onErrorEvent(baseResponse);
-        }
-
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-            onSuccessEvent(baseResponse);
-        }
-    };
-    
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        onResume();
-    }
-
 }

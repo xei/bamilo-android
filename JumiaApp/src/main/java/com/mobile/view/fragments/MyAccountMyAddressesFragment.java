@@ -6,14 +6,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.mobile.components.customfontviews.Button;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.address.GetMyAddressesHelper;
 import com.mobile.helpers.address.SetDefaultBillingAddressHelper;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -21,6 +19,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -80,12 +79,16 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Print.i(TAG, "ON VIEW CREATED");
         super.onViewCreated(view, savedInstanceState);
-        ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.save_label));
-
+        // Set total bar
+        CheckoutStepManager.setTotalBarForMyAccount(view);
+        // Validate order summary
         View orderSummaryLayout = view.findViewById(super.ORDER_SUMMARY_CONTAINER);
-        if(orderSummaryLayout != null){
+        if (orderSummaryLayout != null) {
             orderSummaryLayout.setVisibility(View.GONE);
         }
+
+        //hide horizontal divider in this case
+        view.findViewById(R.id.divider_horizontal).setVisibility(View.GONE);
     }
 
     @Override

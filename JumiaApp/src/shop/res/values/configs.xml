@@ -4,7 +4,7 @@
 
 	<!-- APP -->
     <item name="is_shop_specific" type="bool">true</item>
-    
+    <string name="app_name">Shop.com.mm</string>
 	<!-- COUNTRIES -->
 	<!-- country.xml -->
 

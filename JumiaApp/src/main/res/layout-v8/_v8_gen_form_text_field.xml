@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="48dp">
+    android:layout_height="48dp"
+    android:layoutDirection="ltr">
 
     <!-- ICON -->
 
@@ -22,8 +23,9 @@
         style="@style/form_style"
         android:layout_width="100dp"
         android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
         android:layout_toLeftOf="@id/text_field_icon"
-        android:background="@drawable/spinner_background_holo_orange"
+        android:background="@drawable/spinner_background"
         android:clickable="true"
         android:spinnerMode="dropdown"
         android:visibility="gone" />
@@ -35,8 +37,7 @@
         style="@style/TextField"
         android:layout_toLeftOf="@id/text_field_spinner_prefix"
         android:layout_toRightOf="@+id/text_field_spinner_suffix"
-        android:paddingEnd="50dp"
-        android:paddingRight="50dp" />
+        android:paddingLeft="50dp" />
 
     <!-- PASSWORD EYE -->
 
@@ -70,7 +71,8 @@
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"
-        android:background="@drawable/spinner_background_holo_orange"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/spinner_background"
         android:clickable="true"
         android:spinnerMode="dropdown"
         android:visibility="gone" />

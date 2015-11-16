@@ -25,6 +25,8 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     protected String mUrl;
 
+    protected String mSku;
+
     protected String mImagePhone;
 
     protected String mImageTablet;
@@ -90,6 +92,10 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         return mTeaserTypeId;
     }
 
+    public String getSku() {
+        return mSku;
+    }
+
     /*
      * ########## JSON ##########
      */
@@ -100,6 +106,8 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
+        // Get sku
+        mSku = jsonObject.optString(RestConstants.SKU);
         // Get name
         mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         // Get title
@@ -146,6 +154,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mSku);
         dest.writeString(this.mName);
         dest.writeString(this.mTitle);
         dest.writeString(this.mSubTitle);
@@ -158,6 +167,7 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
     }
 
     protected BaseTeaserObject(Parcel in) {
+        this.mSku = in.readString();
         this.mName = in.readString();
         this.mTitle = in.readString();
         this.mSubTitle = in.readString();

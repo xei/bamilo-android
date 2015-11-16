@@ -14,14 +14,12 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -68,6 +66,10 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     public void onStart() {
         super.onStart();
+        initializeFormData();
+    }
+
+    private void initializeFormData() {
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
             triggerInitForm();
@@ -88,11 +90,11 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     protected void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
+        if (null == JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+            initializeFormData();
         }
     }
 
