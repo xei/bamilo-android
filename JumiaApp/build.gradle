@@ -226,14 +226,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:com.mobile.framework')
     /** Android wear releases **/
-//    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-//    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-//    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
-//    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
-//    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
-//    shopPreInstallWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
-//    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
-//    darazPreInstallWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
+    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
+    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+    shopPreInstallWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+    darazPreInstallWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
 }
 
 /**
