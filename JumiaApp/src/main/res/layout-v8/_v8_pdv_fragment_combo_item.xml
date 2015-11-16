@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/comboGlobal"
-    android:layout_width="wrap_content"
+              android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/layout_padding"
     android:background="@color/white"
@@ -29,7 +29,6 @@
     <!-- SEPARATOR -->
 
     <View
-        android:id="@+id/sep1"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/black_300" />
@@ -51,12 +50,11 @@
             android:textColor="@color/color_accent" />
 
         <ImageView
-            android:id="@+id/imArrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_gravity="right|end"
-            android:src="@drawable/ic_arrow_combo_inv" />
+            android:src="@drawable/ic_arrow_combo" />
 
     </RelativeLayout>
 

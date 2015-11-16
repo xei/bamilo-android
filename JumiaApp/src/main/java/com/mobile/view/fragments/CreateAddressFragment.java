@@ -24,13 +24,17 @@ import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressPostalCode;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
+import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -47,7 +51,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,22 +67,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     private static final String TAG = CreateAddressFragment.class.getSimpleName();
 
-    protected static final String SHIPPING_FORM_TAG = "shipping";
-
-    protected static final String BILLING_FORM_TAG = "billing";
-
-    private static final String SHIPPING_REGION_POS = "save_shipping_rg_position";
-
-    private static final String BILLING_REGION_POS = "save_billing_rg_position";
-
-    private static final String SHIPPING_CITY_POS = "save_shipping_ct_position";
-
-    private static final String BILLING_CITY_POS = "save_billing_ct_position";
-
-    private static final String SHIPPING_STATE = "shipping_values";
-
-    private static final String BILLING_STATE = "billing_values";
-
     private static final int IS_DEFAULT_SHIPPING_ADDRESS = 1;
 
     protected static final int IS_DEFAULT_BILLING_ADDRESS = 1;
@@ -90,7 +77,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected ViewGroup mShippingFormContainer;
     protected DynamicForm shippingFormGenerator;
-    protected Form mFormResponse;
+    protected Form mFormShipping;
+    protected Form mFormBilling;
     protected ViewGroup mBillingIncludeContainer;
     protected ViewGroup mBillingFormContainer;
     protected DynamicForm billingFormGenerator;
@@ -103,13 +91,26 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected TextView mShippingTitle;
 
     protected Boolean oneAddressCreated = false;
-    protected ContentValues mShippingSavedValues;
-    protected ContentValues mBillingSavedValues;
     protected boolean isCityIdAnEditText = false;
     protected ScrollView mScrollViewContainer;
 
     protected PurchaseEntity orderSummary;
 
+    private Bundle mBillingFormSavedState;
+
+    private Bundle mShippingFormSavedState;
+
+    private static final String SHIPPING_SAVED_STATE = "shippingSavedStateBundle";
+
+    private static final String BILLING_SAVED_STATE = "billingSavedStateBundle";
+
+    private Bundle mSavedRegionCitiesPositions;
+
+    private static final String REGION_CITIES_POSITIONS = "regionsCitiesBundle";
+
+    private static final String BILLING_TAG = "billing";
+
+    private static final String SHIPPING_TAG = "shipping";
 
     public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
         super(enabledMenuItems, action, R.layout.checkout_create_address_main, titleResId, adjust_state);
@@ -142,11 +143,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Validate the saved values
         if (savedInstanceState != null) {
             // Get the ship content values
-            mShippingSavedValues = savedInstanceState.getParcelable(SHIPPING_STATE);
+            mShippingFormSavedState = savedInstanceState.getParcelable(SHIPPING_SAVED_STATE);
             // Get the bill content values
-            mBillingSavedValues = savedInstanceState.getParcelable(BILLING_STATE);
-            //Log.d(TAG, "SAVED CONTENT VALUES: " + mShippingSavedValues.toString());
-            //Log.d(TAG, "SAVED CONTENT VALUES: " + ((mBillingSavedValues!= null) ? mBillingSavedValues.toString() : "IS NULL") );
+            mBillingFormSavedState = savedInstanceState.getParcelable(BILLING_SAVED_STATE);
+            // Get region and Cities positions
+            mSavedRegionCitiesPositions = savedInstanceState.getBundle(REGION_CITIES_POSITIONS);
         } else {
             Print.i(TAG, "SAVED CONTENT VALUES IS NULL");
         }
@@ -210,25 +211,37 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "ON SAVE SATE");
         try {
             // Validate check
-            if (mIsSameCheckBox.isChecked()) {
-                ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-                Print.d(TAG, "CONTENT SHIP VALUES: " + mContentValues.toString());
-                outState.putParcelable(SHIPPING_STATE, mContentValues);
-            } else {
-                ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
-                Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues.toString());
-                ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-                Print.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());
-
-                outState.putParcelable(SHIPPING_STATE, mShipValues);
-                outState.putParcelable(BILLING_STATE, mBillValues);
+            Bundle shippingSavedStateBundle = new Bundle();
+            shippingFormGenerator.saveFormState(shippingSavedStateBundle);
+            outState.putParcelable(SHIPPING_SAVED_STATE, shippingSavedStateBundle);
+            Bundle listPositions = new Bundle();
+            saveRegionsCitiesPositions(SHIPPING_TAG, listPositions, shippingSavedStateBundle);
+            if (!mIsSameCheckBox.isChecked()) {
+                Bundle billingSavedStateBundle = new Bundle();
+                billingFormGenerator.saveFormState(billingSavedStateBundle);
+                outState.putParcelable(BILLING_SAVED_STATE, billingSavedStateBundle);
+                saveRegionsCitiesPositions(BILLING_TAG, listPositions, billingSavedStateBundle);
             }
+            outState.putBundle(REGION_CITIES_POSITIONS, listPositions);
         } catch (ClassCastException e) {
             Print.w(TAG, "INVALID CAST ON CREATE CONTENT VALUES", e);
         } catch (NullPointerException e) {
             Print.w(TAG, "SOME VIEW IS NULL", e);
         }
 
+    }
+
+    /**
+     * Method that saves the selected positions of the regions/cities/postalCode
+     *
+     * @param tag
+     * @param addressSavedStateBundle
+     * @param listPositions
+     */
+    private void saveRegionsCitiesPositions(String tag, Bundle listPositions, Bundle addressSavedStateBundle) {
+        listPositions.putInt(tag + RestConstants.REGION, addressSavedStateBundle.getInt(RestConstants.REGION));
+        listPositions.putInt(tag + RestConstants.CITY, addressSavedStateBundle.getInt(RestConstants.CITY));
+        listPositions.putInt(tag + RestConstants.POSTCODE, addressSavedStateBundle.getInt(RestConstants.POSTCODE));
     }
 
     /*
@@ -240,6 +253,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
+        // Case goes to back stack save the state
+        if(shippingFormGenerator != null) {
+            Bundle shippingSavedStateBundle = new Bundle();
+            shippingFormGenerator.saveFormState(shippingSavedStateBundle);
+            mShippingFormSavedState = shippingSavedStateBundle;
+        }
+        if (!mIsSameCheckBox.isChecked()) {
+            if(billingFormGenerator != null) {
+                Bundle billingSavedStateBundle = new Bundle();
+                billingFormGenerator.saveFormState(billingSavedStateBundle);
+                mBillingFormSavedState = billingSavedStateBundle;
+            }
+        }
+
     }
 
     /*
@@ -273,24 +300,51 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.i(TAG, "ON DESTROY");
         regions = null;
         oneAddressCreated = false;
+        mFormShipping = null;
+        mFormBilling = null;
     }
 
 
     /**
      * Load the dynamic form
      */
-    protected void loadCreateAddressForm(Form form) {
+    protected void loadCreateAddressForm(Form mFormShipping, Form mFormBilling) {
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
         // Shipping form
-        shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
-        mShippingFormContainer.removeAllViews();
-        mShippingFormContainer.addView(shippingFormGenerator.getContainer());
-        mShippingFormContainer.refreshDrawableState();
+        if(shippingFormGenerator == null){
+            Print.i(TAG,"null");
+            shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+            mShippingFormContainer.removeAllViews();
+            mShippingFormContainer.addView(shippingFormGenerator.getContainer());
+            mShippingFormContainer.refreshDrawableState();
+        } else {
+            if(mShippingFormContainer.getChildCount() == 0){
+                // Have to create set a Dynamic form in order to not have the parent dependencies.
+                // this happens when user goes from create address to another screen through the overflow menu, and presses back.
+                // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
+                shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+                mShippingFormContainer.addView(shippingFormGenerator.getContainer());
+                mShippingFormContainer.refreshDrawableState();
+            }
+        }
+
         // Billing form
-        billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), form);
-        mBillingFormContainer.removeAllViews();
-        mBillingFormContainer.addView(billingFormGenerator.getContainer());
-        mBillingFormContainer.refreshDrawableState();
+        if(billingFormGenerator == null){
+            billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormBilling);
+            mBillingFormContainer.removeAllViews();
+            mBillingFormContainer.addView(billingFormGenerator.getContainer());
+            mBillingFormContainer.refreshDrawableState();
+        } else {
+            if(mBillingFormContainer.getChildCount() == 0){
+                // Have to create set a Dynamic form in order to not have the parent dependencies
+                // this happens when user goes from create address to another screen through the overflow menu, and presses back.
+                // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
+                billingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormBilling);
+                mBillingFormContainer.addView(billingFormGenerator.getContainer());
+                mBillingFormContainer.refreshDrawableState();
+            }
+        }
+
         // Define if CITY is a List or Text
         isCityIdAnEditText = (shippingFormGenerator.getItemByKey(RestConstants.CITY).getEditControl() instanceof EditText);
         // Hide unused fields form
@@ -298,37 +352,18 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         hideSomeFields(billingFormGenerator, true);
         // Validate Regions
         if (regions == null) {
-            FormField field = form.getFieldKeyMap().get(RestConstants.REGION);
+            FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.REGION);
             String url = field.getDataCalls().get(RestConstants.API_CALL);
             triggerGetRegions(url);
         } else {
-            setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
-            setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
+            setRegions(shippingFormGenerator, regions, SHIPPING_TAG);
+            setRegions(billingFormGenerator, regions, BILLING_TAG);
         }
         // Load the saved shipping values
-        loadSavedValues(mShippingSavedValues, shippingFormGenerator);
-        loadSavedValues(mBillingSavedValues, billingFormGenerator);
+        shippingFormGenerator.loadSaveFormState(mShippingFormSavedState);
+        billingFormGenerator.loadSaveFormState(mBillingFormSavedState);
     }
 
-    /**
-     * Load the saved values to the respective form
-     */
-    private void loadSavedValues(ContentValues savedValues, DynamicForm dynamicForm) {
-        // Validate values
-        if (savedValues != null) {
-            // Get dynamic form and update
-            Iterator<DynamicFormItem> iter = dynamicForm.getIterator();
-            while (iter.hasNext()) {
-                DynamicFormItem item = iter.next();
-                try {
-                    item.loadState(savedValues);
-                    //Log.d(TAG, "CURRENT ITEM: " + item.getControl().getId());
-                } catch (NullPointerException e) {
-                    Print.w(TAG, "LOAD STATE: NOT CONTAINS KEY " + item.getKey());
-                }
-            }
-        }
-    }
 
     /**
      * Hide the default check boxes
@@ -374,48 +409,31 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        int defaultPosition = 0;
-        // TODO: VALIDATE THIS IS NECESSARY, DEF TO CREATE ???
-//        // Get default position
-//        String regionValue = mFormResponse.getFieldKeyMap().get(RestConstants.REGION).getValue();
-//        if ( regionValue != null && Integer.parseInt(regionValue) > 0){
-//            int defaultId = Integer.parseInt(regionValue);
-//            for (int i = 0; i < regions.size(); i++) {
-//                if (regions.get(i).getValue() == defaultId) {
-//                    defaultPosition = i;
-//                    break;
-//                }
-//            }
-//        }
-        setSavedSelectedRegionPos(spinner, tag, defaultPosition);
+        setSavedSelectedRegionPos(spinner, tag);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
+        v.setEditControl(spinner);
         group.addView(spinner);
-        showFragmentContentContainer(); // Show to trigger
+        // Show invisible content to trigger spinner listeners
+        showGhostFragmentContentContainer();
     }
 
     /**
      * Load and set the saved region position
      */
-    private void setSavedSelectedRegionPos(IcsSpinner spinner, String tag, int defaultPosition) {
+    private void setSavedSelectedRegionPos(IcsSpinner spinner, String tag) {
         // Get saved value
-        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_REGION_POS)) {
-            int pos = mShippingSavedValues.getAsInteger(SHIPPING_REGION_POS);
-            if (pos > 0 && pos < regions.size()) {
-                spinner.setSelection(pos);
+        int position = IntConstants.INVALID_POSITION;
+        if (mSavedRegionCitiesPositions != null) {
+            position = mSavedRegionCitiesPositions.getInt(tag + RestConstants.REGION);
+        }
+
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
+            if (tag.equals(SHIPPING_TAG)) {
+                spinner.setSelection(position);
             } else {
-                spinner.setSelection(defaultPosition);
+                spinner.setSelection(position);
             }
-        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_REGION_POS)) {
-            int pos = mBillingSavedValues.getAsInteger(BILLING_REGION_POS);
-            //Log.d(TAG, "SAVED BILLING REGION VALUE: " + pos);
-            if (pos > 0 && pos < regions.size()) {
-                spinner.setSelection(pos);
-            } else {
-                spinner.setSelection(defaultPosition);
-            }
-        } else {
-            spinner.setSelection(defaultPosition);
         }
     }
 
@@ -424,10 +442,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     protected void setCitiesOnSelectedRegion(String requestedRegionAndFields, ArrayList<AddressCity> cities) {
         if (requestedRegionAndFields.equals(selectedRegionOnShipping)) {
-            setCities(shippingFormGenerator, cities, SHIPPING_FORM_TAG);
+            setCities(shippingFormGenerator, cities, SHIPPING_TAG);
         }
         if (requestedRegionAndFields.equals(selectedRegionOnBilling)) {
-            setCities(billingFormGenerator, cities, BILLING_FORM_TAG);
+            setCities(billingFormGenerator, cities, BILLING_TAG);
         }
     }
 
@@ -436,10 +454,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      */
     protected void setPostalCodesOnSelectedCity(String requestedCityAndFields, ArrayList<AddressPostalCode> postalCodes) {
         if (requestedCityAndFields.equals(selectedCityOnShipping)) {
-            setPostalCodes(shippingFormGenerator, postalCodes, SHIPPING_FORM_TAG);
+            setPostalCodes(shippingFormGenerator, postalCodes, SHIPPING_TAG);
         }
         if (requestedCityAndFields.equals(selectedCityOnBilling)) {
-            setPostalCodes(billingFormGenerator, postalCodes, BILLING_FORM_TAG);
+            setPostalCodes(billingFormGenerator, postalCodes, BILLING_TAG);
         }
     }
 
@@ -459,9 +477,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        setSavedSelectedCityPos(spinner, cities, tag);
+        setSavedSelectedCityPos(spinner, tag);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
+        v.setEditControl(spinner);
         group.addView(spinner);
     }
 
@@ -481,33 +500,28 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        setSavedSelectedPostalCodePos(spinner, postalCodes, tag);
+        setSavedSelectedPostalCodePos(spinner, tag);
         spinner.setTag(tag);
         spinner.setOnItemSelectedListener(this);
+        v.setEditControl(spinner);
         group.addView(spinner);
     }
 
     /**
      * Load and set the saved city position one time
      */
-    private void setSavedSelectedCityPos(IcsSpinner spinner, ArrayList<AddressCity> array, String tag) {
-        // Get saved value
-        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_CITY_POS)) {
-            int pos = mShippingSavedValues.getAsInteger(SHIPPING_CITY_POS);
-            //Log.d(TAG, "SAVED SHIPPING CITY VALUE: " + pos);
-            if (pos > 0 && pos < array.size()) {
-                spinner.setSelection(pos);
+    private void setSavedSelectedCityPos(IcsSpinner spinner, String tag) {
+        int position = IntConstants.INVALID_POSITION;
+        if (mSavedRegionCitiesPositions != null) {
+            position = mSavedRegionCitiesPositions.getInt(tag + RestConstants.CITY);
+        }
+
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
+            if (tag.equals(SHIPPING_TAG)) {
+                spinner.setSelection(position);
+            } else {
+                spinner.setSelection(position);
             }
-            // Clean the saved city pos
-            mShippingSavedValues.remove(SHIPPING_CITY_POS);
-        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_CITY_POS)) {
-            int pos = mBillingSavedValues.getAsInteger(BILLING_CITY_POS);
-            //Log.d(TAG, "SAVED BILLING CITY VALUE: " + pos);
-            if (pos > 0 && pos < array.size()) {
-                spinner.setSelection(pos);
-            }
-            // Clean the saved city pos
-            mBillingSavedValues.remove(BILLING_CITY_POS);
         }
     }
 
@@ -515,26 +529,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Load and set the postal code position one time
      *
      */
-    private void setSavedSelectedPostalCodePos(IcsSpinner spinner, ArrayList<AddressPostalCode> array, String tag) {
-        //FIXME
-        // Get saved value
-        if (tag.equals(SHIPPING_FORM_TAG) && mShippingSavedValues != null && mShippingSavedValues.containsKey(SHIPPING_CITY_POS)) {
-            int pos = mShippingSavedValues.getAsInteger(SHIPPING_CITY_POS);
-            //Log.d(TAG, "SAVED SHIPPING CITY VALUE: " + pos);
-            if (pos > 0 && pos < array.size()) {
-                spinner.setSelection(pos);
-            }
-            // Clean the saved city pos
-            mShippingSavedValues.remove(SHIPPING_CITY_POS);
-        } else if (tag.equals(BILLING_FORM_TAG) && mBillingSavedValues != null && mBillingSavedValues.containsKey(BILLING_CITY_POS)) {
-            int pos = mBillingSavedValues.getAsInteger(BILLING_CITY_POS);
-            //Log.d(TAG, "SAVED BILLING CITY VALUE: " + pos);
-            if (pos > 0 && pos < array.size()) {
-                spinner.setSelection(pos);
-            }
-            // Clean the saved city pos
-            mBillingSavedValues.remove(BILLING_CITY_POS);
+    private void setSavedSelectedPostalCodePos(IcsSpinner spinner, String tag) {
+        int position = IntConstants.INVALID_POSITION;
+        if (mSavedRegionCitiesPositions != null) {
+            position = mSavedRegionCitiesPositions.getInt(tag + RestConstants.POSTCODE);
         }
+
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
+            if (tag.equals(SHIPPING_TAG)) {
+                spinner.setSelection(position);
+            } else {
+                spinner.setSelection(position);
+            }
+        }
+
     }
 
     /**
@@ -601,31 +609,17 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             }
         }
 
-        /*
-        // Validate spinner
-        ViewGroup mRegionGroup = (ViewGroup) shippingFormGenerator.getItemByKey(RestConstants.JSON_REGION_ID_TAG).getControl();
-        // Validate if region group is filled
-        if (!(mRegionGroup.getChildAt(0) instanceof IcsSpinner)) {
-            Log.w(TAG, "REGION SPINNER NOT FILL YET");
-            return;
-        }
-        */
-
         // Validate check
         if (mIsSameCheckBox.isChecked()) {
             Print.i(TAG, "CREATE ADDRESS: IS SHIPPING AND IS BILLING TOO");
             ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT VALUES: " + mContentValues.toString());
+            Print.d(TAG, "CONTENT VALUES: " + mContentValues);
             triggerCreateAddress(mContentValues, false);
         } else {
             Print.i(TAG, "CREATE ADDRESS: SHIPPING AND BILLING");
             ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues.toString());
+            Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues);
             triggerCreateAddress(mShipValues, false);
-            // only to be fired if the first succeds
-//            ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-//            Log.d(TAG, "CONTENT BILL VALUES: " + mBillValues.toString());
-//            triggerCreateAddress(mBillValues,true);
         }
     }
 
@@ -638,13 +632,15 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         if (shippingGenderItem != null && billingGenderItem != null) {
             try {
                 int genderIndex = -1;
-                if (((RadioGroupLayout) shippingGenderItem.getEditControl()).getChildCount() > 0) {
+                RadioGroupLayout group1 = (RadioGroupLayout) shippingGenderItem.getEditControl().findViewById(R.id.radio_group_container);
+                if (group1.getChildCount() > 0) {
                     // Get selected gender index from the shipping form
-                    genderIndex = ((RadioGroupLayout) shippingGenderItem.getEditControl()).getSelectedIndex();
+                    genderIndex = group1.getSelectedIndex();
                 }
-                if (((RadioGroupLayout) billingGenderItem.getEditControl()).getChildCount() > 0 && genderIndex != -1) {
+                RadioGroupLayout group2 = (RadioGroupLayout) billingGenderItem.getEditControl().findViewById(R.id.radio_group_container);
+                if (group2.getChildCount() > 0 && genderIndex != -1) {
                     // Set the billing gender with the same as the shipping
-                    ((RadioGroupLayout) billingGenderItem.getEditControl()).setSelection(genderIndex);
+                    group2.setSelection(genderIndex);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -695,7 +691,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
             // Get city field
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.CITY);
+            FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.CITY);
             // Case list
             if (FormInputType.list == field.getInputType()) {
                 // Get url
@@ -704,11 +700,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 int regionId = ((AddressRegion) object).getValue();
                 // Save the selected region on the respective variable
                 String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
-                if (tag.equals(SHIPPING_FORM_TAG)) {
-                    selectedRegionOnShipping = SHIPPING_FORM_TAG + "_" + regionId;
+                if (tag.equals(SHIPPING_TAG)) {
+                    selectedRegionOnShipping = SHIPPING_TAG + "_" + regionId;
                     triggerGetCities(url, regionId, selectedRegionOnShipping);
-                } else if (tag.equals(BILLING_FORM_TAG)) {
-                    selectedRegionOnBilling = BILLING_FORM_TAG + "_" + regionId;
+                } else if (tag.equals(BILLING_TAG)) {
+                    selectedRegionOnBilling = BILLING_TAG + "_" + regionId;
                     triggerGetCities(url, regionId, selectedRegionOnBilling);
                 }
             }
@@ -719,7 +715,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else if (object instanceof AddressCity){
 
             // Get city field
-            FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.POSTCODE);
+            FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
             // Case list
             if (field != null && FormInputType.list == field.getInputType()) {
                 // Get url
@@ -728,11 +724,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 int cityId = ((AddressCity) object).getValue();
                 // Save the selected city on the respective variable
                 String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
-                if (tag.equals(SHIPPING_FORM_TAG)) {
-                    selectedCityOnShipping = SHIPPING_FORM_TAG + "_" + cityId;
+                if (tag.equals(SHIPPING_TAG)) {
+                    selectedCityOnShipping = SHIPPING_TAG + "_" + cityId;
                     triggerGetPostalCodes(url, cityId, selectedCityOnShipping);
-                } else if (tag.equals(BILLING_FORM_TAG)) {
-                    selectedCityOnBilling = BILLING_FORM_TAG + "_" + cityId;
+                } else if (tag.equals(BILLING_TAG)) {
+                    selectedCityOnBilling = BILLING_TAG + "_" + cityId;
                     triggerGetPostalCodes(url, cityId, selectedCityOnBilling);
                 }
             }
@@ -854,8 +850,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
 
     /*
@@ -863,8 +859,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
     /**
@@ -876,8 +872,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @return boolean
      * @author sergiopereira
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         if (isOnStoppingProcess || eventType == null) {
@@ -890,20 +886,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 onInitFormSuccessEvent();
                 break;
             case GET_CREATE_ADDRESS_FORM_EVENT:
-                onGetCreateAddressFormSuccessEvent(bundle);
+                onGetCreateAddressFormSuccessEvent(baseResponse);
                 break;
             case GET_REGIONS_EVENT:
-                onGetRegionsSuccessEvent(bundle);
+                onGetRegionsSuccessEvent(baseResponse);
                 break;
             case GET_CITIES_EVENT:
-                onGetCitiesSuccessEvent(bundle);
+                onGetCitiesSuccessEvent(baseResponse);
                 break;
             case GET_POSTAL_CODE_EVENT:
-                onGetPostalCodesSuccessEvent(bundle);
+                onGetPostalCodesSuccessEvent(baseResponse);
                 break;
             case CREATE_ADDRESS_SIGNUP_EVENT:
             case CREATE_ADDRESS_EVENT:
-                onCreateAddressSuccessEvent(bundle);
+                onCreateAddressSuccessEvent(baseResponse);
                 break;
             default:
                 break;
@@ -917,39 +913,45 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         triggerCreateAddressForm();
     }
 
-    protected void onGetCreateAddressFormSuccessEvent(Bundle bundle) {
+    protected void onGetCreateAddressFormSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
         // Get order summary
         //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         orderSummary = JumiaApplication.INSTANCE.getCart();
         // Save and load form
-        Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
-        mFormResponse = form;
+        AddressForms form = (AddressForms)baseResponse.getMetadata().getData();
+        mFormShipping = form.getShippingForm();
+        mFormBilling = form.getBillingForm();
         // Load form, get regions
-        loadCreateAddressForm(form);
+        loadCreateAddressForm(mFormShipping, mFormBilling);
     }
 
-    protected void onGetRegionsSuccessEvent(Bundle bundle) {
+    protected void onGetRegionsSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
-        regions = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+        regions = (AddressRegions) baseResponse.getMetadata().getData();
         // Validate response
         if (CollectionUtils.isNotEmpty(regions)) {
-            setRegions(shippingFormGenerator, regions, SHIPPING_FORM_TAG);
-            setRegions(billingFormGenerator, regions, BILLING_FORM_TAG);
+            setRegions(shippingFormGenerator, regions, SHIPPING_TAG);
+            setRegions(billingFormGenerator, regions, BILLING_TAG);
         } else {
             Print.w(TAG, "GET REGIONS EVENT: IS EMPTY");
             super.showFragmentErrorRetry();
         }
     }
 
-    protected void onGetCitiesSuccessEvent(Bundle bundle) {
+    protected void onGetCitiesSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
-        Print.d(TAG, "REQUESTED REGION FROM FIELD: " + bundle.getString(GetCitiesHelper.CUSTOM_TAG));
-        String requestedRegionAndField = bundle.getString(GetCitiesHelper.CUSTOM_TAG);
-        ArrayList<AddressCity> cities = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
+
+        ArrayList<AddressCity> citiesArray = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getMetadata().getData();
+
+        GetCitiesHelper.AddressCitiesStruct cities= (GetCitiesHelper.AddressCitiesStruct)citiesArray;
+
+        String requestedRegionAndField = cities.getCustomTag();
+        Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
+
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
 
-        FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.POSTCODE);
+        FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
         if(field == null){
             // Show
             showFragmentContentContainer();
@@ -958,17 +960,18 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     }
 
-    protected void onGetPostalCodesSuccessEvent(Bundle bundle) {
+    protected void onGetPostalCodesSuccessEvent(BaseResponse baseResponse) {
+        GetPostalCodeHelper.AddressPostalCodesStruct postalCodesStruct = (GetPostalCodeHelper.AddressPostalCodesStruct) baseResponse.getMetadata().getData();
         Print.d(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
-        Print.d(TAG, "REQUESTED CITY FROM FIELD: " + bundle.getString(GetPostalCodeHelper.CUSTOM_TAG));
-        String requestedRegionAndField = bundle.getString(GetCitiesHelper.CUSTOM_TAG);
-        ArrayList<AddressPostalCode> postalCodes = bundle.getParcelableArrayList(Constants.BUNDLE_RESPONSE_KEY);
-        setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodes);
+        Print.d(TAG, "REQUESTED CITY FROM FIELD: " + postalCodesStruct.getCustomTag());
+        String requestedRegionAndField = postalCodesStruct.getCustomTag();
+
+        setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodesStruct);
         // Show
         showFragmentContentContainer();
     }
 
-    protected void onCreateAddressSuccessEvent(Bundle bundle) {
+    protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
     }
 
@@ -977,9 +980,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * @return boolean
      * @author sergiopereira
      */
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -987,7 +990,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
@@ -997,20 +1000,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 onInitFormErrorEvent();
                 break;
             case GET_CREATE_ADDRESS_FORM_EVENT:
-                onGetCreateAddressFormErrorEvent(bundle);
+                onGetCreateAddressFormErrorEvent(baseResponse);
                 break;
             case GET_REGIONS_EVENT:
-                onGetRegionsErrorEvent(bundle);
+                onGetRegionsErrorEvent(baseResponse);
                 break;
             case GET_CITIES_EVENT:
-                onGetCitiesErrorEvent(bundle);
+                onGetCitiesErrorEvent(baseResponse);
                 break;
             case GET_POSTAL_CODE_EVENT:
-                onGetPostalCodesErrorEvent(bundle);
+                onGetPostalCodesErrorEvent(baseResponse);
                 break;
             case CREATE_ADDRESS_SIGNUP_EVENT:
             case CREATE_ADDRESS_EVENT:
-                onCreateAddressErrorEvent(bundle);
+                onCreateAddressErrorEvent(baseResponse);
                 break;
             default:
                 break;
@@ -1024,23 +1027,23 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "RECEIVED INIT_FORMS");
     }
 
-    protected void onGetCreateAddressFormErrorEvent(Bundle bundle) {
+    protected void onGetCreateAddressFormErrorEvent(BaseResponse baseResponse) {
         Print.w(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
     }
 
-    protected void onGetRegionsErrorEvent(Bundle bundle) {
+    protected void onGetRegionsErrorEvent(BaseResponse baseResponse) {
         Print.w(TAG, "RECEIVED GET_REGIONS_EVENT");
     }
 
-    protected void onGetCitiesErrorEvent(Bundle bundle) {
+    protected void onGetCitiesErrorEvent(BaseResponse baseResponse) {
         Print.w(TAG, "RECEIVED GET_CITIES_EVENT");
     }
 
-    protected void onGetPostalCodesErrorEvent(Bundle bundle) {
+    protected void onGetPostalCodesErrorEvent(BaseResponse baseResponse) {
         Print.w(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
     }
 
-    protected void onCreateAddressErrorEvent(Bundle bundle) {
+    protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
         // Clean flag to wait for both different responses
         oneAddressCreated = false;

@@ -31,7 +31,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     private boolean prioritary;
 
-    private ContentValues parameters;
+    protected ContentValues mParameters;
 
     public SuperBaseHelper(){
         mEventType = getEventType();
@@ -87,7 +87,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
             appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
         }
 
-        return CollectionUtils.isNotEmpty(parameters) ? CollectionUtils.convertContentValuesToMap(parameters): null;
+        return CollectionUtils.isNotEmpty(mParameters) ? CollectionUtils.convertContentValuesToMap(mParameters): null;
     }
 
     /**
@@ -109,19 +109,15 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return mEventTask;
     }
 
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle){
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
-        bundle.putString(Constants.BUNDLE_RESPONSE_SUCCESS_MESSAGE_KEY, baseResponse.getMessage());
+    public void postSuccess(BaseResponse baseResponse){
+        baseResponse.setEventType(mEventType);
+        baseResponse.setEventTask(getEventTask());
     }
 
-    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle){
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, baseResponse.getError().getErrorCode());
-        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, prioritary);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, getEventTask());
-        bundle.putSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY, (Serializable) baseResponse.getErrorMessages());
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, mEventType);
-        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
+    public void postError(BaseResponse baseResponse){
+        baseResponse.setEventType(mEventType);
+        baseResponse.setEventTask(getEventTask());
+        baseResponse.setPrioritary(prioritary);
     }
 
     protected EventTask setEventTask(){
@@ -152,10 +148,9 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     @Override
     public final void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST COMPLETE: " + baseResponse.hadSuccess());
-        Bundle bundle = new Bundle();
-        createSuccessBundleParams(baseResponse, bundle);
+        postSuccess(baseResponse);
         if(mRequester != null) {
-            mRequester.onRequestComplete(bundle);
+            mRequester.onRequestComplete(baseResponse);
         } else {
             Print.w(TAG, "WARNING: REQUESTER IS NULL ON REQUEST COMPLETE FOR " + mEventType);
         }
@@ -164,10 +159,9 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     @Override
     public final void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
-        Bundle bundle = new Bundle();
-        createErrorBundleParams(baseResponse, bundle);
+        postError(baseResponse);
         if(mRequester != null) {
-            mRequester.onRequestError(bundle);
+            mRequester.onRequestError(baseResponse);
         } else {
             Print.w(TAG, "WARNING: REQUESTER IS NULL ON REQUEST ERROR FOR " + mEventType);
         }
@@ -175,10 +169,10 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     protected final void appendParameters(ContentValues parameters){
         if(CollectionUtils.isNotEmpty(parameters)){
-            if(this.parameters == null){
-                this.parameters = new ContentValues();
+            if(this.mParameters == null){
+                this.mParameters = new ContentValues();
             }
-            this.parameters.putAll(parameters);
+            this.mParameters.putAll(parameters);
         }
     }
 

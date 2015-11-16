@@ -24,12 +24,12 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.VersionInfo;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.ApptimizeTracking;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.ImageResolutionHelper;
 import com.mobile.newFramework.utils.SingletonMap;
@@ -62,7 +62,6 @@ public class JumiaApplication extends A4SApplication {
     // Account variables
     public static Customer CUSTOMER;
     private PersistentSessionStore mCustomerUtils;
-    private boolean loggedIn = false;
 
     /**
      * General Persistent Variables
@@ -78,13 +77,10 @@ public class JumiaApplication extends A4SApplication {
      */
     private HashMap<String, FormData> formDataRegistry = new HashMap<>();
     private PaymentMethodForm paymentMethodForm;
-    public Form registerForm; // TODO use an alternative to persist form on rotation
-    public Bundle registerSavedInstanceState; // TODO use an alternative to persist filled fields on rotation
     public Form reviewForm; // TODO use an alternative to persist form on rotation
     public Form ratingForm; // TODO use an alternative to persist form on rotation
     public Form mSellerReviewForm; // TODO use an alternative to persist form on rotation
     private static ContentValues ratingReviewValues;
-    private static ContentValues sellerReviewValues;
     public static boolean isSellerReview = false;
     private static HashMap<String, String> sFormReviewValues = new HashMap<>();
 
@@ -171,12 +167,13 @@ public class JumiaApplication extends A4SApplication {
     public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
         Print.d(TAG, "ON HANDLE");
         // isInitializing = false;
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+//        Bundle bundle = new Bundle();
+//        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
+//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
+
         Print.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
-        msg.obj = bundle;
+        msg.obj = new BaseResponse<>(eventType, errorType);
         // Send result message
         initializationHandler.sendMessage(msg);
     }
@@ -257,24 +254,6 @@ public class JumiaApplication extends A4SApplication {
      */
     public void setFormDataRegistry(HashMap<String, FormData> formDataRegistry) {
         this.formDataRegistry = formDataRegistry;
-    }
-
-    /**
-     * @return the loggedIn
-     * @deprecated This flag is not persisted on rotation.
-     */
-    @Deprecated
-    public boolean isLoggedIn() {
-        return loggedIn;
-    }
-
-    /**
-     * @param loggedIn
-     *            the loggedIn to set
-     */
-    @Deprecated
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
     }
 
     /**
@@ -360,7 +339,6 @@ public class JumiaApplication extends A4SApplication {
         ratingForm = null;
         isSellerReview = false;
         ratingReviewValues = null;
-        sellerReviewValues = null;
         sFormReviewValues = null;
         WishListCache.clean();
         AdjustTracker.resetTransactionCount(getApplicationContext());
@@ -373,9 +351,7 @@ public class JumiaApplication extends A4SApplication {
         } catch (IOException e) {
             Print.e(TAG, "Error clearing requests cache", e);
         }
-        registerForm = null;
         paymentMethodForm = null;
-        registerSavedInstanceState = null;
         mSellerReviewForm = null;
     }
 

@@ -7,13 +7,26 @@
         android:id="@+id/recentlyviewed_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginTop="@dimen/rounded_margin_small"
+        android:layout_alignParentTop="true"
         android:listSelector="@drawable/selector_list_item_highlight"
         android:numColumns="@integer/favourite_num_columns"
-        android:paddingBottom="@dimen/button_container_height" />
+        android:layout_above="@+id/button_line" />
 
-    <include  layout="@layout/recentlyviewed_buttons" />
+
+    <View style="@style/divider_horizontal"
+        android:id="@+id/button_line" android:layout_above="@+id/recentlyviewed_button_grey"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/recentlyviewed_button_grey"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:gravity="center"
+        style="@style/TextButton"
+        android:contentDescription="@string/clear_recently_viewed_button_description"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:textAllCaps="true"
+        android:text="@string/recentlyview_clear_viewed" />
+
 
 </RelativeLayout>

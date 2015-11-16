@@ -55,15 +55,12 @@ public class OffersListAdapterNew extends BaseAdapter {
         public RatingBar offerRating;
         public TextView offerReview;
         public TextView offerDeliveryTime;
-        public Button variations;
+        public TextView variations;
     }
 
     /**
      * the constructor for this adapter
      *
-     * @param context
-     * @param offers
-     * @param listener
      */
     public OffersListAdapterNew(Context context, ArrayList<ProductOffer> offers, @NonNull IOffersAdapterService listener) {
         this.context = context.getApplicationContext();
@@ -128,7 +125,7 @@ public class OffersListAdapterNew extends BaseAdapter {
             item.offerRating = (RatingBar) itemView.findViewById(R.id.item_rating);
             item.offerReview = (TextView) itemView.findViewById(R.id.item_reviews);
             item.offerDeliveryTime = (TextView) itemView.findViewById(R.id.offer_item_delivery);
-            item.variations = (Button) itemView.findViewById(R.id.button_variant);
+            item.variations = (TextView) itemView.findViewById(R.id.button_variant);
             itemView.setTag(item);
 
         } else {
@@ -139,13 +136,6 @@ public class OffersListAdapterNew extends BaseAdapter {
         final ProductOffer productOffer = offers.get(position);
         ProductUtils.setPriceRules(productOffer, item.offerPrice, item.offerSpecialPrice);
         item.offerProductOwner.setText(productOffer.getSeller().getName());
-
-//        int ratingCount = productOffer.getSeller().getRatingCount();
-//        String reviewLabel = context.getResources().getQuantityString(R.plurals.reviews_array, ratingCount, ratingCount);
-
-//        item.offerReview.setText(reviewLabel);
-//        item.offerRating.setRating(productOffer.getSeller().getRatingValue());
-//        item.offerRating.setVisibility(View.VISIBLE);
 
         if( !(productOffer.getMinDeliveryTime() == 0 && productOffer.getMaxDeliveryTime() == 0) ) {
             item.offerDeliveryTime.setVisibility(View.VISIBLE);

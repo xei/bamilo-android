@@ -407,10 +407,17 @@ public class SimpleMonthView extends View {
             int calendarDay = (i + mWeekStart) % mNumDays;
             int x = (2 * i + 1) * dayWidthHalf + mPadding;
             mDayLabelCalendar.set(Calendar.DAY_OF_WEEK, calendarDay);
-            canvas.drawText(
-                    new DateFormatSymbols(Locale.getDefault()).getWeekdays()[mDayLabelCalendar
-                            .get(Calendar.DAY_OF_WEEK)].toUpperCase(Locale.getDefault()).substring(
-                            0, 3), x, y, mMonthDayLabelPaint);
+            try {
+                canvas.drawText(
+                        new DateFormatSymbols(Locale.getDefault()).getWeekdays()[mDayLabelCalendar
+                                .get(Calendar.DAY_OF_WEEK)].toUpperCase(Locale.getDefault()).substring(
+                                0, 3), x, y, mMonthDayLabelPaint);
+            } catch (StringIndexOutOfBoundsException e) {
+                canvas.drawText(
+                        new DateFormatSymbols(Locale.getDefault()).getWeekdays()[mDayLabelCalendar
+                                .get(Calendar.DAY_OF_WEEK)].toUpperCase(Locale.getDefault()), x, y, mMonthDayLabelPaint);
+            }
+
         }
     }
 

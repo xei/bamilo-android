@@ -30,8 +30,8 @@ public class AigGetCategoriesPaginatedTest extends AigTestCase {
 
     @Override
     public Map<String, String> getData() {
-        HashMap<String, String> data = new HashMap<>();
-        data.put("paginate", "1");
+        HashMap<String, String> data = null;
+
         return data;
     }
 

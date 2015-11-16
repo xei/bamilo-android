@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="2"
+    android:layoutDirection="ltr">
+
+    <!-- ORDER STATUS -->
+
+    <FrameLayout
+        android:id="@+id/my_orders_frame_order_status"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1" />
+
+    <!-- ORDERS -->
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/drop_shadow_right"
+        android:orientation="vertical">
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/HeaderStyle"
+            android:text="@string/my_order_history_label" />
+
+        <ListView
+            android:id="@+id/orders_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@color/black_700"
+            android:dividerHeight="1dp"
+            android:listSelector="@drawable/_gen_selector_group_selected"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
+

@@ -1,26 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingLeft="@dimen/margin_30px" >
+    android:layout_height="wrap_content">
 
     <com.mobile.components.customfontviews.TextView
-        style="@style/text_form"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="bottom"
-        android:paddingBottom="@dimen/margin_20px"
+        style="@style/SingleLineStyle"
         android:text="@string/billing_add_label"
-        android:textColor="@color/grey_middlelight" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_30px"
-        android:paddingLeft="@dimen/form_btn_address_padding_fix"
-        android:paddingRight="@dimen/form_btn_address_padding_fix"
-        android:paddingTop="@dimen/margin_30px"
-        android:src="@drawable/selector_btn_addaddress" />
+        android:textAllCaps="true" />
 
 </LinearLayout>

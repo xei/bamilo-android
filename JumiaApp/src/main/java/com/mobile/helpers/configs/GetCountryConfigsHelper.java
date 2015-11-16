@@ -1,9 +1,4 @@
-/**
- * @author Manuel Silva
- */
 package com.mobile.helpers.configs;
-
-import android.os.Bundle;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.ChooseLanguageController;
@@ -24,12 +19,10 @@ import com.mobile.preferences.CountryPersistentConfigs;
  */
 public class GetCountryConfigsHelper extends SuperBaseHelper {
 
-    private static final String TAG = GetCountryConfigsHelper.class.getSimpleName();
+    public static final String TAG = GetCountryConfigsHelper.class.getSimpleName();
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        // Request
-//        new GetCountryConfigurations(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getCountryConfigurations);
     }
 
@@ -39,8 +32,8 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         //TODO move to observable
         CountryConfigs countryConfigs = (CountryConfigs) baseResponse.getMetadata().getData();

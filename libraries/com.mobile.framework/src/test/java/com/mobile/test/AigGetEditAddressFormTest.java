@@ -1,6 +1,7 @@
 package com.mobile.test;
 
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormData;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
@@ -29,8 +30,8 @@ public class AigGetEditAddressFormTest extends AigTestCase {
 
     @Override
     public Map<String, String> getData() {
-        HashMap<String, String> data = null;
-
+        HashMap<String, String> data = new HashMap<>();
+        data.put("id", "1463294");
         return data;
     }
 

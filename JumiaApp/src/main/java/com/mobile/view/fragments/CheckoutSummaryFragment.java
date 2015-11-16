@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
@@ -23,6 +24,7 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -30,6 +32,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
@@ -61,21 +64,19 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
 
     private ViewGroup mShippingMethodView;
 
-    private ViewGroup mTotalView;
-
     private PurchaseEntity mOrderSummary;
 
     private ViewGroup mShippingAddressList;
 
     private TextView mShippingMethodText;
 
-    private TextView mTotal;
-
     private int mCheckoutStep;
 
     private ViewGroup mVoucherView;
 
     private TextView mVoucherValue;
+
+    private LinearLayout mPriceRules;
 
     /**
      * Get instance
@@ -141,6 +142,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         mSubTotal = (TextView) view.findViewById(R.id.checkout_summary_products_text_subtotal);
         mExtraCosts = (TextView) view.findViewById(R.id.checkout_summary_extra_costs_value);
         mExtraCostsContainer = (LinearLayout) view.findViewById(R.id.checkout_summary_extra_costs_container);
+        // Price rules
+        mPriceRules = (LinearLayout) view.findViewById(R.id.checkout_summary_price_rules_container);
         // Shipping Address
         mShippingAddressView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_address);
         mShippingAddressList = (ViewGroup) view.findViewById(R.id.checkout_summary_shipping_address_list);
@@ -149,13 +152,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         mShippingMethodView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_shipping_method);
         mShippingMethodText = (TextView) view.findViewById(R.id.checkout_summary_shipping_method_text);
         view.findViewById(R.id.checkout_summary_shipping_method_btn_edit).setOnClickListener(this);
-        // Total
-        mTotalView = (ViewGroup) view.findViewById(R.id.checkout_summary_include_total);
-        mTotal = (TextView) view.findViewById(R.id.checkout_summary_total_text);
         // Get saved order summary
-        Bundle  args = savedInstanceState;
-        if(args != null && args.containsKey(ConstantsIntentExtra.ORDER_SUMMARY)){
-            mOrderSummary = args.getParcelable(ConstantsIntentExtra.ORDER_SUMMARY);
+        if(savedInstanceState != null && savedInstanceState.containsKey(ConstantsIntentExtra.ORDER_SUMMARY)){
+            mOrderSummary = savedInstanceState.getParcelable(ConstantsIntentExtra.ORDER_SUMMARY);
             // Show order summary
             showOrderSummary();
         } else {
@@ -243,7 +242,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             return;
         }
 
-        Print.i(TAG, "ORDER SUMMARY: " + mOrderSummary.toString());
+        Print.i(TAG, "ORDER SUMMARY: " + mOrderSummary);
 
         // Validate the current checkout step
         switch (mCheckoutStep) {
@@ -260,8 +259,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                 if (mOrderSummary.hasShippingAddress()) {
                     showShippingAddress(mOrderSummary.getShippingAddress());
                 }
-                // Validate total
-                showTotal(mOrderSummary.getTotal());
                 // continue
             case ConstantsCheckout.CHECKOUT_BILLING:
                 // Voucher
@@ -271,7 +268,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             default:
                 // Show cart
                 showCart();
-                CheckoutStepManager.showPriceRules(getBaseActivity(), (LinearLayout) getView().findViewById(R.id.checkout_summary_price_rules_container), mOrderSummary.getPriceRules());
+                CheckoutStepManager.showPriceRules(getBaseActivity(), mPriceRules, mOrderSummary.getPriceRules());
                 break;
         }
 
@@ -289,11 +286,17 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         for (PurchaseCartItem item : mShopList) {
             View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
             // Name
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_name)).setText(item.getName());
+            ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
+
+            String imageUrl = item.getImageUrl();
+            ImageView mImageView = (ImageView) cartItemView.findViewById(R.id.image_view);
+            View pBar = cartItemView.findViewById(R.id.image_loading_progress);
+            RocketImageLoader.instance.loadImage(imageUrl, mImageView, pBar,
+                    R.drawable.no_image_small);
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
-            ((TextView) cartItemView.findViewById(R.id.order_summary_item_quantity)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
+            ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
             if (variation != null &&
@@ -301,11 +304,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                     !variation.equalsIgnoreCase(",") &&
                     !variation.equalsIgnoreCase("...") &&
                     !variation.equalsIgnoreCase(".")) {
-                ((TextView) cartItemView.findViewById(R.id.order_summary_item_variation)).setText(variation);
-                cartItemView.findViewById(R.id.order_summary_item_variation).setVisibility(View.VISIBLE);
+                ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(variation + " " + item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             }
             // Buttons
-            View deleteButton = cartItemView.findViewById(R.id.order_summary_item_btn_remove);
+            View deleteButton = cartItemView.findViewById(R.id.button_delete);
             // deleteButton.setVisibility(View.VISIBLE);
             deleteButton.setOnClickListener(this);
             deleteButton.setTag(item.getConfigSimpleSKU());
@@ -335,6 +337,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, mShippingAddressList, false);
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
+        shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
+        shippingAddressView.findViewById(R.id.checkout_address_item_radio_btn).setVisibility(View.GONE);
 
         // Only use region if is available
         StringBuilder regionString = new StringBuilder();
@@ -345,8 +349,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(regionString.toString());
 
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(shippingAddress.getPostcode());
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText("" + shippingAddress.getPhone());
-        shippingAddressView.findViewById(R.id.checkout_address_item_btn_container).setVisibility(View.GONE);
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(shippingAddress.getPhone());
         mShippingAddressList.addView(shippingAddressView);
         mShippingAddressView.setVisibility(View.VISIBLE);
     }
@@ -361,23 +364,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         mShippingMethodView.setVisibility(View.VISIBLE);
     }
 
-//    /**
-//     * Show the shipping fee
-//     *
-//     * @see com.mobile.utils.ui.ShoppingCartUtils#setShippingRule(com.mobile.newFramework.objects.ShoppingCart, android.view.View, com.mobile.components.customfontviews.TextView, android.view.View, com.mobile.components.customfontviews.TextView)
-//     * @author sergiopereira
-//     */
-//    @Deprecated
-//    private void showShippingFees() {
-//        if(!mCart.hasSumCosts()){
-//            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(String.valueOf(mOrderSummary.getShippingAmount())));
-//        } else {
-//            mShippingFeeValue.setText(CurrencyFormatter.formatCurrency(mCart.getSumCostsValue()));
-//        }
-//
-//        mShippingFeeView.setVisibility(View.VISIBLE);
-//    }
-
     /**
      * Show voucher
      *
@@ -389,16 +375,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderSummary.getCouponDiscount()));
             mVoucherView.setVisibility(View.VISIBLE);
         }
-    }
-
-    /**
-     * Show the current total
-     *
-     * @author sergiopereira
-     */
-    private void showTotal(double total) {
-        mTotal.setText(CurrencyFormatter.formatCurrency(total));
-        mTotalView.setVisibility(View.VISIBLE);
     }
 
     /**
@@ -449,7 +425,9 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Ship Address Edit
         else if (id == R.id.checkout_summary_shipping_method_btn_edit) onClickEditMethodButton();
         // Remove
-        else if (id == R.id.order_summary_item_btn_remove) onClickRemoveItemButton(view);
+        else if (id == R.id.button_delete) {
+            onClickRemoveItemButton(view);
+        }
         // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
@@ -561,8 +539,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     /**
      * Process the success response
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
@@ -575,13 +553,13 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
             Print.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
-            mOrderSummary = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mOrderSummary = (PurchaseEntity) baseResponse.getMetadata().getData();
             showOrderSummary();
             showFragmentContentContainer();
             break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 Print.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
-                mOrderSummary = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                mOrderSummary = (PurchaseEntity) baseResponse.getMetadata().getData();
                 showOrderSummary();
                 hideActivityProgress();
                 showFragmentContentContainer();
@@ -597,8 +575,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     /**
      * Process the error response
      */
-    protected boolean onErrorEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
@@ -607,13 +585,13 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         }
 
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {
 //        case GET_SHOPPING_CART_ITEMS_EVENT:
@@ -641,8 +619,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
 
     /*
@@ -650,8 +628,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
     @Override

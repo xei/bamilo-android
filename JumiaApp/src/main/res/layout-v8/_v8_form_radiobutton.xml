@@ -7,7 +7,8 @@
     android:layout_marginRight="0dp"
     android:background="@color/transparent"
     android:button="@null"
-    android:drawableRight="@drawable/btn_radio_holo_orange"
+                                                   android:drawablePadding="8dp"
+    android:drawableRight="@drawable/_gen_selector_radio_button"
     android:ellipsize="end"
     android:textColor="@color/form_text"
     android:textSize="@dimen/text_form" />

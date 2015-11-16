@@ -24,5 +24,7 @@
     <!-- DEEP LINK APP INDEXING -->
     <string name="dp_app_index_prefix">/DARAZ</string>
 
+    <!-- MARKET -->
+    <string name="id_market">com.daraz.android</string>
 
 </resources>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingBottom="30dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="46dp">
+
+            <!--INFO-->
+
+            <com.mobile.components.customfontviews.TextView
+                style="@style/TextDisplay_1"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:text="@string/welcome_label"
+                android:textColor="@color/black_900" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/register_text_info"
+                style="@style/TextCaption"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:gravity="center"
+                android:singleLine="false"
+                android:text="@string/register_info" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="34dp" />
+
+            <!-- FORM CONTAINER -->
+
+            <LinearLayout
+                android:id="@+id/register_form_container"
+                android:layout_width="@dimen/register_container_width"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- REMEMBER EMAIL -->
+
+            <!--<include layout="@layout/login_remember_checkbox"/>-->
+
+            <!-- BUTTON -->
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="40dp" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/register_button_create"
+                style="@style/AigButton.Active"
+                android:layout_width="@dimen/register_container_width"
+                android:text="@string/create_label" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

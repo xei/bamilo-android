@@ -13,7 +13,7 @@ import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.interfaces.OnViewHolderClickListener;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -29,8 +29,7 @@ import java.util.ArrayList;
  * @author sergiopereira
  * @modified alexandrapires
  */
-public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.ProductViewHolder> implements OnClickListener{
-
+public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.ProductViewHolder> implements OnClickListener {
 
     private ArrayList<ProductBundle> mDataSet;
 
@@ -40,15 +39,14 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     private String mProductSku;
 
-    private OnViewHolderClickListener mOnViewHolderClicked;
-
+    private OnProductViewHolderClickListener mOnViewHolderClicked;
 
 
     /**
      * Provide a reference to the views for each data item.<br>
      * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br>
-     * @author sergiopereira
      *
+     * @author sergiopereira
      */
     public static class ProductViewHolder extends RecyclerView.ViewHolder {
         // Data
@@ -66,38 +64,34 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
         /**
          * Constructor
+         *
          * @param view -  the view holder
          */
         public ProductViewHolder(View view) {
             super(view);
             name = (TextView) view.findViewById(R.id.item_title);
             brand = (TextView) view.findViewById(R.id.item_brand);
-
             image = (ImageView) view.findViewById(R.id.image_view);
             progress = view.findViewById(R.id.image_loading_progress);
             //see if is fashion or not
             rating = (RatingBar) view.findViewById(R.id.product_detail_product_rating);
             reviews = (TextView) view.findViewById(R.id.product_detail_product_rating_count);
-
             price = (TextView) view.findViewById(R.id.pdv_text_price);
             discount = (TextView) view.findViewById(R.id.pdv_text_special_price);
             percentage = (TextView) view.findViewById(R.id.pdv_text_discount);
-
             cbItem = (CheckBox) view.findViewById(R.id.item_check);
-
             brand = (TextView) view.findViewById(R.id.item_brand);
-
             variation = (TextView) view.findViewById(R.id.choosen_variation);
-
         }
     }
 
     /**
      * Provide a suitable constructor (depends on the kind of data)
+     *
      * @param context - the application context
-     * @param data - the array lisl
+     * @param data    - the array lisl
      */
-    public ComboGridAdapter(Context context, ArrayList<ProductBundle> data,String mProductSku) {
+    public ComboGridAdapter(Context context, ArrayList<ProductBundle> data, String mProductSku) {
         mContext = context;
         mDataSet = data;
         this.mProductSku = mProductSku;
@@ -105,15 +99,11 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     /**
      * update a bundle in the arrays; necessary for updating viewholder in case of a chosen simple
-     * @param productBundle
-     *
      */
-    public void setItemInArray(ProductBundle productBundle)
-    {
-        for(int i=0; i< mDataSet.size(); i++)
-        {
-            if(mDataSet.get(i).getSku().equals(productBundle.getSku()))
-                mDataSet.set(i,productBundle);
+    public void setItemInArray(ProductBundle productBundle) {
+        for (int i = 0; i < mDataSet.size(); i++) {
+            if (mDataSet.get(i).getSku().equals(productBundle.getSku()))
+                mDataSet.set(i, productBundle);
         }
     }
 
@@ -123,7 +113,6 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      */
     @Override
     public ProductViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         return new ProductViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.pdv_combo_item_list, parent, false));
     }
 
@@ -139,8 +128,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
     }
 
 
-    public ArrayList<ProductBundle> getItems()
-    {
+    public ArrayList<ProductBundle> getItems() {
         return mDataSet;
     }
 
@@ -162,11 +150,10 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
     @Override
     public void onBindViewHolder(ProductViewHolder holder, int position) {
 
-        if(holder == null)
-            holder = new ProductViewHolder(LayoutInflater.from(mContext).inflate(R.layout.pdv_combo_item_list,null,false));
+        if (holder == null)
+            holder = new ProductViewHolder(LayoutInflater.from(mContext).inflate(R.layout.pdv_combo_item_list, null, false));
         // Set animation
         setAnimation(holder, position);
-
         // Get item
         ProductBundle item = mDataSet.get(position);
         // Set name
@@ -175,7 +162,6 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         holder.brand.setText(item.getBrand());
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
-
         // Set rating and reviews
         setSpecificViewForListLayout(holder, item);
         // Set prices
@@ -183,25 +169,22 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         //set selection
         holder.cbItem.setChecked(item.isChecked());
         //set variation if has multiple variations and there is a selected variation
-        if(item.hasMultiSimpleVariations() && item.getSelectedSimple() != null)
-        {
+        if (item.hasMultiSimpleVariations() && item.getSelectedSimple() != null) {
             ProductSimple productSimple = item.getSelectedSimple();
             holder.variation.setText(productSimple.getVariationValue());
             holder.variation.setVisibility(View.VISIBLE);
         }
-
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
     }
 
 
-
-
     /**
      * Set the product price.
+     *
      * @param holder - the view holder
-     * @param item - the product
+     * @param item   - the product
      */
     private void setProductPrice(ProductViewHolder holder, ProductRegular item) {
         ProductUtils.setPriceRules(item, holder.price, holder.discount);
@@ -211,12 +194,13 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     /**
      * Validate and set views from list layout.
+     *
      * @param holder - the view holder
-     * @param item - the product
+     * @param item   - the product
      */
     private void setSpecificViewForListLayout(ProductViewHolder holder, ProductRegular item) {
         // Validate list views
-        if(holder.rating != null && holder.reviews != null) {
+        if (holder.rating != null && holder.reviews != null) {
             // Show rating
             if (item.getAvgRating() > 0) {
                 holder.rating.setRating((float) item.getAvgRating());
@@ -235,11 +219,12 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     /**
      * Set an animation for new items.
-     * @param holder - the view holder
+     *
+     * @param holder   - the view holder
      * @param position - the current position
      */
     private void setAnimation(ProductViewHolder holder, int position) {
-        if(position > mLastPosition) {
+        if (position > mLastPosition) {
             //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.entry_up_from_bottom);
             Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.abc_fade_in);
             //Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.abc_slide_in_bottom);
@@ -249,25 +234,24 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
     }
 
 
-
-
     /**
      * Get the product from the current data.
+     *
      * @param position - the respective product position
      * @return Product or null
      */
     public ProductBundle getItem(int position) {
-        return CollectionUtils.isEmpty(mDataSet) ?  null : mDataSet.get(position);
+        return CollectionUtils.isEmpty(mDataSet) ? null : mDataSet.get(position);
     }
 
     /**
      * Set the listener the click on view holder.
+     *
      * @param listener - the listener
      */
-    public void setOnViewHolderClickListener(OnViewHolderClickListener listener) {
+    public void setOnViewHolderClickListener(OnProductViewHolderClickListener listener) {
         this.mOnViewHolderClicked = listener;
     }
-
 
 
     @Override
@@ -276,20 +260,13 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
             // position
             int position = (Integer) view.getTag(R.id.position);
             ProductBundle productBundle = mDataSet.get(position);
-
-            if(!mProductSku.equals(productBundle.getSku())) {
+            if (!mProductSku.equals(productBundle.getSku())) {
                 CheckBox cb = (CheckBox) view.findViewById(R.id.item_check);
-
                 cb.setChecked(!cb.isChecked());
-
                 mOnViewHolderClicked.onViewHolderClick(this, position);
             }
-
         }
-
-
     }
-
 
 
 }

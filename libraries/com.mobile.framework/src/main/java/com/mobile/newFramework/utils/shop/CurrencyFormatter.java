@@ -2,7 +2,6 @@ package com.mobile.newFramework.utils.shop;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.TextUtils;
@@ -166,7 +165,7 @@ public class CurrencyFormatter {
      */
     @SuppressWarnings("unused")
     private static NumberFormat getNumberFormat() {
-        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1 ? createNumberFormatter() : DecimalFormat.getCurrencyInstance();
+        return DecimalFormat.getCurrencyInstance();
     }
     
     /**
@@ -174,6 +173,7 @@ public class CurrencyFormatter {
      * @return NumberFormat
      * @author GuilhermeSilva
      */
+    @Deprecated
 	private static NumberFormat createNumberFormatter() {
 		//Log.d( TAG, "createNumberFormatter for android 2.x");
 		NumberFormat formatter;

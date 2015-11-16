@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
@@ -12,10 +9,11 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -34,6 +32,8 @@ import java.util.EnumSet;
 public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
     private static final String TAG = CheckoutCreateAddressFragment.class.getSimpleName();
+
+    private View mCheckoutTotalBar;
 
     /**
      * Fragment used to create an address
@@ -65,6 +65,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
     }
 
     @Override
@@ -73,19 +74,19 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
-        } else if(mFormResponse != null && orderSummary != null && regions != null){
-            loadCreateAddressForm(mFormResponse);
+        } else if(mFormShipping != null &&  mFormBilling!= null && orderSummary != null && regions != null){
+            loadCreateAddressForm(mFormShipping, mFormBilling);
         } else {
             triggerCreateAddressForm();
         }
     }
 
-    protected void loadCreateAddressForm(Form form) {
-        super.loadCreateAddressForm(form);
+    protected void loadCreateAddressForm(Form formShipping,Form formBilling) {
+        super.loadCreateAddressForm(formShipping,formBilling);
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
-
-        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
+        // Set the checkout total bar
+        CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
     }
 
     @Override
@@ -100,8 +101,8 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     }
 
     @Override
-    protected void onCreateAddressSuccessEvent(Bundle bundle) {
-        super.onCreateAddressSuccessEvent(bundle);
+    protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
+        super.onCreateAddressSuccessEvent(baseResponse);
         //GTM
         TrackerDelegator.trackAddAddress(true);
         // Waiting for both responses
@@ -116,7 +117,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         }
 
         // Get next step
-        FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+        FragmentType nextFragment = ((NextStepStruct)baseResponse.getMetadata().getData()).getFragmentType();
         if(nextFragment == null || nextFragment == FragmentType.UNKNOWN){
             Print.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
             nextFragment = FragmentType.MY_ADDRESSES;
@@ -127,30 +128,30 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     }
 
     @Override
-    protected void onGetCreateAddressFormErrorEvent(Bundle bundle) {
-        super.onGetCreateAddressFormErrorEvent(bundle);
+    protected void onGetCreateAddressFormErrorEvent(BaseResponse baseResponse) {
+        super.onGetCreateAddressFormErrorEvent(baseResponse);
         super.showFragmentErrorRetry();
     }
 
     @Override
-    protected void onGetRegionsErrorEvent(Bundle bundle) {
-        super.onGetRegionsErrorEvent(bundle);
+    protected void onGetRegionsErrorEvent(BaseResponse baseResponse) {
+        super.onGetRegionsErrorEvent(baseResponse);
         super.showFragmentErrorRetry();
     }
 
     @Override
-    protected void onGetCitiesErrorEvent(Bundle bundle) {
-        super.onGetCitiesErrorEvent(bundle);
+    protected void onGetCitiesErrorEvent(BaseResponse baseResponse) {
+        super.onGetCitiesErrorEvent(baseResponse);
         super.showFragmentErrorRetry();
     }
 
     @Override
-    protected void onCreateAddressErrorEvent(Bundle bundle) {
-        super.onCreateAddressErrorEvent(bundle);
+    protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
+        super.onCreateAddressErrorEvent(baseResponse);
         //GTM
         TrackerDelegator.trackAddAddress(false);
         // Error
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
         } else {

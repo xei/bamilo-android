@@ -93,7 +93,7 @@
     <dimen name="button_double_container_height">163dp</dimen>
     <dimen name="button_landscape_width">640dp</dimen>
     <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
-    <dimen name="product_item_addtocart_variation_width">65dp</dimen>
+    <dimen name="product_item_addtocart_variation_width">89dp</dimen>
     <dimen name="product_item_text_right_margin">75dp</dimen>
     <dimen name="title_box_height">27dp</dimen>
 
@@ -106,7 +106,7 @@
 
     <!-- dimen name="fragment_root_text_size">27sp</dimen -->
 
-    <dimen name="form_item_height">45dp</dimen>
+    <!--<dimen name="form_item_height">48dp</dimen>-->
     <dimen name="form_date_width">190dp</dimen>
 
     <dimen name="login_margin_small">15dp</dimen>
@@ -193,5 +193,10 @@
 
     <dimen name="ratings_average_with">260dp</dimen>
     <dimen name="specs_column_with">220dp</dimen>
+
+    <dimen name="padding_recent_search_item">24dp</dimen>
+
+    <!-- BOTTOM SHEET -->
+    <integer name="dialog_max_items">7</integer>
 
 </resources>

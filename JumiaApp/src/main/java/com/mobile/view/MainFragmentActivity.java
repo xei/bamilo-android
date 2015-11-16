@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
 import com.ad4screen.sdk.Tag;
-import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -16,13 +15,11 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.PreferenceListFragment.OnPreferenceAttachedListener;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
-import com.mobile.view.fragments.CheckoutAboutYouFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
 import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
@@ -42,8 +39,8 @@ import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
-import com.mobile.view.fragments.MyAddressesSessionLogin;
 import com.mobile.view.fragments.MyOrdersFragment;
+import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -55,7 +52,8 @@ import com.mobile.view.fragments.ReviewFragment;
 import com.mobile.view.fragments.ReviewWriteFragment;
 import com.mobile.view.fragments.ReviewsFragment;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
-import com.mobile.view.fragments.SessionLoginFragment;
+import com.mobile.view.fragments.SessionLoginEmailFragment;
+import com.mobile.view.fragments.SessionLoginMainFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
@@ -66,11 +64,13 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+//import com.mobile.view.fragments.CheckoutAboutYouFragment;
+
 /**
  * @author sergiopereira
  */
 @Tag(name = "MainActivity")
-public class MainFragmentActivity extends BaseActivity implements OnPreferenceAttachedListener {
+public class MainFragmentActivity extends BaseActivity {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
 
@@ -211,7 +211,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
     protected void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
-        JumiaApplication.INSTANCE.setLoggedIn(false);
     }
 
     /*
@@ -269,9 +268,9 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = HomePageFragment.newInstance(bundle);
                 break;
             case CATALOG:
-                if(CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_ENTRIES)){
-                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_ENTRIES);
-                    bundle.remove(ConstantsIntentExtra.REMOVE_ENTRIES);
+                if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
+                    removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
+                    bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 } else {
                     removeEntries = true;
                 }
@@ -288,7 +287,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductImageGalleryFragment.getInstance(bundle);
                 break;
             case POPULARITY:
-            //    fragment = ReviewsFragment.getInstance(bundle);
                 fragment = ReviewsFragment.getInstance(bundle);
                 break;
             case WRITE_REVIEW:
@@ -299,12 +297,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 break;
             case SHOPPING_CART:
                 fragment = ShoppingCartFragment.getInstance(bundle);
-                break;
-            case REGISTER:
-                fragment = SessionRegisterFragment.getInstance(bundle);
-                break;
-            case FORGOT_PASSWORD:
-                fragment = SessionForgotPasswordFragment.getInstance();
                 break;
             case STATIC_PAGE:
                 fragment = StaticPageFragment.getInstance(bundle);
@@ -317,19 +309,25 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = MyAccountUserDataFragment.getInstance();
                 break;
             case MY_ORDERS:
-                fragment = MyOrdersFragment.getInstance(bundle);
+                fragment = MyOrdersFragment.getInstance();
+                break;
+            case ORDER_STATUS:
+                fragment = OrderStatusFragment.getInstance(bundle);
                 break;
             case CHOOSE_COUNTRY:
                 fragment = ChooseCountryFragment.getInstance();
                 break;
             case LOGIN:
-                fragment = SessionLoginFragment.getInstance(bundle);
+                fragment = SessionLoginMainFragment.getInstance(bundle);
                 break;
-            case MY_ADDRESSES_LOGIN:
-                fragment = MyAddressesSessionLogin.getInstance(bundle);
+            case LOGIN_EMAIL:
+                fragment = SessionLoginEmailFragment.getInstance(bundle);
                 break;
-            case ABOUT_YOU:
-                fragment = CheckoutAboutYouFragment.getInstance();
+            case REGISTER:
+                fragment = SessionRegisterFragment.getInstance(bundle);
+                break;
+            case FORGOT_PASSWORD:
+                fragment = SessionForgotPasswordFragment.getInstance();
                 break;
             case MY_ADDRESSES:
                 fragment = CheckoutMyAddressesFragment.getInstance();
@@ -376,7 +374,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
                 fragment = ProductSizeGuideFragment.newInstance(bundle);
                 break;
             case PRODUCT_OFFERS:
-              //  fragment = ProductOffersFragment.newInstance(bundle);
                 fragment = ProductOffersFragmentNew.newInstance(bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
@@ -391,10 +388,7 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
             case INNER_SHOP:
                 fragment = InnerShopFragment.getInstance(bundle);
                 break;
-//            case WRITE_REVIEW_SELLER:
-//                fragment = WriteSellerReviewFragment.getInstance(bundle);
-//                break;
-            case COMBOPAGE:
+            case COMBO_PAGE:
                 fragment = ComboFragment.getInstance(bundle);
                 break;
             case FILTERS:
@@ -489,11 +483,6 @@ public class MainFragmentActivity extends BaseActivity implements OnPreferenceAt
         popBackStackUntilTag(tag);
         // Get the current fragment
         fragment = (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
-    }
-
-    // ####################### MY ACCOUNT FRAGMENT #######################
-    @Override
-    public void onPreferenceAttached() {
     }
 
     public boolean isInMaintenance() {

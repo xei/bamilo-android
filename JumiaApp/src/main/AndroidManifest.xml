@@ -9,10 +9,10 @@
     <!-- ######################################## -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Android 6.0 Dangerous Permission -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Android 6.0 Dangerous Permission -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- Android 6.0 Dangerous Permission -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- ############# AD4Push: MESSAGE (Receive) ############# -->
@@ -31,7 +31,7 @@
     <!-- ############# Location: LocationHelper and AD4Push ############# -->
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:required="false" />
+        android:required="false" /> <!-- Android 6.0 Dangerous Permission -->
 
     <!-- ##################################### -->
     <!-- ############# Features ############## -->

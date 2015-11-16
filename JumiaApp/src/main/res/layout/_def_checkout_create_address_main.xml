@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:divider="@drawable/divider_horizontal_black_700"
+    app:showDividers="middle">
 
     <!-- CONTENT -->
 
     <ScrollView
         android:id="@+id/checkout_address_form_scroll"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/checkout_button_container"
-        android:layout_alignParentTop="true">
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
         <!-- FORMS -->
 
@@ -34,15 +37,6 @@
 
     <!-- NEXT BUTTON -->
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey_light"
-        android:layout_above="@+id/checkout_button_container"
-        android:layout_marginLeft="@dimen/dimen_30px"
-        android:layout_marginRight="@dimen/dimen_30px"/>
+    <include layout="@layout/checkout_total_layout" />
 
-
-    <include layout="@layout/checkout_total_layout"/>
-
-</RelativeLayout>
+</android.support.v7.widget.LinearLayoutCompat>

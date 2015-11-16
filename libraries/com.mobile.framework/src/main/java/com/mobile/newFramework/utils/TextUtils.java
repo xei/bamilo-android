@@ -1,5 +1,7 @@
 package com.mobile.newFramework.utils;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 
@@ -23,6 +25,16 @@ public class TextUtils {
      */
     public static boolean isNotEmpty(CharSequence str) {
         return !isEmpty(str);
+    }
+
+    /**
+     * Returns true if the sub string is part of string.
+     * @param str the string to be examined
+     * @param sub the sub string to find
+     * @return true if str is not null and zero length
+     */
+    public static boolean contains(@Nullable String str, @NonNull String sub) {
+        return !isEmpty(str) && str.contains(sub);
     }
 
     /**
@@ -75,8 +87,45 @@ public class TextUtils {
      * @return A spanned String.
      */
     public static Spanned placeHolderText(String placeHolder, String text){
-        String textEncoded = android.text.TextUtils.htmlEncode(text);
+        String textEncoded = htmlEncode(text);
         String placeHolderText = String.format(placeHolder, textEncoded);
         return Html.fromHtml(placeHolderText);
+    }
+
+    /**
+     * Html-encode the string.
+     * @param s the string to be encoded
+     * @return the encoded string
+     */
+    public static String htmlEncode(String s) {
+        StringBuilder sb = new StringBuilder();
+        char c;
+        for (int i = 0; i < s.length(); i++) {
+            c = s.charAt(i);
+            switch (c) {
+                case '<':
+                    sb.append("&lt;"); //$NON-NLS-1$
+                    break;
+                case '>':
+                    sb.append("&gt;"); //$NON-NLS-1$
+                    break;
+                case '&':
+                    sb.append("&amp;"); //$NON-NLS-1$
+                    break;
+                case '\'':
+                    //http://www.w3.org/TR/xhtml1
+                    // The named character reference &apos; (the apostrophe, U+0027) was introduced in
+                    // XML 1.0 but does not appear in HTML. Authors should therefore use &#39; instead
+                    // of &apos; to work as expected in HTML 4 user agents.
+                    sb.append("&#39;"); //$NON-NLS-1$
+                    break;
+                case '"':
+                    sb.append("&quot;"); //$NON-NLS-1$
+                    break;
+                default:
+                    sb.append(c);
+            }
+        }
+        return sb.toString();
     }
 }

@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.CheckBox;
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -22,8 +21,10 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.NewsletterOption;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -44,8 +45,6 @@ import java.util.EnumSet;
 public class MyAccountEmailNotificationFragment extends BaseFragment implements IResponseCallback, OnCheckedChangeListener {
 
     private static final String TAG = MyAccountEmailNotificationFragment.class.getSimpleName();
-
-    private final static int UNSUBSCRIBE_VALUE = -1;
 
     private Form mNewslettersForm;
 
@@ -121,9 +120,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get list view
         mNewsletterList = (LinearLayout) view.findViewById(R.id.myaccount_newsletter_list);
         // Get save button
-        view.findViewById(R.id.myaccount_newsletter_save).setOnClickListener(this);
-        // Get cancel button
-        view.findViewById(R.id.myaccount_newsletter_cancel).setOnClickListener(this);
+        view.findViewById(R.id.email_notifications_save).setOnClickListener(this);
         // Validate data
         if (mNewslettersForm == null) triggerGetNewslettersForm();
          else showNewslettersForm();
@@ -243,16 +240,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             LinearLayout newsletterList) {
         for (int i = 0; i < newsletterOptions.size(); i++) {
             View view = mInflater.inflate(R.layout.simple_email_notification_option, newsletterList, false);
-            CheckBox checkBox = (CheckBox) view.findViewById(R.id.myaccount_newsletter_checkbox);
-            TextView newsletterName = (TextView) view.findViewById(R.id.myaccount_newslleter_option);
-            View lineView = view.findViewById(R.id.newsletter_line);
-            if(i == newsletterOptions.size()-1){
-                lineView.setVisibility(View.GONE);
-            } else {
-                lineView.setVisibility(View.VISIBLE);
-            }
+            CheckBox checkBox = (CheckBox) view.findViewById(R.id.newsletter_option);
+
             checkBox.setTag("" + i);
-            newsletterName.setText(newsletterOptions.get(i).label);
+            checkBox.setText(newsletterOptions.get(i).label);
             checkBox.setChecked(newsletterOptions.get(i).isSubscrided);
             checkBox.setOnCheckedChangeListener(this);
             newsletterList.addView(view);
@@ -273,9 +264,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         // Get view id
         int id = view.getId();
         // Next button
-        if (id == R.id.myaccount_newsletter_save) onClickSaveButton();
-        // Cancel button
-        else if (id == R.id.myaccount_newsletter_cancel) onClickCancelButton();
+        if (id == R.id.email_notifications_save) onClickSaveButton();
         // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW");
     }
@@ -308,31 +297,32 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             // Validate the current newsletter form
             ContentValues values = new ContentValues();
             boolean isSubscribed = false;
+            String dummyKey ="";
             for (NewsletterOption option : mNewsletterOptions) {
+                dummyKey = option.name;
                 if (option.isSubscrided) {
                     values.put(option.name, option.value);
                     isSubscribed = true;
-                } else
-                    values.put(option.name, UNSUBSCRIBE_VALUE);
+                }
             }
-            // Trigger
-            Print.d(TAG, "VALUES: " + values.toString());
+            //TODO
+            //FIXME
+            /**
+             * This Form needs to be changed on the API side, because the way they detect if we want to unselected a notification,
+             * is by not sending that, so if we want to unselect all newsletters, we have to send and empty request, and the way
+             * our framework is built does not support that kind of action.
+             * So in order to be able to send the request we have to put some dummy data so the event isn't really empty
+             */
+            if(CollectionUtils.isEmpty(values)){
+                values.put(dummyKey, "");
+            }
+
             triggerSubscribeNewsletters(values);
             // Tracking subscritption
             TrackerDelegator.trackNewsletterSubscription(isSubscribed, GTMValues.MYACCOUNT);
         } catch (NullPointerException e) {
             Print.w(TAG, "NPE ON SUBSCRIBE NEWSLETTERS", e);
         }
-    }
-
-    /**
-     * Process the click on the cancel button
-     * 
-     * @author sergiopereira
-     */
-    private void onClickCancelButton() {
-        Print.i(TAG, "ON CLICK: CANCEL");
-        getBaseActivity().onBackPressed();
     }
 
     /*
@@ -371,9 +361,9 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /**
      * Filter the success response
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT");
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
@@ -387,7 +377,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             Print.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
             // Get the form
             // Save the form
-            mNewslettersForm = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            mNewslettersForm = (Form)baseResponse.getMetadata().getData();
             // Clean options
             mNewsletterOptions = null;
             // Show the form
@@ -410,9 +400,9 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /**
      * Filter the error response
      */
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
@@ -421,14 +411,14 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         }
 
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
             return true;
         }
 
         showFragmentContentContainer();
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
@@ -465,8 +455,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
 
     /*
@@ -475,8 +465,8 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle )
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
     /*

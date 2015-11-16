@@ -26,6 +26,18 @@ import java.util.Map;
  */
 public class PurchaseCartItem implements IJSONSerializable, Parcelable {
 
+    /**
+     * Create parcelable
+     */
+    public static final Creator<PurchaseCartItem> CREATOR = new Creator<PurchaseCartItem>() {
+        public PurchaseCartItem createFromParcel(Parcel in) {
+            return new PurchaseCartItem(in);
+        }
+
+        public PurchaseCartItem[] newArray(int size) {
+            return new PurchaseCartItem[size];
+        }
+    };
     private String imageUrl;
     private String productUrl;
     private String mSKU;
@@ -34,6 +46,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
     private int maxQuantity;
     private String configId;
     private String name;
+    private String brand;
     private Map<String, String> simpleData;
     private String variation;
     private String price;
@@ -52,6 +65,33 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
 
     public PurchaseCartItem(JSONObject jsonObject) {
         initialize(jsonObject);
+    }
+
+    /**
+     * Parcel constructor
+     */
+    private PurchaseCartItem(Parcel in) {
+        imageUrl = in.readString();
+        productUrl = in.readString();
+        mSKU = in.readString();
+        mSimpleSku = in.readString();
+        quantity = in.readLong();
+        maxQuantity = in.readInt();
+        configId = in.readString();
+        name = in.readString();
+        specialPrice = in.readString();
+        savingPercentage = in.readDouble();
+        price = in.readString();
+        simpleData = new HashMap<>();
+        in.readMap(simpleData, String.class.getClassLoader());
+        variation = in.readString();
+        priceVal = in.readDouble();
+        specialPriceVal = in.readDouble();
+        mPriceValueConverted = in.readDouble();
+        mSpecialPriceConverted = in.readDouble();
+        mCategoriesIds = in.readString();
+        mAttributeSetId = in.readString();
+        brand = in.readString();
     }
 
     /*
@@ -73,6 +113,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
             quantity = jsonObject.getLong(RestConstants.JSON_QUANTITY_TAG);
             maxQuantity = jsonObject.getInt(RestConstants.JSON_MAX_QUANTITY);
             name = jsonObject.getString(RestConstants.JSON_ITEM_NAME_TAG);
+            brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
             mAttributeSetId = jsonObject.optString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
             variation = jsonObject.optString(RestConstants.JSON_VARIATION_TAG);
             mCategoriesIds = jsonObject.optString(RestConstants.JSON_CATEGORY_ID_TAG);
@@ -157,18 +198,18 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
         return mSimpleSku;
     }
 
-    /*
-     * @param quantity of the product
-     */
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
-
     /**
      * @return the quantity
      */
     public long getQuantity() {
         return quantity;
+    }
+
+    /*
+     * @param quantity of the product
+     */
+    public void setQuantity(long quantity) {
+        this.quantity = quantity;
     }
 
     /**
@@ -185,6 +226,12 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
         return name;
     }
 
+    /**
+     * @return the brand
+     */
+    public String getBrand() {
+        return brand;
+    }
 
     /**
      * @return the special price
@@ -272,6 +319,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
     public String getAttributeSetId (){
         return mAttributeSetId;
     }
+
     /**
      * ########### Parcelable ###########
      *
@@ -314,45 +362,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
         dest.writeDouble(mSpecialPriceConverted);
         dest.writeString(mCategoriesIds);
         dest.writeString(mAttributeSetId);
+        dest.writeString(brand);
     }
-
-    /**
-     * Parcel constructor
-     */
-    private PurchaseCartItem(Parcel in) {
-        imageUrl = in.readString();
-        productUrl = in.readString();
-        mSKU = in.readString();
-        mSimpleSku = in.readString();
-        quantity = in.readLong();
-        maxQuantity = in.readInt();
-        configId = in.readString();
-        name = in.readString();
-        specialPrice = in.readString();
-        savingPercentage = in.readDouble();
-        price = in.readString();
-        simpleData = new HashMap<>();
-        in.readMap(simpleData, String.class.getClassLoader());
-        variation = in.readString();
-        priceVal = in.readDouble();
-        specialPriceVal = in.readDouble();
-        mPriceValueConverted = in.readDouble();
-        mSpecialPriceConverted = in.readDouble();
-        mCategoriesIds = in.readString();
-        mAttributeSetId = in.readString();
-    }
-
-    /**
-     * Create parcelable
-     */
-    public static final Creator<PurchaseCartItem> CREATOR = new Creator<PurchaseCartItem>() {
-        public PurchaseCartItem createFromParcel(Parcel in) {
-            return new PurchaseCartItem(in);
-        }
-
-        public PurchaseCartItem[] newArray(int size) {
-            return new PurchaseCartItem[size];
-        }
-    };
 
 }

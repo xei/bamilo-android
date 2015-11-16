@@ -49,8 +49,8 @@ public class RemoveFromWishListHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         // Remove item from wish list cache
         WishListCache.remove(mSku);
     }

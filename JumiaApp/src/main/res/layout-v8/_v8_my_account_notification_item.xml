@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/option_name"
+        style="@style/TextCaption"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:layout_marginTop="16dp"
+        android:text="Title"
+        android:textColor="@color/black"/>
+
+    <com.mobile.components.customfontviews.CheckBox
+        android:id="@+id/notification_checkbox"
+        style="@style/form_checkbox_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:button="@null"
+        android:drawableLeft="@drawable/_gen_selector_check_box"
+        android:gravity="center"/>
+
+    <View
+        style="@style/divider_horizontal"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

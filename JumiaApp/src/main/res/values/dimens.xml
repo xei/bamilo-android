@@ -297,7 +297,7 @@
     <dimen name="button_double_container_height">109.67dp</dimen>
     <dimen name="button_landscape_width">426.67dp</dimen>
     <dimen name="product_item_button_height">@dimen/button_small_height</dimen>
-    <dimen name="product_item_addtocart_variation_width">43.33dp</dimen>
+    <dimen name="product_item_addtocart_variation_width">89dp</dimen>
     <dimen name="product_item_text_right_margin">50dp</dimen>
     <dimen name="title_box_height">18.67dp</dimen>
 
@@ -315,7 +315,7 @@
 
     <dimen name="login_container_width">@dimen/inner_container_width</dimen>
 
-    <dimen name="form_item_height">30dp</dimen>
+    <dimen name="form_item_height">48dp</dimen>
     <!-- 93.33dp reduced to 90dp -->
     <dimen name="form_date_width">90dp</dimen>
 
@@ -506,6 +506,20 @@
     <dimen name="ratings_average_with">160dp</dimen>
     <dimen name="specs_column_with">120dp</dimen>
 
+    <dimen name="my_account_gen_dimen">16dp</dimen>
 
-    <integer name="dialog_max_item">7</integer>
+    <!--LOGIN-->
+    <dimen name="login_main_container_width">@dimen/match_parent</dimen>
+    <dimen name="login_email_container_width">@dimen/match_parent</dimen>
+    <dimen name="register_container_width">@dimen/match_parent</dimen>
+
+    <integer name="config_add_cart_anim_duration">500</integer>
+
+    <dimen name="confirm_msg_padding">6dp</dimen>
+
+    <dimen name="padding_recent_search_item">20dp</dimen>
+
+    <!-- BOTTOM SHEET -->
+    <integer name="dialog_max_items">5</integer>
+
 </resources>

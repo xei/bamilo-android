@@ -74,8 +74,8 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
         //TODO move to observable
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
@@ -83,8 +83,13 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
 
-        bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
+//        bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
+//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
+
+        AddItemStruct addItemStruct = new AddItemStruct();
+        addItemStruct.setPurchaseEntity(cart);
+        addItemStruct.setCurrentPos(mCurrentPos);
+        baseResponse.getMetadata().setData(addItemStruct);
         /*
          * LastViewed
          */
@@ -94,13 +99,26 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
         }
     }
 
-    @Override
-    public void createErrorBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createErrorBundleParams(baseResponse, bundle);
-        bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
-        bundle.putString(PRODUCT_SKU_TAG, mCurrentSku);
-    }
+    public class AddItemStruct {
+        private PurchaseEntity purchaseEntity;
+        private int currentPos;
 
+        public PurchaseEntity getPurchaseEntity() {
+            return purchaseEntity;
+        }
+
+        void setPurchaseEntity(PurchaseEntity purchaseEntity) {
+            this.purchaseEntity = purchaseEntity;
+        }
+
+        public int getCurrentPos() {
+            return currentPos;
+        }
+
+        void setCurrentPos(int currentPos) {
+            this.currentPos = currentPos;
+        }
+    }
 
     /**
      * Method used to create a request bundle.

@@ -83,9 +83,9 @@ Then /^I enter a valid search$/ do
 end
 
 Then /^I enter a invalid search$/ do 
-  wait_for_elements_exist(["* marked:'abs__search_src_text'"],:timeout => 30)
-  clear_text_in("android.widget.EditText marked:'abs__search_src_text'")
-  enter_text("android.widget.EditText marked:'abs__search_src_text'", @invalidsearch.to_s)
+  wait_for_elements_exist(["* marked:'"+@search_input.to_s+"'"],:timeout => 30)
+  clear_text_in("android.widget.EditText marked:'"+@search_input.to_s+"'")
+  enter_text("android.widget.EditText marked:'"+@search_input.to_s+"'", @invalidsearch.to_s)
 end
 
 Then /^I enter the new password$/ do 
@@ -177,15 +177,63 @@ end
 Then /^I fill the new address form$/ do
   wait_for_elements_exist(["* marked:'first_name'"],:timeout => 30)
   enter_text("android.widget.EditText marked:'first_name'", 'test')
+  step "I swipe down moving with 2 steps"
   enter_text("android.widget.EditText marked:'last_name'", 'test')
+  step "I swipe down moving with 2 steps"
   enter_text("android.widget.EditText marked:'address1'", 'test')
-  enter_text("android.widget.EditText marked:'address2'", 'test')
-  enter_text("android.widget.EditText marked:'phone'", '912345678')
-  enter_text("android.widget.EditText marked:'city'", 'test')  
+  step "I swipe down moving with 2 steps"
+  enter_text("android.widget.EditText marked:'address2'", 'testing')
+  step "I swipe down moving with 2 steps"
+  enter_text("android.widget.EditText marked:'phone'", @phone_nr.to_s)
+  #enter_text("android.widget.EditText marked:'city'", 'test')
 end
 
 Then /^I enter the a new email$/ do
   wait_for_elements_exist(["* {contentDescription CONTAINS 'email'}"],:timeout => 30)
   number = rand(10000)
   enter_text("android.widget.EditText {contentDescription CONTAINS 'email'}", 'testcalabash'+number.to_s+'@mailinator.com')
+end
+
+Then /^I clean the Edit Address Form$/ do
+  wait_for_elements_exist(["* marked:'first_name'"],:timeout => 30)
+  clear_text_in("android.widget.EditText marked:'first_name'")
+  step "I swipe down moving with 2 steps"
+  clear_text_in("android.widget.EditText marked:'last_name'")
+  step "I swipe down moving with 2 steps"
+  clear_text_in("android.widget.EditText marked:'address1'")
+  step "I swipe down moving with 2 steps"
+  clear_text_in("android.widget.EditText marked:'address2'")
+  step "I swipe down moving with 2 steps"
+  clear_text_in("android.widget.EditText marked:'phone'")
+  #enter_text("android.widget.EditText marked:'city'", '')
+end
+
+Then /^I enter a new value in Address$/ do
+  wait_for_elements_exist(["android.widget.EditText marked:'address1'"],:timeout => 30)
+  if query("EditText marked:'address1'",:text).first == "test"
+    clear_text_in("android.widget.EditText marked:'address1'")
+    enter_text("android.widget.EditText marked:'address1'", 'testing')
+  else
+    clear_text_in("android.widget.EditText marked:'address1'")
+    enter_text("android.widget.EditText marked:'address1'", 'test')
+  end
+
+end
+
+Then /^I enter a valid Voucher$/ do
+  wait_for_elements_exist(["android.widget.EditText marked:'voucher_name'"],:timeout => 50)
+  enter_text("android.widget.EditText marked:'voucher_name'", @voucher.to_s)
+end
+
+
+Then /^I enter a invalid Voucher$/ do
+  wait_for_elements_exist(["android.widget.EditText marked:'voucher_name'"],:timeout => 50)
+  enter_text("android.widget.EditText marked:'voucher_name'", @invalid_voucher.to_s)
+end
+
+Then /^I enter a the search a$/ do
+  wait_for_elements_exist(["* marked:'"+@search_input.to_s+"'"],:timeout => 30)
+  enter_text("android.widget.EditText marked:'"+@search_input.to_s+"'", '')
+  enter_text("android.widget.EditText marked:'"+@search_input.to_s+"'", 'a')
+  press_user_action_button
 end

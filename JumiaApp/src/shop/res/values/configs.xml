@@ -4,7 +4,7 @@
 
 	<!-- APP -->
     <item name="is_shop_specific" type="bool">true</item>
-    
+    <string name="app_name">Shop.com.mm</string>
 	<!-- COUNTRIES -->
 	<!-- country.xml -->
 
@@ -49,5 +49,8 @@
 
     <!-- DEEP LINK APP INDEXING -->
     <string name="dp_app_index_prefix">/SHOP</string>
+
+    <!-- MARKET -->
+    <string name="id_market">com.shop.android</string>
 
 </resources>

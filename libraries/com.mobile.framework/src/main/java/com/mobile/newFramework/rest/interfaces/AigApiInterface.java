@@ -1,11 +1,13 @@
 package com.mobile.newFramework.rest.interfaces;
 
+import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.objects.addresses.PhonePrefixes;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.Catalog;
@@ -23,9 +25,10 @@ import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.orders.MyOrder;
-import com.mobile.newFramework.objects.orders.OrderTracker;
+import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
@@ -33,6 +36,7 @@ import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.search.Suggestions;
+import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.objects.statics.StaticTermsConditions;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -141,7 +145,7 @@ public interface AigApiInterface {
     String getForgotPasswordForm = "getForgotPasswordForm";
 
     @GET("/")
-    void getCreateAddressForm(Callback<BaseResponse<Form>> callback);
+    void getCreateAddressForm(Callback<BaseResponse<AddressForms>> callback);
 
     String getCreateAddressForm = "getCreateAddressForm";
 
@@ -165,6 +169,11 @@ public interface AigApiInterface {
     void getPaymentMethodsForm(Callback<BaseResponse<CheckoutFormPayment>> callback);
 
     String getPaymentMethodsForm = "getPaymentMethodsForm";
+
+    @GET("/")
+    void getUserDataForm(Callback<BaseResponse<Form>> callback);
+
+    String getUserDataForm = "getUserDataForm";
 
     /*
      * ## CATALOG
@@ -314,6 +323,12 @@ public interface AigApiInterface {
      * ## SESSION
      */
 
+    @FormUrlEncoded
+    @POST("/")
+    void setUserData(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+
+    String setUserData = "setUserData";
+
     @GET("/")
     void logoutCustomer(Callback<BaseResponse<Void>> callback);
 
@@ -322,7 +337,6 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void loginCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
-
     String loginCustomer = "loginCustomer";
 
     @FormUrlEncoded
@@ -442,16 +456,11 @@ public interface AigApiInterface {
 
     String setSellerReview = "setSellerReview";
 
-    @GET("/")
-    void getSellerReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
-
-    String getSellerReviews = "getSellerReviews";
-
     /*
     * ## ORDERS
     */
     @GET("/")
-    void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderTracker>> callback);
+    void trackOrder(@QueryMap Map<String, String> data, Callback<BaseResponse<OrderStatus>> callback);
 
     String trackOrder = "trackOrder";
 
@@ -500,4 +509,16 @@ public interface AigApiInterface {
     void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String removeFromWishList = "removeFromWishList";
 
+    @FormUrlEncoded
+    @POST("/")
+    void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
+    String emailCheck = "emailCheck";
+
+    @GET("/")
+    void getPhonePrefixes(Callback<BaseResponse<PhonePrefixes>> callback);
+    String getPhonePrefixes = "getPhonePrefixes";
+
+    @GET("/")
+    void getFaqTerms(Callback<BaseResponse<MobileAbout>> callback);
+    String getFaqTerms = "getFaqTerms";
 }

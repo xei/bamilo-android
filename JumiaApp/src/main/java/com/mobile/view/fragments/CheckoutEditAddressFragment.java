@@ -13,15 +13,15 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -66,6 +66,10 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     public void onStart() {
         super.onStart();
+        initializeFormData();
+    }
+
+    private void initializeFormData() {
         // Get and show form
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
             triggerInitForm();
@@ -86,35 +90,35 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     @Override
     protected void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
+        if (null == JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+            initializeFormData();
         }
     }
 
-    protected void onGetEditAddressFormErrorEvent(Bundle bundle){
-        super.onGetEditAddressFormErrorEvent(bundle);
+    protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse){
+        super.onGetEditAddressFormErrorEvent(baseResponse);
         super.showFragmentErrorRetry();
     }
 
-    protected void onGetRegionsErrorEvent(Bundle bundle){
-        super.onGetRegionsErrorEvent(bundle);
+    protected void onGetRegionsErrorEvent(BaseResponse baseResponse){
+        super.onGetRegionsErrorEvent(baseResponse);
         super.showFragmentErrorRetry();
     }
 
-    protected void onGetCitiesErrorEvent(Bundle bundle){
-        super.onGetCitiesErrorEvent(bundle);
+    protected void onGetCitiesErrorEvent(BaseResponse baseResponse){
+        super.onGetCitiesErrorEvent(baseResponse);
         super.showFragmentErrorRetry();
     }
 
-    protected void onEditAddressErrorEvent(Bundle bundle){
-        super.onEditAddressErrorEvent(bundle);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+    protected void onEditAddressErrorEvent(BaseResponse baseResponse){
+        super.onEditAddressErrorEvent(baseResponse);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             @SuppressWarnings("unchecked")
-            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            Map<String, List<String>> errors = baseResponse.getErrorMessages();
             showErrorDialog(errors);
         } else {
             Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);

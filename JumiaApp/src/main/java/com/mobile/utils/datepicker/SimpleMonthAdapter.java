@@ -17,7 +17,6 @@
 package com.mobile.utils.datepicker;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -154,13 +153,8 @@ public class SimpleMonthAdapter extends BaseAdapter implements SimpleMonthView.O
             v = new SimpleMonthView(mContext);
             // Set up the new view
             LayoutParams params = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
-                params = new LayoutParams(LayoutParams.MATCH_PARENT,
-                        LayoutParams.MATCH_PARENT);
-            } else {
-                params = new LayoutParams(LayoutParams.FILL_PARENT,
-                        LayoutParams.FILL_PARENT);
-            }
+            params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
             v.setLayoutParams(params);
             v.setClickable(true);
             v.setOnDayClickListener(this);

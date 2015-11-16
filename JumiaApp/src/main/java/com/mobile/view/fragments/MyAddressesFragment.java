@@ -15,6 +15,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.GenericRadioGroup;
@@ -175,8 +176,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         else if(id == R.id.checkout_addresses_other_add) onClickCreateAddressButton();
             // Edit button
         else if(id == R.id.checkout_address_item_btn_edit) onClickEditAddressButton(view);
-            // Delete button
-        else if(id == R.id.checkout_address_item_btn_delete) onClickDeleteAddressButton(view);
             // Check box
         else if(id == R.id.checkout_address_billing_checkbox) onClickCheckBox((CheckBox) view);
             // Unknown view
@@ -238,15 +237,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         // Validate if is not the current shipping address
         int position = mTopRadioGroup.getCheckedPosition();
         if(position > 0) addresses.switchShippingAddress(position - 1);
-    }
-
-
-    /**
-     * Process the click on delete button.
-     */
-    private void onClickDeleteAddressButton(View view){
-        String addressId = view.getTag().toString();
-        Print.i(TAG, "ON CLICK: DELETE ADDRESS " + addressId);
     }
 
     /**
@@ -475,15 +465,10 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
         ((TextView) parent.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) parent.findViewById(R.id.checkout_address_item_phone)).setText("" + address.getPhone());
-        parent.findViewById(R.id.checkout_address_item_divider).setVisibility(View.VISIBLE);
         // Buttons
         View editBtn = parent.findViewById(R.id.checkout_address_item_btn_edit);
-        View deleteBtn = parent.findViewById(R.id.checkout_address_item_btn_delete);
-        // deleteBtn.setVisibility(View.VISIBLE);
         editBtn.setTag(tag);
-        deleteBtn.setTag(tag);
         editBtn.setOnClickListener(this);
-        deleteBtn.setOnClickListener(this);
     }
 
     /**
@@ -513,8 +498,8 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
-        onErrorEvent(bundle);
+    public void onRequestError(BaseResponse baseResponse) {
+        onErrorEvent(baseResponse);
     }
 
     /*
@@ -522,17 +507,17 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        onSuccessEvent(bundle);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        onSuccessEvent(baseResponse);
     }
 
     /**
      * ############# RESPONSE #############
      */
 
-    protected abstract boolean onErrorEvent(Bundle bundle);
+    protected abstract boolean onErrorEvent(BaseResponse baseResponse);
 
-    protected abstract boolean onSuccessEvent(Bundle bundle);
+    protected abstract boolean onSuccessEvent(BaseResponse baseResponse);
 
     /**
      * ########### DIALOGS ###########
@@ -541,7 +526,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     /**
      * Dialog used to show an error
      */
-    protected void showErrorDialog(HashMap<String, List<String>> errors, int titleId) {
+    protected void showErrorDialog(Map<String, List<String>> errors, int titleId) {
         Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
         List<String> errorMessages = null;
         if (errors != null) {

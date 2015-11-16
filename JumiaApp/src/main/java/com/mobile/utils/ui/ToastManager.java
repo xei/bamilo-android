@@ -2,6 +2,7 @@ package com.mobile.utils.ui;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
 
 import com.mobile.utils.Toast;
 import com.mobile.view.R;
@@ -19,22 +20,26 @@ public class ToastManager {
     /*
      * #### ERROR ####
      */
-    public static final int ERROR_FB_PERMISSION             = 0;
-    public static final int ERROR_NO_CONNECTION             = 1;
-    public static final int ERROR_CATALOG_LOAD_MORE         = 2;
-    public static final int ERROR_OCCURRED                  = 3;
-    public static final int ERROR_PRODUCT_NOT_RETRIEVED     = 4;
-    public static final int ERROR_PRODUCT_OUT_OF_STOCK      = 5;
-    public static final int ERROR_ADDED_TO_CART             = 6;
-    public static final int ERROR_UNEXPECTED_PLEASE_RETRY   = 7;
+    public static final int ERROR_FB_PERMISSION             = 1;
+    public static final int ERROR_NO_CONNECTION             = 2;
+    public static final int ERROR_CATALOG_LOAD_MORE         = 3;
+    public static final int ERROR_OCCURRED                  = 4;
+    public static final int ERROR_PRODUCT_NOT_RETRIEVED     = 5;
+    public static final int ERROR_PRODUCT_OUT_OF_STOCK      = 6;
+    public static final int ERROR_ADDED_TO_CART             = 7;
+    public static final int ERROR_UNEXPECTED_PLEASE_RETRY   = 8;
+    public static final int ERROR_SSL_SSL_HOST_MISMATCH     = 9;
+    public static final int ERROR_SSL_GENERIC               = 10;
+    public static final int ERROR_INVALID_EMAIL             = 11;
+    
 
     /*
      * #### SUCCESS ####
      */
-    public static final int SUCCESS_LOGIN                   = 8;
-    public static final int SUCCESS_ADDED_FAVOURITE         = 9;
-    public static final int SUCCESS_REMOVED_FAVOURITE       = 10;
-    public static final int SUCCESS_ADDED_CART              = 11;
+    public static final int SUCCESS_LOGIN                   = 101;
+    public static final int SUCCESS_ADDED_FAVOURITE         = 102;
+    public static final int SUCCESS_REMOVED_FAVOURITE       = 103;
+    public static final int SUCCESS_ADDED_CART              = 104;
 
     @IntDef({
             // #### ERROR ####
@@ -46,6 +51,9 @@ public class ToastManager {
             ERROR_PRODUCT_OUT_OF_STOCK,
             ERROR_ADDED_TO_CART,
             ERROR_UNEXPECTED_PLEASE_RETRY,
+            ERROR_SSL_SSL_HOST_MISMATCH,
+            ERROR_SSL_GENERIC,
+            ERROR_INVALID_EMAIL,
             // #### SUCCESS ####
             SUCCESS_LOGIN,
             SUCCESS_ADDED_FAVOURITE,
@@ -87,6 +95,9 @@ public class ToastManager {
             case ERROR_UNEXPECTED_PLEASE_RETRY:
                 Toast.makeText(context, context.getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
                 break;
+            case ERROR_INVALID_EMAIL:
+                Toast.makeText(context, context.getString(R.string.error_invalid_email), Toast.LENGTH_LONG).show();
+                break;
             /*
              * #### SUCCESS ####
              */
@@ -103,6 +114,20 @@ public class ToastManager {
                 Toast.makeText(context, context.getString(R.string.added_to_shop_cart_dialog_text), Toast.LENGTH_SHORT).show();
                 break;
             default:
+                break;
+        }
+    }
+
+    public static void show(Context context, @TypeMessage int type, @Nullable Object... placeholders) {
+        switch(type){
+            case ERROR_SSL_SSL_HOST_MISMATCH:
+                Toast.makeText(context, context.getString(R.string.ssl_error_host_mismatch, placeholders), Toast.LENGTH_SHORT).show();
+                break;
+            case ERROR_SSL_GENERIC:
+                Toast.makeText(context, context.getString(R.string.ssl_error_generic, placeholders), Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                show(context,type);
                 break;
         }
     }

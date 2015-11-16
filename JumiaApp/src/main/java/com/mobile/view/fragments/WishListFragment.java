@@ -21,8 +21,10 @@ import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -31,11 +33,11 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ToastManager;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
 
 /**
  * WishList fragment with pagination.
@@ -205,12 +207,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
         if (!JumiaApplication.isCustomerLoggedIn()) {
-            // Pop entries until home
-            getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
-            // Goto Login and next WishList
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            switchToLoginFragment();
         }
         // Case first time
         else if (mWishList == null || sForceReloadWishListFromNetwork) {
@@ -251,7 +248,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Show the wish list container as first time.
      */
     protected void showWishListContainer(WishList wishList) {
-        WishListGridAdapter listAdapter = new WishListGridAdapter(this.getActivity(), wishList.getProducts(), new OnWishListViewHolderClickListener() {
+        WishListGridAdapter listAdapter = new WishListGridAdapter(wishList.getProducts(), new OnWishListViewHolderClickListener() {
             @Override
             public void onItemClick(View view) {
                 WishListFragment.this.onItemClick(view);
@@ -283,12 +280,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Update content
         WishListGridAdapter adapter = (WishListGridAdapter) mListView.getAdapter();
         adapter.notifyDataSetChanged();
-        //if (adapter != null) {
-        //    adapter.notifyDataSetChanged();
-        //} else {
-        //    WishListAdapter listAdapter = new WishListAdapter(getBaseActivity(), mWishList.getProducts(), this);
-        //    mListView.setAdapter(listAdapter);
-        //}
     }
 
     /**
@@ -466,6 +457,18 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         }
     }
 
+    /**
+     * Request login
+     */
+    private void switchToLoginFragment() {
+        // Pop entries until home
+        getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
+        // Goto Login and next WishList
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+    }
+
     /*
      * ############## TRIGGERS ##############
      */
@@ -494,9 +497,9 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
-    public void onRequestComplete(Bundle bundle) {
+    public void onRequestComplete(BaseResponse baseResponse) {
         Log.i(TAG, "ON SUCCESS");
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate fragment state
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -505,22 +508,22 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Hide progress
         hideActivityProgress();
         // Validate event
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART);
+                showAddToCartCompleteMessage(baseResponse);
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_REMOVED_FAVOURITE);
+                showInfoAddToSaved();
                 break;
             case GET_WISH_LIST:
             default:
                 // Hide loading more
                 setLoadingMore(false);
                 // Show content
-                WishList wishList = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                WishList wishList = (WishList) baseResponse.getMetadata().getData();
                 showContent(wishList);
                 break;
         }
@@ -531,9 +534,9 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
         Log.i(TAG, "ON REQUEST ERROR");
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // Validate fragment state
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -544,20 +547,29 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                if (!super.handleErrorEvent(bundle)) {
-                    ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_OUT_OF_STOCK);
+                if (!super.handleErrorEvent(baseResponse)) {
+                    showInfoAddToShoppingCartOOS();
                 }
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
-                if (!super.handleErrorEvent(bundle)) {
+                if (!super.handleErrorEvent(baseResponse)) {
                     showUnexpectedErrorWarning();
                 }
                 break;
             case GET_WISH_LIST:
             default:
                 // Validate error
-                if (!super.handleErrorEvent(bundle)) {
-                    showContinueShopping();
+                if (!super.handleErrorEvent(baseResponse)) {
+                    try {
+                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
+                        if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
+                            switchToLoginFragment();
+                        } else {
+                            showContinueShopping();
+                        }
+                    } catch (ClassCastException | NullPointerException e) {
+                        showContinueShopping();
+                    }
                 }
                 isErrorOnLoadingMore = isLoadingMoreData;
                 setLoadingMore(false);

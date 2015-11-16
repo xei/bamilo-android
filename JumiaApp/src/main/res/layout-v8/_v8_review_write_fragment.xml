@@ -11,6 +11,10 @@
             android:id="@+id/product_info_container"
             layout="@layout/product_details_fragment_header" />
 
+        <View
+            android:layout_below="@id/product_info_container"
+            style="@style/divider_horizontal"/>
+
         <!-- SHADOW -->
 
         <View

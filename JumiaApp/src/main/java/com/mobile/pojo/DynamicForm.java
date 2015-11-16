@@ -1,27 +1,29 @@
 package com.mobile.pojo;
 
 import android.content.ContentValues;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RatingBar;
 
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.objects.addresses.FormListItem;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.view.R;
 
+import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This Class defines the representation of a dynamic form
@@ -42,16 +44,17 @@ import java.util.Map;
  */
 public class DynamicForm implements Iterable<DynamicFormItem> {
 
-    private final static String TAG = DynamicForm.class.getSimpleName();
+    public final static String TAG = DynamicForm.class.getSimpleName();
 
-    private ViewGroup base;
-    private List<DynamicFormItem> controls;
+    private final ViewGroup base;
+    private final List<DynamicFormItem> controls;
+    private final IcsAdapterView.OnItemSelectedListener itemSelected_listener;
+    private final TextWatcher text_watcher;
     private int lastID = 0x7f096000;
     private Form form;
-
     private OnFocusChangeListener focus_listener;
-    private IcsAdapterView.OnItemSelectedListener itemSelected_listener;
-    private TextWatcher text_watcher;
+    private WeakReference<View.OnClickListener> mClickListener;
+    private WeakReference<IResponseCallback> mRequestCallBack;
 
     /**
      * The constructor for the DynamicForm
@@ -67,17 +70,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         this.itemSelected_listener = null;
         this.text_watcher = null;
     }
-
-//    /**
-//     * Adds a control to the dynamic form
-//     *
-//     * @param ctrl
-//     *            an instance of a DynamicFormItem to be added to the form
-//     */
-//    public void addControl(DynamicFormItem ctrl) {
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//        addControl(ctrl, params);
-//    }
 
     /**
      * Adds a control to the dynamic form
@@ -213,14 +205,14 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return ++lastID;
     }
 
-    /**
-     * Gets the last used ID
-     *
-     * @return the last id used to create a control
-     */
-    public int getLastId() {
-        return lastID;
-    }
+//    /**
+//     * Gets the last used ID
+//     *
+//     * @return the last id used to create a control
+//     */
+//    public int getLastId() {
+//        return lastID;
+//    }
 
     /**
      * Get the form object that is return from the framework containing all the
@@ -258,23 +250,23 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return result;
     }
 
-    /**
-     * Checks if all the required fields are filled
-     * 
-     * @return True, if all the required fields are filled; False, if the are
-     *         unfilled required fields
-     */
-    public boolean checkRequired() {
-        boolean result = true;
-        for (DynamicFormItem dynamicFormItem : this) {
-            result &= dynamicFormItem.validateRequired();
-        }
-        return result;
-    }
+//    /**
+//     * Checks if all the required fields are filled
+//     *
+//     * @return True, if all the required fields are filled; False, if the are
+//     *         unfilled required fields
+//     */
+//    public boolean checkRequired() {
+//        boolean result = true;
+//        for (DynamicFormItem dynamicFormItem : this) {
+//            result &= dynamicFormItem.validateRequired();
+//        }
+//        return result;
+//    }
 
     /**
-     * Fills a hashmap with the values from the form
-     * 
+     * Fills a hashmap with the values from the form.
+     * Only used to send the info of the form to the server.
      * @return A hashmap containing the values from the form
      */
     public ContentValues save() {
@@ -301,15 +293,32 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             // Case related number
             else if (control != null && control.getType() == FormInputType.relatedNumber ) {
                 // Get number
-                model.put(control.getName(), control.getValue());
-                // Get related option
-                IFormField related = control.getEntry().getRelatedField();
-                RadioGroupLayout group = (RadioGroupLayout) control.getControl().findViewWithTag(DynamicFormItem.RELATED_RADIO_GROUP_TAG);
-                // Get selected position
-                int idx = group.getSelectedIndex();
-                // Get option value from related item
-                String value = related.getOptions().get(idx).getValue();
-                model.put(related.getName(), value);
+                String number = control.getValue();
+                if (TextUtils.isNotEmpty(number)) {
+                    model.put(control.getName(), number);
+                    // Get related option
+                    IFormField related = control.getEntry().getRelatedField();
+                    // Validate related type
+                    FormInputType relatedType = related.getInputType();
+                    // Only send the related info if the main is filled
+
+                    if(relatedType == FormInputType.radioGroup) {
+                        RadioGroupLayout group = (RadioGroupLayout) control.getControl().findViewWithTag(DynamicFormItem.RELATED_RADIO_GROUP_TAG);
+                        // Get selected position
+                        int idx = group.getSelectedIndex();
+                        // Get option value from related item
+                        String value = related.getOptions().get(idx).getValue();
+                        model.put(related.getName(), value);
+                    }
+                    else if (relatedType == FormInputType.list) {
+                        IcsSpinner spinner = (IcsSpinner) control.getControl().findViewWithTag(DynamicFormItem.RELATED_LIST_GROUP_TAG);
+                        FormListItem item = (FormListItem) spinner.getSelectedItem();
+                        if (item != null) {
+                            model.put(related.getName(), item.getValue());
+                        }
+                    }
+                }
+
             }
             // Case default
             else if (null != control && null != control.getValue()) {
@@ -317,16 +326,16 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             }
 
             // TODO VALIDATE IF THESE CASES ARE NECESSARY
-            // Case ???
-            else if (null != control && control.getType() == FormInputType.rating) {
-                saveRatingForm(control, model);
-            }
-            // Case ???
-            else if (null != control) {
-                model.put(control.getName(), "");
-            } else {
-                Print.e(TAG, "control is null");
-            }
+//            // Case ???
+//            else if (null != control && control.getType() == FormInputType.rating) {
+//                saveRatingForm(control, model);
+//            }
+//            // Case ???
+//            else if (null != control) {
+//                model.put(control.getName(), "");
+//            } else {
+//                Print.e(TAG, "control is null");
+//            }
         }
 
         return model;
@@ -343,33 +352,29 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             model.put(control.getName(), mSelectedRegion.getValue());
     }
 
-    /**
-     * Save rating bar stars selection
-     */
-    private void saveRatingForm(DynamicFormItem control,ContentValues model){
-        LinearLayout ratingList = ((LinearLayout)control.getEditControl());
-        Iterator it = control.getEntry().getDateSetRating().entrySet().iterator();
-        int count = 1;
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry)it.next();
-            float rate = ((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getRating();
-            model.put(ratingList.findViewById(count).findViewById(R.id.option_stars).getTag().toString(), (int) rate);
-            count++;
-        }
-    }
+//    /**
+//     * Save rating bar stars selection
+//     */
+//    private void saveRatingForm(DynamicFormItem control,ContentValues model){
+//        LinearLayout ratingList = ((LinearLayout)control.getEditControl());
+//        Iterator it = control.getEntry().getDateSetRating().entrySet().iterator();
+//        int count = 1;
+//        while (it.hasNext()) {
+//            Map.Entry pairs = (Map.Entry)it.next();
+//            float rate = ((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getRating();
+//            model.put(ratingList.findViewById(count).findViewById(R.id.option_stars).getTag().toString(), (int) rate);
+//            count++;
+//        }
+//    }
     
     public int getSelectedValueIndex() {
-        // ContentValues model = new ContentValues();
         DynamicFormItem control;
-
         for (DynamicFormItem dynamicFormItem : this) {
-
             control = dynamicFormItem;
             if (null != control && control.getType() == FormInputType.radioGroup && control.isRadioGroupLayoutVertical()) {
                 return control.getSubFormsSelectedIndex();
             }
         }
-
         return -1;
     }
 
@@ -410,36 +415,8 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public void setOnFocusChangeListener(OnFocusChangeListener listener) {
         focus_listener = listener;
-
         for (DynamicFormItem dynamicFormItem : this) {
             dynamicFormItem.setOnFocusChangeListener(focus_listener);
-        }
-
-    }
-
-    /**
-     * Sets the OnItemSelected listener to all the spinner controls of the form
-     * 
-     * @param listener
-     *            The listener to be fired every time the selected item changes
-     */
-    public void setOnItemSelectedListener(IcsAdapterView.OnItemSelectedListener listener) {
-        itemSelected_listener = listener;
-
-        for (DynamicFormItem dynamicFormItem : this) {
-            dynamicFormItem.setOnItemSelectedListener(itemSelected_listener);
-        }
-
-    }
-
-    /**
-     * Sets the TextWatcher listener to all the edit controls of the form
-     *
-     */
-    public void setTextWatcher(TextWatcher watcher) {
-        text_watcher = watcher;
-        for (DynamicFormItem dynamicFormItem : this) {
-            dynamicFormItem.setTextWatcher(text_watcher);
         }
     }
 
@@ -453,4 +430,86 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return controls.iterator();
     }
 
+    /**
+     * Save the form state
+     */
+    public void saveFormState(@NonNull Bundle outState) {
+        for (DynamicFormItem item : this) {
+            item.saveState(outState);
+        }
+    }
+
+    /**
+     * Load the saved form state.
+     */
+    public void loadSaveFormState(@Nullable Bundle mFormSavedState) {
+        if (mFormSavedState != null) {
+            for (DynamicFormItem item : this) {
+                item.loadState(mFormSavedState);
+            }
+        }
+    }
+
+    /**
+     * This method checks if both passwords inserted match
+     *
+     * @return true if yes false if not
+     */
+    public boolean checkPasswords() {
+        boolean result = true;
+        String old = "";
+        for (DynamicFormItem item : this) {
+            // Case password
+            if (item.getType() == FormInputType.password) {
+                // Save first
+                if (TextUtils.isEmpty(old)) {
+                    old = item.getValue();
+                }
+                // Check first vs second
+                else {
+                    result = old.equals(item.getValue());
+                    if (!result) {
+                        item.ShowError(base.getContext().getString(R.string.form_passwordsnomatch));
+                    }
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Sets a click listener to a specific form type or to all case null.
+     */
+    public void setOnClickListener(View.OnClickListener listener) {
+        mClickListener = new WeakReference<>(listener);
+    }
+
+    public void setInitialValue(@NonNull FormInputType formType, @NonNull Object value) {
+        for (DynamicFormItem dynamicFormItem : this) {
+            if (dynamicFormItem.getType() == formType) {
+                dynamicFormItem.setValue(value);
+            }
+        }
+    }
+
+    public boolean hasClickListener() {
+        return  mClickListener != null && mClickListener.get() != null;
+    }
+
+    public boolean hasResponseCallback() {
+        return  mRequestCallBack != null && mRequestCallBack.get() != null;
+    }
+
+    public WeakReference<View.OnClickListener> getClickListener() {
+        return mClickListener;
+    }
+
+    public WeakReference<IResponseCallback> getRequestCallBack() {
+        return mRequestCallBack;
+    }
+
+    public void setRequestCallBack(IResponseCallback requestCallBack) {
+        mRequestCallBack = new WeakReference<>(requestCallBack);
+    }
 }

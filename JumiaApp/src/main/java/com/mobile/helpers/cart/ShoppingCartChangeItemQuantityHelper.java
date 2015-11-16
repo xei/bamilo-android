@@ -4,8 +4,6 @@
  */
 package com.mobile.helpers.cart;
 
-import android.os.Bundle;
-
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -13,7 +11,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -53,8 +50,8 @@ public class ShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void createSuccessBundleParams(BaseResponse baseResponse, Bundle bundle) {
-        super.createSuccessBundleParams(baseResponse, bundle);
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
 
         //TODO move to observable
         JumiaApplication.INSTANCE.setCart(null);
@@ -64,40 +61,7 @@ public class ShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
 
-        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-    }
-
-//    @Override
-//    public Bundle generateRequestBundle(Bundle args) {
-//        Bundle bundle = new Bundle();
-//        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT.action);
-//        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.POST);
-//        bundle.putParcelable(Constants.BUNDLE_FORM_DATA_KEY, args.getParcelable(CART_ITEMS));
-//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);
-//        return bundle;
-//    }
-    
-//    @Override
-//    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-//        Log.d("TRACK", "parseResponseBundle GetShoppingCartChangeItemQuantityHelper");
-//        JumiaApplication.INSTANCE.setCart(null);
-//        ShoppingCart cart = new ShoppingCart();
-//        try {
-//            cart.initialize(jsonObject);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        JumiaApplication.INSTANCE.setCart(cart);
 //        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT);
-//
-//        // Track the new cart value
-//        TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount());
-//
-//        return bundle;
-//    }
-
+    }
 
 }

@@ -37,27 +37,10 @@ public class FormFactory {
     private static FormFactory factory = null;
 
     /**
-     * TODO: To implement if re-use is necessary.
-     * ATTENCION: Must remove from current parent view in order to re-use in another view : ((ViewGroup) userForm.getContainer().getParent()).removeView(userForm.getContainer());
-     *
-    *        private DynamicForm addressForm = null;
-             private DynamicForm addressEditForm = null;
-             private DynamicForm loginForm = null;
-             private DynamicForm paymentForm = null;
-             private DynamicForm registerForm = null;
-             private DynamicForm pollForm = null;
-             private DynamicForm ratingForm = null;
-             private DynamicForm signupForm;
-     */
-
-
-    // private DynamicForm shippingForm = null;
-    private float scale = 1;
-
-    /**
      * The constructor is private to prevent the creation of the object
      */
     private FormFactory() {
+        // ...
     }
 
     /**
@@ -69,7 +52,6 @@ public class FormFactory {
         if (null == factory) {
             factory = new FormFactory();
         }
-
         return factory;
     }
 
@@ -106,9 +88,6 @@ public class FormFactory {
      */
     public DynamicForm CreateForm(int formType, Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
         DynamicForm parent = null;
-        if (context != null && context.getResources() != null && context.getResources().getDisplayMetrics() != null) {
-            scale = context.getResources().getDisplayMetrics().density;
-        }
         Print.i(TAG, "code1register CREATING FORM : " + formType);
         switch (formType) {
             case FormConstants.ADDRESS_FORM:
@@ -118,27 +97,22 @@ public class FormFactory {
                 parent = createEditAddressForm(context, form, ctrlParams);
                 break;
             case FormConstants.LOGIN_FORM:
+                form.setType(formType); // Used to show icons
+                form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
                 parent = createLoginForm(context, form, ctrlParams);
                 break;
             case FormConstants.REGISTRATION_FORM:
+                form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
+            case FormConstants.USER_DATA_FORM:
+                form.setType(formType);  // Used to show icons
                 parent = createRegistrationForm(context, form, ctrlParams);
                 break;
             case FormConstants.FORGET_PASSWORD_FORM:
+                form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
                 parent = createForgetPasswordForm(context, form, ctrlParams);
-                break;
-            case FormConstants.POLL_FORM:
-                parent = createPollForm(context, form, ctrlParams);
-                break;
-            case FormConstants.SIGNUP_FORM:
-                parent = createSignupForm(context, form, ctrlParams);
                 break;
             case FormConstants.PAYMENT_DETAILS_FORM:
                 parent = createPaymentMethodsForm(context, form, ctrlParams);
-                break;
-            case FormConstants.REVIEW_FORM:
-            case FormConstants.RATING_FORM:
-            case FormConstants.REVIEW_SELLER_FORM:
-                parent = createRatingReviewOptionsForm(context, form, ctrlParams);
                 break;
             case FormConstants.CHANGE_PASSWORD_FORM:
                 parent = createChangePasswordForm(context,form, ctrlParams);
@@ -218,23 +192,9 @@ public class FormFactory {
             ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
         }
 
-//        if (loginForm == null) {
-//            loginForm = createGenericForm(context, form, ctrlParams);
-//        }
-//        return loginForm;
         return createGenericForm(context,form,ctrlParams);
    }
 
-//    /**
-//     * Create the payment methods edit form
-//     *
-//     * @param context The context where the form is to be inserted
-//     * @param form The definition provided by the framework
-//     * @return An instance of a DynamicForm with the form representation implemented
-//     */
-//    private DynamicForm createPaymentMethodsForm(Context context, Form form) {
-//        return createPaymentMethodsForm(context, form, null);
-//    }
 
     /**
      * Create the payment methods edit form
@@ -251,27 +211,11 @@ public class FormFactory {
             final int CTRLMARGIN_RIGHT = 0;
             final int CTRLMARGIN_BOTTOM = 0;
 
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
+            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
         }
 
         return createGenericForm(context, form, ctrlParams);
     }
-
-    /**
-     * create the write seller review form
-     */
-    private DynamicForm createRatingReviewOptionsForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
-    }
-
 
     /**
      * Create the user registration form
@@ -312,66 +256,6 @@ public class FormFactory {
     }
 
     /**
-     * Create the poll form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    // Validate this method for poll
-    private DynamicForm createPollForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = (int) (5 * scale);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
-    }
-
-
-    /**
-     * Create the signup form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    // Validate this method for signup
-    private DynamicForm createSignupForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
-    }
-
-    /**
-     * Create the payment methods edit form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    /*-private DynamicForm createShippingMethodsForm(Context context, Form form) {
-        final int CTRLMARGIN_LEFT = 0;
-        final int CTRLMARGIN_TOP = (int) (5 * scale);
-        final int CTRLMARGIN_RIGHT = 0;
-        final int CTRLMARGIN_BOTTOM = (int) (5 * scale);
-
-        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-
-        return createShippingMethodsForm(context, form, shippingForm, ctrlParams);
-    }*/
-
-    /**
      * This is used as base to create the given form. Here all the controls are instantiated.
      *
      * @param context The context where the form is to be inserted
@@ -390,25 +274,8 @@ public class FormFactory {
         parent.setLayoutParams(frmParams);
 
         DynamicForm userForm = new DynamicForm(parent);
-        userForm.setForm( form );
+        userForm.setForm(form);
 
-        // Used for dates with day/month/year
-        LinearLayout groupLayout = new LinearLayout(context);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        //#RTL
-        if(ShopSelector.isRtl()){
-            groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-        }
-
-        groupLayout.setId(userForm.getNextId());
-        groupLayout.setOrientation(LinearLayout.HORIZONTAL);
-        groupLayout.setLayoutParams(params);
-
-        // TODO: VALIDATE IF THIS IS NECESSARY : MetaFormExtractor
-//        ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
-//        MetaFormExtractor.dumpIFormField(transformedFields);
-
-//      for (IFormField frmEntry : transformedFields) {
 
         for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
@@ -421,6 +288,18 @@ public class FormFactory {
             } else if ( ! ctrl.isDatePart() ) {
                 userForm.addControl(ctrl, ctrlParams);
             } else {
+                // Used for dates with day/month/year
+                LinearLayout groupLayout = new LinearLayout(context);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                //#RTL
+                if(ShopSelector.isRtl()){
+                    groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
+                }
+
+                groupLayout.setId(userForm.getNextId());
+                groupLayout.setOrientation(LinearLayout.HORIZONTAL);
+                groupLayout.setLayoutParams(params);
+
                 userForm.addGroupedControl(groupLayout, ctrl, ctrlParams);
             }
 
@@ -452,50 +331,5 @@ public class FormFactory {
             ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
         }
     }
-
-    /**
-     * This is used to create the Shipping methods form. Here all the controls are instantiated.
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @param userForm
-     * @param ctrlParams
-     * @return n instance of a DynamicForm with the form representation implemented
-     */
-    /*-private DynamicForm createShippingMethodsForm(Context context, Form form, DynamicForm userForm, ViewGroup.LayoutParams ctrlParams) {
-
-        LinearLayout parent;
-        Log.i(TAG,"code1form id : "+form.id+" name: "+form.name);
-        if (null == userForm) {
-            parent = new LinearLayout(context);
-            LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            parent.setOrientation(LinearLayout.VERTICAL);
-            parent.setLayoutParams(frmParams);
-
-            userForm = new DynamicForm(parent);
-            userForm.setForm( form );
-
-            LinearLayout groupLayout = new LinearLayout(context);
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            groupLayout.setId( userForm.getNextId() );
-            groupLayout.setOrientation(LinearLayout.HORIZONTAL);
-            groupLayout.setLayoutParams(params);
-
-            DynamicFormItem ctrl;
-
-            ArrayList<IFormField> transformedFields = MetaFormExtractor.generateMetaFields( form.fields );
-            MetaFormExtractor.dumpIFormField(transformedFields);
-
-            for (IFormField frmEntry : transformedFields) {
-                Log.d( TAG, "createShippingMethodsForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType() );
-                ctrl = new DynamicFormItem(userForm, context, frmEntry);
-                userForm.addControl(ctrl, ctrlParams);
-            }
-        } else {
-            ((ViewGroup) userForm.getContainer().getParent()).removeView(userForm.getContainer());
-        }
-
-        return userForm;
-    }*/
 
 }

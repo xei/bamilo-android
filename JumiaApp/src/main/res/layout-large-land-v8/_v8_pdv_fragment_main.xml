@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
 
@@ -112,7 +111,7 @@
 
             <include
                 android:id="@+id/pdv_combos_container"
-                layout="@layout/_def_pdv_fragment_combos" />
+                layout="@layout/pdv_fragment_combos"/>
 
             <!-- RELATED ITEMS -->
 

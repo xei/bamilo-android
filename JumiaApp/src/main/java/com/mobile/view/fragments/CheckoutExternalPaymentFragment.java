@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -22,23 +21,24 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.account.GetCustomerHelper;
-import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
+import com.newrelic.agent.android.util.NetworkFailure;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -61,7 +61,7 @@ import java.util.Set;
  *
  * @author Manuel Silva
  */
-public class CheckoutExternalPaymentFragment extends BaseFragment {
+public class CheckoutExternalPaymentFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = CheckoutExternalPaymentFragment.class.getSimpleName();
 
@@ -137,27 +137,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        triggerGetCustomer();
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
     }
-
-    private void triggerGetCustomer() {
-        triggerContentEventNoLoading(new GetCustomerHelper(), null, mCallback);
-    }
-
-    IResponseCallback mCallback = new IResponseCallback() {
-
-        @Override
-        public void onRequestError(Bundle bundle) {
-            CheckoutExternalPaymentFragment.super.handleErrorEvent(bundle);
-        }
-
-        @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
-
-        }
-    };
 
     /*
      * (non-Javadoc)
@@ -170,6 +151,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         webview = (WebView) view.findViewById(R.id.webview);
+        // TODO VALIDATE IF THIS TRIGGER IS NECESSARY
+        triggerGetCustomer();
     }
 
     /*
@@ -192,10 +175,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
-        // Needed for 2.3 problem with not showing keyboard by tapping in webview
         webview.requestFocus();
         prepareCookieStore();
         setupWebView();
@@ -211,9 +190,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
     }
 
     /*
@@ -225,9 +201,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
     }
 
     /*
@@ -279,9 +252,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     private void startCheckout() {
         showFragmentLoading();
         webview.clearView();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            webview.loadUrl("about:blank");
-        }
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
             paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
         } else {
@@ -338,20 +308,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         isRequestedPage = true;
     }
 
-//    private void setProxy() {
-////        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-////            ProxyConfiguration conf = null;
-////            try {
-////                conf = ProxySettings.getCurrentProxyConfiguration(getActivity(), new URI(url));
-////            } catch (Exception e) {
-////                Log.e(TAG, "ProxyConfigurationException:", e);
-////            }
-////            if (conf != null && conf.getProxyType() != Type.DIRECT) {
-////                ProxyUtils.setWebViewProxy(getActivity(), conf);
-////            }
-////        }
-//    }
-
     private void prepareCookieStore() {
         // GET COOKIES FROM FRAMEWORK
         List<HttpCookie> cookies = AigHttpClient.getInstance().getCookies();
@@ -374,17 +330,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
     }
 
     private String prepareCookie(HttpCookie cookie) {
-        String transDomain = cookie.getDomain();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
-            if (cookie.getDomain().startsWith(".")) {
-                transDomain = transDomain.substring(1);
-                Print.d(TAG, "prepareCookie: transform domain = " + cookie.getDomain() + " result = "
-                        + transDomain);
-            } else {
-                Print.d(TAG, "prepareCookie: cookie is fine: result = " + transDomain);
-            }
-        }
-        return transDomain;
+        return cookie.getDomain();
     }
 
     private void trackPurchase(final JSONObject result) {
@@ -399,6 +345,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         private static final String SUCCESS_URL_TAG = "checkout/success";
         private static final String JAVASCRIPT_PROCESS = "javascript:window.INTERFACE.processContent(document.getElementById('jsonAppObject').innerHTML);";
         private boolean wasLoadingErrorPage;
+        private long beginTransaction;
 
         @SuppressWarnings("deprecation")
         @Override
@@ -438,6 +385,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             } else if (url.equals(failedPageRequest)) {
                 Print.d(TAG, "onPageFinished: page was saved failed page");
                 wasLoadingErrorPage = true;
+                getBaseActivity().removeAllNativeCheckoutFromBackStack();
+                showFragmentSSLError();
             } else if (isRequestedPage) {
                 showFragmentContentContainer();
                 isRequestedPage = false;
@@ -488,14 +437,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             if (url.equals(failedPageRequest)) {
                 return;
             }
-
+            beginTransaction = System.currentTimeMillis();
             showFragmentLoading();
-
-            if (url.contains("checkout/success")) {
+            if (url.contains(SUCCESS_URL_TAG)) {
                 view.getSettings().setBlockNetworkImage(true);
-                if (Build.VERSION.SDK_INT >= 8) {
-                    view.getSettings().setBlockNetworkLoads(true);
-                }
+                view.getSettings().setBlockNetworkLoads(true);
                 view.getSettings().setLoadsImagesAutomatically(false);
             }
         }
@@ -511,11 +457,19 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             Print.i(TAG, "code1payment : onReceivedSslError : " + error);
             Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
-                Toast.makeText(getActivity(), "The host name does not match the certificate: " + error, Toast.LENGTH_LONG).show();
+                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_SSL_HOST_MISMATCH, error);
             } else {
-                Toast.makeText(getActivity(), "An SSL error occurred: " + error, Toast.LENGTH_LONG).show();
+                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_GENERIC, error);
             }
-            handler.proceed();
+            // Case in dev continue
+            if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
+                handler.proceed();
+            } else {
+                String url = view.getUrl();
+                NewRelicTracker.noticeFailureTransaction(url, beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
+                onReceivedError(view, error.getPrimaryError(), error.toString(), url);
+                handler.cancel();
+            }
         }
     }
 
@@ -528,12 +482,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
                 Print.d(TAG, "Got checkout response: " + content);
                 final JSONObject result = new JSONObject(content);
                 if (result.optBoolean("success")) {
-
-                    // Defining event as having no priority
-                    Bundle args = new Bundle();
-                    args.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_NOT_PRIORITARY);
-                    triggerContentEventNoLoading(new GetShoppingCartItemsHelper(), args, mCallback);
-
+                    // TODO VALIDATE IF THIS TRIGGER IS NECESSARY
+                    triggerGetCustomer();
                     // Measure to escape the web view thread
                     handler.post(new Runnable() {
                         @Override
@@ -566,11 +516,21 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
         }
     }
 
-    protected boolean onSuccessEvent(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    private void triggerGetCustomer() {
+        triggerContentEventNoLoading(new GetCustomerHelper(), null, this);
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        CheckoutExternalPaymentFragment.super.handleErrorEvent(baseResponse);
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_CUSTOMER:
-                customer = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+                customer = (Customer)baseResponse.getMetadata().getData();
                 JumiaApplication.CUSTOMER = customer;
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
@@ -578,7 +538,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment {
             default:
                 break;
         }
-        return false;
     }
 
     /*

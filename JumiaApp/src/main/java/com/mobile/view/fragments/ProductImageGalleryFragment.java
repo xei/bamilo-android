@@ -15,12 +15,14 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.JumiaViewPagerWithZoom;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -43,13 +45,17 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
 
     private JumiaViewPagerWithZoom mViewPager;
 
-    private ArrayList<String> mImageList;
+    private RelativeLayout mOutOfStockOverlay;
+    
+    private ArrayList<ImageUrls> mImageList;
 
     private HorizontalScrollView mHorizontalScrollView;
 
     private ViewGroup mThumbnailContainer;
 
     private boolean enabledInfiniteSlide;
+
+    private boolean mIsOutOfStock;
 
     /**
      * Constructor using a nested flag
@@ -117,8 +123,9 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if(arguments != null) {
             enabledInfiniteSlide = arguments.getBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, true);
-            mImageList = arguments.getStringArrayList(ConstantsIntentExtra.IMAGE_LIST);
+            mImageList = arguments.getParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST);
             isNestedFragment = arguments.getBoolean(ConstantsIntentExtra.IS_NESTED_FRAGMENT);
+            mIsOutOfStock = arguments.getBoolean(ConstantsIntentExtra.OUT_OF_STOCK);
         }
     }
 
@@ -132,6 +139,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         Print.i(TAG, "ON VIEW CREATED");
         // Get pager
         mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
+        // Get Overlay
+        mOutOfStockOverlay = (RelativeLayout) view.findViewById(R.id.pdv_image_oos_overlay);
         // HorizontalScrollView
         mHorizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.pdv_thumbnail_indicator_scroll);
         // Get thumbnail indicator
@@ -175,9 +184,10 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE");
-        outState.putStringArrayList(ConstantsIntentExtra.IMAGE_LIST, mImageList);
+        outState.putParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST, mImageList);
         outState.putBoolean(ConstantsIntentExtra.IS_NESTED_FRAGMENT, isNestedFragment);
         outState.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, enabledInfiniteSlide);
+        outState.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, mIsOutOfStock);
     }
 
     /*
@@ -227,10 +237,17 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
      * Set product image gallery
      */
     private void createGallery() {
+
+        if(mIsOutOfStock){
+            mOutOfStockOverlay.setVisibility(View.VISIBLE);
+        } else {
+            mOutOfStockOverlay.setVisibility(View.GONE);
+        }
+
         // Setted in order to show the no image placeholder on PDV view
         if (CollectionUtils.isEmpty(mImageList)) {
             mImageList = new ArrayList<>();
-            mImageList.add("");
+            mImageList.add(new ImageUrls());
         }
         // Get size
         int size = mImageList.size();
@@ -416,7 +433,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
                 View holder = inflater.inflate(R.layout.pdv_fragment_gallery_item, mThumbnailContainer, false);
                 View loading = holder.findViewById(R.id.loading_progress);
                 ImageView im = (ImageView) holder.findViewById(R.id.image);
-                RocketImageLoader.instance.loadImage(mImageList.get(i), im, loading, R.drawable.no_image_small);
+                RocketImageLoader.instance.loadImage(mImageList.get(i).getUrl(), im, loading, R.drawable.no_image_small);
                 holder.setTag(R.id.target_position, i);
                 holder.setOnClickListener(this);
                 mThumbnailContainer.addView(holder);

@@ -20,11 +20,16 @@ import java.util.HashMap;
  */
 public class ShippingMethodForm extends ShippingMethodFormHolder implements Parcelable {
 
-	private final static String TAG = ShippingMethodForm.class.getSimpleName();
+	public final static String TAG = ShippingMethodForm.class.getSimpleName();
 
     private ShippingRadioGroupList mShippingRadioGroupList;
 
-    public ShippingMethodForm(){}
+    /**
+     * Empty constructor
+     */
+    public ShippingMethodForm(){
+        // ...
+    }
 
     public ShippingMethodForm(ShippingMethodFormHolder shippingMethodFormHolder){
         this.id = shippingMethodFormHolder.id;

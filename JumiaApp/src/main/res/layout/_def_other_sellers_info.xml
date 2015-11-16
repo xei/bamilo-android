@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    android:id="@+id/sellers_info"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/sellers_info"
+    android:gravity="center_vertical|left|start"
+    android:orientation="vertical"
+    android:paddingEnd="@dimen/layout_padding"
     android:paddingLeft="@dimen/layout_padding"
     android:paddingRight="@dimen/layout_padding"
     android:paddingStart="@dimen/layout_padding"
-    android:paddingEnd="@dimen/layout_padding"
-    android:gravity="center_vertical|left|start"
     >
 
     <!-- SELLER INFO -->
@@ -17,21 +18,21 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/offer_owner_name"
         style="@style/TextBody_1"
-        android:textColor="@color/black"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
 
         />
 
     <!-- SMALL RATING -->
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
         android:id="@+id/ratingContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left|start"
+        android:orientation="horizontal"
         android:visibility="gone">
 
         <!-- changeFashion: choose the right rating bar considering vertical type -->
@@ -58,21 +59,21 @@
             android:id="@+id/item_reviews"
             style="@style/TextCaption"
             color="@color/black_800"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_mid"
             android:layout_marginStart="@dimen/margin_mid"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
            />
 
     </LinearLayout>
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_variant"
         android:layout_width="@dimen/product_item_addtocart_variation_width"
         android:layout_height="@dimen/product_item_button_height"
         android:layout_marginBottom="@dimen/rounded_margin_small"
-        android:background="@drawable/spinnerbutton_background_holo_light"
+        android:background="@drawable/spinner_background"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="@string/product_variant_placeholder"
@@ -83,13 +84,13 @@
     <!-- DELIVERY TIME SECTION -->
 
     <com.mobile.components.customfontviews.TextView
+        android:id="@+id/offer_item_delivery"
         style="@style/TextCaption"
-        android:textColor="@color/black"
-        android:text="3 - 8 days"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/offer_item_delivery"
         android:paddingBottom="10dp"
+        android:text="3 - 8 days"
+        android:textColor="@color/black"
 
         />
 

@@ -5,13 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.Button;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.utils.Constants;
+import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.Toast;
@@ -74,13 +74,13 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        // Set total bar
+        CheckoutStepManager.setTotalBarForMyAccount(view);
+        // Validate order summary
         View orderSummaryLayout = view.findViewById(super.ORDER_SUMMARY_CONTAINER);
         if(orderSummaryLayout != null){
             orderSummaryLayout.setVisibility(View.GONE);
         }
-
-        ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.save_label));
     }
 
     @Override
@@ -88,8 +88,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
         super.onResume();
         if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
             triggerInitForm();
-        } else if(mFormResponse != null && regions != null){
-            loadCreateAddressForm(mFormResponse);
+        } else if(mFormShipping != null &&  mFormBilling!= null && regions != null){
+            loadCreateAddressForm(mFormShipping,mFormBilling);
         } else {
             triggerCreateAddressForm();
         }
@@ -102,8 +102,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     }
 
     @Override
-    protected void onCreateAddressSuccessEvent(Bundle bundle) {
-        super.onCreateAddressSuccessEvent(bundle);
+    protected void onCreateAddressSuccessEvent(BaseResponse baseResponse) {
+        super.onCreateAddressSuccessEvent(baseResponse);
         AnalyticsGoogle.get().trackAddressCreation(TrackingEvent.ACCOUNT_CREATE_ADDRESS,
                 (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString()+"":""); //replaced getID because doesn't come from api
 
@@ -125,29 +125,29 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     }
 
     @Override
-    protected void onGetCreateAddressFormErrorEvent(Bundle bundle) {
-        super.onGetCreateAddressFormErrorEvent(bundle);
+    protected void onGetCreateAddressFormErrorEvent(BaseResponse baseResponse) {
+        super.onGetCreateAddressFormErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
     @Override
-    protected void onGetRegionsErrorEvent(Bundle bundle) {
-        super.onGetRegionsErrorEvent(bundle);
+    protected void onGetRegionsErrorEvent(BaseResponse baseResponse) {
+        super.onGetRegionsErrorEvent(baseResponse);
         onErrorOccurred();
     }
 
     @Override
-    protected void onGetCitiesErrorEvent(Bundle bundle) {
-        super.onGetCitiesErrorEvent(bundle);
+    protected void onGetCitiesErrorEvent(BaseResponse baseResponse) {
+        super.onGetCitiesErrorEvent(baseResponse);
         onErrorOccurred();
 
     }
 
     @Override
-    protected void onCreateAddressErrorEvent(Bundle bundle) {
-        super.onCreateAddressErrorEvent(bundle);
+    protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
+        super.onCreateAddressErrorEvent(baseResponse);
 
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
 
         if (errorCode == ErrorCode.REQUEST_ERROR) {
 //            @SuppressWarnings("unchecked")

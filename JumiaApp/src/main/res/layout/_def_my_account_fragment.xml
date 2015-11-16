@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- ACCOUNT SETTINGS -->
+
+        <LinearLayout
+            android:id="@+id/middle_myaccount_list"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <com.mobile.components.customfontviews.TextView
+                style="@style/HeaderMyAccountStyle"
+                android:text="@string/section_title_account"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- NOTIFICATION SETTINGS -->
+
+    <LinearLayout
+        android:id="@+id/notification_list"
+        android:layout_width="@dimen/inner_container_width"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
+        <com.mobile.components.customfontviews.TextView
+            style="@style/HeaderMyAccountStyle"
+            android:text="@string/section_title_notification"
+            android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <!-- LANGUAGE SETTINGS -->
+
+        <LinearLayout
+            android:id="@+id/language_list"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical" >
+
+            <com.mobile.components.customfontviews.TextView
+                style="@style/HeaderMyAccountStyle"
+                android:text="@string/choose_language"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <!-- MORE SETTINGS -->
+
+            <LinearLayout
+                android:id="@+id/more_info_container"
+                android:layout_width="@dimen/inner_container_width"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical" >
+
+                <com.mobile.components.customfontviews.TextView
+                    style="@style/HeaderMyAccountStyle"
+                    android:text="@string/more"
+                    android:textStyle="bold"/>
+            </LinearLayout>
+
+
+        <!-- SHARE SETTINGS -->
+
+            <LinearLayout
+                android:id="@+id/middle_app_sharing_list"
+                android:layout_width="@dimen/inner_container_width"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical" >
+
+                <com.mobile.components.customfontviews.TextView
+                    style="@style/HeaderMyAccountStyle"
+                    android:text="@string/app_social"
+                    android:textStyle="bold"/>
+
+            </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

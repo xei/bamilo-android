@@ -33,6 +33,8 @@ public interface IFormField {
 
     String getValue();
 
+    void setValue(String value);
+
     Map<String, IFormField> getSubFormFields();
 
     Map<String, String> getDataCalls();
@@ -49,4 +51,7 @@ public interface IFormField {
 
     boolean isDefaultSelection();
 
+    boolean isPrefixField();
+
+    boolean isDisabledField();
 }

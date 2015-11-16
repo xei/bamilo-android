@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.mobile.components.customfontviews.EditText;
@@ -18,6 +17,7 @@ import com.mobile.helpers.session.GetForgotPasswordFormHelper;
 import com.mobile.helpers.session.SetForgotPasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -30,9 +30,9 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author sergiopereira
@@ -49,6 +49,8 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     private Form formResponse;
 
     private Bundle savedInstanceState;
+
+    private View mButton;
 
     /**
      * 
@@ -92,9 +94,16 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         dynamicForm = null;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Get button
+        mButton = view.findViewById(R.id.submit_button);
+    }
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -176,15 +185,11 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * Inflates the required layout for this activity into the main activity template
      */
     private void setAppContentLayout() {
-        Button buttons = (Button) getView().findViewById(R.id.submit_button);
-        buttons.setOnClickListener(new OnClickListener() {
+        mButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = v.getId();
-                if (id == R.id.submit_button) {
-                    if (dynamicForm.validate()) {
-                        requestPassword();
-                    }
+                if (dynamicForm.validate()) {
+                    requestPassword();
                 }
             }
         });
@@ -228,7 +233,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         }
     }
 
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON SUCCESS EVENT");
 
         // Validate fragment visibility
@@ -238,13 +243,13 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         }
 
         showFragmentContentContainer();
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
 
         switch (eventType) {
         case INIT_FORMS:
         case GET_FORGET_PASSWORD_FORM_EVENT:
             Print.d(TAG, "FORGET_PASSWORD_FORM");
-            Form form = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            Form form = (Form)baseResponse.getMetadata().getData();
             if (null != form) {
                 this.formResponse = form;
                 displayForm(form);
@@ -275,7 +280,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         return true;
     }
 
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "ON ERROR EVENT");
 
         // Validate fragment visibility
@@ -284,17 +289,17 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             return true;
         }
 
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
 
         if (eventType == EventType.FORGET_PASSWORD_EVENT) {
             Print.d(TAG, "FORGET_PASSWORD_EVENT");
 
-            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            Map<String, List<String>> errors = baseResponse.getErrorMessages();
             List<String> errorMessages = null;
             if (errors != null) {
                 errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
@@ -345,13 +350,13 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      */
     IResponseCallback mCallBack = new IResponseCallback() {
         @Override
-        public void onRequestError(Bundle bundle) {
-            onErrorEvent(bundle);
+        public void onRequestError(BaseResponse baseResponse) {
+            onErrorEvent(baseResponse);
         }
 
         @Override
-        public void onRequestComplete(Bundle bundle) {
-            onSuccessEvent(bundle);
+        public void onRequestComplete(BaseResponse baseResponse) {
+            onSuccessEvent(baseResponse);
         }
     };
     

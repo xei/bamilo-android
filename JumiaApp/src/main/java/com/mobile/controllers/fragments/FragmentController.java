@@ -249,7 +249,6 @@ public class FragmentController {
             }
             @Override
             public void run() {
-//                Log.e(TAG, "Doing work: addEntryToBackStack");
                 removeAllEntriesWithTag(tag);
                 addToBackStack(tag);
             }
@@ -490,7 +489,7 @@ public class FragmentController {
     @Deprecated
     public void popBackStackUntilTag(BaseActivity activity, String tag) {
         try {
-            activity.getSupportFragmentManager().popBackStackImmediate(tag, 0);
+            activity.getSupportFragmentManager().popBackStackImmediate(tag, POP_BACK_STACK_NO_INCLUSIVE);
         } catch (IllegalStateException | NullPointerException e) {
             Print.w(TAG, "WARNING ON POP BACK STACK", e);
         }
@@ -548,7 +547,7 @@ public class FragmentController {
                         //validating that none of the checkout steps are entered in the new backstack because it will have an empty shopping cart 
                         //and will redirected to the shopping cart fragment, making it the top one
                         if(
-                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.ABOUT_YOU.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.LOGIN.toString()) &&
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&

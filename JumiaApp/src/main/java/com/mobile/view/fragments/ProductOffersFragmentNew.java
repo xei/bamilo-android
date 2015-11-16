@@ -19,10 +19,10 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -33,8 +33,8 @@ import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class used to show the product offers
@@ -256,8 +256,8 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
      */
 
     @Override
-    public void onRequestComplete(Bundle bundle) {
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         // Validate fragment visibility
@@ -268,11 +268,11 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         
         if (getBaseActivity() == null) return;
         
-        super.handleSuccessEvent(bundle);
+        super.handleSuccessEvent(baseResponse);
         
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
-            productOffers = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+            productOffers = (OfferList)baseResponse.getMetadata().getData();
             setAppContent();
             showFragmentContentContainer();
             hideActivityProgress();
@@ -281,7 +281,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             getBaseActivity().updateCartInfo();
             hideActivityProgress();
             showFragmentContentContainer();
-            executeAddToShoppingCartCompleted();
+            showAddToCartCompleteMessage(baseResponse);
             break;
         default:
             break;
@@ -289,7 +289,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     }
 
     @Override
-    public void onRequestError(Bundle bundle) {
+    public void onRequestError(BaseResponse baseResponse) {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -298,11 +298,11 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         }
         hideActivityProgress();
         
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             return;
         }
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
@@ -315,7 +315,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 //            isAddingProductToCart = false;
             hideActivityProgress();
             if (errorCode == ErrorCode.REQUEST_ERROR) {
-                HashMap<String, List<String>> errorMessages = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+                Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
 
                 if (errorMessages != null) {
                     int titleRes = R.string.error_add_to_cart_failed;

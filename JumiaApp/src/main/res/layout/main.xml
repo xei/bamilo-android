@@ -40,6 +40,15 @@
                 app:tabGravity="fill"
                 app:tabMode="fixed" />
 
+            <android.support.design.widget.TabLayout
+                android:id="@+id/checkout_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/tabBar"
+                app:tabGravity="fill"
+                app:tabMode="fixed"
+                android:visibility="gone"/>
+
         </android.support.design.widget.AppBarLayout>
 
         <!-- SCROLLABLE CONTAINER -->
@@ -91,6 +100,16 @@
                 layout="@layout/warning"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:visibility="gone" />
+
+            <!--CONFIGURABLE CART VIEW -->
+
+            <include
+                android:id="@+id/configurableCartView"
+                layout="@layout/config_confirmation_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
                 android:visibility="gone" />
 
         </RelativeLayout>

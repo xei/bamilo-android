@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -10,11 +7,11 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.Button;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.checkout.GetBillingFormHelper;
 import com.mobile.helpers.checkout.SetBillingAddressHelper;
 import com.mobile.newFramework.ErrorCode;
@@ -22,6 +19,8 @@ import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.checkout.CheckoutFormBilling;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
@@ -36,6 +35,7 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Class used to show the my addresses and set the on process checkout the billing and shipping address. 
@@ -44,6 +44,8 @@ import java.util.List;
 public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     private static final String TAG = CheckoutMyAddressesFragment.class.getSimpleName();
+
+    private View mCheckoutTotalBar;
 
     /**
      * Get instance
@@ -96,7 +98,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        ((Button)view.findViewById(R.id.checkout_button_enter)).setText(getResources().getString(R.string.next_button));
+        mCheckoutTotalBar = view.findViewById(R.id.checkout_total_bar);
     }
     
     /*
@@ -175,10 +177,12 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     /**
      * Show form.
      */
-    protected void onGetBillingFormEventSuccessEvent(Bundle bundle) {
+    protected void onGetBillingFormEventSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
-        hiddenForm = bundle.getParcelable(Constants.BUNDLE_FORM_DATA_KEY);
-        Addresses addresses = bundle.getParcelable(Constants.BUNDLE_RESPONSE_KEY);
+        CheckoutFormBilling billingForm = (CheckoutFormBilling)baseResponse.getMetadata().getData();
+
+        hiddenForm = billingForm.getForm();
+        Addresses addresses = billingForm.getAddresses();
         this.addresses = addresses;
         // Validate response
         if(!isValidateResponse()){
@@ -192,19 +196,18 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
             showAddresses(addresses.hasDefaultShippingAndBillingAddress());
         }
         // Get order summary
-        PurchaseEntity orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
+        PurchaseEntity orderSummary = billingForm.getOrderSummary();
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
-
-        CheckoutStepManager.showCheckoutTotal(getView().findViewById(R.id.total_view_stub), orderSummary);
-
+        // Set the checkout total bar
+        CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
     }
 
-    protected void onSetBillingAddressErrorEvent(Bundle bundle) {
+    protected void onSetBillingAddressErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             @SuppressWarnings("unchecked")
-            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
+            Map<String, List<String>> errors = baseResponse.getErrorMessages();
             showErrorDialog(errors, R.string.add_address);
             setDefaultChecked(Boolean.parseBoolean(sameAddress));
         } else{
@@ -214,12 +217,13 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         showFragmentContentContainer();
     }
 
-    protected void onSetBillingAddressSuccessEvent(Bundle bundle) {
+    protected void onSetBillingAddressSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
         // Get next step
-        FragmentType nextFragment = (FragmentType) bundle.getSerializable(Constants.BUNDLE_NEXT_STEP_KEY);
+        NextStepStruct nextStepStruct = (NextStepStruct)baseResponse.getMetadata().getData();
+        FragmentType nextFragment = nextStepStruct.getFragmentType();
         nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.SHIPPING_METHODS;
-        getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(nextFragment, null, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -257,10 +261,10 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     /**
      * Parse success response
-     * @param bundle
+     * @param baseResponse
      * @return boolean
      */
-    protected boolean onSuccessEvent(Bundle bundle) {
+    protected boolean onSuccessEvent(BaseResponse baseResponse) {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
@@ -268,15 +272,15 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
+        EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
             case GET_BILLING_FORM_EVENT:
-                onGetBillingFormEventSuccessEvent(bundle);
+                onGetBillingFormEventSuccessEvent(baseResponse);
                 break;
             case SET_BILLING_ADDRESS_EVENT:
-                onSetBillingAddressSuccessEvent(bundle);
+                onSetBillingAddressSuccessEvent(baseResponse);
                 break;
             default:
                 break;
@@ -287,10 +291,10 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     /**
      * Parse error response
-     * @param bundle
+     * @param baseResponse
      * @return boolean
      */
-    protected boolean onErrorEvent(Bundle bundle) {
+    protected boolean onErrorEvent(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -298,21 +302,21 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         }
 
         // Generic error
-        if (super.handleErrorEvent(bundle)) {
+        if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
             return true;
         }
 
-        EventType eventType = (EventType) bundle.getSerializable(Constants.BUNDLE_EVENT_TYPE_KEY);
-        ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {
             case GET_BILLING_FORM_EVENT:
                 onGetBillingFormEventErrorEvent();
                 break;
             case SET_BILLING_ADDRESS_EVENT:
-                onSetBillingAddressErrorEvent(bundle);
+                onSetBillingAddressErrorEvent(baseResponse);
                 break;
             default:
                 break;
@@ -331,11 +335,12 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     protected void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
+        if (null == JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
+            // Get and show addresses
+            triggerGetForm();
         }
     }
 
