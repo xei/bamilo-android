@@ -54,7 +54,7 @@ import java.util.ArrayList;
  * @author sergiopereira
  * @modified manuelsilva
  */
-public class ReviewsFragment extends BaseFragment {
+public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = ReviewsFragment.class.getSimpleName();
 
@@ -261,7 +261,7 @@ public class ReviewsFragment extends BaseFragment {
                 values.put(GetProductHelper.SKU_TAG, mProductSku);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+                triggerContentEvent(new GetProductHelper(), bundle, this);
 
             } else {
                 showFragmentErrorRetry();
@@ -403,102 +403,7 @@ public class ReviewsFragment extends BaseFragment {
 
     }
 
-    protected void onSuccessEvent(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            if(eventType == EventType.GET_PRODUCT_REVIEWS){
-                pageNumber--;
-            }
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
 
-        switch (eventType) {
-            case GET_PRODUCT_REVIEWS:
-                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
-
-                // Validate the current rating page
-                if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
-
-                if (productRatingPage.getCurrentPage() != 0 && productRatingPage.getTotalPages() != 0) {
-                    pageNumber = productRatingPage.getCurrentPage();
-                    totalPages = productRatingPage.getTotalPages();
-                }
-                //fill header after getting RatingPage object
-                fillAverageRatingData(productRatingPage);
-                //added: fill progress bars
-                setProgressRating(selectedProduct.getTotalRatings());
-                // Append the new page to the current
-                displayReviews(productRatingPage, true);
-                showFragmentContentContainer();
-                break;
-            case GET_PRODUCT_DETAIL:
-                if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
-                    Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-                    getActivity().onBackPressed();
-                    return;
-                } else {
-                    selectedProduct = (ProductComplete) baseResponse.getMetadata().getData();
-                    setAppContentLayout();
-                    // Waiting for the fragment comunication
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            showFragmentContentContainer();
-                        }
-                    }, 300);
-                }
-
-            default:
-                break;
-        }
-    }
-
-    protected void onErrorEvent(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-
-        if(eventType == EventType.GET_PRODUCT_REVIEWS){
-            pageNumber--;
-        }
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        // Generic errors
-        if (super.handleErrorEvent(baseResponse)) return;
-
-        // Hide Loading from triggers
-        showFragmentContentContainer();
-
-        switch (eventType) {
-            case GET_PRODUCT_REVIEWS:
-                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
-
-                // Validate current rating page
-                if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
-                // Append the new page to the current
-                displayReviews(productRatingPage, true);
-                break;
-            case GET_PRODUCT_DETAIL:
-                if (!errorCode.isNetworkError()) {
-                    Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-
-                    try {
-                        getBaseActivity().onBackPressed();
-                    } catch (IllegalStateException e) {
-                        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-                    }
-                    return;
-                }
-            default:
-                break;
-        }
-    }
 
 
     private void displayReviews(ProductRatingPage productRatingPage, boolean isFromApi) {
@@ -829,9 +734,9 @@ public class ReviewsFragment extends BaseFragment {
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         // Show loading layout for first time
         if (pageNumber == 1) {
-            triggerContentEvent(new GetReviewsHelper(), bundle, mCallBack);
+            triggerContentEvent(new GetReviewsHelper(), bundle, this);
         } else {
-            triggerContentEventNoLoading(new GetReviewsHelper(), bundle, mCallBack);
+            triggerContentEventNoLoading(new GetReviewsHelper(), bundle, this);
         }
     }
 
@@ -840,18 +745,8 @@ public class ReviewsFragment extends BaseFragment {
      *
      * @author sergiopereira
      */
-    IResponseCallback mCallBack = new IResponseCallback() {
 
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-            onErrorEvent(baseResponse);
-        }
 
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-            onSuccessEvent(baseResponse);
-        }
-    };
 
     private SharedPreferences getSharedPref() {
         if (sharedPrefs == null) {
@@ -900,5 +795,113 @@ public class ReviewsFragment extends BaseFragment {
             writeReview();
         }
 
+    }
+
+
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
+        Print.i(TAG, "ON SUCCESS EVENT type= "+ eventType);
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            if(eventType == EventType.GET_PRODUCT_REVIEWS){
+                pageNumber--;
+            }
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+
+
+        switch (eventType) {
+            case GET_PRODUCT_REVIEWS:
+                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
+
+                // Validate the current rating page
+                if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
+
+                if (productRatingPage.getCurrentPage() != 0 && productRatingPage.getTotalPages() != 0) {
+                    pageNumber = productRatingPage.getCurrentPage();
+                    totalPages = productRatingPage.getTotalPages();
+                }
+                //fill header after getting RatingPage object
+                fillAverageRatingData(productRatingPage);
+                //added: fill progress bars
+                setProgressRating(selectedProduct.getTotalRatings());
+                // Append the new page to the current
+                displayReviews(productRatingPage, true);
+                showFragmentContentContainer();
+                break;
+            case GET_PRODUCT_DETAIL:
+                if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
+                    Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                    getActivity().onBackPressed();
+                    return;
+                } else {
+                    selectedProduct = (ProductComplete) baseResponse.getMetadata().getData();
+                    setAppContentLayout();
+                    // Waiting for the fragment comunication
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showFragmentContentContainer();
+                        }
+                    }, 300);
+                }
+
+            default:
+                break;
+        }
+    }
+
+
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Print.w(TAG, "ON ERROR EVENT");
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Generic errors
+        if (super.handleErrorEvent(baseResponse)) return;
+
+        // Hide Loading from triggers
+        showFragmentContentContainer();
+
+        EventType eventType = baseResponse.getEventType();
+        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        Print.d(TAG, "onErrorEvent: type = " + eventType + " code = " + errorCode);
+
+        if(eventType == EventType.GET_PRODUCT_REVIEWS){
+            pageNumber--;
+        }
+
+        switch (eventType) {
+            case GET_PRODUCT_REVIEWS:
+                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
+
+                // Validate current rating page
+                if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
+                // Append the new page to the current
+                displayReviews(productRatingPage, true);
+                break;
+            case GET_PRODUCT_DETAIL:
+                if (!errorCode.isNetworkError()) {
+                    Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+
+                    try {
+                        getBaseActivity().onBackPressed();
+                    } catch (IllegalStateException e) {
+                        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+                    }
+                    return;
+                }
+            default:
+                break;
+        }
     }
 }
