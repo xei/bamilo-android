@@ -29,7 +29,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -82,14 +81,13 @@ public class DatePickerDialog extends DialogFragment implements
 
     private AccessibleDateAnimator mAnimator;
 
-    private TextView mDayOfWeekView;
+//    private TextView mDayOfWeekView;
     private LinearLayout mMonthAndDayView;
     private TextView mSelectedMonthTextView;
     private TextView mSelectedDayTextView;
     private TextView mYearView;
     private DayPickerView mDayPickerView;
     private YearPickerView mYearPickerView;
-    private Button mDoneButton;
 
     private int mCurrentView = UNINITIALIZED;
 
@@ -111,8 +109,6 @@ public class DatePickerDialog extends DialogFragment implements
     public interface OnDateSetListener {
 
         /**
-         * @param view
-         *            The view associated with this listener.
          * @param year
          *            The year that was set.
          * @param monthOfYear
@@ -224,7 +220,7 @@ public class DatePickerDialog extends DialogFragment implements
 
         View view = inflater.inflate(R.layout.date_picker_dialog, null);
 
-        mDayOfWeekView = (TextView) view.findViewById(R.id.date_picker_header);
+        //mDayOfWeekView = (TextView) view.findViewById(R.id.date_picker_header);
         mMonthAndDayView = (LinearLayout) view.findViewById(R.id.date_picker_month_and_day);
         mMonthAndDayView.setOnClickListener(this);
         mSelectedMonthTextView = (TextView) view.findViewById(R.id.date_picker_month);
@@ -261,8 +257,8 @@ public class DatePickerDialog extends DialogFragment implements
         animation2.setDuration(ANIMATION_DURATION);
         mAnimator.setOutAnimation(animation2);
 
-        mDoneButton = (Button) view.findViewById(R.id.done);
-        mDoneButton.setOnClickListener(doneListener);
+        // Done button
+        view.findViewById(R.id.done).setOnClickListener(doneListener);
 
         updateDisplay(false);
         setCurrentView(currentView);
@@ -325,11 +321,11 @@ public class DatePickerDialog extends DialogFragment implements
     }
 
     private void updateDisplay(boolean announce) {
-        if (mDayOfWeekView != null) {
-            mDayOfWeekView
-                    .setText(new DateFormatSymbols(Locale.getDefault()).getWeekdays()[mCalendar
-                            .get(Calendar.DAY_OF_WEEK)].toUpperCase(Locale.getDefault()));
-        }
+//        if (mDayOfWeekView != null) {
+//            mDayOfWeekView
+//                    .setText(new DateFormatSymbols(Locale.getDefault()).getWeekdays()[mCalendar
+//                            .get(Calendar.DAY_OF_WEEK)].toUpperCase(Locale.getDefault()));
+//        }
 
         mSelectedMonthTextView
                 .setText(new DateFormatSymbols(Locale.getDefault()).getMonths()[mCalendar
