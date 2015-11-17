@@ -97,10 +97,10 @@ public class DatePickerDialog extends DialogFragment implements
     private boolean mDelayAnimation = true;
 
     // Accessibility strings.
-    private final String mDayPickerDescription = "Month grid of days";
-    private final String mSelectDay = "Select month and day";
-    private final String mYearPickerDescription = "Year list";
-    private final String mSelectYear = "Select year";
+    private static final String M_DAY_PICKER_DESCRIPTION = "Month grid of days";
+    private static final String M_SELECT_DAY = "Select month and day";
+    private static final String M_YEAR_PICKER_DESCRIPTION = "Year list";
+    private static final String M_SELECT_YEAR = "Select year";
 
     /**
      * The callback used to indicate the user is done filling in the date.
@@ -293,8 +293,8 @@ public class DatePickerDialog extends DialogFragment implements
 
                 int flags = DateUtils.FORMAT_SHOW_DATE;
                 String dayString = DateUtils.formatDateTime(getActivity(), millis, flags);
-                mAnimator.setContentDescription(mDayPickerDescription + ": " + dayString);
-                Utils.tryAccessibilityAnnounce(mAnimator, mSelectDay);
+                mAnimator.setContentDescription(M_DAY_PICKER_DESCRIPTION + ": " + dayString);
+                Utils.tryAccessibilityAnnounce(mAnimator, M_SELECT_DAY);
                 break;
             case YEAR_VIEW:
                 pulseAnimator = Utils.getPulseAnimator(mYearView, 0.85f, 1.1f);
@@ -312,8 +312,8 @@ public class DatePickerDialog extends DialogFragment implements
                 pulseAnimator.start();
 
                 CharSequence yearString = YEAR_FORMAT.format(millis);
-                mAnimator.setContentDescription(mYearPickerDescription + ": " + yearString);
-                Utils.tryAccessibilityAnnounce(mAnimator, mSelectYear);
+                mAnimator.setContentDescription(M_YEAR_PICKER_DESCRIPTION + ": " + yearString);
+                Utils.tryAccessibilityAnnounce(mAnimator, M_SELECT_YEAR);
                 break;
         }
     }
