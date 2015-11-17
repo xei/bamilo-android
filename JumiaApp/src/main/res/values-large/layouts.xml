@@ -6,6 +6,4 @@
         name="isTablet"
         tools:ignore="ExtraText">true</bool>
 
-    <string name="orientation">unspecified</string>
-
 </resources>

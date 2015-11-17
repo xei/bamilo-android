@@ -19,10 +19,8 @@
     <string name="hockey_app_id">5a55f44dbed1b1bdb88f57f6eda07d78</string>
 
     <!-- DEEP LINK -->
-    <string name="dp_package_id">com.jumia.android.dev</string>
     <string name="dp_app_name_uppercase">JUMIA</string>
     <string name="dp_app_name_lowercase">jumia</string>
-    <string name="dp_intent_label">Jumia Dev</string>
 
     <!-- NEW RELIC -->
     <string name="newrelic_token">AA98fd2d4afb23e22282c9bd32372183ce09bebec3</string>
