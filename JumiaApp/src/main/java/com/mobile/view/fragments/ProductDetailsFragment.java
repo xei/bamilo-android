@@ -705,7 +705,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
 
             ArrayList<ImageUrls> images;
-            if(ShopSelector.isRtl()){
+            if(ShopSelector.isRtl() && CollectionUtils.isNotEmpty(mProduct.getImageList())){
                 images = new ArrayList<>(mProduct.getImageList());
                 Collections.reverse(images);
             } else {

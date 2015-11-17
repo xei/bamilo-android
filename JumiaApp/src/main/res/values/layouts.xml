@@ -20,7 +20,6 @@
     <item name="checkout_summary_products"              type="layout">@layout/_def_checkout_summary_products</item>
     <item name="checkout_summary_shipping_address"      type="layout">@layout/_def_checkout_summary_shipping_address</item>
     <item name="checkout_summary_shipping_method"       type="layout">@layout/_def_checkout_summary_shipping_method</item>
-    <!--<item name="checkout_summary_total"                 type="layout">@layout/_def_checkout_summary_total</item>-->
     <item name="checkout_payment_methods"               type="layout">@layout/_def_checkout_payment_methods</item>
     <item name="checkout_address_item"                  type="layout">@layout/_def_checkout_address_item</item>
     <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_def_checkout_sameaddress_checkbox</item>
@@ -49,7 +48,7 @@
     <item name="shopping_basket_subtotal_element"       type="layout">@layout/_def_shopping_basket_subtotal_element</item>
 
     <!-- ACTION BAR -->
-    <item name="action_bar_myprofile_layout" type="layout">@layout/_def_action_bar_myprofile_layout</item>
+    <item name="action_bar_myprofile_layout"            type="layout">@layout/_def_action_bar_myprofile_layout</item>
     <item name="action_bar_menu_item_layout"            type="layout">@layout/_def_action_bar_menu_item_layout</item>
     <item name="recent_search_suggestion_list_item"     type="layout">@layout/_def_recent_search_suggestion_list_item</item>
     <item name="search_suggestion_list_item"            type="layout">@layout/_def_search_suggestion_list_item</item>
@@ -96,8 +95,8 @@
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_def_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_def_config_confirmation_msg</item>
-    <item name="pdv_fragment_combo_item" type="layout">@layout/_def_pdv_fragment_combo_item</item>
-    <item name="pdv_fragment_combos" type="layout">@layout/_def_pdv_fragment_combos</item>
+    <item name="pdv_fragment_combo_item"                type="layout">@layout/_def_pdv_fragment_combo_item</item>
+    <item name="pdv_fragment_combos"                    type="layout">@layout/_def_pdv_fragment_combos</item>
 
     <!-- REVIEWS DESCRIPTION SPECIFICATIONS -->
     <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>

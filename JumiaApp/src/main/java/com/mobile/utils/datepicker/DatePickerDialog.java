@@ -73,8 +73,8 @@ public class DatePickerDialog extends DialogFragment implements
     private static final int ANIMATION_DURATION = 300;
     private static final int ANIMATION_DELAY = 500;
 
-    private static SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy", Locale.getDefault());
-    private static SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("dd", Locale.getDefault());
+    private static final SimpleDateFormat YEAR_FORMAT = new SimpleDateFormat("yyyy", Locale.getDefault());
+    private static final SimpleDateFormat DAY_FORMAT = new SimpleDateFormat("dd", Locale.getDefault());
 
     private final Calendar mCalendar = Calendar.getInstance();
     private OnDateSetListener mCallBack;
@@ -82,7 +82,6 @@ public class DatePickerDialog extends DialogFragment implements
 
     private AccessibleDateAnimator mAnimator;
 
-    private TextView mDayOfWeekView;
     private LinearLayout mMonthAndDayView;
     private TextView mSelectedMonthTextView;
     private TextView mSelectedDayTextView;
@@ -100,10 +99,10 @@ public class DatePickerDialog extends DialogFragment implements
     private boolean mDelayAnimation = true;
 
     // Accessibility strings.
-    private String mDayPickerDescription = "Month grid of days";
-    private String mSelectDay = "Select month and day";
-    private String mYearPickerDescription = "Year list";
-    private String mSelectYear = "Select year";
+    private final String mDayPickerDescription = "Month grid of days";
+    private final String mSelectDay = "Select month and day";
+    private final String mYearPickerDescription = "Year list";
+    private final String mSelectYear = "Select year";
 
     /**
      * The callback used to indicate the user is done filling in the date.
@@ -111,8 +110,6 @@ public class DatePickerDialog extends DialogFragment implements
     public interface OnDateSetListener {
 
         /**
-         * @param view
-         *            The view associated with this listener.
          * @param year
          *            The year that was set.
          * @param monthOfYear
@@ -224,7 +221,6 @@ public class DatePickerDialog extends DialogFragment implements
 
         View view = inflater.inflate(R.layout.date_picker_dialog, null);
 
-        mDayOfWeekView = (TextView) view.findViewById(R.id.date_picker_header);
         mMonthAndDayView = (LinearLayout) view.findViewById(R.id.date_picker_month_and_day);
         mMonthAndDayView.setOnClickListener(this);
         mSelectedMonthTextView = (TextView) view.findViewById(R.id.date_picker_month);
@@ -325,11 +321,6 @@ public class DatePickerDialog extends DialogFragment implements
     }
 
     private void updateDisplay(boolean announce) {
-        if (mDayOfWeekView != null) {
-            mDayOfWeekView
-                    .setText(new DateFormatSymbols(Locale.getDefault()).getWeekdays()[mCalendar
-                            .get(Calendar.DAY_OF_WEEK)].toUpperCase(Locale.getDefault()));
-        }
 
         mSelectedMonthTextView
                 .setText(new DateFormatSymbols(Locale.getDefault()).getMonths()[mCalendar

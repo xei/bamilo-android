@@ -449,8 +449,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-
-        // Disabled for Samsung and Blackberry (check_version_enabled)
+        // Check version, disabled for Samsung (check_version_enabled)
         CheckVersion.run(getApplicationContext());
 
         /**
@@ -474,8 +473,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onResumeFragments() {
         super.onResumeFragments();
         /**
-         * Validate current version to show the upgrade dialog.
-         * Disabled for Samsung and Blackberry (check_version_enabled).
+         * Validate current version to show the upgrade dialog, disabled for Samsung (check_version_enabled).
          */
         if (CheckVersion.needsToShowDialog()) {
             CheckVersion.showDialog(this);
