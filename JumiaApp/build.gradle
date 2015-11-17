@@ -292,21 +292,18 @@ task testCalabash << {
     executeWaitAndPrintCmd(['calabash-android', 'run', './JumiaApp/build/outputs/apk/JumiaApp-jumia-debug.apk', '--t', '@Calabash_Tests', 'country=$country'])
 }
 
-
 /**
  * Task that pulls translation string files from WebTranslateIt service.
  * DEPENDENCIES: This task depends on wti gem file to be installed and on mail binary.
  */
 task pushNewStrings << {
-
     println " - Pushing new strings to WebTranslateIt " + new Date()
     def proc = "wti push".execute(null, new File("./Kaymu/src/main/res/"))
     proc.waitFor()
     String result = proc.text
     println result
-
     //check if there are new strings pushed and push them to git develop branch when on jenkins
-    if (rootProject.ext.isJenkins && result.contains('Accepted')) {// Accepted appears when there is new strings to upload
+    if (result.contains('Accepted')) {// Accepted appears when there is new strings to upload
         //notify developers by email
         sendEmailToTeam("Pushed new strings to WebTranslateIt", result)
     }
