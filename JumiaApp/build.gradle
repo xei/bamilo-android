@@ -297,6 +297,25 @@ task testCalabash << {
  * Task that pulls translation string files from WebTranslateIt service.
  * DEPENDENCIES: This task depends on wti gem file to be installed and on mail binary.
  */
+task pushNewStrings << {
+
+    println " - Pushing new strings to WebTranslateIt " + new Date()
+    def proc = "wti push".execute(null, new File("./Kaymu/src/main/res/"))
+    proc.waitFor()
+    String result = proc.text
+    println result
+
+    //check if there are new strings pushed and push them to git develop branch when on jenkins
+    if (rootProject.ext.isJenkins && result.contains('Accepted')) {// Accepted appears when there is new strings to upload
+        //notify developers by email
+        sendEmailToTeam("Pushed new strings to WebTranslateIt", result)
+    }
+}
+
+/**
+ * Task that pulls translation string files from WebTranslateIt service.
+ * DEPENDENCIES: This task depends on wti gem file to be installed and on mail binary.
+ */
 task pullTranslations << {
 
     println " - Pulling translations from WebTranslateIt " + new Date()
@@ -306,12 +325,11 @@ task pullTranslations << {
     println result
 
     //check if there are new translations and push them to git develop branch when on jenkins
-    //if (rootProject.ext.isJenkins && result.contains('OK')) {// OK appears when new translations
-    if (result.contains('OK')) {// OK appears when new translations
-        pushChangedTranslationFilesToGit.execute()
-        //notify developers by email
-        sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
-    }
+//    if (result.contains('OK')) {// OK appears when new translations
+//        pushChangedTranslationFilesToGit.execute()
+//        //notify developers by email
+//        sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
+//    }
 }
 
 /**
@@ -335,9 +353,9 @@ task pushChangedTranslationFilesToGit << {
     executeWaitAndPrintCmd(['git', 'config', '--local', 'credential.helper', 'store', ("--file=" + STORAGE_CRED_FILE)])
 
     // perform add->commit->push
-    //executeWaitAndPrintCmd(['git', 'add', 'JumiaApp/src/main/res/'])
-    //executeWaitAndPrintCmd(['git', 'commit', '-m', "'task/strings_wti/by_jenkins - Uploading new translations from wti'"]);
-    //executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
+    executeWaitAndPrintCmd(['git', 'add', 'JumiaApp/src/main/res/'])
+    executeWaitAndPrintCmd(['git', 'commit', '-m', "'task/strings_wti/by_jenkins - Uploading new translations from wti'"]);
+    executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
 
 }
 
