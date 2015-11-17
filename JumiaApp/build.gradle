@@ -298,7 +298,7 @@ task testCalabash << {
  */
 task pushNewStrings << {
     println " - Pushing new strings to WebTranslateIt " + new Date()
-    def proc = "wti push".execute(null, new File("./Kaymu/src/main/res/"))
+    def proc = "wti push".execute(null, new File("./JumiaApp/src/main/res/"))
     proc.waitFor()
     String result = proc.text
     println result
