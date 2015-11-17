@@ -154,7 +154,7 @@
     <string name="my_orders_label">My Orders</string>
     <string name="my_profile">My Profile</string>
     <string name="myaccount_email_notifications">Email Notifications</string>
-    <string name="myaccount_userdata">User Data</string>
+    <string name="myaccount_userdata">Profile</string>
     <string name="name">Name</string>
     <string name="nav_country">Choose Country</string>
     <string name="nav_country_warning">You are about to change the country. This clears the cart and you will be logged out. Are you sure?</string>
