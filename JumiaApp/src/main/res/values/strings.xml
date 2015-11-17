@@ -469,7 +469,4 @@
     <string name="customer_service_info">Please, try to contact our Customer Service for more info.</string>
     <string name="phone_contact">Phone:</string>
     <string name="email_contact">Email:</string>
-
-    <string name="test_wti">test_wti</string>
-
 </resources>
