@@ -198,7 +198,7 @@
     <string name="pickup_station_city">شہر: ‎%s‎</string>
     <string name="pickup_station_opening_hours">کھلنے کے اوقات: ‎%s‎</string>
     <string name="shipping_fee">زرِ ترسیل: ‎%s‎</string>
-    <string name="shipping_fee_info">"\قابلِ ادائیگی قیمت میں فیس کی شمولیت\"</string>
+    <string name="shipping_fee_info">"\قابلِ ادائیگی قیمت میں فیس کی شمولیت"\</string>
     <string name="shipping_time">مدتِ ترسیل: ‎%s‎</string>
     <string name="pinch_to_zoom_label">چُٹکی رکھ کربڑا کریں۔ </string>
     <string name="please_fill_all_data">براہِ کرم تمام معلومات فراہم کریں</string>
