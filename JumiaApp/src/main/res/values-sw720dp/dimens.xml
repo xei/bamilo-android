@@ -11,22 +11,17 @@
     <!-- dimen name="text_xxl">24sp</dimen -->
 
     <!-- HOME -->
-    <dimen name="teaser_swipe_banner_height">435dp</dimen>
     <dimen name="teaser_product_item_width">208dp</dimen>
-    <dimen name="teaser_product_bundle_item_width">260dp</dimen>
-    <dimen name="teaser_banners_group_height">220dp</dimen>
 
     <!-- SLIDING MENU -->
     <!-- <dimen name="navigation_menu_offset">480dp</dimen> -->
 
     <dimen name="navigation_item_divider_height">1dp</dimen>
-    <dimen name="navigation_cart_vertical_distance">17dp</dimen>
 
     <!-- CHECKOUT HEADER -->
     <dimen name="checkout_header_height">32dp</dimen>
     <dimen name="checkout_header_margin">@dimen/margin_small</dimen>
     <dimen name="checkout_header_step_width">125dp</dimen>
-    <dimen name="checkout_header_step_selected_width">260dp</dimen>
     <dimen name="checkout_header_step_icon">15dp</dimen>
     <dimen name="checkout_header_step_s_icon">20dp</dimen>
     <dimen name="checkout_header_divider_height">1.5dp</dimen>
@@ -35,7 +30,6 @@
     <integer name="campaign_num_columns">2</integer>
 
     <dimen name="campaign_discount_flag_width">60dp</dimen>
-    <dimen name="campaign_banner_height">273.33dp</dimen>
     <dimen name="campaign_title_height">72.33dp</dimen>
     <dimen name="campaign_title_margin_left">@dimen/margin_mid</dimen>
     <dimen name="campaign_image_height">226.67dp</dimen>
@@ -47,20 +41,16 @@
 
     <!-- MY PROFILE -->
     <dimen name="myprofile_item_size">64dp</dimen>
-    <dimen name="myprofile_item_icon_container_size">40.50dp</dimen>
     <dimen name="myprofile_item_icon_size">32dp</dimen>
     <dimen name="myprofile_icon_counter_size">18dp</dimen>
-    <dimen name="myprofile_icon_counter_text_size">9sp</dimen>
-    
+
     <!-- CATALOG -->
-    <dimen name="root_empty_container_height">360dp</dimen>
     <integer name="activate_go_top_buttom_line">8</integer>
     <integer name="activate_go_top_buttom_line_grid">4</integer>
 	<!-- Toast -->
     <dimen name="toast_hover">75dp</dimen>
     
     <!-- PDV IMAGE -->
-    <dimen name="pdv_image">370dp</dimen>
 
     <dimen name="delete_button_size">26dp</dimen>
 
