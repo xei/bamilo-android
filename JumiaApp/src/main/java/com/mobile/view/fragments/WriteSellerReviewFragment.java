@@ -120,7 +120,7 @@
 //                NavigationAction.Product,
 //                R.layout.review_write_fragment,
 //                0,
-//                KeyboardState.ADJUST_CONTENT);
+//                ADJUST_CONTENT);
 //    }
 //
 //    /*

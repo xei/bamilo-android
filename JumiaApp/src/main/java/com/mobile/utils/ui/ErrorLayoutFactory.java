@@ -1,7 +1,7 @@
 package com.mobile.utils.ui;
 
-import android.support.annotation.IntDef;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,7 +59,10 @@ public class ErrorLayoutFactory {
             NO_RECENTLY_VIEWED_LAYOUT,
             CONTINUE_SHOPPING_LAYOUT,
             CATALOG_NO_RESULTS,
-            CATALOG_UNEXPECTED_ERROR
+            CATALOG_UNEXPECTED_ERROR,
+            NO_ORDERS_LAYOUT,
+            SSL_ERROR_LAYOUT,
+            UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT
 
     })
     @Retention(RetentionPolicy.SOURCE)
@@ -208,7 +211,7 @@ public class ErrorLayoutFactory {
         actualError = NO_NETWORK_LAYOUT;
     }
 
-    private void buildUnexpectedErrorLayout(){
+    private void buildUnexpectedErrorLayout() {
         new Builder()
                 .setImage(R.drawable.ic_warning)
                 .setPrincipalMessageVisible(false)

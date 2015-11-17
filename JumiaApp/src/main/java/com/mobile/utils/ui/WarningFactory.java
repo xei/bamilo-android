@@ -1,7 +1,7 @@
 package com.mobile.utils.ui;
 
-import android.support.annotation.IntDef;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.view.View;
 import android.widget.ImageView;

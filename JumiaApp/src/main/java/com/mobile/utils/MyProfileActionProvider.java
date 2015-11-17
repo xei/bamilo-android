@@ -35,7 +35,8 @@ import de.akquinet.android.androlog.Log;
 public class MyProfileActionProvider extends ActionProvider {
 
     public final static String TAG = MyProfileActionProvider.class.getSimpleName();
-    private List<NavigationAction> mSubMenuItems;
+    @NavigationAction.Type
+    private List<Integer> mSubMenuItems;
     private DismissibleSpinner mSpinner;
     private MyProfileAdapter mAdapter;
     private OnClickListener mAdapterOnClickListener;
@@ -74,7 +75,7 @@ public class MyProfileActionProvider extends ActionProvider {
             mSpinner.setVisibility(View.GONE);
 
         mIcon = spinnerContainer.findViewById(R.id.image_myprofile);
-        mIcon.setTag(R.id.nav_action, NavigationAction.MyProfile);
+        mIcon.setTag(R.id.nav_action, NavigationAction.MY_PROFILE);
         // Validate listener
         if (mAdapterOnClickListener != null) {
             mIcon.setOnClickListener(mAdapterOnClickListener);
@@ -90,18 +91,19 @@ public class MyProfileActionProvider extends ActionProvider {
     /**
      * method that creates the overflow menu list, validating it the app is shop or bamilo
      */
-    private List<NavigationAction> getDropdownList() {
+    @NavigationAction.Type
+    private List<Integer> getDropdownList() {
         Log.i(TAG, "ON CREATE DROP DOWN LIST");
         // Validate state
         if (CollectionUtils.isEmpty(mSubMenuItems)) {
             mSubMenuItems = new ArrayList<>();
-            mSubMenuItems.add(NavigationAction.Home);
-            mSubMenuItems.add(NavigationAction.LoginOut);
-            mSubMenuItems.add(NavigationAction.Saved);
-            mSubMenuItems.add(NavigationAction.MyAccount);
-            mSubMenuItems.add(NavigationAction.RecentSearches);
-            mSubMenuItems.add(NavigationAction.RecentlyViewed);
-            mSubMenuItems.add(NavigationAction.MyOrders);
+            mSubMenuItems.add(NavigationAction.HOME);
+            mSubMenuItems.add(NavigationAction.LOGIN_OUT);
+            mSubMenuItems.add(NavigationAction.SAVED);
+            mSubMenuItems.add(NavigationAction.MY_ACCOUNT);
+            mSubMenuItems.add(NavigationAction.RECENT_SEARCHES);
+            mSubMenuItems.add(NavigationAction.RECENTLY_VIEWED);
+            mSubMenuItems.add(NavigationAction.MY_ORDERS);
         }
         return mSubMenuItems;
     }
@@ -135,19 +137,19 @@ public class MyProfileActionProvider extends ActionProvider {
         mSpinner.dismiss();
     }
 
-    public void setFragmentNavigationAction(NavigationAction action) {
+    public void setFragmentNavigationAction(@NavigationAction.Type int action) {
         // Get current list
-        ArrayList<NavigationAction> list = (ArrayList<NavigationAction>) getDropdownList();
+        ArrayList<Integer> list = (ArrayList<Integer>) getDropdownList();
         // Case Home or Cart
-        if (action == NavigationAction.Home || action == NavigationAction.Basket || action == NavigationAction.Saved) {
+        if (action == NavigationAction.HOME || action == NavigationAction.BASKET || action == NavigationAction.SAVED) {
             // Remove home from array
-            if(NavigationAction.Saved == list.get(2)) list.remove(2);
-            if(NavigationAction.Home == list.get(0)) list.remove(0);
+            if(NavigationAction.SAVED == list.get(2)) list.remove(2);
+            if(NavigationAction.HOME == list.get(0)) list.remove(0);
         }
         // Case others
-        else if (NavigationAction.Home != list.get(0)) {
-            list.add(0, NavigationAction.Home);
-            list.add(2, NavigationAction.Saved);
+        else if (NavigationAction.HOME != list.get(0)) {
+            list.add(0, NavigationAction.HOME);
+            list.add(2, NavigationAction.SAVED);
         }
 
     }
@@ -155,15 +157,15 @@ public class MyProfileActionProvider extends ActionProvider {
     /**
      * Adapter to be used on Spinner to manage the options on MyProfile menu
      */
-    class MyProfileAdapter extends ArrayAdapter<NavigationAction> implements SpinnerAdapter {
+    class MyProfileAdapter extends ArrayAdapter<Integer> implements SpinnerAdapter {
 
         OnClickListener mOnClickListener;
 
-        public MyProfileAdapter(Context context, int textViewResourceId, List<NavigationAction> itemsNavigationActions) {
+        public MyProfileAdapter(Context context, int textViewResourceId, @NavigationAction.Type List<Integer> itemsNavigationActions) {
             super(context, textViewResourceId, itemsNavigationActions);
         }
 
-        public MyProfileAdapter(Context context, int textViewResourceId, List<NavigationAction> itemsNavigationActions, OnClickListener onClickListener) {
+        public MyProfileAdapter(Context context, int textViewResourceId, @NavigationAction.Type List<Integer> itemsNavigationActions, OnClickListener onClickListener) {
             this(context, textViewResourceId, itemsNavigationActions);
             this.mOnClickListener = onClickListener;
         }
@@ -198,39 +200,39 @@ public class MyProfileActionProvider extends ActionProvider {
             ImageView icon = (ImageView) view.findViewById(R.id.menu_item_icon);
             TextView title = (TextView) view.findViewById(R.id.menu_item_title);
             // Get action
-            NavigationAction navAction = getItem(position);
+            int navAction = getItem(position);
             view.setTag(R.id.nav_action, navAction);
             // Set listener
             view.setOnClickListener(mOnClickListener);
             // Set action
             switch (navAction) {
-                case Home:
+                case NavigationAction.HOME:
                     title.setText(R.string.home_label);
                     icon.setImageResource(R.drawable.ico_dropdown_home);
                     break;
-                case LoginOut:
+                case NavigationAction.LOGIN_OUT:
                     boolean hasCredentials = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials();
                     int resTitle = hasCredentials ? R.string.sign_out : R.string.sign_in;
                     title.setText(resTitle);
                     icon.setImageResource(R.drawable.ico_dropdown_signin);
                     break;
-                case Saved:
+                case NavigationAction.SAVED:
                     title.setText(R.string.saved);
                     icon.setImageResource(R.drawable.ico_dropdown_favourites);
                     break;
-                case RecentSearches:
+                case NavigationAction.RECENT_SEARCHES:
                     title.setText(R.string.recent_searches);
                     icon.setImageResource(R.drawable.ico_dropdown_recentsearch);
                     break;
-                case RecentlyViewed:
+                case NavigationAction.RECENTLY_VIEWED:
                     title.setText(R.string.recently_viewed);
                     icon.setImageResource(R.drawable.ico_dropdown_recentlyview);
                     break;
-                case MyAccount:
+                case NavigationAction.MY_ACCOUNT:
                     title.setText(R.string.my_account);
                     icon.setImageResource(R.drawable.ico_dropdown_myaccount);
                     break;
-                case MyOrders:
+                case NavigationAction.MY_ORDERS:
                     title.setText(R.string.my_orders_label);
                     icon.setImageResource(R.drawable.ico_dropdown_order);
                     break;

@@ -85,10 +85,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     public InnerShopFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Unknown,
+                NavigationAction.UNKNOWN,
                 R.layout.shop_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*

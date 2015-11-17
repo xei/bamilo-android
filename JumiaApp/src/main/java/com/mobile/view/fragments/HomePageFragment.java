@@ -85,10 +85,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     public HomePageFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Home,
+                NavigationAction.HOME,
                 R.layout.home_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
         // Init position
         HomeMainTeaserHolder.viewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
     }

@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.google.gson.Gson;
-import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.newFramework.utils.TextUtils;
@@ -50,8 +49,9 @@ public class CountriesConfigsTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#getUpgradeType()
      */
     @Override
-    public TableType getUpgradeType() {
-        return TableType.PERSIST;
+	@DarwinDatabaseHelper.UpgradeType
+    public int getUpgradeType() {
+        return DarwinDatabaseHelper.PERSIST;
     }
 
     /*

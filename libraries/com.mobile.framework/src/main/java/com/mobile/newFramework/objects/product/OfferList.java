@@ -95,9 +95,9 @@ public class OfferList implements IJSONSerializable, Parcelable {
         return minPriceOfferConverted;
     }
 
-    public double getMinPriceOffer() {
-        return minPriceOffer;
-    }
+//    public double getMinPriceOffer() {
+//        return minPriceOffer;
+//    }
 
     public int getTotalOffers() {
         return totalOffers;

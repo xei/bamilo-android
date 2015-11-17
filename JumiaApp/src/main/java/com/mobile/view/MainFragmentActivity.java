@@ -84,7 +84,7 @@ public class MainFragmentActivity extends BaseActivity {
      * Constructor
      */
     public MainFragmentActivity() {
-        super(NavigationAction.Unknown,
+        super(NavigationAction.UNKNOWN,
                 EnumSet.noneOf(MyMenuItem.class),
                 EnumSet.noneOf(EventType.class),
                 0,

@@ -6,9 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created by rsoares on 5/25/15.
+ * Type of json structures.
+ * @author ricardo
  */
 public class RequiredJson {
+
     public static final int NONE = -1;
     public static final int COMPLETE_JSON = 1;
     public static final int OBJECT_DATA = 2;

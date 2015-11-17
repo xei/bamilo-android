@@ -77,9 +77,9 @@ public class MyOrder implements IJSONSerializable {
     }
 
 
-    public int getCurrentPage() {
-        return currentPage;
-    }
+//    public int getCurrentPage() {
+//        return currentPage;
+//    }
 
     public int getTotalPages() {
         return totalPages;

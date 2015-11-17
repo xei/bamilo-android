@@ -176,9 +176,11 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
         return null;
     }
 
-    public int getRequiredJson(){
+    @Override
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
+
     /**
      * Calculate the max request per page.
      * @return number or pages

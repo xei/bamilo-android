@@ -145,7 +145,7 @@ public class JumiaApplication extends A4SApplication {
         AnalyticsGoogle.clearCheckoutStarted();
 
         for (ApplicationComponent component : COMPONENTS.values()) {
-            ErrorCode result = component.init(getApplicationContext());
+            int result = component.init(getApplicationContext());
             if (result != ErrorCode.NO_ERROR) {
                 Print.i(TAG, "code1configs : " + result);
                 handleEvent(result, null, initializationHandler);
@@ -163,7 +163,7 @@ public class JumiaApplication extends A4SApplication {
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
     }
 
-    public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
+    public synchronized void handleEvent(@ErrorCode.Code int errorType, EventType eventType, Handler initializationHandler) {
         Print.d(TAG, "ON HANDLE");
         Print.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();

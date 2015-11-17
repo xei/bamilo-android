@@ -2,11 +2,10 @@ package com.mobile.newFramework.objects;
 
 /**
  * @author GuilhermeSilva
- *
  * @version 1.01
- *
+ * <p/>
  * 2012/06/18
- *
+ * <p/>
  * Copyright (c) Rocket Internet All Rights Reserved
  */
 
@@ -17,13 +16,6 @@ import org.json.JSONObject;
  * This classes specifies the behavior of all the object that interact with JSON.
  */
 public interface IJSONSerializable {
-    /**
-     * List of string the represent the class properties in the Address Object
-     * Model.
-     */
-//	public static final String JSON_DATA_TAG = "data";
-//
-//	public static final String JSON_ID_TAG = "id";
 
     /**
      * @param jsonObject

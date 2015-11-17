@@ -142,10 +142,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     public CatalogFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Catalog,
+                NavigationAction.CATALOG,
                 R.layout.catalog_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -1040,7 +1040,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void onRequestCatalogError(BaseResponse baseResponse) {
 
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
 
         Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
         // Case error on load more data
@@ -1049,12 +1049,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             onLoadingMoreRequestError(baseResponse);
         }
         // Case error on request data with filters
-        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
+        else if (errorCode == ErrorCode.REQUEST_ERROR && CollectionUtils.isNotEmpty(mCurrentFilterValues)) {
             Print.i(TAG, "ON SHOW FILTER NO RESULT");
             showFilterNoResult();
         }
         // Case error on request data without filters
-        else if (errorCode != null && errorCode == ErrorCode.REQUEST_ERROR && catalog != null && catalog.getFeaturedBox() != null) {
+        else if (errorCode == ErrorCode.REQUEST_ERROR && catalog != null && catalog.getFeaturedBox() != null) {
             Print.i(TAG, "ON SHOW NO RESULT");
             // Get feature box
             FeaturedBox featuredBox = catalog.getFeaturedBox();
@@ -1062,7 +1062,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             showFeaturedBoxNoResult(featuredBox);
         }
         // Case network errors except No network
-        else if (errorCode != null && errorCode.isNetworkError()
+        else if (ErrorCode.isNetworkError(errorCode)
                 && errorCode != ErrorCode.NO_NETWORK
                 && errorCode != ErrorCode.HTTP_STATUS
                 && errorCode != ErrorCode.SERVER_OVERLOAD
@@ -1090,7 +1090,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mGridView.stopScroll();
         mGridView.scrollBy(0, -getResources().getDimensionPixelSize(R.dimen.catalog_footer_height));
         // Show respective warning indicating to use the warning bar
-        baseResponse.setEventTask(EventTask.SMALL_TASK);
+        baseResponse.setEventTask(EventTask.ACTION_TASK);
         // Case super not handle the error show unexpected error
         if (!super.handleErrorEvent(baseResponse)) showUnexpectedErrorWarning();
     }

@@ -97,10 +97,10 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
      */
     public MyAccountFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
+                NavigationAction.MY_ACCOUNT,
                 R.layout.my_account_fragment,
                 R.string.account_name,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*

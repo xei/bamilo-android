@@ -117,7 +117,7 @@
 //                NavigationAction.LoginOut,
 //                R.layout.login,
 //                IntConstants.ACTION_BAR_NO_TITLE,
-//                KeyboardState.ADJUST_CONTENT);
+//                ADJUST_CONTENT);
 //    }
 //
 //    /*

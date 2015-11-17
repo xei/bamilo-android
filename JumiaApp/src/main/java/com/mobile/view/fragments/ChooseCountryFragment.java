@@ -15,7 +15,6 @@ import com.mobile.controllers.CountryAdapter;
 import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
@@ -72,10 +71,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     public ChooseCountryFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Country,
+                NavigationAction.COUNTRY,
                 R.layout.change_country,
                 ShopSelector.getShopId() != null ? R.string.nav_country : IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -417,7 +416,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         }
         // Get event type and error type
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         if(super.handleErrorEvent(baseResponse)) return;

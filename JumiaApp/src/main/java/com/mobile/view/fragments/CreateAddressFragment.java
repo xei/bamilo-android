@@ -112,11 +112,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     private static final String SHIPPING_TAG = "shipping";
 
-    public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+    public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state) {
         super(enabledMenuItems, action, R.layout.checkout_create_address_main, titleResId, adjust_state);
     }
 
-    public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public CreateAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, int titleCheckout) {
         super(enabledMenuItems, action, R.layout.checkout_create_address_main, titleResId, adjust_state, titleCheckout);
     }
 
@@ -233,10 +233,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Method that saves the selected positions of the regions/cities/postalCode
-     *
-     * @param tag
-     * @param addressSavedStateBundle
-     * @param listPositions
      */
     private void saveRegionsCitiesPositions(String tag, Bundle listPositions, Bundle addressSavedStateBundle) {
         listPositions.putInt(tag + RestConstants.REGION, addressSavedStateBundle.getInt(RestConstants.REGION));

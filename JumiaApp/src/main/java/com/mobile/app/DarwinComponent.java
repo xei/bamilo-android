@@ -29,7 +29,8 @@ public class DarwinComponent extends ApplicationComponent {
      * @see com.mobile.app.ApplicationComponent#init(android.app.Application)
      */
     @Override
-    public ErrorCode init(Context context) {
+    @ErrorCode.Code
+    public int init(Context context) {
         return initInternal(context);
     }
 
@@ -39,7 +40,8 @@ public class DarwinComponent extends ApplicationComponent {
      * @see com.mobile.app.ApplicationComponent#initInternal(android.app.Application)
      */
     @Override
-    protected ErrorCode initInternal(Context context) {
+    @ErrorCode.Code
+    protected int initInternal(Context context) {
         /**
          * Single shop country validation.
          * ErrorCode values: ErrorCode.UNKNOWN_ERROR / ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE / ErrorCode.NO_ERROR
@@ -104,7 +106,8 @@ public class DarwinComponent extends ApplicationComponent {
      * @return true or false
      * @author sergiopereira
      */
-    private ErrorCode isSingleShopCountry(Context context) {
+    @ErrorCode.Code
+    private int isSingleShopCountry(Context context) {
         // Get data from shared preferences
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String shopId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ID, null);

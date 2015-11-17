@@ -21,14 +21,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class ConstantsCheckout {
 
-    // Checkout Steps
-    
-    public static final String CHECKOUT_THANKS_ORDER_NR = "order_nr";  
-    public static final String CHECKOUT_THANKS_ORDER_SHIPPING = "transaction_shipping"; 
-    public static final String CHECKOUT_THANKS_ORDER_TAX = "transaction_tax"; 
-    public static final String CHECKOUT_THANKS_PAYMENT_METHOD = "payment_method";
-    public static final String CHECKOUT_THANKS_ORDER_TOTAL = "order_grand_total";
-
     /***** Checkout Type ******/
     public static final int CHECKOUT_ABOUT_YOU = 0;
     public static final int CHECKOUT_BILLING = 1;
@@ -51,16 +43,5 @@ public class ConstantsCheckout {
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface CheckoutType{}
-
-    /***** Checkout Tab Type ******/
-
-    @IntDef({
-            CHECKOUT_ABOUT_YOU,
-            CHECKOUT_BILLING,
-            CHECKOUT_SHIPPING,
-            CHECKOUT_PAYMENT,
-    })
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface CheckoutTabType{}
 
 }

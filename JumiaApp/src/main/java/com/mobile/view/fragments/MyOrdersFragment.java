@@ -66,10 +66,10 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
      */
     public MyOrdersFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
+                NavigationAction.MY_ORDERS,
                 R.layout.my_orders_fragment_main,
                 R.string.my_orders_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /**
@@ -336,7 +336,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         }
 
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         switch (eventType) {
             case GET_MY_ORDERS_LIST_EVENT:
                 Print.w("ORDER", "ERROR Visible");

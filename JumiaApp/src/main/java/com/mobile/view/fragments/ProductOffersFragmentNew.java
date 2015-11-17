@@ -79,10 +79,10 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
      */
     public ProductOffersFragmentNew() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Offers,
+                NavigationAction.OFFERS,
                 R.layout.product_offers_main_new,
                 R.string.other_sellers,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -302,7 +302,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             return;
         }
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
@@ -359,7 +359,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
                     return;
                 }
             }
-            if (!errorCode.isNetworkError()) {
+            if (!ErrorCode.isNetworkError(errorCode)) {
                 addToShoppingCartFailed();
                 return;
             }

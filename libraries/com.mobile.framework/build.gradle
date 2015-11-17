@@ -35,6 +35,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
     compile 'com.android.support:cardview-v7:23.0.1'
+    compile 'com.android.support:support-annotations:23.1.0'
     compile 'com.nineoldandroids:library:2.4.0' //since using Api level 15, this should no longer be necessary. needs to be validated
     // https://github.com/mcxiaoke/android-volley
     compile 'com.mcxiaoke.volley:library:1.0.19'

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -11,6 +8,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.annotation.IntDef;
 import android.support.v4.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -39,7 +37,6 @@ import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;
@@ -60,6 +57,8 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
 /**
@@ -93,14 +92,23 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private long mStartTimeInMilliseconds;
 
     private boolean isScrolling;
-    private BannerVisibility bannerState;
+
+    @BannerVisibility
+    private int bannerState;
+
+    public static final int DEFAULT = 0;
+    public static final int VISIBLE = 1;
+    public static final int HIDDEN = 2;
+    @IntDef({DEFAULT, VISIBLE, HIDDEN})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface BannerVisibility{}
 
     /**
      * Empty constructor
      */
     public CampaignPageFragment() {
         super(IS_NESTED_FRAGMENT, R.layout.campaign_fragment_pager_item);
-        bannerState = BannerVisibility.DEFAULT;
+        bannerState = DEFAULT;
     }
         
     /**
@@ -145,7 +153,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             if (savedInstanceState.containsKey(COUNTER_START_TIME))
                 mStartTimeInMilliseconds = savedInstanceState.getLong(COUNTER_START_TIME, SystemClock.elapsedRealtime());
             if (savedInstanceState.containsKey(BANNER_STATE))
-                bannerState = (BannerVisibility)savedInstanceState.getSerializable(BANNER_STATE);
+                //noinspection ResourceType
+                bannerState = savedInstanceState.getInt(BANNER_STATE);
         }
         // Tracking
         TrackerDelegator.trackCampaignView(mTeaserCampaign);
@@ -334,7 +343,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 public void onLoadedSuccess(String url, Bitmap bitmap) {
                     // Show content
                     imageView.setImageBitmap(bitmap);
-                    bannerState = BannerVisibility.VISIBLE;
+                    bannerState = VISIBLE;
                     showContent(bannerView);
                 }
 
@@ -342,7 +351,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 public void onLoadedError() {
                     bannerView.setVisibility(View.GONE);
                     mGridView.removeHeaderView(bannerView);
-                    bannerState = BannerVisibility.HIDDEN;
+                    bannerState = HIDDEN;
                     // Show content
                     showContent(bannerView);
                 }
@@ -351,7 +360,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 public void onLoadedCancel() {
                     bannerView.setVisibility(View.GONE);
                     mGridView.removeHeaderView(bannerView);
-                    bannerState = BannerVisibility.HIDDEN;
+                    bannerState = HIDDEN;
                     // Show content
                     showContent(bannerView);
                 }
@@ -370,7 +379,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         // Validate the current data
         if (mGridView.getAdapter() == null) {
             // Add banner to header
-            if (BannerVisibility.HIDDEN != bannerState) mGridView.addHeaderView(bannerView);
+            if (bannerState != HIDDEN) mGridView.addHeaderView(bannerView);
             // Set adapter
             CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), this);
             mGridView.setAdapter(mArrayAdapter);
@@ -513,8 +522,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     /**
      * Filter the success response
-     * @param baseResponse
-     * @return boolean
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
@@ -559,13 +566,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     /**
      * Filter the error response
-     * @param baseResponse
-     * @return boolean
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         // Validate fragment visibility
@@ -632,12 +637,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     }
                 });
         mDialogErrorToCart.show(fm, null);
-    }
-
-    private enum BannerVisibility {
-        DEFAULT,
-        VISIBLE,
-        HIDDEN
     }
     
     /**
@@ -821,7 +820,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * calculate remainingTime based on <code>mStartTimeInMilliseconds</code>(time of the API
          * request) and return it with the format "hh:mm:ss"
          *
-         * @param remainingTime
          * @return <code>String</code> with remaining time properly formatted or null if product
          *         reached the remaining time
          */
