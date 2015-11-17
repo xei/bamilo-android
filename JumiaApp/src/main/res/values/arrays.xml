@@ -4,7 +4,6 @@
     <string-array name="myaccount_array">
         <item>@string/myaccount_userdata</item>
         <item>@string/my_addresses</item>
-        <item>@string/myaccount_email_notifications</item>
     </string-array>
 
     <!-- NAVIGATION MENU ITEMS -->
@@ -46,6 +45,7 @@
     <!-- SHARE -->
     <string-array name="app_notification_array">
         <item>@string/notifications</item>
+        <item>@string/myaccount_email_notifications</item>
     </string-array>
 
     <!-- ARTICLES -->
