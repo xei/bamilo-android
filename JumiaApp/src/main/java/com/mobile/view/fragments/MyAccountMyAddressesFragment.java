@@ -11,7 +11,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.address.GetMyAddressesHelper;
 import com.mobile.helpers.address.SetDefaultBillingAddressHelper;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -56,9 +55,9 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
     public MyAccountMyAddressesFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccountMyAddresses,
+                NavigationAction.MY_ACCOUNT_MY_ADDRESSES,
                 R.string.my_addresses,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
 
         resetRequests();
     }
@@ -211,7 +210,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
         }
 
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         switch(eventType){

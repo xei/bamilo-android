@@ -55,12 +55,8 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
         return null;
     }
 
-    /**
-     * ############### IJSON ###############
-     */
-
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 
@@ -70,8 +66,6 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
 
     /**
      * return a prefix position by knowing it's value
-     * @param value
-     * @return
      */
     public int getPositionFromValue(String value) {
         if(TextUtils.isNotEmpty(value)){

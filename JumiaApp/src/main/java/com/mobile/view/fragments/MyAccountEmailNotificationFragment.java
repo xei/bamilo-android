@@ -17,7 +17,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.account.GetNewslettersFormHelper;
 import com.mobile.helpers.account.SubscribeNewslettersHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.NewsletterOption;
@@ -73,10 +72,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     public MyAccountEmailNotificationFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccountEmailNotification,
+                NavigationAction.MY_ACCOUNT_EMAIL_NOTIFICATION,
                 R.layout.my_account_email_notification_fragment,
                 R.string.myaccount_email_notifications,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -418,7 +417,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
 
         showFragmentContentContainer();
 
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:

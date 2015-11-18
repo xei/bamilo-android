@@ -72,10 +72,10 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
      */
     public OrderStatusFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
+                NavigationAction.MY_ORDERS,
                 R.layout.order_status_fragment,
                 R.string.order_status_label,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     @Override
@@ -279,7 +279,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     }
 
     private void triggerOrder(String orderNr) {
-        EventTask task = isNestedFragment ? EventTask.SMALL_TASK : EventTask.NORMAL_TASK;
+        EventTask task = isNestedFragment ? EventTask.ACTION_TASK : EventTask.NORMAL_TASK;
         triggerContentEvent(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNr, task), this);
     }
 

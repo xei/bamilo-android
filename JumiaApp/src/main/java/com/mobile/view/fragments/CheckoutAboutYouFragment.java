@@ -122,7 +122,7 @@
 //                NavigationAction.Checkout,
 //                R.layout.checkout_about_you_main,
 //                R.string.checkout_label,
-//                KeyboardState.ADJUST_CONTENT,
+//                ADJUST_CONTENT,
 //                ConstantsCheckout.CHECKOUT_ABOUT_YOU);
 //    }
 //

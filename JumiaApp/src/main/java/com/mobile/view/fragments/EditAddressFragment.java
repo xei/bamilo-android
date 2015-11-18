@@ -19,7 +19,6 @@ import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
 import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormInputType;
@@ -85,11 +84,11 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
     private Bundle mFormSavedState;
 
-    public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+    public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state) {
         super(enabledMenuItems, action, R.layout.checkout_edit_address_main, titleResId, adjust_state);
     }
 
-    public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, int titleCheckout) {
         super(enabledMenuItems, action, R.layout.checkout_edit_address_main, titleResId, adjust_state, titleCheckout);
     }
 
@@ -336,7 +335,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 }
             }
         } catch (NullPointerException | NumberFormatException e) {
-
+            //...
         }
         return 0;
     }
@@ -600,7 +599,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             return true;
         }
 
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {

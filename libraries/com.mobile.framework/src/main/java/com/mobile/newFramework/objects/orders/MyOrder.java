@@ -72,14 +72,14 @@ public class MyOrder implements IJSONSerializable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 
 
-    public int getCurrentPage() {
-        return currentPage;
-    }
+//    public int getCurrentPage() {
+//        return currentPage;
+//    }
 
     public int getTotalPages() {
         return totalPages;

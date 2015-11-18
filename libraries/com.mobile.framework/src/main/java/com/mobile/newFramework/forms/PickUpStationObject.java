@@ -171,7 +171,7 @@ public class PickUpStationObject implements Parcelable {
         this.paymentMethods = new ArrayList<>();
         JSONArray arrayPaymentMethod;
         try {
-            arrayPaymentMethod = jsonObject.getJSONArray(RestConstants.JSON_PICKUP_PAYMENT_METHOD);
+            arrayPaymentMethod = jsonObject.getJSONArray(RestConstants.PAYMENT_METHOD);
             for (int i = 0; i < arrayPaymentMethod.length(); i++) {
                 this.paymentMethods.add(arrayPaymentMethod.get(i).toString());
             }

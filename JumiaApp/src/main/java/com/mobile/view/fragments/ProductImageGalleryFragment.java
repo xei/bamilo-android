@@ -88,7 +88,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
 //     * Default constructor
 //     */
 //    public ProductImageGalleryFragment() {
-//        super(EnumSet.of(MyMenuItem.HIDE_AB), NavigationAction.Product, R.layout.product_gallery_fragment, 0, KeyboardState.NO_ADJUST_CONTENT);
+//        super(EnumSet.of(MyMenuItem.HIDE_AB), NavigationAction.Product, R.layout.product_gallery_fragment, 0, NO_ADJUST_CONTENT);
 //    }
 
     /**

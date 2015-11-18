@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,9 @@ import android.widget.TextView;
 
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -46,6 +50,24 @@ public class ErrorLayoutFactory {
 
     public static final int UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT = 12;
 
+    @IntDef({
+            NO_NETWORK_LAYOUT,
+            UNEXPECTED_ERROR_LAYOUT,
+            CART_EMPTY_LAYOUT,
+            NO_FAVOURITES_LAYOUT,
+            NO_RECENT_SEARCHES_LAYOUT,
+            NO_RECENTLY_VIEWED_LAYOUT,
+            CONTINUE_SHOPPING_LAYOUT,
+            CATALOG_NO_RESULTS,
+            CATALOG_UNEXPECTED_ERROR,
+            NO_ORDERS_LAYOUT,
+            SSL_ERROR_LAYOUT,
+            UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT
+
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface LayoutErrorType{}
+
     private View mErrorLayout;
 
     private int actualError;
@@ -63,7 +85,7 @@ public class ErrorLayoutFactory {
         mErrorLayout = errorLayout;
     }
 
-    public void showErrorLayout(int error) {
+    public void showErrorLayout(@LayoutErrorType int error) {
         if(actualError != error) {
             //build
             switch (error) {
@@ -189,7 +211,7 @@ public class ErrorLayoutFactory {
         actualError = NO_NETWORK_LAYOUT;
     }
 
-    private void buildUnexpectedErrorLayout(){
+    private void buildUnexpectedErrorLayout() {
         new Builder()
                 .setImage(R.drawable.ic_warning)
                 .setPrincipalMessageVisible(false)

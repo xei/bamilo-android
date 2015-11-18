@@ -6,7 +6,6 @@ import android.view.View;
 import com.mobile.app.JumiaApplication;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -14,7 +13,6 @@ import com.mobile.utils.Toast;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,9 +42,9 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
 
     public MyAccountEditAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
+                NavigationAction.MY_ACCOUNT,
                 R.string.edit_address,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     @Override
@@ -102,14 +100,14 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     }
 
     protected void onEditAddressErrorEvent(BaseResponse baseResponse){
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             @SuppressWarnings("unchecked")
             Map<String, List<String>> errors = baseResponse.getErrorMessages();
             showErrorDialog(errors);
             showFragmentContentContainer();
         } else {
-            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);
             onErrorOccurred();
         }
     }

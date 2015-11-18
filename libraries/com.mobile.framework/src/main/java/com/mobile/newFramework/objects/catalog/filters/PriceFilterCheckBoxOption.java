@@ -51,8 +51,8 @@ public class PriceFilterCheckBoxOption implements IJSONSerializable, SingleFilte
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     public String getId() {

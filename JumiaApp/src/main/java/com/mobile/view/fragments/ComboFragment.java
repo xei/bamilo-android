@@ -60,10 +60,10 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      */
     public ComboFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Combos,
+                NavigationAction.COMBOS,
                 R.layout.pdv_combos_page,
                 R.string.combos_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /**
@@ -330,7 +330,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
         // Specific errors
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
 
         // Generic errors
         if (super.handleErrorEvent(baseResponse)) {
@@ -386,7 +386,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                         return;
                     }
                 }
-                if (!errorCode.isNetworkError()) {
+                if (!ErrorCode.isNetworkError(errorCode)) {
                     addToShoppingCartFailed();
                     return;
                 }

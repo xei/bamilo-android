@@ -29,9 +29,9 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -77,10 +77,10 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     public CheckoutThanksFragment() {
         super(EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.layout.checkout_thanks,
                 R.string.checkout_label,
-                KeyboardState.NO_ADJUST_CONTENT,
+                NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_THANKS);
     }
 
@@ -97,15 +97,15 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Get values
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if(arguments != null &&
-                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING) &&
-                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX) &&
-                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD) &&
-                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL)){
+                getArguments().containsKey(RestConstants.TRANSACTION_SHIPPING) &&
+                getArguments().containsKey(RestConstants.TRANSACTION_TAX) &&
+                getArguments().containsKey(RestConstants.PAYMENT_METHOD) &&
+                getArguments().containsKey(RestConstants.ORDER_GRAND_TOTAL)){
             
-            orderShipping = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING);
-            orderTax = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX);
-            paymentMethod = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD);
-            mGrandTotalValue = getArguments().getDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL);
+            orderShipping = getArguments().getString(RestConstants.TRANSACTION_SHIPPING);
+            orderTax = getArguments().getString(RestConstants.TRANSACTION_TAX);
+            paymentMethod = getArguments().getString(RestConstants.PAYMENT_METHOD);
+            mGrandTotalValue = getArguments().getDouble(RestConstants.ORDER_GRAND_TOTAL);
         }
         
     }
@@ -133,10 +133,10 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, orderShipping);
-        outState.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, orderTax);
-        outState.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, paymentMethod);
-        outState.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mGrandTotalValue);
+        outState.putString(RestConstants.TRANSACTION_SHIPPING, orderShipping);
+        outState.putString(RestConstants.TRANSACTION_TAX, orderTax);
+        outState.putString(RestConstants.PAYMENT_METHOD, paymentMethod);
+        outState.putDouble(RestConstants.ORDER_GRAND_TOTAL, mGrandTotalValue);
     }
 
     @Override
@@ -453,7 +453,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     protected boolean onErrorEvent(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.i(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
 
         return false;

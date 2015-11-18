@@ -74,11 +74,11 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     protected static String sameAddress = "";
 
-    protected MyAddressesFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state) {
+    protected MyAddressesFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state) {
         super(enabledMenuItems, action, R.layout.checkout_my_addresses, titleResId, adjust_state);
     }
 
-    protected MyAddressesFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    protected MyAddressesFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, int titleCheckout) {
         super(enabledMenuItems, action, R.layout.checkout_my_addresses, titleResId, adjust_state, titleCheckout);
     }
 

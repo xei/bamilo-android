@@ -50,17 +50,13 @@ public class AddressForms implements IJSONSerializable {
      * */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-
-        if(mShippingForm.initialize(jsonObject) &&  mBillingForm.initialize(jsonObject))
-            return true;
-
-        return false;
+        return mShippingForm.initialize(jsonObject) &&  mBillingForm.initialize(jsonObject);
     }
 
 
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.ARRAY_DATA_FIRST;
     }
 

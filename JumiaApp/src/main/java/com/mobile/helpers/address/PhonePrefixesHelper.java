@@ -32,7 +32,7 @@ public class PhonePrefixesHelper extends SuperBaseHelper {
 
     @Override
     public EventTask getEventTask() {
-        return EventTask.SMALL_TASK;
+        return EventTask.ACTION_TASK;
     }
 
     @Override

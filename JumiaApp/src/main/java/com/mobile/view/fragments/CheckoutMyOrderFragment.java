@@ -95,10 +95,10 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
      */
     public CheckoutMyOrderFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.layout.checkout_my_order_main,
                 R.string.checkout_label,
-                KeyboardState.NO_ADJUST_CONTENT,
+                NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_ORDER);
     }
 
@@ -513,11 +513,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                 getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, null, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 Bundle bundle = new Bundle();
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, "" + mOrderFinish.getVatValue());
-                bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
-                bundle.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mOrderFinish.getPriceForTracking());
+                bundle.putString(RestConstants.ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
+                bundle.putString(RestConstants.TRANSACTION_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
+                bundle.putString(RestConstants.TRANSACTION_TAX, "" + mOrderFinish.getVatValue());
+                bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
+                bundle.putDouble(RestConstants.ORDER_GRAND_TOTAL, mOrderFinish.getPriceForTracking());
                 getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
             }
         } else {
@@ -637,13 +637,11 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                 } else {
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
                     Bundle bundle = new Bundle();
-                    //        bundle.putString(Constants.BUNDLE_RESPONSE_KEY, checkoutFinish.getOrderNumber());
-                    //        bundle.putParcelable(PAYMENT_FORM, checkoutFinish.getPaymentMethodForm());
-                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
-                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
-                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, "" + mOrderFinish.getVatValue());
-                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
-                    bundle.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mOrderFinish.getPriceForTracking());
+                    bundle.putString(RestConstants.ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
+                    bundle.putString(RestConstants.TRANSACTION_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
+                    bundle.putString(RestConstants.TRANSACTION_TAX, "" + mOrderFinish.getVatValue());
+                    bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
+                    bundle.putDouble(RestConstants.ORDER_GRAND_TOTAL, mOrderFinish.getPriceForTracking());
                     getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
                 }
                 getBaseActivity().updateCartInfo();
@@ -680,7 +678,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         }
 
 
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {

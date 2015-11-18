@@ -64,8 +64,8 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 	}
 
 	@Override
-	public RequiredJson getRequiredJson() {
-		return null;
+	public int getRequiredJson() {
+		return RequiredJson.NONE;
 	}
 
 
@@ -77,18 +77,12 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 		return result;
 	}
 
-	/**
-	 *
-	 * @return
-	 */
-	public int getResultValue() {
-		return value;
-	}
+//	public int getResultValue() {
+//		return value;
+//	}
 
 	/**
 	 * Set the suggestion string
-	 * @param recentSuggestion
-	 * @author sergiopereira
 	 */
 	public void setResult(String recentSuggestion) {
 		this.result = recentSuggestion;
@@ -96,8 +90,6 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 
 	/**
 	 * Set the suggestion as recent
-	 * @param recent
-	 * @author sergiopereira
 	 */
 	public void setIsRecentSearch(boolean recent){
 		this.recentQuery = recent;

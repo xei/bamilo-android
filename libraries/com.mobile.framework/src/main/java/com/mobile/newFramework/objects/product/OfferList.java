@@ -79,7 +79,7 @@ public class OfferList implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.OBJECT_DATA;
     }
 
@@ -95,9 +95,9 @@ public class OfferList implements IJSONSerializable, Parcelable {
         return minPriceOfferConverted;
     }
 
-    public double getMinPriceOffer() {
-        return minPriceOffer;
-    }
+//    public double getMinPriceOffer() {
+//        return minPriceOffer;
+//    }
 
     public int getTotalOffers() {
         return totalOffers;

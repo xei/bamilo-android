@@ -54,7 +54,7 @@ public class ValidProductList extends ArrayList<ProductMultiple> implements IJSO
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

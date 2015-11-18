@@ -67,10 +67,10 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      */
     public RecentlyViewedFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.RecentlyViewed,
+                NavigationAction.RECENTLY_VIEWED,
                 R.layout.recentlyviewed,
                 R.string.recently_viewed,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /**
