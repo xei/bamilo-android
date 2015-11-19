@@ -17,7 +17,6 @@ import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormEditAddressHelper;
 import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
-import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
@@ -35,6 +34,7 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -46,8 +46,6 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -481,14 +479,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     }
 
     /**
-     * Trigger to initialize forms
-     */
-    protected void triggerInitForm(){
-        Print.i(TAG, "TRIGGER: INIT FORMS");
-        triggerContentEvent(new GetInitFormHelper(), null, this);
-    }
-
-    /**
      * Trigger to get regions
      */
     private void triggerGetRegions(String apiCall){
@@ -679,17 +669,13 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     /**
      * Dialog used to show an error
      */
-    protected void showErrorDialog(Map<String, List<String>> errors) {
+    protected void showErrorDialog(String message) {
         Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        List<String> errorMessages = null;
-        if (errors != null) {
-            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
-        }
-        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+        if (TextUtils.isNotEmpty(message)) {
             showFragmentContentContainer();
             dialog = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.error_login_title),
-                    errorMessages.get(0),
+                    message,
                     getString(R.string.ok_label),
                     "",
                     new View.OnClickListener() {
@@ -706,21 +692,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
         }
     }
-//
-//    /**
-//     * when selecting a new region or city, remove city and postal code positions
-//     * @param key
-//     */
-//    private void clearDependenciesSavedValues(String key){
-//        if(mFormSavedState != null){
-//            if(key.equals(RestConstants.REGION)){
-//                mFormSavedState.remove(RestConstants.CITY);
-//                mFormSavedState.remove(RestConstants.POSTCODE);
-//            } else {
-//                mFormSavedState.remove(RestConstants.POSTCODE);
-//            }
-//
-//        }
-//    }
+
 }
 

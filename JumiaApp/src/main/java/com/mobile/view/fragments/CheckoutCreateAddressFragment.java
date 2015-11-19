@@ -10,9 +10,9 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
@@ -72,9 +72,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     public void onResume() {
         super.onResume();
         // Get and show form
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-            triggerInitForm();
-        } else if(mFormShipping != null &&  mFormBilling!= null && orderSummary != null && regions != null){
+        if(mFormShipping != null &&  mFormBilling!= null && orderSummary != null && regions != null){
             loadCreateAddressForm(mFormShipping, mFormBilling);
         } else {
             triggerCreateAddressForm();

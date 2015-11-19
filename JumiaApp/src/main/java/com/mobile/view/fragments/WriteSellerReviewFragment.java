@@ -18,7 +18,7 @@
 //import com.mobile.helpers.configs.GetSellerReviewFormHelper;
 //import com.mobile.helpers.products.RatingReviewProductHelper;
 //import com.mobile.interfaces.IResponseCallback;
-//import com.mobile.newFramework.ErrorCode;
+//import com.mobile.newFramework.rest.errors.ErrorCode;
 //import com.mobile.newFramework.forms.Form;
 //import com.mobile.newFramework.objects.customer.Customer;
 //import com.mobile.newFramework.utils.Constants;

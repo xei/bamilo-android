@@ -31,7 +31,7 @@
 //import com.mobile.helpers.session.GetSignUpFormHelper;
 //import com.mobile.helpers.session.SetSignUpHelper;
 //import com.mobile.interfaces.IResponseCallback;
-//import com.mobile.newFramework.ErrorCode;
+//import com.mobile.newFramework.rest.errors.ErrorCode;
 //import com.mobile.newFramework.forms.Form;
 //import com.mobile.newFramework.forms.FormInputType;
 //import com.mobile.newFramework.objects.cart.PurchaseEntity;

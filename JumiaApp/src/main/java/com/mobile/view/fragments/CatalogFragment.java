@@ -24,7 +24,6 @@ import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
@@ -32,10 +31,10 @@ import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -64,7 +63,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -1015,10 +1013,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 // Validate error
                 if (!super.handleErrorEvent(baseResponse)) {
                     try {
-                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                        if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN) ||
-                            errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ERROR_ADDING_ITEM)) {
-                            // Auto Login
+                        Map errorMessages = baseResponse.getErrorMessages();
+                        if (errorMessages != null && (errorMessages.containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN) || errorMessages.containsKey(ErrorConstants.ERROR_ADDING_ITEM))) {
                             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         } else {
                             showUnexpectedErrorWarning();
@@ -1063,7 +1059,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Case network errors except No network
         else if (ErrorCode.isNetworkError(errorCode)
-                && errorCode != ErrorCode.NO_NETWORK
+                && errorCode != ErrorCode.NO_CONNECTIVITY
                 && errorCode != ErrorCode.HTTP_STATUS
                 && errorCode != ErrorCode.SERVER_OVERLOAD
                 && errorCode != ErrorCode.SERVER_IN_MAINTENANCE

@@ -29,14 +29,14 @@ import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -48,9 +48,6 @@ import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 
 import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -520,8 +517,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
 
-        @SuppressWarnings("unchecked")
-        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
         Print.i(TAG, "ERROR CODE: " + errorCode);
         if (ErrorCode.isNetworkError(errorCode)) {
             switch (errorCode) {
@@ -531,7 +526,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     showUnexpectedError();
                     break;
                 case ErrorCode.TIME_OUT:
-                case ErrorCode.NO_NETWORK:
+                case ErrorCode.NO_CONNECTIVITY:
                     showFragmentRetry();
                     break;
                 case ErrorCode.SSL:
@@ -539,25 +534,20 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                     setLayoutMaintenance(eventType);
                     break;
                 case ErrorCode.REQUEST_ERROR:
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    String dialogMsg = "";
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                    // Generic error message
+                    String msg = baseResponse.getErrorMessage();
+                    if(TextUtils.isNotEmpty(baseResponse.getErrorMessage())) {
+                        msg = getString(R.string.validation_errortext);
                     }
-                    if (validateMessages != null) {
-                        for (String message : validateMessages) {
-                            dialogMsg += message + "\n";
-                        }
-                    } else {
-                        for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
-                            dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-                        }
-                    }
-                    if (dialogMsg.equals("")) {
-                        dialogMsg = getString(R.string.validation_errortext);
-                    }
-                    dialog = DialogGenericFragment.newInstance(true, false, getString(R.string.validation_title), dialogMsg,
-                            getResources().getString(R.string.ok_label), "", new OnClickListener() {
+
+                    dialog = DialogGenericFragment.newInstance(
+                            true,
+                            false,
+                            getString(R.string.validation_title),
+                            msg,
+                            getResources().getString(R.string.ok_label),
+                            "",
+                            new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     int id = v.getId();

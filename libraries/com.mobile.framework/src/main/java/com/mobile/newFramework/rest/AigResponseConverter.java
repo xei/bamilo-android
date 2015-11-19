@@ -1,11 +1,13 @@
 package com.mobile.newFramework.rest;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.pojo.Success;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -15,8 +17,6 @@ import org.json.JSONObject;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 import okio.Okio;
 import retrofit.converter.ConversionException;
@@ -25,7 +25,8 @@ import retrofit.mime.TypedInput;
 import retrofit.mime.TypedOutput;
 
 /**
- * Created by rsoares on 5/21/15.
+ * Class used to convert the JSON response into an object.
+ * @author rsoares
  */
 public class AigResponseConverter implements Converter {
 
@@ -39,9 +40,9 @@ public class AigResponseConverter implements Converter {
         Print.i(TAG, "PARSE FROM BODY");
         try {
             String bodyJson = Okio.buffer(Okio.source(body.in())).readUtf8();
-            JSONObject responseJsonObject = new JSONObject(bodyJson);
-            return parseResponse(responseJsonObject, type);
+            return parseResponse(new JSONObject(bodyJson), type);
         } catch (Exception e) {
+            //Print.w(TAG, "ON FROM BODY RESPONSE", e);
             throw new ConversionException(e);
         }
     }
@@ -68,144 +69,75 @@ public class AigResponseConverter implements Converter {
     /**
      * Parse response
      */
-    protected BaseResponse parseResponse(JSONObject responseJsonObject, Type dataType)
-            throws JSONException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+    private BaseResponse parseResponse(JSONObject jsonObject, Type dataType) throws NullPointerException, JSONException, IllegalAccessException, ClassNotFoundException, InstantiationException {
         BaseResponse<?> response = new BaseResponse<>();
-        response.setSuccess(responseJsonObject.optBoolean(RestConstants.JSON_SUCCESS_TAG, false));
-        if(response.hadSuccess()) {
-            parseSuccessResponse(response, responseJsonObject, dataType);
-        } else {
-            parseUnsuccessResponse(response, responseJsonObject, dataType);
-        }
+        // Get success
+        response.setSuccess(jsonObject.optBoolean(RestConstants.SUCCESS));
+        // Get messages
+        parseResponseMessages(response, jsonObject);
+        // Get data
+        parseResponseData(response, jsonObject, dataType);
+        // return response
         return response;
     }
 
-    /**
-     * Parse success response
-     */
-    protected void parseSuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType)
-            throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
-        Print.i(TAG, "PARSE SUCCESS RESPONSE");
-        // Data
-        //TODO change to use method getMessages when response from API is coming correctly
-        if (responseJsonObject.has(RestConstants.JSON_METADATA_TAG)) {
-            baseResponse.getMetadata().setData(getData(responseJsonObject, dataType));
+    private void parseResponseData(@NonNull BaseResponse<?> response, @NonNull JSONObject json, Type type) throws NullPointerException, JSONException, IllegalAccessException, ClassNotFoundException, InstantiationException {
+        // Case success get metadata || Case error get metadata if exists
+        if(response.hadSuccess() || json.has(RestConstants.METADATA)) {
+            response.getMetadata().setMd5(getMd5(json));
+            response.getMetadata().setData(getData(json, type));
         }
-
-        // Messages
-        JSONObject messagesJsonObject = responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG);
-        baseResponse.setMessage(handleSuccessMessage(messagesJsonObject));
-
-        try {
-            baseResponse.setSuccessMessages(Success.createMap(messagesJsonObject));
-        } catch (JSONException e){
-            Print.i(TAG, "WARNING: JSE ON CREATE SUCCESS MESSAGES", e);
-        }
-        baseResponse.setErrorMessages(Errors.createErrorMessageMap(messagesJsonObject));
-
-        //Sessions
-        baseResponse.setSessions(getSessions(responseJsonObject));
-        //md5
-        baseResponse.getMetadata().setMd5(getMd5(responseJsonObject));
     }
 
+    /**
+     * Method used to save messages.
+     */
+    private void parseResponseMessages(@NonNull BaseResponse<?> baseResponse, @NonNull JSONObject response) {
+        // Get messages field
+        JSONObject messages = response.optJSONObject(RestConstants.MESSAGES);
+        if (messages != null) {
+            // Get error messages
+            baseResponse.setErrorMessages(parseMessages(messages.optJSONArray(RestConstants.ERROR)));
+            // Get success messages
+            baseResponse.setSuccessMessages(parseMessages(messages.optJSONArray(RestConstants.SUCCESS)));
+            // Get validate messages
+            baseResponse.setValidateMessages(parseMessages(messages.optJSONArray(RestConstants.VALIDATE)));
+        }
+    }
 
     /**
-     * Get unsuccess messages
+     * Method used to parse messages.
      */
-    protected void parseUnsuccessResponse(BaseResponse<?> baseResponse, JSONObject responseJsonObject, Type dataType) throws JSONException {
-        Print.i(TAG, "PARSE FAILURE RESPONSE");
-        //body data
-        try{
-            baseResponse.getMetadata().setData(getData(responseJsonObject, dataType));
-        } catch (IllegalAccessException | ClassNotFoundException | InstantiationException | NullPointerException | JSONException e) {
-            e.printStackTrace();
+    private HashMap<String, String> parseMessages(@Nullable JSONArray json) {
+        HashMap<String, String> map = null;
+        if (CollectionUtils.isNotEmpty(json)) {
+            map = new HashMap<>();
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject item = json.optJSONObject(i);
+                if (item != null) {
+                    String reason = item.has(RestConstants.REASON) ? item.optString(RestConstants.REASON) : item.optString(RestConstants.FIELD);
+                    String message = item.optString(RestConstants.MESSAGE);
+                    map.put(reason, message);
+                }
+            }
         }
-        //TODO change to use method getMessages when response from API is coming correctly
-        baseResponse.setErrorMessages(Errors.createErrorMessageMap(responseJsonObject.optJSONObject(RestConstants.JSON_MESSAGES_TAG)));
-        baseResponse.setSessions(getSessions(responseJsonObject));
+        return map;
     }
 
     /**
      * Get data
      */
-    protected IJSONSerializable getData(JSONObject responseJsonObject, Type dataType)
-            throws JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+    private @Nullable IJSONSerializable getData(JSONObject responseJsonObject, Type dataType) throws NullPointerException, JSONException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         String objectType = getType(dataType);
         Print.i(TAG, "GET DATA: " + objectType);
         if(objectType != null && !objectType.equals(Void.class.getName())) {
             IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(objectType);
-            iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
+            if (iJsonSerializable != null) {
+                iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
+            }
             return iJsonSerializable;
         }
         return null;
-    }
-
-    /**
-     * Get success messages
-     */
-    protected String handleSuccessMessage(JSONObject messagesObject) {
-        String successMessage = null;
-        try {
-            if (messagesObject != null) {
-                JSONArray successArray = messagesObject.optJSONArray(RestConstants.JSON_SUCCESS_TAG);
-                if (successArray != null) {
-                    successMessage = successArray.getString(0);
-                }
-            }
-        } catch (JSONException e) {
-            Print.w(TAG, "WARNING HANDLE SUCCESS MESSAGE", e);
-        }
-        return successMessage;
-    }
-
-//    /**
-//     * Get messages
-//     */
-//    protected Map<String, List<String>> getMessages(JSONObject responseJsonObject) {
-//        Map<String, List<String>> messages = new HashMap<>();
-//        try {
-//            if (responseJsonObject.has(RestConstants.JSON_MESSAGES_TAG)) {
-//                JSONObject messagesJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_MESSAGES_TAG);
-//                Iterator<?> keys = messagesJsonObject.keys();
-//
-//                while (keys.hasNext()) {
-//                    String key = (String) keys.next();
-//                    List<String> stringList = new LinkedList<>();
-//                    if (messagesJsonObject.get(key) instanceof JSONArray) {
-//                        JSONArray jsonArray = messagesJsonObject.getJSONArray(key);
-//                        for (int i = 0; i < jsonArray.length(); i++) {
-//                            stringList.add(jsonArray.getString(i));
-//                        }
-//                    }
-//                    messages.put(key, stringList);
-//                }
-//            }
-//        } finally {
-//            return messages;
-//        }
-//    }
-
-    /**
-     * Get session
-     */
-    protected Map<String, String> getSessions(JSONObject responseJsonObject) {
-        Map<String, String> sessions = new HashMap<>();
-        try {
-            if (responseJsonObject.has(RestConstants.JSON_SESSION_TAG)) {
-                JSONObject sessionJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_SESSION_TAG);
-                Iterator<?> keys = sessionJsonObject.keys();
-
-                while (keys.hasNext()) {
-                    String key = (String) keys.next();
-                    if (sessionJsonObject.get(key) instanceof String) {
-                        sessions.put(key, sessionJsonObject.getString(key));
-                    }
-                }
-            }
-        } finally {
-            return sessions;
-        }
     }
 
     /**
@@ -213,15 +145,16 @@ public class AigResponseConverter implements Converter {
      * -  metadata</br>
      * -  metadata -> data</br>
      */
-    protected JSONObject getJsonToInitialize(JSONObject responseJsonObject, final IJSONSerializable iJsonSerializable) throws JSONException {
+    private JSONObject getJsonToInitialize(JSONObject responseJsonObject, IJSONSerializable iJsonSerializable) throws JSONException {
         Print.i(TAG, "GET DATA FROM JSON");
-        @RequiredJson.JsonStruct int requiredJson = iJsonSerializable.getRequiredJson();
+        int requiredJson = iJsonSerializable.getRequiredJson();
+        // Get json from metadata
         if(requiredJson == RequiredJson.METADATA){
-            return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG);
-        } else if(requiredJson == RequiredJson.OBJECT_DATA){
-            return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG).getJSONObject(RestConstants.JSON_DATA_TAG);
-        } else if(requiredJson == RequiredJson.ARRAY_DATA_FIRST){
-            return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG).getJSONArray(RestConstants.JSON_DATA_TAG).getJSONObject(0);
+            return responseJsonObject.getJSONObject(RestConstants.METADATA);
+        }
+        // Get json from metadata -> data
+        else if(requiredJson == RequiredJson.OBJECT_DATA){
+            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.JSON_DATA_TAG);
         }
         return responseJsonObject;
     }
@@ -229,10 +162,34 @@ public class AigResponseConverter implements Converter {
     /**
      * Md5 from metadata
      */
-    public String getMd5(JSONObject responseJsonObject) {
-        if(responseJsonObject.has(RestConstants.JSON_METADATA_TAG)){
-            return responseJsonObject.optJSONObject(RestConstants.JSON_METADATA_TAG).optString(RestConstants.JSON_MD5_TAG, null);
+    private @Nullable String getMd5(@NonNull JSONObject responseJsonObject) {
+        if(responseJsonObject.has(RestConstants.METADATA)){
+            return responseJsonObject.optJSONObject(RestConstants.METADATA).optString(RestConstants.JSON_MD5_TAG, null);
         }
         return null;
     }
+
+
+//    /**
+//     * Get session
+//     */
+//    protected Map<String, String> getSessions(JSONObject responseJsonObject) {
+//        Map<String, String> sessions = new HashMap<>();
+//        try {
+//            if (responseJsonObject.has(RestConstants.JSON_SESSION_TAG)) {
+//                JSONObject sessionJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_SESSION_TAG);
+//                Iterator<?> keys = sessionJsonObject.keys();
+//
+//                while (keys.hasNext()) {
+//                    String key = (String) keys.next();
+//                    if (sessionJsonObject.get(key) instanceof String) {
+//                        sessions.put(key, sessionJsonObject.getString(key));
+//                    }
+//                }
+//            }
+//        } finally {
+//            return sessions;
+//        }
+//    }
+
 }

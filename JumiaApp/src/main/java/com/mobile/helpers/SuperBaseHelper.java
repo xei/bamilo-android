@@ -117,7 +117,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public void postError(BaseResponse baseResponse){
         baseResponse.setEventType(mEventType);
         baseResponse.setEventTask(getEventTask());
-        baseResponse.setPrioritary(prioritary);
+        baseResponse.setPriority(prioritary);
     }
 
     protected EventTask setEventTask(){
@@ -158,7 +158,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     @Override
     public final void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getErrorMessages());
         postError(baseResponse);
         if(mRequester != null) {
             mRequester.onRequestError(baseResponse);

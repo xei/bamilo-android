@@ -7,8 +7,8 @@ import android.view.View;
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.utils.CheckoutStepManager;
@@ -86,9 +86,12 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-            triggerInitForm();
-        } else if(mFormShipping != null &&  mFormBilling!= null && regions != null){
+        initializeFormData();
+    }
+
+    private void initializeFormData() {
+        // Get and show form
+        if(mFormShipping != null &&  mFormBilling!= null && regions != null){
             loadCreateAddressForm(mFormShipping,mFormBilling);
         } else {
             triggerCreateAddressForm();
@@ -97,8 +100,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
 
     @Override
     protected void onClickRetryButton() {
-        //TODO retry error when this method has access to eventType
-        triggerInitForm();
+        initializeFormData();
     }
 
     @Override

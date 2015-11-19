@@ -18,9 +18,9 @@ import com.mobile.helpers.session.SetForgotPasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -31,8 +31,6 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author sergiopereira
@@ -335,17 +333,11 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
 
         if (eventType == EventType.FORGET_PASSWORD_EVENT) {
             Print.d(TAG, "FORGET_PASSWORD_EVENT");
-
-            Map<String, List<String>> errors = baseResponse.getErrorMessages();
-            List<String> errorMessages = null;
-            if (errors != null) {
-                errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
-            }
-            if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+            if (TextUtils.isNotEmpty(baseResponse.getValidateMessage())) {
                 showFragmentContentContainer();
                 dialog = DialogGenericFragment.newInstance(true, false,
                         getString(R.string.error_forgotpassword_title),
-                        errorMessages.get(0),
+                        baseResponse.getValidateMessage(),
                         getString(R.string.ok_label),
                         "",
                         new OnClickListener() {
@@ -358,7 +350,8 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
                             }
                         });
                 dialog.show(getActivity().getSupportFragmentManager(), null);
-
+            } else {
+                showUnexpectedErrorWarning();
             }
         }
 

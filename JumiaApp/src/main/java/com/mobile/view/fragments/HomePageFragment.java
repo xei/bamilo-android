@@ -39,7 +39,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
-import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -460,7 +460,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
+            ToastManager.show(getBaseActivity(), ToastManager.ERROR_PRODUCT_NOT_RETRIEVED);
         }
     }
 

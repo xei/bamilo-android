@@ -18,10 +18,9 @@ import com.mobile.helpers.account.GetUserDataFormHelper;
 import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.helpers.account.SetUserDataHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -32,8 +31,6 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class that shows the personal information of the user, ant let's him change it
@@ -373,46 +370,14 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
             case CHANGE_PASSWORD_EVENT:
                 Print.d(TAG, "changePasswordEvent: Password changed was not successful");
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                    if (errorMessages == null) {
-                        return;
-                    }
-                    showFragmentContentContainer();
-
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                    }
-
-                    String errorMessage;
-                    if (validateMessages.size() == 0) {
-                        return;
-                    }
-                    errorMessage = validateMessages.get(0);
-                    displayErrorHint(errorMessage, false);
+                    displayErrorHint(baseResponse.getValidateMessage(), false);
                     showFragmentContentContainer();
                 }
                 break;
             case EDIT_USER_DATA_EVENT:
                 Print.d(TAG, "EditUserData: Edit user was not successful");
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                    if (errorMessages == null) {
-                        return;
-                    }
-                    showFragmentContentContainer();
-
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                    }
-
-                    String errorMessage;
-                    if (validateMessages.size() == 0) {
-                        return;
-                    }
-                    errorMessage = validateMessages.get(0);
-                    displayErrorHint(errorMessage, true);
+                    displayErrorHint(baseResponse.getValidateMessage(), true);
                     showFragmentContentContainer();
 
                 }

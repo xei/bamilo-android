@@ -2,6 +2,7 @@ package com.mobile.utils.ui;
 
 import android.content.Context;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.mobile.utils.Toast;
@@ -66,7 +67,7 @@ public class ToastManager {
     /**
      * Show a toast.
      */
-    public static void show(Context context, @TypeMessage int type) {
+    public static void show(@NonNull Context context, @TypeMessage int type) {
         switch (type) {
             /*
              * #### ERROR ####

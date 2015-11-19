@@ -12,13 +12,13 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -30,12 +30,10 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ComboGridAdapter;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 
 
@@ -343,33 +341,25 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
 
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-
+                    Map errorMessages = baseResponse.getErrorMessages();
                     if (errorMessages != null) {
-                        int msgRes = -1;
-
                         String message = null;
-                        if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
-                            msgRes = R.string.product_outof_stock;
-                        } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
-                            msgRes = R.string.error_add_to_shopping_cart_quantity;
-                        } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                            List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                            if (validateMessages != null && validateMessages.size() > 0) {
-                                message = validateMessages.get(0);
-                            } else {
-                                msgRes = R.string.error_add_to_cart_failed;
-                            }
+                        if (errorMessages.containsKey(ErrorConstants.ORDER_PRODUCT_SOLD_OUT)) {
+                            message = getString(R.string.product_outof_stock);
+                        } else if (errorMessages.containsKey(ErrorConstants.PRODUCT_ADD_OVER_QUANTITY)) {
+                            message = getString(R.string.error_add_to_shopping_cart_quantity);
+                        } else if (errorMessages.containsKey(ErrorConstants.ORDER_PRODUCT_ERROR_ADDING)) {
+                            message = getString(R.string.error_add_to_cart_failed);
                         }
 
-                        if (msgRes != -1) {
-                            message = getString(msgRes);
-                        } else if (message == null) {
+                        if (message == null) {
                             return;
                         }
 
                         FragmentManager fm = getFragmentManager();
-                        dialog = DialogGenericFragment.newInstance(true, false,
+                        dialog = DialogGenericFragment.newInstance(
+                                true,
+                                false,
                                 mBundleWithMultiple.getName(),
                                 message,
                                 getString(R.string.ok_label), "", new View.OnClickListener() {
@@ -394,9 +384,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     }
 
 
-    private void executeAddToShoppingCartCompleted() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART, getString(R.string.added_to_shop_cart_dialog_text));
-    }
+//    private void executeAddToShoppingCartCompleted() {
+//        getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART, getString(R.string.added_to_shop_cart_dialog_text));
+//    }
 
 
     private void addToShoppingCartFailed() {

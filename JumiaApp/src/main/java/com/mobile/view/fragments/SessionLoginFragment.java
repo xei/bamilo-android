@@ -25,7 +25,7 @@
 //import com.mobile.helpers.session.GetLoginFormHelper;
 //import com.mobile.helpers.session.GetLoginHelper;
 //import com.mobile.interfaces.IResponseCallback;
-//import com.mobile.newFramework.ErrorCode;
+//import com.mobile.newFramework.rest.errors.ErrorCode;
 //import com.mobile.newFramework.forms.Form;
 //import com.mobile.newFramework.forms.FormData;
 //import com.mobile.newFramework.forms.FormInputType;
