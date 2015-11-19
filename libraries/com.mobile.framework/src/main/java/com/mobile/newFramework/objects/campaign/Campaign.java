@@ -33,6 +33,8 @@ public class Campaign implements IJSONSerializable, Parcelable {
 
     private int mCount;
 
+    private int mTotalProducts;
+
     private ArrayList<CampaignItem> mItems = new ArrayList<>();
 
     /**
@@ -70,8 +72,9 @@ public class Campaign implements IJSONSerializable, Parcelable {
         mName = campaignO.optString(RestConstants.JSON_NAME_TAG);
         // Get product count
         mCount = campaignO.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
+        mTotalProducts = campaignO.optInt(RestConstants.TOTAL_PRODUCTS);
         // Get data
-        JSONArray itemsA = campaignO.getJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray itemsA = campaignO.getJSONArray(RestConstants.PRODUCTS);
         for (int i = 0; i < itemsA.length(); i++) {
             CampaignItem item = new CampaignItem();
             if (item.initialize(itemsA.getJSONObject(i))) {
@@ -142,6 +145,11 @@ public class Campaign implements IJSONSerializable, Parcelable {
         return mItems;
     }
 
+    /**
+     * @return the mTotalProducts
+     */
+    public int getmTotalProducts() {return mTotalProducts;}
+
 
 	/*
      * ########### Setters ###########
@@ -168,6 +176,12 @@ public class Campaign implements IJSONSerializable, Parcelable {
         this.mItems = mItems;
     }
 
+
+    /**
+     * @param mTotalProducts the mTotalProducts to set
+     */
+    public void setmTotalProducts(int mTotalProducts) {  this.mTotalProducts = mTotalProducts;}
+
     /**
      * ########### Parcelable ###########
      */
@@ -191,6 +205,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
         dest.writeString(mName);
         dest.writeInt(mCount);
         dest.writeList(mItems);
+        dest.writeInt(mTotalProducts);
     }
 
     /**
@@ -203,6 +218,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
         mCount = in.readInt();
         mItems = new ArrayList<>();
         in.readList(mItems, CampaignItem.class.getClassLoader());
+        mTotalProducts = in.readInt();
     }
 
     /**
@@ -217,6 +233,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
             return new Campaign[size];
         }
     };
+
 
 }
 

@@ -202,7 +202,7 @@ public class RestConstants {
     public static final String VARIATION_VALUE = "variation_value";
 
     // Teaser Campaign Tags
-    public static final String JSON_CAMPAIGN_TAG = "campaign";
+    public static final String JSON_CAMPAIGN_TAG = "campaign_entity";
     public static final String JSON_CAMPAIGN_NAME_TAG = "campaign_name";
     public static final String JSON_CAMPAIGN_URL_TAG = "campaign_url";
     public static final String JSON_CMS_TAG = "cms";
@@ -215,6 +215,7 @@ public class RestConstants {
     public static final String JSON_SIZE_TAG = "size";
     public static final String JSON_REMAINING_TIME_TAG = "remaining_time";
     public static final String JSON_UNIX_TIME_TAG = "unix_time";
+    public static final String SLUG = "slug";
 
 
     // TeaserBrandElement Tags
