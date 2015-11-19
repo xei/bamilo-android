@@ -49,6 +49,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     private TextView mTotalPrice;
     private ComboGridAdapter adapter;
     private ProductBundle mBundleWithMultiple;
+    private ProductBundle mBundleWithOneSimple;
     private ArrayList<ProductBundle> listBundlesOneSimple;
     private ArrayList<ProductBundle> listBundlesMultipleSimple;
     private int countMultipleProcessed = 0;
@@ -195,6 +196,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      * @param productBundle - arguments
      */
     private void addToCartWithOnlySimple(ProductBundle productBundle) {
+        mBundleWithOneSimple = productBundle;
         ProductSimple simples = productBundle.getSimples().get(0);
         proceedWithAddItemToCart(productBundle, simples);
     }
@@ -356,11 +358,13 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                             return;
                         }
 
+                        String name="";
+                        if(mBundleWithMultiple != null) name = mBundleWithMultiple.getName();
+                        else if(mBundleWithOneSimple != null) name = mBundleWithOneSimple.getName();
+
                         FragmentManager fm = getFragmentManager();
-                        dialog = DialogGenericFragment.newInstance(
-                                true,
-                                false,
-                                mBundleWithMultiple.getName(),
+                        dialog = DialogGenericFragment.newInstance(true, false,
+                                name,
                                 message,
                                 getString(R.string.ok_label), "", new View.OnClickListener() {
 
