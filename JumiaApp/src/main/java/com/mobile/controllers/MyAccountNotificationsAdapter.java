@@ -33,7 +33,9 @@ import com.mobile.view.R;
  */
 public class MyAccountNotificationsAdapter extends BaseAdapter {
     public static final String NOTIFICATION_CHECKBOX_TAG = "checkbox_notification_tag";
+    private static final int SHOW_NOTIFICATION_CHECKBOX = 1;
 //    private static final String TAG = MyAccountNotificationsAdapter.class.getName();
+
     private String[] mOptions;
     private int[] mCheckBoxes;
     Context mContext;
@@ -86,7 +88,7 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
 
         // Get the Notification checkbox
         final CheckBox optionsCheckbox = (CheckBox) view.findViewById(R.id.notification_checkbox);
-        if(this.mCheckBoxes[position] == 1) {
+        if(this.mCheckBoxes[position] == SHOW_NOTIFICATION_CHECKBOX) {
             optionsCheckbox.setTag(NOTIFICATION_CHECKBOX_TAG);
             optionsCheckbox.setVisibility(View.VISIBLE);
             /*
