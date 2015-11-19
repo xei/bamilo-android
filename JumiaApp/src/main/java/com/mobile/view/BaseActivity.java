@@ -639,7 +639,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void setupContentViews() {
         Print.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
         // Get the application horizontalListView
-        //contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));

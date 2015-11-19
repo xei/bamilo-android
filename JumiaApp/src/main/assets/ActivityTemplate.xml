@@ -169,7 +169,7 @@ public class ${primary_type_name} extends MyActivity implements IEventListener{
 	 * Set the Home Page Layout
 	 */
 	private void setAppContentLayout() {
-		InflateLayout.inflate(this, R.id.main, R.layout.configurator_module);
+		InflateLayout.inflate(this, R.id.app_content, R.layout.configurator_module);
 	}
 
 	// TODO: Add here new layout functions

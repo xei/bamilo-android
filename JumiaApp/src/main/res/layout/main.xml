@@ -73,22 +73,10 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone" />
 
-            <!-- CONTENT LAYOUT
-            <ViewStub
-                android:id="@+id/stub_app_content"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignWithParentIfMissing="true"
-                android:layout_below="@id/checkout_header"
-                android:inflatedId="@+id/rocket_app_content"
-                android:layout="@layout/main_fragment_activity_layout"/>
-                 -->
-
             <!-- CONTENT LAYOUT -->
 
             <FrameLayout
-                android:id="@+id/rocket_app_content"
+                android:id="@+id/app_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/checkout_header" />
