@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Checkbox drawable setted via Theme.Jumia -->
+    <!-- Checkbox drawable setted via Theme.Custom -->
 
     <CheckBoxPreference
         android:defaultValue="@bool/default_notification"

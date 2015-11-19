@@ -336,7 +336,7 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">Your Cart</string>
     <string name="your_order">Your Order</string>
-    <string name="install_jumia_android">Install the %s Android App in an instant</string>
+    <string name="install_android">Install the %s Android App in an instant</string>
     <string name="share_the_app">Share the App</string>
     <string name="can_share_app_with_friends">You can now share the app with your friends</string>
     <string name="app_social">App Social</string>

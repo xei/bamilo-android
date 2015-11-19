@@ -43,7 +43,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
 
     private Boolean isSetOnce = false;
 
-    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public interface OnDatePickerDialogListener {
         void onDatePickerDialogSelect(int year, int month, int day);
@@ -113,7 +113,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(R.style.Theme_Jumia_Dialog_NoTitle_DatePicker, R.style.Theme_Jumia_Dialog_NoTitle_DatePicker);
+        setStyle(R.style.Theme_Custom_Dialog_NoTitle_DatePicker, R.style.Theme_Custom_Dialog_NoTitle_DatePicker);
     }
 
     /*

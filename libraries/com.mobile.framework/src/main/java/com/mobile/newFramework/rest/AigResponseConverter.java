@@ -39,6 +39,19 @@ public class AigResponseConverter implements Converter {
         Print.i(TAG, "PARSE FROM BODY");
         try {
             String bodyJson = Okio.buffer(Okio.source(body.in())).readUtf8();
+            if(bodyJson.length() > 3500){
+                int part = 0;
+                int partNumber = 1;
+                while(part+3500 < bodyJson.length()){
+                    Print.i(TAG, "code1size PART"+partNumber+" "+bodyJson.substring(part,part+3500));
+                    partNumber++;
+                    part +=3500;
+                }
+                Print.i(TAG, "code1size PART"+partNumber+" "+bodyJson.substring(part,bodyJson.length()));
+            } else {
+                Print.i(TAG, "code1size "+bodyJson);
+            }
+
             JSONObject responseJsonObject = new JSONObject(bodyJson);
             return parseResponse(responseJsonObject, type);
         } catch (Exception e) {
@@ -55,7 +68,7 @@ public class AigResponseConverter implements Converter {
      * Get object type
      */
     protected String getType(Object type){
-        Print.i(TAG, "GET OBJECT TYPE: " + type.toString());
+        Print.i(TAG, "GET OBJECT TYPE: " + type);
         if(type instanceof Class){
             return ((Class) type).getName();
         } else if(type instanceof ParameterizedType){
