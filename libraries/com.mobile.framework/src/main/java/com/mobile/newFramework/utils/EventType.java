@@ -146,7 +146,7 @@ public enum EventType {
 
     REMOVE_VOUCHER("http:/order/removevoucher/", AigRestContract.NO_CACHE),
 
-    GET_CAMPAIGN_EVENT("http:/campaign/get/", AigRestContract.NO_CACHE),
+    GET_CAMPAIGN_EVENT("http:/campaign/get/slug/", AigRestContract.NO_CACHE),
 
     GET_NEWSLETTERS_FORM_EVENT("managenewsletters", AigRestContract.NO_CACHE),
 

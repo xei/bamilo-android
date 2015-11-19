@@ -14,12 +14,18 @@ public class RequestBundle {
 
     private boolean discard;
 
+    private String pathParameter;
+
     /*
      * GETTERS
      */
 
     public String getUrl() {
         return url;
+    }
+
+    public String getPathParameter() {
+        return pathParameter;
     }
 
     public Map<String, String> getData() {
@@ -52,6 +58,8 @@ public class RequestBundle {
 
         boolean discard;
 
+        String pathParameter;
+
         public Builder setUrl(String url) {
             this.url = url;
             return this;
@@ -72,12 +80,18 @@ public class RequestBundle {
             return this;
         }
 
+        public Builder setPathParameter(String pathParameter) {
+            this.pathParameter = pathParameter;
+            return this;
+        }
+
         public RequestBundle build() {
             RequestBundle requestBundle = new RequestBundle();
             requestBundle.url = url;
             requestBundle.cache = cache;
             requestBundle.data = data;
             requestBundle.discard = discard;
+            requestBundle.pathParameter = pathParameter;
             return requestBundle;
         }
 
@@ -89,6 +103,10 @@ public class RequestBundle {
         restAdapterInit.cache = cache;
         restAdapterInit.discardResponse = discard;
         return restAdapterInit;
+    }
+
+    public void setUrl(String url){
+        this.url = url;
     }
 
 }

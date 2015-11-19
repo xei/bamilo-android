@@ -1,6 +1,7 @@
 package com.mobile.newFramework.requests;
 
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -47,6 +48,10 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         if(mRequestBundle.hasData()){
             parameters.add(mRequestBundle.getData());
         }
+        //add pathParameter
+        if(!TextUtils.isEmpty(mRequestBundle.getPathParameter()))
+            parameters.add(mRequestBundle.getPathParameter());
+
         // Add callback
         parameters.add(this);
         // Invoke api service

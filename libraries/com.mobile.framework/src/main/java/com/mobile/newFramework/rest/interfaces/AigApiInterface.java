@@ -50,6 +50,7 @@ import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import retrofit.http.QueryMap;
 
 
@@ -220,9 +221,10 @@ public interface AigApiInterface {
      * ## CAMPAIGN
      */
 
-    @GET("/")
-    void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
-
+  //  @GET("/")
+ //   void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
+    @GET("/{slug}")
+    void getCampaign(@Path("slug") String campaignSlug, Callback<BaseResponse<Campaign>> callback);
     String getCampaign = "getCampaign";
 
     /*

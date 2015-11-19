@@ -7,6 +7,7 @@ import android.text.TextUtils;
 
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
@@ -48,6 +49,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         // Create builder
         RequestBundle.Builder requestBundleBuilder = new RequestBundle.Builder()
                 .setUrl(getRequestUrl(args))
+                .setPathParameter(getRequestPathParameter(args))
                 .setCache(mEventType.cacheTime);
 
         // Validate data
@@ -80,6 +82,17 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
                 return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
             }
         }
+    }
+
+
+/**
+ * Add a path parameter to request
+ * */
+    protected String getRequestPathParameter(Bundle args) {
+
+        String pathParameter = (args != null) ? args.getString(RestConstants.SLUG) : null;
+        return pathParameter;
+
     }
 
     protected Map<String, String> getRequestData(Bundle args) {
