@@ -107,8 +107,8 @@ public class TargetHelper implements ITargeting, IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     protected TargetHelper(Parcel in) {

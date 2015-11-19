@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.objects.configs.ImageResolution;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -36,8 +35,9 @@ public class ImageResolutionTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#getType()
      */
    @Override
-   public TableType getUpgradeType() {
-       return TableType.CACHE;
+   @DarwinDatabaseHelper.UpgradeType
+   public int getUpgradeType() {
+       return DarwinDatabaseHelper.CACHE;
    }
 
    /*
@@ -217,8 +217,6 @@ public class ImageResolutionTableHelper extends BaseTable {
 
 	 /**
 	  * Clears the image resolutions table
-	  * 
-	  * @param db
 	  */
 	 public static void clearImageResolutions() {
 		 Print.d(TAG, "ON CLEAN TABLE");

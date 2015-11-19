@@ -103,10 +103,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     public ShoppingCartFragment() {
         super(EnumSet.of( MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Basket,
+                NavigationAction.BASKET,
                 R.layout.shopping_basket,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /**

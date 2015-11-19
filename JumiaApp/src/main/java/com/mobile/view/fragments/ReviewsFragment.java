@@ -873,7 +873,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
         showFragmentContentContainer();
 
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType + " code = " + errorCode);
 
         if(eventType == EventType.GET_PRODUCT_REVIEWS){
@@ -890,7 +890,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
                 displayReviews(productRatingPage, true);
                 break;
             case GET_PRODUCT_DETAIL:
-                if (!errorCode.isNetworkError()) {
+                if (!ErrorCode.isNetworkError(errorCode)) {
                     Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 
                     try {

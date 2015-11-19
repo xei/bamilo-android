@@ -42,7 +42,7 @@ public class AvailableCountries extends ArrayList<CountryObject> implements IJSO
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 }

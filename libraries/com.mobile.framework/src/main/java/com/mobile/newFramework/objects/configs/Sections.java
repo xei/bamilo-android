@@ -38,7 +38,7 @@ public class Sections extends LinkedList<Section> implements IJSONSerializable, 
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

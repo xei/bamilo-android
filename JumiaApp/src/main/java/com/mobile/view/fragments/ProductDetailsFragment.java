@@ -122,10 +122,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     public ProductDetailsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Product,
+                NavigationAction.PRODUCT,
                 R.layout.pdv_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /**
@@ -705,7 +705,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
 
             ArrayList<ImageUrls> images;
-            if(ShopSelector.isRtl()){
+            if(ShopSelector.isRtl() && CollectionUtils.isNotEmpty(mProduct.getImageList())){
                 images = new ArrayList<>(mProduct.getImageList());
                 Collections.reverse(images);
             } else {
@@ -1174,7 +1174,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
         // Specific errors
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {

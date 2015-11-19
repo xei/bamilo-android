@@ -447,6 +447,7 @@
     <string name="cta_link_continue_shopping">متابعة التسوق</string>
     <string name="up_to_date">قاعدة بيانات ووردبريس حديثة حالياً!</string>
     <string name="rate_the_app">قم بتقييم البرنامج</string>
+    <string name="order_track_check">يمكنك متابعة الطلب بفحص\nحالة الطلب في هذا التطبيق</string>
     <string name="select_city">يُرجى إختيار مدينة</string>
     <string name="no_saved_items">لم يتم حفظ منتجات في الوقت الحالي</string>
     <string name="no_saved_items_subtitle">ليس لديكم أي منتجات مسجلة</string>
@@ -468,5 +469,4 @@
     <string name="customer_service_info">من فضلكم, المرجو الاتصال بمصلحة الزبناء للمزيد من المعلومات,</string>
     <string name="phone_contact">الهاتف :</string>
     <string name="email_contact">البريد الإلكتروني:</string>
-    <string name="order_track_check">يمكنك متابعة الطلب بفحص\nحالة الطلب في هذا التطبيق</string>
 </resources>

@@ -62,10 +62,10 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      */
     public MyAccountUserDataFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccountUserData,
+                NavigationAction.MY_ACCOUNT_USER_DATA,
                 R.layout.my_account_user_data_fragment,
                 R.string.myaccount_userdata,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /**
@@ -363,7 +363,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
             return;
         }
 
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
 
         switch (eventType) {
             case GET_CHANGE_PASSWORD_FORM_EVENT:

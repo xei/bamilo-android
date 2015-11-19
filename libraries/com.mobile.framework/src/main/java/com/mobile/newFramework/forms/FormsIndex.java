@@ -48,7 +48,7 @@ public class FormsIndex extends HashMap<String, FormData> implements IJSONSerial
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

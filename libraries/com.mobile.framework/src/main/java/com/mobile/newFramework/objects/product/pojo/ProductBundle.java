@@ -72,13 +72,13 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
-    public int getBundleProductLeaderPos() {
-        return bundleProductLeaderPos;
-    }
+//    public int getBundleProductLeaderPos() {
+//        return bundleProductLeaderPos;
+//    }
 
     public boolean isChecked() {
         return isChecked;

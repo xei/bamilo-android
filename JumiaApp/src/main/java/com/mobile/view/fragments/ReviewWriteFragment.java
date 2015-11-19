@@ -122,10 +122,10 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
      */
     public ReviewWriteFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Product,
+                NavigationAction.PRODUCT,
                 R.layout.review_write_fragment,
                 R.string.write_comment,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /*
@@ -847,7 +847,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         if(super.handleErrorEvent(baseResponse)) return;
 
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType + " code= "+errorCode);
 
         switch (eventType) {
@@ -881,7 +881,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
 
             case GET_PRODUCT_DETAIL:
-                if (!errorCode.isNetworkError()) {
+                if (!ErrorCode.isNetworkError(errorCode)) {
                     Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
 
                     showFragmentContentContainer();

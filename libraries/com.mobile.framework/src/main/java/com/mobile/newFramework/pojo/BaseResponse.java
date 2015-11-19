@@ -29,10 +29,10 @@ public class BaseResponse<T>{
         setMetadata(new Metadata<T>());
     }
 
-    public BaseResponse(EventType eventType, ErrorCode errorCode){
+    public BaseResponse(EventType eventType, @ErrorCode.Code int errorCode){
         setEventType(eventType);
         JumiaError jumiaError = new JumiaError();
-        jumiaError.setErrorCode(errorCode);
+        jumiaError.setCode(errorCode);
         setError(jumiaError);
     }
 

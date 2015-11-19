@@ -25,7 +25,7 @@ public class AddressRegions extends ArrayList<AddressRegion> implements IJSONSer
      */
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

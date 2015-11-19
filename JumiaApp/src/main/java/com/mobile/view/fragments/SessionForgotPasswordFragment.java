@@ -65,10 +65,10 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
      */
     public SessionForgotPasswordFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.ForgotPassword,
+                NavigationAction.FORGOT_PASSWORD,
                 R.layout.forgotpassword,
                 R.string.forgotpass_header,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /*

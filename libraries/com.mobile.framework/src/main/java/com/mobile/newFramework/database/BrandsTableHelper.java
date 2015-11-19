@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.utils.output.Print;
 
 /**
@@ -30,8 +29,9 @@ public class BrandsTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#getType()
      */
     @Override
-    public TableType getUpgradeType() {
-        return TableType.PERSIST;
+    @DarwinDatabaseHelper.UpgradeType
+    public int getUpgradeType() {
+        return DarwinDatabaseHelper.PERSIST;
     }
 
     /*

@@ -53,7 +53,7 @@ public class AddressPostalCodes extends ArrayList<AddressPostalCode> implements 
 	}
 
 	@Override
-	public RequiredJson getRequiredJson() {
+	public int getRequiredJson() {
 		return RequiredJson.METADATA;
 	}
 

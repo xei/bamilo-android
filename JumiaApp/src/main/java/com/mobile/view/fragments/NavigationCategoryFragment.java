@@ -194,7 +194,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         Print.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.TIME_OUT || errorCode == ErrorCode.NO_NETWORK) {
             showFragmentNoNetworkRetry();
         } else {

@@ -36,7 +36,8 @@ public class Form implements IJSONSerializable, Parcelable {
     private boolean hideAsterisks;
 
     @Override
-    public RequiredJson getRequiredJson() {
+    @RequiredJson.JsonStruct
+    public int getRequiredJson() {
         return RequiredJson.ARRAY_DATA_FIRST;
     }
 

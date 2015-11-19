@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -37,8 +36,9 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 	 * @see com.mobile.newFramework.database.BaseTable#getUpgradeType()
 	 */
     @Override
-    public TableType getUpgradeType() {
-        return TableType.PERSIST;
+    @DarwinDatabaseHelper.UpgradeType
+    public int getUpgradeType() {
+        return DarwinDatabaseHelper.PERSIST;
     }
 
     /*

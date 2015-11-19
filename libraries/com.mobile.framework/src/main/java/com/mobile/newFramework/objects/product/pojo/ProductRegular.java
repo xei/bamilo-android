@@ -79,8 +79,8 @@ public class ProductRegular extends ProductBase {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     /*

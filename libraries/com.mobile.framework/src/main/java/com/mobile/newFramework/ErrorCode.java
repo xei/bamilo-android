@@ -1,95 +1,72 @@
 package com.mobile.newFramework;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * Error codes used in the response events.
- * 
- * @author GuilhermeSilva, Ralph Holland-Moritz
- * 
  */
-public enum ErrorCode {
+public class ErrorCode {
 
-	NO_ERROR(0),
-	UNKNOWN_ERROR(1),
-	NO_NETWORK(2),
-	CONNECT_ERROR(3),
-	TIME_OUT(4),
-	ERROR_PARSING_SERVER_DATA(5),
-	HTTP_PROTOCOL(6),
-	IO(7),
-	SSL(443),
-	EMPTY_ENTITY(8),
-	HTTP_STATUS(9),
-	REQUEST_ERROR(10),
-	AUTO_COUNTRY_SELECTION(11),
-	INTERNAL_ERROR(101),
-	REQUIRES_USER_INTERACTION(201),
-	SERVER_IN_MAINTENANCE(503),
-	NO_COUNTRIES_CONFIGS(12),
-	NO_COUNTRY_CONFIGS_AVAILABLE(13),
-	SERVER_OVERLOAD(429);
-	
+    public static final int NO_ERROR = 0;
+    public static final int UNKNOWN_ERROR = 1;
+    public static final int NO_NETWORK = 2;
+    public static final int CONNECT_ERROR = 3;
+    public static final int TIME_OUT = 4;
+    public static final int ERROR_PARSING_SERVER_DATA = 5;
+    public static final int HTTP_PROTOCOL = 6;
+    public static final int IO = 7;
+    public static final int SSL = 443;
+    public static final int EMPTY_ENTITY = 8;
+    public static final int HTTP_STATUS = 9;
+    public static final int REQUEST_ERROR = 10;
+    public static final int AUTO_COUNTRY_SELECTION = 11;
+    public static final int INTERNAL_ERROR = 101;
+    public static final int REQUIRES_USER_INTERACTION = 201;
+    public static final int SERVER_IN_MAINTENANCE = 503;
+    public static final int NO_COUNTRIES_CONFIGS = 12;
+    public static final int NO_COUNTRY_CONFIGS_AVAILABLE = 13;
+    public static final int SERVER_OVERLOAD = 429;
 
-	public final int id;
+    @IntDef({
+            NO_ERROR,
+            UNKNOWN_ERROR,
+            NO_NETWORK,
+            CONNECT_ERROR,
+            TIME_OUT,
+            ERROR_PARSING_SERVER_DATA,
+            HTTP_PROTOCOL,
+            IO,
+            SSL,
+            EMPTY_ENTITY,
+            HTTP_STATUS,
+            REQUEST_ERROR,
+            AUTO_COUNTRY_SELECTION,
+            INTERNAL_ERROR,
+            REQUIRES_USER_INTERACTION,
+            SERVER_IN_MAINTENANCE,
+            NO_COUNTRIES_CONFIGS,
+            NO_COUNTRY_CONFIGS_AVAILABLE,
+            SERVER_OVERLOAD
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface Code {}
 
-	ErrorCode(int id) {
-		this.id = id;
-	}
-
-	public static final ErrorCode byId(int id) {
-		if (id > 0)
-			return HTTP_STATUS;
-		for (ErrorCode code : ErrorCode.values()) {
-			if (id == code.id)
-				return code;
-		}
-		return UNKNOWN_ERROR;
-	}
-
-	public boolean isNetworkError() {
-		return isNetworkError(this);
-	}
-
-	public static boolean isNetworkError(ErrorCode error) {
-		switch (error) {
-		case NO_NETWORK:
-		case SERVER_IN_MAINTENANCE:
-		case CONNECT_ERROR:
-		case TIME_OUT:
-		case SSL:
-		case IO:
-		case SERVER_OVERLOAD:
-		case HTTP_STATUS:
-            return true;
-        case AUTO_COUNTRY_SELECTION:
-        case EMPTY_ENTITY:
-        case ERROR_PARSING_SERVER_DATA:
-        case HTTP_PROTOCOL:
-        case INTERNAL_ERROR:
-        case NO_COUNTRIES_CONFIGS:
-        case NO_COUNTRY_CONFIGS_AVAILABLE:
-        case NO_ERROR:
-        case REQUEST_ERROR:
-        case REQUIRES_USER_INTERACTION:
-        case UNKNOWN_ERROR:
-        default:
-            return false;
-		}
-	}
-
-	public boolean isClientError() {
-		if (this == INTERNAL_ERROR || this == UNKNOWN_ERROR) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	public boolean isServerError() {
-		if ( this == ERROR_PARSING_SERVER_DATA ||
-				this == HTTP_PROTOCOL ) {
- 			return true;
-		} else {
-			return false;
-		}
-	}
+    public static boolean isNetworkError(@Code int error) {
+        switch (error) {
+            case NO_NETWORK:
+            case SERVER_IN_MAINTENANCE:
+            case CONNECT_ERROR:
+            case TIME_OUT:
+            case SSL:
+            case IO:
+            case SERVER_OVERLOAD:
+            case HTTP_STATUS:
+                return true;
+            default:
+                return false;
+        }
+    }
 }

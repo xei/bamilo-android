@@ -9,10 +9,8 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.statics.StaticTermsConditions;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -48,10 +46,10 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
      */
     public StaticPageFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Terms,
+                NavigationAction.TERMS,
                 R.layout.static_page_fragment,
                 0,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
     
     /*

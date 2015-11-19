@@ -34,7 +34,7 @@ public class Suggestions extends ArrayList<Suggestion> implements IJSONSerializa
 	}
 
 	@Override
-	public RequiredJson getRequiredJson() {
+	public int getRequiredJson() {
 		return RequiredJson.METADATA;
 	}
 

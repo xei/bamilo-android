@@ -50,9 +50,9 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
      */
     public CheckoutCreateAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.string.checkout_label,
-                KeyboardState.ADJUST_CONTENT,
+                ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_BILLING);
     }
 
@@ -151,7 +151,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         //GTM
         TrackerDelegator.trackAddAddress(false);
         // Error
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
         } else {

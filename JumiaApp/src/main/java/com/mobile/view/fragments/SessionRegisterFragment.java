@@ -80,10 +80,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
      */
     public SessionRegisterFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.LoginOut,
+                NavigationAction.LOGIN_OUT,
                 R.layout.session_register_fragment_main,
                 R.string.register_title,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /*
@@ -361,7 +361,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
                 // Validate errors
-                ErrorCode code = baseResponse.getError().getErrorCode();
+                int code = baseResponse.getError().getCode();
                 Map<String, List<String>> messages = baseResponse.getErrorMessages();
                 validateErrorMessage(code, messages);
                 break;
@@ -370,7 +370,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         }
     }
 
-    private void validateErrorMessage(ErrorCode errorCode, Map<String, List<String>> errorMessages) {
+    private void validateErrorMessage(int errorCode, Map<String, List<String>> errorMessages) {
         // Validate error
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);

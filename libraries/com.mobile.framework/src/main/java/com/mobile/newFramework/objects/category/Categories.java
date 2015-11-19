@@ -47,7 +47,7 @@ public class Categories extends ArrayList<Category> implements IJSONSerializable
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 }

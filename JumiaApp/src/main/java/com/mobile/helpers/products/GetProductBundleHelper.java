@@ -5,7 +5,6 @@ package com.mobile.helpers.products;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;

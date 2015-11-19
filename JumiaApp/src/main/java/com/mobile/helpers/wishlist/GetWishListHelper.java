@@ -53,7 +53,7 @@ public class GetWishListHelper extends SuperBaseHelper {
         values.put(RestConstants.PER_PAGE, IntConstants.MAX_ITEMS_PER_PAGE);
         // Request data
         Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, page == IntConstants.FIRST_PAGE ? EventTask.NORMAL_TASK : EventTask.SMALL_TASK);
+        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, page == IntConstants.FIRST_PAGE ? EventTask.NORMAL_TASK : EventTask.ACTION_TASK);
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         return bundle;
     }

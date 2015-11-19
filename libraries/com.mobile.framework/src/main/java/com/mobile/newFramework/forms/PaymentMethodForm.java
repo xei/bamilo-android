@@ -3,6 +3,7 @@ package com.mobile.newFramework.forms;
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntDef;
 
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
@@ -10,6 +11,9 @@ import com.mobile.newFramework.utils.output.Print;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 public class PaymentMethodForm implements Parcelable {
 
@@ -26,7 +30,8 @@ public class PaymentMethodForm implements Parcelable {
 
     private int payment_type;
     private String action;
-    private RequestType method;
+    @RequestType
+    private int method;
     private String id;
     private String name;
     private String redirect;
@@ -36,9 +41,13 @@ public class PaymentMethodForm implements Parcelable {
     private String customer_last_name;
     private boolean cameFromWebCheckout;
 
-    public enum RequestType {
-        GET, POST, DELETE, PUT
-    }
+    public static final int GET = 0;
+    public static final int POST = 1;
+    public static final int DELETE = 2;
+    public static final int PUT = 3;
+    @IntDef({ GET, POST, DELETE, PUT })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface RequestType {}
 
     public PaymentMethodForm() {
 
@@ -82,9 +91,9 @@ public class PaymentMethodForm implements Parcelable {
 
         String method = mJSONObject.optString(RestConstants.METHOD);
         if (method.equalsIgnoreCase("get")) {
-            setMethod(RequestType.GET);
+            setMethod(GET);
         } else {
-            setMethod(RequestType.POST);
+            setMethod(POST);
         }
 
         try {
@@ -139,7 +148,7 @@ public class PaymentMethodForm implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(payment_type);
         dest.writeString(action);
-        dest.writeSerializable(method);
+        dest.writeInt(method);
         dest.writeString(id);
         dest.writeString(name);
         dest.writeString(redirect);
@@ -152,13 +161,12 @@ public class PaymentMethodForm implements Parcelable {
 
     /**
      * Parcel constructor
-     * 
-     * @param in
      */
+    @SuppressWarnings("ResourceType")
     private PaymentMethodForm(Parcel in) {
         payment_type = in.readInt();
         action = in.readString();
-        method = (RequestType) in.readSerializable();
+        method = in.readInt();
         id = in.readString();
         name = in.readString();
         redirect = in.readString();
@@ -206,7 +214,8 @@ public class PaymentMethodForm implements Parcelable {
     /**
      * @return the method
      */
-    public RequestType getMethod() {
+    @RequestType
+    public int getMethod() {
         return method;
     }
 
@@ -214,7 +223,7 @@ public class PaymentMethodForm implements Parcelable {
      * @param method
      *            the method to set
      */
-    public void setMethod(RequestType method) {
+    public void setMethod(@RequestType int method) {
         this.method = method;
     }
 
@@ -246,15 +255,6 @@ public class PaymentMethodForm implements Parcelable {
      */
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * The url to catch when the external provider redirects to success page.
-     * 
-     * @return the redirect
-     */
-    public String getRedirect() {
-        return redirect;
     }
 
     /**
@@ -299,36 +299,6 @@ public class PaymentMethodForm implements Parcelable {
      */
     public void setOrderNumber(String order_nr) {
         this.order_nr = order_nr;
-    }
-
-    /**
-     * @return the customer_first_name
-     */
-    public String getCustomerFirstName() {
-        return customer_first_name;
-    }
-
-    /**
-     * @param customer_first_name
-     *            the customer_first_name to set
-     */
-    public void setCustomerFirstName(String customer_first_name) {
-        this.customer_first_name = customer_first_name;
-    }
-
-    /**
-     * @return the customer_last_name
-     */
-    public String getCustomerLastName() {
-        return customer_last_name;
-    }
-
-    /**
-     * @param customer_last_name
-     *            the customer_last_name to set
-     */
-    public void setCustomerLastName(String customer_last_name) {
-        this.customer_last_name = customer_last_name;
     }
 
     /**

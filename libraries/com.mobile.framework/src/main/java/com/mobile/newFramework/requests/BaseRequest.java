@@ -83,7 +83,7 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         // Validate error response
         else {
             JumiaError jumiaError = new JumiaError();
-            jumiaError.setErrorCode(ErrorCode.REQUEST_ERROR);
+            jumiaError.setCode(ErrorCode.REQUEST_ERROR);
             baseResponse.setError(jumiaError);
             this.mRequester.onRequestError(baseResponse);
         }
@@ -91,7 +91,7 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     @Override
     public void failure(RetrofitError error) {
-        Print.d("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getErrorCode());
+        Print.d("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getCode());
         // Validate requester and discard flag
         if (mRequestBundle.isDiscardedResponse() || this.mRequester == null) {
             Print.d("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
