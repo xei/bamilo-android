@@ -382,7 +382,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                 }
                 if (!ErrorCode.isNetworkError(errorCode)) {
                     addToShoppingCartFailed();
-                    return;
                 }
         }
     }
@@ -404,9 +403,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                         int id = v.getId();
                         if (id == R.id.button1) {
                             mDialogAddedToCart.dismiss();
-                        } else if (id == R.id.button2) {
-
                         }
+//                        else if (id == R.id.button2) {}
                     }
                 });
 
