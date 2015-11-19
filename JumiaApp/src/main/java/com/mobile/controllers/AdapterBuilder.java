@@ -44,14 +44,14 @@ public class AdapterBuilder {
     public void buildLayout() {
         int count = baseAdapter.getCount();
         for(int i = 0; i < count; i++){
-            final View viewCreated = baseAdapter.getView(i, null, viewGroup);
+            View viewCreated = baseAdapter.getView(i, null, viewGroup);
 
             if(onItemClickListener != null) {
                 final int finalI = i;
                 viewCreated.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        onItemClickListener.onItemClick(viewGroup, viewCreated, finalI);
+                        onItemClickListener.onItemClick(viewGroup, v, finalI);
                     }
                 });
             }
