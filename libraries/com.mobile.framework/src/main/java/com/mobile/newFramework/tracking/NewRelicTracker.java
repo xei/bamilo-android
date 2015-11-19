@@ -27,8 +27,8 @@ public class NewRelicTracker {
 		// Validate context
 		if(context != null) {
 			Print.i(TAG, "ON INIT NEW RELIC");
-			NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).withLoggingEnabled(true);
-			NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).start(context);
+	        NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).withLoggingEnabled(true);
+	        NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).start(context);
 		} else {
 			Print.w(TAG, "WARNING NPE ON INIT NEW RELIC");
 		}
