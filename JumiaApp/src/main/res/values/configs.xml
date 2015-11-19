@@ -11,10 +11,10 @@
     <string name="countries_url">http://www.jumia.com/mobapi/availablecountries</string>
     
 	<!-- SERVER CONFS -->
-    <string name="global_server_shop_name">@string/jumia_global_shopname</string>
-    <string name="global_server_host">@string/jumia_global_server</string>
-    <string name="global_server_restbase_path">@string/jumia_global_restbase_path</string>
-    <string name="global_server_api_version">@string/jumia_global_api_version</string>
+    <string name="global_server_shop_name">@string/global_shopname</string>
+    <string name="global_server_host">@string/global_server</string>
+    <string name="global_server_restbase_path">@string/global_restbase_path</string>
+    <string name="global_server_api_version">@string/global_api_version</string>
 
     <!-- USER PREFERENCES -->
     <item name="default_vibrate" type="bool">false</item>

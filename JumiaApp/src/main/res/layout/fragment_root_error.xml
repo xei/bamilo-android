@@ -25,7 +25,7 @@
         <!-- CONTACTS INFO IN CASE OF SSL ERROR -->
         <include
             android:id="@+id/contacts_info"
-            layout="@layout/jumia_contacts_info"
+            layout="@layout/contacts_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="25.33dp"

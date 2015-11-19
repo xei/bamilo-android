@@ -333,7 +333,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         switch (position) {
             case POSITION_SHARE_APP:
                 String text;
-                String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
+                String preText = getString(R.string.install_android, getString(R.string.app_name_placeholder));
                 if(ShopSelector.isRtl()){
                     text = getString(R.string.share_app_link) + " " + preText;
                 } else {

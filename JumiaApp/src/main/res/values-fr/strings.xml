@@ -335,7 +335,7 @@
     <string name="yes_label">Oui</string>
     <string name="your_cart">Votre panier</string>
     <string name="your_order">Votre commande</string>
-    <string name="install_jumia_android">Installez l\'application %s Android en un instant</string>
+    <string name="install_android">Installez l\'application %s Android en un instant</string>
     <string name="share_the_app">Partagez l\'Application</string>
     <string name="can_share_app_with_friends">Vous pouvez maintenant partager l\'application avec vos amis</string>
     <string name="app_social">Communauté de l\'App</string>

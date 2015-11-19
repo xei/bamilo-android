@@ -4,7 +4,7 @@
     <!-- MAP -->
 
     <ImageView
-        android:id="@+id/jumiaMap"
+        android:id="@+id/splashMap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@null"

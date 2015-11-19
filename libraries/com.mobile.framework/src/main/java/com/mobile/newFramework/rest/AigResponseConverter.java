@@ -55,7 +55,7 @@ public class AigResponseConverter implements Converter {
      * Get object type
      */
     protected String getType(Object type){
-        Print.i(TAG, "GET OBJECT TYPE: " + type.toString());
+        Print.i(TAG, "GET OBJECT TYPE: " + type);
         if(type instanceof Class){
             return ((Class) type).getName();
         } else if(type instanceof ParameterizedType){
