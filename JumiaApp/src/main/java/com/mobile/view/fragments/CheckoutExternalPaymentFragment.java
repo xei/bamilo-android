@@ -72,7 +72,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     private boolean isRequestedPage;
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     private Customer customer;
 
@@ -277,11 +277,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 }
             }
 
-            Print.i(TAG, "code1content parameters: " + parameters.toString());
+            Print.i(TAG, "code1content parameters: " + parameters);
             UrlEncodedFormEntity entity;
             try {
                 entity = new UrlEncodedFormEntity(parameters);
-                Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters.toString());
+                Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters);
                 //setProxy();
                 webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
             } catch (IOException e) {
