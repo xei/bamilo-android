@@ -27,8 +27,7 @@ public class NewRelicTracker {
 		// Validate context
 		if(context != null) {
 			Print.i(TAG, "ON INIT NEW RELIC");
-	        NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).withLoggingEnabled(true);
-	        NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).start(context);
+			NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).withLoggingEnabled(context.getResources().getBoolean(R.bool.ga_debug_mode)).start(context);
 		} else {
 			Print.w(TAG, "WARNING NPE ON INIT NEW RELIC");
 		}
@@ -43,9 +42,9 @@ public class NewRelicTracker {
 	 * @param bytesReceived
 	 * @author sergiopereira
 	 */
-	public static void noticeSuccessTransaction(String url, int requestStatus, long startTimeMillis, long endTimeMillis, long bytesReceived){
+	public static void noticeSuccessTransaction(String url, String httpMethod, int requestStatus, long startTimeMillis, long endTimeMillis, long bytesReceived){
 		Print.i(TAG, "ON SUCCESS TRANSACTION: " + url);
-		NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url : "n.a.", requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
+		NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url : "n.a.", httpMethod, requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
 	}
 
 	/**
@@ -55,8 +54,8 @@ public class NewRelicTracker {
 	 * @param endTimeMillis
 	 * @author sergiopereira
 	 */
-	public static void noticeFailureTransaction(String url, long startTimeMillis, long endTimeMillis){
-		noticeFailureTransaction(url, startTimeMillis, endTimeMillis, NetworkFailure.BadServerResponse);
+	public static void noticeFailureTransaction(String url, String httpMethod, long startTimeMillis, long endTimeMillis){
+		noticeFailureTransaction(url, httpMethod, startTimeMillis, endTimeMillis, NetworkFailure.BadServerResponse);
 	}
 
 	/**
@@ -67,9 +66,9 @@ public class NewRelicTracker {
 	 * @param networkFailure
 	 * @author ricardosoares
 	 */
-	public static void noticeFailureTransaction(String url, long startTimeMillis, long endTimeMillis, NetworkFailure networkFailure){
+	public static void noticeFailureTransaction(String url, String httpMethod, long startTimeMillis, long endTimeMillis, NetworkFailure networkFailure){
 		Print.i(TAG, "ON FAILURE TRANSACTION: " + url);
-		NewRelic.noticeNetworkFailure(!TextUtils.isEmpty(url) ? url : "n.a.", startTimeMillis, System.currentTimeMillis(), networkFailure);
+		NewRelic.noticeNetworkFailure(!TextUtils.isEmpty(url) ? url : "n.a.", httpMethod, startTimeMillis, System.currentTimeMillis(), networkFailure);
 	}
 
 }
