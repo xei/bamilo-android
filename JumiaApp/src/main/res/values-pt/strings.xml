@@ -333,7 +333,7 @@
     <string name="yes_label">Sim</string>
     <string name="your_cart">O Seu Carrinho</string>
     <string name="your_order">A Sua Encomenda</string>
-    <string name="install_jumia_android">Instale a Android App da %s num instante</string>
+    <string name="install_android">Instale a Android App da %s num instante</string>
     <string name="share_the_app">Compartilhar a Aplicação</string>
     <string name="can_share_app_with_friends">Agora podes compartilhar com os teus amigos</string>
     <string name="app_social">App Social</string>

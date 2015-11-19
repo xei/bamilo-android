@@ -19,7 +19,7 @@ public class BottomSheet extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_Jumia_Dialog_Bottom_Sheet);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_Custom_Dialog_Bottom_Sheet);
     }
 
     @NonNull

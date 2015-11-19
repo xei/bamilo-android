@@ -592,7 +592,7 @@
     <style name="Widget" />
 
     <!-- CUSTOM SPINNER STYLE -->
-    <style name="Widget.Jumia.Spinner.Style" parent="Widget">
+    <style name="Widget.Custom.Spinner.Style" parent="Widget">
         <item name="android:background">@drawable/spinner_background</item>
         <item name="android:dropDownSelector">@drawable/custom_list_selector_holo_dark</item>
         <item name="android:popupBackground">@drawable/custom_menu_dropdown_panel_holo_light</item>
@@ -787,7 +787,7 @@
 
     <!-- MATERIAL BOTTOM SHEET -->
 
-    <style name="Theme_Jumia_Dialog_Bottom_Sheet" parent="@android:style/Theme.Dialog">
+    <style name="Theme_Custom_Dialog_Bottom_Sheet" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">false</item>

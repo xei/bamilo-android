@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!--suppress XmlUnboundNsPrefix -->
-<templates><template autoinsert="false" context="java" deleted="false" description="A Rocket Template for Activity that extends MyActivity and implements IEventListenerr" enabled="true" name="RocketActivity">package ${enclosing_package};
+<templates>
+	<template autoinsert="false" context="java" deleted="false" description="A Template for Activity that extends MyActivity and implements IEventListenerr"
+			  enabled="true" name="ActivityTemplate">package ${enclosing_package};
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,7 +25,7 @@ import com.flurry.android.FlurryAgent;
 
 /**
 *
-* Copyright (C) ${year} Rocket Internet - All Rights Reserved
+		* Copyright (C) ${year} ${venture} - All Rights Reserved
 *
 * Unauthorized copying of this file, via any medium is strictly prohibited
 * Proprietary and confidential. 
@@ -167,7 +169,7 @@ public class ${primary_type_name} extends MyActivity implements IEventListener{
 	 * Set the Home Page Layout
 	 */
 	private void setAppContentLayout() {
-		InflateLayout.inflate(this, R.id.rocket_app_content, R.layout.configurator_module);
+		InflateLayout.inflate(this, R.id.app_content, R.layout.configurator_module);
 	}
 
 	// TODO: Add here new layout functions
