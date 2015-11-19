@@ -464,7 +464,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 handler.proceed();
             } else {
                 String url = view.getUrl();
-                NewRelicTracker.noticeFailureTransaction(url, "https", beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
+                NewRelicTracker.noticeFailureTransaction(url, beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
                 onReceivedError(view, error.getPrimaryError(), error.toString(), url);
                 handler.cancel();
             }
