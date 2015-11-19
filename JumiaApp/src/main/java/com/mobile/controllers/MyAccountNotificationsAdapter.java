@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
@@ -32,7 +33,9 @@ import com.mobile.view.R;
  */
 public class MyAccountNotificationsAdapter extends BaseAdapter {
     public static final String NOTIFICATION_CHECKBOX_TAG = "checkbox_notification_tag";
-    String[] mOptions;
+//    private static final String TAG = MyAccountNotificationsAdapter.class.getName();
+    private String[] mOptions;
+    private int[] mCheckBoxes;
     Context mContext;
     private LayoutInflater mInflater;
 
@@ -43,9 +46,11 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
      *            The context from where this adapter is called
      * @param options
      *            The array containing the options to display
+     * @param checkBoxes int array used to show or hide checkbox options
      */
-    public MyAccountNotificationsAdapter(Context context, String[] options) {
+    public MyAccountNotificationsAdapter(Context context, String[] options, int[] checkBoxes) {
         this.mOptions = options;
+        this.mCheckBoxes = checkBoxes;
         this.mContext = context;
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -66,7 +71,7 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         // Recycle the convert view
         View view;
         if (convertView != null) {
@@ -80,9 +85,31 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
         optionsName.setText(this.mOptions[position]);
 
         // Get the Notification checkbox
-        CheckBox optionsCheckbox = (CheckBox) view.findViewById(R.id.notification_checkbox);
-        optionsCheckbox.setTag(NOTIFICATION_CHECKBOX_TAG);
-        optionsCheckbox.setChecked(Ad4PushTracker.getActiveAd4Push(mContext));
+        final CheckBox optionsCheckbox = (CheckBox) view.findViewById(R.id.notification_checkbox);
+        if(this.mCheckBoxes[position] == 1) {
+            optionsCheckbox.setTag(NOTIFICATION_CHECKBOX_TAG);
+            optionsCheckbox.setVisibility(View.VISIBLE);
+            /*
+            TODO: improve this approach
+            WORKAROUND to set the correct checkbox status when user navigates
+            to MyAccountFragment by clicking the back button
+             */
+            optionsCheckbox.post(new Runnable() {
+                @Override
+                public void run() {
+                    optionsCheckbox.setChecked(Ad4PushTracker.getActiveAd4Push(mContext));
+                }
+            });
+            optionsCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    Ad4PushTracker.setActiveAd4Push(mContext, isChecked);
+                }
+            });
+        }
+        else {
+            optionsCheckbox.setVisibility(View.GONE);
+        }
 
         return view;
     }
