@@ -54,7 +54,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     /** TRACKERS  **/
     // http://mvnrepository.com/artifact/com.newrelic.agent.android
-    compile 'com.newrelic.agent.android:android-agent:5.3.0'
+    compile 'com.newrelic.agent.android:android-agent:5.3.2'
     // https://bintray.com/accengage/maven/A4SSDK/
     compile 'com.ad4screen.sdk:A4SSDK:3.2.0.1'
     // https://github.com/adjust/android_sdk

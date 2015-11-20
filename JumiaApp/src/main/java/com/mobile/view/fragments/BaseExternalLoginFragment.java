@@ -17,8 +17,8 @@ import com.mobile.newFramework.utils.NetworkConnectivity;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.social.FacebookHelper;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import org.json.JSONObject;
@@ -69,7 +69,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
     public void onSuccess(LoginResult loginResult) {
         Log.i(TAG, "FacebookCallback onSuccess");
         if(loginResult.getRecentlyDeniedPermissions().contains(FacebookHelper.FB_PERMISSION_EMAIL)){
-            Toast.makeText(getBaseActivity(), getString(R.string.facebook_permission), Toast.LENGTH_LONG).show();
+           getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.facebook_permission));
         }
         onFacebookSuccessLogin();
     }

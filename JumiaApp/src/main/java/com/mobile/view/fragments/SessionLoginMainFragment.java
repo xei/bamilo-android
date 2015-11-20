@@ -41,7 +41,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
-import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 
 import java.lang.ref.WeakReference;
@@ -435,7 +434,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
-                ToastManager.show(getBaseActivity().getApplicationContext(), ToastManager.ERROR_INVALID_EMAIL);
+                getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.error_invalid_email));
                 showFragmentContentContainer();
                 break;
             case FACEBOOK_LOGIN_EVENT:
@@ -454,7 +453,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                     Map<String, List<String>> errors = baseResponse.getErrorMessages();
                     // Show dialog or toast
                     if (!showErrorDialog(errors, R.string.error_signup_title)) {
-                        ToastManager.show(getBaseActivity(), ToastManager.ERROR_NO_CONNECTION);
+                        getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.no_connect_dialog_content));
                     }
                 } else {
                     showUnexpectedErrorWarning();

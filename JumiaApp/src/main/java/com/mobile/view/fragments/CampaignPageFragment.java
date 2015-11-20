@@ -55,6 +55,7 @@ import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
@@ -437,7 +438,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
         // Validate the remain stock
         if(!hasStock)
-            Toast.makeText(getBaseActivity(), getString(R.string.campaign_stock_alert), Toast.LENGTH_LONG).show();
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.campaign_stock_alert));
         // Validate click
         else if(!isAddingProductToCart) {
             // Create values to add to cart
