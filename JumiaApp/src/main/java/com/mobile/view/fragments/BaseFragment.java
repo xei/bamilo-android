@@ -666,25 +666,25 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.error_add_to_shopping_cart));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_add_to_shopping_cart));
         }
     }
 
     public void showInfoLoginSuccess() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
         }
     }
 
     public void showInfoAddToShoppingCartOOS() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_outof_stock));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_outof_stock));
         }
     }
 
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
         }
     }
 

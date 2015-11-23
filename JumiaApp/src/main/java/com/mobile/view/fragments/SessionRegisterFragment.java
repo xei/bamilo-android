@@ -34,6 +34,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -324,10 +325,12 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 // Tracking
                 if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-                // Notify user
-                getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
+
                 // Finish
                 getActivity().onBackPressed();
+
+                // Notify user
+                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 break;
             case GET_REGISTRATION_FORM_EVENT:
                 mForm = (Form) baseResponse.getMetadata().getData();
