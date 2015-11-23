@@ -263,7 +263,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     }
 
     @Override
-    public void onHeaderClick(String targetType, String url, String title) {
+    public void onHeaderClick(String target, String title) {
 
     }
 

@@ -86,14 +86,6 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         mGridVariations.setHasFixedSize(true);
     }
 
-
-
-
-    @Override
-    public void onHeaderClick(String targetType, String url, String title) {
-
-    }
-
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get item
@@ -105,7 +97,7 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
             bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, product.getSKU());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
@@ -115,6 +107,11 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
 
     @Override
     public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+        // ...
+    }
 
+    @Override
+    public void onHeaderClick(String target, String title) {
+        // ...
     }
 }

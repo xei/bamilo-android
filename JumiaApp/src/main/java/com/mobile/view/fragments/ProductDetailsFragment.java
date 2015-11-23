@@ -777,7 +777,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Log.i(TAG, "ON CLICK GLOBAL SELLER");
         Bundle bundle = new Bundle();
         bundle.putString(RestConstants.JSON_KEY_TAG, GetStaticPageHelper.INTERNATIONAL_PRODUCT_POLICY_PAGE);
-        bundle.putString(RestConstants.JSON_TITLE_TAG, getString(R.string.policy));
+        bundle.putString(RestConstants.TITLE, getString(R.string.policy));
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

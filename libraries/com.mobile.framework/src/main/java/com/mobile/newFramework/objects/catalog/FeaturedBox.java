@@ -66,7 +66,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
                     if (productsCategoryObject != null) {
                         // get title
                         if (TextUtils.isEmpty(productsTitle)) {
-                            productsTitle = productsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
+                            productsTitle = productsCategoryObject.optString(RestConstants.TITLE);
                         }
 
                         JSONArray productsObject = productsCategoryObject.getJSONArray(RestConstants.PRODUCTS);
@@ -98,7 +98,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
                     if (brandsCategoryObject != null) {
                         // get title from fist list of brands
                         if (TextUtils.isEmpty(brandsTitle)) {
-                            brandsTitle = brandsCategoryObject.optString(RestConstants.JSON_TITLE_TAG);
+                            brandsTitle = brandsCategoryObject.optString(RestConstants.TITLE);
                         }
 
                         JSONArray brandsObject = brandsCategoryObject.getJSONArray(RestConstants.JSON_BRANDS_TAG);

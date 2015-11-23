@@ -49,7 +49,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
 
         ratingStars = new ArrayList<RatingStar>();
         try {
-            title = jsonObject.getString(RestConstants.JSON_TITLE_TAG);
+            title = jsonObject.getString(RestConstants.TITLE);
             comment = jsonObject.getString(RestConstants.JSON_COMMENT_TAG);
             name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
             date = jsonObject.getString(RestConstants.JSON_COMMENT_DATE_TAG);

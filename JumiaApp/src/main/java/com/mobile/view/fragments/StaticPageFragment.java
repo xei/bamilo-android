@@ -89,7 +89,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get title
-        String title = mStaticPageBundle.getString(RestConstants.JSON_TITLE_TAG);
+        String title = mStaticPageBundle.getString(RestConstants.TITLE);
         title = TextUtils.isNotEmpty(title) ? title : getString(R.string.policy);
         // Title AB
         getBaseActivity().setActionBarTitle(title);

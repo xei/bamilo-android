@@ -241,7 +241,7 @@ public class RestConstants {
     public static final String JSON_COMMENTS_TAG = "comments";
 
     // ProductReviewComment Tags
-    public static final String JSON_TITLE_TAG = "title";
+    public static final String TITLE = "title";
     public static final String JSON_SUB_TITLE_TAG = "sub_title";
 
     // ProductSimple Tags
@@ -401,9 +401,9 @@ public class RestConstants {
      * BANNER
      */
 
-    public static final String JSON_BANNER_TAG = "banner";
-    public static final String JSON_BANNER_PHONE_IMG_TAG = "phone_image";
-    public static final String JSON_BANNER_TABLET_IMG_TAG = "tablet_image";
+    public static final String BANNER = "banner";
+    public static final String PHONE_IMAGE = "phone_image";
+    public static final String TABLET_IMAGE = "tablet_image";
 
 
     /**

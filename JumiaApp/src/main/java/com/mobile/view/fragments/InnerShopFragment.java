@@ -21,10 +21,8 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
-import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
@@ -34,11 +32,12 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
+import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 
 /**
@@ -46,7 +45,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class InnerShopFragment extends BaseFragment implements IResponseCallback {
+public class InnerShopFragment extends BaseFragment implements IResponseCallback, TargetLink.TargetLinkDataListener {
 
     private static final String TAG = InnerShopFragment.class.getSimpleName();
 
@@ -373,33 +372,18 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * @param link The deep link
      */
     private void processDeepLink(String link) {
+        // Parse target link
+        new TargetLink.Builder(new WeakReference<>(getBaseActivity()), link)
+                .addTitle(mTitle)
+                .addOrigin(mGroupType)
+                .appendData(this)
+                .run();
+    }
 
-        TargetHelper targetHelper = new TargetHelper(link);
-
-        // Target
-        String target = targetHelper.getTarget();
-        // Link
-        String url = targetHelper.getTargetValue();
-
-        // Validate deep link
-        if (TextUtils.isNotEmpty(target) && TextUtils.isNotEmpty(url)) {
-
-            // Case pdv
-            if (TextUtils.equals(TargetHelper.TARGET_TYPE_PDV, target)) {
-                gotoProduct(url);
-            }
-            // Case catalog
-            else if (TextUtils.equals(TargetHelper.TARGET_TYPE_CATALOG, target)) {
-                gotoCatalog(url);
-            }
-            // Case campaign
-            else if (TextUtils.equals(TargetHelper.TARGET_TYPE_CAMPAIGN, target)) {
-                gotoCampaign(url);
-            }
-            // Case unknown
-            else {
-                Print.w(TAG, "WARNING UNKNOWN TARGET: " + target + " " + url);
-            }
+    @Override
+    public void onAppendTargetData(FragmentType type, Bundle bundle) {
+        if (type == FragmentType.CATALOG) {
+            bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
         }
     }
 
@@ -415,44 +399,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         if (TextUtils.isNotEmpty(sku)) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
         }
-    }
-
-    /**
-     * Goto Catalog.
-     *
-     * @param url The catalog url
-     */
-    private void gotoCatalog(String url) {
-        Print.i(TAG, "CATALOG: " + url);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
-        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Goto Campaign.
-     *
-     * @param url The campaign url
-     */
-    private void gotoCampaign(String url) {
-        Print.i(TAG, "CAMPAIGN: " + url);
-        Bundle bundle = new Bundle();
-        ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
-        TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(mTitle);
-        campaign.setUrl(url);
-        teaserCampaigns.add(campaign);
-        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**
@@ -502,4 +453,5 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             showContinueShopping();
         }
     }
+
 }

@@ -28,16 +28,12 @@ import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
-import com.mobile.newFramework.objects.catalog.ITargeting;
-import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
-import com.mobile.newFramework.tracking.AnalyticsGoogle;
-import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
@@ -54,6 +50,7 @@ import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.FeaturedBoxHelper;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.catalog.UICatalogHelper;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
 import com.mobile.utils.dialogfragments.WizardPreferences;
@@ -62,6 +59,7 @@ import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -594,7 +592,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, product.getSku());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
@@ -1096,36 +1094,22 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     @Override
-    public void onHeaderClick(String targetType, String url, String title) {
-        ITargeting.TargetType target = ITargeting.TargetType.byValue(targetType);
-        Bundle bundle = new Bundle();
-        switch (target) {
-            case CATALOG:
-                onClickCatalog(url, title, bundle);
-                break;
-            case CAMPAIGN:
-                onClickCampaign(url, title, bundle);
-                break;
-            case PRODUCT:
-                onClickProduct(getSkuFromUrl(url), bundle);
-                break;
-            case SHOP:
-                onClickInnerShop(url, title, bundle);
-                break;
-            default:
-                break;
-        }
+    public void onHeaderClick(String target, String title) {
+        // Parse target link
+        new TargetLink.Builder(new WeakReference<>(getBaseActivity()), target)
+                .addTitle(title)
+                .run();
     }
 
-    protected void onClickCampaign(String targetUrl, String targetTitle, Bundle bundle) {
-        // Tracking event
-        AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
-        // Create campaign using the URL
-        ArrayList<TeaserCampaign> campaigns = createSingleCampaign(targetTitle, targetUrl);
-        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
-        bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, 0);
-        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
+//    protected void onClickCampaign(String targetUrl, String targetTitle, Bundle bundle) {
+//        // Tracking event
+//        AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
+//        // Create campaign using the URL
+//        ArrayList<TeaserCampaign> campaigns = createSingleCampaign(targetTitle, targetUrl);
+//        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
+//        bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, 0);
+//        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
+//    }
 
     /**
      * switch the icon and type of catalog view depending on the previous one

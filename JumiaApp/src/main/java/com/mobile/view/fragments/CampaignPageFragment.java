@@ -168,7 +168,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        Print.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getCampaignId());
+        Print.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTitle() + " " + mTeaserCampaign.getId());
         // Get grid view
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
@@ -294,7 +294,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private void getAndShowCampaign() {
         Print.i(TAG, "VALIDATE CAMPAIGN STATE");
         // Get the campaign id
-        String id = (mTeaserCampaign != null) ? mTeaserCampaign.getCampaignId() : null;
+        String id = (mTeaserCampaign != null) ? mTeaserCampaign.getId() : null;
         // Validate the current state
         if(mCampaign == null) triggerGetCampaign(id);
         else showCampaign();
@@ -468,7 +468,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.CAMPAINGS);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
             TrackerDelegator.trackProductAddedToCart(bundle);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -490,7 +490,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         bundle.putString(DeepLinkManager.PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcampaign);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+        bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     

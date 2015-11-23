@@ -23,15 +23,11 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     protected String mSubTitle;
 
-    protected String mUrl;
-
-    protected String mSku;
-
     protected String mImagePhone;
 
     protected String mImageTablet;
 
-    protected String mTargetType;
+    protected String mTargetLink;
 
     protected long mTimerInMillis;
 
@@ -60,10 +56,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         return mSubTitle;
     }
 
-    public String getUrl() {
-        return mUrl;
-    }
-
     public String getImage() {
         return mImagePhone;
     }
@@ -72,8 +64,8 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         return isTablet ? mImageTablet : mImagePhone;
     }
 
-    public String getTargetType() {
-        return mTargetType;
+    public String getTargetLink() {
+        return mTargetLink;
     }
 
     public boolean hasTimer() {
@@ -92,10 +84,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         return mTeaserTypeId;
     }
 
-    public String getSku() {
-        return mSku;
-    }
-
     /*
      * ########## JSON ##########
      */
@@ -106,18 +94,14 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get sku
-        mSku = jsonObject.optString(RestConstants.SKU);
         // Get name
         mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         // Get title
-        mTitle = jsonObject.optString(RestConstants.JSON_TITLE_TAG);
+        mTitle = jsonObject.optString(RestConstants.TITLE);
         // Get sub title
         mSubTitle = jsonObject.optString(RestConstants.JSON_SUB_TITLE_TAG);
-        // Get url
-        mUrl = jsonObject.getString(RestConstants.URL);
-        // Get target type
-        mTargetType = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
+        // Get target link
+        mTargetLink = jsonObject.optString(RestConstants.TARGET);
         // Get timer in seconds and convert to millis
         mTimerInMillis = jsonObject.optLong(RestConstants.JSON_UNIX_TIME_TAG) * DateTimeUtils.UNIT_SEC_TO_MILLIS;
         // Validate images
@@ -154,27 +138,23 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mSku);
         dest.writeString(this.mName);
         dest.writeString(this.mTitle);
         dest.writeString(this.mSubTitle);
-        dest.writeString(this.mUrl);
         dest.writeString(this.mImagePhone);
         dest.writeString(this.mImageTablet);
-        dest.writeString(this.mTargetType);
+        dest.writeString(this.mTargetLink);
         dest.writeLong(this.mTimerInMillis);
         dest.writeInt(this.mTeaserTypeId);
     }
 
     protected BaseTeaserObject(Parcel in) {
-        this.mSku = in.readString();
         this.mName = in.readString();
         this.mTitle = in.readString();
         this.mSubTitle = in.readString();
-        this.mUrl = in.readString();
         this.mImagePhone = in.readString();
         this.mImageTablet = in.readString();
-        this.mTargetType = in.readString();
+        this.mTargetLink = in.readString();
         this.mTimerInMillis = in.readLong();
         this.mTeaserTypeId = in.readInt();
     }

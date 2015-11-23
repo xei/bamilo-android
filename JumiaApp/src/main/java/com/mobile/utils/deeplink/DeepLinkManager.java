@@ -262,9 +262,7 @@ public class DeepLinkManager {
         // Create bundle
         Bundle bundle = new Bundle();
         ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
-        TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(campaignId.replace("-", " "));
-        campaign.setCampaignId(campaignId);
+        TeaserCampaign campaign = new TeaserCampaign(campaignId.replace("-", " "), campaignId);
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);

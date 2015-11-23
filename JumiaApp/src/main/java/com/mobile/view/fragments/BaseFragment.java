@@ -191,7 +191,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if(arguments != null){
-            mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+            mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE);
             mDeepLinkOrigin = arguments.getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, DeepLinkManager.FROM_UNKNOWN);
         }
     }
@@ -1151,9 +1151,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected ArrayList<TeaserCampaign> createSingleCampaign(String targetTitle, String targetUrl) {
         ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
-        TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(targetTitle);
-        campaign.setUrl(targetUrl);
+        TeaserCampaign campaign = new TeaserCampaign(targetTitle, targetUrl);
         campaigns.add(campaign);
         return campaigns;
     }

@@ -206,7 +206,7 @@ public class CampaignsFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
             bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position));
             return CampaignPageFragment.getInstance(bundle);
         }
@@ -226,7 +226,7 @@ public class CampaignsFragment extends BaseFragment {
          */
         @Override
         public CharSequence getPageTitle(int position) {
-            return mCampaigns.get(position).getTargetTitle().toUpperCase();
+            return mCampaigns.get(position).getTitle().toUpperCase();
         }
         
     }
