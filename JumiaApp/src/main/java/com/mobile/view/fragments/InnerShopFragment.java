@@ -372,7 +372,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void processDeepLink(String link) {
         // Parse target link
-        boolean result = new TargetLink.Builder(this, link)
+        boolean result = new TargetLink.Helper(this, link)
                 .addFragmentType(FragmentType.INNER_SHOP)
                 .addTitle(mTitle)
                 .setOrigin(mGroupType)

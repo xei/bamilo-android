@@ -391,7 +391,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             TrackerDelegator.trackBannerClicked(origin, link, (int) view.getTag(R.id.target_list_position));
         }
         // Parse target link
-        boolean result = new TargetLink.Builder(this,  link)
+        boolean result = new TargetLink.Helper(this, link)
                 .addFragmentType(FragmentType.HOME)
                 .addTitle(title)
                 .setOrigin(origin)

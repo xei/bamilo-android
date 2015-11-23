@@ -1097,7 +1097,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onHeaderClick(String target, String title) {
         // Parse target link
-        boolean result = new TargetLink.Builder(this, target).addTitle(title).run();
+        boolean result = new TargetLink.Helper(this, target).addTitle(title).run();
         if(!result) {
             showUnexpectedErrorWarning();
         }

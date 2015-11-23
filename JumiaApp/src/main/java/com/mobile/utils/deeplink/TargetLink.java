@@ -64,7 +64,7 @@ public class TargetLink {
     /**
      * Class used to process the target link.
      */
-    public static class Builder {
+    public static class Helper {
 
         private BaseFragment mFragment;
         private FragmentType mFragmentType;
@@ -77,7 +77,7 @@ public class TargetLink {
         /**
          * The base.
          */
-        public Builder(@NonNull BaseFragment fragment, @Type @Nullable String target) {
+        public Helper(@NonNull BaseFragment fragment, @Type @Nullable String target) {
             this.mFragment = fragment;
             this.mTarget = target;
         }
@@ -85,7 +85,7 @@ public class TargetLink {
         /**
          * Add a title.
          */
-        public Builder addTitle(@NonNull String title) {
+        public Helper addTitle(@NonNull String title) {
             this.mTitle = title;
             return this;
         }
@@ -93,7 +93,7 @@ public class TargetLink {
         /**
          * Add a click origin.
          */
-        public Builder setOrigin(@NonNull TeaserGroupType origin) {
+        public Helper setOrigin(@NonNull TeaserGroupType origin) {
             this.mOrigin = origin;
             return this;
         }
@@ -101,7 +101,7 @@ public class TargetLink {
         /**
          * Add a fragment type.
          */
-        public Builder addFragmentType(@NonNull FragmentType fragmentType) {
+        public Helper addFragmentType(@NonNull FragmentType fragmentType) {
             this.mFragmentType = fragmentType;
             return this;
         }
@@ -109,7 +109,7 @@ public class TargetLink {
         /**
          * Add a listener to append more data.
          */
-        public Builder addAppendListener(@NonNull OnAppendDataListener listener) {
+        public Helper addAppendListener(@NonNull OnAppendDataListener listener) {
             this.mAppendDataListener = listener;
             return this;
         }
@@ -117,7 +117,7 @@ public class TargetLink {
         /**
          * Add a listener to build the bundle for campaign.
          */
-        public Builder addCampaignListener(@NonNull OnCampaignListener listener) {
+        public Helper addCampaignListener(@NonNull OnCampaignListener listener) {
             this.mCampaignListener = listener;
             return this;
         }
