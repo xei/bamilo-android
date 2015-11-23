@@ -40,8 +40,8 @@ import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -377,7 +377,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 triggerRemoveVoucher();
             }
         } else {
-            getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.ERROR_VOUCHER, getString(R.string.voucher_error_message));
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
         }
     }
     
@@ -389,7 +389,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 paymentName = values.getAsString("name");
                 triggerSubmitPaymentMethod(values);
             } else {
-                Toast.makeText(getActivity(), getString(R.string.please_fill_all_data),Toast.LENGTH_SHORT).show();
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.please_fill_all_data));
             }
         } else if (noPaymentNeeded) {
             // Get next step

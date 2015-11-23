@@ -1743,6 +1743,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         return false;
     }
 
+    public void showWarningMessage(int warningFactory, String message){
+        this.warningFactory.showWarning(warningFactory, message);
+    }
+
 //    /**
 //     * Shows server overload page
 //     */

@@ -40,9 +40,9 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -570,7 +570,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 break;
             case EDIT_ADDRESS_EVENT:
                 Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
-                Toast.makeText(getBaseActivity(), getString(R.string.edit_address_success), Toast.LENGTH_SHORT).show();
+                getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.edit_address_success));
                 getBaseActivity().onBackPressed();
                 break;
             default:
@@ -703,7 +703,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
-            Toast.makeText(getBaseActivity(), getString(R.string.register_required_text), Toast.LENGTH_SHORT).show();
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.register_required_text));
         }
     }
 //

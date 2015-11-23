@@ -19,7 +19,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.Toast;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 /**
@@ -271,7 +271,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment implements IResp
         switch (eventType) {
             case GET_PRODUCT_DETAIL:
                 if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
-                    Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
                     getActivity().onBackPressed();
                     return;
                 } else {
@@ -315,7 +315,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment implements IResp
 
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
-                    Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
 
                     showFragmentContentContainer();
 

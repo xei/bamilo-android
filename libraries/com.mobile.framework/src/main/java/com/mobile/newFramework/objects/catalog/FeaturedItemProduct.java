@@ -59,7 +59,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
             }
             sku = jsonObject.getString(RestConstants.SKU);
             price = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
-            mSpecialPrice = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+            mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
             // get url from first image which has url
             JSONArray imageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_TAG);
             if (imageArray != null) {
