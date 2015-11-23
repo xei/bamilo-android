@@ -106,7 +106,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Set view
         setContentView(R.layout.splash_screen);
         // Get map
-        mMainMapImage = findViewById(R.id.jumiaMap);
+        mMainMapImage = findViewById(R.id.splashMap);
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
@@ -197,7 +197,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     Handler initializationHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             BaseResponse baseResponse = (BaseResponse) msg.obj;
-            ErrorCode errorCode = baseResponse.getError().getErrorCode();
+            int errorCode = baseResponse.getError().getCode();
             EventType eventType = baseResponse.getEventType();
 
             Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
@@ -288,15 +288,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         devText.append("\nVersion Name: " + pInfo.versionName);
         devText.append("\nVersion Code: " + pInfo.versionCode);
-        devText.append("\nInstallation: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
-        devText.append("\nUpdate: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
+        devText.append("\nInstallation: " + java.text.DateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
+        devText.append("\nUpdate: " + java.text.DateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
 
 
         try {
             ZipFile zf = new ZipFile(getApplicationInfo().sourceDir);
             ZipEntry ze = zf.getEntry("classes.dex");
             zf.close();
-            devText.append("\nBuild: " + SimpleDateFormat.getInstance().format(new java.util.Date(ze.getTime())));
+            devText.append("\nBuild: " + java.text.DateFormat.getInstance().format(new java.util.Date(ze.getTime())));
             //ze = null;
             //zf = null;
         } catch (Exception e) {
@@ -307,17 +307,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         devText.append("\nDevice Model: " + android.os.Build.MODEL);
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
     }
-
-//    /*
-//     * (non-Javadoc)
-//     * @see android.app.Activity#onUserLeaveHint()
-//    */
-//    @Override
-//    public void onUserLeaveHint() {
-//        super.onUserLeaveHint();
-//        Print.e(TAG, "onUserLeaveHint");
-//        shouldHandleEvent = false;
-//    }
 
     /**
      * ######## RESPONSES ########
@@ -342,7 +331,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mLastSuccessResponse = baseResponse;
 
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError() != null ? baseResponse.getError().getErrorCode() : null;
+        int errorCode = baseResponse.getError() != null ? baseResponse.getError().getCode() : ErrorCode.NO_ERROR;
 
         Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
 
@@ -529,27 +518,27 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         // Get data
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
 
         @SuppressWarnings("unchecked")
         Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
         Print.i(TAG, "ERROR CODE: " + errorCode);
-        if (errorCode.isNetworkError()) {
+        if (ErrorCode.isNetworkError(errorCode)) {
             switch (errorCode) {
-                case IO:
-                case CONNECT_ERROR:
-                case HTTP_STATUS:
+                case ErrorCode.IO:
+                case ErrorCode.CONNECT_ERROR:
+                case ErrorCode.HTTP_STATUS:
                     showUnexpectedError();
                     break;
-                case TIME_OUT:
-                case NO_NETWORK:
+                case ErrorCode.TIME_OUT:
+                case ErrorCode.NO_NETWORK:
                     showFragmentRetry();
                     break;
-                case SSL:
-                case SERVER_IN_MAINTENANCE:
+                case ErrorCode.SSL:
+                case ErrorCode.SERVER_IN_MAINTENANCE:
                     setLayoutMaintenance(eventType);
                     break;
-                case REQUEST_ERROR:
+                case ErrorCode.REQUEST_ERROR:
                     List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                     String dialogMsg = "";
                     if (validateMessages == null || validateMessages.isEmpty()) {
@@ -579,7 +568,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                             });
                     dialog.show(getSupportFragmentManager(), null);
                     break;
-                case SERVER_OVERLOAD:
+                case ErrorCode.SERVER_OVERLOAD:
                     Print.w("SHOW OVERLOAD");
                     ActivitiesWorkFlow.showOverLoadErrorActivity(this);
                     break;
@@ -670,7 +659,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         showErrorLayout(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
     }
 
-    protected void showErrorLayout(int type, OnClickListener onClickListener){
+    protected void showErrorLayout(@ErrorLayoutFactory.LayoutErrorType int type, OnClickListener onClickListener){
         // Show no network
         if(mErrorFallBackStub instanceof ViewStub) {
             mErrorFallBackStub = ((ViewStub)mErrorFallBackStub).inflate();

@@ -75,8 +75,8 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	}
 
 	@Override
-	public RequiredJson getRequiredJson() {
-		return null;
+	public int getRequiredJson() {
+		return RequiredJson.NONE;
 	}
 
 	/*

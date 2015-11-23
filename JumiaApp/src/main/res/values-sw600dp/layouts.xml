@@ -1,6 +1,4 @@
 <resources>
 
     <bool name="isTablet">true</bool>
-    <string name="orientation">unspecified</string>
-
 </resources>

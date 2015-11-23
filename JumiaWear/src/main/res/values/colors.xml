@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_a2a2a2">#a2a2a2</color>
-    <color name="color_434343">#434343</color>
-    <color name="color_ffffff">#ffffff</color>
-    <color name="color_e1fffe">#e1fffe</color>
     <color name="color_bbefee">#bbefee</color>
 </resources>

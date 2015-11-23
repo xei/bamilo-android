@@ -25,7 +25,6 @@ import com.mobile.helpers.checkout.SetPaymentMethodHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
@@ -90,10 +89,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      */
     public CheckoutPaymentMethodsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.layout.checkout_payment_main,
                 R.string.checkout_label,
-                KeyboardState.ADJUST_CONTENT,
+                ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_PAYMENT);
     }
 
@@ -513,7 +512,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         }
         // Get event type and error
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Validate event type
         switch (eventType) {

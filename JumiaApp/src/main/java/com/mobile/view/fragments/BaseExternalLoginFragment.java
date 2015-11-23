@@ -47,7 +47,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
     /**
      * Constructor
      */
-    public BaseExternalLoginFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, int layoutResId, int titleResId, KeyboardState adjust_state) {
+    public BaseExternalLoginFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int layoutResId, int titleResId, @KeyboardState int adjust_state) {
         super(enabledMenuItems, action, layoutResId, titleResId, adjust_state);
     }
 

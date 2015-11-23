@@ -312,7 +312,6 @@ public class RestConstants {
     public static final String JSON_PICKUP_PLACE = "place";
     public static final String JSON_PICKUP_CITY = "city";
     public static final String JSON_PICKUP_OPENING_HOURS = "opening_hours";
-    public static final String JSON_PICKUP_PAYMENT_METHOD = "payment_method";
     public static final String JSON_PICKUP_REGIONS = "regions";
 
     public static final String JSON_CUSTOMER_TAG = "customer";
@@ -446,6 +445,11 @@ public class RestConstants {
     public static final String ORDER_NR = "ordernr";
     public static final String UPDATE_AT = "updated_at";
 
+
+    public static final String TRANSACTION_SHIPPING = "transaction_shipping";
+    public static final String TRANSACTION_TAX = "transaction_tax";
+    public static final String ORDER_GRAND_TOTAL = "order_grand_total";
+   
     /**
      * HOME PAGE
      */

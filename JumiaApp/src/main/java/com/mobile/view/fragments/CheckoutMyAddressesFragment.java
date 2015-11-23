@@ -60,9 +60,9 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      */
     public CheckoutMyAddressesFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.string.checkout_label,
-                KeyboardState.ADJUST_CONTENT,
+                ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_BILLING);
     }
 
@@ -204,7 +204,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     protected void onSetBillingAddressErrorEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             @SuppressWarnings("unchecked")
             Map<String, List<String>> errors = baseResponse.getErrorMessages();
@@ -308,7 +308,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         }
 
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {

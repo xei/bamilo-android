@@ -21,7 +21,7 @@
 
         <activity
             android:name=".activities.ErrorActivity"
-            android:theme="@style/JumiaTheme"/>
+            android:theme="@style/CustomTheme"/>
         <activity
             android:name="android.support.wearable.activity.ConfirmationActivity"
             android:theme="@style/ConfirmationTheme"/>

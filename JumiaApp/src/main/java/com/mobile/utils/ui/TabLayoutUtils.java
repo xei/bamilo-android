@@ -45,45 +45,45 @@ public class TabLayoutUtils {
         TabLayout.Tab tab = tabLayout.newTab();
         tab.setCustomView(R.layout.tab_about_you);
         tabLayout.addTab(tab);
-        ((View) tab.getCustomView().getParent()).setTag(ConstantsCheckout.TAB_CHECKOUT_ABOUT_YOU);
+        ((View) tab.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
         ((View) tab.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Address
         TabLayout.Tab tab2 = tabLayout.newTab();
         tab2.setCustomView(R.layout.tab_address);
         tabLayout.addTab(tab2);
-        ((View) tab2.getCustomView().getParent()).setTag(ConstantsCheckout.TAB_CHECKOUT_BILLING);
+        ((View) tab2.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_BILLING);
         ((View) tab2.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Shipping
         TabLayout.Tab tab3 = tabLayout.newTab();
         tab3.setCustomView(R.layout.tab_shipping);
         tabLayout.addTab(tab3);
-        ((View) tab3.getCustomView().getParent()).setTag(ConstantsCheckout.TAB_CHECKOUT_SHIPPING);
+        ((View) tab3.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_SHIPPING);
         ((View) tab3.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Payment
         TabLayout.Tab tab4 = tabLayout.newTab();
         tab4.setCustomView(R.layout.tab_payment);
         tabLayout.addTab(tab4);
-        ((View) tab4.getCustomView().getParent()).setTag(ConstantsCheckout.TAB_CHECKOUT_PAYMENT);
+        ((View) tab4.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_PAYMENT);
         ((View) tab4.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Set listener
         tabLayout.setOnTabSelectedListener(listener);
     }
 
-    public static boolean isNavigationActionWithTabLayout(@Nullable NavigationAction action) {
-        return action == NavigationAction.Home || action == NavigationAction.Saved || action == NavigationAction.Basket;
+    public static boolean isNavigationActionWithTabLayout(@NavigationAction.Type int action) {
+        return action == NavigationAction.HOME || action == NavigationAction.SAVED || action == NavigationAction.BASKET;
     }
 
-    public static int getTabPosition(NavigationAction action) {
+    public static int getTabPosition(@NavigationAction.Type int action) {
         // Case Home
-        if (action == NavigationAction.Home) {
+        if (action == NavigationAction.HOME) {
             return 0;
         }
         // Case Basket
-        else if (action == NavigationAction.Saved) {
+        else if (action == NavigationAction.SAVED) {
             return 1;
         }
         // Case Basket
@@ -92,18 +92,18 @@ public class TabLayoutUtils {
         }
     }
 
-    public static void tabSelected(BaseActivity activity, TabLayout.Tab tab, NavigationAction action) {
+    public static void tabSelected(BaseActivity activity, TabLayout.Tab tab, @NavigationAction.Type int action) {
         int pos = tab.getPosition();
         // Case Home
-        if (pos == 0 && action != NavigationAction.Home) {
+        if (pos == 0 && action != NavigationAction.HOME) {
             activity.onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
         // Case Saved
-        else if (pos == 1 && action != NavigationAction.Saved) {
+        else if (pos == 1 && action != NavigationAction.SAVED) {
             activity.onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
         // Case Basket
-        else if (pos == 2 && action != NavigationAction.Basket) {
+        else if (pos == 2 && action != NavigationAction.BASKET) {
             activity.onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
@@ -113,12 +113,12 @@ public class TabLayoutUtils {
      * Because the Coordinator Layout first build the without tool bar size.<br>
      * And after add the tool bar and translate the view to below.
      */
-    public static void setViewWithoutNestedScrollView(View view, NavigationAction action) {
+    public static void setViewWithoutNestedScrollView(View view, @NavigationAction.Type int action) {
         // Case others
-        if (action != NavigationAction.Basket &&
-                action != NavigationAction.Saved &&
-                action != NavigationAction.Home &&
-                action != NavigationAction.Catalog &&
+        if (action != NavigationAction.BASKET &&
+                action != NavigationAction.SAVED &&
+                action != NavigationAction.HOME &&
+                action != NavigationAction.CATALOG &&
                 view != null) {
             TypedValue tv = new TypedValue();
             Context context = view.getContext();
@@ -136,7 +136,7 @@ public class TabLayoutUtils {
             // Show 0 while the cart is not updated
             String quantity = JumiaApplication.INSTANCE.getCart() == null ? "0" : String.valueOf(JumiaApplication.INSTANCE.getCart().getCartCount());
             //noinspection ConstantConditions
-            int pos = getTabPosition(NavigationAction.Basket);
+            int pos = getTabPosition(NavigationAction.BASKET);
             //noinspection ConstantConditions
             ((TextView) mTabLayout.getTabAt(pos).getCustomView().findViewById(R.id.action_cart_count)).setText(quantity);
         } catch (NullPointerException e) {

@@ -1,12 +1,16 @@
 package com.mobile.utils.ui;
 
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.view.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -48,6 +52,21 @@ public class WarningFactory {
     public static final int LOGIN_SUCCESS = 15;
     public static final int ERROR_OUT_OF_STOCK = 16;
     public static final int ERROR_VOUCHER = 17;
+
+    @IntDef({
+        CHOOSE_ONE_SIZE,
+        ADDED_ITEM_TO_CART,
+        ADDED_ITEMS_TO_CART,
+        NO_INTERNET,
+        ERROR_ADD_TO_CART,
+        PROBLEM_FETCHING_DATA,
+        PROBLEM_FETCHING_DATA_ANIMATION,
+        ERROR_ADD_PRODUCTS_TO_CART,
+        ADDED_TO_SAVED, 
+        REMOVE_FROM_SAVED
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface WarningErrorType{}
 
     /**
      * The last warning that was built and might be re-used.
@@ -96,7 +115,7 @@ public class WarningFactory {
      *
      * @param warning The warning desiredt.
      */
-    public void showWarning(int warning){
+    public void showWarning(@WarningErrorType int warning){
         switch (warning){
             // Success cases
             case ADDED_ITEM_TO_CART:

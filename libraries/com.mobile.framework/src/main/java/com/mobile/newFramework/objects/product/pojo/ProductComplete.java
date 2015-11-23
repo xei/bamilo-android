@@ -52,7 +52,7 @@ public class ProductComplete extends ProductMultiple {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.OBJECT_DATA;
     }
 

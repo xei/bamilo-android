@@ -55,9 +55,9 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
      */
     public MyAccountCreateAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
+                NavigationAction.MY_ACCOUNT,
                 R.string.my_addresses,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     @Override
@@ -147,7 +147,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
         super.onCreateAddressErrorEvent(baseResponse);
 
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
 
         if (errorCode == ErrorCode.REQUEST_ERROR) {
 //            @SuppressWarnings("unchecked")
@@ -157,7 +157,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
               showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
             showFragmentContentContainer();
         } else {
-            Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode.name());
+            Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
             getBaseActivity().onBackPressed();
         }
     }

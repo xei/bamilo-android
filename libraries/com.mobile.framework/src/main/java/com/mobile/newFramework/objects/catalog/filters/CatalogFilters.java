@@ -70,7 +70,7 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 }

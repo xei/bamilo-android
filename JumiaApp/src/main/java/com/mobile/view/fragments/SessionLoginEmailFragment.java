@@ -61,10 +61,10 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
      */
     public SessionLoginEmailFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.LoginOut,
+                NavigationAction.LOGIN_OUT,
                 R.layout.session_login_email_fragment,
                 R.string.login_label,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /**
@@ -371,7 +371,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         }
         // Validate error
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Case login form
         if (eventType == EventType.GET_LOGIN_FORM_EVENT) {

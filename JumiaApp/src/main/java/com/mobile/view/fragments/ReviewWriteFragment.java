@@ -60,7 +60,7 @@ import java.util.Map;
  * @modified Paulo Carvalho
  * 
  */
-public class ReviewWriteFragment extends BaseFragment {
+public class ReviewWriteFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = ReviewWriteFragment.class.getSimpleName();
     
@@ -122,10 +122,10 @@ public class ReviewWriteFragment extends BaseFragment {
      */
     public ReviewWriteFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Product,
+                NavigationAction.PRODUCT,
                 R.layout.review_write_fragment,
                 R.string.write_comment,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /*
@@ -239,7 +239,7 @@ public class ReviewWriteFragment extends BaseFragment {
                 values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+                triggerContentEvent(new GetProductHelper(), bundle, this);
             } else {
                 /* Commented due to unnecessary data being fetched
                 triggerAutoLogin();
@@ -328,7 +328,7 @@ public class ReviewWriteFragment extends BaseFragment {
                 values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+                triggerContentEvent(new GetProductHelper(), bundle, this);
             } else {
                 showRetryLayout();
             }
@@ -448,7 +448,7 @@ public class ReviewWriteFragment extends BaseFragment {
                 values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+                triggerContentEvent(new GetProductHelper(), bundle, this);
             } else {
                 showRetryLayout();
             }
@@ -550,208 +550,23 @@ public class ReviewWriteFragment extends BaseFragment {
         setReviewName(dynamicRatingForm);
     }
 
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-
-        Print.i(TAG, "onSuccessEvent eventType : " + eventType);
-        switch (eventType) {
-        case REVIEW_RATING_PRODUCT_EVENT:
-
-            Print.d(TAG, "review product completed: success");
-            // Clean options after success
-            Bundle params = new Bundle();
-            params.putParcelable(TrackerDelegator.PRODUCT_KEY, completeProduct);
-            
-            //only needed for tracking purpose
-            params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(dynamicRatingForm));
-
-            TrackerDelegator.trackItemReview(params, isShowingRatingForm);
-            String buttonMessageText = getResources().getString(R.string.dialog_to_product);
-
-            //Validate if fragment is nested
-            nestedFragment = getParentFragment() instanceof ReviewsFragment;
-
-            dialog_review_submitted = DialogGenericFragment.newInstance(true, false,
-                    getString(R.string.submit_title),
-                    getResources().getString(R.string.submit_text),
-                    buttonMessageText,
-                    "",
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog_review_submitted.dismiss();
-                            isExecutingSendReview = false;
-                            if (getBaseActivity() != null) {
-                                if(nestedFragment){
-                                    cleanForm();
-                                    getBaseActivity().onBackPressed();
-                                } else {
-                                    // Remove entries until specific tag
-                                    getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
-                                }
-                            }
-                        }
-                    });
-            // Fixed back bug
-            dialog_review_submitted.setCancelable(false);
-            dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
-            hideActivityProgress();
-            isExecutingSendReview = false;
-            cleanForm();
-            return false;
-
-        case GET_FORM_RATING_EVENT:
-            Print.i(TAG, "GET_FORM_RATING_EVENT");
-            ratingForm = (Form) baseResponse.getMetadata().getData();
-            setRatingLayout(ratingForm);
-            if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
-                triggerReviewForm();
-            } else {
-                showFragmentContentContainer();
-            }
-
-            return true;
-            
-        case GET_FORM_REVIEW_EVENT:
-            Print.i(TAG, "GET_FORM_REVIEW_EVENT");
-            reviewForm = (Form) baseResponse.getMetadata().getData();
-            if(ratingForm == null)
-                setRatingLayout(reviewForm);
-            showFragmentContentContainer();
-            return true;
-
-        case GET_PRODUCT_DETAIL:
-            Print.d(TAG, "GOT GET_PRODUCT_EVENT");
-            if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
-                Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-                getActivity().onBackPressed();
-                return true;
-            } else {
-                completeProduct = (ProductComplete) baseResponse.getMetadata().getData();
-                // triggerAutoLogin();
-                // triggerCustomer();
-                triggerRatingForm();
-                // Waiting for the fragment communication
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        showFragmentContentContainer();
-                    }
-                }, 300);
-            }
-
-            return true;
-        default:
-            return false;
-        }
-    }
-
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-        
-        // Hide progress
-        hideActivityProgress();
-        
-        isExecutingSendReview = false;
-        // Generic errors
-        if(super.handleErrorEvent(baseResponse)) return true;
-        
-        switch (eventType) {
-        case GET_FORM_RATING_EVENT:
-            if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
-                triggerReviewForm();
-            } else {
-                showRetryLayout();
-            }
-
-            return false;
-        case GET_FORM_REVIEW_EVENT:
-            showRetryLayout();
-            return false;
-        case REVIEW_RATING_PRODUCT_EVENT:
-            dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (!isExecutingSendReview) {
-                                formsValidation();
-                            }
-                            dismissDialogFragment();
-                        }
-                    }, false);
-            dialog.setCancelable(false);
-            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-            hideActivityProgress();
-            isExecutingSendReview = false;
-            return false;
-            
-            
-        case GET_PRODUCT_DETAIL:
-            if (!errorCode.isNetworkError()) {
-                Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-
-                showFragmentContentContainer();
-
-                try {
-                    getBaseActivity().onBackPressed();
-                } catch (IllegalStateException e) {
-                    getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-                }
-                return false;
-            }
-        default:
-        }
-
-        return false;
-    }
 
 
     /**
      * request the ratign form
      */
     private void triggerRatingForm() {
-        triggerContentEvent(new GetRatingFormHelper(), null, mCallBack);
+        triggerContentEvent(new GetRatingFormHelper(), null,this);
     }
 
     /**
      * request the review form
      */
     private void triggerReviewForm() {
-        triggerContentEvent(new GetReviewFormHelper(), null, mCallBack);
+        triggerContentEvent(new GetReviewFormHelper(), null,this);
     }
 
-    /**
-     * CALLBACK
-     * 
-     * @author sergiopereira
-     */
-    IResponseCallback mCallBack = new IResponseCallback() {
 
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-            onErrorEvent(baseResponse);
-        }
-
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-            onSuccessEvent(baseResponse);
-        }
-    };
 
     @Override
     public void onClick(View view) {
@@ -836,7 +651,7 @@ public class ReviewWriteFragment extends BaseFragment {
         bundle.putString(RatingReviewProductHelper.ACTION, action);
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         
-        triggerContentEventProgress(new RatingReviewProductHelper(), bundle, mCallBack);
+        triggerContentEventProgress(new RatingReviewProductHelper(), bundle, this);
         
     }
     
@@ -904,4 +719,183 @@ public class ReviewWriteFragment extends BaseFragment {
         return mSharedPrefs;
     }
 
+
+
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+
+        Print.i(TAG, "ON SUCCESS EVENT");
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        EventType eventType = baseResponse.getEventType();
+        Print.i(TAG, "onSuccessEvent eventType : " + eventType);
+        switch (eventType) {
+            case REVIEW_RATING_PRODUCT_EVENT:
+
+                Print.d(TAG, "review product completed: success");
+                // Clean options after success
+                Bundle params = new Bundle();
+                params.putParcelable(TrackerDelegator.PRODUCT_KEY, completeProduct);
+
+                //only needed for tracking purpose
+                params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(dynamicRatingForm));
+
+                TrackerDelegator.trackItemReview(params, isShowingRatingForm);
+                String buttonMessageText = getResources().getString(R.string.dialog_to_product);
+
+                //Validate if fragment is nested
+                nestedFragment = getParentFragment() instanceof ReviewsFragment;
+
+                dialog_review_submitted = DialogGenericFragment.newInstance(true, false,
+                        getString(R.string.submit_title),
+                        getResources().getString(R.string.submit_text),
+                        buttonMessageText,
+                        "",
+                        new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog_review_submitted.dismiss();
+                                isExecutingSendReview = false;
+                                if (getBaseActivity() != null) {
+                                    if(nestedFragment){
+                                        cleanForm();
+                                        getBaseActivity().onBackPressed();
+                                    } else {
+                                        // Remove entries until specific tag
+                                        getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
+                                    }
+                                }
+                            }
+                        });
+                // Fixed back bug
+                dialog_review_submitted.setCancelable(false);
+                dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
+                hideActivityProgress();
+                isExecutingSendReview = false;
+                cleanForm();
+                break;
+
+            case GET_FORM_RATING_EVENT:
+                Print.i(TAG, "GET_FORM_RATING_EVENT");
+                ratingForm = (Form) baseResponse.getMetadata().getData();
+                setRatingLayout(ratingForm);
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
+                    triggerReviewForm();
+                } else {
+                    showFragmentContentContainer();
+                }
+
+                break;
+
+            case GET_FORM_REVIEW_EVENT:
+                Print.i(TAG, "GET_FORM_REVIEW_EVENT");
+                reviewForm = (Form) baseResponse.getMetadata().getData();
+                if(ratingForm == null)
+                    setRatingLayout(reviewForm);
+                showFragmentContentContainer();
+                break;
+
+            case GET_PRODUCT_DETAIL:
+                Print.d(TAG, "GOT GET_PRODUCT_EVENT");
+                if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
+                    Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                    getActivity().onBackPressed();
+                } else {
+                    completeProduct = (ProductComplete) baseResponse.getMetadata().getData();
+                    // triggerAutoLogin();
+                    // triggerCustomer();
+                    triggerRatingForm();
+                    // Waiting for the fragment communication
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showFragmentContentContainer();
+                        }
+                    }, 300);
+                }break;
+
+            default:
+                break;
+        }
+    }
+
+
+
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+
+        Print.d(TAG, "ON ERROR EVENT");
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        // Hide progress
+        hideActivityProgress();
+
+        isExecutingSendReview = false;
+        // Generic errors
+        if(super.handleErrorEvent(baseResponse)) return;
+
+        EventType eventType = baseResponse.getEventType();
+        int errorCode = baseResponse.getError().getCode();
+        Print.d(TAG, "onErrorEvent: type = " + eventType + " code= "+errorCode);
+
+        switch (eventType) {
+            case GET_FORM_RATING_EVENT:
+                if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
+                    triggerReviewForm();
+                } else {
+                    showRetryLayout();
+                }
+
+                break;
+            case GET_FORM_REVIEW_EVENT:
+                showRetryLayout();
+                break;
+            case REVIEW_RATING_PRODUCT_EVENT:
+                dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
+                        new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (!isExecutingSendReview) {
+                                    formsValidation();
+                                }
+                                dismissDialogFragment();
+                            }
+                        }, false);
+                dialog.setCancelable(false);
+                dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+                hideActivityProgress();
+                isExecutingSendReview = false;
+                break;
+
+
+            case GET_PRODUCT_DETAIL:
+                if (!ErrorCode.isNetworkError(errorCode)) {
+                    Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+
+                    showFragmentContentContainer();
+
+                    try {
+                        getBaseActivity().onBackPressed();
+                    } catch (IllegalStateException e) {
+                        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+                    }
+
+                }break;
+            default:
+                break;
+        }
+
+    }
 }

@@ -51,6 +51,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     private TextView mTotalPrice;
     private ComboGridAdapter adapter;
     private ProductBundle mBundleWithMultiple;
+    private ProductBundle mBundleWithOneSimple;
     private ArrayList<ProductBundle> listBundlesOneSimple;
     private ArrayList<ProductBundle> listBundlesMultipleSimple;
     private int countMultipleProcessed = 0;
@@ -60,10 +61,10 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      */
     public ComboFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Combos,
+                NavigationAction.COMBOS,
                 R.layout.pdv_combos_page,
                 R.string.combos_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /**
@@ -197,6 +198,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      * @param productBundle - arguments
      */
     private void addToCartWithOnlySimple(ProductBundle productBundle) {
+        mBundleWithOneSimple = productBundle;
         ProductSimple simples = productBundle.getSimples().get(0);
         proceedWithAddItemToCart(productBundle, simples);
     }
@@ -330,7 +332,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
         // Specific errors
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
 
         // Generic errors
         if (super.handleErrorEvent(baseResponse)) {
@@ -368,9 +370,13 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                             return;
                         }
 
+                        String name="";
+                        if(mBundleWithMultiple != null) name = mBundleWithMultiple.getName();
+                        else if(mBundleWithOneSimple != null) name = mBundleWithOneSimple.getName();
+
                         FragmentManager fm = getFragmentManager();
                         dialog = DialogGenericFragment.newInstance(true, false,
-                                mBundleWithMultiple.getName(),
+                                name,
                                 message,
                                 getString(R.string.ok_label), "", new View.OnClickListener() {
 
@@ -386,7 +392,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                         return;
                     }
                 }
-                if (!errorCode.isNetworkError()) {
+                if (!ErrorCode.isNetworkError(errorCode)) {
                     addToShoppingCartFailed();
                     return;
                 }

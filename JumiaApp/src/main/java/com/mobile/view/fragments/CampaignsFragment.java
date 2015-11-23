@@ -50,10 +50,10 @@ public class CampaignsFragment extends BaseFragment {
      */
     public CampaignsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Unknown,
+                NavigationAction.UNKNOWN,
                 R.layout.campaign_fragment_main,
                 R.string.campaigns_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*

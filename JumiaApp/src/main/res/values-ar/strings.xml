@@ -336,7 +336,7 @@
     <string name="yes_label">نعم</string>
     <string name="your_cart">عربة التسوق الخاصة بك</string>
     <string name="your_order">الطلب الخاص بك</string>
-    <string name="install_jumia_android">تحميل تطبيق %s للأندرويد في لحظة واحدة</string>
+    <string name="install_android">تحميل تطبيق %s للأندرويد في لحظة واحدة</string>
     <string name="share_the_app">مشاركة التطبيق</string>
     <string name="can_share_app_with_friends">يمكنك الآن مشاركة التطبيق مع أصدقائك</string>
     <string name="app_social">تطبيق مواقع التواصل الإجتماعى</string>
@@ -447,6 +447,7 @@
     <string name="cta_link_continue_shopping">متابعة التسوق</string>
     <string name="up_to_date">قاعدة بيانات ووردبريس حديثة حالياً!</string>
     <string name="rate_the_app">قم بتقييم البرنامج</string>
+    <string name="order_track_check">يمكنك متابعة الطلب بفحص\nحالة الطلب في هذا التطبيق</string>
     <string name="select_city">يُرجى إختيار مدينة</string>
     <string name="no_saved_items">لم يتم حفظ منتجات في الوقت الحالي</string>
     <string name="no_saved_items_subtitle">ليس لديكم أي منتجات مسجلة</string>
@@ -468,5 +469,4 @@
     <string name="customer_service_info">من فضلكم, المرجو الاتصال بمصلحة الزبناء للمزيد من المعلومات,</string>
     <string name="phone_contact">الهاتف :</string>
     <string name="email_contact">البريد الإلكتروني:</string>
-    <string name="order_track_check">يمكنك متابعة الطلب بفحص\nحالة الطلب في هذا التطبيق</string>
 </resources>

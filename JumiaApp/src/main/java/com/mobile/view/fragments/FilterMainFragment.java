@@ -77,10 +77,10 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     public FilterMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Filters,
+                NavigationAction.FILTERS,
                 R.layout.filters_main,
                 R.string.filter_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     public static FilterMainFragment getInstance(Bundle bundle) {

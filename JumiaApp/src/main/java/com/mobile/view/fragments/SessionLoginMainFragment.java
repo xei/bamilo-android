@@ -83,10 +83,10 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
      */
     public SessionLoginMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.LoginOut,
+                NavigationAction.LOGIN_OUT,
                 R.layout.session_login_fragment,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /*
@@ -448,7 +448,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 // Tracking
                 if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
                 // Show warning
-                ErrorCode errorCode = baseResponse.getError().getErrorCode();
+                int errorCode = baseResponse.getError().getCode();
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
                     @SuppressWarnings("unchecked")
                     Map<String, List<String>> errors = baseResponse.getErrorMessages();

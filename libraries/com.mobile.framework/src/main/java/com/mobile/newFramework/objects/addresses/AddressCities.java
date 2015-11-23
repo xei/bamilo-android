@@ -57,7 +57,7 @@ public class AddressCities extends ArrayList<AddressCity> implements IJSONSerial
 	}
 
 	@Override
-	public RequiredJson getRequiredJson() {
+	public int getRequiredJson() {
 		return RequiredJson.METADATA;
 	}
 

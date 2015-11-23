@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
@@ -57,9 +58,10 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -79,7 +81,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final int NO_INFLATE_LAYOUT = 0;
 
-    private NavigationAction action;
+    @NavigationAction.Type
+    private int action;
 
     protected DialogFragment dialog;
 
@@ -89,6 +92,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected int titleResId;
 
+    @ConstantsCheckout.CheckoutType
     protected int checkoutStep;
 
     protected Boolean isNestedFragment = false;
@@ -113,11 +117,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected long mLoadTime = 0l; // For tacking
 
-    private Locale mLocale;
+    public static final int NO_ADJUST_CONTENT = 0;
+    public static final int ADJUST_CONTENT = 1;
+    @IntDef({NO_ADJUST_CONTENT, ADJUST_CONTENT})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface KeyboardState{}
 
-    public enum KeyboardState {NO_ADJUST_CONTENT, ADJUST_CONTENT}
-
-    private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
+    @KeyboardState
+    private int adjustState = ADJUST_CONTENT;
 
     protected TeaserGroupType mGroupType;
 
@@ -128,12 +135,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = titleResId;
-        this.adjustState = adjust_state;
+        this.adjustState = adjustState;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
@@ -150,12 +157,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int  adjustState, @ConstantsCheckout.CheckoutType int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = titleResId;
-        this.adjustState = adjust_state;
+        this.adjustState = adjustState;
         this.checkoutStep = titleCheckout;
     }
 
@@ -294,7 +301,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         /**
          * Adjust state for each fragment type.
          */
-        if (!isNestedFragment || action == NavigationAction.Country) {
+        if (!isNestedFragment || action == NavigationAction.COUNTRY) {
             updateAdjustState(this.adjustState, true);
         }
 
@@ -311,11 +318,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onPause() {
         super.onPause();
-        /**
-         * Restore locale if called the forceInputAlignToLeft(). 
-         * Fix the input text align to right 
-         */
-        restoreInputLocale();
     }
 
     /*
@@ -503,7 +505,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      *            if <code>true</code> the adjustState is replaced by <code>newAdjustState</code>
      * @author Andre Lopes
      */
-    private void updateAdjustState(KeyboardState newAdjustState, boolean force) {
+    private void updateAdjustState(@KeyboardState int newAdjustState, boolean force) {
         if (getBaseActivity() != null) {
             // Let that the definition of the softInputMode can be forced if the flag force is true
             if (force || BaseActivity.currentAdjustState != newAdjustState) {
@@ -604,7 +606,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Show error layout based on type. if the view is not inflated, it will be in first place.
      */
-    protected final void showErrorFragment(int type, OnClickListener listener){
+    protected final void showErrorFragment(@ErrorLayoutFactory.LayoutErrorType int type, OnClickListener listener){
         if(mErrorView instanceof ViewStub){
             // If not inflated yet
             mErrorView.setTag(mErrorView.getId(), type);
@@ -774,13 +776,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void onInflateErrorLayout(ViewStub viewStub, View inflated) {
         Print.i(TAG, "ON INFLATE STUB: ERROR LAYOUT");
-
         mErrorView = inflated;
-
         // Init error factory
         mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
-        showErrorFragment((int) viewStub.getTag(viewStub.getId()), (OnClickListener) viewStub.getTag(R.id.stub_listener));
-
+        @ErrorLayoutFactory.LayoutErrorType int type = (int) viewStub.getTag(viewStub.getId());
+        showErrorFragment(type, (OnClickListener) viewStub.getTag(R.id.stub_listener));
     }
 
     /**
@@ -802,17 +802,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /*
      * ########### INPUT FORMS ###########
      */
-
-    /**
-     * Restore the saved locale {@link #onResume()} if not null.
-     *
-     * @author sergiopereira
-     */
-    protected void restoreInputLocale() {
-        if (mLocale != null) {
-            Locale.setDefault(mLocale);
-        }
-    }
 
     /**
      * Get load time used for tracking
@@ -867,50 +856,50 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public boolean handleErrorEvent(final BaseResponse baseResponse) {
         Print.i(TAG, "ON HANDLE ERROR EVENT");
 
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         EventTask eventTask = baseResponse.getEventTask();
 
         if (!baseResponse.isPrioritary()) {
             return false;
         }
 
-        if (errorCode == null) {
-            return false;
-        }
+//        if (errorCode == null) {
+//            return false;
+//        }
 
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
-        if (errorCode.isNetworkError()) {
+        if (ErrorCode.isNetworkError(errorCode)) {
             switch (errorCode) {
-                case IO:
-                case CONNECT_ERROR:
-                    if(eventTask == EventTask.SMALL_TASK) {
+                case ErrorCode.IO:
+                case ErrorCode.CONNECT_ERROR:
+                    if(eventTask == EventTask.ACTION_TASK) {
                         showUnexpectedErrorWarning();
                     } else {
                         showFragmentErrorRetry();
                     }
                     return true;
-                case TIME_OUT:
-                case NO_NETWORK:
+                case ErrorCode.TIME_OUT:
+                case ErrorCode.NO_NETWORK:
                     // Show no network layout
-                    if(eventTask == EventTask.SMALL_TASK){
+                    if(eventTask == EventTask.ACTION_TASK){
                         showNoNetworkWarning();
                     } else {
                         showFragmentNoNetworkRetry();
                     }
                     return true;
-                case HTTP_STATUS:
+                case ErrorCode.HTTP_STATUS:
                     // Case HOME show retry otherwise show continue
-                    if(action == NavigationAction.Home) {
+                    if(action == NavigationAction.HOME) {
                         showFragmentErrorRetry();
                     } else {
                         showContinueShopping();
                     }
                     return true;
-                case SSL:
-                case SERVER_IN_MAINTENANCE:
+                case ErrorCode.SSL:
+                case ErrorCode.SERVER_IN_MAINTENANCE:
                     showFragmentMaintenance();
                     return true;
-                case REQUEST_ERROR:
+                case ErrorCode.REQUEST_ERROR:
                     Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
                     List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
                     String dialogMsg = "";
@@ -944,7 +933,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                             });
                     dialog.show(getActivity().getSupportFragmentManager(), null);
                     return true;
-                case SERVER_OVERLOAD:
+                case ErrorCode.SERVER_OVERLOAD:
                     if(getBaseActivity() != null){
                         ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
                         showFragmentErrorRetry();

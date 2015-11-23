@@ -83,8 +83,8 @@ public class OrderTrackerItem extends ProductRegular {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     /**

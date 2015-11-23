@@ -84,7 +84,7 @@ public class MainFragmentActivity extends BaseActivity {
      * Constructor
      */
     public MainFragmentActivity() {
-        super(NavigationAction.Unknown,
+        super(NavigationAction.UNKNOWN,
                 EnumSet.noneOf(MyMenuItem.class),
                 EnumSet.noneOf(EventType.class),
                 0,
@@ -223,7 +223,7 @@ public class MainFragmentActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.d(TAG, "ON SAVED INSTANCE STATE: " + mCurrentFragmentType.toString());
+        Print.d(TAG, "ON SAVED INSTANCE STATE: " + mCurrentFragmentType);
         ArrayList<String> frags = new ArrayList<>();
         try {
             String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
@@ -413,7 +413,7 @@ public class MainFragmentActivity extends BaseActivity {
         mCurrentFragmentType = type;
 
         // Transition
-        fragmentManagerTransition(R.id.rocket_app_content, fragment, type, addToBackStack);
+        fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
     }
 
     /*

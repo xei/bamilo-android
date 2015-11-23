@@ -55,7 +55,7 @@ public class AigResponseConverter implements Converter {
      * Get object type
      */
     protected String getType(Object type){
-        Print.i(TAG, "GET OBJECT TYPE: " + type.toString());
+        Print.i(TAG, "GET OBJECT TYPE: " + type);
         if(type instanceof Class){
             return ((Class) type).getName();
         } else if(type instanceof ParameterizedType){
@@ -215,7 +215,7 @@ public class AigResponseConverter implements Converter {
      */
     protected JSONObject getJsonToInitialize(JSONObject responseJsonObject, final IJSONSerializable iJsonSerializable) throws JSONException {
         Print.i(TAG, "GET DATA FROM JSON");
-        RequiredJson requiredJson = iJsonSerializable.getRequiredJson();
+        @RequiredJson.JsonStruct int requiredJson = iJsonSerializable.getRequiredJson();
         if(requiredJson == RequiredJson.METADATA){
             return responseJsonObject.getJSONObject(RestConstants.JSON_METADATA_TAG);
         } else if(requiredJson == RequiredJson.OBJECT_DATA){

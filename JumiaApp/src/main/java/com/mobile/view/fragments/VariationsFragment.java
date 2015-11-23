@@ -48,10 +48,10 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
      */
     public VariationsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Variations,
+                NavigationAction.VARIATIONS,
                 R.layout.product_list_page,
                 R.string.variations,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
 

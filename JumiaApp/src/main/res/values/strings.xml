@@ -153,8 +153,7 @@
     <string name="my_order_voucher_label">Voucher</string>
     <string name="my_orders_label">My Orders</string>
     <string name="my_profile">My Profile</string>
-    <string name="myaccount_email_notifications">Email Notifications</string>
-    <string name="myaccount_userdata">User Data</string>
+    <string name="myaccount_userdata">Profile</string>
     <string name="name">Name</string>
     <string name="nav_country">Choose Country</string>
     <string name="nav_country_warning">You are about to change the country. This clears the cart and you will be logged out. Are you sure?</string>
@@ -169,7 +168,8 @@
     <string name="no_internet_access_warning_title">No Internet Access!</string>
     <string name="no_label">No</string>
     <string name="no_payment">No payment necessary</string>
-    <string name="notifications">Notifications</string>
+    <string name="notifications">Push Notifications</string>
+    <string name="myaccount_email_notifications">Email Notifications</string>
     <string name="notifications_summary">Receive exclusive offers and updates</string>
     <string name="off_label">OFF</string>
     <string name="ok_label">OK</string>
@@ -336,7 +336,7 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">Your Cart</string>
     <string name="your_order">Your Order</string>
-    <string name="install_jumia_android">Install the %s Android App in an instant</string>
+    <string name="install_android">Install the %s Android App in an instant</string>
     <string name="share_the_app">Share the App</string>
     <string name="can_share_app_with_friends">You can now share the app with your friends</string>
     <string name="app_social">App Social</string>

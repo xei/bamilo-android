@@ -48,13 +48,6 @@ android {
             keyPassword "jumia123"
         }
 
-        jumiaBlackberrySigning {
-            storeFile file("keystores/jumia_blackberry.keystore")
-            storePassword "jumiablackberry"
-            keyAlias "jumia_blackberry"
-            keyPassword "jumiablackberry"
-        }
-
         jumiaMtnngSigning {
             storeFile file("keystores/jumia_mtnng.keystore")
             storePassword "jumiamtnng"
@@ -116,16 +109,16 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.8.1"
-            versionCode getAppVersionCode(57)
+            versionName "2.9"
+            versionCode getAppVersionCode(58)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
         }
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.8.1"
-            versionCode 57
+            versionName "2.9"
+            versionCode 58
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -135,23 +128,12 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.8.1"
-            versionCode 59
+            versionName "2.9"
+            versionCode 58
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
                 jumiaMTNng.res.srcDirs = ['src/jumia/res', 'src/jumiaMTNng/res']
-            }
-        }
-
-        jumiaBlackberry {
-            applicationId "com.jumia.blackberry"
-            versionName "2.8.1"
-            versionCode 13
-            signingConfig signingConfigs.jumiaBlackberrySigning
-            resConfigs "en", "fr", "ar"
-            android.sourceSets {
-                jumiaBlackberry.res.srcDirs = ['src/jumia/res', 'src/jumiaBlackberry/res']
             }
         }
 
@@ -160,16 +142,16 @@ android {
          */
         shop {
             applicationId "com.shop.android"
-            versionName "1.6"
-            versionCode getAppVersionCode(10)
+            versionName "1.6.1"
+            versionCode getAppVersionCode(11)
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
         }
 
         shopPreInstall {
             applicationId "com.shop.android"
-            versionName "1.6"
-            versionCode 10
+            versionName "1.6.1"
+            versionCode 11
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
             android.sourceSets {
@@ -182,16 +164,16 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.6"
-            versionCode getAppVersionCode(11)
+            versionName "1.6.1"
+            versionCode getAppVersionCode(12)
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
         }
 
         darazPreInstall {
             applicationId "com.daraz.android"
-            versionName "1.6"
-            versionCode 11
+            versionName "1.6.1"
+            versionCode 12
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
             android.sourceSets {
@@ -204,8 +186,8 @@ android {
          */
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "1.8"
-            versionCode getAppVersionCode(13)
+            versionName "1.8.1"
+            versionCode getAppVersionCode(14)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }
@@ -213,12 +195,20 @@ android {
     }
 
     lintOptions {
-//        disable 'NewApi', 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
         disable 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
         abortOnError false
         disable 'ExtraTranslation','MissingTranslation'
     }
 
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileNameRemoveReferences = outputFile.name.replace('JumiaApp', "App")
+                output.outputFile = new File(outputFile.parent, fileNameRemoveReferences)
+            }
+        }
+    }
 }
 
 dependencies {
@@ -226,14 +216,14 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:com.mobile.framework')
     /** Android wear releases **/
-//    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-//    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
-//    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
-//    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
-//    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
-//    shopPreInstallWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
-//    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
-//    darazPreInstallWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+    jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
+    jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
+    bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
+    shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+    shopPreInstallWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+    darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+    darazPreInstallWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
 }
 
 /**
@@ -309,4 +299,81 @@ task testCalabash << {
     //testCalabash -Pcountry=NG
     //calabash-android run /home/mobile/rocket/jenkins/workspace/Jumia_Calabash_2.2_NG/AutomatedTests/pt.rocket.jumia.dev/bin/JumiaDev-debug.apk --t @Calabash_Tests country=${COUNTRY} -f json -o cucumber.json -f html -o test.html -f pretty
     executeWaitAndPrintCmd(['calabash-android', 'run', './JumiaApp/build/outputs/apk/JumiaApp-jumia-debug.apk', '--t', '@Calabash_Tests', 'country=$country'])
+}
+
+/**
+ * Task that pulls translation string files from WebTranslateIt service.
+ * DEPENDENCIES: This task depends on wti gem file to be installed and on mail binary.
+ */
+task pushNewStrings << {
+    println " - Pushing new strings to WebTranslateIt " + new Date()
+    def proc = "wti push".execute(null, new File("./JumiaApp/src/main/res/"))
+    proc.waitFor()
+    String result = proc.text
+    println result
+    //check if there are new strings pushed and push them to git develop branch when on jenkins
+    if (result.contains('Accepted')) {// Accepted appears when there is new strings to upload
+        //notify developers by email
+        sendEmailToTeam("Pushed new strings to WebTranslateIt", result)
+    }
+}
+
+/**
+ * Task that pulls translation string files from WebTranslateIt service.
+ * DEPENDENCIES: This task depends on wti gem file to be installed and on mail binary.
+ */
+task pullTranslations << {
+
+    println " - Pulling translations from WebTranslateIt " + new Date()
+    def proc = "wti pull".execute(null, new File("./JumiaApp/src/main/res/"))
+    proc.waitFor()
+    String result = proc.text
+    println result
+
+    //check if there are new translations and push them to git develop branch when on jenkins
+//    if (result.contains('OK')) {// OK appears when new translations
+//        pushChangedTranslationFilesToGit.execute()
+//        //notify developers by email
+//        sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
+//    }
+}
+
+/**
+ * Task that performs a commit and a push to git develop branch possible changed translation string files.
+ */
+task pushChangedTranslationFilesToGit << {
+    def STORAGE_CRED_FILE = "/tmp/credentials.git"
+
+    println "- New translations found. Committing and pushing them to git develop branch..."
+    // get git user and pass from env vars
+    String user = System.getenv('GIT_USER')
+    String pass = System.getenv('GIT_PASS')
+    String auth = "https://" + user + ":" + pass + "@github.com"
+
+    // save credentials on file
+    new File(STORAGE_CRED_FILE).write(auth)
+
+    // set necessary git configs
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.email', "'mobilerocketporto@gmail.com'"])
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.name', "'mobile-rocket-porto'"])
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'credential.helper', 'store', ("--file=" + STORAGE_CRED_FILE)])
+
+    // perform add->commit->push
+    executeWaitAndPrintCmd(['git', 'add', 'JumiaApp/src/main/res/'])
+    executeWaitAndPrintCmd(['git', 'commit', '-m', "'task/strings_wti/by_jenkins - Uploading new translations from wti'"]);
+    executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
+
+}
+
+/**
+ * Method that sends an email to all Kaymu dev team
+ * @param emailContent The content of the email that will be sent.
+ */
+def sendEmailToTeam(String subject, String emailContent) {
+    //notify developers by email
+    emailContent = emailContent.replaceAll(/\033\[[0-9;]*m/, "") //remove possible shell color chars
+    new File('/tmp/mailwit.txt').write(emailContent)
+    def recipients = "sergio.pereira@africainternetgroup.com"
+    executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < /tmp/mailwit.txt'])
+
 }

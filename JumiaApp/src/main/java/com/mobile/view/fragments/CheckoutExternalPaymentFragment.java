@@ -17,7 +17,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -73,7 +72,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     private boolean isRequestedPage;
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     private Customer customer;
 
@@ -93,11 +92,10 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
      */
     public CheckoutExternalPaymentFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.layout.checkoutweb,
                 R.string.checkout_label,
-                KeyboardState.NO_ADJUST_CONTENT,
-                ConstantsCheckout.NO_CHECKOUT);
+                NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
     }
 
@@ -269,7 +267,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
         if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null
                 && JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null
-                && JumiaApplication.INSTANCE.getPaymentMethodForm().getMethod() == PaymentMethodForm.RequestType.POST) {
+                && JumiaApplication.INSTANCE.getPaymentMethodForm().getMethod() == PaymentMethodForm.POST) {
             Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
             for (Entry<String, Object> entry : mValues) {
                 if (entry.getKey().equalsIgnoreCase("tc")) {
@@ -279,11 +277,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 }
             }
 
-            Print.i(TAG, "code1content parameters: " + parameters.toString());
+            Print.i(TAG, "code1content parameters: " + parameters);
             UrlEncodedFormEntity entity;
             try {
                 entity = new UrlEncodedFormEntity(parameters);
-                Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters.toString());
+                Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters);
                 //setProxy();
                 webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
             } catch (IOException e) {
@@ -466,7 +464,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 handler.proceed();
             } else {
                 String url = view.getUrl();
-                NewRelicTracker.noticeFailureTransaction(url, beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
+                NewRelicTracker.noticeFailureTransaction(url, "https", beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
                 onReceivedError(view, error.getPrimaryError(), error.toString(), url);
                 handler.cancel();
             }
@@ -497,11 +495,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                     String order_number = "";
                     if (result.has(RestConstants.JSON_ORDER_NUMBER_TAG)) {
                         order_number = result.optString(RestConstants.JSON_ORDER_NUMBER_TAG);
-                    } else if (result.has("orderNr")) {
-                        order_number = result.optString("orderNr");
+                    } else if (result.has(RestConstants.JSON_ORDER_NR_TAG)) {
+                        order_number = result.optString(RestConstants.JSON_ORDER_NR_TAG);
                     }
 
-                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);
+                    bundle.putString(RestConstants.JSON_ORDER_NUMBER_TAG, order_number);
 
                     getBaseActivity().runOnUiThread(new Runnable() {
                         @Override

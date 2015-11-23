@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.os.Bundle;
@@ -46,9 +43,9 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
      */
     public CheckoutEditAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.string.checkout_label,
-                KeyboardState.ADJUST_CONTENT,
+                ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_BILLING);
     }
 
@@ -115,7 +112,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
 
     protected void onEditAddressErrorEvent(BaseResponse baseResponse){
         super.onEditAddressErrorEvent(baseResponse);
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
             @SuppressWarnings("unchecked")
             Map<String, List<String>> errors = baseResponse.getErrorMessages();
