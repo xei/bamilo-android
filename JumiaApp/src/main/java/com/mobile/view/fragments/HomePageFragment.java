@@ -37,7 +37,6 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.lang.ref.WeakReference;
