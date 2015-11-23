@@ -598,7 +598,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
         }
     }
 
@@ -957,9 +957,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
                 if(eventType == EventType.REMOVE_PRODUCT_FROM_WISH_LIST){
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
+                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
                 } else {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_added_saved));
+                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_added_saved));
                 }
 
                 updateWishListProduct();

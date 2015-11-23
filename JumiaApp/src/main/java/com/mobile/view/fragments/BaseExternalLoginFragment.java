@@ -69,7 +69,7 @@ public abstract class BaseExternalLoginFragment extends BaseFragment implements 
     public void onSuccess(LoginResult loginResult) {
         Log.i(TAG, "FacebookCallback onSuccess");
         if(loginResult.getRecentlyDeniedPermissions().contains(FacebookHelper.FB_PERMISSION_EMAIL)){
-           getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.facebook_permission));
+           getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.facebook_permission));
         }
         onFacebookSuccessLogin();
     }

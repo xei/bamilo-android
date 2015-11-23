@@ -122,7 +122,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
             Print.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
             nextFragment = FragmentType.MY_ADDRESSES;
         }
-        getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.create_addresses_success));
+        getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.create_addresses_success));
         FragmentController.getInstance().popLastEntry(FragmentType.CREATE_ADDRESS.toString());
         getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
