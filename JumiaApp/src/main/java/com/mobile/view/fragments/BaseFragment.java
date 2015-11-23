@@ -71,7 +71,7 @@ import java.util.Set;
  */
 public abstract class BaseFragment extends Fragment implements OnActivityFragmentInteraction, OnClickListener, ViewStub.OnInflateListener {
 
-    protected static final String TAG = BaseFragment.class.getSimpleName();
+    public static final String TAG = BaseFragment.class.getSimpleName();
 
     public static final int RESTART_FRAGMENTS_DELAY = 500;
 

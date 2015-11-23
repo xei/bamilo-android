@@ -39,7 +39,6 @@ import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
 import com.mobile.view.R;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -48,7 +47,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class HomePageFragment extends BaseFragment implements IResponseCallback, TargetLink.TargetLinkDataListener, TargetLink.TargetInterceptListener {
+public class HomePageFragment extends BaseFragment implements IResponseCallback, TargetLink.OnAppendDataListener, TargetLink.OnCampaignListener {
 
     private static final String TAG = HomePageFragment.class.getSimpleName();
 
@@ -381,22 +380,23 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         // Get title
         String title = (String) view.getTag(R.id.target_title);
         // Get target link
-        @TargetLink.Type String target = (String) view.getTag(R.id.target_link);
+        @TargetLink.Type String link = (String) view.getTag(R.id.target_link);
         // Get origin id
         int id = (int) view.getTag(R.id.target_teaser_origin);
-        Print.i(TAG, "CLICK TARGET: LINK:" + target + " TITLE:" + title + " ORIGIN:" + id);
+        Print.i(TAG, "CLICK TARGET: LINK:" + link + " TITLE:" + title + " ORIGIN:" + id);
         // Get teaser group type
         TeaserGroupType origin = TeaserGroupType.values()[id];
         if (view.getTag(R.id.target_list_position) != null) {
             origin.setTrackingPosition((int) view.getTag(R.id.target_list_position));
-            TrackerDelegator.trackBannerClicked(origin, target, (int) view.getTag(R.id.target_list_position));
+            TrackerDelegator.trackBannerClicked(origin, link, (int) view.getTag(R.id.target_list_position));
         }
         // Parse target link
-        boolean result = new TargetLink.Builder(new WeakReference<>(getBaseActivity()), target)
+        boolean result = new TargetLink.Builder(this,  link)
+                .addFragmentType(FragmentType.HOME)
                 .addTitle(title)
-                .addOrigin(origin)
-                .appendData(this)
-                .interceptCampaign(this)
+                .setOrigin(origin)
+                .addAppendListener(this)
+                .addCampaignListener(this)
                 .run();
         // Validate result
         if(!result) {
@@ -404,19 +404,24 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         }
     }
 
+    /**
+     * Append some data
+     */
     @Override
-    public void onAppendTargetData(FragmentType type, Bundle bundle) {
+    public void onAppendData(FragmentType type, Bundle bundle) {
         switch (type) {
             case PRODUCT_DETAILS:
                 bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
                 break;
             case CATALOG:
                 bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-                bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
                 break;
         }
     }
 
+    /**
+     * Process create the bundle for campaigns.
+     */
     @NonNull
     @Override
     public Bundle onTargetCampaign(String title, String id, TeaserGroupType origin) {
@@ -427,7 +432,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     }
 
     /**
-     * Goto campaign page
+     * Create a list with campaigns.
      */
     @NonNull
     private ArrayList<TeaserCampaign> createCampaignsData(String title, String id, TeaserGroupType group) {

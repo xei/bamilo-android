@@ -15,25 +15,26 @@ import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.view.BaseActivity;
+import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
- * TODO
+ * Class used to jump for the next target link.
  */
 public class TargetLink {
 
     private static final String TAG = TargetLink.class.getSimpleName();
+
     // TARGET CONSTANTS
     private static final int TARGET_LINK_SIZE = 2;
     private static final int TARGET_TYPE_POSITION = 0;
-    private static final int TARGET_VALUE_POSITION = 1;
+    private static final int TARGET_ID_POSITION = 1;
     private static final String TARGET_LINK_DELIMITER = "::";
+
     // TARGET TYPES CONSTANTS
     public static final String PDV = "product_detail";
     public static final String CATALOG = "catalog";
@@ -47,122 +48,140 @@ public class TargetLink {
     public @interface Type {}
 
     /**
-     * TODO
+     * Interface used to append some data.
      */
-    public interface TargetLinkDataListener {
-        void onAppendTargetData(FragmentType type, Bundle data);
+    public interface OnAppendDataListener {
+        void onAppendData(FragmentType type, Bundle data);
     }
 
     /**
-     * TODO
+     * Interface used to intercept the campaign link.
      */
-    public interface TargetInterceptListener {
+    public interface OnCampaignListener {
         @NonNull Bundle onTargetCampaign(String title, String id, TeaserGroupType mOrigin);
     }
 
     /**
-     * TODO
+     * Class used to process the target link.
      */
     public static class Builder {
 
-        private WeakReference<BaseActivity> mActivity;
+        private BaseFragment mFragment;
+        private FragmentType mFragmentType;
         private String mTitle;
         private String mTarget;
         private TeaserGroupType mOrigin;
-        private TargetLinkDataListener mListener;
-        private TargetInterceptListener mCampaignListener;
+        private OnAppendDataListener mAppendDataListener;
+        private OnCampaignListener mCampaignListener;
 
-        public Builder(@NonNull WeakReference<BaseActivity> activity, @Type @Nullable String target) {
-            this.mActivity = activity;
+        /**
+         * The base.
+         */
+        public Builder(@NonNull BaseFragment fragment, @Type @Nullable String target) {
+            this.mFragment = fragment;
             this.mTarget = target;
         }
 
+        /**
+         * Add a title.
+         */
         public Builder addTitle(@NonNull String title) {
             this.mTitle = title;
             return this;
         }
 
-        public Builder addOrigin(@NonNull TeaserGroupType origin) {
+        /**
+         * Add a click origin.
+         */
+        public Builder setOrigin(@NonNull TeaserGroupType origin) {
             this.mOrigin = origin;
             return this;
         }
 
-        public Builder appendData(@NonNull TargetLinkDataListener listener) {
-            this.mListener = listener;
+        /**
+         * Add a fragment type.
+         */
+        public Builder addFragmentType(@NonNull FragmentType fragmentType) {
+            this.mFragmentType = fragmentType;
             return this;
         }
 
-        public Builder interceptCampaign(@NonNull TargetInterceptListener listener) {
+        /**
+         * Add a listener to append more data.
+         */
+        public Builder addAppendListener(@NonNull OnAppendDataListener listener) {
+            this.mAppendDataListener = listener;
+            return this;
+        }
+
+        /**
+         * Add a listener to build the bundle for campaign.
+         */
+        public Builder addCampaignListener(@NonNull OnCampaignListener listener) {
             this.mCampaignListener = listener;
             return this;
         }
 
+        /**
+         * Execute
+         */
         public boolean run() {
-            // Split target link
+            // ##### Split target link
             String[] targetLink = splitLink(mTarget);
             if(targetLink.length != TARGET_LINK_SIZE) {
                 Log.w(TAG, "WARNING: INVALID TARGET LINK: " + mTarget);
                 return false;
             }
-            // Get type and value
+            // ##### Get type and value
             String type = targetLink[TARGET_TYPE_POSITION];
-            String value = targetLink[TARGET_VALUE_POSITION];
-            // Get fragment type
-            FragmentType fragmentType = getFragmentType(type);
-            if(fragmentType == FragmentType.UNKNOWN) {
+            String id = targetLink[TARGET_ID_POSITION];
+            // ##### Get fragment type
+            FragmentType nextFragmentType = getFragmentType(type);
+            if(nextFragmentType == FragmentType.UNKNOWN) {
                 Print.w(TAG, "WARNING: UNKNOWN TARGET LINK: " + mTarget);
                 return false;
             }
-            // Create bundle
+            // ##### Create bundle
             Bundle bundle;
             // Case generic target
-            if(fragmentType != FragmentType.CAMPAIGNS) {
-                bundle = createGenericFragmentBundle(mTitle, value, mOrigin);
-            }
-            // Case campaign fragment other
-            else if (mCampaignListener != null) {
-                bundle = mCampaignListener.onTargetCampaign(mTitle, value, mOrigin);
+            if(nextFragmentType == FragmentType.CAMPAIGNS) {
+                bundle = createCampaignBundle(mCampaignListener, mTitle, id, mOrigin);
             } else {
-                bundle = createCampaignFragmentBundle(mTitle, value, mOrigin);
+                bundle = createBundle(mFragmentType, mTitle, id, mOrigin);
             }
-            Print.i(TAG, "TARGET LINK: TYPE:" + fragmentType + " TITLE:" + mTitle + " ID:" + value);
-            // Append data
-            if (mListener != null) {
-                mListener.onAppendTargetData(fragmentType, bundle);
+            Print.i(TAG, "TARGET LINK: TYPE:" + nextFragmentType + " TITLE:" + mTitle + " ID:" + id);
+            // ##### Append data
+            if (mAppendDataListener != null) {
+                mAppendDataListener.onAppendData(nextFragmentType, bundle);
             }
-            // Switch fragment
-            mActivity.get().onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+            // ##### Switch fragment
+            mFragment.getBaseActivity().onSwitchFragment(nextFragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
             // Success
             return true;
         }
     }
 
     /**
-     * TODO
+     * Split the target link.
      */
     @NonNull
-    public static String getIdFromTargetLink(@NonNull String link){
+    private static String[] splitLink(@NonNull String link) {
+        return TextUtils.isEmpty(link) ? new String[]{} : TextUtils.split(link, TARGET_LINK_DELIMITER);
+    }
+
+    /**
+     * Get id from target link.
+     */
+    @NonNull
+    private static String getIdFromTargetLink(@NonNull String link){
         String[] splitLink = splitLink(link);
-        return splitLink.length == TARGET_LINK_SIZE ? splitLink[TARGET_VALUE_POSITION] : "";
+        return splitLink.length == TARGET_LINK_SIZE ? splitLink[TARGET_ID_POSITION] : "";
     }
 
     /**
-     * TODO
+     * Match the target type with a fragment type.
      */
     @NonNull
-    private static String[] splitLink(@NonNull String link){
-        // Case empty
-        if(TextUtils.isEmpty(link)) {
-            Log.w(TAG, "WARNING: TARGET LINK IS EMPTY");
-            return new String[]{};
-        }
-        // Case invalid split
-        return TextUtils.split(link, TARGET_LINK_DELIMITER);
-    }
-
-    /**
-     * TODO
-     */
     private static FragmentType getFragmentType(String type) {
         // Case unknown
         FragmentType fragmentType = FragmentType.UNKNOWN;
@@ -176,11 +195,11 @@ public class TargetLink {
         }
         // Case catalog brand
         else if (TextUtils.equals(CATALOG_BRAND, type)) {
-            fragmentType = FragmentType.CATALOG; // TODO
+            fragmentType = FragmentType.CATALOG;
         }
         // Case catalog seller
         else if (TextUtils.equals(CATALOG_SELLER, type)) {
-            fragmentType = FragmentType.CATALOG; // TODO
+            fragmentType = FragmentType.CATALOG;
         }
         // Case campaign
         else if (TextUtils.equals(CAMPAIGN, type)) {
@@ -194,30 +213,48 @@ public class TargetLink {
     }
 
     /**
-     * TODO
+     * Create a generic bundle( PDV, INNER_SHOP AND CATALOG).
      */
     @NonNull
-    private static Bundle createGenericFragmentBundle(String title, String value, TeaserGroupType origin) {
+    private static Bundle createBundle(FragmentType mFragmentType, String title, String value, TeaserGroupType origin) {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, value);
         bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, origin);
+        // CASE CATALOG
+        if(mFragmentType == FragmentType.HOME || mFragmentType == FragmentType.INNER_SHOP) {
+            bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
+        }
         return bundle;
     }
+
+    /*
+     * ############## CAMPAIGN METHODS ##############
+     */
 
     /**
-     * TODO
+     * Create a bundle for campaigns, from listener(multi campaigns) or normal (single campaign).
      */
     @NonNull
-    private static Bundle createCampaignFragmentBundle(String title, String id, TeaserGroupType origin) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, origin);
-        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignList(title, id));
+    private static Bundle createCampaignBundle(OnCampaignListener listener, String title, String id, TeaserGroupType origin) {
+        Bundle bundle;
+        // Case listener
+        if (listener != null) {
+            bundle = listener.onTargetCampaign(title, id, origin);
+        }
+        // Case default
+        else {
+            bundle = new Bundle();
+            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, origin);
+            bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignList(title, id));
+        }
         return bundle;
     }
 
 
-
+    /**
+     * Create an array with a single campaign(HOME AND OTHERS).
+     */
     @NonNull
     public static ArrayList<TeaserCampaign> createCampaignList(String title, String id) {
         ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
@@ -226,8 +263,11 @@ public class TargetLink {
         return campaigns;
     }
 
+    /**
+     * Create an array with multi campaigns(HOME).
+     */
     @NonNull
-    public static ArrayList<TeaserCampaign> createCampaignList(BaseTeaserGroupType campaignGroup) {
+    public static ArrayList<TeaserCampaign> createCampaignList(@NonNull BaseTeaserGroupType campaignGroup) {
         ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
         for (BaseTeaserObject teaser : campaignGroup.getData()) {
             campaigns.add(new TeaserCampaign(teaser.getTitle(), TargetLink.getIdFromTargetLink(teaser.getTargetLink())));

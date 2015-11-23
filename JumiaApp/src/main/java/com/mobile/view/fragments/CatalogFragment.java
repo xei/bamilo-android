@@ -59,7 +59,6 @@ import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -1098,20 +1097,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onHeaderClick(String target, String title) {
         // Parse target link
-        new TargetLink.Builder(new WeakReference<>(getBaseActivity()), target)
-                .addTitle(title)
-                .run();
+        boolean result = new TargetLink.Builder(this, target).addTitle(title).run();
+        if(!result) {
+            showUnexpectedErrorWarning();
+        }
     }
-
-//    protected void onClickCampaign(String targetUrl, String targetTitle, Bundle bundle) {
-//        // Tracking event
-//        AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
-//        // Create campaign using the URL
-//        ArrayList<TeaserCampaign> campaigns = createSingleCampaign(targetTitle, targetUrl);
-//        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
-//        bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, 0);
-//        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
-//    }
 
     /**
      * switch the icon and type of catalog view depending on the previous one

@@ -37,7 +37,6 @@ import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
-import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 
 /**
@@ -45,7 +44,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class InnerShopFragment extends BaseFragment implements IResponseCallback, TargetLink.TargetLinkDataListener {
+public class InnerShopFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = InnerShopFragment.class.getSimpleName();
 
@@ -373,17 +372,13 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void processDeepLink(String link) {
         // Parse target link
-        new TargetLink.Builder(new WeakReference<>(getBaseActivity()), link)
+        boolean result = new TargetLink.Builder(this, link)
+                .addFragmentType(FragmentType.INNER_SHOP)
                 .addTitle(mTitle)
-                .addOrigin(mGroupType)
-                .appendData(this)
+                .setOrigin(mGroupType)
                 .run();
-    }
-
-    @Override
-    public void onAppendTargetData(FragmentType type, Bundle bundle) {
-        if (type == FragmentType.CATALOG) {
-            bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
+        if(!result) {
+            showUnexpectedErrorWarning();
         }
     }
 
