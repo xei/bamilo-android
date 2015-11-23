@@ -190,7 +190,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                 TextView textView = (TextView) mElement.findViewById(idPrice);
                 double price = ((FeaturedItemProduct) featuredItem).getPrice();
                 double special = ((FeaturedItemProduct) featuredItem).getSpecialPrice();
-                if(Double.isNaN(special) && special > 0) {
+                if(!Double.isNaN(special) && special > 0) {
                     textView.setText(CurrencyFormatter.formatCurrency(special));
                 } else {
                     textView.setText(CurrencyFormatter.formatCurrency(price));
