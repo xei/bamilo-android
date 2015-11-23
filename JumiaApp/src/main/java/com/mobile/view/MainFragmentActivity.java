@@ -252,6 +252,8 @@ public class MainFragmentActivity extends BaseActivity {
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
         //
         warningFactory.hideWarning();
+
+        mConfirmationCartMessageView.hideMessage();
         // 
         hideKeyboard();
 

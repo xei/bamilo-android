@@ -14,8 +14,8 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -163,7 +163,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     }
 
     private void onErrorOccurred(){
-        Toast.makeText(getBaseActivity(),getResources().getString(R.string.error_please_try_again),Toast.LENGTH_SHORT).show();
+        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
         getBaseActivity().onBackPressed();
     }
 

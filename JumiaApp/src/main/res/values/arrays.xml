@@ -48,6 +48,14 @@
         <item>@string/myaccount_email_notifications</item>
     </string-array>
 
+    <!--
+        THIS DEFINES WHETHER A CHECKBOX SHOULD APPEAR NEXT TO RESPECTIVE ITEM IN "app_notification_array"
+    -->
+    <integer-array name="app_notification_array_checkboxes">
+        <item>1</item>
+        <item>0</item>
+    </integer-array>
+
     <!-- ARTICLES -->
     <plurals name="numberOfArticles">
         <item quantity="zero">@string/plurals_article</item>

@@ -34,7 +34,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
-import com.mobile.utils.ui.ToastFactory;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.lang.ref.WeakReference;
@@ -335,7 +335,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * The web client to intercept the clicks in the deep links to show the respective view:<br> - Case product: the link is pdv::http://... - Case catalog: the
      * link is catalog::http://... - Case campaign: the link is campaign::http://...
      */
-    private WebViewClient mInnerShopWebClient = new WebViewClient() {
+    private final WebViewClient mInnerShopWebClient = new WebViewClient() {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -402,7 +402,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
         }
     }
 
