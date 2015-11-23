@@ -48,7 +48,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
@@ -950,7 +949,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 view.mName.setLayoutParams(params);
 
             }else{
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
                 params.setMargins((int)getResources().getDimension(R.dimen.margin_large), 0, 0, 0);
                 view.mName.setLayoutParams(params);
                 view.mStockOff.setVisibility(View.VISIBLE);
