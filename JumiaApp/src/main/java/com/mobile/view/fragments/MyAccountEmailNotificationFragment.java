@@ -426,7 +426,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             break;
         case SUBSCRIBE_NEWSLETTERS_EVENT:
             Print.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
             break;
         default:
             break;
@@ -442,7 +442,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void goBackWarningUser() {
         getBaseActivity().onBackPressed();
-        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
     }
 
     /*
