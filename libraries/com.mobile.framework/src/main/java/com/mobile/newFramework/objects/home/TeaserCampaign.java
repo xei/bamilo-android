@@ -1,6 +1,5 @@
 package com.mobile.newFramework.objects.home;
 
-import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -8,7 +7,6 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONObject;
 
@@ -54,7 +52,6 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	 */
 	public void setUrl(String url) {
         this.url = url;
-        getCampaignKey();
     }
 
 	/*
@@ -65,7 +62,6 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
 	public boolean initialize(JSONObject jsonObject) {
 		name = jsonObject.optString(RestConstants.JSON_CAMPAIGN_NAME_TAG);
         url = jsonObject.optString(RestConstants.JSON_CAMPAIGN_URL_TAG);
-        getCampaignKey();
 		return true;
 	}
 
@@ -154,13 +150,4 @@ public class TeaserCampaign implements ITargeting, IJSONSerializable, Parcelable
         }
     };
 
-    /**
-     * extract campaign id from the campaign url
-     */
-    private void getCampaignKey(){
-        if(!TextUtils.isEmpty(url)){
-            Uri myUri = Uri.parse(url);
-            campaignId = myUri.getQueryParameter("campaign_slug");
-        }
-    }
 }

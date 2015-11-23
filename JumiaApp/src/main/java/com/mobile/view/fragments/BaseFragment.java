@@ -1160,11 +1160,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Create an array with a single campaign
      */
-    protected ArrayList<TeaserCampaign> createSingleCampaign(String targetTitle, String targetUrl) {
+    protected ArrayList<TeaserCampaign> createSingleCampaign(String targetTitle, String targetKey) {
         ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
         TeaserCampaign campaign = new TeaserCampaign();
         campaign.setTitle(targetTitle);
-        campaign.setUrl(targetUrl);
+        campaign.setCampaignId(targetKey);
         campaigns.add(campaign);
         return campaigns;
     }

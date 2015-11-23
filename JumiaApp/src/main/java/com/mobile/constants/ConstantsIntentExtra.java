@@ -83,6 +83,7 @@ public class ConstantsIntentExtra {
     public static final String FRAGMENT_TYPE = mPackage + "FragmentType";
     public static final String FRAGMENT_INITIAL_COUNTRY = mPackage + "FragmentInitialCountry";
     public static final String FRAGMENT_BUNDLE = mPackage + "FragmentBundle";
+    public static final String CONTENT_TARGET_KEY = mPackage + "targetKey";
 
     // ########### Login ##############
     public static final String NEXT_FRAGMENT_TYPE = mPackage + "NextFragmentType";

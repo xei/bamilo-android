@@ -15,6 +15,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,15 +31,38 @@ public class Banner implements IJSONSerializable, Parcelable {
     private String mPhoneImage;
     private String mTabletImage;
     private String mTargetType;
+    private String mTargetKey;
+    private String mTarget;
     private String mTitle;
     private String mUrl;
+    protected static final String TEASER_SEPARATOR = "::";
+
 
     public Banner() {
         this.setPhoneImage("");
         this.setTabletImage("");
         this.setUrl("");
         this.setTargetType("");
+        this.setTargetKey("");
+        this.setTarget("");
         this.setTitle("");
+
+    }
+
+    public String getTargetKey() {
+        return mTargetKey;
+    }
+
+    public void setTargetKey(String mTargetKey) {
+        this.mTargetKey = mTargetKey;
+    }
+
+    public String getTarget() {
+        return mTarget;
+    }
+
+    public void setTarget(String mTarget) {
+        this.mTarget = mTarget;
     }
 
     public String getPhoneImage() {
@@ -90,7 +114,8 @@ public class Banner implements IJSONSerializable, Parcelable {
         try {
             mPhoneImage = jsonObject.getString(RestConstants.JSON_BANNER_PHONE_IMG_TAG);
             mTabletImage = jsonObject.getString(RestConstants.JSON_BANNER_TABLET_IMG_TAG);
-            mTargetType = jsonObject.getString(RestConstants.JSON_TARGET_TYPE_TAG);
+            mTarget = jsonObject.getString(RestConstants.JSON_TARGET_TAG);
+            setTargetInfo(mTarget);
             mTitle = jsonObject.getString(RestConstants.JSON_TITLE_TAG);
             mUrl = jsonObject.getString(RestConstants.URL);
         } catch (JSONException e) {
@@ -164,5 +189,19 @@ public class Banner implements IJSONSerializable, Parcelable {
         }
     };
 
+    /**
+     * Function responsible for separating the target type and target key information
+     * @param target
+     */
+    protected void setTargetInfo(String target) {
+        if (TextUtils.isNotEmpty(target)) {
+            String[] targetInfo = target.split(TEASER_SEPARATOR);
+            mTargetType = targetInfo[0];
+            if(targetInfo.length == 2){
+                mTargetKey = targetInfo[1];
+            }
+
+        }
+    }
 
 }

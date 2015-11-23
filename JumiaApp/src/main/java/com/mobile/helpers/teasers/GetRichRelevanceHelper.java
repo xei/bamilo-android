@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.helpers.teasers;
 
 import android.content.ContentValues;
@@ -14,36 +11,36 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
- * Helper used to get the inner shop.
+ * Get Rich Relevance info
+ * used on Home Page
  *
- * @author sergiopereira
+ * @author Paulo Carvalho
  */
-public class GetShopInShopHelper extends SuperBaseHelper {
+public class GetRichRelevanceHelper extends SuperBaseHelper {
 
-    private static String TAG = GetShopInShopHelper.class.getSimpleName();
+    protected static String TAG = GetRichRelevanceHelper.class.getSimpleName();
 
-    public static final String INNER_SHOP_TAG = "key";
+    public static final String URL = Constants.BUNDLE_URL_KEY;
+
+    public static final String REQUEST_TAG = "request";
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_SHOP_EVENT;
+        return EventType.GET_RICH_RELEVANCE_EVENT;
     }
 
     @Override
-    protected void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getShopInShop);
+    public void onRequest(RequestBundle requestBundle) {
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getRichRelevance);
     }
 
-    /**
-     * Method used to create a request bundle.
-     */
-    public static Bundle createBundle(String staticKey) {
-        // Item data
+    public static Bundle createBundle(String richRelevantHash) {
         ContentValues values = new ContentValues();
-        values.put(INNER_SHOP_TAG, staticKey);
-        // Request data
+        values.put(REQUEST_TAG, richRelevantHash);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         return bundle;
     }
+
+
 }

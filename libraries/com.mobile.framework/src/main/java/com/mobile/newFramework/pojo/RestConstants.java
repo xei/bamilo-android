@@ -216,10 +216,6 @@ public class RestConstants {
     public static final String JSON_REMAINING_TIME_TAG = "remaining_time";
     public static final String JSON_UNIX_TIME_TAG = "unix_time";
 
-
-    // TeaserBrandElement Tags
-    public static final String JSON_TARGET_TYPE_TAG = "target_type";
-
     // Address Tags
     public static final String CUSTOMER_ADDRESS_ID = "customer_address_id";
     public static final String PHONE = "phone";
@@ -450,5 +446,11 @@ public class RestConstants {
     public static final String ORDER_NR = "ordernr";
     public static final String UPDATE_AT = "updated_at";
 
+    /**
+     * HOME PAGE
+     */
 
+    public static final String HAS_DATA = "has_data";
+    public static final String RICH_RELEVANCE = "rich_relevance_enabled";
+    public static final String JSON_TARGET_TAG = "target";
 }

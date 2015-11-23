@@ -136,10 +136,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
         } catch (JSONException e) {
             Print.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
         }
-        // Discard groups without items
-        if (teaserGroup != null && !teaserGroup.hasData()) {
-            teaserGroup = null;
-        }
         // Return the group or null
         return teaserGroup;
     }

@@ -27,6 +27,7 @@ import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.objects.home.HomePageObject;
+import com.mobile.newFramework.objects.home.object.TeaserRichRelevanceObject;
 import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.product.BundleList;
@@ -206,6 +207,22 @@ public interface AigApiInterface {
     void getHome(Callback<BaseResponse<HomePageObject>> callback);
 
     String getHome = "getHome";
+
+    /*
+     * ## RICH RELEVANCE
+     */
+
+    @GET("/")
+    void getRichRelevance(@QueryMap Map<String, String> data, Callback<BaseResponse<TeaserRichRelevanceObject>> callback);
+
+    String getRichRelevance = "getRichRelevance";
+
+
+    @FormUrlEncoded
+    @POST("/")
+    void newsletterSignUp(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    String newsletterSignUp = "newsletterSignUp";
 
     /*
      * ## SHOP IN SHOP

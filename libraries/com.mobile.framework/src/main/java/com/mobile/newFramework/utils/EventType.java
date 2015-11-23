@@ -158,10 +158,6 @@ public enum EventType {
 
     GET_COUNTRY_CONFIGURATIONS("http:/main/getconfigurations/", AigRestContract.NO_CACHE),
 
-    HOME_NEWSLETTERS_SIGNUP_FORM_EVENT,
-
-    HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT("https:/newsletter/signup/", AigRestContract.MAX_CACHE_TIME),
-
     GET_FAVOURITE_LIST,
 
     GET_RECENTLY_VIEWED_LIST,
@@ -188,7 +184,11 @@ public enum EventType {
 
     GET_WISH_LIST("http:/wishlist/getproducts/", AigRestContract.NO_CACHE),
 
-    GET_FAQ_TERMS("http:/main/getfaqandterms/", AigRestContract.MAX_CACHE_TIME);
+    GET_FAQ_TERMS("http:/main/getfaqandterms/", AigRestContract.MAX_CACHE_TIME),
+
+    SET_NEWSLETTER_SIGUNP("http:/main/newsletter/signup/", AigRestContract.MAX_CACHE_TIME),
+
+    GET_RICH_RELEVANCE_EVENT("http:/richrelevance/request/", AigRestContract.NO_CACHE);
 
 
     public final String action;

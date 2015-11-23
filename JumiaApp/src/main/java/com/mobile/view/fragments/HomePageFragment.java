@@ -11,16 +11,20 @@ import android.view.ViewGroup;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.widget.NestedScrollView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.FormFactory;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.CategoriesTableHelper;
+import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.home.type.TeaserTargetType;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -32,6 +36,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -68,6 +73,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
 
     private int[] mScrollSavedPosition;
 
+    private LayoutInflater inflater;
     /**
      * Constructor via bundle
      *
@@ -302,18 +308,38 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     private void buildHomePage(HomePageObject homePage) {
         Print.i(TAG, "BUILD HOME PAGE");
-        LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+        inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
-            // Create view
-            BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
-            if (viewHolder != null) {
-                // Set view
-                viewHolder.onBind(baseTeaserType);
-                // Add to container
-                mContainer.addView(viewHolder.itemView);
-                // Save
-                mViewHolders.add(viewHolder);
+            //FIXME to remove, added in order to not crash app until API fixes
+            if(baseTeaserType.getType() == TeaserGroupType.TOP_SELLERS){
+
+            } else
+            // Case Form NewsLetter
+            if(baseTeaserType.getType() == TeaserGroupType.FORM_NEWSLETTER){
+                Form form = null;
+                try{
+                    form = ((TeaserFormObject) baseTeaserType.getData().get(0)).getForm();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                if(form != null){
+                    //TODO needs to be created the correct layout for this form, ticket NAFAMZ-14045
+                    DynamicForm mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.NEWSLETTER_FORM,inflater.getContext(),form);
+                    mContainer.addView(mDynamicForm.getContainer());
+                }
+
+            } else {
+                // Create view
+                BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
+                if (viewHolder != null) {
+                    // Set view
+                    viewHolder.onBind(baseTeaserType);
+                    // Add to container
+                    mContainer.addView(viewHolder.itemView);
+                    // Save
+                    mViewHolders.add(viewHolder);
+                }
             }
         }
         // Restore the scroll state
@@ -389,38 +415,38 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         if(TextUtils.isEmpty(targetType)){
           return false;
         }
-        // Get url
-        String targetUrl = (String) view.getTag(R.id.target_url);
+        // Get target Key
+        String targetKey = (String) view.getTag(R.id.target_key);
+        // validate the state of the view when clicking on the retry button on the Home page
+        if(TextUtils.isEmpty(targetKey)){
+            return false;
+        }
         // Get title
         String targetTitle = (String) view.getTag(R.id.target_title);
         // Get origin id
         int origin = (int) view.getTag(R.id.target_teaser_origin);
-        // Get Sku
-        String targetSku = (String) view.getTag(R.id.target_sku);
         // Get teaser group type
         TeaserGroupType originGroupType = TeaserGroupType.values()[origin];
         if(view.getTag(R.id.target_list_position) != null){
             originGroupType.setTrackingPosition((int) view.getTag(R.id.target_list_position));
-            TrackerDelegator.trackBannerClicked(originGroupType, targetUrl, (int) view.getTag(R.id.target_list_position));
+            // FIXME use targetkey instead of targeturl
+            TrackerDelegator.trackBannerClicked(originGroupType, targetKey, (int) view.getTag(R.id.target_list_position));
         }
-        Print.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
+        Print.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " KEY:" + targetKey);
         // Get target type
         TeaserTargetType target = TeaserTargetType.byString(targetType);
         switch (target) {
             case CATALOG:
-                gotoCatalog(targetTitle, targetUrl, originGroupType);
+                gotoCatalog(targetTitle, targetKey, originGroupType);
                 break;
             case CAMPAIGN:
-                gotoCampaignPage(targetTitle, targetUrl, originGroupType);
+                gotoCampaignPage(targetTitle, targetKey, originGroupType);
                 break;
             case STATIC_PAGE:
-                gotoStaticPage(targetTitle, targetUrl, originGroupType);
+                gotoStaticPage(targetTitle, targetKey, originGroupType);
                 break;
             case PRODUCT_DETAIL:
-                //TODO this validation is only temporary, and should be removed in next release
-                if(TextUtils.isEmpty(targetSku))
-                    targetSku = getSkuFromUrl(targetUrl);
-                gotoProductDetail(targetSku, originGroupType);
+                gotoProductDetail(targetKey, originGroupType);
                 break;
             case UNKNOWN:
             default:
@@ -434,14 +460,14 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     /**
      * Goto catalog page
      */
-    private void gotoCatalog(String title, String url, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
+    private void gotoCatalog(String title, String targetKey, TeaserGroupType groupType) {
+        Print.i(TAG, "GOTO CATALOG PAGE: " + title + " " + targetKey);
         // Update counter for tracking
-        CategoriesTableHelper.updateCategoryCounter(url, title);
+        CategoriesTableHelper.updateCategoryCounter(targetKey, title);
         // Go to bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TARGET_KEY, targetKey);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
         bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
@@ -451,11 +477,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     /**
      * Goto product detail using Sku
      */
-    private void gotoProductDetail(String sku, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO PRODUCT DETAIL: " + sku);
-        if(TextUtils.isNotEmpty(sku)){
+    private void gotoProductDetail(String targetKey, TeaserGroupType groupType) {
+        Print.i(TAG, "GOTO PRODUCT DETAIL: " + targetKey);
+        if(TextUtils.isNotEmpty(targetKey)){
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, targetKey);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
             bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -467,11 +493,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     /**
      * Goto static page
      */
-    private void gotoStaticPage(String title, String url, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO STATIC PAGE: " + title + " " + url);
+    private void gotoStaticPage(String title, String targetKey, TeaserGroupType groupType) {
+        Print.i(TAG, "GOTO STATIC PAGE: " + title + " " + targetKey);
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TARGET_KEY, targetKey);
         bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
         getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -479,8 +505,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
     /**
      * Goto campaign page
      */
-    private void gotoCampaignPage(String targetTitle, String targetUrl, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO CAMPAIGN PAGE: " + targetTitle + " " + targetUrl);
+    private void gotoCampaignPage(String targetTitle, String targetKey, TeaserGroupType groupType) {
+        Print.i(TAG, "GOTO CAMPAIGN PAGE: " + targetTitle + " " + targetKey);
         // Get group
         BaseTeaserGroupType group = mHomePage.getTeasers().get(groupType.ordinal());
         // Case campaign origin
@@ -493,7 +519,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             campaigns = new ArrayList<>();
             TeaserCampaign campaign = new TeaserCampaign();
             campaign.setTitle(targetTitle);
-            campaign.setUrl(targetUrl);
+            campaign.setCampaignId(targetKey);
             campaigns.add(campaign);
         }
         // Create bundle
@@ -514,7 +540,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         for (BaseTeaserObject baseTeaserObject : group.getData()) {
             TeaserCampaign campaign = new TeaserCampaign();
             campaign.setTitle(baseTeaserObject.getTitle());
-            campaign.setUrl(baseTeaserObject.getUrl());
+            campaign.setCampaignId(baseTeaserObject.getTargetKey());
             campaigns.add(campaign);
         }
         return campaigns;

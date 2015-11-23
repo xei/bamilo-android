@@ -38,7 +38,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     public static final String QUERY = "q";
     public static final String CATEGORY = "category";
     public static final String BRAND = "brand";
-
+    public static final String HASH = "hash";
     @Override
     public EventType getEventType() {
         return EventType.GET_PRODUCTS_EVENT;

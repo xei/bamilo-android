@@ -126,6 +126,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private String mCompleteUrl;
 
+    private String mTargetKey;
+
     /**
      * Create and return a new instance.
      *
@@ -175,6 +177,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
             mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+
+            // Target key parameter
+            mTargetKey = arguments.getString(ConstantsIntentExtra.CONTENT_TARGET_KEY);
 
             // Url and parameters
             mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
@@ -373,7 +378,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !validateCompleteURL()) {
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !validateCompleteURL() && TextUtils.isEmpty(mTargetKey)) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL
@@ -917,6 +922,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get Sort
         mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
         mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+        // Add the Catalog hash as a parameter to the catalog request
+        if (TextUtils.isNotEmpty(mTargetKey)) {
+            mQueryValues.put(GetCatalogPageHelper.HASH, mTargetKey);
+        }
 
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
@@ -1117,11 +1126,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
-    protected void onClickCampaign(String targetUrl, String targetTitle, Bundle bundle) {
+    protected void onClickCampaign(String targetKey, String targetTitle, Bundle bundle) {
         // Tracking event
         AnalyticsGoogle.get().trackEvent(TrackingEvent.SHOW_CAMPAIGN, targetTitle, 0l);
         // Create campaign using the URL
-        ArrayList<TeaserCampaign> campaigns = createSingleCampaign(targetTitle, targetUrl);
+        ArrayList<TeaserCampaign> campaigns = createSingleCampaign(targetTitle, targetKey);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
         bundle.putInt(CampaignsFragment.CAMPAIGN_POSITION_TAG, 0);
         getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);

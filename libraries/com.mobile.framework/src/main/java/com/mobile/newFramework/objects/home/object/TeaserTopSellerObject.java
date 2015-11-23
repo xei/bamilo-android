@@ -19,7 +19,6 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     private double mPriceConverted;
     private double mSpecialPrice;
     private double mSpecialPriceConverted;
-
     /**
      * Constructor
      */
@@ -72,8 +71,6 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         mTitle = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         // Get brand
         mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-        // Get url
-        mUrl = jsonObject.getString(RestConstants.URL);
         // Get image
         mImageTablet = mImagePhone = jsonObject.getString(RestConstants.JSON_IMAGE_TAG);
         // Get price
@@ -83,11 +80,12 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         // Get special price
         mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
         // Get special price converted
-        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
+        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
 //        // Get discount percentage
 //        mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
         // Get target type
-        mTargetType = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
+        mTarget = jsonObject.optString(RestConstants.JSON_TARGET_TAG);
+        setTargetInfo(mTarget);
         return true;
     }
 

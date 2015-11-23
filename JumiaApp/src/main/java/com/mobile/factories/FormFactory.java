@@ -102,6 +102,7 @@ public class FormFactory {
                 parent = createLoginForm(context, form, ctrlParams);
                 break;
             case FormConstants.REGISTRATION_FORM:
+            case FormConstants.NEWSLETTER_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
             case FormConstants.USER_DATA_FORM:
                 form.setType(formType);  // Used to show icons

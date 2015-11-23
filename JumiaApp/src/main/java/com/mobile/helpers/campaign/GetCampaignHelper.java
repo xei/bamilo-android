@@ -34,7 +34,7 @@ public class GetCampaignHelper extends SuperBaseHelper {
     public static Bundle createBundle(String campaignId) {
         // Item data
         ContentValues values = new ContentValues();
-        values.put("campaign_slug", campaignId);
+        values.put("slug", campaignId);
         // Request data
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
