@@ -956,6 +956,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
+
                 if(eventType == EventType.REMOVE_PRODUCT_FROM_WISH_LIST){
                     getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
                 } else {
