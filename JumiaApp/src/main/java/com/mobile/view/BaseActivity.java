@@ -1744,7 +1744,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     public void showWarningMessage(int warningFactory, String message){
-        this.warningFactory.showWarning(warningFactory, getString(R.string.facebook_permission));
+        this.warningFactory.showWarning(warningFactory, message);
     }
 
 //    /**

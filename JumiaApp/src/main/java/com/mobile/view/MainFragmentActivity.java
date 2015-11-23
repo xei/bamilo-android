@@ -250,8 +250,6 @@ public class MainFragmentActivity extends BaseActivity {
      */
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
-        //
-        warningFactory.hideWarning();
 
         mConfirmationCartMessageView.hideMessage();
         // 
