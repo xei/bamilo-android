@@ -35,7 +35,7 @@ import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.ui.ToastManager;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 import com.newrelic.agent.android.util.NetworkFailure;
 
@@ -455,9 +455,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
             Print.i(TAG, "code1payment : onReceivedSslError : " + error);
             Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
-                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_SSL_HOST_MISMATCH, error);
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.ssl_error_host_mismatch));
             } else {
-                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_GENERIC, error);
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.ssl_error_generic));
             }
             // Case in dev continue
             if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){

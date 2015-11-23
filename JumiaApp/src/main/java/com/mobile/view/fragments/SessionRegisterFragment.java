@@ -34,7 +34,6 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -317,7 +316,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         super.handleSuccessEvent(baseResponse);
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON SUCCESS: " + eventType.toString());
+        Print.d(TAG, "ON SUCCESS: " + eventType);
         switch (eventType) {
             case REGISTER_ACCOUNT_EVENT:
                 // Get Register Completed Event
@@ -326,7 +325,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
                 // Notify user
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_LOGIN);
+                getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Finish
                 getActivity().onBackPressed();
                 break;
@@ -352,7 +351,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         }
         // Validate
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON ERROR: " + eventType.toString());
+        Print.d(TAG, "ON ERROR: " + eventType);
         switch (eventType) {
             case GET_REGISTRATION_FORM_EVENT:
                 showUnexpectedErrorWarning();
