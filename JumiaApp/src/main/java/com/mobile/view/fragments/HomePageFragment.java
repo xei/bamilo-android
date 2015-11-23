@@ -16,6 +16,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
@@ -408,14 +409,14 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Append some data
      */
     @Override
-    public void onAppendData(FragmentType type, Bundle bundle) {
-        switch (type) {
-            case PRODUCT_DETAILS:
-                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-                break;
-            case CATALOG:
-                bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-                break;
+    public void onAppendData(FragmentType next, String title, String id, Bundle bundle) {
+        if(next == FragmentType.PRODUCT_DETAILS) {
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+        }
+        else if(next == FragmentType.CATALOG) {
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+            // Update the counter
+            CategoriesTableHelper.updateCategoryCounter(id, title);
         }
     }
 
@@ -426,7 +427,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public Bundle onTargetCampaign(String title, String id, TeaserGroupType origin) {
         Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, origin);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, origin);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignsData(title, id, origin));
         return bundle;
     }

@@ -8,7 +8,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.statics.StaticTermsConditions;
+import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
@@ -179,7 +179,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
             return;
         }
         showFragmentContentContainer();
-        textView.setText(((StaticTermsConditions)baseResponse.getMetadata().getData()).getHtml());
+        textView.setText(((StaticPage)baseResponse.getMetadata().getData()).getHtml());
     }
 
     @Override

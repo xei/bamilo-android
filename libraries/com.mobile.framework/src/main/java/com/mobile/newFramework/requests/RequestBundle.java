@@ -1,5 +1,7 @@
 package com.mobile.newFramework.requests;
 
+import android.support.annotation.NonNull;
+
 import com.mobile.newFramework.rest.AigRestAdapter;
 
 import java.util.Map;
@@ -7,12 +9,10 @@ import java.util.Map;
 public class RequestBundle {
 
     private String url;
-
     private Integer cache;
-
     private Map<String, String> data;
-
     private boolean discard;
+    private String parameter;
 
     /*
      * GETTERS
@@ -38,22 +38,29 @@ public class RequestBundle {
         return cache;
     }
 
+    public String getPathParameter() {
+        return parameter;
+    }
+
     /*
      * BUILDER
      */
 
     public static class Builder {
 
-        String url;
-
-        Integer cache;
-
-        Map<String, String> data;
-
-        boolean discard;
+        private String url;
+        private Integer cache;
+        private Map<String, String> data;
+        private boolean discard;
+        private String param1;
 
         public Builder setUrl(String url) {
             this.url = url;
+            return this;
+        }
+
+        public Builder setPathParameter(@NonNull String param1) {
+            this.param1 = param1;
             return this;
         }
 
@@ -78,6 +85,7 @@ public class RequestBundle {
             requestBundle.cache = cache;
             requestBundle.data = data;
             requestBundle.discard = discard;
+            requestBundle.parameter = param1;
             return requestBundle;
         }
 

@@ -101,7 +101,7 @@ public class ConstantsIntentExtra {
     public static final String ORDER_SUMMARY = mPackage + "OrderSummary";
 
     // ############ BANNER TRACKING ###############
-    public static final String ORIGIN_TRACKING_TYPE = "bannerGroupType";
+    public static final String TRACKING_ORIGIN_TYPE = "bannerGroupType";
 
     // ########### MY ORDER ##############
     public static final String PRODUCT_INFO_POS = "ProductInfoPosition";

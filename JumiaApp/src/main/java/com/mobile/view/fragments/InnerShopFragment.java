@@ -3,7 +3,6 @@ package com.mobile.view.fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -18,15 +17,14 @@ import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -56,7 +54,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     private String mTitle;
 
-    private String mUrl;
+    private String mPageId;
 
     private ViewGroup mMainContainer;
 
@@ -101,13 +99,13 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         Bundle arguments = getArguments();
         if (arguments != null) {
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            Print.i(TAG, "RECEIVED DATA: " + mTitle + " " + mUrl);
+            mPageId = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
+            Print.i(TAG, "RECEIVED DATA: " + mTitle + " " + mPageId);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
             mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
+            mPageId = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_ID);
         }
     }
 
@@ -147,7 +145,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVED INSTANCE STATE");
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-        outState.putString(ConstantsIntentExtra.CONTENT_URL, mUrl);
+        outState.putString(ConstantsIntentExtra.CONTENT_ID, mPageId);
     }
 
     @Override
@@ -188,8 +186,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void onValidateDataState() {
         // Get data
-        if (!TextUtils.isEmpty(mUrl)) {
-            triggerGetShop(mUrl);
+        if (!TextUtils.isEmpty(mPageId)) {
+            triggerGetShop(mPageId);
         }
         // Case unexpected error
         else {
@@ -282,24 +280,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     /**
      * Trigger to get the CMS block for shop.
      *
-     * @param url The shop service
+     * @param page The shop service
      */
-    private void triggerGetShop(String url) {
-        Bundle bundle = new Bundle();
-        String staticPageKey = getStaticPageKey(url);
-        bundle.putString(Constants.BUNDLE_URL_KEY, staticPageKey);
-        triggerContentEvent(new GetShopInShopHelper(), bundle, this);
-    }
-
-    /**
-     * extract static page key from the static page url
-     */
-    private String getStaticPageKey(String url){
-        if(!TextUtils.isEmpty(url)){
-            Uri myUri = Uri.parse(url);
-            return myUri.getQueryParameter(GetShopInShopHelper.INNER_SHOP_TAG);
-        }
-        return "";
+    private void triggerGetShop(String page) {
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(page), this);
     }
 
     /*
@@ -394,7 +378,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         if (TextUtils.isNotEmpty(sku)) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
-            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));

@@ -24,7 +24,11 @@ public enum EventType {
 
     GET_CATEGORIES_EVENT("http:/catalog/categories/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCTS_EVENT("http:/search/find/", AigRestContract.NO_CACHE),
+    GET_CATALOG_EVENT("http:/search/find/hash/", AigRestContract.NO_CACHE),
+
+    GET_CATALOG_BRAND("http:/search/find/brand/", AigRestContract.NO_CACHE),
+
+    GET_CATALOG_SELLER("http:/search/find/seller/", AigRestContract.NO_CACHE),
 
     LOGIN_EVENT("https:/customer/login/", AigRestContract.NO_CACHE),
 
@@ -64,7 +68,7 @@ public enum EventType {
 
     REGISTER_ACCOUNT_EVENT("https:/customer/create/", AigRestContract.NO_CACHE),
 
-    GET_TERMS_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
+    GET_STATIC_PAGE("http:/main/getstatic/key/", AigRestContract.MAX_CACHE_TIME),
 
     GET_FORM_REVIEW_EVENT("http:/forms/review/", AigRestContract.MAX_CACHE_TIME),
 
@@ -146,7 +150,7 @@ public enum EventType {
 
     REMOVE_VOUCHER("http:/order/removevoucher/", AigRestContract.NO_CACHE),
 
-    GET_CAMPAIGN_EVENT("http:/campaign/get/", AigRestContract.NO_CACHE),
+    GET_CAMPAIGN_EVENT("http:/campaign/get/slug/", AigRestContract.NO_CACHE),
 
     GET_NEWSLETTERS_FORM_EVENT("managenewsletters", AigRestContract.NO_CACHE),
 
@@ -174,9 +178,9 @@ public enum EventType {
 
     VALIDATE_PRODUCTS("http:/catalog/validate/", AigRestContract.NO_CACHE),
 
-    GET_SHOP_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
+    GET_SHOP_EVENT("http:/main/getstatic/key/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCT_DETAIL("http:/catalog/detail/", AigRestContract.NO_CACHE),
+    GET_PRODUCT_DETAIL("http:/catalog/detail/sku/", AigRestContract.NO_CACHE),
 
     GET_PRODUCT_REVIEWS(GET_PRODUCT_DETAIL.action, AigRestContract.MAX_CACHE_TIME),
 

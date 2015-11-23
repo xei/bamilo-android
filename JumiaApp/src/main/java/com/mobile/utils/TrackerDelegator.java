@@ -675,7 +675,7 @@ public class TrackerDelegator {
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
-        bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, type);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, type);
         trackProductAddedToCart(bundle);
     }
 
@@ -690,7 +690,7 @@ public class TrackerDelegator {
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
-        bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, type);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, type);
         trackProductAddedToCart(bundle);
     }
 
@@ -734,8 +734,8 @@ public class TrackerDelegator {
         // FB
         FacebookTracker.get(sContext).trackAddedToCart(sku, price, JumiaApplication.SHOP_ID, appVersion);
         //GA Banner Flow
-        if (bundle.getSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE) != null) {
-            JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE));
+        if (bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE) != null) {
+            JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE));
         }
 
     }

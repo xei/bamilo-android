@@ -151,7 +151,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
             // Get sku
-            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
+            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // Categories
             categoryTree = arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME) ? arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV" : "";
 
@@ -351,7 +351,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
+        outState.putString(ConstantsIntentExtra.CONTENT_ID, mCompleteProductSku);
         outState.putParcelable(ProductComplete.class.getSimpleName(), mProduct);
     }
 

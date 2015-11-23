@@ -1,16 +1,12 @@
-/**
- * 
- */
 package com.mobile.helpers.products;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -37,10 +33,8 @@ public class GetProductHelper extends SuperBaseHelper {
     }
 
     public static Bundle createBundle(String sku) {
-        ContentValues values = new ContentValues();
-        values.put(GetProductHelper.SKU_TAG, sku);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putString(RestConstants.PARAM_1, sku);
         return bundle;
     }
 

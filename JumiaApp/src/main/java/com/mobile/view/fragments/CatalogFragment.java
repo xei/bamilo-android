@@ -122,6 +122,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private int mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_LIST;
 
     private String mCompleteUrl;
+    private String mKey;
 
     /**
      * Create and return a new instance.
@@ -163,7 +164,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Bundle arguments = getArguments();
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments);
+
+            // TODO REQUEST CATALOG USING KEY
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
+            mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
+
+
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
@@ -191,7 +197,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 }
             }
             // Verify if catalog page was open via navigation drawer
-//            mCategoryId = arguments.getString(ConstantsIntentExtra.CATALOG_SOURCE);
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
         }
 
@@ -205,6 +210,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
         }
+
         // Track most viewed category
         TrackerDelegator.trackCategoryView();
     }
@@ -591,7 +597,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, product.getSku());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
@@ -962,7 +968,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
                 updateWishListProduct();
                 break;
-            case GET_PRODUCTS_EVENT:
+            case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogSuccess(baseResponse);
                 break;
@@ -1028,7 +1034,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                     }
                 }
                 break;
-            case GET_PRODUCTS_EVENT:
+            case GET_CATALOG_EVENT:
             default:
                 onRequestCatalogError(baseResponse);
                 break;

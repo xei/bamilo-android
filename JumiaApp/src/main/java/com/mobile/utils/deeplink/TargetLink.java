@@ -51,7 +51,7 @@ public class TargetLink {
      * Interface used to append some data.
      */
     public interface OnAppendDataListener {
-        void onAppendData(FragmentType type, Bundle data);
+        void onAppendData(FragmentType next, String title, String id, Bundle data);
     }
 
     /**
@@ -152,7 +152,7 @@ public class TargetLink {
             Print.i(TAG, "TARGET LINK: TYPE:" + nextFragmentType + " TITLE:" + mTitle + " ID:" + id);
             // ##### Append data
             if (mAppendDataListener != null) {
-                mAppendDataListener.onAppendData(nextFragmentType, bundle);
+                mAppendDataListener.onAppendData(nextFragmentType, mTitle, id, bundle);
             }
             // ##### Switch fragment
             mFragment.getBaseActivity().onSwitchFragment(nextFragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -216,13 +216,13 @@ public class TargetLink {
      * Create a generic bundle( PDV, INNER_SHOP AND CATALOG).
      */
     @NonNull
-    private static Bundle createBundle(FragmentType mFragmentType, String title, String value, TeaserGroupType origin) {
+    private static Bundle createBundle(FragmentType mNextFragmentType, String title, String value, TeaserGroupType origin) {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, value);
-        bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, origin);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, origin);
         // CASE CATALOG
-        if(mFragmentType == FragmentType.HOME || mFragmentType == FragmentType.INNER_SHOP) {
+        if(mNextFragmentType == FragmentType.HOME || mNextFragmentType == FragmentType.INNER_SHOP) {
             bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
         }
         return bundle;
@@ -245,7 +245,7 @@ public class TargetLink {
         // Case default
         else {
             bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, origin);
+            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, origin);
             bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignList(title, id));
         }
         return bundle;

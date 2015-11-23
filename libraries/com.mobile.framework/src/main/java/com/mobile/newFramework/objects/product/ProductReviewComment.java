@@ -47,7 +47,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-        ratingStars = new ArrayList<RatingStar>();
+        ratingStars = new ArrayList<>();
         try {
             title = jsonObject.getString(RestConstants.TITLE);
             comment = jsonObject.getString(RestConstants.JSON_COMMENT_TAG);

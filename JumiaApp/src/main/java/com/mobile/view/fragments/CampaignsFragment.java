@@ -206,7 +206,7 @@ public class CampaignsFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.ORIGIN_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position));
             return CampaignPageFragment.getInstance(bundle);
         }
@@ -231,12 +231,4 @@ public class CampaignsFragment extends BaseFragment {
         
     }
 
-    /*
-    @Override
-    protected void onClickMaintenanceRetryButton() {
-        mCampaignPagerAdapter = new CampaignPagerAdapter(getChildFragmentManager(), mCampaigns);
-        mCampaignPager.setAdapter(mCampaignPagerAdapter);
-        mCampaignPagerTabStrip.setViewPager(mCampaignPager);
-    }
-    */
 }

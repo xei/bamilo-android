@@ -1,6 +1,5 @@
 package com.mobile.helpers.configs;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
@@ -9,7 +8,6 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -23,10 +21,9 @@ public class GetStaticPageHelper extends SuperBaseHelper {
 
     public static final String INTERNATIONAL_PRODUCT_POLICY_PAGE = "international-product-policy";
 
-
     @Override
     public EventType getEventType() {
-        return EventType.GET_TERMS_EVENT;
+        return EventType.GET_STATIC_PAGE;
     }
 
     @Override
@@ -36,14 +33,12 @@ public class GetStaticPageHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getTermsAndConditions);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getStaticPage);
     }
 
     public static Bundle createBundle(String staticPage) {
-        ContentValues values = new ContentValues();
-        values.put(RestConstants.JSON_KEY_TAG, staticPage);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putString(RestConstants.PARAM_1, staticPage);
         return bundle;
     }
     

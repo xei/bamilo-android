@@ -71,7 +71,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
         // Get product count
         mCount = campaignO.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
         // Get data
-        JSONArray itemsA = campaignO.getJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray itemsA = campaignO.getJSONArray(RestConstants.PRODUCTS);
         for (int i = 0; i < itemsA.length(); i++) {
             CampaignItem item = new CampaignItem();
             if (item.initialize(itemsA.getJSONObject(i))) {
