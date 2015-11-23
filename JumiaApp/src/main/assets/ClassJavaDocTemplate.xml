@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><!--suppress XmlUnboundNsPrefix -->
 <templates><template autoinsert="true" context="java" deleted="false" description="Create JavaDoc for respective class" enabled="true" name="RocketClass">/**
 *
-* Copyright (C) ${year} Rocket Internet - All Rights Reserved
+* Copyright (C) ${year} ${enclosing_project} - All Rights Reserved
 *
 * Unauthorized copying of this file, via any medium is strictly prohibited
 * Proprietary and confidential. 
