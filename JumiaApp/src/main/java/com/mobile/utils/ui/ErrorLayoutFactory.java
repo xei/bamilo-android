@@ -1,5 +1,6 @@
 package com.mobile.utils.ui;
 
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
@@ -224,10 +225,11 @@ public class ErrorLayoutFactory {
 
     private void buildCartEmptyLayout(){
         new Builder()
-                .setImage(R.drawable.img_emptycart)
+                .setImage(R.drawable.ico_empty_cart)
                 .setPrincipalMessage(R.string.order_no_items)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
+                .setButtonTextColor(R.color.white)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
         actualError = CART_EMPTY_LAYOUT;
@@ -307,6 +309,11 @@ public class ErrorLayoutFactory {
 
         Builder setButtonVisible(boolean isToShow){
             mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(isToShow ? View.VISIBLE : View.GONE);
+            return this;
+        }
+
+        Builder setButtonTextColor(@ColorRes int color){
+            ((TextView)mErrorLayout.findViewById(R.id.fragment_root_error_button_message)).setTextColor(mErrorLayout.getContext().getResources().getColor(color));
             return this;
         }
 
