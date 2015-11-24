@@ -50,6 +50,7 @@ import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import retrofit.http.QueryMap;
 
 
@@ -229,9 +230,10 @@ public interface AigApiInterface {
      * ## PRODUCT
      */
 
-    @GET("/")
-    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
-
+ //   @GET("/")
+  //  void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
+    @GET("/{param_1}")
+    void getProductDetail(@Path("param_1") String sku, Callback<BaseResponse<ProductComplete>> callback);
     String getProductDetail = "getProductDetail";
 
     @GET("/")
@@ -439,8 +441,11 @@ public interface AigApiInterface {
     /*
      * ## RATINGS/REVIEWS
      */
-    @GET("/")
-    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
+ //   @GET("/")
+ //   void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
+    //path parameters: required -  sku, rating; optional - page,per_page
+    @GET("/{reviewsParameters}")
+    void getProductReviews(@Path(value="reviewsParameters", encode=false) String reviewsParameters, Callback<BaseResponse<ProductRatingPage>> callback);
 
     String getProductReviews = "getProductReviews";
 
