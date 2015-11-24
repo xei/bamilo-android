@@ -19,7 +19,7 @@ public class AigSearchSkuTest extends AigTestCase {
 
     @Override
     public String getAigInterfaceName() {
-        return AigApiInterface.searchSku;
+        return AigApiInterface.getCatalog;
     }
 
     @Override
