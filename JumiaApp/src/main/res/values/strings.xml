@@ -38,7 +38,8 @@
     <string name="cancel_label">Cancel</string>
     <string name="cart_label">Cart</string>
     <string name="catalog_edit_filters">Edit Filters</string>
-    <string name="catalog_no_results">No results match your filter criteria.\nYou can try to use less specific filters</string>
+    <string name="catalog_no_results">No results match your filter criteria.</string>
+    <string name="catalog_no_results_details">You can try to use less specific filters</string>
     <string name="categories_label">Categories</string>
     <string name="categories_label_uppercase">CATEGORIES</string>
     <string name="categories_name_all">All for</string>
