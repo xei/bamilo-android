@@ -35,7 +35,7 @@ import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.ui.ToastManager;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 import com.newrelic.agent.android.util.NetworkFailure;
 
@@ -72,7 +72,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     private boolean isRequestedPage;
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     private Customer customer;
 
@@ -277,11 +277,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 }
             }
 
-            Print.i(TAG, "code1content parameters: " + parameters.toString());
+            Print.i(TAG, "code1content parameters: " + parameters);
             UrlEncodedFormEntity entity;
             try {
                 entity = new UrlEncodedFormEntity(parameters);
-                Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters.toString());
+                Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters);
                 //setProxy();
                 webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
             } catch (IOException e) {
@@ -455,16 +455,16 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
             Print.i(TAG, "code1payment : onReceivedSslError : " + error);
             Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
-                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_SSL_HOST_MISMATCH, error);
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.ssl_error_host_mismatch));
             } else {
-                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_GENERIC, error);
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.ssl_error_generic));
             }
             // Case in dev continue
             if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
                 handler.proceed();
             } else {
                 String url = view.getUrl();
-                NewRelicTracker.noticeFailureTransaction(url, beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
+                NewRelicTracker.noticeFailureTransaction(url, "https", beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
                 onReceivedError(view, error.getPrimaryError(), error.toString(), url);
                 handler.cancel();
             }

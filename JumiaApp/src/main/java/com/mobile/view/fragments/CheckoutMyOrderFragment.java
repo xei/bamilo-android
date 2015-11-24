@@ -88,6 +88,14 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
 
     private PurchaseEntity mOrderFinish;
 
+    private ImageView mEditShippingAddress;
+
+    private ImageView mEditBillingAddress;
+
+    private ImageView mEditShippingMethod;
+
+    private ImageView mEditPaymentMethod;
+
     /**
      * Empty constructor
      */
@@ -162,24 +170,29 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         mVoucherValue = (TextView) view.findViewById(R.id.text_voucher);
         mTotalValue = (TextView) view.findViewById(R.id.total_value);
         // Get shipping address
-        view.findViewById(R.id.checkout_my_order_shipping_address_btn_edit).setOnClickListener(this);
+        mEditShippingAddress = (ImageView) view.findViewById(R.id.checkout_my_order_shipping_address_btn_edit);
+        mEditShippingAddress.setOnClickListener(this);
         mShippingAddressContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_shipping_address_list);
         // Get billing address
-        view.findViewById(R.id.checkout_my_order_billing_address_btn_edit).setOnClickListener(this);
+        mEditBillingAddress = (ImageView) view.findViewById(R.id.checkout_my_order_billing_address_btn_edit);
+        mEditBillingAddress.setOnClickListener(this);
         mBillingAddressContainer = (ViewGroup) view.findViewById(R.id.checkout_my_order_billing_address_list);
         mBillingAddressIsSame = view.findViewById(R.id.checkout_my_order_billing_address_is_same);
         // Get shipping method
-        view.findViewById(R.id.checkout_my_order_shipping_method_btn_edit).setOnClickListener(this);
+        mEditShippingMethod = (ImageView) view.findViewById(R.id.checkout_my_order_shipping_method_btn_edit);
+        mEditShippingMethod.setOnClickListener(this);
         mShippingMethodName = (TextView) view.findViewById(R.id.checkout_my_order_shipping_method_name);
         // Get payment options
-        view.findViewById(R.id.checkout_my_order_payment_options_btn_edit).setOnClickListener(this);
+        mEditPaymentMethod = (ImageView) view.findViewById(R.id.checkout_my_order_payment_options_btn_edit);
+        mEditPaymentMethod.setOnClickListener(this);
         mPaymentName = (TextView) view.findViewById(R.id.checkout_my_order_payment_name);
         mCoupon = (TextView) view.findViewById(R.id.checkout_my_order_payment_coupon);
         // Get the next step button
         view.findViewById(R.id.checkout_my_order_button_enter).setOnClickListener(this);
         // Price rules
         mPriceRulesContainer = (ViewGroup) view.findViewById(R.id.price_rules_container);
-
+        // Hide or show edit buttons
+        controlEditButtonsVisibility();
         // Validate order
         if (mOrderFinish != null) {
             showMyOrder();
@@ -723,6 +736,24 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
         } else {
             Print.w(TAG, "ERROR ON FINISH CHECKOUT");
             return false;
+        }
+    }
+
+    /**
+     * Method that controls the visibility of the Edit buttons for the case where the user goes to external payment
+     * and presses back to my order
+     */
+    private void controlEditButtonsVisibility(){
+        if(JumiaApplication.INSTANCE.getPaymentMethodForm() != null){
+            mEditShippingAddress.setVisibility(View.GONE);
+            mEditBillingAddress.setVisibility(View.GONE);
+            mEditShippingMethod.setVisibility(View.GONE);
+            mEditPaymentMethod.setVisibility(View.GONE);
+        } else {
+            mEditShippingAddress.setVisibility(View.VISIBLE);
+            mEditBillingAddress.setVisibility(View.VISIBLE);
+            mEditShippingMethod.setVisibility(View.VISIBLE);
+            mEditPaymentMethod.setVisibility(View.VISIBLE);
         }
     }
 

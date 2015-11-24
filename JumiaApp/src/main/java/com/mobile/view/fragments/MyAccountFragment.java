@@ -28,7 +28,6 @@ import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -71,6 +70,9 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     public final static int POSITION_LANGUAGE = 1;
 
     public final static int NOTIFICATION_STATUS = 0;
+
+    public final static int EMAIL_NOTIFICATION_STATUS = 1;
+
     private ViewGroup optionsList;
     
     private ViewGroup appSocialList;
@@ -245,7 +247,11 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
      */
     private void showPreferences(View view) {
         notificationList = (ViewGroup)view.findViewById(R.id.notification_list);
-        MyAccountNotificationsAdapter notificationSettingsAdapter = new MyAccountNotificationsAdapter(getActivity(), getResources().getStringArray(R.array.app_notification_array));
+        MyAccountNotificationsAdapter notificationSettingsAdapter = new MyAccountNotificationsAdapter(
+                getActivity(),
+                getResources().getStringArray(R.array.app_notification_array),
+                getResources().getIntArray(R.array.app_notification_array_checkboxes));
+
 
         new AdapterBuilder(notificationList, notificationSettingsAdapter, this).buildLayout();
     }
@@ -327,7 +333,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         switch (position) {
             case POSITION_SHARE_APP:
                 String text;
-                String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
+                String preText = getString(R.string.install_android, getString(R.string.app_name_placeholder));
                 if(ShopSelector.isRtl()){
                     text = getString(R.string.share_app_link) + " " + preText;
                 } else {
@@ -350,14 +356,11 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     private void handleOnNotifcationListItemClick(ViewGroup parent, int position) {
         switch (position) {
             case NOTIFICATION_STATUS:
-                boolean isEnabled = Ad4PushTracker.getActiveAd4Push(getActivity().getApplicationContext());
-                if(isEnabled){
-                    Ad4PushTracker.setActiveAd4Push(getActivity().getApplicationContext(), !isEnabled);
-                    ((CheckBox)parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG)).setChecked(!isEnabled);
-                } else {
-                    Ad4PushTracker.setActiveAd4Push(getActivity().getApplicationContext(), !isEnabled);
-                    ((CheckBox)parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG)).setChecked(!isEnabled);
-                }
+                CheckBox m = (CheckBox) parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG);
+                m.setChecked(!m.isChecked());
+                break;
+            case EMAIL_NOTIFICATION_STATUS:
+                processOnClickEmailNotification();
                 break;
             default:
                 break;

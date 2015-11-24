@@ -58,7 +58,7 @@ import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListe
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ToastManager;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -163,7 +163,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ARGUMENTS: " + arguments.toString());
+            Print.i(TAG, "ARGUMENTS: " + arguments);
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
@@ -198,7 +198,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
         // Get data from saved instance
         if (savedInstanceState != null) {
-            Print.i(TAG, "SAVED STATE: " + savedInstanceState.toString());
+            Print.i(TAG, "SAVED STATE: " + savedInstanceState);
             mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mQueryValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES);
             mCatalogPage = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_PAGE);
@@ -596,7 +596,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            ToastManager.show(getBaseActivity(), ToastManager.ERROR_OCCURRED);
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
         }
     }
 
@@ -690,7 +690,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      * @param filterValues - the new content values from dialog
      */
     private void onSubmitFilterValues(ContentValues filterValues) {
-        Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues.toString());
+        Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues);
         //Remove old filters from final request values
         for (String key : mCurrentFilterValues.keySet()) {
             mQueryValues.remove(key);
@@ -811,7 +811,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * The listener for grid view
      */
-    private OnScrollListener onRecyclerScrollListener = new OnScrollListener() {
+    private final OnScrollListener onRecyclerScrollListener = new OnScrollListener() {
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -954,10 +954,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
-                int type = eventType == EventType.REMOVE_PRODUCT_FROM_WISH_LIST
-                        ? ToastManager.SUCCESS_REMOVED_FAVOURITE
-                        : ToastManager.SUCCESS_ADDED_FAVOURITE;
-                ToastManager.show(getBaseActivity(), type);
+
+                if(eventType == EventType.REMOVE_PRODUCT_FROM_WISH_LIST){
+                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
+                } else {
+                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_added_saved));
+                }
+
                 updateWishListProduct();
                 break;
             case GET_PRODUCTS_EVENT:

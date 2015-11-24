@@ -38,7 +38,8 @@
     <string name="cancel_label">Cancel</string>
     <string name="cart_label">Cart</string>
     <string name="catalog_edit_filters">Edit Filters</string>
-    <string name="catalog_no_results">No results match your filter criteria.\nYou can try to use less specific filters</string>
+    <string name="catalog_no_results">No results match your filter criteria.</string>
+    <string name="catalog_no_results_details">You can try to use less specific filters</string>
     <string name="categories_label">Categories</string>
     <string name="categories_label_uppercase">CATEGORIES</string>
     <string name="categories_name_all">All for</string>
@@ -336,7 +337,7 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">Your Cart</string>
     <string name="your_order">Your Order</string>
-    <string name="install_jumia_android">Install the %s Android App in an instant</string>
+    <string name="install_android">Install the %s Android App in an instant</string>
     <string name="share_the_app">Share the App</string>
     <string name="can_share_app_with_friends">You can now share the app with your friends</string>
     <string name="app_social">App Social</string>

@@ -103,7 +103,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Set view
         setContentView(R.layout.splash_screen);
         // Get map
-        mMainMapImage = findViewById(R.id.jumiaMap);
+        mMainMapImage = findViewById(R.id.splashMap);
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
@@ -285,15 +285,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         devText.append("\nVersion Name: " + pInfo.versionName);
         devText.append("\nVersion Code: " + pInfo.versionCode);
-        devText.append("\nInstallation: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
-        devText.append("\nUpdate: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
+        devText.append("\nInstallation: " + java.text.DateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
+        devText.append("\nUpdate: " + java.text.DateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
 
 
         try {
             ZipFile zf = new ZipFile(getApplicationInfo().sourceDir);
             ZipEntry ze = zf.getEntry("classes.dex");
             zf.close();
-            devText.append("\nBuild: " + SimpleDateFormat.getInstance().format(new java.util.Date(ze.getTime())));
+            devText.append("\nBuild: " + java.text.DateFormat.getInstance().format(new java.util.Date(ze.getTime())));
             //ze = null;
             //zf = null;
         } catch (Exception e) {

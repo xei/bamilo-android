@@ -134,8 +134,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         view.findViewById(R.id.login_email_button_password).setOnClickListener(this);
         // Get continue button
         view.findViewById(R.id.login_email_button_create).setOnClickListener(this);
-        // Validate state
-        onValidateState();
     }
 
     /*
@@ -146,6 +144,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onStart() {
         super.onStart();
+        // Validate state
+        onValidateState();
         Print.i(TAG, "ON START");
     }
 
@@ -250,6 +250,9 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getContext(), form);
         // Load saved state
         mDynamicForm.loadSaveFormState(mFormSavedState);
+
+        if(mFormContainer.getChildCount() > 0)
+            mFormContainer.removeAllViews();
         // Add form view
         mFormContainer.addView(mDynamicForm.getContainer());
         // Show
@@ -342,10 +345,11 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
-                // Notify user
-                showInfoLoginSuccess();
+
                 // Finish
                 getActivity().onBackPressed();
+                // Notify user
+                showInfoLoginSuccess();
                 return;
             case GET_LOGIN_FORM_EVENT:
                 mForm = (Form) baseResponse.getMetadata().getData();

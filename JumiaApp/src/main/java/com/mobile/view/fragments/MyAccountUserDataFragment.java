@@ -247,7 +247,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      * @param isUserDataError
      */
     private void displayErrorHint(String hint, boolean isUserDataError) {
-        getBaseActivity().warningFactory.showWarning(isUserDataError ? WarningFactory.USER_DATA_VALIDATION : WarningFactory.CHANGE_PASSWORD_VALIDATION, hint);
+        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, hint);
     }
 
     /**
@@ -329,14 +329,14 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
             case CHANGE_PASSWORD_EVENT:
                 Print.d(TAG, "changePasswordEvent: Password changed with success");
                 if (null != getActivity()) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.CHANGE_PASSWORD_SUCCESS, getString(R.string.password_changed));
+                    getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.password_changed));
                     showFragmentContentContainer();
                 }
                 break;
             case EDIT_USER_DATA_EVENT:
                 Print.d(TAG, "editUserEvent: user data edit with success fsdfsdffd ");
                 if (null != getActivity()) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.USER_DATA_SUCCESS, getString(R.string.edit_user_success));
+                    getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.edit_user_success));
                     showFragmentContentContainer();
                 }
                 break;
