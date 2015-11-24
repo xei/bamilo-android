@@ -90,8 +90,6 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Jumia_Dialog_NoTitle);
-        //setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_Jumia_Dialog_Bottom_Sheet);
     }
 
     /*
@@ -256,7 +254,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
 
         private int mCheckedPosition = ProductMultiple.NO_DEFAULT_SIMPLE_POS;
 
-        private LayoutInflater mInflater;
+        private final LayoutInflater mInflater;
 
         /**
          * Constructor

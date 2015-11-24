@@ -13,7 +13,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.ui.ToastManager;
 import com.mobile.utils.ui.VariationProductsGridAdapter;
 import com.mobile.utils.ui.VariationProductsGridView;
 import com.mobile.view.R;
@@ -62,7 +61,7 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ARGUMENTS: " + arguments.toString());
+            Print.i(TAG, "ARGUMENTS: " + arguments);
             mProductComplete = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
         }
 
@@ -109,7 +108,7 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            ToastManager.show(getBaseActivity(), ToastManager.ERROR_OCCURRED);
+            getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
         }
     }
 

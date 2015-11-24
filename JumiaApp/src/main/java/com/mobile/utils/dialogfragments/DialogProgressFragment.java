@@ -45,7 +45,7 @@ public class DialogProgressFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(R.style.Theme_Jumia_Dialog_Progress, R.style.Theme_Jumia_Dialog_Progress);
+        setStyle(R.style.Theme_Custom_Dialog_Progress, R.style.Theme_Custom_Dialog_Progress);
     }
     
     /*
