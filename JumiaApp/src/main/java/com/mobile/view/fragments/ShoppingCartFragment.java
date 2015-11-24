@@ -497,7 +497,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         hideActivityProgress();
         if(JumiaApplication.INSTANCE.getCart() != null)
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
-        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
 
     }
 
@@ -511,7 +511,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (addMultipleStruct.getErrorMessages() != null) {
             ArrayList<String> notAdded = addMultipleStruct.getErrorMessages();
             if (!notAdded.isEmpty()) {
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
             }
         }
 
@@ -1048,7 +1048,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                         triggerRemoveVoucher();
                     }
                 } else {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
                 }
             }
         });

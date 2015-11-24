@@ -290,10 +290,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         isOnStoppingProcess = false;
 
-        if (getBaseActivity() != null && !isNestedFragment) {
-            getBaseActivity().warningFactory.hideWarning();
-        }
-
         /**
          * Adjust state for each fragment type.
          */
@@ -647,44 +643,44 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.no_internet_access_warning_title));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.no_internet_access_warning_title));
         hideActivityProgress();
         showFragmentContentContainer();
     }
 
     protected void showUnexpectedErrorWarning() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
+        getBaseActivity().showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
         showFragmentContentContainer();
         hideActivityProgress();
     }
 
     public void showInfoAddToShoppingCartCompleted() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.added_to_shop_cart_dialog_text));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.added_to_shop_cart_dialog_text));
         }
     }
 
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_add_to_shopping_cart));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.error_add_to_shopping_cart));
         }
     }
 
     public void showInfoLoginSuccess() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.succes_login));
         }
     }
 
     public void showInfoAddToShoppingCartOOS() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_outof_stock));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.product_outof_stock));
         }
     }
 
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.products_removed_saved));
         }
     }
 
