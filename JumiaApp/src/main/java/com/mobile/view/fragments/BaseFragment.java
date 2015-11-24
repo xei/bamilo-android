@@ -651,7 +651,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET, getString(R.string.no_internet_access_warning_title));
+        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.no_internet_access_warning_title));
         hideActivityProgress();
         showFragmentContentContainer();
     }
@@ -664,31 +664,31 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public void showInfoAddToShoppingCartCompleted() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART, getString(R.string.added_to_shop_cart_dialog_text));
+            getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.added_to_shop_cart_dialog_text));
         }
     }
 
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART, getString(R.string.error_add_to_shopping_cart));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_add_to_shopping_cart));
         }
     }
 
     public void showInfoLoginSuccess() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.LOGIN_SUCCESS, getString(R.string.succes_login));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
         }
     }
 
     public void showInfoAddToShoppingCartOOS() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_OUT_OF_STOCK, getString(R.string.product_outof_stock));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_outof_stock));
         }
     }
 
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED, getString(R.string.products_removed_saved));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
         }
     }
 

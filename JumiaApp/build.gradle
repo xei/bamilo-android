@@ -200,6 +200,15 @@ android {
         disable 'ExtraTranslation','MissingTranslation'
     }
 
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileNameRemoveReferences = outputFile.name.replace('JumiaApp', "App")
+                output.outputFile = new File(outputFile.parent, fileNameRemoveReferences)
+            }
+        }
+    }
 }
 
 dependencies {

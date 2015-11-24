@@ -49,7 +49,6 @@ import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
@@ -57,6 +56,7 @@ import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ShoppingCartUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.math.BigDecimal;
@@ -497,7 +497,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         hideActivityProgress();
         if(JumiaApplication.INSTANCE.getCart() != null)
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
-        Toast.makeText(getBaseActivity(), getString(R.string.some_products_not_added), Toast.LENGTH_LONG).show();
+        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
 
     }
 
@@ -511,7 +511,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (addMultipleStruct.getErrorMessages() != null) {
             ArrayList<String> notAdded = addMultipleStruct.getErrorMessages();
             if (!notAdded.isEmpty()) {
-                Toast.makeText(getBaseActivity(), R.string.some_products_not_added, Toast.LENGTH_SHORT).show();
+                getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
             }
         }
 
@@ -1048,7 +1048,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                         triggerRemoveVoucher();
                     }
                 } else {
-                    Toast.makeText(getBaseActivity(), getString(R.string.voucher_error_message), Toast.LENGTH_LONG).show();
+                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
                 }
             }
         });

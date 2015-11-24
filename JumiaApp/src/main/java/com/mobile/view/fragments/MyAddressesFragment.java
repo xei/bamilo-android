@@ -21,8 +21,8 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.GenericRadioGroup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.HashMap;
@@ -271,7 +271,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             String addressId = mBottomRadioGroup.getCheckedTag().toString();
             submitForm(addressId, addressId, IS_SAME_ADDRESS);
         } else {
-            Toast.makeText(getBaseActivity(), getString(R.string.billing_choose_address), Toast.LENGTH_SHORT).show();
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.billing_choose_address));
         }
     }
 
@@ -292,7 +292,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             // Submit values
             submitForm(shippingAddressId, billingAddressId, isSameAddress);
         } else {
-            Toast.makeText(getBaseActivity(), getString(R.string.billing_choose_address), Toast.LENGTH_SHORT).show();
+            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.billing_choose_address));
         }
     }
 
