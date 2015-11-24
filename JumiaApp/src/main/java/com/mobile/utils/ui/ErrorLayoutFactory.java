@@ -68,7 +68,7 @@ public class ErrorLayoutFactory {
     @Retention(RetentionPolicy.SOURCE)
     public @interface LayoutErrorType{}
 
-    private View mErrorLayout;
+    private final View mErrorLayout;
 
     private int actualError;
 
@@ -246,9 +246,10 @@ public class ErrorLayoutFactory {
 
     private void buildCatalogNoResultsLayout(){
         new Builder()
-                .setImage(R.drawable.img_filternoresults)
+                .setImage(R.drawable.ic_filter_empty)
                 .setPrincipalMessage(R.string.catalog_no_results)
-                .setDetailMessageVisible(false)
+                .setDetailMessageVisible(true)
+                .setDetailMessage(R.string.catalog_no_results_details)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
@@ -257,7 +258,7 @@ public class ErrorLayoutFactory {
 
     private void buildCatalogUnexpectedErrorLayout(){
         new Builder()
-                .setImage(R.drawable.img_filternoresults)
+                .setImage(R.drawable.ic_filter_empty)
                 .setPrincipalMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.catalog_edit_filters)

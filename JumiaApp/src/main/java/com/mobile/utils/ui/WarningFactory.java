@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
@@ -64,6 +65,7 @@ public class WarningFactory {
     protected View mWarningBar;
 
     private String mWarningMessage;
+    private String actualWarningMessage;
 
     /**
      * Create a new instance of WarningFactory.
@@ -132,13 +134,14 @@ public class WarningFactory {
      * @param warning
      */
     private void showWarningSuccess(int warning){
-        if(actualWarning != warning){
+        if(actualWarning != warning || !TextUtils.equals(actualWarningMessage, mWarningMessage)){
             new Builder().setText(mWarningMessage)
                     .setBackground(R.color.green_warning)
                     .setImageVisibility(false)
                     .setAnimationDuration(_3_SECONDS)
                     .startAnimation();
             actualWarning = warning;
+            actualWarningMessage = mWarningMessage;
         } else {
             new Builder().startAnimation();
         }
@@ -149,13 +152,14 @@ public class WarningFactory {
      * @param warning
      */
     private void showWarningError(int warning) {
-        if(actualWarning != warning){
+        if(actualWarning != warning || !TextUtils.equals(actualWarningMessage, mWarningMessage)){
             new Builder().setText(mWarningMessage)
                     .setBackground(R.color.red_warning)
                     .setImageVisibility(true)
                     .setAnimationDuration(_3_SECONDS)
                     .startAnimation();
             actualWarning = warning;
+            actualWarningMessage = mWarningMessage;
         } else {
             new Builder().startAnimation();
         }

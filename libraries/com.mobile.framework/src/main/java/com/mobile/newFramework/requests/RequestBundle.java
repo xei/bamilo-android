@@ -7,12 +7,10 @@ import java.util.Map;
 public class RequestBundle {
 
     private String url;
-
     private Integer cache;
-
     private Map<String, String> data;
-
     private boolean discard;
+    private String path;
 
     /*
      * GETTERS
@@ -20,6 +18,10 @@ public class RequestBundle {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public Map<String, String> getData() {
@@ -41,16 +43,14 @@ public class RequestBundle {
     /*
      * BUILDER
      */
-
+    @SuppressWarnings("unused")
     public static class Builder {
 
-        String url;
-
-        Integer cache;
-
-        Map<String, String> data;
-
-        boolean discard;
+        private String url;
+        private Integer cache;
+        private Map<String, String> data;
+        private boolean discard;
+        private String path;
 
         public Builder setUrl(String url) {
             this.url = url;
@@ -72,12 +72,18 @@ public class RequestBundle {
             return this;
         }
 
+        public Builder setPath(String path) {
+            this.path = path;
+            return this;
+        }
+
         public RequestBundle build() {
             RequestBundle requestBundle = new RequestBundle();
             requestBundle.url = url;
             requestBundle.cache = cache;
             requestBundle.data = data;
             requestBundle.discard = discard;
+            requestBundle.path = path;
             return requestBundle;
         }
 
