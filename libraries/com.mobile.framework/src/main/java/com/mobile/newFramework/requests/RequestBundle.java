@@ -1,7 +1,5 @@
 package com.mobile.newFramework.requests;
 
-import android.support.annotation.NonNull;
-
 import com.mobile.newFramework.rest.AigRestAdapter;
 
 import java.util.Map;

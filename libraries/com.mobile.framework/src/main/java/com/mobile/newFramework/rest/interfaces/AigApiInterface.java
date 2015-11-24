@@ -212,19 +212,8 @@ public interface AigApiInterface {
      * ## CAMPAIGN
      */
 
-  //  @GET("/")
- //   void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
-    @GET("/{path}")
-    void getCampaign(@Path("path") String campaignSlug, Callback<BaseResponse<Campaign>> callback);
-    String getCampaign = "getCampaign";
 
-    /*
-     * ## PRODUCT
-     */
 
-    @GET("/{path}")
-    void getProductDetail(@Path("path") String path, Callback<BaseResponse<ProductComplete>> callback);
-    String getProductDetail = "getProductDetail";
 
     @GET("/")
     void getProductBundle(Callback<BaseResponse<BundleList>> callback);
