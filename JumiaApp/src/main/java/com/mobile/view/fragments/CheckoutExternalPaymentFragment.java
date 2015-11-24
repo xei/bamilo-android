@@ -30,6 +30,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.HockeyStartup;
@@ -309,7 +310,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     private void prepareCookieStore() {
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (DeviceInfoHelper.isPosLollipop()) {
             // AppRTC requires third party cookies to work
             CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.setAcceptThirdPartyCookies(webview, true);

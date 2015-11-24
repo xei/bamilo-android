@@ -1744,11 +1744,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         return false;
     }
 
-    public void showWarning(final int warningFact){
+    public void showWarning(@WarningFactory.WarningErrorType final int warningFact){
         warningFactory.showWarning(warningFact);
     }
 
-    public void showWarningMessage(final int warningFact, final String message){
+    public void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact, final String message){
 
         warningFactory.showWarning(warningFact, message);
     }
