@@ -384,10 +384,11 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             break;
         case SUBSCRIBE_NEWSLETTERS_EVENT:
             Print.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
-            // Show toast
-            getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.newsletter_saved_message));
+
             // Goto back
             getBaseActivity().onBackPressed();
+            // Show toast
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.newsletter_saved_message));
             break;
         default:
             break;

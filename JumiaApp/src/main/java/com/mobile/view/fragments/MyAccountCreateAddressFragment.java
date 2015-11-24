@@ -121,6 +121,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
             } else {
                 getBaseActivity().onBackPressed();
             }
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.create_addresses_success));
         }
     }
 
@@ -163,8 +164,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     }
 
     private void onErrorOccurred(){
-        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
         getBaseActivity().onBackPressed();
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
     }
 
 }
