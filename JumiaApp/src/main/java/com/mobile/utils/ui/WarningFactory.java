@@ -31,7 +31,7 @@ public class WarningFactory {
 
 //    public static final int _4_SECONDS = 4000;
     public static final int _3_SECONDS = 3000;
-    public static final int _5_SECONDS = 5000;
+//    public static final int _5_SECONDS = 5000;
 
     /**
      * ################# WARNING BAR #################
@@ -138,7 +138,7 @@ public class WarningFactory {
             new Builder().setText(mWarningMessage)
                     .setBackground(R.color.green_warning)
                     .setImageVisibility(false)
-                    .setAnimationDuration(_5_SECONDS)
+                    .setAnimationDuration(_3_SECONDS)
                     .startAnimation();
             actualWarning = warning;
             actualWarningMessage = mWarningMessage;
@@ -156,7 +156,7 @@ public class WarningFactory {
             new Builder().setText(mWarningMessage)
                     .setBackground(R.color.red_warning)
                     .setImageVisibility(true)
-                    .setAnimationDuration(_5_SECONDS)
+                    .setAnimationDuration(_3_SECONDS)
                     .startAnimation();
             actualWarning = warning;
             actualWarningMessage = mWarningMessage;
@@ -169,7 +169,7 @@ public class WarningFactory {
         if(actualWarning != CHOOSE_ONE_SIZE) {
             new Builder().setText(R.string.product_variance_choose_error)
                     .setBackground(R.color.red_warning)
-                    .setAnimationDuration(_5_SECONDS)
+                    .setAnimationDuration(_3_SECONDS)
                     .setImageVisibility(false)
                     .show();
 
@@ -184,7 +184,7 @@ public class WarningFactory {
             if(actualWarning != PROBLEM_FETCHING_DATA) {
                 new Builder().setText(R.string.server_error)
                         .setBackground(R.color.red_warning)
-                        .setAnimationDuration(_5_SECONDS)
+                        .setAnimationDuration(_3_SECONDS)
                         .setImageVisibility(true)
                         .show();
                 actualWarning = PROBLEM_FETCHING_DATA;
@@ -198,7 +198,7 @@ public class WarningFactory {
                 new Builder().setText(R.string.server_error)
                         .setBackground(R.color.red_warning)
                         .setImageVisibility(true)
-                        .setAnimationDuration(_5_SECONDS)
+                        .setAnimationDuration(_3_SECONDS)
                         .startAnimation();
                 actualWarning = PROBLEM_FETCHING_DATA_ANIMATION;
             } else {
@@ -218,7 +218,7 @@ public class WarningFactory {
      */
     private class Builder {
 
-        private int animationLength = _5_SECONDS;
+        private int animationLength = _3_SECONDS;
 
         Builder(){
             mWarningBar.clearAnimation();

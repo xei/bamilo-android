@@ -835,7 +835,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
                 break;
             case GET_PRODUCT_DETAIL:
                 if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
                     getActivity().onBackPressed();
                     return;
                 } else {
@@ -891,7 +891,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
                 break;
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
 
                     try {
                         getBaseActivity().onBackPressed();

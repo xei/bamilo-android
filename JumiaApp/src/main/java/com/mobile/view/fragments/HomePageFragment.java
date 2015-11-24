@@ -460,7 +460,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
             bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.error_fb_permission_not_granted));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_fb_permission_not_granted));
         }
     }
 

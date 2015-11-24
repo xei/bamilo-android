@@ -108,7 +108,7 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
+            getBaseActivity().showWarningMessage(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
         }
     }
 

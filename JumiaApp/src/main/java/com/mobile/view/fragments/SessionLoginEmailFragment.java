@@ -348,11 +348,11 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
-                // Notify user
-                showInfoLoginSuccess();
+
                 // Finish
                 getActivity().onBackPressed();
-
+                // Notify user
+                showInfoLoginSuccess();
                 return;
             case GET_LOGIN_FORM_EVENT:
                 mForm = (Form) baseResponse.getMetadata().getData();
