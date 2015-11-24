@@ -7,10 +7,10 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -45,7 +45,8 @@ public class GetProductOffersHelper extends SuperBaseHelper {
         values.put(OFFER_SKU, sku);
         values.put(ALL_OFFERS, true);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+     //   bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putParcelable(RestConstants.PARAM_1, values);
         return bundle;
     }
     

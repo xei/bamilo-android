@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.mobile.helpers.products.GetReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -19,6 +20,7 @@ import com.mobile.newFramework.utils.output.Print;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class SuperBaseHelper implements AigResponseCallback {
 
@@ -90,7 +92,34 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
  * */
     protected String getRequestPathParameter(Bundle args) {
 
-        String pathParameter = (args != null) ? args.getString(RestConstants.SLUG) : null;
+        String pathParameter="";
+
+        if(args != null && args.containsKey(RestConstants.PARAM_1))
+        {
+            Object parameterValue = args.get(RestConstants.PARAM_1);
+
+            if(parameterValue instanceof String) {
+                return parameterValue.toString();
+            }
+            else if(parameterValue instanceof ContentValues){
+
+                ContentValues contentPathParameterValues = (ContentValues) parameterValue;
+                Set<String> keys = contentPathParameterValues.keySet();
+
+                //sku must be the first added
+                if(contentPathParameterValues.containsKey(GetReviewsHelper.SKU))
+                    pathParameter+= contentPathParameterValues.get((GetReviewsHelper.SKU).toString());
+
+                for(String key : keys){
+
+                    if(!key.equals(GetReviewsHelper.SKU)){
+                        pathParameter += "/"+ key+ "/" +contentPathParameterValues.get(key).toString();
+                    }
+
+                }
+            }
+        }
+
         return pathParameter;
 
     }

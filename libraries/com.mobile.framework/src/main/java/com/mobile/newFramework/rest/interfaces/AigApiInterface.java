@@ -223,17 +223,18 @@ public interface AigApiInterface {
 
   //  @GET("/")
  //   void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
-    @GET("/{slug}")
-    void getCampaign(@Path("slug") String campaignSlug, Callback<BaseResponse<Campaign>> callback);
+    @GET("/{param_1}")
+    void getCampaign(@Path("param_1") String campaignSlug, Callback<BaseResponse<Campaign>> callback);
     String getCampaign = "getCampaign";
 
     /*
      * ## PRODUCT
      */
 
-    @GET("/")
-    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
-
+ //   @GET("/")
+  //  void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
+    @GET("/{param_1}")
+    void getProductDetail(@Path("param_1") String sku, Callback<BaseResponse<ProductComplete>> callback);
     String getProductDetail = "getProductDetail";
 
     @GET("/")
@@ -241,8 +242,9 @@ public interface AigApiInterface {
 
     String getProductBundle = "getProductBundle";
 
-    @GET("/")
-    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<OfferList>> callback);
+    @GET("/{offersParameters}")
+   // void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<OfferList>> callback);
+    void getProductOffers(@Path (value="offersParameters", encode=false) String offersParameters, Callback<BaseResponse<OfferList>> callback);
 
     String getProductOffers = "getProductOffers";
 
@@ -441,8 +443,11 @@ public interface AigApiInterface {
     /*
      * ## RATINGS/REVIEWS
      */
-    @GET("/")
-    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
+ //   @GET("/")
+ //   void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
+    //path parameters: required -  sku, rating; optional - page,per_page
+    @GET("/{reviewsParameters}")
+    void getProductReviews(@Path(value="reviewsParameters", encode=false) String reviewsParameters, Callback<BaseResponse<ProductRatingPage>> callback);
 
     String getProductReviews = "getProductReviews";
 

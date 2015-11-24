@@ -34,7 +34,7 @@ public class GetCampaignHelper extends SuperBaseHelper {
 
         // Request data
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.SLUG,campaignId);
+        bundle.putString(RestConstants.PARAM_1,campaignId);
         return bundle;
     }
 }
