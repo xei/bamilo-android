@@ -378,7 +378,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
         // Case error
         else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
             getBaseActivity().onBackPressed();
         }
     }
@@ -752,7 +752,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         try {
             boolean value = mProduct.isWishList();
             mWishListButton.setSelected(value);
-            getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE,
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE,
                     value ? getString(R.string.products_added_saved) : getString(R.string.products_removed_saved));
 
             setOutOfStockButton();
@@ -1125,7 +1125,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();
                 // Validate product
                 if (product == null || product.getName() == null) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
                     getBaseActivity().onBackPressed();
                     return;
                 }

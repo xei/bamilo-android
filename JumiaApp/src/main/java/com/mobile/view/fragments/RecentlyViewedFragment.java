@@ -202,7 +202,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      * @author Andre Lopes
      */
     protected void showEmpty() {
-        getBaseActivity().warningFactory.hideWarning();
+        getBaseActivity().hideWarningMessage();
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(null);
         showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this);
@@ -261,7 +261,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     protected void onClickVariation(View view) {
         try {
             // Hide warning
-            getBaseActivity().warningFactory.hideWarning();
+            getBaseActivity().hideWarningMessage();
             // Show dialog
             int position = Integer.parseInt(view.getTag().toString());
             ProductMultiple addableToCart = mProducts.get(position);

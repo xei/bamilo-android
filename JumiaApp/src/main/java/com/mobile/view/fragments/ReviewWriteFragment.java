@@ -804,8 +804,8 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             case GET_PRODUCT_DETAIL:
                 Print.d(TAG, "GOT GET_PRODUCT_EVENT");
                 if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
                     getActivity().onBackPressed();
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
                 } else {
                     completeProduct = (ProductComplete) baseResponse.getMetadata().getData();
                     // triggerAutoLogin();
@@ -882,7 +882,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
 
                     showFragmentContentContainer();
 

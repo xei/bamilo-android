@@ -269,7 +269,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             String addressId = mBottomRadioGroup.getCheckedTag().toString();
             submitForm(addressId, addressId, IS_SAME_ADDRESS);
         } else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.billing_choose_address));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.billing_choose_address));
         }
     }
 
@@ -290,7 +290,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             // Submit values
             submitForm(shippingAddressId, billingAddressId, isSameAddress);
         } else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.billing_choose_address));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.billing_choose_address));
         }
     }
 

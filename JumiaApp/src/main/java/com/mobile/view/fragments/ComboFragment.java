@@ -386,12 +386,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         }
     }
 
-
-//    private void executeAddToShoppingCartCompleted() {
-//        getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.added_to_shop_cart_dialog_text));
-//    }
-
-
     private void addToShoppingCartFailed() {
         mDialogAddedToCart = DialogGenericFragment.newInstance(false, true, null,
                 getResources().getString(R.string.error_add_to_shopping_cart),
@@ -403,8 +397,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                         int id = v.getId();
                         if (id == R.id.button1) {
                             mDialogAddedToCart.dismiss();
+                        } else if (id == R.id.button2) {
+
                         }
-//                        else if (id == R.id.button2) {}
                     }
                 });
 

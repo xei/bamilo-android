@@ -157,7 +157,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
         // In case of all addresses already are the default ones
         if(isSetBillingComplete && isSetShippingComplete){
-            getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.addresses_saved_message));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.addresses_saved_message));
             resetRequests();
         }
     }
@@ -220,13 +220,13 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
             case SET_DEFAULT_SHIPPING_ADDRESS:
                 setDefaultChecked(Boolean.parseBoolean(sameAddress));
                 showFragmentContentContainer();
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
                 resetRequests();
                 break;
             case SET_DEFAULT_BILLING_ADDRESS:
                 setDefaultChecked(Boolean.parseBoolean(sameAddress));
                 showFragmentContentContainer();
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
                 resetRequests();
                 break;
             default:
@@ -286,7 +286,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
      */
     protected void checkSettingRequestComplete(){
         if(isSetBillingComplete && isSetShippingComplete){
-            getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.addresses_saved_message));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.addresses_saved_message));
             onClickRetryButton();
         }
     }

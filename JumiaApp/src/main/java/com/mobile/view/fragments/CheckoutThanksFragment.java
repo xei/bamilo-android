@@ -392,7 +392,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private void onClickOrderNumber(View v){
         ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         ClipMan.setPrimaryClip(ClipData.newPlainText("simple text", ((TextView) v).getText()));
-        getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.copied_to_clipboard));
+        getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.copied_to_clipboard));
     }
     
     /**
