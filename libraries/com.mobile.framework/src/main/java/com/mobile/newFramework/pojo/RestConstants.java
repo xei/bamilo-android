@@ -454,4 +454,6 @@ public class RestConstants {
     public static final String TRANSACTION_TAX = "transaction_tax";
     public static final String ORDER_GRAND_TOTAL = "order_grand_total";
 
+    public static final String PARAM_1 = "param1";
+
 }
