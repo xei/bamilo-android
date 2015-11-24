@@ -12,7 +12,7 @@ public class RequestBundle {
     private Integer cache;
     private Map<String, String> data;
     private boolean discard;
-    private String parameter;
+    private String path;
 
     /*
      * GETTERS
@@ -20,6 +20,10 @@ public class RequestBundle {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public Map<String, String> getData() {
@@ -38,29 +42,20 @@ public class RequestBundle {
         return cache;
     }
 
-    public String getPathParameter() {
-        return parameter;
-    }
-
     /*
      * BUILDER
      */
-
+    @SuppressWarnings("unused")
     public static class Builder {
 
         private String url;
         private Integer cache;
         private Map<String, String> data;
         private boolean discard;
-        private String param1;
+        private String path;
 
         public Builder setUrl(String url) {
             this.url = url;
-            return this;
-        }
-
-        public Builder setPathParameter(@NonNull String param1) {
-            this.param1 = param1;
             return this;
         }
 
@@ -79,13 +74,18 @@ public class RequestBundle {
             return this;
         }
 
+        public Builder setPath(String path) {
+            this.path = path;
+            return this;
+        }
+
         public RequestBundle build() {
             RequestBundle requestBundle = new RequestBundle();
             requestBundle.url = url;
             requestBundle.cache = cache;
             requestBundle.data = data;
             requestBundle.discard = discard;
-            requestBundle.parameter = param1;
+            requestBundle.path = path;
             return requestBundle;
         }
 

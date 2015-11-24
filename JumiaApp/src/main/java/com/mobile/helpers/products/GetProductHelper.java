@@ -1,5 +1,6 @@
 package com.mobile.helpers.products;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
@@ -20,7 +21,7 @@ public class GetProductHelper extends SuperBaseHelper {
     
     protected static String TAG = GetProductHelper.class.getSimpleName();
 
-    public static final String SKU_TAG = "sku";
+    public static final String SKU_TAG = RestConstants.SKU;
 
     @Override
     public EventType getEventType() {
@@ -33,8 +34,10 @@ public class GetProductHelper extends SuperBaseHelper {
     }
 
     public static Bundle createBundle(String sku) {
+        ContentValues values = new ContentValues();
+        values.put(RestConstants.SKU, sku);
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.PARAM_1, sku);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 
