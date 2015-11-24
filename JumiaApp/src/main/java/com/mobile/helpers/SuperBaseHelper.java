@@ -5,8 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.mobile.helpers.products.GetReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
@@ -18,6 +20,7 @@ import com.mobile.newFramework.utils.output.Print;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class SuperBaseHelper implements AigResponseCallback {
 
@@ -48,6 +51,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         // Create builder
         RequestBundle.Builder requestBundleBuilder = new RequestBundle.Builder()
                 .setUrl(getRequestUrl(args))
+                .setPathParameter(getRequestPathParameter(args))
                 .setCache(mEventType.cacheTime);
 
         // Validate data
@@ -80,6 +84,44 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
                 return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
             }
         }
+    }
+
+
+/**
+ * Add a path parameter to request
+ * */
+    protected String getRequestPathParameter(Bundle args) {
+
+        String pathParameter="";
+
+        if(args != null && args.containsKey(RestConstants.PARAM_1))
+        {
+            Object parameterValue = args.get(RestConstants.PARAM_1);
+
+            if(parameterValue instanceof String) {
+                return parameterValue.toString();
+            }
+            else if(parameterValue instanceof ContentValues){
+
+                ContentValues contentPathParameterValues = (ContentValues) parameterValue;
+                Set<String> keys = contentPathParameterValues.keySet();
+
+                //sku must be the first added
+                if(contentPathParameterValues.containsKey(GetReviewsHelper.SKU))
+                    pathParameter+= contentPathParameterValues.get((GetReviewsHelper.SKU).toString());
+
+                for(String key : keys){
+
+                    if(!key.equals(GetReviewsHelper.SKU)){
+                        pathParameter += "/"+ key+ "/" +contentPathParameterValues.get(key).toString();
+                    }
+
+                }
+            }
+        }
+
+        return pathParameter;
+
     }
 
     protected Map<String, String> getRequestData(Bundle args) {
