@@ -31,7 +31,7 @@ public class WarningFactory {
 
 //    public static final int _4_SECONDS = 4000;
     public static final int _3_SECONDS = 3000;
-    public static final int _5_SECONDS = 5000;
+//    public static final int _5_SECONDS = 5000;
 
     /**
      * ################# WARNING BAR #################
@@ -218,7 +218,7 @@ public class WarningFactory {
      */
     private class Builder {
 
-        private int animationLength = _5_SECONDS;
+        private int animationLength = _3_SECONDS;
 
         Builder(){
             mWarningBar.clearAnimation();
