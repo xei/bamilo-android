@@ -53,7 +53,7 @@ public class ShippingMethodSubFormHolder implements IJSONSerializable{
         try {
             id = jsonObject.optString(RestConstants.ID);
             name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-            key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
+            key = jsonObject.optString(RestConstants.KEY);
             scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
             if(jsonObject.has(RestConstants.TYPE)){
                 type = jsonObject.optString(RestConstants.TYPE);

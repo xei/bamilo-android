@@ -917,7 +917,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private void goToProductDetails(String sku) {
         if (!TextUtils.isEmpty(sku)) {
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);

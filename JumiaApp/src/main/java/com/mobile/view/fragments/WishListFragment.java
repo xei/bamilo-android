@@ -412,7 +412,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON ITEM CLICK");
         String sku = (String) view.getTag(R.id.target_sku);
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

@@ -93,7 +93,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments);
             bundleList = arguments.getParcelable(RestConstants.JSON_BUNDLE_PRODUCTS);
-            productSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
+            productSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
         }
     }
 
@@ -261,7 +261,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     }
 
     @Override
-    public void onHeaderClick(String targetType, String url, String title) {
+    public void onHeaderClick(String target, String title) {
 
     }
 

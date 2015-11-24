@@ -41,7 +41,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_PRODUCTS_EVENT;
+        return EventType.GET_CATALOG_EVENT;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class GetReviewsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductReviews);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductDetailReviews);
    }
 
     public static Bundle createBundle(String sku, int page) {

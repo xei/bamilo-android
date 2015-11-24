@@ -150,7 +150,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
             // Get sku
-            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
+            mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // Categories
             categoryTree = arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME) ? arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV" : "";
 
@@ -350,7 +350,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
+        outState.putString(ConstantsIntentExtra.CONTENT_ID, mCompleteProductSku);
         outState.putParcelable(ProductComplete.class.getSimpleName(), mProduct);
     }
 
@@ -774,8 +774,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickGlobalDeliveryLinkButton() {
         Log.i(TAG, "ON CLICK GLOBAL SELLER");
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.JSON_KEY_TAG, GetStaticPageHelper.INTERNATIONAL_PRODUCT_POLICY_PAGE);
-        bundle.putString(RestConstants.JSON_TITLE_TAG, getString(R.string.policy));
+        bundle.putString(RestConstants.KEY, GetStaticPageHelper.INTERNATIONAL_PRODUCT_POLICY_PAGE);
+        bundle.putString(RestConstants.TITLE, getString(R.string.policy));
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -831,7 +831,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Log.i(TAG, "ON CLICK COMBOS SECTION");
         Bundle bundle = new Bundle();
         bundle.putParcelable(RestConstants.JSON_BUNDLE_PRODUCTS, mProduct.getProductBundle());
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, mProduct.getSku());
         getBaseActivity().onSwitchFragment(FragmentType.COMBO_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -863,7 +863,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickOtherOffersProduct() {
         Log.i(TAG, "ON CLICK OTHER OFFERS");
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, mProduct.getSku());
         bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
         bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -1007,7 +1007,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         String sku = (String) view.getTag(R.id.target_sku);
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
         bundle.putBoolean(ConstantsIntentExtra.IS_RELATED_ITEM, true);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

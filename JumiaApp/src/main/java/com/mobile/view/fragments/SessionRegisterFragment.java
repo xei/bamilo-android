@@ -264,8 +264,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
 
     private void onClickTermsAndConditions() {
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.JSON_KEY_TAG, GetStaticPageHelper.TERMS_PAGE);
-        bundle.putString(RestConstants.JSON_TITLE_TAG, getString(R.string.terms_and_conditions));
+        bundle.putString(RestConstants.KEY, GetStaticPageHelper.TERMS_PAGE);
+        bundle.putString(RestConstants.TITLE, getString(R.string.terms_and_conditions));
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

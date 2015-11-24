@@ -54,7 +54,7 @@ import java.util.Locale;
 public class AdjustTracker {
     
     private final static String TAG = AdjustTracker.class.getSimpleName();
-    
+
     public static final String BEGIN_TIME = "beginTime";
     public static final String USER_ID = "userId";
     public static final String CURRENCY_ISO = "currencyIso";
@@ -145,7 +145,7 @@ public class AdjustTracker {
     
     private static AdjustTracker sInstance;
     
-    private static final String NOT_AVAILABLE = "n.a.";
+    public static final String NOT_AVAILABLE = "n.a.";
 
 //    public final static String ENCODING_SCHEME = "UTF-8";
 

@@ -280,7 +280,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             int position = Integer.parseInt(view.getTag().toString());
             ProductMultiple addableToCart = mProducts.get(position);
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, addableToCart.getSku());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, addableToCart.getSku());
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {

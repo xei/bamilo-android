@@ -90,12 +90,10 @@ public class TeaserViewFactory {
         if (listener != null) {
             String title = !TextUtils.isEmpty(teaser.getName()) ? teaser.getName() : teaser.getTitle();
             view.setTag(R.id.target_title, title);
-            view.setTag(R.id.target_type, teaser.getTargetType());
-            view.setTag(R.id.target_url, teaser.getUrl());
+            view.setTag(R.id.target_link, teaser.getTargetLink());
             view.setTag(R.id.target_teaser_origin, teaser.getTeaserTypeId());
             // Set position of the clicked teaser, for tracking purpose
             view.setTag(R.id.target_list_position, position);
-            view.setTag(R.id.target_sku, teaser.getSku());
 
             view.setOnClickListener(listener);
         }
