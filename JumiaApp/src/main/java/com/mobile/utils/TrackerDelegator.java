@@ -472,7 +472,7 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : "n.a.");
+        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : AdjustTracker.NOT_AVAILABLE);
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
@@ -540,7 +540,7 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : "n.a.");
+        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : AdjustTracker.NOT_AVAILABLE);
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
@@ -806,9 +806,9 @@ public class TrackerDelegator {
      */
     public static void trackCampaignView(TeaserCampaign teaserCampaign) {
         // GA
-        AnalyticsGoogle.get().trackGenericPage(teaserCampaign != null ? teaserCampaign.getTitle() : "n.a.");
+        AnalyticsGoogle.get().trackGenericPage(teaserCampaign != null ? teaserCampaign.getTitle() : AdjustTracker.NOT_AVAILABLE);
         // Ad4Push
-        Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign != null ? teaserCampaign.getId() : "n.a.");
+        Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign != null ? teaserCampaign.getId() : AdjustTracker.NOT_AVAILABLE);
     }
 
     /**
