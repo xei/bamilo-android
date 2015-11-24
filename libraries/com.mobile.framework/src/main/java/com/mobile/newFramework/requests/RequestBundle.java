@@ -52,11 +52,6 @@ public class RequestBundle {
         private boolean discard;
         private String path;
 
-        Integer cache;
-
-        Map<String, String> data;
-
-        boolean discard;
 
         public Builder setUrl(String url) {
             this.url = url;
