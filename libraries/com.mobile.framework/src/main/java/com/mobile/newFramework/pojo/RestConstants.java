@@ -125,8 +125,8 @@ public class RestConstants {
     public static final String JSON_DATA_SET_FORM_RATING_TAG = "data_set";
     public static final String JSON_TITLE_FORM_RATING_TAG = "display_title";
     public static final String JSON_ID_FORM_RATING_TAG = "id_rating_type";
-    public static final String JSON_RATING_TAG = "rating";
-    public static final String JSON_REVIEW_TAG = "review";
+    public static final String RATING = "rating";
+    public static final String REVIEW = "review";
     public static final String JSON_IS_ENABLE_TAG = "is_enable";
     public static final String JSON_REQUIRED_LOGIN_TAG = "required_login";
     public static final String JSON_BASED_ON_TAG = "based_on";
@@ -453,7 +453,5 @@ public class RestConstants {
     public static final String TRANSACTION_SHIPPING = "transaction_shipping";
     public static final String TRANSACTION_TAX = "transaction_tax";
     public static final String ORDER_GRAND_TOTAL = "order_grand_total";
-
-    public static final String PARAM_1 = "param1";
 
 }

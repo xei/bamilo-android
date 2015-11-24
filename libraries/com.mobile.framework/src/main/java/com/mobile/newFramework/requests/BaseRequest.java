@@ -44,14 +44,14 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         Method method = AigApiInterface.Service.getMethod(name);
         // Set parameters
         List parameters = new ArrayList();
+        // Add request path
+        if (TextUtils.isNotEmpty(mRequestBundle.getPath())) {
+            parameters.add(mRequestBundle.getPath());
+        }
         // Add request data
         if(mRequestBundle.hasData()){
             parameters.add(mRequestBundle.getData());
         }
-        //add pathParameter
-        if(!TextUtils.isEmpty(mRequestBundle.getPathParameter()))
-            parameters.add(mRequestBundle.getPathParameter());
-
         // Add callback
         parameters.add(this);
         // Invoke api service
