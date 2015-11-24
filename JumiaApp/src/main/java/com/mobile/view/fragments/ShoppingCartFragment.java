@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.widget.NestedScrollView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -97,6 +98,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private double itemRemoved_rating;
     private String itemRemoved_cart_value;
     private String mItemsToCartDeepLink;
+    private NestedScrollView mNestedScroll;
 
     /**
      * Empty constructor
@@ -319,6 +321,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         voucherCode = (EditText) view.findViewById(R.id.voucher_name);
         voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
         couponButton = (TextView) view.findViewById(R.id.voucher_btn);
+        mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
         prepareCouponView();
     }
 
@@ -1029,6 +1032,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             voucherCode.setFocusable(true);
             voucherCode.setFocusableInTouchMode(true);
         }
+        scrollToViewByClick(mNestedScroll, voucherCode);
 
         if (removeVoucher) {
             couponButton.setText(getString(R.string.voucher_remove));

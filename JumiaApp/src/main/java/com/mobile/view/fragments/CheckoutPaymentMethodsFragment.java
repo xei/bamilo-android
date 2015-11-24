@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
@@ -83,7 +84,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private View mCheckoutTotalBar;
 
     private View mCheckoutButtonNext;
-    
+
+    private ScrollView mScrollView;
     /**
      * Empty constructor
      */
@@ -142,6 +144,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         Print.i(TAG, "ON VIEW CREATED");
         // Get containers
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
+        mScrollView = (ScrollView) view.findViewById(R.id.payment_scroll);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
         // Checkout total view
@@ -350,7 +353,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         if (!TextUtils.isEmpty(mVoucher)) {
             voucherCode.setText(mVoucher);
         }
-
+        scrollToViewByClick(mScrollView, voucherCode);
         // voucherDivider = getView().findViewById(R.id.voucher_divider);
         voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
         couponButton = (TextView) getView().findViewById(R.id.voucher_btn);
