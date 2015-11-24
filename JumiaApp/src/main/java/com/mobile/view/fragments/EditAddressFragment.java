@@ -570,8 +570,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 break;
             case EDIT_ADDRESS_EVENT:
                 Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
-                getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.edit_address_success));
                 getBaseActivity().onBackPressed();
+                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.edit_address_success));
                 break;
             default:
                 break;
@@ -703,7 +703,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                     });
             dialog.show(getBaseActivity().getSupportFragmentManager(), null);
         } else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.register_required_text));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.register_required_text));
         }
     }
 //
