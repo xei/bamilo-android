@@ -223,8 +223,8 @@ public interface AigApiInterface {
 
   //  @GET("/")
  //   void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
-    @GET("/{slug}")
-    void getCampaign(@Path("slug") String campaignSlug, Callback<BaseResponse<Campaign>> callback);
+    @GET("/{path}")
+    void getCampaign(@Path("path") String campaignSlug, Callback<BaseResponse<Campaign>> callback);
     String getCampaign = "getCampaign";
 
     /*
