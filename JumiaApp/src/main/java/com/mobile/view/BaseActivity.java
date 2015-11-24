@@ -1155,9 +1155,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         beginInMillis = System.currentTimeMillis();
         String text = mSearchAutoComplete.getText().toString();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
-        Bundle bundle = new Bundle();
-        bundle.putString(GetSearchSuggestionsHelper.SEACH_PARAM, text);
-        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), bundle,
+        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(text),
                 new IResponseCallback() {
                     @Override
                     public void onRequestComplete(BaseResponse baseResponse) {

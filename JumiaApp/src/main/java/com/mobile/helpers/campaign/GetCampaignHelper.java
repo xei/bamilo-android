@@ -33,10 +33,8 @@ public class GetCampaignHelper extends SuperBaseHelper {
      * Method used to create a request bundle.
      */
     public static Bundle createBundle(String id) {
-        // Item data
         ContentValues values = new ContentValues();
         values.put(RestConstants.SLUG, id);
-        // Request data
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;

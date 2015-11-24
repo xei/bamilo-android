@@ -19,7 +19,7 @@ public class AigGetCatalogFilteredTest extends AigTestCase {
 
     @Override
     public String getAigInterfaceName() {
-        return AigApiInterface.getCatalogFiltered;
+        return AigApiInterface.getCatalog;
     }
 
     @Override
