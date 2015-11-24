@@ -29,9 +29,7 @@ public class WarningFactory {
      * ################# ANIMATION DURATION #################
      */
 
-//    public static final int _4_SECONDS = 4000;
     public static final int _3_SECONDS = 3000;
-//    public static final int _5_SECONDS = 5000;
 
     /**
      * ################# WARNING BAR #################
@@ -70,7 +68,6 @@ public class WarningFactory {
     /**
      * Create a new instance of WarningFactory.
      *
-     * @param warningBar
      * @throws java.lang.IllegalStateException In case of warningBar is null.
      */
     public WarningFactory(View warningBar){
@@ -92,8 +89,6 @@ public class WarningFactory {
 
     /**
      * constructor where the label to show can be dynamic
-     * @param warning
-     * @param warningMessage
      */
     public void showWarning(int warning, String warningMessage){
         mWarningMessage = warningMessage;
@@ -131,7 +126,6 @@ public class WarningFactory {
     }
     /**
      * show dynamic success message
-     * @param warning
      */
     private void showWarningSuccess(int warning){
         if(actualWarning != warning || !TextUtils.equals(actualWarningMessage, mWarningMessage)){
@@ -149,7 +143,6 @@ public class WarningFactory {
 
     /**
      * show dynamic error message
-     * @param warning
      */
     private void showWarningError(int warning) {
         if(actualWarning != warning || !TextUtils.equals(actualWarningMessage, mWarningMessage)){
@@ -272,7 +265,6 @@ public class WarningFactory {
             mWarningBar.setVisibility(View.GONE);
             return this;
         }
-
 
     }
 }

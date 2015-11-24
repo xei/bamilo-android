@@ -20,6 +20,6 @@ public class StaticFeaturedBoxItem extends TeaserTopSellerObject {
      */
     public StaticFeaturedBoxItem() {
         super(TeaserTargetType.PRODUCT_DETAIL.ordinal());
-        mTargetType = TeaserTargetType.PRODUCT_DETAIL.name();
+        mTargetLink = TeaserTargetType.PRODUCT_DETAIL.name();
     }
 }

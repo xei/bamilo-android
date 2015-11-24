@@ -16,8 +16,6 @@ public class GetHomeHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        // Request
-//        new GetHomePage(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getHome);
     }
 

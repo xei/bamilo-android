@@ -455,8 +455,8 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     private void onClickStaticPageButton(String key, String label) {
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.JSON_KEY_TAG, key);
-        bundle.putString(RestConstants.JSON_TITLE_TAG, label);
+        bundle.putString(RestConstants.KEY, key);
+        bundle.putString(RestConstants.TITLE, label);
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

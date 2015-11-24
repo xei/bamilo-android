@@ -9,7 +9,7 @@ import android.view.View;
  */
 public interface OnProductViewHolderClickListener {
 
-    void onHeaderClick(String targetType, String url, String title);
+    void onHeaderClick(String target, String title);
 
     void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position);
 

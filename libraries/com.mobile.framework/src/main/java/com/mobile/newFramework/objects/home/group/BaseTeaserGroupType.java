@@ -69,7 +69,7 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
 //        Log.i(TAG, "ON INITIALIZE: " + jsonObject.toString());
         // Get title
-        mTitle = jsonObject.optString(RestConstants.JSON_TITLE_TAG);
+        mTitle = jsonObject.optString(RestConstants.TITLE);
         // Get data
         JSONArray teasersData = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
         // Validate size

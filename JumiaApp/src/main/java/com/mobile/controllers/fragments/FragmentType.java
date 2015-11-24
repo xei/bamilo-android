@@ -64,8 +64,9 @@ public enum FragmentType {
     WRITE_REVIEW_SELLER,
     FILTERS,
     COMBO_PAGE,
-    LOGIN_EMAIL
-    ;
+    LOGIN_EMAIL,
+    CATALOG_SELLER,
+    CATALOG_BRAND;
 
 
 
