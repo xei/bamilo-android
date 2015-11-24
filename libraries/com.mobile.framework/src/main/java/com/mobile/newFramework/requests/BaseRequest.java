@@ -10,6 +10,7 @@ import com.mobile.newFramework.rest.errors.AigBaseException;
 import com.mobile.newFramework.rest.errors.JumiaError;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.lang.reflect.InvocationTargetException;
@@ -44,6 +45,10 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         Method method = AigApiInterface.Service.getMethod(name);
         // Set parameters
         List parameters = new ArrayList();
+        // Add request path
+        if (TextUtils.isNotEmpty(mRequestBundle.getPath())) {
+            parameters.add(mRequestBundle.getPath());
+        }
         // Add request data
         if(mRequestBundle.hasData()){
             parameters.add(mRequestBundle.getData());

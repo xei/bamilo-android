@@ -231,9 +231,8 @@ public interface AigApiInterface {
      * ## PRODUCT
      */
 
-    @GET("/")
-    void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
-
+    @GET("/{path}")
+    void getProductDetail(@Path("path") String path, Callback<BaseResponse<ProductComplete>> callback);
     String getProductDetail = "getProductDetail";
 
     @GET("/")
@@ -441,9 +440,8 @@ public interface AigApiInterface {
     /*
      * ## RATINGS/REVIEWS
      */
-    @GET("/")
-    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
-
+    @GET("/{path}") // @Path(value="path", encode=false)
+    void getProductReviews(@Path("path") String path, Callback<BaseResponse<ProductRatingPage>> callback);
     String getProductReviews = "getProductReviews";
 
     @FormUrlEncoded
