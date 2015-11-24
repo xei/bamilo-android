@@ -723,20 +723,12 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
      * @author sergiopereira
      */
     private void triggerReviews(String sku, int pageNumber) {
-        ContentValues values = new ContentValues();
 
-        values.put(GetReviewsHelper.SKU, sku);
-        values.put(GetReviewsHelper.PAGE, pageNumber);
-        values.put(GetReviewsHelper.PER_PAGE, REVIEWS_PER_PAGE);
-        values.put(GetReviewsHelper.REST_PARAM_RATING, true);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         // Show loading layout for first time
         if (pageNumber == 1) {
-            triggerContentEvent(new GetReviewsHelper(), bundle, this);
+            triggerContentEvent(new GetReviewsHelper(), GetReviewsHelper.createBundle(sku,pageNumber), this);
         } else {
-            triggerContentEventNoLoading(new GetReviewsHelper(), bundle, this);
+            triggerContentEventNoLoading(new GetReviewsHelper(), GetReviewsHelper.createBundle(sku,pageNumber), this);
         }
     }
 
