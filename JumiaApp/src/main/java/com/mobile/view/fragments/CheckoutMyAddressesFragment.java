@@ -14,13 +14,13 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.checkout.GetBillingFormHelper;
 import com.mobile.helpers.checkout.SetBillingAddressHelper;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutFormBilling;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.Constants;
@@ -34,8 +34,6 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class used to show the my addresses and set the on process checkout the billing and shipping address. 
@@ -206,9 +204,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         Print.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
         int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            @SuppressWarnings("unchecked")
-            Map<String, List<String>> errors = baseResponse.getErrorMessages();
-            showErrorDialog(errors, R.string.add_address);
+            showErrorDialog(baseResponse.getValidateMessage(), R.string.add_address);
             setDefaultChecked(Boolean.parseBoolean(sameAddress));
         } else{
             Print.w(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT: " + errorCode);

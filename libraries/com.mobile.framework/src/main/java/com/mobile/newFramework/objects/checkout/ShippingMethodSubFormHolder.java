@@ -58,7 +58,7 @@ public class ShippingMethodSubFormHolder implements IJSONSerializable{
             if(jsonObject.has(RestConstants.TYPE)){
                 type = jsonObject.optString(RestConstants.TYPE);
             } else {
-                type = RestConstants.JSON_METADATA_TAG;
+                type = RestConstants.METADATA;
             }
 
             value = jsonObject.optString(RestConstants.VALUE);

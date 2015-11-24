@@ -18,12 +18,12 @@ import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.EventType;
@@ -38,7 +38,6 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -364,7 +363,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
                 // Validate errors
                 int code = baseResponse.getError().getCode();
-                Map<String, List<String>> messages = baseResponse.getErrorMessages();
+                Map messages = baseResponse.getErrorMessages();
                 validateErrorMessage(code, messages);
                 break;
             default:
@@ -372,13 +371,12 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         }
     }
 
-    private void validateErrorMessage(int errorCode, Map<String, List<String>> errorMessages) {
+    private void validateErrorMessage(int errorCode, Map errorMessages) {
         // Validate error
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
             // Validate error message
             int message =  R.string.incomplete_alert;
-            if (validateMessages != null && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
+            if (errorMessages != null && errorMessages.containsKey(ErrorConstants.CUSTOMER_CREATE_FAILED_EXISTS)) {
                 message = R.string.error_register_alreadyexists;
             }
             // Show container

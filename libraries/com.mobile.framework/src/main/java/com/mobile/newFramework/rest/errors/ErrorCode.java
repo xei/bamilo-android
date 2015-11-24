@@ -1,4 +1,4 @@
-package com.mobile.newFramework;
+package com.mobile.newFramework.rest.errors;
 
 import android.support.annotation.IntDef;
 
@@ -12,7 +12,7 @@ public class ErrorCode {
 
     public static final int NO_ERROR = 0;
     public static final int UNKNOWN_ERROR = 1;
-    public static final int NO_NETWORK = 2;
+    public static final int NO_CONNECTIVITY = 2;
     public static final int CONNECT_ERROR = 3;
     public static final int TIME_OUT = 4;
     public static final int ERROR_PARSING_SERVER_DATA = 5;
@@ -33,7 +33,7 @@ public class ErrorCode {
     @IntDef({
             NO_ERROR,
             UNKNOWN_ERROR,
-            NO_NETWORK,
+            NO_CONNECTIVITY,
             CONNECT_ERROR,
             TIME_OUT,
             ERROR_PARSING_SERVER_DATA,
@@ -56,7 +56,7 @@ public class ErrorCode {
 
     public static boolean isNetworkError(@Code int error) {
         switch (error) {
-            case NO_NETWORK:
+            case NO_CONNECTIVITY:
             case SERVER_IN_MAINTENANCE:
             case CONNECT_ERROR:
             case TIME_OUT:
