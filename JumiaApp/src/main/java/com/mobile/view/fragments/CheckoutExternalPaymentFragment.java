@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -307,6 +308,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     }
 
     private void prepareCookieStore() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // AppRTC requires third party cookies to work
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptThirdPartyCookies(webview, true);
+        }
         // GET COOKIES FROM FRAMEWORK
         List<HttpCookie> cookies = AigHttpClient.getInstance().getCookies();
 
