@@ -34,12 +34,11 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -58,9 +57,6 @@ import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -112,7 +108,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private ViewStub mMaintenanceView;
 
-    protected long mLoadTime = 0l; // For tacking
+    protected long mLoadTime = 0; // For tacking
 
     public static final int NO_ADJUST_CONTENT = 0;
     public static final int ADJUST_CONTENT = 1;
@@ -180,7 +176,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
