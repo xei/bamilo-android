@@ -93,7 +93,7 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         if (product != null) {
             // Show product
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, product.getSKU());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, product.getSKU());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);

@@ -55,7 +55,7 @@ public class RestConstants {
 
     // FormField Tags
     public static final String TYPE = "type";
-    public static final String JSON_KEY_TAG = "key";
+    public static final String KEY = "key";
     public static final String JSON_FIELD_NAME_TAG = JSON_NAME_TAG;
     public static final String LABEL = "label";
     public static final String JSON_DATA_SET_TAG = "dataset";
@@ -454,8 +454,6 @@ public class RestConstants {
     public static final String TRANSACTION_TAX = "transaction_tax";
     public static final String ORDER_GRAND_TOTAL = "order_grand_total";
 
-
-    public static final String PARAM_1 = "param_1";
-
+    public static final String SLUG = "slug";
 
 }

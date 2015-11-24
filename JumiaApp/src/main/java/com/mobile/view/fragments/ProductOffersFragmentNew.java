@@ -108,7 +108,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         // Get data
-        mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
+        mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
         mCompleteProductName = arguments.getString(ConstantsIntentExtra.PRODUCT_NAME);
         mCompleteBrand = arguments.getString(ConstantsIntentExtra.PRODUCT_BRAND);
 
@@ -163,7 +163,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
+        outState.putString(ConstantsIntentExtra.CONTENT_ID, mCompleteProductSku);
         outState.putString(ConstantsIntentExtra.PRODUCT_NAME, mCompleteProductName);
         if(productOffers != null && CollectionUtils.isEmpty(productOffers.getOffers())){
             outState.putParcelable(PRODUCT_OFFERS, productOffers);

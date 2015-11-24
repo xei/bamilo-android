@@ -9,7 +9,6 @@ import android.os.Handler;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
@@ -348,7 +347,7 @@ public class DeepLinkManager {
         String size = data.getQueryParameter(PDV_SIZE_TAG);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductHelper.SKU_TAG, sku);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
         bundle.putString(PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");

@@ -95,7 +95,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments);
             bundleList = arguments.getParcelable(RestConstants.JSON_BUNDLE_PRODUCTS);
-            productSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
+            productSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
         }
     }
 

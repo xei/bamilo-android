@@ -1,5 +1,6 @@
 package com.mobile.helpers.configs;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
@@ -8,6 +9,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -36,9 +38,13 @@ public class GetStaticPageHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getStaticPage);
     }
 
-    public static Bundle createBundle(String staticPage) {
+    public static Bundle createBundle(String key) {
+        // Item data
+        ContentValues values = new ContentValues();
+        values.put(RestConstants.KEY, key);
+        // Request data
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.PARAM_1, staticPage);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
     

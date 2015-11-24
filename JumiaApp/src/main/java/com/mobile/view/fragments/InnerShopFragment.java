@@ -377,7 +377,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         String sku = RestUrlUtils.getQueryValue(url, GetProductHelper.SKU_TAG);
         if (TextUtils.isNotEmpty(sku)) {
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {

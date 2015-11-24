@@ -55,7 +55,7 @@ public class ShippingMethodFormHolder implements IJSONSerializable{
         try {
             id = jsonObject.optString(RestConstants.ID);
             name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-            key = jsonObject.optString(RestConstants.JSON_KEY_TAG);
+            key = jsonObject.optString(RestConstants.KEY);
             value = jsonObject.optString(RestConstants.VALUE);
             label = jsonObject.optString(RestConstants.LABEL);
             type = jsonObject.optString(RestConstants.TYPE);

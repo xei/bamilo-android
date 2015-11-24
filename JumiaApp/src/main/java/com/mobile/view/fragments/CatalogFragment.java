@@ -594,7 +594,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (product != null) {
             // Show product
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, product.getSku());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, product.getSku());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);

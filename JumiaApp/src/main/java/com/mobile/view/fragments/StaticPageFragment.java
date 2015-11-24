@@ -102,7 +102,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     }
 
     private void triggerStaticPage() {
-        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mStaticPageBundle.getString(RestConstants.JSON_KEY_TAG)), this);
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mStaticPageBundle.getString(RestConstants.KEY)), this);
     }
 
     /*

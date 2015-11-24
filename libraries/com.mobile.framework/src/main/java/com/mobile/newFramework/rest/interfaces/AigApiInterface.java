@@ -494,26 +494,22 @@ public interface AigApiInterface {
 
 
     /*
+     * TODO : ADD HERE NEW MOB API INTERFACE v2.0
+     */
+
+    /*
      * ## CATALOG
      */
 
-    @GET("/{param_1}")
-    void getCatalog(@Path("param_1") String hash, Callback<BaseResponse<Catalog>> callback);
+    @GET("/{path}")
+    void getCatalog(@Path(value="path", encode=false) String hash, Callback<BaseResponse<Catalog>> callback);
     String getCatalog = "getCatalog";
-
-    @GET("/{param_1}")
-    void getCatalogBrand(@Path("param_1") String brand, Callback<BaseResponse<Catalog>> callback);
-    String getCatalogBrand = "getCatalogBrand";
-
-    @GET("/{param_1}")
-    void getCatalogSeller(@Path("param_1") String seller, Callback<BaseResponse<Catalog>> callback);
-    String getCatalogSeller = "getCatalogSeller";
 
     /*
     * ## CAMPAIGN
     */
-    @GET("/{param_1}")
-    void getCampaign(@Path("param_1") String slug, Callback<BaseResponse<Campaign>> callback);
+    @GET("/{path}")
+    void getCampaign(@Path(value="path", encode=false) String path, Callback<BaseResponse<Campaign>> callback);
     String getCampaign = "getCampaign";
 
     /*
@@ -521,42 +517,19 @@ public interface AigApiInterface {
      */
 
     @GET("/{path}")
-    void getProductDetail(@Path("path") String path, Callback<BaseResponse<ProductComplete>> callback);
+    void getProductDetail(@Path(value="path", encode=false) String path, Callback<BaseResponse<ProductComplete>> callback);
     String getProductDetail = "getProductDetail";
 
-    @GET("/{path}") // @Path(value="path", encode=false)
-    void getProductReviews(@Path("path") String path, Callback<BaseResponse<ProductRatingPage>> callback);
-    String getProductReviews = "getProductReviews";
+    @GET("/{path}")
+    void getProductDetailReviews(@Path(value="path", encode=false) String path, Callback<BaseResponse<ProductRatingPage>> callback);
+    String getProductDetailReviews = "getProductDetailReviews";
 
-    @GET("/{param_1}/all_offers/{param_2}/")
-    void getProductDetailAllOffers(
-            @Path("param_1") String sku,
-            @Path("param_2") String isAllOffers,
-            Callback<BaseResponse<ProductComplete>> callback);
-    String getProductDetailAllOffers = "getProductDetailAllOffers";
+    /*
+     * ## STATIC
+     */
 
-    @GET("/{param_1}/seller_rating/{param_2}/per_page/{param_3}/page/{param_4}")
-    void getProductDetailRatings(
-            @Path("param_1") String sku,
-            @Path("param_2") String isRating,
-            @Path("param_3") String perPage,
-            @Path("param_4") String page,
-            Callback<BaseResponse<ProductComplete>> callback);
-    String getProductDetailRatings = "getProductDetailRatings";
-
-    @GET("/{param_1}/seller_rating/{param_2}/per_page/{param_3}/page/{param_4}")
-    void getProductDetailSellerReviews(
-            @Path("param_1") String sku,
-            @Path("param_2") String isRating,
-            @Path("param_3") String perPage,
-            @Path("param_4") String page,
-            Callback<BaseResponse<ProductComplete>> callback);
-    String getProductDetailSellerReviews = "getProductDetailSellerReviews";
-
-
-    @GET("/{param_1}")
-    void getStaticPage(@Path("param_1") String page, Callback<BaseResponse<StaticPage>> callback);
+    @GET("/{path}")
+    void getStaticPage(@Path(value="path", encode=false) String path, Callback<BaseResponse<StaticPage>> callback);
     String getStaticPage = "getStaticPage";
-
 
 }
