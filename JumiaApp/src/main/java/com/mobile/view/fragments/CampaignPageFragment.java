@@ -48,7 +48,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
@@ -61,6 +60,8 @@ import com.mobile.view.R;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class used to show campaign page
@@ -606,7 +607,22 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         case GET_CAMPAIGN_EVENT:
             Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Show retry
-            showRetry();
+       //     showRetry();
+            showFragmentContentContainer();
+            Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
+            if(errorMessages != null){
+                String dialogMsg = "";
+                for (Map.Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
+                    dialogMsg += entry.getValue().get(0) + "\n";
+                }
+                if(TextUtils.isNotEmpty(dialogMsg)){
+                    showErrorGetCampaign(dialogMsg);
+                }
+               else
+                    showRetry();
+            }else
+                showRetry();
+
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;
@@ -638,6 +654,24 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     }
                 });
         mDialogErrorToCart.show(fm, null);
+    }
+
+
+    private void showErrorGetCampaign (String errorMessage){
+        FragmentManager fm = getFragmentManager();
+        dialog =  DialogGenericFragment.newInstance(true, false,
+                getString(R.string.validation_title), errorMessage,
+                getResources().getString(R.string.ok_label), "", new OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        int id = v.getId();
+                        if (id == R.id.button1) {
+                            dismissDialogFragment();
+                        }
+                    }
+                });
+        dialog.show(fm, null);
     }
     
     /**
