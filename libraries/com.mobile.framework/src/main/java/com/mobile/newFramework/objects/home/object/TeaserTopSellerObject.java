@@ -14,7 +14,6 @@ import org.json.JSONObject;
 public class TeaserTopSellerObject extends BaseTeaserObject {
 
     private String mBrand;
-    //private int mMaxSavingPercentage;
     private double mPrice;
     private double mPriceConverted;
     private double mSpecialPrice;
@@ -31,18 +30,10 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
      * ########## GETTERS ##########
      */
 
-    public String getSku() {
-        return mSku;
-    }
-
     public String getBrand() {
         return mBrand;
     }
-
-//    public int getMaxSavingPercentage() {
-//        return mMaxSavingPercentage;
-//    }
-
+    
     public double getPrice() {
         return mPrice;
     }
@@ -66,14 +57,9 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get sku
-        mSku = jsonObject.getString(RestConstants.SKU);
-        // Get title
-        mTitle = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+        super.initialize(jsonObject);
         // Get brand
         mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-        // Get url
-        mUrl = jsonObject.getString(RestConstants.URL);
         // Get image
         mImageTablet = mImagePhone = jsonObject.getString(RestConstants.JSON_IMAGE_TAG);
         // Get price
@@ -84,10 +70,6 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
         // Get special price converted
         mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
-//        // Get discount percentage
-//        mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
-        // Get target type
-        mTargetType = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
         return true;
     }
 
@@ -112,7 +94,6 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(this.mBrand);
-//        dest.writeInt(this.mMaxSavingPercentage);
         dest.writeDouble(this.mPrice);
         dest.writeDouble(this.mPriceConverted);
         dest.writeDouble(this.mSpecialPrice);
@@ -122,7 +103,6 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     private TeaserTopSellerObject(Parcel in) {
         super(in);
         this.mBrand = in.readString();
-//        this.mMaxSavingPercentage = in.readInt();
         this.mPrice = in.readDouble();
         this.mPriceConverted = in.readDouble();
         this.mSpecialPrice = in.readDouble();

@@ -56,9 +56,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
 
     private String mBannerImage;
 
-    private String mUrl;
-
-    private String mTargetType;
+    private String mTarget;
 
     private String mTitle;
 
@@ -289,7 +287,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             }
             // Case header
             else if (id == R.id.catalog_header_image_frame) {
-                mOnViewHolderClicked.onHeaderClick(mTargetType, mUrl, mTitle);
+                mOnViewHolderClicked.onHeaderClick(mTarget, mTitle);
             }
             // Case item
             else {
@@ -306,9 +304,8 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             hideHeaderView();
         } else {
             mBannerImage = !isTabletInLandscape ? banner.getPhoneImage() : banner.getTabletImage();
-            mUrl = banner.getUrl();
             mTitle = banner.getTitle();
-            mTargetType = banner.getTargetType();
+            mTarget = banner.getTarget();
             showHeaderView();
         }
     }

@@ -8,7 +8,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.statics.StaticTermsConditions;
+import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
@@ -89,7 +89,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get title
-        String title = mStaticPageBundle.getString(RestConstants.JSON_TITLE_TAG);
+        String title = mStaticPageBundle.getString(RestConstants.TITLE);
         title = TextUtils.isNotEmpty(title) ? title : getString(R.string.policy);
         // Title AB
         getBaseActivity().setActionBarTitle(title);
@@ -102,7 +102,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     }
 
     private void triggerStaticPage() {
-        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mStaticPageBundle.getString(RestConstants.JSON_KEY_TAG)), this);
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mStaticPageBundle.getString(RestConstants.KEY)), this);
     }
 
     /*
@@ -179,7 +179,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
             return;
         }
         showFragmentContentContainer();
-        textView.setText(((StaticTermsConditions)baseResponse.getMetadata().getData()).getHtml());
+        textView.setText(((StaticPage)baseResponse.getMetadata().getData()).getHtml());
     }
 
     @Override

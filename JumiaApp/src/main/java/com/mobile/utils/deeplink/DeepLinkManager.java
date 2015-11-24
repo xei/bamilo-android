@@ -9,11 +9,8 @@ import android.os.Handler;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.helpers.teasers.GetShopInShopHelper;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
@@ -262,9 +259,7 @@ public class DeepLinkManager {
         // Create bundle
         Bundle bundle = new Bundle();
         ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
-        TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(campaignId.replace("-", " "));
-        campaign.setCampaignId(campaignId);
+        TeaserCampaign campaign = new TeaserCampaign(campaignId.replace("-", " "), campaignId);
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);
@@ -352,7 +347,7 @@ public class DeepLinkManager {
         String size = data.getQueryParameter(PDV_SIZE_TAG);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductHelper.SKU_TAG, sku);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
         bundle.putString(PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
@@ -500,7 +495,7 @@ public class DeepLinkManager {
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, innerShopId.replaceAll("-", " "));
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, EventType.GET_SHOP_EVENT.action + "?" + GetShopInShopHelper.INNER_SHOP_TAG + "=" + innerShopId);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, innerShopId);
         bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.INNER_SHOP);
         return bundle;
     }

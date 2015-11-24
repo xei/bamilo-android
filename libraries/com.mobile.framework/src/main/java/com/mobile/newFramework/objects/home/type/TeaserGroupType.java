@@ -38,17 +38,6 @@ public enum TeaserGroupType {
         mPosition = -1;
     }
 
-//    /**
-//     * Constructor
-//     *
-//     * @param type The group key
-//     * @param position The list position of the item that was clicked, for tracking purpose
-//     */
-//    TeaserGroupType(String type, int position) {
-//        mType = type;
-//        mPosition = -1;
-//    }
-
     /**
      * Get the group key
      *

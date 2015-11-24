@@ -33,15 +33,12 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -60,7 +57,6 @@ import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -191,7 +187,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if(arguments != null){
-            mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+            mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE);
             mDeepLinkOrigin = arguments.getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, DeepLinkManager.FROM_UNKNOWN);
         }
     }
@@ -293,10 +289,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Print.d(TAG, "ON RESUME");
 
         isOnStoppingProcess = false;
-
-        if (getBaseActivity() != null && !isNestedFragment) {
-            getBaseActivity().warningFactory.hideWarning();
-        }
 
         /**
          * Adjust state for each fragment type.
@@ -651,44 +643,44 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.no_internet_access_warning_title));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.no_internet_access_warning_title));
         hideActivityProgress();
         showFragmentContentContainer();
     }
 
     protected void showUnexpectedErrorWarning() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
+        getBaseActivity().showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
         showFragmentContentContainer();
         hideActivityProgress();
     }
 
     public void showInfoAddToShoppingCartCompleted() {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.SUCCESS_MESSAGE, getString(R.string.added_to_shop_cart_dialog_text));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.added_to_shop_cart_dialog_text));
         }
     }
 
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_add_to_shopping_cart));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.error_add_to_shopping_cart));
         }
     }
 
     public void showInfoLoginSuccess() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.succes_login));
         }
     }
 
     public void showInfoAddToShoppingCartOOS() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_outof_stock));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.product_outof_stock));
         }
     }
 
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.products_removed_saved));
         }
     }
 
@@ -1090,77 +1082,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Process the product click
-     * @author sergiopereira
-     */
-    protected void onClickProduct(String sku, Bundle bundle) {
-        Print.i(TAG, "ON CLICK PRODUCT");
-        if (sku != null) {
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            Print.i(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Get sku parameter from a product detail complete URL
-     */
-    protected String getSkuFromUrl(String url) {
-        if(TextUtils.isNotEmpty(url)){
-            return RestUrlUtils.getQueryValue(url, RestConstants.SKU);
-        }
-        return null;
-    }
-
-
-    /**
-     * Process the click on shops in shop
-     *
-     * @param url    The url for CMS block
-     * @param title  The shop title
-     * @param bundle The new bundle
-     */
-    protected void onClickInnerShop(String url, String title, Bundle bundle) {
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Process the catalog click
-     */
-    protected void onClickCatalog(String targetUrl, String targetTitle, Bundle bundle) {
-        Print.i(TAG, "ON CLICK CATALOG");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
-        } else {
-            Print.w(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Create an array with a single campaign
-     */
-    protected ArrayList<TeaserCampaign> createSingleCampaign(String targetTitle, String targetUrl) {
-        ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
-        TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(targetTitle);
-        campaign.setUrl(targetUrl);
-        campaigns.add(campaign);
-        return campaigns;
-    }
-
-    /**
      * validate if it show regular warning or confirmation cart message
-     * @param baseResponse
      */
     protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
         //if has cart popup, show configurable confirmation message with cart total price

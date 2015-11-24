@@ -497,7 +497,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         hideActivityProgress();
         if(JumiaApplication.INSTANCE.getCart() != null)
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
-        getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
 
     }
 
@@ -511,7 +511,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (addMultipleStruct.getErrorMessages() != null) {
             ArrayList<String> notAdded = addMultipleStruct.getErrorMessages();
             if (!notAdded.isEmpty()) {
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
             }
         }
 
@@ -917,7 +917,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private void goToProductDetails(String sku) {
         if (!TextUtils.isEmpty(sku)) {
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcart_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
@@ -1048,7 +1048,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                         triggerRemoveVoucher();
                     }
                 } else {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
                 }
             }
         });

@@ -55,7 +55,7 @@ public class RestConstants {
 
     // FormField Tags
     public static final String TYPE = "type";
-    public static final String JSON_KEY_TAG = "key";
+    public static final String KEY = "key";
     public static final String JSON_FIELD_NAME_TAG = JSON_NAME_TAG;
     public static final String LABEL = "label";
     public static final String JSON_DATA_SET_TAG = "dataset";
@@ -202,6 +202,7 @@ public class RestConstants {
     public static final String VARIATION_VALUE = "variation_value";
 
     // Teaser Campaign Tags
+    public static final String CAMPAIGN_ENTITY = "campaign_entity";
     public static final String JSON_CAMPAIGN_TAG = "campaign_entity";
     public static final String JSON_CAMPAIGN_NAME_TAG = "campaign_name";
     public static final String JSON_CAMPAIGN_URL_TAG = "campaign_url";
@@ -242,7 +243,7 @@ public class RestConstants {
     public static final String JSON_COMMENTS_TAG = "comments";
 
     // ProductReviewComment Tags
-    public static final String JSON_TITLE_TAG = "title";
+    public static final String TITLE = "title";
     public static final String JSON_SUB_TITLE_TAG = "sub_title";
 
     // ProductSimple Tags
@@ -402,9 +403,9 @@ public class RestConstants {
      * BANNER
      */
 
-    public static final String JSON_BANNER_TAG = "banner";
-    public static final String JSON_BANNER_PHONE_IMG_TAG = "phone_image";
-    public static final String JSON_BANNER_TABLET_IMG_TAG = "tablet_image";
+    public static final String BANNER = "banner";
+    public static final String PHONE_IMAGE = "phone_image";
+    public static final String TABLET_IMAGE = "tablet_image";
 
 
     /**
@@ -454,5 +455,7 @@ public class RestConstants {
     public static final String TRANSACTION_SHIPPING = "transaction_shipping";
     public static final String TRANSACTION_TAX = "transaction_tax";
     public static final String ORDER_GRAND_TOTAL = "order_grand_total";
+
+    public static final String SLUG = "slug";
 
 }

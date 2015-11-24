@@ -24,7 +24,7 @@ public enum EventType {
 
     GET_CATEGORIES_EVENT("http:/catalog/categories/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCTS_EVENT("http:/search/find/", AigRestContract.NO_CACHE),
+    GET_CATALOG_EVENT("http:/search/find/", AigRestContract.NO_CACHE),
 
     LOGIN_EVENT("https:/customer/login/", AigRestContract.NO_CACHE),
 
@@ -64,7 +64,7 @@ public enum EventType {
 
     REGISTER_ACCOUNT_EVENT("https:/customer/create/", AigRestContract.NO_CACHE),
 
-    GET_TERMS_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
+    GET_STATIC_PAGE("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
 
     GET_FORM_REVIEW_EVENT("http:/forms/review/", AigRestContract.MAX_CACHE_TIME),
 
@@ -166,7 +166,7 @@ public enum EventType {
 
     GET_RECENTLY_VIEWED_LIST,
 
-    GET_PRODUCT_BUNDLE("http:/catalog/bundle/sku/", AigRestContract.NO_CACHE),
+    GET_PRODUCT_BUNDLE("http:/catalog/bundle/", AigRestContract.NO_CACHE),
 
     ADD_PRODUCT_BUNDLE("http:/order/addbundle/", AigRestContract.NO_CACHE),
 
@@ -174,7 +174,7 @@ public enum EventType {
 
     VALIDATE_PRODUCTS("http:/catalog/validate/", AigRestContract.NO_CACHE),
 
-    GET_SHOP_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
+    GET_SHOP_EVENT("http:/main/getstatic/key/", AigRestContract.MAX_CACHE_TIME),
 
     GET_PRODUCT_DETAIL("http:/catalog/detail/", AigRestContract.NO_CACHE),
 
