@@ -1,5 +1,7 @@
 package com.mobile.newFramework.requests;
 
+import android.support.annotation.NonNull;
+
 import com.mobile.newFramework.rest.AigRestAdapter;
 
 import java.util.Map;
@@ -7,14 +9,10 @@ import java.util.Map;
 public class RequestBundle {
 
     private String url;
-
     private Integer cache;
-
     private Map<String, String> data;
-
     private boolean discard;
-
-    private String pathParameter;
+    private String path;
 
     /*
      * GETTERS
@@ -24,8 +22,8 @@ public class RequestBundle {
         return url;
     }
 
-    public String getPathParameter() {
-        return pathParameter;
+    public String getPath() {
+        return path;
     }
 
     public Map<String, String> getData() {
@@ -47,18 +45,14 @@ public class RequestBundle {
     /*
      * BUILDER
      */
-
+    @SuppressWarnings("unused")
     public static class Builder {
 
-        String url;
-
-        Integer cache;
-
-        Map<String, String> data;
-
-        boolean discard;
-
-        String pathParameter;
+        private String url;
+        private Integer cache;
+        private Map<String, String> data;
+        private boolean discard;
+        private String path;
 
         public Builder setUrl(String url) {
             this.url = url;
@@ -80,8 +74,8 @@ public class RequestBundle {
             return this;
         }
 
-        public Builder setPathParameter(String pathParameter) {
-            this.pathParameter = pathParameter;
+        public Builder setPath(String path) {
+            this.path = path;
             return this;
         }
 
@@ -91,7 +85,7 @@ public class RequestBundle {
             requestBundle.cache = cache;
             requestBundle.data = data;
             requestBundle.discard = discard;
-            requestBundle.pathParameter = pathParameter;
+            requestBundle.path = path;
             return requestBundle;
         }
 
@@ -103,10 +97,6 @@ public class RequestBundle {
         restAdapterInit.cache = cache;
         restAdapterInit.discardResponse = discard;
         return restAdapterInit;
-    }
-
-    public void setUrl(String url){
-        this.url = url;
     }
 
 }

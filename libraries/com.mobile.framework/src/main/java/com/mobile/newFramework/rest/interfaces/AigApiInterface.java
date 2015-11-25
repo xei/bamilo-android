@@ -38,7 +38,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.StaticPage;
-import com.mobile.newFramework.objects.statics.StaticTermsConditions;
 import com.mobile.newFramework.pojo.BaseResponse;
 
 import java.lang.reflect.Method;
@@ -93,13 +92,7 @@ public interface AigApiInterface {
 
     @GET("/")
     void getImageResolutions(Callback<BaseResponse> callback);
-
     String getImageResolutions = "getImageResolutions";
-
-    @GET("/")
-    void getTermsAndConditions(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticTermsConditions>> callback);
-
-    String getTermsAndConditions = "getTermsAndConditions";
 
     /*
      * ## FORMS
@@ -177,20 +170,6 @@ public interface AigApiInterface {
     String getUserDataForm = "getUserDataForm";
 
     /*
-     * ## CATALOG
-     */
-
-    @GET("/")
-    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
-
-    String getCatalogFiltered = "getCatalogFiltered";
-
-    @GET("/")
-    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
-
-    String searchSku = "searchSku";
-
-    /*
      * ## CATEGORIES
      */
 
@@ -205,7 +184,6 @@ public interface AigApiInterface {
 
     @GET("/")
     void getHome(Callback<BaseResponse<HomePageObject>> callback);
-
     String getHome = "getHome";
 
     /*
@@ -214,28 +192,7 @@ public interface AigApiInterface {
 
     @GET("/")
     void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticPage>> callback);
-
     String getShopInShop = "getShopInShop";
-
-    /*
-     * ## CAMPAIGN
-     */
-
-  //  @GET("/")
- //   void getCampaign(@QueryMap Map<String, String> data, Callback<BaseResponse<Campaign>> callback);
-    @GET("/{param_1}")
-    void getCampaign(@Path("param_1") String campaignSlug, Callback<BaseResponse<Campaign>> callback);
-    String getCampaign = "getCampaign";
-
-    /*
-     * ## PRODUCT
-     */
-
- //   @GET("/")
-  //  void getProductDetail(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
-    @GET("/{param_1}")
-    void getProductDetail(@Path("param_1") String sku, Callback<BaseResponse<ProductComplete>> callback);
-    String getProductDetail = "getProductDetail";
 
     @GET("/")
     void getProductBundle(Callback<BaseResponse<BundleList>> callback);
@@ -253,15 +210,6 @@ public interface AigApiInterface {
     void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<ValidProductList>> callback);
 
     String validateProducts = "validateProducts";
-
-    /*
-     * ## SEARCH SUGGESTIONS
-     */
-
-    @GET("/")
-    void getSearchSuggestions(@QueryMap Map<String, String> data, Callback<BaseResponse<Suggestions>> callback);
-
-    String getSearchSuggestions = "getSearchSuggestions";
 
     /*
      * ## CART
@@ -443,13 +391,8 @@ public interface AigApiInterface {
     /*
      * ## RATINGS/REVIEWS
      */
- //   @GET("/")
- //   void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
-    //path parameters: required -  sku, rating; optional - page,per_page
-    @GET("/{reviewsParameters}")
-    void getProductReviews(@Path(value="reviewsParameters", encode=false) String reviewsParameters, Callback<BaseResponse<ProductRatingPage>> callback);
-
-    String getProductReviews = "getProductReviews";
+    @GET("/")
+    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -528,4 +471,56 @@ public interface AigApiInterface {
     @GET("/")
     void getFaqTerms(Callback<BaseResponse<MobileAbout>> callback);
     String getFaqTerms = "getFaqTerms";
+
+
+    /*
+     * TODO : ADD HERE NEW MOB API INTERFACE v2.0
+     */
+
+    /*
+     * ## CATALOG
+     */
+
+    //@GET("/{path}")
+    //void getCatalog(@Path(value="path", encode=false) String hash, Callback<BaseResponse<Catalog>> callback);
+    @GET("/")
+    void getCatalog(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
+    String getCatalog = "getCatalog";
+
+    /*
+    * ## CAMPAIGN
+    */
+    @GET("/{path}")
+    void getCampaign(@Path(value="path", encode=false) String path, Callback<BaseResponse<Campaign>> callback);
+    String getCampaign = "getCampaign";
+
+    /*
+     * ## PRODUCT
+     */
+
+    @GET("/{path}")
+    void getProductDetail(@Path(value="path", encode=false) String path, Callback<BaseResponse<ProductComplete>> callback);
+    String getProductDetail = "getProductDetail";
+
+    @GET("/{path}")
+    void getProductDetailReviews(@Path(value="path", encode=false) String path, Callback<BaseResponse<ProductRatingPage>> callback);
+    String getProductDetailReviews = "getProductDetailReviews";
+
+    /*
+     * ## STATIC
+     */
+
+    @GET("/{path}")
+    void getStaticPage(@Path(value="path", encode=false) String path, Callback<BaseResponse<StaticPage>> callback);
+    String getStaticPage = "getStaticPage";
+
+
+    /*
+     * ## SEARCH SUGGESTIONS
+     */
+
+    @GET("/{path}")
+    void getSearchSuggestions(@Path(value="path", encode=false) String path, Callback<BaseResponse<Suggestions>> callback);
+    String getSearchSuggestions = "getSearchSuggestions";
+
 }

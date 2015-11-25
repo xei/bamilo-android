@@ -9,6 +9,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -16,7 +17,6 @@ import com.mobile.utils.TrackerDelegator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
@@ -99,8 +99,8 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     //@Override
     protected void handleSuccess(BaseResponse baseResponse, AddMultipleStruct struct) {
-        Map<String, String> successMessages = baseResponse.getSuccessMessages();
-        if (successMessages != null && !successMessages.isEmpty()) {
+        Map successMessages = baseResponse.getSuccessMessages();
+        if (CollectionUtils.isNotEmpty(successMessages)) {
             struct.setSuccessMessages(checkAddedProducts(successMessages));
         }
         handleError(baseResponse, struct);
@@ -108,8 +108,8 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
 
     //@Override
     protected void handleError(BaseResponse baseResponse, AddMultipleStruct struct) {
-        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-        if (errorMessages != null && !errorMessages.isEmpty()) {
+        Map errorMessages = baseResponse.getErrorMessages();
+        if (CollectionUtils.isNotEmpty(errorMessages)) {
             struct.setErrorMessages(checkNotAddedProducts(errorMessages));
         }
     }
@@ -135,9 +135,9 @@ public class ShoppingCartAddMultipleItemsHelper extends SuperBaseHelper {
      *
      * @return Array of products sku's
      */
-    protected ArrayList<String> checkNotAddedProducts(Map<String, List<String>> errorMessages) {
+    protected ArrayList<String> checkNotAddedProducts(Map<String, String> errorMessages) {
         ArrayList<String> notAdded = new ArrayList<>();
-        for (Map.Entry<String, List<String>> entry : errorMessages.entrySet()) {
+        for (Map.Entry<String, String> entry : errorMessages.entrySet()) {
             String value = productBySku.get(entry.getKey());
             if (value != null) {
                 notAdded.add(value);

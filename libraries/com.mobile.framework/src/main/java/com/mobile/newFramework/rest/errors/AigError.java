@@ -1,13 +1,12 @@
 package com.mobile.newFramework.rest.errors;
 
-import com.mobile.newFramework.ErrorCode;
-
 import retrofit.RetrofitError.Kind;
 
 /**
- * Created by pcarvalho on 5/22/15.
+ * AIG Error
+ * @author pcarvalho
  */
-public class JumiaError {
+public class AigError {
 
     private Kind mKind;
     private String mMessage;

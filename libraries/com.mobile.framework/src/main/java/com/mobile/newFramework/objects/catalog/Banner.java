@@ -1,12 +1,3 @@
-/**
- * @author Guilherme Silva
- * 
- * @version 1.01
- * 
- * 2012/06/18
- * 
- * Copyright (c) Rocket Internet All Rights Reserved
- */
 package com.mobile.newFramework.objects.catalog;
 
 import android.os.Parcel;
@@ -23,64 +14,35 @@ import org.json.JSONObject;
  * Class that represents a catalog banner
  * 
  * @author Paulo Carvalho
+ * @modified spereira
  * 
  */
 public class Banner implements IJSONSerializable, Parcelable {
 
     private String mPhoneImage;
     private String mTabletImage;
-    private String mTargetType;
+    private String mTarget;
     private String mTitle;
-    private String mUrl;
 
     public Banner() {
-        this.setPhoneImage("");
-        this.setTabletImage("");
-        this.setUrl("");
-        this.setTargetType("");
-        this.setTitle("");
+        // ...
     }
 
     public String getPhoneImage() {
         return mPhoneImage;
     }
 
-    public void setPhoneImage(String mPhoneImage) {
-        this.mPhoneImage = mPhoneImage;
-    }
-
     public String getTabletImage() {
         return mTabletImage;
     }
 
-    public void setTabletImage(String mTabletImage) {
-        this.mTabletImage = mTabletImage;
-    }
-
-    public String getTargetType() {
-        return mTargetType;
-    }
-
-    public void setTargetType(String mTargetType) {
-        this.mTargetType = mTargetType;
+    public String getTarget() {
+        return mTarget;
     }
 
     public String getTitle() {
         return mTitle;
     }
-
-    public void setTitle(String mTitle) {
-        this.mTitle = mTitle;
-    }
-
-    public String getUrl() {
-        return mUrl;
-    }
-
-    public void setUrl(String mUrl) {
-        this.mUrl = mUrl;
-    }
-
 
     /* (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
@@ -88,11 +50,10 @@ public class Banner implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            mPhoneImage = jsonObject.getString(RestConstants.JSON_BANNER_PHONE_IMG_TAG);
-            mTabletImage = jsonObject.getString(RestConstants.JSON_BANNER_TABLET_IMG_TAG);
-            mTargetType = jsonObject.getString(RestConstants.JSON_TARGET_TYPE_TAG);
-            mTitle = jsonObject.getString(RestConstants.JSON_TITLE_TAG);
-            mUrl = jsonObject.getString(RestConstants.URL);
+            mPhoneImage = jsonObject.getString(RestConstants.PHONE_IMAGE);
+            mTabletImage = jsonObject.getString(RestConstants.TABLET_IMAGE);
+            mTarget = jsonObject.getString(RestConstants.TARGET);
+            mTitle = jsonObject.getString(RestConstants.TITLE);
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -134,21 +95,18 @@ public class Banner implements IJSONSerializable, Parcelable {
 	public void writeToParcel(Parcel dest, int flags) {
 	    dest.writeString(mPhoneImage);
 	    dest.writeString(mTabletImage);
-	    dest.writeString(mTargetType);
+	    dest.writeString(mTarget);
         dest.writeString(mTitle);
-        dest.writeString(mUrl);
 	}
 
 	/**
 	 * Parcel constructor
-	 * @param in
 	 */
     private Banner(Parcel in) {
         mPhoneImage = in.readString();
         mTabletImage = in.readString();
-        mTargetType = in.readString();
+        mTarget = in.readString();
         mTitle = in.readString();
-        mUrl = in.readString();
     }
 
 	/**

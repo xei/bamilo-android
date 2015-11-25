@@ -149,7 +149,7 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             FragmentType search = FragmentType.PRODUCT_DETAILS;
             // change behaviour depending on type of FeaturedItem
             if (featuredItem instanceof FeaturedItemProduct) {
-                bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, ((FeaturedItemProduct) featuredItem).getSku());
+                bundle.putString(ConstantsIntentExtra.CONTENT_ID, ((FeaturedItemProduct) featuredItem).getSku());
                 navigationSourceId = R.string.gsearch;
                 search = FragmentType.PRODUCT_DETAILS;
             } else if (featuredItem instanceof FeaturedItemBrand) {

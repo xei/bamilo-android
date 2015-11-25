@@ -472,7 +472,7 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : "n.a.");
+        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : AdjustTracker.NOT_AVAILABLE);
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
@@ -540,7 +540,7 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : "n.a.");
+        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : AdjustTracker.NOT_AVAILABLE);
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
@@ -675,7 +675,7 @@ public class TrackerDelegator {
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, type);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, type);
         trackProductAddedToCart(bundle);
     }
 
@@ -690,7 +690,7 @@ public class TrackerDelegator {
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, type);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, type);
         trackProductAddedToCart(bundle);
     }
 
@@ -734,8 +734,8 @@ public class TrackerDelegator {
         // FB
         FacebookTracker.get(sContext).trackAddedToCart(sku, price, JumiaApplication.SHOP_ID, appVersion);
         //GA Banner Flow
-        if (bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null) {
-            JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE));
+        if (bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE) != null) {
+            JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE));
         }
 
     }
@@ -806,9 +806,9 @@ public class TrackerDelegator {
      */
     public static void trackCampaignView(TeaserCampaign teaserCampaign) {
         // GA
-        AnalyticsGoogle.get().trackGenericPage(teaserCampaign != null ? teaserCampaign.getTargetTitle() : "n.a.");
+        AnalyticsGoogle.get().trackGenericPage(teaserCampaign != null ? teaserCampaign.getTitle() : AdjustTracker.NOT_AVAILABLE);
         // Ad4Push
-        Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign != null ? teaserCampaign.getCampaignId() : "n.a.");
+        Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign != null ? teaserCampaign.getId() : AdjustTracker.NOT_AVAILABLE);
     }
 
     /**

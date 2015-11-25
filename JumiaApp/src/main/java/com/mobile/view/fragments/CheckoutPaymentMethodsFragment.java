@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
@@ -41,6 +42,7 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -83,7 +85,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private View mCheckoutTotalBar;
 
     private View mCheckoutButtonNext;
-    
+
+    private ScrollView mScrollView;
     /**
      * Empty constructor
      */
@@ -142,6 +145,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         Print.i(TAG, "ON VIEW CREATED");
         // Get containers
         paymentMethodsContainer = (ViewGroup) view.findViewById(R.id.checkout_payment_methods_container);
+        mScrollView = (ScrollView) view.findViewById(R.id.payment_scroll);
         // Buttons
         view.findViewById(R.id.checkout_button_enter).setOnClickListener(this);
         // Checkout total view
@@ -350,7 +354,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         if (!TextUtils.isEmpty(mVoucher)) {
             voucherCode.setText(mVoucher);
         }
-
+        UIUtils.scrollToViewByClick(mScrollView, voucherCode);
         // voucherDivider = getView().findViewById(R.id.voucher_divider);
         voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
         couponButton = (TextView) getView().findViewById(R.id.voucher_btn);
@@ -377,7 +381,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 triggerRemoveVoucher();
             }
         } else {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
         }
     }
     
@@ -389,7 +393,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 paymentName = values.getAsString("name");
                 triggerSubmitPaymentMethod(values);
             } else {
-                getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.please_fill_all_data));
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.please_fill_all_data));
             }
         } else if (noPaymentNeeded) {
             // Get next step

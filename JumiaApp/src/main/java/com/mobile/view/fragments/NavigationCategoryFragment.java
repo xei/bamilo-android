@@ -19,11 +19,11 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.categories.GetCategoriesHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -195,7 +195,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         // Validate fragment state
         if (isOnStoppingProcess) return;
         int errorCode = baseResponse.getError().getCode();
-        if (errorCode == ErrorCode.TIME_OUT || errorCode == ErrorCode.NO_NETWORK) {
+        if (errorCode == ErrorCode.TIME_OUT || errorCode == ErrorCode.NO_CONNECTIVITY) {
             showFragmentNoNetworkRetry();
         } else {
             showRetry();

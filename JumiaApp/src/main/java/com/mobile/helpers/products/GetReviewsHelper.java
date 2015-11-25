@@ -4,10 +4,12 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -19,19 +21,6 @@ public class GetReviewsHelper extends SuperBaseHelper {
 
     protected static String TAG = GetReviewsHelper.class.getSimpleName();
 
-    public static final String SKU = GetProductHelper.SKU_TAG;
-
-    public static final String PER_PAGE = "per_page";
-
-    public static final String PAGE = "page";
-
-    public static final String REST_PARAM_SELLER_RATING = "seller_rating";
-
-    public static final String REST_PARAM_RATING = "rating";
-
-    public static final int REVIEWS_PER_PAGE = 18;
-
-
     @Override
     public EventType getEventType() {
         return EventType.GET_PRODUCT_REVIEWS;
@@ -39,24 +28,17 @@ public class GetReviewsHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        //test
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductReviews);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductDetailReviews);
    }
 
-    public static Bundle createBundle(String sku,int pageNumber) {
-
-        //all these parameters are placed between {} in request
+    public static Bundle createBundle(String sku, int page) {
         ContentValues values = new ContentValues();
-
-        values.put(GetReviewsHelper.SKU, sku);
-        values.put(GetReviewsHelper.REST_PARAM_RATING, true);
-        values.put(GetReviewsHelper.PAGE, pageNumber);
-        values.put(GetReviewsHelper.PER_PAGE, REVIEWS_PER_PAGE);
-
-
+        values.put(RestConstants.SKU, sku);
+        values.put(RestConstants.RATING, 1);
+        values.put(RestConstants.PAGE, page);
+        values.put(RestConstants.PER_PAGE, IntConstants.MAX_ITEMS_PER_PAGE);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RestConstants.PARAM_1, values); //parameters map
-
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 

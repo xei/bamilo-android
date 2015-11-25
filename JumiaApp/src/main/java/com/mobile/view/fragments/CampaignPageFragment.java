@@ -35,7 +35,6 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.campaign.GetCampaignHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
-import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
@@ -48,7 +47,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
@@ -169,7 +167,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        Print.d(TAG, "TEASER CAMPAIGN: " + mTeaserCampaign.getTargetTitle() + " " + mTeaserCampaign.getCampaignId());
         // Get grid view
         mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
@@ -295,7 +292,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private void getAndShowCampaign() {
         Print.i(TAG, "VALIDATE CAMPAIGN STATE");
         // Get the campaign id
-        String id = (mTeaserCampaign != null) ? mTeaserCampaign.getCampaignId() : null;
+        String id = (mTeaserCampaign != null) ? mTeaserCampaign.getId() : null;
         // Validate the current state
         if(mCampaign == null) triggerGetCampaign(id);
         else showCampaign();
@@ -469,7 +466,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.CAMPAINGS);
             bundle.putString(TrackerDelegator.CATEGORY_KEY, "");
             bundle.putString(TrackerDelegator.SUBCATEGORY_KEY, "");
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             TrackerDelegator.trackProductAddedToCart(bundle);
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -487,11 +484,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Print.d(TAG, "ON CLICK PRODUCT " + prod + " " + size);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductHelper.SKU_TAG, prod);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, prod);
         bundle.putString(DeepLinkManager.PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcampaign);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
     
