@@ -1075,5 +1075,4 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-
 }
