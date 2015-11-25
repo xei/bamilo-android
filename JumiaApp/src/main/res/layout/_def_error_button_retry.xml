@@ -9,7 +9,6 @@
     android:layout_gravity="center"
     android:clickable="true"
     android:gravity="center"
-    android:layoutDirection="locale"
     android:orientation="horizontal">
 
     <ImageView

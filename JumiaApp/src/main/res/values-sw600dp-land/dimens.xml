@@ -9,7 +9,6 @@
     <dimen name="text_m">20sp</dimen>
     <dimen name="text_l">22sp</dimen>
     <dimen name="text_xl">24sp</dimen>
-    <dimen name="text_16sp">16sp</dimen>
     <!-- dimen name="text_xxl">26sp</dimen -->
 
     <!-- HOME -->
