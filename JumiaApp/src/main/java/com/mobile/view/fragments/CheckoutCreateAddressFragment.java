@@ -10,16 +10,16 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -72,9 +72,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     public void onResume() {
         super.onResume();
         // Get and show form
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-            triggerInitForm();
-        } else if(mFormShipping != null &&  mFormBilling!= null && orderSummary != null && regions != null){
+        if(mFormShipping != null &&  mFormBilling!= null && orderSummary != null && regions != null){
             loadCreateAddressForm(mFormShipping, mFormBilling);
         } else {
             triggerCreateAddressForm();
@@ -122,9 +120,10 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
             Print.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
             nextFragment = FragmentType.MY_ADDRESSES;
         }
-        Toast.makeText(getBaseActivity(), getString(R.string.create_addresses_success), Toast.LENGTH_SHORT).show();
+
         FragmentController.getInstance().popLastEntry(FragmentType.CREATE_ADDRESS.toString());
         getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.create_addresses_success));
     }
 
     @Override

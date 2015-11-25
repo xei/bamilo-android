@@ -7,15 +7,15 @@ import android.view.View;
 import com.mobile.app.JumiaApplication;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -86,9 +86,12 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onResume() {
         super.onResume();
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-            triggerInitForm();
-        } else if(mFormShipping != null &&  mFormBilling!= null && regions != null){
+        initializeFormData();
+    }
+
+    private void initializeFormData() {
+        // Get and show form
+        if(mFormShipping != null &&  mFormBilling!= null && regions != null){
             loadCreateAddressForm(mFormShipping,mFormBilling);
         } else {
             triggerCreateAddressForm();
@@ -97,8 +100,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
 
     @Override
     protected void onClickRetryButton() {
-        //TODO retry error when this method has access to eventType
-        triggerInitForm();
+        initializeFormData();
     }
 
     @Override
@@ -121,6 +123,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
             } else {
                 getBaseActivity().onBackPressed();
             }
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.create_addresses_success));
         }
     }
 
@@ -163,8 +166,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     }
 
     private void onErrorOccurred(){
-        Toast.makeText(getBaseActivity(),getResources().getString(R.string.error_please_try_again),Toast.LENGTH_SHORT).show();
         getBaseActivity().onBackPressed();
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
     }
 
 }

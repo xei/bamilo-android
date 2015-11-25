@@ -41,8 +41,8 @@
     <item type="id" name="target_teaser_origin"/>
     <item type="id" name="target_list_position"/>
 
-    <!-- TODO: REMOVE THIS ID FOR REGEX (TEMPORARY SOLUTION) -->
-    <item type="id" name="regex"/>
+    <!-- TARGET LINK -->
+    <item type="id" name="target_link"/>
 
     <!-- DATE PICKER -->
     <item name="orange_dialog" type="color" />

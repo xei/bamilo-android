@@ -136,13 +136,13 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         // Get facebook flag
         isFacebookAvailable = jsonObject.getBoolean(RestConstants.JSON_FACEBOOK_IS_AVAILABLE);
         // Get rating info
-        JSONObject ratingObject = jsonObject.optJSONObject(RestConstants.JSON_RATING_TAG);
+        JSONObject ratingObject = jsonObject.optJSONObject(RestConstants.RATING);
         if (ratingObject != null) {
             isRatingEnable = ratingObject.optBoolean(RestConstants.JSON_IS_ENABLE_TAG, true);
             isRatingLoginRequired = ratingObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG);
         }
         // Get review info
-        JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEW_TAG);
+        JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.REVIEW);
         if (reviewObject != null) {
             isReviewEnable = reviewObject.optBoolean(RestConstants.JSON_IS_ENABLE_TAG, true);
             isReviewLoginRequired = reviewObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG);

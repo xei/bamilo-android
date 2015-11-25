@@ -1,5 +1,6 @@
 package com.mobile.helpers.search;
 
+import android.content.ContentValues;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,15 +11,16 @@ import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +35,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     private static final String TAG = GetSearchSuggestionsHelper.class.getSimpleName();
 
-    private static final EventType EVENT_TYPE = EventType.GET_SEARCH_SUGGESTIONS_EVENT;
-
-    public static final String SEACH_PARAM = "searchParam";
-
-    public static final String QUERY = "q";
+    public static final String SEARCH_PARAM = "searchParam";
 
     private String mQuery;
 
@@ -62,17 +60,24 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         // Get the current query
-        mQuery = args.getString(SEACH_PARAM);
-        Map<String, String> data = new HashMap<>();
-        data.put(QUERY, mQuery);
-        return data;
+        mQuery = args.getString(SEARCH_PARAM);
+        return super.getRequestData(args);
     }
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-//        new SearchSuggestions(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getSearchSuggestions);
     }
+
+    public static Bundle createBundle(String query) {
+        ContentValues values = new ContentValues();
+        values.put(RestConstants.Q, query);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
+        bundle.putString(SEARCH_PARAM, query);
+        return bundle;
+    }
+
 
     @Override
     public void postSuccess(BaseResponse baseResponse) {
@@ -123,8 +128,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         }
         Print.d(TAG, "SUGGESTION: " + suggestions.size());
 
-//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, suggestions.size() > 0);
-//        bundle.putString(SEACH_PARAM, mQuery);
         SuggestionsStruct suggestionsStruct = new SuggestionsStruct(suggestions);
         suggestionsStruct.setSearchParam(mQuery);
         baseResponse.getMetadata().setData(suggestionsStruct);

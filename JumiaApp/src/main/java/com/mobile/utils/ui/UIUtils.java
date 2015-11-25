@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -135,8 +136,31 @@ public class UIUtils {
     public static void animateSlideDown(@NonNull View animatedView) {
         animatedView.clearAnimation();
         animatedView.setVisibility(View.VISIBLE);
-        Animation animation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_down);
+        Animation downAnimation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_down);
+        Animation upAnimation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_up);
+
+        upAnimation.setStartOffset(downAnimation.getDuration() + WarningFactory._3_SECONDS);
+        // Create a set with animations
+        AnimationSet animation = new AnimationSet(false);
+        animation.addAnimation(downAnimation);
+        animation.addAnimation(upAnimation);
         animatedView.startAnimation(animation);
     }
-    
+
+    /**
+     * method responsible for scrolling a scrollview to a view position
+     * @param scrollView
+     * @param viewToScrollTo
+     */
+    public static void scrollToViewByClick(final View scrollView, final View viewToScrollTo){
+
+        viewToScrollTo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP)
+                    scrollView.scrollTo(0, viewToScrollTo.getBottom());
+                return false;
+            }
+        });
+    }
 }

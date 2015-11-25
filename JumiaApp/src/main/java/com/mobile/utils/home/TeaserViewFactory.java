@@ -88,12 +88,11 @@ public class TeaserViewFactory {
     public static void setClickableView(View view, BaseTeaserObject teaser, View.OnClickListener listener, int position) {
         if (listener != null) {
             view.setTag(R.id.target_title, teaser.getTitle());
-            view.setTag(R.id.target_type, teaser.getTargetType());
-            view.setTag(R.id.target_key, teaser.getTargetKey());
+            //FIXME target_link
+            view.setTag(R.id.target_key, teaser.getTargetLink());
             view.setTag(R.id.target_teaser_origin, teaser.getTeaserTypeId());
             // Set position of the clicked teaser, for tracking purpose
             view.setTag(R.id.target_list_position, position);
-            view.setTag(R.id.target_sku, teaser.getSku());
 
             view.setOnClickListener(listener);
         }

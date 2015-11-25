@@ -1,22 +1,23 @@
 package com.mobile.newFramework.rest.errors;
 
 /**
- * Created by pcarvalho on 5/22/15.
+ * Base
+ * @author pcarvalho
  */
 public class AigBaseException extends Exception {
 
-    private JumiaError error;
+    private AigError error;
 
-    public AigBaseException(JumiaError error) {
+    public AigBaseException(AigError error) {
         super();
         this.error = error;
     }
 
-    public JumiaError getError() {
+    public AigError getError() {
         return error;
     }
 
-    public void setError(JumiaError error) {
+    public void setError(AigError error) {
         this.error = error;
     }
 }

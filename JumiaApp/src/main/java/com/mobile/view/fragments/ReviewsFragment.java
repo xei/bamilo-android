@@ -32,20 +32,20 @@ import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.GetReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.objects.product.RatingStar;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -505,7 +505,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
                             @Override
                             public void onClick(View v) {
-                                Print.d(TAG, "review clicked: username = " + userName.getText().toString());
+                                Print.d(TAG, "review clicked: username = " + userName.getText());
                                 goToReview(review, stringCor[0]);
                             }
                         });
@@ -723,20 +723,12 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
      * @author sergiopereira
      */
     private void triggerReviews(String sku, int pageNumber) {
-        ContentValues values = new ContentValues();
 
-        values.put(GetReviewsHelper.SKU, sku);
-        values.put(GetReviewsHelper.PAGE, pageNumber);
-        values.put(GetReviewsHelper.PER_PAGE, REVIEWS_PER_PAGE);
-        values.put(GetReviewsHelper.REST_PARAM_RATING, true);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         // Show loading layout for first time
         if (pageNumber == 1) {
-            triggerContentEvent(new GetReviewsHelper(), bundle, this);
+            triggerContentEvent(new GetReviewsHelper(), GetReviewsHelper.createBundle(sku,pageNumber), this);
         } else {
-            triggerContentEventNoLoading(new GetReviewsHelper(), bundle, this);
+            triggerContentEventNoLoading(new GetReviewsHelper(), GetReviewsHelper.createBundle(sku,pageNumber), this);
         }
     }
 
@@ -835,7 +827,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
                 break;
             case GET_PRODUCT_DETAIL:
                 if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
-                    Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
                     getActivity().onBackPressed();
                     return;
                 } else {
@@ -891,7 +883,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
                 break;
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
-                    Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
 
                     try {
                         getBaseActivity().onBackPressed();

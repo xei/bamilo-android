@@ -1,12 +1,10 @@
-/**
- * 
- */
 package com.mobile.helpers.products;
 
 import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -24,7 +22,7 @@ public class GetProductHelper extends SuperBaseHelper {
     
     protected static String TAG = GetProductHelper.class.getSimpleName();
 
-    public static final String SKU_TAG = "sku";
+    public static final String SKU_TAG = RestConstants.SKU;
 
     @Override
     public EventType getEventType() {
@@ -38,9 +36,9 @@ public class GetProductHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String sku) {
         ContentValues values = new ContentValues();
-        values.put(GetProductHelper.SKU_TAG, sku);
+        values.put(RestConstants.SKU, sku);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 

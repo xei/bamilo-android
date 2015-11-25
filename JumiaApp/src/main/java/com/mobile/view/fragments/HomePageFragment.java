@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +27,6 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
-import com.mobile.newFramework.objects.home.type.TeaserTargetType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
@@ -41,10 +41,10 @@ import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
-import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class HomePageFragment extends BaseFragment implements IResponseCallback {
+public class HomePageFragment extends BaseFragment implements IResponseCallback, TargetLink.OnAppendDataListener, TargetLink.OnCampaignListener {
 
     private static final String TAG = HomePageFragment.class.getSimpleName();
 
@@ -396,152 +396,88 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     @Override
     public void onClick(View view) {
+        super.onClick(view);
         // Validated clicked view
-        if(!onClickTeaserItem(view)) {
-            super.onClick(view);
-        }
+        onClickTeaserItem(view);
     }
 
     /**
      * Process the click on teaser
      */
-    private boolean onClickTeaserItem(View view) {
+    private void onClickTeaserItem(View view) {
         Print.i(TAG, "ON CLICK TEASER ITEM");
-        // Flag to mark as intercepted
-        boolean intercepted = true;
-        // Get type
-        String targetType = (String) view.getTag(R.id.target_type);
-        // validate the state of the view when clicking on the retry button on the Home page
-        if(TextUtils.isEmpty(targetType)){
-          return false;
-        }
-        // Get target Key
-        String targetKey = (String) view.getTag(R.id.target_key);
-        // validate the state of the view when clicking on the retry button on the Home page
-        if(TextUtils.isEmpty(targetKey)){
-            return false;
-        }
         // Get title
-        String targetTitle = (String) view.getTag(R.id.target_title);
+        String title = (String) view.getTag(R.id.target_title);
+        // Get target link
+        @TargetLink.Type String link = (String) view.getTag(R.id.target_link);
         // Get origin id
-        int origin = (int) view.getTag(R.id.target_teaser_origin);
+        int id = (int) view.getTag(R.id.target_teaser_origin);
+        Print.i(TAG, "CLICK TARGET: LINK:" + link + " TITLE:" + title + " ORIGIN:" + id);
         // Get teaser group type
-        TeaserGroupType originGroupType = TeaserGroupType.values()[origin];
-        if(view.getTag(R.id.target_list_position) != null){
-            originGroupType.setTrackingPosition((int) view.getTag(R.id.target_list_position));
+        TeaserGroupType origin = TeaserGroupType.values()[id];
+        if (view.getTag(R.id.target_list_position) != null) {
+            origin.setTrackingPosition((int) view.getTag(R.id.target_list_position));
             // FIXME use targetkey instead of targeturl
-            TrackerDelegator.trackBannerClicked(originGroupType, targetKey, (int) view.getTag(R.id.target_list_position));
+            TrackerDelegator.trackBannerClicked(origin, link, (int) view.getTag(R.id.target_list_position));
         }
-        Print.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " KEY:" + targetKey);
-        // Get target type
-        TeaserTargetType target = TeaserTargetType.byString(targetType);
-        switch (target) {
-            case CATALOG:
-                gotoCatalog(targetTitle, targetKey, originGroupType);
-                break;
-            case CAMPAIGN:
-                gotoCampaignPage(targetTitle, targetKey, originGroupType);
-                break;
-            case STATIC_PAGE:
-                gotoStaticPage(targetTitle, targetKey, originGroupType);
-                break;
-            case PRODUCT_DETAIL:
-                gotoProductDetail(targetKey, originGroupType);
-                break;
-            case UNKNOWN:
-            default:
-                intercepted = false;
-                Print.w(TAG, "WARNING: RECEIVED UNKNOWN TARGET TYPE: " + targetType);
-                break;
+        // Parse target link
+        boolean result = new TargetLink.Helper(this, link)
+                .addFragmentType(FragmentType.HOME)
+                .addTitle(title)
+                .setOrigin(origin)
+                .addAppendListener(this)
+                .addCampaignListener(this)
+                .run();
+        // Validate result
+        if(!result) {
+            showUnexpectedErrorWarning();
         }
-        return intercepted;
     }
 
     /**
-     * Goto catalog page
+     * Append some data
      */
-    private void gotoCatalog(String title, String targetKey, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO CATALOG PAGE: " + title + " " + targetKey);
-        // Update counter for tracking
-        CategoriesTableHelper.updateCategoryCounter(targetKey, title);
-        // Go to bundle
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TARGET_KEY, targetKey);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-        bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Goto product detail using Sku
-     */
-    private void gotoProductDetail(String targetKey, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO PRODUCT DETAIL: " + targetKey);
-        if(TextUtils.isNotEmpty(targetKey)){
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, targetKey);
+    @Override
+    public void onAppendData(FragmentType next, String title, String id, Bundle bundle) {
+        if(next == FragmentType.PRODUCT_DETAILS) {
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
+        }
+        else if(next == FragmentType.CATALOG) {
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+            //FIXME Update the counter
+            CategoriesTableHelper.updateCategoryCounter(id, title);
         }
     }
 
     /**
-     * Goto static page
+     * Process create the bundle for campaigns.
      */
-    private void gotoStaticPage(String title, String targetKey, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO STATIC PAGE: " + title + " " + targetKey);
+    @NonNull
+    @Override
+    public Bundle onTargetCampaign(String title, String id, TeaserGroupType origin) {
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TARGET_KEY, targetKey);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-        getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, origin);
+        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignsData(title, id, origin));
+        return bundle;
     }
 
     /**
-     * Goto campaign page
+     * Create a list with campaigns.
      */
-    private void gotoCampaignPage(String targetTitle, String targetKey, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO CAMPAIGN PAGE: " + targetTitle + " " + targetKey);
-        // Get group
-        BaseTeaserGroupType group = mHomePage.getTeasers().get(groupType.ordinal());
-        // Case campaign origin
+    @NonNull
+    private ArrayList<TeaserCampaign> createCampaignsData(String title, String id, TeaserGroupType group) {
+        Print.i(TAG, "GOTO CAMPAIGN PAGE: " + title + " " + id);
+        // Object
         ArrayList<TeaserCampaign> campaigns;
-        if (groupType == TeaserGroupType.CAMPAIGNS) {
-            campaigns = createCampaign(group);
+        // Get group
+        BaseTeaserGroupType campaignGroup = mHomePage.getTeasers().get(group.ordinal());
+        // Case from campaigns
+        if (group == TeaserGroupType.CAMPAIGNS) {
+            campaigns = TargetLink.createCampaignList(campaignGroup);
         }
-        // Case other origin
+        // Case from other
         else {
-            campaigns = new ArrayList<>();
-            TeaserCampaign campaign = new TeaserCampaign();
-            campaign.setTitle(targetTitle);
-            campaign.setCampaignId(targetKey);
-            campaigns.add(campaign);
-        }
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-        // Switch
-        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Create an array with a single campaign
-     * @return ArrayList with one campaign
-     * @author sergiopereira
-     */
-    private ArrayList<TeaserCampaign> createCampaign(BaseTeaserGroupType group) {
-        ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
-        for (BaseTeaserObject baseTeaserObject : group.getData()) {
-            TeaserCampaign campaign = new TeaserCampaign();
-            campaign.setTitle(baseTeaserObject.getTitle());
-            campaign.setCampaignId(baseTeaserObject.getTargetKey());
-            campaigns.add(campaign);
+            campaigns = TargetLink.createCampaignList(title, id);
         }
         return campaigns;
     }

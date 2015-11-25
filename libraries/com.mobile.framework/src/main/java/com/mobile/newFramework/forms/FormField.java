@@ -202,7 +202,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             // if the field is one of the supported types
             mId = jsonObject.optString(RestConstants.ID);
-            mKey = jsonObject.optString(RestConstants.JSON_KEY_TAG); // Used for form images
+            mKey = jsonObject.optString(RestConstants.KEY); // Used for form images
             mName = jsonObject.optString(RestConstants.JSON_FIELD_NAME_TAG);
             mLabel = jsonObject.optString(RestConstants.LABEL);
             mValue = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
@@ -403,7 +403,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             // fields
             jsonObject.put(RestConstants.ID, mId);
-            jsonObject.put(RestConstants.JSON_KEY_TAG, mKey);
+            jsonObject.put(RestConstants.KEY, mKey);
             jsonObject.put(RestConstants.JSON_FIELD_NAME_TAG, mName);
             jsonObject.put(RestConstants.LABEL, mLabel);
             jsonObject.put(RestConstants.VALUE, mValue);

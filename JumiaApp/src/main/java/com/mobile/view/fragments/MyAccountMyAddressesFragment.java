@@ -21,7 +21,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -157,7 +157,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
         // In case of all addresses already are the default ones
         if(isSetBillingComplete && isSetShippingComplete){
-            Toast.makeText(getActivity(), R.string.addresses_saved_message,Toast.LENGTH_SHORT).show();
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.addresses_saved_message));
             resetRequests();
         }
     }
@@ -211,7 +211,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch(eventType){
             case GET_CUSTOMER_ADDRESSES_EVENT:
@@ -220,13 +220,13 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
             case SET_DEFAULT_SHIPPING_ADDRESS:
                 setDefaultChecked(Boolean.parseBoolean(sameAddress));
                 showFragmentContentContainer();
-                Toast.makeText(getBaseActivity(),getResources().getString(R.string.error_please_try_again),Toast.LENGTH_LONG).show();
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
                 resetRequests();
                 break;
             case SET_DEFAULT_BILLING_ADDRESS:
                 setDefaultChecked(Boolean.parseBoolean(sameAddress));
                 showFragmentContentContainer();
-                Toast.makeText(getBaseActivity(),getResources().getString(R.string.error_please_try_again),Toast.LENGTH_LONG).show();
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
                 resetRequests();
                 break;
             default:
@@ -286,7 +286,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
      */
     protected void checkSettingRequestComplete(){
         if(isSetBillingComplete && isSetShippingComplete){
-            Toast.makeText(getActivity(), R.string.addresses_saved_message,Toast.LENGTH_SHORT).show();
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.addresses_saved_message));
             onClickRetryButton();
         }
     }

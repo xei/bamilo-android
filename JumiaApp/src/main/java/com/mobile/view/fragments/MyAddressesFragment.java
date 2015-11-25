@@ -16,17 +16,15 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.GenericRadioGroup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -271,7 +269,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             String addressId = mBottomRadioGroup.getCheckedTag().toString();
             submitForm(addressId, addressId, IS_SAME_ADDRESS);
         } else {
-            Toast.makeText(getBaseActivity(), getString(R.string.billing_choose_address), Toast.LENGTH_SHORT).show();
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.billing_choose_address));
         }
     }
 
@@ -292,7 +290,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             // Submit values
             submitForm(shippingAddressId, billingAddressId, isSameAddress);
         } else {
-            Toast.makeText(getBaseActivity(), getString(R.string.billing_choose_address), Toast.LENGTH_SHORT).show();
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.billing_choose_address));
         }
     }
 
@@ -526,17 +524,13 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     /**
      * Dialog used to show an error
      */
-    protected void showErrorDialog(Map<String, List<String>> errors, int titleId) {
+    protected void showErrorDialog(String message, int titleId) {
         Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        List<String> errorMessages = null;
-        if (errors != null) {
-            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
-        }
-        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+        if (com.mobile.newFramework.utils.TextUtils.isNotEmpty(message)) {
             showFragmentContentContainer();
             dialog = DialogGenericFragment.newInstance(true, false,
                     getString(titleId),
-                    errorMessages.get(0),
+                    message,
                     getString(R.string.ok_label),
                     "",
                     new View.OnClickListener() {

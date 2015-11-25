@@ -37,8 +37,8 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -298,8 +298,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     class TouchableSpan extends ClickableSpan {
         private boolean mIsPressed;
-        private int mNormalTextColor;
-        private int mPressedTextColor;
+        private final int mNormalTextColor;
+        private final int mPressedTextColor;
 
         public TouchableSpan(int normalTextColorRes, int pressedTextColorRes) {
             mNormalTextColor = getResources().getColor(normalTextColorRes);
@@ -391,9 +391,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @SuppressWarnings("deprecation")
     private void onClickOrderNumber(View v){
         ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipMan.setPrimaryClip(ClipData.newPlainText("simple text",((TextView) v).getText()));
-
-        Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard),Toast.LENGTH_SHORT).show();
+        ClipMan.setPrimaryClip(ClipData.newPlainText("simple text", ((TextView) v).getText()));
+        getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.copied_to_clipboard));
     }
     
     /**
@@ -454,7 +453,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     protected boolean onErrorEvent(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        Print.i(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         return false;
     }

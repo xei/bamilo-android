@@ -18,12 +18,12 @@ import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.EventType;
@@ -34,11 +34,10 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
-import com.mobile.utils.ui.ToastManager;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -265,8 +264,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
 
     private void onClickTermsAndConditions() {
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.JSON_KEY_TAG, GetStaticPageHelper.TERMS_PAGE);
-        bundle.putString(RestConstants.JSON_TITLE_TAG, getString(R.string.terms_and_conditions));
+        bundle.putString(RestConstants.KEY, GetStaticPageHelper.TERMS_PAGE);
+        bundle.putString(RestConstants.TITLE, getString(R.string.terms_and_conditions));
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -317,7 +316,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         super.handleSuccessEvent(baseResponse);
         // Validate event
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON SUCCESS: " + eventType.toString());
+        Print.d(TAG, "ON SUCCESS: " + eventType);
         switch (eventType) {
             case REGISTER_ACCOUNT_EVENT:
                 // Get Register Completed Event
@@ -325,10 +324,12 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 // Tracking
                 if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-                // Notify user
-                ToastManager.show(getBaseActivity(), ToastManager.SUCCESS_LOGIN);
+
                 // Finish
                 getActivity().onBackPressed();
+
+                // Notify user
+                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 break;
             case GET_REGISTRATION_FORM_EVENT:
                 mForm = (Form) baseResponse.getMetadata().getData();
@@ -352,7 +353,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         }
         // Validate
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON ERROR: " + eventType.toString());
+        Print.d(TAG, "ON ERROR: " + eventType);
         switch (eventType) {
             case GET_REGISTRATION_FORM_EVENT:
                 showUnexpectedErrorWarning();
@@ -362,7 +363,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
                 // Validate errors
                 int code = baseResponse.getError().getCode();
-                Map<String, List<String>> messages = baseResponse.getErrorMessages();
+                Map messages = baseResponse.getErrorMessages();
                 validateErrorMessage(code, messages);
                 break;
             default:
@@ -370,13 +371,12 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         }
     }
 
-    private void validateErrorMessage(int errorCode, Map<String, List<String>> errorMessages) {
+    private void validateErrorMessage(int errorCode, Map errorMessages) {
         // Validate error
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            List<String> validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
             // Validate error message
             int message =  R.string.incomplete_alert;
-            if (validateMessages != null && validateMessages.contains(Errors.CODE_REGISTER_CUSTOMEREXISTS)) {
+            if (errorMessages != null && errorMessages.containsKey(ErrorConstants.CUSTOMER_CREATE_FAILED_EXISTS)) {
                 message = R.string.error_register_alreadyexists;
             }
             // Show container

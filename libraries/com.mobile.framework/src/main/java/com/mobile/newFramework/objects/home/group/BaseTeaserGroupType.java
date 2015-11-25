@@ -35,12 +35,6 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
     private TeaserGroupType mType = TeaserGroupType.UNKNOWN;
 
     /**
-     * Empty Constructor
-     */
-    public BaseTeaserGroupType() {
-    }
-
-    /**
      * Constructor
      */
     public BaseTeaserGroupType(TeaserGroupType type, JSONObject jsonObject) throws JSONException {
@@ -77,7 +71,7 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
 //        Log.i(TAG, "ON INITIALIZE: " + jsonObject.toString());
         // Get title
-        mTitle = jsonObject.optString(RestConstants.JSON_TITLE_TAG);
+        mTitle = jsonObject.optString(RestConstants.TITLE);
         // Get Data flag
         mHasData = jsonObject.optBoolean(RestConstants.HAS_DATA);
         mData = new ArrayList<>();

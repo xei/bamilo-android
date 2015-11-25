@@ -23,10 +23,9 @@ public class GetStaticPageHelper extends SuperBaseHelper {
 
     public static final String INTERNATIONAL_PRODUCT_POLICY_PAGE = "international-product-policy";
 
-
     @Override
     public EventType getEventType() {
-        return EventType.GET_TERMS_EVENT;
+        return EventType.GET_STATIC_PAGE;
     }
 
     @Override
@@ -36,14 +35,16 @@ public class GetStaticPageHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getTermsAndConditions);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getStaticPage);
     }
 
-    public static Bundle createBundle(String staticPage) {
+    public static Bundle createBundle(String key) {
+        // Item data
         ContentValues values = new ContentValues();
-        values.put(RestConstants.JSON_KEY_TAG, staticPage);
+        values.put(RestConstants.KEY, key);
+        // Request data
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
     

@@ -40,7 +40,7 @@ public class StaticFeaturedBox implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
         // Get title
-        title = metadataObject.optString(RestConstants.JSON_TITLE_TAG);
+        title = metadataObject.optString(RestConstants.TITLE);
         // Get items
         JSONArray array = metadataObject.getJSONArray(RestConstants.JSON_DATA_TAG);
         if(array.length() > 0 ) {

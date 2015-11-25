@@ -22,7 +22,6 @@ import com.mobile.helpers.address.GetCitiesHelper;
 import com.mobile.helpers.address.GetFormAddAddressHelper;
 import com.mobile.helpers.address.GetPostalCodeHelper;
 import com.mobile.helpers.address.GetRegionsHelper;
-import com.mobile.helpers.configs.GetInitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
@@ -804,14 +803,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     /**
-     * Trigger to initialize forms
-     */
-    protected void triggerInitForm() {
-        Print.i(TAG, "TRIGGER: INIT FORMS");
-        triggerContentEvent(new GetInitFormHelper(), null, this);
-    }
-
-    /**
      * Trigger to get regions
      * @author sergiopereira
      */
@@ -915,7 +906,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         orderSummary = JumiaApplication.INSTANCE.getCart();
         // Save and load form
-        AddressForms form = (AddressForms)baseResponse.getMetadata().getData();
+        AddressForms form = (AddressForms) baseResponse.getMetadata().getData();
         mFormShipping = form.getShippingForm();
         mFormBilling = form.getBillingForm();
         // Load form, get regions
