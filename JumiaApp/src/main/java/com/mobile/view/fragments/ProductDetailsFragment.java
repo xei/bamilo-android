@@ -151,6 +151,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (arguments != null) {
             // Get sku
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
+            if(mCompleteProductSku.contains("-")) {   //if is a simple sku - coming from campaigns
+                mCompleteProductSku = mCompleteProductSku.split("-")[0];
+            }
             // Categories
             categoryTree = arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME) ? arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV" : "";
 
