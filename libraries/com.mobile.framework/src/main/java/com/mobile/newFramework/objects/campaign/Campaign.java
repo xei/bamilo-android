@@ -27,15 +27,19 @@ public class Campaign implements IJSONSerializable, Parcelable {
 
     private String mName;
 
-//    private String mStartTime;
+    private String mStartTime;
 //
-//    private String mEndTime;
+    private String mEndTime;
+
+    private int mRemainingTime;
 
     private int mCount;
 
     private int mTotalProducts;
 
     private ArrayList<CampaignItem> mItems = new ArrayList<>();
+
+
 
     /**
      * Empty constructor
@@ -81,6 +85,11 @@ public class Campaign implements IJSONSerializable, Parcelable {
                 mItems.add(item);
             }
         }
+
+        mStartTime = campaignO.getString(RestConstants.START_TIME);
+        mEndTime = campaignO.getString(RestConstants.END_TIME);
+        mRemainingTime = campaignO.optInt(RestConstants.REMAINING_TIME);
+
         return true;
     }
 
@@ -151,6 +160,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
     public int getmTotalProducts() {return mTotalProducts;}
 
 
+
 	/*
      * ########### Setters ###########
      */
@@ -206,6 +216,9 @@ public class Campaign implements IJSONSerializable, Parcelable {
         dest.writeInt(mCount);
         dest.writeList(mItems);
         dest.writeInt(mTotalProducts);
+        dest.writeString(mStartTime);
+        dest.writeString(mEndTime);
+        dest.writeInt(mRemainingTime);
     }
 
     /**
@@ -219,6 +232,9 @@ public class Campaign implements IJSONSerializable, Parcelable {
         mItems = new ArrayList<>();
         in.readList(mItems, CampaignItem.class.getClassLoader());
         mTotalProducts = in.readInt();
+        mStartTime = in.readString();
+        mEndTime = in.readString();
+        mRemainingTime = in.readInt();
     }
 
     /**
