@@ -40,7 +40,9 @@ public enum EventType {
 
     GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", AigRestContract.DEFAULT_CACHE_TIME),
 
-    ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add/", AigRestContract.NO_CACHE),
+    //old request
+ //   ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add/", AigRestContract.NO_CACHE),
+    ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/cart/addproduct/", AigRestContract.NO_CACHE),
 
     ADD_ITEMS_TO_SHOPPING_CART_EVENT("https:/order/addmultiple/", AigRestContract.NO_CACHE),
 
