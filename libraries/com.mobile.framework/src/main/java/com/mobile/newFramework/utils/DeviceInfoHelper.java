@@ -390,4 +390,7 @@ public class DeviceInfoHelper {
         executeCodeBasedOnVersion(Build.VERSION_CODES.JELLY_BEAN_MR1, iDeviceVersionBasedCode);
     }
 
+    public static boolean isPosLollipop(){
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
 }

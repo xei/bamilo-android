@@ -23,13 +23,12 @@ import com.mobile.helpers.session.LoginFacebookHelper;
 import com.mobile.helpers.session.LoginGuestHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.EventType;
@@ -41,12 +40,11 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.lang.ref.WeakReference;
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class used to perform login via Facebook,
@@ -406,6 +404,8 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
+                    // Notify user
+                    showInfoLoginSuccess();
                 }
                 // Case unknown checkout step
                 else {
@@ -434,8 +434,8 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
-                getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.error_invalid_email));
                 showFragmentContentContainer();
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_invalid_email));
                 break;
             case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
@@ -449,11 +449,8 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 // Show warning
                 int errorCode = baseResponse.getError().getCode();
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    @SuppressWarnings("unchecked")
-                    Map<String, List<String>> errors = baseResponse.getErrorMessages();
-                    // Show dialog or toast
-                    if (!showErrorDialog(errors, R.string.error_signup_title)) {
-                        getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.no_connect_dialog_content));
+                    if (!showErrorDialog(baseResponse.getValidateMessage(), R.string.error_signup_title)) {
+                        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.no_connect_dialog_content));
                     }
                 } else {
                     showUnexpectedErrorWarning();
@@ -466,20 +463,16 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         }
     }
 
-        /**
+    /**
      * Dialog used to show an error
      */
-    private boolean showErrorDialog(Map<String, List<String>> errors, int titleId) {
+    private boolean showErrorDialog(String errors, int titleId) {
         Print.d(TAG, "SHOW ERROR DIALOG");
-        List<String> errorMessages = null;
-        if (errors != null) {
-            errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
-        }
-        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+        if (TextUtils.isNotEmpty(errors)) {
             showFragmentContentContainer();
             dialog = DialogGenericFragment.newInstance(true, false,
                     getString(titleId),
-                    errorMessages.get(0),
+                    errors,
                     getString(R.string.ok_label),
                     "",
                     new View.OnClickListener() {

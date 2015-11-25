@@ -45,8 +45,7 @@ public class RatingStar implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		rating = jsonObject.optDouble(RestConstants.JSON_RATINGS_AVERAGE_TAG, 0.0);
-		optionTitle = jsonObject.getString(RestConstants.JSON_TITLE_TAG);
-
+		optionTitle = jsonObject.getString(RestConstants.TITLE);
 		return true;
 	}
 

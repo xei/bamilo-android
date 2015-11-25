@@ -65,13 +65,13 @@ public class Campaign implements IJSONSerializable, Parcelable {
         mTabletBanner = (bannerDesktopA != null && bannerDesktopA.length() > 0) ? bannerDesktopA.get(0).toString() : null;
         mTabletBanner = ((mTabletBanner == null) ? mMobileBanner : mTabletBanner);
         // Get campaign
-        JSONObject campaignO = jsonObject.getJSONObject(RestConstants.JSON_CAMPAIGN_TAG);
+        JSONObject campaignO = jsonObject.getJSONObject(RestConstants.CAMPAIGN_ENTITY);
         // Get name
         mName = campaignO.optString(RestConstants.JSON_NAME_TAG);
         // Get product count
         mCount = campaignO.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
         // Get data
-        JSONArray itemsA = campaignO.getJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray itemsA = campaignO.getJSONArray(RestConstants.PRODUCTS);
         for (int i = 0; i < itemsA.length(); i++) {
             CampaignItem item = new CampaignItem();
             if (item.initialize(itemsA.getJSONObject(i))) {

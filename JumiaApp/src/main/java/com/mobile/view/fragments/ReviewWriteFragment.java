@@ -29,11 +29,11 @@ import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.RatingReviewProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -804,8 +804,8 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             case GET_PRODUCT_DETAIL:
                 Print.d(TAG, "GOT GET_PRODUCT_EVENT");
                 if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
                     getActivity().onBackPressed();
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
                 } else {
                     completeProduct = (ProductComplete) baseResponse.getMetadata().getData();
                     // triggerAutoLogin();
@@ -882,7 +882,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
 
                     showFragmentContentContainer();
 

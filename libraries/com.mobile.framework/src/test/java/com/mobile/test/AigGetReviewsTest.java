@@ -21,7 +21,7 @@ public class AigGetReviewsTest extends AigTestCase {
 
     @Override
     public String getAigInterfaceName() {
-        return AigApiInterface.getProductReviews;
+        return AigApiInterface.getProductDetailReviews;
     }
 
     @Override

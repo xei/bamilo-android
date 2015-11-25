@@ -2,13 +2,14 @@ package com.mobile.newFramework.requests;
 
 import android.support.annotation.NonNull;
 
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigRestAdapter;
 import com.mobile.newFramework.rest.errors.AigBaseException;
-import com.mobile.newFramework.rest.errors.JumiaError;
+import com.mobile.newFramework.rest.errors.AigError;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.lang.reflect.InvocationTargetException;
@@ -42,7 +43,11 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         // Get api service via string
         Method method = AigApiInterface.Service.getMethod(name);
         // Set parameters
-        List parameters = new ArrayList();
+        List<Object> parameters = new ArrayList();
+        // Add request path
+        if (TextUtils.isNotEmpty(mRequestBundle.getPath())) {
+            parameters.add(mRequestBundle.getPath());
+        }
         // Add request data
         if(mRequestBundle.hasData()){
             parameters.add(mRequestBundle.getData());
@@ -77,9 +82,9 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         }
         // Validate error response
         else {
-            JumiaError jumiaError = new JumiaError();
-            jumiaError.setCode(ErrorCode.REQUEST_ERROR);
-            baseResponse.setError(jumiaError);
+            AigError aigError = new AigError();
+            aigError.setCode(ErrorCode.REQUEST_ERROR);
+            baseResponse.setError(aigError);
             this.mRequester.onRequestError(baseResponse);
         }
     }
@@ -99,17 +104,4 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         }
     }
 
-    /*
-     * ############## UTILS TEMPORARY ##############
-     */
-
-//    protected String[] getBaseAndEndPointFrom(String fullUrl) {
-//        String baseUrl = fullUrl;
-//        String endPoint = "";
-//        if (baseUrl.contains("/mobapi/")) {
-//            baseUrl = mRequestBundle.getUrl().substring(0, baseUrl.indexOf("/mobapi/") + "/mobapi/".length());
-//            endPoint = mRequestBundle.getUrl().substring(baseUrl.indexOf("/mobapi/") + "/mobapi/".length());
-//        }
-//        return new String[]{baseUrl, endPoint};
-//    }
 }

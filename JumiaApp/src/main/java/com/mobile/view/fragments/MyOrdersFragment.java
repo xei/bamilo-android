@@ -17,13 +17,13 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.account.GetMyOrdersListHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.Order;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -35,7 +35,6 @@ import com.mobile.view.R;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -344,9 +343,9 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                 //used for when the user session expires on the server side
                 try {
                     if (errorCode == ErrorCode.REQUEST_ERROR) {
-                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                        if (errorMessages != null) {
-                            if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
+                        Map errorMessages = baseResponse.getErrorMessages();
+                        if (CollectionUtils.isNotEmpty(errorMessages)) {
+                            if (errorMessages.containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN)) {
                                 LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
                                 onValidateDataState();
                             }

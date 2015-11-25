@@ -38,7 +38,7 @@ public class Form implements IJSONSerializable, Parcelable {
     @Override
     @RequiredJson.JsonStruct
     public int getRequiredJson() {
-        return RequiredJson.ARRAY_DATA_FIRST;
+        return RequiredJson.OBJECT_DATA;
     }
 
     /**

@@ -1,121 +1,148 @@
 package com.mobile.newFramework.pojo;
 
-import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.rest.errors.JumiaError;
+import android.support.annotation.Nullable;
+
+import com.mobile.newFramework.rest.errors.AigError;
+import com.mobile.newFramework.rest.errors.ErrorCode;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by spereira on 5/19/15.
+ * Class used to represent a MobApi response.
+ *
+ * @author spereira
  */
-public class BaseResponse<T>{
-    private boolean success;
-    private Map<String, String> successMessages;
-    private Map<String,List<String>> errorMessages;
-    //private remove message variable as soon as possible
-    private String message;
-    private Metadata<T> metadata;
-    private Map<String, String> sessions;
-    private JumiaError error;
+public class BaseResponse<T> {
 
-    private EventType eventType;
-    private EventTask eventTask;
-    private boolean prioritary;
+    private boolean mSuccess;
+    private HashMap<String, String> mErrorMessages;
+    private HashMap<String, String> mSuccessMessages;
+    private HashMap<String, String> mValidateMessages;
+    private AigError mAigError;
+    private Metadata<T> mMetadata;
+    private EventType mEventType;
+    private EventTask mEventTask;
+    private boolean isPriority;
 
-    public BaseResponse(){
+    public BaseResponse() {
         setMetadata(new Metadata<T>());
     }
 
-    public BaseResponse(EventType eventType, @ErrorCode.Code int errorCode){
+    public BaseResponse(EventType eventType, @ErrorCode.Code int errorCode) {
         setEventType(eventType);
-        JumiaError jumiaError = new JumiaError();
-        jumiaError.setCode(errorCode);
-        setError(jumiaError);
+        AigError aigError = new AigError();
+        aigError.setCode(errorCode);
+        setError(aigError);
     }
 
     public boolean hadSuccess() {
-        return success;
+        return mSuccess;
     }
 
-
-    public Map<String, String> getSuccessMessages() {
-        return successMessages;
+    public boolean isPriority() {
+        return isPriority;
     }
 
-    public void setSuccessMessages(Map<String, String> successMessages) {
-        this.successMessages = successMessages;
+    public String getErrorMessage() {
+        return concatMessages(mErrorMessages);
     }
 
-    public Map<String, List<String>> getErrorMessages() {
-        return errorMessages;
+    public String getSuccessMessage() {
+        return concatMessages(mSuccessMessages);
     }
 
-    public void setErrorMessages(Map<String, List<String>> errorMessages) {
-        this.errorMessages = errorMessages;
+    public String getValidateMessage() {
+        return concatMessages(mValidateMessages);
     }
 
-    public String getMessage() {
-        return message;
+    @Nullable
+    public HashMap<String, String> getErrorMessages() {
+        return mErrorMessages;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    @Nullable
+    public HashMap<String, String> getSuccessMessages() {
+        return mSuccessMessages;
     }
 
+    @Nullable
+    public HashMap<String, String> getValidateMessages() {
+        return mValidateMessages;
+    }
+
+    public T getContentData() {
+        return mMetadata.getData();
+    }
+
+    /**
+     * To get the response data use the {@link #getContentData()} method.
+     */
     public Metadata<T> getMetadata() {
-        return metadata;
+        return mMetadata;
     }
 
-    public void setMetadata(Metadata<T> metadata) {
-        this.metadata = metadata;
+    public void setMetadata(Metadata<T> mMetadata) {
+        this.mMetadata = mMetadata;
     }
 
-    public Map<String, String> getSessions() {
-        return sessions;
-    }
-
-    public void setSessions(Map<String, String> sessions) {
-        this.sessions = sessions;
-    }
-
-    public JumiaError getError() {
-        return error;
-    }
-
-    public void setError(JumiaError error) {
-        this.error = error;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public AigError getError() {
+        return mAigError;
     }
 
     public EventType getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(EventType eventType) {
-        this.eventType = eventType;
+        return mEventType;
     }
 
     public EventTask getEventTask() {
-        return eventTask;
+        return mEventTask;
     }
 
-    public void setEventTask(EventTask eventTask) {
-        this.eventTask = eventTask;
+    public void setEventType(EventType mEventType) {
+        this.mEventType = mEventType;
     }
 
-    public boolean isPrioritary() {
-        return prioritary;
+    public void setEventTask(EventTask mEventTask) {
+        this.mEventTask = mEventTask;
     }
 
-    public void setPrioritary(boolean prioritary) {
-        this.prioritary = prioritary;
+    public void setPriority(boolean priority) {
+        this.isPriority = priority;
     }
+
+    public void setErrorMessages(@Nullable HashMap<String, String> map) {
+        this.mErrorMessages = map;
+    }
+
+    public void setSuccessMessages(@Nullable HashMap<String, String> map) {
+        this.mSuccessMessages = map;
+    }
+
+    public void setValidateMessages(@Nullable HashMap<String, String> map) {
+        this.mValidateMessages = map;
+    }
+
+    public void setError(AigError mAigError) {
+        this.mAigError = mAigError;
+    }
+
+    public void setSuccess(boolean mSuccess) {
+        this.mSuccess = mSuccess;
+    }
+
+    private String concatMessages(@Nullable Map<String, String> map) {
+        String message = "";
+        if(CollectionUtils.isNotEmpty(map)) {
+            for(Map.Entry<String, String> entry: map.entrySet()) {
+                message += entry.getValue() + "\n";
+            }
+        }
+        return message;
+    }
+
 }
 
 

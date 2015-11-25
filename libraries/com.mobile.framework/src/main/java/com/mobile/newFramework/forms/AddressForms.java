@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 /**
  * Created by alexandrapires on 10/14/15.
- *
+ * <p/>
  * This class is used to keep two separate Form instances when creating addresses
  */
 public class AddressForms implements IJSONSerializable {
@@ -16,56 +16,46 @@ public class AddressForms implements IJSONSerializable {
 
     private Form mBillingForm;
 
-
     /**
      * Empty constructor
-     * */
-    public AddressForms()
-    {
+     */
+    public AddressForms() {
         mShippingForm = new Form();
         mBillingForm = new Form();
     }
 
-
     /**
      * Return shipping address form
-     * */
-    public Form getShippingForm()
-    {
+     */
+    public Form getShippingForm() {
         return mShippingForm;
     }
 
-
     /**
      * Return billing address form
-     * */
-    public Form getBillingForm()
-    {
+     */
+    public Form getBillingForm() {
         return mBillingForm;
     }
 
 
     /**
      * Initialize both instances from a jsonObject Form
-     * */
+     */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-        return mShippingForm.initialize(jsonObject) &&  mBillingForm.initialize(jsonObject);
+        return mShippingForm.initialize(jsonObject) && mBillingForm.initialize(jsonObject);
     }
-
-
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.ARRAY_DATA_FIRST;
+        return RequiredJson.OBJECT_DATA;
     }
 
     @Override
     public JSONObject toJSON() {
         return null;
     }
-
-
 
 
 }

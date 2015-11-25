@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
@@ -28,9 +29,7 @@ public class WarningFactory {
      * ################# ANIMATION DURATION #################
      */
 
-//    public static final int _4_SECONDS = 4000;
     public static final int _3_SECONDS = 3000;
-    public static final int _5_SECONDS = 5000;
 
     /**
      * ################# WARNING BAR #################
@@ -64,11 +63,11 @@ public class WarningFactory {
     protected View mWarningBar;
 
     private String mWarningMessage;
+    private String actualWarningMessage;
 
     /**
      * Create a new instance of WarningFactory.
      *
-     * @param warningBar
      * @throws java.lang.IllegalStateException In case of warningBar is null.
      */
     public WarningFactory(View warningBar){
@@ -90,8 +89,6 @@ public class WarningFactory {
 
     /**
      * constructor where the label to show can be dynamic
-     * @param warning
-     * @param warningMessage
      */
     public void showWarning(int warning, String warningMessage){
         mWarningMessage = warningMessage;
@@ -129,16 +126,16 @@ public class WarningFactory {
     }
     /**
      * show dynamic success message
-     * @param warning
      */
     private void showWarningSuccess(int warning){
-        if(actualWarning != warning){
+        if(actualWarning != warning || !TextUtils.equals(actualWarningMessage, mWarningMessage)){
             new Builder().setText(mWarningMessage)
                     .setBackground(R.color.green_warning)
                     .setImageVisibility(false)
                     .setAnimationDuration(_3_SECONDS)
                     .startAnimation();
             actualWarning = warning;
+            actualWarningMessage = mWarningMessage;
         } else {
             new Builder().startAnimation();
         }
@@ -146,16 +143,16 @@ public class WarningFactory {
 
     /**
      * show dynamic error message
-     * @param warning
      */
     private void showWarningError(int warning) {
-        if(actualWarning != warning){
+        if(actualWarning != warning || !TextUtils.equals(actualWarningMessage, mWarningMessage)){
             new Builder().setText(mWarningMessage)
                     .setBackground(R.color.red_warning)
                     .setImageVisibility(true)
                     .setAnimationDuration(_3_SECONDS)
                     .startAnimation();
             actualWarning = warning;
+            actualWarningMessage = mWarningMessage;
         } else {
             new Builder().startAnimation();
         }
@@ -214,7 +211,7 @@ public class WarningFactory {
      */
     private class Builder {
 
-        private int animationLength = _5_SECONDS;
+        private int animationLength = _3_SECONDS;
 
         Builder(){
             mWarningBar.clearAnimation();
@@ -268,7 +265,6 @@ public class WarningFactory {
             mWarningBar.setVisibility(View.GONE);
             return this;
         }
-
 
     }
 }

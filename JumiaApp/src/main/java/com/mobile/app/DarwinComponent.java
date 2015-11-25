@@ -10,7 +10,7 @@ import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CountryPersistentConfigs;

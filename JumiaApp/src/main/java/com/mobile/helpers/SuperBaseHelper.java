@@ -48,6 +48,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         // Create builder
         RequestBundle.Builder requestBundleBuilder = new RequestBundle.Builder()
                 .setUrl(getRequestUrl(args))
+                .setPath(getRequestPath(args))
                 .setCache(mEventType.cacheTime);
 
         // Validate data
@@ -62,7 +63,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     /**
      * Get the url from bundle.<br>
      * TODO: Remove the temporary fix to support catalog >= v1.7.
-     * @return
      */
     protected String getRequestUrl(Bundle args) {
         String baseUrl = (args != null) ? args.getString(Constants.BUNDLE_URL_KEY) : null;
@@ -82,6 +82,24 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         }
     }
 
+
+    /**
+     * Add a path parameter to request.
+     */
+    protected String getRequestPath(Bundle args) {
+        // Get query path
+        String path = "";
+        if (args != null) {
+            ContentValues pathValues = args.getParcelable(Constants.BUNDLE_PATH_KEY);
+            if (CollectionUtils.isNotEmpty(pathValues)) {
+                for (Map.Entry<String, Object> entry : pathValues.valueSet()) {
+                    path += entry.getKey() + "/" + entry.getValue() + "/";
+                }
+            }
+        }
+        return path;
+    }
+
     protected Map<String, String> getRequestData(Bundle args) {
         if (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY)){
             appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
@@ -92,7 +110,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     /**
      *  Returns the helper's priority
-     * @return
      */
     public boolean hasPriority(){
         return HelperPriorityConfiguration.IS_PRIORITARY;
@@ -117,7 +134,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public void postError(BaseResponse baseResponse){
         baseResponse.setEventType(mEventType);
         baseResponse.setEventTask(getEventTask());
-        baseResponse.setPrioritary(prioritary);
+        baseResponse.setPriority(prioritary);
     }
 
     protected EventTask setEventTask(){
@@ -158,7 +175,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     @Override
     public final void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getMessage());
+        Print.i(TAG, "########### ON REQUEST ERROR: " + baseResponse.getErrorMessages());
         postError(baseResponse);
         if(mRequester != null) {
             mRequester.onRequestError(baseResponse);
