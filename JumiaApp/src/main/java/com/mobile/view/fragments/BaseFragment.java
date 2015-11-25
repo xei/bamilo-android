@@ -12,7 +12,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -1174,23 +1173,5 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             showInfoAddToShoppingCartCompleted();
         }
     }
-
-    /**
-     * method responsible for scrolling a scrollview to a view position
-     * @param scrollView
-     * @param viewToScrollTo
-     */
-    protected void scrollToViewByClick(final View scrollView, final View viewToScrollTo){
-
-        viewToScrollTo.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_UP)
-                    scrollView.scrollTo(0, viewToScrollTo.getBottom());
-                return false;
-            }
-        });
-    }
-
 
 }

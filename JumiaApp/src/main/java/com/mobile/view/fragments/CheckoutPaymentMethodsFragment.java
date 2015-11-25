@@ -42,6 +42,7 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -353,7 +354,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         if (!TextUtils.isEmpty(mVoucher)) {
             voucherCode.setText(mVoucher);
         }
-        scrollToViewByClick(mScrollView, voucherCode);
+        UIUtils.scrollToViewByClick(mScrollView, voucherCode);
         // voucherDivider = getView().findViewById(R.id.voucher_divider);
         voucherError = (TextView) getView().findViewById(R.id.voucher_error_message);
         couponButton = (TextView) getView().findViewById(R.id.voucher_btn);

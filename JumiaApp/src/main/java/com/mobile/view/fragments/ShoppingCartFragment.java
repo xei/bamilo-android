@@ -57,6 +57,7 @@ import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ShoppingCartUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -1032,7 +1033,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             voucherCode.setFocusable(true);
             voucherCode.setFocusableInTouchMode(true);
         }
-        scrollToViewByClick(mNestedScroll, voucherCode);
+        UIUtils.scrollToViewByClick(mNestedScroll, voucherCode);
 
         if (removeVoucher) {
             couponButton.setText(getString(R.string.voucher_remove));
