@@ -177,7 +177,7 @@ public enum EventType {
 
     GET_SHOP_EVENT("http:/main/getstatic/key/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCT_DETAIL("http:/catalog/detail/sku/", AigRestContract.NO_CACHE),
+    GET_PRODUCT_DETAIL("http:/catalog/detail/", AigRestContract.NO_CACHE),
 
     GET_PRODUCT_REVIEWS(GET_PRODUCT_DETAIL.action, AigRestContract.MAX_CACHE_TIME),
 
