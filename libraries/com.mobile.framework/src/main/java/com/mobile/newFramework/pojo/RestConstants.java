@@ -213,7 +213,6 @@ public class RestConstants {
     public static final String JSON_SIZE_TAG = "size";
     public static final String JSON_REMAINING_TIME_TAG = "remaining_time";
     public static final String JSON_UNIX_TIME_TAG = "unix_time";
-    public static final String SLUG = "slug";
 
     // Address Tags
     public static final String CUSTOMER_ADDRESS_ID = "customer_address_id";
