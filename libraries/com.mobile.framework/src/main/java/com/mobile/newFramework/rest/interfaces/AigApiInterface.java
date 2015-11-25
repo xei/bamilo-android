@@ -191,11 +191,9 @@ public interface AigApiInterface {
      * ## RICH RELEVANCE
      */
 
-    @GET("/")
-    void getRichRelevance(@QueryMap Map<String, String> data, Callback<BaseResponse<TeaserRichRelevanceObject>> callback);
-
+    @GET("/{path}")
+    void getRichRelevance(@Path(value="path", encode=false) String path, Callback<BaseResponse<TeaserRichRelevanceObject>> callback);
     String getRichRelevance = "getRichRelevance";
-
 
     @FormUrlEncoded
     @POST("/")

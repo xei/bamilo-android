@@ -69,15 +69,13 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-//        Log.i(TAG, "ON INITIALIZE: " + jsonObject.toString());
         // Get title
         mTitle = jsonObject.optString(RestConstants.TITLE);
         // Get Data flag
         mHasData = jsonObject.optBoolean(RestConstants.HAS_DATA);
         mData = new ArrayList<>();
         // Form Teaser
-        //FIXME validation should be changed from !mHasData to mHasData
-        if(!mHasData && mType == TeaserGroupType.FORM_NEWSLETTER){
+        if(mHasData && mType == TeaserGroupType.FORM_NEWSLETTER){
             mData.add(getFormTeaser(jsonObject));
         }
         // Get data
@@ -96,8 +94,7 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
             }
 
         } else {
-            //FIXME to be uncomment after fixes
-//            mData.add(getNoDataTeasers(jsonObject));
+            mData.add(getNoDataTeasers(jsonObject));
         }
 
         return true;
@@ -157,7 +154,6 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
 //        if(mType == TeaserGroupType.FORM_NEWSLETTER){
 //            teaser = new TeaserFormObject(mType.ordinal());
 //        }
-
         // Initialize
         try {
             teaser.initialize(jsonObject);

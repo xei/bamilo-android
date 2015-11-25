@@ -10,6 +10,7 @@ import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 
 /**
  * Get Product Information helper
@@ -34,9 +35,18 @@ public class GetProductHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductDetail);
     }
 
-    public static Bundle createBundle(String sku) {
+
+    /**
+     * Method specific for constructing bundle
+     * @param sku
+     * @param richRelevanceHash
+     * @return
+     */
+    public static Bundle createBundle(String sku, String richRelevanceHash) {
         ContentValues values = new ContentValues();
         values.put(RestConstants.SKU, sku);
+        if(TextUtils.isNotEmpty(richRelevanceHash))
+            values.put(RestConstants.JSON_RR_CLICK_REQUEST, richRelevanceHash);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;

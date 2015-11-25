@@ -33,8 +33,6 @@ import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.tracking.AnalyticsGoogle;
-import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
@@ -124,8 +122,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private String mCompleteUrl;
     private String mKey;
 
-    private String mTargetKey;
-
     /**
      * Create and return a new instance.
      *
@@ -167,7 +163,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments);
 
-            // TODO REQUEST CATALOG USING KEY
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
 
@@ -181,8 +176,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
             mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
 
-            // Target key parameter
-            mTargetKey = arguments.getString(ConstantsIntentExtra.CONTENT_TARGET_KEY);
 
             // Url and parameters
             mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
@@ -381,7 +374,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !validateCompleteURL() && TextUtils.isEmpty(mTargetKey)) {
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !validateCompleteURL() && TextUtils.isEmpty(mKey)) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL
@@ -926,8 +919,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
         mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
         // Add the Catalog hash as a parameter to the catalog request
-        if (TextUtils.isNotEmpty(mTargetKey)) {
-            mQueryValues.put(GetCatalogPageHelper.HASH, mTargetKey);
+        if (TextUtils.isNotEmpty(mKey)) {
+            mQueryValues.put(GetCatalogPageHelper.HASH, mKey);
         }
 
         // Create bundle with url and parameters

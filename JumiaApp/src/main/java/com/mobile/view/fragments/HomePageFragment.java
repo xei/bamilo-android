@@ -13,7 +13,6 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.widget.NestedScrollView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.teasers.GetHomeHelper;
@@ -24,7 +23,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -74,6 +72,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     private int[] mScrollSavedPosition;
 
     private LayoutInflater inflater;
+
+    private String mRichRelevanceHash;
     /**
      * Constructor via bundle
      *
@@ -311,10 +311,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
-            //FIXME to remove, added in order to not crash app until API fixes
-            if(baseTeaserType.getType() == TeaserGroupType.TOP_SELLERS){
-
-            } else
             // Case Form NewsLetter
             if(baseTeaserType.getType() == TeaserGroupType.FORM_NEWSLETTER){
                 Form form = null;
@@ -417,8 +413,14 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         TeaserGroupType origin = TeaserGroupType.values()[id];
         if (view.getTag(R.id.target_list_position) != null) {
             origin.setTrackingPosition((int) view.getTag(R.id.target_list_position));
-            // FIXME use targetkey instead of targeturl
-            TrackerDelegator.trackBannerClicked(origin, link, (int) view.getTag(R.id.target_list_position));
+            TrackerDelegator.trackBannerClicked(origin, TargetLink.getIdFromTargetLink(link), (int) view.getTag(R.id.target_list_position));
+        }
+
+        if(origin == TeaserGroupType.TOP_SELLERS){
+            // Get Rich Relevance hash
+            mRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
+        } else {
+            mRichRelevanceHash = "";
         }
         // Parse target link
         boolean result = new TargetLink.Helper(this, link)
@@ -441,10 +443,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public void onAppendData(FragmentType next, String title, String id, Bundle bundle) {
         if(next == FragmentType.PRODUCT_DETAILS) {
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            if(TextUtils.isNotEmpty(mRichRelevanceHash)){
+                bundle.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRichRelevanceHash );
+            }
         }
         else if(next == FragmentType.CATALOG) {
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-            //FIXME Update the counter
             CategoriesTableHelper.updateCategoryCounter(id, title);
         }
     }

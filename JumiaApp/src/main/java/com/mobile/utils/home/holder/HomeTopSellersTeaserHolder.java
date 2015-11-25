@@ -12,12 +12,12 @@ import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.object.TeaserRichRelevanceObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
@@ -52,34 +52,24 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
             if(group.hasData()){
                 horizontalListView.setAdapter(new HomeTopSellersTeaserAdapter(group.getData(), mParentClickListener));
             } else {
-                Print.i(TAG, "NEED RICH RELEVANT REQUEST");
-                //FIXME should be switched to target type and key
-                getRichRelevanceData(group.getData().get(0).getUrl());
+                if(CollectionUtils.isNotEmpty(group.getData()))
+                    getRichRelevanceData(TargetLink.getIdFromTargetLink(group.getData().get(0).getTargetLink()));
             }
-
         } else {
             Log.i(TAG, "BRAND_TEASERS: ADAPTER IS NOT NULL");
         }
     }
 
     /**
-     * This method requests the rich relevant information of a specific hash
-     * @param hash
+     * This method requests the rich relevant information of a specific key
+     * @param key
      */
-    private void getRichRelevanceData(String hash){
+    private void getRichRelevanceData(String key){
 
-        //FIXME parsing section below should be removed
-        String[] parts = hash.split("\\?request=");
-        String parameters = parts[1];
-        Print.i(TAG, "parameters:" + parameters);
-        String urlEnconded = null;
-        try {
-            urlEnconded = URLDecoder.decode(parameters, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        if(TextUtils.isEmpty(key))
+            return;
 
-        JumiaApplication.INSTANCE.sendRequest(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(urlEnconded), new IResponseCallback() {
+        JumiaApplication.INSTANCE.sendRequest(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(key), new IResponseCallback() {
             @Override
             public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "SUCCESS RICH RELEVANCE");

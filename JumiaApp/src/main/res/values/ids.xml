@@ -35,7 +35,7 @@
     <item type="id" name="target_sku"/>
     <item type="id" name="target_simple_sku"/>
     <item type="id" name="target_type"/>
-    <item type="id" name="target_key"/>
+    <item type="id" name="target_rr_hash"/>
     <item type="id" name="target_title"/>
     <item type="id" name="target_position"/>
     <item type="id" name="target_teaser_origin"/>
