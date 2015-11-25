@@ -199,11 +199,6 @@ public interface AigApiInterface {
 
     String getProductBundle = "getProductBundle";
 
-    @GET("/{offersParameters}")
-   // void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<OfferList>> callback);
-    void getProductOffers(@Path (value="offersParameters", encode=false) String offersParameters, Callback<BaseResponse<OfferList>> callback);
-
-    String getProductOffers = "getProductOffers";
 
     @FormUrlEncoded
     @POST("/")
@@ -481,11 +476,12 @@ public interface AigApiInterface {
      * ## CATALOG
      */
 
-    //@GET("/{path}")
-    //void getCatalog(@Path(value="path", encode=false) String hash, Callback<BaseResponse<Catalog>> callback);
-    @GET("/")
-    void getCatalog(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
+    @GET("/{path}")
+    void getCatalog(@Path(value="path", encode=false) String hash, Callback<BaseResponse<Catalog>> callback);
     String getCatalog = "getCatalog";
+ /*   @GET("/")
+    void getCatalog(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
+    String getCatalog = "getCatalog";*/
 
     /*
     * ## CAMPAIGN
@@ -505,6 +501,11 @@ public interface AigApiInterface {
     @GET("/{path}")
     void getProductDetailReviews(@Path(value="path", encode=false) String path, Callback<BaseResponse<ProductRatingPage>> callback);
     String getProductDetailReviews = "getProductDetailReviews";
+
+    @GET("/{path}")
+    void getProductOffers(@Path (value="path", encode=false) String offersParameters, Callback<BaseResponse<OfferList>> callback);
+
+    String getProductOffers = "getProductOffers";
 
     /*
      * ## STATIC
