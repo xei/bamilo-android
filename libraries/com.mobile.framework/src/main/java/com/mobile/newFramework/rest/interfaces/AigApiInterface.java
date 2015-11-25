@@ -170,20 +170,6 @@ public interface AigApiInterface {
     String getUserDataForm = "getUserDataForm";
 
     /*
-     * ## CATALOG
-     */
-
-    @GET("/")
-    void getCatalogFiltered(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
-
-    String getCatalogFiltered = "getCatalogFiltered";
-
-    @GET("/")
-    void searchSku(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductComplete>> callback);
-
-    String searchSku = "searchSku";
-
-    /*
      * ## CATEGORIES
      */
 
@@ -230,15 +216,6 @@ public interface AigApiInterface {
     void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<ValidProductList>> callback);
 
     String validateProducts = "validateProducts";
-
-    /*
-     * ## SEARCH SUGGESTIONS
-     */
-
-    @GET("/")
-    void getSearchSuggestions(@QueryMap Map<String, String> data, Callback<BaseResponse<Suggestions>> callback);
-
-    String getSearchSuggestions = "getSearchSuggestions";
 
     /*
      * ## CART
@@ -508,8 +485,10 @@ public interface AigApiInterface {
      * ## CATALOG
      */
 
-    @GET("/{path}")
-    void getCatalog(@Path(value="path", encode=false) String hash, Callback<BaseResponse<Catalog>> callback);
+    //@GET("/{path}")
+    //void getCatalog(@Path(value="path", encode=false) String hash, Callback<BaseResponse<Catalog>> callback);
+    @GET("/")
+    void getCatalog(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
     String getCatalog = "getCatalog";
 
     /*
@@ -538,5 +517,14 @@ public interface AigApiInterface {
     @GET("/{path}")
     void getStaticPage(@Path(value="path", encode=false) String path, Callback<BaseResponse<StaticPage>> callback);
     String getStaticPage = "getStaticPage";
+
+
+    /*
+     * ## SEARCH SUGGESTIONS
+     */
+
+    @GET("/{path}")
+    void getSearchSuggestions(@Path(value="path", encode=false) String path, Callback<BaseResponse<Suggestions>> callback);
+    String getSearchSuggestions = "getSearchSuggestions";
 
 }

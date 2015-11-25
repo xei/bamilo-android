@@ -67,7 +67,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getCatalogFiltered);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getCatalog);
     }
 
     @Override

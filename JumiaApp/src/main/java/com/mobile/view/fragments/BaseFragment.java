@@ -31,14 +31,14 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -57,9 +57,6 @@ import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -111,7 +108,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private ViewStub mMaintenanceView;
 
-    protected long mLoadTime = 0l; // For tacking
+    protected long mLoadTime = 0; // For tacking
 
     public static final int NO_ADJUST_CONTENT = 0;
     public static final int ADJUST_CONTENT = 1;
@@ -179,7 +176,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -841,23 +838,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Handle error response.
-     * @param baseResponse The error bundle
+     * @param response The error bundle
      * @return intercept or not
      */
     @SuppressWarnings("unchecked")
-    public boolean handleErrorEvent(final BaseResponse baseResponse) {
+    public boolean handleErrorEvent(final BaseResponse response) {
         Print.i(TAG, "ON HANDLE ERROR EVENT");
 
-        int errorCode = baseResponse.getError().getCode();
-        EventTask eventTask = baseResponse.getEventTask();
+        int errorCode = response.getError().getCode();
+        EventTask eventTask = response.getEventTask();
 
-        if (!baseResponse.isPrioritary()) {
+        if (!response.isPriority()) {
             return false;
         }
-
-//        if (errorCode == null) {
-//            return false;
-//        }
 
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
         if (ErrorCode.isNetworkError(errorCode)) {
@@ -871,7 +864,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     }
                     return true;
                 case ErrorCode.TIME_OUT:
-                case ErrorCode.NO_NETWORK:
+                case ErrorCode.NO_CONNECTIVITY:
                     // Show no network layout
                     if(eventTask == EventTask.ACTION_TASK){
                         showNoNetworkWarning();
@@ -892,29 +885,15 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                     showFragmentMaintenance();
                     return true;
                 case ErrorCode.REQUEST_ERROR:
-                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    String dialogMsg = "";
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                    // Get error message or validate message
+                    String msg = TextUtils.isNotEmpty(response.getErrorMessage()) ? response.getErrorMessage() : response.getValidateMessage();
+                    // Get generic message
+                    if(TextUtils.isEmpty(msg)) {
+                        msg = getString(R.string.error_please_try_again);
                     }
-                    if (validateMessages != null) {
-                        for (String message : validateMessages) {
-                            dialogMsg += message + "\n";
-                        }
-                    } else {
-                        for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
-                            dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-                        }
-                    }
-                    if (dialogMsg.equals("")) {
-                        dialogMsg = getString(R.string.validation_errortext);
-                    }
-                    // showContentContainer();
                     dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.validation_title), dialogMsg,
+                            getString(R.string.validation_title), msg,
                             getResources().getString(R.string.ok_label), "", new OnClickListener() {
-
                                 @Override
                                 public void onClick(View v) {
                                     int id = v.getId();
@@ -1095,6 +1074,5 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             showInfoAddToShoppingCartCompleted();
         }
     }
-
 
 }

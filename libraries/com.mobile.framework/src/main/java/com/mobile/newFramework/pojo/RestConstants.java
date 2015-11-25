@@ -8,17 +8,17 @@ public class RestConstants {
     // Common JSON constants
     public static final String JSON_DATA_TAG = "data";
     public static final String ID = "id";
-    public final static String JSON_SUCCESS_TAG = "success";
-    public final static String JSON_MESSAGE_IN_MESSAGES_TAG = "message";
-    public final static String JSON_MESSAGES_TAG = "messages";
-    public final static String JSON_SESSION_TAG = "session";
+    public final static String SUCCESS = "success";
+    public final static String MESSAGE = "message";
+    public final static String MESSAGES = "messages";
     public final static String JSON_MD5_TAG = "md5";
     public final static String JSON_IS_WISH_LIST_TAG = "is_wishlist";
     public final static String OTHER_ADDRESS_ID = "id_sales_order_address";
+    public final static String Q = "q";
 
 
     // ConfigurationService Tags
-    public static final String JSON_METADATA_TAG = "metadata";
+    public static final String METADATA = "metadata";
     public static final String JSON_CALL_PHONE_TAG = "phone_number";
 
     // VersionInfo Tags
@@ -238,8 +238,8 @@ public class RestConstants {
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
 
     // Errors Tags
-    public static final String JSON_VALIDATE_TAG = "validate";
-    public static final String JSON_ERROR_TAG = "error";
+    public static final String VALIDATE = "validate";
+    public static final String ERROR = "error";
 
     // ProductRatingPage Tags
     public static final String JSON_STARS_TAG = "stars";
@@ -458,6 +458,9 @@ public class RestConstants {
     public static final String TRANSACTION_SHIPPING = "transaction_shipping";
     public static final String TRANSACTION_TAX = "transaction_tax";
     public static final String ORDER_GRAND_TOTAL = "order_grand_total";
+    public static final String REASON = "reason";
+    public static final String FIELD = "field";
+
 
 
 }

@@ -3,9 +3,8 @@ package com.mobile.view.fragments;
 import android.os.Bundle;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -13,8 +12,6 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -66,22 +63,21 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     @Override
     public void onStart() {
         super.onStart();
+        initializeFormData();
+    }
 
+    private void initializeFormData() {
         // Get and show form
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
-            triggerInitForm();
-        } else if(mFormResponse != null && mRegions != null){
+        if(mFormResponse != null && mRegions != null){
             loadEditAddressForm(mFormResponse);
         } else {
             triggerEditAddressForm();
         }
-
     }
 
     @Override
     protected void onClickRetryButton() {
-        //TODO retry error when this method has access to eventType
-        triggerInitForm();
+        initializeFormData();
     }
 
     protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse){
@@ -102,9 +98,7 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     protected void onEditAddressErrorEvent(BaseResponse baseResponse){
         int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            @SuppressWarnings("unchecked")
-            Map<String, List<String>> errors = baseResponse.getErrorMessages();
-            showErrorDialog(errors);
+            showErrorDialog(baseResponse.getValidateMessage());
             showFragmentContentContainer();
         } else {
             Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);

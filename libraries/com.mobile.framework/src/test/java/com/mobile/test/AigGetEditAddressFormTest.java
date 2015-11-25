@@ -1,7 +1,6 @@
 package com.mobile.test;
 
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.FormData;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
