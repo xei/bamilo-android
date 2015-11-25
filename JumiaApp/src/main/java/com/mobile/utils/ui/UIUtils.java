@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -145,5 +146,21 @@ public class UIUtils {
         animation.addAnimation(upAnimation);
         animatedView.startAnimation(animation);
     }
-    
+
+    /**
+     * method responsible for scrolling a scrollview to a view position
+     * @param scrollView
+     * @param viewToScrollTo
+     */
+    public static void scrollToViewByClick(final View scrollView, final View viewToScrollTo){
+
+        viewToScrollTo.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP)
+                    scrollView.scrollTo(0, viewToScrollTo.getBottom());
+                return false;
+            }
+        });
+    }
 }

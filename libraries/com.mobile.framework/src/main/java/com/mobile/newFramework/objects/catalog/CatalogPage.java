@@ -74,7 +74,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
         // Get data
         mCategoryId = metadataObject.optString(RestConstants.JSON_CATEGORIES_TAG);
         mBrandId = metadataObject.optString(RestConstants.JSON_BRANDS_TAG);
-        mName = metadataObject.optString(RestConstants.JSON_TITLE_TAG);
+        mName = metadataObject.optString(RestConstants.TITLE);
         mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
         mTotal = metadataObject.optInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
         // Set the max pages that application can request
@@ -118,8 +118,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
         filters = new CatalogFilters(metadataObject);
 
         //Get Banner
-        if(!metadataObject.isNull(RestConstants.JSON_BANNER_TAG)){
-            JSONObject bannerObject = metadataObject.getJSONObject(RestConstants.JSON_BANNER_TAG);
+        if(!metadataObject.isNull(RestConstants.BANNER)){
+            JSONObject bannerObject = metadataObject.getJSONObject(RestConstants.BANNER);
             Banner banner = new Banner();
             banner.initialize(bannerObject);
             mCatalogBanner = banner;

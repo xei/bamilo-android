@@ -3,21 +3,23 @@ package com.mobile.newFramework.pojo;
 import com.mobile.newFramework.objects.IJSONSerializable;
 
 /**
- * Created by rsoares on 5/21/15.
+ * Class used to save the data, that can be Void.
+ * @author rsoares
  */
 public class Metadata<T> {
     private String md5;
     private T data;
 
-    public void setData(T data){
+    public void setData(T data) {
         this.data = data;
     }
 
-    public void setData(IJSONSerializable ijsonSerializable){
-        data = (T)ijsonSerializable;
+    @SuppressWarnings("unchecked")
+    public void setData(IJSONSerializable ijsonSerializable) {
+        data = (T) ijsonSerializable;
     }
 
-    public T getData(){
+    public T getData() {
         return this.data;
     }
 

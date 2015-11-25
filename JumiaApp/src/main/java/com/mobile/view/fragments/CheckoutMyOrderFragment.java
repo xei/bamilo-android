@@ -20,13 +20,13 @@ import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.checkout.CheckoutFinishHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
@@ -42,8 +42,6 @@ import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class used to shoe the order
@@ -699,9 +697,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                 Print.d(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
                 boolean hasErrorMessage = false;
                 if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    @SuppressWarnings("unchecked")
-                    Map<String, List<String>> errors = baseResponse.getErrorMessages();
-                    hasErrorMessage = showErrorDialog(errors);
+                    hasErrorMessage = showErrorDialog(baseResponse.getErrorMessage());
                 }
                 if (!hasErrorMessage) {
                     Print.w(TAG, "RECEIVED CHECKOUT_FINISH_EVENT: " + errorCode);
@@ -717,17 +713,12 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
     /**
      * Dialog used to show an error
      */
-    private boolean showErrorDialog(Map<String, List<String>> errors) {
+    private boolean showErrorDialog(String message) {
         Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        List<String> temp = null;
-        if (errors != null) {
-            temp = errors.get(RestConstants.JSON_VALIDATE_TAG);
-        }
-        final List<String> errorMessages = temp;
-        if (errors != null && errorMessages != null && errorMessages.size() > 0) {
+        if (!TextUtils.isEmpty(message)) {
             dialog = DialogGenericFragment.newInstance(true, false,
-                    getString(R.string.error_login_title),
-                    errorMessages.get(0),
+                    getString(R.string.error_occured),
+                    message,
                     getString(R.string.ok_label),
                     "",
                     new OnClickListener() {

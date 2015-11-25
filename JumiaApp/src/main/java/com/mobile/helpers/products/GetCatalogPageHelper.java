@@ -41,7 +41,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_PRODUCTS_EVENT;
+        return EventType.GET_CATALOG_EVENT;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getCatalogFiltered);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getCatalog);
     }
 
     @Override

@@ -85,14 +85,6 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         mGridVariations.setHasFixedSize(true);
     }
 
-
-
-
-    @Override
-    public void onHeaderClick(String targetType, String url, String title) {
-
-    }
-
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get item
@@ -101,19 +93,24 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         if (product != null) {
             // Show product
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, product.getSKU());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, product.getSKU());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().warningFactory.showWarning(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
+            getBaseActivity().showWarningMessage(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
         }
     }
 
     @Override
     public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+        // ...
+    }
 
+    @Override
+    public void onHeaderClick(String target, String title) {
+        // ...
     }
 }

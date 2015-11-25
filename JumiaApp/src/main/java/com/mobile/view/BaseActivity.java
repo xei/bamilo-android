@@ -131,7 +131,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle mDrawerToggle;
     public MenuItem mSearchMenuItem;
-    public WarningFactory warningFactory;
+    private WarningFactory warningFactory;
     protected DialogFragment dialog;
     protected SearchView mSearchView;
     protected SearchAutoComplete mSearchAutoComplete;
@@ -1155,9 +1155,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         beginInMillis = System.currentTimeMillis();
         String text = mSearchAutoComplete.getText().toString();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
-        Bundle bundle = new Bundle();
-        bundle.putString(GetSearchSuggestionsHelper.SEACH_PARAM, text);
-        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), bundle,
+        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(text),
                 new IResponseCallback() {
                     @Override
                     public void onRequestComplete(BaseResponse baseResponse) {
@@ -1441,6 +1439,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         // Hide progress
         dismissProgress();
+        showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.logout_success));
     }
 
     /**
@@ -1743,8 +1742,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         return false;
     }
 
-    public void showWarningMessage(int warningFactory, String message){
-        this.warningFactory.showWarning(warningFactory, message);
+    public void showWarning(@WarningFactory.WarningErrorType final int warningFact){
+        warningFactory.showWarning(warningFact);
+    }
+
+    public void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact, final String message){
+
+        warningFactory.showWarning(warningFact, message);
+    }
+
+    public void hideWarningMessage(){
+        warningFactory.hideWarning();
     }
 
 //    /**

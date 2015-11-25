@@ -202,7 +202,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      * @author Andre Lopes
      */
     protected void showEmpty() {
-        getBaseActivity().warningFactory.hideWarning();
+        getBaseActivity().hideWarningMessage();
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(null);
         showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this);
@@ -261,7 +261,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     protected void onClickVariation(View view) {
         try {
             // Hide warning
-            getBaseActivity().warningFactory.hideWarning();
+            getBaseActivity().hideWarningMessage();
             // Show dialog
             int position = Integer.parseInt(view.getTag().toString());
             ProductMultiple addableToCart = mProducts.get(position);
@@ -280,7 +280,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             int position = Integer.parseInt(view.getTag().toString());
             ProductMultiple addableToCart = mProducts.get(position);
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, addableToCart.getSku());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, addableToCart.getSku());
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {

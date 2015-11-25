@@ -22,9 +22,8 @@ import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
+import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -36,8 +35,6 @@ import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * WishList fragment with pagination.
@@ -415,7 +412,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON ITEM CLICK");
         String sku = (String) view.getTag(R.id.target_sku);
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -561,8 +558,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 // Validate error
                 if (!super.handleErrorEvent(baseResponse)) {
                     try {
-                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                        if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
+                        if (baseResponse.getErrorMessages().containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN)) {
                             switchToLoginFragment();
                         } else {
                             showContinueShopping();

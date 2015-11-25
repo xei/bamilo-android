@@ -59,7 +59,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
         // Get message
         if (required != null) {
             isRequired = true;
-            message = required.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG);
+            message = required.optString(RestConstants.MESSAGE);
         }
         // Get range
         min = jsonObject.optInt(RestConstants.JSON_MIN_TAG, MIN_CHARACTERS);
