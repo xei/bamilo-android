@@ -70,6 +70,9 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
                 if (sizeO != null)
                     mSizes.add(new CampaignItemSize(sizeO));
             }
+
+            mSelectedSizePosition = 0;
+            mSelectedSize = mSizes.get(0);
         }
 
         return true;
