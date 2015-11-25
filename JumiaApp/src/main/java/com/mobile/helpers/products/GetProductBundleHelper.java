@@ -3,6 +3,7 @@
  */
 package com.mobile.helpers.products;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -12,6 +13,7 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -44,7 +46,7 @@ public class GetProductBundleHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductBundle);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductBundles);
     }
 
 
@@ -53,8 +55,10 @@ public class GetProductBundleHelper extends SuperBaseHelper {
      */
     public static Bundle createBundle(String sku) {
         // Item data
+        ContentValues values = new ContentValues();
+        values.put(PRODUCT_SKU, sku);
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductBundleHelper.PRODUCT_SKU, sku);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 

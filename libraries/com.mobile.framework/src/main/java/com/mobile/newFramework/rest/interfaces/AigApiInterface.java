@@ -503,6 +503,12 @@ public interface AigApiInterface {
     void getProductDetailReviews(@Path(value="path", encode=false) String path, Callback<BaseResponse<ProductRatingPage>> callback);
     String getProductDetailReviews = "getProductDetailReviews";
 
+
+    @GET("/{path}")
+    void getProductBundles(@Path(value="path", encode=false) String path,Callback<BaseResponse<BundleList>> callback);
+
+    String getProductBundles = "getProductBundles";
+
     /*
      * ## STATIC
      */
