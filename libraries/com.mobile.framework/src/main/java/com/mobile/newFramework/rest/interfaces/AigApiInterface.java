@@ -194,11 +194,6 @@ public interface AigApiInterface {
     void getShopInShop(@QueryMap Map<String, String> data, Callback<BaseResponse<StaticPage>> callback);
     String getShopInShop = "getShopInShop";
 
-    /*
-     * ## CAMPAIGN
-     */
-
-
 
 
     @GET("/")

@@ -217,10 +217,6 @@ public class RestConstants {
     public static final String JSON_REMAINING_TIME_TAG = "remaining_time";
     public static final String JSON_UNIX_TIME_TAG = "unix_time";
     public static final String SLUG = "slug";
-    public static final String START_TIME = "start_time";
-    public static final String END_TIME = "end_time";
-    public static final String REMAINING_TIME = "remaining_time";
-
 
     // TeaserBrandElement Tags
     public static final String JSON_TARGET_TYPE_TAG = "target_type";
