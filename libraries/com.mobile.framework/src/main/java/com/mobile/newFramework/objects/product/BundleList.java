@@ -50,11 +50,13 @@ public class BundleList implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException{
-        mId = jsonObject.getString(RestConstants.JSON_BUNDLE_ID);
-        mPrice = jsonObject.getDouble(RestConstants.JSON_BUNDLE_PRICE);
-        mPriceConverted = jsonObject.getDouble(RestConstants.JSON_BUNDLE_PRICE_CONVERTED);
-        mLeaderPosition = jsonObject.getInt(RestConstants.JSON_BUNDLE_LEADER_POS);
-        JSONArray bundleProductsArray = jsonObject.optJSONArray(RestConstants.JSON_BUNDLE_PRODUCTS);
+        JSONObject bundleEntityjson = jsonObject.getJSONObject(RestConstants.BUNDLE_ENTITY);
+
+        mId = bundleEntityjson.getString(RestConstants.ID);
+        mPrice = bundleEntityjson.getDouble(RestConstants.JSON_PRICE_TAG);
+        mPriceConverted = bundleEntityjson.getDouble(RestConstants.JSON_BUNDLE_PRICE_CONVERTED);
+        mLeaderPosition = bundleEntityjson.getInt(RestConstants.JSON_BUNDLE_LEADER_POS);
+        JSONArray bundleProductsArray = bundleEntityjson.optJSONArray(RestConstants.PRODUCTS);
         if (bundleProductsArray != null && bundleProductsArray.length() > 0) {
             mProducts = new ArrayList<>();
             for (int i = 0; i < bundleProductsArray.length(); i++) {
@@ -78,7 +80,7 @@ public class BundleList implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.OBJECT_DATA;
+        return RequiredJson.METADATA;
     }
 
     public String getBundleId() {

@@ -358,12 +358,13 @@ public class RestConstants {
      * BUNDLES
      */
 
-    public static final String JSON_BUNDLE_ID = "bundle_id";
-    public static final String JSON_BUNDLE_PRICE = "bundle_price";
+//    public static final String JSON_BUNDLE_ID = "bundle_id";
+//    public static final String JSON_BUNDLE_PRICE = "bundle_price";
     public static final String JSON_BUNDLE_PRICE_CONVERTED = "bundle_price_converted";
     public static final String JSON_BUNDLE_LEADER_POS = "bundle_leader_config_position";
     public static final String JSON_BUNDLE_PRODUCTS = "bundle_products";
     public static final String JSON_BUNDLE_PRODUCT_LEADER_POS = "leader_simple_position";
+    public static final String BUNDLE_ENTITY = "bundle_entity";
 
     /**
      * OFFERS
