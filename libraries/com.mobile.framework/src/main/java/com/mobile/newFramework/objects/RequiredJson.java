@@ -16,13 +16,15 @@ public class RequiredJson {
     public static final int OBJECT_DATA = 2;
     public static final int METADATA = 3;
     public static final int FORM_ENTITY = 4;
+    public static final int CART_ENTITY = 5;
 
     @IntDef({
             NONE,
             COMPLETE_JSON,
             OBJECT_DATA,
             METADATA,
-            FORM_ENTITY
+            FORM_ENTITY,
+            CART_ENTITY
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface JsonStruct{}
