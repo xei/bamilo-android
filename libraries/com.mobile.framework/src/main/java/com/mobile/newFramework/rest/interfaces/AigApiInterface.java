@@ -519,6 +519,12 @@ public interface AigApiInterface {
 
     String getProductOffers = "getProductOffers";
 
+
+    @GET("/{path}")
+    void getProductBundles(@Path(value="path", encode=false) String path,Callback<BaseResponse<BundleList>> callback);
+
+    String getProductBundles = "getProductBundles";
+
     /*
      * ## STATIC
      */
