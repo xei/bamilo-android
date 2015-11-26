@@ -4,6 +4,7 @@
     android:background="@color/black_300"
     android:gravity="center"
     android:paddingBottom="1dp"
+    android:layoutDirection="ltr"
     android:orientation="horizontal">
 
     <!-- GRID LAYOUT -->
