@@ -6,7 +6,6 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.pojo.RestConstants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -60,24 +59,10 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
             sku = jsonObject.getString(RestConstants.SKU);
             price = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
             mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+            //get image url:
+            imageUrl = jsonObject.optString(RestConstants.URL);
             // get url from first image which has url
-            JSONArray imageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_TAG);
-            if (imageArray != null) {
-                int imageArraySize = imageArray.length();
-                if (imageArraySize > 0) {
-                    boolean isImageUrlDefined = false;
 
-                    int index = 0;
-                    while (!isImageUrlDefined && index < imageArraySize) {
-                        JSONObject imageObject = imageArray.getJSONObject(index);
-                        if (imageObject != null) {
-                            imageUrl = imageObject.optString(RestConstants.URL);
-                            isImageUrlDefined = true;
-                        }
-                        index++;
-                    }
-                }
-            }
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -117,6 +102,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
         dest.writeDouble(price);
         dest.writeDouble(mSpecialPrice);
         dest.writeString(sku);
+        dest.writeString(imageUrl);
     }
 
     private FeaturedItemProduct(Parcel in) {
@@ -124,6 +110,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
         price = in.readDouble();
         mSpecialPrice = in.readDouble();
         sku = in.readString();
+        imageUrl = in.readString();
     }
 
     public static final Parcelable.Creator<FeaturedItemProduct> CREATOR = new Parcelable.Creator<FeaturedItemProduct>() {
