@@ -252,6 +252,7 @@ public class ErrorLayoutFactory {
                 .setPrincipalMessage(R.string.catalog_no_results)
                 .setDetailMessageVisible(true)
                 .setDetailMessage(R.string.catalog_no_results_details)
+                .setButtonTextColor(R.color.white)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
