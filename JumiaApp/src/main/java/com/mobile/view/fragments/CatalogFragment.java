@@ -1,7 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.content.ContentValues;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,7 +30,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -119,7 +117,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private int mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_LIST;
 
-    private String mCompleteUrl;
     private String mKey;
 
     /**
@@ -163,7 +160,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments);
             // Url and parameters
-            mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
+            mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // TODO REQUEST CATALOG USING KEY
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
 
@@ -172,8 +169,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             }
 
             // Default catalog values
-            mQueryValues.put(GetCatalogPageHelper.HASH, mCompleteUrl);
             mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
+            if(TextUtils.isNotEmpty(mKey))
+                mQueryValues.put(GetCatalogPageHelper.HASH, mKey);
             if(TextUtils.isNotEmpty( mSelectedSort.id))
                 mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
             if(TextUtils.isNotEmpty( mSelectedSort.direction))
@@ -214,13 +212,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         TrackerDelegator.trackCategoryView();
     }
 
-    /**
-     * Function that removes the parameters from the url in order to have the complete url without parameters
-     */
-    private void removeParametersFromQuery(final Uri.Builder builder){
-        builder.clearQuery();
-        mCompleteUrl = builder.toString();
-    }
+//    /**
+//     * Function that removes the parameters from the url in order to have the complete url without parameters
+//     */
+//    private void removeParametersFromQuery(final Uri.Builder builder){
+//        builder.clearQuery();
+//        mKey = builder.toString();
+//    }
 
 
 
@@ -375,7 +373,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && !validateCompleteURL() && TextUtils.isEmpty(mKey)) {
+        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY) && TextUtils.isEmpty(mKey)) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL
@@ -913,8 +911,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void triggerGetCatalogPage(int page) {
         Print.i(TAG, "TRIGGER GET PAGINATED CATALOG");
         // Validate if is to use complete URL or not
-        if (TextUtils.isNotEmpty(mCompleteUrl)) {
-            mQueryValues.put(GetCatalogPageHelper.HASH, mCompleteUrl);
+        if (TextUtils.isNotEmpty(mKey)) {
+            mQueryValues.put(GetCatalogPageHelper.HASH, mKey);
         }
 
         // Create catalog request parameters
@@ -1154,13 +1152,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
-    private boolean validateCompleteURL(){
-        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY)) {
-            if (!com.mobile.newFramework.utils.TextUtils.isEmpty(mCompleteUrl))
-                return true;
-        }
-        return false;
-    }
+//    private boolean validateCompleteURL(){
+//        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY)) {
+//            if (!com.mobile.newFramework.utils.TextUtils.isEmpty(mCompleteUrl))
+//                return true;
+//        }
+//        return false;
+//    }
 
     private void setCatalogAdapter(CatalogPage catalogPage){
         CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
