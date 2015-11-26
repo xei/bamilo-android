@@ -18,13 +18,11 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetStaticPageHelper;
-import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -294,11 +292,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     public void onClick(View view) {
         Print.i(TAG, "ON CLICK");
         // Get featured box item type
-        String url = (String) view.getTag(R.id.target_url);
+        String sku = (String) view.getTag(R.id.target_link);
         // Validate target
-        if (TextUtils.isNotEmpty(url)) {
+        if (TextUtils.isNotEmpty(sku)) {
             // Get url
-            gotoProduct(url);
+            gotoProduct(sku);
         } else {
             super.onClick(view);
         }
@@ -369,12 +367,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     /**
      * Goto Product.
      *
-     * @param url The product url
+     * @param sku The product sku
      */
-    private void gotoProduct(String url) {
-        Print.i(TAG, "PDV: " + url);
-        // Validate sku TODO: SHOULD RECEIVE SKU
-        String sku = RestUrlUtils.getQueryValue(url, GetProductHelper.SKU_TAG);
+    private void gotoProduct(String sku) {
+        Print.i(TAG, "PDV: " + sku);
         if (TextUtils.isNotEmpty(sku)) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);

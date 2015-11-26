@@ -12,14 +12,18 @@ import android.view.ViewGroup;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.widget.NestedScrollView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.factories.FormFactory;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.CategoriesTableHelper;
+import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -30,6 +34,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -66,6 +71,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     private int[] mScrollSavedPosition;
 
+    private LayoutInflater inflater;
+
+    private String mRichRelevanceHash;
     /**
      * Constructor via bundle
      *
@@ -300,18 +308,34 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      */
     private void buildHomePage(HomePageObject homePage) {
         Print.i(TAG, "BUILD HOME PAGE");
-        LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
+        inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
-            // Create view
-            BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
-            if (viewHolder != null) {
-                // Set view
-                viewHolder.onBind(baseTeaserType);
-                // Add to container
-                mContainer.addView(viewHolder.itemView);
-                // Save
-                mViewHolders.add(viewHolder);
+            // Case Form NewsLetter
+            if(baseTeaserType.getType() == TeaserGroupType.FORM_NEWSLETTER){
+                Form form = null;
+                try{
+                    form = ((TeaserFormObject) baseTeaserType.getData().get(0)).getForm();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                if(form != null){
+                    //TODO needs to be created the correct layout for this form, ticket NAFAMZ-14045
+                    DynamicForm mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.NEWSLETTER_FORM,inflater.getContext(),form);
+                    mContainer.addView(mDynamicForm.getContainer());
+                }
+
+            } else {
+                // Create view
+                BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
+                if (viewHolder != null) {
+                    // Set view
+                    viewHolder.onBind(baseTeaserType);
+                    // Add to container
+                    mContainer.addView(viewHolder.itemView);
+                    // Save
+                    mViewHolders.add(viewHolder);
+                }
             }
         }
         // Restore the scroll state
@@ -389,7 +413,14 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         TeaserGroupType origin = TeaserGroupType.values()[id];
         if (view.getTag(R.id.target_list_position) != null) {
             origin.setTrackingPosition((int) view.getTag(R.id.target_list_position));
-            TrackerDelegator.trackBannerClicked(origin, link, (int) view.getTag(R.id.target_list_position));
+            TrackerDelegator.trackBannerClicked(origin, TargetLink.getIdFromTargetLink(link), (int) view.getTag(R.id.target_list_position));
+        }
+
+        if(origin == TeaserGroupType.TOP_SELLERS){
+            // Get Rich Relevance hash
+            mRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
+        } else {
+            mRichRelevanceHash = "";
         }
         // Parse target link
         boolean result = new TargetLink.Helper(this, link)
@@ -412,10 +443,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public void onAppendData(FragmentType next, String title, String id, Bundle bundle) {
         if(next == FragmentType.PRODUCT_DETAILS) {
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            if(TextUtils.isNotEmpty(mRichRelevanceHash)){
+                bundle.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRichRelevanceHash );
+            }
         }
         else if(next == FragmentType.CATALOG) {
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-            // Update the counter
             CategoriesTableHelper.updateCategoryCounter(id, title);
         }
     }

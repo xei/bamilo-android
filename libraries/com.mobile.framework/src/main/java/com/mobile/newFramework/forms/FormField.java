@@ -261,7 +261,13 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
                     // Case the newsletter
                     if(mKey.equals("newsletter_categories_subscribed")) {
+                        //FIXME validate if possible to remove this array, its only used on MyAccountEmailNotificationFragment
+                        //FIXME Newsletter revamp should fix this
                         mNewsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), mName));
+
+                        JSONObject option = dataOptionsArray.getJSONObject(i);
+                        if(option != null)
+                            mDataSet.put(option.optString("value"), option.optString("label"));
                     }
                     // Case pickup station
                     else if(mKey.equals("pickup_station") && mScenario != null){

@@ -17,8 +17,8 @@ public abstract class BaseTeaserViewHolder { //extends RecyclerView.ViewHolder {
     public final View itemView;
 
     protected Context mContext;
-
-    protected View.OnClickListener mParentClickListener;
+    //TODO validate necessity
+    protected final View.OnClickListener mParentClickListener;
 
     protected int mOffset = NO_OFFSET;
 
