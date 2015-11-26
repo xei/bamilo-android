@@ -51,6 +51,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private Languages languages;
     private List<TargetHelper> mobileAbout;
     private boolean hasCartPopup;
+    private boolean mIsRichRelevanceEnabled;
 
     /**
      * Empty constructor
@@ -72,6 +73,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         isReviewLoginRequired = false;
         isFacebookAvailable = false;
         hasCartPopup = false;
+        mIsRichRelevanceEnabled = false;
     }
 
     /**
@@ -102,7 +104,8 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
                 "\nrating: " + isRatingEnable +
                 "\nrating_login: " + isRatingLoginRequired +
                 "\nreview: " + isReviewEnable +
-                "\nhas_cart_popup: " + hasCartPopup
+                "\nhas_cart_popup: " + hasCartPopup +
+                "\nrich_relevance_enabled: " + mIsRichRelevanceEnabled
 
                 ;
     }
@@ -152,6 +155,8 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         }
 
         hasCartPopup = jsonObject.optBoolean(RestConstants.JSON_COUNTRY_HAS_CART_POPUP);
+        // Get if Rich Relevance is enabled
+        mIsRichRelevanceEnabled = jsonObject.optBoolean(RestConstants.RICH_RELEVANCE);
         return true;
     }
 
@@ -192,6 +197,10 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     public boolean hasCartPopup() {
         return hasCartPopup;
+    }
+
+    public boolean isRichRelevanceEnabled() {
+        return mIsRichRelevanceEnabled;
     }
 
     public void setCurrencyIso(String mCurrencyIso) {
@@ -303,6 +312,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         isReviewLoginRequired = in.readByte() != 0x00;
         isFacebookAvailable = in.readByte() != 0x00;
         hasCartPopup = in.readByte() != 0x00;
+        mIsRichRelevanceEnabled = in.readByte() != 0x00;
     }
 
     @Override
@@ -328,6 +338,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         dest.writeByte((byte) (isReviewLoginRequired ? 0x01 : 0x00));
         dest.writeByte((byte) (isFacebookAvailable ? 0x01 : 0x00));
         dest.writeByte((byte) (hasCartPopup ? 0x01 : 0x00));
+        dest.writeByte((byte) (mIsRichRelevanceEnabled ? 0x01 : 0x00));
     }
 
     @SuppressWarnings("unused")

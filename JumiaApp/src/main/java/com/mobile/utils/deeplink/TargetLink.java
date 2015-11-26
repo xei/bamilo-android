@@ -70,6 +70,7 @@ public class TargetLink {
         private FragmentType mFragmentType;
         private String mTitle;
         private String mTarget;
+        private String mRichRelevanceTrackingHash;
         private TeaserGroupType mOrigin;
         private OnAppendDataListener mAppendDataListener;
         private OnCampaignListener mCampaignListener;
@@ -119,6 +120,14 @@ public class TargetLink {
          */
         public Helper addCampaignListener(@NonNull OnCampaignListener listener) {
             this.mCampaignListener = listener;
+            return this;
+        }
+
+        /**
+         * Add a rich relevance tracking hash.
+         */
+        public Helper setTrackingHash(@NonNull String trackingHash) {
+            this.mRichRelevanceTrackingHash = trackingHash;
             return this;
         }
 
@@ -173,7 +182,7 @@ public class TargetLink {
      * Get id from target link.
      */
     @NonNull
-    private static String getIdFromTargetLink(@NonNull String link){
+    public static String getIdFromTargetLink(@NonNull String link){
         String[] splitLink = splitLink(link);
         return splitLink.length == TARGET_LINK_SIZE ? splitLink[TARGET_ID_POSITION] : "";
     }
