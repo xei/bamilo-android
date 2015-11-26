@@ -148,17 +148,23 @@ public class UIUtils {
     }
 
     /**
-     * method responsible for scrolling a scrollview to a view position
+     * method responsible for scrolling a scrollview for 60dp
+     * This is used for editexts that show in a layout inside a toolbar
      * @param scrollView
-     * @param viewToScrollTo
+     * @param viewToDetectTouch
      */
-    public static void scrollToViewByClick(final View scrollView, final View viewToScrollTo){
-
-        viewToScrollTo.setOnTouchListener(new View.OnTouchListener() {
+    public static void scrollToViewByClick(final View scrollView, final View viewToDetectTouch){
+        viewToDetectTouch.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP)
-                    scrollView.scrollTo(0, viewToScrollTo.getBottom());
+                if (event.getAction() == MotionEvent.ACTION_UP){
+                    scrollView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.scrollBy(0, dpToPx(60, scrollView.getContext().getResources().getDisplayMetrics().scaledDensity));
+                        }
+                    }, 500);
+                }
                 return false;
             }
         });
