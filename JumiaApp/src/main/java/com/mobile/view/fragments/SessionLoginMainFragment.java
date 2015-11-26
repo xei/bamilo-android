@@ -399,13 +399,14 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
                         TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
+                        // Notify user
+                        showInfoLoginSuccess();
                     } else {
                         TrackerDelegator.trackLoginSuccessful(customer, true, true);
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
-                    // Notify user
-                    showInfoLoginSuccess();
+
                 }
                 // Case unknown checkout step
                 else {

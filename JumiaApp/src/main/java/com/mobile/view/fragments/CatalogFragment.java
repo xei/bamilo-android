@@ -162,31 +162,32 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Bundle arguments = getArguments();
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments);
-
+            // Url and parameters
+            mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
+            // TODO REQUEST CATALOG USING KEY
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
-
 
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
                 mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             }
 
             // Default catalog values
+            mQueryValues.put(GetCatalogPageHelper.HASH, mCompleteUrl);
             mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
-            mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
-            mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+            if(TextUtils.isNotEmpty( mSelectedSort.id))
+                mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
+            if(TextUtils.isNotEmpty( mSelectedSort.direction))
+                mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
 
 
-            // Url and parameters
-            mCompleteUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             // This lines are ment to support opening url through a complete url.
             // Its remove the parameters, saved on the query values, and then clear the parameters from the
             // the complete url, so it ca be used in the new parameter the user may choose
-            if (!TextUtils.isEmpty(mCompleteUrl)) {
-                mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteUrl)));
-                Uri.Builder builder = Uri.parse(mCompleteUrl).buildUpon();
-                removeParametersFromQuery(builder);
-            }
+//            if (!TextUtils.isEmpty(mCompleteUrl)) {
+//                mQueryValues.putAll(RestUrlUtils.getQueryParameters(Uri.parse(mCompleteUrl)));
+//                Uri.Builder builder = Uri.parse(mCompleteUrl).buildUpon();
+//                removeParametersFromQuery(builder);
+//            }
 
             // In case of searching by keyword
             if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
@@ -911,31 +912,35 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void triggerGetCatalogPage(int page) {
         Print.i(TAG, "TRIGGER GET PAGINATED CATALOG");
+        // Validate if is to use complete URL or not
+        if (TextUtils.isNotEmpty(mCompleteUrl)) {
+            mQueryValues.put(GetCatalogPageHelper.HASH, mCompleteUrl);
+        }
+
         // Create catalog request parameters
         mQueryValues.put(GetCatalogPageHelper.PAGE, page);
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
         // Get Sort
-        mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
-        mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
-        // Add the Catalog hash as a parameter to the catalog request
-        if (TextUtils.isNotEmpty(mKey)) {
-            mQueryValues.put(GetCatalogPageHelper.HASH, mKey);
+        if (TextUtils.isNotEmpty(mSelectedSort.id)) {
+            mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
         }
+
+        if (TextUtils.isNotEmpty(mSelectedSort.direction)) {
+            mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
+        }
+
 
         // Create bundle with url and parameters
         Bundle bundle = new Bundle();
         // Query parameters
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
-        // Validate if is to use complete URL or not
-        if (TextUtils.isNotEmpty(mCompleteUrl)) {
-            bundle.putString(GetCatalogPageHelper.URL, mCompleteUrl);
-        }
+
         // Case initial request or load more
         if (page == IntConstants.FIRST_PAGE) {
-            triggerContentEvent(new GetCatalogPageHelper(), bundle, this);
+            triggerContentEvent(new GetCatalogPageHelper(), GetCatalogPageHelper.createBundle(bundle), this);
         } else {
-            triggerContentEventNoLoading(new GetCatalogPageHelper(), bundle, this);
+            triggerContentEventNoLoading(new GetCatalogPageHelper(), GetCatalogPageHelper.createBundle(bundle), this);
         }
     }
 

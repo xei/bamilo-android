@@ -30,7 +30,7 @@ public class Form implements IJSONSerializable, Parcelable {
     private int mType;
     private String method;
     private String action;
-    private ArrayList<FormField> fields;
+    private final ArrayList<FormField> fields;
     private Map<String, Form> subForms;
     private Map<String, FormField> mFieldKeyMap;
     private boolean hideAsterisks;
@@ -38,7 +38,7 @@ public class Form implements IJSONSerializable, Parcelable {
     @Override
     @RequiredJson.JsonStruct
     public int getRequiredJson() {
-        return RequiredJson.OBJECT_DATA;
+        return RequiredJson.FORM_ENTITY;
     }
 
     /**
@@ -113,7 +113,7 @@ public class Form implements IJSONSerializable, Parcelable {
                     } else {
                         Form subForm = new Form();
                         subForm.initialize(fieldsArray.getJSONObject(i));
-                        Print.d("code1subForms : subForm :  " + subForm.toString());
+                        Print.d("code1subForms : subForm :  " + subForm);
                         subForms.put(fieldsArray.getJSONObject(i).getString(RestConstants.JSON_SCENARIO_TAG), subForm);
                     }
                 }
@@ -126,7 +126,7 @@ public class Form implements IJSONSerializable, Parcelable {
                         fields.get(i).setPaymentMethodsField(new HashMap<String, Form>());
                         for (String key : keys) {
                             if(subForms.containsKey(key)){
-                                Print.d("code1subForms : " + key + " : " + subForms.get(key).toString());
+                                Print.d("code1subForms : " + key + " : " + subForms.get(key));
                                 fields.get(i).getPaymentMethodsField().put(key, subForms.get(key));
                             }
                         }
