@@ -641,7 +641,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView shippingValue = (TextView)getView().findViewById(R.id.shipping_value);
             TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
             final View voucherContainer = getView().findViewById(R.id.voucher_info_container);
-            View voucherRemove = getView().findViewById(R.id.basket_voucher_remove);
 
             TextView voucherLabel = (TextView) getView().findViewById(R.id.basket_voucher_label);
             // Get and set the cart value
@@ -656,20 +655,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 if (couponDiscountValue >= 0) {
                     voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
                     voucherContainer.setVisibility(View.VISIBLE);
-                    voucherRemove.setVisibility(View.VISIBLE);
-                    voucherRemove.setOnClickListener(new android.view.View.OnClickListener() {
-                        @Override
-                        public void onClick(android.view.View v) {
-                            voucherContainer.setVisibility(View.GONE);
-                            triggerRemoveVoucher();
-                            // Clean Voucher
-                            removeVoucher();
-                            couponButton.setText(getString(R.string.voucher_use));
-                        }
-                    });
                     // Change Coupon
                     changeVoucher(cart.getCouponCode());
-                    voucherLabel.setText(getString(R.string.my_order_voucher_label) + " " + voucherCode.getText());
+                    voucherLabel.setText(getString(R.string.my_order_voucher_label));
                 } else {
                     voucherContainer.setVisibility(View.GONE);
                     couponButton.setText(getString(R.string.voucher_use));
@@ -1019,7 +1007,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Bundle bundle = new Bundle();
         ContentValues values = new ContentValues();
         for (PurchaseCartItem item : items) {
-            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_QTY + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
+            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_QTY, String.valueOf(item.getQuantity()));
+            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_SKU, item.getConfigSimpleSKU());
         }
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(), bundle, this);
