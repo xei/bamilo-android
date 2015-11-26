@@ -1,5 +1,6 @@
 package com.mobile.helpers.address;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -63,10 +64,12 @@ public class GetPostalCodeHelper extends SuperBaseHelper {
     }
 
     public static Bundle createBundle(String url, int city, String tag) {
+        ContentValues values = new ContentValues();
+        values.put(GetPostalCodeHelper.CITY_ID_TAG, String.valueOf(city));
+        values.put(GetPostalCodeHelper.CUSTOM_TAG, tag);
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, url.split("\\?")[0]); // TODO REMOVE
-        bundle.putString(GetPostalCodeHelper.CITY_ID_TAG, String.valueOf(city));
-        bundle.putString(GetPostalCodeHelper.CUSTOM_TAG, tag);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
+//        bundle.putString(Constants.BUNDLE_URL_KEY, url.split("\\?")[0]); // TODO REMOVE
         return bundle;
     }
 
