@@ -7,6 +7,7 @@ public class RestConstants {
 
     // Common JSON constants
     public static final String JSON_DATA_TAG = "data";
+    public static final String JSON_FORM_ENTITY_TAG = "form_entity";
     public static final String ID = "id";
     public final static String SUCCESS = "success";
     public final static String MESSAGE = "message";
