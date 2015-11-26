@@ -152,7 +152,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         getBaseActivity().closeNavigationDrawer();
         // Create bundle for catalog
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
+        bundle.putString(ConstantsIntentExtra.CONTENT_URL, category.getCategoryPath());
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
@@ -265,7 +265,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         }
         // Case is not a section
         else if (!category.isSection()) {
-            Print.i(TAG, "PARENT GO TO CATALOG:" + category.getApiUrl());
+            Print.i(TAG, "PARENT GO TO CATALOG:" + category.getCategoryPath());
             goToCatalog(category);
         }
         return true;
