@@ -46,7 +46,8 @@ public enum EventType {
 
     REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/cart/removeproduct/", AigRestContract.NO_CACHE),
 
-    GET_SHOPPING_CART_ITEMS_EVENT("https:/cart/cartdata/", AigRestContract.NO_CACHE),
+
+    GET_SHOPPING_CART_ITEMS_EVENT("https:/cart/getdata/", AigRestContract.NO_CACHE),
 
     GET_REGISTRATION_FORM_EVENT("http:/forms/register/", AigRestContract.MAX_CACHE_TIME),
 
@@ -116,9 +117,9 @@ public enum EventType {
 
     EDIT_ADDRESS_EVENT("https:/customer/addressedit/", AigRestContract.NO_CACHE),
 
-    GET_BILLING_FORM_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
+    GET_BILLING_FORM_EVENT("https:/forms/multistepaddresses/", AigRestContract.NO_CACHE),
 
-    SET_BILLING_ADDRESS_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
+    SET_BILLING_ADDRESS_EVENT("https:/forms/multistepaddresses/", AigRestContract.NO_CACHE),
 
     GET_REGIONS_EVENT,
 

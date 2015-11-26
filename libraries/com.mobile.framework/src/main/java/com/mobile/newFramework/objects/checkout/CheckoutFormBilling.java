@@ -57,7 +57,7 @@ public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.METADATA;
+        return RequiredJson.FORM_ENTITY;
     }
 
     public PurchaseEntity getOrderSummary() {

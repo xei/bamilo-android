@@ -5,7 +5,6 @@ import android.os.Parcel;
 
 import com.mobile.newFramework.pojo.RestConstants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

@@ -33,8 +33,6 @@ import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.tracking.AnalyticsGoogle;
-import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;

@@ -159,6 +159,9 @@ public class AigResponseConverter implements Converter {
         // Get json from metadata -> form_entity
         else if(requiredJson == RequiredJson.FORM_ENTITY){
             return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.JSON_FORM_ENTITY_TAG);
+        }// Get json from metadata -> cart_entity
+        else if(requiredJson == RequiredJson.CART_ENTITY){
+            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.CART_ENTITY);
         }
         return responseJsonObject;
     }
