@@ -454,5 +454,13 @@ public class RestConstants {
 
 
     public static final String SLUG = "slug";
+   
+    /**
+     * HOME PAGE
+     */
 
+    public static final String HAS_DATA = "has_data";
+    public static final String RICH_RELEVANCE = "rich_relevance_enabled";
+    public static final String JSON_REQUEST = "req";
+    public static final String JSON_RR_CLICK_REQUEST = "click_request";
 }

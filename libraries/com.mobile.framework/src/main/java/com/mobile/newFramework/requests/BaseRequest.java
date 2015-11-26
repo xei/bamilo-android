@@ -52,6 +52,7 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         if(mRequestBundle.hasData()){
             parameters.add(mRequestBundle.getData());
         }
+
         // Add callback
         parameters.add(this);
         // Invoke api service

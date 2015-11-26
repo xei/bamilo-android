@@ -64,16 +64,16 @@ public class CategoriesTableHelper extends BaseTable {
     /**
      * Method used to increment the counter for respective category.
      *
-     * @param categoryUrlKey urlkey that will be used as identifier
+     * @param id hash that will be used as identifier
      * @param categoryName category name
      */
-    public static void updateCategoryCounter(String categoryUrlKey, String categoryName) {
+    public static void updateCategoryCounter(String id, String categoryName) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         try {
 
             // Create query
             String query = new StringBuilder("select ").append(Columns.VIEW_COUNT).append(" from ").append(TABLE_NAME)
-                    .append(" where ").append(Columns.URL_KEY).append(" = '").append(categoryUrlKey).append("'").toString();
+                    .append(" where ").append(Columns.URL_KEY).append(" = '").append(id).append("'").toString();
             Print.i(TAG, "SQL RESULT query :  " + query);
             Cursor cursor = db.rawQuery(query, null);
 
@@ -89,7 +89,7 @@ public class CategoriesTableHelper extends BaseTable {
                     .append("(" + Columns.NAME + "," + Columns.URL_KEY + "," + Columns.VIEW_COUNT + ") ")
                     .append("VALUES ( ")
                     .append("(").append(DatabaseUtils.sqlEscapeString(categoryName)).append("), ")
-                    .append("(").append(DatabaseUtils.sqlEscapeString(categoryUrlKey)).append("), ")
+                    .append("(").append(DatabaseUtils.sqlEscapeString(id)).append("), ")
                     .append(count + 1)
                     .append(" )")
                     .toString();

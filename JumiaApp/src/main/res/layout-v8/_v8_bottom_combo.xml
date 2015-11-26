@@ -13,22 +13,12 @@
 
         />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/buy_bar_height"
         android:orientation="horizontal"
         android:gravity="center_vertical|right"
         >
-
-        <com.mobile.components.customfontviews.TextView
-            style="@style/TextList_1"
-            android:textColor="@color/orange_f68b1e"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:text="RS 524"
-            android:id="@+id/txTotalComboPrice"
-            />
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextList_2"
@@ -37,12 +27,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/total_price_bottom"
+            android:layout_alignParentRight="true"
             android:id="@+id/txLabelTotal"
             />
 
+        <com.mobile.components.customfontviews.TextView
+            style="@style/TextList_1"
+            android:textColor="@color/orange_f68b1e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="RS 524"
+            android:layout_toLeftOf="@+id/txLabelTotal"
+            android:id="@+id/txTotalComboPrice"
+            />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <com.mobile.components.customfontviews.Button

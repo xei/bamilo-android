@@ -5,6 +5,7 @@
     android:layout_gravity="center"
     android:background="@color/grey_dividerlight"
     android:gravity="center"
+    android:layoutDirection="ltr"
     android:orientation="horizontal"
     android:paddingTop="0.75dp" >
 

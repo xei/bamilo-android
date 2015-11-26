@@ -14,6 +14,7 @@ public enum TeaserGroupType {
     SHOP_TEASERS("shop_teasers"),
     BRAND_TEASERS("brand_teasers"),
     SHOP_OF_WEEK("shop_of_week"),
+    FORM_NEWSLETTER("form_newsletter"),
     FEATURED_STORES("featured_stores"),
     TOP_SELLERS("top_sellers"),
     UNKNOWN;

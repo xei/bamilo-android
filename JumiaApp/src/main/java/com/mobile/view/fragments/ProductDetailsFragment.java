@@ -115,6 +115,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private ViewGroup mTitleFashionContainer;
     private View mGlobalButton;
     private View mOffersContainer;
+    private String mRichRelevanceHash;
 
     /**
      * Empty constructor
@@ -375,7 +376,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
         // Case get product
         else if (TextUtils.isNotEmpty(mCompleteProductSku)) {
-            triggerLoadProduct(mCompleteProductSku);
+            triggerLoadProduct(mCompleteProductSku, mRichRelevanceHash);
         }
         // Case error
         else {
@@ -404,13 +405,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get the sku
         String sku = bundle.getString(GetProductHelper.SKU_TAG);
         // Get the simple size
-        String mDeepLinkSimpleSize = bundle.getString(DeepLinkManager.PDV_SIZE_TAG);
+        String deepLinkSimpleSize = bundle.getString(DeepLinkManager.PDV_SIZE_TAG);
+        // Get Rich Relevance
+        mRichRelevanceHash = bundle.getString(ConstantsIntentExtra.RICH_RELEVANCE_HASH);
         // Validate
         if (sku != null) {
-            Print.i(TAG, "DEEP LINK GET PDV: " + sku + " " + mDeepLinkSimpleSize);
+            Print.i(TAG, "DEEP LINK GET PDV: " + sku + " " + deepLinkSimpleSize);
             mNavSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix));
             mNavPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-            triggerLoadProduct(sku);
+            triggerLoadProduct(sku, mRichRelevanceHash);
             return true;
         }
         return false;
@@ -1072,9 +1075,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * ############## TRIGGERS ##############
      */
 
-    private void triggerLoadProduct(String sku) {
+    private void triggerLoadProduct(String sku, String richRelevanceHash) {
         mBeginRequestMillis = System.currentTimeMillis();
-        triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku), this);
+        if(TextUtils.isNotEmpty(richRelevanceHash))
+            richRelevanceHash = TargetLink.getIdFromTargetLink(richRelevanceHash);
+
+        triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku, richRelevanceHash), this);
     }
 
     private void triggerAddItemToCart(String sku, String simpleSKU) {

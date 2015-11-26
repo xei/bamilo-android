@@ -27,6 +27,7 @@ import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.objects.home.HomePageObject;
+import com.mobile.newFramework.objects.home.object.TeaserRichRelevanceObject;
 import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.product.BundleList;
@@ -187,6 +188,20 @@ public interface AigApiInterface {
     String getHome = "getHome";
 
     /*
+     * ## RICH RELEVANCE
+     */
+
+    @GET("/{path}")
+    void getRichRelevance(@Path(value="path", encode=false) String path, Callback<BaseResponse<TeaserRichRelevanceObject>> callback);
+    String getRichRelevance = "getRichRelevance";
+
+    @FormUrlEncoded
+    @POST("/")
+    void newsletterSignUp(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+
+    String newsletterSignUp = "newsletterSignUp";
+
+    /*
      * ## SHOP IN SHOP
      */
 
@@ -199,10 +214,6 @@ public interface AigApiInterface {
 
     String getProductBundle = "getProductBundle";
 
-    @GET("/")
-    void getProductOffers(@QueryMap Map<String, String> data, Callback<BaseResponse<OfferList>> callback);
-
-    String getProductOffers = "getProductOffers";
 
     @FormUrlEncoded
     @POST("/")
@@ -501,6 +512,11 @@ public interface AigApiInterface {
     @GET("/{path}")
     void getProductDetailReviews(@Path(value="path", encode=false) String path, Callback<BaseResponse<ProductRatingPage>> callback);
     String getProductDetailReviews = "getProductDetailReviews";
+
+    @GET("/{path}")
+    void getProductOffers(@Path (value="path", encode=false) String offersParameters, Callback<BaseResponse<OfferList>> callback);
+
+    String getProductOffers = "getProductOffers";
 
     /*
      * ## STATIC
