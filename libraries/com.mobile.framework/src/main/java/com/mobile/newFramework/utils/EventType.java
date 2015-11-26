@@ -145,7 +145,7 @@ public enum EventType {
 
     ADD_VOUCHER("http:/cart/addvoucher/", AigRestContract.NO_CACHE),
 
-    REMOVE_VOUCHER("http:/order/removevoucher/", AigRestContract.NO_CACHE),
+    REMOVE_VOUCHER("http:/cart/removevoucher/", AigRestContract.NO_CACHE),
 
     GET_CAMPAIGN_EVENT("http:/campaign/get/", AigRestContract.NO_CACHE),
 
