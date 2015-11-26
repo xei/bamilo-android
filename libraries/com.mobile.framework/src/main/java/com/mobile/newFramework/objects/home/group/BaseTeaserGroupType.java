@@ -74,21 +74,22 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
         // Get Data flag
         mHasData = jsonObject.optBoolean(RestConstants.HAS_DATA);
         mData = new ArrayList<>();
-        // Form Teaser
-        if(mHasData && mType == TeaserGroupType.FORM_NEWSLETTER){
-            mData.add(getFormTeaser(jsonObject));
-        }
         // Get data
-        else if(mHasData){
-            JSONArray teasersData = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
-            // Validate size
-            int size = teasersData.length();
-            if (size > 0) {
-                for (int i = 0; i < size; i++) {
-                    JSONObject teaserData = teasersData.optJSONObject(i);
-                    if (teaserData != null) {
-                        BaseTeaserObject teaser = createTeaserObject(teaserData);
-                        if(teaser != null)  mData.add(teaser);
+        if(mHasData){
+            // Form Teaser
+            if(mType == TeaserGroupType.FORM_NEWSLETTER){
+                mData.add(getFormTeaser(jsonObject));
+            } else {
+                JSONArray teasersData = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+                // Validate size
+                int size = teasersData.length();
+                if (size > 0) {
+                    for (int i = 0; i < size; i++) {
+                        JSONObject teaserData = teasersData.optJSONObject(i);
+                        if (teaserData != null) {
+                            BaseTeaserObject teaser = createTeaserObject(teaserData);
+                            if(teaser != null)  mData.add(teaser);
+                        }
                     }
                 }
             }
@@ -130,8 +131,7 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
      */
     private BaseTeaserObject getNoDataTeasers(JSONObject jsonObject){
         // Validate type to create a specific teaser object
-        BaseTeaserObject teaser;
-        teaser = new BaseTeaserObject(mType.ordinal());
+        BaseTeaserObject teaser = new BaseTeaserObject(mType.ordinal());
         // Initialize
         try {
             teaser.initialize(jsonObject);
@@ -148,8 +148,7 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
      * @return
      */
     private BaseTeaserObject getFormTeaser(JSONObject jsonObject){
-        BaseTeaserObject teaser;
-        teaser = new TeaserFormObject(mType.ordinal());
+        BaseTeaserObject teaser = new TeaserFormObject(mType.ordinal());
 //        // Create Home page Newsletter form
 //        if(mType == TeaserGroupType.FORM_NEWSLETTER){
 //            teaser = new TeaserFormObject(mType.ordinal());

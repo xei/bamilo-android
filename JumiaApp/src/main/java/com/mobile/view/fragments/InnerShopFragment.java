@@ -367,7 +367,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     /**
      * Goto Product.
      *
-     * @param sku The product url
+     * @param sku The product sku
      */
     private void gotoProduct(String sku) {
         Print.i(TAG, "PDV: " + sku);
