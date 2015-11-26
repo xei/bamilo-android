@@ -215,6 +215,9 @@ public class RestConstants {
     public static final String JSON_REMAINING_TIME_TAG = "remaining_time";
     public static final String JSON_UNIX_TIME_TAG = "unix_time";
 
+    // TeaserBrandElement Tags
+    public static final String JSON_TARGET_TYPE_TAG = "target_type";
+
     // Address Tags
     public static final String CUSTOMER_ADDRESS_ID = "customer_address_id";
     public static final String PHONE = "phone";

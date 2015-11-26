@@ -174,7 +174,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 mQueryValues.put(GetCatalogPageHelper.HASH, mKey);
             if(TextUtils.isNotEmpty( mSelectedSort.id))
                 mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
-            if(TextUtils.isNotEmpty( mSelectedSort.direction))
+            if(TextUtils.isNotEmpty(mSelectedSort.direction))
                 mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
 
 
