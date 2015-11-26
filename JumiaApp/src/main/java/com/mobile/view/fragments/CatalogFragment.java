@@ -31,7 +31,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -178,7 +177,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues.put(GetCatalogPageHelper.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             if(TextUtils.isNotEmpty( mSelectedSort.id))
                 mQueryValues.put(GetCatalogPageHelper.SORT, mSelectedSort.id);
-            if(TextUtils.isNotEmpty( mSelectedSort.direction))
+            if(TextUtils.isNotEmpty(mSelectedSort.direction))
                 mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
 
 
