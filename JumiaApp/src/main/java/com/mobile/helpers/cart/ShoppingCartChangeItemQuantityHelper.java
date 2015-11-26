@@ -24,9 +24,10 @@ import com.mobile.utils.TrackerDelegator;
  */
 public class ShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
     
-    private static String TAG = ShoppingCartChangeItemQuantityHelper.class.getSimpleName();
+    private static final String TAG = ShoppingCartChangeItemQuantityHelper.class.getSimpleName();
     
-    public static final String ITEM_QTY = "qty_";
+    public static final String ITEM_QTY = "quantity";
+    public static final String ITEM_SKU= "sku";
 
 
     @Override

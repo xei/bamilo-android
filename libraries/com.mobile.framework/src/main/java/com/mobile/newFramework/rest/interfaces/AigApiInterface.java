@@ -467,9 +467,8 @@ public interface AigApiInterface {
     void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String removeFromWishList = "removeFromWishList";
 
-    @FormUrlEncoded
-    @POST("/")
-    void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
+    @GET("/{path}")
+    void emailCheck(@Path(value="path", encode=false) String path, Callback<BaseResponse<CustomerEmailCheck>> callback);
     String emailCheck = "emailCheck";
 
     @GET("/")

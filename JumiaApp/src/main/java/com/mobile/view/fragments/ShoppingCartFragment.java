@@ -1007,7 +1007,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Bundle bundle = new Bundle();
         ContentValues values = new ContentValues();
         for (PurchaseCartItem item : items) {
-            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_QTY + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
+            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_QTY, String.valueOf(item.getQuantity()));
+            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_SKU, item.getConfigSimpleSKU());
         }
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(), bundle, this);

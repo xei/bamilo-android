@@ -18,7 +18,7 @@ import org.json.JSONObject;
 public class Seller implements IJSONSerializable, Parcelable {
 
     private String mName;
-    private String mUrl;
+    private String mTarget;
     private String mWarranty;
     private int mRatingCount;
     private int mRatingValue;
@@ -53,12 +53,12 @@ public class Seller implements IJSONSerializable, Parcelable {
         this.mName = mName;
     }
 
-    public String getUrl() {
-        return mUrl;
+    public String getTarget() {
+        return mTarget;
     }
 
-    public void setUrl(String mUrl) {
-        this.mUrl = mUrl;
+    public void setTarget(String target) {
+        this.mTarget = mTarget;
     }
 
     public int getRatingCount() {
@@ -101,7 +101,7 @@ public class Seller implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-        mUrl = jsonObject.optString(RestConstants.URL);
+        mTarget = jsonObject.optString(RestConstants.TARGET);
         mWarranty = jsonObject.optString(RestConstants.JSON_WARRANTY_TAG);
         isGlobal = jsonObject.optBoolean(RestConstants.IS_GLOBAL);
         JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
@@ -156,7 +156,7 @@ public class Seller implements IJSONSerializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mName);
-        dest.writeString(mUrl);
+        dest.writeString(mTarget);
         dest.writeString(mWarranty);
         dest.writeInt(mRatingCount);
         dest.writeInt(mRatingValue);
@@ -173,7 +173,7 @@ public class Seller implements IJSONSerializable, Parcelable {
      */
     protected Seller(Parcel in) {
         mName = in.readString();
-        mUrl = in.readString();
+        mTarget = in.readString();
         mWarranty = in.readString();
         mRatingCount = in.readInt();
         mRatingValue = in.readInt();

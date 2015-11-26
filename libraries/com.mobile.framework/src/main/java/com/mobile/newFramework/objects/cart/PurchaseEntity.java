@@ -54,36 +54,36 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Cart entity
-        JSONObject cartEntity = jsonObject.getJSONObject(RestConstants.CART_ENTITY);
+//        JSONObject cartEntity = jsonObject.getJSONObject(RestConstants.CART_ENTITY);
         // Total
-        mTotal = cartEntity.getDouble(RestConstants.TOTAL);
-        mTotalConverted = cartEntity.getDouble(RestConstants.TOTAL_CONVERTED);
+        mTotal = jsonObject.getDouble(RestConstants.TOTAL);
+        mTotalConverted = jsonObject.getDouble(RestConstants.TOTAL_CONVERTED);
         // Get cart sub total
-        mSubTotal = cartEntity.optDouble(RestConstants.SUB_TOTAL);
-        mSubTotalConverted = cartEntity.optDouble(RestConstants.SUB_TOTAL_CONVERTED);
+        mSubTotal = jsonObject.optDouble(RestConstants.SUB_TOTAL);
+        mSubTotalConverted = jsonObject.optDouble(RestConstants.SUB_TOTAL_CONVERTED);
         // Vat
-        JSONObject vatObject = cartEntity.optJSONObject(RestConstants.VAT);
+        JSONObject vatObject = jsonObject.optJSONObject(RestConstants.VAT);
         if (vatObject != null) {
             mVatValue = vatObject.optDouble(RestConstants.VALUE);
         }
         // Delivery
-        JSONObject deliveryObject = cartEntity.optJSONObject(RestConstants.DELIVERY);
+        JSONObject deliveryObject = jsonObject.optJSONObject(RestConstants.DELIVERY);
         if (deliveryObject != null) {
             mShippingValue = deliveryObject.optDouble(RestConstants.AMOUNT);
         }
         // Coupon
-        JSONObject couponObject = cartEntity.optJSONObject(RestConstants.COUPON);
+        JSONObject couponObject = jsonObject.optJSONObject(RestConstants.COUPON);
         if (couponObject != null) {
             mCouponCode = couponObject.optString(RestConstants.CODE);
             mCouponDiscount = couponObject.optDouble(RestConstants.VALUE);
         }
         // Costs
-        mSumCostsValue = cartEntity.optDouble(RestConstants.SUM_COSTS_VALUE);
+        mSumCostsValue = jsonObject.optDouble(RestConstants.SUM_COSTS_VALUE);
         // Extra costs
-        mExtraCosts = cartEntity.optDouble(RestConstants.EXTRA_COSTS);
+        mExtraCosts = jsonObject.optDouble(RestConstants.EXTRA_COSTS);
         // Get cart count
-        mCartCount = cartEntity.getInt(RestConstants.TOTAL_PRODUCTS);
-        JSONArray cartArray = cartEntity.getJSONArray(RestConstants.PRODUCTS);
+        mCartCount = jsonObject.getInt(RestConstants.TOTAL_PRODUCTS);
+        JSONArray cartArray = jsonObject.getJSONArray(RestConstants.PRODUCTS);
         mCartItems = new ArrayList<>();
         for (int i = 0; i < cartArray.length(); i++) {
             JSONObject cartObject = cartArray.getJSONObject(i);
@@ -92,7 +92,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             mCartItems.add(item);
         }
         // Price rules
-        JSONArray priceRules = cartEntity.optJSONArray(RestConstants.PRICE_RULES);
+        JSONArray priceRules = jsonObject.optJSONArray(RestConstants.PRICE_RULES);
         if (priceRules != null && priceRules.length() > 0) {
             mPriceRules = new HashMap<>();
             for (int i = 0; i < priceRules.length(); i++) {
@@ -103,23 +103,23 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             }
         }
         // Get shipping method
-        JSONObject jsonShip = cartEntity.optJSONObject(RestConstants.SHIPPING_METHOD);
+        JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.SHIPPING_METHOD);
         if (jsonShip != null) {
             mShippingMethod = jsonShip.optString(RestConstants.METHOD);
         }
         // Get payment method
-        JSONObject jsonPay = cartEntity.optJSONObject(RestConstants.PAYMENT_METHOD);
+        JSONObject jsonPay = jsonObject.optJSONObject(RestConstants.PAYMENT_METHOD);
         if (jsonPay != null) {
             mPaymentMethod = jsonPay.optString(RestConstants.LABEL);
         }
         // Get billing address
-        JSONObject jsonBilAddress = cartEntity.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
+        JSONObject jsonBilAddress = jsonObject.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
         if (jsonBilAddress != null) {
             mBillingAddress = new Address();
             mBillingAddress.initialize(jsonBilAddress);
         }
         // Get shipping address
-        JSONObject jsonShipAddress = cartEntity.optJSONObject(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG);
+        JSONObject jsonShipAddress = jsonObject.optJSONObject(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG);
         if (jsonShipAddress != null) {
             mShippingAddress = new Address();
             mShippingAddress.initialize(jsonShipAddress);
@@ -140,7 +140,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.METADATA;
+        return RequiredJson.CART_ENTITY;
     }
 
 	/*
