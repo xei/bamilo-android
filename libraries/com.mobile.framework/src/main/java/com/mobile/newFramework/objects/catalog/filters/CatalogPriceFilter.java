@@ -42,13 +42,11 @@ public class CatalogPriceFilter extends CatalogFilter {
     }
 
     @Override
-    protected void parseFields(JSONArray fieldsArray) throws JSONException {
-        if(fieldsArray.length() != 0){
-            try{
-                option.setCheckBoxOption(new PriceFilterCheckBoxOption(fieldsArray.getJSONObject(0)));
-            }catch (JSONException ex){
+    protected void parseFields(JSONObject fieldsObject) throws JSONException {
+        try{
+            option.setCheckBoxOption(new PriceFilterCheckBoxOption(fieldsObject));
+        }catch (JSONException ex){
 
-            }
         }
     }
 
