@@ -58,6 +58,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
@@ -764,8 +765,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void goToSellerCatalog() {
         Log.i(TAG, "ON CLICK SELLER NAME");
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, mProduct.getSeller().getUrl());
-        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+         @TargetLink.Type String target = mProduct.getSeller().getTarget();
+        // Parse target link
+        boolean result = new TargetLink.Helper(this, target).run();
+//        bundle.putString(ConstantsIntentExtra.CONTENT_URL, );
+//        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /**

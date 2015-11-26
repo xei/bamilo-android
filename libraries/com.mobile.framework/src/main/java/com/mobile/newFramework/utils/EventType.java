@@ -75,7 +75,7 @@ public enum EventType {
 
     REVIEW_RATING_PRODUCT_EVENT,
 
-    CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT("https:/order/cartchange/", AigRestContract.NO_CACHE),
+    CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT("https:/cart/updateproduct/", AigRestContract.NO_CACHE),
 
     GET_FORMS_DATA_SET_LIST_EVENT,
 
@@ -143,7 +143,7 @@ public enum EventType {
 
     NATIVE_CHECKOUT_AVAILABLE("http:/main/getconfig/module/configuration/key/native_checkout_mobile_api/", AigRestContract.NO_CACHE),
 
-    ADD_VOUCHER("http:/order/addvoucher/", AigRestContract.NO_CACHE),
+    ADD_VOUCHER("http:/cart/addvoucher/", AigRestContract.NO_CACHE),
 
     REMOVE_VOUCHER("http:/order/removevoucher/", AigRestContract.NO_CACHE),
 

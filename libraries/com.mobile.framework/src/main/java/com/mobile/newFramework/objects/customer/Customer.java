@@ -76,7 +76,7 @@ public class Customer implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.METADATA;
+        return RequiredJson.CUSTOMER_ENTITY;
     }
 
     /**

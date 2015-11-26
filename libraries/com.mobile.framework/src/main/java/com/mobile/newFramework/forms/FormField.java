@@ -232,13 +232,22 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 }
             }
 
-            /**
-             * Save api call (region and cities)
-             */
-            String apiCall = jsonObject.optString(RestConstants.API_CALL);
-            if (!TextUtils.isEmpty(apiCall)) {
-                mDataCalls.put(RestConstants.API_CALL, apiCall);
+            /**TODO: Verify if this method should change. To target link or something else.
+             * api_call now comes as a jsonObject but apparently there are
+             *  diferent situations on what will come inside that object.
+             *  This "hack" will allow to receive the ones that bring an endpoint string inside.
+              */
+
+            if(jsonObject.has(RestConstants.API_CALL)){
+                /**
+                 * Save api call (region and cities)
+                 */
+                String apiCall = jsonObject.getJSONObject(RestConstants.API_CALL).optString(RestConstants.ENDPOINT);
+                if (!TextUtils.isEmpty(apiCall)) {
+                    mDataCalls.put(RestConstants.API_CALL, "/"+apiCall);
+                }
             }
+
 
             // Case options TODO Unify options response
             /**
