@@ -15,7 +15,6 @@ import com.mobile.components.AnimatedExpandableListView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.CategoriesListAdapter;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.categories.GetCategoriesHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -32,7 +31,6 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
 
-import java.lang.annotation.Target;
 import java.util.ArrayList;
 
 /**
