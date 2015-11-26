@@ -423,7 +423,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * @author sergiopereira
      */
     private void onClickBuyButton(View view) {
-        String prod = (String) view.getTag(PROD);
         String sku = (String) view.getTag(SKU);
         String size = (String) view.getTag(SIZE);
         Boolean hasStock = (Boolean) view.getTag(STOCK);
@@ -440,7 +439,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         else if(!isAddingProductToCart) {
             // Create values to add to cart
             ContentValues values = new ContentValues();
-     //       values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, prod);
             values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
             values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
             triggerAddToCart(values);
@@ -479,10 +477,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
      * @author sergiopereira
      */
     private void onClickProduct(View view){
-        String prod = (String) view.getTag(PROD);
         String size = (String) view.getTag(SIZE);
         String sku = (String) view.getTag(SKU);
-        Print.d(TAG, "ON CLICK PRODUCT " + prod + " " + size);
+        Print.d(TAG, "ON CLICK PRODUCT " + sku + " " + size);
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
