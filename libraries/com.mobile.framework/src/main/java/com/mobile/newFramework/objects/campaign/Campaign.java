@@ -27,15 +27,13 @@ public class Campaign implements IJSONSerializable, Parcelable {
 
     private String mName;
 
-//    private String mStartTime;
-//
-//    private String mEndTime;
-
     private int mCount;
 
     private int mTotalProducts;
 
     private ArrayList<CampaignItem> mItems = new ArrayList<>();
+
+
 
     /**
      * Empty constructor
@@ -81,6 +79,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
                 mItems.add(item);
             }
         }
+
         return true;
     }
 
@@ -149,6 +148,7 @@ public class Campaign implements IJSONSerializable, Parcelable {
      * @return the mTotalProducts
      */
     public int getmTotalProducts() {return mTotalProducts;}
+
 
 
 	/*
