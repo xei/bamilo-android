@@ -7,6 +7,7 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.DateTimeUtils;
+import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -16,8 +17,6 @@ import org.json.JSONObject;
  * @author spereira
  */
 public class BaseTeaserObject implements IJSONSerializable, Parcelable {
-
-    protected String mName;
 
     protected String mTitle;
 
@@ -43,10 +42,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
     /*
      * ########## GETTERS ##########
      */
-
-    public String getName() {
-        return mName;
-    }
 
     public String getTitle() {
         return mTitle;
@@ -94,8 +89,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get name
-        mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         // Get title
         mTitle = jsonObject.optString(RestConstants.TITLE);
         // Get sub title
@@ -138,7 +131,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mName);
         dest.writeString(this.mTitle);
         dest.writeString(this.mSubTitle);
         dest.writeString(this.mImagePhone);
@@ -149,7 +141,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
     }
 
     protected BaseTeaserObject(Parcel in) {
-        this.mName = in.readString();
         this.mTitle = in.readString();
         this.mSubTitle = in.readString();
         this.mImagePhone = in.readString();

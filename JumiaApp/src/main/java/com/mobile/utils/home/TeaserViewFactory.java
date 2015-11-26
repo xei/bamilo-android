@@ -1,13 +1,13 @@
 package com.mobile.utils.home;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
@@ -88,12 +88,15 @@ public class TeaserViewFactory {
      */
     public static void setClickableView(View view, BaseTeaserObject teaser, View.OnClickListener listener, int position) {
         if (listener != null) {
-            String title = !TextUtils.isEmpty(teaser.getName()) ? teaser.getName() : teaser.getTitle();
-            view.setTag(R.id.target_title, title);
+            view.setTag(R.id.target_title, teaser.getTitle());
             view.setTag(R.id.target_link, teaser.getTargetLink());
             view.setTag(R.id.target_teaser_origin, teaser.getTeaserTypeId());
             // Set position of the clicked teaser, for tracking purpose
             view.setTag(R.id.target_list_position, position);
+
+            if(teaser instanceof TeaserTopSellerObject){
+                view.setTag(R.id.target_rr_hash, ((TeaserTopSellerObject) teaser).getRichRelevanceClickHash());
+            }
 
             view.setOnClickListener(listener);
         }
