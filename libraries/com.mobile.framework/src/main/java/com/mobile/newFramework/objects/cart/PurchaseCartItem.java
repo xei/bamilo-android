@@ -119,9 +119,9 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
             mCategoriesIds = jsonObject.optString(RestConstants.JSON_CATEGORY_ID_TAG);
             // Fix NAFAMZ-7848
             // Throw JSONException if JSON_PRICE_TAG is not present
-            String priceJSON = jsonObject.getString(RestConstants.JSON_ITEM_PRICE_TAG);
+            String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
             if (CurrencyFormatter.isNumber(priceJSON)) {
-                priceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_PRICE_TAG);
+                priceVal = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
                 price = priceJSON;
                 //price = CurrencyFormatter.formatCurrency(priceJSON);
             } else {
@@ -130,7 +130,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
                 price = "";
             }
 
-            mPriceValueConverted = jsonObject.optDouble(RestConstants.JSON_ITEM_PRICE_CONVERTED_TAG, 0d);
+            mPriceValueConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
 
             // Fix NAFAMZ-7848
             String specialPriceJSON = jsonObject.optString(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
@@ -167,7 +167,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.COMPLETE_JSON;
+        return RequiredJson.CART_ENTITY;
     }
 
     /**

@@ -52,7 +52,6 @@ public class RequestBundle {
         private boolean discard;
         private String path;
 
-
         public Builder setUrl(String url) {
             this.url = url;
             return this;

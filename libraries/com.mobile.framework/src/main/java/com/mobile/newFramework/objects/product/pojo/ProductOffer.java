@@ -96,7 +96,7 @@ public class ProductOffer extends ProductMultiple implements IJSONSerializable{
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.NONE;
+        return RequiredJson.METADATA;
     }
 
     public double getFinalPrice() {

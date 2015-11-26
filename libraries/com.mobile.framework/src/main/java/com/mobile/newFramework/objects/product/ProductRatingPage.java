@@ -146,7 +146,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	@Override
 	public int getRequiredJson() {
-		return RequiredJson.OBJECT_DATA;
+		return RequiredJson.METADATA;
 	}
 
 	/**
