@@ -29,7 +29,6 @@ public class BundleList implements IJSONSerializable, Parcelable {
     private String mId;
     private double mPrice;
     private double mPriceConverted;
-    private int mLeaderPosition;
     private ArrayList<ProductBundle> mProducts;
 
 
@@ -54,8 +53,7 @@ public class BundleList implements IJSONSerializable, Parcelable {
 
         mId = bundleEntityjson.getString(RestConstants.ID);
         mPrice = bundleEntityjson.getDouble(RestConstants.JSON_PRICE_TAG);
-        mPriceConverted = bundleEntityjson.getDouble(RestConstants.JSON_BUNDLE_PRICE_CONVERTED);
-        mLeaderPosition = bundleEntityjson.getInt(RestConstants.JSON_BUNDLE_LEADER_POS);
+        mPriceConverted =  bundleEntityjson.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
         JSONArray bundleProductsArray = bundleEntityjson.optJSONArray(RestConstants.PRODUCTS);
         if (bundleProductsArray != null && bundleProductsArray.length() > 0) {
             mProducts = new ArrayList<>();
@@ -124,7 +122,6 @@ public class BundleList implements IJSONSerializable, Parcelable {
         mId = in.readString();
         mPrice = in.readDouble();
         mPriceConverted = in.readDouble();
-        mLeaderPosition = in.readInt();
         if (in.readByte() == 0x01) {
             mProducts = new ArrayList<>();
             in.readList(mProducts, ProductBundle.class.getClassLoader());
@@ -143,7 +140,6 @@ public class BundleList implements IJSONSerializable, Parcelable {
         dest.writeString(mId);
         dest.writeDouble(mPrice);
         dest.writeDouble(mPriceConverted);
-        dest.writeInt(mLeaderPosition);
         if (mProducts == null) {
             dest.writeByte((byte) (0x00));
         } else {
