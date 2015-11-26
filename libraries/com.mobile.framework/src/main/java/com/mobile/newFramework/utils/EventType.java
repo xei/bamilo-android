@@ -40,13 +40,12 @@ public enum EventType {
 
     GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", AigRestContract.DEFAULT_CACHE_TIME),
 
-    ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add/", AigRestContract.NO_CACHE),
+    ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/cart/addproduct/", AigRestContract.NO_CACHE),
 
     ADD_ITEMS_TO_SHOPPING_CART_EVENT("https:/order/addmultiple/", AigRestContract.NO_CACHE),
 
-    REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/order/remove/", AigRestContract.NO_CACHE),
+    REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/cart/removeproduct/", AigRestContract.NO_CACHE),
 
- //   GET_SHOPPING_CART_ITEMS_EVENT("https:/order/cartdata/", AigRestContract.NO_CACHE),
     GET_SHOPPING_CART_ITEMS_EVENT("https:/cart/cartdata/", AigRestContract.NO_CACHE),
 
     GET_REGISTRATION_FORM_EVENT("http:/forms/register/", AigRestContract.MAX_CACHE_TIME),
@@ -147,7 +146,7 @@ public enum EventType {
 
     REMOVE_VOUCHER("http:/order/removevoucher/", AigRestContract.NO_CACHE),
 
-    GET_CAMPAIGN_EVENT("http:/campaign/get/slug/", AigRestContract.NO_CACHE),
+    GET_CAMPAIGN_EVENT("http:/campaign/get/", AigRestContract.NO_CACHE),
 
     GET_NEWSLETTERS_FORM_EVENT("managenewsletters", AigRestContract.NO_CACHE),
 

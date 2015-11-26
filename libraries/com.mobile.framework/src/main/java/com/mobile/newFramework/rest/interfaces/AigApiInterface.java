@@ -98,7 +98,7 @@ public interface AigApiInterface {
      * ## FORMS
      */
 
-    @GET("/")
+    @GET("/{url}")
     void getLoginForm(Callback<BaseResponse<Form>> callback);
 
     String getLoginForm = "getLoginForm";
@@ -379,15 +379,13 @@ public interface AigApiInterface {
     String getCities = "getCities";
 
     @GET("/")
-    void getPostalCodes(@QueryMap Map<String, String> data, Callback<BaseResponse<AddressPostalCodes>> callback);
+    void getPostalCodes(@Path(value="path", encode=false) String path, Callback<BaseResponse<AddressPostalCodes>> callback);
 
     String getPostalCodes = "getPostalCodes";
 
     /*
      * ## RATINGS/REVIEWS
      */
-    @GET("/")
-    void getProductReviews(@QueryMap Map<String, String> data, Callback<BaseResponse<ProductRatingPage>> callback);
 
     @FormUrlEncoded
     @POST("/")
@@ -476,12 +474,11 @@ public interface AigApiInterface {
      * ## CATALOG
      */
 
+    //@GET("/{path}")
+    //void getCatalog(@Path(value="path", encode=false) String hash, Callback<BaseResponse<Catalog>> callback);
     @GET("/{path}")
-    void getCatalog(@Path(value="path", encode=false) String hash, Callback<BaseResponse<Catalog>> callback);
+    void getCatalog(@Path(value="path", encode=false) String path, Callback<BaseResponse<Catalog>> callback);
     String getCatalog = "getCatalog";
- /*   @GET("/")
-    void getCatalog(@QueryMap Map<String, String> data, Callback<BaseResponse<Catalog>> callback);
-    String getCatalog = "getCatalog";*/
 
     /*
     * ## CAMPAIGN
