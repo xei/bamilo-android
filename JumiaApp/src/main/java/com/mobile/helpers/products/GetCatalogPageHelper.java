@@ -13,6 +13,8 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
+import java.util.Map;
+
 /**
  * Get Catalog Page helper
  *
@@ -22,9 +24,9 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     protected static String TAG = GetCatalogPageHelper.class.getSimpleName();
 
-    public static final String URL = Constants.BUNDLE_URL_KEY;
-    //
-    private static final int mCurrentPage = IntConstants.FIRST_PAGE;
+    // TODO: API SHOULD RETURN THIS PARAMETER RESPONSE
+    private int mCurrentPage = IntConstants.FIRST_PAGE;
+
     // Request parameters
     public static final String PAGE = "page";
     public static final String MAX_ITEMS = "maxitems";
@@ -40,37 +42,23 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
         return EventType.GET_CATALOG_EVENT;
     }
 
-//    @Override
-//    protected Map<String, String> getRequestData(Bundle args) {
-//        // Get catalog parameters
-//        ContentValues catalogArguments = args.getParcelable(Constants.BUNDLE_DATA_KEY);
-//        // Get page number
-//        mCurrentPage = catalogArguments.getAsInteger(PAGE);
-//        //
-//        return super.getRequestData(args);
-//    }
-
-//
-//    @Override
-//    protected String getRequestUrl(Bundle args) {
-//        // Get catalog URL
-//        String baseUrl = args.getString(URL);
-//        // Case search then url is empty
-//        if (TextUtils.isEmpty(baseUrl)) baseUrl = mEventType.action;
-//        //
-//        return RestUrlUtils.completeUri(Uri.parse(baseUrl)).toString();
-//    }
+    @Override
+    protected Map<String, String> getRequestData(Bundle args) {
+        // Get catalog parameters
+        ContentValues catalogArguments = args.getParcelable(Constants.BUNDLE_PATH_KEY);
+        // Get page number
+        if (catalogArguments != null) {
+            mCurrentPage = catalogArguments.getAsInteger(PAGE);
+        }
+        return super.getRequestData(args);
+    }
 
     /**
      * Method used to create a request bundle.
      */
-    public static Bundle createBundle(Bundle args) {
-        // Get catalog parameters
-        ContentValues catalogArguments = args.getParcelable(Constants.BUNDLE_DATA_KEY);
-        // Get page number
-//        mCurrentPage = catalogArguments.getAsInteger(PAGE);
+    public static Bundle createBundle(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, catalogArguments);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 

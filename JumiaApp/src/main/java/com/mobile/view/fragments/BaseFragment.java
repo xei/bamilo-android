@@ -374,42 +374,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onLowMemory() {
         super.onLowMemory();
         Print.i(TAG, "ON LOW MEMORY");
-//        // TODO - Validate this is necessary
-//        if (getView() != null && isHidden()) {
-//            unbindDrawables(getView());
-//        }
     }
-
-//    /**
-//     * Recycle bitmaps
-//     * @see <p>http://stackoverflow.com/questions/10314527/caused-by-java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget</p>
-//     *      <p>http://stackoverflow.com/questions/1949066/java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget-android</p>
-//     */
-//    public void unbindDrawables(View view) {
-//        Print.i(TAG, "UNBIND DRAWABLES");
-//        try {
-//
-//            if (view.getBackground() != null) {
-//                view.getBackground().setCallback(null);
-//            } else if (view instanceof ViewGroup) {
-//                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-//                    unbindDrawables(((ViewGroup) view).getChildAt(i));
-//                }
-//                if (view instanceof AdapterView<?>) {
-//                    return;
-//                }
-//
-//                try {
-//                    ((ViewGroup) view).removeAllViews();
-//                } catch (IllegalArgumentException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        } catch (RuntimeException e) {
-//            Print.w(TAG, "" + e);
-//        }
-//    }
 
     /**
      * #### BACK PRESSED ####

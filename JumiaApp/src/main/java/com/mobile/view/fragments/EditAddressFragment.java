@@ -471,11 +471,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     protected void triggerEditAddressForm(){
         Print.i(TAG, "TRIGGER: EDIT FORM");
-        ContentValues values = new ContentValues();
-        values.put(GetFormEditAddressHelper.SELECTED_ADDRESS_ID, mAddressId);
-        Bundle arg = new Bundle();
-        arg.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new GetFormEditAddressHelper(), arg, this);
+        triggerContentEvent(new GetFormEditAddressHelper(), GetFormEditAddressHelper.createBundle(mAddressId), this);
     }
 
     /**

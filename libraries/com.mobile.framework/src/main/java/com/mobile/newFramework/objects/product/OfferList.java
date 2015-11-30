@@ -80,7 +80,7 @@ public class OfferList implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.OBJECT_DATA;
+        return RequiredJson.METADATA;
     }
 
     public ArrayList<ProductOffer> getOffers() {

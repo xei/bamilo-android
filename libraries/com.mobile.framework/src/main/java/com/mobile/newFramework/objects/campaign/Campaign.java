@@ -144,13 +144,6 @@ public class Campaign implements IJSONSerializable, Parcelable {
         return mItems;
     }
 
-    /**
-     * @return the mTotalProducts
-     */
-    public int getmTotalProducts() {return mTotalProducts;}
-
-
-
 	/*
      * ########### Setters ###########
      */
@@ -175,12 +168,6 @@ public class Campaign implements IJSONSerializable, Parcelable {
     public void setItems(ArrayList<CampaignItem> mItems) {
         this.mItems = mItems;
     }
-
-
-    /**
-     * @param mTotalProducts the mTotalProducts to set
-     */
-    public void setmTotalProducts(int mTotalProducts) {  this.mTotalProducts = mTotalProducts;}
 
     /**
      * ########### Parcelable ###########

@@ -2,7 +2,6 @@ package com.mobile.newFramework.rest.interfaces;
 
 import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.FormsIndex;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
@@ -101,17 +100,10 @@ public interface AigApiInterface {
 
     @GET("/{url}")
     void getLoginForm(Callback<BaseResponse<Form>> callback);
-
     String getLoginForm = "getLoginForm";
 
     @GET("/")
-    void getFormsIndex(Callback<BaseResponse<FormsIndex>> callback);
-
-    String getFormsIndex = "getFormsIndex";
-
-    @GET("/")
     void getRatingForm(Callback<BaseResponse<Form>> callback);
-
     String getRatingForm = "getRatingForm";
 
     @GET("/")
@@ -147,7 +139,6 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void getEditAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
-
     String getEditAddressForm = "getEditAddressForm";
 
     @GET("/")
@@ -194,12 +185,6 @@ public interface AigApiInterface {
     @GET("/{path}")
     void getRichRelevance(@Path(value="path", encode=false) String path, Callback<BaseResponse<TeaserRichRelevanceObject>> callback);
     String getRichRelevance = "getRichRelevance";
-
-    @FormUrlEncoded
-    @POST("/")
-    void newsletterSignUp(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
-    String newsletterSignUp = "newsletterSignUp";
 
     /*
      * ## SHOP IN SHOP
@@ -424,7 +409,6 @@ public interface AigApiInterface {
 
     @GET("/")
     void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<MyOrder>> callback);
-
     String getOrdersList = "getOrdersList";
 
     /*
@@ -487,9 +471,6 @@ public interface AigApiInterface {
     /*
      * ## CATALOG
      */
-
-    //@GET("/{path}")
-    //void getCatalog(@Path(value="path", encode=false) String hash, Callback<BaseResponse<Catalog>> callback);
     @GET("/{path}")
     void getCatalog(@Path(value="path", encode=false) String path, Callback<BaseResponse<Catalog>> callback);
     String getCatalog = "getCatalog";
@@ -515,13 +496,11 @@ public interface AigApiInterface {
 
     @GET("/{path}")
     void getProductOffers(@Path (value="path", encode=false) String offersParameters, Callback<BaseResponse<OfferList>> callback);
-
     String getProductOffers = "getProductOffers";
 
 
     @GET("/{path}")
     void getProductBundles(@Path(value="path", encode=false) String path,Callback<BaseResponse<BundleList>> callback);
-
     String getProductBundles = "getProductBundles";
 
     /*

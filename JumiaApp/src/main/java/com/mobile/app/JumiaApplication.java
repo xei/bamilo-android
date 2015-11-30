@@ -15,7 +15,6 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.DarwinDatabaseHelper;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.FormData;
 import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -75,7 +74,6 @@ public class JumiaApplication extends A4SApplication {
     /**
      * Forms
      */
-    private HashMap<String, FormData> formDataRegistry = new HashMap<>();
     private PaymentMethodForm paymentMethodForm;
     public Form reviewForm; // TODO use an alternative to persist form on rotation
     public Form ratingForm; // TODO use an alternative to persist form on rotation
@@ -121,7 +119,6 @@ public class JumiaApplication extends A4SApplication {
         countriesAvailable = new ArrayList<>();
         setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
-        setFormDataRegistry(new HashMap<String, FormData>());
 
         /**
          * Fix a crash report, when app try recover from background
@@ -237,20 +234,6 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @return the formDataRegistry
-     */
-    public HashMap<String, FormData> getFormDataRegistry() {
-        return formDataRegistry;
-    }
-
-    /**
-     * @param formDataRegistry the formDataRegistry to set
-     */
-    public void setFormDataRegistry(HashMap<String, FormData> formDataRegistry) {
-        this.formDataRegistry = formDataRegistry;
-    }
-
-    /**
      * Validate if customer is logged in (not null).
      */
     public static boolean isCustomerLoggedIn() {
@@ -320,14 +303,12 @@ public class JumiaApplication extends A4SApplication {
     public void cleanAllPreviousCountryValues() {
         cleanAllPreviousLanguageValues();
         setCart(null);
-        setFormDataRegistry(new HashMap<String, FormData>());
         CUSTOMER = null;
         getCustomerUtils().save();
         mCustomerUtils = null;
         cart = null;
         paymentsInfoList = null;
         itemSimpleDataRegistry.clear();
-        formDataRegistry.clear();
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;

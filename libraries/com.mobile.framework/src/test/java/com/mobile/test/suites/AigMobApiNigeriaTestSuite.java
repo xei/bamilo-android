@@ -18,7 +18,6 @@ import com.mobile.test.AigGetCreateAddressFormTest;
 import com.mobile.test.AigGetCustomerDetailsTest;
 import com.mobile.test.AigGetEditAddressFormTest;
 import com.mobile.test.AigGetForgotPasswordFormTest;
-import com.mobile.test.AigGetFormsIndexTest;
 import com.mobile.test.AigGetHomePageTest;
 import com.mobile.test.AigGetLoginFormTest;
 import com.mobile.test.AigGetNewsletterFormTest;
@@ -71,7 +70,7 @@ import org.junit.runners.Suite;
         AigGetCreateAddressFormTest.class,
 
         AigGetForgotPasswordFormTest.class,
-        AigGetFormsIndexTest.class,
+        //AigGetFormsIndexTest.class,
         AigGetHomePageTest.class,
        // AigGetImageResolutionsTest.class, TODO Response is not being parsed
         AigGetNewsletterFormTest.class,

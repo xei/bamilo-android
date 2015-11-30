@@ -38,7 +38,7 @@ public class Form implements IJSONSerializable, Parcelable {
     @Override
     @RequiredJson.JsonStruct
     public int getRequiredJson() {
-        return RequiredJson.FORM_ENTITY;
+        return RequiredJson.METADATA;
     }
 
     /**
@@ -92,8 +92,9 @@ public class Form implements IJSONSerializable, Parcelable {
      * )
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
+    public boolean initialize(JSONObject json) {
         try {
+            JSONObject jsonObject = json.getJSONObject(RestConstants.JSON_FORM_ENTITY_TAG);
             method = jsonObject.optString(RestConstants.METHOD);
             action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
             // Case FIELDS

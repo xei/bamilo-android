@@ -33,7 +33,6 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
@@ -159,9 +158,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Bundle arguments = getArguments();
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments);
-            // Url and parameters
+            // Get hash key
             mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
-            // TODO REQUEST CATALOG USING KEY
+            // Get title
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
 
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
@@ -928,17 +927,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues.put(GetCatalogPageHelper.DIRECTION, mSelectedSort.direction);
         }
 
-
-        // Create bundle with url and parameters
-        Bundle bundle = new Bundle();
-        // Query parameters
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, mQueryValues);
-
         // Case initial request or load more
         if (page == IntConstants.FIRST_PAGE) {
-            triggerContentEvent(new GetCatalogPageHelper(), GetCatalogPageHelper.createBundle(bundle), this);
+            triggerContentEvent(new GetCatalogPageHelper(), GetCatalogPageHelper.createBundle(mQueryValues), this);
         } else {
-            triggerContentEventNoLoading(new GetCatalogPageHelper(), GetCatalogPageHelper.createBundle(bundle), this);
+            triggerContentEventNoLoading(new GetCatalogPageHelper(), GetCatalogPageHelper.createBundle(mQueryValues), this);
         }
     }
 
@@ -963,14 +956,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Validate event type
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
+                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
             case ADD_PRODUCT_TO_WISH_LIST:
-
-                if(eventType == EventType.REMOVE_PRODUCT_FROM_WISH_LIST){
-                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
-                } else {
+                if (eventType == EventType.ADD_PRODUCT_TO_WISH_LIST) {
                     getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_added_saved));
                 }
-
                 updateWishListProduct();
                 break;
             case GET_CATALOG_EVENT:

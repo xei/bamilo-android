@@ -52,9 +52,9 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public boolean initialize(JSONObject jsonObject) throws JSONException {
+    public boolean initialize(JSONObject json) throws JSONException {
         // Cart entity
-//        JSONObject cartEntity = jsonObject.getJSONObject(RestConstants.CART_ENTITY);
+        JSONObject jsonObject = json.getJSONObject(RestConstants.CART_ENTITY);
         // Total
         mTotal = jsonObject.getDouble(RestConstants.TOTAL);
         mTotalConverted = jsonObject.getDouble(RestConstants.TOTAL_CONVERTED);
@@ -140,7 +140,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.CART_ENTITY;
+        return RequiredJson.METADATA;
     }
 
 	/*
