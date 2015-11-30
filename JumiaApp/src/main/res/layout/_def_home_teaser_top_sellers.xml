@@ -6,6 +6,7 @@
     android:orientation="vertical">
 
     <com.mobile.components.customfontviews.TextView
+        android:id="@+id/home_teaser_top_seller_section_title"
         style="@style/HeaderTeaser"
         android:text="@string/top_sellers" />
 
