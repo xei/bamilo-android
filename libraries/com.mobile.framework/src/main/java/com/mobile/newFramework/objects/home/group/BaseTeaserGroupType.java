@@ -58,6 +58,10 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
         return mHasData;
     }
 
+    public String getTitle() {
+        return mTitle;
+    }
+
     /*
      * ########## JSON ##########
      */
