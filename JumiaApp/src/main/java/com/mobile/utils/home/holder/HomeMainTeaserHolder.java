@@ -7,9 +7,13 @@ import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.PreviewViewPager;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
+import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import de.akquinet.android.androlog.Log;
 
@@ -80,8 +84,13 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
     public void onBind(BaseTeaserGroupType group) {
         if (pager.getAdapter() == null) {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NULL");
+            ArrayList<BaseTeaserObject> baseTeasers = group.getData();
+            if(isRtl) {
+                // reverse teaser objects array for RTL
+                Collections.reverse(baseTeasers);
+            }
             // Create adapter
-            HomeMainTeaserAdapter adapter = new HomeMainTeaserAdapter(mContext, group.getData(), mParentClickListener, isTablet);
+            HomeMainTeaserAdapter adapter = new HomeMainTeaserAdapter(mContext, baseTeasers, mParentClickListener, isTablet);
             InfinitePagerAdapter infinitePagerAdapter = new InfinitePagerAdapter(adapter);
             infinitePagerAdapter.setOneItemMode();
             infinitePagerAdapter.enableInfinitePages(adapter.getCount() > 1);
@@ -89,6 +98,10 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             pager.setAdapter(infinitePagerAdapter);
             // Add pager to indicator
             indicator.setViewPager(pager);
+            if(isRtl) {
+                // reverse pager position for RTL
+                viewPagerPosition = adapter.getCount() - 1;
+            }
             // Set default position
             pager.setCurrentItem(viewPagerPosition);
         } else {
