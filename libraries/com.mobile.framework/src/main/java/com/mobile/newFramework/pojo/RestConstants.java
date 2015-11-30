@@ -186,7 +186,7 @@ public class RestConstants {
     public static final String COUPON = "coupon";
     public static final String DELIVERY = "delivery";
     public static final String VAT = "vat";
-    public static final String VAT_LABEL_CONFIGURATION = "label_configuration";
+    public static final String LABEL_CONFIGURATION = "label_configuration";
     // ShoppingCartItem Tags
     public static final String JSON_ITEM_IMAGE_TAG = JSON_IMAGE_TAG;
     public static final String JSON_PRODUCT_URL_TAG = "url";
