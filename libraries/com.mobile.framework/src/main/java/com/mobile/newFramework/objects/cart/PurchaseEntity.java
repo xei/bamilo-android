@@ -43,7 +43,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private String mPaymentMethod;
     private Address mBillingAddress;
     private Address mShippingAddress;
-
+    private boolean mVatLabelConfiguration;
     /**
      * Constructor
      */
@@ -65,6 +65,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         JSONObject vatObject = jsonObject.optJSONObject(RestConstants.VAT);
         if (vatObject != null) {
             mVatValue = vatObject.optDouble(RestConstants.VALUE);
+            mVatLabelConfiguration = vatObject.optBoolean(RestConstants.VAT_LABEL_CONFIGURATION);
         }
         // Delivery
         JSONObject deliveryObject = jsonObject.optJSONObject(RestConstants.DELIVERY);
@@ -228,7 +229,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     }
 
     public boolean isVatLabelEnable() {
-        return mVatValue > 0 && mVatValue != Double.NaN;
+        return mVatLabelConfiguration;
     }
 
     public boolean hasShippingAddress() {
@@ -311,6 +312,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         dest.writeString(mPaymentMethod);
         dest.writeValue(mBillingAddress);
         dest.writeValue(mShippingAddress);
+        dest.writeByte((byte) (mVatLabelConfiguration ? 1 : 0));
     }
 
     /**
@@ -340,6 +342,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         mPaymentMethod = in.readString();
         mBillingAddress = (Address) in.readValue(Address.class.getClassLoader());
         mShippingAddress = (Address) in.readValue(Address.class.getClassLoader());
+        mVatLabelConfiguration = in.readByte() == 1;
     }
 
     /**
