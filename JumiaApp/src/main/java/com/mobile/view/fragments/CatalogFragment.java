@@ -184,7 +184,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                     mQueryValues.put(RestConstants.QUERY, URLEncoder.encode(query, "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
-                    mQueryValues.put(GetCatalogPageHelper.QUERY, query);
+                    mQueryValues.put(RestConstants.QUERY, query);
                 }
             }
             // Verify if catalog page was open via navigation drawer
