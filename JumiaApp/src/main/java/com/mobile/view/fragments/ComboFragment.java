@@ -9,6 +9,8 @@ import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
@@ -266,10 +268,25 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     }
 
     /**
-     * updates the combo total price in checking/unchecking bundle
+     * go to de PDV of the specific bundle when clicking it's view
      */
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
+        //get Selected Item
+        String selectedSku = ((ComboGridAdapter) adapter).getItem(position).getSku();
+        //go to PDV
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID,selectedSku);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+    }
+
+
+    /**
+     * updates the combo total price in checking/unchecking bundle
+     */
+    @Override
+    public void onViewHolderItemClick(RecyclerView.Adapter<?> adapter, int position) {
         //get Selected Item
         ProductBundle selectedBundle = ((ComboGridAdapter) adapter).getItem(position);
         //update total price and select a simple if is checked
@@ -277,6 +294,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             bundleList.updateTotalPriceWhenChecking(position);
             mTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
         }
+
+        adapter.notifyDataSetChanged();
     }
 
     @Override
