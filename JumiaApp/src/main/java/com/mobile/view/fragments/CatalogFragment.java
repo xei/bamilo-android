@@ -629,6 +629,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
+    @Override
+    public void onViewHolderItemClick(RecyclerView.Adapter<?> adapter, int position) {
+
+    }
+
     /**
      * Updated the clicked product to add to or remove from wish list.
      */

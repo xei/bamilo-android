@@ -168,6 +168,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         setProductPrice(holder, item);
         //set selection
         holder.cbItem.setChecked(item.isChecked());
+        holder.cbItem.setTag(R.id.position, position);
         //set variation if has multiple variations and there is a selected variation
         if (item.hasMultiSimpleVariations() && item.getSelectedSimple() != null) {
             ProductSimple productSimple = item.getSelectedSimple();
@@ -176,7 +177,11 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         }
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
-        holder.itemView.setOnClickListener(this);
+
+        if(!item.getSku().equals(mProductSku)) {
+            holder.cbItem.setOnClickListener(this);
+            holder.itemView.setOnClickListener(this);
+        }
     }
 
 
@@ -256,7 +261,35 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     @Override
     public void onClick(View view) {
-        if (mOnViewHolderClicked != null) {
+
+        // position
+        int position = (Integer) view.getTag(R.id.position);
+
+
+            ProductBundle productBundle = getItem(position);
+            if(productBundle != null){
+            //if is a checkbox
+            if(view.getId() == R.id.item_check)
+            {
+                if (!mProductSku.equals(productBundle.getSku())) {
+                    CheckBox cb = (CheckBox) view;
+                    cb.setChecked(!cb.isChecked());
+
+                    if (mOnViewHolderClicked != null)
+                        mOnViewHolderClicked.onViewHolderItemClick(this,position);
+                }
+            }else {
+                //if is the whole view
+                if (mOnViewHolderClicked != null)
+                    mOnViewHolderClicked.onViewHolderClick(this, position);
+            }
+
+        }
+
+
+
+
+   /*     if (mOnViewHolderClicked != null) {
             // position
             int position = (Integer) view.getTag(R.id.position);
             ProductBundle productBundle = mDataSet.get(position);
@@ -265,7 +298,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
                 cb.setChecked(!cb.isChecked());
                 mOnViewHolderClicked.onViewHolderClick(this, position);
             }
-        }
+        }*/
     }
 
 
