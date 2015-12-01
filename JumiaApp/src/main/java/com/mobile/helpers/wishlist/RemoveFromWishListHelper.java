@@ -23,7 +23,7 @@ import java.util.Map;
  *
  */
 public class RemoveFromWishListHelper extends SuperBaseHelper {
-
+    public static String REMOVE_FROM_WISHLIST = "remove_from_wishlist";
     private String mSku;
 
     @Override
