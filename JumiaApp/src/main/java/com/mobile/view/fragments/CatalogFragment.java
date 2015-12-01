@@ -55,6 +55,8 @@ import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.Map;
@@ -187,10 +189,16 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 //            }
 
             // In case of searching by keyword
-            if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY)) {
-                if(arguments.getString(ConstantsIntentExtra.SEARCH_QUERY) != null){
-                    mQueryValues.put(GetCatalogPageHelper.QUERY, arguments.getString(ConstantsIntentExtra.SEARCH_QUERY));
+            if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY) && arguments.getString(ConstantsIntentExtra.SEARCH_QUERY) != null) {
+                String query = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
+                try {
+                    mQueryValues.put(GetCatalogPageHelper.QUERY, URLEncoder.encode(query, "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    mQueryValues.put(GetCatalogPageHelper.QUERY, query);
                 }
+
+
             }
             // Verify if catalog page was open via navigation drawer
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
