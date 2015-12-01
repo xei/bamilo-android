@@ -15,4 +15,9 @@ public interface OnProductViewHolderClickListener {
 
     void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position);
 
+    /**
+     * Allows to process a click on an item inside a view
+     * */
+    void onViewHolderItemClick(RecyclerView.Adapter<?> adapter, int position);
+
 }
