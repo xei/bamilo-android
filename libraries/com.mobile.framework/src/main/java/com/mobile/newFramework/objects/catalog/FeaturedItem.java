@@ -62,7 +62,7 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
         name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         imageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
         // concat brand and name instead of using only name
-        String brand = jsonObject.optString(RestConstants.JSON_BRAND_TAG);
+        String brand = jsonObject.optString(RestConstants.BRAND);
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(brand)) {
             name = brand + " " + name;
         }

@@ -113,7 +113,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
             quantity = jsonObject.getLong(RestConstants.JSON_QUANTITY_TAG);
             maxQuantity = jsonObject.getInt(RestConstants.JSON_MAX_QUANTITY);
             name = jsonObject.getString(RestConstants.JSON_ITEM_NAME_TAG);
-            brand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
+            brand = jsonObject.getString(RestConstants.BRAND);
             mAttributeSetId = jsonObject.optString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
             variation = jsonObject.optString(RestConstants.JSON_VARIATION_TAG);
             mCategoriesIds = jsonObject.optString(RestConstants.JSON_CATEGORY_ID_TAG);

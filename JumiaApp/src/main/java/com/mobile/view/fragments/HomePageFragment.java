@@ -71,8 +71,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     private int[] mScrollSavedPosition;
 
-    private LayoutInflater inflater;
-
     private String mRichRelevanceHash;
     /**
      * Constructor via bundle
@@ -308,7 +306,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      */
     private void buildHomePage(HomePageObject homePage) {
         Print.i(TAG, "BUILD HOME PAGE");
-        inflater = LayoutInflater.from(getBaseActivity());
+        LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
             // Case Form NewsLetter
@@ -423,12 +421,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             mRichRelevanceHash = "";
         }
         // Parse target link
-        boolean result = new TargetLink.Helper(this, link)
-                .addFragmentType(FragmentType.HOME)
+        boolean result = new TargetLink(this, link)
                 .addTitle(title)
                 .setOrigin(origin)
                 .addAppendListener(this)
                 .addCampaignListener(this)
+                .retainBackStackEntries()
                 .run();
         // Validate result
         if(!result) {

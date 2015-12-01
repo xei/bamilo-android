@@ -64,7 +64,7 @@ public class PurchaseItem implements Parcelable {
         name = itemJson.getString(RestConstants.JSON_PURCHASE_NAME_TAG);
         paidPriceConverted = itemJson.optDouble(RestConstants.JSON_PAID_PRICE_CONVERTED_TAG, 0d);
         quantity = itemJson.optInt(RestConstants.JSON_QUANTITY_TAG, 0);
-        category = itemJson.getString(RestConstants.JSON_CATEGORY_TAG);
+        category = itemJson.getString(RestConstants.CATEGORY);
         //TODO hotfix to be removed once fix happens on API side
         if (category.equals("false") || category.equals("true")) {
             category = "";

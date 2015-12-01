@@ -155,7 +155,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         mCategory = category;
         @TargetLink.Type String link = category.getTargetLink();
         // Parse target link
-        boolean result = new TargetLink.Helper(this, link).addTitle(category.getName()).addAppendListener(this).run();
+        boolean result = new TargetLink(this, link).addTitle(category.getName()).addAppendListener(this).run();
         if(!result) {
             showUnexpectedErrorWarning();
         }

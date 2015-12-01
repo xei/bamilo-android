@@ -770,12 +770,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     private void goToSellerCatalog() {
         Log.i(TAG, "ON CLICK SELLER NAME");
-        Bundle bundle = new Bundle();
-         @TargetLink.Type String target = mProduct.getSeller().getTarget();
-        // Parse target link
-        boolean result = new TargetLink.Helper(this, target).run();
-//        bundle.putString(ConstantsIntentExtra.CONTENT_URL, );
-//        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+        @TargetLink.Type String target = mProduct.getSeller().getTarget();
+        new TargetLink(this, target).run();
     }
 
     /**

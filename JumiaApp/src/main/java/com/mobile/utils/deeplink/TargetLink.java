@@ -27,14 +27,6 @@ import java.util.ArrayList;
  */
 public class TargetLink {
 
-    private static final String TAG = TargetLink.class.getSimpleName();
-
-    // TARGET CONSTANTS
-    private static final int TARGET_LINK_SIZE = 2;
-    private static final int TARGET_TYPE_POSITION = 0;
-    private static final int TARGET_ID_POSITION = 1;
-    private static final String TARGET_LINK_DELIMITER = "::";
-
     // TARGET TYPES CONSTANTS
     public static final String PDV = "product_detail";
     public static final String CATALOG = "catalog";
@@ -61,137 +53,113 @@ public class TargetLink {
         @NonNull Bundle onTargetCampaign(String title, String id, TeaserGroupType mOrigin);
     }
 
+    private static final String TAG = TargetLink.class.getSimpleName();
+
+    // TARGET CONSTANTS
+    private static final int TARGET_LINK_SIZE = 2;
+    private static final int TARGET_TYPE_POSITION = 0;
+    private static final int TARGET_ID_POSITION = 1;
+    private static final String TARGET_LINK_DELIMITER = "::";
+
+    private BaseFragment mFragment;
+    private String mTitle;
+    private String mTarget;
+    private TeaserGroupType mOrigin;
+    private OnAppendDataListener mAppendDataListener;
+    private OnCampaignListener mCampaignListener;
+    private boolean isToRemoveEntries = true;
+
     /**
-     * Class used to process the target link.
+     * Constructor
      */
-    public static class Helper {
-
-        private BaseFragment mFragment;
-        private FragmentType mFragmentType;
-        private String mTitle;
-        private String mTarget;
-        private String mRichRelevanceTrackingHash;
-        private TeaserGroupType mOrigin;
-        private OnAppendDataListener mAppendDataListener;
-        private OnCampaignListener mCampaignListener;
-
-        /**
-         * The base.
-         */
-        public Helper(@NonNull BaseFragment fragment, @Type @Nullable String target) {
-            this.mFragment = fragment;
-            this.mTarget = target;
-        }
-
-        /**
-         * Add a title.
-         */
-        public Helper addTitle(@NonNull String title) {
-            this.mTitle = title;
-            return this;
-        }
-
-        /**
-         * Add a click origin.
-         */
-        public Helper setOrigin(@NonNull TeaserGroupType origin) {
-            this.mOrigin = origin;
-            return this;
-        }
-
-        /**
-         * Add a fragment type.
-         */
-        public Helper addFragmentType(@NonNull FragmentType fragmentType) {
-            this.mFragmentType = fragmentType;
-            return this;
-        }
-
-        /**
-         * Add a listener to append more data.
-         */
-        public Helper addAppendListener(@NonNull OnAppendDataListener listener) {
-            this.mAppendDataListener = listener;
-            return this;
-        }
-
-        /**
-         * Add a listener to build the bundle for campaign.
-         */
-        public Helper addCampaignListener(@NonNull OnCampaignListener listener) {
-            this.mCampaignListener = listener;
-            return this;
-        }
-
-        /**
-         * Add a rich relevance tracking hash.
-         */
-        public Helper setTrackingHash(@NonNull String trackingHash) {
-            this.mRichRelevanceTrackingHash = trackingHash;
-            return this;
-        }
-
-        /**
-         * Execute
-         */
-        public boolean run() {
-            // ##### Split target link
-            String[] targetLink = splitLink(mTarget);
-            if(targetLink.length != TARGET_LINK_SIZE) {
-                Log.w(TAG, "WARNING: INVALID TARGET LINK: " + mTarget);
-                return false;
-            }
-            // ##### Get type and value
-            String type = targetLink[TARGET_TYPE_POSITION];
-            String id = targetLink[TARGET_ID_POSITION];
-            // ##### Get fragment type
-            FragmentType nextFragmentType = getFragmentType(type);
-            if(nextFragmentType == FragmentType.UNKNOWN) {
-                Print.w(TAG, "WARNING: UNKNOWN TARGET LINK: " + mTarget);
-                return false;
-            }
-            // ##### Create bundle
-            Bundle bundle;
-            // Case generic target
-            if(nextFragmentType == FragmentType.CAMPAIGNS) {
-                bundle = createCampaignBundle(mCampaignListener, mTitle, id, mOrigin);
-            } else {
-                bundle = createBundle(mFragmentType, mTitle, id, mOrigin);
-            }
-            Print.i(TAG, "TARGET LINK: TYPE:" + nextFragmentType + " TITLE:" + mTitle + " ID:" + id);
-            // ##### Append data
-            if (mAppendDataListener != null) {
-                mAppendDataListener.onAppendData(nextFragmentType, mTitle, id, bundle);
-            }
-            // ##### Switch fragment
-            mFragment.getBaseActivity().onSwitchFragment(nextFragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
-            // Success
-            return true;
-        }
+    public TargetLink(@NonNull BaseFragment fragment, @Type @Nullable String target) {
+        this.mFragment = fragment;
+        this.mTarget = target;
     }
 
     /**
-     * Split the target link.
+     * Add a title.
      */
-    @NonNull
-    private static String[] splitLink(@NonNull String link) {
-        return TextUtils.isEmpty(link) ? new String[]{} : TextUtils.split(link, TARGET_LINK_DELIMITER);
+    public TargetLink addTitle(@NonNull String title) {
+        this.mTitle = title;
+        return this;
     }
 
     /**
-     * Get id from target link.
+     * Add a click origin.
      */
-    @NonNull
-    public static String getIdFromTargetLink(@NonNull String link){
-        String[] splitLink = splitLink(link);
-        return splitLink.length == TARGET_LINK_SIZE ? splitLink[TARGET_ID_POSITION] : "";
+    public TargetLink setOrigin(@NonNull TeaserGroupType origin) {
+        this.mOrigin = origin;
+        return this;
+    }
+
+    /**
+     * Remove entries until home.
+     */
+    public TargetLink retainBackStackEntries() {
+        this.isToRemoveEntries = false;
+        return this;
+    }
+
+    /**
+     * Add a listener to append more data.
+     */
+    public TargetLink addAppendListener(@NonNull OnAppendDataListener listener) {
+        this.mAppendDataListener = listener;
+        return this;
+    }
+
+    /**
+     * Add a listener to build the bundle for campaign.
+     */
+    public TargetLink addCampaignListener(@NonNull OnCampaignListener listener) {
+        this.mCampaignListener = listener;
+        return this;
+    }
+
+    /**
+     * Execute
+     */
+    public boolean run() {
+        // ##### Split target link
+        String[] targetLink = splitLink(mTarget);
+        if(targetLink.length != TARGET_LINK_SIZE) {
+            Log.w(TAG, "WARNING: INVALID TARGET LINK: " + mTarget);
+            return false;
+        }
+        // ##### Get type and value
+        String type = targetLink[TARGET_TYPE_POSITION];
+        String id = targetLink[TARGET_ID_POSITION];
+        // ##### Get fragment type
+        FragmentType nextFragmentType = getFragmentType(type);
+        if(nextFragmentType == FragmentType.UNKNOWN) {
+            Print.w(TAG, "WARNING: UNKNOWN TARGET LINK: " + mTarget);
+            return false;
+        }
+        // ##### Create bundle
+        Bundle bundle;
+        // Case generic target
+        if(nextFragmentType == FragmentType.CAMPAIGNS) {
+            bundle = createCampaignBundle(mCampaignListener, mTitle, id, mOrigin);
+        } else {
+            bundle = createBundle(mTitle, id, mOrigin);
+        }
+        Print.i(TAG, "TARGET LINK: TYPE:" + nextFragmentType + " TITLE:" + mTitle + " ID:" + id);
+        // ##### Append data
+        if (mAppendDataListener != null) {
+            mAppendDataListener.onAppendData(nextFragmentType, mTitle, id, bundle);
+        }
+        // ##### Switch fragment
+        mFragment.getBaseActivity().onSwitchFragment(nextFragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+        // Success
+        return true;
     }
 
     /**
      * Match the target type with a fragment type.
      */
     @NonNull
-    private static FragmentType getFragmentType(String type) {
+    private FragmentType getFragmentType(String type) {
         // Case unknown
         FragmentType fragmentType = FragmentType.UNKNOWN;
         // Case pdv
@@ -225,15 +193,12 @@ public class TargetLink {
      * Create a generic bundle( PDV, INNER_SHOP AND CATALOG).
      */
     @NonNull
-    private static Bundle createBundle(FragmentType mNextFragmentType, String title, String value, TeaserGroupType origin) {
+    private Bundle createBundle(String title, String value, TeaserGroupType origin) {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, value);
         bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, origin);
-        // CASE CATALOG
-        if(mNextFragmentType == FragmentType.HOME || mNextFragmentType == FragmentType.INNER_SHOP) {
-            bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
-        }
+        bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, isToRemoveEntries);
         return bundle;
     }
 
@@ -245,7 +210,7 @@ public class TargetLink {
      * Create a bundle for campaigns, from listener(multi campaigns) or normal (single campaign).
      */
     @NonNull
-    private static Bundle createCampaignBundle(OnCampaignListener listener, String title, String id, TeaserGroupType origin) {
+    private Bundle createCampaignBundle(OnCampaignListener listener, String title, String id, TeaserGroupType origin) {
         Bundle bundle;
         // Case listener
         if (listener != null) {
@@ -258,6 +223,27 @@ public class TargetLink {
             bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignList(title, id));
         }
         return bundle;
+    }
+
+    /*
+     * ############## STATIC METHODS ##############
+     */
+
+    /**
+     * Split the target link.
+     */
+    @NonNull
+    private static String[] splitLink(@NonNull String link) {
+        return TextUtils.isEmpty(link) ? new String[]{} : TextUtils.split(link, TARGET_LINK_DELIMITER);
+    }
+
+    /**
+     * Get id from target link.
+     */
+    @NonNull
+    public static String getIdFromTargetLink(@NonNull String link){
+        String[] splitLink = splitLink(link);
+        return splitLink.length == TARGET_LINK_SIZE ? splitLink[TARGET_ID_POSITION] : "";
     }
 
 
