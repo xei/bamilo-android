@@ -422,8 +422,8 @@ public interface AigApiInterface {
 
     String trackOrder = "trackOrder";
 
-    @GET("/")
-    void getOrdersList(@QueryMap Map<String, String> data, Callback<BaseResponse<MyOrder>> callback);
+    @GET("/{path}")
+    void getOrdersList(@Path(value="path", encode=false) String path, Callback<BaseResponse<MyOrder>> callback);
 
     String getOrdersList = "getOrdersList";
 

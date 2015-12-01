@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -30,12 +31,14 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
     public HorizontalListView horizontalListView;
-
+    private TextView sectionTitle;
     /**
      * Constructor
      */
     public HomeTopSellersTeaserHolder(Context context, View view, View.OnClickListener listener) {
         super(context, view, listener);
+        // Get section title
+        sectionTitle = (TextView) view.findViewById(R.id.home_teaser_top_seller_section_title);
         // Get horizontal container
         horizontalListView = (HorizontalListView) view.findViewById(R.id.home_teaser_top_sellers_horizontal_list);
         // Validate orientation
@@ -78,6 +81,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
                     ArrayList<BaseTeaserObject> topSellersTeaserObjects = topSellers.getRichTeaserGroupType().getData();
                     if(!CollectionUtils.isEmpty(topSellersTeaserObjects) && mParentClickListener != null && horizontalListView != null){
                         horizontalListView.setAdapter(new HomeTopSellersTeaserAdapter(topSellersTeaserObjects, mParentClickListener));
+                        sectionTitle.setText(topSellers.getRichTeaserGroupType().getTitle());
                     } else {
                         onRequestError(baseResponse);
                     }

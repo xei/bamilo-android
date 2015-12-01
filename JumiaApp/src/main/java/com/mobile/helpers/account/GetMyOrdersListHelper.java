@@ -34,7 +34,7 @@ public class GetMyOrdersListHelper extends SuperBaseHelper {
         values.put(RestConstants.PAGE, page);
         values.put(RestConstants.PER_PAGE, IntConstants.MAX_ITEMS_PER_PAGE);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 
