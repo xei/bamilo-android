@@ -24,7 +24,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -71,6 +70,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.CheckVersion;
@@ -279,7 +279,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             } else {
                 Print.d(TAG, "selected navAction is already being shown");
             }
-
             // only hide dropdown for Spinner if hideMyProfile flag is activated
             if (hideMyProfile && myProfileActionProvider != null) {
                 myProfileActionProvider.dismissSpinner();
@@ -979,8 +978,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
                 // Get text suggestion
                 String text = selectedSuggestion.getResult();
-                // Clean edit text
-                mSearchAutoComplete.setText("");
+                //Save searched text
+                JumiaApplication.INSTANCE.setSearchedTerm(text);
                 mSearchAutoComplete.dismissDropDown();
                 // Collapse search view
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
@@ -1030,8 +1029,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     if (TextUtils.isEmpty(searchTerm)) {
                         return false;
                     }
-                    // Clean edit text
-                    textView.setText("");
+                    //Save searched text
+                    JumiaApplication.INSTANCE.setSearchedTerm(searchTerm);
                     // Collapse search view
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
                     // Save query
@@ -1054,6 +1053,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 closeNavigationDrawer();
                 isSearchComponentOpened = true;
                 setActionMenuItemsVisibility(false);
+                // Re-set the searched text if it exists
+                mSearchAutoComplete.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        String searchedTerm = JumiaApplication.INSTANCE.getSearchedTerm();
+                        if (TextUtils.isNotEmpty(searchedTerm)) {
+                            mSearchAutoComplete.setText(searchedTerm);
+                            mSearchAutoComplete.setSelection(searchedTerm.length());
+                        }
+                    }
+                });
                 return true;
             }
 
@@ -1073,6 +1083,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
+                    Print.i(TAG,"SEARCH ON FOCUS CHANGE");
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
                     setActionMenuItemsVisibility(true);
                 }
@@ -1130,7 +1141,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 // Hide search bar
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
                 // Clean autocomplete
-                mSearchAutoComplete.setText("");
+//                mSearchAutoComplete.setText("");
                 // Show hidden items
                 setActionMenuItemsVisibility(true);
                 // Forced the IME option on collapse
