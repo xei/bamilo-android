@@ -69,7 +69,6 @@ public class GetPostalCodeHelper extends SuperBaseHelper {
         values.put(GetPostalCodeHelper.CUSTOM_TAG, tag);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
-//        bundle.putString(Constants.BUNDLE_URL_KEY, url.split("\\?")[0]); // TODO REMOVE
         return bundle;
     }
 

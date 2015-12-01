@@ -39,10 +39,8 @@ public class GetStaticPageHelper extends SuperBaseHelper {
     }
 
     public static Bundle createBundle(String key) {
-        // Item data
         ContentValues values = new ContentValues();
         values.put(RestConstants.KEY, key);
-        // Request data
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;

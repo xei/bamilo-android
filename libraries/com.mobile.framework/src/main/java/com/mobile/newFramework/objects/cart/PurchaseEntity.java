@@ -253,9 +253,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
      */
     public String getAttributeSetIdList() {
         String attributeList = "";
-        PurchaseCartItem item;
         if(mCartItems != null && mCartItems.size() > 0){
-
             for (int i = 0; i < mCartItems.size() ; i++) {
                 if (TextUtils.isEmpty(attributeList)) {
                     attributeList = mCartItems.get(i).getAttributeSetId();
@@ -263,7 +261,6 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
                     attributeList = attributeList +";"+ mCartItems.get(i).getAttributeSetId();
                 }
             }
-
         }
         return attributeList;
     }

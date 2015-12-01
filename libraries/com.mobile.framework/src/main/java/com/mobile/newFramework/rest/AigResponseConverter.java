@@ -133,8 +133,7 @@ public class AigResponseConverter implements Converter {
         if(objectType != null && !objectType.equals(Void.class.getName())) {
             IJSONSerializable iJsonSerializable = new DeserializableFactory().createObject(objectType);
             if (iJsonSerializable != null) {
-                //iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
-                iJsonSerializable.initialize(responseJsonObject.getJSONObject(RestConstants.METADATA));
+                iJsonSerializable.initialize(getJsonToInitialize(responseJsonObject, iJsonSerializable));
             }
             return iJsonSerializable;
         }
@@ -157,16 +156,6 @@ public class AigResponseConverter implements Converter {
         else if(requiredJson == RequiredJson.OBJECT_DATA){
             return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.JSON_DATA_TAG);
         }
-//        // Get json from metadata -> form_entity
-//        else if(requiredJson == RequiredJson.FORM_ENTITY){
-//            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.JSON_FORM_ENTITY_TAG);
-//        }// Get json from metadata -> cart_entity
-//        else if(requiredJson == RequiredJson.CART_ENTITY){
-//            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.CART_ENTITY);
-//        }// Get json from metadata -> customer_entity
-//        else if(requiredJson == RequiredJson.CUSTOMER_ENTITY){
-//            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY_TAG);
-//        }
         return responseJsonObject;
     }
 

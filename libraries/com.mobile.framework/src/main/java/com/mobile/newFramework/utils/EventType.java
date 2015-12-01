@@ -46,8 +46,7 @@ public enum EventType {
 
     REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/cart/removeproduct/", AigRestContract.NO_CACHE),
 
-
-    GET_SHOPPING_CART_ITEMS_EVENT("https:/cart/cartdata/", AigRestContract.NO_CACHE),
+    GET_SHOPPING_CART_ITEMS_EVENT("https:/cart/getdata/", AigRestContract.NO_CACHE),
 
     GET_REGISTRATION_FORM_EVENT("http:/forms/register/", AigRestContract.MAX_CACHE_TIME),
 

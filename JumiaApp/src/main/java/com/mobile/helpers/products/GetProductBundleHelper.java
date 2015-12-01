@@ -25,9 +25,6 @@ public class GetProductBundleHelper extends SuperBaseHelper {
 
     protected static String TAG = GetProductBundleHelper.class.getSimpleName();
 
-    public static final String PRODUCT_SKU = "productSku";
-
-
     @Override
     public EventType getEventType() {
         return EventType.GET_PRODUCT_BUNDLE;
@@ -49,7 +46,6 @@ public class GetProductBundleHelper extends SuperBaseHelper {
      * Method used to create a request bundle.
      */
     public static Bundle createBundle(String sku) {
-        // Item data
         ContentValues values = new ContentValues();
         values.put(RestConstants.SKU, sku);
         Bundle bundle = new Bundle();

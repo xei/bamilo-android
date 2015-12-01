@@ -33,7 +33,7 @@ public class GetRichRelevanceHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String richRelevantHash) {
         ContentValues values = new ContentValues();
-        values.put(RestConstants.JSON_REQUEST, richRelevantHash);
+        values.put(RestConstants.REQ, richRelevantHash);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
