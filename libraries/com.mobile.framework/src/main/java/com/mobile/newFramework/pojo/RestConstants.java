@@ -457,4 +457,6 @@ public class RestConstants {
     public static final String REQ = "req";
 
     public static final String CLICK_REQUEST = "click_request";
+    public static final String PARMS = "params";
+    public static final String PARAM = "param";
 }

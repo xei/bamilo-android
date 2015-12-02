@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -29,13 +30,13 @@ import java.util.Map;
 public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     protected final static String TAG = FormField.class.getSimpleName();
-    private final Form mParent;
-    private final LinkedHashMap<String, String> mDataSetRating;
-    private final LinkedHashMap<String, String> mDataSet;
-    private final String mDataSetSource;
-    private final HashMap<String, String> mDataCalls;
-    private final LinkedHashMap<Object,Object> mExtrasValues;
-    private final HashMap<String,PaymentInfo> mPaymentInfoList;
+    private Form mParent;
+    private LinkedHashMap<String, String> mDataSetRating;
+    private LinkedHashMap<String, String> mDataSet;
+    private String mDataSetSource;
+    private String mApiCall;
+    private LinkedHashMap<Object,Object> mExtrasValues;
+    private HashMap<String,PaymentInfo> mPaymentInfoList;
     private String mId;
     private String mKey;
     private String mName;
@@ -76,7 +77,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mValidation = new FieldValidation();
         this.mValue = "";
         this.mDataSet = new LinkedHashMap<>();
-        this.mDataCalls = new HashMap<>();
         this.mDataSetSource = "";
         this.mParent = parent;
         this.mDataSetListener = null;
@@ -185,15 +185,18 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 }
             }
 
-            /**TODO: Verify if this method should change. To target link or something else.
-             * api_call now comes as a jsonObject but apparently there are
-             *  diferent situations on what will come inside that object.
-             *  This "hack" will allow to receive the ones that bring an endpoint string inside.
-             */
-            if(jsonObject.has(RestConstants.API_CALL)){
-                String apiCall = jsonObject.getJSONObject(RestConstants.API_CALL).optString(RestConstants.ENDPOINT);
-                if (!TextUtils.isEmpty(apiCall)) {
-                    mDataCalls.put(RestConstants.API_CALL, "/"+apiCall);
+            // Save api call
+            if (jsonObject.has(RestConstants.API_CALL)) {
+                // Get api call
+                JSONObject apiCall = jsonObject.getJSONObject(RestConstants.API_CALL);
+                // Get endpoint
+                mApiCall = "/" + apiCall.getString(RestConstants.ENDPOINT);
+                // Get params
+                JSONArray params = apiCall.optJSONArray(RestConstants.PARMS);
+                if(CollectionUtils.isNotEmpty(params)) {
+                    for (int i = 0; i < params.length(); i++) {
+                        mApiCall += params.getJSONObject(i).getString(RestConstants.PARAM) + "/%s/";
+                    }
                 }
             }
 
@@ -456,13 +459,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mValue = value;
     }
 
-    public Map<String, IFormField> getSubFormFields() {
-        return null;
-    }
-
     @Override
-    public Map<String, String> getDataCalls() {
-        return mDataCalls;
+    public String getApiCall() {
+        return mApiCall;
     }
 
     @Override
@@ -552,7 +551,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mDataSetListener);
         dest.writeValue(mValidation);
         dest.writeString(mValue);
-        dest.writeValue(mDataCalls);
+        dest.writeString(mApiCall);
         dest.writeValue(mPaymentFields);
         dest.writeValue(mExtrasValues);
         if (mNewsletterOptions == null) {
@@ -593,7 +592,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mDataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
         mValidation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
         mValue = in.readString();
-        mDataCalls = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mApiCall = in.readString();
         mPaymentFields = (HashMap) in.readValue(HashMap.class.getClassLoader());
         mExtrasValues = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
         if (in.readByte() == 0x01) {

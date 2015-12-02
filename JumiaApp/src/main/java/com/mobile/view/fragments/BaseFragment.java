@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -643,6 +644,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
             getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.products_removed_saved));
+        }
+    }
+
+    public void showWarningSuccessMessage(@Nullable String message, @StringRes int fallback) {
+        if(getBaseActivity() != null) {
+            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
+        }
+    }
+
+    public void showWarningErrorMessage(@Nullable String message, @StringRes int fallback) {
+        if(getBaseActivity() != null) {
+            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, text);
         }
     }
 

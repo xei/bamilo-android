@@ -35,6 +35,7 @@ public class StaticPage implements IJSONSerializable, Parcelable {
     /**
      * Empty constructor for JSON converter
      */
+    @SuppressWarnings("unused")
     public StaticPage() {
     }
 
@@ -68,7 +69,7 @@ public class StaticPage implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.METADATA;
+        return RequiredJson.OBJECT_DATA;
     }
 
     public String getHtml() {

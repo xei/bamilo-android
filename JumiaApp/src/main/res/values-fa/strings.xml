@@ -352,7 +352,7 @@
     <string name="delivered_label">تحویل داده شد</string>
     <string name="order_number">شمار سفارش ‎%s‎</string>
     <string name="billing">صورت حساب</string>
-    <string name="first_and_second">‎%2$s‎‎ %1$s‎</string>
+    <string name="first_and_second_placeholders">‎%2$s‎‎ %1$s‎</string>
     <string name="quantity">تعداد ‎%s‎</string>
     <string name="reorder_label">سفارش مجدد</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>

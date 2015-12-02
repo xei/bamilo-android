@@ -231,12 +231,12 @@ public interface AigApiInterface {
     void getRegions(Callback<BaseResponse<AddressRegions>> callback);
     String getRegions = "getRegions";
 
-    @GET("/{path}")
-    void getCities(@Path(value="path", encode=false) String path, Callback<BaseResponse<AddressCities>> callback);
+    @GET("/")
+    void getCities(Callback<BaseResponse<AddressCities>> callback);
     String getCities = "getCities";
 
-    @GET("/{path}")
-    void getPostalCodes(@Path(value="path", encode=false) String path, Callback<BaseResponse<AddressPostalCodes>> callback);
+    @GET("/")
+    void getPostalCodes(Callback<BaseResponse<AddressPostalCodes>> callback);
     String getPostalCodes = "getPostalCodes";
 
     @GET("/")
@@ -350,8 +350,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void forgotPassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
-
+    void forgotPassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String forgotPassword = "forgotPassword";
 
     @FormUrlEncoded

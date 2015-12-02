@@ -14,16 +14,17 @@ import com.mobile.test.AigGetImageResolutionsTest;
 import com.mobile.test.AigGetProductBundleTest;
 import com.mobile.test.AigGetProductDetailTest;
 import com.mobile.test.AigGetProductOffersTest;
-import com.mobile.test.AigGetShopInShopTest;
 import com.mobile.test.AigGetShoppingCartTest;
-import com.mobile.test.LoginCustomerTest;
 import com.mobile.test.AigLogoutCustomerTest;
 import com.mobile.test.AigShoppingCartAddItemTest;
+import com.mobile.test.LoginCustomerTest;
 import com.mobile.test.ShoppingCartUpdateQuantityTest;
 
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+
+//import com.mobile.test.AigGetShopInShopTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -49,7 +50,7 @@ import org.junit.runners.Suite;
         // CAMPAIGN
         AigGetCampaignTest.class,
         // SHOP IN SHOP
-        AigGetShopInShopTest.class,
+        //AigGetShopInShopTest.class,
         // CART
         AigGetShoppingCartTest.class,
         AigShoppingCartAddItemTest.class,

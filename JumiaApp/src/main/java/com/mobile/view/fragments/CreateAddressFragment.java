@@ -348,8 +348,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Validate Regions
         if (regions == null) {
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.REGION);
-            String url = field.getDataCalls().get(RestConstants.API_CALL);
-            triggerGetRegions(url);
+            triggerGetRegions(field.getApiCall());
         } else {
             setRegions(shippingFormGenerator, regions, SHIPPING_TAG);
             setRegions(billingFormGenerator, regions, BILLING_TAG);
@@ -689,18 +688,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.CITY);
             // Case list
             if (FormInputType.list == field.getInputType()) {
-                // Get url
-                String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the cities for this region id
                 int regionId = ((AddressRegion) object).getValue();
                 // Save the selected region on the respective variable
                 String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
                 if (tag.equals(SHIPPING_TAG)) {
                     selectedRegionOnShipping = SHIPPING_TAG + "_" + regionId;
-                    triggerGetCities(url, regionId, selectedRegionOnShipping);
+                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnShipping);
                 } else if (tag.equals(BILLING_TAG)) {
                     selectedRegionOnBilling = BILLING_TAG + "_" + regionId;
-                    triggerGetCities(url, regionId, selectedRegionOnBilling);
+                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnBilling);
                 }
             }
             // Case text or other
@@ -713,18 +710,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
             // Case list
             if (field != null && FormInputType.list == field.getInputType()) {
-                // Get url
-                String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the postal codes for this city id
                 int cityId = ((AddressCity) object).getValue();
                 // Save the selected city on the respective variable
                 String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
                 if (tag.equals(SHIPPING_TAG)) {
                     selectedCityOnShipping = SHIPPING_TAG + "_" + cityId;
-                    triggerGetPostalCodes(url, cityId, selectedCityOnShipping);
+                    triggerGetPostalCodes(field.getApiCall(), cityId, selectedCityOnShipping);
                 } else if (tag.equals(BILLING_TAG)) {
                     selectedCityOnBilling = BILLING_TAG + "_" + cityId;
-                    triggerGetPostalCodes(url, cityId, selectedCityOnBilling);
+                    triggerGetPostalCodes(field.getApiCall(), cityId, selectedCityOnBilling);
                 }
             }
         }

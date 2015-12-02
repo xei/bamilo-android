@@ -324,7 +324,7 @@ public class DynamicFormItem {
         spinner.setVisibility(View.VISIBLE);
         spinner.setTag(RELATED_LIST_GROUP_TAG);
         // Get api call
-        String url = entry.getDataCalls().get(RestConstants.API_CALL);
+        String url = entry.getApiCall();
         // Validate url
         if (!TextUtils.isEmpty(url)) {
             // Get prefixes
