@@ -269,7 +269,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     private void showChooseLanguage(View view) {
         chooseLanguageList = (ViewGroup)view.findViewById(R.id.language_list);
         CountrySettingsAdapter.CountryLanguageInformation countryInformation = CountryPersistentConfigs.getCountryInformation(getActivity());
-        chooseLanguageList.setTag(R.string.choose_language, countryInformation);
+        chooseLanguageList.setTag(R.string.shop_settings, countryInformation);
         CountrySettingsAdapter countrySettingsAdapter = new CountrySettingsAdapter(getActivity(), countryInformation);
 
         new AdapterBuilder(chooseLanguageList, countrySettingsAdapter, this).buildLayout();
@@ -290,7 +290,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         }
         // Case language
         else if (position == POSITION_LANGUAGE) {
-            CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.choose_language);
+            CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.shop_settings);
             ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
                 public void run() {
