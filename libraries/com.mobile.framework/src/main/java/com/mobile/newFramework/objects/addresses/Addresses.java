@@ -72,7 +72,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
             throw new JSONException("");
         }
         // Get other addresses
-        JSONArray jsonOthersArray = jsonObject.optJSONArray(RestConstants.JSON_OTHER_TAG);
+        JSONArray jsonOthersArray = jsonObject.optJSONArray(RestConstants.OTHER);
         if (jsonOthersArray != null && jsonOthersArray.length() > 0) {
             JSONObject jsonOtherAddress;
             for (int i = 0; i < jsonOthersArray.length(); i++) {

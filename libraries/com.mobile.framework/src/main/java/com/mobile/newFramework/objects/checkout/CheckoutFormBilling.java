@@ -47,7 +47,7 @@ public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
         mForm = new Form();
         mForm.initialize(jsonForm);
         // Addresses
-        JSONObject jsonList = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_TAG).getJSONObject(RestConstants.JSON_ADDRESS_LIST_TAG);
+        JSONObject jsonList = jsonObject.getJSONObject(RestConstants.CUSTOMER).getJSONObject(RestConstants.ADDRESS_LIST);
         mAddresses = new Addresses(jsonList);
         // Order
         mOrderSummary = new PurchaseEntity();

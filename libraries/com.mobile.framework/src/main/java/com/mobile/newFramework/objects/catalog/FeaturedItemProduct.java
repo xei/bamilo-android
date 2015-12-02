@@ -57,8 +57,8 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
                 return false;
             }
             sku = jsonObject.getString(RestConstants.SKU);
-            price = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
-            mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+            price = jsonObject.getDouble(RestConstants.PRICE);
+            mSpecialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
             //get image url:
             imageUrl = jsonObject.optString(RestConstants.URL);
             // get url from first image which has url
@@ -78,7 +78,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = super.toJSON();
         try {
-            jsonObject.put(RestConstants.JSON_PRICE_TAG, price);
+            jsonObject.put(RestConstants.PRICE, price);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

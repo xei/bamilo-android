@@ -27,7 +27,7 @@ public abstract class CatalogFilterOption implements IJSONSerializable, Parcelab
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        totalProducts = jsonObject.getInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
+        totalProducts = jsonObject.getInt(RestConstants.TOTAL_PRODUCTS);
         return true;
     }
 

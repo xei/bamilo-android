@@ -44,7 +44,7 @@ public class TeaserFormObject extends BaseTeaserObject {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get data
-        JSONObject formData = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
+        JSONObject formData = jsonObject.getJSONObject(RestConstants.DATA);
         if (formData != null) {
             mForm = new Form();
             mForm.initialize(formData);

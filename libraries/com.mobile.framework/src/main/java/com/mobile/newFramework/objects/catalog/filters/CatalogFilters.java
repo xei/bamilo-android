@@ -33,7 +33,7 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        JSONArray filtersArray = jsonObject.getJSONArray(RestConstants.JSON_FILTERS_TAG);
+        JSONArray filtersArray = jsonObject.getJSONArray(RestConstants.FILTERS);
 
         for(int i = 0; i< filtersArray.length();i++){
             try {

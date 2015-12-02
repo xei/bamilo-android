@@ -35,9 +35,9 @@ public class Version implements IJSONSerializable, Parcelable {
         try {
 
             minimumVersion = jsonObject
-                    .getInt(RestConstants.JSON_MIN_VERSION_TAG);
+                    .getInt(RestConstants.MIN_VERSION);
             currentVersion = jsonObject
-                    .getInt(RestConstants.JSON_CUR_VERSION_TAG);
+                    .getInt(RestConstants.CUR_VERSION);
 
         } catch (JSONException e) {
 //            Log.e(TAG, "error parsing json: ", e);

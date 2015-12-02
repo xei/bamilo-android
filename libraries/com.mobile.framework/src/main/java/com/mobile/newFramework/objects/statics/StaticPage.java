@@ -42,10 +42,10 @@ public class StaticPage implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get html
-        mHtml = jsonObject.optString(RestConstants.JSON_HTML_TAG);
+        mHtml = jsonObject.optString(RestConstants.HTML);
         mType = jsonObject.getString(RestConstants.TYPE);
         // Get featured box (optional)
-        JSONArray array = jsonObject.optJSONArray(RestConstants.JSON_FEATURED_BOX_TAG);
+        JSONArray array = jsonObject.optJSONArray(RestConstants.FEATURED_BOX);
         if(array != null && array.length() > 0) {
             mFeaturedBoxes = new ArrayList<>();
             for (int i = 0; i < array.length(); i++) {

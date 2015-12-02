@@ -48,14 +48,14 @@ public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         id = jsonObject.optString(RestConstants.ID);
-        name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
-        multi = jsonObject.getBoolean(RestConstants.JSON_MULTI);
-        filterSeparator = multi ? jsonObject.getString(RestConstants.JSON_FILTER_SEPARATOR) : jsonObject.optString(RestConstants.JSON_FILTER_SEPARATOR);
+        name = jsonObject.getString(RestConstants.NAME);
+        multi = jsonObject.getBoolean(RestConstants.MULTI);
+        filterSeparator = multi ? jsonObject.getString(RestConstants.FILTER_SEPARATOR) : jsonObject.optString(RestConstants.FILTER_SEPARATOR);
 
-        if(jsonObject.has(RestConstants.JSON_FIELDS_TAG)) {
-            parseFields(jsonObject.optJSONArray(RestConstants.JSON_FIELDS_TAG));
-        } else if(jsonObject.has(RestConstants.JSON_SPECIAL_PRICE_TAG)){
-            parseFields(jsonObject.optJSONObject(RestConstants.JSON_SPECIAL_PRICE_TAG));
+        if(jsonObject.has(RestConstants.FIELDS)) {
+            parseFields(jsonObject.optJSONArray(RestConstants.FIELDS));
+        } else if(jsonObject.has(RestConstants.SPECIAL_PRICE)){
+            parseFields(jsonObject.optJSONObject(RestConstants.SPECIAL_PRICE));
         }
 
         setOptionType(id);

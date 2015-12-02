@@ -35,20 +35,20 @@ public class ProductSimple extends ProductBase {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // TODO NORMAL COMPLETE SIMPLE PRODUCT
-        if (jsonObject.optJSONObject(RestConstants.JSON_META_TAG) != null) {
-            jsonObject = jsonObject.getJSONObject(RestConstants.JSON_META_TAG);
+        if (jsonObject.optJSONObject(RestConstants.META) != null) {
+            jsonObject = jsonObject.getJSONObject(RestConstants.META);
         }
         // Base
         super.initialize(jsonObject);
 
         // TODO
-        mVariationValue = jsonObject.optString(RestConstants.JSON_VARIATION_TAG);
+        mVariationValue = jsonObject.optString(RestConstants.VARIATION);
         if (TextUtils.isEmpty(mVariationValue))
-            mVariationValue = jsonObject.optString(RestConstants.JSON_SIZE_TAG);
+            mVariationValue = jsonObject.optString(RestConstants.SIZE);
         if (TextUtils.isEmpty(mVariationValue))
             mVariationValue = jsonObject.optString(RestConstants.VARIATION_VALUE);
 
-        mQuantity = jsonObject.getInt(RestConstants.JSON_QUANTITY_TAG);
+        mQuantity = jsonObject.getInt(RestConstants.QUANTITY);
 
         return true;
     }

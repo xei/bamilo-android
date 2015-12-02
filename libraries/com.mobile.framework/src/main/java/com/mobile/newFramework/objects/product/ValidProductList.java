@@ -35,7 +35,7 @@ public class ValidProductList extends ArrayList<ProductMultiple> implements IJSO
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get valid products
-        JSONArray validProductArray = jsonObject.getJSONArray(RestConstants.JSON_VALID_TAG);
+        JSONArray validProductArray = jsonObject.getJSONArray(RestConstants.VALID);
         for (int i = 0; i < validProductArray.length(); i++) {
             ProductMultiple validProduct = new ProductMultiple();
             validProduct.initialize(validProductArray.getJSONObject(i));

@@ -19,7 +19,7 @@ public class AvailableCountries extends ArrayList<CountryObject> implements IJSO
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         JSONArray sessionJSONArray = null;
         if (null != jsonObject) {
-            sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
+            sessionJSONArray = jsonObject.optJSONArray(RestConstants.DATA);
         }
         if(sessionJSONArray != null){
             for (int i = 0; i < sessionJSONArray.length(); i++) {
