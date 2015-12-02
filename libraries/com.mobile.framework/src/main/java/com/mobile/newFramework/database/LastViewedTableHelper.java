@@ -9,6 +9,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * This class is a helper to manage the Last Viewed products on database.
@@ -74,7 +75,7 @@ public class LastViewedTableHelper extends BaseTable {
             if (completeProduct != null) {
                 String sku = completeProduct.getSku();
                 // TODO database new approach to validate and limit number of items
-                if (!verifyIfExist(sku)) {
+         /*       if (!verifyIfExist(sku)) {
                     if (getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS) {
                         removeOldestEntry();
                     }
@@ -83,11 +84,64 @@ public class LastViewedTableHelper extends BaseTable {
                     values.put(LastViewedTableHelper._PRODUCT_SKU, sku);
                     db.insert(LastViewedTableHelper.TABLE_NAME, null, values);
                     db.close();
+                }*/
+
+                //if exists, remove existing product to be re-added in a new position with a new id
+                if(verifyIfExist(sku)){
+                    removeLastViewed(sku);
+                }
+
+                SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(LastViewedTableHelper._PRODUCT_SKU, sku);
+                String transaction =  buildSQLInsertTransaction(LastViewedTableHelper.TABLE_NAME, values);
+                db.execSQL(transaction);
+                db.close();
+
+                if (getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS) {
+                    removeOldestEntry();
                 }
             }
         } catch (IllegalStateException | SQLiteException e) {
             // ...
+            Print.e(TAG, "ERROR INSERTING:  " + e.getMessage());
         }
+    }
+
+
+    /**
+     * Build insert sql (for not use replace)
+     * */
+    private static String buildSQLInsertTransaction(String tableName,ContentValues contentValues){
+        StringBuilder sql = new StringBuilder(120);
+        sql.append("INSERT INTO ");
+        sql.append(tableName);
+        sql.append(" (");
+        Set<String> keys = contentValues.keySet();
+        int i=0;
+        //column names
+        for (String key: keys){
+            sql.append(key);
+            i++;
+            if(i < keys.size())
+                sql.append(",");
+        }
+        i=0;
+        //column values
+        sql.append(") VALUES (");
+        for (String key: keys){
+            sql.append("'"+contentValues.get(key)+"'");
+            i++;
+            if(i < keys.size())
+                sql.append(",");
+
+        }
+
+        sql.append(')');
+
+        String query = sql.toString();
+        return query;
+
     }
 
     /**
@@ -142,12 +196,14 @@ public class LastViewedTableHelper extends BaseTable {
     public static ArrayList<String> getLastViewedAddableToCartList() {
         ArrayList<String> listLastViewed = new ArrayList<>();
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-        String query = "SELECT " + _PRODUCT_SKU + " FROM " + TABLE_NAME + " ORDER BY " + _ID + " DESC";
+     //   String query = "SELECT " + _PRODUCT_SKU + " FROM " + TABLE_NAME + " ORDER BY " + _ID + " DESC";
+        String query = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + _ID + " DESC";
         Print.i(TAG, "SQL RESULT query :  " + query);
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
-                listLastViewed.add(cursor.getString(0));
+                Print.i(TAG, "ID: " + cursor.getString(0)+"   SKU: "+cursor.getString(1));
+                listLastViewed.add(cursor.getString(1));
             }
         }
         // Validate cursor
@@ -164,6 +220,7 @@ public class LastViewedTableHelper extends BaseTable {
     public static void removeLastViewed(String sku) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         String query = "DELETE FROM " + TABLE_NAME + " WHERE " + _PRODUCT_SKU + " = '" + sku + "'";
+        Print.i(TAG, "REMOVING PRODUCT SKU :  " + sku);
         Print.i(TAG, "SQL RESULT query :  " + query);
         db.execSQL(query);
         db.close();
