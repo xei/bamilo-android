@@ -39,6 +39,7 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.ErrorConstants;
@@ -229,6 +230,24 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Print.d(TAG, "ON RESUME");
         // Validate current data product
         onValidateDataState();
+
+        // Verify if is comming from login after trying to add/remove item from cart.
+        final Bundle args = getArguments();
+        if(args != null) {
+            if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
+                ProductComplete mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
+                triggerAddToWishList(mClicked.getSku());
+                TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
+            } else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
+                ProductComplete mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+                triggerRemoveFromWishList(mClicked.getSku());
+                TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+            }
+
+        }
+
         // Tracking
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_DETAIL, getLoadTime(), false);
     }
@@ -944,6 +963,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 Log.w(TAG, "NPE ON ADD ITEM TO WISH LIST", e);
             }
         } else {
+            // Save values to end action after login
+            final Bundle args = getArguments();
+            if(args != null) {
+                if (view.isSelected()) {
+                    args.putParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST, mProduct);
+                } else {
+                    args.putParcelable(AddToWishListHelper.ADD_TO_WISHLIST, mProduct);
+                }
+            }
+
             // Goto login
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
@@ -968,6 +997,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 Log.w(TAG, "NPE ON ADD ITEM TO SAVED", e);
             }
         } else {
+            // Save values to end action after login
+            final Bundle args = getArguments();
+            if(args != null) {
+                if (view.isSelected()) {
+                    args.putParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST, mProduct);
+                } else {
+                    args.putParcelable(AddToWishListHelper.ADD_TO_WISHLIST, mProduct);
+                }
+            }
+
             // Goto login
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
