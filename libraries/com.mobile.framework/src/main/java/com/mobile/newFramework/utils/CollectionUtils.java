@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Class used to help with collections.<br>
@@ -344,6 +345,15 @@ public class CollectionUtils {
 
     public static Map<String, String> convertContentValuesToMap(ContentValues contentValues) {
         Map<String, String> data = new HashMap<>();
+        for (Map.Entry entrySet: contentValues.valueSet()) {
+            data.put(entrySet.getKey().toString(), entrySet.getValue() != null ? entrySet.getValue().toString() : null);
+        }
+        return data;
+    }
+
+
+    public static Map<String, String> convertContentValuesToSortedMap(ContentValues contentValues) {
+        Map<String, String> data = new TreeMap<>();
         for (Map.Entry entrySet: contentValues.valueSet()) {
             data.put(entrySet.getKey().toString(), entrySet.getValue() != null ? entrySet.getValue().toString() : null);
         }
