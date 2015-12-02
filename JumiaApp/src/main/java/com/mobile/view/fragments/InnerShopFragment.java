@@ -355,7 +355,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void processDeepLink(String link) {
         // Parse target link
-        boolean result = new TargetLink(getBaseActivityWeakRef(), link)
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
                 .addTitle(mTitle)
                 .setOrigin(mGroupType)
                 .retainBackStackEntries()

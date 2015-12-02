@@ -789,7 +789,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void goToSellerCatalog() {
         Log.i(TAG, "ON CLICK SELLER NAME");
         @TargetLink.Type String target = mProduct.getSeller().getTarget();
-        new TargetLink(getBaseActivityWeakRef(), target).run();
+        new TargetLink(getWeakBaseActivity(), target).run();
     }
 
     /**
