@@ -372,6 +372,7 @@
     <string name="reviews_plural">%d reviews</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="choose_language">Choose Language</string>
     <string name="shop_settings">SHOP SETTINGS</string>
     <string name="language">Language</string>
     <string name="country">Country</string>
