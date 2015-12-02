@@ -62,9 +62,9 @@ public class OfferList implements IJSONSerializable, Parcelable {
                 }
             }
 
-            minPriceOffer = jsonObject.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
-            minPriceOfferConverted = jsonObject.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG);
-            totalOffers = jsonObject.optInt(RestConstants.JSON_TOTAL_TAG);
+            minPriceOffer = offerJson.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
+            minPriceOfferConverted = offerJson.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG);
+            totalOffers = offerJson.optInt(RestConstants.JSON_TOTAL_TAG);
 
         } catch (JSONException e) {
             return false;
