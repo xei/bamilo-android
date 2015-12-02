@@ -355,8 +355,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void changePassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
-
+    void changePassword(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String changePassword = "changePassword";
 
     @FormUrlEncoded
