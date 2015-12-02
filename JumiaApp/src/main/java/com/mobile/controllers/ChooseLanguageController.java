@@ -55,7 +55,7 @@ public class ChooseLanguageController {
             public void onDismiss() {
 
             }
-        }, null, fragment.getString(R.string.shop_settings), languagesListAdapter, defaultPosition).show(fragment.getChildFragmentManager(), null);
+        }, null, fragment.getString(R.string.choose_language), languagesListAdapter, defaultPosition).show(fragment.getChildFragmentManager(), null);
     }
 
     /**
