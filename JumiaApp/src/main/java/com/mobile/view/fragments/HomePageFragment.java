@@ -421,7 +421,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             mRichRelevanceHash = "";
         }
         // Parse target link
-        boolean result = new TargetLink(this, link)
+        boolean result = new TargetLink(getBaseActivityWeakRef(), link)
                 .addTitle(title)
                 .setOrigin(origin)
                 .addAppendListener(this)

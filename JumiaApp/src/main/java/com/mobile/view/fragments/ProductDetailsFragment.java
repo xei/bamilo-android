@@ -39,7 +39,6 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.ErrorConstants;
@@ -790,7 +789,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void goToSellerCatalog() {
         Log.i(TAG, "ON CLICK SELLER NAME");
         @TargetLink.Type String target = mProduct.getSeller().getTarget();
-        new TargetLink(this, target).run();
+        new TargetLink(getBaseActivityWeakRef(), target).run();
     }
 
     /**

@@ -15,11 +15,12 @@ import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.view.fragments.BaseFragment;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.fragments.CampaignsFragment;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -61,7 +62,7 @@ public class TargetLink {
     private static final int TARGET_ID_POSITION = 1;
     private static final String TARGET_LINK_DELIMITER = "::";
 
-    private BaseFragment mFragment;
+    private WeakReference<BaseActivity> mActivity;
     private String mTitle;
     private String mTarget;
     private TeaserGroupType mOrigin;
@@ -72,8 +73,8 @@ public class TargetLink {
     /**
      * Constructor
      */
-    public TargetLink(@NonNull BaseFragment fragment, @Type @Nullable String target) {
-        this.mFragment = fragment;
+    public TargetLink(@NonNull WeakReference<BaseActivity> activity, @Type @Nullable String target) {
+        this.mActivity = activity;
         this.mTarget = target;
     }
 
@@ -150,7 +151,9 @@ public class TargetLink {
             mAppendDataListener.onAppendData(nextFragmentType, mTitle, id, bundle);
         }
         // ##### Switch fragment
-        mFragment.getBaseActivity().onSwitchFragment(nextFragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+        if(mActivity.get() != null) {
+            mActivity.get().onSwitchFragment(nextFragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
         // Success
         return true;
     }
