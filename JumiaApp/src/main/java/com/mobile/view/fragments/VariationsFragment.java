@@ -110,6 +110,11 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
     }
 
     @Override
+    public void onViewHolderItemClick(RecyclerView.Adapter<?> adapter, int position) {
+
+    }
+
+    @Override
     public void onHeaderClick(String target, String title) {
         // ...
     }
