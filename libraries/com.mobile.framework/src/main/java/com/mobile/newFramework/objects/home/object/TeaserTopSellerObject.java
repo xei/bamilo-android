@@ -63,7 +63,7 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
         // Get brand
-        mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
+        mBrand = jsonObject.getString(RestConstants.BRAND);
         // Get image
         mImageTablet = mImagePhone = jsonObject.getString(RestConstants.JSON_IMAGE_TAG);
         // Get Rich Relevance hash

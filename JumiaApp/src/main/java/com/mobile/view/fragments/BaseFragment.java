@@ -58,6 +58,7 @@ import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
 import java.util.Set;
 
 /**
@@ -449,6 +450,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             mainActivity = (BaseActivity) getActivity();
         }
         return mainActivity;
+    }
+
+    /**
+     * Create a BaseActivity weak reference.
+     */
+    public WeakReference<BaseActivity> getWeakBaseActivity() {
+        return new WeakReference<>(getBaseActivity());
     }
 
     /**

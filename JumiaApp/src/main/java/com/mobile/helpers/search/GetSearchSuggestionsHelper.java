@@ -71,7 +71,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String query) {
         ContentValues values = new ContentValues();
-        values.put(RestConstants.Q, query);
+        values.put(RestConstants.QUERY, query);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         bundle.putString(SEARCH_PARAM, query);

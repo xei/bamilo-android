@@ -7,6 +7,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -27,16 +28,6 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     // TODO: API SHOULD RETURN THIS PARAMETER RESPONSE
     private int mCurrentPage = IntConstants.FIRST_PAGE;
 
-    // Request parameters
-    public static final String PAGE = "page";
-    public static final String MAX_ITEMS = "maxitems";
-    public static final String SORT = "sort";
-    public static final String DIRECTION = "dir";
-    public static final String QUERY = "q";
-    public static final String CATEGORY = "category";
-    public static final String BRAND = "brand";
-    public static final String HASH = "hash";
-
     @Override
     public EventType getEventType() {
         return EventType.GET_CATALOG_EVENT;
@@ -48,7 +39,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
         ContentValues catalogArguments = args.getParcelable(Constants.BUNDLE_PATH_KEY);
         // Get page number
         if (catalogArguments != null) {
-            mCurrentPage = catalogArguments.getAsInteger(PAGE);
+            mCurrentPage = catalogArguments.getAsInteger(RestConstants.PAGE);
         }
         return super.getRequestData(args);
     }
