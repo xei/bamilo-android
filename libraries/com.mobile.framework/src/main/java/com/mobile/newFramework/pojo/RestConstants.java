@@ -218,7 +218,6 @@ public class RestConstants {
     public static final String ADDRESS_1 = "address1";
     public static final String ADDRESS_2 = "address2";
     public static final String CITY = "city";
-    public static final String CITY_ID = "city_id";
     public static final String POSTCODE = "postcode";
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
@@ -452,9 +451,6 @@ public class RestConstants {
      */
 
     public static final String HAS_DATA = "has_data";
-    public static final String RICH_RELEVANCE = "rich_relevance_enabled";
-    public static final String JSON_REQUEST = "req";
-    public static final String JSON_RR_CLICK_REQUEST = "click_request";
     public static final String SELLER = "seller";
 
     // Request parameters
@@ -463,7 +459,6 @@ public class RestConstants {
     public static final String DIRECTION = "dir";
     public static final String HASH = "hash";
 
-    public static final String HAS_DATA = "has_data";
     public static final String RICH_RELEVANCE_ENABLED = "rich_relevance_enabled";
     public static final String REQ = "req";
 
