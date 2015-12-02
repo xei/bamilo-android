@@ -255,9 +255,8 @@ public class MainFragmentActivity extends BaseActivity {
         mConfirmationCartMessageView.hideMessage();
         // 
         hideKeyboard();
-
+        // Remove entries from back stack
         boolean removeEntries = false;
-
         // Validate fragment type
         switch (type) {
             case HOME:
@@ -268,13 +267,18 @@ public class MainFragmentActivity extends BaseActivity {
                 }
                 fragment = HomePageFragment.newInstance(bundle);
                 break;
+            case CATALOG_SELLER:
+            case CATALOG_BRAND:
             case CATALOG:
+                // Default
+                removeEntries = true;
+                // Get indications to remove old entries or not
                 if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
-                } else {
-                    removeEntries = true;
                 }
+                // Put the catalog type
+                bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, type);
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:

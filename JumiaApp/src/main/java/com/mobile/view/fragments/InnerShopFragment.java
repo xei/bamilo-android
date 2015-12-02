@@ -330,6 +330,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             Print.i(TAG, "ON PAGE FINISHED: " + url);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
@@ -354,10 +355,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void processDeepLink(String link) {
         // Parse target link
-        boolean result = new TargetLink.Helper(this, link)
-                .addFragmentType(FragmentType.INNER_SHOP)
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
                 .addTitle(mTitle)
                 .setOrigin(mGroupType)
+                .retainBackStackEntries()
                 .run();
         if(!result) {
             showUnexpectedErrorWarning();

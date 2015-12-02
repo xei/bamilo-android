@@ -15,7 +15,7 @@ public class RestConstants {
     public final static String JSON_MD5_TAG = "md5";
     public final static String JSON_IS_WISH_LIST_TAG = "is_wishlist";
     public final static String OTHER_ADDRESS_ID = "id_sales_order_address";
-    public final static String Q = "q";
+    public final static String QUERY = "q";
 
 
     // ConfigurationService Tags
@@ -97,7 +97,7 @@ public class RestConstants {
     public static final String JSON_ATTRIBUTE_SET_ID_TAG = "attribute_set_id";
     public static final String JSON_PRICE_TAG = "price";
     public static final String JSON_PRICE_CONVERTED_TAG = "price_converted";
-    public static final String JSON_BRAND_TAG = "brand";
+    public static final String BRAND = "brand";
     public static final String JSON_BRAND_ID_TAG = "brand_id";
     public static final String JSON_CATEGORIES_TAG = "categories";
     public static final String JSON_SIMPLES_TAG = "simples";
@@ -148,7 +148,6 @@ public class RestConstants {
     public static final String LINK = "link";
     public static final String JSON_VARIATION_IMAGE_TAG = JSON_IMAGE_TAG;
     public static final String JSON_VARIATION_NAME_TAG = JSON_NAME_TAG;
-    public static final String JSON_VARIATION_BRAND_TAG = JSON_BRAND_TAG;
     public static final String JSON_VARIATION_PRICE_TAG = JSON_PRICE_TAG;
     public static final String JSON_VARIATION_SPECIALPRICE_TAG = JSON_SPECIAL_PRICE_TAG;
 
@@ -247,7 +246,7 @@ public class RestConstants {
 
     // PurchaseItem Tags
     public static final String JSON_PURCHASE_NAME_TAG = "name";
-    public static final String JSON_CATEGORY_TAG = "category";
+    public static final String CATEGORY = "category";
     public static final String JSON_PAID_PRICE_CONVERTED_TAG = "paidprice_converted";
 
     // Section Tags
@@ -467,4 +466,12 @@ public class RestConstants {
     public static final String RICH_RELEVANCE = "rich_relevance_enabled";
     public static final String JSON_REQUEST = "req";
     public static final String JSON_RR_CLICK_REQUEST = "click_request";
+    public static final String SELLER = "seller";
+
+    // Request parameters
+    public static final String MAX_ITEMS = "maxitems";
+    public static final String SORT = "sort";
+    public static final String DIRECTION = "dir";
+    public static final String HASH = "hash";
+
 }

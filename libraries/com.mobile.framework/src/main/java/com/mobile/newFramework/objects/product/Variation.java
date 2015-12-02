@@ -39,7 +39,7 @@ public class Variation implements IJSONSerializable, Parcelable{
 
 			//added new tags
 			name = jsonObject.getString(RestConstants.JSON_VARIATION_NAME_TAG);
-			brand = jsonObject.getString(RestConstants.JSON_VARIATION_BRAND_TAG);
+			brand = jsonObject.getString(RestConstants.BRAND);
 			price = jsonObject.getDouble(RestConstants.JSON_VARIATION_PRICE_TAG);
 			specialPrice = jsonObject.getDouble(RestConstants.JSON_VARIATION_SPECIALPRICE_TAG);
 
@@ -67,7 +67,7 @@ public class Variation implements IJSONSerializable, Parcelable{
 			//added new tags
 			sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
 			name = jsonObject.getString(RestConstants.JSON_VARIATION_NAME_TAG);
-			brand = jsonObject.getString(RestConstants.JSON_VARIATION_BRAND_TAG);
+			brand = jsonObject.getString(RestConstants.BRAND);
 			price = jsonObject.getDouble(RestConstants.JSON_VARIATION_PRICE_TAG);
 			specialPrice = jsonObject.optDouble(RestConstants.JSON_VARIATION_SPECIALPRICE_TAG);
 		} catch (JSONException e) {
@@ -89,7 +89,7 @@ public class Variation implements IJSONSerializable, Parcelable{
 
 			//added
 			jsonObject.put(RestConstants.JSON_VARIATION_NAME_TAG, name);
-			jsonObject.put(RestConstants.JSON_VARIATION_BRAND_TAG, brand);
+			jsonObject.put(RestConstants.BRAND, brand);
 			jsonObject.put(RestConstants.JSON_VARIATION_PRICE_TAG, price);
 			jsonObject.put(RestConstants.JSON_VARIATION_SPECIALPRICE_TAG, specialPrice);
 		} catch (JSONException e) {
