@@ -97,6 +97,8 @@ public class JumiaApplication extends A4SApplication {
     public boolean trackSearchCategory = true;
     private HashMap<String, String> bannerSkus = new HashMap<>();
 
+    // Search
+    public String mSavedSearchTerm;
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
@@ -386,6 +388,23 @@ public class JumiaApplication extends A4SApplication {
      */
     public void clearBannerFlowSkus() {
         bannerSkus = null;
+    }
+
+
+    /**
+     * Save last searched term
+     */
+    public void setSearchedTerm(String searchTerm) {
+        mSavedSearchTerm =  searchTerm;
+    }
+
+    /**
+     * returns the saved searched term
+     *
+     * @return searched term
+     */
+    public String getSearchedTerm() {
+        return mSavedSearchTerm;
     }
 
 }

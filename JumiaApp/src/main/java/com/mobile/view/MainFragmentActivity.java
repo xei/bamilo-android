@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
 import com.ad4screen.sdk.Tag;
+import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -405,7 +406,9 @@ public class MainFragmentActivity extends BaseActivity {
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;
         }
-
+        // Clear search term
+        if(type != FragmentType.CATALOG && type != FragmentType.FILTERS)
+            JumiaApplication.INSTANCE.setSearchedTerm("");
 
         // Validate menu flag and pop entries until home
         if (removeEntries) {
@@ -446,6 +449,11 @@ public class MainFragmentActivity extends BaseActivity {
      */
     private void onProcessBackPressed() {
         fragment = getActiveFragment();
+
+        // Clear search term
+        if(fragment.getTag().equals(FragmentType.CATALOG.toString()))
+            JumiaApplication.INSTANCE.setSearchedTerm("");
+
         // Case navigation opened
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
             Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");

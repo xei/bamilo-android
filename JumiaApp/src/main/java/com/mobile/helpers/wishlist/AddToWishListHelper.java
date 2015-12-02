@@ -23,7 +23,7 @@ import java.util.Map;
  *
  */
 public class AddToWishListHelper extends SuperBaseHelper {
-
+    public static String ADD_TO_WISHLIST = "add_to_wishlist";
     private String mSku;
 
     @Override

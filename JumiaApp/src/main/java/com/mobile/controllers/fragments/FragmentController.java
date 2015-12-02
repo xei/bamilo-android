@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.WorkerThread;
@@ -402,7 +403,6 @@ public class FragmentController {
                 }
             }
         });
-
 
         /**
          * Case isn't add to back stack
