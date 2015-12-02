@@ -124,7 +124,7 @@ public class TargetLink {
     public boolean run() {
         // ##### Split target link
         String[] targetLink = splitLink(mTarget);
-        if(targetLink.length != TARGET_LINK_SIZE) {
+        if (targetLink.length != TARGET_LINK_SIZE) {
             Log.w(TAG, "WARNING: INVALID TARGET LINK: " + mTarget);
             return false;
         }
@@ -133,14 +133,14 @@ public class TargetLink {
         String id = targetLink[TARGET_ID_POSITION];
         // ##### Get fragment type
         FragmentType nextFragmentType = getFragmentType(type);
-        if(nextFragmentType == FragmentType.UNKNOWN) {
+        if (nextFragmentType == FragmentType.UNKNOWN) {
             Print.w(TAG, "WARNING: UNKNOWN TARGET LINK: " + mTarget);
             return false;
         }
         // ##### Create bundle
         Bundle bundle;
         // Case generic target
-        if(nextFragmentType == FragmentType.CAMPAIGNS) {
+        if (nextFragmentType == FragmentType.CAMPAIGNS) {
             bundle = createCampaignBundle(mCampaignListener, mTitle, id, mOrigin);
         } else {
             bundle = createBundle(mTitle, id, mOrigin);
@@ -151,7 +151,7 @@ public class TargetLink {
             mAppendDataListener.onAppendData(nextFragmentType, mTitle, id, bundle);
         }
         // ##### Switch fragment
-        if(mActivity.get() != null) {
+        if (mActivity.get() != null) {
             mActivity.get().onSwitchFragment(nextFragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
         // Success
@@ -244,7 +244,7 @@ public class TargetLink {
      * Get id from target link.
      */
     @NonNull
-    public static String getIdFromTargetLink(@NonNull String link){
+    public static String getIdFromTargetLink(@NonNull String link) {
         String[] splitLink = splitLink(link);
         return splitLink.length == TARGET_LINK_SIZE ? splitLink[TARGET_ID_POSITION] : "";
     }
