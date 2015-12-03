@@ -48,11 +48,10 @@ public class OfferList implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            minPriceOffer = jsonObject.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
-            minPriceOfferConverted = jsonObject.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG);
-            totalOffers = jsonObject.optInt(RestConstants.JSON_TOTAL_TAG);
+            //Offer object
+            JSONObject offerJson = jsonObject.getJSONObject(RestConstants.JSON_OFFERS_TAG);
             // Offers
-            JSONArray offersArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
+            JSONArray offersArray = offerJson.optJSONArray(RestConstants.JSON_DATA_TAG);
             int size = offersArray.length();
             if(size > 0) {
                 offers = new ArrayList<>();
@@ -62,6 +61,11 @@ public class OfferList implements IJSONSerializable, Parcelable {
                     offers.add(offer);
                 }
             }
+
+            minPriceOffer = offerJson.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
+            minPriceOfferConverted = offerJson.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG);
+            totalOffers = offerJson.optInt(RestConstants.JSON_TOTAL_TAG);
+
         } catch (JSONException e) {
             return false;
         }
