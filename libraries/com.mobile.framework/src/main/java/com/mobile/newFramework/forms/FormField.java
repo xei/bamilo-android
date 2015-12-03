@@ -190,7 +190,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 // Get api call
                 JSONObject apiCall = jsonObject.getJSONObject(RestConstants.API_CALL);
                 // Get endpoint
-                mApiCall = "/" + apiCall.getString(RestConstants.ENDPOINT);
+                mApiCall = apiCall.getString(RestConstants.TARGET);
                 // Get params
                 JSONArray params = apiCall.optJSONArray(RestConstants.PARMS);
                 if(CollectionUtils.isNotEmpty(params)) {

@@ -40,16 +40,23 @@ import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 import retrofit.Callback;
+import retrofit.http.DELETE;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
+import retrofit.http.RestMethod;
 
 
 public interface AigApiInterface {
@@ -69,6 +76,16 @@ public interface AigApiInterface {
             return methods.get(name);
         }
     }
+
+    /**
+     * The below code allows DELETE Method to have a request body and it creates a new method (BODY_DELETE)
+     * See Jake Wharton comment here http://stackoverflow.com/questions/22572301/retrofit-throwing-illegalargumentexception-exception-for-asynchronous-formurlenc
+     * This method (BODY_DELETE) should be used whenever we need to add a request body on a DELETE method.
+     */
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @RestMethod(value = "DELETE", hasBody = true)
+    @interface BODY_DELETE { String value(); }
 
     /*
      * ########## HTTP GET ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0
@@ -100,7 +117,6 @@ public interface AigApiInterface {
 
     @GET("/")
     void getReviewForm(Callback<BaseResponse<Form>> callback);
-
     String getReviewForm = "getReviewForm";
 
     @GET("/")
@@ -240,17 +256,12 @@ public interface AigApiInterface {
     String getPostalCodes = "getPostalCodes";
 
     @GET("/")
-    void removeVoucher(Callback<BaseResponse<PurchaseEntity>> callback);
-    String removeVoucher = "removeVoucher";
-
-    @GET("/")
     void logoutCustomer(Callback<BaseResponse<Void>> callback);
     String logoutCustomer = "logoutCustomer";
 
     @GET("/")
     void getShoppingCart(Callback<BaseResponse<PurchaseEntity>> callback);
     String getShoppingCart = "getShoppingCart";
-
 
     /*
      * ########## HTTP POST ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0
@@ -266,63 +277,30 @@ public interface AigApiInterface {
     void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<ValidProductList>> callback);
     String validateProducts = "validateProducts";
 
-    /*
-     * ## CART
-     */
-
     @FormUrlEncoded
     @POST("/")
     void addItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
     String addItemShoppingCart = "addItemShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
     void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
     String addBundleShoppingCart = "addBundleShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
     void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
     String addMultipleItemsShoppingCart = "addMultipleItemsShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
-    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String updateQuantityShoppingCart = "updateQuantityShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
     void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
     String removeAllShoppingCart = "removeAllShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
-    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String removeItemShoppingCart = "removeItemShoppingCart";
-
-    /*
-     * ## VOUCHER
-     */
 
     @FormUrlEncoded
     @POST("/")
     void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
     String addVoucher = "addVoucher";
-
-    /*
-     * ## SESSION
-     */
-
-    @FormUrlEncoded
-    @POST("/")
-    void setUserData(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
-    String setUserData = "setUserData";
 
     @FormUrlEncoded
     @POST("/")
@@ -332,20 +310,16 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void loginFacebookCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
-
     String loginFacebookCustomer = "loginFacebookCustomer";
 
     @FormUrlEncoded
     @POST("/")
     void signUpCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepLogin>> callback);
-
     String signUpCustomer = "signUpCustomer";
-
 
     @FormUrlEncoded
     @POST("/")
     void registerCustomer(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
-
     String registerCustomer = "registerCustomer";
 
     @FormUrlEncoded
@@ -361,42 +335,22 @@ public interface AigApiInterface {
     @FormUrlEncoded
     @POST("/")
     void subscribeNewsletter(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
     String subscribeNewsletter = "subscribeNewsletter";
 
     @FormUrlEncoded
     @POST("/")
     void createAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepObject>> callback);
-
     String createAddress = "createAddress";
 
     @FormUrlEncoded
     @POST("/")
     void editAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
     String editAddress = "editAddress";
-
-    @FormUrlEncoded
-    @POST("/")
-    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-
-    String setDefaultShippingAddress = "setDefaultShippingAddress";
-
-    @FormUrlEncoded
-    @POST("/")
-    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-    String setDefaultBillingAddress = "setDefaultBillingAddress";
-
-
 
     @FormUrlEncoded
     @POST("/")
     void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SetBillingAddress>> callback);
     String setBillingAddress = "setBillingAddress";
-
-    /*
-     * ## RATINGS/REVIEWS
-     */
 
     @FormUrlEncoded
     @POST("/")
@@ -407,10 +361,6 @@ public interface AigApiInterface {
     @POST("/")
     void setSellerReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String setSellerReview = "setSellerReview";
-
-    /*
-    * ## CHECKOUT
-    */
 
     @FormUrlEncoded
     @POST("/")
@@ -432,19 +382,46 @@ public interface AigApiInterface {
     void addToWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String addToWishList = "addToWishList";
 
-    @FormUrlEncoded
-    @POST("/")
-    void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-    String removeFromWishList = "removeFromWishList";
-
-
-    
     /*
      * ########## HTTP PUT ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0
      */
+
+    @FormUrlEncoded
+    @PUT("/")
+    void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String setDefaultShippingAddress = "setDefaultShippingAddress";
+
+    @FormUrlEncoded
+    @PUT("/")
+    void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String setDefaultBillingAddress = "setDefaultBillingAddress";
+
+    @FormUrlEncoded
+    @PUT("/")
+    void setUserData(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
+    String setUserData = "setUserData";
+
+    @FormUrlEncoded
+    @PUT("/")
+    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+    String updateQuantityShoppingCart = "updateQuantityShoppingCart";
     
     /*
      * ########## HTTP DELETE ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0
      */
+
+    @FormUrlEncoded
+    @BODY_DELETE("/")
+    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+    String removeItemShoppingCart = "removeItemShoppingCart";
+
+    @DELETE("/")
+    void removeVoucher(Callback<BaseResponse<PurchaseEntity>> callback);
+    String removeVoucher = "removeVoucher";
+    
+    @FormUrlEncoded
+    @BODY_DELETE("/")
+    void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String removeFromWishList = "removeFromWishList";
 
 }

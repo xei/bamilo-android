@@ -12,6 +12,7 @@ import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.utils.deeplink.TargetLink;
 
 import java.util.Map;
 
@@ -75,7 +76,7 @@ public class GetCitiesHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String url, int region, String tag) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, String.format(url, region));
+        bundle.putString(Constants.BUNDLE_URL_KEY, "/" + String.format(TargetLink.getIdFromTargetLink(url), region));
         bundle.putString(TAG, tag);
         return bundle;
     }

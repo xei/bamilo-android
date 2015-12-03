@@ -12,6 +12,7 @@ import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.utils.deeplink.TargetLink;
 
 import java.util.Map;
 
@@ -57,7 +58,7 @@ public class GetPostalCodeHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String url, int city, String tag) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, String.format(url, city));
+        bundle.putString(Constants.BUNDLE_URL_KEY, "/" + String.format(TargetLink.getIdFromTargetLink(url), city));
         bundle.putString(TAG, tag);
         return bundle;
     }
