@@ -419,7 +419,6 @@
     <string name="shipment">Shipment %1$d of %2$d</string>
     <string name="delivery_time_placeholder">Delivery time: %1$d - %2$d days</string>
     <string name="product_specifications">Product Specifications</string>
-    <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">The host name does not match the certificate: %s</string>
     <string name="ssl_error_generic">An SSL error occurred: %s</string>
     <string name="save_for_later">Save for later</string>
@@ -471,6 +470,7 @@
     <string name="phone_contact">Phone:</string>
     <string name="email_contact">Email:</string>
     <string name="logout_success">Logged out with success</string>
+    <!-- NEW 2.9 -->
 
     <string name="test_script">NOT TRANSLATE</string>
 
