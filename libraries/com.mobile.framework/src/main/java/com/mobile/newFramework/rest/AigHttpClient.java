@@ -21,6 +21,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.HttpCookie;
+import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -156,13 +157,13 @@ public class AigHttpClient extends OkClient {
         // CACHE
         setCache(okHttpClient, context);
         // REDIRECTS
-        okHttpClient.setFollowSslRedirects(true);
+        okHttpClient.setFollowSslRedirects(false);
         okHttpClient.setFollowRedirects(true);
         // TIMEOUTS
         okHttpClient.setReadTimeout(AigConfigurations.SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
         okHttpClient.setConnectTimeout(AigConfigurations.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
         // INTERCEPTORS
-        //addInterceptors(okHttpClient);
+        addInterceptors(okHttpClient);
         // Return client
         return okHttpClient;
     }
@@ -234,8 +235,26 @@ public class AigHttpClient extends OkClient {
             Print.d(TAG, "Message:            " + response.message());
             Print.d(TAG, "Redirect:           " + response.isRedirect());
             Print.d(TAG, "Cache response:     " + response.cacheResponse());
+            if(response.networkResponse().code() == HttpURLConnection.HTTP_MOVED_PERM){
+                Print.d(TAG, "code1Network response code:   " + response.networkResponse().code());
+                Request request = chain.request();
+                int tryCount = 0;
+                while (!response.isSuccessful() && tryCount < 1) {
+
+                    Print.d(TAG, "code1interceptRequest is not successful - " + tryCount + " scheme "+request.uri().getScheme());
+                    Print.d(TAG, "code1interceptRequest is not successful - " + tryCount + " Location "+ response.headers().get("Location"));
+                    tryCount++;
+                    Request recoveryRequest = request.newBuilder().url(response.headers().get("Location").toString()).build();
+//                    request.newBuilder().url(request.headers().get("Location").toString());
+                    Print.d(TAG, "code1interceptRequest is not successful - " + tryCount + " scheme "+request.uri().getScheme());
+                    // retry the request
+                    response = chain.proceed(recoveryRequest);
+                }
+            }
             Print.d(TAG, "Network response:   " + response.networkResponse());
-            Print.d(TAG, "> Request:          " + response.request().toString());
+            Print.d(TAG, "> Request:          " + response.request());
+            Print.d(TAG, "> Method ###:          " + chain.request().method());
+            Print.d(TAG, "> Body ###:          " + chain.request().body());
             Print.d(TAG, "######################################################\n");
             return response;
         }
@@ -251,7 +270,7 @@ public class AigHttpClient extends OkClient {
     }
 
     private static File getCache(@NonNull Context context){
-        return new File(context.getFilesDir().toString() + "/retrofitCache");
+        return new File(context.getFilesDir() + "/retrofitCache");
     }
 
 }

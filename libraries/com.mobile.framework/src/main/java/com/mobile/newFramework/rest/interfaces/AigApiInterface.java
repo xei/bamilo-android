@@ -41,17 +41,24 @@ import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
 import retrofit.Callback;
+import retrofit.http.DELETE;
+import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.Path;
 import retrofit.http.QueryMap;
+import retrofit.http.RestMethod;
 
 
 public interface AigApiInterface {
@@ -259,12 +266,6 @@ public interface AigApiInterface {
     void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String removeAllShoppingCart = "removeAllShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
-    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String removeItemShoppingCart = "removeItemShoppingCart";
 
     /*
      * ## VOUCHER
@@ -540,5 +541,22 @@ public interface AigApiInterface {
     @GET("/{path}")
     void getSearchSuggestions(@Path(value="path", encode=false) String path, Callback<BaseResponse<Suggestions>> callback);
     String getSearchSuggestions = "getSearchSuggestions";
+
+
+    /**
+     * DELETE Methods
+     */
+
+    @Target(ElementType.METHOD)
+    @Retention(RetentionPolicy.RUNTIME)
+    @RestMethod(value = "DELETE", hasBody = true)
+    @interface BODY_DELETE {
+        String value();
+    }
+
+    @FormUrlEncoded
+    @BODY_DELETE("/")
+    void removeItemShoppingCart(@Field("sku") String data, Callback<BaseResponse<PurchaseEntity>> callback);
+    String removeItemShoppingCart = "removeItemShoppingCart";
 
 }
