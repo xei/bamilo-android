@@ -235,18 +235,17 @@ public class AigHttpClient extends OkClient {
             Print.d(TAG, "Message:            " + response.message());
             Print.d(TAG, "Redirect:           " + response.isRedirect());
             Print.d(TAG, "Cache response:     " + response.cacheResponse());
+
+            // Handle Redirects
+            // If the server returns an 301 error code after an https request we should try to perform the same request with http
+            // We need to use the returned Location and keep the body info.
             if(response.networkResponse().code() == HttpURLConnection.HTTP_MOVED_PERM){
-                Print.d(TAG, "code1Network response code:   " + response.networkResponse().code());
                 Request request = chain.request();
                 int tryCount = 0;
                 while (!response.isSuccessful() && tryCount < 1) {
 
-                    Print.d(TAG, "code1interceptRequest is not successful - " + tryCount + " scheme "+request.uri().getScheme());
-                    Print.d(TAG, "code1interceptRequest is not successful - " + tryCount + " Location "+ response.headers().get("Location"));
                     tryCount++;
                     Request recoveryRequest = request.newBuilder().url(response.headers().get("Location").toString()).build();
-//                    request.newBuilder().url(request.headers().get("Location").toString());
-                    Print.d(TAG, "code1interceptRequest is not successful - " + tryCount + " scheme "+request.uri().getScheme());
                     // retry the request
                     response = chain.proceed(recoveryRequest);
                 }
@@ -254,7 +253,6 @@ public class AigHttpClient extends OkClient {
             Print.d(TAG, "Network response:   " + response.networkResponse());
             Print.d(TAG, "> Request:          " + response.request());
             Print.d(TAG, "> Method ###:          " + chain.request().method());
-            Print.d(TAG, "> Body ###:          " + chain.request().body());
             Print.d(TAG, "######################################################\n");
             return response;
         }

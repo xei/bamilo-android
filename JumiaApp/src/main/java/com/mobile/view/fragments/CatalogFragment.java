@@ -288,14 +288,20 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         final Bundle args = getArguments();
         if(args != null) {
             if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
-                ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
-                triggerAddToWishList(mClicked.getSku());
-                TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                if(JumiaApplication.isCustomerLoggedIn()){
+                    ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
+                    triggerAddToWishList(mClicked.getSku());
+                    TrackerDelegator.trackAddToFavorites(mClicked);
+                }
+
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             } else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
-                ProductRegular mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
-                triggerRemoveFromWishList(mClicked.getSku());
-                TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                if(JumiaApplication.isCustomerLoggedIn()){
+                    ProductRegular mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+                    triggerRemoveFromWishList(mClicked.getSku());
+                    TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                }
+
                 args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
             }
 

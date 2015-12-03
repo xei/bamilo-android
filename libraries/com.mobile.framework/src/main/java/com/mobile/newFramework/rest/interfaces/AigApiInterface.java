@@ -56,6 +56,7 @@ import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.PUT;
 import retrofit.http.Path;
 import retrofit.http.QueryMap;
 import retrofit.http.RestMethod;
@@ -255,11 +256,6 @@ public interface AigApiInterface {
 
     String addMultipleItemsShoppingCart = "addMultipleItemsShoppingCart";
 
-    @FormUrlEncoded
-    @POST("/")
-    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String updateQuantityShoppingCart = "updateQuantityShoppingCart";
 
     @FormUrlEncoded
     @POST("/")
@@ -277,17 +273,12 @@ public interface AigApiInterface {
 
     String addVoucher = "addVoucher";
 
-    @GET("/")
-    void removeVoucher(Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String removeVoucher = "removeVoucher";
-
     /*
      * ## SESSION
      */
 
     @FormUrlEncoded
-    @POST("/")
+    @PUT("/")
     void setUserData(@FieldMap Map<String, String> data, Callback<BaseResponse<Customer>> callback);
 
     String setUserData = "setUserData";
@@ -362,13 +353,13 @@ public interface AigApiInterface {
     String editAddress = "editAddress";
 
     @FormUrlEncoded
-    @POST("/")
+    @PUT("/")
     void setDefaultShippingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     String setDefaultShippingAddress = "setDefaultShippingAddress";
 
     @FormUrlEncoded
-    @POST("/")
+    @PUT("/")
     void setDefaultBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
 
     String setDefaultBillingAddress = "setDefaultBillingAddress";
@@ -463,11 +454,6 @@ public interface AigApiInterface {
     void addToWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String addToWishList = "addToWishList";
 
-    @FormUrlEncoded
-    @POST("/")
-    void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-    String removeFromWishList = "removeFromWishList";
-
     @GET("/{path}")
     void emailCheck(@Path(value="path", encode=false) String path, Callback<BaseResponse<CustomerEmailCheck>> callback);
     String emailCheck = "emailCheck";
@@ -547,6 +533,11 @@ public interface AigApiInterface {
      * DELETE Methods
      */
 
+    /**
+     * The below code allows DELETE Method to have a request body and it creates a new method (BODY_DELETE)
+     * See Jake Wharton comment here http://stackoverflow.com/questions/22572301/retrofit-throwing-illegalargumentexception-exception-for-asynchronous-formurlenc
+     * This method (BODY_DELETE) should be used whenever we need to add a request body on a DELETE method.
+     */
     @Target(ElementType.METHOD)
     @Retention(RetentionPolicy.RUNTIME)
     @RestMethod(value = "DELETE", hasBody = true)
@@ -556,7 +547,27 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @BODY_DELETE("/")
-    void removeItemShoppingCart(@Field("sku") String data, Callback<BaseResponse<PurchaseEntity>> callback);
+    void removeItemShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
     String removeItemShoppingCart = "removeItemShoppingCart";
+
+    @DELETE("/")
+    void removeVoucher(Callback<BaseResponse<PurchaseEntity>> callback);
+
+    String removeVoucher = "removeVoucher";
+
+    @FormUrlEncoded
+    @BODY_DELETE("/")
+    void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String removeFromWishList = "removeFromWishList";
+
+    /**
+     * PUT Methods
+     */
+    @FormUrlEncoded
+    @PUT("/")
+    void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
+    String updateQuantityShoppingCart = "updateQuantityShoppingCart";
 
 }

@@ -37,7 +37,7 @@ public class ShoppingCartRemoveItemHelper extends SuperBaseHelper {
 
 //    public static final String UPDATE_CART = "update_cart";
 
-    private static final boolean isToUpdateCart = true;
+    private static boolean isToUpdateCart = true;
 
     @Override
     public EventType getEventType() {
@@ -71,12 +71,12 @@ public class ShoppingCartRemoveItemHelper extends SuperBaseHelper {
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
     }
 
-    public static Bundle createBundle(String sku, boolean isToUpdateCart) {
+    public static Bundle createBundle(String sku, final boolean istoUpdateCart) {
         ContentValues values = new ContentValues();
         values.put(RestConstants.SKU, sku);
-        isToUpdateCart = isToUpdateCart;
+        isToUpdateCart = istoUpdateCart;
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         return bundle;
     }
 
