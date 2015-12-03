@@ -313,9 +313,6 @@ public class FragmentController {
      */
     private void popBackStack(BaseActivity activity) {
         Print.i(TAG, "POP BACK STACK");
-        // Get current fragment
-        String currentTag = getLastEntry();
-        Print.i(TAG, "CURRENT TAG:"+currentTag);
         // Pop the last fragment
         popLastEntry();
         // Get the new last fragment
@@ -331,10 +328,6 @@ public class FragmentController {
             // Pop stack until fragment tag
             try {
                 activity.getSupportFragmentManager().popBackStackImmediate(lastTag, POP_BACK_STACK_NO_INCLUSIVE);
-                // Clear search term
-                if(currentTag.equals(FragmentType.CATALOG.toString()))
-                    JumiaApplication.INSTANCE.setSearchedTerm("");
-
             } catch (IllegalStateException | NullPointerException e) {
                 Print.w(TAG, "WARNING ON POP BACK STACK", e);
             }
@@ -410,10 +403,6 @@ public class FragmentController {
                 }
             }
         });
-        // Clear search term
-        if(fragmentType != FragmentType.CATALOG && fragmentType != FragmentType.FILTERS)
-            JumiaApplication.INSTANCE.setSearchedTerm("");
-
 
         /**
          * Case isn't add to back stack
