@@ -287,7 +287,6 @@ public class RestConstants {
     public static final String BILLING = "billing";
     public static final String JSON_OTHER_TAG = "other";
     public static final String API_CALL = "api_call";
-    public static final String ENDPOINT = "endpoint";
     public static final String REGION = "region";
     public static final String MULTI_STEP_ENTITY = "multistep_entity";
 
