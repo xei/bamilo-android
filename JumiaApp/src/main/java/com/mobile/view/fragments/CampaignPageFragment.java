@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.IntDef;
-import android.support.v4.app.FragmentManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
@@ -50,7 +49,6 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -86,8 +84,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     private boolean isAddingProductToCart;
 
-    private DialogGenericFragment mDialogErrorToCart;
-    
     private long mStartTimeInMilliseconds;
 
     private boolean isScrolling;
@@ -575,25 +571,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             return;
         }
 
-        /*
-        if(eventType != null){
-//            if(errorCode == ErrorCode.NO_NETWORK){
-//                ((CatalogFragment) getParentFragment()).disableCatalogButtons();
-//                showFragmentRetry(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        getAndShowCampaign();
-//                    }
-//                }, R.string.no_connect_dialog_content);
-//                return true;
-//            } else
-                if (errorCode == ErrorCode.HTTP_STATUS) {
-                showContinueShopping();
-                return true;
-            }
-        }
-        */
-
         // Generic errors
         if(super.handleErrorEvent(baseResponse)) return;
 
@@ -606,7 +583,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;
             hideActivityProgress();
-            showErrorCartDialog();
+            showInfoAddToShoppingCartFailed();
             break;
         default:
             break;
@@ -614,29 +591,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     }
 
-    /**
-     * ########### DIALOGS ###########
-     */
-
-    private void showErrorCartDialog (){
-        FragmentManager fm = getFragmentManager();
-        mDialogErrorToCart = DialogGenericFragment.newInstance(true, false,
-                getString(R.string.error_add_to_cart_failed),
-                getString(R.string.error_add_to_cart_failed),
-                getString(R.string.ok_label), "", new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            mDialogErrorToCart.dismiss();
-                        }
-                    }
-                });
-        mDialogErrorToCart.show(fm, null);
-    }
-
-
-    
     /**
      * ########### ADAPTER ###########  
      */    
