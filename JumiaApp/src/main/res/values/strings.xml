@@ -288,7 +288,6 @@
     <string name="some_products_not_added">Unfortunately, some products were not added to cart.</string>
     <string name="splash_slogan">The biggest online shopping mall in Africa</string>
     <string name="splash_slogan_daraz">The only online shopping destination you will need!</string>
-    <string name="splash_slogan_powered_by"/>
     <string name="stale_warning">Lost connection</string>
     <string name="string_appearance">Appearance</string>
     <string name="string_price">Price</string>
@@ -471,4 +470,7 @@
     <string name="phone_contact">Phone:</string>
     <string name="email_contact">Email:</string>
     <string name="logout_success">Logged out with success</string>
+
+    <string name="test_script">NOT TRANSLATE</string>
+
 </resources>
