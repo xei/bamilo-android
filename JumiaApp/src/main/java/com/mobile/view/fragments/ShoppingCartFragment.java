@@ -259,8 +259,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void triggerRemoveItem(PurchaseCartItem item) {
 
-//        ContentValues values = new ContentValues();
-//        values.put("sku", );
         itemRemoved_sku = item.getConfigSimpleSKU();
         itemRemoved_price = item.getSpecialPriceVal().toString();
         itemRemoved_price_tracking = item.getPriceForTracking();
@@ -277,11 +275,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (itemRemoved_price == null) {
             itemRemoved_price = item.getPriceVal().toString();
         }
-//        Bundle bundle = new Bundle();
-//        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         // only show loading when removing individual items
         if (isRemovingAllItems) {
-//            bundle.putBoolean(ShoppingCartRemoveItemHelper.UPDATE_CART, false);
             triggerContentEventNoLoading(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), false), null);
         } else {
             triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
