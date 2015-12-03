@@ -25,6 +25,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="@dimen/dimen_30px"
         android:layout_marginLeft="@dimen/dimen_30px"
+        android:layout_marginStart="@dimen/dimen_30px"
         android:gravity="center"
         android:text="@string/new_arrival_badge" />
 
