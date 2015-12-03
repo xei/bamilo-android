@@ -59,7 +59,7 @@
                 <com.mobile.components.customfontviews.TextView
                     style="@style/HeaderMyAccountStyle"
                     android:textStyle="bold"
-                    android:text="@string/choose_language" />
+                    android:text="@string/shop_settings" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
