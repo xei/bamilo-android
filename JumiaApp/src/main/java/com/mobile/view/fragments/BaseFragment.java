@@ -653,31 +653,45 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public void showInfoAddToShoppingCartCompleted() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.added_to_shop_cart_dialog_text));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.added_to_shop_cart_dialog_text));
         }
     }
 
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.error_add_to_shopping_cart));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_add_to_shopping_cart));
+        }
+    }
+
+    public void showInfoAddBundleToShoppingCartCompleted() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.added_bundle_to_shop_cart_dialog_text));
+        }
+    }
+
+    public void showInfoAddBundleToShoppingCartFailed(String errorMessage) {
+        if(getBaseActivity() != null) {
+            if(TextUtils.isEmpty(errorMessage))
+                errorMessage = getString(R.string.error_add_bundle_to_shopping_cart);
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, errorMessage);
         }
     }
 
     public void showInfoLoginSuccess() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.succes_login));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
         }
     }
 
     public void showInfoAddToShoppingCartOOS() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.product_outof_stock));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_outof_stock));
         }
     }
 
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.products_removed_saved));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
         }
     }
 
@@ -1063,7 +1077,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * validate if it show regular warning or confirmation cart message
      */
-    protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
+    protected void showAddToCartCompleteMessage(BaseResponse baseResponse, boolean isProductBundle){
         //if has cart popup, show configurable confirmation message with cart total price
         if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
             PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
@@ -1071,7 +1085,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         else{
             //show regular message add item to cart
-            showInfoAddToShoppingCartCompleted();
+            if(!isProductBundle)
+                showInfoAddToShoppingCartCompleted();
+            else
+                showInfoAddBundleToShoppingCartCompleted();
         }
     }
 

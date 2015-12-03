@@ -302,7 +302,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                showAddToCartCompleteMessage(baseResponse);
+                showAddToCartCompleteMessage(baseResponse, false);
                 break;
             case TRACK_ORDER_EVENT:
                 // Get order status

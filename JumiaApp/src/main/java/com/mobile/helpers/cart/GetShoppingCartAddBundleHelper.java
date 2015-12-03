@@ -4,39 +4,39 @@
  */
 package com.mobile.helpers.cart;
 
+import android.content.ContentValues;
+import android.os.Bundle;
+
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.product.BundleList;
+import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.TrackerDelegator;
 
 /**
- * Get Shopping Cart Items helper
+ * Add product bundle to cart
  * 
  * @author Manuel Silva
+ * @Modified Paulo Carvalho
  * 
  */
 public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
     
     private static String TAG = GetShoppingCartAddBundleHelper.class.getSimpleName();
     
-    public static final String BUNDLE_ID = "bundleId";
-
-    // TODO: USE placeholders
-
-//  product-item-selector[0]
-//  ...
-    public static final String PRODUCT_SKU_TAG = "product-item-selector[";
-    
-//  product-simple-selector[0]
+    public static final String BUNDLE_ID = "bundle_id";
+//  product_list[0]
 //  ... 
-    public static final String PRODUCT_SIMPLE_SKU_TAG = "product-simple-selector[";
+    public static final String PRODUCT_SIMPLE_SKU_TAG = "product_list[";
 
 
     @Override
@@ -57,16 +57,34 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-
-        //TODO move to observable
+        Print.i(TAG,"ADD BUNDLE POST SUCCESS");
         JumiaApplication.INSTANCE.setCart(null);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
+    }
 
-//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
+    /**
+     * Method used to create a request bundle.
+     */
+    public static Bundle createBundle(BundleList bundleList) {
+        // Item data
+        ContentValues values = new ContentValues();
+        //id 869
+        values.put(BUNDLE_ID, bundleList.getBundleId());
+        int i = 0;
+        for (ProductBundle bundleListProduct : bundleList.getProducts()) {
+            if(bundleListProduct.isChecked()){
+                values.put(PRODUCT_SIMPLE_SKU_TAG+i+"]", bundleListProduct.getSelectedSimple().getSku());
+                i++;
+            }
+        }
+        // Request data
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
     }
 
 }
