@@ -35,6 +35,7 @@ public class StaticPage implements IJSONSerializable, Parcelable {
     /**
      * Empty constructor for JSON converter
      */
+    @SuppressWarnings("unused")
     public StaticPage() {
     }
 

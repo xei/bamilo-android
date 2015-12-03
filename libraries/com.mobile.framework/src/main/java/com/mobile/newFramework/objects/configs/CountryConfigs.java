@@ -156,7 +156,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
         hasCartPopup = jsonObject.optBoolean(RestConstants.JSON_COUNTRY_HAS_CART_POPUP);
         // Get if Rich Relevance is enabled
-        mIsRichRelevanceEnabled = jsonObject.optBoolean(RestConstants.RICH_RELEVANCE);
+        mIsRichRelevanceEnabled = jsonObject.optBoolean(RestConstants.RICH_RELEVANCE_ENABLED);
         return true;
     }
 

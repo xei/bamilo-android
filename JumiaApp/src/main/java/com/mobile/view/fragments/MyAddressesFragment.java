@@ -450,9 +450,8 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
      */
     private void setAddressView(View parent, Address address, String tag) {
         // Text
-        ((TextView) parent.findViewById(R.id.checkout_address_item_name)).setText(address.getFirstName() + " " + address.getLastName());
+        ((TextView) parent.findViewById(R.id.checkout_address_item_name)).setText(String.format(getString(R.string.first_and_second_placeholders), address.getFirstName(), address.getLastName()));
         ((TextView) parent.findViewById(R.id.checkout_address_item_street)).setText(address.getAddress());
-
         // Only use region if is available
         StringBuilder regionString = new StringBuilder();
         if (!TextUtils.isEmpty(address.getRegion())) {
@@ -460,9 +459,8 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         }
         regionString.append(address.getCity());
         ((TextView) parent.findViewById(R.id.checkout_address_item_region)).setText(regionString.toString());
-
         ((TextView) parent.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
-        ((TextView) parent.findViewById(R.id.checkout_address_item_phone)).setText("" + address.getPhone());
+        ((TextView) parent.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
         // Buttons
         View editBtn = parent.findViewById(R.id.checkout_address_item_btn_edit);
         editBtn.setTag(tag);

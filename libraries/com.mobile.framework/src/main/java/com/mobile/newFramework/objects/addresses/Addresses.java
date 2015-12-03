@@ -55,7 +55,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         Print.d("INITIALIZE");
-
         // Get shipping address and save it
         JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.SHIPPING);
         if (jsonShip != null) {
@@ -64,7 +63,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
         } else {
             throw new JSONException("");
         }
-        //addresses.put("" + shippingAddress.getIdCustomerAddress(), shippingAddress);
         // Get billing address and save it
         JSONObject jsonBil = jsonObject.optJSONObject(RestConstants.BILLING);
         if (jsonBil != null) {

@@ -11,14 +11,12 @@ import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 
-//import com.mobile.newFramework.requests.address.SetDefaultShippingAddress;
 
 public class SetDefaultShippingAddressTest extends BaseTestCase {
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-
 
         HashMap<String, String> data = new HashMap<>();
 
@@ -33,7 +31,6 @@ public class SetDefaultShippingAddressTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        //new SetDefaultShippingAddress(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.setDefaultShippingAddress);
         try {
             mCountDownLatch.await();

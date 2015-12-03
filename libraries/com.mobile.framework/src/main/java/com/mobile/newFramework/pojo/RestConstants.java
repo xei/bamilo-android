@@ -165,7 +165,6 @@ public class RestConstants {
     public static final String JSON_CATEGORY_LABEL_TAG = LABEL;
     public static final String JSON_URL_KEY_TAG = "url_key";
     public static final String JSON_CHILDREN_TAG = "children";
-    public static final String JSON_API_URL_TAG = "api_url";
     public static final String JSON_CATEGORY_URL_TAG = URL;
 
     // ShoppingCart Tags
@@ -193,8 +192,6 @@ public class RestConstants {
     public static final String JSON_ITEM_NAME_TAG = JSON_NAME_TAG;
     public static final String JSON_ITEM_SPECIAL_PRICE_TAG = "special_price";
     public static final String JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG = "special_price_converted";
-    public static final String JSON_ITEM_PRICE_TAG = "unit_price";
-    public static final String JSON_ITEM_PRICE_CONVERTED_TAG = "unit_price_converted";
     public static final String JSON_MAX_QUANTITY = "max_quantity";
     public static final String JSON_VARIATION_TAG = "variation";
     public static final String JSON_SIMPLE_SKU_TAG = "simple_sku";
@@ -203,7 +200,7 @@ public class RestConstants {
 
     // Teaser Campaign Tags
     public static final String CAMPAIGN_ENTITY = "campaign_entity";
-    public static final String JSON_CMS_TAG = "cms";
+    public static final String CMS = "cms";
     public static final String JSON_MOBILE_BANNER_TAG = "mobile_banner";
     public static final String JSON_DESKTOP_BANNER_TAG = "desktop_banner";
     public static final String JSON_SAVE_PRICE_TAG = "save_price";
@@ -214,9 +211,6 @@ public class RestConstants {
     public static final String JSON_REMAINING_TIME_TAG = "remaining_time";
     public static final String JSON_UNIX_TIME_TAG = "unix_time";
 
-    // TeaserBrandElement Tags
-    public static final String JSON_TARGET_TYPE_TAG = "target_type";
-
     // Address Tags
     public static final String CUSTOMER_ADDRESS_ID = "customer_address_id";
     public static final String PHONE = "phone";
@@ -224,7 +218,6 @@ public class RestConstants {
     public static final String ADDRESS_1 = "address1";
     public static final String ADDRESS_2 = "address2";
     public static final String CITY = "city";
-    public static final String CITY_ID = "city_id";
     public static final String POSTCODE = "postcode";
     public static final String JSON_IS_DEFAULT_BILLING_TAG = "is_default_billing";
     public static final String JSON_IS_DEFAULT_SHIPPING_TAG = "is_default_shipping";
@@ -294,7 +287,6 @@ public class RestConstants {
     public static final String BILLING = "billing";
     public static final String JSON_OTHER_TAG = "other";
     public static final String API_CALL = "api_call";
-    public static final String ENDPOINT = "endpoint";
     public static final String REGION = "region";
     public static final String MULTI_STEP_ENTITY = "multistep_entity";
 
@@ -361,11 +353,6 @@ public class RestConstants {
     /**
      * BUNDLES
      */
-
-//    public static final String JSON_BUNDLE_ID = "bundle_id";
-//    public static final String JSON_BUNDLE_PRICE = "bundle_price";
-    public static final String JSON_BUNDLE_PRICE_CONVERTED = "bundle_price_converted";
-    public static final String JSON_BUNDLE_LEADER_POS = "bundle_leader_config_position";
     public static final String JSON_BUNDLE_PRODUCTS = "bundle_products";
     public static final String JSON_BUNDLE_PRODUCT_LEADER_POS = "leader_simple_position";
     public static final String BUNDLE_ENTITY = "bundle_entity";
@@ -457,15 +444,12 @@ public class RestConstants {
 
 
     public static final String SLUG = "slug";
-   
+
     /**
      * HOME PAGE
      */
 
     public static final String HAS_DATA = "has_data";
-    public static final String RICH_RELEVANCE = "rich_relevance_enabled";
-    public static final String JSON_REQUEST = "req";
-    public static final String JSON_RR_CLICK_REQUEST = "click_request";
     public static final String SELLER = "seller";
 
     // Request parameters
@@ -474,4 +458,10 @@ public class RestConstants {
     public static final String DIRECTION = "dir";
     public static final String HASH = "hash";
 
+    public static final String RICH_RELEVANCE_ENABLED = "rich_relevance_enabled";
+    public static final String REQ = "req";
+
+    public static final String CLICK_REQUEST = "click_request";
+    public static final String PARMS = "params";
+    public static final String PARAM = "param";
 }

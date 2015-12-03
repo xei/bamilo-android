@@ -990,14 +990,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Validate event type
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
+                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
             case ADD_PRODUCT_TO_WISH_LIST:
-
-                if(eventType == EventType.REMOVE_PRODUCT_FROM_WISH_LIST){
-                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
-                } else {
+                if (eventType == EventType.ADD_PRODUCT_TO_WISH_LIST) {
                     getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_added_saved));
                 }
-
                 updateWishListProduct();
                 break;
             case GET_CATALOG_EVENT:

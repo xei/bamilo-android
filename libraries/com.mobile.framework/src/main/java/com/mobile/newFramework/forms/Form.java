@@ -38,7 +38,7 @@ public class Form implements IJSONSerializable, Parcelable {
     @Override
     @RequiredJson.JsonStruct
     public int getRequiredJson() {
-        return RequiredJson.FORM_ENTITY;
+        return RequiredJson.METADATA;
     }
 
     /**
@@ -92,33 +92,38 @@ public class Form implements IJSONSerializable, Parcelable {
      * )
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
+    public boolean initialize(JSONObject json) {
         try {
+            JSONObject jsonObject = json.getJSONObject(RestConstants.JSON_FORM_ENTITY_TAG);
             method = jsonObject.optString(RestConstants.METHOD);
             action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
+
             // Case FIELDS
             JSONArray fieldsArray = null;
             if(jsonObject.has(RestConstants.JSON_FIELDS_TAG)){
                 fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
             }
+
             // Validate array
             if(fieldsArray != null){
                 for (int i = 0; i < fieldsArray.length(); ++i) {
+                    // TODO: VALIDATE THIS APPROACH
                     if(!fieldsArray.getJSONObject(i).has(RestConstants.JSON_SCENARIO_TAG) && !fieldsArray.getJSONObject(i).has(RestConstants.ID)){
                         FormField field = new FormField(this);
                         if (field.initialize(fieldsArray.getJSONObject(i))) {
                             fields.add(field);
                             mFieldKeyMap.put(field.getKey(), field);
                         }
-                    } else {
+                    }
+                    // TODO: VALIDATE THIS APPROACH
+                    else {
                         Form subForm = new Form();
                         subForm.initialize(fieldsArray.getJSONObject(i));
-                        Print.d("code1subForms : subForm :  " + subForm);
                         subForms.put(fieldsArray.getJSONObject(i).getString(RestConstants.JSON_SCENARIO_TAG), subForm);
                     }
                 }
             }
-            
+            // TODO: VALIDATE THIS APPROACH
             if(subForms != null && subForms.size() > 0){
                 for (int i = 0; i < fields.size(); i++) {
                     if(fields.get(i).getDataSet().size()>0){
@@ -135,7 +140,7 @@ public class Form implements IJSONSerializable, Parcelable {
                 subForms.clear();
                 subForms = null;
             }
-            
+
         } catch (JSONException e) {
             Print.d("initialize: error parsing jsonobject" + e);
             return false;

@@ -67,7 +67,7 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         // Get image
         mImageTablet = mImagePhone = jsonObject.getString(RestConstants.JSON_IMAGE_TAG);
         // Get Rich Relevance hash
-        mRichRelevanceClickHash = jsonObject.optString(RestConstants.JSON_RR_CLICK_REQUEST);
+        mRichRelevanceClickHash = jsonObject.optString(RestConstants.CLICK_REQUEST);
         // Get price
         mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
         // Get price converted

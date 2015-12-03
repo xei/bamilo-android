@@ -167,7 +167,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.CART_ENTITY;
+        return RequiredJson.METADATA;
     }
 
     /**

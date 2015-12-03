@@ -57,10 +57,6 @@ public class Seller implements IJSONSerializable, Parcelable {
         return mTarget;
     }
 
-    public void setTarget(String target) {
-        this.mTarget = mTarget;
-    }
-
     public int getRatingCount() {
         return mRatingCount;
     }
