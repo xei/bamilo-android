@@ -91,20 +91,20 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         // Get title
         mTitle = jsonObject.optString(RestConstants.TITLE);
         // Get sub title
-        mSubTitle = jsonObject.optString(RestConstants.JSON_SUB_TITLE_TAG);
+        mSubTitle = jsonObject.optString(RestConstants.SUB_TITLE);
         // Get target link
         mTargetLink = jsonObject.optString(RestConstants.TARGET);
         // Get timer in seconds and convert to millis
-        mTimerInMillis = jsonObject.optLong(RestConstants.JSON_UNIX_TIME_TAG) * DateTimeUtils.UNIT_SEC_TO_MILLIS;
+        mTimerInMillis = jsonObject.optLong(RestConstants.UNIX_TIME) * DateTimeUtils.UNIT_SEC_TO_MILLIS;
         // Validate images
-        if (jsonObject.has(RestConstants.JSON_IMAGE_TAG)) {
+        if (jsonObject.has(RestConstants.IMAGE)) {
             // Get image
-            mImagePhone = mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+            mImagePhone = mImageTablet = jsonObject.optString(RestConstants.IMAGE);
         } else {
             // Get image phone
-            mImagePhone = jsonObject.optString(RestConstants.JSON_IMAGE_PORTRAIT_TAG);
+            mImagePhone = jsonObject.optString(RestConstants.IMAGE_PORTRAIT);
             // Get image tablet
-            mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_LANDSCAPE_TAG);
+            mImageTablet = jsonObject.optString(RestConstants.IMAGE_LANDSCAPE);
         }
         return false;
     }

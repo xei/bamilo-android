@@ -860,7 +860,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickCombosProduct() {
         Log.i(TAG, "ON CLICK COMBOS SECTION");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RestConstants.JSON_BUNDLE_PRODUCTS, mProduct.getProductBundle());
+        bundle.putParcelable(RestConstants.BUNDLE_PRODUCTS, mProduct.getProductBundle());
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, mProduct.getSku());
         getBaseActivity().onSwitchFragment(FragmentType.COMBO_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

@@ -36,8 +36,8 @@ public class CatalogRatingFilterOption extends CatalogFilterOption implements Mu
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        val = jsonObject.getString(RestConstants.JSON_VAL_TAG);
-        average = jsonObject.getInt(RestConstants.JSON_RATINGS_AVERAGE_TAG);
+        val = jsonObject.getString(RestConstants.VAL);
+        average = jsonObject.getInt(RestConstants.AVERAGE);
         return super.initialize(jsonObject);
     }
 

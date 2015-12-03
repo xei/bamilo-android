@@ -158,15 +158,15 @@ public class PickUpStationObject implements Parcelable {
 
     public void initialize(JSONObject jsonObject) {
         //this.pickupStationRegionId = jsonObject.optString(RestConstants.JSON_PICKUP_ID_PICKUP_STATION_REGION);
-        this.pickupStationId = jsonObject.optString(RestConstants.JSON_PICKUP_STATION_ID);
-        this.name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-        this.pickupId = jsonObject.optString(RestConstants.JSON_PICKUP_ID);
-        this.image = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
-        this.address = jsonObject.optString(RestConstants.JSON_PICKUP_ADDRESS);
-        this.place = jsonObject.optString(RestConstants.JSON_PICKUP_PLACE);
-        this.city = jsonObject.optString(RestConstants.JSON_PICKUP_CITY);
-        this.openingHours = jsonObject.optString(RestConstants.JSON_PICKUP_OPENING_HOURS);
-        this.shippingFee = jsonObject.optLong(RestConstants.JSON_SHIPPING_FEE_TAG);
+        this.pickupStationId = jsonObject.optString(RestConstants.ID_PICKUPSTATION);
+        this.name = jsonObject.optString(RestConstants.NAME);
+        this.pickupId = jsonObject.optString(RestConstants.PICKUP_ID);
+        this.image = jsonObject.optString(RestConstants.IMAGE);
+        this.address = jsonObject.optString(RestConstants.ADDRESS);
+        this.place = jsonObject.optString(RestConstants.PLACE);
+        this.city = jsonObject.optString(RestConstants.CITY);
+        this.openingHours = jsonObject.optString(RestConstants.OPENING_HOURS);
+        this.shippingFee = jsonObject.optLong(RestConstants.SHIPPING_FEE);
 
         this.paymentMethods = new ArrayList<>();
         JSONArray arrayPaymentMethod;
@@ -183,7 +183,7 @@ public class PickUpStationObject implements Parcelable {
         this.regions = new ArrayList<>();
         JSONObject arrayRegions;
         try {
-            arrayRegions = jsonObject.getJSONObject(RestConstants.JSON_PICKUP_REGIONS);
+            arrayRegions = jsonObject.getJSONObject(RestConstants.REGIONS);
             Iterator<?> keys = arrayRegions.keys();
             while (keys.hasNext()) {
                 String key = keys.next().toString();

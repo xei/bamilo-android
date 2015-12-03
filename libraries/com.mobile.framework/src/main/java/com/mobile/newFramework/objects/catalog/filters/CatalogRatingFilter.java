@@ -33,9 +33,9 @@ public class CatalogRatingFilter extends CatalogCheckFilter{
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        JSONObject starsSize = jsonObject.getJSONObject(RestConstants.JSON_RATING_STAR_SIZE_TAG);
-        min = starsSize.getInt(RestConstants.JSON_MIN_TAG);
-        max = starsSize.getInt(RestConstants.JSON_MAX_TAG);
+        JSONObject starsSize = jsonObject.getJSONObject(RestConstants.STARS_SIZE);
+        min = starsSize.getInt(RestConstants.MIN);
+        max = starsSize.getInt(RestConstants.MAX);
         return super.initialize(jsonObject);
     }
 

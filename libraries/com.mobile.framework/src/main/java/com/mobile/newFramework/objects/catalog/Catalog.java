@@ -18,7 +18,7 @@ public class Catalog implements IJSONSerializable{
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        if(jsonObject.has(RestConstants.JSON_FEATURED_BOX_TAG)){
+        if(jsonObject.has(RestConstants.FEATURED_BOX)){
             featuredBox = new FeaturedBox(jsonObject);
         } else {
             catalogPage = new CatalogPage(jsonObject);

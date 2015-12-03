@@ -156,19 +156,19 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // if the field is one of the supported types
             mId = jsonObject.optString(RestConstants.ID);
             mKey = jsonObject.optString(RestConstants.KEY); // Used for form images
-            mName = jsonObject.optString(RestConstants.JSON_FIELD_NAME_TAG);
+            mName = jsonObject.optString(RestConstants.NAME);
             mLabel = jsonObject.optString(RestConstants.LABEL);
             mValue = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
-            mScenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
-            mLinkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
+            mScenario = jsonObject.optString(RestConstants.SCENARIO);
+            mLinkText = jsonObject.optString(RestConstants.LINK_TEXT);
             isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
             isDisabled = jsonObject.optBoolean(RestConstants.DISABLED);
-            mFormat = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
+            mFormat = jsonObject.optString(RestConstants.FORMAT);
             isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), "before");
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
 
             // Case RULES
-            JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_RULES_TAG);
+            JSONObject validationObject = jsonObject.optJSONObject(RestConstants.RULES);
             if(validationObject != null) {
                 if (!mValidation.initialize(validationObject)) {
                     //Log.e(TAG, "initialize: Error parsing the rules fields");
@@ -177,11 +177,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
             // Case "data_set" //should be more generic
-            JSONArray optionsArray  = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_FORM_RATING_TAG);
+            JSONArray optionsArray  = jsonObject.optJSONArray(RestConstants.DATA_SET);
             //dataSetRating.clear();
             if (optionsArray != null && optionsArray.length() > 0) {
                 for (int i = 0; i < optionsArray.length(); i++) {
-                    mDataSetRating.put(optionsArray.getJSONObject(i).optString(RestConstants.JSON_ID_FORM_RATING_TAG), optionsArray.getJSONObject(i).optString(RestConstants.JSON_TITLE_FORM_RATING_TAG));
+                    mDataSetRating.put(optionsArray.getJSONObject(i).optString(RestConstants.ID_RATING_TYPE), optionsArray.getJSONObject(i).optString(RestConstants.DISPLAY_TITLE));
                 }
             }
 
@@ -266,7 +266,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
             // CASE fields from related TODO use options
-            dataOptionsArray = jsonObject.optJSONArray(RestConstants.JSON_FIELDS_TAG);
+            dataOptionsArray = jsonObject.optJSONArray(RestConstants.FIELDS);
             if(dataOptionsArray != null) {
                 mOptions = new ArrayList<>();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
@@ -284,7 +284,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType != FormInputType.errorMessage){
                 mDataSet.clear();
                 mPaymentFields = new HashMap<>();
-                dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
+                dataOptionsObject = jsonObject.optJSONObject(RestConstants.OPTIONS);
                 Iterator<?> it = dataOptionsObject.keys();
                 //Clean payment method info
                 while (it.hasNext()) {
@@ -294,7 +294,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     //Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
                     mDataSet.put(value, label);
                     // Info
-                    JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
+                    JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.DESCRIPTION);
                     PaymentInfo mPaymentInfo = new PaymentInfo();
                     mPaymentInfo.initialize(paymentDescription);
                     mPaymentInfoList.put(label,mPaymentInfo);
@@ -364,18 +364,18 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // fields
             jsonObject.put(RestConstants.ID, mId);
             jsonObject.put(RestConstants.KEY, mKey);
-            jsonObject.put(RestConstants.JSON_FIELD_NAME_TAG, mName);
+            jsonObject.put(RestConstants.NAME, mName);
             jsonObject.put(RestConstants.LABEL, mLabel);
             jsonObject.put(RestConstants.VALUE, mValue);
-            jsonObject.put(RestConstants.JSON_TERMS_TAG, mLinkText);
+            jsonObject.put(RestConstants.TERMS, mLinkText);
             // validation
-            jsonObject.put(RestConstants.JSON_RULES_TAG, mValidation.toJSON());
+            jsonObject.put(RestConstants.RULES, mValidation.toJSON());
             JSONArray dataSetArray = new JSONArray();
             for (String dataSetItem : mDataSet.keySet()) {
                 dataSetArray.put(dataSetItem);
             }
-            jsonObject.put(RestConstants.JSON_DATA_SET_TAG, dataSetArray);
-            jsonObject.put(RestConstants.JSON_DATA_SET_SOURCE_TAG, mDataSetSource);
+            jsonObject.put(RestConstants.DATASET, dataSetArray);
+            jsonObject.put(RestConstants.DATASET_SOURCE, mDataSetSource);
 
         } catch (JSONException e) {
             e.printStackTrace();

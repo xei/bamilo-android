@@ -363,11 +363,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Hide the default check boxes
      */
     private void hideSomeFields(DynamicForm dynamicForm, boolean isBilling) {
-        DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
+        DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.IS_DEFAULT_SHIPPING);
         if (item != null) {
             item.getEditControl().setVisibility(View.GONE);
         }
-        item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
+        item = dynamicForm.getItemByKey(RestConstants.IS_DEFAULT_BILLING);
         if (item != null) {
             item.getEditControl().setVisibility(View.GONE);
         }
@@ -375,7 +375,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Hide the gender field only for billing address
         if (isBilling) {
             try {
-                item = dynamicForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
+                item = dynamicForm.getItemByKey(RestConstants.GENDER);
                 if (item != null) {
                     item.getMandatoryControl().setVisibility(View.GONE);
                     item.getEditControl().setVisibility(View.GONE);
@@ -621,8 +621,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * method that controls that the addresses have the same gender when creating billing and shipping at the same time
      */
     private void validateSameGender() {
-        DynamicFormItem shippingGenderItem = shippingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
-        DynamicFormItem billingGenderItem = billingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
+        DynamicFormItem shippingGenderItem = shippingFormGenerator.getItemByKey(RestConstants.GENDER);
+        DynamicFormItem billingGenderItem = billingFormGenerator.getItemByKey(RestConstants.GENDER);
         if (shippingGenderItem != null && billingGenderItem != null) {
             try {
                 int genderIndex = -1;
@@ -654,9 +654,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Update default values (unknown keys)
         for (Map.Entry<String, Object> value : mContentValues.valueSet()) {
             String key = value.getKey();
-            if (key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) {
+            if (key.contains(RestConstants.IS_DEFAULT_BILLING)) {
                 mContentValues.put(key, isDefaultBilling);
-            } else if (key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) {
+            } else if (key.contains(RestConstants.IS_DEFAULT_SHIPPING)) {
                 mContentValues.put(key, isDefaultShipping);
             }
         }

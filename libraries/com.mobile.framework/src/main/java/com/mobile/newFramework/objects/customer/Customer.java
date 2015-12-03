@@ -47,14 +47,14 @@ public class Customer implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) {
         try {
             // Entity
-            jsonObject = jsonObject.getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY_TAG);
+            jsonObject = jsonObject.getJSONObject(RestConstants.CUSTOMER_ENTITY);
             // Data
             id = jsonObject.getString(RestConstants.ID);
             firstName = jsonObject.getString(RestConstants.FIRST_NAME);
             lastName = jsonObject.getString(RestConstants.LAST_NAME);
             email = jsonObject.getString(RestConstants.EMAIL);
-            gender = jsonObject.optString(RestConstants.JSON_GENDER_TAG);
-            birthday = jsonObject.optString(RestConstants.JSON_BIRTHDAY_TAG);
+            gender = jsonObject.optString(RestConstants.GENDER);
+            birthday = jsonObject.optString(RestConstants.BIRTHDAY);
             // Get wish list products
             JSONArray jsonArray = jsonObject.optJSONArray(RestConstants.WISH_LIST_PRODUCTS);
             if (jsonArray != null && jsonArray.length() > 0) {
@@ -177,7 +177,7 @@ public class Customer implements IJSONSerializable, Parcelable {
             jsonObject.put(RestConstants.FIRST_NAME, firstName);
             jsonObject.put(RestConstants.LAST_NAME, lastName);
             jsonObject.put(RestConstants.EMAIL, email);
-            jsonObject.put(RestConstants.JSON_GENDER_TAG, gender);
+            jsonObject.put(RestConstants.GENDER, gender);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

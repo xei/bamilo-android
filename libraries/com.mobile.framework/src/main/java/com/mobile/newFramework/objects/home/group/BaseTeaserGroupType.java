@@ -84,7 +84,7 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
             if(mType == TeaserGroupType.FORM_NEWSLETTER){
                 mData.add(getFormTeaser(jsonObject));
             } else {
-                JSONArray teasersData = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+                JSONArray teasersData = jsonObject.getJSONArray(RestConstants.DATA);
                 // Validate size
                 int size = teasersData.length();
                 if (size > 0) {

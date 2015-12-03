@@ -37,12 +37,12 @@ public class Languages extends ArrayList<Language> implements IJSONSerializable 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get languages
-        JSONArray languages = jsonObject.getJSONArray(RestConstants.JSON_COUNTRY_LANGUAGES);
+        JSONArray languages = jsonObject.getJSONArray(RestConstants.LANGUAGES);
         for (int i = 0; i < languages.length(); i++) {
             Language language = new Language();
-            language.setLangCode(languages.getJSONObject(i).getString(RestConstants.JSON_CODE_TAG));
-            language.setLangName(languages.getJSONObject(i).getString(RestConstants.JSON_NAME_TAG));
-            language.setIsDefault(languages.getJSONObject(i).getBoolean(RestConstants.JSON_COUNTRY_LANG_DEFAULT));
+            language.setLangCode(languages.getJSONObject(i).getString(RestConstants.CODE));
+            language.setLangName(languages.getJSONObject(i).getString(RestConstants.NAME));
+            language.setIsDefault(languages.getJSONObject(i).getBoolean(RestConstants.DEFAULT));
             this.add(language);
         }
         return true;

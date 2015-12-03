@@ -59,17 +59,17 @@ public class Campaign implements IJSONSerializable, Parcelable {
         // Get banner
         JSONObject cms = jsonObject.optJSONObject(RestConstants.CMS);
         // Get mobile and tablet banners
-        JSONArray banner = (cms != null) ? cms.optJSONArray(RestConstants.JSON_MOBILE_BANNER_TAG) : null;
+        JSONArray banner = (cms != null) ? cms.optJSONArray(RestConstants.MOBILE_BANNER) : null;
         mMobileBanner = (banner != null && banner.length() > 0) ? banner.get(0).toString() : null;
-        JSONArray bannerDesktopA = (cms != null) ? cms.optJSONArray(RestConstants.JSON_DESKTOP_BANNER_TAG) : null;
+        JSONArray bannerDesktopA = (cms != null) ? cms.optJSONArray(RestConstants.DESKTOP_BANNER) : null;
         mTabletBanner = (bannerDesktopA != null && bannerDesktopA.length() > 0) ? bannerDesktopA.get(0).toString() : null;
         mTabletBanner = ((mTabletBanner == null) ? mMobileBanner : mTabletBanner);
         // Get campaign
         JSONObject campaign = jsonObject.getJSONObject(RestConstants.CAMPAIGN_ENTITY);
         // Get name
-        mName = campaign.optString(RestConstants.JSON_NAME_TAG);
+        mName = campaign.optString(RestConstants.NAME);
         // Get product count
-        mCount = campaign.optInt(RestConstants.JSON_PRODUCT_COUNT_TAG);
+        mCount = campaign.optInt(RestConstants.PRODUCT_COUNT);
         mTotalProducts = campaign.optInt(RestConstants.TOTAL_PRODUCTS);
         // Get data
         JSONArray itemsA = campaign.getJSONArray(RestConstants.PRODUCTS);
