@@ -42,7 +42,7 @@ public enum EventType {
 
     ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/cart/addproduct/", AigRestContract.NO_CACHE),
 
-    ADD_ITEMS_TO_SHOPPING_CART_EVENT("https:/order/addmultiple/", AigRestContract.NO_CACHE),
+    ADD_ITEMS_TO_SHOPPING_CART_EVENT("https:/cart/addmultiple/", AigRestContract.NO_CACHE),
 
     REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/cart/removeproduct/", AigRestContract.NO_CACHE),
 
@@ -137,7 +137,7 @@ public enum EventType {
 
     SET_PAYMENT_METHOD_EVENT("https:/multistep/paymentmethod/", AigRestContract.DEFAULT_CACHE_TIME),
 
-    GET_MY_ORDERS_LIST_EVENT("http:/order/list/", AigRestContract.NO_CACHE),
+    GET_MY_ORDERS_LIST_EVENT("http:/orderlist/", AigRestContract.NO_CACHE),
 
     CHECKOUT_FINISH_EVENT("https:/multistep/finish/", AigRestContract.NO_CACHE),
 
@@ -165,7 +165,7 @@ public enum EventType {
 
     GET_PRODUCT_BUNDLE("http:/catalog/bundle/", AigRestContract.NO_CACHE),
 
-    ADD_PRODUCT_BUNDLE("http:/order/addbundle/", AigRestContract.NO_CACHE),
+    ADD_PRODUCT_BUNDLE("http:/cart/addbundle/", AigRestContract.NO_CACHE),
 
     GET_SELLER_REVIEWS,
 

@@ -7,11 +7,14 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+
+import java.util.Map;
 
 /**
  * Get Catalog Page helper
@@ -22,55 +25,31 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
 
     protected static String TAG = GetCatalogPageHelper.class.getSimpleName();
 
-    public static final String URL = Constants.BUNDLE_URL_KEY;
-    //
-    private static final int mCurrentPage = IntConstants.FIRST_PAGE;
-    // Request parameters
-    public static final String PAGE = "page";
-    public static final String MAX_ITEMS = "maxitems";
-    public static final String SORT = "sort";
-    public static final String DIRECTION = "dir";
-    public static final String QUERY = "q";
-    public static final String CATEGORY = "category";
-    public static final String BRAND = "brand";
-    public static final String HASH = "hash";
+    // TODO: API SHOULD RETURN THIS PARAMETER RESPONSE
+    private int mCurrentPage = IntConstants.FIRST_PAGE;
 
     @Override
     public EventType getEventType() {
         return EventType.GET_CATALOG_EVENT;
     }
 
-//    @Override
-//    protected Map<String, String> getRequestData(Bundle args) {
-//        // Get catalog parameters
-//        ContentValues catalogArguments = args.getParcelable(Constants.BUNDLE_DATA_KEY);
-//        // Get page number
-//        mCurrentPage = catalogArguments.getAsInteger(PAGE);
-//        //
-//        return super.getRequestData(args);
-//    }
-
-//
-//    @Override
-//    protected String getRequestUrl(Bundle args) {
-//        // Get catalog URL
-//        String baseUrl = args.getString(URL);
-//        // Case search then url is empty
-//        if (TextUtils.isEmpty(baseUrl)) baseUrl = mEventType.action;
-//        //
-//        return RestUrlUtils.completeUri(Uri.parse(baseUrl)).toString();
-//    }
+    @Override
+    protected Map<String, String> getRequestData(Bundle args) {
+        // Get catalog parameters
+        ContentValues catalogArguments = args.getParcelable(Constants.BUNDLE_PATH_KEY);
+        // Get page number
+        if (catalogArguments != null) {
+            mCurrentPage = catalogArguments.getAsInteger(RestConstants.PAGE);
+        }
+        return super.getRequestData(args);
+    }
 
     /**
      * Method used to create a request bundle.
      */
-    public static Bundle createBundle(Bundle args) {
-        // Get catalog parameters
-        ContentValues catalogArguments = args.getParcelable(Constants.BUNDLE_DATA_KEY);
-        // Get page number
-//        mCurrentPage = catalogArguments.getAsInteger(PAGE);
+    public static Bundle createBundle(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, catalogArguments);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 

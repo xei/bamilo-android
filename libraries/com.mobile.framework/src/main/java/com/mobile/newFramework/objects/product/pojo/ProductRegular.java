@@ -49,7 +49,7 @@ public class ProductRegular extends ProductBase {
     protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
-        mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
+        mBrand = jsonObject.getString(RestConstants.BRAND);
         mBrandId = jsonObject.optInt(RestConstants.JSON_BRAND_ID_TAG);
         // Optional TODO FIX THIS
         mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
