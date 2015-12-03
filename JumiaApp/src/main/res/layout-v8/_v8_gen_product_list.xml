@@ -14,14 +14,16 @@
         layout="@layout/image_loadable"
         android:background="@color/color_accent" />
 
-    <ImageView
-        android:id="@+id/image_is_new"
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_centerInParent="false"
-        android:src="@drawable/selector_is_new" />
+        android:layout_marginTop="@dimen/dimen_30px"
+        android:layout_marginRight="@dimen/dimen_30px"
+        android:text="@string/new_arrival_badge" />
 
     <!-- INFORMATION -->
 
