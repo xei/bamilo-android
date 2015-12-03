@@ -64,9 +64,6 @@ public class OfferList implements IJSONSerializable, Parcelable {
                     offers.add(offer);
                 }
             }
-
-
-
         } catch (JSONException e) {
             return false;
         }
