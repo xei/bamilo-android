@@ -62,13 +62,13 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
             mPaymentType = jsonPay.optString(RestConstants.TYPE);
         }
         // Get billing address
-        JSONObject jsonBilAddress = jsonObject.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
+        JSONObject jsonBilAddress = jsonObject.optJSONObject(RestConstants.BILLING_ADDRESS);
         if (jsonBilAddress != null) {
             mBillingAddress = new Address();
             mBillingAddress.initialize(jsonBilAddress);
         }
         // Get shipping address
-        JSONObject jsonShipAddress = jsonObject.optJSONObject(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG);
+        JSONObject jsonShipAddress = jsonObject.optJSONObject(RestConstants.SHIPPING_ADDRESS);
         if (jsonShipAddress != null) {
             mShippingAddress = new Address();
             mShippingAddress.initialize(jsonShipAddress);

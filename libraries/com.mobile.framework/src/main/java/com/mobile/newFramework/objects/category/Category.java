@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -130,20 +131,19 @@ public class Category implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        mType = jsonObject.optString(RestConstants.JSON_CATEGORY_TYPE_TAG);
-        if(isSection){
-            mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG).toUpperCase();
-        } else {
-            mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG);
+        mType = jsonObject.optString(RestConstants.TYPE);
+        mName = jsonObject.optString(RestConstants.LABEL);
+        if(isSection && TextUtils.isNotEmpty(mName)) {
+            mName = mName.toUpperCase();
         }
-        mImage = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
-        mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
+        mImage = jsonObject.optString(RestConstants.IMAGE);
+        mUrlKey = jsonObject.optString(RestConstants.URL_KEY);
         mTargetLink = jsonObject.optString(RestConstants.TARGET);
-        mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
-        mPath = jsonObject.optString(RestConstants.JSON_CATEGORY_URL_TAG);
+        mUrlKey = jsonObject.optString(RestConstants.URL_KEY);
+        mPath = jsonObject.optString(RestConstants.URL);
         Print.i(TAG, "code1categoy : getApiUrl: " + mTargetLink + " category.getName(): " + mName);
         // Get sub categories
-        JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
+        JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.CHILDREN);
         if (childrenArray != null) {
             mSubCategories = new ArrayList<>();
             for (int i = 0; i < childrenArray.length(); ++i) {
@@ -162,9 +162,9 @@ public class Category implements IJSONSerializable, Parcelable {
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_CATEGORY_TYPE_TAG, mType);
-            jsonObject.put(RestConstants.JSON_CATEGORY_LABEL_TAG, mName);
-            jsonObject.put(RestConstants.JSON_URL_KEY_TAG, mUrlKey);
+            jsonObject.put(RestConstants.TYPE, mType);
+            jsonObject.put(RestConstants.LABEL, mName);
+            jsonObject.put(RestConstants.URL_KEY, mUrlKey);
 
             JSONArray childrenArray = new JSONArray();
 
@@ -172,7 +172,7 @@ public class Category implements IJSONSerializable, Parcelable {
                 childrenArray.put(child.toJSON());
             }
 
-            jsonObject.put(RestConstants.JSON_CHILDREN_TAG, childrenArray);
+            jsonObject.put(RestConstants.CHILDREN, childrenArray);
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -233,8 +233,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         ContentValues values = mDynamicForm.save();
         // Get value from newsletter
         isSubscribingNewsletter = false;
-        if(values.containsKey(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG)) {
-            isSubscribingNewsletter = values.getAsBoolean(RestConstants.JSON_NEWSLETTER_CATEGORIES_SUBSCRIBED_TAG);
+        if(values.containsKey(RestConstants.REGISTER_NEWSLETTER_CATEGORIES_SUBSCRIBED)) {
+            isSubscribingNewsletter = values.getAsBoolean(RestConstants.REGISTER_NEWSLETTER_CATEGORIES_SUBSCRIBED);
         }
         // Register user
         triggerRegister(values);

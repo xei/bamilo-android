@@ -65,17 +65,17 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         // Get brand
         mBrand = jsonObject.getString(RestConstants.BRAND);
         // Get image
-        mImageTablet = mImagePhone = jsonObject.getString(RestConstants.JSON_IMAGE_TAG);
+        mImageTablet = mImagePhone = jsonObject.getString(RestConstants.IMAGE);
         // Get Rich Relevance hash
-        mRichRelevanceClickHash = jsonObject.optString(RestConstants.JSON_RR_CLICK_REQUEST);
+        mRichRelevanceClickHash = jsonObject.optString(RestConstants.CLICK_REQUEST);
         // Get price
-        mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
+        mPrice = jsonObject.getDouble(RestConstants.PRICE);
         // Get price converted
-        mPriceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
+        mPriceConverted = jsonObject.getDouble(RestConstants.PRICE_CONVERTED);
         // Get special price
-        mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+        mSpecialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
         // Get special price converted
-        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
+        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.SPECIAL_PRICE_CONVERTED);
         return true;
     }
 

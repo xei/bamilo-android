@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.mobile.newFramework.rest.configs.AigConfigurations;
+import com.mobile.newFramework.rest.configs.HeaderConstants;
 import com.mobile.newFramework.rest.cookies.AigCookieManager;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
 import com.mobile.newFramework.rest.errors.NoConnectivityException;
@@ -21,6 +22,7 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.HttpCookie;
+import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -156,13 +158,13 @@ public class AigHttpClient extends OkClient {
         // CACHE
         setCache(okHttpClient, context);
         // REDIRECTS
-        okHttpClient.setFollowSslRedirects(true);
+        okHttpClient.setFollowSslRedirects(false);
         okHttpClient.setFollowRedirects(true);
         // TIMEOUTS
         okHttpClient.setReadTimeout(AigConfigurations.SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
         okHttpClient.setConnectTimeout(AigConfigurations.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
         // INTERCEPTORS
-        //addInterceptors(okHttpClient);
+        addInterceptors(okHttpClient);
         // Return client
         return okHttpClient;
     }
@@ -204,11 +206,45 @@ public class AigHttpClient extends OkClient {
      */
     @SuppressWarnings("unused")
     private static void addInterceptors(OkHttpClient okHttpClient) {
-        okHttpClient.interceptors().add(new RequestInterceptor());
-        okHttpClient.interceptors().add(new ResponseInterceptor());
+        okHttpClient.interceptors().add(new RedirectResponseInterceptor());
+        //okHttpClient.interceptors().add(new RequestDebuggerInterceptor());
+        //okHttpClient.interceptors().add(new ResponseDebuggerInterceptor());
     }
 
-    private static class RequestInterceptor implements Interceptor {
+    private static class RedirectResponseInterceptor implements Interceptor {
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            // Handle Redirects
+            // If the server returns an 301 error code after an https request we should try to perform the same request with http
+            // We need to use the returned Location and keep the body info.
+            Response response = chain.proceed(chain.request());
+            if(response.networkResponse().code() == HttpURLConnection.HTTP_MOVED_PERM){
+                Request request = chain.request();
+                int tryCount = 0;
+                while (!response.isSuccessful() && tryCount < 1) {
+                    tryCount++;
+                    Request recoveryRequest = request.newBuilder().url(response.headers().get(HeaderConstants.LOCATION)).build();
+                    // retry the request
+                    response = chain.proceed(recoveryRequest);
+                }
+
+                Print.w(TAG, "############ OK HTTP: REDIRECT RESPONSE INTERCEPTOR ############");
+                // Print.d(TAG, "Headers:          \n" + response.headers());
+                // Print.d(TAG, "Message:            " + response.message());
+                // Print.d(TAG, "Redirect:           " + response.isRedirect());
+                // Print.d(TAG, "Cache response:     " + response.cacheResponse());
+                Print.w(TAG, "Network response:   " + response.networkResponse());
+                Print.w(TAG, "> Request:          " + response.request());
+                Print.w(TAG, "> Method:           " + chain.request().method());
+                Print.w(TAG, "######################################################\n");
+
+            }
+            return response;
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private static class RequestDebuggerInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Print.d(TAG, "############ OK HTTP: REQUEST INTERCEPTOR ############");
@@ -225,7 +261,8 @@ public class AigHttpClient extends OkClient {
         }
     }
 
-    private static class ResponseInterceptor implements Interceptor {
+    @SuppressWarnings("unused")
+    private static class ResponseDebuggerInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Print.d(TAG, "############ OK HTTP: RESPONSE INTERCEPTOR ############");
@@ -235,7 +272,8 @@ public class AigHttpClient extends OkClient {
             Print.d(TAG, "Redirect:           " + response.isRedirect());
             Print.d(TAG, "Cache response:     " + response.cacheResponse());
             Print.d(TAG, "Network response:   " + response.networkResponse());
-            Print.d(TAG, "> Request:          " + response.request().toString());
+            Print.d(TAG, "> Request:          " + response.request());
+            Print.d(TAG, "> Method:           " + chain.request().method());
             Print.d(TAG, "######################################################\n");
             return response;
         }
@@ -251,7 +289,7 @@ public class AigHttpClient extends OkClient {
     }
 
     private static File getCache(@NonNull Context context){
-        return new File(context.getFilesDir().toString() + "/retrofitCache");
+        return new File(context.getFilesDir() + "/retrofitCache");
     }
 
 }

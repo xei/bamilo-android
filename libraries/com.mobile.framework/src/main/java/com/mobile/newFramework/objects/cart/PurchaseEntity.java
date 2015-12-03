@@ -52,9 +52,9 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public boolean initialize(JSONObject jsonObject) throws JSONException {
+    public boolean initialize(JSONObject json) throws JSONException {
         // Cart entity
-//        JSONObject cartEntity = jsonObject.getJSONObject(RestConstants.CART_ENTITY);
+        JSONObject jsonObject = json.getJSONObject(RestConstants.CART_ENTITY);
         // Total
         mTotal = jsonObject.getDouble(RestConstants.TOTAL);
         mTotalConverted = jsonObject.getDouble(RestConstants.TOTAL_CONVERTED);
@@ -114,13 +114,13 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             mPaymentMethod = jsonPay.optString(RestConstants.LABEL);
         }
         // Get billing address
-        JSONObject jsonBilAddress = jsonObject.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
+        JSONObject jsonBilAddress = jsonObject.optJSONObject(RestConstants.BILLING_ADDRESS);
         if (jsonBilAddress != null) {
             mBillingAddress = new Address();
             mBillingAddress.initialize(jsonBilAddress);
         }
         // Get shipping address
-        JSONObject jsonShipAddress = jsonObject.optJSONObject(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG);
+        JSONObject jsonShipAddress = jsonObject.optJSONObject(RestConstants.SHIPPING_ADDRESS);
         if (jsonShipAddress != null) {
             mShippingAddress = new Address();
             mShippingAddress.initialize(jsonShipAddress);
@@ -141,7 +141,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.CART_ENTITY;
+        return RequiredJson.METADATA;
     }
 
 	/*
@@ -254,9 +254,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
      */
     public String getAttributeSetIdList() {
         String attributeList = "";
-        PurchaseCartItem item;
         if(mCartItems != null && mCartItems.size() > 0){
-
             for (int i = 0; i < mCartItems.size() ; i++) {
                 if (TextUtils.isEmpty(attributeList)) {
                     attributeList = mCartItems.get(i).getAttributeSetId();
@@ -264,7 +262,6 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
                     attributeList = attributeList +";"+ mCartItems.get(i).getAttributeSetId();
                 }
             }
-
         }
         return attributeList;
     }

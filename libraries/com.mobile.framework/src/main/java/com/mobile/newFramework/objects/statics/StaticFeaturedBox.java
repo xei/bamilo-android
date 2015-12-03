@@ -42,7 +42,7 @@ public class StaticFeaturedBox implements IJSONSerializable, Parcelable {
         // Get title
         title = metadataObject.optString(RestConstants.TITLE);
         // Get items
-        JSONArray array = metadataObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray array = metadataObject.getJSONArray(RestConstants.DATA);
         if(array.length() > 0 ) {
             items = new ArrayList<>();
             for (int i = 0; i < array.length(); i++) {
@@ -52,7 +52,7 @@ public class StaticFeaturedBox implements IJSONSerializable, Parcelable {
                 items.add(product);
             }
         } else {
-            throw new JSONException("The Json array " + RestConstants.JSON_DATA_TAG + " is empty");
+            throw new JSONException("The Json array " + RestConstants.DATA + " is empty");
         }
         return true;
     }

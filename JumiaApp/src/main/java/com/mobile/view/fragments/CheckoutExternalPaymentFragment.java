@@ -500,13 +500,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                     bundle.putString(ConstantsIntentExtra.SUCCESS_INFORMATION, content);
 
                     String order_number = "";
-                    if (result.has(RestConstants.JSON_ORDER_NUMBER_TAG)) {
-                        order_number = result.optString(RestConstants.JSON_ORDER_NUMBER_TAG);
-                    } else if (result.has(RestConstants.JSON_ORDER_NR_TAG)) {
-                        order_number = result.optString(RestConstants.JSON_ORDER_NR_TAG);
+                    if (result.has(RestConstants.ORDER_NR)) {
+                        order_number = result.optString(RestConstants.ORDER_NR);
+                    } else if (result.has(RestConstants.ORDERNr)) {
+                        order_number = result.optString(RestConstants.ORDERNr);
                     }
 
-                    bundle.putString(RestConstants.JSON_ORDER_NUMBER_TAG, order_number);
+                    bundle.putString(RestConstants.ORDER_NR, order_number);
 
                     getBaseActivity().runOnUiThread(new Runnable() {
                         @Override

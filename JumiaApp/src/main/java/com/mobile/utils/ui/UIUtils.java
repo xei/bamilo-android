@@ -112,10 +112,7 @@ public class UIUtils {
         Context context = imageView.getContext();
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
         imageView.setImageResource(id);
-
     }
-
-
 
     /**
      * Animate a view sliding from down to top

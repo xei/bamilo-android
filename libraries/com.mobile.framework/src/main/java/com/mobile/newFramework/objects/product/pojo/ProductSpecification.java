@@ -57,8 +57,8 @@ public class ProductSpecification implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            mTitle = jsonObject.optString(RestConstants.JSON_HEAD_LABEL_TAG,"");
-            JSONArray bodyArray = jsonObject.optJSONArray(RestConstants.JSON_BODY_TAG);
+            mTitle = jsonObject.optString(RestConstants.HEAD_LABEL,"");
+            JSONArray bodyArray = jsonObject.optJSONArray(RestConstants.BODY);
 
             if(bodyArray != null && bodyArray.length() > 0){
                 for (int i = 0; i < bodyArray.length() ; i++) {

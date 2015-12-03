@@ -43,7 +43,7 @@ public class MyOrder implements IJSONSerializable {
             currentPage = paginationObject.optInt(RestConstants.CURRENT_PAGE, 0);
             totalPages = paginationObject.optInt(RestConstants.TOTAL_PAGES, 0);
 
-            int totalOrders = jsonObject.optInt(RestConstants.JSON_ORDER_TOTAL_NUM_TAG, -1);
+            int totalOrders = jsonObject.optInt(RestConstants.TOTAL_ORDERS, -1);
             Print.d( "ORDERS TOTAL: " + totalOrders);
             orders = new ArrayList<>();
             // Get order history

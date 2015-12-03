@@ -49,16 +49,16 @@ public class ShippingMethodFormBuilderHolder implements IJSONSerializable{
     public boolean initialize(JSONObject jsonObject) {
         try {
             id = jsonObject.optString(RestConstants.ID);
-            name = jsonObject.optString(RestConstants.JSON_FORM_TAG);
+            name = jsonObject.optString(RestConstants.FORM);
             method = jsonObject.optString(RestConstants.METHOD);
-            action = jsonObject.optString(RestConstants.JSON_ACTION_TAG);
+            action = jsonObject.optString(RestConstants.ACTION);
 
             fields.clear();
 
-            JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.JSON_FIELDS_TAG);
+            JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.FIELDS);
             if(fieldsArray != null){
                 for (int i = 0; i < fieldsArray.length(); ++i) {
-                    if(!fieldsArray.getJSONObject(i).has(RestConstants.JSON_SCENARIO_TAG)){
+                    if(!fieldsArray.getJSONObject(i).has(RestConstants.SCENARIO)){
                         ShippingMethodFormHolder field = new ShippingMethodFormHolder();
                         if (field.initialize(fieldsArray.getJSONObject(i))) {
                             fields.add(field);
@@ -93,16 +93,16 @@ public class ShippingMethodFormBuilderHolder implements IJSONSerializable{
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(RestConstants.ID, id);
-            jsonObject.put(RestConstants.JSON_FORM_TAG, name);
+            jsonObject.put(RestConstants.FORM, name);
             jsonObject.put(RestConstants.METHOD, method);
-            jsonObject.put(RestConstants.JSON_ACTION_TAG, action);
+            jsonObject.put(RestConstants.ACTION, action);
 
             JSONArray fieldArray = new JSONArray();
             for (ShippingMethodFormHolder field : fields) {
                 fieldArray.put(field.toJSON());
             }
 
-            jsonObject.put(RestConstants.JSON_FIELDS_TAG, fieldArray);
+            jsonObject.put(RestConstants.FIELDS, fieldArray);
 
         } catch (JSONException e) {
 //            Log.e(TAG, "trying to create json objects failed", e );

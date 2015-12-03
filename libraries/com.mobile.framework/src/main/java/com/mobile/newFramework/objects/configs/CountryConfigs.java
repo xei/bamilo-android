@@ -113,39 +113,39 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get currency info
-        mCurrencyIso = jsonObject.getString(RestConstants.JSON_COUNTRY_CURRENCY_ISO);
-        mCurrencySymbol = jsonObject.getString(RestConstants.JSON_COUNTRY_CURRENCY_SYMBOL);
-        mCurrencyPosition = jsonObject.optString(RestConstants.JSON_COUNTRY_CURRENCY_POSITION);
+        mCurrencyIso = jsonObject.getString(RestConstants.CURRENCY_ISO);
+        mCurrencySymbol = jsonObject.getString(RestConstants.CURRENCY_SYMBOL);
+        mCurrencyPosition = jsonObject.optString(RestConstants.CURRENCY_POSITION);
         // Fallback for currency
 //        if (TextUtils.isEmpty(mCurrencySymbol)) {
         if (mCurrencySymbol.equals("")) {
             mCurrencySymbol = mCurrencyIso;
         }
         // Get price info
-        mNoDecimals = jsonObject.getInt(RestConstants.JSON_COUNTRY_NO_DECIMALS);
-        mThousandsSep = jsonObject.getString(RestConstants.JSON_COUNTRY_THOUSANDS_SEP);
-        mDecimalsSep = jsonObject.getString(RestConstants.JSON_COUNTRY_DECIMALS_SEP);
+        mNoDecimals = jsonObject.getInt(RestConstants.NO_DECIMALS);
+        mThousandsSep = jsonObject.getString(RestConstants.THOUSANDS_SEP);
+        mDecimalsSep = jsonObject.getString(RestConstants.DECIMALS_SEP);
         // Get GA id
-        mGaId = jsonObject.getString(RestConstants.JSON_COUNTRY_GA_ID);
+        mGaId = jsonObject.getString(RestConstants.GA_ANDROID_ID);
         // Get GTM id
-        mGTMId = jsonObject.optString(RestConstants.JSON_COUNTRY_GTM_ID);
+        mGTMId = jsonObject.optString(RestConstants.GTM_ANDROID);
         // Get phone number
-        mPhoneNumber = jsonObject.getString(RestConstants.JSON_CALL_PHONE_TAG);
+        mPhoneNumber = jsonObject.getString(RestConstants.PHONE_NUMBER);
         // Get email
-        mCsEmail = jsonObject.getString(RestConstants.JSON_COUNTRY_CS_EMAIL);
+        mCsEmail = jsonObject.getString(RestConstants.CS_EMAIL);
         // Get facebook flag
-        isFacebookAvailable = jsonObject.getBoolean(RestConstants.JSON_FACEBOOK_IS_AVAILABLE);
+        isFacebookAvailable = jsonObject.getBoolean(RestConstants.FACEBOOK_IS_AVAILABLE);
         // Get rating info
         JSONObject ratingObject = jsonObject.optJSONObject(RestConstants.RATING);
         if (ratingObject != null) {
-            isRatingEnable = ratingObject.optBoolean(RestConstants.JSON_IS_ENABLE_TAG, true);
-            isRatingLoginRequired = ratingObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG);
+            isRatingEnable = ratingObject.optBoolean(RestConstants.IS_ENABLE, true);
+            isRatingLoginRequired = ratingObject.optBoolean(RestConstants.REQUIRED_LOGIN);
         }
         // Get review info
         JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.REVIEW);
         if (reviewObject != null) {
-            isReviewEnable = reviewObject.optBoolean(RestConstants.JSON_IS_ENABLE_TAG, true);
-            isReviewLoginRequired = reviewObject.optBoolean(RestConstants.JSON_REQUIRED_LOGIN_TAG);
+            isReviewEnable = reviewObject.optBoolean(RestConstants.IS_ENABLE, true);
+            isReviewLoginRequired = reviewObject.optBoolean(RestConstants.REQUIRED_LOGIN);
         }
         languages = new Languages(jsonObject);
 
@@ -154,9 +154,9 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         } catch (JSONException ex) {
         }
 
-        hasCartPopup = jsonObject.optBoolean(RestConstants.JSON_COUNTRY_HAS_CART_POPUP);
+        hasCartPopup = jsonObject.optBoolean(RestConstants.HAS_CART_POPUP);
         // Get if Rich Relevance is enabled
-        mIsRichRelevanceEnabled = jsonObject.optBoolean(RestConstants.RICH_RELEVANCE);
+        mIsRichRelevanceEnabled = jsonObject.optBoolean(RestConstants.RICH_RELEVANCE_ENABLED);
         return true;
     }
 

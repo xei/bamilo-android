@@ -10,10 +10,12 @@ import org.json.JSONObject;
 
 /**
  * Class used to represent a form inside a teaser on the Home Page.
+ *
  * @author Paulo Carvalho
  */
 public class TeaserFormObject extends BaseTeaserObject {
     private Form mForm;
+
     /**
      * Constructor
      */
@@ -29,31 +31,27 @@ public class TeaserFormObject extends BaseTeaserObject {
         return mForm;
     }
 
-
     /*
      * ########## JSON ##########
      */
 
     /**
      * Initialize
+     *
      * @param jsonObject JSONObject containing the parameters of the object
      * @throws JSONException
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get data
-        JSONObject formData = jsonObject.getJSONObject(RestConstants.JSON_DATA_TAG);
-
-        if(formData != null){
+        JSONObject formData = jsonObject.getJSONObject(RestConstants.DATA);
+        if (formData != null) {
             mForm = new Form();
             mForm.initialize(formData);
         }
         return true;
     }
 
-    /**
-     *
-     */
     @Override
     public JSONObject toJSON() {
         return null;
@@ -72,7 +70,6 @@ public class TeaserFormObject extends BaseTeaserObject {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeValue(mForm);
-
     }
 
     private TeaserFormObject(Parcel in) {

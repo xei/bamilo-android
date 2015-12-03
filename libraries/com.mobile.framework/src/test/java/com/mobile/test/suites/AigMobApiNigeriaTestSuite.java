@@ -18,7 +18,6 @@ import com.mobile.test.AigGetCreateAddressFormTest;
 import com.mobile.test.AigGetCustomerDetailsTest;
 import com.mobile.test.AigGetEditAddressFormTest;
 import com.mobile.test.AigGetForgotPasswordFormTest;
-import com.mobile.test.AigGetFormsIndexTest;
 import com.mobile.test.AigGetHomePageTest;
 import com.mobile.test.AigGetLoginFormTest;
 import com.mobile.test.AigGetNewsletterFormTest;
@@ -32,7 +31,6 @@ import com.mobile.test.AigGetRegisterFormTest;
 import com.mobile.test.AigGetReviewFormTest;
 import com.mobile.test.AigGetReviewsTest;
 import com.mobile.test.AigGetSellerReviewFormTest;
-import com.mobile.test.AigGetShopInShopTest;
 import com.mobile.test.AigGetShoppingCartTest;
 import com.mobile.test.AigGetSignUpFormTest;
 import com.mobile.test.AigLoginCustomerTest;
@@ -43,6 +41,8 @@ import com.mobile.test.AigShoppingCartAddItemTest;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
+
+//import com.mobile.test.AigGetShopInShopTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -71,7 +71,7 @@ import org.junit.runners.Suite;
         AigGetCreateAddressFormTest.class,
 
         AigGetForgotPasswordFormTest.class,
-        AigGetFormsIndexTest.class,
+        //AigGetFormsIndexTest.class,
         AigGetHomePageTest.class,
        // AigGetImageResolutionsTest.class, TODO Response is not being parsed
         AigGetNewsletterFormTest.class,
@@ -83,7 +83,7 @@ import org.junit.runners.Suite;
         AigGetReviewFormTest.class,
         AigGetReviewsTest.class,
         AigGetSellerReviewFormTest.class,
-        AigGetShopInShopTest.class,
+        //AigGetShopInShopTest.class,
         AigGetSignUpFormTest.class,
         AigSearchSkuTest.class,
         AigShoppingCartAddItemTest.class,

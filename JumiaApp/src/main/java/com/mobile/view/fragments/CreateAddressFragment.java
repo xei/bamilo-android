@@ -348,8 +348,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Validate Regions
         if (regions == null) {
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.REGION);
-            String url = field.getDataCalls().get(RestConstants.API_CALL);
-            triggerGetRegions(url);
+            triggerGetRegions(field.getApiCall());
         } else {
             setRegions(shippingFormGenerator, regions, SHIPPING_TAG);
             setRegions(billingFormGenerator, regions, BILLING_TAG);
@@ -364,11 +363,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Hide the default check boxes
      */
     private void hideSomeFields(DynamicForm dynamicForm, boolean isBilling) {
-        DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
+        DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.IS_DEFAULT_SHIPPING);
         if (item != null) {
             item.getEditControl().setVisibility(View.GONE);
         }
-        item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
+        item = dynamicForm.getItemByKey(RestConstants.IS_DEFAULT_BILLING);
         if (item != null) {
             item.getEditControl().setVisibility(View.GONE);
         }
@@ -376,7 +375,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Hide the gender field only for billing address
         if (isBilling) {
             try {
-                item = dynamicForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
+                item = dynamicForm.getItemByKey(RestConstants.GENDER);
                 if (item != null) {
                     item.getMandatoryControl().setVisibility(View.GONE);
                     item.getEditControl().setVisibility(View.GONE);
@@ -622,8 +621,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * method that controls that the addresses have the same gender when creating billing and shipping at the same time
      */
     private void validateSameGender() {
-        DynamicFormItem shippingGenderItem = shippingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
-        DynamicFormItem billingGenderItem = billingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
+        DynamicFormItem shippingGenderItem = shippingFormGenerator.getItemByKey(RestConstants.GENDER);
+        DynamicFormItem billingGenderItem = billingFormGenerator.getItemByKey(RestConstants.GENDER);
         if (shippingGenderItem != null && billingGenderItem != null) {
             try {
                 int genderIndex = -1;
@@ -655,9 +654,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Update default values (unknown keys)
         for (Map.Entry<String, Object> value : mContentValues.valueSet()) {
             String key = value.getKey();
-            if (key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) {
+            if (key.contains(RestConstants.IS_DEFAULT_BILLING)) {
                 mContentValues.put(key, isDefaultBilling);
-            } else if (key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) {
+            } else if (key.contains(RestConstants.IS_DEFAULT_SHIPPING)) {
                 mContentValues.put(key, isDefaultShipping);
             }
         }
@@ -689,18 +688,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.CITY);
             // Case list
             if (FormInputType.list == field.getInputType()) {
-                // Get url
-                String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the cities for this region id
                 int regionId = ((AddressRegion) object).getValue();
                 // Save the selected region on the respective variable
                 String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
                 if (tag.equals(SHIPPING_TAG)) {
                     selectedRegionOnShipping = SHIPPING_TAG + "_" + regionId;
-                    triggerGetCities(url, regionId, selectedRegionOnShipping);
+                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnShipping);
                 } else if (tag.equals(BILLING_TAG)) {
                     selectedRegionOnBilling = BILLING_TAG + "_" + regionId;
-                    triggerGetCities(url, regionId, selectedRegionOnBilling);
+                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnBilling);
                 }
             }
             // Case text or other
@@ -713,18 +710,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
             // Case list
             if (field != null && FormInputType.list == field.getInputType()) {
-                // Get url
-                String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the postal codes for this city id
                 int cityId = ((AddressCity) object).getValue();
                 // Save the selected city on the respective variable
                 String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
                 if (tag.equals(SHIPPING_TAG)) {
                     selectedCityOnShipping = SHIPPING_TAG + "_" + cityId;
-                    triggerGetPostalCodes(url, cityId, selectedCityOnShipping);
+                    triggerGetPostalCodes(field.getApiCall(), cityId, selectedCityOnShipping);
                 } else if (tag.equals(BILLING_TAG)) {
                     selectedCityOnBilling = BILLING_TAG + "_" + cityId;
-                    triggerGetPostalCodes(url, cityId, selectedCityOnBilling);
+                    triggerGetPostalCodes(field.getApiCall(), cityId, selectedCityOnBilling);
                 }
             }
         }
@@ -825,7 +820,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      *
      */
     protected void triggerGetPostalCodes(String url, int city, String tag) {
-        Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + url + " " + tag);
+        Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + city + " " + tag);
         triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(url, city, tag), this);
     }
 

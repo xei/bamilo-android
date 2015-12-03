@@ -6,15 +6,14 @@ import android.os.Bundle;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.utils.deeplink.TargetLink;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,10 +22,6 @@ import java.util.Map;
 public class GetCitiesHelper extends SuperBaseHelper {
     
     public static String TAG = GetCitiesHelper.class.getSimpleName();
-    
-    public static String REGION_ID_TAG = "region_id";
-    
-    public static String CUSTOM_TAG = "custom_tag";
 
     private String customTag;
 
@@ -42,10 +37,9 @@ public class GetCitiesHelper extends SuperBaseHelper {
 
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
-        customTag = args.getString(CUSTOM_TAG);
-        Map<String, String> data = new HashMap<>();
-        data.put(RestConstants.REGION, args.getString(REGION_ID_TAG));
-        return data;
+        customTag = args.getString(TAG);
+        args.remove(TAG);
+        return super.getRequestData(args);
     }
 
     @Override
@@ -79,12 +73,11 @@ public class GetCitiesHelper extends SuperBaseHelper {
             this.customTag = customTag;
         }
     }
-    
+
     public static Bundle createBundle(String url, int region, String tag) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, url.split("\\?")[0]); // FIXME: API v2.0
-        bundle.putString(GetCitiesHelper.REGION_ID_TAG, String.valueOf(region));
-        bundle.putString(GetCitiesHelper.CUSTOM_TAG, tag);
+        bundle.putString(Constants.BUNDLE_URL_KEY, "/" + String.format(TargetLink.getIdFromTargetLink(url), region));
+        bundle.putString(TAG, tag);
         return bundle;
     }
 

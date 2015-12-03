@@ -10,8 +10,6 @@ import com.mobile.test.suites.AigMobApiNigeriaTestSuite;
 import java.util.HashMap;
 import java.util.Map;
 
-//import com.mobile.newFramework.requests.reviews.GetProductReviews;
-
 public class AigGetReviewsTest extends AigTestCase {
 
     @Override

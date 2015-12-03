@@ -34,7 +34,7 @@ public class GlobalSeller implements IJSONSerializable, Parcelable {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+        name = jsonObject.optString(RestConstants.NAME);
         deliveryTime = jsonObject.getString(RestConstants.DELIVERY_TIME);
         isGlobal = jsonObject.getBoolean(RestConstants.IS_GLOBAL);
         if(isGlobal){
