@@ -52,9 +52,9 @@ public class ShippingMethodSubFormHolder implements IJSONSerializable{
     public boolean initialize(JSONObject jsonObject) {
         try {
             id = jsonObject.optString(RestConstants.ID);
-            name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+            name = jsonObject.optString(RestConstants.NAME);
             key = jsonObject.optString(RestConstants.KEY);
-            scenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
+            scenario = jsonObject.optString(RestConstants.SCENARIO);
             if(jsonObject.has(RestConstants.TYPE)){
                 type = jsonObject.optString(RestConstants.TYPE);
             } else {
@@ -70,8 +70,8 @@ public class ShippingMethodSubFormHolder implements IJSONSerializable{
              */
 
             required = true;
-            if(jsonObject.has(RestConstants.JSON_OPTIONS_TAG)){
-                JSONArray optionsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTIONS_TAG);
+            if(jsonObject.has(RestConstants.OPTIONS)){
+                JSONArray optionsArray = jsonObject.getJSONArray(RestConstants.OPTIONS);
                 for (int i = 0; i < optionsArray.length(); i++) {
                     PickUpStationObject mPickUpStationObject = new PickUpStationObject();
                     mPickUpStationObject.initialize(optionsArray.getJSONObject(i));

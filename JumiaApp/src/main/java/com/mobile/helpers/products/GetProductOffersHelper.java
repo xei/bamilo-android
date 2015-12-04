@@ -45,7 +45,6 @@ public class GetProductOffersHelper extends SuperBaseHelper {
         values.put(OFFER_SKU, sku);
         values.put(ALL_OFFERS, true);
         Bundle bundle = new Bundle();
-     //   bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }

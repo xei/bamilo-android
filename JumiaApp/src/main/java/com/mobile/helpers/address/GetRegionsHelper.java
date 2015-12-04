@@ -10,6 +10,7 @@ import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.utils.deeplink.TargetLink;
 
 /**
  * Helper used to set the shipping address 
@@ -36,7 +37,7 @@ public class GetRegionsHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String url) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, url);
+        bundle.putString(Constants.BUNDLE_URL_KEY, "/" + TargetLink.getIdFromTargetLink(url));
         return bundle;
     }
 

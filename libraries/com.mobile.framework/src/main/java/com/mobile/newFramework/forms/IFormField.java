@@ -35,9 +35,7 @@ public interface IFormField {
 
     void setValue(String value);
 
-    Map<String, IFormField> getSubFormFields();
-
-    Map<String, String> getDataCalls();
+    String getApiCall();
 
     Map<String, String> getDateSetRating();
 

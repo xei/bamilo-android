@@ -57,10 +57,6 @@ public class Seller implements IJSONSerializable, Parcelable {
         return mTarget;
     }
 
-    public void setTarget(String target) {
-        this.mTarget = mTarget;
-    }
-
     public int getRatingCount() {
         return mRatingCount;
     }
@@ -100,14 +96,14 @@ public class Seller implements IJSONSerializable, Parcelable {
          */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-        mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+        mName = jsonObject.optString(RestConstants.NAME);
         mTarget = jsonObject.optString(RestConstants.TARGET);
-        mWarranty = jsonObject.optString(RestConstants.JSON_WARRANTY_TAG);
+        mWarranty = jsonObject.optString(RestConstants.WARRANTY);
         isGlobal = jsonObject.optBoolean(RestConstants.IS_GLOBAL);
-        JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
+        JSONObject reviewObject = jsonObject.optJSONObject(RestConstants.REVIEWS);
         if(reviewObject != null){
-            mRatingCount = reviewObject.optInt(RestConstants.JSON_TOTAL_TAG);
-            mRatingValue = reviewObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG);
+            mRatingCount = reviewObject.optInt(RestConstants.TOTAL);
+            mRatingValue = reviewObject.optInt(RestConstants.AVERAGE);
         }
         mDeliveryTime = jsonObject.optString(RestConstants.DELIVERY_TIME);
         JSONObject globalObject = jsonObject.optJSONObject(RestConstants.GLOBAL);

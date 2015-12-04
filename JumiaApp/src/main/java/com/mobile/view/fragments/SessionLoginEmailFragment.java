@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.mobile.constants.ConstantsCheckout;
@@ -32,7 +31,6 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -345,7 +343,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
-
                 // Finish
                 getActivity().onBackPressed();
                 // Notify user
@@ -385,24 +382,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
             // Validate and show errors
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 Print.d(TAG, "SHOW DIALOG");
-                if (TextUtils.isNotEmpty(baseResponse.getValidateMessage())) {
-                    showFragmentContentContainer();
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.error_login_title),
-                            baseResponse.getValidateMessage(),
-                            getString(R.string.ok_label), "", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-                } else {
-                    showUnexpectedErrorWarning();
-                }
+                showFragmentContentContainer();
+                showWarningErrorMessage(baseResponse.getValidateMessage(), R.string.error_login_title);
             } else {
                 showFragmentErrorRetry();
             }

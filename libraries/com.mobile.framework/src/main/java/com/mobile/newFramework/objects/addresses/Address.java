@@ -50,7 +50,7 @@ public class Address implements IJSONSerializable, Parcelable {
             id = dataObject.optInt(RestConstants.ID);
         }
         if (id == 0) {
-            id = dataObject.getInt(RestConstants.OTHER_ADDRESS_ID);
+            id = dataObject.getInt(RestConstants.ID_SALES_ORDER_ADDRESS);
         }
         firstName = dataObject.getString(RestConstants.FIRST_NAME);
         lastName = dataObject.getString(RestConstants.LAST_NAME);

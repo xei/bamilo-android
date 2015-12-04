@@ -234,14 +234,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         final Bundle args = getArguments();
         if(args != null) {
             if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
-                ProductComplete mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
-                triggerAddToWishList(mClicked.getSku());
-                TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                if(JumiaApplication.isCustomerLoggedIn()){
+                    ProductComplete mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
+                    triggerAddToWishList(mClicked.getSku());
+                    TrackerDelegator.trackAddToFavorites(mClicked);
+                }
+
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             } else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
-                ProductComplete mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
-                triggerRemoveFromWishList(mClicked.getSku());
-                TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                if(JumiaApplication.isCustomerLoggedIn()){
+                    ProductComplete mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+                    triggerRemoveFromWishList(mClicked.getSku());
+                    TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                }
+
                 args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
             }
 
@@ -789,7 +795,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void goToSellerCatalog() {
         Log.i(TAG, "ON CLICK SELLER NAME");
         @TargetLink.Type String target = mProduct.getSeller().getTarget();
-        new TargetLink(getWeakBaseActivity(), target).run();
+        new TargetLink(getWeakBaseActivity(), target).retainBackStackEntries().run();
     }
 
     /**
@@ -854,7 +860,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickCombosProduct() {
         Log.i(TAG, "ON CLICK COMBOS SECTION");
         Bundle bundle = new Bundle();
-        bundle.putParcelable(RestConstants.JSON_BUNDLE_PRODUCTS, mProduct.getProductBundle());
+        bundle.putParcelable(RestConstants.BUNDLE_PRODUCTS, mProduct.getProductBundle());
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, mProduct.getSku());
         getBaseActivity().onSwitchFragment(FragmentType.COMBO_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

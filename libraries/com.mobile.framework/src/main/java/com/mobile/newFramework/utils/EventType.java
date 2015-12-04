@@ -46,7 +46,6 @@ public enum EventType {
 
     REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/cart/removeproduct/", AigRestContract.NO_CACHE),
 
-
     GET_SHOPPING_CART_ITEMS_EVENT("https:/cart/getdata/", AigRestContract.NO_CACHE),
 
     GET_REGISTRATION_FORM_EVENT("http:/forms/register/", AigRestContract.MAX_CACHE_TIME),
@@ -91,17 +90,13 @@ public enum EventType {
      * NATIVE CHECKOUT EVENTS
      */
 
-    GET_SIGNUP_FORM_EVENT("registersignup", AigRestContract.MAX_CACHE_TIME),
-
-    GET_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/registersignup/", AigRestContract.MAX_CACHE_TIME),
+    GET_SIGNUP_FORM_EVENT("http:/forms/registersignup/", AigRestContract.MAX_CACHE_TIME),
 
     GUEST_LOGIN_EVENT("https:/customer/createsignup/", AigRestContract.NO_CACHE),
 
     GET_CREATE_ADDRESS_FORM_EVENT("http:/forms/addresscreate/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_EDIT_ADDRESS_FORM_EVENT("addressedit", AigRestContract.MAX_CACHE_TIME),
-
-    GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT("http:/forms/addressedit/", AigRestContract.MAX_CACHE_TIME),
+    GET_EDIT_ADDRESS_FORM_EVENT("http:/forms/addressedit/", AigRestContract.MAX_CACHE_TIME),
 
     GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/getaddresslist/", AigRestContract.NO_CACHE),
 
@@ -137,7 +132,7 @@ public enum EventType {
 
     SET_PAYMENT_METHOD_EVENT("https:/multistep/paymentmethod/", AigRestContract.DEFAULT_CACHE_TIME),
 
-    GET_MY_ORDERS_LIST_EVENT("http:/orderlist/", AigRestContract.NO_CACHE),
+    GET_MY_ORDERS_LIST_EVENT("http:/customer/orderlist/", AigRestContract.NO_CACHE),
 
     CHECKOUT_FINISH_EVENT("https:/multistep/finish/", AigRestContract.NO_CACHE),
 
@@ -149,9 +144,7 @@ public enum EventType {
 
     GET_CAMPAIGN_EVENT("http:/campaign/get/", AigRestContract.NO_CACHE),
 
-    GET_NEWSLETTERS_FORM_EVENT("managenewsletters", AigRestContract.NO_CACHE),
-
-    GET_NEWSLETTERS_FORM_FALLBACK_EVENT("http:/forms/managenewsletters/", AigRestContract.NO_CACHE),
+    GET_NEWSLETTERS_FORM_EVENT("http:/forms/managenewsletters/", AigRestContract.NO_CACHE),
 
     SUBSCRIBE_NEWSLETTERS_EVENT("https:/customer/managenewsletters/", AigRestContract.NO_CACHE),
 

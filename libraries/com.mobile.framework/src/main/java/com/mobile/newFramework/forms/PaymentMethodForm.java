@@ -74,7 +74,7 @@ public class PaymentMethodForm implements Parcelable {
         JSONObject mJSONObject = jsonObject.optJSONObject("payment");
         if (mJSONObject == null || mJSONObject.length() == 0) {
             setPaymentType(METHOD_OTHER);
-            setOrderNumber(jsonObject.optString(RestConstants.JSON_ORDER_NUMBER_TAG));
+            setOrderNumber(jsonObject.optString(RestConstants.ORDER_NR));
             return;
         } 
 
@@ -97,19 +97,19 @@ public class PaymentMethodForm implements Parcelable {
         }
 
         try {
-            JSONObject formJson = mJSONObject.optJSONObject(RestConstants.JSON_FORM_TAG);
+            JSONObject formJson = mJSONObject.optJSONObject(RestConstants.FORM);
             if(formJson == null || formJson.length() == 0 ){
                 String url = mJSONObject.optString(RestConstants.URL);
                 setAction(url);
                 return;
             }
 
-            setAction(formJson.optString(RestConstants.JSON_ACTION_TAG));
+            setAction(formJson.optString(RestConstants.ACTION));
             setId(formJson.optString(RestConstants.ID));
-            setName(formJson.optString(RestConstants.JSON_NAME_TAG));
+            setName(formJson.optString(RestConstants.NAME));
 
             ContentValues mContentValues = new ContentValues();
-            JSONArray mJSONArray = formJson.getJSONArray(RestConstants.JSON_FIELDS_TAG);
+            JSONArray mJSONArray = formJson.getJSONArray(RestConstants.FIELDS);
             for (int i = 0; i < mJSONArray.length(); i++) {
                 JSONObject element = mJSONArray.getJSONObject(i);
                 String key = element.getString(RestConstants.KEY);
