@@ -153,7 +153,6 @@
     <string name="my_order_voucher_label">قسيمة شراء</string>
     <string name="my_orders_label">طلباتي</string>
     <string name="my_profile">الملف الخاص بي</string>
-    <string name="myaccount_email_notifications">إخطارات البريد الإلكتروني</string>
     <string name="myaccount_userdata">بيانات المستخدم</string>
     <string name="name">الاسم</string>
     <string name="nav_country">اختر دولة</string>
@@ -170,6 +169,7 @@
     <string name="no_label">لا</string>
     <string name="no_payment">لا يوجد دفع ضروري لهذا</string>
     <string name="notifications">الإخطارات</string>
+    <string name="myaccount_email_notifications">إخطارات البريد الإلكتروني</string>
     <string name="notifications_summary">يمكنك الحصول على العروض الحصرية وآخر التحديثات</string>
     <string name="off_label">إغلاق</string>
     <string name="ok_label">موافق</string>
@@ -287,6 +287,7 @@
     <string name="some_products_not_added">للأسف، بعض المنتجات لم يتم إضافتها إلى العربة.</string>
     <string name="splash_slogan">أكبر موقع للتسوق عبر الإنترنت فى أفريقيا</string>
     <string name="splash_slogan_daraz">موقع التسوق الوحيد الذي تحتاجه!</string>
+    <string name="splash_slogan_powered_by">splash_slogan_powered_by</string>
     <string name="stale_warning">فقدت الاتصال</string>
     <string name="string_appearance">الظهور</string>
     <string name="string_price">السعر</string>
@@ -335,7 +336,6 @@
     <string name="yes_label">نعم</string>
     <string name="your_cart">عربة التسوق الخاصة بك</string>
     <string name="your_order">الطلب الخاص بك</string>
-    <string name="install_android">تحميل تطبيق %s للأندرويد في لحظة واحدة</string>
     <string name="share_the_app">مشاركة التطبيق</string>
     <string name="can_share_app_with_friends">يمكنك الآن مشاركة التطبيق مع أصدقائك</string>
     <string name="app_social">تطبيق مواقع التواصل الإجتماعى</string>
@@ -457,7 +457,6 @@
     <string name="delivered_label">تم توصيل</string>
     <string name="order_number">رقم الطلب‎%s‎</string>
     <string name="billing">الفواتير</string>
-    <string name="first_and_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
     <string name="quantity">عدد ‎%s‎</string>
     <string name="reorder_label">إعادة الطلب</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
