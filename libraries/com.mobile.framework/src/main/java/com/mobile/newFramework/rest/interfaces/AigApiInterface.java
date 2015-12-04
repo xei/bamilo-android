@@ -257,12 +257,6 @@ public interface AigApiInterface {
     String addMultipleItemsShoppingCart = "addMultipleItemsShoppingCart";
 
 
-    @FormUrlEncoded
-    @POST("/")
-    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-
-    String removeAllShoppingCart = "removeAllShoppingCart";
-
     /*
      * ## VOUCHER
      */
@@ -569,5 +563,12 @@ public interface AigApiInterface {
     void updateQuantityShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
 
     String updateQuantityShoppingCart = "updateQuantityShoppingCart";
+
+    @FormUrlEncoded
+    @PUT("/")
+    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+
+    String removeAllShoppingCart = "removeAllShoppingCart";
+
 
 }
