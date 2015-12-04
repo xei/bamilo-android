@@ -92,7 +92,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private String itemRemoved_sku;
     private String itemRemoved_price;
     private String mPhone2Call = "";
-    private boolean isCallInProgress = false;
     private boolean isRemovingAllItems = false; // Flag used to remove all items after call to order
     private double itemRemoved_price_tracking = 0d;
     private long itemRemoved_quantity;
@@ -383,7 +382,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         intent.setData(Uri.parse("tel:" + mPhone2Call));
         if (intent.resolveActivity(getBaseActivity().getPackageManager()) != null) {
             startActivity(intent);
-            isCallInProgress = true;
         }
     }
 
@@ -520,47 +518,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
     }
 
-    /**
-     * Present a dialog to remove all items from cart <br>
-     * (Expectly used after user clicks "Call to Order")
-     */
-    private void askToRemoveProductsAfterOrder(final PurchaseEntity purchaseEntity) {
-        // Dismiss any existing dialogs
-        dismissDialogFragment();
-
-        dialog = DialogGenericFragment.newInstance(true, false,
-                getString(R.string.shoppingcart_dialog_title),
-                getString(R.string.shoppingcart_remove_products),
-                getString(R.string.yes_label),
-                getString(R.string.no_label),
-                new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        // Case remove
-                        if (id == R.id.button1) {
-                            isRemovingAllItems = true;
-                            List<PurchaseCartItem> items = new ArrayList<>(purchaseEntity.getCartItems());
-                            for (PurchaseCartItem item : items) {
-                                mBeginRequestMillis = System.currentTimeMillis();
-                                triggerRemoveItem(item);
-                            }
-                            showNoItems();
-                            // Update global cart with an empty Cart
-                            PurchaseEntity cart = new PurchaseEntity();
-                            JumiaApplication.INSTANCE.setCart(cart);
-                            // Update cart
-                            getBaseActivity().updateCartInfo();
-                        }
-                        // Case continue
-                        else if (id == R.id.button2) {
-                            displayShoppingCart(purchaseEntity);
-                        }
-                        dismissDialogFragment();
-                    }
-                });
-        dialog.show(getActivity().getSupportFragmentManager(), null);
-    }
 
     /**
      *

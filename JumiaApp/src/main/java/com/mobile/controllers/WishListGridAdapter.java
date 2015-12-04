@@ -22,8 +22,8 @@ import java.util.ArrayList;
  */
 public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapter.WishListProductViewHolder> implements View.OnClickListener {
 
-    private ArrayList<ProductMultiple> products;
-    private OnWishListViewHolderClickListener listener;
+    private final ArrayList<ProductMultiple> products;
+    private final OnWishListViewHolderClickListener listener;
 
     public WishListGridAdapter(ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
         this.products = products;
