@@ -8,7 +8,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
 
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
@@ -17,7 +16,6 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.objects.addresses.FormListItem;
-import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.view.R;
@@ -26,7 +24,6 @@ import java.lang.ref.WeakReference;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This Class defines the representation of a dynamic form
@@ -322,16 +319,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
                     }
                 }
 
-            }
-            // Case ratings
-            else if (null != control && control.getType() == FormInputType.rating) {
-                RatingBar bar = (RatingBar) getItemByKey(control.getKey()).getEditControl().findViewById(R.id.option_stars);
-                Map<String, String> ratingMap = control.getEntry().getDateSetRating();
-                if(CollectionUtils.isNotEmpty(ratingMap)){
-                    for (int i = 0; i < ratingMap.size(); i++){
-                        model.put(bar.getTag().toString(), (int) bar.getRating());
-                    }
-                }
             }
             // Case default
             else if (null != control && null != control.getValue()) {
