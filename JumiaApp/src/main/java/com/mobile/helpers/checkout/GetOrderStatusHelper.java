@@ -30,9 +30,9 @@ public class GetOrderStatusHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String orderNr, EventTask task) {
         ContentValues values = new ContentValues();
-        values.put(RestConstants.ORDER_NR, orderNr);
+        values.put(RestConstants.ORDERNR, orderNr);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, task);
         return bundle;
     }

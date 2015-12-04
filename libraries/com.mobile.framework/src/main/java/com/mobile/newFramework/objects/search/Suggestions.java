@@ -45,7 +45,7 @@ public class Suggestions extends ArrayList<Suggestion> implements IJSONSerializa
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		try {
-			JSONArray suggestionsArray = jsonObject.getJSONArray(RestConstants.JSON_SUGGESTIONS_TAG);
+			JSONArray suggestionsArray = jsonObject.getJSONArray(RestConstants.SUGGESTIONS);
             for (int i = 0; i < suggestionsArray.length(); ++i) {
                 Suggestion suggestion = new Suggestion();
                 suggestion.initialize(suggestionsArray.getJSONObject(i));

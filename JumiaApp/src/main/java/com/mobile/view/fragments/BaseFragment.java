@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -375,42 +376,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onLowMemory() {
         super.onLowMemory();
         Print.i(TAG, "ON LOW MEMORY");
-//        // TODO - Validate this is necessary
-//        if (getView() != null && isHidden()) {
-//            unbindDrawables(getView());
-//        }
     }
-
-//    /**
-//     * Recycle bitmaps
-//     * @see <p>http://stackoverflow.com/questions/10314527/caused-by-java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget</p>
-//     *      <p>http://stackoverflow.com/questions/1949066/java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget-android</p>
-//     */
-//    public void unbindDrawables(View view) {
-//        Print.i(TAG, "UNBIND DRAWABLES");
-//        try {
-//
-//            if (view.getBackground() != null) {
-//                view.getBackground().setCallback(null);
-//            } else if (view instanceof ViewGroup) {
-//                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-//                    unbindDrawables(((ViewGroup) view).getChildAt(i));
-//                }
-//                if (view instanceof AdapterView<?>) {
-//                    return;
-//                }
-//
-//                try {
-//                    ((ViewGroup) view).removeAllViews();
-//                } catch (IllegalArgumentException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        } catch (RuntimeException e) {
-//            Print.w(TAG, "" + e);
-//        }
-//    }
 
     /**
      * #### BACK PRESSED ####
@@ -686,6 +652,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
             getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.products_removed_saved));
+        }
+    }
+
+    public void showWarningSuccessMessage(@Nullable String message, @StringRes int fallback) {
+        if(getBaseActivity() != null) {
+            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
+        }
+    }
+
+    public void showWarningErrorMessage(@Nullable String message, @StringRes int fallback) {
+        if(getBaseActivity() != null) {
+            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, text);
         }
     }
 

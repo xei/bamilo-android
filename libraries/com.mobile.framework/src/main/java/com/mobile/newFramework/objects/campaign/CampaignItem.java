@@ -55,14 +55,14 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
 
         super.initialize(jsonObject);
 
-        mSavePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG, 0d);
-        mStockPercentage = jsonObject.optInt(RestConstants.JSON_STOCK_PERCENTAGE_TAG, 0);
+        mSavePrice = jsonObject.optDouble(RestConstants.SAVE_PRICE, 0d);
+        mStockPercentage = jsonObject.optInt(RestConstants.STOCK_PERCENTAGE, 0);
 
-        hasUniqueSize = jsonObject.optBoolean(RestConstants.JSON_HAS_UNIQUE_SIZE_TAG);
-        mRemainingTime = jsonObject.optInt(RestConstants.JSON_REMAINING_TIME_TAG, -1);
+        hasUniqueSize = jsonObject.optBoolean(RestConstants.HAS_UNIQUE_SIZE);
+        mRemainingTime = jsonObject.optInt(RestConstants.REMAINING_TIME, -1);
 
         // Save sizes
-        JSONArray sizesA = jsonObject.optJSONArray(RestConstants.JSON_SIZES_TAG);
+        JSONArray sizesA = jsonObject.optJSONArray(RestConstants.SIZES);
         if (sizesA != null && sizesA.length() > 0) {
             mSizes = new ArrayList<>();
             for (int i = 0; i < sizesA.length(); i++) {

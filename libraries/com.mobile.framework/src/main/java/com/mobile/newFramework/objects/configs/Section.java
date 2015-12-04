@@ -87,15 +87,15 @@ public class Section implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-            String name = jsonObject.getString(RestConstants.JSON_SECTION_NAME_TAG);
+            String name = jsonObject.getString(RestConstants.SECTION_NAME);
             /**
              * HACK - while API dont return md5 for each section,
              * use System.currentTimeMillis in the mean time to "replace" md5.
              */
             String md5 = ""+System.currentTimeMillis();
-            String url = jsonObject.getString(RestConstants.JSON_SECTION_URL_TAG);
-            if(jsonObject.has(RestConstants.JSON_SECTION_MD5_TAG)){
-                md5 = jsonObject.getString(RestConstants.JSON_SECTION_MD5_TAG);
+            String url = jsonObject.getString(RestConstants.URL);
+            if(jsonObject.has(RestConstants.SECTION_MD5)){
+                md5 = jsonObject.getString(RestConstants.SECTION_MD5);
                 //Log.i(TAG, "code1md5 got md5 for : "+url+ " md5 is : "+md5);
             }
             init(name, md5, url);
@@ -113,7 +113,7 @@ public class Section implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_NAME_TAG, name);
+            jsonObject.put(RestConstants.NAME, name);
             jsonObject.put(RestConstants.URL, url);
         } catch (JSONException e) {
             e.printStackTrace();

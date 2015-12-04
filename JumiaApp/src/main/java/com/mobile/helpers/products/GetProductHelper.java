@@ -35,18 +35,15 @@ public class GetProductHelper extends SuperBaseHelper {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductDetail);
     }
 
-
     /**
      * Method specific for constructing bundle
-     * @param sku
-     * @param richRelevanceHash
-     * @return
      */
     public static Bundle createBundle(String sku, String richRelevanceHash) {
         ContentValues values = new ContentValues();
         values.put(RestConstants.SKU, sku);
-        if(TextUtils.isNotEmpty(richRelevanceHash))
-            values.put(RestConstants.JSON_RR_CLICK_REQUEST, richRelevanceHash);
+        if(TextUtils.isNotEmpty(richRelevanceHash)) {
+            values.put(RestConstants.CLICK_REQUEST, richRelevanceHash);
+        }
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;

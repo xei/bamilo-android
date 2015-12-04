@@ -49,7 +49,7 @@ public class CheckoutFormShipping implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get shipping methods
-        mForm = new ShippingMethodFormBuilderHolder(jsonObject.getJSONObject(RestConstants.JSON_SHIPPING_METHOD_TAG));
+        mForm = new ShippingMethodFormBuilderHolder(jsonObject.getJSONObject(RestConstants.SHIPPING_METHOD_FORM));
         // Order
         mOrderSummary = new PurchaseEntity();
         mOrderSummary.initialize(jsonObject);

@@ -40,7 +40,7 @@ public class CatalogCheckFilterOption extends CatalogFilterOption implements Mul
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         id = jsonObject.optString(RestConstants.ID);
         label = jsonObject.getString(RestConstants.LABEL);
-        val = jsonObject.getString(RestConstants.JSON_VAL_TAG);
+        val = jsonObject.getString(RestConstants.VAL);
         return super.initialize(jsonObject);
     }
 

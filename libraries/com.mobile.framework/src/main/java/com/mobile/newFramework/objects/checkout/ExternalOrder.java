@@ -29,10 +29,10 @@ public class ExternalOrder implements Parcelable {
      * Empty constructor
      */
     public ExternalOrder(JSONObject result) {
-        number = result.optString(RestConstants.JSON_ORDER_NR_TAG);
-        value = result.optDouble(RestConstants.JSON_GRAND_TOTAL_TAG);
-        valueConverted = result.optDouble(RestConstants.JSON_GRAND_TOTAL_CONVERTED_TAG);
-        coupon = result.optString(RestConstants.JSON_ORDER_COUPON_CODE_TAG);
+        number = result.optString(RestConstants.ORDERNr);
+        value = result.optDouble(RestConstants.GRAND_TOTAL);
+        valueConverted = result.optDouble(RestConstants.GRAND_TOTAL_CONVERTED);
+        coupon = result.optString(RestConstants.COUPON_CODE);
         items = PurchaseItem.parseItems(result.optJSONArray(RestConstants.PRODUCTS));
         getSkusAndAverage();
     }

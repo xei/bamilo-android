@@ -40,7 +40,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         public TextView price;
         public TextView percentage;
         public TextView brand;
-        public View isNew;
+        public TextView newArrivalBadge;
         public TextView varianceButton;
         public View addToCartButton;
         public View deleteButton;
@@ -49,7 +49,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         public WishListProductViewHolder(View view){
             super(view);
             container = itemView.findViewById(R.id.addabletocart_item_container);
-            isNew = itemView.findViewById(R.id.item_image_is_new);
+            newArrivalBadge = (TextView) itemView.findViewById(R.id.new_arrival_badge);
             image = (ImageView) itemView.findViewById(R.id.item_image);
             name = (TextView) itemView.findViewById(R.id.item_name);
             brand = (TextView) itemView.findViewById(R.id.item_brand);
@@ -125,7 +125,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
      */
     private void setImage(WishListProductViewHolder prodItem, ProductMultiple addableToCart) {
         // Set is new image
-        prodItem.isNew.setSelected(addableToCart.isNew());
+        prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
         RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_small);
     }

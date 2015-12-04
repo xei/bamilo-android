@@ -32,7 +32,7 @@ public class CatalogColorFilterOption extends CatalogCheckFilterOption {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        hexValue = jsonObject.getString(RestConstants.JSON_HEX_VALUE_TAG);
+        hexValue = jsonObject.getString(RestConstants.HEX_VALUE);
         return super.initialize(jsonObject);
     }
 
