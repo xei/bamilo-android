@@ -41,8 +41,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         holder.name.setText(item.getName());
         // Set brand
         holder.brand.setText(item.getBrand());
-        // Set is new image
-        holder.recent.setSelected(item.isNew());
+        // Show / Hide New Arrival Badge
+        holder.newArrivalBadge.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image
