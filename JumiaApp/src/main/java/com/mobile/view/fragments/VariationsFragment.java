@@ -104,13 +104,10 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         }
     }
 
-    @Override
-    public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
-        // ...
-    }
+
 
     @Override
-    public void onViewHolderItemClick(RecyclerView.Adapter<?> adapter, int position) {
+    public void onViewHolderItemClick(View view,RecyclerView.Adapter<?> adapter, int position) {
 
     }
 

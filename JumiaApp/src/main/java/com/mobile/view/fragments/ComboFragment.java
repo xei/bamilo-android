@@ -7,6 +7,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -286,11 +287,15 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      * updates the combo total price in checking/unchecking bundle
      */
     @Override
-    public void onViewHolderItemClick(RecyclerView.Adapter<?> adapter, int position) {
+    public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
         //get Selected Item
         ProductBundle selectedBundle = ((ComboGridAdapter) adapter).getItem(position);
-        //update total price and select a simple if is checked
+
         if (!selectedBundle.getSku().equals(productSku)) {
+            //update checkbox status
+            CheckBox cb = (CheckBox) view;
+            cb.setChecked(!cb.isChecked());
+            //update total price
             bundleList.updateTotalPriceWhenChecking(position);
             mTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
         }
@@ -298,10 +303,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         adapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
 
-    }
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
