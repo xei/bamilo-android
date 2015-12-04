@@ -201,4 +201,15 @@
 
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
 
+    <!-- NEW ARRIVAL BADGE -->
+    <style name="NewArrivalBadge">
+        <item name="android:padding">@dimen/dimen_12px</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:background">@color/black_700</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_8sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
 </resources>
