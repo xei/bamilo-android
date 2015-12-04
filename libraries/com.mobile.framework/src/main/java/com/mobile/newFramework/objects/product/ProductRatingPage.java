@@ -64,28 +64,28 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		reviewComments = new ArrayList<>();
 
 		// just used for seller reviews
-		 sellerName = dataObject.optString(RestConstants.JSON_NAME_TAG);
+		 sellerName = dataObject.optString(RestConstants.NAME);
 		 sellerUrl = dataObject.optString(RestConstants.URL);
 
-		JSONObject productObject = dataObject.optJSONObject(RestConstants.JSON_PRODUCT_TAG);
+		JSONObject productObject = dataObject.optJSONObject(RestConstants.PRODUCT);
 		if (productObject != null) {
-            productName = productObject.optString(RestConstants.JSON_NAME_TAG);
+            productName = productObject.optString(RestConstants.NAME);
             productSku = productObject.optString(RestConstants.SKU);
         }
-        JSONObject starSizeObject = dataObject.optJSONObject(RestConstants.JSON_RATING_STAR_SIZE_TAG);
+        JSONObject starSizeObject = dataObject.optJSONObject(RestConstants.STARS_SIZE);
 
 		if(starSizeObject != null){
-		    minStarSize = starSizeObject.optInt(RestConstants.JSON_NAME_TAG, 1);
-		    maxStarSize =  starSizeObject.optInt(RestConstants.JSON_NAME_TAG, 5);
+		    minStarSize = starSizeObject.optInt(RestConstants.NAME, 1);
+		    maxStarSize =  starSizeObject.optInt(RestConstants.NAME, 5);
 		}
 
 
-		JSONObject ratingsObject = dataObject.optJSONObject(RestConstants.REVIEW_RATING_FIELD);
+		JSONObject ratingsObject = dataObject.optJSONObject(RestConstants.RATINGS);
 
 		if (ratingsObject != null) {
-			mBasedOn = ratingsObject.optInt(RestConstants.JSON_BASED_ON_TAG);
+			mBasedOn = ratingsObject.optInt(RestConstants.BASED_ON);
 
-            JSONArray ratingTypes = ratingsObject.optJSONArray(RestConstants.JSON_RATING_TYPE_TAG);
+            JSONArray ratingTypes = ratingsObject.optJSONArray(RestConstants.BY_TYPE);
             if (ratingTypes != null && ratingTypes.length() > 0) {
                 for (int i = 0; i < ratingTypes.length(); i++) {
 
@@ -103,15 +103,15 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 
         }
-        JSONObject reviewsObject = dataObject.optJSONObject(RestConstants.JSON_REVIEWS_TAG);
+        JSONObject reviewsObject = dataObject.optJSONObject(RestConstants.REVIEWS);
 		if(reviewsObject != null){
-		    commentsCount = reviewsObject.optInt(RestConstants.JSON_TOTAL_TAG, 0);
+		    commentsCount = reviewsObject.optInt(RestConstants.TOTAL, 0);
 
 	        // comments.
-	        JSONArray comments = reviewsObject.optJSONArray(RestConstants.JSON_COMMENTS_TAG);
+	        JSONArray comments = reviewsObject.optJSONArray(RestConstants.COMMENTS);
 
 	        // just used for seller reviews
-	        average = reviewsObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG, -1);
+	        average = reviewsObject.optInt(RestConstants.AVERAGE, -1);
 
 	        if(comments != null){
 	            int size = comments.length();

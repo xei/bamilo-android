@@ -59,8 +59,8 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
         url = jsonObject.optString(RestConstants.URL);
-        name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-        imageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+        name = jsonObject.optString(RestConstants.NAME);
+        imageUrl = jsonObject.optString(RestConstants.IMAGE);
         // concat brand and name instead of using only name
         String brand = jsonObject.optString(RestConstants.BRAND);
         if (!TextUtils.isEmpty(name) && !TextUtils.isEmpty(brand)) {
@@ -80,8 +80,8 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 
         try {
             jsonObject.put(RestConstants.URL, url);
-            jsonObject.put(RestConstants.JSON_NAME_TAG, name);
-            jsonObject.put(RestConstants.JSON_IMAGE_TAG, imageUrl);
+            jsonObject.put(RestConstants.NAME, name);
+            jsonObject.put(RestConstants.IMAGE, imageUrl);
 
         } catch (JSONException e) {
             e.printStackTrace();

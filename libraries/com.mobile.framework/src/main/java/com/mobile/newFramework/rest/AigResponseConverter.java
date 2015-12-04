@@ -154,17 +154,7 @@ public class AigResponseConverter implements Converter {
         }
         // Get json from metadata -> data
         else if(requiredJson == RequiredJson.OBJECT_DATA){
-            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.JSON_DATA_TAG);
-        }
-        // Get json from metadata -> form_entity
-        else if(requiredJson == RequiredJson.FORM_ENTITY){
-            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.JSON_FORM_ENTITY_TAG);
-        }// Get json from metadata -> cart_entity
-        else if(requiredJson == RequiredJson.CART_ENTITY){
-            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.CART_ENTITY);
-        }// Get json from metadata -> customer_entity
-        else if(requiredJson == RequiredJson.CUSTOMER_ENTITY){
-            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.JSON_CUSTOMER_ENTITY_TAG);
+            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.DATA);
         }
         return responseJsonObject;
     }
@@ -174,7 +164,7 @@ public class AigResponseConverter implements Converter {
      */
     private @Nullable String getMd5(@NonNull JSONObject responseJsonObject) {
         if(responseJsonObject.has(RestConstants.METADATA)){
-            return responseJsonObject.optJSONObject(RestConstants.METADATA).optString(RestConstants.JSON_MD5_TAG, null);
+            return responseJsonObject.optJSONObject(RestConstants.METADATA).optString(RestConstants.MD5, null);
         }
         return null;
     }

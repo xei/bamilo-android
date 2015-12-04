@@ -58,8 +58,8 @@ public class OrderTrackerItem extends ProductRegular {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
         delivery = jsonObject.getString(RestConstants.DELIVERY);
-		quantity = jsonObject.getString(RestConstants.JSON_QUANTITY_TAG);
-        JSONObject statusObject = jsonObject.getJSONObject(RestConstants.JSON_ORDER_STATUS_TAG);
+		quantity = jsonObject.getString(RestConstants.QUANTITY);
+        JSONObject statusObject = jsonObject.getJSONObject(RestConstants.STATUS);
         status = statusObject.optString(RestConstants.LABEL);
         updateDate = statusObject.optString(RestConstants.UPDATE_AT);
         return true;
@@ -74,8 +74,8 @@ public class OrderTrackerItem extends ProductRegular {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_QUANTITY_TAG, quantity);
-            jsonObject.put(RestConstants.JSON_ORDER_STATUS_TAG, status);
+            jsonObject.put(RestConstants.QUANTITY, quantity);
+            jsonObject.put(RestConstants.STATUS, status);
         } catch (JSONException e) {
             e.printStackTrace();
         }

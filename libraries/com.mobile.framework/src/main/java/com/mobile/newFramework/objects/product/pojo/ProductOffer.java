@@ -58,12 +58,12 @@ public class ProductOffer extends ProductMultiple implements IJSONSerializable{
     public boolean initialize(JSONObject jsonObject) {
         try {
 
-            JSONObject sellerObject = jsonObject.getJSONObject(RestConstants.JSON_SELLER_TAG);
+            JSONObject sellerObject = jsonObject.getJSONObject(RestConstants.SELLER_ENTITY);
 
             if(sellerObject != null)
                 seller = new Seller(sellerObject);
 
-            JSONObject productObject = jsonObject.getJSONObject(RestConstants.JSON_PRODUCT_TAG);
+            JSONObject productObject = jsonObject.getJSONObject(RestConstants.PRODUCT);
 
             if(productObject != null){
 
@@ -71,8 +71,8 @@ public class ProductOffer extends ProductMultiple implements IJSONSerializable{
 
                 initializeProductMultiple(productObject);
 
-                minDeliveryTime = productObject.optInt(RestConstants.JSON_MIN_DELIVERY_TAG);
-                maxDeliveryTime = productObject.optInt(RestConstants.JSON_MAX_DELIVERY_TAG);
+                minDeliveryTime = productObject.optInt(RestConstants.MIN_DELIVERY_TIME);
+                maxDeliveryTime = productObject.optInt(RestConstants.MAX_DELIVERY_TIME);
 
             }
 

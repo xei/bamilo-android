@@ -106,22 +106,22 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
         Print.d("ON INITIALIZE");
 
         try {
-            imageUrl = getImageUrl(jsonObject.getString(RestConstants.JSON_ITEM_IMAGE_TAG));
-            productUrl = jsonObject.optString(RestConstants.JSON_PRODUCT_URL_TAG);
+            imageUrl = getImageUrl(jsonObject.getString(RestConstants.IMAGE));
+            productUrl = jsonObject.optString(RestConstants.URL);
             mSKU = jsonObject.getString(RestConstants.SKU);
-            mSimpleSku = jsonObject.getString(RestConstants.JSON_SIMPLE_SKU_TAG);
-            quantity = jsonObject.getLong(RestConstants.JSON_QUANTITY_TAG);
-            maxQuantity = jsonObject.getInt(RestConstants.JSON_MAX_QUANTITY);
-            name = jsonObject.getString(RestConstants.JSON_ITEM_NAME_TAG);
+            mSimpleSku = jsonObject.getString(RestConstants.SIMPLE_SKU);
+            quantity = jsonObject.getLong(RestConstants.QUANTITY);
+            maxQuantity = jsonObject.getInt(RestConstants.MAX_QUANTITY);
+            name = jsonObject.getString(RestConstants.NAME);
             brand = jsonObject.getString(RestConstants.BRAND);
-            mAttributeSetId = jsonObject.optString(RestConstants.JSON_ATTRIBUTE_SET_ID_TAG);
-            variation = jsonObject.optString(RestConstants.JSON_VARIATION_TAG);
-            mCategoriesIds = jsonObject.optString(RestConstants.JSON_CATEGORY_ID_TAG);
+            mAttributeSetId = jsonObject.optString(RestConstants.ATTRIBUTE_SET_ID);
+            variation = jsonObject.optString(RestConstants.VARIATION);
+            mCategoriesIds = jsonObject.optString(RestConstants.ID_CATALOG_CATEGORY);
             // Fix NAFAMZ-7848
             // Throw JSONException if JSON_PRICE_TAG is not present
-            String priceJSON = jsonObject.getString(RestConstants.JSON_PRICE_TAG);
+            String priceJSON = jsonObject.getString(RestConstants.PRICE);
             if (CurrencyFormatter.isNumber(priceJSON)) {
-                priceVal = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
+                priceVal = jsonObject.getDouble(RestConstants.PRICE);
                 price = priceJSON;
                 //price = CurrencyFormatter.formatCurrency(priceJSON);
             } else {
@@ -130,12 +130,12 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
                 price = "";
             }
 
-            mPriceValueConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG, 0d);
+            mPriceValueConverted = jsonObject.optDouble(RestConstants.PRICE_CONVERTED, 0d);
 
             // Fix NAFAMZ-7848
-            String specialPriceJSON = jsonObject.optString(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
+            String specialPriceJSON = jsonObject.optString(RestConstants.SPECIAL_PRICE);
             if (CurrencyFormatter.isNumber(specialPriceJSON)) {
-                specialPriceVal = jsonObject.getDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_TAG);
+                specialPriceVal = jsonObject.getDouble(RestConstants.SPECIAL_PRICE);
                 specialPrice = specialPriceJSON;
                 // specialPrice = CurrencyFormatter.formatCurrency();
             } else {
@@ -143,7 +143,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
                 specialPrice = price;
             }
 
-            mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_ITEM_SPECIAL_PRICE_CONVERTED_TAG, 0d);
+            mSpecialPriceConverted = jsonObject.optDouble(RestConstants.SPECIAL_PRICE_CONVERTED, 0d);
 
             savingPercentage = 100 - specialPriceVal / priceVal * 100;
 
@@ -167,7 +167,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.CART_ENTITY;
+        return RequiredJson.METADATA;
     }
 
     /**

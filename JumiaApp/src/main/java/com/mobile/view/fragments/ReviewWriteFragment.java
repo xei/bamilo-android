@@ -42,6 +42,7 @@ import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.ProductUtils;
@@ -108,8 +109,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static ReviewWriteFragment getInstance(Bundle bundle) {
         ReviewWriteFragment fragment = new ReviewWriteFragment();
@@ -418,7 +417,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /**
      * restore information related to the form edit texts
-     * @param form
      */
     private void restoreTextReview(DynamicForm form){
         mFormReviewValues = JumiaApplication.INSTANCE.getFormReviewValues();
@@ -460,8 +458,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
             ProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
             getView().findViewById(R.id.send_review).setOnClickListener(this);
-            productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
-            //displayPriceInformation(productPriceNormal, productPriceSpecial);
+            productName.setText(String.format(getString(R.string.first_and_second_placeholders), completeProduct.getBrand(), completeProduct.getName()));
         }
     }
     
@@ -497,37 +494,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             }
         }
     }
-
-//    /**
-//     * method to display the header price info
-//     * @param productPriceNormal
-//     * @param productPriceSpecial
-//     */
-//    private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
-//        String unitPrice = String.valueOf(completeProduct.getPrice());
-//        /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
-//        String specialPrice = String.valueOf(completeProduct.getSpecialPrice());
-//        /*--if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();*/
-//
-//        displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
-//    }
-//
-//    private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial,
-//            String unitPrice, String specialPrice) {
-//        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
-//            // display only the special price
-//            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
-//            productPriceNormal.setVisibility(View.GONE);
-//        } else {
-//            // display special and normal price
-//            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
-//            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
-//            productPriceNormal.setVisibility(View.VISIBLE);
-//            productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags()
-//                    | Paint.STRIKE_THRU_TEXT_FLAG);
-//        }
-//    }
-
 
     /**
      * function to clean form
@@ -615,7 +581,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                     bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(ratingForm.getAction(), dynamicRatingForm);
+                    executeSendReview(TargetLink.getIdFromTargetLink(ratingForm.getAction()), dynamicRatingForm);
                 }
             } else {
                 if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
@@ -624,7 +590,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                     bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
                     getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
                 } else {
-                    executeSendReview(reviewForm.getAction(), dynamicRatingForm);
+                    executeSendReview(TargetLink.getIdFromTargetLink(reviewForm.getAction()), dynamicRatingForm);
                 }
             }
         }
@@ -633,35 +599,18 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     
     /**
      * function responsible for sending the rating/review to API
-     * 
-     * 
-     * @param action
-     * @param form
      */
     private void executeSendReview(String action, DynamicForm form) {
-        
-        Bundle bundle = new Bundle();
-        
         form.getItemByKey(SKU).getEntry().setValue(completeProduct.getSku());
-        
         ContentValues values = form.save();
-        
         getRatingFormValues(values,form);
-
-        bundle.putString(RatingReviewProductHelper.ACTION, action);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        
-        triggerContentEventProgress(new RatingReviewProductHelper(), bundle, this);
-        
+        triggerContentEventProgress(new RatingReviewProductHelper(), RatingReviewProductHelper.createBundle(action, values), this);
     }
     
     
     /**
      * 
      * Function that retrieves info from rating bars form
-     * 
-     * @param values
-     * @param form
      */
     private void getRatingFormValues(ContentValues values, DynamicForm form){
         
@@ -692,7 +641,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     /**
      * function responsible for creating a map between the rating option name and it's value
      * needed for tracking only
-     * @return
      */
     private HashMap<String, Long> getRatingsMapValues(DynamicForm form){
         HashMap<String, Long> values = new HashMap<>();

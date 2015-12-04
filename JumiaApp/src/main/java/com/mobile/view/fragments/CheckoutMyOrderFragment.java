@@ -524,7 +524,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                 getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, null, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 Bundle bundle = new Bundle();
-                bundle.putString(RestConstants.ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
+                bundle.putString(RestConstants.ORDERNR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
                 bundle.putString(RestConstants.TRANSACTION_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
                 bundle.putString(RestConstants.TRANSACTION_TAX, "" + mOrderFinish.getVatValue());
                 bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
@@ -648,7 +648,7 @@ public class CheckoutMyOrderFragment extends BaseFragment implements IResponseCa
                 } else {
                     JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
                     Bundle bundle = new Bundle();
-                    bundle.putString(RestConstants.ORDER_NR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
+                    bundle.putString(RestConstants.ORDERNR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
                     bundle.putString(RestConstants.TRANSACTION_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
                     bundle.putString(RestConstants.TRANSACTION_TAX, "" + mOrderFinish.getVatValue());
                     bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());

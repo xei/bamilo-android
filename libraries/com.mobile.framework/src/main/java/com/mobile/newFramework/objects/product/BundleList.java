@@ -52,8 +52,8 @@ public class BundleList implements IJSONSerializable, Parcelable {
         JSONObject bundleEntityjson = jsonObject.getJSONObject(RestConstants.BUNDLE_ENTITY);
 
         mId = bundleEntityjson.getString(RestConstants.ID);
-        mPrice = bundleEntityjson.getDouble(RestConstants.JSON_PRICE_TAG);
-        mPriceConverted =  bundleEntityjson.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
+        mPrice = bundleEntityjson.getDouble(RestConstants.PRICE);
+        mPriceConverted =  bundleEntityjson.getDouble(RestConstants.PRICE_CONVERTED);
         JSONArray bundleProductsArray = bundleEntityjson.optJSONArray(RestConstants.PRODUCTS);
         if (bundleProductsArray != null && bundleProductsArray.length() > 0) {
             mProducts = new ArrayList<>();

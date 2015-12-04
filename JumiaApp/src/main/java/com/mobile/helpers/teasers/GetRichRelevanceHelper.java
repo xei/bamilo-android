@@ -21,8 +21,6 @@ public class GetRichRelevanceHelper extends SuperBaseHelper {
 
     protected static String TAG = GetRichRelevanceHelper.class.getSimpleName();
 
-    public static final String URL = Constants.BUNDLE_URL_KEY;
-
     @Override
     public EventType getEventType() {
         return EventType.GET_RICH_RELEVANCE_EVENT;
@@ -35,7 +33,7 @@ public class GetRichRelevanceHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String richRelevantHash) {
         ContentValues values = new ContentValues();
-        values.put(RestConstants.JSON_REQUEST, richRelevantHash);
+        values.put(RestConstants.REQ, richRelevantHash);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;

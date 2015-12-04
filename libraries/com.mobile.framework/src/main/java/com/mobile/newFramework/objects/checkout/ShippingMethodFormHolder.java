@@ -54,17 +54,17 @@ public class ShippingMethodFormHolder implements IJSONSerializable{
     public boolean initialize(JSONObject jsonObject) {
         try {
             id = jsonObject.optString(RestConstants.ID);
-            name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+            name = jsonObject.optString(RestConstants.NAME);
             key = jsonObject.optString(RestConstants.KEY);
             value = jsonObject.optString(RestConstants.VALUE);
             label = jsonObject.optString(RestConstants.LABEL);
             type = jsonObject.optString(RestConstants.TYPE);
 
-            if(jsonObject.has(RestConstants.JSON_RULES_TAG)){
-                required = jsonObject.getJSONObject(RestConstants.JSON_RULES_TAG).optBoolean(RestConstants.JSON_REQUIRED_TAG, false);
+            if(jsonObject.has(RestConstants.RULES)){
+                required = jsonObject.getJSONObject(RestConstants.RULES).optBoolean(RestConstants.REQUIRED, false);
             }
 
-            JSONObject optionsObject = jsonObject.getJSONObject(RestConstants.JSON_OPTIONS_TAG);
+            JSONObject optionsObject = jsonObject.getJSONObject(RestConstants.OPTIONS);
 
             Iterator<?> opts = optionsObject.keys();
             while (opts.hasNext()) {

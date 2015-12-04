@@ -20,12 +20,17 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:layout_marginStart="@dimen/rounded_margin_mid" />
 
-    <ImageView
-        android:id="@+id/item_image_is_new"
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
+        android:layout_alignTop="@+id/item_image_container"
+        android:layout_alignLeft="@+id/item_image_container"
+        android:layout_alignStart="@+id/item_image_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_30px"
         android:layout_gravity="top|left|start"
-        android:src="@drawable/selector_is_new" />
+        android:text="@string/new_arrival_badge" />
 
     <!-- INFO CONTAINER -->
 

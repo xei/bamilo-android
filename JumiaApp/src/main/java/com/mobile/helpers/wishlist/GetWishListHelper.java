@@ -47,14 +47,12 @@ public class GetWishListHelper extends SuperBaseHelper {
      * Method used to create the request bundle.
      */
     public static Bundle createBundle(int page) {
-        // Item data
         ContentValues values = new ContentValues();
         values.put(RestConstants.PAGE, page);
         values.put(RestConstants.PER_PAGE, IntConstants.MAX_ITEMS_PER_PAGE);
-        // Request data
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, page == IntConstants.FIRST_PAGE ? EventTask.NORMAL_TASK : EventTask.ACTION_TASK);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 
