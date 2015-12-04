@@ -1,35 +1,31 @@
 package com.mobile.view.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
+import com.mobile.helpers.cart.GetShoppingCartAddBundleHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
-import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.ComboGridView;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ComboGridAdapter;
 import com.mobile.view.R;
@@ -47,7 +43,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     private BundleList mBundleList;
     private String productSku;
-    private DialogFragment mDialogAddedToCart;
     private TextView mTotalPrice;
     private ComboGridView mGridView;
     private ComboGridAdapter adapter;
@@ -238,8 +233,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             CheckBox cb = (CheckBox) view;
             cb.setChecked(!cb.isChecked());
             //update total price
-            bundleList.updateTotalPriceWhenChecking(position);
-            mTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
+            mBundleList.updateTotalPriceWhenChecking(position);
+            mTotalPrice.setText(CurrencyFormatter.formatCurrency(mBundleList.getPrice()));
         }
 
         adapter.notifyDataSetChanged();
@@ -304,6 +299,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         if (super.handleErrorEvent(baseResponse)) return;
         // Specific errors
         EventType eventType = baseResponse.getEventType();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
 
         switch (eventType) {

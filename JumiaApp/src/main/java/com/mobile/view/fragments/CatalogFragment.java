@@ -619,8 +619,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
+    @Override
+    public void onVariationClick(View view, RecyclerView.Adapter<?> adapter) {
 
-
+    }
 
 
     @Override
