@@ -153,7 +153,6 @@
     <string name="my_order_voucher_label">رعایتی پرچی</string>
     <string name="my_orders_label">میرے آرڈرز</string>
     <string name="my_profile">مائی پروفائل</string>
-    <string name="myaccount_email_notifications">ای میل اطلاعات</string>
     <string name="myaccount_userdata">صارف کی معلومات</string>
     <string name="name">نام</string>
     <string name="nav_country">ملک چنیں</string>
@@ -170,6 +169,7 @@
     <string name="no_label">نہیں</string>
     <string name="no_payment">کسی ادائیگی کی ضرورت نہیں</string>
     <string name="notifications">اطلاعات</string>
+    <string name="myaccount_email_notifications">ای میل اطلاعات</string>
     <string name="notifications_summary">خصوصی پیشکش اور تازہ معلومات حاصل کریں۔</string>
     <string name="off_label">بند</string>
     <string name="ok_label">ٹھیک</string>
@@ -287,6 +287,7 @@
     <string name="some_products_not_added">بدقسمتی سے کچھ اشیاء ٹوکری میں شامل نہیں کی جاسکیں</string>
     <string name="splash_slogan">پاکستان کا سب سے بڑی آن لائن خریداری کا مرکز</string>
     <string name="splash_slogan_daraz">آن لائن خریداری کا واحد مرکز جس کی آپ کو ضرورت پڑے گی۔</string>
+    <string name="splash_slogan_powered_by">splash_slogan_powered_by</string>
     <string name="stale_warning">رابطہ منقطع</string>
     <string name="string_appearance">ظاہر</string>
     <string name="string_price">قیمت</string>
@@ -335,7 +336,6 @@
     <string name="yes_label">ہاں</string>
     <string name="your_cart">آپ کی ٹوکری</string>
     <string name="your_order">آپ کا آرڈر</string>
-    <string name="install_android">‎%s‎ اینڈرائڈ ایپ ایک لمحے میں نصب کریں</string>
     <string name="share_the_app">ایپ کو پھیلائیں</string>
     <string name="can_share_app_with_friends">اب آپ ایپ کو اپنے دوستوں کے ساتھ شریک کر سکتے ہیں</string>
     <string name="app_social">سماجی ایپ</string>
@@ -457,7 +457,6 @@
     <string name="delivered_label">ڈیلورڈ</string>
     <string name="order_number">حکم/آڈڑ نمبر ‎%s‎</string>
     <string name="billing">بلنگ</string>
-    <string name="first_and_second_placeholders">‎%1$s‎‎%2$s‎</string>
     <string name="quantity">تعداد‎%s ‎</string>
     <string name="reorder_label">ترتیب</string>
     <string name="order_status_date">‎&lt;b>‎‎%1$s‎‎&lt;/b>\n‎‎%2$s‎</string>
