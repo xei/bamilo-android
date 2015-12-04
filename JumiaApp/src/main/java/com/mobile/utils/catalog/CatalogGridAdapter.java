@@ -283,7 +283,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             int position = (Integer) view.getTag(R.id.position);
             // Case favourite
             if (id == R.id.image_is_favourite) {
-                mOnViewHolderClicked.onWishListClick(view, this, position);
+                mOnViewHolderClicked.onViewHolderItemClick(view, this, position);
             }
             // Case header
             else if (id == R.id.catalog_header_image_frame) {

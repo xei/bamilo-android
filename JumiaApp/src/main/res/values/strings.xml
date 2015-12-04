@@ -289,7 +289,6 @@
     <string name="some_products_not_added">Unfortunately, some products were not added to cart.</string>
     <string name="splash_slogan">The biggest online shopping mall in Africa</string>
     <string name="splash_slogan_daraz">The only online shopping destination you will need!</string>
-    <string name="splash_slogan_powered_by"/>
     <string name="stale_warning">Lost connection</string>
     <string name="string_appearance">Appearance</string>
     <string name="string_price">Price</string>
@@ -421,7 +420,6 @@
     <string name="shipment">Shipment %1$d of %2$d</string>
     <string name="delivery_time_placeholder">Delivery time: %1$d - %2$d days</string>
     <string name="product_specifications">Product Specifications</string>
-    <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">The host name does not match the certificate: %s</string>
     <string name="ssl_error_generic">An SSL error occurred: %s</string>
     <string name="save_for_later">Save for later</string>
@@ -473,6 +471,7 @@
     <string name="phone_contact">Phone:</string>
     <string name="email_contact">Email:</string>
     <string name="logout_success">Logged out with success</string>
-    <!-- NEW IN 2.9 -->
+    <!-- NEW 2.9 -->
+    <string name="percentage">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">This bundle could not be added to the shopping cart. Please try again later.</string>
 </resources>

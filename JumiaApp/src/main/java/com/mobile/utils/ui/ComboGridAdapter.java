@@ -281,45 +281,23 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         // position
         int position = (Integer) view.getTag(R.id.position);
 
-
-            ProductBundle productBundle = getItem(position);
-            if(productBundle != null){
-            //if is a checkbox
-            if(view.getId() == R.id.item_check)
-            {
-                if (!mProductSku.equals(productBundle.getSku())) {
-                    CheckBox cb = (CheckBox) view;
-                    cb.setChecked(!cb.isChecked());
-
-                    if (mOnViewHolderClicked != null)
-                        mOnViewHolderClicked.onViewHolderItemClick(this, position);
-                }
+        if (mOnViewHolderClicked != null){
+            //if is checkbox
+            if(view.getId() == R.id.item_check) {
+                mOnViewHolderClicked.onViewHolderItemClick(view,this,position);
             }
             //if is choose size
             else if(view.getId() == R.id.choosen_variation){
                 if (mOnViewHolderClicked != null)
                     mOnViewHolderClicked.onVariationClick(view, this);
-            } else {
-                //if is the whole view
-                if (mOnViewHolderClicked != null)
-                    mOnViewHolderClicked.onViewHolderClick(this, position);
             }
-
+            else{
+                //if is the whole view
+                mOnViewHolderClicked.onViewHolderClick(this, position);
+            }
         }
 
 
-
-
-   /*     if (mOnViewHolderClicked != null) {
-            // position
-            int position = (Integer) view.getTag(R.id.position);
-            ProductBundle productBundle = mDataSet.get(position);
-            if (!mProductSku.equals(productBundle.getSku())) {
-                CheckBox cb = (CheckBox) view.findViewById(R.id.item_check);
-                cb.setChecked(!cb.isChecked());
-                mOnViewHolderClicked.onViewHolderClick(this, position);
-            }
-        }*/
     }
 
 

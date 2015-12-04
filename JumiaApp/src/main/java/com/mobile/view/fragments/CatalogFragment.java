@@ -619,8 +619,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
+
+
+
+
     @Override
-    public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+    public void onViewHolderItemClick(View view,RecyclerView.Adapter<?> adapter, int position) {
         // Get item
         mWishListItemClicked = ((CatalogGridAdapter) adapter).getItem(position);
         // Validate customer is logged in
@@ -647,16 +651,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Goto login
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
-    }
-
-    @Override
-    public void onVariationClick(View view, RecyclerView.Adapter<?> adapter) {
-
-    }
-
-    @Override
-    public void onViewHolderItemClick(RecyclerView.Adapter<?> adapter, int position) {
-
     }
 
     /**

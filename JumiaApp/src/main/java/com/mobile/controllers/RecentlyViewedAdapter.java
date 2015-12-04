@@ -29,9 +29,9 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
 
     public final static String TAG = RecentlyViewedAdapter.class.getSimpleName();
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
-    private OnClickListener mOnClickParentListener;
+    private final OnClickListener mOnClickParentListener;
 
     private Class<? extends ProductMultiple> itemsClass;
 

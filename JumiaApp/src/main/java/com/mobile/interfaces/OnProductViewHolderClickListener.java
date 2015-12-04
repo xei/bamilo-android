@@ -13,12 +13,15 @@ public interface OnProductViewHolderClickListener {
 
     void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position);
 
-    void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position);
-
     void onVariationClick(View view, RecyclerView.Adapter<?> adapter);
+
     /**
-     * Allows to process a click on an item inside a view
+     * Generic method that allows processing a click on a specific view item (any kind of item) inside a  mother view
+     * Usages:
+     * whishlist: add to wiishlist
+     * Combos Page: update total price when check/uncheck an item
+     *
      * */
-    void onViewHolderItemClick(RecyclerView.Adapter<?> adapter, int position);
+    void onViewHolderItemClick(View view,RecyclerView.Adapter<?> adapter, int position);
 
 }
