@@ -294,11 +294,6 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-    String removeAllShoppingCart = "removeAllShoppingCart";
-
-    @FormUrlEncoded
-    @POST("/")
     void addVoucher(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
     String addVoucher = "addVoucher";
 
@@ -423,5 +418,10 @@ public interface AigApiInterface {
     @BODY_DELETE("/")
     void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String removeFromWishList = "removeFromWishList";
+
+    @FormUrlEncoded
+    @PUT("/")
+    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+    String removeAllShoppingCart = "removeAllShoppingCart";
 
 }
