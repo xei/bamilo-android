@@ -154,7 +154,7 @@ public class ErrorLayoutFactory {
     public void buildSSLErrorLayout(){
         // Build common
         new Builder()
-                .setImage(R.drawable.ic_warning)
+                .setImage(R.drawable.ic_warning2)
                 .setPrincipalMessage(R.string.an_error_occurred)
                 .setDetailMessage(R.string.customer_service_info)
                 .setButtonVisible(false);
@@ -174,7 +174,7 @@ public class ErrorLayoutFactory {
     public void buildUnknownCheckoutStepErrorLayout(){
         // Build common
         new Builder()
-                .setImage(R.drawable.ic_warning)
+                .setImage(R.drawable.ic_warning2)
                 .setPrincipalMessage(R.string.an_error_occurred)
                 .setDetailMessage(R.string.customer_service_info)
                 .setButtonVisible(false);
@@ -214,7 +214,7 @@ public class ErrorLayoutFactory {
 
     private void buildUnexpectedErrorLayout() {
         new Builder()
-                .setImage(R.drawable.ic_warning)
+                .setImage(R.drawable.ic_warning2)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setRotationVisible(true)
@@ -237,7 +237,7 @@ public class ErrorLayoutFactory {
 
     private void buildContinueShoppingLayout() {
         new Builder()
-                .setImage(R.drawable.ic_warning)
+                .setImage(R.drawable.ic_warning2)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)
