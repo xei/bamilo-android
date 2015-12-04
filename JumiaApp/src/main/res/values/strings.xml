@@ -160,6 +160,7 @@
     <string name="nav_country_warning">You are about to change the country. This clears the cart and you will be logged out. Are you sure?</string>
     <string name="nav_track_order">Track My Order</string>
     <string name="navigation_cart_empty">Your cart is empty</string>
+    <string name="new_arrival_badge">New</string>
     <string name="new_password_hint">New password</string>
     <string name="new_password_label">New Password</string>
     <string name="newsletter_saved_message">Your email notifications settings have been saved.</string>

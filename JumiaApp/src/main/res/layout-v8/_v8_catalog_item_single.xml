@@ -13,13 +13,17 @@
         android:layout_marginRight="@dimen/margin_60px"
         android:layout_marginTop="@dimen/margin_30px" />
 
-    <ImageView
-        android:id="@+id/image_is_new"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:src="@drawable/selector_is_new" />
+        android:layout_marginTop="@dimen/dimen_30px"
+        android:layout_marginRight="@dimen/dimen_30px"
+        android:gravity="center"
+        android:text="@string/new_arrival_badge" />
 
     <ImageView
         android:id="@+id/image_is_favourite"
