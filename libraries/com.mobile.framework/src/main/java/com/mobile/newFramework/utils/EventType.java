@@ -84,7 +84,7 @@ public enum EventType {
 
     GET_RESOLUTIONS("http:/main/imageresolutions/", AigRestContract.MAX_CACHE_TIME),
 
-    TRACK_ORDER_EVENT("http:/order/trackingorder/", AigRestContract.NO_CACHE),
+    TRACK_ORDER_EVENT("http:/customer/trackingorder/", AigRestContract.NO_CACHE),
 
     /**
      * NATIVE CHECKOUT EVENTS
