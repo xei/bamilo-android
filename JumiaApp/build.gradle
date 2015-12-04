@@ -323,6 +323,7 @@ task pushNewStrings << {
  * DEPENDENCIES: This task depends on wti gem file to be installed and on mail binary.
  */
 task pullTranslations << {
+
     println " - Pulling translations from WebTranslateIt " + new Date()
     def proc = "wti pull".execute(null, new File("./JumiaApp/src/main/res/"))
     proc.waitFor()
@@ -365,7 +366,7 @@ task pushChangedTranslationFilesToGit << {
 }
 
 /**
- * Method that sends an email to all dev team
+ * Method that sends an email to all Kaymu dev team
  * @param emailContent The content of the email that will be sent.
  */
 def sendEmailToTeam(String subject, String emailContent) {
@@ -374,7 +375,5 @@ def sendEmailToTeam(String subject, String emailContent) {
     new File('/tmp/mailwit.txt').write(emailContent)
     def recipients = "sergio.pereira@africainternetgroup.com"
     executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < /tmp/mailwit.txt'])
-    //def from = "ptc_jenkins@jumia.com"
-    //executeWaitAndPrintCmd(['sh', '-c', 'mail -r "' + from + '" -s "[PTC] - ' + subject + '" ' + recipients + ' < /tmp/mailwit.txt'])
 
 }

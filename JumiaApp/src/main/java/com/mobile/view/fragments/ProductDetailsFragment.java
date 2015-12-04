@@ -148,7 +148,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (arguments != null) {
             // Get sku
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
-            // TODO: Remove this
+            // TODO: Remove, the campaign should send the correct id
             if(TextUtils.contains(mCompleteProductSku, "-")) {   //if is a simple sku - coming from campaigns
                 mCompleteProductSku = mCompleteProductSku.split("-")[0];
             }

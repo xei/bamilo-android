@@ -340,10 +340,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Specific errors
         EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
-        switch (eventType) {
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                showWarningErrorMessage(baseResponse.getErrorMessage(), R.string.error_add_to_shopping_cart);
-                break;
+        if (eventType == EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT) {
+            showWarningErrorMessage(baseResponse.getErrorMessage(), R.string.error_add_to_shopping_cart);
         }
     }
 

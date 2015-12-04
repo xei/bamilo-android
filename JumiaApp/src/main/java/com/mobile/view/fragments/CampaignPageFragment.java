@@ -530,7 +530,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
         // Update cart info
         super.handleSuccessEvent(baseResponse);
-        //
+        // Validate type
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
             Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
