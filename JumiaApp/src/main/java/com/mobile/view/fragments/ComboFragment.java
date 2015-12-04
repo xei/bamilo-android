@@ -1,8 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -19,9 +17,7 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -30,14 +26,12 @@ import com.mobile.utils.ComboGridView;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ComboGridAdapter;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Map;
 
 
 /**
@@ -48,11 +42,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     private BundleList bundleList;
     private String productSku;
-    private DialogFragment mDialogAddedToCart;
     private TextView mTotalPrice;
     private ComboGridAdapter adapter;
     private ProductBundle mBundleWithMultiple;
-    private ProductBundle mBundleWithOneSimple;
     private ArrayList<ProductBundle> listBundlesOneSimple;
     private ArrayList<ProductBundle> listBundlesMultipleSimple;
     private int countMultipleProcessed = 0;
@@ -199,7 +191,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      * @param productBundle - arguments
      */
     private void addToCartWithOnlySimple(ProductBundle productBundle) {
-        mBundleWithOneSimple = productBundle;
         ProductSimple simples = productBundle.getSimples().get(0);
         proceedWithAddItemToCart(productBundle, simples);
     }
@@ -339,91 +330,21 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
-
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
         // Hide dialog progress
         hideActivityProgress();
-
+        // Generic errors
+        if (super.handleErrorEvent(baseResponse)) return;
         // Specific errors
         EventType eventType = baseResponse.getEventType();
-        int errorCode = baseResponse.getError().getCode();
-
-        // Generic errors
-        if (super.handleErrorEvent(baseResponse)) {
-            return;
-        }
-
         Print.d(TAG, "onErrorEvent: type = " + eventType);
-
-        switch (eventType) {
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    Map errorMessages = baseResponse.getErrorMessages();
-                    if (errorMessages != null) {
-                        String message = null;
-                        if (errorMessages.containsKey(ErrorConstants.ORDER_PRODUCT_SOLD_OUT)) {
-                            message = getString(R.string.product_outof_stock);
-                        } else if (errorMessages.containsKey(ErrorConstants.PRODUCT_ADD_OVER_QUANTITY)) {
-                            message = getString(R.string.error_add_to_shopping_cart_quantity);
-                        } else if (errorMessages.containsKey(ErrorConstants.ORDER_PRODUCT_ERROR_ADDING)) {
-                            message = getString(R.string.error_add_to_cart_failed);
-                        }
-
-                        if (message == null) {
-                            return;
-                        }
-
-                        String name="";
-                        if(mBundleWithMultiple != null) name = mBundleWithMultiple.getName();
-                        else if(mBundleWithOneSimple != null) name = mBundleWithOneSimple.getName();
-
-                        FragmentManager fm = getFragmentManager();
-                        dialog = DialogGenericFragment.newInstance(true, false,
-                                name,
-                                message,
-                                getString(R.string.ok_label), "", new View.OnClickListener() {
-
-                                    @Override
-                                    public void onClick(View v) {
-                                        int id = v.getId();
-                                        if (id == R.id.button1) {
-                                            dismissDialogFragment();
-                                        }
-                                    }
-                                });
-                        dialog.show(fm, null);
-                        return;
-                    }
-                }
-                if (!ErrorCode.isNetworkError(errorCode)) {
-                    addToShoppingCartFailed();
-                }
+        if (eventType == EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT) {
+            showWarningErrorMessage(baseResponse.getErrorMessage(), R.string.error_add_to_shopping_cart);
         }
     }
-
-    private void addToShoppingCartFailed() {
-        mDialogAddedToCart = DialogGenericFragment.newInstance(false, true, null,
-                getResources().getString(R.string.error_add_to_shopping_cart),
-                getResources().getString(R.string.ok_label),
-                "",
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            mDialogAddedToCart.dismiss();
-                        }
-                    }
-                });
-
-        mDialogAddedToCart.show(getFragmentManager(), null);
-    }
-
 
 }
