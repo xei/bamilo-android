@@ -238,6 +238,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+                //FIXME java.lang.IllegalArgumentException: argument 1 should have type java.lang.String, got java.util.HashMap
                 triggerContentEvent(new GetProductHelper(), bundle, this);
             } else {
                 /* Commented due to unnecessary data being fetched
@@ -620,11 +621,13 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         View  ratingFormContainer = form.getItemByKey(RATINGS).getEditControl();
         
         for (int i = 1; i < ratingMap.size()+1; i++) {
-           int rate =  (int)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
-           String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag().toString();
+            int rate =  (int)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
+            String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag().toString();
         
-           String key =formName+"["+id+"]";
-           values.put(key, rate);
+            String key =formName+"["+id+"]";
+            values.put(key, rate);
+            // Remove entry that's used only for locally saving the form value
+            values.remove(id);
            
         }
     }
