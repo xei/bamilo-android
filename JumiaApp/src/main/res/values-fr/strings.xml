@@ -153,6 +153,7 @@
     <string name="my_order_voucher_label">Code promotionnel</string>
     <string name="my_orders_label">Mes Commandes</string>
     <string name="my_profile">Mon Profil</string>
+    <string name="myaccount_email_notifications">Notifications Email</string>
     <string name="myaccount_userdata">Les données de l\'utilisateur</string>
     <string name="name">Nom</string>
     <string name="nav_country">Choisir Le Pays</string>
@@ -169,7 +170,6 @@
     <string name="no_label">Non</string>
     <string name="no_payment">Aucun paiement nécessaire</string>
     <string name="notifications">Notifications</string>
-    <string name="myaccount_email_notifications">Notifications Email</string>
     <string name="notifications_summary">Recevez des offres exclusives et mises à jour personnelles</string>
     <string name="off_label">-</string>
     <string name="ok_label">OK</string>
@@ -335,6 +335,7 @@
     <string name="yes_label">Oui</string>
     <string name="your_cart">Votre panier</string>
     <string name="your_order">Votre commande</string>
+    <string name="install_android">Installez l\'application %s Android en un instant</string>
     <string name="share_the_app">Partagez l\'Application</string>
     <string name="can_share_app_with_friends">Vous pouvez maintenant partager l\'application avec vos amis</string>
     <string name="app_social">Communauté de l\'App</string>
@@ -454,6 +455,7 @@
     <string name="delivered_label">Livré</string>
     <string name="order_number">Numéro de commande %s</string>
     <string name="billing">Facturation</string>
+    <string name="first_and_second_placeholders">%1$s %2$s</string>
     <string name="quantity">Qté %s</string>
     <string name="reorder_label">Recommander</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>

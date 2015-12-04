@@ -360,7 +360,8 @@ task pushChangedTranslationFilesToGit << {
     // perform add->commit->push
     executeWaitAndPrintCmd(['git', 'add', 'JumiaApp/src/main/res/'])
     executeWaitAndPrintCmd(['git', 'commit', '-m', "'task/strings_wti/by_jenkins - Uploading new translations from wti'"]);
-    executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
+    //executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
+    executeWaitAndPrintCmd(['git', 'push', 'origin', 'NAFAMZ-14923_WTI_in_CI'])
 
 }
 
@@ -369,10 +370,8 @@ task pushChangedTranslationFilesToGit << {
  * @param emailContent The content of the email that will be sent.
  */
 def sendEmailToTeam(String subject, String emailContent) {
-    //notify developers by email
     emailContent = emailContent.replaceAll(/\033\[[0-9;]*m/, "") //remove possible shell color chars
     new File('/tmp/mailwit.txt').write(emailContent)
     def recipients = "sergio.pereira@africainternetgroup.com"
     executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < /tmp/mailwit.txt'])
-
 }
