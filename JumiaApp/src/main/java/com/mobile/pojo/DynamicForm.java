@@ -325,11 +325,11 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             }
             // Case ratings
             else if (null != control && control.getType() == FormInputType.rating) {
-                RatingBar bar = (RatingBar) control.getControl().findViewById(R.id.option_stars);
+                RatingBar bar = (RatingBar) control.getControl().findViewWithTag(DynamicFormItem.RATING_BAR_TAG);
                 Map<String, String> ratingMap = control.getEntry().getDateSetRating();
                 if(CollectionUtils.isNotEmpty(ratingMap)){
                     for (int i = 0; i < ratingMap.size(); i++){
-                        model.put(bar.getTag().toString(), (int) bar.getRating());
+                        model.put(bar.getTag(R.id.rating_bar_id).toString(), (int) bar.getRating());
                     }
                 }
             }

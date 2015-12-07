@@ -617,7 +617,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         
         for (int i = 1; i < ratingMap.size()+1; i++) {
            int rate =  (int)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
-           String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag().toString();
+           String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag(R.id.rating_bar_id).toString();
         
            String key =formName+"["+id+"]";
            values.put(key, rate);

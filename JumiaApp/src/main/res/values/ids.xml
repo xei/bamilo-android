@@ -50,4 +50,6 @@
     <!-- IMAGE LOADER -->
     <item type="id" name="no_animate"/>
 
+    <!-- REVIEWS -->
+    <item type="id" name="rating_bar_id"/>
 </resources>
