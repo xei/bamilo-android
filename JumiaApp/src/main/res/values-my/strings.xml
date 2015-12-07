@@ -153,7 +153,6 @@
     <string name="my_order_voucher_label">ေဘာက္ခ်ာ  </string>
     <string name="my_orders_label">ကြ်ႏု္ပ္၏ေအာ္ဒါမ်ား</string>
     <string name="my_profile">ကြ်ႏု္ပ္၏ Profile</string>
-    <string name="myaccount_email_notifications">အီးေမးလ္သို႕အေၾကာင္းၾကားစာမ်ား ပို႕ေပးျခင္း</string>
     <string name="myaccount_userdata">သံုးစြဲသူအခ်က္အလက္</string>
     <string name="name">အမည္</string>
     <string name="nav_country">ႏိုင္ငံေရြးခ်ယ္ပါ</string>
@@ -170,6 +169,7 @@
     <string name="no_label">No</string>
     <string name="no_payment">ေငြေပးေခ်ရန္မလိုပါ</string>
     <string name="notifications">Notifications</string>
+    <string name="myaccount_email_notifications">အီးေမးလ္သို႕အေၾကာင္းၾကားစာမ်ား ပို႕ေပးျခင္း</string>
     <string name="notifications_summary">အထူးကမ္းလွမ္းခ်က္မ်ားႏွင့္ ေနာက္ဆံုး Updates မ်ားလက္ခံရန္</string>
     <string name="off_label">OFF</string>
     <string name="ok_label">OK</string>
@@ -335,7 +335,6 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">သင္၏ေစ်း၀ယ္လွည္း</string>
     <string name="your_order">သင္၏ေအာ္ဒါ</string>
-    <string name="install_android">%s Android App ကို ယခု install လုပ္မည္</string>
     <string name="share_the_app">App ကို မွ်ေ၀မည္</string>
     <string name="can_share_app_with_friends">သူငယ္ခ်င္းမ်ားကို ေဒါင္းလုတ္ယူရန္ လင့္ခ္ မွ်ေ၀ႏုိင္ပါသည္</string>
     <string name="app_social">App မွ်ေ၀ရန္</string>
@@ -417,7 +416,6 @@
     <string name="shipment">ေအာ္ဒါပို႕ေဆာင္မွဳ  %2$d မွ %1$dခု</string>
     <string name="delivery_time_placeholder">ပိုေဆာင္ခ်ိန္ %1$d ရက္မွ - %2$d ရက္ ရုံးဖြင့္ရက္အတြင္း</string>
     <string name="product_specifications">သီးျခားသတ္မွတ္ခ်က္</string>
-    <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">%s ႏွင့္ ကိုက္ညီမွဳ မရွိပါ။</string>
     <string name="ssl_error_generic">%s တြင္ တစ္စံုတစ္ရာ မွားယြင္းေနပါသည္။</string>
     <string name="save_for_later">မွတ္ထားမည္</string>
@@ -457,7 +455,6 @@
     <string name="delivered_label">ပို႕ေဆာင္ၿပီးပါၿပီ</string>
     <string name="order_number">ေအာ္ဒါအမွတ္ %s</string>
     <string name="billing">ေငြေခ်မည္႕လိပ္စာ</string>
-    <string name="first_and_second_placeholders">%1$s %2$s</string>
     <string name="quantity">အေရအတြက္ %s</string>
     <string name="reorder_label">ေအာ္ဒါထပ္မွာရန္</string>
     <string name="order_status_date">%1$s %2$s</string>
