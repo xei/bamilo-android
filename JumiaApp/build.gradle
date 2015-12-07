@@ -356,8 +356,10 @@ task pushChangedTranslationFilesToGit << {
     // perform add->commit->push
     executeWaitAndPrintCmd(['git', 'add', 'JumiaApp/src/main/res/'])
     executeWaitAndPrintCmd(['git', 'commit', '-m', "'task/strings_wti/by_jenkins - Uploading new translations from wti'"]);
+    executeWaitAndPrintCmd(['git', 'log'])
+    executeWaitAndPrintCmd(['git', 'status'])
+    executeWaitAndPrintCmd(['git', 'push', '-v', 'origin', 'NAFAMZ-14923_WTI_in_CI'])
     //executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
-    executeWaitAndPrintCmd(['git', 'push', 'origin', 'NAFAMZ-14923_WTI_in_CI'])
 }
 
 /**
