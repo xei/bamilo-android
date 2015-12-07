@@ -234,11 +234,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             }
             
             if (completeProduct == null) {
-                ContentValues values = new ContentValues();
-                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-                triggerContentEvent(new GetProductHelper(), bundle, this);
+                triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(mCompleteProductSku, null), this);
             } else {
                 /* Commented due to unnecessary data being fetched
                 triggerAutoLogin();
@@ -621,11 +617,12 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         
         for (int i = 1; i < ratingMap.size()+1; i++) {
            int rate =  (int)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
-           String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag().toString();
+           String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag(R.id.rating_bar_id).toString();
         
            String key =formName+"["+id+"]";
            values.put(key, rate);
-           
+            // Remove entry that's used only for locally saving the form value
+            values.remove(id);
         }
     }
     
