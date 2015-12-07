@@ -234,12 +234,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             }
             
             if (completeProduct == null) {
-                ContentValues values = new ContentValues();
-                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-                //FIXME java.lang.IllegalArgumentException: argument 1 should have type java.lang.String, got java.util.HashMap
-                triggerContentEvent(new GetProductHelper(), bundle, this);
+                triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(mCompleteProductSku, null), this);
             } else {
                 /* Commented due to unnecessary data being fetched
                 triggerAutoLogin();

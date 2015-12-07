@@ -325,7 +325,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
             }
             // Case ratings
             else if (null != control && control.getType() == FormInputType.rating) {
-                RatingBar bar = (RatingBar) getItemByKey(control.getKey()).getEditControl().findViewById(R.id.option_stars);
+                RatingBar bar = (RatingBar) control.getControl().findViewById(R.id.option_stars);
                 Map<String, String> ratingMap = control.getEntry().getDateSetRating();
                 if(CollectionUtils.isNotEmpty(ratingMap)){
                     for (int i = 0; i < ratingMap.size(); i++){
