@@ -5,7 +5,9 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator;
 import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.JumiaViewPagerWithZoom;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -35,7 +37,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
 
     private ArrayList<ImageUrls> mImagesList;
 
- //   private InfiniteCirclePageIndicator mViewPagerIndicator;
+    private InfiniteCirclePageIndicator mViewPagerIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,8 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
      */
     private void setContent(){
         mViewPager = (JumiaViewPagerWithZoom) findViewById(R.id.viewpager);
-        // mViewPagerIndicator = (InfiniteCirclePageIndicator) findViewById(R.id.view_pager_indicator);
+        mViewPagerIndicator = (InfiniteCirclePageIndicator) findViewById(R.id.view_pager_indicator);
+        mViewPagerIndicator.setVisibility(View.VISIBLE);
         View closeView = findViewById(R.id.gallery_button_close);
         // Get thumbnail indicator
         findViewById(R.id.pdv_thumbnail_indicator_container).setVisibility(View.GONE);
@@ -161,29 +164,29 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
         // Add infinite adapter to pager
         mViewPager.setAdapter(infinitePagerAdapter);
         // Add pager to indicator
-        //setIndicatorForViewPager(size);
+        setIndicatorForViewPager(size);
 
     }
 
-//    /**
-//     * Set the pager indicator validating the size.<br>
-//     * @param size
-//     * @author ricardo
-//     * @modified sergiopereira
-//     */
-//    private void setIndicatorForViewPager(int size) {
-//        // Validate the current size
-//       if (size > 1) {
-//            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) mViewPagerIndicator.getLayoutParams();
-//            p.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.dimen_78px));
-//            mViewPagerIndicator.requestLayout();
-//
-//            mViewPagerIndicator.setVisibility(View.VISIBLE);
-//        } else {
-//            mViewPagerIndicator.setVisibility(View.INVISIBLE);
-//        }
-//        mViewPagerIndicator.setViewPager(mViewPager);
-//    }
+    /**
+     * Set the pager indicator validating the size.<br>
+     * @param size
+     * @author ricardo
+     * @modified sergiopereira
+     */
+    private void setIndicatorForViewPager(int size) {
+        // Validate the current size
+       if (size > 1) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) mViewPagerIndicator.getLayoutParams();
+            p.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.dimen_78px));
+            mViewPagerIndicator.requestLayout();
+
+            mViewPagerIndicator.setVisibility(View.VISIBLE);
+        } else {
+            mViewPagerIndicator.setVisibility(View.INVISIBLE);
+        }
+        mViewPagerIndicator.setViewPager(mViewPager);
+    }
 
     /*
  * (non-Javadoc)

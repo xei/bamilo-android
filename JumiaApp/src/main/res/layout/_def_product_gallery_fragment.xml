@@ -34,14 +34,13 @@
         android:layout_alignRight="@id/viewpager"
         android:layout_height="match_parent"/>
 
-    <!--
     <com.mobile.components.infiniteviewpager.InfiniteCirclePageIndicator
         android:id="@+id/view_pager_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-       -->
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
 
     <!-- CLOSE BUTTON -->
 

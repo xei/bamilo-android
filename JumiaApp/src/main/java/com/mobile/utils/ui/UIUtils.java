@@ -134,14 +134,7 @@ public class UIUtils {
         animatedView.clearAnimation();
         animatedView.setVisibility(View.VISIBLE);
         Animation downAnimation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_down);
-        Animation upAnimation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_up);
-
-        upAnimation.setStartOffset(downAnimation.getDuration() + WarningFactory._3_SECONDS);
-        // Create a set with animations
-        AnimationSet animation = new AnimationSet(false);
-        animation.addAnimation(downAnimation);
-        animation.addAnimation(upAnimation);
-        animatedView.startAnimation(animation);
+        animatedView.startAnimation(downAnimation);
     }
 
     /**

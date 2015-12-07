@@ -28,9 +28,9 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
 
     protected View mCartViewBar;
 
-    private TextView mTxCartTotalPrice;
+    private final TextView mTxCartTotalPrice;
 
-    private Context mContext;
+    private final Context mContext;
 
     private boolean isShowing;
 
@@ -73,6 +73,12 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
             mTxCartTotalPrice.setText(message);
             isShowing = true;
             UIUtils.animateSlideDown(mCartViewBar);
+            mCartViewBar.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    UIUtils.animateSlideUp(mCartViewBar);
+                }
+            }, WarningFactory._3_SECONDS);
         } catch (Exception e) {
             Print.e(TAG, "ERROR IN SHOW MESSAGE: " + e.getMessage());
         }
