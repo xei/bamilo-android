@@ -343,7 +343,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         if (eventType == EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT) {
-            showWarningErrorMessage(baseResponse.getErrorMessage(), R.string.error_add_to_shopping_cart);
+            showWarningErrorMessage(baseResponse.getErrorMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
         }
     }
 

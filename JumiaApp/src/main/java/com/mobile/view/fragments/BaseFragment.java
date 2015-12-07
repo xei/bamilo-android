@@ -39,6 +39,7 @@ import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.utils.MessagesUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -625,12 +626,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         hideActivityProgress();
     }
 
-    public void showInfoAddToShoppingCartCompleted() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.added_to_shop_cart_dialog_text));
-        }
-    }
-
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
             getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.error_add_to_shopping_cart));
@@ -655,17 +650,35 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    public void showWarningSuccessMessage(@Nullable String message, @StringRes int fallback) {
+    public void showWarningSuccessMessage(@Nullable String message) {
+        showWarningSuccessMessage(message, null);
+    }
+
+    public void showWarningSuccessMessage(@Nullable String message, @Nullable EventType eventType) {
+        int id = MessagesUtils.getSuccessMessageId(eventType);
+        if(getBaseActivity() != null && id > 0) {
+            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(id);
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
+        }
+    }
+
+    public void showWarningSuccessMessage(@Nullable String message, int fallback) {
         if(getBaseActivity() != null) {
             String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
             getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
         }
     }
 
-    public void showWarningErrorMessage(@Nullable String message, @StringRes int fallback) {
+    public void showWarningErrorMessage(@Nullable String message) {
+        showWarningErrorMessage(message, null);
+    }
+    public void showWarningErrorMessage(@Nullable String message, @Nullable EventType eventType) {
+        int id = MessagesUtils.getSuccessMessageId(eventType);
+        Print.i(TAG, "code1message id is : "+id);
         if(getBaseActivity() != null) {
-            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, text);
+            String text = TextUtils.isNotEmpty(message) ? message : id > 0 ? getBaseActivity().getString(id) : null;
+            if(text != null)
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, text);
         }
     }
 
@@ -802,6 +815,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Print.i(TAG, "ON HANDLE SUCCESS EVENT");
         // Validate event
         EventType eventType = baseResponse.getEventType();
+
         switch (eventType) {
             case GET_SHOPPING_CART_ITEMS_EVENT:
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
@@ -816,6 +830,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case GUEST_LOGIN_EVENT:
             case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
+                handleSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
                 // TODO ADD HERE COMMON METHODS
                 return true;
             default:
@@ -905,6 +920,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Case unexpected error from server data
         else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
             showFragmentMaintenance();
+        } else {
+            handleErrorMessage(response.getErrorMessage(), response.getEventTask(), response.getEventType());
         }
 
         /**
@@ -914,6 +931,20 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
          */
 
         return false;
+    }
+
+    public void handleErrorMessage(final String errorMessage, final EventTask eventTask, final EventType eventType) {
+        if(eventTask == EventTask.ACTION_TASK){
+            Print.i(TAG, "code1message : errorMessage : "+errorMessage);
+            showWarningErrorMessage(errorMessage, eventType);
+        }
+    }
+
+    public void handleSuccessMessage(final String successMessage, final EventTask eventTask, final EventType eventType) {
+        if(eventTask == EventTask.ACTION_TASK){
+            Print.i(TAG, "code1message : successMessage : "+successMessage);
+            showWarningSuccessMessage(successMessage, eventType);
+        }
     }
 
     /*
@@ -1059,7 +1090,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         else{
             //show regular message add item to cart
-            showInfoAddToShoppingCartCompleted();
+            showWarningSuccessMessage(baseResponse.getSuccessMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
         }
     }
 
