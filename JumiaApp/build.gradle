@@ -341,18 +341,18 @@ task pullTranslations << {
  * Task that performs a commit and a push to git develop branch possible changed translation string files.
  */
 task pushChangedTranslationFilesToGit << {
-    def STORAGE_CRED_FILE = "/tmp/credentials.git"
-    println "- New translations found. Committing and pushing them to git develop branch..."
-    // get git user and pass from env vars
-    String user = System.getenv('GIT_USER')
-    String pass = System.getenv('GIT_PASS')
-    String auth = "https://" + user + ":" + pass + "@github.com"
-    // save credentials on file
-    new File(STORAGE_CRED_FILE).write(auth)
-    // set necessary git configs
-    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.email', "'mobilerocketporto@gmail.com'"])
-    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.name', "'mobile-rocket-porto'"])
-    executeWaitAndPrintCmd(['git', 'config', '--local', 'credential.helper', 'store', ("--file=" + STORAGE_CRED_FILE)])
+//    def STORAGE_CRED_FILE = "/tmp/credentials.git"
+//    println "- New translations found. Committing and pushing them to git develop branch..."
+//    // get git user and pass from env vars
+//    String user = System.getenv('GIT_USER')
+//    String pass = System.getenv('GIT_PASS')
+//    String auth = "https://" + user + ":" + pass + "@github.com"
+//    // save credentials on file
+//    new File(STORAGE_CRED_FILE).write(auth)
+//    // set necessary git configs
+//    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.email', "'mobilerocketporto@gmail.com'"])
+//    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.name', "'mobile-rocket-porto'"])
+//    executeWaitAndPrintCmd(['git', 'config', '--local', 'credential.helper', 'store', ("--file=" + STORAGE_CRED_FILE)])
     // perform add->commit->push
     executeWaitAndPrintCmd(['git', 'add', 'JumiaApp/src/main/res/'])
     executeWaitAndPrintCmd(['git', 'commit', '-m', "'task/strings_wti/by_jenkins - Uploading new translations from wti'"]);
