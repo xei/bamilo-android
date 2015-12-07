@@ -28,7 +28,6 @@ public class TrackOrderTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        //new TrackOrder(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.trackOrder);
         try {
             mCountDownLatch.await();

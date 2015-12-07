@@ -54,7 +54,7 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
             // Base
             super.initialize(jsonObject);
             // Leader
-            bundleProductLeaderPos = jsonObject.getInt(RestConstants.JSON_BUNDLE_PRODUCT_LEADER_POS);
+            bundleProductLeaderPos = jsonObject.getInt(RestConstants.LEADER_SIMPLE_POSITION);
         } catch (JSONException e) {
             return false;
         }

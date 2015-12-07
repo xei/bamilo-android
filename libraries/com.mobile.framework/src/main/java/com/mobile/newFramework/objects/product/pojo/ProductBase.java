@@ -45,12 +45,12 @@ public class ProductBase implements Parcelable, IJSONSerializable {
     protected final boolean initializeProductBase(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mSku = jsonObject.optString(RestConstants.SKU);
-        mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
+        mPrice = jsonObject.getDouble(RestConstants.PRICE);
         // Optional
-        mPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
-        mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
-        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
-        mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
+        mPriceConverted = jsonObject.optDouble(RestConstants.PRICE_CONVERTED);
+        mSpecialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
+        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.SPECIAL_PRICE_CONVERTED);
+        mMaxSavingPercentage = jsonObject.optInt(RestConstants.MAX_SAVING_PERCENTAGE);
         mPriceRange = jsonObject.optString(RestConstants.PRICE_RANGE);
         return true;
     }

@@ -14,6 +14,8 @@ import java.util.Map;
 /**
  * Class used to represent a MobApi response.
  *
+ * TODO: ArrayMap from support is a good alternative to maps. (Test solution Robolectric)
+ *
  * @author spereira
  */
 public class BaseResponse<T> {
@@ -60,17 +62,17 @@ public class BaseResponse<T> {
     }
 
     @Nullable
-    public HashMap<String, String> getErrorMessages() {
+    public Map<String, String> getErrorMessages() {
         return mErrorMessages;
     }
 
     @Nullable
-    public HashMap<String, String> getSuccessMessages() {
+    public Map<String, String> getSuccessMessages() {
         return mSuccessMessages;
     }
 
     @Nullable
-    public HashMap<String, String> getValidateMessages() {
+    public Map<String, String> getValidateMessages() {
         return mValidateMessages;
     }
 
@@ -136,8 +138,8 @@ public class BaseResponse<T> {
     private String concatMessages(@Nullable Map<String, String> map) {
         String message = "";
         if(CollectionUtils.isNotEmpty(map)) {
-            for(Map.Entry<String, String> entry: map.entrySet()) {
-                message += entry.getValue() + "\n";
+            for (String value : map.values()) {
+                message += value + " ";
             }
         }
         return message;

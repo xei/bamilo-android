@@ -57,11 +57,8 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
                 return false;
             }
             sku = jsonObject.getString(RestConstants.SKU);
-            price = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
-            mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
-            //get image url:
-            imageUrl = jsonObject.optString(RestConstants.URL);
-            // get url from first image which has url
+            price = jsonObject.getDouble(RestConstants.PRICE);
+            mSpecialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -78,7 +75,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = super.toJSON();
         try {
-            jsonObject.put(RestConstants.JSON_PRICE_TAG, price);
+            jsonObject.put(RestConstants.PRICE, price);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
@@ -102,7 +99,6 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
         dest.writeDouble(price);
         dest.writeDouble(mSpecialPrice);
         dest.writeString(sku);
-        dest.writeString(imageUrl);
     }
 
     private FeaturedItemProduct(Parcel in) {
@@ -110,7 +106,6 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
         price = in.readDouble();
         mSpecialPrice = in.readDouble();
         sku = in.readString();
-        imageUrl = in.readString();
     }
 
     public static final Parcelable.Creator<FeaturedItemProduct> CREATOR = new Parcelable.Creator<FeaturedItemProduct>() {

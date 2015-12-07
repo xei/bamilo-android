@@ -257,8 +257,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     /**
      * Parse success response
-     * @param baseResponse
-     * @return boolean
      */
     protected boolean onSuccessEvent(BaseResponse baseResponse) {
 
@@ -287,8 +285,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
 
     /**
      * Parse error response
-     * @param baseResponse
-     * @return boolean
      */
     protected boolean onErrorEvent(BaseResponse baseResponse) {
         // Validate fragment visibility

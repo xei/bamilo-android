@@ -29,9 +29,9 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
 
     public final static String TAG = RecentlyViewedAdapter.class.getSimpleName();
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
-    private OnClickListener mOnClickParentListener;
+    private final OnClickListener mOnClickParentListener;
 
     private Class<? extends ProductMultiple> itemsClass;
 
@@ -45,7 +45,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         private TextView price;
         private TextView percentage;
         private TextView brand;
-        private View isNew;
+        private TextView newArrivalBadge;
         private TextView varianceButton;
         private View addToCartButton;
         private View deleteButton;
@@ -119,7 +119,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             // Create tag
             item = new Item();
             item.container = itemView.findViewById(R.id.addabletocart_item_container);
-            item.isNew = itemView.findViewById(R.id.item_image_is_new);
+            item.newArrivalBadge = (TextView) itemView.findViewById(R.id.new_arrival_badge);
             item.image = (ImageView) itemView.findViewById(R.id.item_image);
             item.name = (TextView) itemView.findViewById(R.id.item_name);
             item.brand = (TextView) itemView.findViewById(R.id.item_brand);
@@ -175,7 +175,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
      */
     private void setImage(Item prodItem, ProductMultiple addableToCart){
         // Set is new image
-        prodItem.isNew.setSelected(addableToCart.isNew());
+        prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
         RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image,  null, R.drawable.no_image_small);
     }

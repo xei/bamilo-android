@@ -226,8 +226,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Validate Regions
         if(mRegions == null) {
             FormField field = form.getFieldKeyMap().get(RestConstants.REGION);
-            String url = field.getDataCalls().get(RestConstants.API_CALL);
-            triggerGetRegions(url);
+            triggerGetRegions(field.getApiCall());
         } else {
             Print.d(TAG, "REGIONS ISN'T NULL");
             setRegions(mEditFormGenerator, mRegions);
@@ -419,33 +418,24 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.CITY);
             // Case list
             if (FormInputType.list == field.getInputType()) {
-                // Get API call
-                String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the cities for this region id
                 int regionId = ((AddressRegion) object).getValue();
-//                // Remove old entries
-//                clearDependenciesSavedValues(RestConstants.REGION);
                 // Get cities
-                triggerGetCities(url, regionId);
+                triggerGetCities(field.getApiCall(), regionId);
             }
             // Case text or other
             else {
                 showFragmentContentContainer();
             }
         } else if (object instanceof AddressCity){
-
             // Get city field
             FormField field = mFormResponse.getFieldKeyMap().get(RestConstants.POSTCODE);
             // Case list
             if (field != null && FormInputType.list == field.getInputType()) {
-                // Get url
-                String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the postal codes for this city id
                 int cityId = ((AddressCity) object).getValue();
-//                // Remove old entries
-//                clearDependenciesSavedValues(RestConstants.CITY);
                 // Get postal codes
-                triggerGetPostalCodes(url, cityId);
+                triggerGetPostalCodes(field.getApiCall(), cityId);
 
             }
         }
@@ -471,11 +461,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     protected void triggerEditAddressForm(){
         Print.i(TAG, "TRIGGER: EDIT FORM");
-        ContentValues values = new ContentValues();
-        values.put(GetFormEditAddressHelper.SELECTED_ADDRESS_ID, mAddressId);
-        Bundle arg = new Bundle();
-        arg.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new GetFormEditAddressHelper(), arg, this);
+        triggerContentEvent(new GetFormEditAddressHelper(), GetFormEditAddressHelper.createBundle(mAddressId), this);
     }
 
     /**

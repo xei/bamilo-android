@@ -71,7 +71,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get teaser
-        JSONArray data = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray data = jsonObject.getJSONArray(RestConstants.DATA);
         int size = data.length();
         if (size > 0) {
             mTeasers = new ArrayList<>();

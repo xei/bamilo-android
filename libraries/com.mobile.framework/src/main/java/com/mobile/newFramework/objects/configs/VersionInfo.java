@@ -27,7 +27,7 @@ public class VersionInfo implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         try {
-            JSONObject versionInfo = jsonObject.getJSONObject(RestConstants.JSON_VERSION_TAG);
+            JSONObject versionInfo = jsonObject.getJSONObject(RestConstants.VERSION);
             @SuppressWarnings("unchecked")
             Iterator<String> iter = versionInfo.keys();
             while( iter.hasNext()) {

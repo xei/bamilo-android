@@ -160,6 +160,7 @@
     <string name="nav_country_warning">You are about to change the country. This clears the cart and you will be logged out. Are you sure?</string>
     <string name="nav_track_order">Track My Order</string>
     <string name="navigation_cart_empty">Your cart is empty</string>
+    <string name="new_arrival_badge">New</string>
     <string name="new_password_hint">New password</string>
     <string name="new_password_label">New Password</string>
     <string name="newsletter_saved_message">Your email notifications settings have been saved.</string>
@@ -288,7 +289,6 @@
     <string name="some_products_not_added">Unfortunately, some products were not added to cart.</string>
     <string name="splash_slogan">The biggest online shopping mall in Africa</string>
     <string name="splash_slogan_daraz">The only online shopping destination you will need!</string>
-    <string name="splash_slogan_powered_by"/>
     <string name="stale_warning">Lost connection</string>
     <string name="string_appearance">Appearance</string>
     <string name="string_price">Price</string>
@@ -420,7 +420,6 @@
     <string name="shipment">Shipment %1$d of %2$d</string>
     <string name="delivery_time_placeholder">Delivery time: %1$d - %2$d days</string>
     <string name="product_specifications">Product Specifications</string>
-    <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">The host name does not match the certificate: %s</string>
     <string name="ssl_error_generic">An SSL error occurred: %s</string>
     <string name="save_for_later">Save for later</string>
@@ -460,7 +459,7 @@
     <string name="delivered_label">Delivered</string>
     <string name="order_number">Order N.º %s</string>
     <string name="billing">Billing</string>
-    <string name="first_and_second">%1$s %2$s</string>
+    <string name="first_and_second_placeholders">%1$s %2$s</string>
     <string name="quantity">Qty %s</string>
     <string name="reorder_label">Reorder</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b>\n%2$s</string>
@@ -472,4 +471,6 @@
     <string name="phone_contact">Phone:</string>
     <string name="email_contact">Email:</string>
     <string name="logout_success">Logged out with success</string>
+    <!-- NEW 2.9 -->
+    <string name="percentage">%s%%</string>
 </resources>

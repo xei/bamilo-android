@@ -73,11 +73,11 @@ public class ProductComplete extends ProductMultiple {
             //has offers
             hasOffers = false;
             // Share url
-            mShareUrl = jsonObject.optString(RestConstants.JSON_SHARE_URL_TAG);
+            mShareUrl = jsonObject.optString(RestConstants.SHARE_URL);
             // Bundle
-            hasBundle = jsonObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG);
+            hasBundle = jsonObject.optBoolean(RestConstants.BUNDLE);
             // Images
-            JSONArray imageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
+            JSONArray imageArray = jsonObject.optJSONArray(RestConstants.IMAGE_LIST);
             if (imageArray != null && imageArray.length() > 0) {
                 mImageList = new ArrayList<>();
                 for (int i = 0; i < imageArray.length(); ++i) {
@@ -87,21 +87,21 @@ public class ProductComplete extends ProductMultiple {
                 }
             }
             // Seller
-            JSONObject sellerObject = jsonObject.optJSONObject(RestConstants.JSON_SELLER_TAG);
+            JSONObject sellerObject = jsonObject.optJSONObject(RestConstants.SELLER_ENTITY);
             if (sellerObject != null) {
                 mSeller = new Seller(sellerObject);
             }
             //Offers
-            JSONObject offers = jsonObject.optJSONObject(RestConstants.JSON_OFFERS_TAG);
+            JSONObject offers = jsonObject.optJSONObject(RestConstants.OFFERS);
             if (offers != null) {
-                mMinPriceOffer = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
-                mMinPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG);
-                mTotalOffers = offers.optInt(RestConstants.JSON_TOTAL_TAG);
+                mMinPriceOffer = offers.optDouble(RestConstants.MIN_PRICE);
+                mMinPriceOfferConverted = offers.optDouble(RestConstants.MIN_PRICE_CONVERTED);
+                mTotalOffers = offers.optInt(RestConstants.TOTAL);
                 hasOffers = true;
 
             }
             // Related products
-            JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
+            JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.RELATED_PRODUCTS);
             if (relatedProductsJsonArray != null && relatedProductsJsonArray.length() > 0) {
                 mRelatedProducts = new ArrayList<>();
                 for (int i = 0; i < relatedProductsJsonArray.length(); i++) {
@@ -112,13 +112,13 @@ public class ProductComplete extends ProductMultiple {
                 }
             }
             // Summary
-            JSONObject summaryObject = jsonObject.optJSONObject(RestConstants.JSON_SUMMARY_TAG);
+            JSONObject summaryObject = jsonObject.optJSONObject(RestConstants.SUMMARY);
             if (summaryObject != null) {
-                mDescription = summaryObject.optString(RestConstants.JSON_DESCRIPTION_TAG);
-                mShortDescription = summaryObject.optString(RestConstants.JSON_SHORT_DESC_TAG);
+                mDescription = summaryObject.optString(RestConstants.DESCRIPTION);
+                mShortDescription = summaryObject.optString(RestConstants.SHORT_DESCRIPTION);
             }
             // Specifications
-            JSONArray specificationsArray = jsonObject.optJSONArray(RestConstants.JSON_SPECIFICATIONS_TAG);
+            JSONArray specificationsArray = jsonObject.optJSONArray(RestConstants.SPECIFICATIONS);
             if (specificationsArray != null && specificationsArray.length() > 0) {
                 mProductSpecs = new ArrayList<>();
                 for (int i = 0; i < specificationsArray.length(); i++) {
@@ -128,7 +128,7 @@ public class ProductComplete extends ProductMultiple {
                 }
             }
             // Variations
-            JSONArray variationsArray = jsonObject.optJSONArray(RestConstants.JSON_VARIATIONS_TAG);
+            JSONArray variationsArray = jsonObject.optJSONArray(RestConstants.VARIATIONS);
             if (variationsArray != null && variationsArray.length() > 0) {
                 mProductVariations = new ArrayList<>();
                 for (int i = 0; i < variationsArray.length(); i++) {

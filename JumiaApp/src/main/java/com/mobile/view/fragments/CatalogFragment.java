@@ -288,14 +288,20 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         final Bundle args = getArguments();
         if(args != null) {
             if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
-                ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
-                triggerAddToWishList(mClicked.getSku());
-                TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                if(JumiaApplication.isCustomerLoggedIn()){
+                    ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
+                    triggerAddToWishList(mClicked.getSku());
+                    TrackerDelegator.trackAddToFavorites(mClicked);
+                }
+
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             } else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
-                ProductRegular mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
-                triggerRemoveFromWishList(mClicked.getSku());
-                TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                if(JumiaApplication.isCustomerLoggedIn()){
+                    ProductRegular mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+                    triggerRemoveFromWishList(mClicked.getSku());
+                    TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                }
+
                 args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
             }
 
@@ -613,8 +619,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
+
+
+
+
     @Override
-    public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+    public void onViewHolderItemClick(View view,RecyclerView.Adapter<?> adapter, int position) {
         // Get item
         mWishListItemClicked = ((CatalogGridAdapter) adapter).getItem(position);
         // Validate customer is logged in
@@ -641,11 +651,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Goto login
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
-    }
-
-    @Override
-    public void onViewHolderItemClick(RecyclerView.Adapter<?> adapter, int position) {
-
     }
 
     /**
@@ -984,14 +989,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Validate event type
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
+                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
             case ADD_PRODUCT_TO_WISH_LIST:
-
-                if(eventType == EventType.REMOVE_PRODUCT_FROM_WISH_LIST){
-                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
-                } else {
+                if (eventType == EventType.ADD_PRODUCT_TO_WISH_LIST) {
                     getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_added_saved));
                 }
-
                 updateWishListProduct();
                 break;
             case GET_CATALOG_EVENT:
