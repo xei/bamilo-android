@@ -113,7 +113,7 @@ public class Seller implements IJSONSerializable, Parcelable {
             JSONObject globalLinkObject = globalObject.optJSONObject(RestConstants.LINK);
             if (globalLinkObject != null) {
                 mDeliveryMoreText = globalLinkObject.optString(RestConstants.TEXT);
-                mDeliveryMoreLink = globalLinkObject.optString(RestConstants.URL);
+                mDeliveryMoreLink = globalLinkObject.optString(RestConstants.TARGET);
             }
         }
         return true;
