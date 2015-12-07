@@ -854,6 +854,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (!response.isPriority()) {
             return false;
         }
+        // Hide keyboard if error screen shows
+        if(getBaseActivity() != null)
+            getBaseActivity().hideKeyboard();
 
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
         if (ErrorCode.isNetworkError(errorCode)) {
