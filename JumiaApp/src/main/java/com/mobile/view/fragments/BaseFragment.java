@@ -674,7 +674,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
     public void showWarningErrorMessage(@Nullable String message, @Nullable EventType eventType) {
         int id = MessagesUtils.getSuccessMessageId(eventType);
-        Print.i(TAG, "code1message id is : "+id);
         if(getBaseActivity() != null) {
             String text = TextUtils.isNotEmpty(message) ? message : id > 0 ? getBaseActivity().getString(id) : null;
             if(text != null)
@@ -938,14 +937,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public void handleErrorMessage(final String errorMessage, final EventTask eventTask, final EventType eventType) {
         if(eventTask == EventTask.ACTION_TASK){
-            Print.i(TAG, "code1message : errorMessage : "+errorMessage);
             showWarningErrorMessage(errorMessage, eventType);
         }
     }
 
     public void handleSuccessMessage(final String successMessage, final EventTask eventTask, final EventType eventType) {
         if(eventTask == EventTask.ACTION_TASK){
-            Print.i(TAG, "code1message : successMessage : "+successMessage);
             showWarningSuccessMessage(successMessage, eventType);
         }
     }
