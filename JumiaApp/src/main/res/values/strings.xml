@@ -473,7 +473,4 @@
     <string name="logout_success">Logged out with success</string>
     <!-- NEW 2.9 -->
     <string name="percentage">%s%%</string>
-
-    <string name="test_script">NOT  TRANSLATE    </string>
-
 </resources>

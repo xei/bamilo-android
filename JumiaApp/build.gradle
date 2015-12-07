@@ -302,8 +302,12 @@ task testCalabash << {
 }
 
 /**
- * Task that pulls translation string files from WebTranslateIt service.
+ * #################### TRANSLATIONS ####################
  * DEPENDENCIES: This task depends on wti gem file to be installed and on mail binary.
+ */
+
+/**
+ * Task that pulls translation string files from WebTranslateIt service.
  */
 task pushNewStrings << {
     println " - Pushing new strings to WebTranslateIt " + new Date()
@@ -313,14 +317,12 @@ task pushNewStrings << {
     println result
     //check if there are new strings pushed and push them to git develop branch when on jenkins
     if (result.contains('Accepted')) {// Accepted appears when there is new strings to upload
-        //notify developers by email
         sendEmailToTeam("Pushed new strings to WebTranslateIt", result)
     }
 }
 
 /**
  * Task that pulls translation string files from WebTranslateIt service.
- * DEPENDENCIES: This task depends on wti gem file to be installed and on mail binary.
  */
 task pullTranslations << {
     println " - Pulling translations from WebTranslateIt " + new Date()
@@ -328,11 +330,9 @@ task pullTranslations << {
     proc.waitFor()
     String result = proc.text
     println result
-
     //check if there are new translations and push them to git develop branch when on jenkins
     if (result.contains('OK')) {// OK appears when new translations
         pushChangedTranslationFilesToGit.execute()
-        //notify developers by email
         sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
     }
 }
@@ -342,36 +342,32 @@ task pullTranslations << {
  */
 task pushChangedTranslationFilesToGit << {
     def STORAGE_CRED_FILE = "/tmp/credentials.git"
-
     println "- New translations found. Committing and pushing them to git develop branch..."
     // get git user and pass from env vars
     String user = System.getenv('GIT_USER')
     String pass = System.getenv('GIT_PASS')
     String auth = "https://" + user + ":" + pass + "@github.com"
-
     // save credentials on file
     new File(STORAGE_CRED_FILE).write(auth)
-
     // set necessary git configs
     executeWaitAndPrintCmd(['git', 'config', '--local', 'user.email', "'mobilerocketporto@gmail.com'"])
     executeWaitAndPrintCmd(['git', 'config', '--local', 'user.name', "'mobile-rocket-porto'"])
     executeWaitAndPrintCmd(['git', 'config', '--local', 'credential.helper', 'store', ("--file=" + STORAGE_CRED_FILE)])
-
     // perform add->commit->push
     executeWaitAndPrintCmd(['git', 'add', 'JumiaApp/src/main/res/'])
     executeWaitAndPrintCmd(['git', 'commit', '-m', "'task/strings_wti/by_jenkins - Uploading new translations from wti'"]);
     //executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
     executeWaitAndPrintCmd(['git', 'push', 'origin', 'NAFAMZ-14923_WTI_in_CI'])
-
 }
 
 /**
  * Method that sends an email to all dev team
- * @param emailContent The content of the email that will be sent.
+ * @param content The content of the email that will be sent.
  */
-def sendEmailToTeam(String subject, String emailContent) {
-    emailContent = emailContent.replaceAll(/\033\[[0-9;]*m/, "") //remove possible shell color chars
-    new File('/tmp/mailwit.txt').write(emailContent)
+def sendEmailToTeam(String subject, String content) {
+    def TEMP_FILE = "/tmp/jumia_email_wit.txt"
     def recipients = "sergio.pereira@africainternetgroup.com"
-    executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < /tmp/mailwit.txt'])
+    content = content.replaceAll(/\033\[[0-9;]*m/, "") //remove possible shell color chars
+    new File(TEMP_FILE).write(content)
+    executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < ' + TEMP_FILE ])
 }
