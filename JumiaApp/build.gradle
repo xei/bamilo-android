@@ -331,7 +331,7 @@ task pullTranslations << {
     String result = proc.text
     println result
     //check if there are new translations and push them to git develop branch when on jenkins
-    if (result.contains('OK')) {// OK appears when new translations
+    if (result.contains('values*OK')) {// OK appears when new translations
         pushChangedTranslationFilesToGit.execute()
         sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
     }
@@ -344,8 +344,8 @@ task pushChangedTranslationFilesToGit << {
     // perform add->commit->push
     executeWaitAndPrintCmd(['git', 'add', 'JumiaApp/src/main/res/'])
     executeWaitAndPrintCmd(['git', 'commit', '-m', "'task/strings_wti/by_jenkins - Uploading new translations from wti'"]);
-    //executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
-    executeWaitAndPrintCmd(['git', 'push', 'origin', 'NAFAMZ-14923_WTI_in_CI'])
+    executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
+    //executeWaitAndPrintCmd(['git', 'push', 'origin', 'NAFAMZ-14923_WTI_in_CI'])
 
 //    def STORAGE_CRED_FILE = "/tmp/credentials.git"
 //    println "- New translations found. Committing and pushing them to git develop branch..."
@@ -362,7 +362,7 @@ task pushChangedTranslationFilesToGit << {
 //    // perform add->commit->push
 //    executeWaitAndPrintCmd(['git', 'add', 'JumiaApp/src/main/res/'])
 //    executeWaitAndPrintCmd(['git', 'commit', '-m', "'task/strings_wti/by_jenkins - Uploading new translations from wti'"]);
-//    executeWaitAndPrintCmd(['git', 'push', 'origin', 'NAFAMZ-14923_WTI_in_CI'])
+//    executeWaitAndPrintCmd(['git', 'push', 'origin', 'development'])
 }
 
 /**
