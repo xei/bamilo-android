@@ -510,7 +510,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, false);
+                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
                 break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();

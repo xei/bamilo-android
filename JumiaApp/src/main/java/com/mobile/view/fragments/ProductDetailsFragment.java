@@ -40,7 +40,6 @@ import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
@@ -68,7 +67,6 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.Map;
 
 /**
  * This class displays the product detail screen.
@@ -1163,7 +1161,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 updateWishListValue();
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, false);
+                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
                 break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();

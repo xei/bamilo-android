@@ -51,7 +51,6 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductUtils;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
@@ -547,7 +546,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             Print.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
             isAddingProductToCart = false;
             hideActivityProgress();
-            ProductUtils.showAddToCartCompleteMessage(this, baseResponse, false);
+            ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
             break;
             default:
             break;

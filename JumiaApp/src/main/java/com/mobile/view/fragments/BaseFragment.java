@@ -1092,19 +1092,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    /**
-     * validate if it show regular warning or confirmation cart message
-     */
-    protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
-        //if has cart popup, show configurable confirmation message with cart total price
-        if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
-            PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
-            getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
-        }
-        else{
-            //show regular message add item to cart
-            showWarningSuccessMessage(baseResponse.getSuccessMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
-        }
-    }
+//    /**
+//     * validate if it show regular warning or confirmation cart message
+//     */
+//    protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
+//        //if has cart popup, show configurable confirmation message with cart total price
+//        if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
+//            PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
+//            getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
+//        }
+//        else{
+//            //show regular message add item to cart
+//            showWarningSuccessMessage(baseResponse.getSuccessMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
+//        }
+//    }
 
 }

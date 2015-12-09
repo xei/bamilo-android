@@ -451,7 +451,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT");
-                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, false);
+                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
                 int position = ((AddedItemStructure) baseResponse.getMetadata().getData()).getCurrentPos();
                 updateLayoutAfterAction(position);
                 break;

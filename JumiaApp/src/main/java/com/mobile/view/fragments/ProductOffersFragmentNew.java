@@ -274,7 +274,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             getBaseActivity().updateCartInfo();
             hideActivityProgress();
             showFragmentContentContainer();
-            ProductUtils.showAddToCartCompleteMessage(this, baseResponse, false);
+            ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
             break;
         default:
             break;

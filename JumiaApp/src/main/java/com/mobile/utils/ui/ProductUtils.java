@@ -13,9 +13,9 @@ import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
@@ -108,19 +108,15 @@ public class ProductUtils {
     /**
      * validate if it show regular warning or confirmation cart message
      */
-    public static void showAddToCartCompleteMessage(@NonNull BaseFragment fragment, BaseResponse baseResponse, boolean isProductBundle){
+    public static void showAddToCartCompleteMessage(@NonNull BaseFragment fragment, BaseResponse baseResponse, EventType eventType){
         if(fragment == null) return;
         //if has cart popup, show configurable confirmation message with cart total price
-        if(CountryPersistentConfigs.hasCartPopup(fragment.getBaseActivity().getApplicationContext())){
+        if(false){
             PurchaseEntity purchaseEntity = ((AddedItemStructure) baseResponse.getMetadata().getData()).getPurchaseEntity();
             fragment.getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
-        }
-        else{
+        } else {
             //show regular message add item to cart
-            if(!isProductBundle)
-                fragment.showInfoAddToShoppingCartCompleted();
-            else
-                fragment.showInfoAddBundleToShoppingCartCompleted();
+            fragment.showWarningSuccessMessage(baseResponse.getSuccessMessage(), eventType);
         }
     }
 

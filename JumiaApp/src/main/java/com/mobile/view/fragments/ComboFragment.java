@@ -16,11 +16,8 @@ import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.ComboGridView;
@@ -33,7 +30,6 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Map;
 
 
 /**
@@ -284,7 +280,11 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Hide dialog progress
         hideActivityProgress();
         super.handleSuccessEvent(baseResponse);
-        ProductUtils.showAddToCartCompleteMessage(this, baseResponse, true);
+        EventType eventType = baseResponse.getEventType();
+        if (eventType == EventType.ADD_PRODUCT_BUNDLE) {
+            ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
+        }
+
     }
 
 
@@ -303,8 +303,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Specific errors
         EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
-        if (eventType == EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT) {
-            showWarningErrorMessage(baseResponse.getErrorMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
+        if (eventType == EventType.ADD_PRODUCT_BUNDLE) {
+            showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
         }
     }
 
