@@ -45,11 +45,13 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.http.DELETE;
+import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
@@ -284,7 +286,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void addBundleShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+    void addBundleShoppingCart(@FieldMap Map<String, String> data, @Field("product_list[]") ArrayList<String> keys, Callback<BaseResponse<PurchaseEntity>> callback);
     String addBundleShoppingCart = "addBundleShoppingCart";
 
     @FormUrlEncoded

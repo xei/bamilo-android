@@ -17,6 +17,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Map;
 
 public abstract class SuperBaseHelper implements AigResponseCallback {
@@ -55,6 +56,12 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         Map<String, String> data = getRequestData(args);
         if (data != null) {
             requestBundleBuilder.setData(data);
+        }
+
+        // Validate data
+        ArrayList<String> array = getRequestArray(args);
+        if (array != null) {
+            requestBundleBuilder.setArray(array);
         }
         //
         return requestBundleBuilder.build();
@@ -106,6 +113,15 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         }
 
         return CollectionUtils.isNotEmpty(mParameters) ? CollectionUtils.convertContentValuesToMap(mParameters): null;
+    }
+
+    protected ArrayList<String> getRequestArray(Bundle args) {
+        ArrayList<String> array = new ArrayList<>();
+        if (args != null && args.containsKey(Constants.BUNDLE_ARRAY_KEY)){
+            array = args.getStringArrayList(Constants.BUNDLE_ARRAY_KEY);
+        }
+
+        return CollectionUtils.isNotEmpty(array) ? array: null;
     }
 
     /**

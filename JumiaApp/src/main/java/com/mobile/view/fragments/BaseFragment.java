@@ -29,7 +29,6 @@ import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -42,7 +41,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
@@ -821,6 +819,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            case ADD_PRODUCT_BUNDLE:
                 getBaseActivity().updateCartInfo();
                 return true;
             case LOGOUT_EVENT:
@@ -1062,22 +1061,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    /**
-     * validate if it show regular warning or confirmation cart message
-     */
-    protected void showAddToCartCompleteMessage(BaseResponse baseResponse, boolean isProductBundle){
-        //if has cart popup, show configurable confirmation message with cart total price
-        if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
-            PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
-            getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
-        }
-        else{
-            //show regular message add item to cart
-            if(!isProductBundle)
-                showInfoAddToShoppingCartCompleted();
-            else
-                showInfoAddBundleToShoppingCartCompleted();
-        }
-    }
+
 
 }

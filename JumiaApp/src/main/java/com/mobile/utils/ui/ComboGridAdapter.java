@@ -15,7 +15,6 @@ import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
-import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -167,7 +166,9 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         // Set prices
         setProductPrice(holder, item);
         // Set variation
-        setVariationContent(holder, item, position);
+        ProductUtils.setVariationContent(holder.variation, item);
+        holder.variation.setTag(R.id.position, position);
+        holder.variation.setOnClickListener(this);
         //set selection
         holder.cbItem.setChecked(item.isChecked());
         holder.cbItem.setTag(R.id.position, position);
@@ -178,27 +179,6 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
             holder.cbItem.setOnClickListener(this);
             holder.itemView.setOnClickListener(this);
         }
-    }
-
-    /**
-     * Set the variation container
-     *
-     */
-    private void setVariationContent(ProductViewHolder prodItem, ProductMultiple product, int position) {
-        // Set simple button
-        if(product.hasMultiSimpleVariations()) {
-            // Set simple value
-            String simpleVariationValue = "...";
-            if(product.hasSelectedSimpleVariation()) {
-                simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
-            }
-            prodItem.variation.setText(simpleVariationValue);
-            prodItem.variation.setVisibility(View.VISIBLE);
-        } else {
-            prodItem.variation.setVisibility(View.INVISIBLE);
-        }
-        prodItem.variation.setTag(R.id.position, position);
-        prodItem.variation.setOnClickListener(this);
     }
 
     /**
@@ -283,14 +263,14 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
         if (mOnViewHolderClicked != null){
             //if is checkbox
-            if(view.getId() == R.id.item_check) {
+            if(view.getId() == R.id.item_check || view.getId() == R.id.choosen_variation) {
                 mOnViewHolderClicked.onViewHolderItemClick(view,this,position);
             }
             //if is choose size
-            else if(view.getId() == R.id.choosen_variation){
-                if (mOnViewHolderClicked != null)
-                    mOnViewHolderClicked.onVariationClick(view, this);
-            }
+//            else if(view.getId() == R.id.choosen_variation){
+//                if (mOnViewHolderClicked != null)
+//                    mOnViewHolderClicked.onViewHolderItemClick(view,this,position);
+//            }
             else{
                 //if is the whole view
                 mOnViewHolderClicked.onViewHolderClick(this, position);

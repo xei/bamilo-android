@@ -2,6 +2,7 @@ package com.mobile.newFramework.requests;
 
 import com.mobile.newFramework.rest.AigRestAdapter;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class RequestBundle {
@@ -9,12 +10,21 @@ public class RequestBundle {
     private String url;
     private Integer cache;
     private Map<String, String> data;
+    private ArrayList<String> array;
     private boolean discard;
     private String path;
 
     /*
      * GETTERS
      */
+
+    public ArrayList<String> getArray() {
+        return array;
+    }
+
+    public boolean hasArray() {
+        return array != null;
+    }
 
     public String getUrl() {
         return url;
@@ -49,6 +59,7 @@ public class RequestBundle {
         private String url;
         private Integer cache;
         private Map<String, String> data;
+        private ArrayList<String> array;
         private boolean discard;
         private String path;
 
@@ -59,6 +70,11 @@ public class RequestBundle {
 
         public Builder discardResponse() {
             this.discard = true;
+            return this;
+        }
+
+        public Builder setArray(ArrayList<String> array) {
+            this.array = array;
             return this;
         }
 
@@ -82,6 +98,7 @@ public class RequestBundle {
             requestBundle.url = url;
             requestBundle.cache = cache;
             requestBundle.data = data;
+            requestBundle.array = array;
             requestBundle.discard = discard;
             requestBundle.path = path;
             return requestBundle;

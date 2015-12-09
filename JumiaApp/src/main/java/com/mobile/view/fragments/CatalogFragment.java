@@ -620,12 +620,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     @Override
-    public void onVariationClick(View view, RecyclerView.Adapter<?> adapter) {
-
-    }
-
-
-    @Override
     public void onViewHolderItemClick(View view,RecyclerView.Adapter<?> adapter, int position) {
         // Get item
         mWishListItemClicked = ((CatalogGridAdapter) adapter).getItem(position);

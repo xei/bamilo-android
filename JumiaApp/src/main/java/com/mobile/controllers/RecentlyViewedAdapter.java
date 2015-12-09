@@ -91,7 +91,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         // Set brand, name and price
         setTextContent(prodItem, addableToCart);
         // Set variation
-        setVariationContent(prodItem, addableToCart);
+        ProductUtils.setVariationContent(prodItem.varianceButton, addableToCart);
         // Set clickable views
         setClickableViews(position, prodItem.container, prodItem.addToCartButton, prodItem.varianceButton);
         // Return view
@@ -148,24 +148,24 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         }
     }
 
-    /**
-     * Set the variation container
-     * @author sergiopereira
-     */
-    private void setVariationContent(Item prodItem, ProductMultiple product){
-        // Set simple button
-        if(product.hasMultiSimpleVariations()) {
-            // Set simple value
-            String simpleVariationValue = "...";
-            if(product.hasSelectedSimpleVariation()) {
-                simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
-            }
-            prodItem.varianceButton.setText(simpleVariationValue);
-            prodItem.varianceButton.setVisibility(View.VISIBLE);
-        } else {
-            prodItem.varianceButton.setVisibility(View.INVISIBLE);
-        }
-    }
+//    /**
+//     * Set the variation container
+//     * @author sergiopereira
+//     */
+//    private void setVariationContent(Item prodItem, ProductMultiple product){
+//        // Set simple button
+//        if(product.hasMultiSimpleVariations()) {
+//            // Set simple value
+//            String simpleVariationValue = "...";
+//            if(product.hasSelectedSimpleVariation()) {
+//                simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
+//            }
+//            prodItem.varianceButton.setText(simpleVariationValue);
+//            prodItem.varianceButton.setVisibility(View.VISIBLE);
+//        } else {
+//            prodItem.varianceButton.setVisibility(View.INVISIBLE);
+//        }
+//    }
 
     /**
      * Set the image view

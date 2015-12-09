@@ -18,6 +18,7 @@ import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.cart.AddedItemStructure;
 import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -34,6 +35,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -449,8 +451,8 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT");
-                showAddToCartCompleteMessage(baseResponse, false);
-                int position = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getCurrentPos();
+                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, false);
+                int position = ((AddedItemStructure) baseResponse.getMetadata().getData()).getCurrentPos();
                 updateLayoutAfterAction(position);
                 break;
             case VALIDATE_PRODUCTS:

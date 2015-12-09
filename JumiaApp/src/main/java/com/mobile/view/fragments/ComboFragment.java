@@ -28,6 +28,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ComboGridAdapter;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -225,37 +226,41 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      */
     @Override
     public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
-        //get Selected Item
-        ProductBundle selectedBundle = ((ComboGridAdapter) adapter).getItem(position);
+        // User pressed the check button
+        if(view.getId() == R.id.item_check ) {
+            //get Selected Item
+            ProductBundle selectedBundle = ((ComboGridAdapter) adapter).getItem(position);
 
-        if (!selectedBundle.getSku().equals(productSku)) {
-            //update checkbox status
-            CheckBox cb = (CheckBox) view;
-            cb.setChecked(!cb.isChecked());
-            //update total price
-            mBundleList.updateTotalPriceWhenChecking(position);
-            mTotalPrice.setText(CurrencyFormatter.formatCurrency(mBundleList.getPrice()));
-        }
-
-        adapter.notifyDataSetChanged();
-    }
-
-
-
-    @Override
-    public void onVariationClick(View view, RecyclerView.Adapter<?> adapter) {
-        mIsToAddBundleToCart = false;
-        try {
-            int position = (int) view.getTag(R.id.position);
-            ProductBundle product = ((ComboGridAdapter) adapter).getItem(position);
-            if(product != null){
-                mBundleWithMultiple = product;
-                onClickSimpleVariationsButton(getString(R.string.product_variance_choose));
+            if (!selectedBundle.getSku().equals(productSku)) {
+                //update checkbox status
+                CheckBox cb = (CheckBox) view;
+                cb.setChecked(!cb.isChecked());
+                //update total price
+                mBundleList.updateTotalPriceWhenChecking(position);
+                mTotalPrice.setText(CurrencyFormatter.formatCurrency(mBundleList.getPrice()));
             }
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
+
+            adapter.notifyDataSetChanged();
         }
+        // User pressed the size button
+        else if (view.getId() == R.id.choosen_variation){
+            mIsToAddBundleToCart = false;
+            try {
+                int positions = (int) view.getTag(R.id.position);
+                Print.i(TAG,"POSITION:"+position);
+                Print.i(TAG,"POSITIONS:"+positions);
+                ProductBundle product = ((ComboGridAdapter) adapter).getItem(positions);
+                if(product != null){
+                    mBundleWithMultiple = product;
+                    onClickSimpleVariationsButton(getString(R.string.product_variance_choose));
+                }
+            } catch (NullPointerException e) {
+                Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
+            }
+        }
+
     }
+
 
     /**
      * Update the combo list container
@@ -278,10 +283,8 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
         // Hide dialog progress
         hideActivityProgress();
-
         super.handleSuccessEvent(baseResponse);
-        showAddToCartCompleteMessage(baseResponse, true);
-        getBaseActivity().updateCartInfo();
+        ProductUtils.showAddToCartCompleteMessage(this, baseResponse, true);
     }
 
 
