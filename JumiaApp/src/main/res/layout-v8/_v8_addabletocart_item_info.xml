@@ -91,12 +91,13 @@
         android:id="@+id/button_shop"
         style="@style/AigButton.Active"
         android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_144px"
         android:layout_alignParentLeft="true"
         android:layout_below="@id/price_section"
         android:layout_marginTop="5dp"
         android:layout_toLeftOf="@+id/button_variant"
         android:contentDescription="@string/productdetail_addcart_description"
-        android:text="@string/add_to_shopping_cart"
+        android:text="@string/buy_now"
         android:textColor="@color/white"
         android:textStyle="bold" />
 
