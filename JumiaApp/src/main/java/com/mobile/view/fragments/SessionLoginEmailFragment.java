@@ -383,7 +383,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
             if (errorCode == ErrorCode.REQUEST_ERROR) {
                 Print.d(TAG, "SHOW DIALOG");
                 showFragmentContentContainer();
-                showWarningErrorMessage(baseResponse.getValidateMessage(), R.string.error_login_title);
+                showWarningErrorMessage(baseResponse.getValidateMessage(), EventType.LOGIN_EVENT);
             } else {
                 showFragmentErrorRetry();
             }

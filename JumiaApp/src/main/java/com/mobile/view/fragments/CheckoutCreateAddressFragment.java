@@ -123,7 +123,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
         FragmentController.getInstance().popLastEntry(FragmentType.CREATE_ADDRESS.toString());
         getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-        getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.create_addresses_success));
+        showWarningSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventType());
     }
 
     @Override

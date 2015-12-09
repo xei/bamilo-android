@@ -123,7 +123,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
             } else {
                 getBaseActivity().onBackPressed();
             }
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.create_addresses_success));
+            showWarningSuccessMessage(baseResponse.getSuccessMessage(), R.string.create_addresses_success);
         }
     }
 

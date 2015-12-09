@@ -462,9 +462,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
             Print.i(TAG, "code1payment : onReceivedSslError : " + error);
             Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
-                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.ssl_error_host_mismatch));
+                showWarningErrorMessage(getString(R.string.ssl_error_host_mismatch));
             } else {
-                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.ssl_error_generic));
+                showWarningErrorMessage(getString(R.string.ssl_error_generic));
             }
             // Case in dev continue
             if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
