@@ -1046,7 +1046,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                         if (errorMessages != null && (errorMessages.containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN) || errorMessages.containsKey(ErrorConstants.ERROR_ADDING_ITEM))) {
                             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         } else {
-                            showUnexpectedErrorWarning();
+                            super.handleErrorMessage(baseResponse.getErrorMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
                         }
                     } catch (ClassCastException | NullPointerException e) {
                         showUnexpectedErrorWarning();
