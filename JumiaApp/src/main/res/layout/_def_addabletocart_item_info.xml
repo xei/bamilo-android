@@ -87,6 +87,7 @@
         android:id="@+id/button_shop"
         style="@style/AigButton.Active"
         android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_144px"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/price_section"
@@ -94,7 +95,7 @@
         android:layout_toEndOf="@+id/button_variant"
         android:layout_toRightOf="@+id/button_variant"
         android:contentDescription="@string/productdetail_addcart_description"
-        android:text="@string/add_to_shopping_cart"
+        android:text="@string/buy_now"
         android:textColor="@color/white"
         android:textStyle="bold" />
 
