@@ -3,7 +3,7 @@ package com.mobile.helpers;
 import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.annotation.NonNull;
 
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -23,20 +23,22 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     private static String TAG = SuperBaseHelper.class.getSimpleName();
 
-    protected IResponseCallback mRequester;
-
-    protected EventType mEventType;
-
+    private IResponseCallback mRequester;
+    private EventType mEventType;
     private EventTask mEventTask;
-
-    private boolean prioritary;
-
+    private boolean isPriority;
     protected ContentValues mParameters;
 
+    /**
+     * Constructor
+     */
     public SuperBaseHelper(){
         mEventType = getEventType();
     }
 
+    /**
+     * The super method used to perform a request.
+     */
     public final void sendRequest(Bundle args, IResponseCallback requester) {
         mRequester = requester;
         setEventTask(args);
@@ -44,52 +46,36 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         onRequest(createRequest(args));
     }
 
-    protected RequestBundle createRequest(Bundle args) {
-        // Create builder
-        RequestBundle.Builder requestBundleBuilder = new RequestBundle.Builder()
-                .setUrl(getRequestUrl(args))
-                .setPath(getRequestPath(args))
-                .setCache(mEventType.cacheTime);
+    /*
+     * ################ REQUEST BUNDLE METHODS ################
+     */
 
-        // Validate data
-        Map<String, String> data = getRequestData(args);
-        if (data != null) {
-            requestBundleBuilder.setData(data);
-        }
-        //
-        return requestBundleBuilder.build();
+    /**
+     * Create a request bundle
+     */
+    protected RequestBundle createRequest(Bundle args) {
+        return new RequestBundle(getEndPoint(args))
+                .addQueryPath(getQueryPath(args))
+                .addQueryData(getRequestData(args))
+                .setCache(mEventType.cacheTime);
     }
 
     /**
-     * Get the url from bundle.<br>
-     * TODO: Remove the temporary fix to support catalog >= v1.7.
+     * Get the endpoint from EventType or from argument.<br>
      */
-    protected String getRequestUrl(Bundle args) {
-        String baseUrl = (args != null) ? args.getString(Constants.BUNDLE_URL_KEY) : null;
-
-        if(TextUtils.isEmpty(baseUrl)) {
-            return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
-        } 
-        // TODO: Temporary fix to support catalog v1.7 and v1.8.
-        else {
-            Uri uri = Uri.parse(baseUrl);
-            appendParameters(RestUrlUtils.getQueryParameters(uri));
-            if (uri.getHost() != null) {
-                return uri.getScheme()+"://" + uri.getHost() + uri.getPath();
-            } else {
-                return RestUrlUtils.completeUri(Uri.parse(mEventType.action)).toString();
-            }
-        }
+    protected String getEndPoint(Bundle args) {
+        String endpoint = CollectionUtils.containsKey(args, Constants.BUNDLE_END_POINT_KEY) ? args.getString(Constants.BUNDLE_END_POINT_KEY) : mEventType.action;
+        return RestUrlUtils.completeUri(Uri.parse(endpoint)).toString();
     }
-
 
     /**
      * Add a path parameter to request.
      */
-    protected String getRequestPath(Bundle args) {
+    @NonNull
+    private String getQueryPath(Bundle args) {
         // Get query path
         String path = "";
-        if (args != null) {
+        if (CollectionUtils.isNotEmpty(args)) {
             ContentValues pathValues = args.getParcelable(Constants.BUNDLE_PATH_KEY);
             if (CollectionUtils.isNotEmpty(pathValues)) {
                 for (Map.Entry<String, Object> entry : pathValues.valueSet()) {
@@ -104,27 +90,33 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         if (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY)){
             appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
         }
-
         return CollectionUtils.isNotEmpty(mParameters) ? CollectionUtils.convertContentValuesToMap(mParameters): null;
     }
 
-    /**
-     *  Returns the helper's priority
-     */
     public boolean hasPriority(){
         return HelperPriorityConfiguration.IS_PRIORITARY;
     }
+
+    public EventTask getEventTask() {
+        return mEventTask == null ? mEventTask = setEventTask() : mEventTask;
+    }
+
+    protected EventTask setEventTask(){
+        return EventTask.NORMAL_TASK;
+    }
+
+    /*
+     * ################ ABSTRACT METHODS ################
+     */
 
     protected abstract void onRequest(RequestBundle requestBundle);
 
     public abstract EventType getEventType();
 
-    public EventTask getEventTask() {
-        if (mEventTask == null) {
-            mEventTask = setEventTask();
-        }
-        return mEventTask;
-    }
+    /*
+     * ################ RESPONSE ################
+     */
+
 
     public void postSuccess(BaseResponse baseResponse){
         baseResponse.setEventType(mEventType);
@@ -134,11 +126,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
     public void postError(BaseResponse baseResponse){
         baseResponse.setEventType(mEventType);
         baseResponse.setEventTask(getEventTask());
-        baseResponse.setPriority(prioritary);
-    }
-
-    protected EventTask setEventTask(){
-        return EventTask.NORMAL_TASK;
+        baseResponse.setPriority(isPriority);
     }
 
     /**
@@ -159,7 +147,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
      * @param args arguments with priority.
      */
     private void setPriority(Bundle args){
-        prioritary = args != null && args.containsKey(Constants.BUNDLE_PRIORITY_KEY) ? args.getBoolean(Constants.BUNDLE_PRIORITY_KEY) : hasPriority();
+        isPriority = args != null && args.containsKey(Constants.BUNDLE_PRIORITY_KEY) ? args.getBoolean(Constants.BUNDLE_PRIORITY_KEY) : hasPriority();
     }
 
     @Override

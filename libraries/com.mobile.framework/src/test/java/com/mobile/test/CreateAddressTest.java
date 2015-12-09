@@ -51,9 +51,9 @@ public class CreateAddressTest extends BaseTestCase {
         data.put("Alice_Module_Mobapi_Form_Ext1m7_Customer_AddressForm[first_name]", "test");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/address/create")
+                .setEndPoint("https://www.jumia.com.ng/mobapi/v1.7/customer/address/create")
                 .setCache(EventType.CREATE_ADDRESS_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

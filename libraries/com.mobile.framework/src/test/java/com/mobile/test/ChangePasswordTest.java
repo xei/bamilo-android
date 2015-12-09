@@ -23,9 +23,9 @@ public class ChangePasswordTest extends BaseTestCase {
         data.put("Alice_Module_Customer_Model_PasswordForm[password]", "123456");
         data.put("Alice_Module_Customer_Model_PasswordForm[password2]", "123456");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/changepass/")
+                .setEndPoint("https://www.jumia.com.ng/mobapi/v1.7/customer/changepass/")
                 .setCache(EventType.FORGET_PASSWORD_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

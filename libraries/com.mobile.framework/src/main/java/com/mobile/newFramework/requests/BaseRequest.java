@@ -12,7 +12,6 @@ import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         // Get api service via string
         Method method = AigApiInterface.Service.getMethod(name);
         // Set parameters
-        List<Object> parameters = new ArrayList();
+        List<Object> parameters = new ArrayList<>();
         // Add request path
         if (TextUtils.isNotEmpty(mRequestBundle.getPath())) {
             parameters.add(mRequestBundle.getPath());
@@ -52,16 +51,13 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         if(mRequestBundle.hasData()){
             parameters.add(mRequestBundle.getData());
         }
-
         // Add callback
         parameters.add(this);
         // Invoke api service
-        AigApiInterface service = AigRestAdapter.getRestAdapter(mRequestBundle.toRestAdapterInit()).create(AigApiInterface.class);
+        AigApiInterface service = AigRestAdapter.getRestAdapter(mRequestBundle).create(AigApiInterface.class);
         try {
             method.invoke(service, parameters.toArray());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -74,7 +70,7 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
     public void success(BaseResponse baseResponse, Response response) {
         Print.d("BASE SUCCESS: " + response.getBody() + " " + baseResponse.hadSuccess());
         // Validate requester and discard flag
-        if (mRequestBundle.isDiscardedResponse() || this.mRequester == null) {
+        if (mRequestBundle.discardResponse() || this.mRequester == null) {
             Print.d("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
         }
         // Validate success response
@@ -94,7 +90,7 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
     public void failure(RetrofitError error) {
         Print.d("BASE ERROR CAUSE CODE: " + ((AigBaseException) error.getCause()).getError().getCode());
         // Validate requester and discard flag
-        if (mRequestBundle.isDiscardedResponse() || this.mRequester == null) {
+        if (mRequestBundle.discardResponse() || this.mRequester == null) {
             Print.d("REQUESTER IS NULL OR IS TO DISCARDED RESPONSE");
         }
         // Error response

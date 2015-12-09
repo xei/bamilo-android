@@ -1,59 +1,102 @@
 package com.mobile.newFramework.requests;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.mobile.newFramework.rest.AigRestAdapter;
+import com.mobile.newFramework.utils.CollectionUtils;
 
 import java.util.Map;
 
-public class RequestBundle {
+/**
+ * Class used to save all content used to perform a request.
+ */
+public class RequestBundle implements AigRestAdapter.Request {
 
-    private String url;
-    private Integer cache;
-    private Map<String, String> data;
-    private boolean discard;
+    private String endpoint;
     private String path;
+    private Map<String, String> data;
+    private Integer cache;
+    private boolean discard;
 
     /*
-     * GETTERS
+     * ##### BUILDER #####
      */
 
-    public String getUrl() {
-        return url;
+    public RequestBundle(@NonNull  String endpoint) {
+        this.endpoint = endpoint;
     }
 
+    public RequestBundle setCache(@Nullable Integer cache) {
+        this.cache = cache;
+        return this;
+    }
+
+    public RequestBundle addQueryPath(@NonNull String path) {
+        this.path = path;
+        return this;
+    }
+
+    public RequestBundle addQueryData(@NonNull Map<String, String> data) {
+        this.data = data;
+        return this;
+    }
+
+    /*
+     * ##### GETTERS #####
+     */
+
+    @NonNull
     public String getPath() {
         return path;
     }
 
+    @NonNull
     public Map<String, String> getData() {
         return data;
     }
 
     public boolean hasData() {
-        return data != null;
+        return CollectionUtils.isNotEmpty(data);
     }
 
-    public boolean isDiscardedResponse() {
-        return discard;
+    /*
+     * ##### AigRestAdapter.Request #####
+     */
+
+    @NonNull
+    @Override
+    public String getEndPoint() {
+        return endpoint;
     }
 
+    @Nullable
+    @Override
     public Integer getCache() {
         return cache;
     }
 
+    @Override
+    public Boolean discardResponse() {
+        return discard;
+    }
+
     /*
-     * BUILDER
+     * ##### OTHER BUILDER #####
      */
+
+    @Deprecated
     @SuppressWarnings("unused")
     public static class Builder {
 
-        private String url;
-        private Integer cache;
-        private Map<String, String> data;
-        private boolean discard;
+        private String endpoint;
         private String path;
+        private Map<String, String> data;
+        private Integer cache;
+        private boolean discard;
 
-        public Builder setUrl(String url) {
-            this.url = url;
+        public Builder setEndPoint(String endPoint) {
+            this.endpoint = endPoint;
             return this;
         }
 
@@ -62,39 +105,30 @@ public class RequestBundle {
             return this;
         }
 
-        public Builder setData(Map<String, String> data) {
-            this.data = data;
-            return this;
-        }
-
         public Builder setCache(Integer cache) {
             this.cache = cache;
             return this;
         }
 
-        public Builder setPath(String path) {
+        public Builder addQueryPath(String path) {
             this.path = path;
             return this;
         }
 
+        public Builder addQueryData(Map<String, String> data) {
+            this.data = data;
+            return this;
+        }
+
         public RequestBundle build() {
-            RequestBundle requestBundle = new RequestBundle();
-            requestBundle.url = url;
-            requestBundle.cache = cache;
+            RequestBundle requestBundle = new RequestBundle(endpoint);
+            requestBundle.path = path;
             requestBundle.data = data;
             requestBundle.discard = discard;
-            requestBundle.path = path;
+            requestBundle.cache = cache;
             return requestBundle;
         }
 
-    }
-
-    public AigRestAdapter.RestAdapterInit toRestAdapterInit(){
-        AigRestAdapter.RestAdapterInit restAdapterInit = new AigRestAdapter.RestAdapterInit();
-        restAdapterInit.url = url;
-        restAdapterInit.cache = cache;
-        restAdapterInit.discardResponse = discard;
-        return restAdapterInit;
     }
 
 }

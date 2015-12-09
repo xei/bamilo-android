@@ -819,9 +819,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Trigger to get postal codes
      *
      */
-    protected void triggerGetPostalCodes(String url, int city, String tag) {
+    protected void triggerGetPostalCodes(String action, int city, String tag) {
         Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + city + " " + tag);
-        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(url, city, tag), this);
+        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(action, city, tag), this);
     }
 
     /**

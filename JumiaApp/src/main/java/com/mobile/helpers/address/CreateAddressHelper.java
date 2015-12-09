@@ -3,6 +3,7 @@
  */
 package com.mobile.helpers.address;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.helpers.NextStepStruct;
@@ -11,6 +12,7 @@ import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
@@ -38,12 +40,12 @@ public class CreateAddressHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected RequestBundle createRequest(Bundle args) {
-        // Validate origin
+    protected String getEndPoint(Bundle args) {
+        EventType type = getEventType();
         if(args.getBoolean(IS_FROM_SIGNUP) && !args.getBoolean(IS_BILLING)){
-            mEventType = EventType.CREATE_ADDRESS_SIGNUP_EVENT;
+            type = EventType.CREATE_ADDRESS_SIGNUP_EVENT;
         }
-        return super.createRequest(args);
+        return RestUrlUtils.completeUri(Uri.parse(type.action)).toString();
     }
 
     @Override

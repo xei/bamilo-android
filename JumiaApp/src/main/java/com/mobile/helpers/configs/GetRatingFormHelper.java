@@ -24,8 +24,8 @@ public class GetRatingFormHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected String getRequestUrl(Bundle args) {
-        return super.getRequestUrl(args);
+    protected String getEndPoint(Bundle args) {
+        return super.getEndPoint(args);
     }
 
     @Override

@@ -34,7 +34,7 @@ public class RatingReviewProductHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected String getRequestUrl(Bundle args) {
+    protected String getEndPoint(Bundle args) {
         return RestUrlUtils.completeUri(Uri.parse(args.getString(ACTION))).toString();
     }
 

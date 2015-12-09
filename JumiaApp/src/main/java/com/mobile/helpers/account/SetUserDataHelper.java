@@ -20,8 +20,6 @@ import java.util.Map;
  */
 public class SetUserDataHelper extends SuperBaseHelper {
 
-    private static final String TAG = SetUserDataHelper.class.getSimpleName();
-
     private ContentValues mContentValues;
 
     public static Bundle createBundle(ContentValues values) {

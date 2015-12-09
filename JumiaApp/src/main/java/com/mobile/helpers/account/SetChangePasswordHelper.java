@@ -45,7 +45,6 @@ public class SetChangePasswordHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new ChangePassword(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.changePassword);
     }
 

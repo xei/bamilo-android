@@ -293,4 +293,11 @@ public class RestConstants {
     public static final String CLICK_REQUEST = "click_request";
     public static final String PARMS = "params";
     public static final String PARAM = "param";
+    public static final String PATH = "path";
+    public static final String PRIORITY = "priority";
+    public static final String TASK = "task";
+    public static final String PRE_INSTALL = "pre_install";
+    public static final String SIM_OPERATOR = "sim_operator";
+    public static final String BUNDLE_VERSION = "bundle_version";
+    public static final String END_POINT = "end_point";
 }

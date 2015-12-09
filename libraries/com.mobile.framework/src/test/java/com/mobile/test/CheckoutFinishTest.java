@@ -21,9 +21,9 @@ public class CheckoutFinishTest extends BaseTestCase {
 
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/finish/?app=android&customer_device=tablet")
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/finish/?app=android&customer_device=tablet")
                 .setCache(EventType.CHECKOUT_FINISH_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

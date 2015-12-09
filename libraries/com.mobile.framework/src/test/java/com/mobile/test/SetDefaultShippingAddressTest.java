@@ -22,9 +22,9 @@ public class SetDefaultShippingAddressTest extends BaseTestCase {
 
         data.put("id", "942663");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/customer/address/makedefaultshipping/")
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/customer/address/makedefaultshipping/")
                 .setCache(EventType.SET_DEFAULT_SHIPPING_ADDRESS.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

@@ -19,9 +19,9 @@ public class VoucherAddTest extends BaseTestCase {
         HashMap<String, String> data = new HashMap<>();
         data.put("couponcode", "123456");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://integration-www.jumia.ug/mobapi/v1.7/order/addvoucher/")
+                .setEndPoint("http://integration-www.jumia.ug/mobapi/v1.7/order/addvoucher/")
                 .setCache(EventType.ADD_VOUCHER.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

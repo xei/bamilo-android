@@ -57,7 +57,7 @@ public abstract class AigTestCase extends TestCase implements AigResponseCallbac
         mInterfaceName = getAigInterfaceName();
         mUrl = getUrl();
         mData = getData();
-        mRequestBundle = new RequestBundle.Builder().setUrl(mUrl).setData(mData).build();
+        mRequestBundle = new RequestBundle.Builder().setEndPoint(mUrl).addQueryData(mData).build();
         mCountDownLatch = new CountDownLatch(1);
     }
 

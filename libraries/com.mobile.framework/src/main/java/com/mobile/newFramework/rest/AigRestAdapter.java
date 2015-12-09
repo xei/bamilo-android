@@ -1,5 +1,8 @@
 package com.mobile.newFramework.rest;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.configs.HeaderConstants;
 import com.mobile.newFramework.rest.errors.AigErrorHandler;
@@ -21,12 +24,12 @@ import retrofit.RestAdapter;
 public class AigRestAdapter {
 
     /**
-     * Constructor
+     * Interface to perform a request
      */
-    public static class RestAdapterInit{
-        public String url;
-        public Integer cache;
-        public boolean discardResponse;
+    public interface Request {
+        @NonNull String getEndPoint();
+        @Nullable Integer getCache();
+        Boolean discardResponse();
     }
 
     /**
@@ -34,15 +37,15 @@ public class AigRestAdapter {
      *
      * @return BaseRequest
      */
-    public static RestAdapter getRestAdapter(RestAdapterInit restAdapterInit) {
+    public static RestAdapter getRestAdapter(Request request) {
         // Create a rest adapter
         RestAdapter.Builder builder = new RestAdapter.Builder()
                 .setLogLevel(getLogLevel())
                 .setClient(AigHttpClient.getInstance())
-                .setEndpoint(restAdapterInit.url)
-                .setRequestInterceptor(new HttpHeaderRequestInterceptor(restAdapterInit.cache));
+                .setEndpoint(request.getEndPoint())
+                .setRequestInterceptor(new HttpHeaderRequestInterceptor(request.getCache()));
         // Validate discard flag
-        if(!restAdapterInit.discardResponse) {
+        if(!request.discardResponse()) {
             builder.setConverter(new AigResponseConverter())
                 .setErrorHandler(new AigErrorHandler());
         }
