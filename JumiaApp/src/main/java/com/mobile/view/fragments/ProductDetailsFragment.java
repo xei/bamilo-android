@@ -1228,26 +1228,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
-                // Validate error
-                try {
-                    Map errorMessages = baseResponse.getErrorMessages();
-                    if (errorMessages != null && (errorMessages.containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN) || errorMessages.containsKey(ErrorConstants.ERROR_ADDING_ITEM))) {
-                        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                    } else {
-                        showUnexpectedErrorWarning();
-                    }
-                } catch (ClassCastException | NullPointerException e) {
-                    showUnexpectedErrorWarning();
-                }
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                showWarningErrorMessage(baseResponse.getErrorMessage(), R.string.error_add_to_shopping_cart);
                 break;
             case GET_PRODUCT_DETAIL:
                 showContinueShopping();
             default:
                 break;
         }
+
     }
 
     /**

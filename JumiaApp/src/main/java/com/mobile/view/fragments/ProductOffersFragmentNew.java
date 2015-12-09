@@ -301,11 +301,12 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             showFragmentErrorRetry();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            showWarningErrorMessage(baseResponse.getErrorMessage(), R.string.error_add_to_shopping_cart);
+            showWarningErrorMessage(baseResponse.getErrorMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
             break;
         default:
             break;
         }
+        super.handleErrorMessage(baseResponse.getErrorMessage(), baseResponse.getEventTask(), eventType);
     }
 
     /*

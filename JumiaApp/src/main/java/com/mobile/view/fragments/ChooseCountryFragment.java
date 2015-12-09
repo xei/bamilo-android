@@ -115,6 +115,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             // Get and show new available countries
             isChangeCountry = true;
             triggerGetAvailableCountries();
+            // Remove the JUMIA icon when is only for change country
+            if (getBaseActivity().getSupportActionBar() != null)
+                getBaseActivity().getSupportActionBar().setCustomView(null);
+
         } else {
             // Show available countries from memory/database, loaded in splash screen.
             isChangeCountry = false;

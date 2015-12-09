@@ -92,7 +92,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private String itemRemoved_sku;
     private String itemRemoved_price;
     private String mPhone2Call = "";
-    private boolean isRemovingAllItems = false; // Flag used to remove all items after call to order
+    private final boolean isRemovingAllItems = false; // Flag used to remove all items after call to order
     private double itemRemoved_price_tracking = 0d;
     private long itemRemoved_quantity;
     private double itemRemoved_rating;
@@ -494,7 +494,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         hideActivityProgress();
         if(JumiaApplication.INSTANCE.getCart() != null)
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
-        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
+//        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
 
     }
 

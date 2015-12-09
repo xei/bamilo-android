@@ -430,7 +430,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
         // Validate the remain stock
         if(!hasStock)
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.campaign_stock_alert));
+            showWarningErrorMessage(getString(R.string.campaign_stock_alert));
         // Validate click
         else if(!isAddingProductToCart) {
             // Create values to add to cart
@@ -580,7 +580,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;
             hideActivityProgress();
-            showWarningErrorMessage(baseResponse.getErrorMessage(), R.string.error_add_to_shopping_cart);
             break;
         default:
             break;

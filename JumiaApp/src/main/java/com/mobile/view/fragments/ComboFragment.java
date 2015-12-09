@@ -302,36 +302,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         if (super.handleErrorEvent(baseResponse)) return;
         // Specific errors
         EventType eventType = baseResponse.getEventType();
-        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
-
-        switch (eventType) {
-            case ADD_PRODUCT_BUNDLE:
-
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    Map errorMessages = baseResponse.getErrorMessages();
-                    if (errorMessages != null) {
-                        String message = null;
-                        if (errorMessages.containsKey(ErrorConstants.ORDER_PRODUCT_SOLD_OUT)) {
-                            message = getString(R.string.product_outof_stock);
-                        } else if (errorMessages.containsKey(ErrorConstants.PRODUCT_ADD_OVER_QUANTITY)) {
-                            message = getString(R.string.error_add_to_shopping_cart_quantity);
-                        } else if (errorMessages.containsKey(ErrorConstants.ORDER_PRODUCT_ERROR_ADDING)) {
-                            message = getString(R.string.error_add_to_cart_failed);
-                        } else if (errorMessages.containsKey(ErrorConstants.ERROR_INVALID_BUNDLE)) {
-                            message = (String) errorMessages.get(ErrorConstants.ERROR_INVALID_BUNDLE);
-                        }
-
-                        if (!TextUtils.isEmpty(message)){
-                            showInfoAddBundleToShoppingCartFailed(message);
-                            return;
-                        }
-
-                    }
-                }
-                if (!ErrorCode.isNetworkError(errorCode)) {
-                    showInfoAddBundleToShoppingCartFailed("");
-                }
+        if (eventType == EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT) {
+            showWarningErrorMessage(baseResponse.getErrorMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
         }
     }
 
