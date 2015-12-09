@@ -38,17 +38,17 @@ import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.utils.MessagesUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.utils.MessagesUtils;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -829,11 +829,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         switch (eventType) {
             case GET_SHOPPING_CART_ITEMS_EVENT:
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+                getBaseActivity().updateCartInfo();
+                return true;
+            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             case ADD_PRODUCT_BUNDLE:
                 getBaseActivity().updateCartInfo();
+                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
                 return true;
             case LOGOUT_EVENT:
                 Print.i(TAG, "LOGOUT EVENT");
@@ -902,26 +905,27 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 case ErrorCode.SERVER_IN_MAINTENANCE:
                     showFragmentMaintenance();
                     return true;
-                case ErrorCode.REQUEST_ERROR:
-                    // Get error message or validate message
-                    String msg = TextUtils.isNotEmpty(response.getErrorMessage()) ? response.getErrorMessage() : response.getValidateMessage();
-                    // Get generic message
-                    if(TextUtils.isEmpty(msg)) {
-                        msg = getString(R.string.error_please_try_again);
-                    }
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.validation_title), msg,
-                            getResources().getString(R.string.ok_label), "", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                    return true;
+                //TODO verify is necessary
+//                case ErrorCode.REQUEST_ERROR:
+//                    // Get error message or validate message
+//                    String msg = TextUtils.isNotEmpty(response.getErrorMessage()) ? response.getErrorMessage() : response.getValidateMessage();
+//                    // Get generic message
+//                    if(TextUtils.isEmpty(msg)) {
+//                        msg = getString(R.string.error_please_try_again);
+//                    }
+//                    dialog = DialogGenericFragment.newInstance(true, false,
+//                            getString(R.string.validation_title), msg,
+//                            getResources().getString(R.string.ok_label), "", new OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    int id = v.getId();
+//                                    if (id == R.id.button1) {
+//                                        dismissDialogFragment();
+//                                    }
+//                                }
+//                            });
+//                    dialog.show(getActivity().getSupportFragmentManager(), null);
+//                    return true;
                 case ErrorCode.SERVER_OVERLOAD:
                     if(getBaseActivity() != null){
                         ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());

@@ -546,7 +546,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             Print.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
             isAddingProductToCart = false;
             hideActivityProgress();
-            ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
             break;
             default:
             break;

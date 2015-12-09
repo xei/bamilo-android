@@ -1160,9 +1160,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Update value
                 updateWishListValue();
                 break;
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
-                break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();
                 // Validate product
