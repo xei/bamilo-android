@@ -11,7 +11,7 @@ ignore_locales: 'en'
 # Optional
 # before_pull: "echo 'some unix command'"   # Command executed before pulling files
 # after_pull:  "touch tmp/restart.txt"      # Command executed after pulling files
-after_pull:  "rm RIStrings*"                # Removed iOS strings
+after_pull:  "rm -rf *.lproj"                # Removed iOS strings
 
 #
 # before_push: "echo 'some unix command'"   # Command executed before pushing files

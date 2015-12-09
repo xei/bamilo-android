@@ -278,11 +278,11 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
                 break;
             case FORGET_PASSWORD_EVENT:
                 Print.i(TAG, "FORGET_PASSWORD_EVENT successful");
-                showWarningSuccessMessage(baseResponse.getSuccessMessage(), R.string.forgotten_password_successtext);
                 break;
             default:
                 break;
         }
+        super.handleErrorMessage(baseResponse.getErrorMessage(), baseResponse.getEventTask(), eventType);
 
     }
 
@@ -302,7 +302,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         if (eventType == EventType.FORGET_PASSWORD_EVENT) {
             Print.d(TAG, "FORGET_PASSWORD_EVENT");
-            showWarningErrorMessage(baseResponse.getValidateMessage(), R.string.error_forgotpassword_title);
+            showWarningErrorMessage(baseResponse.getValidateMessage(), EventType.FORGET_PASSWORD_EVENT);
         }
 
     }

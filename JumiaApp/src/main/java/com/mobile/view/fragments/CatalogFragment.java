@@ -615,13 +615,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
+            showWarningErrorMessage(getString(R.string.error_occured));
         }
     }
-
-
-
-
 
     @Override
     public void onViewHolderItemClick(View view,RecyclerView.Adapter<?> adapter, int position) {
@@ -984,16 +980,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        super.handleSuccessEvent(baseResponse);
         // Hide dialog progress
         hideActivityProgress();
         // Validate event type
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
-                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
             case ADD_PRODUCT_TO_WISH_LIST:
-                if (eventType == EventType.ADD_PRODUCT_TO_WISH_LIST) {
-                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_added_saved));
-                }
                 updateWishListProduct();
                 break;
             case GET_CATALOG_EVENT:
@@ -1053,7 +1046,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                         if (errorMessages != null && (errorMessages.containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN) || errorMessages.containsKey(ErrorConstants.ERROR_ADDING_ITEM))) {
                             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         } else {
-                            showUnexpectedErrorWarning();
+                            super.handleErrorMessage(baseResponse.getErrorMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
                         }
                     } catch (ClassCastException | NullPointerException e) {
                         showUnexpectedErrorWarning();

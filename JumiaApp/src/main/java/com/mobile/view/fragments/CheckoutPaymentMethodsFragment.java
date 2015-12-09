@@ -381,7 +381,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 triggerRemoveVoucher();
             }
         } else {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
+            showWarningErrorMessage(getString(R.string.voucher_error_message));
         }
     }
     
@@ -393,7 +393,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 paymentName = values.getAsString("name");
                 triggerSubmitPaymentMethod(values);
             } else {
-                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.please_fill_all_data));
+                showWarningErrorMessage(getString(R.string.please_fill_all_data));
             }
         } else if (noPaymentNeeded) {
             // Get next step
