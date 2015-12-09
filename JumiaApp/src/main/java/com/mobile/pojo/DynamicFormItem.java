@@ -96,6 +96,7 @@ import java.util.regex.Pattern;
 public class DynamicFormItem {
     public final static String RELATED_RADIO_GROUP_TAG = "related_radio_group";
     public final static String RELATED_LIST_GROUP_TAG = "related_list_group";
+    public final static String RATING_BAR_TAG = "rating_bar";
     public final static String BIRTHDATE_TAG = "birthday_tag";
     public final static String RELATED_GROUP_SEPARATOR = "::";
     private final static String TAG = DynamicFormItem.class.getSimpleName();
@@ -1685,7 +1686,8 @@ public class DynamicFormItem {
             TextView label = (TextView) ratingLine.findViewById(R.id.option_label);
 
             RatingBar starts = (RatingBar) ratingLine.findViewById(R.id.option_stars);
-            starts.setTag(pairs.getKey().toString());
+            starts.setTag(RATING_BAR_TAG);
+            starts.setTag(R.id.rating_bar_id, pairs.getKey().toString());
             label.setText("" + pairs.getValue());
             linearLayout.addView(ratingLine);
         }

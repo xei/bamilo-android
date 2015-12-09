@@ -217,9 +217,9 @@ public class ErrorLayoutFactory {
                 .setImage(R.drawable.ic_warning)
                 .setPrincipalMessageVisible(false)
                 .setDetailMessage(R.string.server_error)
-                .setRotationVisible(true)
-                .setButtonMessage(R.string.try_again_retry)
-                .setButtonBackground(R.color.black_700);
+                .setRotationVisible(false)
+                .setButtonMessage(R.string.continue_shopping)
+                .setButtonBackground(R.color.color_accent);
         actualError = UNEXPECTED_ERROR_LAYOUT;
     }
 
