@@ -4,45 +4,18 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-
-import java.util.Map;
+import com.mobile.utils.deeplink.TargetLink;
 
 /**
  * Helper used to set User information
  */
 public class SetUserDataHelper extends SuperBaseHelper {
-
-    private ContentValues mContentValues;
-
-    public static Bundle createBundle(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        return bundle;
-    }
-
-    @Override
-    protected RequestBundle createRequest(Bundle args) {
-        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
-        return super.createRequest(args);
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return CollectionUtils.convertContentValuesToMap(mContentValues);
-    }
-
-    @Override
-    protected void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.setUserData);
-    }
 
     @Override
     public EventType getEventType() {
@@ -50,12 +23,19 @@ public class SetUserDataHelper extends SuperBaseHelper {
     }
 
     @Override
-    public void postSuccess(BaseResponse baseResponse) {
-        super.postSuccess(baseResponse);
+    protected EventTask setEventTask() {
+        return EventTask.ACTION_TASK;
     }
 
     @Override
-    protected EventTask setEventTask() {
-        return EventTask.ACTION_TASK;
+    protected void onRequest(RequestBundle requestBundle) {
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setUserData);
+    }
+
+    public static Bundle createBundle(String endpoint, ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_END_POINT_KEY, "/" + TargetLink.getIdFromTargetLink(endpoint));
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
     }
 }

@@ -114,7 +114,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
 
             if (null != billingFormGenerator) {
                 ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-                triggerCreateAddress(mBillValues, true);
+                triggerCreateAddress(billingFormGenerator.getForm().getAction(), mBillValues);
             }
         } else {
             if(isFirstUserAddress){

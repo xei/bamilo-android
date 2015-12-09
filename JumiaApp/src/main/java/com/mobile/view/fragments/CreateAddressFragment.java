@@ -37,7 +37,6 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -604,17 +603,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         // Validate check
-        if (mIsSameCheckBox.isChecked()) {
-            Print.i(TAG, "CREATE ADDRESS: IS SHIPPING AND IS BILLING TOO");
-            ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT VALUES: " + mContentValues);
-            triggerCreateAddress(mContentValues, false);
-        } else {
-            Print.i(TAG, "CREATE ADDRESS: SHIPPING AND BILLING");
-            ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues);
-            triggerCreateAddress(mShipValues, false);
-        }
+        ContentValues mContentValues;
+        int isBilling = mIsSameCheckBox.isChecked() ? IS_DEFAULT_BILLING_ADDRESS : ISNT_DEFAULT_BILLING_ADDRESS;
+        mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, isBilling);
+        Print.d(TAG, "CONTENT VALUES: " + mContentValues);
+        triggerCreateAddress(shippingFormGenerator.getForm().getAction(), mContentValues);
     }
 
     /**
@@ -777,12 +770,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Trigger to create an address
      * @author sergiopereira
      */
-    protected void triggerCreateAddress(ContentValues values, boolean isBilling) {
+    protected void triggerCreateAddress(String action, ContentValues values) {
         Print.i(TAG, "TRIGGER: CREATE ADDRESS");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CreateAddressHelper.IS_BILLING, isBilling);
-        triggerContentEvent(new CreateAddressHelper(), bundle, this);
+        triggerContentEvent(new CreateAddressHelper(), CreateAddressHelper.createBundle(action, values), this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }

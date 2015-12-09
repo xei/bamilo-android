@@ -24,7 +24,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -316,7 +315,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
                 values.put(dummyKey, "");
             }
 
-            triggerSubscribeNewsletters(values);
+            triggerSubscribeNewsletters(mNewslettersForm.getAction(), values);
             // Tracking subscritption
             TrackerDelegator.trackNewsletterSubscription(isSubscribed, GTMValues.MYACCOUNT);
         } catch (NullPointerException e) {
@@ -331,11 +330,9 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /**
      * Trigger to subscribe newsletters
      */
-    private void triggerSubscribeNewsletters(ContentValues values) {
+    private void triggerSubscribeNewsletters(String action, ContentValues values) {
         Print.i(TAG, "TRIGGER: SUBSCRIBE");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new SubscribeNewslettersHelper(), bundle, this);
+        triggerContentEvent(new SubscribeNewslettersHelper(), SubscribeNewslettersHelper.createBundle(action, values), this);
     }
 
     /**

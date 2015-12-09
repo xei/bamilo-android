@@ -9,13 +9,11 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-
-import java.util.Map;
+import com.mobile.utils.deeplink.TargetLink;
 
 /**
  * Example helper
@@ -24,23 +22,14 @@ public class SetChangePasswordHelper extends SuperBaseHelper {
 
     private static final String TAG = SetChangePasswordHelper.class.getSimpleName();
 
-    private ContentValues mContentValues;
-
-    public static Bundle createBundle(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        return bundle;
+    @Override
+    public EventType getEventType() {
+        return EventType.CHANGE_PASSWORD_EVENT;
     }
 
     @Override
-    protected RequestBundle createRequest(Bundle args) {
-        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY);
-        return super.createRequest(args);
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return CollectionUtils.convertContentValuesToMap(mContentValues);
+    protected EventTask setEventTask() {
+        return EventTask.ACTION_TASK;
     }
 
     @Override
@@ -49,24 +38,19 @@ public class SetChangePasswordHelper extends SuperBaseHelper {
     }
 
     @Override
-    public EventType getEventType() {
-        return EventType.CHANGE_PASSWORD_EVENT;
-    }
-
-    @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-
-        //TODO move to observable
         // Save credentials
         Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
-        mContentValues.remove( "Alice_Module_Customer_Model_PasswordForm[password2]" );
-        JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
-        Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+        mParameters.remove( "Alice_Module_Customer_Model_PasswordForm[password2]" );
+        JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.ACTION_TASK;
+    public static Bundle createBundle(String endpoint, ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_END_POINT_KEY, "/" + TargetLink.getIdFromTargetLink(endpoint));
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
     }
+
 }

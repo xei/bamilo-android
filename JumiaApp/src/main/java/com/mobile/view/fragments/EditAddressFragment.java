@@ -32,7 +32,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -377,7 +376,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void onClickEditAddressButton() {
         Print.i(TAG, "ON CLICK: EDIT");
         if (mEditFormGenerator.validate()) {
-            triggerEditAddress(createContentValues(mEditFormGenerator));
+            triggerEditAddress(mEditFormGenerator.getForm().getAction(), createContentValues(mEditFormGenerator));
         } else {
             Print.i(TAG, "INVALID FORM");
         }
@@ -447,11 +446,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     /**
      * Trigger to edit an address
      */
-    private void triggerEditAddress(ContentValues values) {
+    private void triggerEditAddress(String action, ContentValues values) {
         Print.i(TAG, "TRIGGER: EDIT ADDRESS");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new EditAddressHelper(), bundle, this);
+        triggerContentEvent(new EditAddressHelper(), EditAddressHelper.createBundle(action, values), this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }

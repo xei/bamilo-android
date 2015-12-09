@@ -193,7 +193,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
      * 
      */
     private void requestPassword() {
-        triggerForgot(dynamicForm.save());
+        triggerForgot(dynamicForm.getForm().getAction(), dynamicForm.save());
     }
 
     /**
@@ -237,8 +237,8 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
         triggerContentEvent(new GetForgotPasswordFormHelper(), null, this);
     }
 
-    private void triggerForgot(ContentValues values) {
-        triggerContentEvent(new SetForgotPasswordHelper(), SetForgotPasswordHelper.createBundle(values), this);
+    private void triggerForgot(String action, ContentValues values) {
+        triggerContentEvent(new SetForgotPasswordHelper(), SetForgotPasswordHelper.createBundle(action, values), this);
         getBaseActivity().hideKeyboard();
     }
 
