@@ -66,6 +66,7 @@
     <item name="product_details_fragment_header"        type="layout">@layout/_v8_product_details_fragment_header</item>
     <item name="pdv_price_tag"                          type="layout">@layout/_v8_pdv_price_tag</item>
     <item name="sublist" 	                            type="layout">@layout/_v8_sublist</item>
+    <item name="pdv_fragment_image" 	                type="layout">@layout/_v8_pdv_fragment_image</item>
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_v8_pdv_fragment_buy_bar</item>
     <item name="pdv_fragment_rating" 	                type="layout">@layout/_v8_pdv_fragment_rating</item>
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_v8_pdv_fragment_seller_info</item>
