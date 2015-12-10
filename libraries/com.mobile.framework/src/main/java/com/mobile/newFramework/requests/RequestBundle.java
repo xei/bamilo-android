@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.mobile.newFramework.rest.AigRestAdapter;
-import com.mobile.newFramework.utils.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -39,12 +38,12 @@ public class RequestBundle implements AigRestAdapter.Request {
         return this;
     }
 
-    public RequestBundle addQueryData(@NonNull Map<String, String> data) {
+    public RequestBundle addQueryData(@Nullable Map<String, String> data) {
         this.data = data;
         return this;
     }
 
-    public Builder setArray(ArrayList<String> array) {
+    public RequestBundle addQueryArray(@Nullable ArrayList<String> array) {
         this.array = array;
         return this;
     }
@@ -58,13 +57,14 @@ public class RequestBundle implements AigRestAdapter.Request {
         return path;
     }
 
-    @NonNull
+    @Nullable
     public Map<String, String> getData() {
         return data;
     }
 
-    public boolean hasData() {
-        return CollectionUtils.isNotEmpty(data);
+    @Nullable
+    public ArrayList<String> getArray() {
+        return array;
     }
 
     /*

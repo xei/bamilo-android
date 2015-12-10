@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -58,7 +59,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return new RequestBundle(getEndPoint(args))
                 .addQueryPath(getQueryPath(args))
                 .addQueryData(getRequestData(args))
-                .setArray(getRequestArray(args))
+                .addQueryArray(getRequestArray(args))
                 .setCache(mEventType.cacheTime);
     }
 
@@ -88,6 +89,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return path;
     }
 
+    @Nullable
     protected Map<String, String> getRequestData(Bundle args) {
         if (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY)){
             appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
@@ -95,13 +97,12 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return CollectionUtils.isNotEmpty(mParameters) ? CollectionUtils.convertContentValuesToMap(mParameters): null;
     }
 
+    @Nullable
     protected ArrayList<String> getRequestArray(Bundle args) {
-        ArrayList<String> array = new ArrayList<>();
-        if (args != null && args.containsKey(Constants.BUNDLE_ARRAY_KEY)){
-            array = args.getStringArrayList(Constants.BUNDLE_ARRAY_KEY);
+        if (args != null && args.containsKey(Constants.BUNDLE_ARRAY_KEY)) {
+            return args.getStringArrayList(Constants.BUNDLE_ARRAY_KEY);
         }
-        return CollectionUtils.isNotEmpty(array) ? array: null;
-        return
+        return null;
     }
 
     public boolean hasPriority(){

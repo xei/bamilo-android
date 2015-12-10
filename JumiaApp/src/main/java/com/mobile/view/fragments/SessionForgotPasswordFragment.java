@@ -276,7 +276,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
             default:
                 break;
         }
-        super.handleErrorMessage(baseResponse.getErrorMessage(), baseResponse.getEventTask(), eventType);
+        super.handleTaskEvent(baseResponse.getErrorMessage(), baseResponse.getEventTask(), eventType);
 
     }
 

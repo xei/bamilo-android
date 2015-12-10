@@ -5,10 +5,10 @@ import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;
-import com.mobile.newFramework.objects.cart.AddedItemStructure;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
@@ -105,18 +105,17 @@ public class ProductUtils {
         }
     }
 
-
     /**
-     * validate if it show regular warning or confirmation cart message
+     * Validate if it show regular warning or confirmation cart message<br>
+     *      - If has cart popup, show configurable confirmation message with cart total price<br>
+     *      - Else show regular message add item to cart<br>
      */
-    public static void showAddToCartCompleteMessage(@NonNull BaseFragment fragment, BaseResponse baseResponse, EventType eventType){
-        if(fragment == null) return;
-        //if has cart popup, show configurable confirmation message with cart total price
-        if(CountryPersistentConfigs.hasCartPopup(fragment.getBaseActivity().getApplicationContext())){
-            PurchaseEntity purchaseEntity = ((AddedItemStructure) baseResponse.getMetadata().getData()).getPurchaseEntity();
-            fragment.getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
+    public static void showAddToCartCompleteMessage(@NonNull BaseFragment fragment, @NonNull BaseResponse baseResponse, @NonNull EventType eventType) {
+        boolean isToShowCartPopUp = CountryPersistentConfigs.hasCartPopup(fragment.getBaseActivity().getApplicationContext());
+        PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
+        if (isToShowCartPopUp && cart != null && cart.getTotal() > 0) {
+            fragment.getBaseActivity().mConfirmationCartMessageView.showMessage(cart.getTotal());
         } else {
-            //show regular message add item to cart
             fragment.showWarningSuccessMessage(baseResponse.getSuccessMessage(), eventType);
         }
     }

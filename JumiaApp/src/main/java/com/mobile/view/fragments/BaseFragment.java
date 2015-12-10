@@ -42,6 +42,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MessagesUtils;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -625,44 +626,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         hideActivityProgress();
     }
 
-    public void showInfoAddToShoppingCartFailed() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_add_to_shopping_cart));
-        }
-    }
-
-    public void showInfoAddBundleToShoppingCartCompleted() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.added_bundle_to_shop_cart_dialog_text));
-        }
-    }
-
-    public void showInfoAddBundleToShoppingCartFailed(String errorMessage) {
-        if(getBaseActivity() != null) {
-            if(TextUtils.isEmpty(errorMessage))
-                errorMessage = getString(R.string.error_add_bundle_to_shopping_cart);
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, errorMessage);
-        }
-    }
-
-    public void showInfoLoginSuccess() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
-        }
-    }
-
-    public void showInfoAddToShoppingCartOOS() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_outof_stock));
-        }
-    }
-
-    public void showInfoAddToSaved() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
-        }
-    }
-
     public void showWarningSuccessMessage(@Nullable String message) {
         showWarningSuccessMessage(message, null);
     }
@@ -881,56 +844,23 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             return false;
         }
         // Hide keyboard if error screen shows
-        if (getBaseActivity() != null)
+        if (getBaseActivity() != null) {
             getBaseActivity().hideKeyboard();
+        }
 
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
+        // Case network error
         if (ErrorCode.isNetworkError(errorCode)) {
-            switch (errorCode) {
-                case ErrorCode.IO:
-                case ErrorCode.CONNECT_ERROR:
-                    if (eventTask == EventTask.ACTION_TASK) {
-                        showUnexpectedErrorWarning();
-                    } else {
-                        showFragmentErrorRetry();
-                    }
-                    return true;
-                case ErrorCode.TIME_OUT:
-                case ErrorCode.NO_CONNECTIVITY:
-                    // Show no network layout
-                    if (eventTask == EventTask.ACTION_TASK) {
-                        showNoNetworkWarning();
-                    } else {
-                        showFragmentNoNetworkRetry();
-                    }
-                    return true;
-                case ErrorCode.HTTP_STATUS:
-                    // Case HOME show retry otherwise show continue
-                    if (action == NavigationAction.HOME) {
-                        showFragmentErrorRetry();
-                    } else {
-                        showContinueShopping();
-                    }
-                    return true;
-                case ErrorCode.SSL:
-                case ErrorCode.SERVER_IN_MAINTENANCE:
-                    showFragmentMaintenance();
-                    return true;
-                case ErrorCode.SERVER_OVERLOAD:
-                    if (getBaseActivity() != null) {
-                        ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
-                        showFragmentErrorRetry();
-                    }
-                    return true;
-                default:
-                    break;
-            }
+            return handleNetworkError(errorCode, eventTask);
         }
         // Case unexpected error from server data
         else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
             showFragmentMaintenance();
-        } else {
-            handleErrorMessage(response.getErrorMessage(), response.getEventTask(), response.getEventType());
+            return true;
+        }
+        // Show warning messages
+        else {
+            handleTaskEvent(response.getErrorMessage(), response.getEventTask(), response.getEventType());
         }
 
         /**
@@ -942,7 +872,58 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         return false;
     }
 
-    public void handleErrorMessage(final String errorMessage, final EventTask eventTask, final EventType eventType) {
+    /**
+     * Handle network events.
+     */
+    public boolean handleNetworkError(int errorCode, EventTask eventTask) {
+        boolean result = true;
+        switch (errorCode) {
+            case ErrorCode.IO:
+            case ErrorCode.CONNECT_ERROR:
+                if (eventTask == EventTask.ACTION_TASK) {
+                    showUnexpectedErrorWarning();
+                } else {
+                    showFragmentErrorRetry();
+                }
+                break;
+            case ErrorCode.TIME_OUT:
+            case ErrorCode.NO_CONNECTIVITY:
+                // Show no network layout
+                if (eventTask == EventTask.ACTION_TASK) {
+                    showNoNetworkWarning();
+                } else {
+                    showFragmentNoNetworkRetry();
+                }
+                break;
+            case ErrorCode.HTTP_STATUS:
+                // Case HOME show retry otherwise show continue
+                if (action == NavigationAction.HOME) {
+                    showFragmentErrorRetry();
+                } else {
+                    showContinueShopping();
+                }
+                break;
+            case ErrorCode.SSL:
+            case ErrorCode.SERVER_IN_MAINTENANCE:
+                showFragmentMaintenance();
+                break;
+            case ErrorCode.SERVER_OVERLOAD:
+                if (getBaseActivity() != null) {
+                    ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
+                    showFragmentErrorRetry();
+                }
+                break;
+            default:
+                result = false;
+                break;
+        }
+        return result;
+    }
+
+    /**
+     * Handle task events.
+     */
+    public void handleTaskEvent(final String errorMessage, final EventTask eventTask, final EventType eventType) {
         if (eventTask == EventTask.ACTION_TASK) {
             switch (eventType) {
                 case EDIT_ADDRESS_EVENT:
@@ -1097,22 +1078,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();
         }
-    }
-
-    /**
-     * Validate if it show regular warning or confirmation cart message<br>
-     *      - If has cart popup, show configurable confirmation message with cart total price<br>
-     *      - Else show regular message add item to cart<br>
-     */
-    protected void showAddToCartCompleteMessage(BaseResponse baseResponse) {
-        boolean isToShowCartPopUp = CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext());
-        PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
-        if (isToShowCartPopUp && cart != null && cart.getTotal() > 0) {
-            getBaseActivity().mConfirmationCartMessageView.showMessage(cart.getTotal());
-        } else {
-            showWarningSuccessMessage(baseResponse.getSuccessMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
-        }
-        return
     }
 
 }

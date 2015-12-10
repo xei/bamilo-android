@@ -9,6 +9,7 @@ import com.mobile.newFramework.rest.errors.AigError;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -46,9 +47,9 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         // Add request path
         if (TextUtils.isNotEmpty(mRequestBundle.getPath())) parameters.add(mRequestBundle.getPath());
         // Add request data
-        if(mRequestBundle.hasData()) parameters.add(mRequestBundle.getData());
+        if(CollectionUtils.isNotEmpty(mRequestBundle.getData())) parameters.add(mRequestBundle.getData());
         // Add request array
-        if(mRequestBundle.hasArray()) parameters.add(mRequestBundle.getArray());
+        if(CollectionUtils.isNotEmpty(mRequestBundle.getArray())) parameters.add(mRequestBundle.getArray());
         // Add callback
         parameters.add(this);
         // Invoke api service
