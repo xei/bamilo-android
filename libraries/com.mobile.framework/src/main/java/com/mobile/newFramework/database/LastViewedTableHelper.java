@@ -23,7 +23,7 @@ public class LastViewedTableHelper extends BaseTable {
     // Table Name
     public static final String TABLE_NAME = "last_viewed";
 
-    private static final int MAX_SAVED_PRODUCTS = 5;
+    private static final int MAX_SAVED_PRODUCTS = 15;
 
     // Table Rows
     public static final String _ID = "id";
