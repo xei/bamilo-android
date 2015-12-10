@@ -45,7 +45,6 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -815,44 +814,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     /**
-     * ########### RESPONSE LISTENER ###########
+     * ############# RESPONSE #############
      */
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        onErrorEvent(baseResponse);
-    }
-
     /*
      * (non-Javadoc)
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-    }
-
-    /**
-     * ############# RESPONSE #############
-     */
-    /**
-     * Filter the success response
-     *
-     * @return boolean
-     * @author sergiopereira
-     */
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
-
         switch (eventType) {
             case INIT_FORMS:
                 onInitFormSuccessEvent();
@@ -876,8 +851,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             default:
                 break;
         }
-
-        return true;
     }
 
     protected void onInitFormSuccessEvent() {
@@ -913,23 +886,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected void onGetCitiesSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
-
         ArrayList<AddressCity> citiesArray = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getMetadata().getData();
-
         GetCitiesHelper.AddressCitiesStruct cities= (GetCitiesHelper.AddressCitiesStruct)citiesArray;
-
         String requestedRegionAndField = cities.getCustomTag();
         Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
-
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
-
         FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
         if(field == null){
-            // Show
             showFragmentContentContainer();
             Print.i(TAG, "DOES NOT HAVE POSTAL CODE");
         }
-
     }
 
     protected void onGetPostalCodesSuccessEvent(BaseResponse baseResponse) {
@@ -937,9 +903,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
         Print.d(TAG, "REQUESTED CITY FROM FIELD: " + postalCodesStruct.getCustomTag());
         String requestedRegionAndField = postalCodesStruct.getCustomTag();
-
         setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodesStruct);
-        // Show
         showFragmentContentContainer();
     }
 
@@ -949,22 +913,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Filter the error response
-     * @return boolean
-     * @author sergiopereira
      */
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
-
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
 
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
-            return true;
+            return;
         }
 
         switch (eventType) {
@@ -990,8 +952,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             default:
                 break;
         }
-
-        return false;
     }
 
 
@@ -1019,34 +979,5 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
         // Clean flag to wait for both different responses
         oneAddressCreated = false;
-    }
-
-    /**
-     * ########### DIALOGS ###########
-     */
-    /**
-     * Dialog used to show an error
-     *
-     * @author sergiopereira
-     */
-    protected void showErrorDialog(String errorMessage ,String dialogTitle) {
-        Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        // FIXME to be fixed on a next release, where all form validations are made on our side and delt with the the error messages centrally
-        showFragmentContentContainer();
-        dialog = DialogGenericFragment.newInstance(true, false,
-                dialogTitle,
-                errorMessage,
-                getString(R.string.ok_label),
-                "",
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            dismissDialogFragment();
-                        }
-                    }
-                });
-        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
     }
 }

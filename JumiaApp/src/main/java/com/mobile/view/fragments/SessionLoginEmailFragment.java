@@ -21,7 +21,6 @@ import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.EventType;
@@ -380,13 +379,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
             // Tracking
             TrackerDelegator.trackLoginFailed(false, GTMValues.LOGIN, GTMValues.EMAILAUTH);
             // Validate and show errors
-            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                Print.d(TAG, "SHOW DIALOG");
-                showFragmentContentContainer();
-                showWarningErrorMessage(baseResponse.getValidateMessage(), EventType.LOGIN_EVENT);
-            } else {
-                showFragmentErrorRetry();
-            }
+            showFragmentContentContainer();
+            showFormValidateMessages(mDynamicForm, baseResponse, eventType);
         }
     }
 

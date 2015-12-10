@@ -34,7 +34,6 @@ public class PickUpStationObject implements Parcelable {
     private ArrayList<String> paymentMethods;
     private ArrayList<Region> regions;
     private long shippingFee;
-    //private String pickupStationRegionId;
 
     /**
      * Empty Constructor
@@ -46,7 +45,7 @@ public class PickUpStationObject implements Parcelable {
     /**
      * @return the id_pickupstation
      */
-    public String getIdPickupstation() {
+    public String getIdPickupStation() {
         return pickupId;
     }
 
@@ -55,13 +54,6 @@ public class PickUpStationObject implements Parcelable {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -79,24 +71,10 @@ public class PickUpStationObject implements Parcelable {
     }
 
     /**
-     * @param image the image to set
-     */
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    /**
      * @return the address
      */
     public String getAddress() {
         return address;
-    }
-
-    /**
-     * @param address the address to set
-     */
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     /**
@@ -107,24 +85,10 @@ public class PickUpStationObject implements Parcelable {
     }
 
     /**
-     * @param place the place to set
-     */
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    /**
      * @return the city
      */
     public String getCity() {
         return city;
-    }
-
-    /**
-     * @param city the city to set
-     */
-    public void setCity(String city) {
-        this.city = city;
     }
 
     /**
@@ -149,15 +113,7 @@ public class PickUpStationObject implements Parcelable {
         return shippingFee;
     }
 
-    /**
-     * @param regions the regions to set
-     */
-    public void setRegions(ArrayList<Region> regions) {
-        this.regions = regions;
-    }
-
     public void initialize(JSONObject jsonObject) {
-        //this.pickupStationRegionId = jsonObject.optString(RestConstants.JSON_PICKUP_ID_PICKUP_STATION_REGION);
         this.pickupStationId = jsonObject.optString(RestConstants.ID_PICKUPSTATION);
         this.name = jsonObject.optString(RestConstants.NAME);
         this.pickupId = jsonObject.optString(RestConstants.PICKUP_ID);
@@ -219,7 +175,6 @@ public class PickUpStationObject implements Parcelable {
         place = in.readString();
         city = in.readString();
         openingHours = in.readString();
-        //pickupStationRegionId = in.readString();
         paymentMethods = new ArrayList<>();
         in.readList(paymentMethods, String.class.getClassLoader());
         regions = new ArrayList<>();

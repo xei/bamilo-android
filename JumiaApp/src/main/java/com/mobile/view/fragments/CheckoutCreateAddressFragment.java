@@ -14,6 +14,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -151,7 +152,14 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Error
         int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
+            // Case is same form for both or is the first
+            if(mIsSameCheckBox != null && (mIsSameCheckBox.isChecked() || !oneAddressCreated)) {
+                showFormValidateMessages(shippingFormGenerator, baseResponse, EventType.CREATE_ADDRESS_EVENT);
+            }
+            // Case is not the same and is the second
+            else {
+                showFormValidateMessages(billingFormGenerator, baseResponse, EventType.CREATE_ADDRESS_EVENT);
+            }
         } else {
             Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
             super.showUnexpectedErrorWarning();

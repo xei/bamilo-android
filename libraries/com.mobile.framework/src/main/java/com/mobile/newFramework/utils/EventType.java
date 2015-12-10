@@ -28,6 +28,8 @@ public enum EventType {
 
     LOGIN_EVENT("https:/customer/login/", AigRestContract.NO_CACHE),
 
+    AUTO_LOGIN_EVENT(LOGIN_EVENT.action, AigRestContract.NO_CACHE),
+
     EMAIL_CHECK("http:/customer/emailcheck/", AigRestContract.NO_CACHE),
 
     FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin/", AigRestContract.NO_CACHE),
@@ -62,7 +64,7 @@ public enum EventType {
 
     FORGET_PASSWORD_EVENT,
 
-    REGISTER_ACCOUNT_EVENT("https:/customer/create/", AigRestContract.NO_CACHE),
+    REGISTER_ACCOUNT_EVENT,
 
     GET_STATIC_PAGE("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
 

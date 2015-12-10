@@ -18,7 +18,6 @@ import com.mobile.helpers.account.SetUserDataHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -340,32 +339,23 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
+        // Call super
         if (super.handleErrorEvent(baseResponse)) {
             return;
         }
-
-        int errorCode = baseResponse.getError().getCode();
-
+        // Validate type
         switch (eventType) {
             case GET_CHANGE_PASSWORD_FORM_EVENT:
             case EDIT_USER_DATA_FORM_EVENT:
                 showFragmentErrorRetry();
                 break;
             case CHANGE_PASSWORD_EVENT:
-                Print.d(TAG, "changePasswordEvent: Password changed was not successful");
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    displayErrorHint(baseResponse.getValidateMessage());
-                    showFragmentContentContainer();
-                }
+                showFragmentContentContainer();
+                showFormValidateMessages(mChangePasswordForm, baseResponse, eventType);
                 break;
             case EDIT_USER_DATA_EVENT:
-                Print.d(TAG, "EditUserData: Edit user was not successful");
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    displayErrorHint(baseResponse.getValidateMessage());
-                    showFragmentContentContainer();
-
-                }
+                showFragmentContentContainer();
+                showFormValidateMessages(mUserDataForm, baseResponse, eventType);
                 break;
             default:
                 break;

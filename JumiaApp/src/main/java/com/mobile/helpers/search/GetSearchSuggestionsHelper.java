@@ -53,11 +53,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected String getEndPoint(Bundle args) {
-        return super.getEndPoint(args);
-    }
-
-    @Override
     protected Map<String, String> getRequestData(Bundle args) {
         // Get the current query
         mQuery = args.getString(SEARCH_PARAM);

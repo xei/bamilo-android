@@ -50,7 +50,6 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -478,9 +477,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         // Validate values
         if(savedRatingReviewValues != null && dynamicRatingForm != null) {
             // Get dynamic form and update
-            Iterator<DynamicFormItem> iter = dynamicRatingForm.getIterator();
-            while (iter.hasNext()) {
-                DynamicFormItem item = iter.next();
+            for (DynamicFormItem item : dynamicRatingForm) {
                 try {
                     item.loadState(savedRatingReviewValues);
                 } catch (NullPointerException e) {
@@ -801,35 +798,19 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 } else {
                     showRetryLayout();
                 }
-
                 break;
             case GET_FORM_REVIEW_EVENT:
                 showRetryLayout();
                 break;
             case REVIEW_RATING_PRODUCT_EVENT:
-                dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
-                        new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (!isExecutingSendReview) {
-                                    formsValidation();
-                                }
-                                dismissDialogFragment();
-                            }
-                        }, false);
-                dialog.setCancelable(false);
-                dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+                showFormValidateMessages(dynamicRatingForm, baseResponse, eventType);
                 hideActivityProgress();
                 isExecutingSendReview = false;
                 break;
-
-
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
                     getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
-
                     showFragmentContentContainer();
-
                     try {
                         getBaseActivity().onBackPressed();
                     } catch (IllegalStateException e) {

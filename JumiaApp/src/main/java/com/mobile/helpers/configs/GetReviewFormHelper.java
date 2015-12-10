@@ -1,7 +1,5 @@
 package com.mobile.helpers.configs;
 
-import android.os.Bundle;
-
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -18,11 +16,6 @@ public class GetReviewFormHelper extends SuperBaseHelper {
     @Override
     public EventType getEventType() {
         return EventType.GET_FORM_REVIEW_EVENT;
-    }
-
-    @Override
-    protected String getEndPoint(Bundle args) {
-        return super.getEndPoint(args);
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -98,7 +99,7 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     protected void onEditAddressErrorEvent(BaseResponse baseResponse){
         int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            showErrorDialog(baseResponse.getValidateMessage());
+            showFormValidateMessages(mEditFormGenerator, baseResponse, EventType.EDIT_ADDRESS_EVENT);
             showFragmentContentContainer();
         } else {
             Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);

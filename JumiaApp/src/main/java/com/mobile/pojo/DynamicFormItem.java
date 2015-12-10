@@ -110,7 +110,6 @@ public class DynamicFormItem {
     private final int errorColor;
     private final boolean hideAsterisks;
     private int mPreSelectedPosition = IntConstants.INVALID_POSITION;
-    private float scale = 1;
     private IFormField entry = null;
     private View errorControl;
     private View dataControl;
@@ -118,14 +117,8 @@ public class DynamicFormItem {
     private TextView errorTextControl;
     private TextView mandatoryControl;
     private String errorText;
-    //private OnFocusChangeListener editFocusListener;
     private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
-    //private TextWatcher textWatcher;
     private DatePickerDialog dialogDate;
-    private int selectedYear;
-    private int selectedMonthOfYear;
-    private int selectedDayOfMoth;
-    //private ArrayList<DynamicForm> childDynamicForm;
     private SharedPreferences mSharedPrefs;
 
     /**
@@ -146,7 +139,6 @@ public class DynamicFormItem {
         this.errorTextControl = null;
         this.mandatoryControl = null;
         this.errorText = context.getString(R.string.dynamic_errortext);
-        this.scale = context.getResources().getDisplayMetrics().density;
         this.errorColor = context.getResources().getColor(R.color.red_basic);
         this.hideAsterisks = parent.getForm().isToHideAsterisks();
         buildControl();
@@ -948,7 +940,7 @@ public class DynamicFormItem {
      *
      * @param message The error message to be displayed on the control
      */
-    public void ShowError(String message) {
+    public void showErrorMessage(String message) {
         if (null != errorControl) {
             setErrorText(message);
             this.errorControl.setVisibility(message.equals("") ? View.GONE : View.VISIBLE);
@@ -1325,9 +1317,6 @@ public class DynamicFormItem {
 
             @Override
             public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-                selectedYear = year;
-                selectedMonthOfYear = monthOfYear;
-                selectedDayOfMoth = dayOfMonth;
                 Calendar currentCalendar = Calendar.getInstance();
                 GregorianCalendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
                 Print.i(TAG, "selected Date : year: " + year +" month: "+ monthOfYear +" day: "+ dayOfMonth);
@@ -1819,8 +1808,7 @@ public class DynamicFormItem {
         errImage.setImageResource(R.drawable.indicator_input_error);
 
         //ErrorText params
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         //#RTL
         if (ShopSelector.isRtl()) {
