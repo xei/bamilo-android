@@ -52,6 +52,10 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         if(mRequestBundle.hasData()){
             parameters.add(mRequestBundle.getData());
         }
+        // Add request array
+        if(mRequestBundle.hasArray()){
+            parameters.add(mRequestBundle.getArray());
+        }
 
         // Add callback
         parameters.add(this);
