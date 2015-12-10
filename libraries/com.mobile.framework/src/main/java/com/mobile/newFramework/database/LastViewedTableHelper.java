@@ -74,16 +74,17 @@ public class LastViewedTableHelper extends BaseTable {
             if (completeProduct != null) {
                 String sku = completeProduct.getSku();
                 // TODO database new approach to validate and limit number of items
-                if (!verifyIfExist(sku)) {
-                    if (getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS) {
-                        removeOldestEntry();
-                    }
-                    SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-                    ContentValues values = new ContentValues();
-                    values.put(LastViewedTableHelper._PRODUCT_SKU, sku);
-                    db.insert(LastViewedTableHelper.TABLE_NAME, null, values);
-                    db.close();
+                if (!verifyIfExist(sku) && getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS) {
+                    removeOldestEntry();
+                } else {
+                    removeLastViewed(sku);
                 }
+
+                SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+                ContentValues values = new ContentValues();
+                values.put(LastViewedTableHelper._PRODUCT_SKU, sku);
+                db.insert(LastViewedTableHelper.TABLE_NAME, null, values);
+                db.close();
             }
         } catch (IllegalStateException | SQLiteException e) {
             // ...
@@ -164,6 +165,7 @@ public class LastViewedTableHelper extends BaseTable {
     public static void removeLastViewed(String sku) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         String query = "DELETE FROM " + TABLE_NAME + " WHERE " + _PRODUCT_SKU + " = '" + sku + "'";
+        Print.i(TAG, "REMOVING PRODUCT SKU :  " + sku);
         Print.i(TAG, "SQL RESULT query :  " + query);
         db.execSQL(query);
         db.close();
@@ -174,9 +176,11 @@ public class LastViewedTableHelper extends BaseTable {
      */
     public static void removeOldestEntry() {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + _ID + " IN " +
-                        "( SELECTED " + _ID + " FROM " + TABLE_NAME +
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + _ID + " = " +
+                        "( SELECT " + _ID + " FROM " + TABLE_NAME +
                         " ORDER BY " + _ID + " ASC LIMIT 1 )";
+
+        Print.i(TAG,"QUERY:"+query);
         db.execSQL(query);
         db.close();
     }
