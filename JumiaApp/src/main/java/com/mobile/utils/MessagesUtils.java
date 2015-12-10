@@ -17,7 +17,9 @@ public enum MessagesUtils {
 
     ADD_ITEM_TO_SHOPPING_CART_EVENT(R.string.error_add_to_shopping_cart, R.string.added_to_shop_cart_dialog_text),
 
-    ADD_ITEMS_TO_SHOPPING_CART_EVENT(R.string.some_products_not_added, R.string.added_to_shop_cart_dialog_text),
+    ADD_ITEMS_TO_SHOPPING_CART_EVENT(R.string.some_products_not_added, R.string.added_bundle_to_shop_cart_dialog_text),
+
+    ADD_PRODUCT_BUNDLE(R.string.some_products_not_added, R.string.added_bundle_to_shop_cart_dialog_text),
 
     ADD_PRODUCT_TO_WISH_LIST(R.string.error_occured, R.string.products_added_saved),
 
