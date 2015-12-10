@@ -44,13 +44,11 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         // Set parameters
         List<Object> parameters = new ArrayList<>();
         // Add request path
-        if (TextUtils.isNotEmpty(mRequestBundle.getPath())) {
-            parameters.add(mRequestBundle.getPath());
-        }
+        if (TextUtils.isNotEmpty(mRequestBundle.getPath())) parameters.add(mRequestBundle.getPath());
         // Add request data
-        if(mRequestBundle.hasData()){
-            parameters.add(mRequestBundle.getData());
-        }
+        if(mRequestBundle.hasData()) parameters.add(mRequestBundle.getData());
+        // Add request array
+        if(mRequestBundle.hasArray()) parameters.add(mRequestBundle.getArray());
         // Add callback
         parameters.add(this);
         // Invoke api service

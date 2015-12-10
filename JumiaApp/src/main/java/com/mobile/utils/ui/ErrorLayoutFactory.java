@@ -215,10 +215,11 @@ public class ErrorLayoutFactory {
     private void buildUnexpectedErrorLayout() {
         new Builder()
                 .setImage(R.drawable.ic_warning)
-                .setPrincipalMessageVisible(false)
+                .setPrincipalMessage(R.string.error_problem_fetching_data)
                 .setDetailMessage(R.string.server_error)
                 .setRotationVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
+                .setButtonTextColor(R.color.white)
                 .setButtonBackground(R.color.color_accent);
         actualError = UNEXPECTED_ERROR_LAYOUT;
     }
@@ -238,9 +239,10 @@ public class ErrorLayoutFactory {
     private void buildContinueShoppingLayout() {
         new Builder()
                 .setImage(R.drawable.ic_warning)
-                .setPrincipalMessageVisible(false)
+                .setPrincipalMessage(R.string.error_problem_fetching_data)
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)
+                .setButtonTextColor(R.color.white)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
         actualError = CONTINUE_SHOPPING_LAYOUT;

@@ -17,6 +17,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Map;
 
 public abstract class SuperBaseHelper implements AigResponseCallback {
@@ -57,6 +58,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         return new RequestBundle(getEndPoint(args))
                 .addQueryPath(getQueryPath(args))
                 .addQueryData(getRequestData(args))
+                .setArray(getRequestArray(args))
                 .setCache(mEventType.cacheTime);
     }
 
@@ -91,6 +93,15 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
             appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
         }
         return CollectionUtils.isNotEmpty(mParameters) ? CollectionUtils.convertContentValuesToMap(mParameters): null;
+    }
+
+    protected ArrayList<String> getRequestArray(Bundle args) {
+        ArrayList<String> array = new ArrayList<>();
+        if (args != null && args.containsKey(Constants.BUNDLE_ARRAY_KEY)){
+            array = args.getStringArrayList(Constants.BUNDLE_ARRAY_KEY);
+        }
+        return CollectionUtils.isNotEmpty(array) ? array: null;
+        return
     }
 
     public boolean hasPriority(){

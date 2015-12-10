@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.mobile.newFramework.rest.AigRestAdapter;
 import com.mobile.newFramework.utils.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -16,6 +17,7 @@ public class RequestBundle implements AigRestAdapter.Request {
     private String endpoint;
     private String path;
     private Map<String, String> data;
+    private ArrayList<String> array;
     private Integer cache;
     private boolean discard;
 
@@ -39,6 +41,11 @@ public class RequestBundle implements AigRestAdapter.Request {
 
     public RequestBundle addQueryData(@NonNull Map<String, String> data) {
         this.data = data;
+        return this;
+    }
+
+    public Builder setArray(ArrayList<String> array) {
+        this.array = array;
         return this;
     }
 
@@ -92,6 +99,7 @@ public class RequestBundle implements AigRestAdapter.Request {
         private String endpoint;
         private String path;
         private Map<String, String> data;
+        private ArrayList<String> array;
         private Integer cache;
         private boolean discard;
 
@@ -102,6 +110,11 @@ public class RequestBundle implements AigRestAdapter.Request {
 
         public Builder discardResponse() {
             this.discard = true;
+            return this;
+        }
+
+        public Builder setArray(ArrayList<String> array) {
+            this.array = array;
             return this;
         }
 
@@ -124,6 +137,7 @@ public class RequestBundle implements AigRestAdapter.Request {
             RequestBundle requestBundle = new RequestBundle(endpoint);
             requestBundle.path = path;
             requestBundle.data = data;
+            requestBundle.array = array;
             requestBundle.discard = discard;
             requestBundle.cache = cache;
             return requestBundle;

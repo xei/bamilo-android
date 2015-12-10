@@ -15,6 +15,7 @@ public class Constants {
      */
     public static final String BUNDLE_END_POINT_KEY = RestConstants.END_POINT;
     public static final String BUNDLE_DATA_KEY = RestConstants.DATA;
+    public static final String BUNDLE_ARRAY_KEY = "array"
     public static final String BUNDLE_PATH_KEY = RestConstants.PATH;
     public static final String BUNDLE_PRIORITY_KEY = RestConstants.PRIORITY;
     public static final String BUNDLE_EVENT_TASK = RestConstants.TASK;

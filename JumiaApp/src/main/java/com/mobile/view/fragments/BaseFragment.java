@@ -42,8 +42,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.pojo.DynamicForm;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MessagesUtils;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -51,6 +49,7 @@ import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -628,25 +627,39 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.error_add_to_shopping_cart));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_add_to_shopping_cart));
+        }
+    }
+
+    public void showInfoAddBundleToShoppingCartCompleted() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.added_bundle_to_shop_cart_dialog_text));
+        }
+    }
+
+    public void showInfoAddBundleToShoppingCartFailed(String errorMessage) {
+        if(getBaseActivity() != null) {
+            if(TextUtils.isEmpty(errorMessage))
+                errorMessage = getString(R.string.error_add_bundle_to_shopping_cart);
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, errorMessage);
         }
     }
 
     public void showInfoLoginSuccess() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.succes_login));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
         }
     }
 
     public void showInfoAddToShoppingCartOOS() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.product_outof_stock));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_outof_stock));
         }
     }
 
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.products_removed_saved));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
         }
     }
 
@@ -828,10 +841,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         EventType eventType = baseResponse.getEventType();
 
         switch (eventType) {
-            case GET_SHOPPING_CART_ITEMS_EVENT:
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+            case ADD_PRODUCT_BUNDLE:
+                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
+            case GET_SHOPPING_CART_ITEMS_EVENT:
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 getBaseActivity().updateCartInfo();
                 return true;
             case LOGOUT_EVENT:
@@ -1097,6 +1112,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         } else {
             showWarningSuccessMessage(baseResponse.getSuccessMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
         }
+        return
     }
 
 }
