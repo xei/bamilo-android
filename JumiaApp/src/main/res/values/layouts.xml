@@ -83,6 +83,7 @@
     <item name="pdv_price_tag"                          type="layout">@layout/_def_pdv_price_tag</item>
 
     <item name="pdv_fragment_main" 	                    type="layout">@layout/_def_pdv_fragment_main</item>
+    <item name="pdv_fragment_image" 	                type="layout">@layout/_def_pdv_fragment_image</item>
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
     <item name="pdv_fragment_rating" 	                type="layout">@layout/_def_pdv_fragment_rating</item>
     <item name="pdv_fragment_related_item" 	            type="layout">@layout/_def_pdv_fragment_related_item</item>
