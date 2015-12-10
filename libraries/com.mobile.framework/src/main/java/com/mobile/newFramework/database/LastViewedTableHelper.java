@@ -74,9 +74,8 @@ public class LastViewedTableHelper extends BaseTable {
             if (completeProduct != null) {
                 String sku = completeProduct.getSku();
                 // TODO database new approach to validate and limit number of items
-                if (!verifyIfExist(sku)) {
-                    if (getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS)
-                        removeOldestEntry();
+                if (!verifyIfExist(sku) && getLastViewedEntriesCount() == MAX_SAVED_PRODUCTS) {
+                    removeOldestEntry();
                 } else {
                     removeLastViewed(sku);
                 }
