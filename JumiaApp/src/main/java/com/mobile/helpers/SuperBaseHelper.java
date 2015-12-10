@@ -15,7 +15,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.view.fragments.RecentlyViewedFragment;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -34,7 +33,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
     protected ContentValues mParameters;
 
-
     public SuperBaseHelper(){
         mEventType = getEventType();
     }
@@ -43,7 +41,7 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         mRequester = requester;
         setEventTask(args);
         setPriority(args);
-        onRequest(createRequest(args,requester));
+        onRequest(createRequest(args));
     }
 
     protected RequestBundle createRequest(Bundle args) {
@@ -55,29 +53,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
 
         // Validate data
         Map<String, String> data = getRequestData(args);
-        if (data != null) {
-            requestBundleBuilder.setData(data);
-        }
-        //
-        return requestBundleBuilder.build();
-    }
-
-
-    protected RequestBundle createRequest(Bundle args,IResponseCallback requester) {
-        // Create builder
-        RequestBundle.Builder requestBundleBuilder = new RequestBundle.Builder()
-                .setUrl(getRequestUrl(args))
-                .setPath(getRequestPath(args))
-                .setCache(mEventType.cacheTime);
-
-        // Validate data
-        Map<String, String> data;
-        if(requester instanceof RecentlyViewedFragment)
-            //get sorted keys for RecentViewed list
-            data = getRequestSortedData(args);
-        else
-            data = getRequestData(args);
-
         if (data != null) {
             requestBundleBuilder.setData(data);
         }
@@ -131,18 +106,6 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
         }
 
         return CollectionUtils.isNotEmpty(mParameters) ? CollectionUtils.convertContentValuesToMap(mParameters): null;
-    }
-
-
-    /**
-     *  Appends and return a map with parameters sorted by key
-     */
-    protected Map<String, String> getRequestSortedData(Bundle args) {
-        if (args != null && args.containsKey(Constants.BUNDLE_DATA_KEY)){
-            appendParameters((ContentValues) args.getParcelable(Constants.BUNDLE_DATA_KEY));
-        }
-
-        return CollectionUtils.isNotEmpty(mParameters) ? CollectionUtils.convertContentValuesToSortedMap(mParameters): null;
     }
 
     /**
@@ -229,7 +192,5 @@ public abstract class SuperBaseHelper implements AigResponseCallback {
             this.mParameters.putAll(parameters);
         }
     }
-
-
 
 }
