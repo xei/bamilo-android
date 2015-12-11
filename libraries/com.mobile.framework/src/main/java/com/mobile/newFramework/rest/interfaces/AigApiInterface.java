@@ -276,7 +276,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void validateProducts(@FieldMap Map<String, String> data, Callback<BaseResponse<ValidProductList>> callback);
+    void validateProducts( @Field("products[]") ArrayList<String> keys, Callback<BaseResponse<ValidProductList>> callback);
     String validateProducts = "validateProducts";
 
     @FormUrlEncoded
