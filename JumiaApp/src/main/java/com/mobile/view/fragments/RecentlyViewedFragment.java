@@ -27,7 +27,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -357,7 +356,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         } catch (IndexOutOfBoundsException e) {
             Print.w(TAG, "WARNING: IOB ON ADD ITEM TO CART", e);
             if(mAdapter != null) mAdapter.notifyDataSetChanged();
-            showInfoAddToShoppingCartFailed();
+            showWarningErrorMessage(getString(R.string.error_add_to_shopping_cart));
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON ADD ITEM TO CART", e);
             view.setEnabled(false);
@@ -497,7 +496,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.d(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 hideActivityProgress();
-                showInfoAddToShoppingCartOOS();
                 break;
             case VALIDATE_PRODUCTS:
                 Print.d(TAG, "ON RESPONSE ERROR: VALIDATE_PRODUCTS");
@@ -523,14 +521,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      * send a array of products sku's to be validated by the API
      */
     private void triggerValidateRecentlyViewed(ArrayList<String> list) {
-        ContentValues values = new ContentValues();
-        for (int i = 0; i < list.size(); i++) {
-            values.put(String.format(ValidateProductHelper.VALIDATE_PRODUCTS_KEY, i), list.get(i));
-        }
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new ValidateProductHelper(), bundle, this);
+        triggerContentEvent(new ValidateProductHelper(), ValidateProductHelper.createBundle(list), this);
     }
 
     /**

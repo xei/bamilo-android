@@ -15,7 +15,7 @@ public class VoucherRemoveTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://integration-www.jumia.ug/mobapi/v1.7/order/removevoucher/")
+                .setEndPoint("https://integration-www.jumia.ug/mobapi/v1.7/order/removevoucher/")
                 .setCache(EventType.REMOVE_VOUCHER.cacheTime)
                 .build();
     }

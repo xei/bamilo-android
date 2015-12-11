@@ -21,9 +21,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.EventType;
@@ -33,12 +31,10 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.Map;
 
 /**
  * Class used to manage the register form
@@ -237,7 +233,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
             isSubscribingNewsletter = values.getAsBoolean(RestConstants.REGISTER_NEWSLETTER_CATEGORIES_SUBSCRIBED);
         }
         // Register user
-        triggerRegister(values);
+        triggerRegister(mDynamicForm.getForm().getAction(), values);
     }
 
     /*
@@ -294,8 +290,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
      * ############# TRIGGERS #############
      */
 
-    private void triggerRegister(ContentValues values) {
-        triggerContentEvent(new RegisterHelper(), RegisterHelper.createBundle(values), this);
+    private void triggerRegister(String endpoint, ContentValues values) {
+        triggerContentEvent(new RegisterHelper(), RegisterHelper.createBundle(endpoint, values), this);
     }
 
     private void triggerRegisterForm() {
@@ -324,10 +320,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 // Tracking
                 if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-
                 // Finish
                 getActivity().onBackPressed();
-
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 break;
@@ -348,9 +342,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
             return;
         }
         // Super
-        if (super.handleErrorEvent(baseResponse)) {
-            return;
-        }
+        if (super.handleErrorEvent(baseResponse)) return;
         // Validate
         EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "ON ERROR: " + eventType);
@@ -361,44 +353,13 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
             case REGISTER_ACCOUNT_EVENT:
                 // Tracking
                 TrackerDelegator.trackSignupFailed(GTMValues.REGISTER);
-                // Validate errors
-                int code = baseResponse.getError().getCode();
-                Map messages = baseResponse.getErrorMessages();
-                validateErrorMessage(code, messages);
+                // Validate and show errors
+                showFragmentContentContainer();
+                // Show validate messages
+                showFormValidateMessages(mDynamicForm, baseResponse, eventType);
                 break;
             default:
                 break;
-        }
-    }
-
-    private void validateErrorMessage(int errorCode, Map errorMessages) {
-        // Validate error
-        if (errorCode == ErrorCode.REQUEST_ERROR) {
-            // Validate error message
-            int message =  R.string.incomplete_alert;
-            if (errorMessages != null && errorMessages.containsKey(ErrorConstants.CUSTOMER_CREATE_FAILED_EXISTS)) {
-                message = R.string.error_register_alreadyexists;
-            }
-            // Show container
-            showFragmentContentContainer();
-            // Show dialog
-            dialog = DialogGenericFragment.newInstance(true, false,
-                    getString(R.string.error_register_title),
-                    getString(message),
-                    getString(R.string.ok_label),
-                    "",
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = v.getId();
-                            if (id == R.id.button1) {
-                                dismissDialogFragment();
-                            }
-                        }
-                    });
-            dialog.show(getActivity().getSupportFragmentManager(), null);
-        } else {
-            showUnexpectedErrorWarning();
         }
     }
 

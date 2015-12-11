@@ -233,7 +233,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     else if(mKey.equals("pickup_station") && mScenario != null){
                         PickUpStationObject pStation = new PickUpStationObject();
                         pStation.initialize(dataOptionsArray.getJSONObject(i));
-                        mExtrasValues.put(pStation.getIdPickupstation(), pStation);
+                        mExtrasValues.put(pStation.getIdPickupStation(), pStation);
                         mDataSet.put(pStation.getName(), pStation.getName());
                     }
                     // Case default

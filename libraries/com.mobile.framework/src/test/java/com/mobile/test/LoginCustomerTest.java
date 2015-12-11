@@ -20,9 +20,9 @@ public class LoginCustomerTest extends BaseTestCase {
         data.put("Alice_Module_Customer_Model_LoginForm[email]", "sofias@jumia.com");
         data.put("Alice_Module_Customer_Model_LoginForm[password]", "123456");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/login/")
+                .setEndPoint("https://www.jumia.com.ng/mobapi/v1.7/customer/login/")
                 .setCache(EventType.LOGIN_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

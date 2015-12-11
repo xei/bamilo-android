@@ -17,7 +17,6 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.ComboGridView;
@@ -269,7 +268,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT: ");
-
         // Validate fragment visibility
         if (isOnStoppingProcess || getBaseActivity() == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
@@ -278,7 +276,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Hide dialog progress
         hideActivityProgress();
         super.handleSuccessEvent(baseResponse);
-
     }
 
 
@@ -293,13 +290,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Hide dialog progress
         hideActivityProgress();
         // Generic errors
-        if (super.handleErrorEvent(baseResponse)) return;
-        // Specific errors
-        EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "onErrorEvent: type = " + eventType);
-        if (eventType == EventType.ADD_PRODUCT_BUNDLE) {
-            showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
-        }
+        super.handleErrorEvent(baseResponse);
     }
 
 }

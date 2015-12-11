@@ -53,7 +53,6 @@ import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListe
 import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.io.UnsupportedEncodingException;
@@ -1046,8 +1045,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                         Map errorMessages = baseResponse.getErrorMessages();
                         if (errorMessages != null && (errorMessages.containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN) || errorMessages.containsKey(ErrorConstants.ERROR_ADDING_ITEM))) {
                             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        } else {
-                            super.handleErrorMessage(baseResponse.getErrorMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
                         }
                     } catch (ClassCastException | NullPointerException e) {
                         showUnexpectedErrorWarning();

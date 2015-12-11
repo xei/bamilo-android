@@ -11,6 +11,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -110,7 +111,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
         super.onEditAddressErrorEvent(baseResponse);
         int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            showErrorDialog(baseResponse.getValidateMessage());
+            showFormValidateMessages(mEditFormGenerator, baseResponse, EventType.EDIT_ADDRESS_EVENT);
         } else {
             Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);
             super.showUnexpectedErrorWarning();

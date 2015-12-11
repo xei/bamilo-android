@@ -21,9 +21,9 @@ public class SetDefaultBillingAddressTest extends BaseTestCase {
         data.put("id", "942667");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/customer/address/makedefaultbilling/")
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/customer/address/makedefaultbilling/")
                 .setCache(EventType.SET_DEFAULT_BILLING_ADDRESS.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

@@ -43,7 +43,6 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.UIUtils;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -302,7 +301,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         paymentMethodsContainer.removeAllViews();
         paymentMethodsContainer.addView(formGenerator.getContainer());
-        loadSavedValues(mSavedState, formGenerator.getIterator());
+        loadSavedValues(mSavedState, formGenerator.iterator());
         paymentMethodsContainer.refreshDrawableState();
         prepareCouponView();
         validatePaymentIsAvailable();

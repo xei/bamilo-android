@@ -20,9 +20,9 @@ public class LoginFacebookCustomerTest extends BaseTestCase {
         HashMap<String, String> data = new HashMap<>();
         data.put("facebook", "true");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/facebooklogin/")
+                .setEndPoint("https://www.jumia.com.ng/mobapi/v1.7/customer/facebooklogin/")
                 .setCache(EventType.FACEBOOK_LOGIN_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 
