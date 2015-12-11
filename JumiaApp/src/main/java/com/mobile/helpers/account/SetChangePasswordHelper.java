@@ -12,7 +12,6 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.deeplink.TargetLink;
 
 /**
@@ -40,9 +39,6 @@ public class SetChangePasswordHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        // Save credentials
-        Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
-        mParameters.remove( "Alice_Module_Customer_Model_PasswordForm[password2]" );
         JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
     }
 

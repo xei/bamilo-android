@@ -231,13 +231,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     }
 
     /**
-     * Method responsible for showing warning bar with error validation message
-     */
-    private void displayErrorHint(String hint) {
-        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, hint);
-    }
-
-    /**
      * function used to fill the layout section with the user data form
      */
     private void fillUserDataForm(Form userForm){
