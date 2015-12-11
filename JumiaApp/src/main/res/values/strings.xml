@@ -78,6 +78,7 @@
     <string name="error_no_connection">No connection</string>
     <string name="error_occured">Sorry, an error occurred.</string>
     <string name="error_please_try_again">We have encountered a small problem fetching the data. Please try again.</string>
+    <string name="error_problem_fetching_data">Problem fetching data</string>
     <string name="error_register_alreadyexists">This email already exists. Please choose another one.</string>
     <string name="error_register_title">Registration failed</string>
     <string name="error_signup_title">Signup failed</string>
@@ -467,7 +468,7 @@
     <string name="no_orders_message">You don\'t have yet any Orders.</string>
     <string name="no_orders">No Orders</string>
     <string name="an_error_occurred">An Error Occurred</string>
-    <string name="customer_service_info">Please, try to contact our Customer Service for more info.</string>
+    <string name="customer_service_info">Please try to contact our Customer Service for more info.</string>
     <string name="phone_contact">Phone:</string>
     <string name="email_contact">Email:</string>
     <string name="logout_success">Logged out with success</string>

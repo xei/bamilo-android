@@ -25,7 +25,6 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ComboGridAdapter;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -276,14 +275,9 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
         // Hide dialog progress
         hideActivityProgress();
         super.handleSuccessEvent(baseResponse);
-        EventType eventType = baseResponse.getEventType();
-        if (eventType == EventType.ADD_PRODUCT_BUNDLE) {
-            ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
-        }
 
     }
 

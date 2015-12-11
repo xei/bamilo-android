@@ -16,6 +16,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
@@ -111,7 +112,7 @@ public class ProductUtils {
     public static void showAddToCartCompleteMessage(@NonNull BaseFragment fragment, BaseResponse baseResponse, EventType eventType){
         if(fragment == null) return;
         //if has cart popup, show configurable confirmation message with cart total price
-        if(false){
+        if(CountryPersistentConfigs.hasCartPopup(fragment.getBaseActivity().getApplicationContext())){
             PurchaseEntity purchaseEntity = ((AddedItemStructure) baseResponse.getMetadata().getData()).getPurchaseEntity();
             fragment.getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
         } else {

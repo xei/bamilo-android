@@ -988,6 +988,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
                 updateWishListProduct();
+                super.handleSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
                 break;
             case GET_CATALOG_EVENT:
             default:
