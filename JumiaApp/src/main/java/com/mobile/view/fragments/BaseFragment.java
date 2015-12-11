@@ -29,7 +29,6 @@ import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -39,18 +38,17 @@ import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.utils.MessagesUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.MessagesUtils;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -628,25 +626,39 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public void showInfoAddToShoppingCartFailed() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.error_add_to_shopping_cart));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_add_to_shopping_cart));
+        }
+    }
+
+    public void showInfoAddBundleToShoppingCartCompleted() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.added_bundle_to_shop_cart_dialog_text));
+        }
+    }
+
+    public void showInfoAddBundleToShoppingCartFailed(String errorMessage) {
+        if(getBaseActivity() != null) {
+            if(TextUtils.isEmpty(errorMessage))
+                errorMessage = getString(R.string.error_add_bundle_to_shopping_cart);
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, errorMessage);
         }
     }
 
     public void showInfoLoginSuccess() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.succes_login));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
         }
     }
 
     public void showInfoAddToShoppingCartOOS() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.product_outof_stock));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_outof_stock));
         }
     }
 
     public void showInfoAddToSaved() {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.products_removed_saved));
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.products_removed_saved));
         }
     }
 
@@ -817,10 +829,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         switch (eventType) {
             case GET_SHOPPING_CART_ITEMS_EVENT:
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 getBaseActivity().updateCartInfo();
+                return true;
+            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+            case ADD_PRODUCT_BUNDLE:
+                getBaseActivity().updateCartInfo();
+                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
                 return true;
             case LOGOUT_EVENT:
                 Print.i(TAG, "LOGOUT EVENT");
@@ -889,26 +905,27 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 case ErrorCode.SERVER_IN_MAINTENANCE:
                     showFragmentMaintenance();
                     return true;
-                case ErrorCode.REQUEST_ERROR:
-                    // Get error message or validate message
-                    String msg = TextUtils.isNotEmpty(response.getErrorMessage()) ? response.getErrorMessage() : response.getValidateMessage();
-                    // Get generic message
-                    if(TextUtils.isEmpty(msg)) {
-                        msg = getString(R.string.error_please_try_again);
-                    }
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.validation_title), msg,
-                            getResources().getString(R.string.ok_label), "", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                    return true;
+                //TODO verify is necessary
+//                case ErrorCode.REQUEST_ERROR:
+//                    // Get error message or validate message
+//                    String msg = TextUtils.isNotEmpty(response.getErrorMessage()) ? response.getErrorMessage() : response.getValidateMessage();
+//                    // Get generic message
+//                    if(TextUtils.isEmpty(msg)) {
+//                        msg = getString(R.string.error_please_try_again);
+//                    }
+//                    dialog = DialogGenericFragment.newInstance(true, false,
+//                            getString(R.string.validation_title), msg,
+//                            getResources().getString(R.string.ok_label), "", new OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    int id = v.getId();
+//                                    if (id == R.id.button1) {
+//                                        dismissDialogFragment();
+//                                    }
+//                                }
+//                            });
+//                    dialog.show(getActivity().getSupportFragmentManager(), null);
+//                    return true;
                 case ErrorCode.SERVER_OVERLOAD:
                     if(getBaseActivity() != null){
                         ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
@@ -1079,19 +1096,19 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    /**
-     * validate if it show regular warning or confirmation cart message
-     */
-    protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
-        //if has cart popup, show configurable confirmation message with cart total price
-        if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
-            PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
-            getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
-        }
-        else{
-            //show regular message add item to cart
-            showWarningSuccessMessage(baseResponse.getSuccessMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
-        }
-    }
+//    /**
+//     * validate if it show regular warning or confirmation cart message
+//     */
+//    protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
+//        //if has cart popup, show configurable confirmation message with cart total price
+//        if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
+//            PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
+//            getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
+//        }
+//        else{
+//            //show regular message add item to cart
+//            showWarningSuccessMessage(baseResponse.getSuccessMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
+//        }
+//    }
 
 }

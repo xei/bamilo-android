@@ -11,5 +11,6 @@ public class ErrorConstants {
     public final static String PRODUCT_ADD_OVER_QUANTITY = "SR_ORDER_PRODUCT_ERROR_ADDING_STOCK_ABOVE_ALLOWED_QUANTITY";
     public final static String ORDER_PRODUCT_ERROR_ADDING = "ORDER_PRODUCT_ERROR_ADDING";
     public final static String ERROR_ADDING_ITEM = "ERROR_ADDING_ITEM";
+    public final static String ERROR_INVALID_BUNDLE = "INVALID_BUNDLE";
 
 }

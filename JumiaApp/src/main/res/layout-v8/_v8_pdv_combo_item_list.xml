@@ -58,13 +58,10 @@
         <!-- VARIATION -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/choosen_variation"
-            style="@style/TextCaption"
-            android:textColor="@color/black_800"
+            style="@style/FormButtonSpinner"
+            android:layout_width="@dimen/dimen_340px"
             android:lines="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="variation"
-            android:visibility="gone"
+            android:visibility="visible"
             />
 
         <!-- RATING -->

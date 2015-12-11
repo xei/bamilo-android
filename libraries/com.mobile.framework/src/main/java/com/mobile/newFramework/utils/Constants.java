@@ -12,6 +12,7 @@ public class Constants {
      */
     public static final String BUNDLE_URL_KEY = "url";
     public static final String BUNDLE_DATA_KEY = "data";
+    public static final String BUNDLE_ARRAY_KEY = "array";
     public static final String BUNDLE_PATH_KEY = "path";
     public static final String BUNDLE_PRIORITY_KEY = "priority";
     public static final String BUNDLE_EVENT_TASK = "eventtask";
