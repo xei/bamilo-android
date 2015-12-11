@@ -97,14 +97,14 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private long itemRemoved_quantity;
     private double itemRemoved_rating;
     private String itemRemoved_cart_value;
-    private String mItemsToCartDeepLink;
+    private static String mItemsToCartDeepLink;
     private NestedScrollView mNestedScroll;
 
     /**
      * Empty constructor
      */
     public ShoppingCartFragment() {
-        super(EnumSet.of( MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.BASKET,
                 R.layout.shopping_basket,
                 IntConstants.ACTION_BAR_NO_TITLE,
@@ -238,11 +238,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
         Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
         // Create arguments to add all items to cart
-        HashMap<String, String> productBySku = new HashMap<>();
+        ArrayList<String> productBySku = new ArrayList();
         for (String simpleSku : itemsToCart) {
-            // sku -> simple sku
-            productBySku.put(simpleSku.split("-")[0], simpleSku);
+            productBySku.add(simpleSku);
         }
+        mItemsToCartDeepLink=null;
         // Case valid deep link
         if (!productBySku.isEmpty()) {
             triggerAddAllItems(productBySku);
@@ -301,10 +301,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      * Trigger to add all items to cart (Deep link).
      */
-    private void triggerAddAllItems(HashMap<String, String> values) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
-        triggerContentEventProgress(new ShoppingCartAddMultipleItemsHelper(), bundle, this);
+    private void triggerAddAllItems(ArrayList<String> values) {
+        triggerContentEventProgress(new ShoppingCartAddMultipleItemsHelper(), ShoppingCartAddMultipleItemsHelper.createBundle(values), this);
     }
 
     /**
@@ -487,16 +485,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         return true;
     }
 
-    /**
-     *
-     */
-    private void onAddItemsToShoppingCartRequestError(){
-        hideActivityProgress();
-        if(JumiaApplication.INSTANCE.getCart() != null)
-            displayShoppingCart(JumiaApplication.INSTANCE.getCart());
-//        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
-
-    }
 
     /**
      *
@@ -549,7 +537,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 break;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-                onAddItemsToShoppingCartRequestError();
+            //    onAddItemsToShoppingCartRequestError();
+                showNoItems();
+                showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
                 break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 if (items.size() == 0) {
