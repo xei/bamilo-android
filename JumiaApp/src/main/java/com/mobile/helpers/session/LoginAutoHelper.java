@@ -9,7 +9,7 @@ import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
 /**
- * Login helper
+ * Auto login helper
  */
 public class LoginAutoHelper extends LoginHelper {
 
