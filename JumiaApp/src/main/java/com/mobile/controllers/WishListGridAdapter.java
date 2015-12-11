@@ -29,13 +29,11 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
 
     private final boolean isTabletInLandscape;
 
-    private final Context mContext;
 
     public WishListGridAdapter(Context context, ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
         this.products = products;
         this.listener = listener;
-        this.mContext = context;
-        this.isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(mContext);
+        this.isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(context);
     }
 
     /**
