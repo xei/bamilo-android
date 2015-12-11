@@ -70,21 +70,12 @@ public class LoginHelper extends SuperBaseHelper {
         WishListCache.set(JumiaApplication.CUSTOMER.getWishListCache());
     }
 
-    public static Bundle createAutoLoginBundle() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
-        bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        return bundle;
-    }
-
     public static Bundle createLoginBundle(ContentValues values) {
         // TODO VALIDATE WHAT IS USED FOR INTERNAL_AUTO_LOGIN_FLAG
         values.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         bundle.putBoolean(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
         return bundle;
     }
 

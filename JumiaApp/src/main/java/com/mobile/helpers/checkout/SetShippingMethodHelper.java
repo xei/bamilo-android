@@ -19,10 +19,6 @@ import com.mobile.newFramework.utils.EventType;
  */
 public class SetShippingMethodHelper extends SuperBaseHelper {
     
-    private static String TAG = SetShippingMethodHelper.class.getSimpleName();
-    
-    public static final String FORM_CONTENT_VALUES = "content_values";
-
     @Override
     public EventType getEventType() {
         return EventType.SET_SHIPPING_METHOD_EVENT;
@@ -35,7 +31,6 @@ public class SetShippingMethodHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-//        new SetShippingMethod(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.setShippingMethod);
     }
 

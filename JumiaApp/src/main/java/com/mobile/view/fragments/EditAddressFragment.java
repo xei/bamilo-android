@@ -32,16 +32,13 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -377,7 +374,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void onClickEditAddressButton() {
         Print.i(TAG, "ON CLICK: EDIT");
         if (mEditFormGenerator.validate()) {
-            triggerEditAddress(createContentValues(mEditFormGenerator));
+            triggerEditAddress(mEditFormGenerator.getForm().getAction(), createContentValues(mEditFormGenerator));
         } else {
             Print.i(TAG, "INVALID FORM");
         }
@@ -447,11 +444,9 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     /**
      * Trigger to edit an address
      */
-    private void triggerEditAddress(ContentValues values) {
+    private void triggerEditAddress(String action, ContentValues values) {
         Print.i(TAG, "TRIGGER: EDIT ADDRESS");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new EditAddressHelper(), bundle, this);
+        triggerContentEvent(new EditAddressHelper(), EditAddressHelper.createBundle(action, values), this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }
@@ -647,36 +642,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         onSuccessEvent(baseResponse);
-    }
-
-    /**
-     * ########### DIALOGS ###########
-     */
-    /**
-     * Dialog used to show an error
-     */
-    protected void showErrorDialog(String message) {
-        Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        if (TextUtils.isNotEmpty(message)) {
-            showFragmentContentContainer();
-            dialog = DialogGenericFragment.newInstance(true, false,
-                    getString(R.string.error_login_title),
-                    message,
-                    getString(R.string.ok_label),
-                    "",
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = v.getId();
-                            if (id == R.id.button1) {
-                                dismissDialogFragment();
-                            }
-                        }
-                    });
-            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-        } else {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.register_required_text));
-        }
     }
 
 }

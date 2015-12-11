@@ -22,9 +22,9 @@ public class SetShippingMethodTest extends BaseTestCase {
         data.put("shippingMethodForm[shipping_method]", "UniversalShippingMatrix");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/shippingmethod/")
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/shippingmethod/")
                 .setCache(EventType.SET_SHIPPING_METHOD_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

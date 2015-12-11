@@ -294,5 +294,12 @@ public class RestConstants {
     public static final String PARMS = "params";
     public static final String PARAM = "param";
     public static final String BUNDLE_ID = "bundle_id";
-    public static final String PRODUCT_SIMPLE_SKU_TAG = "product_list[]";
+    public static final String PATH = "path";
+    public static final String PRIORITY = "priority";
+    public static final String TASK = "task";
+    public static final String PRE_INSTALL = "pre_install";
+    public static final String SIM_OPERATOR = "sim_operator";
+    public static final String BUNDLE_VERSION = "bundle_version";
+    public static final String END_POINT = "end_point";
+    public static final String ARRAY = "array";
 }

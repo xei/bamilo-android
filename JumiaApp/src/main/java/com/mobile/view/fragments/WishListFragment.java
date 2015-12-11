@@ -510,15 +510,15 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
-                showInfoAddToSaved();
                 break;
             case GET_WISH_LIST:
-            default:
                 // Hide loading more
                 setLoadingMore(false);
                 // Show content
                 WishList wishList = (WishList) baseResponse.getMetadata().getData();
                 showContent(wishList);
+                break;
+            default:
                 break;
         }
     }
@@ -541,14 +541,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                if (!super.handleErrorEvent(baseResponse)) {
-                    showInfoAddToShoppingCartOOS();
-                }
-                break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
-                if (!super.handleErrorEvent(baseResponse)) {
-                    showUnexpectedErrorWarning();
-                }
+                super.handleErrorEvent(baseResponse);
                 break;
             case GET_WISH_LIST:
             default:

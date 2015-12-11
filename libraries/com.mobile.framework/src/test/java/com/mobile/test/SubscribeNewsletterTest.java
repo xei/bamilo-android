@@ -22,9 +22,9 @@ public class SubscribeNewsletterTest extends BaseTestCase {
         data.put("Alice_Module_Mobapi_Form_Ext1m3_Customer_NewsletterManageForm[newsletter_categories_subscribed][5]", "5");
         data.put("Alice_Module_Mobapi_Form_Ext1m3_Customer_NewsletterManageForm[newsletter_categories_subscribed][6]", "6");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/managenewsletters/")
+                .setEndPoint("https://www.jumia.com.ng/mobapi/v1.7/customer/managenewsletters/")
                 .setCache(EventType.SUBSCRIBE_NEWSLETTERS_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

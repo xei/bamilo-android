@@ -11,6 +11,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -114,7 +115,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
 
             if (null != billingFormGenerator) {
                 ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-                triggerCreateAddress(mBillValues, true);
+                triggerCreateAddress(billingFormGenerator.getForm().getAction(), mBillValues);
             }
         } else {
             if(isFirstUserAddress){
@@ -149,15 +150,16 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
         super.onCreateAddressErrorEvent(baseResponse);
-
         int errorCode = baseResponse.getError().getCode();
-
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-//            @SuppressWarnings("unchecked")
-//            HashMap<String, List<String>> errors = (HashMap<String, List<String>>) bundle.getSerializable(Constants.BUNDLE_RESPONSE_ERROR_MESSAGE_KEY);
-//
-//            showErrorDialog(errors, getString(R.string.address_creation_failed));
-              showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
+            // Case is same form for both or is the first
+            if(mIsSameCheckBox != null && (mIsSameCheckBox.isChecked() || !oneAddressCreated)) {
+                showFormValidateMessages(shippingFormGenerator, baseResponse, EventType.CREATE_ADDRESS_EVENT);
+            }
+            // Case is not the same and is the second
+            else {
+                showFormValidateMessages(billingFormGenerator, baseResponse, EventType.CREATE_ADDRESS_EVENT);
+            }
             showFragmentContentContainer();
         } else {
             Log.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
