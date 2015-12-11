@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/addabletocart_item_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center">
+    style="@style/grid_row_style"
+    android:layout_height="@dimen/catalog_list_item_height"
+    >
 
     <!-- IMAGE CONTAINER -->
 
@@ -49,6 +49,13 @@
 
     <View
         style="@style/divider_horizontal"
-        android:layout_below="@+id/info_container" />
+        android:layout_alignParentBottom="true"/>
+    <View
+        android:id="@+id/vdivider"
+        style="@style/VerticalListDivider"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+         />
 
 </RelativeLayout>
