@@ -1,6 +1,5 @@
 package com.mobile.helpers.address;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
@@ -8,7 +7,6 @@ import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -28,11 +26,6 @@ public class GetPostalCodeHelper extends SuperBaseHelper {
     @Override
     public EventType getEventType() {
         return EventType.GET_POSTAL_CODE_EVENT;
-    }
-
-    @Override
-    protected String getRequestUrl(Bundle args) {
-        return RestUrlUtils.completeUri(Uri.parse(args.getString(Constants.BUNDLE_URL_KEY))).toString();
     }
 
     @Override
@@ -56,9 +49,9 @@ public class GetPostalCodeHelper extends SuperBaseHelper {
         baseResponse.getMetadata().setData(addressPostalCodes);
     }
 
-    public static Bundle createBundle(String url, int city, String tag) {
+    public static Bundle createBundle(String endpoint, int city, String tag) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, "/" + String.format(TargetLink.getIdFromTargetLink(url), city));
+        bundle.putString(Constants.BUNDLE_END_POINT_KEY, "/" + String.format(TargetLink.getIdFromTargetLink(endpoint), city));
         bundle.putString(TAG, tag);
         return bundle;
     }

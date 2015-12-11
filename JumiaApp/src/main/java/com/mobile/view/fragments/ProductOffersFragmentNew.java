@@ -298,13 +298,9 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             showFragmentContentContainer();
             showFragmentErrorRetry();
             break;
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            showWarningErrorMessage(baseResponse.getErrorMessage(), EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT);
-            break;
         default:
             break;
         }
-        super.handleErrorMessage(baseResponse.getErrorMessage(), baseResponse.getEventTask(), eventType);
     }
 
     /*

@@ -1,6 +1,5 @@
 package com.mobile.helpers.address;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
@@ -8,7 +7,6 @@ import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
@@ -28,11 +26,6 @@ public class GetCitiesHelper extends SuperBaseHelper {
     @Override
     public EventType getEventType() {
         return EventType.GET_CITIES_EVENT;
-    }
-
-    @Override
-    protected String getRequestUrl(Bundle args) {
-        return RestUrlUtils.completeUri(Uri.parse(args.getString(Constants.BUNDLE_URL_KEY))).toString();
     }
 
     @Override
@@ -76,7 +69,7 @@ public class GetCitiesHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String url, int region, String tag) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, "/" + String.format(TargetLink.getIdFromTargetLink(url), region));
+        bundle.putString(Constants.BUNDLE_END_POINT_KEY, "/" + String.format(TargetLink.getIdFromTargetLink(url), region));
         bundle.putString(TAG, tag);
         return bundle;
     }

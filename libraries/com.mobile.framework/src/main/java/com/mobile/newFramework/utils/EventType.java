@@ -28,6 +28,8 @@ public enum EventType {
 
     LOGIN_EVENT("https:/customer/login/", AigRestContract.NO_CACHE),
 
+    AUTO_LOGIN_EVENT(LOGIN_EVENT.action, AigRestContract.NO_CACHE),
+
     EMAIL_CHECK("http:/customer/emailcheck/", AigRestContract.NO_CACHE),
 
     FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin/", AigRestContract.NO_CACHE),
@@ -52,17 +54,17 @@ public enum EventType {
 
     GET_CHANGE_PASSWORD_FORM_EVENT("http:/forms/changepassword/", AigRestContract.MAX_CACHE_TIME),
 
-    CHANGE_PASSWORD_EVENT("https:/customer/changepassword/", AigRestContract.NO_CACHE),
+    CHANGE_PASSWORD_EVENT,
 
     GET_FORGET_PASSWORD_FORM_EVENT("http:/forms/forgotpassword/", AigRestContract.MAX_CACHE_TIME),
 
     EDIT_USER_DATA_FORM_EVENT("http:/forms/edit/", AigRestContract.NO_CACHE),
 
-    EDIT_USER_DATA_EVENT("http:/customer/edit/", AigRestContract.NO_CACHE),
+    EDIT_USER_DATA_EVENT,
 
-    FORGET_PASSWORD_EVENT("https:/customer/forgotpassword/", AigRestContract.NO_CACHE),
+    FORGET_PASSWORD_EVENT,
 
-    REGISTER_ACCOUNT_EVENT("https:/customer/create/", AigRestContract.NO_CACHE),
+    REGISTER_ACCOUNT_EVENT,
 
     GET_STATIC_PAGE("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
 
@@ -106,15 +108,15 @@ public enum EventType {
 
     SET_DEFAULT_BILLING_ADDRESS(SET_DEFAULT_ADDRESS.action, AigRestContract.NO_CACHE),
 
-    CREATE_ADDRESS_EVENT("https:/customer/addresscreate/", AigRestContract.NO_CACHE),
+    CREATE_ADDRESS_EVENT,
 
     CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/", AigRestContract.NO_CACHE),
 
-    EDIT_ADDRESS_EVENT("https:/customer/addressedit/", AigRestContract.NO_CACHE),
+    EDIT_ADDRESS_EVENT,
 
     GET_BILLING_FORM_EVENT("https:/forms/multistepaddresses/", AigRestContract.NO_CACHE),
 
-    SET_BILLING_ADDRESS_EVENT("https:/forms/multistepaddresses/", AigRestContract.NO_CACHE),
+    SET_BILLING_ADDRESS_EVENT,
 
     GET_REGIONS_EVENT,
 
@@ -146,7 +148,7 @@ public enum EventType {
 
     GET_NEWSLETTERS_FORM_EVENT("http:/forms/managenewsletters/", AigRestContract.NO_CACHE),
 
-    SUBSCRIBE_NEWSLETTERS_EVENT("https:/customer/managenewsletters/", AigRestContract.NO_CACHE),
+    SUBSCRIBE_NEWSLETTERS_EVENT,
 
     GET_GLOBAL_CONFIGURATIONS,
 

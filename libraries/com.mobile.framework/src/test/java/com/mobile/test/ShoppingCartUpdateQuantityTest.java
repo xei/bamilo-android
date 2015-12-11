@@ -19,9 +19,9 @@ public class ShoppingCartUpdateQuantityTest extends BaseTestCase {
         HashMap<String, String> data = new HashMap<>();
         data.put("qty_SA948ELAAJLTNAFAMZ", "2");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://integration-www.jumia.ug/mobapi/v1.7/order/cartchange/")
+                .setEndPoint("https://integration-www.jumia.ug/mobapi/v1.7/order/cartchange/")
                 .setCache(EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

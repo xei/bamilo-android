@@ -18,8 +18,6 @@ public class SetPaymentMethodHelper extends SuperBaseHelper {
     
     private static String TAG = SetPaymentMethodHelper.class.getSimpleName();
     
-    public static final String FORM_CONTENT_VALUES = "content_values";
-
     @Override
     public EventType getEventType() {
         return EventType.SET_PAYMENT_METHOD_EVENT;
@@ -32,7 +30,6 @@ public class SetPaymentMethodHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-//        new SetPaymentMethod(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.setPaymentMethod);
     }
 
@@ -40,14 +37,9 @@ public class SetPaymentMethodHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         SetPaymentMethod responseData = (SetPaymentMethod) baseResponse.getMetadata().getData();
-
         NextStepStruct nextStepStruct = new NextStepStruct(responseData);
         baseResponse.getMetadata().setData(nextStepStruct);
-
-        // Get order summary from response
-//        bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, responseData.getOrderSummary());
         Print.i(TAG, "ORDER SUMMARY: " + responseData.getOrderSummary().toString());
-//        bundle.putSerializable(Constants.BUNDLE_NEXT_STEP_KEY, CheckoutStepManager.getNextFragment(responseData.getNextStep()));
     }
 
 }

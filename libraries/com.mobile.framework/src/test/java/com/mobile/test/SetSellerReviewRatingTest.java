@@ -28,9 +28,9 @@ public class SetSellerReviewRatingTest extends BaseTestCase {
         data.put("review[sellerId]", "128");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/rating/addsellerreview/")
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/rating/addsellerreview/")
                 .setCache(EventType.REVIEW_RATING_PRODUCT_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

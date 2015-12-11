@@ -30,9 +30,9 @@ public class RegisterCustomerTest extends BaseTestCase {
         data.put("Alice_Module_Mobapi_Form_Ext1m7_Customer_RegistrationForm[email]", "qawsedrftgyh@jumia.com");
         // __autologin_requested__=true
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/create/")
+                .setEndPoint("https://www.jumia.com.ng/mobapi/v1.7/customer/create/")
                 .setCache(EventType.REGISTER_ACCOUNT_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

@@ -1,7 +1,5 @@
 package com.mobile.helpers.configs;
 
-import android.os.Bundle;
-
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -21,11 +19,6 @@ public class GetRatingFormHelper extends SuperBaseHelper {
     @Override
     public EventType getEventType() {
         return EventType.GET_FORM_RATING_EVENT;
-    }
-
-    @Override
-    protected String getRequestUrl(Bundle args) {
-        return super.getRequestUrl(args);
     }
 
     @Override

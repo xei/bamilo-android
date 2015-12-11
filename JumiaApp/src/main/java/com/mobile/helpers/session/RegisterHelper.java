@@ -10,14 +10,12 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
-import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-
-import java.util.Map;
+import com.mobile.utils.deeplink.TargetLink;
 
 /**
  * Example helper
@@ -28,8 +26,6 @@ import java.util.Map;
 public class RegisterHelper extends SuperBaseHelper {
     
     private static String TAG = RegisterHelper.class.getSimpleName();
-
-    private ContentValues mContentValues;
 
     @Override
     public EventType getEventType() {
@@ -42,17 +38,6 @@ public class RegisterHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected RequestBundle createRequest(Bundle args) {
-        mContentValues = args.getParcelable(Constants.BUNDLE_DATA_KEY );
-        return super.createRequest(args);
-    }
-
-    @Override
-    protected Map<String, String> getRequestData(Bundle args) {
-        return CollectionUtils.convertContentValuesToMap(mContentValues);
-    }
-
-    @Override
     protected void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.registerCustomer);
     }
@@ -61,15 +46,15 @@ public class RegisterHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
-        mContentValues.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
-        JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mContentValues);
-        Print.i(TAG, "HAS CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials());
+        mParameters.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
+        JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
         // Save customer
-        JumiaApplication.CUSTOMER = ((Customer) baseResponse.getMetadata().getData());
+        JumiaApplication.CUSTOMER = ((Customer) baseResponse.getContentData());
     }
 
-    public static Bundle createBundle(ContentValues values) {
+    public static Bundle createBundle(String endpoint, ContentValues values) {
         Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_END_POINT_KEY, "/" + TargetLink.getIdFromTargetLink(endpoint));
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         return bundle;
     }

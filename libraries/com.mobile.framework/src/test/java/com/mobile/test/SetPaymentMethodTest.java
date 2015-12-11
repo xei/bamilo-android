@@ -23,9 +23,9 @@ public class SetPaymentMethodTest extends BaseTestCase {
         data.put("name", "Cash On Delivery");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/paymentmethod/")
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/paymentmethod/")
                 .setCache(EventType.SET_SHIPPING_METHOD_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 
