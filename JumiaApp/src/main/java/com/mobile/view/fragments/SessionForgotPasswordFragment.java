@@ -18,7 +18,6 @@ import com.mobile.helpers.session.SetForgotPasswordHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -243,9 +242,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     }
 
     private void triggerForgot(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new SetForgotPasswordHelper(), bundle, this);
+        triggerContentEvent(new SetForgotPasswordHelper(), SetForgotPasswordHelper.createBundle(values), this);
         getBaseActivity().hideKeyboard();
     }
 
