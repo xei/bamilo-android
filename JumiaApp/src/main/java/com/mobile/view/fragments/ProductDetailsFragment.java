@@ -779,8 +779,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         try {
             boolean value = mProduct.isWishList();
             mWishListButton.setSelected(value);
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE,
-                    value ? getString(R.string.products_added_saved) : getString(R.string.products_removed_saved));
 
             setOutOfStockButton();
         } catch (NullPointerException e) {
@@ -1161,6 +1159,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 WishListFragment.sForceReloadWishListFromNetwork = true;
                 // Update value
                 updateWishListValue();
+                super.handleSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 showAddToCartCompleteMessage(baseResponse);

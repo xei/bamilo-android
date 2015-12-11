@@ -11,9 +11,7 @@
         android:layout_height="wrap_content"
         android:listSelector="@drawable/selector_list_item_highlight"
         android:numColumns="@integer/favourite_num_columns"
-        android:paddingLeft="@dimen/margin_10px"
-        android:paddingRight="@dimen/margin_10px" />
-
+        />
     <!--LOADING MORE-->
 
     <include
