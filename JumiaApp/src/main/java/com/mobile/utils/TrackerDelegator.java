@@ -1159,8 +1159,8 @@ public class TrackerDelegator {
     /**
      * fires a GA event every time the user taps on one of the home teasers
      */
-    public static void trackBannerClicked(TeaserGroupType groupType, String targetUrl, int position){
-        AnalyticsGoogle.get().trackEventBannerClick(getCategoryFromTeaserGroupType(groupType), targetUrl, position);
+    public static void trackBannerClicked(TeaserGroupType groupType, String targetKey, int position){
+        AnalyticsGoogle.get().trackEventBannerClick(getCategoryFromTeaserGroupType(groupType), targetKey, position);
     }
 
     /**

@@ -78,6 +78,8 @@ public class CountryPersistentConfigs {
 
         //has_cart_popup
         mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, countryConfigs.hasCartPopup());
+        // Rich Relevance
+        mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_RICH_RELEVANCE, countryConfigs.isRichRelevanceEnabled());
         mEditor.apply();
     }
 
@@ -245,6 +247,17 @@ public class CountryPersistentConfigs {
     public static boolean hasCartPopup(Context context){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, false);
+
+    }
+
+    /**
+     * Checks the country configuration for the Rich Relevance status
+     * @param context
+     * @return
+     */
+    public static boolean isRichRelevanceEnabled(Context context){
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_RICH_RELEVANCE, false);
 
     }
 }

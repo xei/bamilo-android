@@ -43,7 +43,7 @@ public class CatalogCheckFilter extends CatalogFilter {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
 
-        JSONArray optionsArray = jsonObject.getJSONArray(RestConstants.JSON_OPTION_TAG);
+        JSONArray optionsArray = jsonObject.getJSONArray(RestConstants.OPTION);
 
         for (int i = 0; i < optionsArray.length(); i++) {
             filterOptions.add(getFilterOptionType(optionsArray.getJSONObject(i)));

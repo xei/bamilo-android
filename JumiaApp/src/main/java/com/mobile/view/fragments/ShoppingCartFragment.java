@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.widget.NestedScrollView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -56,6 +57,7 @@ import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ShoppingCartUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -90,13 +92,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private String itemRemoved_sku;
     private String itemRemoved_price;
     private String mPhone2Call = "";
-    private boolean isCallInProgress = false;
-    private boolean isRemovingAllItems = false; // Flag used to remove all items after call to order
+    private final boolean isRemovingAllItems = false; // Flag used to remove all items after call to order
     private double itemRemoved_price_tracking = 0d;
     private long itemRemoved_quantity;
     private double itemRemoved_rating;
     private String itemRemoved_cart_value;
     private String mItemsToCartDeepLink;
+    private NestedScrollView mNestedScroll;
 
     /**
      * Empty constructor
@@ -256,8 +258,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void triggerRemoveItem(PurchaseCartItem item) {
 
-        ContentValues values = new ContentValues();
-        values.put("sku", item.getConfigSimpleSKU());
         itemRemoved_sku = item.getConfigSimpleSKU();
         itemRemoved_price = item.getSpecialPriceVal().toString();
         itemRemoved_price_tracking = item.getPriceForTracking();
@@ -274,14 +274,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (itemRemoved_price == null) {
             itemRemoved_price = item.getPriceVal().toString();
         }
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         // only show loading when removing individual items
         if (isRemovingAllItems) {
-            bundle.putBoolean(ShoppingCartRemoveItemHelper.UPDATE_CART, false);
-            triggerContentEventNoLoading(new ShoppingCartRemoveItemHelper(), bundle, null);
+            triggerContentEventNoLoading(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), false), null);
         } else {
-            triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), bundle, this);
+            triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
         }
     }
 
@@ -319,6 +316,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         voucherCode = (EditText) view.findViewById(R.id.voucher_name);
         voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
         couponButton = (TextView) view.findViewById(R.id.voucher_btn);
+        mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
         prepareCouponView();
     }
 
@@ -384,7 +382,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         intent.setData(Uri.parse("tel:" + mPhone2Call));
         if (intent.resolveActivity(getBaseActivity().getPackageManager()) != null) {
             startActivity(intent);
-            isCallInProgress = true;
         }
     }
 
@@ -497,7 +494,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         hideActivityProgress();
         if(JumiaApplication.INSTANCE.getCart() != null)
             displayShoppingCart(JumiaApplication.INSTANCE.getCart());
-        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
+//        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
 
     }
 
@@ -521,47 +518,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
     }
 
-    /**
-     * Present a dialog to remove all items from cart <br>
-     * (Expectly used after user clicks "Call to Order")
-     */
-    private void askToRemoveProductsAfterOrder(final PurchaseEntity purchaseEntity) {
-        // Dismiss any existing dialogs
-        dismissDialogFragment();
-
-        dialog = DialogGenericFragment.newInstance(true, false,
-                getString(R.string.shoppingcart_dialog_title),
-                getString(R.string.shoppingcart_remove_products),
-                getString(R.string.yes_label),
-                getString(R.string.no_label),
-                new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        // Case remove
-                        if (id == R.id.button1) {
-                            isRemovingAllItems = true;
-                            List<PurchaseCartItem> items = new ArrayList<>(purchaseEntity.getCartItems());
-                            for (PurchaseCartItem item : items) {
-                                mBeginRequestMillis = System.currentTimeMillis();
-                                triggerRemoveItem(item);
-                            }
-                            showNoItems();
-                            // Update global cart with an empty Cart
-                            PurchaseEntity cart = new PurchaseEntity();
-                            JumiaApplication.INSTANCE.setCart(cart);
-                            // Update cart
-                            getBaseActivity().updateCartInfo();
-                        }
-                        // Case continue
-                        else if (id == R.id.button2) {
-                            displayShoppingCart(purchaseEntity);
-                        }
-                        dismissDialogFragment();
-                    }
-                });
-        dialog.show(getActivity().getSupportFragmentManager(), null);
-    }
 
     /**
      *
@@ -637,7 +593,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView shippingValue = (TextView)getView().findViewById(R.id.shipping_value);
             TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
             final View voucherContainer = getView().findViewById(R.id.voucher_info_container);
-            View voucherRemove = getView().findViewById(R.id.basket_voucher_remove);
 
             TextView voucherLabel = (TextView) getView().findViewById(R.id.basket_voucher_label);
             // Get and set the cart value
@@ -652,20 +607,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 if (couponDiscountValue >= 0) {
                     voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
                     voucherContainer.setVisibility(View.VISIBLE);
-                    voucherRemove.setVisibility(View.VISIBLE);
-                    voucherRemove.setOnClickListener(new android.view.View.OnClickListener() {
-                        @Override
-                        public void onClick(android.view.View v) {
-                            voucherContainer.setVisibility(View.GONE);
-                            triggerRemoveVoucher();
-                            // Clean Voucher
-                            removeVoucher();
-                            couponButton.setText(getString(R.string.voucher_use));
-                        }
-                    });
                     // Change Coupon
                     changeVoucher(cart.getCouponCode());
-                    voucherLabel.setText(getString(R.string.my_order_voucher_label) + " " + voucherCode.getText());
+                    voucherLabel.setText(getString(R.string.my_order_voucher_label));
                 } else {
                     voucherContainer.setVisibility(View.GONE);
                     couponButton.setText(getString(R.string.voucher_use));
@@ -1015,7 +959,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Bundle bundle = new Bundle();
         ContentValues values = new ContentValues();
         for (PurchaseCartItem item : items) {
-            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_QTY + item.getConfigSimpleSKU(), String.valueOf(item.getQuantity()));
+            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_QTY, String.valueOf(item.getQuantity()));
+            values.put(ShoppingCartChangeItemQuantityHelper.ITEM_SKU, item.getConfigSimpleSKU());
         }
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(), bundle, this);
@@ -1029,6 +974,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             voucherCode.setFocusable(true);
             voucherCode.setFocusableInTouchMode(true);
         }
+        UIUtils.scrollToViewByClick(mNestedScroll, voucherCode);
 
         if (removeVoucher) {
             couponButton.setText(getString(R.string.voucher_remove));

@@ -28,9 +28,9 @@ public class ShoppingCartAddBundleTest extends BaseTestCase {
         data.put("product-simple-selector[1]" , "HP017ELAC93ZNAFAMZ-173013");
         data.put("bundleId" , "1058");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.ci/mobapi/v1.7/order/addBundle/")
+                .setEndPoint("https://www.jumia.ci/mobapi/v1.7/order/addBundle/")
                 .setCache(EventType.ADD_ITEM_TO_SHOPPING_CART_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

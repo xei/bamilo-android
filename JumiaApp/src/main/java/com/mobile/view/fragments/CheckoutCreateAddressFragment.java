@@ -14,12 +14,12 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -109,7 +109,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
             if (null != billingFormGenerator) {
                 ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-                triggerCreateAddress(mBillValues, true);
+                triggerCreateAddress(billingFormGenerator.getForm().getAction(), mBillValues);
             }
             return ;
         }
@@ -123,7 +123,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
         FragmentController.getInstance().popLastEntry(FragmentType.CREATE_ADDRESS.toString());
         getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-        getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.create_addresses_success));
+        showWarningSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventType());
     }
 
     @Override
@@ -152,7 +152,14 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         // Error
         int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
+            // Case is same form for both or is the first
+            if(mIsSameCheckBox != null && (mIsSameCheckBox.isChecked() || !oneAddressCreated)) {
+                showFormValidateMessages(shippingFormGenerator, baseResponse, EventType.CREATE_ADDRESS_EVENT);
+            }
+            // Case is not the same and is the second
+            else {
+                showFormValidateMessages(billingFormGenerator, baseResponse, EventType.CREATE_ADDRESS_EVENT);
+            }
         } else {
             Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
             super.showUnexpectedErrorWarning();

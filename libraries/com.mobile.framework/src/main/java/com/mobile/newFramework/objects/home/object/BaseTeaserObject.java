@@ -17,8 +17,6 @@ import org.json.JSONObject;
  */
 public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
-    protected String mName;
-
     protected String mTitle;
 
     protected String mSubTitle;
@@ -43,10 +41,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
     /*
      * ########## GETTERS ##########
      */
-
-    public String getName() {
-        return mName;
-    }
 
     public String getTitle() {
         return mTitle;
@@ -94,25 +88,23 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get name
-        mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         // Get title
         mTitle = jsonObject.optString(RestConstants.TITLE);
         // Get sub title
-        mSubTitle = jsonObject.optString(RestConstants.JSON_SUB_TITLE_TAG);
+        mSubTitle = jsonObject.optString(RestConstants.SUB_TITLE);
         // Get target link
         mTargetLink = jsonObject.optString(RestConstants.TARGET);
         // Get timer in seconds and convert to millis
-        mTimerInMillis = jsonObject.optLong(RestConstants.JSON_UNIX_TIME_TAG) * DateTimeUtils.UNIT_SEC_TO_MILLIS;
+        mTimerInMillis = jsonObject.optLong(RestConstants.UNIX_TIME) * DateTimeUtils.UNIT_SEC_TO_MILLIS;
         // Validate images
-        if (jsonObject.has(RestConstants.JSON_IMAGE_TAG)) {
+        if (jsonObject.has(RestConstants.IMAGE)) {
             // Get image
-            mImagePhone = mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+            mImagePhone = mImageTablet = jsonObject.optString(RestConstants.IMAGE);
         } else {
             // Get image phone
-            mImagePhone = jsonObject.optString(RestConstants.JSON_IMAGE_PORTRAIT_TAG);
+            mImagePhone = jsonObject.optString(RestConstants.IMAGE_PORTRAIT);
             // Get image tablet
-            mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_LANDSCAPE_TAG);
+            mImageTablet = jsonObject.optString(RestConstants.IMAGE_LANDSCAPE);
         }
         return false;
     }
@@ -138,7 +130,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mName);
         dest.writeString(this.mTitle);
         dest.writeString(this.mSubTitle);
         dest.writeString(this.mImagePhone);
@@ -149,7 +140,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
     }
 
     protected BaseTeaserObject(Parcel in) {
-        this.mName = in.readString();
         this.mTitle = in.readString();
         this.mSubTitle = in.readString();
         this.mImagePhone = in.readString();

@@ -11,7 +11,6 @@ import com.mobile.newFramework.utils.output.Print;
 
 import java.util.HashMap;
 
-//import com.mobile.newFramework.requests.address.SetDefaultShippingAddress;
 
 public class SetDefaultShippingAddressTest extends BaseTestCase {
 
@@ -19,21 +18,19 @@ public class SetDefaultShippingAddressTest extends BaseTestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-
         HashMap<String, String> data = new HashMap<>();
 
         data.put("id", "942663");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/customer/address/makedefaultshipping/")
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/customer/address/makedefaultshipping/")
                 .setCache(EventType.SET_DEFAULT_SHIPPING_ADDRESS.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        //new SetDefaultShippingAddress(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.setDefaultShippingAddress);
         try {
             mCountDownLatch.await();

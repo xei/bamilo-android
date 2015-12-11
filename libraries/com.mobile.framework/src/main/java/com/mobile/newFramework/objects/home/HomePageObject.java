@@ -71,7 +71,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get teaser
-        JSONArray data = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray data = jsonObject.getJSONArray(RestConstants.DATA);
         int size = data.length();
         if (size > 0) {
             mTeasers = new ArrayList<>();
@@ -135,10 +135,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
             }
         } catch (JSONException e) {
             Print.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
-        }
-        // Discard groups without items
-        if (teaserGroup != null && !teaserGroup.hasData()) {
-            teaserGroup = null;
         }
         // Return the group or null
         return teaserGroup;

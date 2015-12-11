@@ -28,9 +28,9 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
 
     protected View mCartViewBar;
 
-    private TextView mTxCartTotalPrice;
+    private final TextView mTxCartTotalPrice;
 
-    private Context mContext;
+    private final Context mContext;
 
     private boolean isShowing;
 
@@ -54,13 +54,22 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
     /**
      * Hide view with animation
      */
-    public void hideMessage() {
+    public void hideMessageWithAnimation() {
         if (isShowing) {
             UIUtils.animateSlideUp(mCartViewBar);
             isShowing = false;
         }
     }
 
+    /**
+     * Hide view without animation
+     */
+    public void hideMessage() {
+        if (isShowing) {
+            mCartViewBar.setVisibility(View.GONE);
+            isShowing = false;
+        }
+    }
 
     /**
      * Show view with animation
@@ -73,6 +82,15 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
             mTxCartTotalPrice.setText(message);
             isShowing = true;
             UIUtils.animateSlideDown(mCartViewBar);
+            mCartViewBar.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(isShowing){
+                        UIUtils.animateSlideUp(mCartViewBar);
+                    }
+
+                }
+            }, WarningFactory._3_SECONDS);
         } catch (Exception e) {
             Print.e(TAG, "ERROR IN SHOW MESSAGE: " + e.getMessage());
         }
@@ -83,11 +101,11 @@ public class ConfirmationCartMessageView implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.cta_button_view_cart: //view cart
-                hideMessage();
+                hideMessageWithAnimation();
                 ((BaseActivity) ConfirmationCartMessageView.this.mContext).onSwitchFragment(FragmentType.SHOPPING_CART, new Bundle(), FragmentController.ADD_TO_BACK_STACK);
                 break;
             default:
-                hideMessage();
+                hideMessageWithAnimation();
                 break;
         }
     }

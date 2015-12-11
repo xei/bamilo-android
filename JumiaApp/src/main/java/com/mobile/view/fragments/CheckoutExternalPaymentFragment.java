@@ -462,9 +462,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
             Print.i(TAG, "code1payment : onReceivedSslError : " + error);
             Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
-                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.ssl_error_host_mismatch));
+                showWarningErrorMessage(getString(R.string.ssl_error_host_mismatch));
             } else {
-                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.ssl_error_generic));
+                showWarningErrorMessage(getString(R.string.ssl_error_generic));
             }
             // Case in dev continue
             if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
@@ -500,13 +500,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                     bundle.putString(ConstantsIntentExtra.SUCCESS_INFORMATION, content);
 
                     String order_number = "";
-                    if (result.has(RestConstants.JSON_ORDER_NUMBER_TAG)) {
-                        order_number = result.optString(RestConstants.JSON_ORDER_NUMBER_TAG);
-                    } else if (result.has(RestConstants.JSON_ORDER_NR_TAG)) {
-                        order_number = result.optString(RestConstants.JSON_ORDER_NR_TAG);
+                    if (result.has(RestConstants.ORDER_NR)) {
+                        order_number = result.optString(RestConstants.ORDER_NR);
+                    } else if (result.has(RestConstants.ORDERNr)) {
+                        order_number = result.optString(RestConstants.ORDERNr);
                     }
 
-                    bundle.putString(RestConstants.JSON_ORDER_NUMBER_TAG, order_number);
+                    bundle.putString(RestConstants.ORDER_NR, order_number);
 
                     getBaseActivity().runOnUiThread(new Runnable() {
                         @Override

@@ -20,9 +20,9 @@ public class SignUpCustomerTest extends BaseTestCase {
         data.put("register_signup[scenario]", "guest");
         data.put("register_signup[email]", "asdasdasdasd@gmalas.com");
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/create/")
+                .setEndPoint("https://www.jumia.com.ng/mobapi/v1.7/customer/create/")
                 .setCache(EventType.GUEST_LOGIN_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

@@ -154,7 +154,7 @@ public class AigResponseConverter implements Converter {
         }
         // Get json from metadata -> data
         else if(requiredJson == RequiredJson.OBJECT_DATA){
-            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.JSON_DATA_TAG);
+            return responseJsonObject.getJSONObject(RestConstants.METADATA).getJSONObject(RestConstants.DATA);
         }
         return responseJsonObject;
     }
@@ -164,32 +164,9 @@ public class AigResponseConverter implements Converter {
      */
     private @Nullable String getMd5(@NonNull JSONObject responseJsonObject) {
         if(responseJsonObject.has(RestConstants.METADATA)){
-            return responseJsonObject.optJSONObject(RestConstants.METADATA).optString(RestConstants.JSON_MD5_TAG, null);
+            return responseJsonObject.optJSONObject(RestConstants.METADATA).optString(RestConstants.MD5, null);
         }
         return null;
     }
-
-
-//    /**
-//     * Get session
-//     */
-//    protected Map<String, String> getSessions(JSONObject responseJsonObject) {
-//        Map<String, String> sessions = new HashMap<>();
-//        try {
-//            if (responseJsonObject.has(RestConstants.JSON_SESSION_TAG)) {
-//                JSONObject sessionJsonObject = responseJsonObject.getJSONObject(RestConstants.JSON_SESSION_TAG);
-//                Iterator<?> keys = sessionJsonObject.keys();
-//
-//                while (keys.hasNext()) {
-//                    String key = (String) keys.next();
-//                    if (sessionJsonObject.get(key) instanceof String) {
-//                        sessions.put(key, sessionJsonObject.getString(key));
-//                    }
-//                }
-//            }
-//        } finally {
-//            return sessions;
-//        }
-//    }
 
 }

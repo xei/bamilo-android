@@ -49,11 +49,11 @@ public class CatalogPriceFilterOption implements IJSONSerializable, SingleFilter
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        min = jsonObject.getInt(RestConstants.JSON_MIN_TAG);
+        min = jsonObject.getInt(RestConstants.MIN);
         rangeMin = min;
-        max = jsonObject.getInt(RestConstants.JSON_MAX_TAG);
+        max = jsonObject.getInt(RestConstants.MAX);
         rangeMax = max;
-        interval = jsonObject.getInt(RestConstants.JSON_INTERVAL_TAG);
+        interval = jsonObject.getInt(RestConstants.INTERVAL);
         return true;
     }
 

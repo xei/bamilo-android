@@ -96,6 +96,7 @@ import java.util.regex.Pattern;
 public class DynamicFormItem {
     public final static String RELATED_RADIO_GROUP_TAG = "related_radio_group";
     public final static String RELATED_LIST_GROUP_TAG = "related_list_group";
+    public final static String RATING_BAR_TAG = "rating_bar";
     public final static String BIRTHDATE_TAG = "birthday_tag";
     public final static String RELATED_GROUP_SEPARATOR = "::";
     private final static String TAG = DynamicFormItem.class.getSimpleName();
@@ -109,7 +110,6 @@ public class DynamicFormItem {
     private final int errorColor;
     private final boolean hideAsterisks;
     private int mPreSelectedPosition = IntConstants.INVALID_POSITION;
-    private float scale = 1;
     private IFormField entry = null;
     private View errorControl;
     private View dataControl;
@@ -117,14 +117,8 @@ public class DynamicFormItem {
     private TextView errorTextControl;
     private TextView mandatoryControl;
     private String errorText;
-    //private OnFocusChangeListener editFocusListener;
     private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
-    //private TextWatcher textWatcher;
     private DatePickerDialog dialogDate;
-    private int selectedYear;
-    private int selectedMonthOfYear;
-    private int selectedDayOfMoth;
-    //private ArrayList<DynamicForm> childDynamicForm;
     private SharedPreferences mSharedPrefs;
 
     /**
@@ -145,7 +139,6 @@ public class DynamicFormItem {
         this.errorTextControl = null;
         this.mandatoryControl = null;
         this.errorText = context.getString(R.string.dynamic_errortext);
-        this.scale = context.getResources().getDisplayMetrics().density;
         this.errorColor = context.getResources().getColor(R.color.red_basic);
         this.hideAsterisks = parent.getForm().isToHideAsterisks();
         buildControl();
@@ -324,7 +317,7 @@ public class DynamicFormItem {
         spinner.setVisibility(View.VISIBLE);
         spinner.setTag(RELATED_LIST_GROUP_TAG);
         // Get api call
-        String url = entry.getDataCalls().get(RestConstants.API_CALL);
+        String url = entry.getApiCall();
         // Validate url
         if (!TextUtils.isEmpty(url)) {
             // Get prefixes
@@ -947,7 +940,7 @@ public class DynamicFormItem {
      *
      * @param message The error message to be displayed on the control
      */
-    public void ShowError(String message) {
+    public void showErrorMessage(String message) {
         if (null != errorControl) {
             setErrorText(message);
             this.errorControl.setVisibility(message.equals("") ? View.GONE : View.VISIBLE);
@@ -1324,9 +1317,6 @@ public class DynamicFormItem {
 
             @Override
             public void onDateSet(DatePickerDialog dialog, int year, int monthOfYear, int dayOfMonth) {
-                selectedYear = year;
-                selectedMonthOfYear = monthOfYear;
-                selectedDayOfMoth = dayOfMonth;
                 Calendar currentCalendar = Calendar.getInstance();
                 GregorianCalendar cal = new GregorianCalendar(year, monthOfYear, dayOfMonth);
                 Print.i(TAG, "selected Date : year: " + year +" month: "+ monthOfYear +" day: "+ dayOfMonth);
@@ -1685,7 +1675,8 @@ public class DynamicFormItem {
             TextView label = (TextView) ratingLine.findViewById(R.id.option_label);
 
             RatingBar starts = (RatingBar) ratingLine.findViewById(R.id.option_stars);
-            starts.setTag(pairs.getKey().toString());
+            starts.setTag(RATING_BAR_TAG);
+            starts.setTag(R.id.rating_bar_id, pairs.getKey().toString());
             label.setText("" + pairs.getValue());
             linearLayout.addView(ratingLine);
         }
@@ -1817,8 +1808,7 @@ public class DynamicFormItem {
         errImage.setImageResource(R.drawable.indicator_input_error);
 
         //ErrorText params
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         //#RTL
         if (ShopSelector.isRtl()) {

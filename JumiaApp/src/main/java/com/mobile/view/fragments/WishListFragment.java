@@ -245,7 +245,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Show the wish list container as first time.
      */
     protected void showWishListContainer(WishList wishList) {
-        WishListGridAdapter listAdapter = new WishListGridAdapter(wishList.getProducts(), new OnWishListViewHolderClickListener() {
+        WishListGridAdapter listAdapter = new WishListGridAdapter(getBaseActivity(), wishList.getProducts(), new OnWishListViewHolderClickListener() {
             @Override
             public void onItemClick(View view) {
                 WishListFragment.this.onItemClick(view);
@@ -508,20 +508,17 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         super.handleSuccessEvent(baseResponse);
         // Validate event type
         switch (eventType) {
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                showAddToCartCompleteMessage(baseResponse);
-                break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
-                showInfoAddToSaved();
                 break;
             case GET_WISH_LIST:
-            default:
                 // Hide loading more
                 setLoadingMore(false);
                 // Show content
                 WishList wishList = (WishList) baseResponse.getMetadata().getData();
                 showContent(wishList);
+                break;
+            default:
                 break;
         }
     }
@@ -544,14 +541,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                if (!super.handleErrorEvent(baseResponse)) {
-                    showInfoAddToShoppingCartOOS();
-                }
-                break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
-                if (!super.handleErrorEvent(baseResponse)) {
-                    showUnexpectedErrorWarning();
-                }
+                super.handleErrorEvent(baseResponse);
                 break;
             case GET_WISH_LIST:
             default:
@@ -577,7 +568,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * ######## SCROLL STATE ########
      */
 
-    private OnScrollListener onScrollListener = new OnScrollListener() {
+    private final OnScrollListener onScrollListener = new OnScrollListener() {
 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -111,10 +112,7 @@ public class UIUtils {
         Context context = imageView.getContext();
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
         imageView.setImageResource(id);
-
     }
-
-
 
     /**
      * Animate a view sliding from down to top
@@ -136,14 +134,29 @@ public class UIUtils {
         animatedView.clearAnimation();
         animatedView.setVisibility(View.VISIBLE);
         Animation downAnimation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_down);
-        Animation upAnimation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_up);
-
-        upAnimation.setStartOffset(downAnimation.getDuration() + WarningFactory._3_SECONDS);
-        // Create a set with animations
-        AnimationSet animation = new AnimationSet(false);
-        animation.addAnimation(downAnimation);
-        animation.addAnimation(upAnimation);
-        animatedView.startAnimation(animation);
+        animatedView.startAnimation(downAnimation);
     }
-    
+
+    /**
+     * method responsible for scrolling a scrollview for 60dp
+     * This is used for editexts that show in a layout inside a toolbar
+     * @param scrollView
+     * @param viewToDetectTouch
+     */
+    public static void scrollToViewByClick(final View scrollView, final View viewToDetectTouch){
+        viewToDetectTouch.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP){
+                    scrollView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.scrollBy(0, dpToPx(60, scrollView.getContext().getResources().getDisplayMetrics().scaledDensity));
+                        }
+                    }, 500);
+                }
+                return false;
+            }
+        });
+    }
 }

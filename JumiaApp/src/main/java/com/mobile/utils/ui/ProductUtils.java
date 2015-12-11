@@ -5,14 +5,20 @@ import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.view.View;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
+import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
 
 public class ProductUtils {
 
@@ -78,6 +84,39 @@ public class ProductUtils {
             percentage.setVisibility(View.VISIBLE);
         } else {
             percentage.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * Set the variation container
+     */
+    public static void setVariationContent(View view, ProductMultiple product){
+        // Set simple button
+        if(product.hasMultiSimpleVariations()) {
+            // Set simple value
+            String simpleVariationValue = "...";
+            if(product.hasSelectedSimpleVariation()) {
+                simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
+            }
+            ((TextView)view).setText(simpleVariationValue);
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    /**
+     * Validate if it show regular warning or confirmation cart message<br>
+     *      - If has cart popup, show configurable confirmation message with cart total price<br>
+     *      - Else show regular message add item to cart<br>
+     */
+    public static void showAddToCartCompleteMessage(@NonNull BaseFragment fragment, @NonNull BaseResponse baseResponse, @NonNull EventType eventType) {
+        boolean isToShowCartPopUp = CountryPersistentConfigs.hasCartPopup(fragment.getBaseActivity().getApplicationContext());
+        PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
+        if (isToShowCartPopUp && cart != null && cart.getTotal() > 0) {
+            fragment.getBaseActivity().mConfirmationCartMessageView.showMessage(cart.getTotal());
+        } else {
+            fragment.showWarningSuccessMessage(baseResponse.getSuccessMessage(), eventType);
         }
     }
 

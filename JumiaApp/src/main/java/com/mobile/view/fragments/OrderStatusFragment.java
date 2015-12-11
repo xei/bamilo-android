@@ -195,7 +195,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     private void showAddress(@NonNull ViewGroup view, @Nullable String title, @Nullable Address address) {
         if (address != null) {
             ((TextView) view.findViewById(R.id.order_status_address_item_title)).setText(title);
-            String name = getString(R.string.first_and_second, address.getFirstName(), address.getLastName());
+            String name = getString(R.string.first_and_second_placeholders, address.getFirstName(), address.getLastName());
             ((TextView) view.findViewById(R.id.order_status_address_item_name)).setText(name);
             ((TextView) view.findViewById(R.id.order_status_address_item_street)).setText(address.getAddress());
             ((TextView) view.findViewById(R.id.order_status_address_item_region)).setText(address.getCity());
@@ -302,7 +302,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                showAddToCartCompleteMessage(baseResponse);
                 break;
             case TRACK_ORDER_EVENT:
                 // Get order status
@@ -334,7 +333,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                showInfoAddToShoppingCartOOS();
                 break;
             case TRACK_ORDER_EVENT:
                 showFragmentErrorRetry();

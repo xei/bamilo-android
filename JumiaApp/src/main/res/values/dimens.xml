@@ -19,6 +19,9 @@
     <dimen name="margin_120px">40dp</dimen>
     <dimen name="margin_140px">46dp</dimen>
     <dimen name="margin_150px">50dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="margin_28dp">28dp</dimen>
+    <dimen name="margin_48dp">48dp</dimen>
 
     <!-- BASE DIMENSIONS: PX TO DP -->
     <dimen name="dimen_3px">1dp</dimen>
@@ -78,6 +81,7 @@
     <dimen name="dimen_720px">240dp</dimen>
     <dimen name="dimen_780px">260dp</dimen>
     <dimen name="dimen_810px">270dp</dimen>
+    <dimen name="dimen_320dp">320dp</dimen>
 
     <!-- MATERIAL: Typographic scale & basic styles -->
     <dimen name="dimen_display_4">112sp</dimen>
@@ -137,6 +141,8 @@
     <dimen name="text_m">16sp</dimen>
     <dimen name="text_l">18sp</dimen>
     <dimen name="text_xl">20sp</dimen>
+    <dimen name="text_8sp">8sp</dimen>
+    <dimen name="text_16sp">16sp</dimen>
     <!-- dimen name="text_xxl">22sp</dimen -->
 
 

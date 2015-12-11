@@ -12,172 +12,172 @@ import com.mobile.newFramework.utils.output.Print;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Variation implements IJSONSerializable, Parcelable{
+public class Variation implements IJSONSerializable, Parcelable {
 
-	private static final String TAG = Variation.class.getSimpleName();
+    private static final String TAG = Variation.class.getSimpleName();
 
-	private String sku;
-	private String link;
-	private String image;
+    private String sku;
+    private String link;
+    private String image;
 
-	//added new info
-	private String name;
-	private String brand;
-	private double price;
-	private double specialPrice;
+    //added new info
+    private String name;
+    private String brand;
+    private double price;
+    private double specialPrice;
 
 
-	public Variation() {
+    public Variation() {
 
-	}
-	
-	public boolean initialize(String sku, JSONObject jsonObject) {
-		this.sku = sku;
-		try {
-			link = jsonObject.getString(RestConstants.LINK);
-			image = getImageUrl(jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG));
+    }
 
-			//added new tags
-			name = jsonObject.getString(RestConstants.JSON_VARIATION_NAME_TAG);
-			brand = jsonObject.getString(RestConstants.JSON_VARIATION_BRAND_TAG);
-			price = jsonObject.getDouble(RestConstants.JSON_VARIATION_PRICE_TAG);
-			specialPrice = jsonObject.getDouble(RestConstants.JSON_VARIATION_SPECIALPRICE_TAG);
+    public boolean initialize(String sku, JSONObject jsonObject) {
+        this.sku = sku;
+        try {
+            link = jsonObject.getString(RestConstants.LINK);
+            image = getImageUrl(jsonObject.getString(RestConstants.IMAGE));
 
-		} catch (JSONException e) {
-			Print.e(TAG, "Error initializing the variation ", e);
-			return false;
-		}
+            //added new tags
+            name = jsonObject.getString(RestConstants.NAME);
+            brand = jsonObject.getString(RestConstants.BRAND);
+            price = jsonObject.getDouble(RestConstants.PRICE);
+            specialPrice = jsonObject.getDouble(RestConstants.SPECIAL_PRICE);
 
-		return true;
-	}
+        } catch (JSONException e) {
+            Print.e(TAG, "Error initializing the variation ", e);
+            return false;
+        }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-	 * )
-	 */
-	@Override
-	public boolean initialize(JSONObject jsonObject) {
-		try {
-			link = jsonObject.optString(RestConstants.LINK);
-			image = getImageUrl(jsonObject.getString(RestConstants.JSON_VARIATION_IMAGE_TAG));
+        return true;
+    }
 
-			//added new tags
-			sku = jsonObject.getString(RestConstants.JSON_SKU_TAG);
-			name = jsonObject.getString(RestConstants.JSON_VARIATION_NAME_TAG);
-			brand = jsonObject.getString(RestConstants.JSON_VARIATION_BRAND_TAG);
-			price = jsonObject.getDouble(RestConstants.JSON_VARIATION_PRICE_TAG);
-			specialPrice = jsonObject.optDouble(RestConstants.JSON_VARIATION_SPECIALPRICE_TAG);
-		} catch (JSONException e) {
-			Print.e(TAG, "Error initializing the variation ", e);
-		}
-		return true;
-	}
-	
-	   /* (non-Javadoc)
-     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+     * )
      */
     @Override
-	public JSONObject toJSON() {
-		JSONObject jsonObject = new JSONObject();
-		try {
-			jsonObject.put(RestConstants.SKU, sku);
-			jsonObject.put(RestConstants.LINK, link);
-			jsonObject.put(RestConstants.JSON_IMAGE_TAG, image);
+    public boolean initialize(JSONObject jsonObject) {
+        try {
+            link = jsonObject.optString(RestConstants.LINK);
+            image = getImageUrl(jsonObject.getString(RestConstants.IMAGE));
 
-			//added
-			jsonObject.put(RestConstants.JSON_VARIATION_NAME_TAG, name);
-			jsonObject.put(RestConstants.JSON_VARIATION_BRAND_TAG, brand);
-			jsonObject.put(RestConstants.JSON_VARIATION_PRICE_TAG, price);
-			jsonObject.put(RestConstants.JSON_VARIATION_SPECIALPRICE_TAG, specialPrice);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return jsonObject;
-	}
+            //added new tags
+            sku = jsonObject.getString(RestConstants.SKU);
+            name = jsonObject.getString(RestConstants.NAME);
+            brand = jsonObject.getString(RestConstants.BRAND);
+            price = jsonObject.getDouble(RestConstants.PRICE);
+            specialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
+        } catch (JSONException e) {
+            Print.e(TAG, "Error initializing the variation ", e);
+        }
+        return true;
+    }
 
-	@Override
-	public int getRequiredJson() {
-		return RequiredJson.NONE;
-	}
+    /* (non-Javadoc)
+  * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
+  */
+    @Override
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(RestConstants.SKU, sku);
+            jsonObject.put(RestConstants.LINK, link);
+            jsonObject.put(RestConstants.IMAGE, image);
 
-	public String getSKU() {
-		return sku;
-	}
-	
-	public void setSKU(String sku) {
-		this.sku = sku;
-	}
+            //added
+            jsonObject.put(RestConstants.NAME, name);
+            jsonObject.put(RestConstants.BRAND, brand);
+            jsonObject.put(RestConstants.PRICE, price);
+            jsonObject.put(RestConstants.SPECIAL_PRICE, specialPrice);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 
-	public String getLink() {
-		return link;
-	}
+    @Override
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
+    }
 
-	public String getImage() {
-		return image;
-	}
+    public String getSKU() {
+        return sku;
+    }
 
-	//added
-	public String getName() {
-		return name;
-	}
+    public void setSKU(String sku) {
+        this.sku = sku;
+    }
 
-	public String getBrand() {
-		return brand;
-	}
+    public String getLink() {
+        return link;
+    }
 
-	public double getPrice() {
-		return price;
-	}
+    public String getImage() {
+        return image;
+    }
 
-	public double getSpecialPrice() {
-		return specialPrice;
-	}
+    //added
+    public String getName() {
+        return name;
+    }
 
-	public boolean hasDiscount() {
-		return specialPrice > 0 && specialPrice != Double.NaN;
-	}
+    public String getBrand() {
+        return brand;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public double getSpecialPrice() {
+        return specialPrice;
+    }
+
+    public boolean hasDiscount() {
+        return specialPrice > 0 && specialPrice != Double.NaN;
+    }
 
 
-	private String getImageUrl(String url) {
-		String modUrl = ImageResolutionHelper.replaceResolution(url);
-		if(modUrl != null)
-			return modUrl;
-		return url;
-	}
+    private String getImageUrl(String url) {
+        String modUrl = ImageResolutionHelper.replaceResolution(url);
+        if (modUrl != null)
+            return modUrl;
+        return url;
+    }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(sku);
-		dest.writeString(link);
-		dest.writeString(image);
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(sku);
+        dest.writeString(link);
+        dest.writeString(image);
 
-		//added
-		dest.writeString(name);
-		dest.writeString(brand);
-		dest.writeDouble(price);
-		dest.writeDouble(specialPrice);
-	}
-	
-	private Variation(Parcel in){
-		sku = in.readString();
-		link = in.readString();
-		image = in.readString();
+        //added
+        dest.writeString(name);
+        dest.writeString(brand);
+        dest.writeDouble(price);
+        dest.writeDouble(specialPrice);
+    }
 
-		//added
-		name = in.readString();
-		brand = in.readString();
-		price = in.readDouble();
-		specialPrice = in.readDouble();
-	}
-	
+    private Variation(Parcel in) {
+        sku = in.readString();
+        link = in.readString();
+        image = in.readString();
+
+        //added
+        name = in.readString();
+        brand = in.readString();
+        price = in.readDouble();
+        specialPrice = in.readDouble();
+    }
+
     public static final Parcelable.Creator<Variation> CREATOR = new Parcelable.Creator<Variation>() {
         public Variation createFromParcel(Parcel in) {
             return new Variation(in);
@@ -187,5 +187,5 @@ public class Variation implements IJSONSerializable, Parcelable{
             return new Variation[size];
         }
     };
-	
+
 }

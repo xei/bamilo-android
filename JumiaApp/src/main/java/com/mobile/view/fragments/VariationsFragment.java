@@ -15,6 +15,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.VariationProductsGridAdapter;
 import com.mobile.utils.ui.VariationProductsGridView;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -100,13 +101,15 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            getBaseActivity().showWarningMessage(com.mobile.utils.ui.WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
         }
     }
 
+
+
     @Override
-    public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
-        // ...
+    public void onViewHolderItemClick(View view,RecyclerView.Adapter<?> adapter, int position) {
+
     }
 
     @Override

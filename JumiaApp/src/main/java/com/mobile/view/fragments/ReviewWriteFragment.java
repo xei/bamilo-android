@@ -50,7 +50,6 @@ import com.mobile.view.R;
 
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -58,22 +57,22 @@ import java.util.Map;
  *
  * @author sergiopereira
  * @modified Paulo Carvalho
- * 
+ *
  */
 public class ReviewWriteFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = ReviewWriteFragment.class.getSimpleName();
-    
+
     private static final String SHOWING_FORM = "showingForm";
-    
+
     private static final String NAME = "name";
-    
+
     private static final String TITLE = "title";
-    
+
     private static final String COMMENT = "comment";
 
     private static final String SKU = "sku";
-    
+
     private static final String RATINGS = "ratings";
 
     private ProductComplete completeProduct;
@@ -85,21 +84,21 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     private boolean isExecutingSendReview = false;
 
     private String mCompleteProductSku = "";
-    
+
     private View mainContainer;
 
     private Form ratingForm;
-    
+
     private Form reviewForm;
-    
+
     private DynamicForm dynamicRatingForm;
-    
+
     private boolean isShowingRatingForm = true;
-    
+
     public static final String RATING_SHOW = "isShowingRating";
-    
+
     private boolean nestedFragment = true;
-    
+
     private ContentValues formValues;
 
     private SharedPreferences mSharedPrefs;
@@ -108,8 +107,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static ReviewWriteFragment getInstance(Bundle bundle) {
         ReviewWriteFragment fragment = new ReviewWriteFragment();
@@ -130,7 +127,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -141,7 +138,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -153,12 +150,12 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
             reviewForm =  JumiaApplication.INSTANCE.reviewForm;
             isShowingRatingForm = savedInstanceState.getBoolean(SHOWING_FORM);
-        } 
+        }
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View,
      * android.os.Bundle)
      */
@@ -173,14 +170,14 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
-        
+
     }
 
     /**
@@ -196,7 +193,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -216,12 +213,12 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         }
 
         isExecutingSendReview = false;
-        
+
         if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
             getView().findViewById(R.id.product_info_container).setVisibility(View.GONE);
             getView().findViewById(R.id.shadow).setVisibility(View.GONE);
-        } 
-        
+        }
+
         if(getArguments() != null && getArguments().containsKey(RATING_SHOW)) {
             isShowingRatingForm = getArguments().getBoolean(RATING_SHOW);
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
@@ -233,13 +230,9 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 String sku = getArguments().getString(ConstantsIntentExtra.PRODUCT_SKU);
                 mCompleteProductSku = sku != null ? sku : "";
             }
-            
+
             if (completeProduct == null) {
-                ContentValues values = new ContentValues();
-                values.put(GetProductHelper.SKU_TAG, mCompleteProductSku);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-                triggerContentEvent(new GetProductHelper(), bundle, this);
+                triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(mCompleteProductSku, null), this);
             } else {
                 /* Commented due to unnecessary data being fetched
                 triggerAutoLogin();
@@ -260,12 +253,12 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
                 }
             }
-        
+
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onPause()
      */
     @Override
@@ -276,7 +269,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onStop()
      */
     @Override
@@ -284,7 +277,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         super.onStop();
         Print.i(TAG, "ON STOP");
         saveReview();
-        
+
         //duplicated here and on onSaveInstance because when this fragment is removed from the Reviews Landscape it doesn't pass on the onSaveInstance method
         JumiaApplication.INSTANCE.ratingForm = ratingForm;
         JumiaApplication.INSTANCE.reviewForm = reviewForm;
@@ -292,7 +285,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
     @Override
@@ -312,12 +305,12 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             }
         }
     }
-    
-    
+
+
     private void showRetryLayout() {
         showFragmentErrorRetry();
     }
-    
+
     /**
      * Set the Products layout using inflate
      */
@@ -332,18 +325,18 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             } else {
                 showRetryLayout();
             }
-            
+
         } else {
             mainContainer.setVisibility(View.VISIBLE);
-            
+
             if (getBaseActivity() == null) return;
-    
+
             dynamicRatingForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), form);
             if(ratingContainer.getChildCount() > 0)
                 ratingContainer.removeAllViews();
-            
+
             ratingContainer.addView(dynamicRatingForm.getContainer());
-            
+
             loadReviewAndRatingFormValues();
             restoreTextReview(dynamicRatingForm);
             setReviewName(dynamicRatingForm);
@@ -384,7 +377,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             }
 
             setGenericLayout();
-            
+
         }
 
     }
@@ -418,7 +411,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     /**
      * restore information related to the form edit texts
-     * @param form
      */
     private void restoreTextReview(DynamicForm form){
         mFormReviewValues = JumiaApplication.INSTANCE.getFormReviewValues();
@@ -435,13 +427,13 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 form.getItemByKey(COMMENT).setValue(mFormReviewValues.get(COMMENT));
         }
     }
-    
+
     /**
      * Set info of the product on write review screen
-     * 
+     *
      */
     private void setGenericLayout(){
-        
+
         if (completeProduct == null) {
             if (!mCompleteProductSku.equalsIgnoreCase("")) {
                 ContentValues values = new ContentValues();
@@ -452,7 +444,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             } else {
                 showRetryLayout();
             }
-            
+
         } else {
             mainContainer.setVisibility(View.VISIBLE);
             TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
@@ -460,11 +452,10 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
             ProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
             getView().findViewById(R.id.send_review).setOnClickListener(this);
-            productName.setText(completeProduct.getBrand() + " " + completeProduct.getName());
-            //displayPriceInformation(productPriceNormal, productPriceSpecial);
+            productName.setText(String.format(getString(R.string.first_and_second_placeholders), completeProduct.getBrand(), completeProduct.getName()));
         }
     }
-    
+
     /**
      * Save rating and review form
      */
@@ -480,15 +471,13 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
      * Load rating and review form
      */
     private void loadReviewAndRatingFormValues() {
-        
+
         ContentValues savedRatingReviewValues = formValues == null ? JumiaApplication.getRatingReviewValues() : formValues;
-        
+
         // Validate values
         if(savedRatingReviewValues != null && dynamicRatingForm != null) {
             // Get dynamic form and update
-            Iterator<DynamicFormItem> iter = dynamicRatingForm.getIterator();
-            while (iter.hasNext()) {
-                DynamicFormItem item = iter.next();
+            for (DynamicFormItem item : dynamicRatingForm) {
                 try {
                     item.loadState(savedRatingReviewValues);
                 } catch (NullPointerException e) {
@@ -498,49 +487,18 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         }
     }
 
-//    /**
-//     * method to display the header price info
-//     * @param productPriceNormal
-//     * @param productPriceSpecial
-//     */
-//    private void displayPriceInformation(TextView productPriceNormal, TextView productPriceSpecial) {
-//        String unitPrice = String.valueOf(completeProduct.getPrice());
-//        /*--if (unitPrice == null) unitPrice = completeProduct.getMaxPrice();*/
-//        String specialPrice = String.valueOf(completeProduct.getSpecialPrice());
-//        /*--if (specialPrice == null) specialPrice = completeProduct.getMaxSpecialPrice();*/
-//
-//        displayPriceInfo(productPriceNormal, productPriceSpecial, unitPrice, specialPrice);
-//    }
-//
-//    private void displayPriceInfo(TextView productPriceNormal, TextView productPriceSpecial,
-//            String unitPrice, String specialPrice) {
-//        if (specialPrice == null || (unitPrice.equals(specialPrice))) {
-//            // display only the special price
-//            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(unitPrice));
-//            productPriceNormal.setVisibility(View.GONE);
-//        } else {
-//            // display special and normal price
-//            productPriceSpecial.setText(CurrencyFormatter.formatCurrency(specialPrice));
-//            productPriceNormal.setText(CurrencyFormatter.formatCurrency(unitPrice));
-//            productPriceNormal.setVisibility(View.VISIBLE);
-//            productPriceNormal.setPaintFlags(productPriceNormal.getPaintFlags()
-//                    | Paint.STRIKE_THRU_TEXT_FLAG);
-//        }
-//    }
-
-
     /**
      * function to clean form
      */
     private void cleanForm() {
         if(dynamicRatingForm != null)
             dynamicRatingForm.clear();
-       
+
         JumiaApplication.cleanRatingReviewValues();
         JumiaApplication.INSTANCE.setFormReviewValues(null);
         if(formValues != null)
             formValues = null;
-        
+
         if(isShowingRatingForm){
             setRatingLayout(ratingForm);
         } else {
@@ -576,7 +534,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             formsValidation();
         }
     }
-    
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -586,7 +544,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         super.onClickRetryButton(view);
         onResume();
     }
-    
+
     /**
      * function that validates if the form is correctly filled
      */
@@ -599,7 +557,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 dynamicRatingForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), ratingForm);
             else if(reviewForm != null)
                 dynamicRatingForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), reviewForm);
-            
+
             if(!dynamicRatingForm.validate())
                 return;
         } else {
@@ -629,57 +587,41 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             }
         }
     }
-    
-    
+
+
     /**
      * function responsible for sending the rating/review to API
-     * 
-     * 
-     * @param action
-     * @param form
      */
     private void executeSendReview(String action, DynamicForm form) {
-        
-        Bundle bundle = new Bundle();
-        
         form.getItemByKey(SKU).getEntry().setValue(completeProduct.getSku());
-        
         ContentValues values = form.save();
-        
-        getRatingFormValues(values,form);
-
-        bundle.putString(RatingReviewProductHelper.ACTION, action);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        
-        triggerContentEventProgress(new RatingReviewProductHelper(), bundle, this);
-        
+        getRatingFormValues(values, form);
+        triggerContentEventProgress(new RatingReviewProductHelper(), RatingReviewProductHelper.createBundle(action, values), this);
     }
-    
-    
+
+
     /**
-     * 
+     *
      * Function that retrieves info from rating bars form
-     * 
-     * @param values
-     * @param form
      */
     private void getRatingFormValues(ContentValues values, DynamicForm form){
-        
+
         String formName = form.getItemByKey(RATINGS).getName();
-        
+
         Map<String, String> ratingMap = form.getItemByKey(RATINGS).getEntry().getDateSetRating();
         View  ratingFormContainer = form.getItemByKey(RATINGS).getEditControl();
-        
+
         for (int i = 1; i < ratingMap.size()+1; i++) {
            int rate =  (int)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
-           String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag().toString();
-        
+           String id =  ratingFormContainer.findViewById(i).findViewById(R.id.option_stars).getTag(R.id.rating_bar_id).toString();
+
            String key =formName+"["+id+"]";
            values.put(key, rate);
-           
+            // Remove entry that's used only for locally saving the form value
+            values.remove(id);
         }
     }
-    
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         Print.d(TAG, "  -----> ON SAVE INSTANCE STATE !!!!!!!!!");
@@ -688,26 +630,25 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         outState.putBoolean(SHOWING_FORM, isShowingRatingForm);
         super.onSaveInstanceState(outState);
     }
-    
+
     /**
      * function responsible for creating a map between the rating option name and it's value
      * needed for tracking only
-     * @return
      */
     private HashMap<String, Long> getRatingsMapValues(DynamicForm form){
         HashMap<String, Long> values = new HashMap<>();
-        
+
             if(form != null){
                 Map<String, String> ratingMap = form.getItemByKey(RATINGS).getEntry().getDateSetRating();
                 View  ratingFormContainer = form.getItemByKey(RATINGS).getEditControl();
-                
+
                 for (int i = 1; i < ratingMap.size()+1; i++) {
                    long rate =  (long)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
                    String name =  ((TextView)ratingFormContainer.findViewById(i).findViewById(R.id.option_label)).getText().toString();
                    values.put(name, rate);
                 }
             }
-        
+
         return values;
     }
 
@@ -857,35 +798,19 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 } else {
                     showRetryLayout();
                 }
-
                 break;
             case GET_FORM_REVIEW_EVENT:
                 showRetryLayout();
                 break;
             case REVIEW_RATING_PRODUCT_EVENT:
-                dialog = DialogGenericFragment.createServerErrorDialog(getBaseActivity(),
-                        new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (!isExecutingSendReview) {
-                                    formsValidation();
-                                }
-                                dismissDialogFragment();
-                            }
-                        }, false);
-                dialog.setCancelable(false);
-                dialog.show(getBaseActivity().getSupportFragmentManager(), null);
+                showFormValidateMessages(dynamicRatingForm, baseResponse, eventType);
                 hideActivityProgress();
                 isExecutingSendReview = false;
                 break;
-
-
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
                     getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
-
                     showFragmentContentContainer();
-
                     try {
                         getBaseActivity().onBackPressed();
                     } catch (IllegalStateException e) {

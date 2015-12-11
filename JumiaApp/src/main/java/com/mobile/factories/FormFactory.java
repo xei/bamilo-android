@@ -34,7 +34,18 @@ public class FormFactory {
 
     private final static String TAG = FormFactory.class.getSimpleName();
 
-    private static FormFactory factory = null;
+    private static FormFactory sFactory = null;
+    // Icons used for forms by reflection (LINT NOT REMOVE)
+    @SuppressWarnings("unused")
+    int[] icons = new int[]{
+            R.drawable.ic_form_birthday,
+            R.drawable.ic_form_email,
+            R.drawable.ic_form_first_name,
+            R.drawable.ic_form_gender,
+            R.drawable.ic_form_national_id,
+            R.drawable.ic_form_password,
+            R.drawable.ic_form_phone
+    };
 
     /**
      * The constructor is private to prevent the creation of the object
@@ -49,10 +60,10 @@ public class FormFactory {
      * @return The form factory
      */
     public static FormFactory getSingleton() {
-        if (null == factory) {
-            factory = new FormFactory();
+        if (null == sFactory) {
+            sFactory = new FormFactory();
         }
-        return factory;
+        return sFactory;
     }
 
     /**
@@ -102,6 +113,7 @@ public class FormFactory {
                 parent = createLoginForm(context, form, ctrlParams);
                 break;
             case FormConstants.REGISTRATION_FORM:
+            case FormConstants.NEWSLETTER_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
             case FormConstants.USER_DATA_FORM:
                 form.setType(formType);  // Used to show icons

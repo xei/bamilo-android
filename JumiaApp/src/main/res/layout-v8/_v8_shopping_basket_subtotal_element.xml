@@ -142,20 +142,11 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/basket_voucher_label"
             style="@style/SingleLineStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_alignParentRight="true"
             android:ellipsize="none"
             android:text="@string/my_order_voucher_label"
-            />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/basket_voucher_remove"
-            style="@style/SingleLineStyle"
-            android:layout_width="wrap_content"
-            android:text="@string/voucher_remove"
-            android:textColor="@color/black_800"
-            android:visibility="gone"
-            android:layout_toLeftOf="@id/basket_voucher_label"
+            android:layout_toLeftOf="@+id/text_voucher"
             />
 
         <com.mobile.components.customfontviews.TextView

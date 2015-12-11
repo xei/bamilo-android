@@ -54,12 +54,12 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
 //        Log.d(TAG, "FILTER: FEATURED BOX");
-        JSONObject data = metadataObject.optJSONObject(RestConstants.JSON_DATA_TAG);
-        if (data != null) {
+        JSONArray featuredBoxObject = metadataObject.getJSONArray(RestConstants.FEATURED_BOX);
+        if (featuredBoxObject != null) {
             // one List for all products
             products = new ArrayList<>();
             try{
-                JSONArray featuredBoxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BOX_TAG);
+
                 if (featuredBoxObject != null && featuredBoxObject.length() > 0) {
                     // get products only from the first list
                     JSONObject productsCategoryObject = featuredBoxObject.getJSONObject(0);
@@ -91,7 +91,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
             brands = new ArrayList<>();
 
             try{
-                JSONArray featuredBrandboxObject = data.getJSONArray(RestConstants.JSON_FEATURED_BRAND_BOX_TAG);
+                JSONArray featuredBrandboxObject = metadataObject.getJSONArray(RestConstants.FEATURED_BRANDBOX);
                 if (featuredBrandboxObject != null && featuredBrandboxObject.length() > 0) {
                     // get brands only from the first list
                     JSONObject brandsCategoryObject = featuredBrandboxObject.getJSONObject(0);
@@ -101,7 +101,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
                             brandsTitle = brandsCategoryObject.optString(RestConstants.TITLE);
                         }
 
-                        JSONArray brandsObject = brandsCategoryObject.getJSONArray(RestConstants.JSON_BRANDS_TAG);
+                        JSONArray brandsObject = brandsCategoryObject.getJSONArray(RestConstants.BRANDS);
                         if (brandsObject != null && brandsObject.length() > 0) {
                             // get brands
                             for (int j = 0; j < brandsObject.length(); j++) {
@@ -120,14 +120,14 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
 //                Log.e(TAG, "ERROR PARSING FEATURE BRAND BOX");
             }
 
-            JSONObject searchTipsObject = data.optJSONObject(RestConstants.JSON_FEATURED_SEARCH_TIPS_TAG);
+            JSONObject searchTipsObject = metadataObject.optJSONObject(RestConstants.SEARCH_TIPS);
             if (searchTipsObject != null) {
                 searchTips = searchTipsObject.optString(RestConstants.TEXT);
             }
 
-            errorMessage = data.getString(RestConstants.JSON_ERROR_MESSAGE_TAG);
+            errorMessage = metadataObject.getString(RestConstants.ERROR_MESSAGE);
 
-            noticeMessage = data.getString(RestConstants.JSON_NOTICE_MESSAGE_TAG);
+            noticeMessage = metadataObject.getString(RestConstants.NOTICE_MESSAGE);
         }
 
         return true;

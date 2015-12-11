@@ -18,7 +18,7 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     private double mPriceConverted;
     private double mSpecialPrice;
     private double mSpecialPriceConverted;
-
+    private String mRichRelevanceClickHash;
     /**
      * Constructor
      */
@@ -32,6 +32,10 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
 
     public String getBrand() {
         return mBrand;
+    }
+
+    public String getRichRelevanceClickHash() {
+        return mRichRelevanceClickHash;
     }
     
     public double getPrice() {
@@ -59,17 +63,19 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
         // Get brand
-        mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
+        mBrand = jsonObject.getString(RestConstants.BRAND);
         // Get image
-        mImageTablet = mImagePhone = jsonObject.getString(RestConstants.JSON_IMAGE_TAG);
+        mImageTablet = mImagePhone = jsonObject.getString(RestConstants.IMAGE);
+        // Get Rich Relevance hash
+        mRichRelevanceClickHash = jsonObject.optString(RestConstants.CLICK_REQUEST);
         // Get price
-        mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
+        mPrice = jsonObject.getDouble(RestConstants.PRICE);
         // Get price converted
-        mPriceConverted = jsonObject.getDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
+        mPriceConverted = jsonObject.getDouble(RestConstants.PRICE_CONVERTED);
         // Get special price
-        mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
+        mSpecialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
         // Get special price converted
-        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
+        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.SPECIAL_PRICE_CONVERTED);
         return true;
     }
 
@@ -98,6 +104,7 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         dest.writeDouble(this.mPriceConverted);
         dest.writeDouble(this.mSpecialPrice);
         dest.writeDouble(this.mSpecialPriceConverted);
+        dest.writeString(this.mRichRelevanceClickHash);
     }
 
     private TeaserTopSellerObject(Parcel in) {
@@ -107,6 +114,7 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
         this.mPriceConverted = in.readDouble();
         this.mSpecialPrice = in.readDouble();
         this.mSpecialPriceConverted = in.readDouble();
+        this.mRichRelevanceClickHash = in.readString();
     }
 
     public static final Creator<TeaserTopSellerObject> CREATOR = new Creator<TeaserTopSellerObject>() {

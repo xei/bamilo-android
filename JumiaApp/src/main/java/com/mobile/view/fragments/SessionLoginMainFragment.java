@@ -19,9 +19,9 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.EmailCheckHelper;
+import com.mobile.helpers.session.LoginAutoHelper;
 import com.mobile.helpers.session.LoginFacebookHelper;
 import com.mobile.helpers.session.LoginGuestHelper;
-import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -348,7 +348,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
 
     private void triggerAutoLogin() {
         Print.i(TAG, "TRIGGER AUTO LOGIN");
-        triggerContentEvent(new LoginHelper(), LoginHelper.createAutoLoginBundle(), this);
+        triggerContentEvent(new LoginAutoHelper(), LoginAutoHelper.createAutoLoginBundle(), this);
     }
 
     @Override
@@ -388,7 +388,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 break;
             case GUEST_LOGIN_EVENT:
             case FACEBOOK_LOGIN_EVENT:
-            case LOGIN_EVENT:
+            case AUTO_LOGIN_EVENT:
                 // Get Customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getMetadata().getData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
@@ -404,8 +404,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
-                    // Notify user
-                    showInfoLoginSuccess();
+
                 }
                 // Case unknown checkout step
                 else {
@@ -438,11 +437,11 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_invalid_email));
                 break;
             case FACEBOOK_LOGIN_EVENT:
-            case LOGIN_EVENT:
+            case AUTO_LOGIN_EVENT:
                 // Logout
                 LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
                 // Tracking
-                TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, eventType == EventType.LOGIN_EVENT ? GTMValues.EMAILAUTH : GTMValues.FACEBOOK);
+                TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, eventType == EventType.AUTO_LOGIN_EVENT ? GTMValues.EMAILAUTH : GTMValues.FACEBOOK);
             case GUEST_LOGIN_EVENT:
                 // Tracking
                 if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);

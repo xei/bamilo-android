@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -28,7 +30,6 @@ import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -41,14 +42,15 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.pojo.DynamicForm;
+import com.mobile.utils.MessagesUtils;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -57,6 +59,7 @@ import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
 import java.util.Set;
 
 /**
@@ -374,42 +377,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onLowMemory() {
         super.onLowMemory();
         Print.i(TAG, "ON LOW MEMORY");
-//        // TODO - Validate this is necessary
-//        if (getView() != null && isHidden()) {
-//            unbindDrawables(getView());
-//        }
     }
-
-//    /**
-//     * Recycle bitmaps
-//     * @see <p>http://stackoverflow.com/questions/10314527/caused-by-java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget</p>
-//     *      <p>http://stackoverflow.com/questions/1949066/java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget-android</p>
-//     */
-//    public void unbindDrawables(View view) {
-//        Print.i(TAG, "UNBIND DRAWABLES");
-//        try {
-//
-//            if (view.getBackground() != null) {
-//                view.getBackground().setCallback(null);
-//            } else if (view instanceof ViewGroup) {
-//                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-//                    unbindDrawables(((ViewGroup) view).getChildAt(i));
-//                }
-//                if (view instanceof AdapterView<?>) {
-//                    return;
-//                }
-//
-//                try {
-//                    ((ViewGroup) view).removeAllViews();
-//                } catch (IllegalArgumentException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        } catch (RuntimeException e) {
-//            Print.w(TAG, "" + e);
-//        }
-//    }
 
     /**
      * #### BACK PRESSED ####
@@ -483,6 +451,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             mainActivity = (BaseActivity) getActivity();
         }
         return mainActivity;
+    }
+
+    /**
+     * Create a BaseActivity weak reference.
+     */
+    public WeakReference<BaseActivity> getWeakBaseActivity() {
+        return new WeakReference<>(getBaseActivity());
     }
 
     /**
@@ -651,35 +626,48 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         hideActivityProgress();
     }
 
-    public void showInfoAddToShoppingCartCompleted() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.added_to_shop_cart_dialog_text));
+    public void showWarningSuccessMessage(@Nullable String message) {
+        showWarningSuccessMessage(message, null);
+    }
+
+    public void showWarningSuccessMessage(@Nullable String message, @Nullable EventType eventType) {
+        int id = MessagesUtils.getSuccessMessageId(eventType);
+        if(getBaseActivity() != null && id > 0) {
+            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(id);
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
         }
     }
 
-    public void showInfoAddToShoppingCartFailed() {
+    public void showWarningSuccessMessage(@Nullable String message, int fallback) {
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.error_add_to_shopping_cart));
+            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
         }
     }
 
-    public void showInfoLoginSuccess() {
+    public void showWarningErrorMessage(@Nullable String message) {
+        showWarningErrorMessage(message, null);
+    }
+    public void showWarningErrorMessage(@Nullable String message, @Nullable EventType eventType) {
+        int id = MessagesUtils.getSuccessMessageId(eventType);
         if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.succes_login));
+            String text = TextUtils.isNotEmpty(message) ? message : id > 0 ? getBaseActivity().getString(id) : null;
+            if(text != null)
+                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, text);
         }
     }
 
-    public void showInfoAddToShoppingCartOOS() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getResources().getString(R.string.product_outof_stock));
+    /**
+     * Method used to show validation messages for a form submission.
+     */
+    public void showFormValidateMessages(@Nullable DynamicForm dynamicForm, @NonNull BaseResponse response, @NonNull EventType type) {
+        if(dynamicForm != null) {
+            dynamicForm.showValidateMessages(response.getValidateMessages());
+        } else {
+            showWarningErrorMessage(response.getValidateMessage(), type);
         }
     }
 
-    public void showInfoAddToSaved() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.products_removed_saved));
-        }
-    }
 
     /**
      * Set the inflated stub
@@ -814,11 +802,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Print.i(TAG, "ON HANDLE SUCCESS EVENT");
         // Validate event
         EventType eventType = baseResponse.getEventType();
+
         switch (eventType) {
-            case GET_SHOPPING_CART_ITEMS_EVENT:
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+            case ADD_PRODUCT_BUNDLE:
+                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
+            case GET_SHOPPING_CART_ITEMS_EVENT:
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 getBaseActivity().updateCartInfo();
                 return true;
             case LOGOUT_EVENT:
@@ -828,7 +819,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case GUEST_LOGIN_EVENT:
             case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
-                // TODO ADD HERE COMMON METHODS
+            case AUTO_LOGIN_EVENT:
+                handleSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
                 return true;
             default:
                 break;
@@ -851,72 +843,24 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (!response.isPriority()) {
             return false;
         }
+        // Hide keyboard if error screen shows
+        if (getBaseActivity() != null) {
+            getBaseActivity().hideKeyboard();
+        }
 
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
+        // Case network error
         if (ErrorCode.isNetworkError(errorCode)) {
-            switch (errorCode) {
-                case ErrorCode.IO:
-                case ErrorCode.CONNECT_ERROR:
-                    if(eventTask == EventTask.ACTION_TASK) {
-                        showUnexpectedErrorWarning();
-                    } else {
-                        showFragmentErrorRetry();
-                    }
-                    return true;
-                case ErrorCode.TIME_OUT:
-                case ErrorCode.NO_CONNECTIVITY:
-                    // Show no network layout
-                    if(eventTask == EventTask.ACTION_TASK){
-                        showNoNetworkWarning();
-                    } else {
-                        showFragmentNoNetworkRetry();
-                    }
-                    return true;
-                case ErrorCode.HTTP_STATUS:
-                    // Case HOME show retry otherwise show continue
-                    if(action == NavigationAction.HOME) {
-                        showFragmentErrorRetry();
-                    } else {
-                        showContinueShopping();
-                    }
-                    return true;
-                case ErrorCode.SSL:
-                case ErrorCode.SERVER_IN_MAINTENANCE:
-                    showFragmentMaintenance();
-                    return true;
-                case ErrorCode.REQUEST_ERROR:
-                    // Get error message or validate message
-                    String msg = TextUtils.isNotEmpty(response.getErrorMessage()) ? response.getErrorMessage() : response.getValidateMessage();
-                    // Get generic message
-                    if(TextUtils.isEmpty(msg)) {
-                        msg = getString(R.string.error_please_try_again);
-                    }
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.validation_title), msg,
-                            getResources().getString(R.string.ok_label), "", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                    return true;
-                case ErrorCode.SERVER_OVERLOAD:
-                    if(getBaseActivity() != null){
-                        ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
-                        showFragmentErrorRetry();
-                    }
-                    return true;
-                default:
-                    break;
-            }
+            return handleNetworkError(errorCode, eventTask);
         }
         // Case unexpected error from server data
         else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
             showFragmentMaintenance();
+            return true;
+        }
+        // Show warning messages
+        else {
+            handleTaskEvent(response.getErrorMessage(), response.getEventTask(), response.getEventType());
         }
 
         /**
@@ -926,6 +870,82 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
          */
 
         return false;
+    }
+
+    /**
+     * Handle network events.
+     */
+    public boolean handleNetworkError(int errorCode, EventTask eventTask) {
+        boolean result = true;
+        switch (errorCode) {
+            case ErrorCode.IO:
+            case ErrorCode.CONNECT_ERROR:
+                if (eventTask == EventTask.ACTION_TASK) {
+                    showUnexpectedErrorWarning();
+                } else {
+                    showFragmentErrorRetry();
+                }
+                break;
+            case ErrorCode.TIME_OUT:
+            case ErrorCode.NO_CONNECTIVITY:
+                // Show no network layout
+                if (eventTask == EventTask.ACTION_TASK) {
+                    showNoNetworkWarning();
+                } else {
+                    showFragmentNoNetworkRetry();
+                }
+                break;
+            case ErrorCode.HTTP_STATUS:
+                // Case HOME show retry otherwise show continue
+                if (action == NavigationAction.HOME) {
+                    showFragmentErrorRetry();
+                } else {
+                    showContinueShopping();
+                }
+                break;
+            case ErrorCode.SSL:
+            case ErrorCode.SERVER_IN_MAINTENANCE:
+                showFragmentMaintenance();
+                break;
+            case ErrorCode.SERVER_OVERLOAD:
+                if (getBaseActivity() != null) {
+                    ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
+                    showFragmentErrorRetry();
+                }
+                break;
+            default:
+                result = false;
+                break;
+        }
+        return result;
+    }
+
+    /**
+     * Handle task events.
+     */
+    public void handleTaskEvent(final String errorMessage, final EventTask eventTask, final EventType eventType) {
+        if (eventTask == EventTask.ACTION_TASK) {
+            switch (eventType) {
+                case EDIT_ADDRESS_EVENT:
+                case REGISTER_ACCOUNT_EVENT:
+                case EDIT_USER_DATA_EVENT:
+                case CHANGE_PASSWORD_EVENT:
+                case REVIEW_RATING_PRODUCT_EVENT:
+                case FORGET_PASSWORD_EVENT:
+                case LOGIN_EVENT:
+                    // Used the showFormValidateMessages(form)
+                    break;
+                default:
+                    showWarningErrorMessage(errorMessage, eventType);
+                    break;
+            }
+        }
+    }
+
+    public void handleSuccessMessage(final String successMessage, final EventTask eventTask, final EventType eventType) {
+        if(eventTask == EventTask.ACTION_TASK){
+            showWarningSuccessMessage(successMessage, eventType);
+        }
     }
 
     /*
@@ -1059,21 +1079,5 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             dialog.dismissAllowingStateLoss();
         }
     }
-
-    /**
-     * validate if it show regular warning or confirmation cart message
-     */
-    protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
-        //if has cart popup, show configurable confirmation message with cart total price
-        if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
-            PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
-            getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
-        }
-        else{
-            //show regular message add item to cart
-            showInfoAddToShoppingCartCompleted();
-        }
-    }
-
 
 }

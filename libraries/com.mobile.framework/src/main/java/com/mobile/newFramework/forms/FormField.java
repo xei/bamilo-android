@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -28,26 +29,14 @@ import java.util.Map;
  */
 public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
-    /**
-     * Create parcelable
-     */
-    public static final Creator<FormField> CREATOR = new Creator<FormField>() {
-        public FormField createFromParcel(Parcel in) {
-            return new FormField(in);
-        }
-
-        public FormField[] newArray(int size) {
-            return new FormField[size];
-        }
-    };
     protected final static String TAG = FormField.class.getSimpleName();
-    private final Form mParent;
-    private final LinkedHashMap<String, String> mDataSetRating;
-    private final LinkedHashMap<String, String> mDataSet;
-    private final String mDataSetSource;
-    private final HashMap<String, String> mDataCalls;
-    private final LinkedHashMap<Object,Object> mExtrasValues;
-    private final HashMap<String,PaymentInfo> mPaymentInfoList;
+    private Form mParent;
+    private LinkedHashMap<String, String> mDataSetRating;
+    private LinkedHashMap<String, String> mDataSet;
+    private String mDataSetSource;
+    private String mApiCall;
+    private LinkedHashMap<Object,Object> mExtrasValues;
+    private HashMap<String,PaymentInfo> mPaymentInfoList;
     private String mId;
     private String mKey;
     private String mName;
@@ -68,6 +57,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private boolean isPrefixField;
     private boolean isDisabled;
 
+    @SuppressWarnings("unused")
+    public interface OnDataSetReceived {
+        void DataSetReceived(Map<String, String> dataSet);
+    }
+
+
     /**
      * FormField param constructor
      *
@@ -82,7 +77,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mValidation = new FieldValidation();
         this.mValue = "";
         this.mDataSet = new LinkedHashMap<>();
-        this.mDataCalls = new HashMap<>();
         this.mDataSetSource = "";
         this.mParent = parent;
         this.mDataSetListener = null;
@@ -93,47 +87,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mPaymentInfoList = new HashMap<>();
         this.mFormat = "dd-MM-yyyy";
         this.isDisabled = false;
-    }
-
-    /**
-     * Parcel constructor
-     */
-    @SuppressWarnings("unchecked")
-    private FormField(Parcel in) {
-        mParent = (Form) in.readValue(Form.class.getClassLoader());
-        mId = in.readString();
-        mKey = in.readString();
-        mName = in.readString();
-        mInputType = (FormInputType) in.readValue(FormInputType.class.getClassLoader());
-        mLabel = in.readString();
-        mLinkText = in.readString();
-        mDataSetRating = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
-        mScenario = in.readString();
-        mDataSet = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
-        if (in.readByte() == 0x01) {
-            mOptions = new ArrayList<>();
-            in.readList(mOptions, IFormField.class.getClassLoader());
-        } else {
-            mOptions = null;
-        }
-        mDataSetSource = in.readString();
-        mDataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
-        mValidation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
-        mValue = in.readString();
-        mDataCalls = (HashMap) in.readValue(HashMap.class.getClassLoader());
-        mPaymentFields = (HashMap) in.readValue(HashMap.class.getClassLoader());
-        mExtrasValues = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
-        if (in.readByte() == 0x01) {
-            mNewsletterOptions = new ArrayList<>();
-            in.readList(mNewsletterOptions, NewsletterOption.class.getClassLoader());
-        } else {
-            mNewsletterOptions = null;
-        }
-        mPaymentInfoList = (HashMap) in.readValue(HashMap.class.getClassLoader());
-        mChildFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
-        mParentFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
-        mFormat = in.readString();
-        isPrefixField = in.readByte() == 1;
     }
 
     /*
@@ -203,19 +156,19 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // if the field is one of the supported types
             mId = jsonObject.optString(RestConstants.ID);
             mKey = jsonObject.optString(RestConstants.KEY); // Used for form images
-            mName = jsonObject.optString(RestConstants.JSON_FIELD_NAME_TAG);
+            mName = jsonObject.optString(RestConstants.NAME);
             mLabel = jsonObject.optString(RestConstants.LABEL);
             mValue = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
-            mScenario = jsonObject.optString(RestConstants.JSON_SCENARIO_TAG);
-            mLinkText = jsonObject.optString(RestConstants.JSON_LINK_TEXT_TAG);
+            mScenario = jsonObject.optString(RestConstants.SCENARIO);
+            mLinkText = jsonObject.optString(RestConstants.LINK_TEXT);
             isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
             isDisabled = jsonObject.optBoolean(RestConstants.DISABLED);
-            mFormat = jsonObject.optString(RestConstants.JSON_FORMAT_TAG);
+            mFormat = jsonObject.optString(RestConstants.FORMAT);
             isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), "before");
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
 
             // Case RULES
-            JSONObject validationObject = jsonObject.optJSONObject(RestConstants.JSON_RULES_TAG);
+            JSONObject validationObject = jsonObject.optJSONObject(RestConstants.RULES);
             if(validationObject != null) {
                 if (!mValidation.initialize(validationObject)) {
                     //Log.e(TAG, "initialize: Error parsing the rules fields");
@@ -224,21 +177,29 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
             // Case "data_set" //should be more generic
-            JSONArray optionsArray  = jsonObject.optJSONArray(RestConstants.JSON_DATA_SET_FORM_RATING_TAG);
+            JSONArray optionsArray  = jsonObject.optJSONArray(RestConstants.DATA_SET);
             //dataSetRating.clear();
             if (optionsArray != null && optionsArray.length() > 0) {
                 for (int i = 0; i < optionsArray.length(); i++) {
-                    mDataSetRating.put(optionsArray.getJSONObject(i).optString(RestConstants.JSON_ID_FORM_RATING_TAG), optionsArray.getJSONObject(i).optString(RestConstants.JSON_TITLE_FORM_RATING_TAG));
+                    mDataSetRating.put(optionsArray.getJSONObject(i).optString(RestConstants.ID_RATING_TYPE), optionsArray.getJSONObject(i).optString(RestConstants.DISPLAY_TITLE));
                 }
             }
 
-            /**
-             * Save api call (region and cities)
-             */
-            String apiCall = jsonObject.optString(RestConstants.API_CALL);
-            if (!TextUtils.isEmpty(apiCall)) {
-                mDataCalls.put(RestConstants.API_CALL, apiCall);
+            // Save api call
+            if (jsonObject.has(RestConstants.API_CALL)) {
+                // Get api call
+                JSONObject apiCall = jsonObject.getJSONObject(RestConstants.API_CALL);
+                // Get endpoint
+                mApiCall = apiCall.getString(RestConstants.TARGET);
+                // Get params
+                JSONArray params = apiCall.optJSONArray(RestConstants.PARMS);
+                if(CollectionUtils.isNotEmpty(params)) {
+                    for (int i = 0; i < params.length(); i++) {
+                        mApiCall += params.getJSONObject(i).getString(RestConstants.PARAM) + "/%s/";
+                    }
+                }
             }
+
 
             // Case options TODO Unify options response
             /**
@@ -258,16 +219,21 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 mExtrasValues.clear();
                 mNewsletterOptions = new ArrayList<>();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
-
                     // Case the newsletter
                     if(mKey.equals("newsletter_categories_subscribed")) {
+                        //FIXME validate if possible to remove this array, its only used on MyAccountEmailNotificationFragment
+                        //FIXME Newsletter revamp should fix this
                         mNewsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), mName));
+
+                        JSONObject option = dataOptionsArray.getJSONObject(i);
+                        if(option != null)
+                            mDataSet.put(option.optString("value"), option.optString("label"));
                     }
                     // Case pickup station
                     else if(mKey.equals("pickup_station") && mScenario != null){
                         PickUpStationObject pStation = new PickUpStationObject();
                         pStation.initialize(dataOptionsArray.getJSONObject(i));
-                        mExtrasValues.put(pStation.getIdPickupstation(), pStation);
+                        mExtrasValues.put(pStation.getIdPickupStation(), pStation);
                         mDataSet.put(pStation.getName(), pStation.getName());
                     }
                     // Case default
@@ -300,7 +266,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
 
             // CASE fields from related TODO use options
-            dataOptionsArray = jsonObject.optJSONArray(RestConstants.JSON_FIELDS_TAG);
+            dataOptionsArray = jsonObject.optJSONArray(RestConstants.FIELDS);
             if(dataOptionsArray != null) {
                 mOptions = new ArrayList<>();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
@@ -318,7 +284,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType != FormInputType.errorMessage){
                 mDataSet.clear();
                 mPaymentFields = new HashMap<>();
-                dataOptionsObject = jsonObject.optJSONObject(RestConstants.JSON_OPTIONS_TAG);
+                dataOptionsObject = jsonObject.optJSONObject(RestConstants.OPTIONS);
                 Iterator<?> it = dataOptionsObject.keys();
                 //Clean payment method info
                 while (it.hasNext()) {
@@ -328,7 +294,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     //Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
                     mDataSet.put(value, label);
                     // Info
-                    JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.JSON_DESCRIPTION_TAG);
+                    JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.DESCRIPTION);
                     PaymentInfo mPaymentInfo = new PaymentInfo();
                     mPaymentInfo.initialize(paymentDescription);
                     mPaymentInfoList.put(label,mPaymentInfo);
@@ -398,18 +364,18 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // fields
             jsonObject.put(RestConstants.ID, mId);
             jsonObject.put(RestConstants.KEY, mKey);
-            jsonObject.put(RestConstants.JSON_FIELD_NAME_TAG, mName);
+            jsonObject.put(RestConstants.NAME, mName);
             jsonObject.put(RestConstants.LABEL, mLabel);
             jsonObject.put(RestConstants.VALUE, mValue);
-            jsonObject.put(RestConstants.JSON_TERMS_TAG, mLinkText);
+            jsonObject.put(RestConstants.TERMS, mLinkText);
             // validation
-            jsonObject.put(RestConstants.JSON_RULES_TAG, mValidation.toJSON());
+            jsonObject.put(RestConstants.RULES, mValidation.toJSON());
             JSONArray dataSetArray = new JSONArray();
             for (String dataSetItem : mDataSet.keySet()) {
                 dataSetArray.put(dataSetItem);
             }
-            jsonObject.put(RestConstants.JSON_DATA_SET_TAG, dataSetArray);
-            jsonObject.put(RestConstants.JSON_DATA_SET_SOURCE_TAG, mDataSetSource);
+            jsonObject.put(RestConstants.DATASET, dataSetArray);
+            jsonObject.put(RestConstants.DATASET_SOURCE, mDataSetSource);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -493,13 +459,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mValue = value;
     }
 
-    public Map<String, IFormField> getSubFormFields() {
-        return null;
-    }
-
     @Override
-    public Map<String, String> getDataCalls() {
-        return mDataCalls;
+    public String getApiCall() {
+        return mApiCall;
     }
 
     @Override
@@ -550,10 +512,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mPaymentFields = pFields;
     }
 
-    /*
-     * ########### PARCELABLE ###########
-     */
-
     public ArrayList<NewsletterOption> getNewsletterOptions() {
         return mNewsletterOptions;
     }
@@ -561,6 +519,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public HashMap<String, PaymentInfo> getPaymentInfoList() {
         return mPaymentInfoList;
     }
+
+    /*
+     * ########### PARCELABLE ###########
+     */
 
     @Override
     public int describeContents() {
@@ -589,7 +551,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mDataSetListener);
         dest.writeValue(mValidation);
         dest.writeString(mValue);
-        dest.writeValue(mDataCalls);
+        dest.writeString(mApiCall);
         dest.writeValue(mPaymentFields);
         dest.writeValue(mExtrasValues);
         if (mNewsletterOptions == null) {
@@ -605,10 +567,57 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeByte((byte) (isPrefixField ? 1 : 0));
     }
 
-    @SuppressWarnings("unused")
-    public interface OnDataSetReceived {
-        void DataSetReceived(Map<String, String> dataSet);
+    /**
+     * Parcel constructor
+     */
+    @SuppressWarnings("unchecked")
+    private FormField(Parcel in) {
+        mParent = (Form) in.readValue(Form.class.getClassLoader());
+        mId = in.readString();
+        mKey = in.readString();
+        mName = in.readString();
+        mInputType = (FormInputType) in.readValue(FormInputType.class.getClassLoader());
+        mLabel = in.readString();
+        mLinkText = in.readString();
+        mDataSetRating = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
+        mScenario = in.readString();
+        mDataSet = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            mOptions = new ArrayList<>();
+            in.readList(mOptions, IFormField.class.getClassLoader());
+        } else {
+            mOptions = null;
+        }
+        mDataSetSource = in.readString();
+        mDataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
+        mValidation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
+        mValue = in.readString();
+        mApiCall = in.readString();
+        mPaymentFields = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mExtrasValues = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
+        if (in.readByte() == 0x01) {
+            mNewsletterOptions = new ArrayList<>();
+            in.readList(mNewsletterOptions, NewsletterOption.class.getClassLoader());
+        } else {
+            mNewsletterOptions = null;
+        }
+        mPaymentInfoList = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mChildFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
+        mParentFormField = (IFormField) in.readValue(IFormField.class.getClassLoader());
+        mFormat = in.readString();
+        isPrefixField = in.readByte() == 1;
     }
 
+    /**
+     * Create parcelable
+     */
+    public static final Creator<FormField> CREATOR = new Creator<FormField>() {
+        public FormField createFromParcel(Parcel in) {
+            return new FormField(in);
+        }
+        public FormField[] newArray(int size) {
+            return new FormField[size];
+        }
+    };
 
 }

@@ -20,7 +20,7 @@ public class RequiredJson {
             NONE,
             COMPLETE_JSON,
             OBJECT_DATA,
-            METADATA
+            METADATA,
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface JsonStruct{}

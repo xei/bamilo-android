@@ -42,12 +42,10 @@ public class EmailCheckHelper extends SuperBaseHelper {
     }
 
     public static Bundle createBundle(String email) {
-        // Item data
         ContentValues values = new ContentValues();
         values.put(RestConstants.EMAIL, email);
-        // Request data
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 

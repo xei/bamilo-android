@@ -51,9 +51,9 @@ public class EditAddressTest extends BaseTestCase {
         data.put("Alice_Module_Mobapi_Form_Ext1m7_Customer_AddressForm[first_name]", "test");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("https://www.jumia.com.ng/mobapi/v1.7/customer/address/edit")
+                .setEndPoint("https://www.jumia.com.ng/mobapi/v1.7/customer/address/edit")
                 .setCache(EventType.EDIT_ADDRESS_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

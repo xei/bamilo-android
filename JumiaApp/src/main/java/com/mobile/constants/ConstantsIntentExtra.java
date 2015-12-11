@@ -114,5 +114,10 @@ public class ConstantsIntentExtra {
     public static final String ARG_3 = mPackage + "arg3";
 
 
+    // ########## RICH RELEVANE ############
+
+    public static final String RICH_RELEVANCE_HASH = mPackage + "RichRelevanceHash";
+
+
 
 }

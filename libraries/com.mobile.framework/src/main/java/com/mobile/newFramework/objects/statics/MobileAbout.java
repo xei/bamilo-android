@@ -43,6 +43,6 @@ public class MobileAbout extends ArrayList<TargetHelper> implements IJSONSeriali
 
     @Override
     public int getRequiredJson() {
-        return RequiredJson.OBJECT_DATA;
+        return RequiredJson.METADATA;
     }
 }

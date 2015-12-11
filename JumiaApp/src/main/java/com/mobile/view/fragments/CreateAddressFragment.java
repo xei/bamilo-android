@@ -37,7 +37,6 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -46,7 +45,6 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -348,8 +346,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Validate Regions
         if (regions == null) {
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.REGION);
-            String url = field.getDataCalls().get(RestConstants.API_CALL);
-            triggerGetRegions(url);
+            triggerGetRegions(field.getApiCall());
         } else {
             setRegions(shippingFormGenerator, regions, SHIPPING_TAG);
             setRegions(billingFormGenerator, regions, BILLING_TAG);
@@ -364,11 +361,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Hide the default check boxes
      */
     private void hideSomeFields(DynamicForm dynamicForm, boolean isBilling) {
-        DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG);
+        DynamicFormItem item = dynamicForm.getItemByKey(RestConstants.IS_DEFAULT_SHIPPING);
         if (item != null) {
             item.getEditControl().setVisibility(View.GONE);
         }
-        item = dynamicForm.getItemByKey(RestConstants.JSON_IS_DEFAULT_BILLING_TAG);
+        item = dynamicForm.getItemByKey(RestConstants.IS_DEFAULT_BILLING);
         if (item != null) {
             item.getEditControl().setVisibility(View.GONE);
         }
@@ -376,7 +373,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Hide the gender field only for billing address
         if (isBilling) {
             try {
-                item = dynamicForm.getItemByKey(RestConstants.JSON_GENDER_TAG);
+                item = dynamicForm.getItemByKey(RestConstants.GENDER);
                 if (item != null) {
                     item.getMandatoryControl().setVisibility(View.GONE);
                     item.getEditControl().setVisibility(View.GONE);
@@ -605,25 +602,19 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         // Validate check
-        if (mIsSameCheckBox.isChecked()) {
-            Print.i(TAG, "CREATE ADDRESS: IS SHIPPING AND IS BILLING TOO");
-            ContentValues mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT VALUES: " + mContentValues);
-            triggerCreateAddress(mContentValues, false);
-        } else {
-            Print.i(TAG, "CREATE ADDRESS: SHIPPING AND BILLING");
-            ContentValues mShipValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, ISNT_DEFAULT_BILLING_ADDRESS);
-            Print.d(TAG, "CONTENT SHIP VALUES: " + mShipValues);
-            triggerCreateAddress(mShipValues, false);
-        }
+        ContentValues mContentValues;
+        int isBilling = mIsSameCheckBox.isChecked() ? IS_DEFAULT_BILLING_ADDRESS : ISNT_DEFAULT_BILLING_ADDRESS;
+        mContentValues = createContentValues(shippingFormGenerator, IS_DEFAULT_SHIPPING_ADDRESS, isBilling);
+        Print.d(TAG, "CONTENT VALUES: " + mContentValues);
+        triggerCreateAddress(shippingFormGenerator.getForm().getAction(), mContentValues);
     }
 
     /**
      * method that controls that the addresses have the same gender when creating billing and shipping at the same time
      */
     private void validateSameGender() {
-        DynamicFormItem shippingGenderItem = shippingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
-        DynamicFormItem billingGenderItem = billingFormGenerator.getItemByKey(RestConstants.JSON_GENDER_TAG);
+        DynamicFormItem shippingGenderItem = shippingFormGenerator.getItemByKey(RestConstants.GENDER);
+        DynamicFormItem billingGenderItem = billingFormGenerator.getItemByKey(RestConstants.GENDER);
         if (shippingGenderItem != null && billingGenderItem != null) {
             try {
                 int genderIndex = -1;
@@ -655,9 +646,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Update default values (unknown keys)
         for (Map.Entry<String, Object> value : mContentValues.valueSet()) {
             String key = value.getKey();
-            if (key.contains(RestConstants.JSON_IS_DEFAULT_BILLING_TAG)) {
+            if (key.contains(RestConstants.IS_DEFAULT_BILLING)) {
                 mContentValues.put(key, isDefaultBilling);
-            } else if (key.contains(RestConstants.JSON_IS_DEFAULT_SHIPPING_TAG)) {
+            } else if (key.contains(RestConstants.IS_DEFAULT_SHIPPING)) {
                 mContentValues.put(key, isDefaultShipping);
             }
         }
@@ -689,18 +680,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.CITY);
             // Case list
             if (FormInputType.list == field.getInputType()) {
-                // Get url
-                String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the cities for this region id
                 int regionId = ((AddressRegion) object).getValue();
                 // Save the selected region on the respective variable
                 String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
                 if (tag.equals(SHIPPING_TAG)) {
                     selectedRegionOnShipping = SHIPPING_TAG + "_" + regionId;
-                    triggerGetCities(url, regionId, selectedRegionOnShipping);
+                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnShipping);
                 } else if (tag.equals(BILLING_TAG)) {
                     selectedRegionOnBilling = BILLING_TAG + "_" + regionId;
-                    triggerGetCities(url, regionId, selectedRegionOnBilling);
+                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnBilling);
                 }
             }
             // Case text or other
@@ -713,18 +702,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
             // Case list
             if (field != null && FormInputType.list == field.getInputType()) {
-                // Get url
-                String url = field.getDataCalls().get(RestConstants.API_CALL);
                 // Request the postal codes for this city id
                 int cityId = ((AddressCity) object).getValue();
                 // Save the selected city on the respective variable
                 String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
                 if (tag.equals(SHIPPING_TAG)) {
                     selectedCityOnShipping = SHIPPING_TAG + "_" + cityId;
-                    triggerGetPostalCodes(url, cityId, selectedCityOnShipping);
+                    triggerGetPostalCodes(field.getApiCall(), cityId, selectedCityOnShipping);
                 } else if (tag.equals(BILLING_TAG)) {
                     selectedCityOnBilling = BILLING_TAG + "_" + cityId;
-                    triggerGetPostalCodes(url, cityId, selectedCityOnBilling);
+                    triggerGetPostalCodes(field.getApiCall(), cityId, selectedCityOnBilling);
                 }
             }
         }
@@ -782,12 +769,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Trigger to create an address
      * @author sergiopereira
      */
-    protected void triggerCreateAddress(ContentValues values, boolean isBilling) {
+    protected void triggerCreateAddress(String action, ContentValues values) {
         Print.i(TAG, "TRIGGER: CREATE ADDRESS");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        bundle.putBoolean(CreateAddressHelper.IS_BILLING, isBilling);
-        triggerContentEvent(new CreateAddressHelper(), bundle, this);
+        triggerContentEvent(new CreateAddressHelper(), CreateAddressHelper.createBundle(action, values), this);
         // Hide the keyboard
         getBaseActivity().hideKeyboard();
     }
@@ -824,50 +808,26 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
      * Trigger to get postal codes
      *
      */
-    protected void triggerGetPostalCodes(String url, int city, String tag) {
-        Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + url + " " + tag);
-        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(url, city, tag), this);
+    protected void triggerGetPostalCodes(String action, int city, String tag) {
+        Print.i(TAG, "TRIGGER: GET POSTAL CODES: " + city + " " + tag);
+        triggerContentEvent(new GetPostalCodeHelper(), GetPostalCodeHelper.createBundle(action, city, tag), this);
     }
 
     /**
-     * ########### RESPONSE LISTENER ###########
+     * ############# RESPONSE #############
      */
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        onErrorEvent(baseResponse);
-    }
-
     /*
      * (non-Javadoc)
      * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-    }
-
-    /**
-     * ############# RESPONSE #############
-     */
-    /**
-     * Filter the success response
-     *
-     * @return boolean
-     * @author sergiopereira
-     */
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
-
         switch (eventType) {
             case INIT_FORMS:
                 onInitFormSuccessEvent();
@@ -891,8 +851,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             default:
                 break;
         }
-
-        return true;
     }
 
     protected void onInitFormSuccessEvent() {
@@ -928,23 +886,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected void onGetCitiesSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
-
         ArrayList<AddressCity> citiesArray = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getMetadata().getData();
-
         GetCitiesHelper.AddressCitiesStruct cities= (GetCitiesHelper.AddressCitiesStruct)citiesArray;
-
         String requestedRegionAndField = cities.getCustomTag();
         Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
-
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
-
         FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
         if(field == null){
-            // Show
             showFragmentContentContainer();
             Print.i(TAG, "DOES NOT HAVE POSTAL CODE");
         }
-
     }
 
     protected void onGetPostalCodesSuccessEvent(BaseResponse baseResponse) {
@@ -952,9 +903,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
         Print.d(TAG, "REQUESTED CITY FROM FIELD: " + postalCodesStruct.getCustomTag());
         String requestedRegionAndField = postalCodesStruct.getCustomTag();
-
         setPostalCodesOnSelectedCity(requestedRegionAndField, postalCodesStruct);
-        // Show
         showFragmentContentContainer();
     }
 
@@ -964,22 +913,20 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     /**
      * Filter the error response
-     * @return boolean
-     * @author sergiopereira
      */
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
-
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
 
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
-            return true;
+            return;
         }
 
         switch (eventType) {
@@ -1005,8 +952,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             default:
                 break;
         }
-
-        return false;
     }
 
 
@@ -1034,34 +979,5 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "RECEIVED CREATE_ADDRESS_EVENT");
         // Clean flag to wait for both different responses
         oneAddressCreated = false;
-    }
-
-    /**
-     * ########### DIALOGS ###########
-     */
-    /**
-     * Dialog used to show an error
-     *
-     * @author sergiopereira
-     */
-    protected void showErrorDialog(String errorMessage ,String dialogTitle) {
-        Print.d(TAG, "SHOW LOGIN ERROR DIALOG");
-        // FIXME to be fixed on a next release, where all form validations are made on our side and delt with the the error messages centrally
-        showFragmentContentContainer();
-        dialog = DialogGenericFragment.newInstance(true, false,
-                dialogTitle,
-                errorMessage,
-                getString(R.string.ok_label),
-                "",
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int id = v.getId();
-                        if (id == R.id.button1) {
-                            dismissDialogFragment();
-                        }
-                    }
-                });
-        dialog.show(getBaseActivity().getSupportFragmentManager(), null);
     }
 }

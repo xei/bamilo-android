@@ -23,9 +23,9 @@ public class ValidateProductsTest extends BaseTestCase {
         data.put("products[3]", "LE842ELAC3ZVNGAMZ");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl(" http://www.jumia.com.ng/mobapi/v1.7/catalog/validate/")
+                .setEndPoint(" http://www.jumia.com.ng/mobapi/v1.7/catalog/validate/")
                 .setCache(EventType.VALIDATE_PRODUCTS.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 

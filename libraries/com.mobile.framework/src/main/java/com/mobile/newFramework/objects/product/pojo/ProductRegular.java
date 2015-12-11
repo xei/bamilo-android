@@ -48,27 +48,27 @@ public class ProductRegular extends ProductBase {
 
     protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
-        mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
-        mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-        mBrandId = jsonObject.optInt(RestConstants.JSON_BRAND_ID_TAG);
+        mName = jsonObject.getString(RestConstants.NAME);
+        mBrand = jsonObject.getString(RestConstants.BRAND);
+        mBrandId = jsonObject.optInt(RestConstants.BRAND_ID);
         // Optional TODO FIX THIS
-        mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+        mImageUrl = jsonObject.optString(RestConstants.IMAGE);
         if(TextUtils.isEmpty(mImageUrl)) {
-            mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_URL_TAG);
+            mImageUrl = jsonObject.optString(RestConstants.IMAGE_URL);
         }
         // Is new
-        isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG);
+        isNew = jsonObject.optBoolean(RestConstants.IS_NEW);
         // Wish List flag
-        if (jsonObject.optBoolean(RestConstants.JSON_IS_WISH_LIST_TAG)) {
+        if (jsonObject.optBoolean(RestConstants.IS_WISH_LIST)) {
             WishListCache.add(mSku);
         }
-        mCategories = jsonObject.optString(RestConstants.JSON_CATEGORIES_TAG);
+        mCategories = jsonObject.optString(RestConstants.CATEGORIES);
         // Rating
-        JSONObject ratings = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_SUMMARY_TAG);
+        JSONObject ratings = jsonObject.optJSONObject(RestConstants.RATING_REVIEWS_SUMMARY);
         if (ratings != null) {
-            mAvgRating = ratings.optDouble(RestConstants.JSON_RATINGS_AVERAGE_TAG);
-            mTotalRatings = ratings.optInt(RestConstants.JSON_RATINGS_TOTAL_TAG);
-            mTotalReviews = ratings.optInt(RestConstants.JSON_REVIEWS_TOTAL_TAG);
+            mAvgRating = ratings.optDouble(RestConstants.AVERAGE);
+            mTotalRatings = ratings.optInt(RestConstants.RATINGS_TOTAL);
+            mTotalReviews = ratings.optInt(RestConstants.REVIEWS_TOTAL);
         }
         return true;
     }

@@ -2,9 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListAdapter;
@@ -19,20 +17,16 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.ErrorConstants;
-import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.Map;
 
 /**
  * Class used to show the product offers
@@ -279,7 +273,6 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             getBaseActivity().updateCartInfo();
             hideActivityProgress();
             showFragmentContentContainer();
-            showAddToCartCompleteMessage(baseResponse);
             break;
         default:
             break;
@@ -288,66 +281,22 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        // Hide progress
         hideActivityProgress();
-        
-        if (super.handleErrorEvent(baseResponse)) {
-            return;
-        }
+        // Super
+        if (super.handleErrorEvent(baseResponse)) return;
+        // Validate type
         EventType eventType = baseResponse.getEventType();
-        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
-            hideActivityProgress();
             showFragmentContentContainer();
             showFragmentErrorRetry();
-            break;
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            hideActivityProgress();
-            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                Map errorMessages = baseResponse.getErrorMessages();
-                if (errorMessages != null) {
-                    String message = null;
-                    if (errorMessages.containsKey(ErrorConstants.ORDER_PRODUCT_SOLD_OUT)) {
-                        message = getString(R.string.product_outof_stock);
-                    } else if (errorMessages.containsKey(ErrorConstants.PRODUCT_ADD_OVER_QUANTITY)) {
-                        message = getString(R.string.error_add_to_shopping_cart_quantity);
-                    } else if (errorMessages.containsKey(ErrorConstants.ORDER_PRODUCT_ERROR_ADDING)) {
-                        message = getString(R.string.error_add_to_cart_failed);
-                    }
-
-                    if (message == null) {
-                        return;
-                    }
-
-                    FragmentManager fm = getFragmentManager();
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.error_add_to_cart_failed),
-                            message,
-                            getString(R.string.ok_label), "", new OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(fm, null);
-                    return;
-                }
-            }
-            if (!ErrorCode.isNetworkError(errorCode)) {
-                addToShoppingCartFailed();
-                return;
-            }
             break;
         default:
             break;
@@ -364,7 +313,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         ProductOffer offer = productOffers.getOffers().get(position);
         if(offer.getSeller() != null){
             Bundle bundle = new Bundle();
-            String targetUrl = offer.getSeller().getUrl();
+            String targetUrl = offer.getSeller().getTarget();
             String targetTitle = offer.getSeller().getName();
             bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
@@ -400,16 +349,6 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
         }
-    }
-
-    private void executeAddToShoppingCartCompleted() {
-        super.showInfoAddToShoppingCartCompleted();
-
-    }
-    
-    private void addToShoppingCartFailed() {
-        super.showInfoAddToShoppingCartFailed() ;
-
     }
 
     @Override

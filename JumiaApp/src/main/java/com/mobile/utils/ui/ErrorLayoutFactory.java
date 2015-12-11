@@ -1,5 +1,6 @@
 package com.mobile.utils.ui;
 
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
@@ -214,20 +215,22 @@ public class ErrorLayoutFactory {
     private void buildUnexpectedErrorLayout() {
         new Builder()
                 .setImage(R.drawable.ic_warning)
-                .setPrincipalMessageVisible(false)
+                .setPrincipalMessage(R.string.error_problem_fetching_data)
                 .setDetailMessage(R.string.server_error)
-                .setRotationVisible(true)
-                .setButtonMessage(R.string.try_again_retry)
-                .setButtonBackground(R.color.black_700);
+                .setRotationVisible(false)
+                .setButtonMessage(R.string.continue_shopping)
+                .setButtonTextColor(R.color.white)
+                .setButtonBackground(R.color.color_accent);
         actualError = UNEXPECTED_ERROR_LAYOUT;
     }
 
     private void buildCartEmptyLayout(){
         new Builder()
-                .setImage(R.drawable.img_emptycart)
+                .setImage(R.drawable.ico_empty_cart)
                 .setPrincipalMessage(R.string.order_no_items)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
+                .setButtonTextColor(R.color.white)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
         actualError = CART_EMPTY_LAYOUT;
@@ -236,9 +239,10 @@ public class ErrorLayoutFactory {
     private void buildContinueShoppingLayout() {
         new Builder()
                 .setImage(R.drawable.ic_warning)
-                .setPrincipalMessageVisible(false)
+                .setPrincipalMessage(R.string.error_problem_fetching_data)
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)
+                .setButtonTextColor(R.color.white)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
         actualError = CONTINUE_SHOPPING_LAYOUT;
@@ -250,6 +254,7 @@ public class ErrorLayoutFactory {
                 .setPrincipalMessage(R.string.catalog_no_results)
                 .setDetailMessageVisible(true)
                 .setDetailMessage(R.string.catalog_no_results_details)
+                .setButtonTextColor(R.color.white)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
@@ -308,6 +313,11 @@ public class ErrorLayoutFactory {
 
         Builder setButtonVisible(boolean isToShow){
             mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(isToShow ? View.VISIBLE : View.GONE);
+            return this;
+        }
+
+        Builder setButtonTextColor(@ColorRes int color){
+            ((TextView)mErrorLayout.findViewById(R.id.fragment_root_error_button_message)).setTextColor(mErrorLayout.getContext().getResources().getColor(color));
             return this;
         }
 

@@ -5,7 +5,6 @@ import android.os.Parcel;
 
 import com.mobile.newFramework.pojo.RestConstants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -37,18 +36,16 @@ public class CatalogPriceFilter extends CatalogFilter {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
-        option.initialize(jsonObject.getJSONObject(RestConstants.JSON_OPTION_TAG));
+        option.initialize(jsonObject.getJSONObject(RestConstants.OPTION));
         return true;
     }
 
     @Override
-    protected void parseFields(JSONArray fieldsArray) throws JSONException {
-        if(fieldsArray.length() != 0){
-            try{
-                option.setCheckBoxOption(new PriceFilterCheckBoxOption(fieldsArray.getJSONObject(0)));
-            }catch (JSONException ex){
+    protected void parseFields(JSONObject fieldsObject) throws JSONException {
+        try{
+            option.setCheckBoxOption(new PriceFilterCheckBoxOption(fieldsObject));
+        }catch (JSONException ex){
 
-            }
         }
     }
 
