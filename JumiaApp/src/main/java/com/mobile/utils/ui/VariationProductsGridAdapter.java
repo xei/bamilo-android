@@ -88,8 +88,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
-
-        UIUtils.showOrHideViews(View.GONE, holder.percentage, holder.ratingContainer, holder.favourite);
+        UIUtils.showOrHideViews(View.GONE, holder.percentage, holder.ratingContainer, holder.favourite, holder.newArrivalBadge);
 
     }
     
