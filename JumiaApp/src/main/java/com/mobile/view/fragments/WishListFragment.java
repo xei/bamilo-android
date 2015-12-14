@@ -245,7 +245,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Show the wish list container as first time.
      */
     protected void showWishListContainer(WishList wishList) {
-        WishListGridAdapter listAdapter = new WishListGridAdapter(wishList.getProducts(), new OnWishListViewHolderClickListener() {
+        WishListGridAdapter listAdapter = new WishListGridAdapter(getBaseActivity(), wishList.getProducts(), new OnWishListViewHolderClickListener() {
             @Override
             public void onItemClick(View view) {
                 WishListFragment.this.onItemClick(view);
@@ -568,7 +568,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * ######## SCROLL STATE ########
      */
 
-    private OnScrollListener onScrollListener = new OnScrollListener() {
+    private final OnScrollListener onScrollListener = new OnScrollListener() {
 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
