@@ -97,7 +97,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private long itemRemoved_quantity;
     private double itemRemoved_rating;
     private String itemRemoved_cart_value;
-    private static String mItemsToCartDeepLink;
+    private String mItemsToCartDeepLink;
     private NestedScrollView mNestedScroll;
 
     /**
@@ -242,7 +242,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         for (String simpleSku : itemsToCart) {
             productBySku.add(simpleSku);
         }
-        mItemsToCartDeepLink=null;
         // Case valid deep link
         if (!productBySku.isEmpty()) {
             triggerAddAllItems(productBySku);
