@@ -14,6 +14,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
@@ -304,19 +305,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
     public BaseActivity(@NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
-        this(R.layout.main, action, enabledMenuItems, userEvents, titleResId, contentLayoutId);
+        this(R.layout.main, action, enabledMenuItems, titleResId);
     }
 
     /**
      * Constructor
      */
-    public BaseActivity(int activityLayoutId, @NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
+    public BaseActivity(int activityLayoutId, @NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, int titleResId) {
         this.activityLayoutId = activityLayoutId;
-        //this.userEvents = userEvents;
         this.action = action;
         this.menuItems = enabledMenuItems;
         this.titleResId = titleResId;
-        //this.contentLayoutId = contentLayoutId;
     }
 
     /*
@@ -497,14 +496,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int newNavAction, int actionBarTitleResId, int checkoutStep) {
         Print.i(TAG, "ON UPDATE BASE COMPONENTS");
-        // Update the app bar layout
-        setAppBarLayout(this.action, newNavAction);
         // Update options menu and search bar
-        menuItems = enabledMenuItems;
-        hideKeyboard();
-        invalidateOptionsMenu();
-        // Update the sliding menu
+        this.menuItems = enabledMenuItems;
+        // Update the current nav action
+        int oldNavAction = this.action;
         this.action = newNavAction;
+        // Update the app bar layout
+        setAppBarLayout(oldNavAction, newNavAction);
+        // Hide TODO: VALIDATE IF THIS IS NECESSARY
+        //hideKeyboard();
+        // Update Options Menu
+        invalidateOptionsMenu();
         // Select step on Checkout
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
@@ -931,8 +933,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         // Set text color for old android versions
-        mSearchAutoComplete.setTextColor(getResources().getColor(R.color.search_edit_color));
-        mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.search_hint_color));
+        mSearchAutoComplete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.search_edit_color));
+        mSearchAutoComplete.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.search_hint_color));
         // Initial state
         MenuItemCompat.collapseActionView(mSearchMenuItem);
         // Calculate the max width to fill action bar
