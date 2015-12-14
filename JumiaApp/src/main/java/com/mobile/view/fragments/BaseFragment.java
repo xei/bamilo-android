@@ -615,7 +615,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.no_internet_access_warning_title));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getString(R.string.no_internet_access_warning_title));
         hideActivityProgress();
         showFragmentContentContainer();
     }
@@ -708,7 +708,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         try {
             boolean isSingleShop = getResources().getBoolean(R.bool.is_single_shop_country);
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getString(R.string.app_name));
+            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getBaseActivity().getString(R.string.app_name));
             TextView fallbackBest = (TextView) inflated.findViewById(R.id.fallback_best);
             TextView fallbackCountry = (TextView) inflated.findViewById(R.id.fallback_country);
             View countryD = inflated.findViewById(R.id.fallback_country_double);
