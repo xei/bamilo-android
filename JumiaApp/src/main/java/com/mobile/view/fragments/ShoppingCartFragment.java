@@ -588,6 +588,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
             TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
             TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
+            TextView isNew = (TextView) getView().findViewById(R.id.vat_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
             View shippingContainer = getView().findViewById(R.id.shipping_container);
             TextView shippingValue = (TextView)getView().findViewById(R.id.shipping_value);
@@ -743,7 +744,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
         prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
         prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
-
+        prodItem.isNew = (TextView) view.findViewById(R.id.new_arrival_badge);
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
 
         prodItem.pBar = view.findViewById(R.id.image_loading_progress);
@@ -757,6 +758,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.itemName.setSelected(true);
 
         String imageUrl = prodItem.itemValues.image;
+
+        // Hide is New badge because shopping cart product has no info regarding this attribute
+        prodItem.isNew.setVisibility(View.GONE);
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
                 R.drawable.no_image_small);
@@ -1037,6 +1041,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public TextView priceView;
         public TextView quantityBtn;
         public ImageView productView;
+        public TextView isNew;
         public View pBar;
 //        public TextView discountPercentage;
 //        public TextView priceDisc;
@@ -1061,7 +1066,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 //            priceDisc = null;
 //            variancesContainer = null;
             deleteBtn = null;
-
+            isNew = null;
             super.finalize();
         }
     }
