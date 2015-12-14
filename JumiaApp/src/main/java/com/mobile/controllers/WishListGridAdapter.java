@@ -1,5 +1,6 @@
 package com.mobile.controllers;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
@@ -25,9 +27,13 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
     private final ArrayList<ProductMultiple> products;
     private final OnWishListViewHolderClickListener listener;
 
-    public WishListGridAdapter(ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
+    private final boolean isTabletInLandscape;
+
+
+    public WishListGridAdapter(Context context, ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
         this.products = products;
         this.listener = listener;
+        this.isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(context);
     }
 
     /**
@@ -45,6 +51,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         public View addToCartButton;
         public View deleteButton;
         public View container;
+        public View vDivider;
 
         public WishListProductViewHolder(View view){
             super(view);
@@ -59,6 +66,12 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
             varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
             addToCartButton = itemView.findViewById(R.id.button_shop);
             deleteButton = itemView.findViewById(R.id.button_delete);
+            vDivider = itemView.findViewById(R.id.vdivider);
+            if(isTabletInLandscape){
+                vDivider.setVisibility(View.VISIBLE);
+            } else {
+                vDivider.setVisibility(View.GONE);
+            }
         }
     }
 
