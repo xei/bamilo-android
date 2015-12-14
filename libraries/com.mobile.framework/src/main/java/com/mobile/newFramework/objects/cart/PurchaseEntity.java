@@ -32,6 +32,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private double mSubTotalConverted;
     private int mCartCount;
     private double mVatValue;
+    private String mVatLabel;
     private double mShippingValue;
     private double mExtraCosts;
     private double mSumCostsValue;
@@ -65,6 +66,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         JSONObject vatObject = jsonObject.optJSONObject(RestConstants.VAT);
         if (vatObject != null) {
             mVatValue = vatObject.optDouble(RestConstants.VALUE);
+            mVatLabel = vatObject.optString(RestConstants.LABEL);
             mIsVatEnabled = vatObject.optBoolean(RestConstants.LABEL_CONFIGURATION);
         }
         // Delivery
@@ -162,6 +164,10 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
     public double getVatValue() {
         return this.mVatValue;
+    }
+
+    public String getVatLabel() {
+        return this.mVatLabel;
     }
 
     public double getShippingValue() {
@@ -293,6 +299,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         dest.writeDouble(mSubTotalConverted);
         dest.writeInt(mCartCount);
         dest.writeDouble(mVatValue);
+        dest.writeString(mVatLabel);
         dest.writeDouble(mShippingValue);
         dest.writeDouble(mExtraCosts);
         dest.writeDouble(mSumCostsValue);
@@ -322,6 +329,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         mSubTotalConverted = in.readDouble();
         mCartCount = in.readInt();
         mVatValue = in.readDouble();
+        mVatLabel = in.readString();
         mShippingValue = in.readDouble();
         mExtraCosts = in.readDouble();
         mSumCostsValue = in.readDouble();
