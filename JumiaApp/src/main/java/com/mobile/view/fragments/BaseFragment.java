@@ -820,7 +820,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
             case AUTO_LOGIN_EVENT:
-                handleSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
+            case FORGET_PASSWORD_EVENT:
+            case REMOVE_PRODUCT_FROM_WISH_LIST:
+            case ADD_PRODUCT_TO_WISH_LIST:
+                handleSuccessTaskEvent(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), eventType);
                 return true;
             default:
                 break;
@@ -860,7 +863,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Show warning messages
         else {
-            handleTaskEvent(response.getErrorMessage(), response.getEventTask(), response.getEventType());
+            handleErrorTaskEvent(response.getErrorMessage(), response.getEventTask(), response.getEventType());
         }
 
         /**
@@ -923,7 +926,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Handle task events.
      */
-    public void handleTaskEvent(final String errorMessage, final EventTask eventTask, final EventType eventType) {
+    public void handleErrorTaskEvent(final String errorMessage, final EventTask eventTask, final EventType eventType) {
         if (eventTask == EventTask.ACTION_TASK) {
             switch (eventType) {
                 case EDIT_ADDRESS_EVENT:
@@ -942,7 +945,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    public void handleSuccessMessage(final String successMessage, final EventTask eventTask, final EventType eventType) {
+    public void handleSuccessTaskEvent(final String successMessage, final EventTask eventTask, final EventType eventType) {
         if(eventTask == EventTask.ACTION_TASK){
             showWarningSuccessMessage(successMessage, eventType);
         }

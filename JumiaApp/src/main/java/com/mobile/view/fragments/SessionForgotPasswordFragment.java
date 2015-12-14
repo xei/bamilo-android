@@ -254,8 +254,11 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
+        // Call super
+        super.handleSuccessEvent(baseResponse);
+        // Show container
         showFragmentContentContainer();
+        // Validate event
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "onSuccessEvent eventType : " + eventType);
         switch (eventType) {
@@ -270,14 +273,9 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
                     showFragmentErrorRetry();
                 }
                 break;
-            case FORGET_PASSWORD_EVENT:
-                Print.i(TAG, "FORGET_PASSWORD_EVENT successful");
-                break;
             default:
                 break;
         }
-        super.handleTaskEvent(baseResponse.getErrorMessage(), baseResponse.getEventTask(), eventType);
-
     }
 
     @Override
