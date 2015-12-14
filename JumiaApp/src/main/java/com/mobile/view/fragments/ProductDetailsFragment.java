@@ -1157,7 +1157,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 WishListFragment.sForceReloadWishListFromNetwork = true;
                 // Update value
                 updateWishListValue();
-                super.handleSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
                 break;
             case GET_PRODUCT_DETAIL:
                 ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();

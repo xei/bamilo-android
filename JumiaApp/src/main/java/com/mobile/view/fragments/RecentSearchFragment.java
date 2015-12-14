@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.SearchSuggestionsAdapter;
@@ -212,6 +213,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                             String text = selectedSuggestion.getResult();
                             GetSearchSuggestionsHelper.saveSearchQuery(text);
                             executeSearchRequest(text);
+                            JumiaApplication.INSTANCE.setSearchedTerm(text);
                         }
                     });
 
