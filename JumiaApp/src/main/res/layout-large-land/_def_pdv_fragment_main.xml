@@ -16,7 +16,7 @@
     <!-- PDV PRODUCT MAIN: TITLES AND SLIDE SHOW -->
 
     <include
-        layout="@layout/_def_pdv_fragment_image"
+        layout="@layout/pdv_fragment_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignEnd="@id/center_point"
