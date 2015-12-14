@@ -503,7 +503,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         this.action = newNavAction;
         // Update the app bar layout
         setAppBarLayout(oldNavAction, newNavAction);
-        // Hide TODO: VALIDATE IF THIS IS NECESSARY
+        // Hide TODO: VALIDATE IF THIS IS NECESSARY (v2.9)
         //hideKeyboard();
         // Update Options Menu
         invalidateOptionsMenu();
