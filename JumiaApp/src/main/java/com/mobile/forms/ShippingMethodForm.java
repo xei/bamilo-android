@@ -5,7 +5,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.mobile.newFramework.objects.checkout.ShippingMethodFormHolder;
+import com.mobile.newFramework.objects.checkout.ShippingFormField;
 import com.mobile.utils.ShippingRadioGroupList;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.HashMap;
  * @modified sergiopereira
  * 
  */
-public class ShippingMethodForm extends ShippingMethodFormHolder implements Parcelable {
+public class ShippingMethodForm extends ShippingFormField implements Parcelable {
 
 	public final static String TAG = ShippingMethodForm.class.getSimpleName();
 
@@ -31,7 +31,7 @@ public class ShippingMethodForm extends ShippingMethodFormHolder implements Parc
         // ...
     }
 
-    public ShippingMethodForm(ShippingMethodFormHolder shippingMethodFormHolder){
+    public ShippingMethodForm(ShippingFormField shippingMethodFormHolder){
         this.id = shippingMethodFormHolder.id;
         this.key = shippingMethodFormHolder.key;
         this.label = shippingMethodFormHolder.label;

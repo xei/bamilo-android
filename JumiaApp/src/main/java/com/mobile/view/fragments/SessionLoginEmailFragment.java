@@ -338,7 +338,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         switch (eventType) {
             case LOGIN_EVENT:
                 // Get customer
-                NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getMetadata().getData();
+                NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
@@ -346,7 +346,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 getActivity().onBackPressed();
                 return;
             case GET_LOGIN_FORM_EVENT:
-                mForm = (Form) baseResponse.getMetadata().getData();
+                mForm = (Form) baseResponse.getContentData();
                 loadForm(mForm);
             default:
                 break;

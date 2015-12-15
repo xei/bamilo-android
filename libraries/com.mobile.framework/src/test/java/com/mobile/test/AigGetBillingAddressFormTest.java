@@ -14,12 +14,12 @@ public class AigGetBillingAddressFormTest extends AigTestCase {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_BILLING_FORM_EVENT;
+        return EventType.GET_MULTI_STEP_ADDRESSES;
     }
 
     @Override
     public String getAigInterfaceName() {
-        return AigApiInterface.getBillingAddressForm;
+        return AigApiInterface.getMultiStepAddresses;
     }
 
     @Override

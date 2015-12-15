@@ -251,7 +251,7 @@ public class MyAccountMyAddressesFragment extends MyAddressesFragment{
 
         switch(eventType){
             case GET_CUSTOMER_ADDRESSES_EVENT:
-                this.addresses = (Addresses)baseResponse.getMetadata().getData();
+                this.addresses = (Addresses)baseResponse.getContentData();
 
                 if(this.addresses != null){
                     // Show addresses using saved value, if is the same address for Bill and Ship

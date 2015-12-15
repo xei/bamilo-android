@@ -264,7 +264,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
-            productOffers = (OfferList)baseResponse.getMetadata().getData();
+            productOffers = (OfferList)baseResponse.getContentData();
             setAppContent();
             showFragmentContentContainer();
             hideActivityProgress();

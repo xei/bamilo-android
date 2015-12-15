@@ -93,7 +93,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
             Print.w(TAG, "WARNING: IE ON GET RECENT SEARCHES", e);
         }
         //
-        Suggestions searchSuggestions = (Suggestions) baseResponse.getMetadata().getData();
+        Suggestions searchSuggestions = (Suggestions) baseResponse.getContentData();
         CollectionUtils.addAll(suggestions, searchSuggestions);
 
         SuggestionsStruct suggestionsStruct = new SuggestionsStruct(searchSuggestions);

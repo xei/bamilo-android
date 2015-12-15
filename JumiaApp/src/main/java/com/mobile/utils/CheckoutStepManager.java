@@ -1,9 +1,10 @@
 package com.mobile.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,10 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.utils.TextViewUtils;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -45,12 +47,14 @@ public class CheckoutStepManager {
      * @param nextStep The next step
      * @return {@link FragmentType}
      */
-    public static FragmentType getNextFragment(String nextStep) {
+    public static FragmentType getNextFragment(@Nullable String nextStep) {
         Print.i(TAG, "NEXT STEP STRING: " + nextStep);
         // Default case
         FragmentType fragmentType = FragmentType.UNKNOWN;
+        // Case not valid next step (null or empty)
+        if(TextUtils.isEmpty(nextStep)) return fragmentType;
         // Create addresses step
-        if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
+        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
         // Billing and shipping address step
         else if (nextStep.equalsIgnoreCase(BILLING_STEP)) fragmentType = FragmentType.MY_ADDRESSES;
         // Shipping method step
@@ -105,19 +109,19 @@ public class CheckoutStepManager {
     public static void setTotalBar(@NonNull View view, @NonNull PurchaseEntity purchaseEntity){
         double value = purchaseEntity.getTotal();
         if(value > 0){
-            Resources resources = view.getResources();
-            final String title = resources.getString(R.string.order_summary_total_label);
-            final String finalValue = CurrencyFormatter.formatCurrency(value).replaceAll("\\s","");
-            final int color1 = resources.getColor(R.color.black);
-            final int color2 = resources.getColor(R.color.black_800);
+            Context context = view.getContext();
+            final String title = context.getString(R.string.order_summary_total_label);
+            final String finalValue = CurrencyFormatter.formatCurrency(value);
+            final int color1 = ContextCompat.getColor(context, R.color.black);
+            final int color2 = ContextCompat.getColor(context, R.color.black_800);
             final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
             titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
-            titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue, color1, color2));
+            titleTextView.setText(UIUtils.setSpan(title + " ", finalValue, color1, color2));
             titleTextView.post(new Runnable() {
                 @Override
                 public void run() {
                     if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
-                        titleTextView.setText(TextViewUtils.setSpan(title + "\n", finalValue, color1, color2));
+                        titleTextView.setText(UIUtils.setSpan(title + "\n", finalValue, color1, color2));
                     }
                 }
             });

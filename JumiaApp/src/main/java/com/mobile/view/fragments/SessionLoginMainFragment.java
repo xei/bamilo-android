@@ -390,7 +390,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
             case FACEBOOK_LOGIN_EVENT:
             case AUTO_LOGIN_EVENT:
                 // Get Customer
-                NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getMetadata().getData();
+                NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextStepFromApi = nextStepStruct.getFragmentType();
                 // Case valid next step
                 if(nextStepFromApi != FragmentType.UNKNOWN) {

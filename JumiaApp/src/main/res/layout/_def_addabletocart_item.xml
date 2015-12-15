@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/addabletocart_item_container"
     style="@style/grid_row_style"
-    android:layout_height="@dimen/catalog_list_item_height"
-    >
+    android:layout_height="@dimen/catalog_list_item_height">
 
     <!-- IMAGE CONTAINER -->
 
@@ -23,13 +22,13 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/new_arrival_badge"
         style="@style/NewArrivalBadge"
-        android:layout_alignTop="@+id/item_image_container"
-        android:layout_alignLeft="@+id/item_image_container"
-        android:layout_alignStart="@+id/item_image_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_30px"
+        android:layout_alignLeft="@+id/item_image_container"
+        android:layout_alignStart="@+id/item_image_container"
+        android:layout_alignTop="@+id/item_image_container"
         android:layout_gravity="top|left|start"
+        android:layout_marginTop="@dimen/dimen_30px"
         android:text="@string/new_arrival_badge" />
 
     <!-- INFO CONTAINER -->
@@ -49,13 +48,13 @@
 
     <View
         style="@style/divider_horizontal"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
+
     <View
         android:id="@+id/vdivider"
         style="@style/VerticalListDivider"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
-         />
+        android:visibility="gone" />
 
 </RelativeLayout>

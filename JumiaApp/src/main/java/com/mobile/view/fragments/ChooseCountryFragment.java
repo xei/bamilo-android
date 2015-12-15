@@ -396,7 +396,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             case GET_GLOBAL_CONFIGURATIONS:
                 Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
                 // Get countries
-                JumiaApplication.INSTANCE.countriesAvailable = (AvailableCountries) baseResponse.getMetadata().getData();
+                JumiaApplication.INSTANCE.countriesAvailable = (AvailableCountries) baseResponse.getContentData();
                 // Show countries
                 showAvailableCountries();
                 showFragmentContentContainer();

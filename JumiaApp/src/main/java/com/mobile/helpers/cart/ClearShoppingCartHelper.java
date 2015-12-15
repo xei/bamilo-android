@@ -61,7 +61,7 @@ public class ClearShoppingCartHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
 
-        PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
+        PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
 
         //TODO move to observable
         JumiaApplication.INSTANCE.setCart(null);

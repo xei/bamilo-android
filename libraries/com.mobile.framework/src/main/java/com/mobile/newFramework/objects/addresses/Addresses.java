@@ -39,14 +39,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
         super();
     }
 
-    /**
-     * Constructor
-     *
-     * @throws JSONException
-     */
-    public Addresses(JSONObject jsonObject) throws JSONException {
-        initialize(jsonObject);
-    }
 
     /*
      * (non-Javadoc)
@@ -209,7 +201,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
     /**
      * Parcel constructor
      */
-    private Addresses(Parcel in) {
+    protected Addresses(Parcel in) {
         shippingAddress = in.readParcelable(Address.class.getClassLoader());
         billingAddress = in.readParcelable(Address.class.getClassLoader());
         addresses = new HashMap<>();

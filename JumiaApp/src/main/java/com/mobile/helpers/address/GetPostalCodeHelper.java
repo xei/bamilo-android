@@ -43,7 +43,7 @@ public class GetPostalCodeHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        AddressPostalCodes postalCodes = (AddressPostalCodes) baseResponse.getMetadata().getData();
+        AddressPostalCodes postalCodes = (AddressPostalCodes) baseResponse.getContentData();
         AddressPostalCodesStruct addressPostalCodes = new AddressPostalCodesStruct(postalCodes);
         addressPostalCodes.setCustomTag(customTag);
         baseResponse.getMetadata().setData(addressPostalCodes);

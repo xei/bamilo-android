@@ -4,17 +4,17 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Created by rsoares on 6/2/15.
  */
-public class ShippingMethodFormHolder implements IJSONSerializable{
+public class ShippingFormField implements IJSONSerializable{
 
     public String id;
     public String key;
@@ -25,12 +25,12 @@ public class ShippingMethodFormHolder implements IJSONSerializable{
     public boolean required;
     public ArrayList<String> options;
     public HashMap<String, ShippingMethodOption> optionsShippingMethod;
-    public ArrayList<ShippingMethodSubFormHolder> shippingMethodsSubForms;
+    public ArrayList<ShippingFormFieldPUS> shippingMethodsSubForms;
 
     /**
      * Form empty constructor.
      */
-    public ShippingMethodFormHolder() {
+    public ShippingFormField() {
         this.id = "";
         this.key = "";
         this.name = "";
@@ -51,34 +51,25 @@ public class ShippingMethodFormHolder implements IJSONSerializable{
      * )
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
-        try {
-            id = jsonObject.optString(RestConstants.ID);
-            name = jsonObject.optString(RestConstants.NAME);
-            key = jsonObject.optString(RestConstants.KEY);
-            value = jsonObject.optString(RestConstants.VALUE);
-            label = jsonObject.optString(RestConstants.LABEL);
-            type = jsonObject.optString(RestConstants.TYPE);
-
-            if(jsonObject.has(RestConstants.RULES)){
-                required = jsonObject.getJSONObject(RestConstants.RULES).optBoolean(RestConstants.REQUIRED, false);
-            }
-
-            JSONObject optionsObject = jsonObject.getJSONObject(RestConstants.OPTIONS);
-
-            Iterator<?> opts = optionsObject.keys();
-            while (opts.hasNext()) {
-                String key = opts.next().toString();
-                options.add(key);
-                ShippingMethodOption shippingMethod = new ShippingMethodOption();
-                shippingMethod.initialize(key, optionsObject.optJSONObject(key));
-                optionsShippingMethod.put(key, shippingMethod);
-            }
-
-        } catch (JSONException e) {
-            return false;
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        id = jsonObject.optString(RestConstants.ID);
+        name = jsonObject.optString(RestConstants.NAME);
+        key = jsonObject.optString(RestConstants.KEY);
+        value = jsonObject.optString(RestConstants.VALUE);
+        label = jsonObject.optString(RestConstants.LABEL);
+        type = jsonObject.optString(RestConstants.TYPE);
+        if (jsonObject.has(RestConstants.RULES)) {
+            required = jsonObject.getJSONObject(RestConstants.RULES).optBoolean(RestConstants.REQUIRED);
         }
-
+        // Save option
+        JSONArray options = jsonObject.getJSONArray(RestConstants.OPTIONS);
+        for (int i = 0; i < options.length(); i++) {
+            ShippingMethodOption shippingMethod = new ShippingMethodOption();
+            shippingMethod.initialize(options.getJSONObject(i));
+            // Save the option with the value as a key
+            this.options.add(shippingMethod.value);
+            this.optionsShippingMethod.put(shippingMethod.value, shippingMethod);
+        }
         return true;
     }
 

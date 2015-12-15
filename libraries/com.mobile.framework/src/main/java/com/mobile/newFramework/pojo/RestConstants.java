@@ -259,7 +259,6 @@ public class RestConstants {
     public static final String PAGE = "page";
     public static final String PER_PAGE = "per_page";
     public static final String PAGINATION = "pagination";
-    public static final String ADDRESSES = "addresses";
     public static final String VERTICAL = "vertical";
     public static final String FASHION = "fashion";
     public static final String WISH_LIST_PRODUCTS = "wishlist_products";
@@ -302,4 +301,6 @@ public class RestConstants {
     public static final String BUNDLE_VERSION = "bundle_version";
     public static final String END_POINT = "end_point";
     public static final String ARRAY = "array";
+    public static final String ADDRESSES_BILLING_ID = "addresses[billing_id]";
+    public static final String ADDRESSES_SHIPPING_ID = "addresses[shipping_id]";
 }

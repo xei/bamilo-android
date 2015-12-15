@@ -3,6 +3,9 @@ package com.mobile.utils.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
@@ -158,5 +161,12 @@ public class UIUtils {
                 return false;
             }
         });
+    }
+
+    public static SpannableString setSpan(String first, String second, int firstColor, int secondColor){
+        SpannableString spannableString = new SpannableString(first + second);
+        spannableString.setSpan(new ForegroundColorSpan(firstColor), 0, first.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(secondColor), first.length(), first.length() + second.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString;
     }
 }

@@ -1,6 +1,6 @@
 package com.mobile.test;
 
-import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
+import com.mobile.newFramework.objects.checkout.MultiStepPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
@@ -14,12 +14,12 @@ public class AigGetPaymentMethodsFormTest extends AigTestCase {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_PAYMENT_METHODS_EVENT;
+        return EventType.GET_MULTI_STEP_PAYMENT;
     }
 
     @Override
     public String getAigInterfaceName() {
-        return AigApiInterface.getPaymentMethodsForm;
+        return AigApiInterface.getMultiStepPayment;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class AigGetPaymentMethodsFormTest extends AigTestCase {
     public void testResponse(BaseResponse response) {
         Print.d("RESPONSE SUCCESS: " + response.hadSuccess());
         assertTrue("Success is true", response.hadSuccess());
-        CheckoutFormPayment form = (CheckoutFormPayment) response.getMetadata().getData();
+        MultiStepPayment form = (MultiStepPayment) response.getMetadata().getData();
         assertNotNull("Form is null", form);
 
         //assertFalse("Success is false", response.hadSuccess());

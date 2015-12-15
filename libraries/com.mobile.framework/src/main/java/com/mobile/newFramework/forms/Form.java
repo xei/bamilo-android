@@ -15,17 +15,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Class that represents an input form.
- * 
+ *
  * @author GuilhermeSilva
- * 
  */
 public class Form implements IJSONSerializable, Parcelable {
 
-	public final static String TAG = Form.class.getSimpleName();
+    public final static String TAG = Form.class.getSimpleName();
 
     private int mType;
     private String method;
@@ -64,7 +62,7 @@ public class Form implements IJSONSerializable, Parcelable {
         return action;
     }
 
-    public Map<String, FormField> getFieldKeyMap(){
+    public Map<String, FormField> getFieldKeyMap() {
         return mFieldKeyMap;
     }
 
@@ -92,60 +90,28 @@ public class Form implements IJSONSerializable, Parcelable {
      * )
      */
     @Override
-    public boolean initialize(JSONObject json) {
+    public boolean initialize(JSONObject json) throws JSONException {
+        JSONObject jsonObject = json.getJSONObject(RestConstants.FORM_ENTITY);
+        initAsSubForm(jsonObject);
+        return true;
+    }
+
+    public boolean initAsSubForm(JSONObject jsonObject) {
         try {
-            JSONObject jsonObject = json.getJSONObject(RestConstants.FORM_ENTITY);
             method = jsonObject.optString(RestConstants.METHOD);
             action = jsonObject.optString(RestConstants.ACTION);
-
-            // Case FIELDS
-            JSONArray fieldsArray = null;
-            if(jsonObject.has(RestConstants.FIELDS)){
-                fieldsArray = jsonObject.getJSONArray(RestConstants.FIELDS);
-            }
-
-            // Validate array
-            if(fieldsArray != null){
-                for (int i = 0; i < fieldsArray.length(); ++i) {
-                    // TODO: VALIDATE THIS APPROACH
-                    if(!fieldsArray.getJSONObject(i).has(RestConstants.SCENARIO) && !fieldsArray.getJSONObject(i).has(RestConstants.ID)){
-                        FormField field = new FormField(this);
-                        if (field.initialize(fieldsArray.getJSONObject(i))) {
-                            fields.add(field);
-                            mFieldKeyMap.put(field.getKey(), field);
-                        }
-                    }
-                    // TODO: VALIDATE THIS APPROACH
-                    else {
-                        Form subForm = new Form();
-                        subForm.initialize(fieldsArray.getJSONObject(i));
-                        subForms.put(fieldsArray.getJSONObject(i).getString(RestConstants.SCENARIO), subForm);
-                    }
+            JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.FIELDS);
+            for (int i = 0; i < fieldsArray.length(); ++i) {
+                FormField field = new FormField(this);
+                if (field.initialize(fieldsArray.getJSONObject(i))) {
+                    fields.add(field);
+                    mFieldKeyMap.put(field.getKey(), field);
                 }
             }
-            // TODO: VALIDATE THIS APPROACH
-            if(subForms != null && subForms.size() > 0){
-                for (int i = 0; i < fields.size(); i++) {
-                    if(fields.get(i).getDataSet().size()>0){
-                        Set<String> keys = fields.get(i).getDataSet().keySet();
-                        fields.get(i).setPaymentMethodsField(new HashMap<String, Form>());
-                        for (String key : keys) {
-                            if(subForms.containsKey(key)){
-                                Print.d("code1subForms : " + key + " : " + subForms.get(key));
-                                fields.get(i).getPaymentMethodsField().put(key, subForms.get(key));
-                            }
-                        }
-                    }
-                }
-                subForms.clear();
-                subForms = null;
-            }
-
         } catch (JSONException e) {
             Print.d("initialize: error parsing jsonobject" + e);
             return false;
         }
-
         return true;
     }
 
@@ -171,7 +137,7 @@ public class Form implements IJSONSerializable, Parcelable {
         }
         return jsonObject;
     }
-    
+
     @Override
     public int describeContents() {
         return 0;
@@ -184,7 +150,7 @@ public class Form implements IJSONSerializable, Parcelable {
         dest.writeString(action);
         dest.writeList(fields);
     }
-    
+
     /**
      * Parcel constructor
      */
@@ -197,7 +163,7 @@ public class Form implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * Create parcelable 
+     * Create parcelable
      */
     public static final Creator<Form> CREATOR = new Creator<Form>() {
         public Form createFromParcel(Parcel in) {

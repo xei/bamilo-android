@@ -530,7 +530,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         switch (eventType) {
             case GET_HOME_EVENT:
                 Print.i(TAG, "ON SUCCESS RESPONSE: GET_HOME_EVENT");
-                HomePageObject homePage = (HomePageObject) baseResponse.getMetadata().getData();
+                HomePageObject homePage = (HomePageObject) baseResponse.getContentData();
                 if (homePage != null && homePage.hasTeasers()) {
                     Print.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
                     // Save home page

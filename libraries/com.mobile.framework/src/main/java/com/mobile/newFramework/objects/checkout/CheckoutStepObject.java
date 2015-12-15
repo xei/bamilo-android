@@ -12,23 +12,19 @@ import org.json.JSONObject;
  */
 public class CheckoutStepObject implements IJSONSerializable {
 
-    private String nextStep;
+    private String mNextCheckoutStep;
 
     public CheckoutStepObject() {
     }
 
-    public CheckoutStepObject(CheckoutStepObject checkoutStepObject) {
-        this.nextStep = checkoutStepObject.nextStep;
-    }
-
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        nextStep = jsonObject.getJSONObject(RestConstants.MULTI_STEP_ENTITY).getString(RestConstants.NEXT_STEP);
+        mNextCheckoutStep = jsonObject.getJSONObject(RestConstants.MULTI_STEP_ENTITY).getString(RestConstants.NEXT_STEP);
         return true;
     }
 
-    public String getNextStep() {
-        return nextStep;
+    public String getNextCheckoutStep() {
+        return mNextCheckoutStep;
     }
 
     @Override

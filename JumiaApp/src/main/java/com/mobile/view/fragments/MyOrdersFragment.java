@@ -302,7 +302,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_MY_ORDERS_LIST_EVENT:
-                MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
+                MyOrder orders = (MyOrder) baseResponse.getContentData();
                 ArrayList<Order> orderList = orders.getOrders();
                 // Get max pages
                 mMaxPages = orders.getTotalPages();

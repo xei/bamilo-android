@@ -12,7 +12,6 @@ import android.widget.ScrollView;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -46,12 +45,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
 
     private static final String ISNT_SAME_ADDRESS = "0";
 
-    protected static final String BILLING_ID_TAG = "billing";
-
-    protected static final String SHIPPING_ID_TAG = "shipping";
-
-    protected static final String IS_SAME_TAG = "equal";
-
     protected GenericRadioGroup mTopRadioGroup;
 
     protected GenericRadioGroup mBottomRadioGroup;
@@ -67,8 +60,6 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
     protected View mTopAddContainer;
 
     protected ScrollView mMainScrollView;
-
-    protected Form hiddenForm;
 
     protected static String sameAddress = "";
 

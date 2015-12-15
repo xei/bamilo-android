@@ -478,7 +478,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessApiEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS API EVENT");
-        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct)baseResponse.getMetadata().getData();
+        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct)baseResponse.getContentData();
         // Validate out dated sections
         if (apiInformation.isSectionNameConfigurations()) {
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");

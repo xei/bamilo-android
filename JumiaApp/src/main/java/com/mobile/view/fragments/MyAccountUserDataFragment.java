@@ -293,12 +293,12 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
         switch (eventType) {
             case GET_CHANGE_PASSWORD_FORM_EVENT:
-                Form passwordForm = (Form)baseResponse.getMetadata().getData();
+                Form passwordForm = (Form)baseResponse.getContentData();
                 fillChangePasswordForm(passwordForm);
                 Print.i(TAG, "GET CHANGE PASSWORD FORM");
                 break;
             case EDIT_USER_DATA_FORM_EVENT:
-                Form userForm = (Form)baseResponse.getMetadata().getData();
+                Form userForm = (Form)baseResponse.getContentData();
                 fillUserDataForm(userForm);
                 showFragmentContentContainer();
                 Print.i(TAG, "GET USER DATA FORM");

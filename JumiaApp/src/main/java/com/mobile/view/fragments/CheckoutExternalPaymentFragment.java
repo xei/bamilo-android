@@ -534,7 +534,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_CUSTOMER:
-                customer = (Customer)baseResponse.getMetadata().getData();
+                customer = (Customer)baseResponse.getContentData();
                 JumiaApplication.CUSTOMER = customer;
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:

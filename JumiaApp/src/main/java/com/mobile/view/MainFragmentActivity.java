@@ -24,8 +24,8 @@ import com.mobile.view.fragments.CatalogFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
 import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
+import com.mobile.view.fragments.CheckoutFinishFragment;
 import com.mobile.view.fragments.CheckoutMyAddressesFragment;
-import com.mobile.view.fragments.CheckoutMyOrderFragment;
 import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
@@ -350,7 +350,7 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = CheckoutPaymentMethodsFragment.getInstance();
                 break;
             case MY_ORDER:
-                fragment = CheckoutMyOrderFragment.getInstance(bundle);
+                fragment = CheckoutFinishFragment.getInstance(bundle);
                 break;
             case CHECKOUT_THANKS:
                 fragment = CheckoutThanksFragment.getInstance(bundle);
