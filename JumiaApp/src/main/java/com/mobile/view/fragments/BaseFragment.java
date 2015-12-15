@@ -163,7 +163,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * #### LIFE CICLE ####
+     * #### LIFE CYCLE ####
      */
 
     /*
@@ -929,6 +929,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void handleErrorTaskEvent(final String errorMessage, final EventTask eventTask, final EventType eventType) {
         if (eventTask == EventTask.ACTION_TASK) {
             switch (eventType) {
+                // Case form submission
                 case EDIT_ADDRESS_EVENT:
                 case REGISTER_ACCOUNT_EVENT:
                 case EDIT_USER_DATA_EVENT:
@@ -936,8 +937,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 case REVIEW_RATING_PRODUCT_EVENT:
                 case FORGET_PASSWORD_EVENT:
                 case LOGIN_EVENT:
-                    // Used the showFormValidateMessages(form)
-                    break;
+                    // If the error message is empty used the showFormValidateMessages(form)
+                    if(TextUtils.isEmpty(errorMessage)) break;
+                // Case other tasks
                 default:
                     showWarningErrorMessage(errorMessage, eventType);
                     break;

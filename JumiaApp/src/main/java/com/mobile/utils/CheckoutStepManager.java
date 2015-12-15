@@ -157,24 +157,26 @@ public class CheckoutStepManager {
      * @param nextStepFromApi - The next step from Api, used case is in checkout process
      * @author spereira
      */
-    public static void validateLoggedNextStep(BaseActivity activity, boolean isInCheckoutProcess, FragmentType mParentFragmentType, FragmentType nextStepFromParent, FragmentType nextStepFromApi) {
+    public static void validateLoggedNextStep(BaseActivity activity, boolean isInCheckoutProcess, FragmentType mParentFragmentType, FragmentType nextStepFromParent, FragmentType nextStepFromApi, Bundle arguments) {
         // Case next step from api
         if(isInCheckoutProcess) {
             goToCheckoutNextStepFromApi(activity, mParentFragmentType, nextStepFromApi);
         } else {
-            goToNextStepFromParent(activity, nextStepFromParent);
+            goToNextStepFromParent(activity, nextStepFromParent, arguments);
         }
     }
 
     /**
      * Method used to switch the step
      */
-    private static void goToNextStepFromParent(BaseActivity activity, FragmentType nextStepFromParent) {
+    private static void goToNextStepFromParent(BaseActivity activity, FragmentType nextStepFromParent, Bundle arguments) {
         // Validate the next step
         if (nextStepFromParent != null && nextStepFromParent != FragmentType.UNKNOWN) {
             Print.i(TAG, "NEXT STEP FROM PARENT: " + nextStepFromParent.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
             Bundle args = new Bundle();
+            if(arguments != null)
+                args = arguments;
             args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
             activity.onSwitchFragment(nextStepFromParent, args, FragmentController.ADD_TO_BACK_STACK);
         } else {

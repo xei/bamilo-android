@@ -403,7 +403,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                         TrackerDelegator.trackLoginSuccessful(customer, true, true);
                     }
                     // Validate the next step
-                    CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi);
+                    CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
 
                 }
                 // Case unknown checkout step

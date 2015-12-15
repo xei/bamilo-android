@@ -292,7 +292,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void addMultipleItemsShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
+    void addMultipleItemsShoppingCart(@Field("product_list[]") ArrayList<String> keys, Callback<BaseResponse<PurchaseEntity>> callback);
     String addMultipleItemsShoppingCart = "addMultipleItemsShoppingCart";
 
     @FormUrlEncoded

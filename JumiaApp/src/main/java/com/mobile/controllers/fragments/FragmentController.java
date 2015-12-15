@@ -35,9 +35,7 @@ public class FragmentController {
     private static final String TAG = FragmentController.class.getSimpleName();
     
     private static final boolean ANIMATION_IN = true;
-    
-    private static final boolean ANIMATION_OUT = false;
-    
+
     public static final Boolean ADD_TO_BACK_STACK = true;
     
     public static final Bundle NO_BUNDLE = null;

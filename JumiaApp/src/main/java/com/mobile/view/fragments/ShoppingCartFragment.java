@@ -104,7 +104,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Empty constructor
      */
     public ShoppingCartFragment() {
-        super(EnumSet.of( MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
                 NavigationAction.BASKET,
                 R.layout.shopping_basket,
                 IntConstants.ACTION_BAR_NO_TITLE,
@@ -238,10 +238,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
         Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
         // Create arguments to add all items to cart
-        HashMap<String, String> productBySku = new HashMap<>();
+        ArrayList<String> productBySku = new ArrayList();
         for (String simpleSku : itemsToCart) {
-            // sku -> simple sku
-            productBySku.put(simpleSku.split("-")[0], simpleSku);
+            productBySku.add(simpleSku);
         }
         // Case valid deep link
         if (!productBySku.isEmpty()) {
@@ -301,10 +300,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      * Trigger to add all items to cart (Deep link).
      */
-    private void triggerAddAllItems(HashMap<String, String> values) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ShoppingCartAddMultipleItemsHelper.ADD_ITEMS, values);
-        triggerContentEventProgress(new ShoppingCartAddMultipleItemsHelper(), bundle, this);
+    private void triggerAddAllItems(ArrayList<String> values) {
+        triggerContentEventProgress(new ShoppingCartAddMultipleItemsHelper(), ShoppingCartAddMultipleItemsHelper.createBundle(values), this);
     }
 
     /**
@@ -486,16 +483,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         return true;
     }
 
-    /**
-     *
-     */
-    private void onAddItemsToShoppingCartRequestError(){
-        hideActivityProgress();
-        if(JumiaApplication.INSTANCE.getCart() != null)
-            displayShoppingCart(JumiaApplication.INSTANCE.getCart());
-//        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.some_products_not_added));
-
-    }
 
     /**
      *
@@ -548,7 +535,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 break;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-                onAddItemsToShoppingCartRequestError();
+                showNoItems();
                 break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 if (items.size() == 0) {
@@ -587,6 +574,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
             TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
             TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
+            TextView isNew = (TextView) getView().findViewById(R.id.vat_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
             View shippingContainer = getView().findViewById(R.id.shipping_container);
             TextView shippingValue = (TextView)getView().findViewById(R.id.shipping_value);
@@ -742,7 +730,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
         prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
         prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
-
+        prodItem.isNew = (TextView) view.findViewById(R.id.new_arrival_badge);
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
 
         prodItem.pBar = view.findViewById(R.id.image_loading_progress);
@@ -753,6 +741,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.itemName.setSelected(true);
 
         String imageUrl = prodItem.itemValues.image;
+
+        // Hide is New badge because shopping cart product has no info regarding this attribute
+        prodItem.isNew.setVisibility(View.GONE);
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
                 R.drawable.no_image_small);
@@ -1011,6 +1002,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public TextView priceView;
         public TextView quantityBtn;
         public ImageView productView;
+        public TextView isNew;
         public View pBar;
 //        public TextView discountPercentage;
 //        public TextView priceDisc;
@@ -1035,7 +1027,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 //            priceDisc = null;
 //            variancesContainer = null;
             deleteBtn = null;
-
+            isNew = null;
             super.finalize();
         }
     }
