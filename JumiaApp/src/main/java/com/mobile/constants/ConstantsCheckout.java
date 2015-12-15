@@ -28,7 +28,6 @@ public class ConstantsCheckout {
     public static final int CHECKOUT_PAYMENT = 3;
     public static final int CHECKOUT_ORDER = 4;
     public static final int CHECKOUT_THANKS = 5;
-    public static final int CHECKOUT_NO_SET_HEADER = 6;
     public static final int NO_CHECKOUT = -1;
 
     @IntDef({
@@ -38,7 +37,6 @@ public class ConstantsCheckout {
             CHECKOUT_PAYMENT,
             CHECKOUT_ORDER,
             CHECKOUT_THANKS,
-            CHECKOUT_NO_SET_HEADER,
             NO_CHECKOUT,
     })
     @Retention(RetentionPolicy.SOURCE)

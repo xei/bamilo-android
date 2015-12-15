@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -17,6 +18,7 @@ import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.location.LocationHelper;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.fragments.CampaignsFragment;
 
@@ -803,6 +805,53 @@ public class DeepLinkManager {
             }
         }
         return bundle;
+    }
+
+    // ####################### DEEP LINK #######################
+
+    /**
+     * Validate and process intent from notification
+     * @return valid or invalid
+     */
+    public static boolean onSwitchToDeepLink(BaseActivity activity, Intent intent) {
+        // Get deep link
+        Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(intent);
+        // Validate deep link
+        boolean isDeepLinkLaunch = launchValidDeepLink(activity, mDeepLinkBundle);
+        // Track open app event for all tracker but Adjust
+        TrackerDelegator.trackAppOpen(activity.getApplicationContext(), isDeepLinkLaunch);
+        // Adjust reattribution
+        TrackerDelegator.deeplinkReattribution(intent);
+        // return result
+        return isDeepLinkLaunch;
+    }
+
+    /**
+     * Validate and process intent from notification
+     * @param bundle The deep link intent
+     * @return valid or invalid
+     */
+    private static boolean launchValidDeepLink(BaseActivity activity, Bundle bundle) {
+        Print.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
+        if (bundle != null) {
+            // Get fragment type
+            FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
+            //Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
+            // Validate fragment type
+            if (fragmentType != FragmentType.UNKNOWN) {
+                // Restart back stack and fragment manager
+                FragmentController.getInstance().popAllBackStack(activity);
+                // Validate this step to maintain the base TAG
+                activity.onSwitchFragment(FragmentType.HOME, bundle, FragmentController.ADD_TO_BACK_STACK);
+                // Switch to fragment with respective bundle
+                if(fragmentType != FragmentType.HOME) {
+                    activity.onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
+                }
+                return true;
+            }
+        }
+        Print.i(TAG, "DEEP LINK: INVALID INTENT");
+        return false;
     }
 
 }
