@@ -536,9 +536,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 break;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
-            //    onAddItemsToShoppingCartRequestError();
                 showNoItems();
-                showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
                 break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 if (items.size() == 0) {
