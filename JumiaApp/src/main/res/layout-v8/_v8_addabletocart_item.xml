@@ -46,4 +46,12 @@
         style="@style/divider_horizontal"
         android:layout_below="@+id/info_container" />
 
+    <View
+        android:id="@+id/vdivider"
+        style="@style/VerticalListDivider"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        />
+
 </RelativeLayout>
