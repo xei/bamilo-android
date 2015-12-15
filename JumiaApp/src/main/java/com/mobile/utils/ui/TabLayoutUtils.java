@@ -44,7 +44,6 @@ public class TabLayoutUtils {
     public static void fillCheckoutTabLayout(@NonNull TabLayout tabLayout, @Nullable TabLayout.OnTabSelectedListener listener, @Nullable android.view.View.OnClickListener clickListener) {
         // About You
         TabLayout.Tab tab = tabLayout.newTab();
-
         tabLayout.addTab(tab);
         tab.setCustomView(R.layout.tab_about_you);
         ((View) tab.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
@@ -52,15 +51,15 @@ public class TabLayoutUtils {
 
         // Address
         TabLayout.Tab tab2 = tabLayout.newTab();
-
-        tabLayout.addTab(tab2);tab2.setCustomView(R.layout.tab_address);
+        tabLayout.addTab(tab2);
+        tab2.setCustomView(R.layout.tab_address);
         ((View) tab2.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_BILLING);
         ((View) tab2.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Shipping
         TabLayout.Tab tab3 = tabLayout.newTab();
-
-        tabLayout.addTab(tab3);tab3.setCustomView(R.layout.tab_shipping);
+        tabLayout.addTab(tab3);
+        tab3.setCustomView(R.layout.tab_shipping);
         ((View) tab3.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_SHIPPING);
         ((View) tab3.getCustomView().getParent()).setOnClickListener(clickListener);
 
