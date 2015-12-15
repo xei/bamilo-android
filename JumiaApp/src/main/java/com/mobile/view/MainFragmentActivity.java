@@ -16,7 +16,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
@@ -65,8 +64,6 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-//import com.mobile.view.fragments.CheckoutAboutYouFragment;
-
 /**
  * @author sergiopereira
  */
@@ -108,18 +105,9 @@ public class MainFragmentActivity extends BaseActivity {
             Print.d(TAG, "################### SAVED INSTANCE IS NULL");
             // Initialize fragment controller
             FragmentController.getInstance().init();
-            // Get deep link
-            Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(getIntent());
-            // Validate deep link
-            boolean isDeepLinkLaunch = isValidDeepLinkNotification(mDeepLinkBundle);
-            // Track open app event for all tracker but Adjust
-            TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
-            // Invalid deep link
-            if (!isDeepLinkLaunch) {
+            // Case invalid deep link goto HOME else goto deep link
+            if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                // Adjust reattribution
-                TrackerDelegator.deeplinkReattribution(getIntent());
             }
 
         } else {
@@ -135,7 +123,7 @@ public class MainFragmentActivity extends BaseActivity {
             if (!CollectionUtils.isEmpty(backStackTypes)) {
                 FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, mCurrentFragmentType);
             } else {
-                Print.d(TAG, "COULDN'T RECOVER BACKSTACK");
+                Print.d(TAG, "COULDN'T RECOVER BACK STACK");
             }
         }
 
@@ -159,12 +147,8 @@ public class MainFragmentActivity extends BaseActivity {
         Print.d(TAG, "ON NEW INTENT");
         // For AD4 - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
         this.setIntent(intent);
-        // Get deep link
-        Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(intent);
         // Validate deep link
-        boolean isDeepLinkLaunch = isValidDeepLinkNotification(mDeepLinkBundle);
-        //track open app event for all tracker but Adjust
-        TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
+        DeepLinkManager.onSwitchToDeepLink(this, intent);
     }
 
     /*
@@ -499,37 +483,6 @@ public class MainFragmentActivity extends BaseActivity {
 
     public boolean isInMaintenance() {
         return isInMaintenance;
-    }
-
-    // ####################### DEEP LINK #######################
-
-    /**
-     * Validate and process intent from notification
-     *
-     * @param bundle The deep link intent
-     * @return valid or invalid
-     */
-    private boolean isValidDeepLinkNotification(Bundle bundle) {
-        Print.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
-        if (bundle != null) {
-            // Get fragment type
-            FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
-            //Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
-            // Validate fragment type
-            if (fragmentType != FragmentType.UNKNOWN) {
-                // Restart back stack and fragment manager
-                FragmentController.getInstance().popAllBackStack(this);
-                // Validate this step to maintain the base TAG
-                onSwitchFragment(FragmentType.HOME, bundle, FragmentController.ADD_TO_BACK_STACK);
-                // Switch to fragment with respective bundle
-                if(fragmentType != FragmentType.HOME) {
-                    onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
-                }
-                return true;
-            }
-        }
-        Print.i(TAG, "DEEP LINK: INVALID INTENT");
-        return false;
     }
 
 }

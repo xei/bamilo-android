@@ -617,10 +617,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             if(cart.isVatLabelEnable()) {
                 vatValue.setVisibility(View.VISIBLE);
                 vatValue.setText(CurrencyFormatter.formatCurrency(cart.getVatValue()));
-                vatIncludedLabel.setText(getString(R.string.vat_string));
+                vatIncludedLabel.setText(cart.getVatLabel());
             } else {
                 vatValue.setVisibility(View.GONE);
-                vatIncludedLabel.setText(getString(R.string.string_vat_included));
+                vatIncludedLabel.setVisibility(View.GONE);
             }
 
             ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);

@@ -163,7 +163,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * #### LIFE CICLE ####
+     * #### LIFE CYCLE ####
      */
 
     /*
@@ -615,7 +615,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.no_internet_access_warning_title));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getString(R.string.no_internet_access_warning_title));
         hideActivityProgress();
         showFragmentContentContainer();
     }
@@ -708,7 +708,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         try {
             boolean isSingleShop = getResources().getBoolean(R.bool.is_single_shop_country);
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getString(R.string.app_name));
+            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getBaseActivity().getString(R.string.app_name));
             TextView fallbackBest = (TextView) inflated.findViewById(R.id.fallback_best);
             TextView fallbackCountry = (TextView) inflated.findViewById(R.id.fallback_country);
             View countryD = inflated.findViewById(R.id.fallback_country_double);
@@ -820,7 +820,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
             case AUTO_LOGIN_EVENT:
-                handleSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), baseResponse.getEventType());
+            case FORGET_PASSWORD_EVENT:
+            case REMOVE_PRODUCT_FROM_WISH_LIST:
+            case ADD_PRODUCT_TO_WISH_LIST:
+                handleSuccessTaskEvent(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), eventType);
                 return true;
             default:
                 break;
@@ -860,7 +863,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
         // Show warning messages
         else {
-            handleTaskEvent(response.getErrorMessage(), response.getEventTask(), response.getEventType());
+            handleErrorTaskEvent(response.getErrorMessage(), response.getEventTask(), response.getEventType());
         }
 
         /**
@@ -923,9 +926,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Handle task events.
      */
-    public void handleTaskEvent(final String errorMessage, final EventTask eventTask, final EventType eventType) {
+    public void handleErrorTaskEvent(final String errorMessage, final EventTask eventTask, final EventType eventType) {
         if (eventTask == EventTask.ACTION_TASK) {
             switch (eventType) {
+                // Case form submission
                 case EDIT_ADDRESS_EVENT:
                 case REGISTER_ACCOUNT_EVENT:
                 case EDIT_USER_DATA_EVENT:
@@ -933,8 +937,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 case REVIEW_RATING_PRODUCT_EVENT:
                 case FORGET_PASSWORD_EVENT:
                 case LOGIN_EVENT:
-                    // Used the showFormValidateMessages(form)
-                    break;
+                    // If the error message is empty used the showFormValidateMessages(form)
+                    if(TextUtils.isEmpty(errorMessage)) break;
+                // Case other tasks
                 default:
                     showWarningErrorMessage(errorMessage, eventType);
                     break;
@@ -942,7 +947,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    public void handleSuccessMessage(final String successMessage, final EventTask eventTask, final EventType eventType) {
+    public void handleSuccessTaskEvent(final String successMessage, final EventTask eventTask, final EventType eventType) {
         if(eventTask == EventTask.ACTION_TASK){
             showWarningSuccessMessage(successMessage, eventType);
         }
