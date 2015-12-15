@@ -357,6 +357,8 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
      * This method is invoked when the user wants to create a review.
      */
     private void writeReview() {
+        // Clean previous write review form values
+        JumiaApplication.cleanRatingReviewValues();
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.PRODUCT_SKU, mProductSku);
         args.putParcelable(ConstantsIntentExtra.PRODUCT, selectedProduct);
