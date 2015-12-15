@@ -26,16 +26,17 @@ public class TabLayoutUtils {
     public static void fillTabLayout(@NonNull TabLayout tabLayout, @Nullable TabLayout.OnTabSelectedListener listener) {
         // Home
         TabLayout.Tab tab = tabLayout.newTab();
-        tab.setCustomView(R.layout.tab_home);
         tabLayout.addTab(tab);
+        tab.setCustomView(R.layout.tab_home);
         // Saved
         TabLayout.Tab tab2 = tabLayout.newTab();
-        tab2.setCustomView(R.layout.tab_saved);
         tabLayout.addTab(tab2);
+        tab2.setCustomView(R.layout.tab_saved);
         // Basket
         TabLayout.Tab tab3 = tabLayout.newTab();
-        tab3.setCustomView(R.layout.tab_cart);
         tabLayout.addTab(tab3);
+        tab3.setCustomView(R.layout.tab_cart);
+
         // Set listener
         tabLayout.setOnTabSelectedListener(listener);
     }
@@ -43,29 +44,30 @@ public class TabLayoutUtils {
     public static void fillCheckoutTabLayout(@NonNull TabLayout tabLayout, @Nullable TabLayout.OnTabSelectedListener listener, @Nullable android.view.View.OnClickListener clickListener) {
         // About You
         TabLayout.Tab tab = tabLayout.newTab();
-        tab.setCustomView(R.layout.tab_about_you);
+
         tabLayout.addTab(tab);
+        tab.setCustomView(R.layout.tab_about_you);
         ((View) tab.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
         ((View) tab.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Address
         TabLayout.Tab tab2 = tabLayout.newTab();
-        tab2.setCustomView(R.layout.tab_address);
-        tabLayout.addTab(tab2);
+
+        tabLayout.addTab(tab2);tab2.setCustomView(R.layout.tab_address);
         ((View) tab2.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_BILLING);
         ((View) tab2.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Shipping
         TabLayout.Tab tab3 = tabLayout.newTab();
-        tab3.setCustomView(R.layout.tab_shipping);
-        tabLayout.addTab(tab3);
+
+        tabLayout.addTab(tab3);tab3.setCustomView(R.layout.tab_shipping);
         ((View) tab3.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_SHIPPING);
         ((View) tab3.getCustomView().getParent()).setOnClickListener(clickListener);
 
         // Payment
         TabLayout.Tab tab4 = tabLayout.newTab();
-        tab4.setCustomView(R.layout.tab_payment);
         tabLayout.addTab(tab4);
+        tab4.setCustomView(R.layout.tab_payment);
         ((View) tab4.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_PAYMENT);
         ((View) tab4.getCustomView().getParent()).setOnClickListener(clickListener);
 
