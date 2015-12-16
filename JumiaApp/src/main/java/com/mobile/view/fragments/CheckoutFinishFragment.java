@@ -383,15 +383,18 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Name
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_name)).setText(item.getName());
             // Quantity
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.my_order_qty) + ": " + item.getQuantity());
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, item.getQuantity()));
             // Price
             String price = item.getPrice();
             if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
-            if (variation != null && variation.length() > 0 && !variation.equalsIgnoreCase(",") &&
-                    !variation.equalsIgnoreCase("...") && !variation.equalsIgnoreCase(".") && !variation.equalsIgnoreCase("false")) {
+            if (variation != null && variation.length() > 0 &&
+                    !variation.equalsIgnoreCase(",") &&
+                    !variation.equalsIgnoreCase("...") &&
+                    !variation.equalsIgnoreCase(".") &&
+                    !variation.equalsIgnoreCase("false")) {
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setText(variation);
                 prodInflateView.findViewById(R.id.my_order_item_variation).setVisibility(View.VISIBLE);
             }
@@ -422,7 +425,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         ShoppingCartUtils.setShippingRule(mOrderFinish, mShipFeeView, mShipFeeValue, mExtraCostsContainer, mExtraCosts);
         // Voucher
         if (mOrderFinish.hasCouponDiscount()) {
-            mVoucherValue.setText("- " + CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount()));
+            mVoucherValue.setText(getString(R.string.placeholder_discount, CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount())));
         } else {
             mVoucherView.setVisibility(View.GONE);
         }
@@ -458,7 +461,8 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void addAddressView(ViewGroup container, Address address) {
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, container, false);
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(address.getFirstName() + " " + address.getLastName());
+        String name = getString(R.string.first_and_second_placeholders, address.getFirstName(), address.getLastName());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(name);
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(address.getAddress());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
@@ -590,9 +594,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void triggerCheckoutFinish() {
         Print.i(TAG, "TRIGGER: CHECKOUT FINISH");
-        Bundle bundle = new Bundle();
-        bundle.putString(SetStepFinishHelper.USER_AGENT, getUserAgentAsExtraData());
-        triggerContentEvent(new SetStepFinishHelper(), bundle, this);
+        triggerContentEvent(new SetStepFinishHelper(), SetStepFinishHelper.createBundle(getUserAgentAsExtraData()), this);
     }
 
     /**

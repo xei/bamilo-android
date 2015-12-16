@@ -116,18 +116,9 @@ public class RadioGroupLayoutVertical extends RadioGroup {
 
         if (addInnerForm) {
             Print.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
-
-            // Generate an inner form with this LayoutParams
-            LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            // int leftMargin = getResources().getDimensionPixelSize(R.dimen.form_payment_left_margin);
-            int verticalMargin = getResources().getDimensionPixelSize(R.dimen.form_payment_vertical_margin);
-            ctrlParams.setMargins(0, verticalMargin, 0, verticalMargin);
-
-            DynamicForm formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)), ctrlParams);
+            DynamicForm formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)));
             generatedForms.put(idx, formGenerator);
-
             extras.addView(formGenerator.getContainer());
-
             Print.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
         }
 

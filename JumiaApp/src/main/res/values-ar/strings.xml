@@ -434,7 +434,7 @@
     <string name="create_label">إنشاء</string>
     <string name="change_password">تغيير كلمة المرور</string>
     <string name="continue_without_log_in">الاستمرار بدون تسجيل الدخول</string>
-    <string name="format_discount_value">-%s</string>
+    <string name="placeholder_discount">-%s</string>
     <string name="edit_user_success">لقج تم تغيير معلومات المستخدم بنجاح</string>
     <string name="password">كلمة المرور</string>
     <string name="more">المزيد</string>

@@ -1,5 +1,6 @@
 package com.mobile.newFramework.objects.checkout;
 
+import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -12,7 +13,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by rsoares on 6/2/15.
+ * Class used to represent the shipping form.
+ * @author rsoares
+ * @modified sergio pereira
  */
 public class ShippingForm implements IJSONSerializable {
 
@@ -51,7 +54,7 @@ public class ShippingForm implements IJSONSerializable {
                 // Get key
                 String type = jsonField.optString(RestConstants.TYPE);
                 // Case radio options (All shipping options)
-                if (TextUtils.equals(type, "radio")) {
+                if (TextUtils.equals(type, FormField.RADIO)) {
                     ShippingFormField field = new ShippingFormField();
                     field.initialize(fieldsArray.getJSONObject(i));
                     fields.add(field);

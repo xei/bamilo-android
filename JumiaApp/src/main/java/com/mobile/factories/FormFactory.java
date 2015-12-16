@@ -1,8 +1,9 @@
 package com.mobile.factories;
 
 import android.content.Context;
+import android.support.annotation.DimenRes;
+import android.support.annotation.NonNull;
 import android.util.LayoutDirection;
-import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -10,7 +11,6 @@ import com.mobile.constants.FormConstants;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.view.R;
@@ -35,8 +35,8 @@ public class FormFactory {
     private final static String TAG = FormFactory.class.getSimpleName();
 
     private static FormFactory sFactory = null;
-    // Icons used for forms by reflection (LINT NOT REMOVE)
-    @SuppressWarnings("unused")
+
+    @SuppressWarnings("unused") // Icons used for forms by reflection (LINT NOT REMOVE)
     int[] icons = new int[]{
             R.drawable.ic_form_birthday,
             R.drawable.ic_form_email,
@@ -60,10 +60,7 @@ public class FormFactory {
      * @return The form factory
      */
     public static FormFactory getSingleton() {
-        if (null == sFactory) {
-            sFactory = new FormFactory();
-        }
-        return sFactory;
+        return null == sFactory ? sFactory = new FormFactory() : sFactory;
     }
 
     /**
@@ -79,192 +76,66 @@ public class FormFactory {
      * @return An instance of a DynamicForm with the form representation implemented
      */
     public DynamicForm CreateForm(int formType, Context context, Form form) {
-        return CreateForm(formType, context, form, null);
-    }
-
-
-    /**
-     * Creates the form for a given type using a definition provided from the framework
-     *
-     * @param formType
-     *            The type of form to create. This value should be placed on the FormConstants
-     * @param context
-     *            The context where the form is to be inserted
-     * @param form
-     *            The definition provided by the framework
-     * @param ctrlParams
-     *            LayoutParams to use instead of default
-     *
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    public DynamicForm CreateForm(int formType, Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
         DynamicForm parent = null;
         Print.i(TAG, "code1register CREATING FORM : " + formType);
         switch (formType) {
             case FormConstants.ADDRESS_FORM:
-                parent = createAddressForm(context, form, ctrlParams);
+                parent = createAddressForm(context, form);
                 break;
             case FormConstants.ADDRESS_EDIT_FORM:
-                parent = createEditAddressForm(context, form, ctrlParams);
+                parent = createEditAddressForm(context, form);
                 break;
             case FormConstants.LOGIN_FORM:
                 form.setType(formType); // Used to show icons
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
-                parent = createLoginForm(context, form, ctrlParams);
+                parent = createLoginForm(context, form);
                 break;
             case FormConstants.REGISTRATION_FORM:
             case FormConstants.NEWSLETTER_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
             case FormConstants.USER_DATA_FORM:
                 form.setType(formType);  // Used to show icons
-                parent = createRegistrationForm(context, form, ctrlParams);
+                parent = createRegistrationForm(context, form);
                 break;
             case FormConstants.FORGET_PASSWORD_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
-                parent = createForgetPasswordForm(context, form, ctrlParams);
+                parent = createForgetPasswordForm(context, form);
                 break;
             case FormConstants.PAYMENT_DETAILS_FORM:
-                parent = createPaymentMethodsForm(context, form, ctrlParams);
+                parent = createPaymentMethodsForm(context, form);
                 break;
             case FormConstants.CHANGE_PASSWORD_FORM:
-                parent = createChangePasswordForm(context,form, ctrlParams);
+                parent = createChangePasswordForm(context,form);
                 break;
         }
         return parent;
     }
 
-    private DynamicForm createChangePasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if (null == ctrlParams) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.rounded_margin_mid);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM =0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-
-        return createGenericForm(context, form, ctrlParams);
+    private DynamicForm createChangePasswordForm(Context context, Form form) {
+        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
     }
 
-    /**
-     * Creates the form for the address details
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     *
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    private DynamicForm createAddressForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
+    private DynamicForm createAddressForm(Context context, Form form) {
+        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
+    }
+    private DynamicForm createEditAddressForm(Context context, Form form) {
+        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
     }
 
-    /**
-     * Creates the form for the address details
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     *
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    private DynamicForm createEditAddressForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
-
-    }
-
-    /**
-     * Create the login form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    private DynamicForm createLoginForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-
-        return createGenericForm(context,form,ctrlParams);
+    private DynamicForm createLoginForm(Context context, Form form) {
+        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
    }
 
-
-    /**
-     * Create the payment methods edit form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @param ctrlParams LayoutParams to use instead of default
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    private DynamicForm createPaymentMethodsForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if (null == ctrlParams) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = 0;
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-        }
-
-        return createGenericForm(context, form, ctrlParams);
+    private DynamicForm createPaymentMethodsForm(Context context, Form form) {
+        return createGenericForm(context, form, createParams(context, R.dimen.form_no_top_margin));
     }
 
-    /**
-     * Create the user registration form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    private DynamicForm createRegistrationForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
+    private DynamicForm createRegistrationForm(Context context, Form form) {
+        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
     }
 
-    /**
-     * Create the user forget password form
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return An instance of a DynamicForm with the form representation implemented
-     */
-    private DynamicForm createForgetPasswordForm(Context context, Form form, LinearLayout.LayoutParams ctrlParams) {
-        if(ctrlParams == null) {
-            final int CTRLMARGIN_LEFT = 0;
-            final int CTRLMARGIN_TOP = context.getResources().getDimensionPixelSize(R.dimen.form_top_margin);
-            final int CTRLMARGIN_RIGHT = 0;
-            final int CTRLMARGIN_BOTTOM = 0;
-
-            ctrlParams = createParams(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT,CTRLMARGIN_BOTTOM);
-        }
-        return createGenericForm(context, form, ctrlParams);
+    private DynamicForm createForgetPasswordForm(Context context, Form form) {
+        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
     }
 
     /**
@@ -275,59 +146,30 @@ public class FormFactory {
      * @return n instance of a DynamicForm with the form representation implemented
      */
     private DynamicForm createGenericForm(Context context, Form form, ViewGroup.LayoutParams ctrlParams) {
-        LinearLayout parent;
+        // Validate
         if(context == null){
             return null;
         }
-        parent = new LinearLayout(context);
-
+        // Root view group
+        LinearLayout viewGroup = new LinearLayout(context);
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        parent.setOrientation(LinearLayout.VERTICAL);
-        parent.setLayoutParams(frmParams);
-
-        DynamicForm userForm = new DynamicForm(parent);
-        userForm.setForm(form);
-
-
+        viewGroup.setOrientation(LinearLayout.VERTICAL);
+        viewGroup.setLayoutParams(frmParams);
+        // Create dynamic form
+        DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
+        // Create each form field
         for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
-            DynamicFormItem ctrl = new DynamicFormItem(userForm, context, frmEntry);
-
-            if (ctrl.isMeta() || ctrl.hasNoType()) {
-                // Don't waste space with meta fields nor field without type
-                Print.i(TAG, "Meta or no type field");
-                userForm.addControl(ctrl, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            } else if ( ! ctrl.isDatePart() ) {
-                userForm.addControl(ctrl, ctrlParams);
-            } else {
-                // Used for dates with day/month/year
-                LinearLayout groupLayout = new LinearLayout(context);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                //#RTL
-                if(ShopSelector.isRtl()){
-                    groupLayout.setGravity(Gravity.RIGHT|Gravity.CENTER_VERTICAL);
-                }
-
-                groupLayout.setId(userForm.getNextId());
-                groupLayout.setOrientation(LinearLayout.HORIZONTAL);
-                groupLayout.setLayoutParams(params);
-
-                userForm.addGroupedControl(groupLayout, ctrl, ctrlParams);
-            }
-
+            DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, frmEntry);
+            dynamicForm.addControl(dynamicFormItem, ctrlParams);
         }
-
-        return userForm;
+        return dynamicForm;
     }
 
-    /**
-     *
-     * @return Params created based on margins
-     */
-    private LinearLayout.LayoutParams createParams(final int CTRLMARGIN_LEFT, final int CTRLMARGIN_TOP,final int CTRLMARGIN_RIGHT, final int CTRLMARGIN_BOTTOM){
+    private LinearLayout.LayoutParams createParams(@NonNull Context context, @DimenRes int dimension) {
         LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ctrlParams.setMargins(CTRLMARGIN_LEFT, CTRLMARGIN_TOP, CTRLMARGIN_RIGHT, CTRLMARGIN_BOTTOM);
-        setRtl(ctrlParams, CTRLMARGIN_LEFT, CTRLMARGIN_RIGHT);
+        ctrlParams.setMargins(0, context.getResources().getDimensionPixelSize(dimension), 0, 0);
+        setRtl(ctrlParams, 0, 0);
         return ctrlParams;
     }
 

@@ -47,7 +47,7 @@ public class TeaserFormObject extends BaseTeaserObject {
         JSONObject formData = jsonObject.getJSONObject(RestConstants.DATA);
         if (formData != null) {
             mForm = new Form();
-            mForm.initialize(formData);
+            mForm.initAsSubForm(formData);
         }
         return true;
     }

@@ -434,7 +434,7 @@
     <string name="create_label">ျပဳလုပ္မည္</string>
     <string name="change_password">Password ေျပာင္းလဲရန္</string>
     <string name="continue_without_log_in">Log in မ၀င္ဘဲ ဆက္လက္လုပ္ေဆာင္မည္</string>
-    <string name="format_discount_value">-%s</string>
+    <string name="placeholder_discount">-%s</string>
     <string name="edit_user_success">အသံုးျပဳသူအခ်က္အလက္အားျပင္ဆင္ၿပီးပါၿပီ</string>
     <string name="password">Password</string>
     <string name="more">အျခား</string>

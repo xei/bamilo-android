@@ -31,31 +31,28 @@ public class GetStepShippingHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        MultiStepShipping shippingMethodsForm = (MultiStepShipping) baseResponse.getContentData();
-        ShippingMethodFormStruct shippingMethodFormStruct = new ShippingMethodFormStruct(shippingMethodsForm);
+        MultiStepShipping step = (MultiStepShipping) baseResponse.getContentData();
+        ShippingMethodFormStruct shippingMethodFormStruct = new ShippingMethodFormStruct(step);
         baseResponse.getMetadata().setData(shippingMethodFormStruct);
     }
 
 
-
     public class ShippingMethodFormStruct extends MultiStepShipping {
+
         private ShippingMethodFormBuilder formBuilder;
 
-        public ShippingMethodFormStruct(){}
+        public ShippingMethodFormStruct() {
+            super();
+        }
 
-        ShippingMethodFormStruct(MultiStepShipping shippingMethodsForm){
+        ShippingMethodFormStruct(MultiStepShipping shippingMethodsForm) {
             super(shippingMethodsForm);
             formBuilder = new ShippingMethodFormBuilder();
             formBuilder.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
         }
 
-
         public ShippingMethodFormBuilder getFormBuilder() {
             return formBuilder;
-        }
-
-        public void setFormBuilder(ShippingMethodFormBuilder formBuilder) {
-            this.formBuilder = formBuilder;
         }
     }
 

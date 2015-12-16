@@ -158,8 +158,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * @param value
      *            the form object
      */
-    public void setForm(Form value) {
+    public DynamicForm setForm(Form value) {
         form = value;
+        return this;
     }
 
     /**

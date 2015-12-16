@@ -333,7 +333,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onSuccessGetShippingMethods(BaseResponse baseResponse){
         Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
         //
-        GetStepShippingHelper.ShippingMethodFormStruct shippingMethodsForm = (GetStepShippingHelper.ShippingMethodFormStruct )baseResponse.getContentData();
+        GetStepShippingHelper.ShippingMethodFormStruct shippingMethodsForm = (GetStepShippingHelper.ShippingMethodFormStruct) baseResponse.getContentData();
         // Get order summary
         PurchaseEntity orderSummary = shippingMethodsForm.getOrderSummary();
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);

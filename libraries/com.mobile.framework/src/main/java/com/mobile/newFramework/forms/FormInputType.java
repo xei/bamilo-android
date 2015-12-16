@@ -13,7 +13,6 @@ public enum FormInputType {
     checkBox,
     email,
     date,
-    meta,
     metadata,
     list,
     hide,
