@@ -440,7 +440,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
                 Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENTLY_VIEWED_LIST");
-                list = (ArrayList<String>)baseResponse.getMetadata().getData();
+                list = (ArrayList<String>)baseResponse.getContentData();
                 if (!CollectionUtils.isEmpty(list)) {
                     triggerValidateRecentlyViewed(list);
                 } else {
@@ -453,7 +453,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 updateLayoutAfterAction(position);
                 break;
             case VALIDATE_PRODUCTS:
-                mProducts = (ValidProductList) baseResponse.getMetadata().getData();
+                mProducts = (ValidProductList) baseResponse.getContentData();
                 if (!CollectionUtils.isEmpty(mProducts)) {
                     showContent();
                 } else {

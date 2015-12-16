@@ -1,4 +1,4 @@
-package com.mobile.helpers.address;
+package com.mobile.helpers.checkout;
 
 import android.content.ContentValues;
 import android.os.Bundle;
@@ -13,19 +13,15 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.utils.deeplink.TargetLink;
 
 /**
- * Helper used to create an address 
- * @author sergiopereira
+ * Helper used to set the shipping address
  */
-public class CreateAddressHelper extends SuperBaseHelper {
+public class SetStepPaymentHelper extends SuperBaseHelper {
     
-    public static String TAG = CreateAddressHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
-        return EventType.CREATE_ADDRESS_EVENT;
+        return EventType.SET_MULTI_STEP_PAYMENT;
     }
 
     @Override
@@ -35,20 +31,19 @@ public class CreateAddressHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.createAddress);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setMultiStepPayment);
     }
 
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        CheckoutStepObject checkoutStep = (CheckoutStepObject) baseResponse.getContentData();
-        NextStepStruct nextStepStruct = new NextStepStruct(checkoutStep);
+        CheckoutStepObject nextStep = (CheckoutStepObject) baseResponse.getContentData();
+        NextStepStruct nextStepStruct = new NextStepStruct(nextStep);
         baseResponse.getMetadata().setData(nextStepStruct);
     }
 
-    public static Bundle createBundle(String endpoint, ContentValues values) {
+    public static Bundle createBundle(ContentValues values) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_END_POINT_KEY, "/" + TargetLink.getIdFromTargetLink(endpoint));
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         return bundle;
     }

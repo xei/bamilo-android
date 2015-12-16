@@ -1159,7 +1159,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 updateWishListValue();
                 break;
             case GET_PRODUCT_DETAIL:
-                ProductComplete product = (ProductComplete) baseResponse.getMetadata().getData();
+                ProductComplete product = (ProductComplete) baseResponse.getContentData();
                 // Validate product
                 if (product == null || product.getName() == null) {
                     getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
@@ -1193,7 +1193,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 BrandsTableHelper.updateBrandCounter(product.getBrand());
                 break;
             case GET_PRODUCT_BUNDLE:
-                BundleList bundleList = (BundleList) baseResponse.getMetadata().getData();
+                BundleList bundleList = (BundleList) baseResponse.getContentData();
                 //keep the bundle
                 mProduct.setProductBundle(bundleList);
                 // build combo section from here

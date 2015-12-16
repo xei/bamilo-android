@@ -33,9 +33,7 @@ public class GetShoppingCartItemsHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-
-        //TODO move to observable
-        PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
+        PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
     }

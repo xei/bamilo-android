@@ -36,7 +36,7 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
         super.postSuccess(baseResponse);
 
         //TODO move to observable
-        CountryConfigs countryConfigs = (CountryConfigs) baseResponse.getMetadata().getData();
+        CountryConfigs countryConfigs = (CountryConfigs) baseResponse.getContentData();
 
         if(!CountryPersistentConfigs.hasLanguages(JumiaApplication.INSTANCE.getApplicationContext())){
             ChooseLanguageController.setLanguageBasedOnDevice(countryConfigs.getLanguages(), countryConfigs.getCurrencyIso());

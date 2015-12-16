@@ -500,24 +500,20 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
 
         switch (eventType) {
-            case INIT_FORMS:
-                Print.d(TAG, "RECEIVED INIT_FORMS");
-                triggerEditAddressForm();
-                break;
             case GET_EDIT_ADDRESS_FORM_EVENT:
                 Print.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
                 // Get order summary
                 //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
                 orderSummary = JumiaApplication.INSTANCE.getCart();
                 // Form
-                Form form = (Form)baseResponse.getMetadata().getData();
+                Form form = (Form)baseResponse.getContentData();
                 mFormResponse = form;
                 // Load form, get regions
                 loadEditAddressForm(form);
                 break;
             case GET_REGIONS_EVENT:
                 Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
-                mRegions = (AddressRegions) baseResponse.getMetadata().getData();
+                mRegions = (AddressRegions) baseResponse.getContentData();
                 if (CollectionUtils.isNotEmpty(mRegions)) {
                     setRegions(mEditFormGenerator, mRegions);
                 } else {
@@ -527,14 +523,14 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 break;
             case GET_CITIES_EVENT:
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
-                ArrayList<AddressCity> cities = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getMetadata().getData();
+                ArrayList<AddressCity> cities = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getContentData();
                 setCities(mEditFormGenerator, cities);
                 // Show
                 showFragmentContentContainer();
                 break;
             case GET_POSTAL_CODE_EVENT:
                 Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
-                ArrayList<AddressPostalCode> postalCodes = (AddressPostalCodes)baseResponse.getMetadata().getData();
+                ArrayList<AddressPostalCode> postalCodes = (AddressPostalCodes)baseResponse.getContentData();
                 setPostalCodes(mEditFormGenerator, postalCodes);
                 // Show
                 showFragmentContentContainer();
@@ -574,9 +570,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {
-            case INIT_FORMS:
-                onInitFormsErrorEvent();
-                break;
             case GET_EDIT_ADDRESS_FORM_EVENT:
                 onGetEditAddressFormErrorEvent(baseResponse);
                 break;

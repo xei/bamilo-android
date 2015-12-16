@@ -76,7 +76,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
             @Override
             public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "SUCCESS RICH RELEVANCE");
-                TeaserRichRelevanceObject topSellers = (TeaserRichRelevanceObject) baseResponse.getMetadata().getData();
+                TeaserRichRelevanceObject topSellers = (TeaserRichRelevanceObject) baseResponse.getContentData();
                 if(topSellers != null){
                     ArrayList<BaseTeaserObject> topSellersTeaserObjects = topSellers.getRichTeaserGroupType().getData();
                     if(!CollectionUtils.isEmpty(topSellersTeaserObjects) && mParentClickListener != null && horizontalListView != null){

@@ -12,14 +12,11 @@ import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.Catalog;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.checkout.CheckoutFinish;
-import com.mobile.newFramework.objects.checkout.CheckoutFormBilling;
-import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
-import com.mobile.newFramework.objects.checkout.CheckoutFormShipping;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.checkout.CheckoutStepObject;
-import com.mobile.newFramework.objects.checkout.SetBillingAddress;
-import com.mobile.newFramework.objects.checkout.SetPaymentMethod;
-import com.mobile.newFramework.objects.checkout.SetShippingMethod;
+import com.mobile.newFramework.objects.checkout.MultiStepAddresses;
+import com.mobile.newFramework.objects.checkout.MultiStepPayment;
+import com.mobile.newFramework.objects.checkout.MultiStepShipping;
 import com.mobile.newFramework.objects.configs.ApiInformation;
 import com.mobile.newFramework.objects.configs.AvailableCountries;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
@@ -146,14 +143,6 @@ public interface AigApiInterface {
     String getNewsletterForm = "getNewsletterForm";
 
     @GET("/")
-    void getShippingMethodsForm(Callback<BaseResponse<CheckoutFormShipping>> callback);
-    String getShippingMethodsForm = "getShippingMethodsForm";
-
-    @GET("/")
-    void getPaymentMethodsForm(Callback<BaseResponse<CheckoutFormPayment>> callback);
-    String getPaymentMethodsForm = "getPaymentMethodsForm";
-
-    @GET("/")
     void getUserDataForm(Callback<BaseResponse<Form>> callback);
     String getUserDataForm = "getUserDataForm";
 
@@ -242,10 +231,6 @@ public interface AigApiInterface {
     String getAddressesList = "getAddressesList";
 
     @GET("/")
-    void getBillingAddressForm(Callback<BaseResponse<CheckoutFormBilling>> callback);
-    String getBillingAddressForm = "getBillingAddressForm";
-
-    @GET("/")
     void getRegions(Callback<BaseResponse<AddressRegions>> callback);
     String getRegions = "getRegions";
 
@@ -264,6 +249,22 @@ public interface AigApiInterface {
     @GET("/")
     void getShoppingCart(Callback<BaseResponse<PurchaseEntity>> callback);
     String getShoppingCart = "getShoppingCart";
+
+    @GET("/")
+    void getMultiStepAddresses(Callback<BaseResponse<MultiStepAddresses>> callback);
+    String getMultiStepAddresses = "getMultiStepAddresses";
+
+    @GET("/")
+    void getMultiStepShipping(Callback<BaseResponse<MultiStepShipping>> callback);
+    String getMultiStepShipping = "getMultiStepShipping";
+
+    @GET("/")
+    void getMultiStepPayment(Callback<BaseResponse<MultiStepPayment>> callback);
+    String getMultiStepPayment = "getMultiStepPayment";
+
+    @GET("/")
+    void getMultiStepFinish(Callback<BaseResponse<PurchaseEntity>> callback);
+    String getMultiStepFinish = "getMultiStepFinish";
 
     /*
      * ########## HTTP POST ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0
@@ -346,11 +347,6 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setBillingAddress(@FieldMap Map<String, String> data, Callback<BaseResponse<SetBillingAddress>> callback);
-    String setBillingAddress = "setBillingAddress";
-
-    @FormUrlEncoded
-    @POST("/")
     void setRatingReview(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String setRatingReview = "setRatingReview";
 
@@ -361,23 +357,29 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void setShippingMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetShippingMethod>> callback);
-    String setShippingMethod = "setShippingMethod";
-
-    @FormUrlEncoded
-    @POST("/")
-    void setPaymentMethod(@FieldMap Map<String, String> data, Callback<BaseResponse<SetPaymentMethod>> callback);
-    String setPaymentMethod = "setPaymentMethod";
-
-    @FormUrlEncoded
-    @POST("/")
-    void checkoutFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutFinish>> callback);
-    String checkoutFinish = "checkoutFinish";
-
-    @FormUrlEncoded
-    @POST("/")
     void addToWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String addToWishList = "addToWishList";
+
+    @FormUrlEncoded
+    @POST("/")
+    void setMultiStepAddresses(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepObject>> callback);
+    String setMultiStepAddresses = "setMultiStepAddresses";
+
+    @FormUrlEncoded
+    @POST("/")
+    void setMultiStepShipping(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepObject>> callback);
+    String setMultiStepShipping = "setMultiStepShipping";
+
+    @FormUrlEncoded
+    @POST("/")
+    void setMultiStepPayment(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutStepObject>> callback);
+    String setMultiStepPayment = "setMultiStepPayment";
+
+    @FormUrlEncoded
+    @POST("/")
+    void setMultiStepFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutFinish>> callback);
+    String setMultiStepFinish = "setMultiStepFinish";
+
 
     /*
      * ########## HTTP PUT ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0

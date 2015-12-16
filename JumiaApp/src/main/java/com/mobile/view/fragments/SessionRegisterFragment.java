@@ -315,8 +315,6 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         Print.d(TAG, "ON SUCCESS: " + eventType);
         switch (eventType) {
             case REGISTER_ACCOUNT_EVENT:
-                // Get Register Completed Event
-                //Customer customer = (Customer) baseResponse.getMetadata().getData();
                 // Tracking
                 if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
@@ -326,7 +324,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 break;
             case GET_REGISTRATION_FORM_EVENT:
-                mForm = (Form) baseResponse.getMetadata().getData();
+                mForm = (Form) baseResponse.getContentData();
                 loadForm(mForm);
                 break;
             default:

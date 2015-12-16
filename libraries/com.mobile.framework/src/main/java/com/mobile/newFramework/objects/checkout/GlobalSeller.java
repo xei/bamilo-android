@@ -42,8 +42,8 @@ public class GlobalSeller implements IJSONSerializable, Parcelable {
             info = global.getString(RestConstants.CMS_INFO);
             shippingInfo = global.getString(RestConstants.SHIPPING);
             JSONObject linkObject = global.getJSONObject(RestConstants.LINK);
-            staticText = linkObject.getString(RestConstants.TEXT);
-            staticLink = linkObject.getString(RestConstants.URL);
+            staticText = linkObject.optString(RestConstants.TEXT);
+            staticLink = linkObject.optString(RestConstants.URL);
         }
 
         return true;

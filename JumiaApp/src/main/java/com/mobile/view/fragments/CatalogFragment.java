@@ -1064,7 +1064,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
         int errorCode = baseResponse.getError().getCode();
 
-        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
+        Catalog catalog = (Catalog) baseResponse.getContentData();
         // Case error on load more data
         if (isLoadingMoreData) {
             Print.i(TAG, "ON ERROR RESPONSE: IS LOADING MORE");

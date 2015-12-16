@@ -534,7 +534,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         case GET_CAMPAIGN_EVENT:
             Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
             // Get and show campaign
-            mCampaign = (Campaign)baseResponse.getMetadata().getData();
+            mCampaign = (Campaign)baseResponse.getContentData();
             /*--
              * Don't apply Timer if there are no products with remainingTime defined
              */

@@ -1,7 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,18 +11,16 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
-import com.mobile.helpers.checkout.GetBillingFormHelper;
-import com.mobile.helpers.checkout.SetBillingAddressHelper;
-import com.mobile.newFramework.forms.FormField;
+import com.mobile.helpers.checkout.GetStepAddressesHelper;
+import com.mobile.helpers.checkout.SetStepAddressesHelper;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.objects.checkout.CheckoutFormBilling;
+import com.mobile.newFramework.objects.checkout.MultiStepAddresses;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
@@ -177,9 +174,8 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      */
     protected void onGetBillingFormEventSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_BILLING_FORM_EVENT");
-        CheckoutFormBilling billingForm = (CheckoutFormBilling)baseResponse.getMetadata().getData();
+        MultiStepAddresses billingForm = (MultiStepAddresses)baseResponse.getContentData();
 
-        hiddenForm = billingForm.getForm();
         Addresses addresses = billingForm.getAddresses();
         this.addresses = addresses;
         // Validate response
@@ -216,7 +212,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     protected void onSetBillingAddressSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED SET_BILLING_ADDRESS_EVENT");
         // Get next step
-        NextStepStruct nextStepStruct = (NextStepStruct)baseResponse.getMetadata().getData();
+        NextStepStruct nextStepStruct = (NextStepStruct)baseResponse.getContentData();
         FragmentType nextFragment = nextStepStruct.getFragmentType();
         nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.SHIPPING_METHODS;
         getBaseActivity().onSwitchFragment(nextFragment, null, FragmentController.ADD_TO_BACK_STACK);
@@ -229,26 +225,23 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     protected void triggerGetForm() {
         sameAddress = "";
-        triggerGetBillingForm();
+        triggerGetMultiStepAddresses();
     }
 
     /**
      * Trigger to set the billing form
      */
-    private void triggerSetBilling(ContentValues contentValues) {
+    private void triggerSetMultiStepAddresses(String billing, String shipping) {
         Print.d(TAG, "TRIGGER SET BILLING");
-        // Submit values
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
-        triggerContentEvent(new SetBillingAddressHelper(), bundle, this);
+        triggerContentEvent(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
     }
 
     /**
      * Trigger to get the billing form
      */
-    private void triggerGetBillingForm(){
+    private void triggerGetMultiStepAddresses() {
         Print.i(TAG, "TRIGGER: LOGIN FORM");
-        triggerContentEvent(new GetBillingFormHelper(), null, this);
+        triggerContentEvent(new GetStepAddressesHelper(), null, this);
     }
 
     /**
@@ -270,10 +263,10 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         switch (eventType) {
-            case GET_BILLING_FORM_EVENT:
+            case GET_MULTI_STEP_ADDRESSES:
                 onGetBillingFormEventSuccessEvent(baseResponse);
                 break;
-            case SET_BILLING_ADDRESS_EVENT:
+            case SET_MULTI_STEP_ADDRESSES:
                 onSetBillingAddressSuccessEvent(baseResponse);
                 break;
             default:
@@ -304,10 +297,10 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
 
         switch (eventType) {
-            case GET_BILLING_FORM_EVENT:
+            case GET_MULTI_STEP_ADDRESSES:
                 onGetBillingFormEventErrorEvent();
                 break;
-            case SET_BILLING_ADDRESS_EVENT:
+            case SET_MULTI_STEP_ADDRESSES:
                 onSetBillingAddressErrorEvent(baseResponse);
                 break;
             default:
@@ -373,14 +366,6 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
     @Override
     protected void submitForm(String shippingAddressId, String billingAddressId, String isDifferent) {
         Print.d(TAG, "SUBMIT ADDRESSES SHIP: " + shippingAddressId + " BIL: " + billingAddressId + " SAME: " + isDifferent);
-        // Create content values from form
-        ContentValues contentValues = new ContentValues();
-        for (FormField field : hiddenForm.getFields()) {
-            if (field.getKey().contains(BILLING_ID_TAG)) contentValues.put(field.getName(), billingAddressId);
-            else if (field.getKey().contains(SHIPPING_ID_TAG)) contentValues.put(field.getName(), shippingAddressId);
-            else if (field.getKey().contains(IS_SAME_TAG)) contentValues.put(field.getName(), isDifferent);
-        }
-        // Trigger
-        triggerSetBilling(contentValues);
+        triggerSetMultiStepAddresses(billingAddressId, shippingAddressId);
     }
 }

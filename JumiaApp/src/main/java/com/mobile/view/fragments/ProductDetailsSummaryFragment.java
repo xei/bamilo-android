@@ -275,7 +275,7 @@ public class ProductDetailsSummaryFragment extends BaseFragment implements IResp
                     getActivity().onBackPressed();
                     return;
                 } else {
-                    mCompleteProduct = (ProductComplete) baseResponse.getMetadata().getData();
+                    mCompleteProduct = (ProductComplete) baseResponse.getContentData();
                     getViews();
                     displayProductInformation();
                     // Waiting for the fragment comunication

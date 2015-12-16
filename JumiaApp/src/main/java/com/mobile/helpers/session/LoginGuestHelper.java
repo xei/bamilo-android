@@ -59,7 +59,7 @@ public class LoginGuestHelper extends SuperBaseHelper {
             Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer
-        CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
+        CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getContentData();
         // Save customer
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);

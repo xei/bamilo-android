@@ -396,7 +396,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             return;
         }
         // Get static page
-        StaticPage mShopPage = (StaticPage) baseResponse.getMetadata().getData();
+        StaticPage mShopPage = (StaticPage) baseResponse.getContentData();
         //  Case valid success response
         if (mShopPage != null) {
             onLoadShopData(mShopPage);

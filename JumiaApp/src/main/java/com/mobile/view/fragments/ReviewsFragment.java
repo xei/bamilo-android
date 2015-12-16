@@ -810,7 +810,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
         switch (eventType) {
             case GET_PRODUCT_REVIEWS:
-                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
+                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getContentData();
 
                 // Validate the current rating page
                 if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
@@ -833,7 +833,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
                     getActivity().onBackPressed();
                     return;
                 } else {
-                    selectedProduct = (ProductComplete) baseResponse.getMetadata().getData();
+                    selectedProduct = (ProductComplete) baseResponse.getContentData();
                     setAppContentLayout();
                     // Waiting for the fragment comunication
                     new Handler().postDelayed(new Runnable() {
@@ -876,7 +876,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
         switch (eventType) {
             case GET_PRODUCT_REVIEWS:
-                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
+                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getContentData();
 
                 // Validate current rating page
                 if (mProductRatingPage == null) mProductRatingPage = productRatingPage;

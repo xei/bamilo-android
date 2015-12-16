@@ -199,7 +199,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
         case GET_SEARCH_SUGGESTIONS_EVENT:
             Print.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
 
-            ArrayList<Suggestion> response = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+            ArrayList<Suggestion> response = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
             if (response != null) {
                 mRecentSearches = response;
                 if (!mRecentSearches.isEmpty()) {

@@ -515,7 +515,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 // Hide loading more
                 setLoadingMore(false);
                 // Show content
-                WishList wishList = (WishList) baseResponse.getMetadata().getData();
+                WishList wishList = (WishList) baseResponse.getContentData();
                 showContent(wishList);
                 break;
             default:

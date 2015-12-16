@@ -317,7 +317,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
                     getActivity().onBackPressed();
                     return;
                 } else {
-                    mCompleteProduct = (ProductComplete) baseResponse.getMetadata().getData();
+                    mCompleteProduct = (ProductComplete) baseResponse.getContentData();
                     getViews();
                     displaySpecification();
                     // Waiting for the fragment comunication

@@ -324,7 +324,7 @@ public class DynamicFormItem {
             JumiaApplication.INSTANCE.sendRequest(new PhonePrefixesHelper(), PhonePrefixesHelper.createBundle(url), new IResponseCallback() {
                 @Override
                 public void onRequestComplete(BaseResponse baseResponse) {
-                    PhonePrefixes prefixes = (PhonePrefixes) baseResponse.getMetadata().getData();
+                    PhonePrefixes prefixes = (PhonePrefixes) baseResponse.getContentData();
                     ArrayAdapter<PhonePrefix> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, prefixes);
                     adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
                     spinner.setAdapter(adapter);

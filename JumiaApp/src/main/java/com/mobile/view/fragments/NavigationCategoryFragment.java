@@ -175,7 +175,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         // Validate fragment state
         if (isOnStoppingProcess) return;
         // Get categories
-        mCategories = (Categories) baseResponse.getMetadata().getData();
+        mCategories = (Categories) baseResponse.getContentData();
         if (CollectionUtils.isNotEmpty(mCategories)) {
             // Show categories
             showCategoryList(mCategories);

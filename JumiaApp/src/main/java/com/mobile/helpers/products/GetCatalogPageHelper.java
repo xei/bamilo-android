@@ -61,7 +61,7 @@ public class GetCatalogPageHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        Catalog catalog = (Catalog) baseResponse.getMetadata().getData();
+        Catalog catalog = (Catalog) baseResponse.getContentData();
         catalog.getCatalogPage().setPage(mCurrentPage);
     }
 

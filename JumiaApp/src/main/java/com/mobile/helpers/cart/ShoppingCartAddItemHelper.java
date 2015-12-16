@@ -77,23 +77,15 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        //TODO move to observable
-        PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
+        PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
-
-//        bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
-//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-
         AddedItemStructure addItemStruct = new AddedItemStructure();
         addItemStruct.setPurchaseEntity(cart);
         addItemStruct.setCurrentPos(mCurrentPos);
         baseResponse.getMetadata().setData(addItemStruct);
-        /*
-         * LastViewed
-         */
         // Validate if is to remove from LastViewed
         if (isToRemoveFromLastViewed && !TextUtils.isEmpty(mCurrentSku)) {
             LastViewedTableHelper.removeLastViewed(mCurrentSku);

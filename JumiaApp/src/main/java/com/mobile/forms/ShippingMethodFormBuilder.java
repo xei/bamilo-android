@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.newFramework.objects.checkout.ShippingMethodFormBuilderHolder;
-import com.mobile.newFramework.objects.checkout.ShippingMethodFormHolder;
+import com.mobile.newFramework.objects.checkout.ShippingForm;
+import com.mobile.newFramework.objects.checkout.ShippingFormField;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.utils.ShippingRadioGroupList;
@@ -25,7 +25,7 @@ public class ShippingMethodFormBuilder implements Parcelable  {
 
     private ShippingRadioGroupList mRadioGroup;
 
-    public ShippingMethodFormBuilderHolder shippingMethodFormBuilderHolder;
+    public ShippingForm shippingMethodFormBuilderHolder;
 
     /**
      * Empty constructor
@@ -85,7 +85,7 @@ public class ShippingMethodFormBuilder implements Parcelable  {
 
     public ContentValues getValues(){
         ContentValues values = new ContentValues();
-        for (ShippingMethodFormHolder element : shippingMethodFormBuilderHolder.fields) {
+        for (ShippingFormField element : shippingMethodFormBuilderHolder.fields) {
             values.putAll(((ShippingMethodForm)element).getContentValues());
         }
         return values;
@@ -98,7 +98,6 @@ public class ShippingMethodFormBuilder implements Parcelable  {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(shippingMethodFormBuilderHolder.id);
         dest.writeString(shippingMethodFormBuilderHolder.name);
         dest.writeString(shippingMethodFormBuilderHolder.method);
         dest.writeString(shippingMethodFormBuilderHolder.action);
@@ -109,7 +108,6 @@ public class ShippingMethodFormBuilder implements Parcelable  {
      * Parcel constructor
      */
     private ShippingMethodFormBuilder(Parcel in) {
-        shippingMethodFormBuilderHolder.id = in.readString();
         shippingMethodFormBuilderHolder.name = in.readString();
         shippingMethodFormBuilderHolder.method = in.readString();
         shippingMethodFormBuilderHolder.action = in.readString();

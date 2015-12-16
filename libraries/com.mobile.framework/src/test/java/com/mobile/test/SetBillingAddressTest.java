@@ -25,7 +25,7 @@ public class SetBillingAddressTest extends BaseTestCase {
 
         requestBundle = new RequestBundle.Builder()
                 .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/billing/")
-                .setCache(EventType.SET_BILLING_ADDRESS_EVENT.cacheTime)
+                .setCache(EventType.SET_MULTI_STEP_ADDRESSES.cacheTime)
                 .addQueryData(data)
                 .build();
     }
@@ -33,7 +33,7 @@ public class SetBillingAddressTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.setBillingAddress);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setMultiStepAddresses);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

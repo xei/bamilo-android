@@ -16,7 +16,7 @@ public class ShippingMethod {
 
     public ShippingMethod() {
         this.shippingMethodHolder = new ShippingMethodOption();
-        this.shippingMethodHolder.shippingMethod = "";
+        this.shippingMethodHolder.value = "";
         this.shippingMethodHolder.label = "";
         this.shippingMethodHolder.deliveryTime = "";
     }
