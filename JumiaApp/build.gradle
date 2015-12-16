@@ -37,6 +37,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 22
         resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+        multiDexEnabled true
     }
 
     signingConfigs {

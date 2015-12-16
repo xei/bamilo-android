@@ -45,10 +45,10 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.6.0'
     compile 'com.squareup.okio:okio:1.6.0'
     /** GOOGLE PLAY SERVICE **/
-    compile 'com.google.android.gms:play-services-analytics:7.5.0'
-    compile 'com.google.android.gms:play-services-location:7.5.0'
-    compile 'com.google.android.gms:play-services-ads:7.5.0'
-    compile 'com.google.android.gms:play-services-wearable:7.5.0'
+    compile 'com.google.android.gms:play-services-analytics:8.3.0'
+    compile 'com.google.android.gms:play-services-location:8.3.0'
+    compile 'com.google.android.gms:play-services-ads:8.3.0'
+    compile 'com.google.android.gms:play-services-wearable:8.3.0'
     /** SOCIALS **/
     // https://developers.facebook.com/docs/android
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
