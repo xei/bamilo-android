@@ -87,28 +87,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     }
 
     /**
-     * Adds a control to the dynamic form
-     * 
-     * @param ctrl
-     *            An instance of a DynamicFormItem to be added to the form
-     * @param params
-     *            A LayoutParams instance to be used when inserting the control
-     *            into the form
-     */
-    public void addGroupedControl(ViewGroup group, DynamicFormItem ctrl, ViewGroup.LayoutParams params) {
-        View controlView = ctrl.getControl();
-        if (null != controlView && null != group) {
-            ctrl.setOnItemSelectedListener(itemSelected_listener);
-            controls.put(ctrl.getKey(), ctrl);
-
-            group.addView(controlView);
-            if (null == base.findViewById(group.getId())) {
-                base.addView(group, params);
-            }
-        }
-    }
-
-    /**
      * Gets one of the form controls with a specific index
      * 
      * @param index
@@ -158,8 +136,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * @param value
      *            the form object
      */
-    public void setForm(Form value) {
+    public DynamicForm setForm(Form value) {
         form = value;
+        return this;
     }
 
     /**

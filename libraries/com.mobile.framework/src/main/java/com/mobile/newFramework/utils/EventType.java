@@ -166,7 +166,7 @@ public enum EventType {
 
     GET_RICH_RELEVANCE_EVENT("http:/richrelevance/request/"),
 
-    // ############# NEW MULTI STEP CHECKOUT #############
+    // ############# MULTI STEP CHECKOUT #############
 
     SET_MULTI_STEP_ADDRESSES("https:/multistep/addresses/"),
 
@@ -182,8 +182,11 @@ public enum EventType {
 
     GET_MULTI_STEP_FINISH("https:/multistep/getstepfinish/"),
 
-    SET_MULTI_STEP_FINISH("https:/multistep/finish/");
+    SET_MULTI_STEP_FINISH("https:/multistep/finish/"),
 
+    // ############# CART #############
+
+    CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/");
 
 
     public final String action;

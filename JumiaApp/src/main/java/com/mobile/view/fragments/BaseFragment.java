@@ -251,26 +251,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    /**
-     * Show the summary order if the view is present
-     *
-     * @author sergiopereira
-     */
-    public void showOrderSummaryIfPresent(int checkoutStep, PurchaseEntity orderSummary) {
-        // Get order summary
-        if (isOrderSummaryPresent) {
-            Print.i(TAG, "ORDER SUMMARY IS PRESENT");
-            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.replace(ORDER_SUMMARY_CONTAINER, CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary));
-            ft.commit();
-        } else {
-            Print.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
-        }
-    }
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -345,6 +328,31 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onDestroy();
     }
 
+    /*
+     * #### CHECKOUT SUMMARY FRAGMENT ####
+     */
+
+    /**
+     * Show the summary order if the view is present
+     * On rotate, tries use the old fragment from ChildFragmentManager.
+     * @author sergiopereira
+     */
+    public void showOrderSummaryIfPresent(int checkoutStep, PurchaseEntity orderSummary) {
+        // Get order summary
+        if (isOrderSummaryPresent) {
+            Print.i(TAG, "ORDER SUMMARY IS PRESENT");
+            Fragment fragment = getChildFragmentManager().findFragmentByTag(CheckoutSummaryFragment.TAG + "_" + checkoutStep);
+            if(fragment == null) {
+                fragment = CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary);
+            }
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.replace(ORDER_SUMMARY_CONTAINER, fragment, CheckoutSummaryFragment.TAG + "_" + checkoutStep);
+            ft.commit();
+        } else {
+            Print.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
+        }
+    }
+
     /**
      * #### MEMORY ####
      */
@@ -352,6 +360,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * This method should be used when we known that the system clean data of application
      */
+    @Deprecated
     public void restartAllFragments() {
         Print.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity);
         final BaseActivity activity = getBaseActivity();

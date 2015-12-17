@@ -29,6 +29,23 @@ import java.util.Map;
 public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     protected final static String TAG = FormField.class.getSimpleName();
+
+    // Supported Types
+    public static final String RADIO = "radio";
+    private static final String STRING = "string";
+    private static final String EMAIL = "email";
+    private static final String DATE = "date";
+    private static final String NUMBER = "number";
+    private static final String RELATED_NUMBER = "related_number";
+    private static final String PASSWORD = "password";
+    private static final String LIST = "list";
+    private static final String CHOICE = "choice";
+    private static final String RATING = "array";
+    private static final String CHECKBOX = "checkbox";
+    private static final String HIDDEN = "hidden";
+    private static final String CHECKBOX_LINK = "checkbox_link";
+    private static final String ERROR_MESSAGE = "errorMessage";
+
     private Form mParent;
     private LinkedHashMap<String, String> mDataSetRating;
     private LinkedHashMap<String, String> mDataSet;
@@ -97,53 +114,44 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         try {
             String formFieldString = jsonObject.optString(RestConstants.TYPE);
             switch (formFieldString) {
-                case "string":
-                case "text":
+                case STRING:
                     mInputType = FormInputType.text;
                     break;
-                case "email":
+                case EMAIL:
                     mInputType = FormInputType.email;
                     break;
-                case "date":
+                case DATE:
                     mInputType = FormInputType.date;
                     break;
-                case "integer":
-                case "number":
+                case NUMBER:
                     mInputType = FormInputType.number;
                     break;
-                case "related_number":
+                case RELATED_NUMBER:
                     mInputType = FormInputType.relatedNumber;
                     break;
-                case "password":
+                case PASSWORD:
                     mInputType = FormInputType.password;
                     break;
-                case "radio":
+                case RADIO:
                     mInputType = FormInputType.radioGroup;
                     break;
-                case "choice":
-                case "list":
-                case "select":
+                case CHOICE:
+                case LIST:
                     mInputType = FormInputType.list;
                     break;
-                case "array":
-                case "rating":
+                case RATING:
                     mInputType = FormInputType.rating;
                     break;
-                case "boolean":
-                case "checkbox":
-                case "multi_checkbox":
+                case CHECKBOX:
                     mInputType = FormInputType.checkBox;
                     break;
-                case "":
-                    mInputType = FormInputType.meta;
-                    break;
-                case "hidden":
+                case HIDDEN:
                     mInputType = FormInputType.hide;
                     break;
-                case "checkbox_link":
+                case CHECKBOX_LINK:
                     mInputType = FormInputType.checkBoxLink;
                     break;
-                case "errorMessage":
+                case ERROR_MESSAGE:
                     mInputType = FormInputType.errorMessage;
                     break;
                 default:
@@ -218,7 +226,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             /**
              * ########### RELATED FIELD ###########
              */
-
             // Case related data (sub form)
             JSONObject relatedDataObject = jsonObject.optJSONObject(RestConstants.RELATED_DATA);
             if (relatedDataObject != null) {
@@ -227,8 +234,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 formField.setParentField(this);
                 mChildFormField = formField;
             }
-
-            // CASE fields from related TODO use options
+            // Case fields from related number with radio group options
             dataOptionsArray = jsonObject.optJSONArray(RestConstants.FIELDS);
             if(dataOptionsArray != null) {
                 mOptions = new ArrayList<>();

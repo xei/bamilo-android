@@ -329,7 +329,7 @@
     <string name="create_label">ایجاد</string>
     <string name="change_password">تغییر رمز عبور</string>
     <string name="continue_without_log_in">ادامه بدون ورود به حساب کاربری</string>
-    <string name="format_discount_value">-‎%s‎</string>
+    <string name="placeholder_discount">-‎%s‎</string>
     <string name="edit_user_success">ویرایش اطلاعات کاربر موفقیت‌آمیز بود.</string>
     <string name="password">رمز عبور</string>
     <string name="more">بیشتر</string>

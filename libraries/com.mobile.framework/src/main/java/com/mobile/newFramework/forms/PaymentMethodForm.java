@@ -39,7 +39,6 @@ public class PaymentMethodForm implements Parcelable {
     private String order_nr;
     private String customer_first_name;
     private String customer_last_name;
-    private boolean cameFromWebCheckout;
 
     public static final int GET = 0;
     public static final int POST = 1;
@@ -76,7 +75,7 @@ public class PaymentMethodForm implements Parcelable {
             setPaymentType(METHOD_OTHER);
             setOrderNumber(jsonObject.optString(RestConstants.ORDER_NR));
             return;
-        } 
+        }
 
         String type = mJSONObject.optString(RestConstants.TYPE);
         if (type.equalsIgnoreCase(PAYMENT_METHOD_AUTO_SUBMIT_EXTERNAL)) {
@@ -129,61 +128,6 @@ public class PaymentMethodForm implements Parcelable {
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.os.Parcelable#describeContents()
-     */
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
-     */
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(payment_type);
-        dest.writeString(action);
-        dest.writeInt(method);
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(redirect);
-        dest.writeParcelable(contentValues, flags);
-        dest.writeString(order_nr);
-        dest.writeString(customer_first_name);
-        dest.writeString(customer_last_name);
-        dest.writeBooleanArray(new boolean[] {cameFromWebCheckout});
-    }
-
-    /**
-     * Parcel constructor
-     */
-    @SuppressWarnings("ResourceType")
-    private PaymentMethodForm(Parcel in) {
-        payment_type = in.readInt();
-        action = in.readString();
-        method = in.readInt();
-        id = in.readString();
-        name = in.readString();
-        redirect = in.readString();
-        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
-        order_nr = in.readString();
-        customer_first_name = in.readString();
-        customer_last_name = in.readString();
-        in.readBooleanArray(new boolean[] {cameFromWebCheckout});
-    }
-
-    /**
-     * @return the payment_type
-     */
-    public int getPaymentType() {
-        return payment_type;
-    }
-
     /**
      * @param payment_type
      *            the payment_type to set
@@ -225,6 +169,13 @@ public class PaymentMethodForm implements Parcelable {
      */
     public void setMethod(@RequestType int method) {
         this.method = method;
+    }
+
+    public boolean isExternalPayment() {
+        return payment_type == METHOD_SUBMIT_EXTERNAL ||
+                payment_type == METHOD_AUTO_SUBMIT_EXTERNAL ||
+                payment_type == METHOD_AUTO_REDIRECT_EXTERNAL ||
+                payment_type == METHOD_RENDER_INTERNAL;
     }
 
     /**
@@ -287,13 +238,6 @@ public class PaymentMethodForm implements Parcelable {
     }
 
     /**
-     * @return the order_nr
-     */
-    public String getOrderNumber() {
-        return order_nr;
-    }
-
-    /**
      * @param order_nr
      *            the order_nr to set
      */
@@ -301,19 +245,56 @@ public class PaymentMethodForm implements Parcelable {
         this.order_nr = order_nr;
     }
 
-    /**
-     * @return the cameFromWebCheckout
+    /*
+     * ############## PARCELABLE ##############
      */
-    public boolean isCameFromWebCheckout() {
-        return cameFromWebCheckout;
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.os.Parcelable#describeContents()
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(payment_type);
+        dest.writeString(action);
+        dest.writeInt(method);
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(redirect);
+        dest.writeParcelable(contentValues, flags);
+        dest.writeString(order_nr);
+        dest.writeString(customer_first_name);
+        dest.writeString(customer_last_name);
     }
 
     /**
-     * @param cameFromWebCheckout the cameFromWebCheckout to set
+     * Parcel constructor
      */
-    public void setCameFromWebCheckout(boolean cameFromWebCheckout) {
-        this.cameFromWebCheckout = cameFromWebCheckout;
+    @SuppressWarnings("ResourceType")
+    private PaymentMethodForm(Parcel in) {
+        payment_type = in.readInt();
+        action = in.readString();
+        method = in.readInt();
+        id = in.readString();
+        name = in.readString();
+        redirect = in.readString();
+        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+        order_nr = in.readString();
+        customer_first_name = in.readString();
+        customer_last_name = in.readString();
     }
+
 
     /**
      * Create parcelable

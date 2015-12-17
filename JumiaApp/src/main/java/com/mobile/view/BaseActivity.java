@@ -503,8 +503,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         this.action = newNavAction;
         // Update the app bar layout
         setAppBarLayout(oldNavAction, newNavAction);
-        // Hide
-        //hideKeyboard();       // TODO: PLEASE VALIDATE IF THIS IS NECESSARY IN THE VERSION v2.9
         // Update Options Menu
         invalidateOptionsMenu();
         // Select step on Checkout
@@ -1271,11 +1269,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     public void updateCartInfo() {
         Print.d(TAG, "ON UPDATE CART INFO");
-//        if (JumiaApplication.INSTANCE.getCart() != null) {
-//            Log.d(TAG, "updateCartInfo value = "
-//                    + JumiaApplication.INSTANCE.getCart().getCartValue() + " quantity = "
-//                    + JumiaApplication.INSTANCE.getCart().getCartCount());
-//        }
         updateCartInfoInActionBar();
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
     }

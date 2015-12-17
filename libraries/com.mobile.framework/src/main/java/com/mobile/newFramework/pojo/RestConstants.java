@@ -179,7 +179,6 @@ public class RestConstants {
     public static final String CREATION_DATE = "creation_date";
     public static final String PAYMENT_METHOD = "payment_method";
     public static final String PAYMENT = "payment";
-    public static final String PAYMENT_METHOD_FORM = "paymentMethodForm";
     public static final String STATUS = "status";
     public static final String SHIPPING_METHOD = "shipping_method";
     public static final String BILLING_ADDRESS = "billing_address";
@@ -192,7 +191,6 @@ public class RestConstants {
     public static final String REGION = "region";
     public static final String MULTI_STEP_ENTITY = "multistep_entity";
     public static final String NEXT_STEP = "next_step";
-    public static final String SHIPPING_METHOD_FORM = "shippingMethodForm";
     public static final String TEXT = "text";
     public static final String TOOLTIP_TEXT = "tooltip_text";
     public static final String CVC_TEXT = "cvc_text";
@@ -303,4 +301,7 @@ public class RestConstants {
     public static final String ARRAY = "array";
     public static final String ADDRESSES_BILLING_ID = "addresses[billing_id]";
     public static final String ADDRESSES_SHIPPING_ID = "addresses[shipping_id]";
+    public static final String APP = "app";
+    public static final String ANDROID = "android";
+    public static final String CUSTOMER_DEVICE = "customer_device";
 }

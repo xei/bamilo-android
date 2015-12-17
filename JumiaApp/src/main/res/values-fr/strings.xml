@@ -432,7 +432,7 @@
     <string name="create_label">créer</string>
     <string name="change_password">Changer le mot de passe</string>
     <string name="continue_without_log_in">Continuer sans s\'identifier</string>
-    <string name="format_discount_value">-%s</string>
+    <string name="placeholder_discount">-%s</string>
     <string name="edit_user_success">Informations client modifier avec succès</string>
     <string name="password">Mot de passe</string>
     <string name="more">Plus</string>
