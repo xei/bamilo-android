@@ -1036,17 +1036,13 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             view.setTag(BRAND, item.getBrand());
             view.setTag(PRICE, item.getPriceForTracking());
             view.setTag(DISCOUNT, item.getMaxSavingPercentage());
-            if(id == R.id.campaign_item_button_buy){
-
+            if (mOnClickListener != null){
                 // Send to listener
-                if (mOnClickListener != null){
+                if(id == R.id.campaign_item_button_buy){
                     Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
                     mOnClickListener.onClickAddProduct(view, item);
-                }
-
-            } else {
-                if (mOnClickListener != null){
-                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
+                } else {
+                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " + selectedSize.size);
                     mOnClickListener.onClickOpenProduct(view);
                 }
             }
