@@ -29,8 +29,7 @@ public class GetCustomerHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-
-        JumiaApplication.CUSTOMER = (Customer) baseResponse.getMetadata().getData();
+        JumiaApplication.CUSTOMER = (Customer) baseResponse.getContentData();
     }
 
 }

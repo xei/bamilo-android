@@ -52,7 +52,7 @@ public class LoginFacebookHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         // Save customer
-        CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
+        CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getContentData();
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
         baseResponse.getMetadata().setData(nextStepStruct);
 

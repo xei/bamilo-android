@@ -83,7 +83,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      * @return CheckoutSummaryFragment
      */
     public static CheckoutSummaryFragment getInstance(int checkoutStep, PurchaseEntity orderSummary) {
-        //if (mOrderSummaryFragment == null) 
         CheckoutSummaryFragment sOrderSummaryFragment = new CheckoutSummaryFragment();
         // Save order summary
         sOrderSummaryFragment.mCheckoutStep = checkoutStep;
@@ -552,13 +551,13 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         switch (eventType) {
         case GET_SHOPPING_CART_ITEMS_EVENT:
             Print.d(TAG, "RECEIVED GET_SHOPPING_CART_ITEMS_EVENT");
-            mOrderSummary = (PurchaseEntity) baseResponse.getMetadata().getData();
+            mOrderSummary = (PurchaseEntity) baseResponse.getContentData();
             showOrderSummary();
             showFragmentContentContainer();
             break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 Print.d(TAG, "RECEIVED REMOVE_ITEM_FROM_SHOPPING_CART_EVENT");
-                mOrderSummary = (PurchaseEntity) baseResponse.getMetadata().getData();
+                mOrderSummary = (PurchaseEntity) baseResponse.getContentData();
                 showOrderSummary();
                 hideActivityProgress();
                 showFragmentContentContainer();

@@ -10,7 +10,9 @@ import com.mobile.utils.CheckoutStepManager;
  * Created by rsoares on 9/22/15.
  */
 public class NextStepStruct {
+
     private CheckoutStepObject checkoutStepObject;
+
     private FragmentType fragmentType;
 
     public NextStepStruct() {
@@ -19,7 +21,7 @@ public class NextStepStruct {
     public NextStepStruct(@Nullable CheckoutStepObject checkoutStepObject) {
         this.checkoutStepObject = checkoutStepObject;
         if(checkoutStepObject != null) {
-            fragmentType = CheckoutStepManager.getNextFragment(checkoutStepObject.getNextStep());
+            fragmentType = CheckoutStepManager.getNextFragment(checkoutStepObject.getNextCheckoutStep());
         } else {
             fragmentType = FragmentType.UNKNOWN;
         }

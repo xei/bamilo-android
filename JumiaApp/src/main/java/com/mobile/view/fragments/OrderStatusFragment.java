@@ -305,7 +305,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 break;
             case TRACK_ORDER_EVENT:
                 // Get order status
-                OrderStatus order = (OrderStatus) baseResponse.getMetadata().getData();
+                OrderStatus order = (OrderStatus) baseResponse.getContentData();
                 if (order != null) {
                     showOrderStatus(order);
                 } else {

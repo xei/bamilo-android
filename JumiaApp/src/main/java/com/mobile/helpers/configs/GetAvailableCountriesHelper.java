@@ -47,7 +47,7 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        AvailableCountries availableCountries = (AvailableCountries) baseResponse.getMetadata().getData();
+        AvailableCountries availableCountries = (AvailableCountries) baseResponse.getContentData();
 
         //TODO move to observable
         // Gets the previous Countries list

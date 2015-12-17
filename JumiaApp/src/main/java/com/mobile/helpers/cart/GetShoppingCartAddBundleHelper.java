@@ -57,7 +57,7 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
         super.postSuccess(baseResponse);
         Print.i(TAG,"ADD BUNDLE POST SUCCESS");
         JumiaApplication.INSTANCE.setCart(null);
-        PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
+        PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value

@@ -16,7 +16,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -35,7 +34,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private LinkedHashMap<String, String> mDataSet;
     private String mDataSetSource;
     private String mApiCall;
-    private LinkedHashMap<Object,Object> mExtrasValues;
     private HashMap<String,PaymentInfo> mPaymentInfoList;
     private String mId;
     private String mKey;
@@ -80,7 +78,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mDataSetSource = "";
         this.mParent = parent;
         this.mDataSetListener = null;
-        this.mExtrasValues = new LinkedHashMap<>();
         this.mScenario = null;
         this.mLinkText = "";
         this.mDataSetRating = new LinkedHashMap<>();
@@ -178,7 +175,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             // Case "data_set" //should be more generic
             JSONArray optionsArray  = jsonObject.optJSONArray(RestConstants.DATA_SET);
-            //dataSetRating.clear();
             if (optionsArray != null && optionsArray.length() > 0) {
                 for (int i = 0; i < optionsArray.length(); i++) {
                     mDataSetRating.put(optionsArray.getJSONObject(i).optString(RestConstants.ID_RATING_TYPE), optionsArray.getJSONObject(i).optString(RestConstants.DISPLAY_TITLE));
@@ -200,23 +196,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 }
             }
 
+            // Case options
+            JSONArray dataOptionsArray = jsonObject.optJSONArray(RestConstants.OPTIONS);
 
-            // Case options TODO Unify options response
-            /**
-             * Validate this method to save the shipping methods
-             */
-            JSONArray dataOptionsArray = null;
-            JSONObject dataOptionsObject = null;
-            if(!jsonObject.isNull("options")) {
-                dataOptionsArray = jsonObject.optJSONArray("options");
-                dataOptionsObject = jsonObject.optJSONObject("options");
-            }
-
-
-            // TODO Improve this method
             // Case shipping options from array
             if(dataOptionsArray != null){
-                mExtrasValues.clear();
                 mNewsletterOptions = new ArrayList<>();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
                     // Case the newsletter
@@ -224,31 +208,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                         //FIXME validate if possible to remove this array, its only used on MyAccountEmailNotificationFragment
                         //FIXME Newsletter revamp should fix this
                         mNewsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), mName));
-
-                        JSONObject option = dataOptionsArray.getJSONObject(i);
-                        if(option != null)
-                            mDataSet.put(option.optString("value"), option.optString("label"));
-                    }
-                    // Case pickup station
-                    else if(mKey.equals("pickup_station") && mScenario != null){
-                        PickUpStationObject pStation = new PickUpStationObject();
-                        pStation.initialize(dataOptionsArray.getJSONObject(i));
-                        mExtrasValues.put(pStation.getIdPickupStation(), pStation);
-                        mDataSet.put(pStation.getName(), pStation.getName());
                     }
                     // Case default
-                    else {
-                        JSONObject option = dataOptionsArray.getJSONObject(i);
-                        mDataSet.put(option.optString("value"), option.optString("label"));
-                    }
-                }
-            }
-            // Case shipping options from object
-            else if(dataOptionsObject != null){
-                Iterator<?> it = dataOptionsObject.keys();
-                while (it.hasNext()) {
-                    String curKey = (String) it.next();
-                    mDataSet.put(curKey, curKey);
+                    JSONObject option = dataOptionsArray.getJSONObject(i);
+                    mDataSet.put(option.optString(RestConstants.VALUE), option.optString(RestConstants.LABEL));
                 }
             }
 
@@ -284,27 +247,23 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType != FormInputType.errorMessage){
                 mDataSet.clear();
                 mPaymentFields = new HashMap<>();
-                dataOptionsObject = jsonObject.optJSONObject(RestConstants.OPTIONS);
-                Iterator<?> it = dataOptionsObject.keys();
-                //Clean payment method info
-                while (it.hasNext()) {
-                    String curKey = (String) it.next();
-                    String label = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.LABEL);
-                    String value = dataOptionsObject.getJSONObject(curKey).getString(RestConstants.VALUE);
-                    //Log.d(TAG, "FORM FIELD: CURRENT KEY " + curKey + " VALUE: " + value);
+                JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.OPTIONS);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject field = jsonArray.getJSONObject(i);
+                    String label = field.getString(RestConstants.LABEL);
+                    String value = field.getString(RestConstants.VALUE);
                     mDataSet.put(value, label);
-                    // Info
-                    JSONObject paymentDescription = dataOptionsObject.optJSONObject(curKey).optJSONObject(RestConstants.DESCRIPTION);
+                    // Create payment info
+                    JSONObject paymentDescription = field.optJSONObject(RestConstants.DESCRIPTION);
                     PaymentInfo mPaymentInfo = new PaymentInfo();
                     mPaymentInfo.initialize(paymentDescription);
-                    mPaymentInfoList.put(label,mPaymentInfo);
-                    // Sub forms
-                    Print.d("code1paymentDescription : saved : " + curKey);
-                    JSONObject json = dataOptionsObject.getJSONObject(curKey);
-                    Form mForm = new Form();
-                    mForm.initialize(json);
-                    mPaymentFields.put(label, mForm);
-                    Print.d("code1paymentDescription : initialized form : " + curKey);
+                    mPaymentInfoList.put(label, mPaymentInfo);
+                    // Create sub forms for required fields
+                    if(field.has(RestConstants.FIELDS)){
+                        Form mForm = new Form();
+                        mForm.initAsSubForm(field);
+                        mPaymentFields.put(label, mForm);
+                    }
                 }
             }
 
@@ -508,10 +467,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return this.mPaymentFields;
     }
 
-    public void setPaymentMethodsField(HashMap<String, Form> pFields){
-        this.mPaymentFields = pFields;
-    }
-
     public ArrayList<NewsletterOption> getNewsletterOptions() {
         return mNewsletterOptions;
     }
@@ -553,7 +508,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeString(mValue);
         dest.writeString(mApiCall);
         dest.writeValue(mPaymentFields);
-        dest.writeValue(mExtrasValues);
         if (mNewsletterOptions == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -594,7 +548,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mValue = in.readString();
         mApiCall = in.readString();
         mPaymentFields = (HashMap) in.readValue(HashMap.class.getClassLoader());
-        mExtrasValues = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
         if (in.readByte() == 0x01) {
             mNewsletterOptions = new ArrayList<>();
             in.readList(mNewsletterOptions, NewsletterOption.class.getClassLoader());

@@ -23,7 +23,7 @@ public class SetShippingMethodTest extends BaseTestCase {
 
         requestBundle = new RequestBundle.Builder()
                 .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/shippingmethod/")
-                .setCache(EventType.SET_SHIPPING_METHOD_EVENT.cacheTime)
+                .setCache(EventType.SET_MULTI_STEP_SHIPPING.cacheTime)
                 .addQueryData(data)
                 .build();
     }
@@ -31,7 +31,7 @@ public class SetShippingMethodTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.setShippingMethod);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setMultiStepShipping);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

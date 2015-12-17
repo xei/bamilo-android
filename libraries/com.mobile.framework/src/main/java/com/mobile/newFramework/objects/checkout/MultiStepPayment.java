@@ -6,30 +6,25 @@ import android.os.Parcelable;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Class that represents the response from the get products rating
- * @author spereira
  */
-public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
-
-    public static final String TAG = CheckoutFormBilling.class.getSimpleName();
+public class MultiStepPayment implements IJSONSerializable, Parcelable {
 
     private PurchaseEntity mOrderSummary;
+
     private Form mForm;
-    private Addresses mAddresses;
 
     /**
-     * Empty Constructor
+     * Empty constructor
      */
     @SuppressWarnings("unused")
-    public CheckoutFormBilling() {
+    public MultiStepPayment() {
         super();
     }
 
@@ -42,22 +37,13 @@ public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Form
-        JSONObject jsonForm = jsonObject.getJSONObject(RestConstants.ADDRESSES);
-        mForm = new Form();
-        mForm.initialize(jsonForm);
-        // Addresses
-        JSONObject jsonList = jsonObject.getJSONObject(RestConstants.CUSTOMER).getJSONObject(RestConstants.ADDRESS_LIST);
-        mAddresses = new Addresses(jsonList);
         // Order
         mOrderSummary = new PurchaseEntity();
         mOrderSummary.initialize(jsonObject);
+        // Get form
+        mForm = new Form();
+        mForm.initialize(jsonObject);
         return true;
-    }
-
-    @Override
-    public int getRequiredJson() {
-        return RequiredJson.METADATA;
     }
 
     public PurchaseEntity getOrderSummary() {
@@ -68,14 +54,21 @@ public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
         return mForm;
     }
 
-    public Addresses getAddresses() {
-        return mAddresses;
-    }
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
+     */
     @Override
     public JSONObject toJSON() {
         return null;
     }
+
+    @Override
+    public int getRequiredJson() {
+        return RequiredJson.METADATA;
+    }
+
 
     @Override
     public int describeContents() {
@@ -84,24 +77,24 @@ public class CheckoutFormBilling implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(mForm);
-        dest.writeValue(mAddresses);
         dest.writeValue(mOrderSummary);
+        dest.writeValue(mForm);
+
     }
 
-    private CheckoutFormBilling(Parcel in) {
-        mForm = (Form) in.readValue(Form.class.getClassLoader());
-        mAddresses = (Addresses) in.readValue(Addresses.class.getClassLoader());
+    private MultiStepPayment(Parcel in) {
         mOrderSummary = (PurchaseEntity) in.readValue(PurchaseEntity.class.getClassLoader());
+        mForm = (Form) in.readValue(Form.class.getClassLoader());
+
     }
 
-    public static final Creator<CheckoutFormBilling> CREATOR = new Creator<CheckoutFormBilling>() {
-        public CheckoutFormBilling createFromParcel(Parcel in) {
-            return new CheckoutFormBilling(in);
+    public static final Creator<MultiStepPayment> CREATOR = new Creator<MultiStepPayment>() {
+        public MultiStepPayment createFromParcel(Parcel in) {
+            return new MultiStepPayment(in);
         }
 
-        public CheckoutFormBilling[] newArray(int size) {
-            return new CheckoutFormBilling[size];
+        public MultiStepPayment[] newArray(int size) {
+            return new MultiStepPayment[size];
         }
     };
 

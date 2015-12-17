@@ -107,13 +107,15 @@ public class PickUpStationObject implements Parcelable {
 
     /**
      * Get the shipping fee
+     *
      * @return long
      */
     public long getShippingFee() {
         return shippingFee;
     }
 
-    public void initialize(JSONObject jsonObject) {
+    public void initialize(JSONObject jsonObject) throws JSONException {
+        // Save info
         this.pickupStationId = jsonObject.optString(RestConstants.ID_PICKUPSTATION);
         this.name = jsonObject.optString(RestConstants.NAME);
         this.pickupId = jsonObject.optString(RestConstants.PICKUP_ID);
@@ -123,36 +125,23 @@ public class PickUpStationObject implements Parcelable {
         this.city = jsonObject.optString(RestConstants.CITY);
         this.openingHours = jsonObject.optString(RestConstants.OPENING_HOURS);
         this.shippingFee = jsonObject.optLong(RestConstants.SHIPPING_FEE);
-
+        // Save payment methods
         this.paymentMethods = new ArrayList<>();
-        JSONArray arrayPaymentMethod;
-        try {
-            arrayPaymentMethod = jsonObject.getJSONArray(RestConstants.PAYMENT_METHOD);
-            for (int i = 0; i < arrayPaymentMethod.length(); i++) {
-                this.paymentMethods.add(arrayPaymentMethod.get(i).toString());
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        JSONArray arrayPaymentMethod = jsonObject.getJSONArray(RestConstants.PAYMENT_METHOD);
+        for (int i = 0; i < arrayPaymentMethod.length(); i++) {
+            this.paymentMethods.add(arrayPaymentMethod.getString(i));
         }
-
-
+        // Save regions
         this.regions = new ArrayList<>();
-        JSONObject arrayRegions;
-        try {
-            arrayRegions = jsonObject.getJSONObject(RestConstants.REGIONS);
-            Iterator<?> keys = arrayRegions.keys();
-            while (keys.hasNext()) {
-                String key = keys.next().toString();
-                Print.i(TAG, "code1adding key : " + key);
-                Region mRegion = new Region(key, arrayRegions.getString(key));
-                this.regions.add(mRegion);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        JSONObject arrayRegions = jsonObject.getJSONObject(RestConstants.REGIONS);
+        Iterator<?> keys = arrayRegions.keys();
+        while (keys.hasNext()) {
+            String key = keys.next().toString();
+            Print.i(TAG, "code1adding key : " + key);
+            Region mRegion = new Region(key, arrayRegions.getString(key));
+            this.regions.add(mRegion);
         }
-
     }
-
 
     @Override
     public int describeContents() {

@@ -724,7 +724,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
             case GET_FORM_RATING_EVENT:
                 Print.i(TAG, "GET_FORM_RATING_EVENT");
-                ratingForm = (Form) baseResponse.getMetadata().getData();
+                ratingForm = (Form) baseResponse.getContentData();
                 setRatingLayout(ratingForm);
                 if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)){
                     triggerReviewForm();
@@ -736,7 +736,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
             case GET_FORM_REVIEW_EVENT:
                 Print.i(TAG, "GET_FORM_REVIEW_EVENT");
-                reviewForm = (Form) baseResponse.getMetadata().getData();
+                reviewForm = (Form) baseResponse.getContentData();
                 if(ratingForm == null)
                     setRatingLayout(reviewForm);
                 showFragmentContentContainer();
@@ -748,7 +748,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                     getActivity().onBackPressed();
                     getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
                 } else {
-                    completeProduct = (ProductComplete) baseResponse.getMetadata().getData();
+                    completeProduct = (ProductComplete) baseResponse.getContentData();
                     // triggerAutoLogin();
                     // triggerCustomer();
                     triggerRatingForm();

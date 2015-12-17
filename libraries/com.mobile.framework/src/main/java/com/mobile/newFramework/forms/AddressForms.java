@@ -3,6 +3,7 @@ package com.mobile.newFramework.forms;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -43,7 +44,7 @@ public class AddressForms implements IJSONSerializable {
      * Initialize both instances from a jsonObject Form
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
         return mShippingForm.initialize(jsonObject) && mBillingForm.initialize(jsonObject);
     }
 

@@ -371,7 +371,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         case GET_NEWSLETTERS_FORM_EVENT:
             Print.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
             // Save the form
-            mNewslettersForm = (Form)baseResponse.getMetadata().getData();
+            mNewslettersForm = (Form)baseResponse.getContentData();
             // Clean options
             mNewsletterOptions = null;
             // Show the form

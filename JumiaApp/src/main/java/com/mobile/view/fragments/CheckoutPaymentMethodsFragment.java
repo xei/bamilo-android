@@ -21,19 +21,17 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.NextStepStruct;
-import com.mobile.helpers.checkout.GetPaymentMethodsHelper;
-import com.mobile.helpers.checkout.SetPaymentMethodHelper;
+import com.mobile.helpers.checkout.GetStepPaymentHelper;
+import com.mobile.helpers.checkout.SetStepPaymentHelper;
 import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.objects.checkout.CheckoutFormPayment;
-import com.mobile.newFramework.objects.checkout.SetPaymentMethod;
+import com.mobile.newFramework.objects.checkout.MultiStepPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -443,10 +441,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         
         switch (eventType) {
-        case GET_PAYMENT_METHODS_EVENT:
+        case GET_MULTI_STEP_PAYMENT:
             Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             // Get order summary
-            CheckoutFormPayment responseData = (CheckoutFormPayment) baseResponse.getMetadata().getData();
+            MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
             orderSummary = responseData.getOrderSummary();
             super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
             // Set the checkout total bar
@@ -464,10 +462,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             }
             updateVoucher(orderSummary);
             break;
-        case SET_PAYMENT_METHOD_EVENT:
+        case SET_MULTI_STEP_PAYMENT:
             Print.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             // Get next step
-            NextStepStruct nextStepStruct = (NextStepStruct)baseResponse.getMetadata().getData();
+            NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
             FragmentType nextFragment = nextStepStruct.getFragmentType();
             nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.MY_ORDER;
             // Tracking
@@ -475,9 +473,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
             TrackerDelegator.trackPaymentMethod(userId, email, paymentName);
             // Switch to FINISH
-            Bundle bundle = new Bundle();
-            bundle.putParcelable(ConstantsIntentExtra.ORDER_FINISH, ((SetPaymentMethod) nextStepStruct.getCheckoutStepObject()).getOrderSummary());
-            getBaseActivity().onSwitchFragment(nextFragment, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         case ADD_VOUCHER:
             couponButton.setText(getString(R.string.voucher_remove));
@@ -519,10 +515,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Validate event type
         switch (eventType) {
-        case GET_PAYMENT_METHODS_EVENT:
+        case GET_MULTI_STEP_PAYMENT:
             Print.i(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             break;
-        case SET_PAYMENT_METHOD_EVENT:
+        case SET_MULTI_STEP_PAYMENT:
             Print.i(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
             //GTM TRACKING
             if(formGenerator != null){
@@ -551,15 +547,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      */
     
     private void triggerSubmitPaymentMethod(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new SetPaymentMethodHelper(), bundle, this);
+        triggerContentEvent(new SetStepPaymentHelper(), SetStepPaymentHelper.createBundle(values), this);
     }
     
     private void triggerSubmitVoucher(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new AddVoucherHelper(), bundle, this);
+        triggerContentEventProgress(new AddVoucherHelper(), AddVoucherHelper.createBundle(values), this);
     }
     
     private void triggerRemoveVoucher() {
@@ -567,8 +559,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     }
     
     private void triggerGetPaymentMethods(){
-        Print.i(TAG, "TRIGGER: GET PAYMENT METHODS");
-        triggerContentEvent(new GetPaymentMethodsHelper(), null, this);
+        triggerContentEvent(new GetStepPaymentHelper(), null, this);
     }
 
 }

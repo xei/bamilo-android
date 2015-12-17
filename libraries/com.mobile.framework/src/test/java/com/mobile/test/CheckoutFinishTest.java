@@ -22,7 +22,7 @@ public class CheckoutFinishTest extends BaseTestCase {
 
         requestBundle = new RequestBundle.Builder()
                 .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/finish/?app=android&customer_device=tablet")
-                .setCache(EventType.CHECKOUT_FINISH_EVENT.cacheTime)
+                .setCache(EventType.SET_MULTI_STEP_FINISH.cacheTime)
                 .addQueryData(data)
                 .build();
     }
@@ -30,7 +30,7 @@ public class CheckoutFinishTest extends BaseTestCase {
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.checkoutFinish);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setMultiStepFinish);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

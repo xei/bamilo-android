@@ -14,15 +14,14 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.forms.ShippingMethodFormBuilder;
 import com.mobile.helpers.NextStepStruct;
-import com.mobile.helpers.checkout.GetShippingMethodsHelper;
-import com.mobile.helpers.checkout.SetShippingMethodHelper;
+import com.mobile.helpers.checkout.GetStepShippingHelper;
+import com.mobile.helpers.checkout.SetStepShippingHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.Fulfillment;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
@@ -291,10 +290,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
-        case GET_SHIPPING_METHODS_EVENT:
+        case GET_MULTI_STEP_SHIPPING:
             onSuccessGetShippingMethods(baseResponse);
             break;
-        case SET_SHIPPING_METHOD_EVENT:
+        case SET_MULTI_STEP_SHIPPING:
             onSuccessSetShippingMethods(baseResponse);
             break;
         default:
@@ -320,10 +319,10 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
-        case GET_SHIPPING_METHODS_EVENT:
+        case GET_MULTI_STEP_SHIPPING:
             onErrorGetShippingMethods();
             break;
-        case SET_SHIPPING_METHOD_EVENT:
+        case SET_MULTI_STEP_SHIPPING:
             onErrorSetShippingMethods();
             break;
         default:
@@ -334,14 +333,14 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onSuccessGetShippingMethods(BaseResponse baseResponse){
         Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
         //
-        GetShippingMethodsHelper.ShippingMethodFormStruct shippingMethodsForm = (GetShippingMethodsHelper.ShippingMethodFormStruct)baseResponse.getMetadata().getData();
+        GetStepShippingHelper.ShippingMethodFormStruct shippingMethodsForm = (GetStepShippingHelper.ShippingMethodFormStruct )baseResponse.getContentData();
         // Get order summary
         PurchaseEntity orderSummary = shippingMethodsForm.getOrderSummary();
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_SHIPPING, orderSummary);
         // Form
         loadForm(shippingMethodsForm.getFormBuilder());
         // Set fulfillment
-        loadFulfillment(shippingMethodsForm.getmFulfillmentList());
+        loadFulfillment(shippingMethodsForm.getFulfillmentList());
         // Set the checkout total bar
         CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
         // Show
@@ -351,7 +350,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     public void onSuccessSetShippingMethods(BaseResponse baseResponse){
         Print.i(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
         // Get next step
-        NextStepStruct methodStruct = (NextStepStruct) baseResponse.getMetadata().getData();
+        NextStepStruct methodStruct = (NextStepStruct) baseResponse.getContentData();
         FragmentType nextFragment = methodStruct.getFragmentType();
         nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.PAYMENT_METHODS;
         getBaseActivity().onSwitchFragment(nextFragment, null, FragmentController.ADD_TO_BACK_STACK);
@@ -378,9 +377,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      */
     private void triggerSubmitShippingMethod(ContentValues values) {
         Print.i(TAG, "TRIGGER: SET SHIPPING METHOD");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new SetShippingMethodHelper(), bundle, this);
+        triggerContentEvent(new SetStepShippingHelper(), SetStepShippingHelper.createBundle(values), this);
     }
     
     /**
@@ -389,7 +386,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      */
     private void triggerGetShippingMethods(){
         Print.i(TAG, "TRIGGER: GET SHIPPING METHODS");
-        triggerContentEvent(new GetShippingMethodsHelper(), null, this);
+        triggerContentEvent(new GetStepShippingHelper(), null, this);
     }
 
 }

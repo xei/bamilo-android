@@ -829,9 +829,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             return;
         }
         switch (eventType) {
-            case INIT_FORMS:
-                onInitFormSuccessEvent();
-                break;
             case GET_CREATE_ADDRESS_FORM_EVENT:
                 onGetCreateAddressFormSuccessEvent(baseResponse);
                 break;
@@ -864,7 +861,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
         orderSummary = JumiaApplication.INSTANCE.getCart();
         // Save and load form
-        AddressForms form = (AddressForms) baseResponse.getMetadata().getData();
+        AddressForms form = (AddressForms) baseResponse.getContentData();
         mFormShipping = form.getShippingForm();
         mFormBilling = form.getBillingForm();
         // Load form, get regions
@@ -873,7 +870,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected void onGetRegionsSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_REGIONS_EVENT");
-        regions = (AddressRegions) baseResponse.getMetadata().getData();
+        regions = (AddressRegions) baseResponse.getContentData();
         // Validate response
         if (CollectionUtils.isNotEmpty(regions)) {
             setRegions(shippingFormGenerator, regions, SHIPPING_TAG);
@@ -886,7 +883,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
 
     protected void onGetCitiesSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_CITIES_EVENT");
-        ArrayList<AddressCity> citiesArray = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getMetadata().getData();
+        ArrayList<AddressCity> citiesArray = (GetCitiesHelper.AddressCitiesStruct)baseResponse.getContentData();
         GetCitiesHelper.AddressCitiesStruct cities= (GetCitiesHelper.AddressCitiesStruct)citiesArray;
         String requestedRegionAndField = cities.getCustomTag();
         Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
@@ -899,7 +896,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     }
 
     protected void onGetPostalCodesSuccessEvent(BaseResponse baseResponse) {
-        GetPostalCodeHelper.AddressPostalCodesStruct postalCodesStruct = (GetPostalCodeHelper.AddressPostalCodesStruct) baseResponse.getMetadata().getData();
+        GetPostalCodeHelper.AddressPostalCodesStruct postalCodesStruct = (GetPostalCodeHelper.AddressPostalCodesStruct) baseResponse.getContentData();
         Print.d(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
         Print.d(TAG, "REQUESTED CITY FROM FIELD: " + postalCodesStruct.getCustomTag());
         String requestedRegionAndField = postalCodesStruct.getCustomTag();
@@ -930,9 +927,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         switch (eventType) {
-            case INIT_FORMS:
-                onInitFormErrorEvent();
-                break;
             case GET_CREATE_ADDRESS_FORM_EVENT:
                 onGetCreateAddressFormErrorEvent(baseResponse);
                 break;

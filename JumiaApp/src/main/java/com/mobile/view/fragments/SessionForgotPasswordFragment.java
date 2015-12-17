@@ -262,7 +262,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "onSuccessEvent eventType : " + eventType);
         switch (eventType) {
-            case INIT_FORMS:
             case GET_FORGET_PASSWORD_FORM_EVENT:
                 Print.d(TAG, "FORGET_PASSWORD_FORM");
                 Form form = (Form) baseResponse.getContentData();

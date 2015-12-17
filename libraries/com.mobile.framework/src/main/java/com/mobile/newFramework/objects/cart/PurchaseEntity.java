@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.objects.checkout.Fulfillment;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
 
@@ -45,6 +46,8 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private Address mBillingAddress;
     private Address mShippingAddress;
     private boolean mIsVatEnabled;
+    private ArrayList<Fulfillment> mFulfillmentList;
+
     /**
      * Constructor
      */
@@ -127,8 +130,15 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             mShippingAddress = new Address();
             mShippingAddress.initialize(jsonShipAddress);
         }
+        // Get fulfilment
+        JSONArray fulfillmentArray = jsonObject.optJSONArray(RestConstants.FULFILLMENT);
+        if(fulfillmentArray != null) {
+            mFulfillmentList = new ArrayList<>();
+            for (int i = 0; i < fulfillmentArray.length(); i++) {
+                mFulfillmentList.add(new Fulfillment(fulfillmentArray.getJSONObject(i)));
+            }
+        }
         return true;
-
     }
 
     /*
@@ -220,6 +230,10 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
     public Address getBillingAddress() {
         return mBillingAddress;
+    }
+
+    public ArrayList<Fulfillment> getFulfillmentList() {
+        return mFulfillmentList;
     }
 
     /**
@@ -317,6 +331,12 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         dest.writeValue(mBillingAddress);
         dest.writeValue(mShippingAddress);
         dest.writeByte((byte) (mIsVatEnabled ? 1 : 0));
+        if (mFulfillmentList == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mFulfillmentList);
+        }
     }
 
     /**
@@ -348,6 +368,12 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         mBillingAddress = (Address) in.readValue(Address.class.getClassLoader());
         mShippingAddress = (Address) in.readValue(Address.class.getClassLoader());
         mIsVatEnabled = in.readByte() == 1;
+        if (in.readByte() == 0x01) {
+            mFulfillmentList = new ArrayList<>();
+            in.readList(mFulfillmentList, Fulfillment.class.getClassLoader());
+        } else {
+            mFulfillmentList = null;
+        }
     }
 
     /**
