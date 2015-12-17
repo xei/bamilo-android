@@ -76,14 +76,17 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     private Customer customer;
 
+    private PaymentMethodForm mPaymentSubmitted;
+
     /**
      * Get instance
      */
-    public static CheckoutExternalPaymentFragment getInstance() {
+    public static CheckoutExternalPaymentFragment getInstance(Bundle bundle) {
         CheckoutExternalPaymentFragment fragment = new CheckoutExternalPaymentFragment();
         fragment.webview = null;
         fragment.paymentUrl = null;
         fragment.failedPageRequest = null;
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -97,21 +100,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 R.string.checkout_label,
                 NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
-    }
-
-    @Override
-    public boolean allowBackPressed() {
-        if (webview == null) {
-            Print.d(TAG, "onBackPressed");
-        } else {
-            Print.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
-        }
-        boolean result = false;
-        if (webview != null && webview.canGoBack() && webview.hasFocus()) {
-            webview.goBack();
-            result = true;
-        }
-        return result;
     }
 
     /*
@@ -136,6 +124,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
+        // Get arguments
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mPaymentSubmitted = arguments.getParcelable(ConstantsIntentExtra.DATA);
+        }
     }
 
     /*
@@ -229,6 +222,21 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     }
 
     @Override
+    public boolean allowBackPressed() {
+        if (webview == null) {
+            Print.d(TAG, "onBackPressed");
+        } else {
+            Print.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
+        }
+        boolean result = false;
+        if (webview != null && webview.canGoBack() && webview.hasFocus()) {
+            webview.goBack();
+            result = true;
+        }
+        return result;
+    }
+
+    @Override
     public void onLowMemory() {
         super.onLowMemory();
         Print.e(getTag(), "LOW MEM");
@@ -250,8 +258,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     private void startCheckout() {
         showFragmentLoading();
         webview.clearView();
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
-            paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
+        if (mPaymentSubmitted != null) {
+            paymentUrl = mPaymentSubmitted.getAction();
         } else {
             super.showFragmentErrorRetry();
             return;
@@ -260,15 +268,13 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         // Track
         String userId = JumiaApplication.CUSTOMER.getIdAsString();
         String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
-        String payment = JumiaApplication.INSTANCE.getPaymentMethodForm().getName();
+        String payment = mPaymentSubmitted.getName();
         TrackerDelegator.trackPaymentMethod(userId, email, payment);
 
         List<NameValuePair> parameters = new ArrayList<>();
 
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null
-                && JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null
-                && JumiaApplication.INSTANCE.getPaymentMethodForm().getMethod() == PaymentMethodForm.POST) {
-            Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
+        if (mPaymentSubmitted != null && mPaymentSubmitted.getContentValues() != null && mPaymentSubmitted.getMethod() == PaymentMethodForm.POST) {
+            Set<Entry<String, Object>> mValues = mPaymentSubmitted.getContentValues().valueSet();
             for (Entry<String, Object> entry : mValues) {
                 if (entry.getKey().equalsIgnoreCase("tc")) {
                     parameters.add(new BasicNameValuePair(entry.getKey(), "1"));
@@ -287,8 +293,8 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null) {
-            Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
+        } else if (mPaymentSubmitted.getContentValues() != null) {
+            Set<Entry<String, Object>> mValues = mPaymentSubmitted.getContentValues().valueSet();
             //setProxy();
             for (Entry<String, Object> entry : mValues) {
                 if (!paymentUrl.contains("?")) {
@@ -495,18 +501,18 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                             trackPurchase(result);
                         }
                     });
-                    final Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.SUCCESS_INFORMATION, content);
 
-                    String order_number = "";
+                    // Get order number
+                    String orderNumber = "";
                     if (result.has(RestConstants.ORDER_NR)) {
-                        order_number = result.optString(RestConstants.ORDER_NR);
+                        orderNumber = result.optString(RestConstants.ORDER_NR);
                     } else if (result.has(RestConstants.ORDERNr)) {
-                        order_number = result.optString(RestConstants.ORDERNr);
+                        orderNumber = result.optString(RestConstants.ORDERNr);
                     }
-
-                    bundle.putString(RestConstants.ORDER_NR, order_number);
-
+                    // Create bundle for last checkout step
+                    final Bundle bundle = new Bundle();
+                    bundle.putString(RestConstants.ORDER_NUMBER, orderNumber);
+                    // Switch
                     getBaseActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {

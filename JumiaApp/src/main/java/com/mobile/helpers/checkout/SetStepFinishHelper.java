@@ -2,10 +2,7 @@ package com.mobile.helpers.checkout;
 
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.checkout.CheckoutFinish;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -50,14 +47,6 @@ public class SetStepFinishHelper extends SuperBaseHelper {
     @Override
     protected void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.setMultiStepFinish);
-    }
-
-    @Override
-    public void postSuccess(BaseResponse baseResponse) {
-        super.postSuccess(baseResponse);
-        CheckoutFinish checkoutFinish = (CheckoutFinish)baseResponse.getContentData();
-        JumiaApplication.INSTANCE.setPaymentMethodForm(checkoutFinish.getPaymentMethodForm());
-        JumiaApplication.INSTANCE.getPaymentMethodForm().setOrderNumber(checkoutFinish.getOrderNumber());
     }
 
     public static Bundle createBundle(String userAgent) {

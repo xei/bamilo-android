@@ -1269,11 +1269,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     public void updateCartInfo() {
         Print.d(TAG, "ON UPDATE CART INFO");
-//        if (JumiaApplication.INSTANCE.getCart() != null) {
-//            Log.d(TAG, "updateCartInfo value = "
-//                    + JumiaApplication.INSTANCE.getCart().getCartValue() + " quantity = "
-//                    + JumiaApplication.INSTANCE.getCart().getCartCount());
-//        }
         updateCartInfoInActionBar();
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
     }

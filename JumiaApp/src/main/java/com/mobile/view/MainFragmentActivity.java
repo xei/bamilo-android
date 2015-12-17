@@ -340,7 +340,7 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = CheckoutThanksFragment.getInstance(bundle);
                 break;
             case CHECKOUT_EXTERNAL_PAYMENT:
-                fragment = CheckoutExternalPaymentFragment.getInstance();
+                fragment = CheckoutExternalPaymentFragment.getInstance(bundle);
                 break;
             case CAMPAIGNS:
                 fragment = CampaignsFragment.newInstance(bundle);

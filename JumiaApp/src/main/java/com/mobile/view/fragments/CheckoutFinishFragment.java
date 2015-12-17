@@ -25,6 +25,7 @@ import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.checkout.CheckoutFinish;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
@@ -97,6 +98,8 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
 
     private ImageView mEditPaymentMethod;
 
+    private CheckoutFinish mCheckoutFinish;
+
     /**
      * Empty constructor
      */
@@ -144,6 +147,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
             mOrderFinish = arguments.getParcelable(ConstantsIntentExtra.ORDER_FINISH);
+            mCheckoutFinish = arguments.getParcelable(ConstantsIntentExtra.DATA);
         }
         // Track
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_ORDER);
@@ -237,6 +241,13 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         Print.i(TAG, "ON PAUSE");
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(ConstantsIntentExtra.ORDER_FINISH, mOrderFinish);
+        outState.putParcelable(ConstantsIntentExtra.DATA, mCheckoutFinish);
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -276,12 +287,12 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     @Override
     public boolean allowBackPressed() {
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
+        if (mCheckoutFinish == null) {
             return false;
         } else {
             dialog = DialogGenericFragment.newInstance(true, false,
                     getString(R.string.confirm_order_loosing_order_title),
-                    getString(R.string.confirm_order_loosing_order) + " \n" + JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber(),
+                    getString(R.string.confirm_order_loosing_order) + " \n" + mCheckoutFinish.getOrderNumber(),
                     getString(R.string.ok_label),
                     getString(R.string.cancel_label),
                     new OnClickListener() {
@@ -290,7 +301,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                             int id = v.getId();
                             if (id == R.id.button1) {
                                 dismissDialogFragment();
-                                JumiaApplication.INSTANCE.setPaymentMethodForm(null);
                                 JumiaApplication.INSTANCE.setCart(null);
                                 triggerClearCart();
                                 getBaseActivity().updateCartInfo();
@@ -341,11 +351,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         onClickRetryButton();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelable(ConstantsIntentExtra.ORDER_FINISH, mOrderFinish);
-    }
 
     /**
      * Show the order content
@@ -523,18 +528,8 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     private void onClickNextStepButton() {
         Print.i(TAG, "ON CLICK: NextStep");
         // this validation is trigger when the user back presses from an external payment
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
-            if (JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_REDIRECT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_RENDER_INTERNAL) {
-                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, null, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                Bundle bundle = new Bundle();
-                bundle.putString(RestConstants.ORDERNR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
-                bundle.putString(RestConstants.TRANSACTION_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
-                bundle.putString(RestConstants.TRANSACTION_TAX, "" + mOrderFinish.getVatValue());
-                bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
-                bundle.putDouble(RestConstants.ORDER_GRAND_TOTAL, mOrderFinish.getPriceForTracking());
-                getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
-            }
+        if (mCheckoutFinish != null) {
+            switchToSubmittedPayment();
         } else {
             triggerCheckoutFinish();
         }
@@ -542,37 +537,25 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
 
     /**
      * Process the click on the edit address button
-     *
-     * @author sergiopereira
      */
     private void onClickEditAddressesButton() {
         Print.i(TAG, "ON CLICK: EditAddresses");
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
-            if (!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
-                FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
-                getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
+            FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
     /**
      * Process the click on the edit shipping method button
-     *
-     * @author sergiopereira
      */
     private void onClickEditShippingMethodButton() {
         Print.i(TAG, "ON CLICK: EditShippingMethod");
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
-            if (!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
-                FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
-                getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
+            FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
-
-    /**
-     * ############# TRIGGERS #############
-     */
 
     /**
      * Process the click on the edit payment method button
@@ -581,13 +564,15 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void onClickEditPaymentOptionsButton() {
         Print.i(TAG, "ON CLICK: EditPaymentOptions");
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() == null) {
-            if (!getBaseActivity().popBackStackUntilTag(FragmentType.PAYMENT_METHODS.toString())) {
-                FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
-                getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.PAYMENT_METHODS.toString())) {
+            FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
+
+    /**
+     * ############# TRIGGERS #############
+     */
 
     /**
      * Trigger ti finish the checkout process
@@ -649,24 +634,35 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 }
                 break;
             case SET_MULTI_STEP_FINISH:
-                Print.i(TAG, "RECEIVED CHECKOUT_FINISH_EVENT");
-                if (JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_SUBMIT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_AUTO_REDIRECT_EXTERNAL || JumiaApplication.INSTANCE.getPaymentMethodForm().getPaymentType() == PaymentMethodForm.METHOD_RENDER_INTERNAL) {
-                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
-                    getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, null, FragmentController.ADD_TO_BACK_STACK);
-                } else {
-                    JumiaApplication.INSTANCE.getPaymentMethodForm().setCameFromWebCheckout(false);
-                    Bundle bundle = new Bundle();
-                    bundle.putString(RestConstants.ORDERNR, JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber());
-                    bundle.putString(RestConstants.TRANSACTION_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
-                    bundle.putString(RestConstants.TRANSACTION_TAX, "" + mOrderFinish.getVatValue());
-                    bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
-                    bundle.putDouble(RestConstants.ORDER_GRAND_TOTAL, mOrderFinish.getPriceForTracking());
-                    getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
-                }
+                mCheckoutFinish = (CheckoutFinish) baseResponse.getContentData();
+                switchToSubmittedPayment();
                 getBaseActivity().updateCartInfo();
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * Method used to validate the submitted payment.
+     */
+    private void switchToSubmittedPayment() {
+        PaymentMethodForm mPaymentSubmitted = mCheckoutFinish.getPaymentMethodForm();
+        // Case external payment
+        if (mPaymentSubmitted.isExternalPayment()) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(ConstantsIntentExtra.DATA, mCheckoutFinish.getPaymentMethodForm());
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+        // Case other
+        else {
+            Bundle bundle = new Bundle();
+            bundle.putString(RestConstants.ORDER_NUMBER, mCheckoutFinish.getOrderNumber());
+            bundle.putString(RestConstants.TRANSACTION_SHIPPING, String.valueOf(mOrderFinish.getShippingValue()));
+            bundle.putString(RestConstants.TRANSACTION_TAX, String.valueOf(mOrderFinish.getVatValue()));
+            bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
+            bundle.putDouble(RestConstants.ORDER_GRAND_TOTAL, mOrderFinish.getPriceForTracking());
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -702,7 +698,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      * and presses back to my order
      */
     private void controlEditButtonsVisibility(){
-        int value = JumiaApplication.INSTANCE.getPaymentMethodForm() != null ? View.GONE : View.VISIBLE;
+        int value = mCheckoutFinish != null ? View.GONE : View.VISIBLE;
         UIUtils.showOrHideViews(value, mEditShippingAddress, mEditBillingAddress, mEditShippingMethod, mEditPaymentMethod);
     }
 

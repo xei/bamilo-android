@@ -16,7 +16,6 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.DarwinDatabaseHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.PaymentInfo;
-import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.VersionInfo;
@@ -74,7 +73,6 @@ public class JumiaApplication extends A4SApplication {
     /**
      * Forms
      */
-    private PaymentMethodForm paymentMethodForm;
     public Form reviewForm; // TODO use an alternative to persist form on rotation
     public Form ratingForm; // TODO use an alternative to persist form on rotation
     public Form mSellerReviewForm; // TODO use an alternative to persist form on rotation
@@ -242,14 +240,6 @@ public class JumiaApplication extends A4SApplication {
         return CUSTOMER != null;
     }
 
-    public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm) {
-        this.paymentMethodForm = paymentMethodForm;
-    }
-
-    public PaymentMethodForm getPaymentMethodForm() {
-        return this.paymentMethodForm;
-    }
-
     /**
      * clean and return last saved rating
      *
@@ -328,7 +318,6 @@ public class JumiaApplication extends A4SApplication {
         } catch (IOException e) {
             Print.e(TAG, "Error clearing requests cache", e);
         }
-        paymentMethodForm = null;
         mSellerReviewForm = null;
     }
 

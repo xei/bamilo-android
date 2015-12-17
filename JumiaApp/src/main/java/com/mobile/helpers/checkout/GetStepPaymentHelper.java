@@ -31,7 +31,6 @@ public class GetStepPaymentHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
-        JumiaApplication.INSTANCE.setPaymentMethodForm(null);
         JumiaApplication.setPaymentsInfoList(responseData.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList());
     }
 

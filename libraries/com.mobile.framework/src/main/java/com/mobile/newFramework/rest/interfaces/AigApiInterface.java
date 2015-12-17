@@ -423,9 +423,8 @@ public interface AigApiInterface {
     void removeFromWishList(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String removeFromWishList = "removeFromWishList";
 
-    @FormUrlEncoded
-    @PUT("/")
-    void removeAllShoppingCart(@FieldMap Map<String, String> data, Callback<BaseResponse<PurchaseEntity>> callback);
-    String removeAllShoppingCart = "removeAllShoppingCart";
+    @DELETE("/")
+    void clearShoppingCart(Callback<BaseResponse<Void>> callback);
+    String clearShoppingCart = "clearShoppingCart";
 
 }
