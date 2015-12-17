@@ -139,7 +139,7 @@ public class CheckoutStepManager {
                 // Set label
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
                 // Set value
-                String text = String.format(context.getString(R.string.format_discount_value), CurrencyFormatter.formatCurrency(priceRules.get(key)));
+                String text = String.format(context.getString(R.string.placeholder_discount), CurrencyFormatter.formatCurrency(priceRules.get(key)));
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText(text);
                 priceRulesContainer.addView(priceRuleElement);
             }

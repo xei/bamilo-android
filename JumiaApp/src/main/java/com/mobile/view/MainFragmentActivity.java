@@ -235,9 +235,9 @@ public class MainFragmentActivity extends BaseActivity {
      */
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
-
+        // Hide confirmation message
         mConfirmationCartMessageView.hideMessage();
-        // 
+        // Hide keyboard
         hideKeyboard();
         // Remove entries from back stack
         boolean removeEntries = false;
@@ -340,7 +340,7 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = CheckoutThanksFragment.getInstance(bundle);
                 break;
             case CHECKOUT_EXTERNAL_PAYMENT:
-                fragment = CheckoutExternalPaymentFragment.getInstance();
+                fragment = CheckoutExternalPaymentFragment.getInstance(bundle);
                 break;
             case CAMPAIGNS:
                 fragment = CampaignsFragment.newInstance(bundle);
@@ -446,6 +446,9 @@ public class MainFragmentActivity extends BaseActivity {
         // Case fragment not allow back pressed
         else if (fragment == null || !fragment.allowBackPressed()) {
             Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
+            // Hide Keyboard
+            hideKeyboard();
+            // Back
             fragmentManagerBackPressed();
         }
         // Case fragment allow back pressed

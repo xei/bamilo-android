@@ -503,7 +503,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             case GET_EDIT_ADDRESS_FORM_EVENT:
                 Print.d(TAG, "RECEIVED GET_EDIT_ADDRESS_FORM_EVENT");
                 // Get order summary
-                //orderSummary = bundle.getParcelable(Constants.BUNDLE_ORDER_SUMMARY_KEY);
                 orderSummary = JumiaApplication.INSTANCE.getCart();
                 // Form
                 Form form = (Form)baseResponse.getContentData();
@@ -590,10 +589,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
 
         return false;
-    }
-
-    protected void onInitFormsErrorEvent(){
-        Print.d(TAG, "RECEIVED INIT_FORMS");
     }
 
     protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse){

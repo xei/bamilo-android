@@ -65,7 +65,7 @@ public class FulfillmentUiBuilder {
     public static View getProductView(Context context, PurchaseCartItem purchaseCartItem){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         ViewGroup fulfillmentProduct = (ViewGroup) inflater.inflate(R.layout.fulfillment_product, null, false);
-        ((TextView)fulfillmentProduct.findViewById(R.id.fulfillment_product_qty)).setText(String.format(context.getString(R.string.qty_placeholder), purchaseCartItem.getQuantity()));
+        ((TextView)fulfillmentProduct.findViewById(R.id.fulfillment_product_qty)).setText(context.getString(R.string.qty_placeholder, purchaseCartItem.getQuantity()));
         ((TextView)fulfillmentProduct.findViewById(R.id.fulfillment_product_name)).setText(purchaseCartItem.getName());
         return fulfillmentProduct;
     }

@@ -30,8 +30,8 @@ public class MultiStepShipping implements IJSONSerializable, Parcelable {
     }
 
     public MultiStepShipping(MultiStepShipping step) {
-        mOrderSummary = step.mOrderSummary;
-        mForm = step.mForm;
+        this.mOrderSummary = step.mOrderSummary;
+        this.mForm = step.mForm;
     }
 
     /*

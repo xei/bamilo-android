@@ -850,11 +850,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
     }
 
-    protected void onInitFormSuccessEvent() {
-        Print.d(TAG, "RECEIVED INIT_FORMS");
-        triggerCreateAddressForm();
-    }
-
     protected void onGetCreateAddressFormSuccessEvent(BaseResponse baseResponse) {
         Print.d(TAG, "RECEIVED GET_CREATE_ADDRESS_FORM_EVENT");
         // Get order summary
@@ -946,11 +941,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             default:
                 break;
         }
-    }
-
-
-    protected void onInitFormErrorEvent() {
-        Print.d(TAG, "RECEIVED INIT_FORMS");
     }
 
     protected void onGetCreateAddressFormErrorEvent(BaseResponse baseResponse) {

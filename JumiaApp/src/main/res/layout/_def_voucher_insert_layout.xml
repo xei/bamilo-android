@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/voucher_container"
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/voucher_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="0dp"
@@ -23,8 +24,7 @@
         android:layout_marginRight="@dimen/dimen_60px"
         android:layout_marginStart="@dimen/dimen_60px"
         android:orientation="horizontal"
-        android:weightSum="1"
-        >
+        android:weightSum="1">
 
         <!-- EDIT TEXT -->
 
@@ -57,8 +57,7 @@
             android:ellipsize="marquee"
             android:gravity="left|start|center_vertical"
             android:singleLine="false"
-            android:text="@string/voucher_use"
-            />
+            android:text="@string/voucher_use" />
 
     </LinearLayout>
 
@@ -73,5 +72,5 @@
         android:singleLine="false"
         android:text="@string/voucher_error_message"
         android:textColor="@color/red_middle"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </LinearLayout>

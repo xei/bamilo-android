@@ -147,8 +147,6 @@
     <string name="my_order_no_orders_label">You have placed no orders.</string>
     <string name="my_order_number_label">Nr.</string>
     <string name="my_order_payment">Payment Options</string>
-    <string name="my_order_qty">Qty</string>
-    <string name="my_order_quantity_label">Qty.</string>
     <string name="my_order_ship_fee_label">Shipping Fee</string>
     <string name="my_order_total_label">Total</string>
     <string name="my_order_tracking_label">Order Tracking</string>
@@ -170,7 +168,6 @@
     <string name="no_connect_dialog_content">Please check your Internet-Connection and try again!</string>
     <string name="no_internet_access_warning_title">No Internet Access!</string>
     <string name="no_label">No</string>
-    <string name="no_payment">No payment necessary</string>
     <string name="notifications">Push Notifications</string>
     <string name="myaccount_email_notifications">Email Notifications</string>
     <string name="notifications_summary">Receive exclusive offers and updates</string>
@@ -413,7 +410,6 @@
     <string name="description1">Description</string>
     <string name="rat_rev">Ratings Reviews</string>
     <string name="fulfilled_by">Fulfilled by %s</string>
-    <string name="qty_placeholder">Qty: %d</string>
     <string name="policy">Policy</string>
     <string name="shipment">Shipment %1$d of %2$d</string>
     <string name="delivery_time_placeholder">Delivery time: %1$d - %2$d days</string>
@@ -434,7 +430,7 @@
     <string name="create_label">Create</string>
     <string name="change_password">Change password</string>
     <string name="continue_without_log_in">Continue without log in</string>
-    <string name="format_discount_value">-%s</string>
+    <string name="placeholder_discount">-%s</string>
     <string name="edit_user_success">User data edit with success</string>
     <string name="password">Password</string>
     <string name="more">More</string>
@@ -458,7 +454,7 @@
     <string name="order_number">Order N.º %s</string>
     <string name="billing">Billing</string>
     <string name="first_and_second_placeholders">%1$s %2$s</string>
-    <string name="quantity">Qty %s</string>
+    <string name="qty_placeholder">Qty: %s</string>
     <string name="reorder_label">Reorder</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b>\n%2$s</string>
     <string name="order_pending">Order Pending</string>
