@@ -80,62 +80,35 @@ public class FormFactory {
         Print.i(TAG, "code1register CREATING FORM : " + formType);
         switch (formType) {
             case FormConstants.ADDRESS_FORM:
-                parent = createAddressForm(context, form);
+                parent = createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
                 break;
             case FormConstants.ADDRESS_EDIT_FORM:
-                parent = createEditAddressForm(context, form);
+                parent = createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
                 break;
             case FormConstants.LOGIN_FORM:
                 form.setType(formType); // Used to show icons
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
-                parent = createLoginForm(context, form);
+                parent = createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
                 break;
             case FormConstants.REGISTRATION_FORM:
             case FormConstants.NEWSLETTER_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
             case FormConstants.USER_DATA_FORM:
                 form.setType(formType);  // Used to show icons
-                parent = createRegistrationForm(context, form);
+                parent = createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
                 break;
             case FormConstants.FORGET_PASSWORD_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
-                parent = createForgetPasswordForm(context, form);
+                parent = createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
                 break;
             case FormConstants.PAYMENT_DETAILS_FORM:
-                parent = createPaymentMethodsForm(context, form);
+                parent = createGenericForm(context, form, createParams(context, R.dimen.form_no_top_margin));
                 break;
             case FormConstants.CHANGE_PASSWORD_FORM:
-                parent = createChangePasswordForm(context,form);
+                parent = createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
                 break;
         }
         return parent;
-    }
-
-    private DynamicForm createChangePasswordForm(Context context, Form form) {
-        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
-    }
-
-    private DynamicForm createAddressForm(Context context, Form form) {
-        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
-    }
-    private DynamicForm createEditAddressForm(Context context, Form form) {
-        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
-    }
-
-    private DynamicForm createLoginForm(Context context, Form form) {
-        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
-   }
-
-    private DynamicForm createPaymentMethodsForm(Context context, Form form) {
-        return createGenericForm(context, form, createParams(context, R.dimen.form_no_top_margin));
-    }
-
-    private DynamicForm createRegistrationForm(Context context, Form form) {
-        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
-    }
-
-    private DynamicForm createForgetPasswordForm(Context context, Form form) {
-        return createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
     }
 
     /**
