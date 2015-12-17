@@ -242,12 +242,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     public void onClick(View view) {
         // Get view id
         int id = view.getId();
-        // Buy button
-        if (id == R.id.campaign_item_button_buy) {
-//            onClickBuyButton(view);
-        }
+
         // Product name and image container
-        else if (id == R.id.image_container || id == R.id.campaign_item_name) {
+       if (id == R.id.image_container || id == R.id.campaign_item_name) {
             onClickProduct(view);
         }
         // Parent view
@@ -413,11 +410,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
 
     @Override
-    public void onDialogListItemSelect(int position) {
-
-    }
-
-    @Override
     public void onDialogListClickView(View view) {
 
     }
@@ -481,6 +473,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
         }
+
     }
     
     /**

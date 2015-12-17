@@ -57,8 +57,6 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
      */
     public interface OnDialogListListener {
 
-        void onDialogListItemSelect(int position);
-
         void onDialogListClickView(View view);
 
         void onDialogSizeListClickView(int position, CampaignItem item);
