@@ -46,6 +46,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
+import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.objects.addresses.PhonePrefix;
 import com.mobile.newFramework.objects.addresses.PhonePrefixes;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -1539,7 +1540,7 @@ public class DynamicFormItem {
 
         // in order to position the mandatory signal on the payment method screen in the requested position, we don't inflate the dynamic form mandatory sign,
         // we use a hardcode mandatory signal since the  payment method is always a mandatory section
-        if (!this.getKey().equalsIgnoreCase("payment_method"))
+        if (!this.getKey().equalsIgnoreCase(RestConstants.PAYMENT_METHOD))
             dataContainer.addView(this.mandatoryControl);
 
         radioGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -1562,8 +1563,11 @@ public class DynamicFormItem {
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
             }
         });
-        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), formsMap, defaultSelect);
-
+        // Get payment info from form
+        HashMap<String, PaymentInfo> paymentInfoMap = this.parent.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList();
+        // Create options
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), formsMap, paymentInfoMap, defaultSelect);
+        // Add view
         this.control.addView(dataContainer);
     }
 

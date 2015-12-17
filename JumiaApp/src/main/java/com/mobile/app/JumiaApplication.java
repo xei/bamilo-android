@@ -15,7 +15,6 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.DarwinDatabaseHelper;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.VersionInfo;
@@ -42,7 +41,6 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class JumiaApplication extends A4SApplication {
@@ -67,23 +65,18 @@ public class JumiaApplication extends A4SApplication {
     /**
      * Cart
      */
-    private Map<String, Map<String, String>> itemSimpleDataRegistry = new HashMap<>();
     private PurchaseEntity cart;
 
     /**
      * Forms
      */
-    public Form reviewForm; // TODO use an alternative to persist form on rotation
-    public Form ratingForm; // TODO use an alternative to persist form on rotation
-    public Form mSellerReviewForm; // TODO use an alternative to persist form on rotation
+    public Form reviewForm;
+    public Form ratingForm;
+    public Form mSellerReviewForm;
     private static ContentValues ratingReviewValues;
     public static boolean isSellerReview = false;
     private static HashMap<String, String> sFormReviewValues = new HashMap<>();
 
-    /**
-     * Payment methods Info
-     */
-    private static HashMap<String, PaymentInfo> paymentsInfoList;
     public int lastPaymentSelected = -1;
 
     public ArrayList<CountryObject> countriesAvailable = null;
@@ -117,7 +110,6 @@ public class JumiaApplication extends A4SApplication {
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
         // Init cached data
         countriesAvailable = new ArrayList<>();
-        setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
 
         /**
@@ -227,13 +219,6 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @param itemSimpleDataRegistry the itemSimpleDataRegistry to set
-     */
-    public void setItemSimpleDataRegistry(Map<String, Map<String, String>> itemSimpleDataRegistry) {
-        this.itemSimpleDataRegistry = itemSimpleDataRegistry;
-    }
-
-    /**
      * Validate if customer is logged in (not null).
      */
     public static boolean isCustomerLoggedIn() {
@@ -261,13 +246,6 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @return the paymentsInfoList
-     */
-    public static HashMap<String, PaymentInfo> getPaymentsInfoList() {
-        return paymentsInfoList;
-    }
-
-    /**
      * get the values from the write review form
      * @return sFormReviewValues
      */
@@ -282,14 +260,6 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * @param paymentsInfoList
-     *            the paymentsInfoList to set
-     */
-    public static void setPaymentsInfoList(HashMap<String, PaymentInfo> paymentsInfoList) {
-        JumiaApplication.paymentsInfoList = paymentsInfoList;
-    }
-
-    /**
      * Clean current memory.
      */
     public void cleanAllPreviousCountryValues() {
@@ -299,8 +269,6 @@ public class JumiaApplication extends A4SApplication {
         getCustomerUtils().save();
         mCustomerUtils = null;
         cart = null;
-        paymentsInfoList = null;
-        itemSimpleDataRegistry.clear();
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
