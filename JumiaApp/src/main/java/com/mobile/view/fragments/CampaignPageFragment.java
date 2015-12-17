@@ -959,8 +959,9 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                     if(isFirst){
                         sizesValues+=size.size;
                         isFirst = false;
+                    } else {
+                        sizesValues+=";"+size.size;
                     }
-                    else sizesValues+=";"+size.size;
 
                 }
                 view.mSizesValue.setText(String.format(getString(R.string.size),sizesValues));
