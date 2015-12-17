@@ -342,7 +342,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (isOrderSummaryPresent) {
             Print.i(TAG, "ORDER SUMMARY IS PRESENT");
             Fragment fragment = getChildFragmentManager().findFragmentByTag(CheckoutSummaryFragment.TAG + "_" + checkoutStep);
-            if(fragment == null) fragment = CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary);
+            if(fragment == null) {
+                fragment = CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary);
+            }
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
             ft.replace(ORDER_SUMMARY_CONTAINER, fragment, CheckoutSummaryFragment.TAG + "_" + checkoutStep);
             ft.commit();

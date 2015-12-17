@@ -273,7 +273,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
         List<NameValuePair> parameters = new ArrayList<>();
 
-        if (mPaymentSubmitted != null && mPaymentSubmitted.getContentValues() != null && mPaymentSubmitted.getMethod() == PaymentMethodForm.POST) {
+        if (mPaymentSubmitted.getContentValues() != null && mPaymentSubmitted.getMethod() == PaymentMethodForm.POST) {
             Set<Entry<String, Object>> mValues = mPaymentSubmitted.getContentValues().valueSet();
             for (Entry<String, Object> entry : mValues) {
                 if (entry.getKey().equalsIgnoreCase("tc")) {
