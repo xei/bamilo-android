@@ -101,9 +101,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         Print.i(TAG, "ON VIEW CREATED");
         if (null != JumiaApplication.CUSTOMER) {
             setAppContentLayout(view);
-            init();
-        } else {
-            showFragmentErrorRetry();
         }
     }
 
@@ -116,6 +113,11 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+        if (null != JumiaApplication.CUSTOMER) {
+            init();
+        } else {
+            showFragmentErrorRetry();
+        }
     }
 
     /*
@@ -147,6 +149,18 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
             mChangePasswordForm.saveFormState(bundle);
         }
         mFormSavedState = bundle;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
+        if (mUserDataForm != null) {
+            mUserDataForm.saveFormState(outState);
+        }
+        if (mChangePasswordForm != null) {
+            mChangePasswordForm.saveFormState(outState);
+        }
     }
 
     /*
@@ -218,22 +232,11 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         triggerGetUserDataForm();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
-        if (mUserDataForm != null) {
-            mUserDataForm.saveFormState(outState);
-        }
-        if (mChangePasswordForm != null) {
-            mChangePasswordForm.saveFormState(outState);
-        }
-    }
-
     /**
      * function used to fill the layout section with the user data form
      */
     private void fillUserDataForm(Form userForm){
+        mUserDataFormContainer.removeAllViews();
         mUserDataForm = FormFactory.getSingleton().CreateForm(FormConstants.USER_DATA_FORM,getBaseActivity(),userForm);
         // Load saved state
         mUserDataForm.loadSaveFormState(mFormSavedState);
