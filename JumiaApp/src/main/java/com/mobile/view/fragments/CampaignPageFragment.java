@@ -63,6 +63,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private final static String COUNTER_START_TIME = "start_time";
 
     private final static String BANNER_STATE = "banner_state";
+    private static final String PERCENTAGE = "%";
     public int NAME = R.id.name;
     public int BRAND = R.id.brand;
     public int PRICE = R.id.price;
@@ -931,7 +932,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
             }else{
                 view.mStockOff.setVisibility(View.VISIBLE);
-                view.mStockOff.setText(item.getMaxSavingPercentage() + "%");
+                view.mStockOff.setText(item.getMaxSavingPercentage() + PERCENTAGE);
             }
         }
 
