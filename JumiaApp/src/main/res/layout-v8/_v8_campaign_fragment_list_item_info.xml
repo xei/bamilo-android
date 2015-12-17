@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:padding="@dimen/dimen_10dp"
         android:background="@color/black_300"
-        android:gravity="start|left|center_vertical" >
+        android:gravity="left|center_vertical" >
 
         <!-- STOCK BAR -->
 
@@ -38,10 +38,8 @@
             style="@style/TextCaption"
             android:layout_below="@id/campaign_item_stock_bar"
             android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:maxLines="1"
             android:singleLine="true"
             android:text="@string/campaign_ramaining_stock"
@@ -55,7 +53,6 @@
             style="@style/TextCaption"
             android:layout_below="@id/campaign_item_stock_bar"
             android:layout_toRightOf="@id/campaign_item_stock_label"
-            android:layout_toEndOf="@id/campaign_item_stock_label"
             android:layout_marginTop="@dimen/margin_small"
             android:ellipsize="marquee"
             android:maxLines="1"
