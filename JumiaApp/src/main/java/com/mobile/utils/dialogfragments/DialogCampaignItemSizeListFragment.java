@@ -60,6 +60,8 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
         void onDialogListItemSelect(int position);
 
         void onDialogListClickView(View view);
+
+        void onDialogSizeListClickView(int position, CampaignItem item);
     }
 
     /**
@@ -235,7 +237,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
             public void run() {
                 dismiss();
                 if (mListener != null) {
-                    mListener.onDialogListItemSelect(position);
+                    mListener.onDialogSizeListClickView(position, mProduct);
                 }
             }
         }, DELAY_DISMISS);
