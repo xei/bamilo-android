@@ -29,6 +29,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.MultiStepPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
@@ -58,11 +59,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
     private ViewGroup mPaymentContainer;
 
-    private DynamicForm formGenerator;
+    private DynamicForm mDynamicForm;
 
     private TextView couponButton;
-
-    private TextView voucherError;
 
     private String mVoucher = null;
 
@@ -182,8 +181,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        if(formGenerator != null){
-            JumiaApplication.INSTANCE.lastPaymentSelected = formGenerator.getSelectedValueIndex();
+        if(mDynamicForm != null){
+            JumiaApplication.INSTANCE.lastPaymentSelected = mDynamicForm.getSelectedValueIndex();
         }
 
     }
@@ -278,7 +277,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         super.onSaveInstanceState(outState);
         // Save the current selected item
         try {
-            ContentValues values = formGenerator.save();
+            ContentValues values = mDynamicForm.save();
             if(values.size() > 0)
                 outState.putParcelable(ConstantsIntentExtra.DATA, values);
         } catch (Exception e) {
@@ -291,14 +290,26 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      */
     private void loadForm(Form form) {
         Print.i(TAG, "LOAD FORM");
-        formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
+        mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         mPaymentContainer.removeAllViews();
-        mPaymentContainer.addView(formGenerator.getContainer());
-        loadSavedValues(mSavedState, formGenerator.iterator());
+        mPaymentContainer.addView(mDynamicForm.getContainer());
+        loadSavedValues(mSavedState, mDynamicForm.iterator());
         mPaymentContainer.refreshDrawableState();
         prepareCouponView();
         validatePaymentIsAvailable();
         showFragmentContentContainer();
+    }
+
+    /**
+     * Set the all views associated to order.
+     */
+    private void setOrderInfo(PurchaseEntity purchaseEntity) {
+        // Set the checkout total bar
+        CheckoutStepManager.setTotalBar(mCheckoutTotalBar, purchaseEntity);
+        // Update voucher
+        updateVoucher(purchaseEntity);
+        // Show checkout summary
+        super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, purchaseEntity);
     }
 
     /*
@@ -337,8 +348,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             mVoucherView.setText(mVoucher);
         }
         UIUtils.scrollToViewByClick(mScrollView, mVoucherView);
-        // voucherDivider = getView().findViewById(R.id.voucher_divider);
-        voucherError = (TextView) mVoucherContainer.findViewById(R.id.voucher_error_message);
         couponButton = (TextView) mVoucherContainer.findViewById(R.id.voucher_btn);
         if (removeVoucher) {
             couponButton.setText(getString(R.string.voucher_remove));
@@ -369,11 +378,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     
     private void onClickSubmitPaymentButton() {
         Print.i(TAG, "ON CLICK: Submit Payment Method");
-        if(formGenerator != null){
-            if(formGenerator.validate()){
-                ContentValues values = formGenerator.save();
-                paymentName = values.getAsString("name");
-                triggerSubmitPaymentMethod(values);
+        if(mDynamicForm != null){
+            if(mDynamicForm.validate()){
+                ContentValues values = mDynamicForm.save();
+                paymentName = values.getAsString(RestConstants.NAME);
+                triggerSubmitPaymentMethod(mDynamicForm.getForm().getAction(), values);
             } else {
                 showWarningErrorMessage(getString(R.string.please_fill_all_data));
             }
@@ -424,15 +433,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             Print.d(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
             // Get order summary
             MultiStepPayment responseData = (MultiStepPayment) baseResponse.getContentData();
-            PurchaseEntity orderSummary = responseData.getOrderSummary();
-            // Set the checkout total bar
-            CheckoutStepManager.setTotalBar(mCheckoutTotalBar, orderSummary);
             // Form
             loadForm(responseData.getForm());
-            // Update voucher
-            updateVoucher(orderSummary);
-            // Show checkout summary
-            super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_PAYMENT, orderSummary);
+            // Set the checkout total bar
+            setOrderInfo((PurchaseEntity) baseResponse.getContentData());
             break;
         case SET_MULTI_STEP_PAYMENT:
             Print.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
@@ -448,24 +452,16 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         case ADD_VOUCHER:
-            couponButton.setText(getString(R.string.voucher_remove));
-            voucherError.setVisibility(View.GONE);
-            hideActivityProgress();
-            removeVoucher = true;
-            triggerGetPaymentMethods();
-            break;
         case REMOVE_VOUCHER:
-            couponButton.setText(getString(R.string.voucher_use));
-            voucherError.setVisibility(View.GONE);
+            couponButton.setText(getString(eventType == EventType.ADD_VOUCHER ? R.string.voucher_remove : R.string.voucher_use));
+            removeVoucher = eventType == EventType.ADD_VOUCHER;
             hideActivityProgress();
-            triggerGetPaymentMethods();
-            removeVoucher = false;
+            setOrderInfo((PurchaseEntity) baseResponse.getContentData());
             break;
         default:
             break;
         }
     }
-
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
@@ -490,21 +486,13 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             break;
         case SET_MULTI_STEP_PAYMENT:
             Print.i(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
-            //GTM TRACKING
-            if(formGenerator != null){
-                ContentValues values = formGenerator.save();
-                if(values != null && values.containsKey("name") && null != JumiaApplication.INSTANCE.getCart()){
-                    String paymentMethod = values.getAsString("name");
-                    TrackerDelegator.trackFailedPayment(paymentMethod, JumiaApplication.INSTANCE.getCart().getCartValueEuroConverted());
-                }
-            }
-            showUnexpectedErrorWarning();
+            TrackerDelegator.trackFailedPayment(paymentName, JumiaApplication.INSTANCE.getCart());
+            showWarningErrorMessage(baseResponse.getValidateMessage());
             showFragmentContentContainer();
             break;
         case ADD_VOUCHER:
         case REMOVE_VOUCHER:
             mVoucherView.setText("");
-            voucherError.setVisibility(View.VISIBLE);
             hideActivityProgress();
             break;
         default:
@@ -516,8 +504,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      * ############# REQUESTS #############
      */
     
-    private void triggerSubmitPaymentMethod(ContentValues values) {
-        triggerContentEvent(new SetStepPaymentHelper(), SetStepPaymentHelper.createBundle(values), this);
+    private void triggerSubmitPaymentMethod(String endpoint, ContentValues values) {
+        triggerContentEvent(new SetStepPaymentHelper(), SetStepPaymentHelper.createBundle(endpoint, values), this);
     }
     
     private void triggerSubmitVoucher(ContentValues values) {

@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <com.mobile.components.customfontviews.TextView
         style="@style/HeaderStyle"
@@ -18,7 +17,7 @@
         android:layout_marginLeft="@dimen/dimen_60px"
         android:layout_marginRight="@dimen/dimen_60px"
         android:layout_marginStart="@dimen/dimen_60px"
-        android:layout_marginTop="@dimen/margin_large" >
+        android:layout_marginTop="@dimen/margin_large">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/articles_count"
@@ -26,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/vat_included_label"
@@ -35,8 +34,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@id/articles_count"
-            android:text="@string/string_vat_included"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:visibility="gone"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/vat_value"
@@ -45,7 +44,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_below="@id/articles_count"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:visibility="gone"/>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
@@ -55,8 +55,7 @@
             android:layout_marginRight="@dimen/dimen_60px"
             android:layout_toLeftOf="@+id/price_total"
             android:layout_toStartOf="@+id/price_total"
-            android:textColor="@color/black_800"
-            />
+            android:textColor="@color/black_800" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_total"
@@ -64,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
     </RelativeLayout>
 
     <!-- Price Rules -->
@@ -93,22 +92,22 @@
         android:layout_marginRight="@dimen/dimen_60px"
         android:layout_marginStart="@dimen/dimen_60px"
         android:layout_marginTop="@dimen/dimen_60px"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextBody_1"
+            android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_width="wrap_content"
             android:text="@string/shipping"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_value"
             style="@style/TextBody_3"
+            android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
             android:text="@string/free_label"
             android:textColor="@color/black" />
     </RelativeLayout>
@@ -123,7 +122,7 @@
         android:layout_marginLeft="@dimen/dimen_60px"
         android:layout_marginRight="@dimen/dimen_60px"
         android:layout_marginStart="@dimen/dimen_60px"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextList_1"
@@ -145,24 +144,22 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dimen_60px"
         android:layout_marginRight="@dimen/dimen_60px"
-        android:visibility="visible" >
+        android:visibility="visible">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/basket_voucher_label"
             style="@style/SingleLineStyle"
             android:layout_width="match_parent"
-            android:text="@string/my_order_voucher_label"
             android:layout_toLeftOf="@+id/text_voucher"
             android:layout_toStartOf="@+id/text_voucher"
-            />
+            android:text="@string/my_order_voucher_label" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/text_voucher"
             style="@style/SingleLineStyle"
             android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            />
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
     <!-- TOTAL -->
 
@@ -175,14 +172,13 @@
         android:layout_marginRight="@dimen/dimen_60px"
         android:layout_marginStart="@dimen/dimen_60px"
         android:layout_marginTop="@dimen/margin_mid"
-        android:visibility="visible"
-        >
+        android:visibility="visible">
 
         <!-- Divider -->
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/black_700"/>
+            android:background="@color/black_700" />
 
         <com.mobile.components.customfontviews.TextView
             style="@style/TextList_1"
@@ -191,7 +187,7 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:text="@string/my_order_total_label"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/total_value"
@@ -200,8 +196,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/black"
-             />
+            android:textColor="@color/black" />
     </RelativeLayout>
 
 

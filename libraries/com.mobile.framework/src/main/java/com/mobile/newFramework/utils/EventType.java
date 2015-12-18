@@ -174,11 +174,11 @@ public enum EventType {
 
     GET_MULTI_STEP_SHIPPING("https:/multistep/getstepshipping/"),
 
-    SET_MULTI_STEP_SHIPPING("https:/multistep/shippingmethod/"),
+    SET_MULTI_STEP_SHIPPING,
 
     GET_MULTI_STEP_PAYMENT("https:/multistep/getsteppayment/"),
 
-    SET_MULTI_STEP_PAYMENT("https:/multistep/paymentmethod/"),
+    SET_MULTI_STEP_PAYMENT,
 
     GET_MULTI_STEP_FINISH("https:/multistep/getstepfinish/"),
 

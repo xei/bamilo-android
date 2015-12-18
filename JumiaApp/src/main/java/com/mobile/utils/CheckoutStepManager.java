@@ -103,29 +103,26 @@ public class CheckoutStepManager {
     /**
      * Method used for showing checkout total at checkout steps.
      *
-     * @param view ViewStub or View with TextView (checkout_total_label).
+     * @param view           ViewStub or View with TextView (checkout_total_label).
      * @param purchaseEntity OrderSummary to get total
      */
-    public static void setTotalBar(@NonNull View view, @NonNull PurchaseEntity purchaseEntity){
-        double value = purchaseEntity.getTotal();
-        if(value > 0){
-            Context context = view.getContext();
-            final String title = context.getString(R.string.order_summary_total_label);
-            final String finalValue = CurrencyFormatter.formatCurrency(value);
-            final int color1 = ContextCompat.getColor(context, R.color.black);
-            final int color2 = ContextCompat.getColor(context, R.color.black_800);
-            final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
-            titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
-            titleTextView.setText(UIUtils.setSpan(title + " ", finalValue, color1, color2));
-            titleTextView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
-                        titleTextView.setText(UIUtils.setSpan(title + "\n", finalValue, color1, color2));
-                    }
+    public static void setTotalBar(@NonNull View view, @NonNull PurchaseEntity purchaseEntity) {
+        Context context = view.getContext();
+        final String title = context.getString(R.string.order_summary_total_label);
+        final String finalValue = CurrencyFormatter.formatCurrency(purchaseEntity.getTotal());
+        final int color1 = ContextCompat.getColor(context, R.color.black);
+        final int color2 = ContextCompat.getColor(context, R.color.black_800);
+        final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
+        titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
+        titleTextView.setText(UIUtils.setSpan(title + " ", finalValue, color1, color2));
+        titleTextView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
+                    titleTextView.setText(UIUtils.setSpan(title + "\n", finalValue, color1, color2));
                 }
-            });
-        }
+            }
+        });
     }
 
     public static void showPriceRules(Context context, ViewGroup priceRulesContainer, HashMap<String, String> priceRules) {
