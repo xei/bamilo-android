@@ -28,17 +28,18 @@ android {
 
     useLibrary 'org.apache.http.legacy'
 
-    dexOptions {
-        jumboMode true
-        javaMaxHeapSize "4g" //Added due to instant run
-    }
-
     defaultConfig {
         applicationId "com.mobile.view"
         minSdkVersion 15
         targetSdkVersion 22
 //        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
         multiDexEnabled true
+    }
+
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "2048M" //Added due to instant run
+        incremental true
     }
 
     signingConfigs {
