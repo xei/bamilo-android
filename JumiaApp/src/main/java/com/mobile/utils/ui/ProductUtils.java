@@ -37,7 +37,7 @@ public class ProductUtils {
         } else {
             setPrice(productBase, price, specialPrice);
         }
-        specialPrice    .setVisibility(View.VISIBLE);
+        specialPrice.setVisibility(View.VISIBLE);
     }
 
     private static void setPrice(ProductBase productBase, TextView price, TextView specialPrice){
@@ -55,9 +55,13 @@ public class ProductUtils {
     }
 
     public static void setPriceRules(@NonNull CampaignItem campaignItem, @NonNull TextView price, @NonNull TextView specialPrice){
-        if(campaignItem.hasSelectedSize()) {
+        String priceRange = campaignItem.getPriceRange();
+        if(TextUtils.isNotEmpty(priceRange)){
+            specialPrice.setText(CurrencyFormatter.formatCurrencyPattern(priceRange));
+            price.setText("");
+        } else if(campaignItem.hasSelectedSize()) {
             setPrice(campaignItem.getSizes().get(campaignItem.getSelectedSizePosition()), price, specialPrice);
-        } else {
+        }else {
             setPrice(campaignItem, price, specialPrice);
         }
         specialPrice.setVisibility(View.VISIBLE);

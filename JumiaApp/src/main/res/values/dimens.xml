@@ -81,7 +81,16 @@
     <dimen name="dimen_720px">240dp</dimen>
     <dimen name="dimen_780px">260dp</dimen>
     <dimen name="dimen_810px">270dp</dimen>
+
+
+    <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_16dp">16dp</dimen>
+    <dimen name="dimen_48dp">48dp</dimen>
+    <dimen name="dimen_92dp">92dp</dimen>
     <dimen name="dimen_320dp">320dp</dimen>
+
+
+
 
     <!-- MATERIAL: Typographic scale & basic styles -->
     <dimen name="dimen_display_4">112sp</dimen>
