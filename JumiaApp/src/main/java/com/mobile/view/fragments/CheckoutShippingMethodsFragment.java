@@ -268,7 +268,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         Print.i(TAG, "ON CLICK: SET SHIPPING METHOD");
         ContentValues values = mFormResponse.getValues();
         if(CollectionUtils.isNotEmpty(values)){
-            triggerSubmitShippingMethod(values);
+            triggerSubmitShippingMethod(mFormResponse.action, values);
         }
     }
 
@@ -320,10 +320,11 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
         case GET_MULTI_STEP_SHIPPING:
-            onErrorGetShippingMethods();
+            showFragmentErrorRetry();
             break;
         case SET_MULTI_STEP_SHIPPING:
-            onErrorSetShippingMethods();
+            showWarningErrorMessage(baseResponse.getValidateMessage());
+            showFragmentContentContainer();
             break;
         default:
             break;
@@ -356,17 +357,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         getBaseActivity().onSwitchFragment(nextFragment, null, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    public void onErrorGetShippingMethods(){
-        Print.w(TAG, "RECEIVED GET_SHIPPING_METHODS_EVENT");
-        super.showFragmentErrorRetry();
-
-    }
-
-    public void onErrorSetShippingMethods(){
-        Print.w(TAG, "RECEIVED SET_SHIPPING_METHOD_EVENT");
-        super.showUnexpectedErrorWarning();
-    }
-
     /**
      * ############# REQUESTS #############
      */
@@ -375,9 +365,9 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
      * Trigger to set the shipping method
      * @author sergiopereira
      */
-    private void triggerSubmitShippingMethod(ContentValues values) {
+    private void triggerSubmitShippingMethod(String endpoint, ContentValues values) {
         Print.i(TAG, "TRIGGER: SET SHIPPING METHOD");
-        triggerContentEvent(new SetStepShippingHelper(), SetStepShippingHelper.createBundle(values), this);
+        triggerContentEvent(new SetStepShippingHelper(), SetStepShippingHelper.createBundle(endpoint, values), this);
     }
     
     /**

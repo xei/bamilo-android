@@ -26,6 +26,7 @@ public class ShippingMethodFormBuilder implements Parcelable  {
     private ShippingRadioGroupList mRadioGroup;
 
     public ShippingForm shippingMethodFormBuilderHolder;
+    public String action;
 
     /**
      * Empty constructor

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.checkout.ExternalOrder;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
@@ -952,9 +953,10 @@ public class TrackerDelegator {
      * Tracking add address for GTM
      *
      */
-    public static void trackFailedPayment(String paymentMethod, double transactionTotal) {
-        // GTM
-        GTMManager.get().gtmTrackFailedPayment(paymentMethod, transactionTotal, EUR_CURRENCY);
+    public static void trackFailedPayment(String paymentMethod, PurchaseEntity order) {
+        if (order != null) {
+            GTMManager.get().gtmTrackFailedPayment(paymentMethod, order.getCartValueEuroConverted(), EUR_CURRENCY);
+        }
     }
 
     /**
