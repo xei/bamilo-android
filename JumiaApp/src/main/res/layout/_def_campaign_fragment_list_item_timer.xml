@@ -45,7 +45,7 @@
         android:drawablePadding="6.67dp"
         android:fontFamily="roboto_reg"
         android:includeFontPadding="false"
-        android:text="@string/campaing_timer_end"
+        android:text="@string/campaign_timer_end"
         android:textColor="#666"
         android:textSize="@dimen/text_xs" />
 

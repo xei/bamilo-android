@@ -51,7 +51,7 @@
         android:drawableRight="@drawable/ico_clock"
         android:fontFamily="roboto_reg"
         android:includeFontPadding="false"
-        android:text="@string/campaing_timer_end"
+        android:text="@string/campaign_timer_end"
         android:textColor="#666"
         android:textSize="@dimen/text_xs" />
 

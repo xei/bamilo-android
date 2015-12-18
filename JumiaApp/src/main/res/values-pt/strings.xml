@@ -32,8 +32,8 @@
     <string name="campaign_save">Está a Poupar</string>
     <string name="campaign_stock_alert">Pedimos desculpa mas o artigo que selecionou está esgotado</string>
     <string name="campaigns_label">Campanhas</string>
-    <string name="campaing_offer_ended">A Promoção Terminou!</string>
-    <string name="campaing_timer_end">Termina em:</string>
+    <string name="campaign_offer_ended">A Promoção Terminou!</string>
+    <string name="campaign_timer_end">Termina em:</string>
     <string name="cancel_label">Cancelar</string>
     <string name="cart_label">Carrinho</string>
     <string name="catalog_edit_filters">Editar Filtros</string>
