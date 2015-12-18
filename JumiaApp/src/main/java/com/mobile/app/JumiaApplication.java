@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
@@ -89,12 +88,6 @@ public class JumiaApplication extends A4SApplication {
 
     // Search
     public String mSavedSearchTerm;
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        MultiDex.install(this);
-    }
 
     /*
      * (non-Javadoc)
