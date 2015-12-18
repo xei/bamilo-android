@@ -24,7 +24,7 @@ def getAppVersionCode(int releaseVersionCode) {
 android {
 
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '23.0.1'
 
     useLibrary 'org.apache.http.legacy'
 
@@ -32,14 +32,11 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 15
         targetSdkVersion 22
-//        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
-        multiDexEnabled true
+        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
     }
 
     dexOptions {
         jumboMode true
-        javaMaxHeapSize "2048M" //Added due to instant run
-        incremental true
     }
 
     signingConfigs {
