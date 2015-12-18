@@ -471,4 +471,6 @@
     <!-- NEW 2.9 -->
     <string name="percentage">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">This bundle could not be added to the shopping cart. Please try again later.</string>
+    <string name="buy">buy</string>
+    <string name="size">Size %s</string>
 </resources>
