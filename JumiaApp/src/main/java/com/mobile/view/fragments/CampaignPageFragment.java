@@ -751,7 +751,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set stock bar
             setStockBar(view.mStockBar, item.getStockPercentage());
             // Set stock percentage
-            view.mStockPercentage.setText(getString(R.string.percentage, item.getStockPercentage()));
+            view.mStockPercentage.setText(String.format(getString(R.string.percentage), item.getStockPercentage()));
             view.mStockPercentage.setSelected(true);
             // Set buy button
             setClickableView(view.mButtonBuy, position);
@@ -962,7 +962,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
             } else {
                 // Hide the size container
-                view.mSizeContainer.setVisibility(View.GONE);
+                view.mSizeContainer.setVisibility(View.INVISIBLE);
                 // Set itself as selected size
                 CampaignItemSize size = null;
                 try {

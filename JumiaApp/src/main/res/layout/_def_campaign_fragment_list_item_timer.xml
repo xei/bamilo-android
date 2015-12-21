@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
+    android:layout_marginTop="@dimen/dimen_10dp"
     >
 
     <!-- TIMER TITLE -->
