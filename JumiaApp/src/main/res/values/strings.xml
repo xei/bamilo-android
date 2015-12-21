@@ -33,8 +33,10 @@
     <string name="campaign_save">You Save</string>
     <string name="campaign_stock_alert">Sorry the item you have chosen is sold out.</string>
     <string name="campaigns_label">Campaigns</string>
-    <string name="campaing_offer_ended">Offer Ended!</string>
-    <string name="campaing_timer_end">Ends in</string>
+    <string name="campaign_unavailable_title">This campaign is finished</string>
+    <string name="campaign_unavailable_description">Even so, we have plenty of other great offers waiting for you.</string>
+    <string name="campaign_offer_ended">Offer Ended!</string>
+    <string name="campaign_timer_end">Ends in:</string>
     <string name="cancel_label">Cancel</string>
     <string name="cart_label">Cart</string>
     <string name="catalog_edit_filters">Edit Filters</string>
@@ -171,6 +173,7 @@
     <string name="notifications">Push Notifications</string>
     <string name="myaccount_email_notifications">Email Notifications</string>
     <string name="notifications_summary">Receive exclusive offers and updates</string>
+    <string name="off_label">OFF</string>
     <string name="ok_label">OK</string>
     <string name="option2_description">Change Password, E-mail, etc&#8230;</string>
     <string name="option3_description">Subscribe or Unsubscribe</string>
