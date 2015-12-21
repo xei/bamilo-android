@@ -319,6 +319,7 @@
     <string name="upgrade_remindmelater">Remind me later</string>
     <string name="validation_errortext">There were errors on the data submited, please check your input fields.</string>
     <string name="validation_title">Input data error</string>
+    <string name="vat_string">VAT</string>
     <string name="voucher_error_message">Please input a valid Coupon Code</string>
     <string name="voucher_message_hint">Enter your coupon code here</string>
     <string name="voucher_remove">Remove</string>
