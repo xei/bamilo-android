@@ -347,6 +347,8 @@ task wtiPullTranslations << {
 def gitCommitAndPush(String branch, String directory, String message) {
     // perform add->commit->push
     println " - - Commit and psuh to git " + branch
+    executeWaitAndPrintCmd(['git', 'config', '--global', 'user.name', "'mobile-rocket-porto'"])
+    executeWaitAndPrintCmd(['git', 'config', '--global', 'user.email', "'mobilerocketporto@gmail.com'"])
     executeWaitAndPrintCmd(['git', 'add', directory])
     executeWaitAndPrintCmd(['git', 'commit', '-m', message]);
     executeWaitAndPrintCmd(['git', 'push', 'origin', branch])
