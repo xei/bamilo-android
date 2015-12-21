@@ -19,6 +19,7 @@ import com.mobile.newFramework.objects.catalog.FeaturedItemBrand;
 import com.mobile.newFramework.objects.catalog.FeaturedItemProduct;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -153,9 +154,9 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                 navigationSourceId = R.string.gsearch;
                 search = FragmentType.PRODUCT_DETAILS;
             } else if (featuredItem instanceof FeaturedItemBrand) {
-                bundle.putString(ConstantsIntentExtra.CONTENT_URL, featuredItem.getUrl());
+                bundle.putString(ConstantsIntentExtra.CONTENT_ID, TargetLink.getIdFromTargetLink(featuredItem.getTarget()));
                 navigationSourceId = R.string.gsearch;
-                search = FragmentType.CATALOG;
+                search = FragmentType.CATALOG_BRAND;
                 // add title for Brands
                 bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, featuredItem.getName());
             }
@@ -196,7 +197,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                     textView.setText(CurrencyFormatter.formatCurrency(price));
                 }
             }
-            // RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img);
             RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
         } else {
             Print.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");
