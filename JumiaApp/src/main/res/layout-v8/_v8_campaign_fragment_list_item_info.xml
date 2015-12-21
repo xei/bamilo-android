@@ -5,7 +5,18 @@
               android:orientation="horizontal"
               android:weightSum="2"
               android:layout_marginTop="@dimen/dimen_10dp"
+              android:layoutDirection="ltr"
     >
+
+    <!-- BUTTON -->
+
+    <com.mobile.components.customfontviews.Button
+        android:id="@+id/campaign_item_button_buy"
+        style="@style/AigButton.Active"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dimen_48dp"
+        android:layout_weight="1"
+        android:text="@string/buy" />
 
     <!-- INFO -->
 
@@ -31,44 +42,38 @@
             android:progress="0"
             android:progressDrawable="@android:color/transparent" />
 
-        <!-- STOCK LABEL -->
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/campaign_item_stock_label"
-            style="@style/TextCaption"
-            android:layout_below="@id/campaign_item_stock_bar"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_alignParentLeft="true"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="@string/campaign_ramaining_stock"
-            android:textColor="@color/black"
-            />
-
         <!-- STOCK VALUE -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_stock_value"
             style="@style/TextCaption"
+            android:layout_width="wrap_content"
             android:layout_below="@id/campaign_item_stock_bar"
-            android:layout_toRightOf="@id/campaign_item_stock_label"
+            android:layout_toLeftOf="@id/campaign_item_stock_label"
             android:layout_marginTop="@dimen/margin_small"
             android:ellipsize="marquee"
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="@color/black"
             />
+
+        <!-- STOCK LABEL -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_stock_label"
+            style="@style/TextCaption"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/campaign_item_stock_bar"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_alignParentRight="true"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/campaign_ramaining_stock"
+            android:textColor="@color/black"
+            />
+
+
     </RelativeLayout>
-
-    <!-- BUTTON -->
-
-    <com.mobile.components.customfontviews.Button
-        android:id="@+id/campaign_item_button_buy"
-        style="@style/AigButton.Active"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dimen_48dp"
-        android:layout_weight="1"
-        android:text="@string/buy" />
 
 </LinearLayout>
