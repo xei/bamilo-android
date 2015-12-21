@@ -159,15 +159,15 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         int id = view.getId();
         // Submit
         if(id == R.id.checkout_button_enter) onClickSubmitAddressesButton();
-            // Add new
+        // Add new
         else if(id == R.id.checkout_addresses_default_add) onClickCreateAddressButton();
-            // Add new
+        // Add new
         else if(id == R.id.checkout_addresses_other_add) onClickCreateAddressButton();
-            // Edit button
+        // Edit button
         else if(id == R.id.checkout_address_item_btn_edit) onClickEditAddressButton(view);
-            // Check box
+        // Check box
         else if(id == R.id.checkout_address_billing_checkbox) onClickCheckBox((CheckBox) view);
-            // Unknown view
+        // Unknown view
         else Print.i(TAG, "ON CLICK: UNKNOWN VIEW " + view.getTag());
     }
 
