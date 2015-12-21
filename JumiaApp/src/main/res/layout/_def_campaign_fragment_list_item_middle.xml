@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/dimen_92dp"
             android:layout_marginStart="@dimen/dimen_92dp"
@@ -55,7 +55,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_discount"
-            style="@style/TextList_2"
+            style="@style/TextList_1"
             android:layout_marginRight="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
             android:ellipsize="marquee"
@@ -64,14 +64,14 @@
             android:gravity="start|left|bottom"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/black_800"
+            android:textColor="@color/red_basic"
             />
 
         <!-- PRICE -->
         <!-- DISCOUNT -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_price"
-            style="@style/TextList_1"
+            style="@style/TextList_2"
             android:layout_alignBottom="@id/campaign_item_discount"
             android:layout_alignTop="@id/campaign_item_discount"
             android:layout_toRightOf="@id/campaign_item_discount"
@@ -80,7 +80,7 @@
             android:gravity="center"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/red_basic"
+            android:textColor="@color/black_800"
             />
 
     </RelativeLayout>
