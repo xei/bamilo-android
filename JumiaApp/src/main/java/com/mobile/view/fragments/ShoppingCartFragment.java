@@ -63,6 +63,7 @@ import com.mobile.view.R;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -85,14 +86,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private Button mCallToOrderButton;
     private DialogListFragment dialogList;
     private TextView couponButton;
-    private TextView voucherError;
     private EditText voucherCode;
     private String mVoucher = null;
     private boolean removeVoucher = false;
     private String itemRemoved_sku;
     private String itemRemoved_price;
     private String mPhone2Call = "";
-    private final boolean isRemovingAllItems = false; // Flag used to remove all items after call to order
     private double itemRemoved_price_tracking = 0d;
     private long itemRemoved_quantity;
     private double itemRemoved_rating;
@@ -238,10 +237,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
         Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
         // Create arguments to add all items to cart
-        ArrayList<String> productBySku = new ArrayList();
-        for (String simpleSku : itemsToCart) {
-            productBySku.add(simpleSku);
-        }
+        ArrayList<String> productBySku = new ArrayList<>();
+        Collections.addAll(productBySku, itemsToCart);
         // Case valid deep link
         if (!productBySku.isEmpty()) {
             triggerAddAllItems(productBySku);
@@ -263,7 +260,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         itemRemoved_quantity = item.getQuantity();
         itemRemoved_rating = -1d;
 
-        // TODO Validate this
         if (TextUtils.isEmpty(cartValue)) {
             TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
             itemRemoved_cart_value = totalValue.toString();
@@ -273,12 +269,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (itemRemoved_price == null) {
             itemRemoved_price = item.getPriceVal().toString();
         }
-        // only show loading when removing individual items
-        if (isRemovingAllItems) {
-            triggerContentEventNoLoading(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), false), null);
-        } else {
-            triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
-        }
+
+        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
     }
 
     /**
@@ -311,7 +303,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         checkoutButton = (Button) view.findViewById(R.id.checkout_button);
         mCallToOrderButton = (Button) view.findViewById(R.id.checkout_call_to_order);
         voucherCode = (EditText) view.findViewById(R.id.voucher_name);
-        voucherError = (TextView) view.findViewById(R.id.voucher_error_message);
         couponButton = (TextView) view.findViewById(R.id.voucher_btn);
         mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
         prepareCouponView();
@@ -406,7 +397,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             case ADD_VOUCHER:
                 PurchaseEntity addVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getContentData();
                 couponButton.setText(getString(R.string.voucher_remove));
-                voucherError.setVisibility(View.GONE);
                 hideActivityProgress();
                 removeVoucher = true;
                 displayShoppingCart(addVoucherPurchaseEntity);
@@ -414,7 +404,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             case REMOVE_VOUCHER:
                 PurchaseEntity removeVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getContentData();
                 couponButton.setText(getString(R.string.voucher_use));
-                voucherError.setVisibility(View.GONE);
                 hideActivityProgress();
                 removeVoucher = false;
                 displayShoppingCart(removeVoucherPurchaseEntity);
@@ -431,14 +420,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
                 TrackerDelegator.trackProductRemoveFromCart(params);
                 TrackerDelegator.trackLoadTiming(params);
-                if (!isRemovingAllItems) {
-                    displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
-                    hideActivityProgress();
-                }
+                displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
+                hideActivityProgress();
                 return true;
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                //showFragmentContentContainer();
                 params = new Bundle();
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
@@ -446,34 +432,22 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 return true;
             case GET_SHOPPING_CART_ITEMS_EVENT:
-                //alexandrapires: loading dismiss
                 hideActivityProgress();
                 PurchaseEntity purchaseEntity = (PurchaseEntity) baseResponse.getContentData();
                 params = new Bundle();
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-
                 TrackerDelegator.trackLoadTiming(params);
-
                 params.clear();
                 params.putParcelable(AdjustTracker.CART, purchaseEntity);
                 TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
                 TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
-
-                // verify if "Call to Order" was used
-//                if (isCallInProgress) {
-//                    isCallInProgress = false;
-//                    askToRemoveProductsAfterOrder(purchaseEntity);
-//                } else {
-                    displayShoppingCart(purchaseEntity);
-//                }
-
+                displayShoppingCart(purchaseEntity);
                 return true;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
                 onAddItemsToShoppingCartRequestSuccess(baseResponse);
                 break;
             default:
-                //showFragmentContentContainer();
                 params = new Bundle();
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
@@ -528,9 +502,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             case ADD_VOUCHER:
             case REMOVE_VOUCHER:
                 voucherCode.setText("");
-                voucherError.setVisibility(View.VISIBLE);
-                // voucherDivider.setBackgroundColor(R.color.red_middle);
-                // hideActivityProgress();
                 break;
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 break;
@@ -574,7 +545,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
             TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
             TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
-            TextView isNew = (TextView) getView().findViewById(R.id.vat_value);
             View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
             View shippingContainer = getView().findViewById(R.id.shipping_container);
             TextView shippingValue = (TextView)getView().findViewById(R.id.shipping_value);
@@ -613,6 +583,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
 
             if(cart.isVatLabelEnable()) {
+                vatIncludedLabel.setVisibility(View.VISIBLE);
                 vatValue.setVisibility(View.VISIBLE);
                 vatValue.setText(CurrencyFormatter.formatCurrency(cart.getVatValue()));
                 vatIncludedLabel.setText(cart.getVatLabel());
@@ -1004,9 +975,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public ImageView productView;
         public TextView isNew;
         public View pBar;
-//        public TextView discountPercentage;
-//        public TextView priceDisc;
-//        public TextView variancesContainer;
         public TextView deleteBtn;
         public CartItemValues itemValues;
 
@@ -1023,9 +991,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             quantityBtn = null;
             productView = null;
             pBar = null;
-//            discountPercentage = null;
-//            priceDisc = null;
-//            variancesContainer = null;
             deleteBtn = null;
             isNew = null;
             super.finalize();

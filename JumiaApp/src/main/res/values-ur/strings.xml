@@ -412,7 +412,7 @@
     <string name="description1">تفصیل</string>
     <string name="rat_rev">درجہ بندی اور تجزیے</string>
     <string name="fulfilled_by">%s کی طرف سے پورا</string>
-    <string name="qty_placeholder">مقدار:  %d</string>
+    <string name="qty_placeholder">مقدار:  %s</string>
     <string name="policy">پالیسی</string>
     <string name="shipment">%1$d کھیپ کے %2$d</string>
     <string name="delivery_time_placeholder">ڈلیوری وقت: %1$d - %2$d  دن</string>
