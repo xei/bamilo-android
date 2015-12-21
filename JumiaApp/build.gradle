@@ -347,8 +347,16 @@ task wtiPullTranslations << {
 def gitCommitAndPush(String branch, String directory, String message) {
     // perform add->commit->push
     println " - - Commit and psuh to git " + branch
-    executeWaitAndPrintCmd(['git', 'config', '--global', 'user.name', "'mobile-rocket-porto'"])
-    executeWaitAndPrintCmd(['git', 'config', '--global', 'user.email', "'mobilerocketporto@gmail.com'"])
+    // save credentials on file, get git user and pass from env vars
+    def STORAGE_CRED_FILE = "/tmp/credentials.git"
+    String user = System.getenv('GIT_USER')
+    String pass = System.getenv('GIT_PASS')
+    new File(STORAGE_CRED_FILE).write("https://" + user + ":" + pass + "@github.com")
+    // set git credentials
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.name', "'mobile-rocket-porto'"])
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.email', "'mobilerocketporto@gmail.com'"])
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'credential.helper', 'store', ("--file=" + STORAGE_CRED_FILE)])
+    // perform add->commit->push
     executeWaitAndPrintCmd(['git', 'add', directory])
     executeWaitAndPrintCmd(['git', 'commit', '-m', message]);
     executeWaitAndPrintCmd(['git', 'push', 'origin', branch])
