@@ -51,6 +51,8 @@ public class ErrorLayoutFactory {
 
     public static final int UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT = 12;
 
+    public static final int CAMPAIGN_UNAVAILABLE_LAYOUT = 13;
+
     @IntDef({
             NO_NETWORK_LAYOUT,
             UNEXPECTED_ERROR_LAYOUT,
@@ -63,8 +65,8 @@ public class ErrorLayoutFactory {
             CATALOG_UNEXPECTED_ERROR,
             NO_ORDERS_LAYOUT,
             SSL_ERROR_LAYOUT,
-            UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT
-
+            UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT,
+            CAMPAIGN_UNAVAILABLE_LAYOUT
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface LayoutErrorType{}
@@ -90,6 +92,9 @@ public class ErrorLayoutFactory {
         if(actualError != error) {
             //build
             switch (error) {
+                case CAMPAIGN_UNAVAILABLE_LAYOUT:
+                    buildCampaignUnavailableErrorLayout(error);
+                    break;
                 case UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT:
                     buildUnknownCheckoutStepErrorLayout();
                     break;
@@ -130,6 +135,17 @@ public class ErrorLayoutFactory {
         }
         //show
         show();
+    }
+
+    /**
+     * Show error layout in case of invalid campaign
+     *
+     * @param error
+     */
+    public void buildCampaignUnavailableErrorLayout(int error){
+        showGenericError(error, R.drawable.ic_campaigns2, R.string.campaign_unavailable_title,
+                R.string.campaign_unavailable_description, R.string.continue_shopping,
+                R.color.white, R.color.color_accent, false);
     }
 
     private void buildNoFavouritesLayout(int error){
@@ -198,6 +214,32 @@ public class ErrorLayoutFactory {
                 .setDetailMessage(detailMessage)
                 .setButtonVisible(false)
                 .setRotationVisible(false);
+        actualError = error;
+    }
+
+    /**
+     * Show generic error message with button
+     *
+     * @param error
+     * @param image
+     * @param principalMessage
+     * @param detailMessage
+     * @param buttonMessage
+     * @param buttonTextColor
+     * @param buttonBackground
+     * @param rotationVisible
+     */
+    private void showGenericError(int error, int image, int principalMessage, int detailMessage,
+                                  int buttonMessage, int buttonTextColor, int buttonBackground,
+                                  boolean rotationVisible) {
+        new Builder()
+                .setImage(image)
+                .setPrincipalMessage(principalMessage)
+                .setDetailMessage(detailMessage)
+                .setButtonMessage(buttonMessage)
+                .setButtonTextColor(buttonTextColor)
+                .setRotationVisible(rotationVisible)
+                .setButtonBackground(buttonBackground);
         actualError = error;
     }
 
