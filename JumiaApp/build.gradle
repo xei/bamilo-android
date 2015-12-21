@@ -336,6 +336,8 @@ task wtiPullTranslations << {
     if (result.contains('values*OK')) {// OK appears when new translations
         gitCommitAndPush("development", STRINGS, "[Jenkins::Jumia] - Uploading new translations from wti")
         sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
+    } else {
+        println "No translation to push..."
     }
 }
 

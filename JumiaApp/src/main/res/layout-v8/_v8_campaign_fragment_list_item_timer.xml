@@ -5,7 +5,18 @@
               android:layout_height="wrap_content"
               android:gravity="center"
               android:orientation="horizontal"
+              android:layout_marginTop="@dimen/dimen_10dp"
+              android:layoutDirection="ltr"
     >
+
+    <!-- TIMER -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/campaign_item_stock_timer"
+        style="@style/TextInfo"
+        android:layout_width="wrap_content"
+        android:textColor="@color/red_basic"
+        />
 
     <!-- TIMER TITLE -->
 
@@ -17,18 +28,5 @@
         android:textColor="@color/black"
         android:layout_marginLeft="@dimen/margin_small"
         />
-
-    <!-- TIMER -->
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/campaign_item_stock_timer"
-        style="@style/TextInfo"
-        android:layout_width="wrap_content"
-        android:textColor="@color/red_basic"
-        />
-
-
-
-    <!-- </LinearLayout> -->
 
 </LinearLayout>
