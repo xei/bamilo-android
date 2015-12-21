@@ -10,6 +10,7 @@ public enum FormInputType {
     number,
     password,
     radioGroup,
+    option,
     checkBox,
     email,
     date,
