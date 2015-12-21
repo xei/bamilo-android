@@ -333,7 +333,7 @@ task wtiPullTranslations << {
     String result = proc.text
     println result
     //check if there are new translations and push them to git develop branch when on jenkins
-    if (result.find('values.*OK').length() > 0) {// OK appears when new translations
+    if (result.find('values.*OK') != null) {// OK appears when new translations
         gitCommitAndPush("HEAD:development", STRINGS, "'[Jenkins::Jumia] - Uploading new translations from wti'")
         sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
     } else {
