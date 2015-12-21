@@ -98,6 +98,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private String itemRemoved_cart_value;
     private String mItemsToCartDeepLink;
     private NestedScrollView mNestedScroll;
+    private int selectedPosition;
+    private long crrQuantity;
 
     /**
      * Empty constructor
@@ -137,6 +139,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             mItemsToCartDeepLink = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
             arguments.remove(ConstantsIntentExtra.CONTENT_URL);
         }
+
+        selectedPosition = 0;
     }
 
     @Override
@@ -491,19 +495,22 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
 
         hideActivityProgress();
+        EventType eventType = baseResponse.getEventType();
 
         // Validate generic errors
         if (super.handleErrorEvent(baseResponse)) {
+
+            if(eventType == EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT ){
+                items.get(selectedPosition).setQuantity(crrQuantity); //restarts the previous position for load selected quantity before the error
+            }
             return true;
         }
 
-        EventType eventType = baseResponse.getEventType();
+
         switch (eventType) {
             case ADD_VOUCHER:
             case REMOVE_VOUCHER:
                 voucherCode.setText("");
-                break;
-            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 break;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
                 showNoItems();
@@ -823,10 +830,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
     public void changeQuantityOfItem(final int position) {
         ArrayList<String> quantities = new ArrayList<>();
+        selectedPosition = position;
         for (int i = 1; i <= items.get(position).getMaxQuantity(); i++) {
             quantities.add(String.valueOf(i));
         }
-        final long crrQuantity = items.get(position).getQuantity();
+        crrQuantity = items.get(position).getQuantity();
         OnDialogListListener listener = new OnDialogListListener() {
             @Override
             public void onDialogListItemSelect(int quantity, String value) {
