@@ -175,11 +175,11 @@ public class TargetLink {
         }
         // Case catalog brand
         else if (TextUtils.equals(CATALOG_BRAND, type)) {
-            fragmentType = FragmentType.CATALOG;
+            fragmentType = FragmentType.CATALOG_BRAND;
         }
         // Case catalog seller
         else if (TextUtils.equals(CATALOG_SELLER, type)) {
-            fragmentType = FragmentType.CATALOG;
+            fragmentType = FragmentType.CATALOG_SELLER;
         }
         // Case campaign
         else if (TextUtils.equals(CAMPAIGN, type)) {

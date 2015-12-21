@@ -412,7 +412,7 @@
     <string name="description1">ကုန္ပစၥည္းအေၾကာင္း</string>
     <string name="rat_rev">သံုးသပ္ခ်က္မ်ား  </string>
     <string name="fulfilled_by">Fulfilled by%s</string>
-    <string name="qty_placeholder">Qty: %d</string>
+    <string name="qty_placeholder">Qty: %s</string>
     <string name="policy">Policy</string>
     <string name="shipment">ေအာ္ဒါပို႕ေဆာင္မွဳ  %2$d မွ %1$dခု</string>
     <string name="delivery_time_placeholder">ပိုေဆာင္ခ်ိန္ %1$d ရက္မွ - %2$d ရက္ ရုံးဖြင့္ရက္အတြင္း</string>
