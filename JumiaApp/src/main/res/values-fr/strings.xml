@@ -145,15 +145,12 @@
     <string name="my_order_no_orders_label">Vous n\'avez rien commandé</string>
     <string name="my_order_number_label">Nr.</string>
     <string name="my_order_payment">Mode de paiement</string>
-    <string name="my_order_qty">Qté</string>
-    <string name="my_order_quantity_label">Qté.</string>
     <string name="my_order_ship_fee_label">Frais de livraison</string>
     <string name="my_order_total_label">Total</string>
     <string name="my_order_tracking_label">Statut de la Commande</string>
     <string name="my_order_voucher_label">Code promotionnel</string>
     <string name="my_orders_label">Mes Commandes</string>
     <string name="my_profile">Mon Profil</string>
-    <string name="myaccount_email_notifications">Notifications Email</string>
     <string name="myaccount_userdata">Les données de l\'utilisateur</string>
     <string name="name">Nom</string>
     <string name="nav_country">Choisir Le Pays</string>
@@ -168,10 +165,9 @@
     <string name="no_connect_dialog_content">Vérifiez votre connexion internet et essayez à nouveau!</string>
     <string name="no_internet_access_warning_title">Pas d\'accès internet!</string>
     <string name="no_label">Non</string>
-    <string name="no_payment">Aucun paiement nécessaire</string>
     <string name="notifications">Notifications</string>
+    <string name="myaccount_email_notifications">Notifications Email</string>
     <string name="notifications_summary">Recevez des offres exclusives et mises à jour personnelles</string>
-    <string name="off_label">-</string>
     <string name="ok_label">OK</string>
     <string name="option2_description">Changez votre mot de passe, e-mail, etc&#8230;</string>
     <string name="option3_description">S\'inscrire ou se désinscrire</string>
@@ -335,7 +331,6 @@
     <string name="yes_label">Oui</string>
     <string name="your_cart">Votre panier</string>
     <string name="your_order">Votre commande</string>
-    <string name="install_android">Installez l\'application %s Android en un instant</string>
     <string name="share_the_app">Partagez l\'Application</string>
     <string name="can_share_app_with_friends">Vous pouvez maintenant partager l\'application avec vos amis</string>
     <string name="app_social">Communauté de l\'App</string>
@@ -349,7 +344,6 @@
     <string name="my_addresses">Mes Adresses</string>
     <string name="create_edit_address">Créez ou modifiez vos adresses</string>
     <string name="string_more_choices">Plus de choix</string>
-    <string name="string_vat_included">(TVA incl.)</string>
     <string name="addresses_saved_message">Les paramètres de vos adresses ont été enregistrés.</string>
     <string name="dialog_to_product">Détails du produit</string>
     <string name="address_creation_failed_title">La création d\'adresse a échoué</string>
@@ -412,7 +406,6 @@
     <string name="description1">description</string>
     <string name="rat_rev">Notes</string>
     <string name="fulfilled_by">Expédié par %s</string>
-    <string name="qty_placeholder">Qté: %s</string>
     <string name="policy">Politique</string>
     <string name="shipment">Colis %1$d sur %2$d</string>
     <string name="delivery_time_placeholder">Temps de livraison : %1$d à %2$d jours</string>
@@ -432,7 +425,6 @@
     <string name="create_label">créer</string>
     <string name="change_password">Changer le mot de passe</string>
     <string name="continue_without_log_in">Continuer sans s\'identifier</string>
-    <string name="placeholder_discount">-%s</string>
     <string name="edit_user_success">Informations client modifier avec succès</string>
     <string name="password">Mot de passe</string>
     <string name="more">Plus</string>
@@ -446,8 +438,8 @@
     <string name="rate_the_app">Evaluez notre application</string>
     <string name="order_track_check">Vous pouvez vérifier le statut de votre commande sur l\'onglet "Mes commandes"</string>
     <string name="select_city">Veuillez sélectionner une ville.</string>
-    <string name="no_saved_items">Votre panier est vide pour le moment</string>
-    <string name="no_saved_items_subtitle">Vous n\'avez pas d\'articles</string>
+    <string name="no_saved_items">Aucun produit mis de côté.</string>
+    <string name="no_saved_items_subtitle">Vous n\'avez pas encore mis d\'articles de côté.</string>
     <string name="no_recently_viewed_items">Aucun article vu récemment.</string>
     <string name="no_recently_viewed_items_subtitle">Vous n\'avez aucun éléments récemment consultés.</string>
     <string name="recent_searches_empty">Vous n\'avez pas de recherche récente.</string>
@@ -455,8 +447,7 @@
     <string name="delivered_label">Livré</string>
     <string name="order_number">Numéro de commande %s</string>
     <string name="billing">Facturation</string>
-    <string name="first_and_second_placeholders">%1$s %2$s</string>
-    <string name="quantity">Qté %s</string>
+    <string name="qty_placeholder">Qté: %d</string>
     <string name="reorder_label">Recommander</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
     <string name="order_pending">Commande en attente</string>
