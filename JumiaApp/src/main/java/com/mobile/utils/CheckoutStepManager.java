@@ -34,10 +34,10 @@ public class CheckoutStepManager {
     
     private static final String TAG = CheckoutStepManager.class.getSimpleName();
 
-    public final static String ADDRESSES_STEP = "createAddress";
-    public final static String BILLING_STEP = "addresses";
-    public final static String SHIPPING_STEP = "shippingMethod";
-    public final static String PAYMENT_STEP = "paymentMethod";
+    public final static String CREATE_ADDRESS_STEP = "createAddress";
+    public final static String ADDRESSES_STEP = "addresses";
+    public final static String SHIPPING_STEP = "shipping";
+    public final static String PAYMENT_STEP = "payment";
     public final static String ORDER_STEP = "finish";
 
     public static final int CHECKOUT_TOTAL_MAX_LINES = 2;
@@ -54,9 +54,9 @@ public class CheckoutStepManager {
         // Case not valid next step (null or empty)
         if(TextUtils.isEmpty(nextStep)) return fragmentType;
         // Create addresses step
-        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
+        else if (nextStep.equalsIgnoreCase(CREATE_ADDRESS_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
         // Billing and shipping address step
-        else if (nextStep.equalsIgnoreCase(BILLING_STEP)) fragmentType = FragmentType.MY_ADDRESSES;
+        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.MY_ADDRESSES;
         // Shipping method step
         else if (nextStep.equalsIgnoreCase(SHIPPING_STEP)) fragmentType = FragmentType.SHIPPING_METHODS;
         // Payment method step
