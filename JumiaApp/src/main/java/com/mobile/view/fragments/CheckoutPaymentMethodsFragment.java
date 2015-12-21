@@ -436,7 +436,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Form
             loadForm(responseData.getForm());
             // Set the checkout total bar
-            setOrderInfo((PurchaseEntity) baseResponse.getContentData());
+            setOrderInfo(responseData.getOrderSummary());
             break;
         case SET_MULTI_STEP_PAYMENT:
             Print.d(TAG, "RECEIVED SET_PAYMENT_METHOD_EVENT");
