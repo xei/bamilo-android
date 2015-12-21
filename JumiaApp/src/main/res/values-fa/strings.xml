@@ -33,8 +33,8 @@
     <string name="campaign_save">میزان تخفیف</string>
     <string name="campaign_stock_alert">متاسفیم. موجودی کالا به اتمام رسیده است.</string>
     <string name="campaigns_label">کمپین ها</string>
-    <string name="campaign_offer_ended">زمان پیشنهاد به پایان رسیده است</string>
-    <string name="campaign_timer_end">پایان</string>
+    <string name="campaing_offer_ended">زمان پیشنهاد به پایان رسیده است</string>
+    <string name="campaing_timer_end">پایان</string>
     <string name="cancel_label">لغو</string>
     <string name="cart_label">سبد خرید</string>
     <string name="catalog_edit_filters">ویرایش فیلترها</string>

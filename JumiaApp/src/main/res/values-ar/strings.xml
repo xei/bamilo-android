@@ -33,8 +33,8 @@
     <string name="campaign_save">أنت توفر</string>
     <string name="campaign_stock_alert">عفوًا، المنتج الذي قمت باختياره غير متوفر</string>
     <string name="campaigns_label">العروض</string>
-    <string name="campaign_offer_ended">انتهت العروض!</string>
-    <string name="campaign_timer_end">تنتهي في:</string>
+    <string name="campaing_offer_ended">انتهت العروض!</string>
+    <string name="campaing_timer_end">تنتهي في:</string>
     <string name="cancel_label">إلغاء</string>
     <string name="cart_label">عربة التسوق</string>
     <string name="catalog_edit_filters">تعديل الاختيارات</string>

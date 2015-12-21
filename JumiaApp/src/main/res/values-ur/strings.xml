@@ -33,8 +33,8 @@
     <string name="campaign_save">آپ کی بچت</string>
     <string name="campaign_stock_alert">معذرت! جو شے آپ نے پسند کی، وہ بِک چکی ہے۔</string>
     <string name="campaigns_label">مہمات</string>
-    <string name="campaign_offer_ended">پیشکش ختم ہوئی!</string>
-    <string name="campaign_timer_end">وقتِ اختتام:</string>
+    <string name="campaing_offer_ended">پیشکش ختم ہوئی!</string>
+    <string name="campaing_timer_end">وقتِ اختتام:</string>
     <string name="cancel_label">منسوخ</string>
     <string name="cart_label">ٹوکری</string>
     <string name="catalog_edit_filters">چھلنی میں ترامیم کریں</string>
