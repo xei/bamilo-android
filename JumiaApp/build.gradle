@@ -333,11 +333,11 @@ task wtiPullTranslations << {
     String result = proc.text
     println result
     //check if there are new translations and push them to git develop branch when on jenkins
-    if (result.contains('values*OK')) {// OK appears when new translations
+    if (result.find('values.*OK').length() > 0) {// OK appears when new translations
         gitCommitAndPush("development", STRINGS, "[Jenkins::Jumia] - Uploading new translations from wti")
         sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
     } else {
-        println "No translation to push..."
+        println " - - No translation to push..."
     }
 }
 
@@ -346,6 +346,7 @@ task wtiPullTranslations << {
  */
 def gitCommitAndPush(String branch, String directory, String message) {
     // perform add->commit->push
+    println " - - Commit and psuh to git " + branch
     executeWaitAndPrintCmd(['git', 'add', directory])
     executeWaitAndPrintCmd(['git', 'commit', '-m', message]);
     executeWaitAndPrintCmd(['git', 'push', 'origin', branch])
