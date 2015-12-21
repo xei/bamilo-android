@@ -5,8 +5,7 @@
     android:background="@color/white"
     android:minHeight="@dimen/dimen_340px"
     android:orientation="horizontal"
-    android:paddingBottom="12dp"
-    android:paddingTop="12dp">
+    >
 
     <com.mobile.components.customfontviews.RadioButton
         android:id="@+id/pickup_station_radio_button"
