@@ -39,7 +39,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private static final String RELATED_NUMBER = "related_number";
     private static final String PASSWORD = "password";
     private static final String LIST = "list";
-    private static final String CHOICE = "choice";
     private static final String RATING = "array";
     private static final String CHECKBOX = "checkbox";
     private static final String HIDDEN = "hidden";
@@ -135,7 +134,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 case RADIO:
                     mInputType = FormInputType.radioGroup;
                     break;
-                case CHOICE:
                 case LIST:
                     mInputType = FormInputType.list;
                     break;
