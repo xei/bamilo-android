@@ -36,6 +36,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -441,27 +442,31 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
 
     private void addItemToCart(CampaignItem campaignItem){
-
-        String sku = campaignItem.getSelectedSize().getSku();
-        String size = campaignItem.getSelectedSize().getVariationValue();
-        Boolean hasStock = campaignItem.hasStock();
-        String name = campaignItem.getName();
-        String brand = campaignItem.getBrand();
-        double price = campaignItem.getPriceForTracking();
-        int discount = campaignItem.getMaxSavingPercentage();
-        Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
-        // Validate the remain stock
-        if(!hasStock)
-            showWarningErrorMessage(getString(R.string.campaign_stock_alert));
-            // Validate click
-        else if(!isAddingProductToCart) {
-            // Create values to add to cart
-            ContentValues values = new ContentValues();
-            values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
-            values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
-            triggerAddToCart(values);
-            // Tracking
-            trackAddToCart(sku, name, brand, price, discount);
+        ProductSimple productSimple = campaignItem.getSelectedSimple();
+        if(productSimple != null) {
+            String sku = productSimple.getSku();
+            String size = productSimple.getVariationValue();
+            Boolean hasStock = campaignItem.hasStock();
+            String name = campaignItem.getName();
+            String brand = campaignItem.getBrand();
+            double price = campaignItem.getPriceForTracking();
+            int discount = campaignItem.getMaxSavingPercentage();
+            Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
+            // Validate the remain stock
+            if (!hasStock)
+                showWarningErrorMessage(getString(R.string.campaign_stock_alert));
+                // Validate click
+            else if (!isAddingProductToCart) {
+                // Create values to add to cart
+                ContentValues values = new ContentValues();
+                values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+                values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+                triggerAddToCart(values);
+                // Tracking
+                trackAddToCart(sku, name, brand, price, discount);
+            }
+        } else {
+            showUnexpectedErrorWarning();
         }
     }
 
@@ -946,7 +951,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          */
         private void setSizeContainer(final ItemView view, final CampaignItem item, int position){
             // Campaign has sizes except itself (>1)
-            if(!item.hasUniqueSize() && item.hasSizes()) {
+            if(!item.hasUniqueSize() && CollectionUtils.isNotEmpty(item.getSimples())) {
                 // Show container
                 view.mSizeContainer.setVisibility(View.VISIBLE);
                 // Get sizes
@@ -974,8 +979,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 } catch (IndexOutOfBoundsException | NullPointerException e) {
                     Print.w(TAG, "WARNING: EXCEPTION ON SET SIZE SELECTION: 0");
                 }
-                item.setSelectedSizePosition(0);
-                item.setSelectedSize(size);
+                item.setSelectedSimplePosition(0);
             }
         }
 
@@ -1005,10 +1009,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         @Override
         public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
             String parentPosition = parent.getTag().toString();
-            ProductSimple size = (ProductSimple) parent.getItemAtPosition(position);
             CampaignItem campaignItem = getItem(Integer.valueOf(parentPosition));
-            campaignItem.setSelectedSizePosition(position);
-            campaignItem.setSelectedSize(size);
+            campaignItem.setSelectedSimplePosition(position);
             Print.d(TAG, "selected simple");
         }
 
@@ -1030,7 +1032,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
             int id = view.getId();
             // Get selected size
-            ProductSimple selectedSize = item.getSelectedSize();
+            ProductSimple selectedSize = item.getSelectedSimple();
             // Add new tags
             view.setTag(PROD, item.getSku());
             view.setTag(SKU, (selectedSize != null) ? selectedSize.getSku() : item.getSku());

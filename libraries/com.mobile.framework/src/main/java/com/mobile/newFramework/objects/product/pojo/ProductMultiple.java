@@ -23,7 +23,7 @@ public class ProductMultiple extends ProductRegular {
 
     private String mSizeGuideUrl;
     private String mVariationName;
-    protected ArrayList<ProductSimple> mSimples;
+    private ArrayList<ProductSimple> mSimples;
     private int mSelectedSimplePosition;
     private String mVariationsAvailable;
 

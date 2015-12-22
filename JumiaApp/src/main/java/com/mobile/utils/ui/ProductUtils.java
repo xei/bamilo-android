@@ -54,19 +54,6 @@ public class ProductUtils {
         }
     }
 
-    public static void setPriceRules(@NonNull CampaignItem campaignItem, @NonNull TextView price, @NonNull TextView specialPrice){
-        String priceRange = campaignItem.getPriceRange();
-        if(TextUtils.isNotEmpty(priceRange)){
-            specialPrice.setText(CurrencyFormatter.formatCurrencyPattern(priceRange));
-            price.setText("");
-        } else if(campaignItem.hasSelectedSize()) {
-            setPrice(campaignItem.getSimples().get(campaignItem.getSelectedSizePosition()), price, specialPrice);
-        }else {
-            setPrice(campaignItem, price, specialPrice);
-        }
-        specialPrice.setVisibility(View.VISIBLE);
-    }
-
     @Deprecated
     private static void setPrice(CampaignItemSize campaignItemSize, TextView price, TextView specialPrice){
 

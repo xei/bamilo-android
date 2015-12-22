@@ -32,10 +32,6 @@ public class CampaignItem extends ProductMultiple implements IJSONSerializable {
 
     private int mRemainingTime;
 
-    private ProductSimple mSelectedSize;
-
-    private int mSelectedSizePosition;
-
     /**
      * Empty constructor
      */
@@ -61,21 +57,8 @@ public class CampaignItem extends ProductMultiple implements IJSONSerializable {
         hasUniqueSize = jsonObject.optBoolean(RestConstants.HAS_UNIQUE_SIZE);
         mRemainingTime = jsonObject.optInt(RestConstants.REMAINING_TIME, -1);
 
-        // Save sizes
-//        JSONArray sizesA = jsonObject.optJSONArray(RestConstants.SIZES);
-//        if (sizesA != null && sizesA.length() > 0) {
-//            mSizes = new ArrayList<>();
-//            for (int i = 0; i < sizesA.length(); i++) {
-//                JSONObject sizeO = sizesA.optJSONObject(i);
-//                if (sizeO != null)
-//                    mSizes.add(new CampaignItemSize(sizeO));
-//            }
-//
-//            mSelectedSizePosition = 0;
-//            mSelectedSize = mSizes.get(0);
-//        }
-        mSelectedSizePosition = 0;
-        mSelectedSize = mSimples.get(0);
+        setSelectedSimplePosition(0);
+
         return true;
     }
 
@@ -121,20 +104,6 @@ public class CampaignItem extends ProductMultiple implements IJSONSerializable {
         return mStockPercentage;
     }
 
-    /**
-     * @return the mSelectedSize
-     */
-    public ProductSimple getSelectedSize() {
-        return mSelectedSize;
-    }
-
-    /**
-     * @return the mSelectedSizePosition
-     */
-    public int getSelectedSizePosition() {
-        return mSelectedSizePosition;
-    }
-
     /***
      * @return the mRemainingTime
      */
@@ -153,44 +122,10 @@ public class CampaignItem extends ProductMultiple implements IJSONSerializable {
     }
 
     /**
-     * @return the hasSizes except itself
-     */
-    public boolean hasSizes() {
-        return mSimples != null && mSimples.size() > 0;
-    }
-
-    /**
-     * @return the hasSizes
-     */
-    public boolean hasSelectedSize() {
-        return hasSizes() && mSelectedSizePosition >= 0 && mSelectedSizePosition < mSimples.size();
-    }
-
-    /**
      * @return the hasSizes
      */
     public boolean hasStock() {
         return mStockPercentage > 0;
-    }
-
-	/*
-	 * ########### Setters ###########
-	 */
-
-    /**
-     * @param mSelectedSize
-     *            the mSelectedSize to set
-     */
-    public void setSelectedSize(ProductSimple mSelectedSize) {
-        this.mSelectedSize = mSelectedSize;
-    }
-
-    /**
-     * @param mSelectedSizePosition
-     *            the mSelectedSizePosition to set
-     */
-    public void setSelectedSizePosition(int mSelectedSizePosition) {
-        this.mSelectedSizePosition = mSelectedSizePosition;
     }
 
     /**
@@ -210,8 +145,6 @@ public class CampaignItem extends ProductMultiple implements IJSONSerializable {
         dest.writeInt(mStockPercentage);
         dest.writeByte((byte) (hasUniqueSize ? 0x01 : 0x00));
         dest.writeInt(mRemainingTime);
-        dest.writeValue(mSelectedSize);
-        dest.writeInt(mSelectedSizePosition);
     }
 
     protected CampaignItem(Parcel in) {
@@ -220,8 +153,6 @@ public class CampaignItem extends ProductMultiple implements IJSONSerializable {
         mStockPercentage = in.readInt();
         hasUniqueSize = in.readByte() != 0x00;
         mRemainingTime = in.readInt();
-        mSelectedSize = (ProductSimple) in.readValue(ProductSimple.class.getClassLoader());
-        mSelectedSizePosition = in.readInt();
     }
 
     @SuppressWarnings("unused")

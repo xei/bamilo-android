@@ -123,7 +123,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
         // Validate adapter
         DialogItemSizeAdapter mAdapter = new DialogItemSizeAdapter(mProduct.getSimples());
         // Add adapter
-        mAdapter.setCheckedPosition(mProduct.getSelectedSizePosition());
+        mAdapter.setCheckedPosition(mProduct.getSelectedSimplePosition());
         list.setAdapter(mAdapter);
         list.setOnItemClickListener(this);
     }
@@ -221,8 +221,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
             return;
         }
         // Update selected position
-        mProduct.setSelectedSizePosition(position);
-        mProduct.setSelectedSize(mProduct.getSimples().get(position));
+        mProduct.setSelectedSimplePosition(position);
         // Get adapter
         DialogItemSizeAdapter adapter = (DialogItemSizeAdapter) adapterView.getAdapter();
         // Set checked position
