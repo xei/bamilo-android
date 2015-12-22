@@ -33,8 +33,10 @@
     <string name="campaign_save">You Save</string>
     <string name="campaign_stock_alert">Sorry the item you have chosen is sold out.</string>
     <string name="campaigns_label">Campaigns</string>
-    <string name="campaing_offer_ended">Offer Ended!</string>
-    <string name="campaing_timer_end">Ends in:</string>
+    <string name="campaign_unavailable_title">This campaign is finished</string>
+    <string name="campaign_unavailable_description">Even so, we have plenty of other great offers waiting for you.</string>
+    <string name="campaign_offer_ended">Offer Ended!</string>
+    <string name="campaign_timer_end">Ends in:</string>
     <string name="cancel_label">Cancel</string>
     <string name="cart_label">Cart</string>
     <string name="catalog_edit_filters">Edit Filters</string>
@@ -320,6 +322,7 @@
     <string name="upgrade_remindmelater">Remind me later</string>
     <string name="validation_errortext">There were errors on the data submited, please check your input fields.</string>
     <string name="validation_title">Input data error</string>
+    <string name="vat_string">VAT</string>
     <string name="voucher_error_message">Please input a valid Coupon Code</string>
     <string name="voucher_message_hint">Enter your coupon code here</string>
     <string name="voucher_remove">Remove</string>
@@ -469,4 +472,7 @@
     <!-- NEW 2.9 -->
     <string name="percentage">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">This bundle could not be added to the shopping cart. Please try again later.</string>
+    <string name="buy">buy</string>
+    <string name="size">Size %s</string>
+    <string name="no_translate">NO TRANSLATE IS A TEST</string>
 </resources>

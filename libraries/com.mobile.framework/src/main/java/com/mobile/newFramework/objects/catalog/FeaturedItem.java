@@ -20,12 +20,12 @@ import org.json.JSONObject;
  */
 public class FeaturedItem implements IJSONSerializable, Parcelable {
 
-    private String url;
+    private String target;
     private String name;
     protected String imageUrl;
 
     public FeaturedItem() {
-        this.url = "";
+        this.target = "";
         this.name = "";
         this.imageUrl = "";
     }
@@ -33,8 +33,8 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
     /**
      * @return the url
      */
-    public String getUrl() {
-        return url;
+    public String getTarget() {
+        return target;
     }
 
     /**
@@ -58,7 +58,7 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) {
-        url = jsonObject.optString(RestConstants.URL);
+        target = jsonObject.optString(RestConstants.TARGET);
         name = jsonObject.optString(RestConstants.NAME);
         imageUrl = jsonObject.optString(RestConstants.IMAGE);
         // concat brand and name instead of using only name
@@ -79,7 +79,7 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
         JSONObject jsonObject = new JSONObject();
 
         try {
-            jsonObject.put(RestConstants.URL, url);
+            jsonObject.put(RestConstants.URL, target);
             jsonObject.put(RestConstants.NAME, name);
             jsonObject.put(RestConstants.IMAGE, imageUrl);
 
@@ -101,7 +101,7 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 	 */
 
     protected FeaturedItem(Parcel in) {
-        url = in.readString();
+        target = in.readString();
         name = in.readString();
         imageUrl = in.readString();
     }
@@ -113,7 +113,7 @@ public class FeaturedItem implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(url);
+        dest.writeString(target);
         dest.writeString(name);
         dest.writeString(imageUrl);
     }

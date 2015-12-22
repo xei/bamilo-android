@@ -34,10 +34,10 @@ public class CheckoutStepManager {
     
     private static final String TAG = CheckoutStepManager.class.getSimpleName();
 
-    public final static String ADDRESSES_STEP = "createAddress";
-    public final static String BILLING_STEP = "addresses";
-    public final static String SHIPPING_STEP = "shippingMethod";
-    public final static String PAYMENT_STEP = "paymentMethod";
+    public final static String CREATE_ADDRESS_STEP = "createAddress";
+    public final static String ADDRESSES_STEP = "addresses";
+    public final static String SHIPPING_STEP = "shipping";
+    public final static String PAYMENT_STEP = "payment";
     public final static String ORDER_STEP = "finish";
 
     public static final int CHECKOUT_TOTAL_MAX_LINES = 2;
@@ -54,9 +54,9 @@ public class CheckoutStepManager {
         // Case not valid next step (null or empty)
         if(TextUtils.isEmpty(nextStep)) return fragmentType;
         // Create addresses step
-        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
+        else if (nextStep.equalsIgnoreCase(CREATE_ADDRESS_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
         // Billing and shipping address step
-        else if (nextStep.equalsIgnoreCase(BILLING_STEP)) fragmentType = FragmentType.MY_ADDRESSES;
+        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.MY_ADDRESSES;
         // Shipping method step
         else if (nextStep.equalsIgnoreCase(SHIPPING_STEP)) fragmentType = FragmentType.SHIPPING_METHODS;
         // Payment method step
@@ -103,29 +103,26 @@ public class CheckoutStepManager {
     /**
      * Method used for showing checkout total at checkout steps.
      *
-     * @param view ViewStub or View with TextView (checkout_total_label).
+     * @param view           ViewStub or View with TextView (checkout_total_label).
      * @param purchaseEntity OrderSummary to get total
      */
-    public static void setTotalBar(@NonNull View view, @NonNull PurchaseEntity purchaseEntity){
-        double value = purchaseEntity.getTotal();
-        if(value > 0){
-            Context context = view.getContext();
-            final String title = context.getString(R.string.order_summary_total_label);
-            final String finalValue = CurrencyFormatter.formatCurrency(value);
-            final int color1 = ContextCompat.getColor(context, R.color.black);
-            final int color2 = ContextCompat.getColor(context, R.color.black_800);
-            final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
-            titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
-            titleTextView.setText(UIUtils.setSpan(title + " ", finalValue, color1, color2));
-            titleTextView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
-                        titleTextView.setText(UIUtils.setSpan(title + "\n", finalValue, color1, color2));
-                    }
+    public static void setTotalBar(@NonNull View view, @NonNull PurchaseEntity purchaseEntity) {
+        Context context = view.getContext();
+        final String title = context.getString(R.string.order_summary_total_label);
+        final String finalValue = CurrencyFormatter.formatCurrency(purchaseEntity.getTotal());
+        final int color1 = ContextCompat.getColor(context, R.color.black);
+        final int color2 = ContextCompat.getColor(context, R.color.black_800);
+        final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
+        titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
+        titleTextView.setText(UIUtils.setSpan(title + " ", finalValue, color1, color2));
+        titleTextView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
+                    titleTextView.setText(UIUtils.setSpan(title + "\n", finalValue, color1, color2));
                 }
-            });
-        }
+            }
+        });
     }
 
     public static void showPriceRules(Context context, ViewGroup priceRulesContainer, HashMap<String, String> priceRules) {

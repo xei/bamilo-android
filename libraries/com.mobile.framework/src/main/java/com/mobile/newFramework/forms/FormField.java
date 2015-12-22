@@ -44,6 +44,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private static final String HIDDEN = "hidden";
     private static final String CHECKBOX_LINK = "checkbox_link";
     private static final String ERROR_MESSAGE = "errorMessage";
+    private static final String EMPTY = "";
 
     private Form mParent;
     private LinkedHashMap<String, String> mDataSetRating;
@@ -151,6 +152,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     break;
                 case ERROR_MESSAGE:
                     mInputType = FormInputType.errorMessage;
+                    break;
+                case EMPTY:
+                    mInputType = FormInputType.option;
                     break;
                 default:
                     return false;

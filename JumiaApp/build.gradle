@@ -24,19 +24,19 @@ def getAppVersionCode(int releaseVersionCode) {
 android {
 
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
 
     useLibrary 'org.apache.http.legacy'
-
-    dexOptions {
-        jumboMode true
-    }
 
     defaultConfig {
         applicationId "com.mobile.view"
         minSdkVersion 15
         targetSdkVersion 22
-        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+//        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+    }
+
+    dexOptions {
+        jumboMode true
     }
 
     signingConfigs {
@@ -333,9 +333,11 @@ task wtiPullTranslations << {
     String result = proc.text
     println result
     //check if there are new translations and push them to git develop branch when on jenkins
-    if (result.contains('values*OK')) {// OK appears when new translations
-        gitCommitAndPush("development", STRINGS, "[Jenkins::Jumia] - Uploading new translations from wti")
+    if (result.find('values.*OK') != null) {// OK appears when new translations
+        gitCommitAndPush("HEAD:development", STRINGS, "'[Jenkins::Jumia] - Uploading new translations from wti'")
         sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
+    } else {
+        println " - - No translation to push..."
     }
 }
 
@@ -343,6 +345,17 @@ task wtiPullTranslations << {
  * Method that performs a commit and a push to git develop branch possible changed translation string files.
  */
 def gitCommitAndPush(String branch, String directory, String message) {
+    // perform add->commit->push
+    println " - - Commit and psuh to git " + branch
+    // save credentials on file, get git user and pass from env vars
+    def STORAGE_CRED_FILE = "/tmp/credentials.git"
+    String user = System.getenv('GIT_USER')
+    String pass = System.getenv('GIT_PASS')
+    new File(STORAGE_CRED_FILE).write("https://" + user + ":" + pass + "@github.com")
+    // set git credentials
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.name', "'mobile-rocket-porto'"])
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.email', "'mobilerocketporto@gmail.com'"])
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'credential.helper', 'store', ("--file=" + STORAGE_CRED_FILE)])
     // perform add->commit->push
     executeWaitAndPrintCmd(['git', 'add', directory])
     executeWaitAndPrintCmd(['git', 'commit', '-m', message]);

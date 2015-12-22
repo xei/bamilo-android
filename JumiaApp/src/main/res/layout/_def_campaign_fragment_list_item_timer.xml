@@ -2,63 +2,30 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/campaign_item_stock_timer_container"
     android:layout_width="match_parent"
-    android:layout_height="20dp"
-    android:layout_marginLeft="@dimen/campaign_discount_flag_width"
-    android:layout_marginStart="@dimen/campaign_discount_flag_width"
+    android:layout_height="wrap_content"
     android:gravity="center"
-    android:layoutDirection="locale"
     android:orientation="horizontal"
-    android:paddingEnd="@dimen/margin_large"
-    android:paddingLeft="@dimen/campaign_title_margin_left"
-    android:paddingRight="@dimen/margin_large"
-    android:paddingStart="@dimen/campaign_title_margin_left"
-    android:visibility="visible" >
-
-    <!--
-         STOCK OFF SPACER
-
-    <com.mobile.components.holo_font_views.TextView
-        android:layout_width="@dimen/campaign_discount_flag_width"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
-    -->
-
-
-    <!--
-         TIMER LAYOUT
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:gravity="center" >
-    -->
-
+    android:layout_marginTop="@dimen/dimen_10dp"
+    >
 
     <!-- TIMER TITLE -->
 
     <com.mobile.components.customfontviews.TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ico_clock"
-        android:drawableStart="@drawable/ico_clock"
-        android:drawablePadding="6.67dp"
-        android:fontFamily="roboto_reg"
-        android:includeFontPadding="false"
-        android:text="@string/campaing_timer_end"
-        android:textColor="#666"
-        android:textSize="@dimen/text_xs" />
+        style="@style/TextInfo"
+        android:textAllCaps="true"
+        android:text="@string/campaign_timer_end"
+        android:textColor="@color/black"
+        android:layout_marginRight="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        />
 
     <!-- TIMER -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_stock_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="roboto_reg"
-        android:includeFontPadding="false"
-        android:textColor="#cc0000"
-        android:textSize="@dimen/text_xs" />
+        style="@style/TextInfo"
+        android:textColor="@color/red_basic"
+        />
     <!-- </LinearLayout> -->
 
 </LinearLayout>

@@ -1,46 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/campaign_title_height"
-    android:orientation="horizontal"
-    android:layoutDirection="locale"
-    android:paddingEnd="@dimen/margin_large"
-    android:paddingLeft="@dimen/campaign_title_margin_left"
-    android:paddingRight="@dimen/margin_large"
-    android:paddingStart="@dimen/campaign_title_margin_left" >
+    android:layout_height="wrap_content"
+    >
 
     <!-- STOCK OFF -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_stock_off"
-        android:layout_width="@dimen/campaign_discount_flag_width"
-        android:layout_height="match_parent"
-        android:background="@drawable/campaign_promobadge"
-        android:fontFamily="roboto_bold"
-        android:gravity="center"
-        android:lines="2"
-        android:maxLines="2"
-        android:paddingBottom="@dimen/margin_small"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/text_s" />
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        />
+
+    <!-- BRAND -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/campaign_item_brand"
+        style="@style/TextCaption"
+        android:layout_width="match_parent"
+        android:layout_toLeftOf="@+id/campaign_item_stock_off"
+        android:layout_toStartOf="@+id/campaign_item_stock_off"
+        android:ellipsize="end"
+        android:lines="1"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:gravity="left|start|center_vertical"
+        android:text=""
+        android:textColor="@color/black_800"
+        />
 
     <!-- NAME -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_name"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/margin_large"
-        android:layout_marginStart="@dimen/margin_large"
-        android:layout_weight="1"
-        android:background="@drawable/selector_list_item_highlight"
+        style="@style/TextBody_1"
         android:ellipsize="end"
-        android:fontFamily="roboto_regular"
-        android:gravity="center"
-        android:lines="2"
-        android:maxLines="2"
+        android:lines="1"
+        android:layout_below="@id/campaign_item_brand"
+        android:maxLines="1"
         android:text=""
-        android:textColor="@color/grey_middle"
-        android:textSize="@dimen/text_l" />
+        android:textColor="@color/black"
+        />
 
-</LinearLayout>
+</RelativeLayout>

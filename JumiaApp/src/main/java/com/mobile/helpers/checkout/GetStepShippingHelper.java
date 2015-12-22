@@ -48,6 +48,7 @@ public class GetStepShippingHelper extends SuperBaseHelper {
         ShippingMethodFormStruct(MultiStepShipping shippingMethodsForm) {
             super(shippingMethodsForm);
             formBuilder = new ShippingMethodFormBuilder();
+            formBuilder.action = getForm().action;
             formBuilder.shippingMethodFormBuilderHolder = shippingMethodsForm.getForm();
         }
 

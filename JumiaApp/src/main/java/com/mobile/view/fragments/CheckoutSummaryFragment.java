@@ -241,6 +241,20 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
     }
 
     /**
+     * Method used to update the checkout summary case is not in stopping process.
+     */
+    public void onUpdate(int checkoutStep, PurchaseEntity orderSummary) {
+        // Validate fragment visibility
+        if (isOnStoppingProcess && getBaseActivity() != null) {
+            Print.w(TAG, "RECEIVED UPDATE IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        mCheckoutStep = checkoutStep;
+        mOrderSummary = orderSummary;
+        showOrderSummary();
+    }
+
+    /**
      * Show the order summary
      *
      * @author sergiopereira
@@ -384,6 +398,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         if (mOrderSummary.hasCouponDiscount()) {
             mVoucherValue.setText(getString(R.string.placeholder_discount, CurrencyFormatter.formatCurrency(mOrderSummary.getCouponDiscount())));
             mVoucherView.setVisibility(View.VISIBLE);
+        } else {
+            mVoucherView.setVisibility(View.GONE);
         }
     }
 

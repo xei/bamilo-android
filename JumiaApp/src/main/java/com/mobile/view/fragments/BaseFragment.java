@@ -341,9 +341,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         // Get order summary
         if (isOrderSummaryPresent) {
             Print.i(TAG, "ORDER SUMMARY IS PRESENT");
-            Fragment fragment = getChildFragmentManager().findFragmentByTag(CheckoutSummaryFragment.TAG + "_" + checkoutStep);
+            CheckoutSummaryFragment fragment = (CheckoutSummaryFragment) getChildFragmentManager().findFragmentByTag(CheckoutSummaryFragment.TAG + "_" + checkoutStep);
             if(fragment == null) {
                 fragment = CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary);
+            } else {
+                // Used to update when is applied a voucher
+                fragment.onUpdate(checkoutStep, orderSummary);
             }
             FragmentTransaction ft = getChildFragmentManager().beginTransaction();
             ft.replace(ORDER_SUMMARY_CONTAINER, fragment, CheckoutSummaryFragment.TAG + "_" + checkoutStep);
@@ -939,13 +942,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (eventTask == EventTask.ACTION_TASK) {
             switch (eventType) {
                 // Case form submission
-                case EDIT_ADDRESS_EVENT:
+                case REVIEW_RATING_PRODUCT_EVENT:
+                case LOGIN_EVENT:
                 case REGISTER_ACCOUNT_EVENT:
                 case EDIT_USER_DATA_EVENT:
                 case CHANGE_PASSWORD_EVENT:
-                case REVIEW_RATING_PRODUCT_EVENT:
                 case FORGET_PASSWORD_EVENT:
-                case LOGIN_EVENT:
+                case CREATE_ADDRESS_EVENT:
+                case EDIT_ADDRESS_EVENT:
+                case SET_MULTI_STEP_SHIPPING:
+                case SET_MULTI_STEP_PAYMENT:
                     // If the error message is empty used the showFormValidateMessages(form)
                     if(TextUtils.isEmpty(errorMessage)) break;
                 // Case other tasks

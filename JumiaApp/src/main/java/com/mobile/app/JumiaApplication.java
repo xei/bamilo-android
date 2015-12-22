@@ -88,6 +88,7 @@ public class JumiaApplication extends A4SApplication {
 
     // Search
     public String mSavedSearchTerm;
+
     /*
      * (non-Javadoc)
      * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()

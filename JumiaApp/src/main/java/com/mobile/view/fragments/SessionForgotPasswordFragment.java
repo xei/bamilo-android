@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -59,7 +56,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
      */
     public SessionForgotPasswordFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.FORGOT_PASSWORD,
+                NavigationAction.LOGIN_OUT,
                 R.layout.forgotpassword,
                 R.string.forgotpass_header,
                 ADJUST_CONTENT);

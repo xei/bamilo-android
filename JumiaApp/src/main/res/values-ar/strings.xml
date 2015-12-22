@@ -145,15 +145,12 @@
     <string name="my_order_no_orders_label">لم يتم القيام بأي طلبات شراء</string>
     <string name="my_order_number_label">الرقم</string>
     <string name="my_order_payment">خيارات الدفع</string>
-    <string name="my_order_qty">العدد</string>
-    <string name="my_order_quantity_label">العدد</string>
     <string name="my_order_ship_fee_label">رسوم الشحن</string>
     <string name="my_order_total_label">السعر الكلي</string>
     <string name="my_order_tracking_label">متابعة الطلب</string>
     <string name="my_order_voucher_label">قسيمة شراء</string>
     <string name="my_orders_label">طلباتي</string>
     <string name="my_profile">الملف الخاص بي</string>
-    <string name="myaccount_email_notifications">إخطارات البريد الإلكتروني</string>
     <string name="myaccount_userdata">بيانات المستخدم</string>
     <string name="name">الاسم</string>
     <string name="nav_country">اختر دولة</string>
@@ -168,10 +165,9 @@
     <string name="no_connect_dialog_content">يُرجى فحص الاتصال بالإنترنت الخاص بك والمحاولة مرة أخرى!</string>
     <string name="no_internet_access_warning_title">لا يمكنك الدخول على الإنترنت!</string>
     <string name="no_label">لا</string>
-    <string name="no_payment">لا يوجد دفع ضروري لهذا</string>
     <string name="notifications">الإخطارات</string>
+    <string name="myaccount_email_notifications">إخطارات البريد الإلكتروني</string>
     <string name="notifications_summary">يمكنك الحصول على العروض الحصرية وآخر التحديثات</string>
-    <string name="off_label">إغلاق</string>
     <string name="ok_label">موافق</string>
     <string name="option2_description">تغيير كلمة المرور، البريد الإلكتروني، وغير ذلك</string>
     <string name="option3_description">الاشتراك أو إلغاء الاشتراك</string>
@@ -335,7 +331,6 @@
     <string name="yes_label">نعم</string>
     <string name="your_cart">عربة التسوق الخاصة بك</string>
     <string name="your_order">الطلب الخاص بك</string>
-    <string name="install_android">تحميل تطبيق %s للأندرويد في لحظة واحدة</string>
     <string name="share_the_app">مشاركة التطبيق</string>
     <string name="can_share_app_with_friends">يمكنك الآن مشاركة التطبيق مع أصدقائك</string>
     <string name="app_social">تطبيق مواقع التواصل الإجتماعى</string>
@@ -349,7 +344,6 @@
     <string name="my_addresses">العناوين الخاصة بي</string>
     <string name="create_edit_address">إنشاء العنوان أو تعديل بياناته</string>
     <string name="string_more_choices">المزيد من الخيارات</string>
-    <string name="string_vat_included">متضمنة للضرائب</string>
     <string name="addresses_saved_message">تم حفظ إعدادات العناوين الخاصة بك</string>
     <string name="dialog_to_product">إلى تفاصيل المنتج</string>
     <string name="address_creation_failed_title">لم ينجح إنشاء العنوان</string>
@@ -412,12 +406,10 @@
     <string name="description1">الوصف</string>
     <string name="rat_rev">تعليقات التقييمات</string>
     <string name="fulfilled_by">تم التوصيل بواسطة %s</string>
-    <string name="qty_placeholder">الكمية: %d</string>
     <string name="policy">السياسة</string>
     <string name="shipment">شحن %1$d لـ %2$d</string>
     <string name="delivery_time_placeholder">وقت التوصيل: %1$d - %2$d يوم</string>
     <string name="product_specifications">المواصفات</string>
-    <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">اسم المجال لا يطابق الشهادة:%s</string>
     <string name="ssl_error_generic">حدث خطأ ما SSL: %s</string>
     <string name="save_for_later">حفظ لما بعد</string>
@@ -434,7 +426,6 @@
     <string name="create_label">إنشاء</string>
     <string name="change_password">تغيير كلمة المرور</string>
     <string name="continue_without_log_in">الاستمرار بدون تسجيل الدخول</string>
-    <string name="placeholder_discount">-%s</string>
     <string name="edit_user_success">لقج تم تغيير معلومات المستخدم بنجاح</string>
     <string name="password">كلمة المرور</string>
     <string name="more">المزيد</string>
@@ -457,8 +448,7 @@
     <string name="delivered_label">تم توصيل</string>
     <string name="order_number">رقم الطلب‎%s‎</string>
     <string name="billing">الفواتير</string>
-    <string name="first_and_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
-    <string name="quantity">عدد ‎%s‎</string>
+    <string name="qty_placeholder">الكمية: %d</string>
     <string name="reorder_label">إعادة الطلب</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
     <string name="order_pending">قيد الإنتظار</string>
