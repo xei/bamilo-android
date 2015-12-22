@@ -452,6 +452,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mCompleteProductSku = product.getSku();
         // Set layout
         setTitle();
+        setBuyButton();
         setWishListButton();
         setSlideShow();
         setProductPriceInfo();
@@ -468,6 +469,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         showFragmentContentContainer();
         // Tracking
         TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath, isRelatedItem);
+    }
+
+    /**
+     * sets data for mBuyButton
+     */
+    private void setBuyButton() {
+        // showcase products in the Jumia catalog flagged as "Pre-Orders" in the app
+        // so that customers can pre-pay for items in the catalog before they become widely available
+        if(mProduct.isPreOrder()) {
+            mBuyButton.setText(R.string.pre_order);
+        }
+        else {
+            mBuyButton.setText(R.string.buy_now_button);
+        }
     }
 
     private void setOffers() {

@@ -1066,16 +1066,16 @@ public class DynamicFormItem {
     }
 
     private void buildCheckBoxInflated(RelativeLayout.LayoutParams params, int controlWidth) {
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+        //int currentApiVersion = android.os.Build.VERSION.SDK_INT;
         this.control.setLayoutParams(params);
-        //#RTL
-        if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        } else {
-            // data controls
-            params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        }
+//        //#RTL
+//        if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+//            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//        } else {
+//            // data controls
+//            params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//        }
 
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
@@ -1113,7 +1113,8 @@ public class DynamicFormItem {
         this.dataControl.setId(parent.getNextId());
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.addRule(RelativeLayout.LEFT_OF, this.mandatoryControl.getId());
+        //#RTL
+        params.addRule(ShopSelector.isRtl() ? RelativeLayout.RIGHT_OF : RelativeLayout.LEFT_OF, this.mandatoryControl.getId());
         this.dataControl.setLayoutParams(params);
         this.dataControl.setContentDescription(this.entry.getKey());
         this.dataControl.setFocusable(false);
