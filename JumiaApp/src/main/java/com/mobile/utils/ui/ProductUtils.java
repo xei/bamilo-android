@@ -60,7 +60,7 @@ public class ProductUtils {
             specialPrice.setText(CurrencyFormatter.formatCurrencyPattern(priceRange));
             price.setText("");
         } else if(campaignItem.hasSelectedSize()) {
-            setPrice(campaignItem.getSizes().get(campaignItem.getSelectedSizePosition()), price, specialPrice);
+            setPrice(campaignItem.getSimples().get(campaignItem.getSelectedSizePosition()), price, specialPrice);
         }else {
             setPrice(campaignItem, price, specialPrice);
         }

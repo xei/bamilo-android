@@ -19,6 +19,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
+import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -121,7 +122,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
         // Get list
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
         // Validate adapter
-        DialogItemSizeAdapter mAdapter = new DialogItemSizeAdapter(mProduct.getSizes());
+        DialogItemSizeAdapter mAdapter = new DialogItemSizeAdapter(mProduct.getSimples());
         // Add adapter
         mAdapter.setCheckedPosition(mProduct.getSelectedSizePosition());
         list.setAdapter(mAdapter);
@@ -222,7 +223,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
         }
         // Update selected position
         mProduct.setSelectedSizePosition(position);
-        mProduct.setSelectedSize(mProduct.getSizes().get(position));
+        mProduct.setSelectedSize(mProduct.getSimples().get(position));
         // Get adapter
         DialogItemSizeAdapter adapter = (DialogItemSizeAdapter) adapterView.getAdapter();
         // Set checked position
@@ -250,7 +251,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
      */
     private class DialogItemSizeAdapter extends BaseAdapter {
 
-        private final ArrayList<CampaignItemSize> mItems;
+        private final ArrayList<ProductSimple> mItems;
 
         private int mCheckedPosition = ProductMultiple.NO_DEFAULT_SIMPLE_POS;
 
@@ -259,7 +260,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
         /**
          * Constructor
          */
-        public DialogItemSizeAdapter(ArrayList<CampaignItemSize> simples) {
+        public DialogItemSizeAdapter(ArrayList<ProductSimple> simples) {
             mInflater = LayoutInflater.from(mContext);
             mItems = simples;
         }
