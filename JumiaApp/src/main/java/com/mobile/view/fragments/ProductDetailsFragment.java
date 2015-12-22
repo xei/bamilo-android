@@ -475,6 +475,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * sets data for mBuyButton
      */
     private void setBuyButton() {
+        // when product is flagged as pre-order show "PRE-ORDER" instead of "BUY NOW".
         if(mProduct.isPreOrder()) {
             mBuyButton.setText(R.string.pre_order);
         }
