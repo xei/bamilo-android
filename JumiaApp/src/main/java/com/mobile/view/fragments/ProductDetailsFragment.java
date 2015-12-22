@@ -475,7 +475,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * sets data for mBuyButton
      */
     private void setBuyButton() {
-        // when product is flagged as pre-order show "PRE-ORDER" instead of "BUY NOW".
+        // showcase products in the Jumia catalog flagged as "Pre-Orders" in the app
+        // so that customers can pre-pay for items in the catalog before they become widely available
         if(mProduct.isPreOrder()) {
             mBuyButton.setText(R.string.pre_order);
         }
