@@ -40,7 +40,7 @@ public class ProductUtils {
         specialPrice.setVisibility(View.VISIBLE);
     }
 
-    private static void setPrice(ProductBase productBase, TextView price, TextView specialPrice){
+    private static void setPrice(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice){
         // Case discount
         if (productBase.hasDiscount()) {
             specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getSpecialPrice()));
@@ -95,7 +95,7 @@ public class ProductUtils {
     /**
      * Set the variation container
      */
-    public static void setVariationContent(View view, ProductMultiple product){
+    public static void setVariationContent(@NonNull View view, @NonNull ProductMultiple product){
         // Set simple button
         if(product.hasMultiSimpleVariations()) {
             // Set simple value
@@ -103,7 +103,9 @@ public class ProductUtils {
             if(product.hasSelectedSimpleVariation()) {
                 simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
             }
-            ((TextView)view).setText(simpleVariationValue);
+            if(view instanceof TextView) {
+                ((TextView) view).setText(simpleVariationValue);
+            }
             view.setVisibility(View.VISIBLE);
         } else {
             view.setVisibility(View.INVISIBLE);
