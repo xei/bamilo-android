@@ -43,7 +43,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
+import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ProductUtils;
@@ -57,7 +57,7 @@ import java.util.ArrayList;
  * Class used to show campaign page
  * @author sergiopereira
  */
-public class CampaignPageFragment extends BaseFragment implements OnScrollListener, IResponseCallback , DialogCampaignItemSizeListFragment.OnDialogListListener  {
+public class CampaignPageFragment extends BaseFragment implements OnScrollListener, IResponseCallback , DialogSimpleListFragment.OnDialogListListener {
 
     public static final String TAG = CampaignPageFragment.class.getSimpleName();
     
@@ -416,14 +416,25 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
 
     @Override
+    public void onDialogListItemSelect(int position) {
+        CampaignItem item = mCampaign.getItems().get(position);
+        addItemToCart(item);
+    }
+
+    @Override
     public void onDialogListClickView(View view) {
 
     }
 
     @Override
-    public void onDialogSizeListClickView(int position, CampaignItem item) {
-        addItemToCart(item);
+    public void onDialogListDismiss() {
+
     }
+
+//    @Override
+//    public void onDialogSizeListClickView(int position, CampaignItem item) {
+//
+//    }
 
 
     /**
@@ -474,8 +485,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     protected void showVariantsDialog(CampaignItem item) {
 
         try {
-            DialogCampaignItemSizeListFragment dialog = DialogCampaignItemSizeListFragment.newInstance(
-                    getBaseActivity(),
+            DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
+                    this.getActivity(),
                     getString(R.string.product_variance_choose),
                     item,
                     this);

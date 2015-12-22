@@ -36,6 +36,7 @@ import java.util.ArrayList;
  *
  * @see <a href="http://tutorials.jenkov.com/java-concurrency/volatile.html">volatile</a>
  */
+@Deprecated
 public class DialogCampaignItemSizeListFragment extends BottomSheet implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private final static String TAG = DialogSimpleListFragment.class.getSimpleName();
