@@ -77,16 +77,21 @@
             style="@style/FormButtonSpinner.DropDown"
             android:visibility="gone" />
 
-        <com.mobile.utils.PickUpStationListView
+
+        <com.mobile.components.ExpandedGridViewComponent
             android:id="@+id/pickup_stations_list_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:paddingTop="12dp"
+            android:horizontalSpacing="1dp"
             android:divider="@color/black_700"
             android:dividerHeight="1dp"
-            android:scrollbars="none"
+            android:numColumns="1"
+            android:verticalSpacing="1dp"
             android:visibility="gone"
-            app:expand="true" />
+            app:expand="true"
+            android:scrollbars="none"/>
 
         <!--
             https://code.google.com/p/android/issues/detail?id=2254

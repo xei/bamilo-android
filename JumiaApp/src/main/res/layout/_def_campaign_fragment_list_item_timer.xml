@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
+    android:layout_marginTop="@dimen/dimen_10dp"
     >
 
     <!-- TIMER TITLE -->
@@ -12,7 +13,7 @@
     <com.mobile.components.customfontviews.TextView
         style="@style/TextInfo"
         android:textAllCaps="true"
-        android:text="@string/campaing_timer_end"
+        android:text="@string/campaign_timer_end"
         android:textColor="@color/black"
         android:layout_marginRight="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_small"

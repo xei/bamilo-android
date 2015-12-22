@@ -45,6 +45,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
@@ -381,11 +382,15 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     
     /**
-     * Show only the retry view
-     * @author sergiopereira
+     * Show the error view for campaigns
      */
-    private void showRetry() {
-        showFragmentErrorRetry();
+    private void showCampaignUnavailable() {
+        showErrorFragment(ErrorLayoutFactory.CAMPAIGN_UNAVAILABLE_LAYOUT, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
+        });
     }
     
     /**
@@ -607,8 +612,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         switch (eventType) {
         case GET_CAMPAIGN_EVENT:
             Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
-            // Show retry
-            showRetry();
+            // Show campaign not available screen
+            showCampaignUnavailable();
             break;
         case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             isAddingProductToCart = false;
@@ -751,7 +756,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set stock bar
             setStockBar(view.mStockBar, item.getStockPercentage());
             // Set stock percentage
-            view.mStockPercentage.setText(getString(R.string.percentage, item.getStockPercentage()));
+            view.mStockPercentage.setText(String.format(getString(R.string.percentage), item.getStockPercentage()));
             view.mStockPercentage.setSelected(true);
             // Set buy button
             setClickableView(view.mButtonBuy, position);
@@ -962,7 +967,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
             } else {
                 // Hide the size container
-                view.mSizeContainer.setVisibility(View.GONE);
+                view.mSizeContainer.setVisibility(View.INVISIBLE);
                 // Set itself as selected size
                 CampaignItemSize size = null;
                 try {
