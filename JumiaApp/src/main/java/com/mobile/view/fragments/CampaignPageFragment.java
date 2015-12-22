@@ -31,7 +31,6 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
-import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -39,7 +38,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.TrackerDelegator;
@@ -444,8 +442,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
     private void addItemToCart(CampaignItem campaignItem){
 
-        String sku = campaignItem.getSelectedSimple().getSku();
-        String size = campaignItem.getSelectedSimple().getVariationValue();
+        String sku = campaignItem.getSelectedSize().getSku();
+        String size = campaignItem.getSelectedSize().getVariationValue();
         Boolean hasStock = campaignItem.hasStock();
         String name = campaignItem.getName();
         String brand = campaignItem.getBrand();

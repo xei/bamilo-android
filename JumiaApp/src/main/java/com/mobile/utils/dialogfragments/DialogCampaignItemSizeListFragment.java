@@ -17,7 +17,6 @@ import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
-import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.output.Print;
@@ -318,11 +317,11 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
 //            TextView textViewUnAvailable = (TextView) view.findViewById(R.id.item_text_unavailable);
             CheckBox checkBox = (CheckBox) view.findViewById(R.id.dialog_item_checkbox);
             // Get simple
-            CampaignItemSize simple = (CampaignItemSize) getItem(position);
+            ProductSimple simple = (ProductSimple) getItem(position);
             // Set text
             view.setEnabled(true);
             textView.setVisibility(View.VISIBLE);
-            textView.setText(simple.size);
+            textView.setText(simple.getVariationValue());
 
             // Set check box
             checkBox.setChecked(position == mCheckedPosition);

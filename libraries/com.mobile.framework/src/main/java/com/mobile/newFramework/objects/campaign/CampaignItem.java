@@ -220,7 +220,7 @@ public class CampaignItem extends ProductMultiple implements IJSONSerializable {
         mStockPercentage = in.readInt();
         hasUniqueSize = in.readByte() != 0x00;
         mRemainingTime = in.readInt();
-        mSelectedSize = (ProductSimple) in.readValue(CampaignItemSize.class.getClassLoader());
+        mSelectedSize = (ProductSimple) in.readValue(ProductSimple.class.getClassLoader());
         mSelectedSizePosition = in.readInt();
     }
 

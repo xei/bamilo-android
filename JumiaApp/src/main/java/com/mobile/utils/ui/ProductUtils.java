@@ -67,6 +67,7 @@ public class ProductUtils {
         specialPrice.setVisibility(View.VISIBLE);
     }
 
+    @Deprecated
     private static void setPrice(CampaignItemSize campaignItemSize, TextView price, TextView specialPrice){
 
         if (campaignItemSize.hasDiscount()) {
