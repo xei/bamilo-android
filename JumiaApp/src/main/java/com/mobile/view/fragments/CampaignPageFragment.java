@@ -954,20 +954,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             if(!item.hasUniqueSize() && CollectionUtils.isNotEmpty(item.getSimples())) {
                 // Show container
                 view.mSizeContainer.setVisibility(View.VISIBLE);
-                // Get sizes
-                ArrayList<ProductSimple> sizes = item.getSimples();
-                String sizesValues = "";
-                boolean isFirst = true;
-                for (ProductSimple  size : sizes) {
-                    if(isFirst){
-                        sizesValues+=size.getVariationValue();
-                        isFirst = false;
-                    } else {
-                        sizesValues+=";"+size.getVariationValue();
-                    }
-
-                }
-                view.mSizesValue.setText(String.format(getString(R.string.size),sizesValues));
+                view.mSizesValue.setText(String.format(getString(R.string.size),item.getVariationsAvailable()));
 
             } else {
                 // Hide the size container
@@ -1045,10 +1032,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             if (mOnClickListener != null){
                 // Send to listener
                 if(id == R.id.campaign_item_button_buy){
-                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.getSku() + " " +  selectedSize.getVariationValue());
+                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + ((selectedSize != null) ? " " + selectedSize.getSku()+ " " +  selectedSize.getVariationValue():""));
                     mOnClickListener.onClickAddProduct(view, item);
                 } else {
-                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.getSku() + " " + selectedSize.getVariationValue());
+                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + ((selectedSize != null) ? " " + selectedSize.getSku()+ " " +  selectedSize.getVariationValue():""));
                     mOnClickListener.onClickOpenProduct(view);
                 }
             }
