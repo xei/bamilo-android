@@ -218,8 +218,9 @@ public class RocketImageLoader {
                 }
 
                 // clear any previous image
-                if(placeHolderImageId != -1)
+                if(placeHolderImageId != NO_VALUE_INTEGER) {
                     imageView.setImageResource(placeHolderImageId);
+                }
 
                 imgContainer = volleyImageLoader.get(imageUrl, new ImageListener() {
 
@@ -282,7 +283,7 @@ public class RocketImageLoader {
                             }
                         } else {
                             //imageView.setImageBitmap(null);
-                            if(placeHolderImageId != -1)
+                            if(placeHolderImageId != NO_VALUE_INTEGER)
                                 imageView.setImageResource(placeHolderImageId);
                         }
                     }
@@ -296,7 +297,10 @@ public class RocketImageLoader {
             } 
             
             // clear any previous image
-            imageView.setImageResource(placeHolderImageId);
+            if(placeHolderImageId != NO_VALUE_INTEGER) {
+                imageView.setImageResource(placeHolderImageId);
+            }
+
             if (listener != null) {
                 listener.onLoadedError();
             }            
