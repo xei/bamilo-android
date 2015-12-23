@@ -72,7 +72,7 @@
     <item name="catalog_item_grid"                      type="layout">@layout/_def_catalog_item_grid</item>
     <item name="gen_product_list"                       type="layout">@layout/_def_gen_product_list</item>
     <item name="catalog_item_single"       		        type="layout">@layout/_def_catalog_item_single</item>
-    <item name="catalog_fragment_footer"                type="layout">@layout/catalog_fragment_footer</item>
+    <item name="catalog_fragment_footer"                type="layout">@layout/_def_catalog_fragment_footer</item>
 
     <!-- INNER SHOP -->
     <item name="shop_fragment_main"                     type="layout">@layout/_def_shop_fragment_main</item>
