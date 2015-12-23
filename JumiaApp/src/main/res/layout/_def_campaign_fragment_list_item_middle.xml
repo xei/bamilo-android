@@ -56,15 +56,15 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_discount"
             style="@style/TextList_1"
+            android:layout_width="wrap_content"
             android:layout_marginRight="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
             android:ellipsize="marquee"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:gravity="start|left|bottom"
+            android:layout_centerVertical="true"
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="@color/red_basic"
+            android:layout_gravity="center_horizontal"
             />
 
         <!-- PRICE -->
@@ -72,15 +72,16 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_price"
             style="@style/TextList_2"
-            android:layout_alignBottom="@id/campaign_item_discount"
-            android:layout_alignTop="@id/campaign_item_discount"
+            android:layout_width="wrap_content"
             android:layout_toRightOf="@id/campaign_item_discount"
             android:layout_toEndOf="@id/campaign_item_discount"
+            android:layout_centerVertical="true"
             android:ellipsize="marquee"
             android:gravity="center"
             android:maxLines="1"
             android:singleLine="true"
             android:textColor="@color/black_800"
+            android:layout_gravity="center_horizontal"
             />
 
     </RelativeLayout>
