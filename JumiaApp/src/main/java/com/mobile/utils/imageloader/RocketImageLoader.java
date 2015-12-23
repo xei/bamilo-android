@@ -106,6 +106,7 @@ public class RocketImageLoader {
      * 
      * @param imageUrl
      * @param imageView
+     * @param hideView
      * @param listener
      */
     public void loadImage(String imageUrl, ImageView imageView, boolean hideView, RocketImageLoaderListener listener) {
@@ -218,8 +219,9 @@ public class RocketImageLoader {
                 }
 
                 // clear any previous image
-                if(placeHolderImageId != -1)
+                if(placeHolderImageId != NO_VALUE_INTEGER) {
                     imageView.setImageResource(placeHolderImageId);
+                }
 
                 imgContainer = volleyImageLoader.get(imageUrl, new ImageListener() {
 
@@ -236,8 +238,9 @@ public class RocketImageLoader {
                             listener.onLoadedError();
                         }
 
-                        if (hideImageView)
+                        if (hideImageView) {
                             imageView.setVisibility(View.GONE);
+                        }
                     }
 
                     @Override
@@ -277,12 +280,13 @@ public class RocketImageLoader {
                                     listener.onLoadedSuccess(imageUrl, response.getBitmap());
                                 }
 
-                                if (hideImageView)
+                                if (hideImageView) {
                                     imageView.setVisibility(View.VISIBLE);
+                                }
                             }
                         } else {
                             //imageView.setImageBitmap(null);
-                            if(placeHolderImageId != -1)
+                            if(placeHolderImageId != NO_VALUE_INTEGER)
                                 imageView.setImageResource(placeHolderImageId);
                         }
                     }
@@ -296,7 +300,10 @@ public class RocketImageLoader {
             } 
             
             // clear any previous image
-            imageView.setImageResource(placeHolderImageId);
+            if(placeHolderImageId != NO_VALUE_INTEGER) {
+                imageView.setImageResource(placeHolderImageId);
+            }
+
             if (listener != null) {
                 listener.onLoadedError();
             }            

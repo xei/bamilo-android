@@ -43,6 +43,7 @@ public class ProductComplete extends ProductMultiple {
     private ArrayList<Variation> mProductVariations;
     private String mShareUrl;
     private boolean isFashion;
+    private boolean isPreOrder;
 
     /**
      * Complete product empty constructor.
@@ -137,6 +138,7 @@ public class ProductComplete extends ProductMultiple {
                     mProductVariations.add(variation);
                 }
             }
+            isPreOrder = Boolean.parseBoolean(jsonObject.optString(RestConstants.PRE_ORDER));
 
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the complete product", e);
@@ -214,6 +216,10 @@ public class ProductComplete extends ProductMultiple {
 
     public double getMinPriceOffer() { return mMinPriceOffer;}
 
+    public boolean isPreOrder() {
+        return isPreOrder;
+    }
+
     /*
      * ############ PARCELABLE ############
      */
@@ -249,6 +255,7 @@ public class ProductComplete extends ProductMultiple {
         dest.writeList(mRelatedProducts);
         dest.writeString(mShortDescription);
         dest.writeByte((byte) (isFashion ? 1 : 0));
+        dest.writeByte((byte) (isPreOrder ? 1 : 0));
 
     }
 
@@ -271,6 +278,7 @@ public class ProductComplete extends ProductMultiple {
         in.readList(mRelatedProducts, ProductRegular.class.getClassLoader());
         mShortDescription = in.readString();
         isFashion = in.readByte() == 1;
+        isPreOrder = in.readByte() == 1;
     }
 
     public static final Parcelable.Creator<ProductComplete> CREATOR = new Parcelable.Creator<ProductComplete>() {

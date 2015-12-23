@@ -31,19 +31,19 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
-import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
+import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ProductUtils;
@@ -57,7 +57,7 @@ import java.util.ArrayList;
  * Class used to show campaign page
  * @author sergiopereira
  */
-public class CampaignPageFragment extends BaseFragment implements OnScrollListener, IResponseCallback , DialogCampaignItemSizeListFragment.OnDialogListListener  {
+public class CampaignPageFragment extends BaseFragment implements OnScrollListener, IResponseCallback , DialogSimpleListFragment.OnDialogListListener {
 
     public static final String TAG = CampaignPageFragment.class.getSimpleName();
     
@@ -416,14 +416,25 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
 
     @Override
+    public void onDialogListItemSelect(int position) {
+        CampaignItem item = mCampaign.getItems().get(position);
+        addItemToCart(item);
+    }
+
+    @Override
     public void onDialogListClickView(View view) {
 
     }
 
     @Override
-    public void onDialogSizeListClickView(int position, CampaignItem item) {
-        addItemToCart(item);
+    public void onDialogListDismiss() {
+
     }
+
+//    @Override
+//    public void onDialogSizeListClickView(int position, CampaignItem item) {
+//
+//    }
 
 
     /**
@@ -442,27 +453,31 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
 
     private void addItemToCart(CampaignItem campaignItem){
-
-        String sku = campaignItem.getSelectedSize().simpleSku;
-        String size = campaignItem.getSelectedSize().size;
-        Boolean hasStock = campaignItem.hasStock();
-        String name = campaignItem.getName();
-        String brand = campaignItem.getBrand();
-        double price = campaignItem.getPriceForTracking();
-        int discount = campaignItem.getMaxSavingPercentage();
-        Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
-        // Validate the remain stock
-        if(!hasStock)
-            showWarningErrorMessage(getString(R.string.campaign_stock_alert));
-            // Validate click
-        else if(!isAddingProductToCart) {
-            // Create values to add to cart
-            ContentValues values = new ContentValues();
-            values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
-            values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
-            triggerAddToCart(values);
-            // Tracking
-            trackAddToCart(sku, name, brand, price, discount);
+        ProductSimple productSimple = campaignItem.getSelectedSimple();
+        if(productSimple != null) {
+            String sku = productSimple.getSku();
+            String size = productSimple.getVariationValue();
+            Boolean hasStock = campaignItem.hasStock();
+            String name = campaignItem.getName();
+            String brand = campaignItem.getBrand();
+            double price = campaignItem.getPriceForTracking();
+            int discount = campaignItem.getMaxSavingPercentage();
+            Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
+            // Validate the remain stock
+            if (!hasStock)
+                showWarningErrorMessage(getString(R.string.campaign_stock_alert));
+                // Validate click
+            else if (!isAddingProductToCart) {
+                // Create values to add to cart
+                ContentValues values = new ContentValues();
+                values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+                values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+                triggerAddToCart(values);
+                // Tracking
+                trackAddToCart(sku, name, brand, price, discount);
+            }
+        } else {
+            showUnexpectedErrorWarning();
         }
     }
 
@@ -470,8 +485,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     protected void showVariantsDialog(CampaignItem item) {
 
         try {
-            DialogCampaignItemSizeListFragment dialog = DialogCampaignItemSizeListFragment.newInstance(
-                    getBaseActivity(),
+            DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
+                    this.getActivity(),
                     getString(R.string.product_variance_choose),
                     item,
                     this);
@@ -947,36 +962,22 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          */
         private void setSizeContainer(final ItemView view, final CampaignItem item, int position){
             // Campaign has sizes except itself (>1)
-            if(!item.hasUniqueSize() && item.hasSizes()) {
+            if(!item.hasUniqueSize() && CollectionUtils.isNotEmpty(item.getSimples())) {
                 // Show container
                 view.mSizeContainer.setVisibility(View.VISIBLE);
-                // Get sizes
-                ArrayList<CampaignItemSize> sizes = item.getSizes();
-                String sizesValues = "";
-                boolean isFirst = true;
-                for (CampaignItemSize  size : sizes) {
-                    if(isFirst){
-                        sizesValues+=size.size;
-                        isFirst = false;
-                    } else {
-                        sizesValues+=";"+size.size;
-                    }
-
-                }
-                view.mSizesValue.setText(String.format(getString(R.string.size),sizesValues));
+                view.mSizesValue.setText(String.format(getString(R.string.size),item.getVariationsAvailable()));
 
             } else {
                 // Hide the size container
                 view.mSizeContainer.setVisibility(View.INVISIBLE);
                 // Set itself as selected size
-                CampaignItemSize size = null;
+                ProductSimple size = null;
                 try {
-                    size = item.getSizes().get(0);
+                    size = item.getSimples().get(0);
                 } catch (IndexOutOfBoundsException | NullPointerException e) {
                     Print.w(TAG, "WARNING: EXCEPTION ON SET SIZE SELECTION: 0");
                 }
-                item.setSelectedSizePosition(0);
-                item.setSelectedSize(size);
+                item.setSelectedSimplePosition(0);
             }
         }
 
@@ -1006,10 +1007,8 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         @Override
         public void onItemSelected(IcsAdapterView<?> parent, View view, int position, long id) {
             String parentPosition = parent.getTag().toString();
-            CampaignItemSize size = (CampaignItemSize) parent.getItemAtPosition(position);
             CampaignItem campaignItem = getItem(Integer.valueOf(parentPosition));
-            campaignItem.setSelectedSizePosition(position);
-            campaignItem.setSelectedSize(size);
+            campaignItem.setSelectedSimplePosition(position);
             Print.d(TAG, "selected simple");
         }
 
@@ -1031,11 +1030,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
             int id = view.getId();
             // Get selected size
-            CampaignItemSize selectedSize = item.getSelectedSize();
+            ProductSimple selectedSize = item.getSelectedSimple();
             // Add new tags
             view.setTag(PROD, item.getSku());
-            view.setTag(SKU, (selectedSize != null) ? selectedSize.simpleSku : item.getSku());
-            view.setTag(SIZE, (selectedSize != null) ? selectedSize.size : "");
+            view.setTag(SKU, (selectedSize != null) ? selectedSize.getSku() : item.getSku());
+            view.setTag(SIZE, (selectedSize != null) ? selectedSize.getVariationValue() : "");
             view.setTag(STOCK, item.hasStock());
             view.setTag(NAME, item.getName());
             view.setTag(BRAND, item.getBrand());
@@ -1044,10 +1043,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             if (mOnClickListener != null){
                 // Send to listener
                 if(id == R.id.campaign_item_button_buy){
-                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " +  selectedSize.size);
+                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + ((selectedSize != null) ? " " + selectedSize.getSku()+ " " +  selectedSize.getVariationValue():""));
                     mOnClickListener.onClickAddProduct(view, item);
                 } else {
-                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + selectedSize.simpleSku + " " + selectedSize.size);
+                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + ((selectedSize != null) ? " " + selectedSize.getSku()+ " " +  selectedSize.getVariationValue():""));
                     mOnClickListener.onClickOpenProduct(view);
                 }
             }

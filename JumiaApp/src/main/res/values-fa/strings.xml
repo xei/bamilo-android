@@ -33,8 +33,6 @@
     <string name="campaign_save">میزان تخفیف</string>
     <string name="campaign_stock_alert">متاسفیم. موجودی کالا به اتمام رسیده است.</string>
     <string name="campaigns_label">کمپین ها</string>
-    <string name="campaing_offer_ended">زمان پیشنهاد به پایان رسیده است</string>
-    <string name="campaing_timer_end">پایان</string>
     <string name="cancel_label">لغو</string>
     <string name="cart_label">سبد خرید</string>
     <string name="catalog_edit_filters">ویرایش فیلترها</string>
@@ -168,6 +166,7 @@
     <string name="notifications">اطلاعیه ها</string>
     <string name="myaccount_email_notifications">اطلاع از طریق پست الکترونیکی</string>
     <string name="notifications_summary">دریافت پیشنهادات اختصاصی و بروزرسانی ها</string>
+    <string name="off_label">تخفیف</string>
     <string name="ok_label">تایید</string>
     <string name="option2_description">تغییر رمز عبور، ایمیل و ...</string>
     <string name="option3_description">مشترک شدن یا لغو اشتراک</string>
