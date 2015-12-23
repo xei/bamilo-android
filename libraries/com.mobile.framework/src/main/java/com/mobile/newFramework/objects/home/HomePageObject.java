@@ -1,7 +1,9 @@
 package com.mobile.newFramework.objects.home;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
@@ -17,6 +19,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -27,7 +30,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
 
     public static final String TAG = HomePageObject.class.getSimpleName();
 
-    private ArrayList<BaseTeaserGroupType> mTeasers;
+    private LinkedHashMap<String, BaseTeaserGroupType> mTeasers;
 
     /**
      * Empty constructor
@@ -45,7 +48,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
      *
      * @return An array list
      */
-    public ArrayList<BaseTeaserGroupType> getTeasers() {
+    public LinkedHashMap<String, BaseTeaserGroupType> getTeasers() {
         return mTeasers;
     }
 
@@ -74,7 +77,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
         JSONArray data = jsonObject.getJSONArray(RestConstants.DATA);
         int size = data.length();
         if (size > 0) {
-            mTeasers = new ArrayList<>();
+            mTeasers = new LinkedHashMap<String, BaseTeaserGroupType>();
             // Save unordered response
             Map<String, BaseTeaserGroupType> map = new HashMap<>();
             for (int i = 0; i < size; i++) {
@@ -92,7 +95,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
                 BaseTeaserGroupType group = map.get(type.getType());
                 // Append case not null
                 if (group != null) {
-                    mTeasers.add(group);
+                    mTeasers.put(type.getType(), group);
                 }
             }
         } else {
@@ -155,14 +158,15 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(mTeasers);
+            dest.writeMap(mTeasers);
+
         }
     }
 
     private HomePageObject(Parcel in) {
         if (in.readByte() == 0x01) {
-            mTeasers = new ArrayList<>();
-            in.readList(mTeasers, BaseTeaserGroupType.class.getClassLoader());
+            mTeasers = new LinkedHashMap<>();
+           in.readMap(mTeasers, LinkedHashMap.class.getClassLoader());
         } else {
             mTeasers = null;
         }

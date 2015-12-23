@@ -308,7 +308,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "BUILD HOME PAGE");
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
-        for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
+        for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers().values()) {
             // Case Form NewsLetter
             if(baseTeaserType.getType() == TeaserGroupType.FORM_NEWSLETTER){
                 Form form = null;
@@ -472,13 +472,15 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         // Object
         ArrayList<TeaserCampaign> campaigns;
         // Get group
-        BaseTeaserGroupType campaignGroup = mHomePage.getTeasers().get(group.ordinal());
+        BaseTeaserGroupType campaignGroup = mHomePage.getTeasers().get(group.getType());
         // Case from campaigns
         if (group == TeaserGroupType.CAMPAIGNS) {
+            Print.i(TAG, "code1campaigns group == TeaserGroupType.CAMPAIGNS");
             campaigns = TargetLink.createCampaignList(campaignGroup);
         }
         // Case from other
         else {
+            Print.i(TAG, "code1campaigns createCampaignList");
             campaigns = TargetLink.createCampaignList(title, id);
         }
         return campaigns;
