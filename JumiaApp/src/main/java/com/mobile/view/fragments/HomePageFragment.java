@@ -467,7 +467,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      * Create a list with campaigns.
      */
     @NonNull
-    private ArrayList<TeaserCampaign> createCampaignsData(String title, String id, TeaserGroupType group) {
+    private ArrayList<TeaserCampaign> createCampaignsData(@NonNull String title, @NonNull String id, TeaserGroupType group) {
         Print.i(TAG, "GOTO CAMPAIGN PAGE: " + title + " " + id);
         // Object
         ArrayList<TeaserCampaign> campaigns;
