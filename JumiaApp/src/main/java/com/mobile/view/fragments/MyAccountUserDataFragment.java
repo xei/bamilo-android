@@ -156,12 +156,15 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     public void onSaveInstanceState(Bundle outState) {
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         if (mUserDataForm != null) {
+            // save edited data in user data form
             mUserDataForm.saveFormState(outState);
         }
-        else if (mChangePasswordForm != null) {
+        if (mChangePasswordForm != null) {
+            // save edited data in change password form
             mChangePasswordForm.saveFormState(outState);
         }
-        else {
+
+        if (mUserDataForm == null && mChangePasswordForm == null) {
             outState = mFormSavedState;
         }
         super.onSaveInstanceState(outState);
