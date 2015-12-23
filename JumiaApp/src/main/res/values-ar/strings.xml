@@ -33,8 +33,6 @@
     <string name="campaign_save">أنت توفر</string>
     <string name="campaign_stock_alert">عفوًا، المنتج الذي قمت باختياره غير متوفر</string>
     <string name="campaigns_label">العروض</string>
-    <string name="campaing_offer_ended">انتهت العروض!</string>
-    <string name="campaing_timer_end">تنتهي في:</string>
     <string name="cancel_label">إلغاء</string>
     <string name="cart_label">عربة التسوق</string>
     <string name="catalog_edit_filters">تعديل الاختيارات</string>
@@ -168,6 +166,7 @@
     <string name="notifications">الإخطارات</string>
     <string name="myaccount_email_notifications">إخطارات البريد الإلكتروني</string>
     <string name="notifications_summary">يمكنك الحصول على العروض الحصرية وآخر التحديثات</string>
+    <string name="off_label">إغلاق</string>
     <string name="ok_label">موافق</string>
     <string name="option2_description">تغيير كلمة المرور، البريد الإلكتروني، وغير ذلك</string>
     <string name="option3_description">الاشتراك أو إلغاء الاشتراك</string>
