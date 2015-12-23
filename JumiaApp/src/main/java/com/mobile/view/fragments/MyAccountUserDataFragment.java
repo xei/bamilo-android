@@ -144,23 +144,27 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         Bundle bundle = new Bundle();
         if(mUserDataForm != null) {
             mUserDataForm.saveFormState(bundle);
+            mFormSavedState = bundle;
         }
         if(mChangePasswordForm != null) {
             mChangePasswordForm.saveFormState(bundle);
+            mFormSavedState = bundle;
         }
-        mFormSavedState = bundle;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         if (mUserDataForm != null) {
             mUserDataForm.saveFormState(outState);
         }
-        if (mChangePasswordForm != null) {
+        else if (mChangePasswordForm != null) {
             mChangePasswordForm.saveFormState(outState);
         }
+        else {
+            outState = mFormSavedState;
+        }
+        super.onSaveInstanceState(outState);
     }
 
     /*
