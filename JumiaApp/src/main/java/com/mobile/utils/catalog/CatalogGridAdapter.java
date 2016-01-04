@@ -46,9 +46,9 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
 
     private boolean isToShowFooter;
 
-    private boolean isTabletInLandscape;
+    private final boolean isTabletInLandscape;
     
-    private Context mContext;
+    private final Context mContext;
     
     private int mLastPosition = -1;
 
@@ -308,6 +308,11 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             mTarget = banner.getTarget();
             showHeaderView();
         }
+    }
+
+    @Override
+    public void setHeader(@Nullable View banner) {
+
     }
 
     /**

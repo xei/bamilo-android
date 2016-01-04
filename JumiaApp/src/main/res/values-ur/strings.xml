@@ -32,8 +32,6 @@
     <string name="campaign_save">آپ کی بچت</string>
     <string name="campaign_stock_alert">معذرت! جو شے آپ نے پسند کی، وہ بِک چکی ہے۔</string>
     <string name="campaigns_label">مہمات</string>
-    <string name="campaing_offer_ended">پیشکش ختم ہوئی!</string>
-    <string name="campaing_timer_end">وقتِ اختتام:</string>
     <string name="cancel_label">منسوخ</string>
     <string name="cart_label">ٹوکری</string>
     <string name="catalog_edit_filters">چھلنی میں ترامیم کریں</string>
@@ -167,6 +165,7 @@
     <string name="notifications">اطلاعات</string>
     <string name="myaccount_email_notifications">ای میل اطلاعات</string>
     <string name="notifications_summary">خصوصی پیشکش اور تازہ معلومات حاصل کریں۔</string>
+    <string name="off_label">بند</string>
     <string name="ok_label">ٹھیک</string>
     <string name="option2_description">پاسورڈ، ای میل، وغیرہ تبدیل کریں</string>
     <string name="option3_description">اجراء اور منسوخیِ اجراء</string>

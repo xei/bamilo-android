@@ -31,8 +31,6 @@
     <string name="campaign_save">Está a Poupar</string>
     <string name="campaign_stock_alert">Pedimos desculpa mas o artigo que selecionou está esgotado</string>
     <string name="campaigns_label">Campanhas</string>
-    <string name="campaing_offer_ended">A Promoção Terminou!</string>
-    <string name="campaing_timer_end">Termina em:</string>
     <string name="cancel_label">Cancelar</string>
     <string name="cart_label">Carrinho</string>
     <string name="catalog_edit_filters">Editar Filtros</string>
@@ -166,6 +164,7 @@
     <string name="notifications">Notificações</string>
     <string name="myaccount_email_notifications">Notificações por Email</string>
     <string name="notifications_summary">Receba ofertas exclusivas</string>
+    <string name="off_label">OFF</string>
     <string name="ok_label">OK</string>
     <string name="option2_description">Alterar Password, E-mail etc&#8230;</string>
     <string name="option3_description">Subscrever ou Cancelar Subscrição</string>

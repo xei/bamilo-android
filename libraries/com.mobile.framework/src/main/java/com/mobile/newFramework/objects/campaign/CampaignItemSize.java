@@ -11,7 +11,9 @@ import org.json.JSONObject;
 /**
  * 
  * @author sergiopereira
+ * @deprecated use {@link com.mobile.newFramework.objects.product.pojo.ProductSimple} instead
  */
+@Deprecated
 public class CampaignItemSize implements IJSONSerializable, Parcelable {
     
     public String size;
