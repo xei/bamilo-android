@@ -65,7 +65,7 @@
 -keep public class * extends android.app.Service
 -keep public class * extends android.content.BroadcastReceiver
 -keep public class * extends android.content.ContentProvider
--keep public class * extends android.app.backup.BackupAgentHelper
+#-keep public class * extends android.app.backup.BackupAgentHelper
 -keep public class * extends android.preference.Preference
 -keep public class * extends android.support.v4.view.ActionProvider
 -keep public class * extends android.support.v4.app.Fragment
@@ -78,16 +78,17 @@
 ########################################################################################
 
 ## BEGIN GOOGLE PLAY SERVICES ########################################################
--keep class * extends java.util.ListResourceBundle {
-    protected Object[][] getContents();
-}
--keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
-    public static final *** NULL;
-}
--keepnames @com.google.android.gms.common.annotation.KeepName class *
--keepclassmembernames class * {
-    @com.google.android.gms.common.annotation.KeepName *;
-}
+
+#-keep class * extends java.util.ListResourceBundle {
+#    protected Object[][] getContents();
+#}
+#-keep public class com.google.android.gms.common.internal.safeparcel.SafeParcelable {
+#    public static final *** NULL;
+#}
+#-keepnames @com.google.android.gms.common.annotation.KeepName class *
+#-keepclassmembernames class * {
+#    @com.google.android.gms.common.annotation.KeepName *;
+#}
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
@@ -101,10 +102,10 @@
 	public *;
 	@com.ad4screen.sdk.common.annotations.API protected *; 
 }
--keep class com.ad4screen.sdk.IA4SService { public *; }
--keep class com.ad4screen.sdk.IA4SService$Stub { public *; }
--keep class com.ad4screen.sdk.plugins.** { *; }
--dontwarn com.ad4screen.sdk.plugins.**
+#-keep class com.ad4screen.sdk.IA4SService { public *; }
+#-keep class com.ad4screen.sdk.IA4SService$Stub { public *; }
+#-keep class com.ad4screen.sdk.plugins.** { *; }
+#-dontwarn com.ad4screen.sdk.plugins.**
 ############################################################################################
 
 ## BEGIN NEW RELIC #########################################################################
@@ -117,8 +118,8 @@
 ## BEGIN FACEBOOK ##########################################################################
 -keep class com.facebook.** { *; }
 -keepattributes Signature
--dontnote bolts.Task
--dontnote bolts.Task$TaskCompletionSource
+#-dontnote bolts.Task
+#-dontnote bolts.Task$TaskCompletionSource
 ############################################################################################
 
 ## BEGIN GOOGLE ################################################
@@ -133,8 +134,8 @@
 ################################################################
 
 ## BEGIN APPTIMIZE ##########################################################
--keepclassmembers class * extends com.apptimize.ApptimizeTest { <methods>; }
--keep class com.apptimize.** { *; }
+#-keepclassmembers class * extends com.apptimize.ApptimizeTest { <methods>; }
+#-keep class com.apptimize.** { *; }
 -keep class android.support.v4.view.ViewPager
 -keepclassmembers class android.support.v4.view.ViewPager$LayoutParams { *; }
 -keep class android.support.v4.app.Fragment { *; }
@@ -188,12 +189,12 @@
 -keep interface com.mobile.components.RangeSeekBar$** { public *; }
 -keep class com.mobile.components.RangeSeekBar { public *; }
 -keep public interface com.mobile.components.absspinner.IcsAdapterView$** { public *; }
--keep,includedescriptorclasses class com.mobile.components.icsspinner.IcsAdapterView { public *; }  
+-keep,includedescriptorclasses class com.mobile.components.absspinner.IcsAdapterView { public *; }
 -keep interface com.mobile.components.ScrollViewEx$** { public *; }
 -keep interface com.mobile.components.androidslidingtabstrip.SlidingTabLayout$** { public *; }
 #### com.mobile.utils
 -keep class com.mobile.utils.MyProfileActionProvider { public *; }
--keep class com.mobile.utils.SearchSuggestionImeBackListener { public *; }
+#-keep class com.mobile.utils.SearchSuggestionImeBackListener { public *; }
 -keep class com.mobile.utils.NavigationAction { public *; }
 -keep class com.mobile.utils.photoview.PhotoViewAttacher { public *; }
 -keep interface com.mobile.utils.photoview.PhotoViewAttacher$** { *; }
@@ -206,7 +207,7 @@
 #################################################################################
 
 ## JAVASCRIPTINTERFACE ##########################################################
--keepclassmembers class com.mobile.view.fragments.CheckoutWebFragment$JavaScriptInterface { public *; }
+##-keepclassmembers class com.mobile.view.fragments.CheckoutWebFragment$JavaScriptInterface { public *; }
 -keepclassmembers class com.mobile.view.fragments.CheckoutExternalPaymentFragment$JavaScriptInterface { public *; }
 -keepattributes JavascriptInterface
 #################################################################################
