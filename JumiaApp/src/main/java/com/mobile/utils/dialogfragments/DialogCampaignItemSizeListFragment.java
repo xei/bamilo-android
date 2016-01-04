@@ -17,8 +17,8 @@ import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
-import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
+import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -36,6 +36,7 @@ import java.util.ArrayList;
  *
  * @see <a href="http://tutorials.jenkov.com/java-concurrency/volatile.html">volatile</a>
  */
+@Deprecated
 public class DialogCampaignItemSizeListFragment extends BottomSheet implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private final static String TAG = DialogSimpleListFragment.class.getSimpleName();
@@ -121,9 +122,9 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
         // Get list
         ListView list = (ListView) view.findViewById(R.id.dialog_list_view);
         // Validate adapter
-        DialogItemSizeAdapter mAdapter = new DialogItemSizeAdapter(mProduct.getSizes());
+        DialogItemSizeAdapter mAdapter = new DialogItemSizeAdapter(mProduct.getSimples());
         // Add adapter
-        mAdapter.setCheckedPosition(mProduct.getSelectedSizePosition());
+        mAdapter.setCheckedPosition(mProduct.getSelectedSimplePosition());
         list.setAdapter(mAdapter);
         list.setOnItemClickListener(this);
     }
@@ -221,8 +222,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
             return;
         }
         // Update selected position
-        mProduct.setSelectedSizePosition(position);
-        mProduct.setSelectedSize(mProduct.getSizes().get(position));
+        mProduct.setSelectedSimplePosition(position);
         // Get adapter
         DialogItemSizeAdapter adapter = (DialogItemSizeAdapter) adapterView.getAdapter();
         // Set checked position
@@ -250,7 +250,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
      */
     private class DialogItemSizeAdapter extends BaseAdapter {
 
-        private final ArrayList<CampaignItemSize> mItems;
+        private final ArrayList<ProductSimple> mItems;
 
         private int mCheckedPosition = ProductMultiple.NO_DEFAULT_SIMPLE_POS;
 
@@ -259,7 +259,7 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
         /**
          * Constructor
          */
-        public DialogItemSizeAdapter(ArrayList<CampaignItemSize> simples) {
+        public DialogItemSizeAdapter(ArrayList<ProductSimple> simples) {
             mInflater = LayoutInflater.from(mContext);
             mItems = simples;
         }
@@ -317,11 +317,11 @@ public class DialogCampaignItemSizeListFragment extends BottomSheet implements A
 //            TextView textViewUnAvailable = (TextView) view.findViewById(R.id.item_text_unavailable);
             CheckBox checkBox = (CheckBox) view.findViewById(R.id.dialog_item_checkbox);
             // Get simple
-            CampaignItemSize simple = (CampaignItemSize) getItem(position);
+            ProductSimple simple = (ProductSimple) getItem(position);
             // Set text
             view.setEnabled(true);
             textView.setVisibility(View.VISIBLE);
-            textView.setText(simple.size);
+            textView.setText(simple.getVariationValue());
 
             // Set check box
             checkBox.setChecked(position == mCheckedPosition);
