@@ -41,14 +41,13 @@ dependencies {
     compile 'com.android.support:cardview-v7:23.1.1'
     compile 'com.android.support:support-annotations:23.1.1'
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.nineoldandroids:library:2.4.0' //since using Api level 15, this should no longer be necessary. needs to be validated
     // https://github.com/mcxiaoke/android-volley
     compile 'com.mcxiaoke.volley:library:1.0.19'
     /** FRAMEWORK **/
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.6.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.6.0'
-    compile 'com.squareup.okio:okio:1.6.0'
+    //compile 'com.squareup.okhttp:okhttp-urlconnection:2.6.0'
+    //compile 'com.squareup.okio:okio:1.6.0'
     /** GOOGLE PLAY SERVICE **/
     compile 'com.google.android.gms:play-services-analytics:7.5.0'
     compile 'com.google.android.gms:play-services-location:7.5.0'
@@ -76,7 +75,6 @@ dependencies {
     // #STETHO :: http://facebook.github.io/stetho/
     compile 'com.facebook.stetho:stetho:1.2.0'
     compile 'com.facebook.stetho:stetho-okhttp:1.2.0'
-    compile 'com.facebook.stetho:stetho-urlconnection:1.2.0'
     // #LEAK :: https://github.com/square/leakcanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
