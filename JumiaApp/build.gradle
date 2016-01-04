@@ -32,11 +32,13 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 15
         targetSdkVersion 22
-//        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+        multiDexEnabled false
     }
 
     dexOptions {
-        jumboMode true
+        jumboMode = true
+        incremental true
+        javaMaxHeapSize "2048M"
     }
 
     signingConfigs {
@@ -87,6 +89,8 @@ android {
         debug {
             applicationIdSuffix ".dev"
             debuggable true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-dev.txt'
         }
         live {
             applicationIdSuffix ".live"

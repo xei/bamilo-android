@@ -22,7 +22,6 @@ import android.support.v4.view.accessibility.AccessibilityRecordCompat;
 import android.support.v4.widget.EdgeEffectCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.FocusFinder;
 import android.view.KeyEvent;
@@ -38,6 +37,8 @@ import android.widget.FrameLayout;
 import android.widget.ScrollView;
 
 import java.util.List;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * NestedScrollView is just like {@link android.widget.ScrollView}, but it supports acting

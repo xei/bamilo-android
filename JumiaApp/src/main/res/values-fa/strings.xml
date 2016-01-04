@@ -12,7 +12,6 @@
     <string name="added_bundle_to_shop_cart_dialog_text">کالاها به سبد خرید اضافه گردیدند</string>
     <string name="added_to_shop_cart_dialog_text">کالا به سبد خرید شما اضافه شد.</string>
     <string name="all_label">همه</string>
-    <string name="app_name">بامیلو</string>
     <string name="back_label">بازگشت</string>
     <string name="back_level">مرحله قابل</string>
     <string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>
@@ -448,7 +447,7 @@
     <string name="delivered_label">تحویل داده شد</string>
     <string name="order_number">شمار سفارش ‎%s‎</string>
     <string name="billing">صورت حساب</string>
-    <string name="qty_placeholder">تعداد: %d</string>
+    <string name="qty_placeholder">تعداد: %s</string>
     <string name="reorder_label">سفارش مجدد</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
     <string name="order_pending">در انتظار بررسی</string>

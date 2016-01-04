@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -67,6 +66,8 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * This class displays the product detail screen.

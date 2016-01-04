@@ -12,7 +12,6 @@
     <string name="added_bundle_to_shop_cart_dialog_text">اشیاء ٹوکری میں شامل کردی گئیں تھیں۔</string>
     <string name="added_to_shop_cart_dialog_text">چیز ٹوکری میں شامل کر دی گئی تھی۔</string>
     <string name="all_label">تمام</string>
-    <string name="app_name">دراز</string>
     <string name="back_label">پیچھے</string>
     <string name="back_level">پچھلا درجہ</string>
     <string name="bamilo_not_available">فی الوقت میسر نہیں ہے</string>
@@ -448,7 +447,7 @@
     <string name="delivered_label">ڈیلورڈ</string>
     <string name="order_number">حکم/آڈڑ نمبر ‎%s‎</string>
     <string name="billing">بلنگ</string>
-    <string name="qty_placeholder">مقدار:  %d</string>
+    <string name="qty_placeholder">مقدار:  %s</string>
     <string name="reorder_label">ترتیب</string>
     <string name="order_status_date">‎&lt;b>‎‎%1$s‎‎&lt;/b>\n‎‎%2$s‎</string>
     <string name="order_pending">زیر التواء آرڈر</string>

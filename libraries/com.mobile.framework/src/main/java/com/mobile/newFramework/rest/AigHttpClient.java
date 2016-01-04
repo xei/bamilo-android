@@ -9,6 +9,7 @@ import com.mobile.newFramework.rest.cookies.AigCookieManager;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
 import com.mobile.newFramework.rest.errors.NoConnectivityException;
 import com.mobile.newFramework.utils.NetworkConnectivity;
+import com.mobile.newFramework.utils.debug.DebugTools;
 import com.mobile.newFramework.utils.output.Print;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
@@ -207,8 +208,8 @@ public class AigHttpClient extends OkClient {
     @SuppressWarnings("unused")
     private static void addInterceptors(OkHttpClient okHttpClient) {
         okHttpClient.interceptors().add(new RedirectResponseInterceptor());
-        //okHttpClient.interceptors().add(new RequestDebuggerInterceptor());
-        //okHttpClient.interceptors().add(new ResponseDebuggerInterceptor());
+        // #DEBUG :: Add network interceptors only for debug version
+        DebugTools.addNetWorkInterceptors(okHttpClient);
     }
 
     private static class RedirectResponseInterceptor implements Interceptor {
@@ -239,42 +240,6 @@ public class AigHttpClient extends OkClient {
                 Print.w(TAG, "######################################################\n");
 
             }
-            return response;
-        }
-    }
-
-    @SuppressWarnings("unused")
-    private static class RequestDebuggerInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Print.d(TAG, "############ OK HTTP: REQUEST INTERCEPTOR ############");
-            Request request = chain.request();
-            Print.d(TAG, "Headers:      \n" + request.headers());
-            Print.d(TAG, "Url:            " + request.url());
-            Print.d(TAG, "UrI:            " + request.uri());
-            Print.d(TAG, "Https:          " + request.isHttps());
-            Print.d(TAG, "Method:         " + request.method());
-            Print.d(TAG, "Body:           " + request.body());
-            Print.d(TAG, "Cache:          " + request.cacheControl());
-            Print.d(TAG, "####################################################\n");
-            return chain.proceed(request);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    private static class ResponseDebuggerInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Print.d(TAG, "############ OK HTTP: RESPONSE INTERCEPTOR ############");
-            Response response = chain.proceed(chain.request());
-            Print.d(TAG, "Headers:          \n" + response.headers());
-            Print.d(TAG, "Message:            " + response.message());
-            Print.d(TAG, "Redirect:           " + response.isRedirect());
-            Print.d(TAG, "Cache response:     " + response.cacheResponse());
-            Print.d(TAG, "Network response:   " + response.networkResponse());
-            Print.d(TAG, "> Request:          " + response.request());
-            Print.d(TAG, "> Method:           " + chain.request().method());
-            Print.d(TAG, "######################################################\n");
             return response;
         }
     }
