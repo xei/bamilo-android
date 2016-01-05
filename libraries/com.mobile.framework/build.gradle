@@ -5,6 +5,8 @@ android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
 
+    useLibrary 'org.apache.http.legacy'
+
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
@@ -17,7 +19,6 @@ android {
         javaMaxHeapSize "2048M"
     }
 
-    useLibrary 'org.apache.http.legacy'
 }
 
 /**

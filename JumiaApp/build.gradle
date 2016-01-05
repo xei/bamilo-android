@@ -90,19 +90,19 @@ android {
             applicationIdSuffix ".dev"
             debuggable true
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-dev.txt'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-pro.txt', 'proguard-project-dev.txt'
         }
         live {
             applicationIdSuffix ".live"
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-live.txt'
         }
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
         }
     }
 
