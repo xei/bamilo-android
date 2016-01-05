@@ -2,7 +2,6 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -189,6 +188,23 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
     /*
      * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save the current selected item
+        try {
+            ContentValues values = mDynamicForm.save();
+            if(values.size() > 0)
+                outState.putParcelable(ConstantsIntentExtra.DATA, values);
+        } catch (Exception e) {
+            Print.w(TAG, "TRY SAVE FORM BUT IS NULL");
+        }
+    }
+
+    /*
+     * (non-Javadoc)
      *
      * @see android.support.v4.app.Fragment#onStop()
      */
@@ -256,32 +272,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             getBaseActivity().onSwitchFragment(FragmentType.SHOPPING_CART, bundle, FragmentController.ADD_TO_BACK_STACK);
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Save the current selected item
-        try {
-            ContentValues values = mDynamicForm.save();
-            if(values.size() > 0)
-                outState.putParcelable(ConstantsIntentExtra.DATA, values);
-        } catch (Exception e) {
-            Print.w(TAG, "TRY SAVE FORM BUT IS NULL");
         }
     }
 
