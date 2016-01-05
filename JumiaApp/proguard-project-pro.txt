@@ -37,6 +37,11 @@
 #-verbose
 ##################################################################################
 
+## BEGIN OBFUSCATE PACKAGE NAMES #########################################
+-repackageclasses ''
+-allowaccessmodification
+###########################################################################
+
 ## IGNORE WARN/NOTE CLASSES #########################################
 -dontnote android.support.**
 -dontnote com.ad4screen.sdk.**

@@ -37,11 +37,6 @@
 #-verbose
 ##################################################################################
 
-## BEGIN OBFUSCATE PACKAGE NAMES #########################################
-#-repackageclasses ''
-#-allowaccessmodification
-###########################################################################
-
 ## BEGIN REMOVE LOG CODE #########################################
 #-assumenosideeffects class de.akquinet.android.androlog.Log {
 #    public static boolean isLoggable(java.lang.String, int);
