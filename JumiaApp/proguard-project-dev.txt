@@ -21,9 +21,10 @@
 
 #################################################################################################
 # Author: SergioPereira										                                    #
+# Defaults: android-sdk-linux/tools/proguard                                                    #
 # See: http://proguard.sourceforge.net/manual/examples.html	                                    #
-# https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt             #
-# https://android.googlesource.com/platform/sdk/+/master/files/proguard-android-optimize.txt    #
+#      https://android.googlesource.com/platform/sdk/+/master/files/proguard-android.txt        #
+#      https://android.googlesource.com/platform/sdk/+/master/files/proguard-android-optimize.txt#
 #################################################################################################
 
 ## PARENT proguard-android.txt #########################################
