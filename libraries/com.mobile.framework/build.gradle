@@ -8,7 +8,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        multiDexEnabled false
+        multiDexEnabled false // Disabling multidex support. We are using proguard for debug build type.
     }
 
     dexOptions {
