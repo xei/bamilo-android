@@ -24,7 +24,7 @@
         style="@style/TextInfo"
         android:layout_width="wrap_content"
         android:textAllCaps="true"
-        android:text="@string/campaing_timer_end"
+        android:text="@string/campaign_timer_end"
         android:textColor="@color/black"
         android:layout_marginLeft="@dimen/margin_small"
         />
