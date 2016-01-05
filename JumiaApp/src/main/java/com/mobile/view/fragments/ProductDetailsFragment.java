@@ -528,11 +528,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             //changeFashion: rating style is changed if vertical is fashion
             if (mProduct.isFashion()) {
+                if(ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1 ){
+                    setProgressForRTLPreJelly(mProductFashionRating, (float) mProduct.getAvgRating(), mProductFashionRating.getMax());
+                }
                 mProductFashionRating.setRating((float) mProduct.getAvgRating());
+
                 mProductRating.setVisibility(View.GONE);
                 mProductFashionRating.setVisibility(View.VISIBLE);
             } else {
+                if(ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1 ){
+                    setProgressForRTLPreJelly(mProductRating, (float) mProduct.getAvgRating(), mProductRating.getMax());
+                }
                 mProductRating.setRating((float) mProduct.getAvgRating());
+
                 mProductRating.setVisibility(View.VISIBLE);
             }
             String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
@@ -540,6 +548,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
 
    //     mProductRating.setVisibility(View.VISIBLE);
+    }
+
+    private void setProgressForRTLPreJelly(RatingBar progressBar, float progress, int maxTotal){
+        progressBar.setRotation(180.0f);
+
     }
 
     /**
