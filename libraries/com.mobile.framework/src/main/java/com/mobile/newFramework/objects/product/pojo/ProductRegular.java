@@ -27,6 +27,7 @@ public class ProductRegular extends ProductBase {
     protected int mTotalReviews;
     protected int mTotalRatings;
     private int mBrandId;
+    private boolean shopFirst;
 
     /**
      * Empty constructor
@@ -70,6 +71,9 @@ public class ProductRegular extends ProductBase {
             mTotalRatings = ratings.optInt(RestConstants.RATINGS_TOTAL);
             mTotalReviews = ratings.optInt(RestConstants.REVIEWS_TOTAL);
         }
+
+        shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST, false);
+
         return true;
     }
 
@@ -151,6 +155,7 @@ public class ProductRegular extends ProductBase {
         mAvgRating = in.readDouble();
         mTotalReviews = in.readInt();
         mTotalRatings = in.readInt();
+        shopFirst = in.readByte() != 0x00;
     }
 
     @Override
@@ -165,6 +170,7 @@ public class ProductRegular extends ProductBase {
         dest.writeDouble(mAvgRating);
         dest.writeInt(mTotalReviews);
         dest.writeInt(mTotalRatings);
+        dest.writeByte((byte) (shopFirst ? 0x01 : 0x00));
     }
 
     @Override
@@ -185,4 +191,7 @@ public class ProductRegular extends ProductBase {
         }
     };
 
+    public boolean isShopFirst() {
+        return shopFirst;
+    }
 }
