@@ -13,6 +13,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.GetShoppingCartAddBundleHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -188,6 +189,11 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
 
     @Override
     public void onDialogListClickView(View view) {
+
+    }
+
+    @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
 
     }
 

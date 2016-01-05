@@ -34,6 +34,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
@@ -1127,6 +1128,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onDialogListClickView(View view) {
         onClick(view);
+    }
+
+    @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
+
     }
 
     @Override

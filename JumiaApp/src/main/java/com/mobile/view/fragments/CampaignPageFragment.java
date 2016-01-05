@@ -34,6 +34,7 @@ import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.catalog.Banner;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -48,6 +49,7 @@ import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.catalog.HeaderFooterInterface;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
+import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.ProductUtils;
@@ -61,7 +63,7 @@ import java.util.ArrayList;
  * Class used to show campaign page
  * @author sergiopereira
  */
-public class CampaignPageFragment extends BaseFragment implements IResponseCallback , DialogCampaignItemSizeListFragment.OnDialogListListener{
+public class CampaignPageFragment extends BaseFragment implements IResponseCallback , DialogSimpleListFragment.OnDialogListListener{
 
     public static final String TAG = CampaignPageFragment.class.getSimpleName();
 
@@ -410,6 +412,11 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     }
 
     @Override
+    public void onDialogListItemSelect(int position) {
+
+    }
+
+    @Override
     public void onDialogListClickView(View view) {
 
     }
@@ -419,6 +426,10 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         addItemToCart(item);
     }
 
+    @Override
+    public void onDialogListDismiss() {
+
+    }
 
     /**
      * Process the click on the buy button
@@ -464,7 +475,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     protected void showVariantsDialog(CampaignItem item) {
 
         try {
-            DialogCampaignItemSizeListFragment dialog = DialogCampaignItemSizeListFragment.newInstance(
+            DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
                     getBaseActivity(),
                     getString(R.string.product_variance_choose),
                     item,

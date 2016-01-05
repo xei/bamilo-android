@@ -14,6 +14,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -361,6 +362,11 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     @Override
     public void onDialogListClickView(View view) {
+
+    }
+
+    @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
 
     }
 
