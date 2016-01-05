@@ -567,7 +567,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Name
             TextView sellerName = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_name);
             sellerName.setText(mProduct.getSeller().getName());
-            sellerName.setOnClickListener(this);
+
+            if(TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
+                sellerName.setOnClickListener(this);
+            }
+
             // Case global seller
             if(mProduct.getSeller().isGlobal()) {
                 // Set global button
