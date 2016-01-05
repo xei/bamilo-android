@@ -676,21 +676,11 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
         //if is rtl, the progress bars shows up with inverted progression
         if (ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            progressBarFive.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(FIVE_STAR_PROGRESS)));
-            progressBarFive.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
-            progressBarFour.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(FOUR_STAR_PROGRESS)));
-            progressBarFour.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
-            progressBarThree.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(THREE_STAR_PROGRESS)));
-            progressBarThree.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
-            progressBarTwo.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(TWO_STAR_PROGRESS)));
-            progressBarTwo.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
-            progressBarOne.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(ONE_STAR_PROGRESS)));
-            progressBarOne.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
+            setProgressForRTLPreJelly(progressBarFive, Integer.parseInt(mProductRatingPage.getByStarValue(FIVE_STAR_PROGRESS)), maxTotal);
+            setProgressForRTLPreJelly(progressBarFour, Integer.parseInt(mProductRatingPage.getByStarValue(FOUR_STAR_PROGRESS)), maxTotal);
+            setProgressForRTLPreJelly(progressBarThree, Integer.parseInt(mProductRatingPage.getByStarValue(THREE_STAR_PROGRESS)), maxTotal);
+            setProgressForRTLPreJelly(progressBarTwo, Integer.parseInt(mProductRatingPage.getByStarValue(TWO_STAR_PROGRESS)), maxTotal);
+            setProgressForRTLPreJelly(progressBarOne, Integer.parseInt(mProductRatingPage.getByStarValue(ONE_STAR_PROGRESS)), maxTotal);
 
         } else {
             progressBarFive.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue(FIVE_STAR_PROGRESS)));
@@ -716,6 +706,20 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
         TextView txValueOne = (TextView) mProgressBoard.findViewById(R.id.oneValue);
         txValueOne.setText(mProductRatingPage.getByStarValue(ONE_STAR_PROGRESS));
+
+    }
+
+    private void setProgressForRTLPreJelly(ProgressBar progressBar, int progress, int maxTotal){
+        if( progress == 0 ){
+            progressBar.setProgress(maxTotal);
+            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
+        } else if( progress == maxTotal) {
+            progressBar.setProgress(0);
+            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress));
+        } else {
+            progressBar.setProgress(progress);
+            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress));
+        }
 
     }
 
