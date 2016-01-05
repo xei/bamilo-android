@@ -31,6 +31,7 @@ import com.mobile.newFramework.objects.addresses.AddressCity;
 import com.mobile.newFramework.objects.addresses.AddressPostalCode;
 import com.mobile.newFramework.objects.addresses.AddressRegion;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
+import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -408,6 +409,28 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         group.addView(spinner);
         // Show invisible content to trigger spinner listeners
         showGhostFragmentContentContainer();
+
+        //set selected position: default if ""
+        if(mShippingFormSavedState != null && mShippingFormSavedState.getInt(RestConstants.REGION) <= spinner.getCount()) {
+            spinner.setSelection(mShippingFormSavedState.getInt(RestConstants.REGION));
+        }else  if(v.getEntry().getValue() != ""){
+            spinner.setSelection(getDefaultPosition(v, regions, Integer.valueOf(v.getEntry().getValue())));
+        }
+
+
+    }
+
+
+    /**
+     * Get the position of the address city
+     * @return int the position
+     */
+    private int getDefaultPosition(DynamicFormItem formItem, ArrayList<? extends FormListItem> regions, int regionValue){
+            for (int i = 0; i < regions.size(); i++)
+                if (regionValue == regions.get(i).getValue()) {
+                    return i;
+                }
+        return 0;
     }
 
     /**
