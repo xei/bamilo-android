@@ -253,6 +253,7 @@ public class MainFragmentActivity extends BaseActivity {
                 break;
             case CATALOG_SELLER:
             case CATALOG_BRAND:
+            case CATALOG_DEEPLINK:
             case CATALOG:
                 // Default
                 removeEntries = true;

@@ -166,6 +166,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
             if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
             else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
+            else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.CONTENT_URL);
+
             else mQueryValues.put(RestConstants.HASH, mKey);
             // Get sort
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
@@ -174,7 +176,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if(TextUtils.isNotEmpty( mSelectedSort.id)) mQueryValues.put(RestConstants.SORT, mSelectedSort.id);
             if(TextUtils.isNotEmpty(mSelectedSort.direction)) mQueryValues.put(RestConstants.DIRECTION, mSelectedSort.direction);
             // Default catalog values
-            mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
+            if(!mQueryValues.containsKey(RestConstants.MAX_ITEMS))
+                mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
 
             // In case of searching by keyword
             if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY) && arguments.getString(ConstantsIntentExtra.SEARCH_QUERY) != null) {
@@ -204,16 +207,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Track most viewed category
         TrackerDelegator.trackCategoryView();
     }
-
-//    /**
-//     * Function that removes the parameters from the url in order to have the complete url without parameters
-//     */
-//    private void removeParametersFromQuery(final Uri.Builder builder){
-//        builder.clearQuery();
-//        mKey = builder.toString();
-//    }
-
-
 
     /*
      * (non-Javadoc)
@@ -707,6 +700,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Show dialog
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, mCatalogPage.getFilters());
+            bundle.putString(FilterMainFragment.CATALOG_TYPE, this.getTag());
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");
