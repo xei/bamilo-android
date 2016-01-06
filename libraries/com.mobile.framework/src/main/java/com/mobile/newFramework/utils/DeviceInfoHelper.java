@@ -385,6 +385,13 @@ public class DeviceInfoHelper {
         executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, iDeviceVersionBasedCode);
     }
 
+    /**
+     * Execute callbacks based on Jelly Bean MR1 version (API 17).
+     */
+    public static void executeCodeBasedOnJellyBeanMr1Version(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
+        executeCodeBasedOnVersion(Build.VERSION_CODES.JELLY_BEAN_MR1, iDeviceVersionBasedCode);
+    }
+
     public static boolean isPosLollipop(){
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
