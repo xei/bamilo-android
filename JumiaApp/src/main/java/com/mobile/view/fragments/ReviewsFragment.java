@@ -343,7 +343,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
             if (pageNumber == 1) {
                 triggerReviews(selectedProduct.getSku(), pageNumber);
             } else {
-                setProgressRating(selectedProduct.getTotalRatings(), "setAppContentLayout");
+                setProgressRating(selectedProduct.getTotalRatings());
                 fillAverageRatingData(mProductRatingPage);
                 displayReviews(mProductRatingPage, false);
             }
@@ -665,9 +665,8 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
      *
      * @param maxTotal - total of ratings
      */
-    private void setProgressRating(int maxTotal, String log) {
+    private void setProgressRating(int maxTotal) {
         //get progress bars and value numbers
-        Print.i(TAG, "code1rating setProgressRating from "+log+" maxTotal "+maxTotal);
         progressBarFive = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFive);
         progressBarFour = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFour);
         progressBarThree = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarThree);
@@ -683,7 +682,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
 
         //if is rtl, the progress bars shows up with inverted progression
-        if (ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
             setProgressForRTLPreJelly(progressBarFive, Integer.parseInt(mProductRatingPage.getByStarValue(FIVE_STAR_PROGRESS)), maxTotal);
             setProgressForRTLPreJelly(progressBarFour, Integer.parseInt(mProductRatingPage.getByStarValue(FOUR_STAR_PROGRESS)), maxTotal);
             setProgressForRTLPreJelly(progressBarThree, Integer.parseInt(mProductRatingPage.getByStarValue(THREE_STAR_PROGRESS)), maxTotal);
@@ -723,13 +722,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
             progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress));
         } else {
             progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-            if( progress == 0 ){
-                progressBar.setProgress(maxTotal);
-            } else if( progress == maxTotal) {
-                progressBar.setProgress(0);
-            } else {
-                progressBar.setProgress(maxTotal - progress);
-            }
+            progressBar.setProgress(maxTotal - progress);
         }
 
     }
@@ -837,7 +830,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
                 //fill header after getting RatingPage object
                 fillAverageRatingData(productRatingPage);
                 //added: fill progress bars
-                setProgressRating(selectedProduct.getTotalRatings(), "onRequestComplete");
+                setProgressRating(selectedProduct.getTotalRatings());
                 // Append the new page to the current
                 displayReviews(productRatingPage, true);
                 showFragmentContentContainer();

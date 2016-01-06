@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/image_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/campaign_image_height"
         android:layout_marginTop="@dimen/dimen_10dp"
          >
 

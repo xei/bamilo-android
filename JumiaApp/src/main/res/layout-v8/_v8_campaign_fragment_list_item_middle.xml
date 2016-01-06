@@ -17,7 +17,7 @@
         <ImageView
             android:id="@+id/image_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/campaign_image_height"
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/dimen_92dp"
             android:layout_marginRight="@dimen/dimen_92dp"

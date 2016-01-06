@@ -46,6 +46,7 @@ import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -530,7 +531,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             //changeFashion: rating style is changed if vertical is fashion
             if (mProduct.isFashion()) {
-                if(ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1 ){
+                if(ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1() ){
                     setProgressForRTLPreJelly(mProductFashionRating, (float) mProduct.getAvgRating(), mProductFashionRating.getMax());
                 }
                 mProductFashionRating.setRating((float) mProduct.getAvgRating());
@@ -538,7 +539,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mProductRating.setVisibility(View.GONE);
                 mProductFashionRating.setVisibility(View.VISIBLE);
             } else {
-                if(ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1 ){
+                if(ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()){
                     setProgressForRTLPreJelly(mProductRating, (float) mProduct.getAvgRating(), mProductRating.getMax());
                 }
                 mProductRating.setRating((float) mProduct.getAvgRating());
