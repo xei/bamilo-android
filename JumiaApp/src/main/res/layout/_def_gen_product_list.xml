@@ -88,6 +88,16 @@
         android:text="Price"
         android:textColor="@color/black_800" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_shop_first_alias"
+        android:layout_below="@id/item_discount"
+        android:layout_alignLeft="@id/center_view"
+        android:layout_alignStart="@id/center_view"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="6dp"/>
+
     <RelativeLayout
         android:id="@+id/rating_container"
         android:layout_width="match_parent"
