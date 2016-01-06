@@ -374,21 +374,10 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     private void onClickEditAddressButton() {
         Print.i(TAG, "ON CLICK: EDIT");
         if (mEditFormGenerator.validate()) {
-            triggerEditAddress(mEditFormGenerator.getForm().getAction(), createContentValues(mEditFormGenerator));
+            triggerEditAddress(mEditFormGenerator.getForm().getAction(), mEditFormGenerator.save());
         } else {
             Print.i(TAG, "INVALID FORM");
         }
-    }
-
-    /**
-     * Method used to create the content values
-     *
-     * @return new content values
-     * @author sergiopereira
-     */
-    protected ContentValues createContentValues(DynamicForm dynamicForm) {
-        // Save content values
-        return dynamicForm.save();
     }
 
     /**

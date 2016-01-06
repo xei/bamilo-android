@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.ad4screen.sdk.A4SApplication;
@@ -31,6 +32,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.ImageResolutionHelper;
 import com.mobile.newFramework.utils.SingletonMap;
 import com.mobile.newFramework.utils.cache.WishListCache;
+import com.mobile.newFramework.utils.debug.DebugTools;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
@@ -60,9 +62,6 @@ public class JumiaApplication extends A4SApplication {
     private PersistentSessionStore mCustomerUtils;
 
     /**
-     * General Persistent Variables
-     */
-    /**
      * Cart
      */
     private PurchaseEntity cart;
@@ -82,12 +81,20 @@ public class JumiaApplication extends A4SApplication {
     public ArrayList<CountryObject> countriesAvailable = null;
 
     // for tracking
-    public boolean trackSearch = true;
-    public boolean trackSearchCategory = true;
     private HashMap<String, String> bannerSkus = new HashMap<>();
 
     // Search
     public String mSavedSearchTerm;
+
+    /**
+     * attachBaseContext
+     */
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // Enabled multi dex
+        MultiDex.install(this);
+    }
 
     /*
      * (non-Javadoc)
@@ -95,8 +102,11 @@ public class JumiaApplication extends A4SApplication {
      */
     @Override
     public void onApplicationCreate() {
-        Print.initializeAndroidMode(getApplicationContext());
+        // #DEBUG Install debug tools only for debug version
+        DebugTools.initialize(this);
+        // ON APPLICATION CREATE
         Print.i(TAG, "ON APPLICATION CREATE");
+        // Save instance
         INSTANCE = this;
         // Init image loader
         RocketImageLoader.init(this);

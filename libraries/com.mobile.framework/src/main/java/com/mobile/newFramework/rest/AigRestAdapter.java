@@ -7,7 +7,7 @@ import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.configs.HeaderConstants;
 import com.mobile.newFramework.rest.errors.AigErrorHandler;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.debug.DebugTools;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -56,7 +56,7 @@ public class AigRestAdapter {
      * Get log level based in Androlog
      */
     private static RestAdapter.LogLevel getLogLevel() {
-        return Print.isLoggable() ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
+        return DebugTools.IS_DEBUGGABLE ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
     }
 
     /**

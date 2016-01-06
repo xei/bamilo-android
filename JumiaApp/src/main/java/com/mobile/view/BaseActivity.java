@@ -987,9 +987,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 GetSearchSuggestionsHelper.saveSearchQuery(text);
                 // Show query
                 showSearchCategory(text);
-                if (JumiaApplication.INSTANCE != null) {
-                    JumiaApplication.INSTANCE.trackSearch = true;
-                }
             }
         });
 
@@ -1099,7 +1096,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void showSearchCategory(String searchText) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
         // Tracking
-        JumiaApplication.INSTANCE.trackSearchCategory = true;
         TrackerDelegator.trackSearchSuggestions(searchText);
         // Data
         Bundle bundle = new Bundle();

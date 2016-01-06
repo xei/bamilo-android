@@ -31,8 +31,6 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 
-import com.nineoldandroids.view.ViewHelper;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -307,7 +305,7 @@ public abstract class TouchExplorationHelper<T> extends AccessibilityNodeProvide
             final View view = (View) current;
             // We have attach info so this view is attached and there is no
             // need to check whether we reach to ViewRootImpl on the way up.
-            if ((ViewHelper.getAlpha(view) <= 0) || (view.getVisibility() != View.VISIBLE)) {
+            if ((view.getAlpha() <= 0) || (view.getVisibility() != View.VISIBLE)) {
                 return false;
             }
             current = view.getParent();
