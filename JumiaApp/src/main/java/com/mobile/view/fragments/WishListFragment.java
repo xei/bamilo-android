@@ -5,7 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
@@ -18,6 +17,7 @@ import com.mobile.helpers.wishlist.GetWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -35,6 +35,8 @@ import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * WishList fragment with pagination.
@@ -398,6 +400,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     public void onDialogListClickView(View view) {
         // Process the click in the main method
         onClick(view);
+    }
+
+    @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
+
     }
 
     @Override

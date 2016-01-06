@@ -7,22 +7,23 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.mobile.components.HeaderGridView;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsAdapterView.OnItemSelectedListener;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -31,7 +32,9 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
+import com.mobile.newFramework.objects.catalog.Banner;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -42,7 +45,10 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.catalog.HeaderFooterGridView;
+import com.mobile.utils.catalog.HeaderFooterInterface;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
@@ -57,10 +63,10 @@ import java.util.ArrayList;
  * Class used to show campaign page
  * @author sergiopereira
  */
-public class CampaignPageFragment extends BaseFragment implements OnScrollListener, IResponseCallback , DialogSimpleListFragment.OnDialogListListener {
+public class CampaignPageFragment extends BaseFragment implements IResponseCallback , DialogSimpleListFragment.OnDialogListListener{
 
     public static final String TAG = CampaignPageFragment.class.getSimpleName();
-    
+
     private final static String COUNTER_START_TIME = "start_time";
 
     private final static String BANNER_STATE = "banner_state";
@@ -76,7 +82,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     private TeaserCampaign mTeaserCampaign;
     private Campaign mCampaign;
 
-    private HeaderGridView mGridView;
+    private HeaderFooterGridView mGridView;
 
     private boolean isAddingProductToCart;
 
@@ -102,7 +108,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         super(IS_NESTED_FRAGMENT, R.layout.campaign_fragment_pager_item);
         bannerState = DEFAULT;
     }
-        
+
     /**
      * Constructor via bundle
      * @return CampaignFragment
@@ -161,9 +167,21 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get grid view
-        mGridView = (HeaderGridView) view.findViewById(R.id.campaign_grid);
+        mGridView = (HeaderFooterGridView) view.findViewById(R.id.campaign_grid);
         // Set onScrollListener to signal adapter's Handler when user is scrolling
-        mGridView.setOnScrollListener(this);
+        mGridView.addOnScrollListener(new OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                isScrolling = newState == RecyclerView.SCROLL_STATE_DRAGGING;
+
+
+            }
+        });
+
+        mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.catalog_grid_num_columns));
+        mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
         // Validate the current state
         getAndShowCampaign();
     }
@@ -246,7 +264,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         int id = view.getId();
 
         // Product name and image container
-       if (id == R.id.image_container || id == R.id.campaign_item_name) {
+        if (id == R.id.image_container || id == R.id.campaign_item_name) {
             onClickProduct(view);
         }
         // Parent view
@@ -274,7 +292,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         outState.putLong(COUNTER_START_TIME, mStartTimeInMilliseconds);
         outState.putSerializable(BANNER_STATE, bannerState);
     }
-    
+
     /**
      * Get and show the campaign
      * @author sergiopereira
@@ -287,7 +305,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         if(mCampaign == null) triggerGetCampaign(id);
         else showCampaign();
     }
-    
+
     /**
      * Show campaign
      * @author sergiopereira
@@ -298,7 +316,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         // Get banner and show items
         getBannerView();
     }
-    
+
     /**
      * Get the banner view to add the header view
      * @return View
@@ -324,7 +342,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             @Override
             public void onLoadedError() {
                 bannerView.setVisibility(View.GONE);
-                mGridView.removeHeaderView(bannerView);
+                mGridView.hideHeaderView();
                 bannerState = HIDDEN;
                 // Show content
                 showContent(bannerView);
@@ -333,7 +351,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             @Override
             public void onLoadedCancel() {
                 bannerView.setVisibility(View.GONE);
-                mGridView.removeHeaderView(bannerView);
+                mGridView.hideHeaderView();
                 bannerState = HIDDEN;
                 // Show content
                 showContent(bannerView);
@@ -343,7 +361,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         // Return the banner
         return bannerView;
     }
-    
+
     /**
      * Show only the content view
      * @author sergiopereira
@@ -352,7 +370,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         // Validate the current data
         if (mGridView.getAdapter() == null) {
             // Add banner to header
-            if (bannerState != HIDDEN) mGridView.addHeaderView(bannerView);
+            if (bannerState != HIDDEN) mGridView.setHeaderView(bannerView);
             // Set adapter
             CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), mIOnProductClick);
             mGridView.setAdapter(mArrayAdapter);
@@ -380,7 +398,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
     };
 
-    
+
     /**
      * Show the error view for campaigns
      */
@@ -392,33 +410,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             }
         });
     }
-    
-    /**
-     * ############# LISTENERS #############
-     */
-
-    /*
-     * (non-Javadoc)
-     * @see android.widget.AbsListView.OnScrollListener#onScrollStateChanged(android.widget.AbsListView, int)
-     */
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
-        isScrolling = scrollState == OnScrollListener.SCROLL_STATE_FLING;
-    }
-    
-    /*
-     * (non-Javadoc)
-     * @see android.widget.AbsListView.OnScrollListener#onScroll(android.widget.AbsListView, int, int, int)
-     */
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        // ...
-    }
 
     @Override
     public void onDialogListItemSelect(int position) {
-        CampaignItem item = mCampaign.getItems().get(position);
-        addItemToCart(item);
+
     }
 
     @Override
@@ -427,15 +422,14 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
 
     @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
+        addItemToCart(item);
+    }
+
+    @Override
     public void onDialogListDismiss() {
 
     }
-
-//    @Override
-//    public void onDialogSizeListClickView(int position, CampaignItem item) {
-//
-//    }
-
 
     /**
      * Process the click on the buy button
@@ -453,31 +447,27 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
     }
 
     private void addItemToCart(CampaignItem campaignItem){
-        ProductSimple productSimple = campaignItem.getSelectedSimple();
-        if(productSimple != null) {
-            String sku = productSimple.getSku();
-            String size = productSimple.getVariationValue();
-            Boolean hasStock = campaignItem.hasStock();
-            String name = campaignItem.getName();
-            String brand = campaignItem.getBrand();
-            double price = campaignItem.getPriceForTracking();
-            int discount = campaignItem.getMaxSavingPercentage();
-            Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
-            // Validate the remain stock
-            if (!hasStock)
-                showWarningErrorMessage(getString(R.string.campaign_stock_alert));
-                // Validate click
-            else if (!isAddingProductToCart) {
-                // Create values to add to cart
-                ContentValues values = new ContentValues();
-                values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
-                values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
-                triggerAddToCart(values);
-                // Tracking
-                trackAddToCart(sku, name, brand, price, discount);
-            }
-        } else {
-            showUnexpectedErrorWarning();
+
+        String sku = campaignItem.getSelectedSimple().getSku();
+        String size = campaignItem.getSelectedSimple().getVariationValue();
+        Boolean hasStock = campaignItem.hasStock();
+        String name = campaignItem.getName();
+        String brand = campaignItem.getBrand();
+        double price = campaignItem.getPriceForTracking();
+        int discount = campaignItem.getMaxSavingPercentage();
+        Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
+        // Validate the remain stock
+        if(!hasStock)
+            showWarningErrorMessage(getString(R.string.campaign_stock_alert));
+            // Validate click
+        else if(!isAddingProductToCart) {
+            // Create values to add to cart
+            ContentValues values = new ContentValues();
+            values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+            values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+            triggerAddToCart(values);
+            // Tracking
+            trackAddToCart(sku, name, brand, price, discount);
         }
     }
 
@@ -486,7 +476,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
         try {
             DialogSimpleListFragment dialog = DialogSimpleListFragment.newInstance(
-                    this.getActivity(),
+                    getBaseActivity(),
                     getString(R.string.product_variance_choose),
                     item,
                     this);
@@ -496,7 +486,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         }
 
     }
-    
+
     /**
      * Track item added to cart
      * @author sergiopereira
@@ -520,7 +510,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Process the click on the item
      * @param view The product button with some tags
@@ -539,7 +529,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
-    
+
     /**
      * Trigger to get the campaign via id
      * @param id The campaign id
@@ -550,7 +540,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         // Create request
         triggerContentEvent(new GetCampaignHelper(), GetCampaignHelper.createBundle(id), this);
     }
-    
+
     /**
      * ############# REQUESTS #############
      */
@@ -586,24 +576,24 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         super.handleSuccessEvent(baseResponse);
         // Validate type
         switch (eventType) {
-        case GET_CAMPAIGN_EVENT:
-            Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
-            // Get and show campaign
-            mCampaign = (Campaign)baseResponse.getContentData();
+            case GET_CAMPAIGN_EVENT:
+                Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
+                // Get and show campaign
+                mCampaign = (Campaign)baseResponse.getContentData();
             /*--
              * Don't apply Timer if there are no products with remainingTime defined
              */
-            // Set startTime after getting request
-            mStartTimeInMilliseconds = SystemClock.elapsedRealtime();
-            showCampaign();
-            break;
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            Print.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
-            isAddingProductToCart = false;
-            hideActivityProgress();
-            break;
+                // Set startTime after getting request
+                mStartTimeInMilliseconds = SystemClock.elapsedRealtime();
+                showCampaign();
+                break;
+            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+                Print.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
+                isAddingProductToCart = false;
+                hideActivityProgress();
+                break;
             default:
-            break;
+                break;
         }
     }
 
@@ -625,131 +615,57 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
         if(super.handleErrorEvent(baseResponse)) return;
         // Validate type
         switch (eventType) {
-        case GET_CAMPAIGN_EVENT:
-            Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
-            // Show campaign not available screen
-            showCampaignUnavailable();
-            break;
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            isAddingProductToCart = false;
-            hideActivityProgress();
-            break;
-        default:
-            break;
+            case GET_CAMPAIGN_EVENT:
+                Print.d(TAG, "RECEIVED GET_CAMPAIGN_EVENT");
+                // Show campaign not available screen
+                showCampaignUnavailable();
+                break;
+            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
+                isAddingProductToCart = false;
+                hideActivityProgress();
+                break;
+            default:
+                break;
         }
 
     }
 
     /**
-     * ########### ADAPTER ###########  
-     */    
-    
-    public class CampaignAdapter extends ArrayAdapter<CampaignItem> implements OnClickListener, OnItemSelectedListener{
-        
+     * ########### ADAPTER ###########
+     */
+
+    public class CampaignAdapter extends RecyclerView.Adapter<CampaignItemHolder> implements OnClickListener, OnItemSelectedListener, HeaderFooterInterface {
+
         // private static final int YELLOW_PERCENTAGE = 34 < X < 64
-        
+
         private static final int GREEN_PERCENTAGE = 64;
-        
+
         private static final int ORANGE_PERCENTAGE = 34;
 
         private final LayoutInflater mInflater;
 
         private final IOnProductClick mOnClickListener;
 
+        private final ArrayList<CampaignItem> mItems;
+
         /**
          * Constructor
          */
         public CampaignAdapter(Context context, ArrayList<CampaignItem> items, IOnProductClick onClickBuyListener) {
-            super(context, R.layout.campaign_fragment_list_item, items);
+            mItems = items;
             mInflater = LayoutInflater.from(context);
             mOnClickListener = onClickBuyListener;
         }
-        
-        /*
-         * (non-Javadoc)
-         * @see android.widget.ArrayAdapter#getItem(int)
-         */
-        @Override
+
         public CampaignItem getItem(int position) {
-            return super.getItem(position);
+            return mItems.get(position);
         }
-        
-        /*
-         * (non-Javadoc)
-         * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-         */
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view;
-            // Validate current view
-            if (convertView == null) view = mInflater.inflate(R.layout.campaign_fragment_list_item, parent, false);
-            else view = convertView;
-            // Get the class associated to the view
-            ItemView itemView = getItemView(view);
-            // Get current campaign item
-            CampaignItem item = getItem(position);
-            // Set data
-            setData(itemView, item, position);
-            // Return the filled view
-            return view;
-        }
-        
-        /**
-         * Get the recycled view
-         */
-        private ItemView getItemView(View view){
-            ItemView item;
-            if (view.getTag() == null) {
-                item = new ItemView();
-                // Get stock off
-                item.mStockOff = (TextView) view.findViewById(R.id.campaign_item_stock_off);
-                // Get brand
-                item.mBrand = (TextView) view.findViewById(R.id.campaign_item_brand);
-                // Get name
-                item.mName = (TextView) view.findViewById(R.id.campaign_item_name);
-                // Get image container
-                item.mImageContainer = view.findViewById(R.id.image_container);
-                // Get image
-                item.mImage = (ImageView) view.findViewById(R.id.image_view);
-                // Get Progress
-                item.progress = view.findViewById(R.id.campaign_loading_progress);
-                // Get size container
-                item.mSizeContainer = view.findViewById(R.id.campaign_item_size_container);
-                // Get size spinner
-                item.mSizesValue = (TextView) view.findViewById(R.id.campaign_item_size_label);
-                // Get price
-                item.mPrice = (TextView) view.findViewById(R.id.campaign_item_price);
-                // Get discount
-                item.mDiscount = (TextView) view.findViewById(R.id.campaign_item_discount);
-                // Get save
-                item.mSave = (TextView) view.findViewById(R.id.campaign_item_save_label);
-                // Get save value
-                item.mSaveValue = (TextView) view.findViewById(R.id.campaign_item_save_value);
-                // Get stock bar
-                item.mStockBar = (ProgressBar) view.findViewById(R.id.campaign_item_stock_bar);
-                // Get stock %
-                item.mStockPercentage = (TextView) view.findViewById(R.id.campaign_item_stock_value);
-                // Get button
-                item.mButtonBuy = view.findViewById(R.id.campaign_item_button_buy);
-                // Get Offer Ender image
-                item.mOfferEnded = (TextView) view.findViewById(R.id.campaign_item_offer_ended);
-                // Get timer container
-                item.mTimerContainer = view.findViewById(R.id.campaign_item_stock_timer_container);
-                // Get timer
-                item.mTimer = (TextView) view.findViewById(R.id.campaign_item_stock_timer);
-                // Stores the item representation on the tag of the view for later retrieval
-                view.setTag(item);
-            } else {
-                item = (ItemView) view.getTag();
-            }
-            return item;
-        }
-        
+
         /**
          * Set the campaign data
          * @author sergiopereira
          */
-        private void setData(ItemView view, CampaignItem item, int position) {
+        private void setData(CampaignItemHolder view, CampaignItem item, int position) {
             //Log.d(TAG, "SET DATA");
             // Set stock off
             setStockOff(view, item);
@@ -780,7 +696,11 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Set itemView's remainingTime to be used by handler
             view.mRemainingTime = remainingTime;
             // start handler processing
-            if(remainingTime > 0) view.mHandler.sendEmptyMessageDelayed(0, 1000);
+            if(remainingTime > 0){
+                Message msg = new Message();
+                msg.obj = view;
+                mHandler.sendMessageDelayed(msg, 1000);
+            }
             // update Timer
             updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
         }
@@ -807,12 +727,12 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
 
                     // Set full opacity to image
                     image.setAlpha(1F);
-                // show "Offer Ended" and disable product
+                    // show "Offer Ended" and disable product
                 } else {
                     Print.d(TAG, "Product expired!");
                     showOfferEnded(timerContainer, buttonBuy, offerEnded, timer, name, image, imageContainer);
                 }
-            // show product normally without timers
+                // show product normally without timers
             } else {
                 timerContainer.setVisibility(View.INVISIBLE);
                 buttonBuy.setEnabled(true);
@@ -906,7 +826,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * Set the price and special price view
          * @author sergiopereira
          */
-        private void setPriceContainer(ItemView view, CampaignItem item){
+        private void setPriceContainer(CampaignItemHolder view, CampaignItem item){
             // Set price
             view.mPrice.setSelected(true);
             // Validate special price
@@ -917,7 +837,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * Set the save value
          * @author sergiopereira
          */
-        private void setSaveContainer(ItemView view, CampaignItem item){
+        private void setSaveContainer(CampaignItemHolder view, CampaignItem item){
             if(item.hasDiscount()){
                 String label = getString(R.string.campaign_save);
                 String value = CurrencyFormatter.formatCurrency( "" + item.getSavePrice());
@@ -926,12 +846,12 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 view.mSaveValue.setText(value);
                 view.mSave.setSelected(true);
             } else {
-            	// Set as invisible to occupy the its space
+                // Set as invisible to occupy the its space
                 view.mSave.setVisibility(View.INVISIBLE);
                 view.mSaveValue.setVisibility(View.INVISIBLE);
             }
         }
-        
+
         /**
          * Set a view as clickable saving the position
          * @author sergiopereira
@@ -946,7 +866,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * Hide or show the stock off
          * @author ricardosoares
          */
-        private void setStockOff(ItemView view, CampaignItem item){
+        private void setStockOff(CampaignItemHolder view, CampaignItem item){
             if(item.getMaxSavingPercentage() == 0){
                 view.mStockOff.setVisibility(View.GONE);
 
@@ -960,7 +880,7 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
          * Hide or show the size container
          * @author sergiopereira
          */
-        private void setSizeContainer(final ItemView view, final CampaignItem item, int position){
+        private void setSizeContainer(final CampaignItemHolder view, final CampaignItem item, int position){
             // Campaign has sizes except itself (>1)
             if(!item.hasUniqueSize() && CollectionUtils.isNotEmpty(item.getSimples())) {
                 // Show container
@@ -980,7 +900,6 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
                 item.setSelectedSimplePosition(0);
             }
         }
-
         /**
          * Set the stock bar color
          * @author sergiopereira
@@ -990,10 +909,10 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             // Case GREEN:
             if(stock >= GREEN_PERCENTAGE)
                 view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_green_bar));
-            // Case YELLOW:
+                // Case YELLOW:
             else if(ORANGE_PERCENTAGE < stock && stock < GREEN_PERCENTAGE)
                 view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_yellow_bar));
-            // Case ORANGE:
+                // Case ORANGE:
             else  view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_orange_bar));
             // Set value
             view.getProgressDrawable().setBounds(bounds);
@@ -1043,54 +962,140 @@ public class CampaignPageFragment extends BaseFragment implements OnScrollListen
             if (mOnClickListener != null){
                 // Send to listener
                 if(id == R.id.campaign_item_button_buy){
-                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + ((selectedSize != null) ? " " + selectedSize.getSku()+ " " +  selectedSize.getVariationValue():""));
                     mOnClickListener.onClickAddProduct(view, item);
                 } else {
-                    Print.d(TAG, "CAMPAIGN ON CLICK: " + item.getSku() + " " + ((selectedSize != null) ? " " + selectedSize.getSku()+ " " +  selectedSize.getVariationValue():""));
                     mOnClickListener.onClickOpenProduct(view);
                 }
             }
         }
 
-        /**
-         * A representation of each item on the list
-         */
-        private class ItemView {
-            private TextView mStockOff;
-            private TextView mBrand;
-            private TextView mName;
-            private View mImageContainer;
-            private ImageView mImage;
-            private View progress;
-            private View mSizeContainer;
-            private TextView mSizesValue;
-            private TextView mPrice;
-            private TextView mDiscount;
-            private TextView mSave;
-            private TextView mSaveValue;
-            private ProgressBar mStockBar;
-            private TextView mStockPercentage;
-            private View mButtonBuy;
-            private TextView mOfferEnded;
-            private View mTimerContainer;
-            private TextView mTimer;
-            private int mRemainingTime;
+        @Override
+        public CampaignItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new CampaignItemHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.campaign_fragment_list_item, parent, false));
+        }
 
-            /**
-             * Handler used to update Timer every second, when user is not scrolling
-             */
-            private final Handler mHandler = new Handler() {
-                public void handleMessage(android.os.Message msg) {
-                    // only update if is not detected a fling (fast scrolling) on gridview
-                    if (!isScrolling) {
-                        updateTimer(mTimer, mTimerContainer, mButtonBuy, mOfferEnded, mName, mImage, mRemainingTime, mImageContainer);
-                    }
-                    this.sendEmptyMessageDelayed(0, 1000);
-                }
-            };
+        @Override
+        public void onBindViewHolder(CampaignItemHolder holder, int position) {
+            setData(holder, mItems.get(position), position);
+        }
+
+        @Override
+        public int getItemCount() {
+            return mItems.size();
         }
 
 
+        /**
+         * Handler used to update Timer every second, when user is not scrolling
+         */
+        private final Handler mHandler = new Handler() {
+            public void handleMessage(android.os.Message msg) {
+                // only update if is not detected a fling (fast scrolling) on gridview
+                if (!isScrolling) {
+                    CampaignItemHolder mCampaignItemHolder = (CampaignItemHolder) msg.obj;
+                    updateTimer(mCampaignItemHolder.mTimer, mCampaignItemHolder.mTimerContainer, mCampaignItemHolder.mButtonBuy, mCampaignItemHolder.mOfferEnded
+                            , mCampaignItemHolder.mName, mCampaignItemHolder.mImage,mCampaignItemHolder. mRemainingTime, mCampaignItemHolder.mImageContainer);
+                }
+                this.sendEmptyMessageDelayed(0, 1000);
+            }
+        };
+
+
+        @Override
+        public void showHeaderView() {
+
+        }
+
+        @Override
+        public void hideHeaderView() {
+
+        }
+
+        @Override
+        public void showFooterView() {
+
+        }
+
+        @Override
+        public void hideFooterView() {
+
+        }
+
+        @Override
+        public void setHeader(@Nullable Banner banner) {
+
+        }
+
+        @Override
+        public void setHeader(@Nullable View banner) {
+
+        }
     }
-    
+
+    /**
+     * A representation of each item on the list
+     */
+    public class CampaignItemHolder extends RecyclerView.ViewHolder {
+        private final TextView mStockOff;
+        private final TextView mBrand;
+        private final TextView mName;
+        private final View mImageContainer;
+        private final ImageView mImage;
+        private final View progress;
+        private final View mSizeContainer;
+        private final TextView mSizesValue;
+        private final TextView mPrice;
+        private final TextView mDiscount;
+        private final TextView mSave;
+        private final TextView mSaveValue;
+        private final ProgressBar mStockBar;
+        private final TextView mStockPercentage;
+        private final View mButtonBuy;
+        private final TextView mOfferEnded;
+        private final View mTimerContainer;
+        private final TextView mTimer;
+        private int mRemainingTime;
+
+        public CampaignItemHolder(View itemView) {
+            super(itemView);
+            // Get stock off
+            mStockOff = (TextView) itemView.findViewById(R.id.campaign_item_stock_off);
+            // Get brand
+            mBrand = (TextView) itemView.findViewById(R.id.campaign_item_brand);
+            // Get name
+            mName = (TextView) itemView.findViewById(R.id.campaign_item_name);
+            // Get image container
+            mImageContainer = itemView.findViewById(R.id.image_container);
+            // Get image
+            mImage = (ImageView) itemView.findViewById(R.id.image_view);
+            // Get Progress
+            progress = itemView.findViewById(R.id.campaign_loading_progress);
+            // Get size container
+            mSizeContainer = itemView.findViewById(R.id.campaign_item_size_container);
+            // Get size spinner
+            mSizesValue = (TextView) itemView.findViewById(R.id.campaign_item_size_label);
+            // Get price
+            mPrice = (TextView) itemView.findViewById(R.id.campaign_item_price);
+            // Get discount
+            mDiscount = (TextView) itemView.findViewById(R.id.campaign_item_discount);
+            // Get save
+            mSave = (TextView) itemView.findViewById(R.id.campaign_item_save_label);
+            // Get save value
+            mSaveValue = (TextView) itemView.findViewById(R.id.campaign_item_save_value);
+            // Get stock bar
+            mStockBar = (ProgressBar) itemView.findViewById(R.id.campaign_item_stock_bar);
+            // Get stock %
+            mStockPercentage = (TextView) itemView.findViewById(R.id.campaign_item_stock_value);
+            // Get button
+            mButtonBuy = itemView.findViewById(R.id.campaign_item_button_buy);
+            // Get Offer Ender image
+            mOfferEnded = (TextView) itemView.findViewById(R.id.campaign_item_offer_ended);
+            // Get timer container
+            mTimerContainer = itemView.findViewById(R.id.campaign_item_stock_timer_container);
+            // Get timer
+            mTimer = (TextView) itemView.findViewById(R.id.campaign_item_stock_timer);
+
+        }
+    }
+
 }

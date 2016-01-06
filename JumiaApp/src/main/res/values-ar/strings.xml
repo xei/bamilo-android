@@ -12,7 +12,6 @@
     <string name="added_bundle_to_shop_cart_dialog_text">تم إضافة المنتجات إلى عربة التسوق</string>
     <string name="added_to_shop_cart_dialog_text">تم إضافة المنتج إلى عربة التسوق</string>
     <string name="all_label">الكل</string>
-    <string name="app_name">جوميا</string>
     <string name="back_label">الرجوع</string>
     <string name="back_level">مستوى الرجوع</string>
     <string name="bamilo_not_available">باميلو غير متاح الآن</string>
@@ -447,7 +446,7 @@
     <string name="delivered_label">تم توصيل</string>
     <string name="order_number">رقم الطلب‎%s‎</string>
     <string name="billing">الفواتير</string>
-    <string name="qty_placeholder">الكمية: %d</string>
+    <string name="qty_placeholder">الكمية: %s</string>
     <string name="reorder_label">إعادة الطلب</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
     <string name="order_pending">قيد الإنتظار</string>
