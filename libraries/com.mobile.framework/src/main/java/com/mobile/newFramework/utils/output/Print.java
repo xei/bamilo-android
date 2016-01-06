@@ -15,23 +15,12 @@ public class Print {
 
     private static int defaultLogMode = ANDROID_MODE;
 
-    private static boolean isLoggable = true;
-
     public static void initializeTestingMode() {
         defaultLogMode = TESTING_MODE;
     }
 
     public static void initializeAndroidMode(Context context) {
         Log.init(context);
-        setIsLoggable(context);
-    }
-
-    private static void setIsLoggable(Context context) {
-       isLoggable = context.getPackageName().contains(".live") || context.getPackageName().contains(".dev");
-    }
-
-    public static boolean isLoggable() {
-        return isLoggable;
     }
 
     public static void i(String tag, String message) {

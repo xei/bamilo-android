@@ -5,7 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
@@ -36,6 +35,8 @@ import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * WishList fragment with pagination.

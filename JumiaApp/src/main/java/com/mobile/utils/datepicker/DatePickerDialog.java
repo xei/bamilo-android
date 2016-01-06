@@ -16,11 +16,11 @@
 
 package com.mobile.utils.datepicker;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,7 +35,6 @@ import android.widget.TextView;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.datepicker.SimpleMonthAdapter.CalendarDay;
 import com.mobile.view.R;
-import com.nineoldandroids.animation.ObjectAnimator;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -43,6 +42,8 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Locale;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * Dialog allowing users to select a date.
@@ -276,8 +277,7 @@ public class DatePickerDialog extends DialogFragment implements
 
         switch (viewIndex) {
             case MONTH_AND_DAY_VIEW:
-                ObjectAnimator pulseAnimator = Utils.getPulseAnimator(mMonthAndDayView, 0.9f,
-                        1.05f);
+                ObjectAnimator pulseAnimator = Utils.getPulseAnimator(mMonthAndDayView, 0.9f, 1.05f);
                 if (mDelayAnimation) {
                     pulseAnimator.setStartDelay(ANIMATION_DELAY);
                     mDelayAnimation = false;
