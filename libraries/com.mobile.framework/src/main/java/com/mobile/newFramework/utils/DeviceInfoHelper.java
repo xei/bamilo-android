@@ -395,4 +395,8 @@ public class DeviceInfoHelper {
     public static boolean isPosLollipop(){
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
+
+    public static boolean isPreJellyBeanMR1(){
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+    }
 }

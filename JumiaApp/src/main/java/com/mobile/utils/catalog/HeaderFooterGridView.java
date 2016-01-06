@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.mobile.newFramework.objects.catalog.Banner;
+import com.mobile.view.fragments.CampaignPageFragment;
 
 /**
  * Created by spereira on 2/27/15.
@@ -55,7 +56,10 @@ public class HeaderFooterGridView extends RecyclerView {
 
     public void hideHeaderView() {
         mGridLayoutManager.hideHeaderView();
-        ((CatalogGridAdapter) getAdapter()).hideHeaderView();
+        if(getAdapter() instanceof HeaderFooterInterface) {
+            mGridLayoutManager.showHeaderView();
+            ((HeaderFooterInterface) getAdapter()).showHeaderView();
+        }
     }
 
     public void showFooterView() {

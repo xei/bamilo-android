@@ -50,7 +50,7 @@ public class CampaignsFragment extends BaseFragment {
      */
     public CampaignsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.UNKNOWN,
+                NavigationAction.CAMPAIGN,
                 R.layout.campaign_fragment_main,
                 R.string.campaigns_label,
                 NO_ADJUST_CONTENT);
@@ -186,7 +186,7 @@ public class CampaignsFragment extends BaseFragment {
      */
     private class CampaignPagerAdapter extends FragmentPagerAdapter {
         
-        private ArrayList<TeaserCampaign> mCampaigns;
+        private final ArrayList<TeaserCampaign> mCampaigns;
         
         /**
          * Constructor

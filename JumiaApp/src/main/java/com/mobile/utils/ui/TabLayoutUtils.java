@@ -120,6 +120,7 @@ public class TabLayoutUtils {
                 action != NavigationAction.SAVED &&
                 action != NavigationAction.HOME &&
                 action != NavigationAction.CATALOG &&
+                action != NavigationAction.CAMPAIGN &&
                 view != null) {
             TypedValue tv = new TypedValue();
             Context context = view.getContext();
