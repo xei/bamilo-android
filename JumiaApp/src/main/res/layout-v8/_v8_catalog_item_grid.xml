@@ -94,6 +94,14 @@
         android:text="Price"
         android:textColor="@color/grey_light" />
 
+    <ImageView
+        android:id="@+id/item_shop_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_shop_first_alias"
+        android:layout_below="@id/item_discount"
+        android:layout_alignRight="@+id/item_brand"
+        android:layout_marginTop="6dp" />
     <View
         android:id="@+id/divider"
         style="@style/HorizontalListDivider"
