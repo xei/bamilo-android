@@ -32,11 +32,13 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 15
         targetSdkVersion 22
-//        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+        multiDexEnabled false // Disabling multidex support. We are using proguard for debug build type.
     }
 
     dexOptions {
-        jumboMode true
+        jumboMode = true
+        incremental true
+        javaMaxHeapSize "2048M"
     }
 
     signingConfigs {
@@ -87,18 +89,20 @@ android {
         debug {
             applicationIdSuffix ".dev"
             debuggable true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-pro.txt', 'proguard-project-dev.txt'
         }
         live {
             applicationIdSuffix ".live"
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-live.txt'
         }
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
         }
     }
 

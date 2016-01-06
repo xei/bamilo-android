@@ -12,7 +12,6 @@
     <string name="added_bundle_to_shop_cart_dialog_text">ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းသို႔ ထည္႔ၿပီးပါၿပီ</string>
     <string name="added_to_shop_cart_dialog_text">1 ခု ထည္႕သြင္းၿပီးပါၿပီ</string>
     <string name="all_label">အားလံုး</string>
-    <string name="app_name">Shop.com.mm</string>
     <string name="back_label">ေနာက္သို႔</string>
     <string name="back_level">ၿပီးခဲ့ေသာအဆင့္သို႔ ျပန္သြားရန္</string>
     <string name="bamilo_not_available">Bamilo အား လက္ရွိအခ်ိန္အတြင္း မရရွိႏိုင္ေသးပါ။</string>
@@ -447,7 +446,7 @@
     <string name="delivered_label">ပို႕ေဆာင္ၿပီးပါၿပီ</string>
     <string name="order_number">ေအာ္ဒါအမွတ္ %s</string>
     <string name="billing">ေငြေခ်မည္႕လိပ္စာ</string>
-    <string name="qty_placeholder">Qty: %d</string>
+    <string name="qty_placeholder">Qty: %s</string>
     <string name="reorder_label">ေအာ္ဒါထပ္မွာရန္</string>
     <string name="order_status_date">%1$s %2$s</string>
     <string name="order_pending">မေရာက္ရွိေသးပါ</string>

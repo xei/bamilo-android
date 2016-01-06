@@ -65,7 +65,7 @@ public class ProductOffer extends ProductMultiple implements IJSONSerializable{
 
             JSONObject productObject = jsonObject.getJSONObject(RestConstants.PRODUCT);
 
-            if(productObject != null){
+            if(productObject != null && jsonObject.optBoolean(RestConstants.HAS_SELLER, false)){
 
                 initializeProductBase(productObject);
 
