@@ -761,9 +761,18 @@ public class DynamicFormItem {
                 outState.putInt(getKey(), selectedItem);
                 break;
             case radioGroup:
-                if (this.dataControl instanceof IcsSpinner) {
+                if (isRadioGroupLayoutVertical()) {
+//                    ContentValues mValues = getSubFormsValues();
+//                    if (mValues != null) {
+//                        outState.putAll(mValues);
+//                    }
+                    outState.putString("name", getRadioGroupLayoutVerticalSelectedFieldName());
+                    outState.putString(getName(), getValue());
+                }
+                else if (this.dataControl instanceof IcsSpinner) {
                     outState.putInt(getKey(), ((IcsSpinner) this.dataControl).getSelectedItemPosition());
-                } else {
+                }
+                else {
                     outState.putInt(getKey(), ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).getSelectedIndex());
                 }
                 break;

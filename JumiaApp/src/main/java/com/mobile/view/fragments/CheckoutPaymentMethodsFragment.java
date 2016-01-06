@@ -195,9 +195,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         super.onSaveInstanceState(outState);
         // Save the current selected item
         try {
-            ContentValues values = mDynamicForm.save();
-            if(values.size() > 0)
-                outState.putParcelable(ConstantsIntentExtra.DATA, values);
+            mDynamicForm.saveFormState(outState);
+//            ContentValues values = mDynamicForm.save();
+//            if(values.size() > 0)
+//                outState.putParcelable(ConstantsIntentExtra.DATA, values);
         } catch (Exception e) {
             Print.w(TAG, "TRY SAVE FORM BUT IS NULL");
         }
