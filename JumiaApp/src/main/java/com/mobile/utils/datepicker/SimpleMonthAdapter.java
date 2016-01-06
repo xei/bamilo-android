@@ -15,9 +15,9 @@
  */
 
 package com.mobile.utils.datepicker;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView.LayoutParams;
@@ -27,6 +27,8 @@ import com.mobile.newFramework.utils.output.Print;
 
 import java.util.Calendar;
 import java.util.HashMap;
+
+import de.akquinet.android.androlog.Log;
 
 
 /**
