@@ -3,12 +3,14 @@ package com.mobile.newFramework.rest;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.mobile.newFramework.rest.configs.AigConfigurations;
 import com.mobile.newFramework.rest.configs.HeaderConstants;
 import com.mobile.newFramework.rest.cookies.AigCookieManager;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
 import com.mobile.newFramework.rest.errors.NoConnectivityException;
 import com.mobile.newFramework.utils.NetworkConnectivity;
+import com.mobile.newFramework.utils.debug.DebugTools;
 import com.mobile.newFramework.utils.output.Print;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
@@ -205,10 +207,17 @@ public class AigHttpClient extends OkClient {
      * Add some http interceptors to debug.
      */
     @SuppressWarnings("unused")
-    private static void addInterceptors(OkHttpClient okHttpClient) {
+    private static void addInterceptors(final OkHttpClient okHttpClient) {
         okHttpClient.interceptors().add(new RedirectResponseInterceptor());
-        //okHttpClient.interceptors().add(new RequestDebuggerInterceptor());
-        //okHttpClient.interceptors().add(new ResponseDebuggerInterceptor());
+        DebugTools.execute(new DebugTools.IBuildTypeCode() {
+            @Override
+            public void onDebugBuildType() {
+                // #STETHO :: Enable Network Inspection
+                okHttpClient.networkInterceptors().add(new StethoInterceptor());
+                //okHttpClient.interceptors().add(new RequestDebuggerInterceptor());
+                //okHttpClient.interceptors().add(new ResponseDebuggerInterceptor());
+            }
+        });
     }
 
     private static class RedirectResponseInterceptor implements Interceptor {
@@ -243,42 +252,6 @@ public class AigHttpClient extends OkClient {
         }
     }
 
-    @SuppressWarnings("unused")
-    private static class RequestDebuggerInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Print.d(TAG, "############ OK HTTP: REQUEST INTERCEPTOR ############");
-            Request request = chain.request();
-            Print.d(TAG, "Headers:      \n" + request.headers());
-            Print.d(TAG, "Url:            " + request.url());
-            Print.d(TAG, "UrI:            " + request.uri());
-            Print.d(TAG, "Https:          " + request.isHttps());
-            Print.d(TAG, "Method:         " + request.method());
-            Print.d(TAG, "Body:           " + request.body());
-            Print.d(TAG, "Cache:          " + request.cacheControl());
-            Print.d(TAG, "####################################################\n");
-            return chain.proceed(request);
-        }
-    }
-
-    @SuppressWarnings("unused")
-    private static class ResponseDebuggerInterceptor implements Interceptor {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Print.d(TAG, "############ OK HTTP: RESPONSE INTERCEPTOR ############");
-            Response response = chain.proceed(chain.request());
-            Print.d(TAG, "Headers:          \n" + response.headers());
-            Print.d(TAG, "Message:            " + response.message());
-            Print.d(TAG, "Redirect:           " + response.isRedirect());
-            Print.d(TAG, "Cache response:     " + response.cacheResponse());
-            Print.d(TAG, "Network response:   " + response.networkResponse());
-            Print.d(TAG, "> Request:          " + response.request());
-            Print.d(TAG, "> Method:           " + chain.request().method());
-            Print.d(TAG, "######################################################\n");
-            return response;
-        }
-    }
-
     public static void clearCache(Context context) throws IOException {
         Print.d(TAG, "Clearing cache");
         if(context != null) {
@@ -290,6 +263,45 @@ public class AigHttpClient extends OkClient {
 
     private static File getCache(@NonNull Context context){
         return new File(context.getFilesDir() + "/retrofitCache");
+    }
+
+
+    @SuppressWarnings("unused")
+    private static class RequestDebuggerInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Print.d(AigHttpClient.TAG, "############ OK HTTP: REQUEST INTERCEPTOR ############");
+            Request request = chain.request();
+            Print.d(AigHttpClient.TAG, "Headers:      \n" + request.headers());
+            Print.d(AigHttpClient.TAG, "Url:            " + request.url());
+            Print.d(AigHttpClient.TAG, "UrI:            " + request.uri());
+            Print.d(AigHttpClient.TAG, "Https:          " + request.isHttps());
+            Print.d(AigHttpClient.TAG, "Method:         " + request.method());
+            Print.d(AigHttpClient.TAG, "Body:           " + request.body());
+            Print.d(AigHttpClient.TAG, "Cache:          " + request.cacheControl());
+            Print.d(AigHttpClient.TAG, "####################################################\n");
+            return chain.proceed(request);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    private static class ResponseDebuggerInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            Print.d(AigHttpClient.TAG, "############ OK HTTP: RESPONSE INTERCEPTOR ############");
+            Response response = chain.proceed(chain.request());
+            Print.d(AigHttpClient.TAG, "Headers:          \n" + response.headers());
+            Print.d(AigHttpClient.TAG, "Message:            " + response.message());
+            Print.d(AigHttpClient.TAG, "Redirect:           " + response.isRedirect());
+            Print.d(AigHttpClient.TAG, "Cache response:     " + response.cacheResponse());
+            Print.d(AigHttpClient.TAG, "Network response:   " + response.networkResponse());
+            Print.d(AigHttpClient.TAG, "> Request:          " + response.request());
+            Print.d(AigHttpClient.TAG, "> Method:           " + chain.request().method());
+            Print.d(AigHttpClient.TAG, "######################################################\n");
+            return response;
+        }
     }
 
 }

@@ -27,25 +27,16 @@
 #      https://android.googlesource.com/platform/sdk/+/master/files/proguard-android-optimize.txt#
 #################################################################################################
 
-## PARENT proguard-android-optimize.txt #########################################
-#-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
-#-optimizationpasses 5
-#-allowaccessmodification
-#-dontpreverify
+## PARENT proguard-android.txt #########################################
 #-dontusemixedcaseclassnames
 #-dontskipnonpubliclibraryclasses
+#-dontoptimize
+#-dontpreverify
 #-verbose
+-dontobfuscate
 ##################################################################################
 
-## BEGIN REMOVE LOG CODE #########################################
--assumenosideeffects class de.akquinet.android.androlog.Log {
-    public static boolean isLoggable(java.lang.String, int);
-    public static int v(...);
-    public static int i(...);
-    public static int w(...);
-    public static int d(...);
-    public static int e(...);
-}
-#####################################################################
-
-## MERGE FROM proguard-project-base.txt #########################################
+## BEGIN MOBILE #################################################################
+-keep class com.mobile.** { *; }
+-keep interface com.mobile.** { *; }
+##################################################################################

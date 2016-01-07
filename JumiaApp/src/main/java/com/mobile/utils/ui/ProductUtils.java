@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
@@ -32,7 +31,7 @@ public class ProductUtils {
 
         //If hasn't simple but has range
         }else if(TextUtils.isNotEmpty(priceRange)){
-            specialPrice.setText(CurrencyFormatter.formatCurrencyPattern(priceRange));
+            specialPrice.setText(priceRange);
             price.setText("");
         } else {
             setPrice(productBase, price, specialPrice);
