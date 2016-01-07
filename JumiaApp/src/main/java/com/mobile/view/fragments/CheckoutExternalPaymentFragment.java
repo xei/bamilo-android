@@ -283,7 +283,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 }
             }
 
-            Print.i(TAG, "code1content parameters: " + parameters);
+            //Print.i(TAG, "code1content parameters: " + parameters);
             UrlEncodedFormEntity entity;
             try {
                 entity = new UrlEncodedFormEntity(parameters);
@@ -386,7 +386,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Print.i(TAG, "code1payment : onPageFinished");
+            //Print.i(TAG, "code1payment : onPageFinished");
             Print.d(TAG, "onPageFinished: url = " + url);
             if (wasLoadingErrorPage) {
                 Print.d(TAG, "onPageFinished: resetting error page information");
@@ -424,7 +424,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         @Override
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
-            Print.i(TAG, "code1payment : onLoadResource");
+            //Print.i(TAG, "code1payment : onLoadResource");
             try {
                 Print.d(TAG, "onLoadResource: url = " + url);
             } catch (OutOfMemoryError e) {
@@ -442,7 +442,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Print.i(TAG, "code1payment : onPageStarted : " + url);
+            //Print.i(TAG, "code1payment : onPageStarted : " + url);
             Print.d(TAG, "onPageStarted: url = " + url);
             if (url.equals(failedPageRequest)) {
                 return;
@@ -464,7 +464,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
          */
         @Override
         public void onReceivedSslError(WebView view, @NonNull SslErrorHandler handler, SslError error) {
-            Print.i(TAG, "code1payment : onReceivedSslError : " + error);
+            //Print.i(TAG, "code1payment : onReceivedSslError : " + error);
             Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
                 showWarningErrorMessage(getString(R.string.ssl_error_host_mismatch));

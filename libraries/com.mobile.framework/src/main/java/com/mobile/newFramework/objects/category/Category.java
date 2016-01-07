@@ -9,7 +9,6 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -141,7 +140,7 @@ public class Category implements IJSONSerializable, Parcelable {
         mTargetLink = jsonObject.optString(RestConstants.TARGET);
         mUrlKey = jsonObject.optString(RestConstants.URL_KEY);
         mPath = jsonObject.optString(RestConstants.URL);
-        Print.i(TAG, "code1categoy : getApiUrl: " + mTargetLink + " category.getName(): " + mName);
+//        //Print.i(TAG, "code1categoy : getApiUrl: " + mTargetLink + " category.getName(): " + mName);
         // Get sub categories
         JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.CHILDREN);
         if (childrenArray != null) {

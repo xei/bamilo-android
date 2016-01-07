@@ -413,7 +413,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 displayShoppingCart(removeVoucherPurchaseEntity);
                 return true;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
-                Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
+                //Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
                 params = new Bundle();
                 params.putString(TrackerDelegator.SKU_KEY, itemRemoved_sku);
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
@@ -931,7 +931,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 if (!TextUtils.isEmpty(mVoucher)) {
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
-                    Print.i(TAG, "code1coupon : " + mVoucher);
+                    //Print.i(TAG, "code1coupon : " + mVoucher);
                     if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {

@@ -34,7 +34,6 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
-import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -43,7 +42,6 @@ import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.Iterator;
 
 /**
  * 
@@ -66,7 +64,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
     private boolean removeVoucher = false;
 
-    private ContentValues mSavedState;
+    private Bundle mSavedState;
     
     private String paymentName = "";
 
@@ -120,8 +118,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         Print.i(TAG, "ON CREATE");
         // Validate the saved values 
         if(savedInstanceState != null){
-            // Get the ship content values
-            mSavedState = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
+            mSavedState = savedInstanceState;
         }
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_PAYMENT);
     }
@@ -180,10 +177,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        if(mDynamicForm != null){
-            JumiaApplication.INSTANCE.lastPaymentSelected = mDynamicForm.getSelectedValueIndex();
-        }
-
     }
 
     /*
@@ -193,14 +186,9 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // Save the current selected item
-        try {
+        // Save the form state
+        if(mDynamicForm != null) {
             mDynamicForm.saveFormState(outState);
-//            ContentValues values = mDynamicForm.save();
-//            if(values.size() > 0)
-//                outState.putParcelable(ConstantsIntentExtra.DATA, values);
-        } catch (Exception e) {
-            Print.w(TAG, "TRY SAVE FORM BUT IS NULL");
         }
     }
 
@@ -284,7 +272,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         mPaymentContainer.removeAllViews();
         mPaymentContainer.addView(mDynamicForm.getContainer());
-        loadSavedValues(mSavedState, mDynamicForm.iterator());
+        mDynamicForm.loadSaveFormState(mSavedState);
         mPaymentContainer.refreshDrawableState();
         prepareCouponView();
         validatePaymentIsAvailable();
@@ -313,23 +301,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             mCheckoutButtonNext.setVisibility(getView().findViewById(R.id.text_information) == null ? View.VISIBLE : View.GONE);
         } catch (NullPointerException e) {
             //...
-        }
-    }
-
-    /**
-     * Load the saved values and update the form
-     */
-    private void loadSavedValues(ContentValues savedValues, Iterator<DynamicFormItem> iter){
-        // Load save state
-        if (savedValues != null){
-            while (iter.hasNext()){
-                try {
-                    iter.next().setSelectedPaymentMethod(JumiaApplication.INSTANCE.lastPaymentSelected);
-                    iter.next().loadState(mSavedState);
-                } catch (Exception e) {
-                    Print.w(TAG, "CAN'T LOAD THE SAVED STATE");
-                }
-            }
         }
     }
 

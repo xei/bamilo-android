@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.checkout.Region;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -137,7 +136,7 @@ public class PickUpStationObject implements Parcelable {
         Iterator<?> keys = arrayRegions.keys();
         while (keys.hasNext()) {
             String key = keys.next().toString();
-            Print.i(TAG, "code1adding key : " + key);
+//            //Print.i(TAG, "code1adding key : " + key);
             Region mRegion = new Region(key, arrayRegions.getString(key));
             this.regions.add(mRegion);
         }

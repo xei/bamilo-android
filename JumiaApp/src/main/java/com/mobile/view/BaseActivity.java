@@ -1409,7 +1409,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
 //    public void showKeyboard() {
 //        // Log.d( TAG, "showKeyboard" );
-//        Print.i(TAG, "code1here showKeyboard");
+//        //Print.i(TAG, "code1here showKeyboard");
 //        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
 //        // use the above as the method below does not always work

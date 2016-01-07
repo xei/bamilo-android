@@ -77,7 +77,7 @@ public class FormFactory {
      */
     public DynamicForm CreateForm(int formType, Context context, Form form) {
         DynamicForm parent = null;
-        Print.i(TAG, "code1register CREATING FORM : " + formType);
+        //Print.i(TAG, "code1register CREATING FORM : " + formType);
         switch (formType) {
             case FormConstants.LOGIN_FORM:
             case FormConstants.REGISTRATION_FORM:

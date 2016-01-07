@@ -47,11 +47,13 @@ import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.forms.PaymentInfo;
+import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.addresses.PhonePrefix;
 import com.mobile.newFramework.objects.addresses.PhonePrefixes;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -218,22 +220,6 @@ public class DynamicFormItem {
      */
     public FormInputType getType() {
         return this.entry.getInputType();
-    }
-
-    public boolean isRadioGroupLayoutVertical() {
-        return this.dataControl instanceof RadioGroupLayoutVertical;
-    }
-
-    public ContentValues getSubFormsValues() {
-        return ((RadioGroupLayoutVertical) this.dataControl).getSubFieldParameters();
-    }
-
-    public int getSubFormsSelectedIndex() {
-        return ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex();
-    }
-
-    public String getRadioGroupLayoutVerticalSelectedFieldName() {
-        return ((RadioGroupLayoutVertical) this.dataControl).getSelectedFieldName();
     }
 
     /**
@@ -456,7 +442,8 @@ public class DynamicFormItem {
                 if (this.dataControl instanceof IcsSpinner) {
                     ((IcsSpinner) this.dataControl).setSelection(position);
                 } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
-                    ((RadioGroupLayoutVertical) this.dataControl).setSelection(position);
+                    ((RadioGroupLayoutVertical) this.dataControl).setPaymentSelection(position);
+                    ((RadioGroupLayoutVertical) this.dataControl).loadSubFieldState(inStat);
                 } else {
                     ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).setSelection(position);
                 }
@@ -508,11 +495,74 @@ public class DynamicFormItem {
             default:
                 break;
         }
-
     }
 
-    public void setSelectedPaymentMethod(int index) {
-        ((RadioGroupLayoutVertical) this.dataControl).setPaymentSelection(index);
+    /**
+     * Saves form item values to submit the form.
+     */
+    public void save(ContentValues values) {
+        switch (this.entry.getInputType()) {
+            case metadata:
+                addSubFormFieldValues(values);
+                values.put(getName(), getValue());
+                break;
+            case radioGroup:
+                if (this.dataControl instanceof RadioGroupLayoutVertical) {
+                    ContentValues mValues = ((RadioGroupLayoutVertical) dataControl).getSubFieldParameters();
+                    if (mValues != null) values.putAll(mValues);
+                    values.put(RestConstants.NAME, ((RadioGroupLayoutVertical) dataControl).getSelectedFieldName());
+                }
+                values.put(getName(), getValue());
+                break;
+            case list:
+                ViewGroup viewGroup = (ViewGroup) getControl();
+                IcsSpinner spinner = (IcsSpinner) viewGroup.getChildAt(0);
+                FormListItem selectedItem = (FormListItem) spinner.getSelectedItem();
+                if(selectedItem != null) {
+                    values.put(getName(), selectedItem.getValue());
+                }
+                break;
+            case relatedNumber:
+                // Get number
+                String number = getValue();
+                if (com.mobile.newFramework.utils.TextUtils.isNotEmpty(number)) {
+                    values.put(getName(), number);
+                    // Get related option
+                    IFormField related = getEntry().getRelatedField();
+                    // Validate related type
+                    FormInputType relatedType = related.getInputType();
+                    // Only send the related info if the main is filled
+                    if (relatedType == FormInputType.radioGroup) {
+                        RadioGroupLayout group = (RadioGroupLayout) getControl().findViewWithTag(DynamicFormItem.RELATED_RADIO_GROUP_TAG);
+                        // Get selected position
+                        int idx = group.getSelectedIndex();
+                        // Get option value from related item
+                        String value = related.getOptions().get(idx).getValue();
+                        values.put(related.getName(), value);
+                    } else if (relatedType == FormInputType.list) {
+                        IcsSpinner icsSpinner = (IcsSpinner) getControl().findViewWithTag(DynamicFormItem.RELATED_LIST_GROUP_TAG);
+                        FormListItem item = (FormListItem) icsSpinner.getSelectedItem();
+                        if (item != null) {
+                            values.put(related.getName(), item.getValue());
+                        }
+                    }
+                }
+                break;
+            case rating:
+                RatingBar bar = (RatingBar) getControl().findViewWithTag(DynamicFormItem.RATING_BAR_TAG);
+                Map<String, String> ratingMap = getEntry().getDateSetRating();
+                if (CollectionUtils.isNotEmpty(ratingMap)) {
+                    for (int i = 0; i < ratingMap.size(); i++) {
+                        values.put(bar.getTag(R.id.rating_bar_id).toString(), (int) bar.getRating());
+                    }
+                }
+                break;
+            default:
+                if (null != getValue()) {
+                    values.put(getName(), getValue());
+                }
+                break;
+        }
     }
 
     /**
@@ -525,17 +575,14 @@ public class DynamicFormItem {
      */
     @Deprecated
     public void loadState(ContentValues inStat) {
-
         switch (this.entry.getInputType()) {
             case checkBox:
                 boolean checked = inStat.getAsBoolean(getName());
                 ((CheckBox) this.dataControl).setChecked(checked);
-
                 break;
             case checkBoxLink:
                 boolean checkedList = inStat.getAsBoolean(getName());
                 ((CheckBox) this.dataControl.findViewWithTag("checkbox")).setChecked(checkedList);
-
                 break;
             case list:
                 Print.i(TAG,"load List");
@@ -551,7 +598,6 @@ public class DynamicFormItem {
                 } else {
                     ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).setSelection(position);
                 }
-
                 break;
             case metadata:
             case date:
@@ -761,18 +807,12 @@ public class DynamicFormItem {
                 outState.putInt(getKey(), selectedItem);
                 break;
             case radioGroup:
-                if (isRadioGroupLayoutVertical()) {
-//                    ContentValues mValues = getSubFormsValues();
-//                    if (mValues != null) {
-//                        outState.putAll(mValues);
-//                    }
-                    outState.putString("name", getRadioGroupLayoutVerticalSelectedFieldName());
-                    outState.putString(getName(), getValue());
-                }
-                else if (this.dataControl instanceof IcsSpinner) {
+                if (this.dataControl instanceof RadioGroupLayoutVertical) {
+                    ((RadioGroupLayoutVertical) this.dataControl).saveSubFieldState(outState);
+                    outState.putInt(getKey(), ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex());
+                } else if (this.dataControl instanceof IcsSpinner) {
                     outState.putInt(getKey(), ((IcsSpinner) this.dataControl).getSelectedItemPosition());
-                }
-                else {
+                } else {
                     outState.putInt(getKey(), ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).getSelectedIndex());
                 }
                 break;
@@ -844,7 +884,7 @@ public class DynamicFormItem {
                     if (this.dataControl instanceof IcsSpinner) {
                         valid = ((IcsSpinner) this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
                     } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
-                        Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
+                        //Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
                         valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                         // validate if accepted terms of payment method
                         if (valid) {
@@ -861,7 +901,7 @@ public class DynamicFormItem {
                             }
                         }
                     } else {
-                        Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayout");
+                        //Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayout");
                         valid = ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                     }
 
@@ -1008,7 +1048,7 @@ public class DynamicFormItem {
         }
 
         TextView mLinkTextView = (TextView) this.dataControl.findViewById(R.id.textview_terms);
-        Print.i(TAG, "code1link : " + this.entry.getLinkText());
+        //Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getKey());
         mLinkTextView.setOnClickListener(new OnClickListener() {
@@ -1254,7 +1294,7 @@ public class DynamicFormItem {
                     Date d = new Date(cal.getTimeInMillis());
                     String date = DateFormat.format(DATE_FORMAT, d).toString();
                     spinnerButton.setText(date);
-                    Print.i(TAG, "code1date : date : " + date);
+                    //Print.i(TAG, "code1date : date : " + date);
                     if(mandatoryControl != null)
                         DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
 
@@ -1519,7 +1559,7 @@ public class DynamicFormItem {
             if (this.parent.getForm().getFields() != null && this.parent.getForm().getFields().size() > 0) {
                 HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getPaymentMethodsField();
                 if (paymentMethodsField != null) {
-                    Print.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField);
+                    //Print.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField);
                     if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubForms().size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));
                     }
