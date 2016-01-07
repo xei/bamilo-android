@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
-    android:layout_height="@dimen/catalog_single_item_height">
+    android:minHeight="@dimen/catalog_single_item_height"
+    android:layout_height="wrap_content">
 
     <include
         android:id="@+id/image_loadable"
@@ -104,7 +105,7 @@
         android:src="@drawable/ic_shop_first_alias"
         android:layout_below="@id/item_discount"
         android:layout_alignRight="@+id/item_brand"
-        android:layout_marginTop="6dp" />
+        android:layout_marginTop="4dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
