@@ -150,6 +150,6 @@
         android:id="@+id/vdivider"
         style="@style/VerticalListDivider"
         android:visibility="gone"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"/>
 
 </RelativeLayout>
