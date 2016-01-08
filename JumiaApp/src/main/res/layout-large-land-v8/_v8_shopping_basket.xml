@@ -4,23 +4,6 @@
               android:layout_height="match_parent"
               android:baselineAligned="false"
               android:orientation="horizontal">
-
-    <!-- SHOPPING CART ITEMS -->
-
-    <com.mobile.components.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/shoppingcart_nested_scroll"
-        android:layout_weight="1" >
-
-        <LinearLayout
-            android:id="@+id/shoppingcart_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-        </LinearLayout>
-    </com.mobile.components.widget.NestedScrollView>
-
     <com.mobile.components.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -72,5 +55,22 @@
             </LinearLayout>
         </LinearLayout>
     </com.mobile.components.widget.NestedScrollView>
+    <!-- SHOPPING CART ITEMS -->
+
+    <com.mobile.components.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/shoppingcart_nested_scroll"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:id="@+id/shoppingcart_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </com.mobile.components.widget.NestedScrollView>
+
+
 
 </LinearLayout>

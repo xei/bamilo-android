@@ -37,7 +37,7 @@
             style="@style/TextCaption"
             android:layout_width="wrap_content"
             android:layout_below="@id/campaign_item_stock_bar"
-            android:layout_toLeftOf="@id/campaign_item_stock_label"
+            android:layout_toLeftOf="@+id/campaign_item_stock_label"
             android:layout_marginTop="@dimen/margin_small"
             android:ellipsize="marquee"
             android:maxLines="1"

@@ -4,16 +4,16 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ListAdapter;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapterNew;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -23,6 +23,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.view.R;
 
@@ -51,7 +52,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     private TextView mProductBrand;
 
-    private GridView mOffersList;
+    private HeaderFooterGridView mOffersList;
 
     private ProductOffer offerAddToCart;
 
@@ -119,7 +120,11 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         // Get views
         mProductName = (TextView) view.findViewById(R.id.offer_product_name);
         mProductBrand = (TextView) view.findViewById(R.id.offer_product_brand);
-        mOffersList = (GridView) view.findViewById(R.id.offers_list);
+        mOffersList = (HeaderFooterGridView) view.findViewById(R.id.offers_list);
+        mOffersList.setHasFixedSize(true);
+        mOffersList.setGridLayoutManager(getResources().getInteger(R.integer.favourite_num_columns));
+        mOffersList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mOffersList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
     }
     
     /*
@@ -216,7 +221,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         mProductBrand.setText(mCompleteBrand);
         OffersListAdapterNew offersAdapter = new OffersListAdapterNew(getActivity().getApplicationContext(),productOffers.getOffers(), this);
         mOffersList.setAdapter(offersAdapter);
-        mOffersList.setOnItemClickListener(this);
+        mOffersList.setOnClickListener(this);
     }
 
 
@@ -365,11 +370,13 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     }
 
     @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
+
+    }
+
+    @Override
     public void onDialogListDismiss() {
-        ListAdapter listAdapter = mOffersList.getAdapter();
-        if(listAdapter instanceof OffersListAdapterNew){
-            ((OffersListAdapterNew) listAdapter).notifyDataSetChanged();
-        }
+       mOffersList.getAdapter().notifyDataSetChanged();
     }
 
     @Override

@@ -33,6 +33,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
@@ -45,6 +46,7 @@ import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -529,11 +531,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             //changeFashion: rating style is changed if vertical is fashion
             if (mProduct.isFashion()) {
+                if(ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1() ){
+                    setProgressForRTLPreJelly(mProductFashionRating, (float) mProduct.getAvgRating(), mProductFashionRating.getMax());
+                }
                 mProductFashionRating.setRating((float) mProduct.getAvgRating());
+
                 mProductRating.setVisibility(View.GONE);
                 mProductFashionRating.setVisibility(View.VISIBLE);
             } else {
+                if(ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()){
+                    setProgressForRTLPreJelly(mProductRating, (float) mProduct.getAvgRating(), mProductRating.getMax());
+                }
                 mProductRating.setRating((float) mProduct.getAvgRating());
+
                 mProductRating.setVisibility(View.VISIBLE);
             }
             String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
@@ -541,6 +551,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
 
    //     mProductRating.setVisibility(View.VISIBLE);
+    }
+
+    private void setProgressForRTLPreJelly(RatingBar progressBar, float progress, int maxTotal){
+        progressBar.setRotation(180.0f);
+
     }
 
     /**
@@ -1119,6 +1134,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onDialogListClickView(View view) {
         onClick(view);
+    }
+
+    @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
+
     }
 
     @Override
