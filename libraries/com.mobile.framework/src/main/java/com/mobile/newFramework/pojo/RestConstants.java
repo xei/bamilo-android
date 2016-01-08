@@ -77,6 +77,7 @@ public class RestConstants {
     public static final String MAX_SAVING_PERCENTAGE = "max_saving_percentage";
     public static final String SPECIAL_PRICE = "special_price";
     public static final String SPECIAL_PRICE_CONVERTED = "special_price_converted";
+    public static final String SHOP_FIRST = "shop_first";
     public static final String IS_NEW = "is_new";
     public static final String SIZE_GUIDE = "size_guide";
     public static final String RELATED_PRODUCTS = "related_products";

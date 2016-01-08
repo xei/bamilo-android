@@ -58,6 +58,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
     private double mSpecialPriceConverted = 0;
     private String mCategoriesIds;
     private String mAttributeSetId;
+    private boolean mShopFirst;
 
     public PurchaseCartItem() {
 
@@ -92,6 +93,7 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
         mCategoriesIds = in.readString();
         mAttributeSetId = in.readString();
         brand = in.readString();
+        mShopFirst = in.readByte() != 0x00;
     }
 
     /*
@@ -146,6 +148,8 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
             mSpecialPriceConverted = jsonObject.optDouble(RestConstants.SPECIAL_PRICE_CONVERTED, 0d);
 
             savingPercentage = 100 - specialPriceVal / priceVal * 100;
+
+            mShopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST,false);
 
 
         } catch (JSONException e) {
@@ -269,6 +273,13 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
     }
 
     /**
+     * @return the mShopFirst
+     */
+    public boolean isShopFirst() {
+        return mShopFirst;
+    }
+
+    /**
      * @return the simpleData
      */
     public Map<String, String> getSimpleData() {
@@ -363,6 +374,8 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
         dest.writeString(mCategoriesIds);
         dest.writeString(mAttributeSetId);
         dest.writeString(brand);
+        dest.writeByte((byte) (mShopFirst ? 0x01 : 0x00));
+
     }
 
 }

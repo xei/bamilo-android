@@ -629,6 +629,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.productSku = item.getConfigSKU();
                 values.productUrl = item.getProductUrl();
                 values.maxQuantity = item.getMaxQuantity();
+                values.shop_first = item.isShopFirst();
 
                 Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
@@ -710,6 +711,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
         prodItem.isNew = (TextView) view.findViewById(R.id.new_arrival_badge);
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
+        prodItem.shopFirstImage = (ImageView) view.findViewById(R.id.item_shop_first);
 
         prodItem.pBar = view.findViewById(R.id.image_loading_progress);
         prodItem.deleteBtn = (TextView) view.findViewById(R.id.button_delete);
@@ -722,6 +724,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         // Hide is New badge because shopping cart product has no info regarding this attribute
         prodItem.isNew.setVisibility(View.GONE);
+        // Hide shop view image if is_shop is false
+        if(!prodItem.itemValues.shop_first)
+            prodItem.shopFirstImage.setVisibility(View.GONE);
+
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
                 R.drawable.no_image_small);
@@ -970,6 +976,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public String productUrl;
         public int maxQuantity;
         public String productSku;
+        public boolean shop_first;
     }
 
     /**
@@ -985,6 +992,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public View pBar;
         public TextView deleteBtn;
         public CartItemValues itemValues;
+        public ImageView shopFirstImage;
 
         /*
          * (non-Javadoc)
@@ -1001,6 +1009,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             pBar = null;
             deleteBtn = null;
             isNew = null;
+            shopFirstImage = null;
             super.finalize();
         }
     }
