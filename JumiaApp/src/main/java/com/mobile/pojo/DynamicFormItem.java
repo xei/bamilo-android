@@ -489,13 +489,11 @@ public class DynamicFormItem {
                 }
                 break;
             case rating:
-                Iterator it = this.entry.getDateSetRating().entrySet().iterator();
-                int count = 1;
-                while (it.hasNext()) {
-                    Map.Entry pairs = (Map.Entry) it.next();
-                    float value = inStat.getFloat(pairs.getKey().toString());
-                    ((RatingBar) this.dataControl.findViewById(count).findViewById(R.id.option_stars)).setRating(value);
-                    count++;
+                if (CollectionUtils.isNotEmpty(getEntry().getDateSetRating())) {
+                    for (String key : getEntry().getDateSetRating().keySet()) {
+                        float value = inStat.getFloat(RATING_BAR_TAG + key);
+                        ((RatingBar) this.dataControl.findViewWithTag(RATING_BAR_TAG + key)).setRating(value);
+                    }
                 }
                 break;
             case hide:
@@ -557,11 +555,10 @@ public class DynamicFormItem {
                 }
                 break;
             case rating:
-                RatingBar bar = (RatingBar) getControl().findViewWithTag(DynamicFormItem.RATING_BAR_TAG);
-                Map<String, String> ratingMap = getEntry().getDateSetRating();
-                if (CollectionUtils.isNotEmpty(ratingMap)) {
-                    for (int i = 0; i < ratingMap.size(); i++) {
-                        values.put(bar.getTag(R.id.rating_bar_id).toString(), (int) bar.getRating());
+                if (CollectionUtils.isNotEmpty(getEntry().getDateSetRating())) {
+                    for (String key : getEntry().getDateSetRating().keySet()) {
+                        RatingBar bar = (RatingBar) this.dataControl.findViewWithTag(RATING_BAR_TAG + key);
+                        values.put(key, (int) bar.getRating());
                     }
                 }
                 break;
@@ -789,11 +786,10 @@ public class DynamicFormItem {
                 }
                 break;
             case rating:
-                RatingBar bar = (RatingBar) getControl().findViewWithTag(DynamicFormItem.RATING_BAR_TAG);
-                Map<String, String> ratingMap = getEntry().getDateSetRating();
-                if (CollectionUtils.isNotEmpty(ratingMap)) {
-                    for (int i = 0; i < ratingMap.size(); i++) {
-                        outState.putFloat(bar.getTag(R.id.rating_bar_id).toString(), bar.getRating());
+                if (CollectionUtils.isNotEmpty(getEntry().getDateSetRating())) {
+                    for (String key : getEntry().getDateSetRating().keySet()) {
+                        RatingBar bar = (RatingBar) this.dataControl.findViewWithTag(RATING_BAR_TAG + key);
+                        outState.putFloat(RATING_BAR_TAG + key, bar.getRating());
                     }
                 }
                 break;
@@ -870,7 +866,12 @@ public class DynamicFormItem {
                 case hide:
                     break;
                 case rating:
-                    result = validateRatingSet();
+                    if (CollectionUtils.isNotEmpty(getEntry().getDateSetRating())) {
+                        for (String key : getEntry().getDateSetRating().keySet()) {
+                            RatingBar bar = (RatingBar) this.dataControl.findViewWithTag(RATING_BAR_TAG + key);
+                            result &= bar.getRating() != 0.0;
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -926,32 +927,6 @@ public class DynamicFormItem {
             setErrorText(message);
             this.errorControl.setVisibility(message.equals("") ? View.GONE : View.VISIBLE);
         }
-    }
-
-    /**
-     * Validate if all ratings options are filled
-     *
-     * @return boolean is valid or not
-     */
-    private boolean validateRatingSet() {
-
-        boolean areAllFilled = true;
-
-        LinearLayout ratingList = ((LinearLayout) this.dataControl);
-
-        Iterator it = this.entry.getDateSetRating().entrySet().iterator();
-        int count = 1;
-        while (it.hasNext()) {
-            it.next();
-
-            float rate = ((RatingBar) ratingList.findViewById(count).findViewById(R.id.option_stars)).getRating();
-
-            if (rate == 0.0)
-                areAllFilled = false;
-
-            count++;
-        }
-        return areAllFilled;
     }
 
     /**
@@ -1577,14 +1552,12 @@ public class DynamicFormItem {
         int count = 1;
         while (it.hasNext()) {
             Map.Entry pairs = (Map.Entry) it.next();
-
             RelativeLayout ratingLine = (RelativeLayout) View.inflate(this.context, R.layout.rating_bar_component, null);
             ratingLine.setId(count);
             count++;
             TextView label = (TextView) ratingLine.findViewById(R.id.option_label);
-
             RatingBar starts = (RatingBar) ratingLine.findViewById(R.id.option_stars);
-            starts.setTag(RATING_BAR_TAG);
+            starts.setTag(RATING_BAR_TAG + pairs.getKey().toString());
             starts.setTag(R.id.rating_bar_id, pairs.getKey().toString());
             label.setText("" + pairs.getValue());
             linearLayout.addView(ratingLine);

@@ -68,7 +68,7 @@ public class CatalogPriceFilter extends CatalogFilter {
         }
 
         if(hasAppliedCheckBoxOption()) {
-            values.put(option.getCheckBoxOption().getId(), true);
+            values.put(option.getCheckBoxOption().getId(), 1);
         }
         return values;
     }
