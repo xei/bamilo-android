@@ -83,6 +83,7 @@
     <dimen name="dimen_810px">270dp</dimen>
 
 
+    <dimen name="dimen_4dp">4dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
     <dimen name="dimen_16dp">16dp</dimen>
     <dimen name="dimen_48dp">48dp</dimen>
