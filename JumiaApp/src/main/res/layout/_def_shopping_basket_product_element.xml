@@ -19,11 +19,8 @@
     <!-- SHOP FIRST IMAGE -->
     <ImageView
         android:id="@+id/item_shop_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_star_full_big"
-        android:layout_below="@id/item_name"
-        android:layout_marginTop="6dp" />
+        style="@style/ShopFirstStyle"
+        android:layout_below="@id/item_name" />
     
 
     <!-- PRICE -->
