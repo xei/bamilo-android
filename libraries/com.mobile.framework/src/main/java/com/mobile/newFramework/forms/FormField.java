@@ -43,8 +43,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private static final String CHECKBOX = "checkbox";
     private static final String HIDDEN = "hidden";
     private static final String CHECKBOX_LINK = "checkbox_link";
-    private static final String MESSAGE_INFO = "info_message";
-    private static final String MESSAGE_ERROR = "error_message";
+    private static final String INFO_MESSAGE = "info_message";
+    private static final String ERROR_MESSAGE = "error_message";
     private static final String EMPTY = "";
 
     private Form mParent;
@@ -151,10 +151,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 case CHECKBOX_LINK:
                     mInputType = FormInputType.checkBoxLink;
                     break;
-                case MESSAGE_INFO:
+                case INFO_MESSAGE:
                     mInputType = FormInputType.infoMessage;
                     break;
-                case MESSAGE_ERROR:
+                case ERROR_MESSAGE:
                     mInputType = FormInputType.errorMessage;
                     break;
                 case EMPTY:
