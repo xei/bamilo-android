@@ -79,7 +79,7 @@ public class ProductMultiple extends ProductRegular {
     }
 
     private boolean hasSimples() {
-        return CollectionUtils.isEmpty(mSimples);
+        return CollectionUtils.isNotEmpty(mSimples);
     }
 
     public boolean hasOwnSimpleVariation() {
