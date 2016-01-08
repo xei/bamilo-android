@@ -38,6 +38,7 @@ import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductRichRelevance;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -77,7 +78,7 @@ import de.akquinet.android.androlog.Log;
  * @author Michael Kroez
  * @modified spereira
  */
-public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnDialogListListener {
+public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnDialogListListener, TargetLink.OnAppendDataListener {
 
     private final static String TAG = ProductDetailsFragment.class.getSimpleName();
 
@@ -112,6 +113,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private View mGlobalButton;
     private View mOffersContainer;
     private String mRichRelevanceHash;
+    private String mRelatedRichRelevanceHash;
 
     /**
      * Empty constructor
@@ -796,6 +798,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setRelatedItems() {
         if (CollectionUtils.isNotEmpty(mProduct.getRelatedProducts())) {
+
+            if(mProduct.getRichRelevance() != null && TextUtils.isNotEmpty(mProduct.getRichRelevance().getTitle()))
+                ((TextView)mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mProduct.getRichRelevance().getTitle());
+
             ExpandedGridViewComponent relatedGridView = (ExpandedGridViewComponent) mRelatedProductsView.findViewById(R.id.pdv_related_grid_view);
             relatedGridView.setExpanded(true);
             relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, mProduct.getRelatedProducts()));
@@ -1082,11 +1088,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String sku = (String) view.getTag(R.id.target_sku);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
-        bundle.putBoolean(ConstantsIntentExtra.IS_RELATED_ITEM, true);
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
+        if(mProduct.getRelatedProducts().get(position) instanceof ProductRichRelevance)
+            mRelatedRichRelevanceHash = ((ProductRichRelevance)mProduct.getRelatedProducts().get(position)).getRichRelevanceClickHash();
+
+        new TargetLink(getWeakBaseActivity(), target)
+                .addAppendListener(this)
+                .retainBackStackEntries()
+                .run();
+    }
+
+    @Override
+    public void onAppendData(FragmentType next, String title, String id, Bundle data) {
+        if(TextUtils.isNotEmpty(mRelatedRichRelevanceHash))
+            data.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRelatedRichRelevanceHash );
     }
 
     /**

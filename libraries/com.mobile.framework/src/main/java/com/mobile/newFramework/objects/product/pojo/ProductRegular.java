@@ -27,7 +27,7 @@ public class ProductRegular extends ProductBase {
     protected int mTotalReviews;
     protected int mTotalRatings;
     private int mBrandId;
-
+    protected String mTarget;
     /**
      * Empty constructor
      */
@@ -48,7 +48,7 @@ public class ProductRegular extends ProductBase {
 
     protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
-        mName = jsonObject.getString(RestConstants.NAME);
+        mName = jsonObject.optString(RestConstants.NAME);
         mBrand = jsonObject.getString(RestConstants.BRAND);
         mBrandId = jsonObject.optInt(RestConstants.BRAND_ID);
         // Optional TODO FIX THIS
@@ -70,6 +70,7 @@ public class ProductRegular extends ProductBase {
             mTotalRatings = ratings.optInt(RestConstants.RATINGS_TOTAL);
             mTotalReviews = ratings.optInt(RestConstants.REVIEWS_TOTAL);
         }
+        mTarget = jsonObject.optString(RestConstants.TARGET);
         return true;
     }
 
@@ -135,6 +136,9 @@ public class ProductRegular extends ProductBase {
         return "";
     }
 
+    public String getTarget() {
+        return mTarget;
+    }
 
     /*
 	 * ############ PARCELABLE ############
@@ -151,6 +155,7 @@ public class ProductRegular extends ProductBase {
         mAvgRating = in.readDouble();
         mTotalReviews = in.readInt();
         mTotalRatings = in.readInt();
+        mTarget = in.readString();
     }
 
     @Override
@@ -165,6 +170,7 @@ public class ProductRegular extends ProductBase {
         dest.writeDouble(mAvgRating);
         dest.writeInt(mTotalReviews);
         dest.writeInt(mTotalRatings);
+        dest.writeString(mTarget);
     }
 
     @Override
