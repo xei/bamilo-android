@@ -351,47 +351,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Validate Regions
         if (regions == null) {
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.REGION);
-            if(TextUtils.isNotEmpty(field.getValue()))
                 triggerGetRegions(field.getApiCall());
-            else{
-                //if region value == "" the regions request is not done and spinners are shown empty
-                //regions
-                inflateSpinnersDefault(shippingFormGenerator, RestConstants.REGION);
-                inflateSpinnersDefault(billingFormGenerator, RestConstants.REGION);
-                //cities
-                if(!isCityIdAnEditText){
-                    inflateSpinnersDefault(shippingFormGenerator, RestConstants.CITY);
-                    inflateSpinnersDefault(billingFormGenerator, RestConstants.CITY);
-                }
-                showFragmentContentContainer();
-
-            }
-
         } else {
             setRegions(shippingFormGenerator, regions, SHIPPING_TAG);
             setRegions(billingFormGenerator, regions, BILLING_TAG);
         }
 
-    }
-
-
-
-
-    /**
-     * Inflates spinners to allow present them empty
-     * */
-    private void inflateSpinnersDefault(DynamicForm dynamicForm, String spinnerKey){
-        DynamicFormItem v = dynamicForm.getItemByKey(spinnerKey);
-        // Clean group
-        ViewGroup group = (ViewGroup) v.getControl();
-        group.removeAllViews();
-        // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
-        spinner.setLayoutParams(group.getLayoutParams());
-        v.setEditControl(spinner);
-        group.addView(spinner);
-
-        showGhostFragmentContentContainer();
     }
 
 
@@ -435,6 +400,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
+
+        if(TextUtils.isEmpty(v.getEntry().getValue()))
+            regions.add(0,new AddressRegion(0,""));
         // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
@@ -723,24 +691,29 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "CURRENT TAG: " + parent.getTag());
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
-            // Get city field
-            FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.CITY);
-            // Case list
-            if (FormInputType.list == field.getInputType()) {
-                // Request the cities for this region id
-                int regionId = ((AddressRegion) object).getValue();
-                // Save the selected region on the respective variable
-                String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
-                if (tag.equals(SHIPPING_TAG)) {
-                    selectedRegionOnShipping = SHIPPING_TAG + "_" + regionId;
-                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnShipping);
-                } else if (tag.equals(BILLING_TAG)) {
-                    selectedRegionOnBilling = BILLING_TAG + "_" + regionId;
-                    triggerGetCities(field.getApiCall(), regionId, selectedRegionOnBilling);
+            if(TextUtils.isNotEmpty(((AddressRegion) object).getLabel())){
+                // Get city field
+                FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.CITY);
+                // Case list
+                if (FormInputType.list == field.getInputType()) {
+                    // Request the cities for this region id
+                    int regionId = ((AddressRegion) object).getValue();
+                    // Save the selected region on the respective variable
+                    String tag = (parent.getTag() != null) ? parent.getTag().toString() : "";
+                    if (tag.equals(SHIPPING_TAG)) {
+                        selectedRegionOnShipping = SHIPPING_TAG + "_" + regionId;
+                        triggerGetCities(field.getApiCall(), regionId, selectedRegionOnShipping);
+                    } else if (tag.equals(BILLING_TAG)) {
+                        selectedRegionOnBilling = BILLING_TAG + "_" + regionId;
+                        triggerGetCities(field.getApiCall(), regionId, selectedRegionOnBilling);
+                    }
                 }
-            }
-            // Case text or other
-            else {
+                // Case text or other
+                else {
+                    showFragmentContentContainer();
+                }
+
+            }else{
                 showFragmentContentContainer();
             }
         } else if (object instanceof AddressCity){
