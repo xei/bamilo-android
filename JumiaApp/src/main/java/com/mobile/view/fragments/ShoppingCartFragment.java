@@ -46,6 +46,7 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -726,7 +727,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.isNew.setVisibility(View.GONE);
         // Hide shop view image if is_shop is false
         if(!prodItem.itemValues.shop_first)
-            prodItem.shopFirstImage.setVisibility(View.GONE);
+            prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
 
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
