@@ -26,6 +26,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.mobile.newFramework.utils.shop.ShopSelector;
+
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{
@@ -63,13 +65,26 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    public void drawVertical(Canvas c, RecyclerView parent) {
-        final int left = parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
-
+    /**
+     * draws horizontal divider on the bottom of each child
+     *
+     * @param c
+     * @param parent
+     */
+    public void drawHorizontal(Canvas c, RecyclerView parent) {
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
+            final int left;
+            final int right;
+            if(i == childCount - 1 && childCount % 2 != 0){
+                left = child.getLeft();
+                right = child.getRight();
+            } else {
+                left = parent.getPaddingLeft();
+                right = parent.getWidth() - parent.getPaddingRight();
+            }
+
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin + Math.round(ViewCompat.getTranslationY(child));
             final int bottom = top + mDivider.getIntrinsicHeight();
@@ -78,16 +93,31 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    public void drawHorizontal(Canvas c, RecyclerView parent) {
-        final int top = parent.getPaddingTop();
-        final int bottom = parent.getHeight() - parent.getPaddingBottom();
+    /**
+     * draws vertical divider from top of first element in view
+     * to the bottom of the last element.
+     * the divider is drawn on either right side or left if LTR or RTL language
+     *
+     * @param c
+     * @param parent
+     */
+    public void drawVertical(Canvas c, RecyclerView parent) {
 
         final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
+        if(childCount > 0) {
+            final View child = parent.getChildAt(0);
+            final int bottom = parent.getChildAt(childCount - 1).getBottom();
+            final int top = parent.getPaddingTop();
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-            final int left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
-            final int right = left + mDivider.getIntrinsicHeight();
+            final int left;
+            final int right;
+            if (ShopSelector.isRtl()) {
+                left = child.getLeft() + params.leftMargin + Math.round(ViewCompat.getTranslationX(child));
+                right = left + mDivider.getIntrinsicHeight();
+            } else {
+                left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
+                right = left + mDivider.getIntrinsicHeight();
+            }
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
