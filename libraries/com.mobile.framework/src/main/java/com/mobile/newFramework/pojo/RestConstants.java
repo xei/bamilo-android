@@ -307,4 +307,5 @@ public class RestConstants {
     public static final String CUSTOMER_DEVICE = "customer_device";
     public static final String PRE_ORDER = "pre_order";
     public static final String HAS_SELLER = "has_seller";
+    public static final String SHOP_FIRST = "shop_first";
 }

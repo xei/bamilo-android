@@ -180,8 +180,10 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             }
         });
 
-        mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.catalog_grid_num_columns));
+        mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.favourite_num_columns));
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
+        mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mGridView.setHasFixedSize(true);
         // Validate the current state
         getAndShowCampaign();
     }

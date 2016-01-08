@@ -2,10 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/offers_list_item"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/border"
-    android:minHeight="114dp"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
 
     <!-- RIGHT SIDE BUTTON -->
@@ -13,23 +10,23 @@
     <com.mobile.components.customfontviews.Button
         android:id="@+id/offer_addcart"
         android:layout_width="120dp"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/dimen_144px"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="@dimen/dimen_16dp"
+        android:layout_marginRight="@dimen/dimen_16dp"
         android:background="@color/color_accent"
         android:text="@string/buy_now_button"
-        android:textColor="@color/white" />
-
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
     <!-- OTHER SELLERS ITEM -->
     <!-- LEFT SIDE -->
     <LinearLayout
         android:id="@+id/left_side_seller"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@id/offer_addcart"
@@ -44,24 +41,27 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|left|start"
             android:orientation="horizontal"
-            android:paddingLeft="@dimen/layout_padding"
-            android:paddingRight="@dimen/layout_padding">
+            android:layout_marginTop="@dimen/dimen_12dp"
+            android:paddingBottom="@dimen/dimen_20dp"
+            android:paddingLeft="@dimen/dimen_16dp"
+            android:paddingStart="@dimen/dimen_16dp">
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/offer_price"
                 style="@style/TextBody_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
-                android:textColor="@color/black" />
+                android:paddingEnd="5dp"
+                android:paddingRight="5dp"
+                android:textColor="@color/black"
+                android:visibility="gone" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/offer_price_normal"
                 style="@style/TextBody_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black_800" />
+                android:textColor="@color/black" />
 
 
         </LinearLayout>
@@ -72,10 +72,8 @@
             layout="@layout/other_sellers_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/price"
-            android:layout_marginTop="16dp" />
+            android:layout_below="@id/price"/>
 
     </LinearLayout>
-
 
 </RelativeLayout>
