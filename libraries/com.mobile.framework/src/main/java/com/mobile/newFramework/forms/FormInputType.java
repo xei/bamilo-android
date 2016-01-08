@@ -20,5 +20,6 @@ public enum FormInputType {
     checkBoxLink,
     rating,
     relatedNumber,
-    errorMessage
+    errorMessage,
+    infoMessage
 }
