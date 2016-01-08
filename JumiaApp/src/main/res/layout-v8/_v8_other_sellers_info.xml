@@ -6,11 +6,8 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical|right"
     android:orientation="vertical"
-    android:paddingEnd="@dimen/dimen_16dp"
     android:paddingLeft="@dimen/dimen_16dp"
-    android:paddingRight="@dimen/dimen_16dp"
-    android:paddingStart="@dimen/dimen_16dp"
-    >
+    android:paddingRight="@dimen/dimen_16dp">
 
     <!-- SELLER INFO -->
 
