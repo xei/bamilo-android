@@ -38,7 +38,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
 
-    private Drawable mDivider;
+    private final Drawable mDivider;
 
     private int mOrientation;
 
@@ -105,21 +105,23 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
         final int childCount = parent.getChildCount();
         if(childCount > 0) {
-            final View child = parent.getChildAt(0);
-            final int bottom = parent.getChildAt(childCount - 1).getBottom();
-            final int top = parent.getPaddingTop();
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-            final int left;
-            final int right;
-            if (ShopSelector.isRtl()) {
-                left = child.getLeft() + params.leftMargin + Math.round(ViewCompat.getTranslationX(child));
-                right = left + mDivider.getIntrinsicHeight();
-            } else {
-                left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
-                right = left + mDivider.getIntrinsicHeight();
+            for (int i = 0; i < childCount; i++){
+                final View child = parent.getChildAt(i);
+                final int bottom = parent.getChildAt(childCount - 1).getBottom();
+                final int top = parent.getPaddingTop();
+                final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+                final int left;
+                final int right;
+                if (ShopSelector.isRtl()) {
+                    left = child.getLeft() + params.leftMargin + Math.round(ViewCompat.getTranslationX(child));
+                    right = left + mDivider.getIntrinsicHeight();
+                } else {
+                    left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
+                    right = left + mDivider.getIntrinsicHeight();
+                }
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
             }
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
         }
     }
 
