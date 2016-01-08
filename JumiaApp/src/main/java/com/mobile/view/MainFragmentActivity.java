@@ -263,7 +263,8 @@ public class MainFragmentActivity extends BaseActivity {
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
                 // Put the catalog type
-                bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, type);
+                bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
+                type = FragmentType.CATALOG;
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:

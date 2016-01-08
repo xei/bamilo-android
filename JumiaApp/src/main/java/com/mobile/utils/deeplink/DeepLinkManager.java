@@ -12,6 +12,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -295,7 +296,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO SEARCH: " + query);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, query);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, query);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
@@ -322,7 +323,7 @@ public class DeepLinkManager {
         if (segments.size() > 2) {
             // Add SKUs for HEADLESS_CART
             simpleSkuArray = segments.get(PATH_DATA_POS);
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, simpleSkuArray);
+            bundle.putString(ConstantsIntentExtra.DATA, simpleSkuArray);
             Print.i(TAG, "DEEP LINK TO CART WITH: " + simpleSkuArray + " " + fragmentType.toString());
         }
         // Create bundle for fragment
@@ -469,14 +470,14 @@ public class DeepLinkManager {
         // case ng/c/womens-dresses&sort=price&dir=asc
         String deeplinkUrl = data.toString();
         if(segments.size() >= MIN_SEGMENTS){
-            String catalogUrlKey = "category=" +segments.get(PATH_DATA_POS);
+            String catalogUrlKey = "?category=" +segments.get(PATH_DATA_POS);
             Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
 
             ContentValues deepLinkValues = new ContentValues();
             if (TextUtils.isNotEmpty(catalogUrlKey))
-                deepLinkValues = TextUtils.splitQuery(catalogUrlKey);
+                deepLinkValues = RestUrlUtils.getQueryParameters(catalogUrlKey);
 
-            bundle.putParcelable(ConstantsIntentExtra.CONTENT_URL, deepLinkValues);
+            bundle.putParcelable(ConstantsIntentExtra.DATA, deepLinkValues);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             bundle.putString(ConstantsIntentExtra.CATALOG_QUERIE, deeplinkUrl);

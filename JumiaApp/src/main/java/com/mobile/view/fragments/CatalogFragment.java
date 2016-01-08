@@ -164,10 +164,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Get title
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             // Get catalog type (Hash/Seller/Brand)
-            FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
+            FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
             if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
             else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
-            else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.CONTENT_URL);
+            else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
 
             else mQueryValues.put(RestConstants.HASH, mKey);
             // Get sort
@@ -177,8 +177,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if(TextUtils.isNotEmpty( mSelectedSort.id)) mQueryValues.put(RestConstants.SORT, mSelectedSort.id);
             if(TextUtils.isNotEmpty(mSelectedSort.direction)) mQueryValues.put(RestConstants.DIRECTION, mSelectedSort.direction);
             // Default catalog values
-            if(!mQueryValues.containsKey(RestConstants.MAX_ITEMS))
-                mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
+            mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
 
             // In case of searching by keyword
             if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY) && arguments.getString(ConstantsIntentExtra.SEARCH_QUERY) != null) {
@@ -701,7 +700,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Show dialog
             Bundle bundle = new Bundle();
             bundle.putParcelableArrayList(FilterMainFragment.FILTER_TAG, mCatalogPage.getFilters());
-            bundle.putString(FilterMainFragment.CATALOG_TYPE, this.getTag());
             getBaseActivity().onSwitchFragment(FragmentType.FILTERS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SHOW DIALOG FRAGMENT");

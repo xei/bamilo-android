@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
@@ -72,10 +73,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     public final static String INITIAL_FILTER_VALUES = "initial_filter_values";
 
-    public final static String CATALOG_TYPE = "catalog_type";
-
-    private String mCatalogType;
-
     private  TextView mTxFilterTitle;
 
     public FilterMainFragment() {
@@ -100,14 +97,12 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
         if(savedInstanceState != null){
             mFilters = savedInstanceState.getParcelableArrayList(FILTER_TAG);
-            mCatalogType = bundle.getString(CATALOG_TYPE);
             currentFilterPosition = savedInstanceState.getInt(FILTER_POSITION_TAG);
             Parcelable[] filterOptions = savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES);
             filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[])filterOptions) : new FilterSelectionController(mFilters);
 
         } else {
             mFilters = bundle.getParcelableArrayList(FILTER_TAG);
-            mCatalogType = bundle.getString(CATALOG_TYPE);
             currentFilterPosition = 0;
             filterSelectionController = new FilterSelectionController(mFilters);
         }
@@ -145,7 +140,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         outState.putParcelableArray(INITIAL_FILTER_VALUES, filterSelectionController.getInitialValues());
         outState.putParcelableArrayList(FILTER_TAG, filterSelectionController.getCatalogFilters());
         outState.putInt(FILTER_POSITION_TAG,currentFilterPosition);
-        outState.putString(CATALOG_TYPE, mCatalogType);
         super.onSaveInstanceState(outState);
     }
 
@@ -254,7 +248,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
         Bundle bundle = new Bundle();
         bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
-        getBaseActivity().communicateBetweenFragments(mCatalogType, bundle);
+
+        getBaseActivity().communicateBetweenFragments(FragmentType.CATALOG.toString(), bundle);
         getBaseActivity().onBackPressed();
 
     }
