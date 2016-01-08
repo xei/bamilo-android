@@ -34,6 +34,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_stock_label"
             style="@style/TextCaption"
+            android:layout_width="wrap_content"
             android:layout_below="@id/campaign_item_stock_bar"
             android:layout_marginRight="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"

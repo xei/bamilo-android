@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
-    android:layout_height="@dimen/catalog_grid_item_height">
+    android:minHeight="@dimen/catalog_grid_item_height"
+    android:layout_height="wrap_content">
 
     <include
         android:id="@+id/image_loadable"
@@ -93,6 +94,12 @@
         android:layout_toLeftOf="@id/item_discount"
         android:text="Price"
         android:textColor="@color/grey_light" />
+
+    <ImageView
+        style="@style/ShopFirstStyle"
+        android:id="@+id/item_shop_first"
+        android:layout_below="@id/item_discount"
+        android:layout_alignRight="@id/item_brand"/>
 
     <View
         android:id="@+id/divider"

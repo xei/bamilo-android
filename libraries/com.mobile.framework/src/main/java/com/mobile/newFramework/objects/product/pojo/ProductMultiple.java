@@ -78,6 +78,10 @@ public class ProductMultiple extends ProductRegular {
         return mSimples;
     }
 
+    private boolean hasSimples() {
+        return CollectionUtils.isNotEmpty(mSimples);
+    }
+
     public boolean hasOwnSimpleVariation() {
         return CollectionUtils.isNotEmpty(mSimples) && mSimples.size() == 1;
     }
@@ -128,7 +132,7 @@ public class ProductMultiple extends ProductRegular {
             return  getOwnSimpleVariation();
         }
         // Case Multi simple variations
-        else if(hasMultiSimpleVariations() && hasSelectedSimpleVariation()) {
+        else if(hasSimples() && hasMultiSimpleVariations() && hasSelectedSimpleVariation()) {
             return getSelectedSimpleVariation();
         }
         // Case invalid
