@@ -43,7 +43,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private static final String CHECKBOX = "checkbox";
     private static final String HIDDEN = "hidden";
     private static final String CHECKBOX_LINK = "checkbox_link";
-    private static final String ERROR_MESSAGE = "errorMessage";
+    private static final String MESSAGE_INFO = "info_message";
+    private static final String MESSAGE_ERROR = "error_message";
     private static final String EMPTY = "";
 
     private Form mParent;
@@ -150,7 +151,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 case CHECKBOX_LINK:
                     mInputType = FormInputType.checkBoxLink;
                     break;
-                case ERROR_MESSAGE:
+                case MESSAGE_INFO:
+                    mInputType = FormInputType.infoMessage;
+                    break;
+                case MESSAGE_ERROR:
                     mInputType = FormInputType.errorMessage;
                     break;
                 case EMPTY:
@@ -252,7 +256,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
              * ########### PAYMENT METHODS ###########
              */
 
-            if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType != FormInputType.errorMessage){
+            if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType == FormInputType.radioGroup){
                 mDataSet.clear();
                 mPaymentFields = new HashMap<>();
                 JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.OPTIONS);
