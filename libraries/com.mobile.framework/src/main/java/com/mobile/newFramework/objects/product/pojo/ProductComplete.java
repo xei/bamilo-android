@@ -116,7 +116,6 @@ public class ProductComplete extends ProductMultiple {
             }
             // Recommended products -> Rich Relevance
             JSONObject recommendedProductObject = jsonObject.optJSONObject(RestConstants.RECOMMENDED_PRODUCTS);
-            mRichRelevance = new RichRelevance();
             if (recommendedProductObject != null)
                 mRichRelevance.initialize(recommendedProductObject);
 
