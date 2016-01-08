@@ -22,10 +22,13 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
@@ -75,19 +78,17 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
-            final int left;
-            final int right;
-            if(i == childCount - 1 && childCount % 2 != 0){
-                left = child.getLeft();
-                right = child.getRight();
-            } else {
-                left = parent.getPaddingLeft();
-                right = parent.getWidth() - parent.getPaddingRight();
-            }
-
+            final int left = child.getLeft();
+            final int right = child.getRight();
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin + Math.round(ViewCompat.getTranslationY(child));
             final int bottom = top + mDivider.getIntrinsicHeight();
+
+
+            Log.i("drawHorizontal", "code1count : top : "+top + " bottom: "+bottom);
+
+
+
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
@@ -104,14 +105,14 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
     public void drawVertical(Canvas c, RecyclerView parent) {
 
         final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount - 1; i++){
+        for (int i = 0; i < childCount; i++){
             final View child = parent.getChildAt(i);
-            final int bottom = parent.getChildAt(childCount - 1).getBottom();
-            final int top = parent.getPaddingTop();
+            final int bottom = child.getBottom();
+            final int top = child.getTop();
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int left;
             final int right;
-            if (ShopSelector.isRtl()) {
+            if (ShopSelector.isRtl() && !DeviceInfoHelper.isPreJellyBeanMR1()) {
                 left = child.getLeft() + params.leftMargin + Math.round(ViewCompat.getTranslationX(child));
                 right = left + mDivider.getIntrinsicHeight();
             } else {
