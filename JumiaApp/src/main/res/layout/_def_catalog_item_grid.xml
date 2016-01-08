@@ -109,14 +109,11 @@
         android:textColor="@color/black_800" />
 
     <ImageView
+        style="@style/ShopFirstStyle"
         android:id="@+id/item_shop_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_shop_first_alias"
         android:layout_below="@id/item_discount"
-        android:layout_alignLeft="@+id/item_brand"
-        android:layout_alignStart="@+id/item_brand"
-        android:layout_marginTop="4dp" />
+        android:layout_alignLeft="@id/item_brand"
+        android:layout_alignStart="@id/item_brand" />
 
     <View
         android:id="@+id/divider"

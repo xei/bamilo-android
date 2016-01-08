@@ -99,20 +99,17 @@
         android:textColor="@color/black_800" />
 
     <ImageView
+        style="@style/ShopFirstStyle"
         android:id="@+id/item_shop_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_shop_first_alias"
         android:layout_below="@id/item_discount"
-        android:layout_alignRight="@+id/item_brand"
-        android:layout_marginTop="4dp" />
+        android:layout_alignRight="@id/item_brand" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/item_name"
         android:layout_below="@+id/item_shop_first"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="@dimen/dimen_6dp"
         android:gravity="right|center_vertical"
         android:orientation="horizontal" >
 

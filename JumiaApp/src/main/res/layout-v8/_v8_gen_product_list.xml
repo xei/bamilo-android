@@ -67,8 +67,7 @@
         android:layout_alignRight="@id/center_view"
         android:layout_below="@id/item_name"
         android:layout_marginLeft="4dp"
-        android:text="Discount"
-        android:layout_marginBottom="3dp"/>
+        android:text="Discount" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
@@ -81,13 +80,10 @@
         android:textColor="@color/black_800" />
 
     <ImageView
+        style="@style/ShopFirstStyle"
         android:id="@+id/item_shop_first"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_shop_first_alias"
         android:layout_below="@id/item_discount"
-        android:layout_alignRight="@id/center_view"
-        android:layout_marginBottom="6dp"/>
+        android:layout_alignRight="@id/item_brand" />
 
     <LinearLayout
         android:id="@+id/rating_container"
@@ -97,7 +93,8 @@
         android:layout_marginBottom="@dimen/margin_30px"
         android:gravity="center_vertical|right"
         android:orientation="horizontal"
-        android:layout_below="@id/item_shop_first">
+        android:layout_below="@id/item_shop_first"
+        android:layout_marginTop="@dimen/dimen_6dp">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
