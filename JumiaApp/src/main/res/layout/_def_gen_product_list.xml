@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
-    android:layout_height="@dimen/catalog_list_item_height">
+    android:minHeight="@dimen/catalog_list_item_height"
+    android:layout_height="wrap_content">
 
     <include
         android:id="@+id/image_loadable"
@@ -88,16 +89,24 @@
         android:text="Price"
         android:textColor="@color/black_800" />
 
+    <ImageView
+        style="@style/ShopFirstStyle"
+        android:id="@+id/item_shop_first"
+        android:layout_below="@id/item_discount"
+        android:layout_alignLeft="@id/item_brand"
+        android:layout_alignStart="@id/item_brand" />
+
     <RelativeLayout
         android:id="@+id/rating_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_name"
-        android:layout_alignParentBottom="true"
         android:layout_alignStart="@id/item_name"
         android:layout_marginBottom="@dimen/margin_30px"
         android:gravity="start|left|center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/item_shop_first"
+        android:layout_marginTop="@dimen/dimen_6dp">
 
         <RatingBar
             android:id="@+id/item_rating"

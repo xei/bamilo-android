@@ -83,6 +83,8 @@
     <dimen name="dimen_810px">270dp</dimen>
 
 
+    <dimen name="dimen_4dp">4dp</dimen>
+    <dimen name="dimen_6dp">6dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
     <dimen name="dimen_12dp">12dp</dimen>
     <dimen name="dimen_16dp">16dp</dimen>
@@ -287,9 +289,9 @@
     <integer name="activate_go_top_buttom_line">6</integer>
     <integer name="activate_go_top_buttom_line_grid">3</integer>
     <integer name="activate_go_top_buttom_line_single">2</integer>
-    <dimen name="catalog_list_item_height">116dp</dimen>
-    <dimen name="catalog_grid_item_height">210dp</dimen>
-    <dimen name="catalog_single_item_height">425dp</dimen>
+    <dimen name="catalog_list_item_height">120dp</dimen>
+    <dimen name="catalog_grid_item_height">220dp</dimen>
+    <dimen name="catalog_single_item_height">435dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>
     <dimen name="catalog_list_item_image_height">98.33dp</dimen>
     <dimen name="catalog_list_item_image_padding">13.33dp</dimen>
