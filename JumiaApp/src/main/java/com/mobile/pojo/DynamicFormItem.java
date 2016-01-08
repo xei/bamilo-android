@@ -488,9 +488,17 @@ public class DynamicFormItem {
                     }
                 }
                 break;
-            case hide:
-                break;
             case rating:
+                Iterator it = this.entry.getDateSetRating().entrySet().iterator();
+                int count = 1;
+                while (it.hasNext()) {
+                    Map.Entry pairs = (Map.Entry) it.next();
+                    float value = inStat.getFloat(pairs.getKey().toString());
+                    ((RatingBar) this.dataControl.findViewById(count).findViewById(R.id.option_stars)).setRating(value);
+                    count++;
+                }
+                break;
+            case hide:
                 break;
             default:
                 break;
@@ -562,79 +570,6 @@ public class DynamicFormItem {
                     values.put(getName(), getValue());
                 }
                 break;
-        }
-    }
-
-    /**
-     * Loads a previously saved state of the control. This is useful in an orientation changed
-     * scenario, for example.
-     *
-     * @param inStat the Bundle that contains the stored information of the control
-     *
-     *NOTE: Please use the loadState(Bundle inStat) instead.
-     */
-    @Deprecated
-    public void loadState(ContentValues inStat) {
-        switch (this.entry.getInputType()) {
-            case checkBox:
-                boolean checked = inStat.getAsBoolean(getName());
-                ((CheckBox) this.dataControl).setChecked(checked);
-                break;
-            case checkBoxLink:
-                boolean checkedList = inStat.getAsBoolean(getName());
-                ((CheckBox) this.dataControl.findViewWithTag("checkbox")).setChecked(checkedList);
-                break;
-            case list:
-                Print.i(TAG,"load List");
-                int listPosition = inStat.getAsInteger(getName());
-                ((IcsSpinner) this.dataControl).setSelection(listPosition);
-                break;
-            case radioGroup:
-                int position = inStat.getAsInteger(getName());
-                if (this.dataControl instanceof IcsSpinner) {
-                    ((IcsSpinner) this.dataControl).setSelection(position);
-                } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
-                    ((RadioGroupLayoutVertical) this.dataControl).setSelection(position);
-                } else {
-                    ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).setSelection(position);
-                }
-                break;
-            case metadata:
-            case date:
-                String date = inStat.getAsString(getKey());
-                ((TextView) this.dataControl.findViewById(R.id.form_button)).setText(date);
-                setDialogDate(date);
-            break;
-            case email:
-            case text:
-            case password:
-            case relatedNumber:
-            case number:
-                String text = inStat.getAsString(getName());
-                ((EditText) this.dataControl).setText(text);
-                break;
-            case hide:
-                break;
-            case rating:
-                loadRatingState(inStat);
-                break;
-            default:
-                break;
-        }
-
-    }
-
-    /**
-     * fill rating bar with saved values
-     */
-    private void loadRatingState(ContentValues inStat) {
-        Iterator it = this.entry.getDateSetRating().entrySet().iterator();
-        int count = 1;
-        while (it.hasNext()) {
-            Map.Entry pairs = (Map.Entry) it.next();
-            float value = Float.parseFloat(inStat.getAsString(pairs.getKey().toString()));
-            ((RatingBar) this.dataControl.findViewById(count).findViewById(R.id.option_stars)).setRating(value);
-            count++;
         }
     }
 
@@ -854,6 +789,13 @@ public class DynamicFormItem {
                 }
                 break;
             case rating:
+                RatingBar bar = (RatingBar) getControl().findViewWithTag(DynamicFormItem.RATING_BAR_TAG);
+                Map<String, String> ratingMap = getEntry().getDateSetRating();
+                if (CollectionUtils.isNotEmpty(ratingMap)) {
+                    for (int i = 0; i < ratingMap.size(); i++) {
+                        outState.putFloat(bar.getTag(R.id.rating_bar_id).toString(), bar.getRating());
+                    }
+                }
                 break;
             default:
                 break;
@@ -1560,7 +1502,7 @@ public class DynamicFormItem {
                 HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getPaymentMethodsField();
                 if (paymentMethodsField != null) {
                     //Print.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField);
-                    if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubForms().size() > 0)) {
+                    if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubFormsMap().size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));
                     }
                 }
