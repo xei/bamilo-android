@@ -566,7 +566,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
      */
     private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar, int average) {
 
-
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         int starsLayout = R.layout.reviews_fragment_rating_samlltype_item;
 
         if (isBigStar)
@@ -590,7 +590,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
                 typeLine.setOrientation(LinearLayout.HORIZONTAL);
                 //#RTL
-                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+
                 if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     typeLine.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
                 }
@@ -607,8 +607,12 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
                         final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
                         final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
+                        if (ShopSelector.isRtl() && currentapiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            userRating.setRating(userRating.getMax() - (float) ratingOptionArray.get(j).getRating());
+                        } else {
+                            userRating.setRating((float) ratingOptionArray.get(j).getRating());
+                        }
 
-                        userRating.setRating((float) ratingOptionArray.get(j).getRating());
                         if (numLines > 1)    //just show title if has more than 1 rating type
                             ratingTitle.setText(ratingOptionArray.get(j).getTitle());
                         else
@@ -640,7 +644,11 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
             final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
             final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
-
+            if (ShopSelector.isRtl() && currentapiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                userRating.setRating(userRating.getMax() - average);
+            } else {
+                userRating.setRating(average);
+            }
             userRating.setRating(average);
             ratingTitle.setVisibility(View.GONE);
 
@@ -657,7 +665,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
      */
     private void setProgressRating(int maxTotal) {
         //get progress bars and value numbers
-
         progressBarFive = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFive);
         progressBarFour = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFour);
         progressBarThree = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarThree);
@@ -673,7 +680,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
 
         //if is rtl, the progress bars shows up with inverted progression
-        if (ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
             setProgressForRTLPreJelly(progressBarFive, Integer.parseInt(mProductRatingPage.getByStarValue(FIVE_STAR_PROGRESS)), maxTotal);
             setProgressForRTLPreJelly(progressBarFour, Integer.parseInt(mProductRatingPage.getByStarValue(FOUR_STAR_PROGRESS)), maxTotal);
             setProgressForRTLPreJelly(progressBarThree, Integer.parseInt(mProductRatingPage.getByStarValue(THREE_STAR_PROGRESS)), maxTotal);
@@ -708,15 +715,12 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
     }
 
     private void setProgressForRTLPreJelly(ProgressBar progressBar, int progress, int maxTotal){
-        if( progress == 0 ){
-            progressBar.setProgress(maxTotal);
-            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-        } else if( progress == maxTotal) {
+        if( progress == 0 && maxTotal == 0){
             progressBar.setProgress(0);
             progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress));
         } else {
-            progressBar.setProgress(progress);
-            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress));
+            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
+            progressBar.setProgress(maxTotal - progress);
         }
 
     }

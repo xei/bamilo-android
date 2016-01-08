@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.output.Print;
@@ -39,6 +40,7 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
 	private String mTitle;
 
 	private ProductMultiple mProduct;
+	private CampaignItem mCampaignItem;
 
 	private Context mContext;
 
@@ -54,6 +56,8 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         void onDialogListItemSelect(int position);
 
         void onDialogListClickView(View view);
+
+        void onDialogSizeListClickView(int position, CampaignItem item);
 
         void onDialogListDismiss();
     }
@@ -75,6 +79,20 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         dialogListFragment.mContext = context;
         dialogListFragment.mListener = listListener;
         dialogListFragment.mTitle = title;
+        dialogListFragment.mProduct = product;
+        return dialogListFragment;
+    }
+
+    /**
+     * Create new instance for CampaignItem
+     */
+    public static DialogSimpleListFragment newInstance(Context context, String title, CampaignItem product, OnDialogListListener listListener) {
+        Print.d(TAG, "NEW INSTANCE");
+        DialogSimpleListFragment dialogListFragment = new DialogSimpleListFragment();
+        dialogListFragment.mContext = context;
+        dialogListFragment.mListener = listListener;
+        dialogListFragment.mTitle = title;
+        dialogListFragment.mCampaignItem = product;
         dialogListFragment.mProduct = product;
         return dialogListFragment;
     }
@@ -234,7 +252,9 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
             @Override
             public void run() {
                 dismiss();
-                if (mListener != null) {
+                if (mListener != null && mCampaignItem != null) {
+                    mListener.onDialogSizeListClickView(position, mCampaignItem);
+                } else if(mListener != null){
                     mListener.onDialogListItemSelect(position);
                 }
             }
