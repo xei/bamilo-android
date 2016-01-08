@@ -1099,7 +1099,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TrackerDelegator.trackSearchSuggestions(searchText);
         // Data
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
