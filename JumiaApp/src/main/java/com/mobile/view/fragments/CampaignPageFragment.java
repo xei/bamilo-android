@@ -181,11 +181,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             }
         });
 
-        if(DeviceInfoHelper.isTabletDevice(getBaseActivity())){
-            mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.catalog_grid_num_columns));
-        } else {
-            mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.favourite_num_columns));
-        }
+        mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.campaign_num_columns));
 
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
