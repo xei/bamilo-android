@@ -259,7 +259,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private void triggerRemoveItem(PurchaseCartItem item) {
 
         itemRemoved_sku = item.getConfigSimpleSKU();
-        itemRemoved_price = item.getSpecialPriceVal().toString();
+        itemRemoved_price = String.valueOf(item.getSpecialPrice());
         itemRemoved_price_tracking = item.getPriceForTracking();
         itemRemoved_quantity = item.getQuantity();
         itemRemoved_rating = -1d;
@@ -271,7 +271,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             itemRemoved_cart_value = cartValue;
 
         if (itemRemoved_price == null) {
-            itemRemoved_price = item.getPriceVal().toString();
+            itemRemoved_price = String.valueOf(item.getPrice());
         }
 
         triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
@@ -624,21 +624,19 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.discount_value = (double) Math.round(item.getSavingPercentage());
                 values.min_delivery_time = 0;
                 values.max_delivery_time = 99;
-                values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
-                values.productSku = item.getConfigSKU();
-                values.productUrl = item.getProductUrl();
+                values.productSku = item.getSku();
                 values.maxQuantity = item.getMaxQuantity();
 
                 Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
                 lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
-                if (!item.getPrice().equals(item.getSpecialPrice())) {
+                if (!item.getPriceString().equals(item.getSpecialPriceString())) {
                     cartHasReducedItem = true;
                 }
 
                 // Fix NAFAMZ-7848
-                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPriceVal() * item.getQuantity()));
+                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPrice() * item.getQuantity()));
                 Print.e(TAG, "unreduced_cart_price= " + unreduced_cart_price);
             }
 
@@ -877,7 +875,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
             params.putDouble(TrackerDelegator.RATING_KEY, -1d);
             params.putString(TrackerDelegator.NAME_KEY, item.getName());
-            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategoriesIds());
+            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategories());
             params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
 
             if (quantity > prods) {
@@ -965,9 +963,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public Double discount_value;
         public Integer min_delivery_time;
         public Integer max_delivery_time;
-        public Map<String, String> simpleData;
         public String variation;
-        public String productUrl;
         public int maxQuantity;
         public String productSku;
     }

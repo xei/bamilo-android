@@ -390,8 +390,10 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Quantity
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, item.getQuantity()));
             // Price
-            String price = item.getPrice();
-            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
+            String price = item.getPriceString();
+            if (!price.equals(item.getSpecialPriceString())){
+                price = item.getSpecialPriceString();
+            }
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
