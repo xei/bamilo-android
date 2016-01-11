@@ -45,7 +45,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Show / Hide New Arrival Badge
         holder.newArrivalBadge.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         //Show/Hide Shop First
-        holder.shopFirst.setVisibility((!item.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+        ProductUtils.setShopFirst(item,holder.shopFirst);
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image

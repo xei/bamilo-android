@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/my_order_item_divider"
@@ -35,7 +35,6 @@
         android:id="@+id/my_order_item_name"
         style="@style/TextBody_1"
         android:layout_below="@id/my_order_item_brand"
-        android:layout_marginBottom="@dimen/margin_60px"
         android:layout_toLeftOf="@+id/image_view"
         android:gravity="right|center_vertical"
         android:textColor="@color/black" />
@@ -64,5 +63,18 @@
         android:gravity="right|center_vertical"
         android:textColor="@color/black"
         android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/shop_first_item"
+        style="@style/ShopFirstStyle"
+        android:layout_alignRight="@id/my_order_item_name"
+        android:layout_below="@id/my_order_item_variation"/>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_10dp"
+        android:background="@color/red_basic"
+        android:layout_below="@id/shop_first_item"
+        />
 
 </RelativeLayout>
