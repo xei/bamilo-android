@@ -133,25 +133,4 @@ public class TextUtils {
         return sb.toString();
     }
 
-    /**
-     * Method responsible for getting the keys/values from a url query
-     *
-     * @param query
-     * @return Map<String, String> with keys/values
-     * @throws UnsupportedEncodingException
-     */
-    public static ContentValues splitQuery(String query) {
-        ContentValues query_pairsCV = new ContentValues();
-        try{
-            String[] pairs = query.split("&");
-            for (String pair : pairs) {
-                int idx = pair.indexOf("=");
-                query_pairsCV.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
-            }
-        } catch(UnsupportedEncodingException e){
-            e.printStackTrace();
-        }
-
-        return query_pairsCV;
-    }
 }
