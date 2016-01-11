@@ -14,6 +14,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,14 +25,11 @@ import java.util.Map;
  */
 public class Form implements IJSONSerializable, Parcelable {
 
-    public final static String TAG = Form.class.getSimpleName();
-
     private int mType;
-    private String method;
-    private String action;
-    private final ArrayList<FormField> fields;
-    private Map<String, Form> subForms;
-    private Map<String, FormField> mFieldKeyMap;
+    private String mMethod;
+    private String mAction;
+    private HashMap<String, Form> mSubFormsMap;
+    private LinkedHashMap<String, FormField> mFormFieldsMap;
     private boolean hideAsterisks;
 
     @Override
@@ -43,27 +42,26 @@ public class Form implements IJSONSerializable, Parcelable {
      * Form empty constructor.
      */
     public Form() {
-        this.method = "";
-        this.action = "";
-        this.fields = new ArrayList<>();
-        this.subForms = new HashMap<>();
-        this.mFieldKeyMap = new HashMap<>();
+        this.mMethod = "";
+        this.mAction = "";
+        this.mSubFormsMap = new HashMap<>();
+        this.mFormFieldsMap = new LinkedHashMap<>();
     }
 
-    public Map<String, Form> getSubForms() {
-        return subForms;
+    public Map<String, Form> getSubFormsMap() {
+        return mSubFormsMap;
     }
 
-    public ArrayList<FormField> getFields() {
-        return fields;
+    public List<FormField> getFields() {
+        return new ArrayList<>(mFormFieldsMap.values());
     }
 
     public String getAction() {
-        return action;
+        return mAction;
     }
 
     public Map<String, FormField> getFieldKeyMap() {
-        return mFieldKeyMap;
+        return mFormFieldsMap;
     }
 
     public void setType(int mType) {
@@ -98,14 +96,13 @@ public class Form implements IJSONSerializable, Parcelable {
 
     public boolean initAsSubForm(JSONObject jsonObject) {
         try {
-            method = jsonObject.optString(RestConstants.METHOD);
-            action = jsonObject.optString(RestConstants.ACTION);
+            mMethod = jsonObject.optString(RestConstants.METHOD);
+            mAction = jsonObject.optString(RestConstants.ACTION);
             JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.FIELDS);
             for (int i = 0; i < fieldsArray.length(); ++i) {
-                FormField field = new FormField(this);
+                FormField field = new FormField();
                 if (field.initialize(fieldsArray.getJSONObject(i))) {
-                    fields.add(field);
-                    mFieldKeyMap.put(field.getKey(), field);
+                    mFormFieldsMap.put(field.getKey(), field);
                 }
             }
         } catch (JSONException e) {
@@ -125,10 +122,10 @@ public class Form implements IJSONSerializable, Parcelable {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put(RestConstants.TYPE, mType);
-            jsonObject.put(RestConstants.METHOD, method);
-            jsonObject.put(RestConstants.ACTION, action);
+            jsonObject.put(RestConstants.METHOD, mMethod);
+            jsonObject.put(RestConstants.ACTION, mAction);
             JSONArray fieldArray = new JSONArray();
-            for (FormField field : fields) {
+            for (FormField field : mFormFieldsMap.values()) {
                 fieldArray.put(field.toJSON());
             }
             jsonObject.put(RestConstants.FIELDS, fieldArray);
@@ -146,20 +143,24 @@ public class Form implements IJSONSerializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mType);
-        dest.writeString(method);
-        dest.writeString(action);
-        dest.writeList(fields);
+        dest.writeString(mMethod);
+        dest.writeString(mAction);
+        dest.writeValue(mSubFormsMap);
+        dest.writeValue(mFormFieldsMap);
+        dest.writeByte((byte) (hideAsterisks ? 0x01 : 0x00));
     }
 
     /**
      * Parcel constructor
      */
+    @SuppressWarnings("unchecked")
     private Form(Parcel in) {
         mType = in.readInt();
-        method = in.readString();
-        action = in.readString();
-        fields = new ArrayList<>();
-        in.readArrayList(FormField.class.getClassLoader());
+        mMethod = in.readString();
+        mAction = in.readString();
+        mSubFormsMap = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mFormFieldsMap = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
+        hideAsterisks = in.readByte() != 0x00;
     }
 
     /**

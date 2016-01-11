@@ -164,9 +164,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Get title
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             // Get catalog type (Hash/Seller/Brand)
-            FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
+            FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
             if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
             else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
+            else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
+
             else mQueryValues.put(RestConstants.HASH, mKey);
             // Get sort
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
@@ -205,16 +207,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Track most viewed category
         TrackerDelegator.trackCategoryView();
     }
-
-//    /**
-//     * Function that removes the parameters from the url in order to have the complete url without parameters
-//     */
-//    private void removeParametersFromQuery(final Uri.Builder builder){
-//        builder.clearQuery();
-//        mKey = builder.toString();
-//    }
-
-
 
     /*
      * (non-Javadoc)

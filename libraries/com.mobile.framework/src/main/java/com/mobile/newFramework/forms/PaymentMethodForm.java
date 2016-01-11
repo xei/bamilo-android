@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import android.support.annotation.IntDef;
 
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -119,7 +118,7 @@ public class PaymentMethodForm implements Parcelable {
                     mContentValues.put(key, element.getString(RestConstants.VALUE));
                 }
             }
-            Print.i(TAG, "code1content : " + mContentValues.toString());
+//            //Print.i(TAG, "code1content : " + mContentValues.toString());
             setContentValues(mContentValues);
 
         } catch (JSONException e) {

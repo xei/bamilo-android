@@ -318,7 +318,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
              * Save the Selected Country Configs
              * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
              */
-            Print.i(TAG, "code1DarwinComponent : selected : " + country.getCountryName());
+            //Print.i(TAG, "code1DarwinComponent : selected : " + country.getCountryName());
             editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
             editor.apply();
             // Clean memory

@@ -44,7 +44,7 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
         this.context = context;
         this.checks = new boolean[objects.size()];
         this.checks[selected] = true;
-        com.mobile.newFramework.utils.output.Print.i(TAG, "code1pus : before PickupStationsAdapter position " + selected);
+        //com.mobile.newFramework.utils.output.Print.i(TAG, "code1pus : before PickupStationsAdapter position " + selected);
         this.pickUpStationObject = objects.get(0);
     }
 

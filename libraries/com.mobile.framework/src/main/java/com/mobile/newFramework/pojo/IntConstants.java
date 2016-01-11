@@ -9,5 +9,5 @@ public class IntConstants {
     public static final int MAX_ITEMS_PER_PAGE = 24;
     public static final int FIRST_PAGE = 1;
     public static final int ACTION_BAR_NO_TITLE = 0;
-    public static final int SUCCESS = 1;
+    public static final int TRUE = 1;
 }

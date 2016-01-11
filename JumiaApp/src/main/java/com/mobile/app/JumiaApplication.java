@@ -1,6 +1,5 @@
 package com.mobile.app;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -71,12 +70,6 @@ public class JumiaApplication extends A4SApplication {
      */
     public Form reviewForm;
     public Form ratingForm;
-    public Form mSellerReviewForm;
-    private static ContentValues ratingReviewValues;
-    public static boolean isSellerReview = false;
-    private static HashMap<String, String> sFormReviewValues = new HashMap<>();
-
-    public int lastPaymentSelected = -1;
 
     public ArrayList<CountryObject> countriesAvailable = null;
 
@@ -147,7 +140,7 @@ public class JumiaApplication extends A4SApplication {
         for (ApplicationComponent component : COMPONENTS.values()) {
             int result = component.init(getApplicationContext());
             if (result != ErrorCode.NO_ERROR) {
-                Print.i(TAG, "code1configs : " + result);
+                //Print.i(TAG, "code1configs : " + result);
                 handleEvent(result, null, initializationHandler);
                 return;
             }
@@ -155,7 +148,7 @@ public class JumiaApplication extends A4SApplication {
 
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
-        Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
+        //Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
         // Initialize check version, disabled for Samsung (check_version_enabled)
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
         CheckVersion.init(getApplicationContext());
@@ -237,40 +230,6 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * clean and return last saved rating
-     *
-     * @return last saved review
-     */
-    public static ContentValues getRatingReviewValues() {
-        return JumiaApplication.ratingReviewValues;
-    }
-
-    /**
-     * clean current rating
-     */
-    public static void cleanRatingReviewValues() {
-        JumiaApplication.ratingReviewValues = null;
-    }
-
-    public static void setRatingReviewValues(ContentValues ratingReviewValues) {
-        JumiaApplication.ratingReviewValues = ratingReviewValues;
-    }
-
-    /**
-     * get the values from the write review form
-     * @return sFormReviewValues
-     */
-    public HashMap<String,String> getFormReviewValues(){
-        return JumiaApplication.sFormReviewValues;
-    }
-    /**
-     * HashMap used to store the values from the write review form
-     */
-    public void setFormReviewValues(HashMap<String, String> sFormReviewValues){
-        JumiaApplication.sFormReviewValues = sFormReviewValues;
-    }
-
-    /**
      * Clean current memory.
      */
     public void cleanAllPreviousCountryValues() {
@@ -283,9 +242,6 @@ public class JumiaApplication extends A4SApplication {
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
-        isSellerReview = false;
-        ratingReviewValues = null;
-        sFormReviewValues = null;
         WishListCache.clean();
         AdjustTracker.resetTransactionCount(getApplicationContext());
         clearBannerFlowSkus();
@@ -297,7 +253,6 @@ public class JumiaApplication extends A4SApplication {
         } catch (IOException e) {
             Print.e(TAG, "Error clearing requests cache", e);
         }
-        mSellerReviewForm = null;
     }
 
     /**

@@ -82,11 +82,13 @@ public class RestUrlUtils {
     }
 
     /**
-     * Get all parameters from url query and insert them all on ContentValues.
+     * Get all parameters from url string query and insert them all on ContentValues.
      * Syntax example: ?category=womens-dresses&sort=price&dir=asc
-     * @param uri
+     * @param rawQuery
      */
-    public static ContentValues getQueryParameters(Uri uri) {
+    public static ContentValues getQueryParameters(@NonNull String rawQuery) {
+        Uri uri = Uri.parse(rawQuery);
+
         if (uri.isOpaque()) {
             throw new UnsupportedOperationException("This isn't a hierarchical URI.");
         }
