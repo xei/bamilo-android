@@ -282,14 +282,11 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     private void handleOnChooseLanguageItemClick(ViewGroup parent, int position) {
         // Case country
-        if (position == POSITION_COUNTRY) {
-            // Case multi shop
-            if(!ShopSelector.isSingleShopCountry()) {
-                getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
+        if (!ShopSelector.isSingleShopCountry() && position == POSITION_COUNTRY) {
+            getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
         // Case language
-        else if (position == POSITION_LANGUAGE) {
+        else {
             CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.shop_settings);
             ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
