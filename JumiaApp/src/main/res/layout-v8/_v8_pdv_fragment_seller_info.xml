@@ -15,14 +15,11 @@
     <!--CONTENT -->
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_name"
-        style="@style/TextBody_1"
-        android:layout_width="@dimen/wrap_content"
+        style="@style/TextBody_1.ShopFirstDrawRight"
         android:layout_gravity="right"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/dimen_10dp"
         android:layout_marginRight="@dimen/layout_padding"
-        android:drawableLeft="@drawable/ic_shop_first_alias"
-        android:drawablePadding="@dimen/dimen_10dp"
         android:textColor="@color/black" />
 
     <!-- DELIVERY TIME -->
