@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.product.RatingStar;
@@ -91,10 +90,6 @@ public class ReviewFragment extends BaseFragment {
         Print.i(TAG, "ON VIEW CREATED");
         inflater = LayoutInflater.from(getActivity());
         setAppContentLayout(view);
-
-        //clean form from write Review form
-        JumiaApplication.cleanRatingReviewValues();
-        JumiaApplication.INSTANCE.setFormReviewValues(null);
     }
     
     /*

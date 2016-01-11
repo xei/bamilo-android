@@ -17,7 +17,6 @@ import com.mobile.forms.ShippingMethodSubForm;
 import com.mobile.newFramework.forms.PickUpStationObject;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -165,31 +164,31 @@ public class ShippingRadioGroupList extends RadioGroup {
         int radioButtonID = this.getCheckedRadioButtonId();
         View radioButton = this.findViewById(radioButtonID);
         int idx = this.indexOfChild(radioButton);
-        Print.i(TAG, "code1validate radioButtonId : " + radioButtonID + " idx : " + idx);
+        //Print.i(TAG, "code1validate radioButtonId : " + radioButtonID + " idx : " + idx);
         return idx;
     }
 
     private void setSelection(final int idx) {
         if (idx >= 0) {
-            Print.i(TAG, "code1selection : id is : " + idx);
+            //Print.i(TAG, "code1selection : id is : " + idx);
             View view = this.getChildAt(idx).findViewById(R.id.radio_shipping);
             if (view instanceof RadioButton) {
                 ((RadioButton) view).setChecked(true);
-                Print.i(TAG, "code1selection : id is : " + idx + " second");
+                //Print.i(TAG, "code1selection : id is : " + idx + " second");
             }
             cleanOtherSelections(idx);
         }
     }
 
     private void cleanOtherSelections(int idx) {
-        Print.i(TAG, "code1selection : id is : " + idx + " cleaning");
+        //Print.i(TAG, "code1selection : id is : " + idx + " cleaning");
         for (int i = 0; i < this.getChildCount(); i++) {
             if (i != idx) {
                 View view = this.getChildAt(i).findViewById(R.id.radio_shipping);
                 if (view instanceof RadioButton) {
                     ((RadioButton) view).setChecked(false);
                     this.getChildAt(i).findViewById(R.id.radio_extras_container).setVisibility(View.GONE);
-                    Print.i(TAG, "code1selection : id is : " + idx + " cleaning 2 : " + i);
+                    //Print.i(TAG, "code1selection : id is : " + idx + " cleaning 2 : " + i);
                 }
             }
         }
@@ -255,7 +254,7 @@ public class ShippingRadioGroupList extends RadioGroup {
     }
 
     public ContentValues getValues() {
-        Print.i(TAG, "code1values : adding valeus " + subForms);
+        //Print.i(TAG, "code1values : adding valeus " + subForms);
         ContentValues mContentValues = new ContentValues();
         int idx = this.getCheckedRadioButtonId();
         if (idx < 0) {
@@ -264,7 +263,7 @@ public class ShippingRadioGroupList extends RadioGroup {
 
         if (subForms.containsKey(mItems.get(idx)) && subForms.get(mItems.get(idx)).size() > 0) {
             PickUpStationObject selectedPickup = null;
-            Print.i(TAG, "code1values : adding ");
+            //Print.i(TAG, "code1values : adding ");
             for (ShippingMethodSubForm element : subForms.get(mItems.get(idx))) {
                 if (element.shippingMethodSubFormHolder.options != null && element.shippingMethodSubFormHolder.options.size() > 0) {
                     if(element.pickupStationsListView.getAdapter() instanceof PickupStationsAdapter){
@@ -274,7 +273,7 @@ public class ShippingRadioGroupList extends RadioGroup {
                     if(selectedPickup != null){
                         mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getPickupStationId());
                     }
-                    Print.i(TAG, "code1values : element.name : " + element.shippingMethodSubFormHolder.name);
+                    //Print.i(TAG, "code1values : element.name : " + element.shippingMethodSubFormHolder.name);
                 } else {
                     if (selectedPickup != null && selectedPickup.getRegions() != null && selectedPickup.getRegions().size() > 0) {
                         mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getRegions().get(0).getId());

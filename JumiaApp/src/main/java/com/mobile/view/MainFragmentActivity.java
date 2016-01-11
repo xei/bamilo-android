@@ -253,6 +253,7 @@ public class MainFragmentActivity extends BaseActivity {
                 break;
             case CATALOG_SELLER:
             case CATALOG_BRAND:
+            case CATALOG_DEEPLINK:
             case CATALOG:
                 // Default
                 removeEntries = true;
@@ -261,8 +262,11 @@ public class MainFragmentActivity extends BaseActivity {
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
-                // Put the catalog type
-                bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, type);
+                // Put the target type
+                bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
+                // Put the type
+                type = FragmentType.CATALOG;
+                // Create instance
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:

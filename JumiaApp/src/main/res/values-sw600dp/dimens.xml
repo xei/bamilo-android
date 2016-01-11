@@ -57,7 +57,7 @@
     <!-- CATALOG -->
     <dimen name="catalog_list_item_height">145dp</dimen>
     <dimen name="catalog_grid_item_height">375dp</dimen>
-    <dimen name="catalog_single_item_height">475dp</dimen>
+    <dimen name="catalog_single_item_height">485dp</dimen>
     <dimen name="catalog_list_item_image_width">112dp</dimen>
     <dimen name="catalog_list_item_image_height">130dp</dimen>
     <dimen name="catalog_list_item_image_padding">20dp</dimen>

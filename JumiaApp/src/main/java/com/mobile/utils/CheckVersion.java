@@ -84,7 +84,7 @@ public class CheckVersion {
         updateUnwantedVersionFromPrefs();
         if (!checkVersionInfo())
             return false;
-        Print.i(TAG, "code1checkversion checkResult : " + checkResult);
+        //Print.i(TAG, "code1checkversion checkResult : " + checkResult);
         if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
             sNeedsToShowDialog = true;
         } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE) {
