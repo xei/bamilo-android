@@ -17,6 +17,7 @@ import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.view.R;
 
@@ -235,11 +236,15 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * Save value from form list item. (Regions and Cities)
      */
     private void saveListSelection(DynamicFormItem control, ContentValues model) {
-        ViewGroup mRegionGroup = (ViewGroup) control.getControl();
-        IcsSpinner spinner = (IcsSpinner) mRegionGroup.getChildAt(0);
-        FormListItem mSelectedRegion = (FormListItem) spinner.getSelectedItem();
-        if(mSelectedRegion != null)
-            model.put(control.getName(), mSelectedRegion.getValue());
+        try {
+            ViewGroup mRegionGroup = (ViewGroup) control.getControl();
+            IcsSpinner spinner = (IcsSpinner) mRegionGroup.getChildAt(0);
+            FormListItem mSelectedRegion = (FormListItem) spinner.getSelectedItem();
+            if (mSelectedRegion != null)
+                model.put(control.getName(), mSelectedRegion.getValue());
+        }catch(Exception ex){
+            Print.e("ERROR",ex.getMessage());
+        }
     }
 
     public int getSelectedValueIndex() {
