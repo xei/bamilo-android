@@ -500,6 +500,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mDataSetRating);
         dest.writeValue(mDataSet);
         dest.writeString(mDataSetSource);
+        dest.writeString(mPlaceHolder);
         dest.writeString(mApiCall);
         dest.writeValue(mPaymentInfoList);
         dest.writeString(mId);
@@ -528,7 +529,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         }
         dest.writeValue(mChildFormField);
         dest.writeValue(mParentFormField);
-        dest.writeString(mPlaceHolder);
         dest.writeByte((byte) (isChecked ? 0x01 : 0x00));
         dest.writeByte((byte) (isPrefixField ? 0x01 : 0x00));
         dest.writeByte((byte) (isDisabled ? 0x01 : 0x00));
@@ -542,6 +542,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mDataSetRating = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
         mDataSet = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
         mDataSetSource = in.readString();
+        mPlaceHolder = in.readString();
         mApiCall = in.readString();
         mPaymentInfoList = (HashMap) in.readValue(HashMap.class.getClassLoader());
         mId = in.readString();
@@ -573,7 +574,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         isChecked = in.readByte() != 0x00;
         isPrefixField = in.readByte() != 0x00;
         isDisabled = in.readByte() != 0x00;
-        mPlaceHolder = in.readString();
     }
 
     /**
