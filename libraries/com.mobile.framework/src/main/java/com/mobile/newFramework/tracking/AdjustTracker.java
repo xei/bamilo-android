@@ -500,7 +500,7 @@ public class AdjustTracker {
 
             case APP_OPEN:
                 Print.i(TAG, "APP_OPEN:" + Adjust.isEnabled());
-                Print.i(TAG, "code1adjust is APP_OPEN " + Adjust.isEnabled());
+//                //Print.i(TAG, "code1adjust is APP_OPEN " + Adjust.isEnabled());
                 AdjustEvent eventAppOpen = new AdjustEvent(mContext.getString(R.string.adjust_token_launch));
 
                 eventAppOpen.addCallbackParameter(AdjustKeys.APP_VERSION, getAppVersion());

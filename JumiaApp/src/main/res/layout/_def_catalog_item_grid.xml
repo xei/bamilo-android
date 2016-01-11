@@ -113,7 +113,8 @@
         android:id="@+id/item_shop_first"
         android:layout_below="@id/item_discount"
         android:layout_alignLeft="@id/item_brand"
-        android:layout_alignStart="@id/item_brand" />
+        android:layout_alignStart="@id/item_brand"
+        android:layout_marginBottom="@dimen/dimen_12dp"/>
 
     <View
         android:id="@+id/divider"

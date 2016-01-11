@@ -1,9 +1,7 @@
 package com.mobile.newFramework.objects.home;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
@@ -17,7 +15,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,6 +32,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     /**
      * Empty constructor
      */
+    @SuppressWarnings("unused")
     public HomePageObject() {
         super();
     }
@@ -77,7 +75,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
         JSONArray data = jsonObject.getJSONArray(RestConstants.DATA);
         int size = data.length();
         if (size > 0) {
-            mTeasers = new LinkedHashMap<String, BaseTeaserGroupType>();
+            mTeasers = new LinkedHashMap<>();
             // Save unordered response
             Map<String, BaseTeaserGroupType> map = new HashMap<>();
             for (int i = 0; i < size; i++) {

@@ -475,12 +475,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         BaseTeaserGroupType campaignGroup = mHomePage.getTeasers().get(group.getType());
         // Case from campaigns
         if (group == TeaserGroupType.CAMPAIGNS) {
-            Print.i(TAG, "code1campaigns group == TeaserGroupType.CAMPAIGNS");
+            //Print.i(TAG, "code1campaigns group == TeaserGroupType.CAMPAIGNS");
             campaigns = TargetLink.createCampaignList(campaignGroup);
         }
         // Case from other
         else {
-            Print.i(TAG, "code1campaigns createCampaignList");
+            //Print.i(TAG, "code1campaigns createCampaignList");
             campaigns = TargetLink.createCampaignList(title, id);
         }
         return campaigns;
