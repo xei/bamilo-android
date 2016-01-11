@@ -1,9 +1,13 @@
 package com.mobile.newFramework.utils;
 
+import android.content.ContentValues;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 public class TextUtils {
 
@@ -128,4 +132,5 @@ public class TextUtils {
         }
         return sb.toString();
     }
+
 }

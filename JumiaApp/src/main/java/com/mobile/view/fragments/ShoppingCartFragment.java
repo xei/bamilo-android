@@ -136,8 +136,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mItemsToCartDeepLink = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            arguments.remove(ConstantsIntentExtra.CONTENT_URL);
+            mItemsToCartDeepLink = arguments.getString(ConstantsIntentExtra.DATA);
+            arguments.remove(ConstantsIntentExtra.DATA);
         }
 
         selectedPosition = 0;
