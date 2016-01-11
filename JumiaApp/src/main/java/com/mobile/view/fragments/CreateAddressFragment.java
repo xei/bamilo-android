@@ -400,10 +400,11 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
+        //add place holder by default if value = ""; ignore if added already
+        if(TextUtils.isEmpty(v.getEntry().getValue()) && regions.get(0).getValue() != 0){
+            regions.add(0,new AddressRegion(0,v.getEntry().getPlaceHolder()));
+        }
 
-        if(TextUtils.isEmpty(v.getEntry().getValue()))
-            regions.add(0,new AddressRegion(0,""));
-        // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -480,6 +481,9 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
+        if(TextUtils.isEmpty(v.getEntry().getValue()) && cities.get(0).getValue() != 0){
+            cities.add(0,new AddressCity(0,v.getEntry().getPlaceHolder()));
+        }
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
@@ -503,6 +507,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
+        //add place holder from API by default if value = ""; ignore if added already
+        if(TextUtils.isEmpty(v.getEntry().getValue()) && postalCodes.get(0).getValue() != 0){
+            postalCodes.add(0,new AddressPostalCode(0,v.getEntry().getPlaceHolder()));
+        }
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
@@ -691,7 +699,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.d(TAG, "CURRENT TAG: " + parent.getTag());
         Object object = parent.getItemAtPosition(position);
         if (object instanceof AddressRegion) {
-            if(TextUtils.isNotEmpty(((AddressRegion) object).getLabel())){
+            if(((AddressRegion) object).getValue() != 0){   //if not the place holder option, load cities of selected region
                 // Get city field
                 FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.CITY);
                 // Case list

@@ -1315,7 +1315,7 @@ public class DynamicFormItem {
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
         } else {
             ArrayList<String> default_string = new ArrayList<>();
-            default_string.add("Empty");
+            default_string.add(this.entry.getPlaceHolder());
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
