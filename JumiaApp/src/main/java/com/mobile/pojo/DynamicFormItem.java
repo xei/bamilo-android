@@ -263,6 +263,7 @@ public class DynamicFormItem {
                 case rating:
                     buildRatingOptionsTerms(controlWidth);
                     break;
+                case infoMessage:
                 case errorMessage:
                     buildText(params);
                     break;
@@ -1256,7 +1257,6 @@ public class DynamicFormItem {
         this.control.setLayoutParams(params);
         this.control.setPadding(0, 10, 0, 10);
         ((RelativeLayout)this.control).setGravity(Gravity.CENTER);
-
         TextView textView = (TextView) View.inflate(this.context, R.layout.text_view_info, null);
         textView.setText(entry.getValue());
         this.control.addView(textView);
