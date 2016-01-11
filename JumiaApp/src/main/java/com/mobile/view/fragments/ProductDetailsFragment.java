@@ -554,7 +554,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setProgressForRTLPreJelly(RatingBar progressBar) {
         if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
-            progressBar.setRotation(180.0f);
+            //TODO: adapt assets for preJelly versions.
         }
     }
 

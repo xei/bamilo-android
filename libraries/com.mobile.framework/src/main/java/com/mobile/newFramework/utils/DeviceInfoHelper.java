@@ -397,6 +397,6 @@ public class DeviceInfoHelper {
     }
 
     public static boolean isPreJellyBeanMR1(){
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1;
     }
 }

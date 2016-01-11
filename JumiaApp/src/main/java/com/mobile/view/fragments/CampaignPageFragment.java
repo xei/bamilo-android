@@ -41,6 +41,7 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -180,7 +181,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             }
         });
 
-        mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.favourite_num_columns));
+        mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.campaign_num_columns));
+
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mGridView.setHasFixedSize(true);
@@ -667,7 +669,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
          * Set the campaign data
          * @author sergiopereira
          */
-        private void setData(CampaignItemHolder view, CampaignItem item, int position) {
+        private void setData(final CampaignItemHolder view, CampaignItem item, int position) {
             //Log.d(TAG, "SET DATA");
             // Set stock off
             setStockOff(view, item);
@@ -697,12 +699,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             int remainingTime = item.getRemainingTime();
             // Set itemView's remainingTime to be used by handler
             view.mRemainingTime = remainingTime;
-            // start handler processing
-            if(remainingTime > 0){
-                Message msg = new Message();
-                msg.obj = view;
-                mHandler.sendMessageDelayed(msg, 1000);
-            }
             // update Timer
             updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
         }
@@ -713,7 +709,18 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
          *
          * Update Timer with remaining Time or show "Offer Ended" when time remaining reaches 0
          */
-        private void updateTimer(TextView timer, View timerContainer, View buttonBuy, View offerEnded, View name, View image, int remainingTime, View imageContainer) {
+        private void updateTimer(final TextView timer, final View timerContainer, final View buttonBuy, final View offerEnded, final View name, final View image, final int remainingTime, final View imageContainer) {
+            // start handler processing
+            if(remainingTime > 0){
+                timer.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // update Timer
+                        updateTimer(timer, timerContainer, buttonBuy, offerEnded, name, image, remainingTime, imageContainer);
+                    }
+                }, 1000);
+            }
+
 //            Print.d(TAG, "updateTimer");
             if (remainingTime > 0) {
 //                Print.d(TAG, "Product with remainingTime");
@@ -985,23 +992,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         public int getItemCount() {
             return mItems.size();
         }
-
-
-        /**
-         * Handler used to update Timer every second, when user is not scrolling
-         */
-        private final Handler mHandler = new Handler() {
-            public void handleMessage(android.os.Message msg) {
-                // only update if is not detected a fling (fast scrolling) on gridview
-                if (!isScrolling) {
-                    CampaignItemHolder mCampaignItemHolder = (CampaignItemHolder) msg.obj;
-                    updateTimer(mCampaignItemHolder.mTimer, mCampaignItemHolder.mTimerContainer, mCampaignItemHolder.mButtonBuy, mCampaignItemHolder.mOfferEnded
-                            , mCampaignItemHolder.mName, mCampaignItemHolder.mImage,mCampaignItemHolder. mRemainingTime, mCampaignItemHolder.mImageContainer);
-                }
-                this.sendEmptyMessageDelayed(0, 1000);
-            }
-        };
-
 
         @Override
         public void showHeaderView() {
