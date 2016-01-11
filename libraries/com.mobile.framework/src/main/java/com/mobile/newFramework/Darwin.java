@@ -90,6 +90,7 @@ public class Darwin {
 	public static final String KEY_COUNTRY_CONFIGS_AVAILABLE = "country_configs_available";
 
 	public static final String KEY_COUNTRY_USER_AGENT_AUTH_KEY = "user_agent_authentication";
+	public static final String KEY_LOGIN_FACEBOOK= "login_facebook";
 
 	/**
 	 * Prevent this class from being instantiated. Make this class into a

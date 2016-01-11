@@ -1,11 +1,14 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -16,8 +19,10 @@ import com.mobile.helpers.account.GetUserDataFormHelper;
 import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.helpers.account.SetUserDataHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -47,6 +52,10 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     private DynamicForm mChangePasswordForm;
 
     private Bundle mFormSavedState;
+
+    private TextView mChangePasswordTitle;
+
+    private TextView mChangePasswordButton;
     /**
      * Empty constructor
      */
@@ -227,7 +236,9 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     public void setAppContentLayout(View mainView) {
         mUserDataFormContainer = (LinearLayout) mainView.findViewById(R.id.user_data_container);
         mChangePasswordFormContainer = (LinearLayout) mainView.findViewById(R.id.change_password_layout);
-        mainView.findViewById(R.id.change_password_save_button).setOnClickListener(this);
+        mChangePasswordTitle = (TextView) mainView.findViewById(R.id.change_password_title);
+        mChangePasswordButton = (TextView) mainView.findViewById(R.id.change_password_save_button);
+        mChangePasswordButton.setOnClickListener(this);
         mainView.findViewById(R.id.user_data_save_button).setOnClickListener(this);
     }
 
@@ -235,8 +246,19 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      * call methods to fill layout with forms
      */
     private void init() {
-        triggerGetChangePasswordForm();
         triggerGetUserDataForm();
+        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        if(!sharedPrefs.getBoolean(Darwin.KEY_LOGIN_FACEBOOK, false)){
+            triggerGetChangePasswordForm();
+            mChangePasswordFormContainer.setVisibility(View.VISIBLE);
+            mChangePasswordTitle.setVisibility(View.VISIBLE);
+            mChangePasswordButton.setVisibility(View.VISIBLE);
+        } else {
+            mChangePasswordFormContainer.setVisibility(View.GONE);
+            mChangePasswordTitle.setVisibility(View.GONE);
+            mChangePasswordButton.setVisibility(View.GONE);
+        }
+
     }
 
     /**

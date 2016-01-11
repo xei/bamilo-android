@@ -2,6 +2,8 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.GetLoginFormHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
@@ -23,6 +26,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -340,6 +344,11 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 // Get customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
+                // Set Facebook login flag false
+                SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+                sharedPrefs.edit().putBoolean(Darwin.KEY_LOGIN_FACEBOOK, false);
+                sharedPrefs.edit().apply();
+
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
                 // Finish
