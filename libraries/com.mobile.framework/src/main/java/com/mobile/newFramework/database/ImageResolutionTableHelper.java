@@ -54,8 +54,8 @@ public class ImageResolutionTableHelper extends BaseTable {
     * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
     */
    @Override
-   public String create(String table) {
-       return "CREATE TABLE " + table + " (" + 
+   public String create() {
+       return "CREATE TABLE ? (" +
                _ID +           " INTEGER PRIMARY KEY, " + 
                _IDENTIFIER +   " TEXT," + 
                _WIDTH +        " INTEGER," + 

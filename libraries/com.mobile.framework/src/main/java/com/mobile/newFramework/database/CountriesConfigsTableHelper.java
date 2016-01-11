@@ -58,8 +58,8 @@ public class CountriesConfigsTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
      */
     @Override
-    public String create(String table) {
-        return "CREATE TABLE " + table + " (" + 
+    public String create() {
+        return "CREATE TABLE ? (" +
                 _ID +           " INTEGER PRIMARY KEY, " +
                 _COUNTRY_NAME +     " TEXT," + 
                 _COUNTRY_URL +      " TEXT," + 
