@@ -929,7 +929,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucherCode);
                     //Print.i(TAG, "code1coupon : " + mVoucher);
-                    if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
+                    if (getString(R.string.voucher_use).equalsIgnoreCase(mCouponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
                         triggerRemoveVoucher();
