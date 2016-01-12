@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.utils.ui.ProductUtils;
@@ -45,7 +44,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Show / Hide New Arrival Badge
         holder.newArrivalBadge.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         //Show/Hide Shop First
-        holder.shopFirst.setVisibility((!item.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+        ProductUtils.setShopFirst(item,holder.shopFirst);
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image

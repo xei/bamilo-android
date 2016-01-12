@@ -46,6 +46,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -67,7 +68,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author sergiopereira
@@ -135,8 +135,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Get arguments
         Bundle arguments = getArguments();
         if (arguments != null) {
-            mItemsToCartDeepLink = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            arguments.remove(ConstantsIntentExtra.CONTENT_URL);
+            mItemsToCartDeepLink = arguments.getString(ConstantsIntentExtra.DATA);
+            arguments.remove(ConstantsIntentExtra.DATA);
         }
 
         selectedPosition = 0;
@@ -618,21 +618,20 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.discount_value = (double) Math.round(item.getSavingPercentage());
                 values.min_delivery_time = 0;
                 values.max_delivery_time = 99;
-                values.simpleData = item.getSimpleData();
                 values.variation = item.getVariation();
-                values.productSku = item.getConfigSKU();
-                values.productUrl = item.getProductUrl();
+                values.productSku = item.getSku();
                 values.maxQuantity = item.getMaxQuantity();
+                values.shop_first = item.isShopFirst();
 
                 Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
                 lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
-                if (!item.getPrice().equals(item.getSpecialPrice())) {
+                if(!TextUtils.equals(item.getPriceString(), item.getSpecialPriceString())){
                     cartHasReducedItem = true;
                 }
 
                 // Fix NAFAMZ-7848
-                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPriceVal() * item.getQuantity()));
+                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPrice() * item.getQuantity()));
                 Print.e(TAG, "unreduced_cart_price= " + unreduced_cart_price);
             }
 
@@ -704,6 +703,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
         prodItem.isNew = (TextView) view.findViewById(R.id.new_arrival_badge);
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
+        prodItem.shopFirstImage = (ImageView) view.findViewById(R.id.item_shop_first);
 
         prodItem.pBar = view.findViewById(R.id.image_loading_progress);
         prodItem.deleteBtn = (TextView) view.findViewById(R.id.button_delete);
@@ -716,6 +716,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         // Hide is New badge because shopping cart product has no info regarding this attribute
         prodItem.isNew.setVisibility(View.GONE);
+        // Hide shop view image if is_shop is false
+        prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
                 R.drawable.no_image_small);
@@ -872,7 +874,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
             params.putDouble(TrackerDelegator.RATING_KEY, -1d);
             params.putString(TrackerDelegator.NAME_KEY, item.getName());
-            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategoriesIds());
+            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategories());
             params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
 
             if (quantity > prods) {
@@ -927,7 +929,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     ContentValues mContentValues = new ContentValues();
                     mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucherCode);
                     //Print.i(TAG, "code1coupon : " + mVoucher);
-                    if (getString(R.string.voucher_use).equalsIgnoreCase(mCouponButton.getText().toString())) {
+                    if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
                         triggerRemoveVoucher();
@@ -960,11 +962,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public Double discount_value;
         public Integer min_delivery_time;
         public Integer max_delivery_time;
-        public Map<String, String> simpleData;
         public String variation;
-        public String productUrl;
         public int maxQuantity;
         public String productSku;
+        public boolean shop_first;
     }
 
     /**
@@ -980,6 +981,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public View pBar;
         public TextView deleteBtn;
         public CartItemValues itemValues;
+        public ImageView shopFirstImage;
 
         /*
          * (non-Javadoc)
@@ -996,6 +998,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             pBar = null;
             deleteBtn = null;
             isNew = null;
+            shopFirstImage = null;
             super.finalize();
         }
     }

@@ -16,12 +16,19 @@
         android:text="Name"
         android:textColor="@color/black" />
 
+    <!-- SHOP FIRST IMAGE -->
+    <ImageView
+        android:id="@+id/item_shop_first"
+        style="@style/ShopFirstStyle"
+        android:layout_below="@id/item_name" />
+    
+
     <!-- PRICE -->
     <RelativeLayout
         android:id="@+id/price_quantity_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_name">
+        android:layout_below="@id/item_shop_first">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_regprice"

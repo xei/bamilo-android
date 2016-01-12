@@ -49,9 +49,9 @@ public class CategoriesTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
      */
     @Override
-    public String create(String tableName) {
+    public String create() {
         return new StringBuilder()
-                .append("CREATE TABLE ").append(tableName)
+                .append("CREATE TABLE ?")
                 .append(" (")
                 .append(Columns.URL_KEY).append(" TEXT PRIMARY KEY, ")
                 .append(Columns.NAME).append(" TEXT, ")
@@ -73,9 +73,9 @@ public class CategoriesTableHelper extends BaseTable {
 
             // Create query
             String query = new StringBuilder("select ").append(Columns.VIEW_COUNT).append(" from ").append(TABLE_NAME)
-                    .append(" where ").append(Columns.URL_KEY).append(" = '").append(id).append("'").toString();
+                    .append(" where ").append(Columns.URL_KEY).append(" = '?'").toString();
             Print.i(TAG, "SQL RESULT query :  " + query);
-            Cursor cursor = db.rawQuery(query, null);
+            Cursor cursor = db.rawQuery(query, new String[]{id});
 
             int count = 0;
             if (cursor != null && cursor.getCount() > 0) {
@@ -88,13 +88,13 @@ public class CategoriesTableHelper extends BaseTable {
                     .append("INSERT OR REPLACE INTO ").append(TABLE_NAME)
                     .append("(" + Columns.NAME + "," + Columns.URL_KEY + "," + Columns.VIEW_COUNT + ") ")
                     .append("VALUES ( ")
-                    .append("(").append(DatabaseUtils.sqlEscapeString(categoryName)).append("), ")
-                    .append("(").append(DatabaseUtils.sqlEscapeString(id)).append("), ")
+                    .append("(").append("?").append("), ")
+                    .append("(").append("?").append("), ")
                     .append(count + 1)
                     .append(" )")
                     .toString();
             // Execute
-            db.execSQL(insertOrReplace);
+            db.execSQL(insertOrReplace, new String[]{DatabaseUtils.sqlEscapeString(categoryName), DatabaseUtils.sqlEscapeString(id)});
             Print.i(TAG, "ON INCREASE COUNTER: " + categoryName);
         } catch (SQLException e) {
             Print.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);
