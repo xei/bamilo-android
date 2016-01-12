@@ -137,16 +137,4 @@
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:gravity="center" />
 
-    <View
-        android:id="@+id/divider"
-        style="@style/HorizontalListDivider"
-        android:visibility="visible"
-        android:layout_alignParentBottom="true" />
-
-    <View
-        android:id="@+id/vdivider"
-        style="@style/VerticalListDivider"
-        android:visibility="gone"
-        android:layout_alignParentLeft="true"/>
-
 </RelativeLayout>

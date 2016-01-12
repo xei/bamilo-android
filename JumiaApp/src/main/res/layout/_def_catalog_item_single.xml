@@ -153,16 +153,4 @@
             android:textColor="@color/black_800" />
     </RelativeLayout>
 
-    <View
-        android:id="@+id/divider"
-        style="@style/HorizontalListDivider"
-        android:layout_alignParentBottom="true"
-        android:visibility="visible" />
-
-    <View
-        android:id="@+id/vdivider"
-        style="@style/VerticalListDivider"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:visibility="gone" />
 </RelativeLayout>
