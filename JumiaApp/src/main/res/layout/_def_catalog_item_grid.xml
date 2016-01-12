@@ -116,16 +116,4 @@
         android:layout_alignStart="@id/item_brand"
         android:layout_marginBottom="@dimen/dimen_12dp"/>
 
-    <View
-        android:id="@+id/divider"
-        style="@style/HorizontalListDivider"
-        android:layout_alignParentBottom="true"
-        android:visibility="visible" />
-
-    <View
-        android:id="@+id/vdivider"
-        style="@style/VerticalListDivider"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:visibility="gone" />
 </RelativeLayout>
