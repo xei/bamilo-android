@@ -9,10 +9,8 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -38,7 +36,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
-import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DarwinRegex;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
@@ -82,6 +79,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private long mBeginRequestMillis;
     private List<PurchaseCartItem> items;
     private LinearLayout lView;
+    private View mTotalContainer;
     private Button mCheckoutButton;
     private Button mCallToOrderButton;
     private DialogListFragment dialogList;
@@ -89,12 +87,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private EditText mVoucherView;
     private String mVoucherCode = null;
     private boolean isToRemoveVoucher = false;
-    private String itemRemoved_sku;
+    private String mItemRemovedSku;
     private String mPhone2Call = "";
-    private double itemRemoved_price_tracking = 0d;
-    private long itemRemoved_quantity;
-    private double itemRemoved_rating;
-    private String itemRemoved_cart_value;
+    private double mItemRemovedPriceTracking = 0d;
+    private long mItemRemovedQuantity;
+    private double mItemRemovedRating;
+    private String mItemRemovedCartValue;
     private String mItemsToCartDeepLink;
     private NestedScrollView mNestedScroll;
     private int selectedPosition;
@@ -177,6 +175,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         Print.i(TAG, "ON STOP");
@@ -196,78 +200,193 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Print.i(TAG, "ON DESTROY");
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
         onResume();
     }
 
+    /*
+     * ####### LAYOUT #######
+     */
+
+    /**
+     * Set the ShoppingCart layout using inflate
+     */
+    public void setAppContentLayout(View view) {
+        mCheckoutButton = (Button) view.findViewById(R.id.checkout_button);
+        mCallToOrderButton = (Button) view.findViewById(R.id.checkout_call_to_order);
+        mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
+        mCouponButton = (TextView) view.findViewById(R.id.voucher_btn);
+        mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
+        mTotalContainer = view.findViewById(R.id.total_container);
+        setCouponView();
+    }
+
+    /**
+     * Replace voucher and update Coupon field
+     */
+    private void changeVoucher(String voucher) {
+        Print.d(TAG, "changeVoucher to " + voucher);
+        mVoucherCode = voucher;
+        isToRemoveVoucher = true;
+        setCouponView();
+    }
+
+    /**
+     * Clean Voucher field
+     */
+    private void removeVoucher() {
+        Print.d(TAG, "removeVoucher");
+        mVoucherCode = null;
+        isToRemoveVoucher = false;
+        // Clean Voucher field
+        mVoucherView.setText("");
+        setCouponView();
+    }
+
+    private void setCouponView() {
+        if (!TextUtils.isEmpty(mVoucherCode)) {
+            mVoucherView.setText(mVoucherCode);
+            mVoucherView.setFocusable(false);
+        } else {
+            mVoucherView.setFocusable(true);
+            mVoucherView.setFocusableInTouchMode(true);
+        }
+        UIUtils.scrollToViewByClick(mNestedScroll, mVoucherView);
+
+        if (isToRemoveVoucher) {
+            mCouponButton.setText(getString(R.string.voucher_remove));
+        }
+        mCouponButton.setOnClickListener(this);
+    }
+
+    /**
+     * Set the total value
+     */
+    private void setTotal(PurchaseEntity cart) {
+        Print.d(TAG, "SET THE TOTAL VALUE");
+        // Get views
+        TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
+        // Set value
+        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
+        mTotalContainer.setVisibility(View.VISIBLE);
+    }
+
+    /**
+     * showNoItems update the layout when basket has no items
+     */
+    public void showNoItems() {
+        showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT, new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
+        });
+        getBaseActivity().hideKeyboard();
+        TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
+    }
+
+    /*
+     * ####### LISTENER #######
+     */
+
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
+    public void onClick(View view) {
+        // Get id
+        int id = view.getId();
+        // Case call to order
+        if(id == R.id.checkout_call_to_order) {
+            onClick2Call();
+        }
+        // Case voucher
+        else if(id == R.id.voucher_btn) {
+            onClickVoucherButton();
+        }
+        // Case next button
+        else if(id == R.id.checkout_button) {
+            onClickCheckoutButton();
+        }
+        // Case super
+        else super.onClick(view);
     }
 
     /**
      *
      */
-    private void releaseVars() {
-        lView = null;
-        mCheckoutButton = null;
-        dialogList = null;
+    private void onClickCheckoutButton() {
+        if (items != null && items.size() > 0) {
+            TrackerDelegator.trackCheckout(items);
+            Bundle bundle = new Bundle();
+            bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
+            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            String title = getString(R.string.shoppingcart_alert_header);
+            String message = getString(R.string.shoppingcart_alert_message_no_items);
+            String buttonText = getString(R.string.ok_label);
+            DialogGenericFragment.createInfoDialog(title, message, buttonText)
+                    .show(getActivity().getSupportFragmentManager(), null);
+        }
     }
+
+    /**
+     * Process the click on voucher button
+     */
+    private void onClickVoucherButton() {
+        mVoucherCode = mVoucherView.getText().toString();
+        getBaseActivity().hideKeyboard();
+        if (!TextUtils.isEmpty(mVoucherCode)) {
+            ContentValues mContentValues = new ContentValues();
+            mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucherCode);
+            if (getString(R.string.voucher_use).equalsIgnoreCase(mCouponButton.getText().toString())) {
+                triggerSubmitVoucher(mContentValues);
+            } else {
+                triggerRemoveVoucher();
+            }
+        } else {
+            showWarningErrorMessage(getString(R.string.voucher_error_message));
+        }
+    }
+
+    /**
+     * Process the click on call to order
+     */
+    private void onClick2Call() {
+        // Displays the phone number but the user must press the Call button to begin the phone call
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + mPhone2Call));
+        if (intent.resolveActivity(getBaseActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
+        // Tracking
+        TrackerDelegator.trackCall(getBaseActivity());
+    }
+
+    /*
+     * ####### TRIGGERS #######
+     */
 
     /**
      * Trigger to get cart items validating FavouritesFragment state is completed
-     *
-     * @author sergiopereira
      */
     private void triggerGetShoppingCart() {
-        // Get items
         triggerContentEvent(new GetShoppingCartItemsHelper(), null, this);
     }
 
     /**
-     * Get items from string
-     *
-     * @author sergiopereira
-     */
-    private void addItemsToCart(String items) {
-        String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
-        Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
-        // Create arguments to add all items to cart
-        ArrayList<String> productBySku = new ArrayList<>();
-        Collections.addAll(productBySku, itemsToCart);
-        // Case valid deep link
-        if (!productBySku.isEmpty()) {
-            triggerAddAllItems(productBySku);
-        }
-        // Case invalid deep link
-        else {
-            triggerGetShoppingCart();
-        }
-    }
-
-    /**
-     *
+     * Trigger to remove item from cart
      */
     private void triggerRemoveItem(PurchaseCartItem item) {
-
-        itemRemoved_sku = item.getConfigSimpleSKU();
-        itemRemoved_price_tracking = item.getPriceForTracking();
-        itemRemoved_quantity = item.getQuantity();
-        itemRemoved_rating = -1d;
-
+        mItemRemovedSku = item.getConfigSimpleSKU();
+        mItemRemovedPriceTracking = item.getPriceForTracking();
+        mItemRemovedQuantity = item.getQuantity();
+        mItemRemovedRating = -1d;
         if (TextUtils.isEmpty(cartValue)) {
-            TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
-            itemRemoved_cart_value = totalValue.toString();
-        } else
-            itemRemoved_cart_value = cartValue;
-
+            TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
+            mItemRemovedCartValue = totalValue.toString();
+        } else {
+            mItemRemovedCartValue = cartValue;
+        }
         triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
     }
 
@@ -295,50 +414,72 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     /**
-     * Set the ShoppingCart layout using inflate
+     *
      */
-    public void setAppContentLayout(View view) {
-        mCheckoutButton = (Button) view.findViewById(R.id.checkout_button);
-        mCallToOrderButton = (Button) view.findViewById(R.id.checkout_call_to_order);
-        mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
-        mCouponButton = (TextView) view.findViewById(R.id.voucher_btn);
-        mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
-        prepareCouponView();
+    private void releaseVars() {
+        lView = null;
+        mCheckoutButton = null;
+        dialogList = null;
     }
 
+
+    /**
+     * Get items from string
+     *
+     * @author sergiopereira
+     */
+    private void addItemsToCart(String items) {
+        String[] itemsToCart = items.split(DarwinRegex.SKU_DELIMITER);
+        Print.i(TAG, "RECEIVED : " + items + " " + itemsToCart.length);
+        // Create arguments to add all items to cart
+        ArrayList<String> productBySku = new ArrayList<>();
+        Collections.addAll(productBySku, itemsToCart);
+        // Case valid deep link
+        if (!productBySku.isEmpty()) {
+            triggerAddAllItems(productBySku);
+        }
+        // Case invalid deep link
+        else {
+            triggerGetShoppingCart();
+        }
+    }
+
+
     public void setListeners() {
-        // checkoutButton.setOnClickListener(checkoutClickListener);
-        mCheckoutButton.setOnTouchListener(new OnTouchListener() {
-            private DialogGenericFragment messageDialog;
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_UP:
-                        if (items != null && items.size() > 0) {
-                            TrackerDelegator.trackCheckout(items);
 
-                            Bundle bundle = new Bundle();
-                            bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
-                            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+        mCheckoutButton.setOnClickListener(this);
 
-                        } else {
-                            String title = getString(R.string.shoppingcart_alert_header);
-                            String message = getString(R.string.shoppingcart_alert_message_no_items);
-                            String buttonText = getString(R.string.ok_label);
-                            messageDialog = DialogGenericFragment.newInstance(true, false,
-                                    title, message, buttonText, null, new OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            messageDialog.dismissAllowingStateLoss();
-                                        }
-                                    });
-                            messageDialog.show(getActivity().getSupportFragmentManager(), null);
-                        }
-                        break;
-                }
-                return false;
-            }
-        });
+//        mCheckoutButton.setOnTouchListener(new OnTouchListener() {
+//            private DialogGenericFragment messageDialog;
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_UP:
+//                        if (items != null && items.size() > 0) {
+//                            TrackerDelegator.trackCheckout(items);
+//
+//                            Bundle bundle = new Bundle();
+//                            bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
+//                            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+//
+//                        } else {
+//                            String title = getString(R.string.shoppingcart_alert_header);
+//                            String message = getString(R.string.shoppingcart_alert_message_no_items);
+//                            String buttonText = getString(R.string.ok_label);
+//                            messageDialog = DialogGenericFragment.newInstance(true, false,
+//                                    title, message, buttonText, null, new OnClickListener() {
+//                                        @Override
+//                                        public void onClick(View v) {
+//                                            messageDialog.dismissAllowingStateLoss();
+//                                        }
+//                                    });
+//                            messageDialog.show(getActivity().getSupportFragmentManager(), null);
+//                        }
+//                        break;
+//                }
+//                return false;
+//            }
+//        });
 
         // Get phone number from country configs
         mPhone2Call = CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity());
@@ -347,40 +488,27 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY) && !TextUtils.isEmpty(mPhone2Call)) {
             mCallToOrderButton.setVisibility(View.VISIBLE);
             mCallToOrderButton.setSelected(true);
-            mCallToOrderButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    TrackerDelegator.trackCall(getBaseActivity());
-                    makeCall();
-                }
-            });
+            mCallToOrderButton.setOnClickListener(this);
         } else {
             mCallToOrderButton.setVisibility(View.GONE);
         }
     }
 
-    /**
-     *
+
+    /*
+     * ####### RESPONSES #######
      */
-    private void makeCall() {
-        // Displays the phone number but the user must press the Call button to begin the phone call
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + mPhone2Call));
-        if (intent.resolveActivity(getBaseActivity().getPackageManager()) != null) {
-            startActivity(intent);
-        }
-    }
+
 
     /**
      *
      */
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
-
-
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         Bundle params;
@@ -398,29 +526,29 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 hideActivityProgress();
                 isToRemoveVoucher = true;
                 displayShoppingCart(addVoucherPurchaseEntity);
-                return true;
+                break;
             case REMOVE_VOUCHER:
                 PurchaseEntity removeVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getContentData();
                 mCouponButton.setText(getString(R.string.voucher_use));
                 hideActivityProgress();
                 isToRemoveVoucher = false;
                 displayShoppingCart(removeVoucherPurchaseEntity);
-                return true;
+                break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
                 //Print.i(TAG, "code1removing and tracking" + itemRemoved_price);
                 params = new Bundle();
-                params.putString(TrackerDelegator.SKU_KEY, itemRemoved_sku);
+                params.putString(TrackerDelegator.SKU_KEY, mItemRemovedSku);
                 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                params.putDouble(TrackerDelegator.PRICE_KEY, itemRemoved_price_tracking);
-                params.putLong(TrackerDelegator.QUANTITY_KEY, itemRemoved_quantity);
-                params.putDouble(TrackerDelegator.RATING_KEY, itemRemoved_rating);
-                params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
+                params.putDouble(TrackerDelegator.PRICE_KEY, mItemRemovedPriceTracking);
+                params.putLong(TrackerDelegator.QUANTITY_KEY, mItemRemovedQuantity);
+                params.putDouble(TrackerDelegator.RATING_KEY, mItemRemovedRating);
+                params.putString(TrackerDelegator.CARTVALUE_KEY, mItemRemovedCartValue);
                 TrackerDelegator.trackProductRemoveFromCart(params);
                 TrackerDelegator.trackLoadTiming(params);
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
                 hideActivityProgress();
-                return true;
+                break;
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 hideActivityProgress();
                 params = new Bundle();
@@ -428,7 +556,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
                 TrackerDelegator.trackLoadTiming(params);
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
-                return true;
+                break;
             case GET_SHOPPING_CART_ITEMS_EVENT:
                 hideActivityProgress();
                 PurchaseEntity purchaseEntity = (PurchaseEntity) baseResponse.getContentData();
@@ -441,7 +569,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 TrackerDelegator.trackPage(TrackingPage.CART_LOADED, getLoadTime(), false);
                 TrackerDelegator.trackPageForAdjust(TrackingPage.CART_LOADED, params);
                 displayShoppingCart(purchaseEntity);
-                return true;
+                break;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
                 onAddItemsToShoppingCartRequestSuccess(baseResponse);
                 break;
@@ -451,8 +579,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
                 TrackerDelegator.trackLoadTiming(params);
                 displayShoppingCart((PurchaseEntity) baseResponse.getMetadata().getData());
+                break;
         }
-        return true;
     }
 
 
@@ -480,12 +608,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      *
      */
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
 
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         hideActivityProgress();
@@ -493,13 +622,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         // Validate generic errors
         if (super.handleErrorEvent(baseResponse)) {
-
             if(eventType == EventType.CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT ){
                 items.get(selectedPosition).setQuantity(crrQuantity); //restarts the previous position for load selected quantity before the error
             }
-            return true;
+            return;
         }
-
 
         switch (eventType) {
             case ADD_VOUCHER:
@@ -519,9 +646,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             default:
                 break;
         }
-
         mBeginRequestMillis = System.currentTimeMillis();
-        return true;
     }
 
     /*
@@ -654,41 +779,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
     }
 
-    /**
-     * Replace voucher and update Coupon field
-     */
-    private void changeVoucher(String voucher) {
-        Print.d(TAG, "changeVoucher to " + voucher);
-        mVoucherCode = voucher;
-        isToRemoveVoucher = true;
-        prepareCouponView();
-    }
 
-    /**
-     * Clean Voucher field
-     */
-    private void removeVoucher() {
-        Print.d(TAG, "removeVoucher");
-        mVoucherCode = null;
-        isToRemoveVoucher = false;
-        // Clean Voucher field
-        mVoucherView.setText("");
-        prepareCouponView();
-    }
-
-    /**
-     * Set the total value
-     * @author sergiopereira
-     */
-    private void setTotal(PurchaseEntity cart) {
-        Print.d(TAG, "SET THE TOTAL VALUE");
-        // Get views
-        TextView totalValue = (TextView) getView().findViewById(R.id.total_value);
-        View totalMain = getView().findViewById(R.id.total_container);
-        // Set value
-        totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
-        totalMain.setVisibility(View.VISIBLE);
-    }
 
     public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
 
@@ -782,20 +873,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     /**
-     * showNoItems update the layout when basket has no items
-     */
-    public void showNoItems() {
-        showErrorFragment(ErrorLayoutFactory.CART_EMPTY_LAYOUT, new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
-        });
-        getBaseActivity().hideKeyboard();
-        TrackerDelegator.trackPage(TrackingPage.EMPTY_CART, getLoadTime(), false);
-    }
-
-    /**
      * Function to redirect to the selected product details.
      */
     private void goToProductDetails(String sku) {
@@ -856,45 +933,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     public void changeQuantityOfItem(int position, int quantity) {
-        trackAddToCartGTM(items.get(position), quantity);
+        TrackerDelegator.trackAddToCartGTM(items.get(position), quantity, mItemRemovedCartValue);
         items.get(position).setQuantity(quantity);
         mBeginRequestMillis = System.currentTimeMillis();
         changeItemQuantityInShoppingCart(items);
     }
 
-    private void trackAddToCartGTM(PurchaseCartItem item, int quantity) {
-        try {
-            double prods = item.getQuantity();
-            Bundle params = new Bundle();
 
-            params.putString(TrackerDelegator.SKU_KEY, item.getConfigSimpleSKU());
-
-            params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-            params.putDouble(TrackerDelegator.PRICE_KEY, item.getPriceForTracking());
-            params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
-            params.putDouble(TrackerDelegator.RATING_KEY, -1d);
-            params.putString(TrackerDelegator.NAME_KEY, item.getName());
-            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategories());
-            params.putString(TrackerDelegator.CARTVALUE_KEY, itemRemoved_cart_value);
-
-            if (quantity > prods) {
-                prods = quantity - prods;
-                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.SHOPPINGCART);
-                for (int i = 0; i < prods; i++) {
-                    TrackerDelegator.trackProductAddedToCart(params);
-                }
-            } else {
-                prods = prods - quantity;
-                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
-                for (int i = 0; i < prods; i++) {
-                    TrackerDelegator.trackProductRemoveFromCart(params);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
 
     private void changeItemQuantityInShoppingCart(List<PurchaseCartItem> items) {
         Bundle bundle = new Bundle();
@@ -907,49 +952,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         triggerContentEventProgress(new ShoppingCartChangeItemQuantityHelper(), bundle, this);
     }
 
-    private void prepareCouponView() {
-        if (!TextUtils.isEmpty(mVoucherCode)) {
-            mVoucherView.setText(mVoucherCode);
-            mVoucherView.setFocusable(false);
-        } else {
-            mVoucherView.setFocusable(true);
-            mVoucherView.setFocusableInTouchMode(true);
-        }
-        UIUtils.scrollToViewByClick(mNestedScroll, mVoucherView);
 
-        if (isToRemoveVoucher) {
-            mCouponButton.setText(getString(R.string.voucher_remove));
-        }
-        mCouponButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mVoucherCode = mVoucherView.getText().toString();
-                getBaseActivity().hideKeyboard();
-                if (!TextUtils.isEmpty(mVoucherCode)) {
-                    ContentValues mContentValues = new ContentValues();
-                    mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucherCode);
-                    //Print.i(TAG, "code1coupon : " + mVoucher);
-                    if (getString(R.string.voucher_use).equalsIgnoreCase(mCouponButton.getText().toString())) {
-                        triggerSubmitVoucher(mContentValues);
-                    } else {
-                        triggerRemoveVoucher();
-                    }
-                } else {
-                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.voucher_error_message));
-                }
-            }
-        });
-    }
-
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        onErrorEvent(baseResponse);
-    }
 
     public static class CartItemValues {
         public Boolean is_checked;

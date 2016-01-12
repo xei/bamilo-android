@@ -383,12 +383,23 @@ public class DialogGenericFragment extends DialogFragment {
                 });
     }
 
-    public static DialogGenericFragment createClientErrorDialog(String message,
-            final Activity activity,
-            final android.view.View.OnClickListener retryClickListener, boolean finishActivity) {
-        return createErrorDialog(activity.getResources().getString(
-                R.string.client_error_title), message, activity, retryClickListener, finishActivity);
+    /**
+     * Create an info dialog.
+     */
+    public static DialogGenericFragment createInfoDialog(String title, String message, String button) {
+        return DialogGenericFragment.newInstance(
+                true,
+                false,
+                title,
+                message,
+                button,
+                null,
+                new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialogGenericFragment.dismissAllowingStateLoss();
+                    }
+                });
     }
-
 
 }
