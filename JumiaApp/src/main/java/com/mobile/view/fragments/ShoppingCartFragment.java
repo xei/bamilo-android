@@ -726,8 +726,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Hide is New badge because shopping cart product has no info regarding this attribute
         prodItem.isNew.setVisibility(View.GONE);
         // Hide shop view image if is_shop is false
-        if(!prodItem.itemValues.shop_first)
-            prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+        prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
 
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
