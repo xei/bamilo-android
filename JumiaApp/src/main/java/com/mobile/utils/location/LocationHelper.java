@@ -23,6 +23,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,7 +45,7 @@ public class LocationHelper implements LocationListener {
     
     private Context context;
 
-    private Handler callback;
+    private WeakReference<Handler> callback;
 
     private Handler timeoutHandle = new Handler();
     
@@ -389,7 +390,7 @@ public class LocationHelper implements LocationListener {
         Print.d(TAG, "SEND MESSAGE: " + eventType + " " + errorType);
         Message msg = new Message();
         msg.obj = new BaseResponse<>(eventType, errorType);
-        callback.sendMessage(msg);
+        callback.get().sendMessage(msg);
     }
     
     /**
@@ -398,7 +399,7 @@ public class LocationHelper implements LocationListener {
      */
     public void sendInitializeMessage(){
         Print.d(TAG, "SEND MESSAGE: INITIALIZE");
-        JumiaApplication.INSTANCE.init(callback);
+        JumiaApplication.INSTANCE.init(callback.get());
     }
 
     /**
@@ -407,6 +408,6 @@ public class LocationHelper implements LocationListener {
      */
     public void initializeLocationHelper (Context ctx, Handler callback){
         this.context = ctx;
-        this.callback = callback;
+        this.callback = new WeakReference<>(callback);
     }
 }
