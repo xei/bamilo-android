@@ -2,7 +2,6 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +30,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
@@ -39,6 +39,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
@@ -390,8 +391,10 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Quantity
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, item.getQuantity()));
             // Price
-            String price = item.getPrice();
-            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
+            String price = item.getPriceString();
+            if(!TextUtils.equals(price, item.getSpecialPriceString())){
+                price = item.getSpecialPriceString();
+            }
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
@@ -409,6 +412,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 prodInflateView.findViewById(R.id.my_order_item_divider).setVisibility(View.GONE);
             }
 
+            ProductUtils.setShopFirst(item, prodInflateView.findViewById(R.id.shop_first_item));
             // Add item view
             mProductsContainer.addView(prodInflateView);
         }
