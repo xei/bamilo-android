@@ -2,7 +2,6 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +30,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
@@ -392,7 +392,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, item.getQuantity()));
             // Price
             String price = item.getPriceString();
-            if (!price.equals(item.getSpecialPriceString())){
+            if(!TextUtils.equals(price, item.getSpecialPriceString())){
                 price = item.getSpecialPriceString();
             }
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));

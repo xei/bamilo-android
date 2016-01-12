@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +43,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DarwinRegex;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -631,7 +631,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
                 lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
-                if (!item.getPriceString().equals(item.getSpecialPriceString())) {
+                if(!TextUtils.equals(item.getPriceString(), item.getSpecialPriceString())){
                     cartHasReducedItem = true;
                 }
 
