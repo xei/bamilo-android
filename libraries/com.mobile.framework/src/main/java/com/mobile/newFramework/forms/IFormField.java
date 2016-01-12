@@ -13,6 +13,8 @@ public interface IFormField {
 
     String getName();
 
+    String getPlaceHolder();
+
     FormInputType getInputType();
 
     String getLabel();
