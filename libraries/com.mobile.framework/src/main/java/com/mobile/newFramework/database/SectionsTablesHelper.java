@@ -60,7 +60,7 @@ public class SectionsTablesHelper extends BaseTable {
      */
     @Override
     public String create() {
-        return "CREATE TABLE ? (" +
+        return "CREATE TABLE %s (" +
                 Columns.ID +            " INTEGER PRIMARY KEY, " + 
                 Columns.NAME +          " TEXT UNIQUE, " + 
                 Columns.MD5 +           " TEXT, " + 

@@ -284,7 +284,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
     }
 
     @Override
-    public void setHeader(@Nullable View banner) {
+    public void setHeader(@Nullable String banner) {
 
     }
 

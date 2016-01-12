@@ -55,7 +55,7 @@ public class ImageResolutionTableHelper extends BaseTable {
     */
    @Override
    public String create() {
-       return "CREATE TABLE ? (" +
+       return "CREATE TABLE %s ( " +
                _ID +           " INTEGER PRIMARY KEY, " + 
                _IDENTIFIER +   " TEXT," + 
                _WIDTH +        " INTEGER," + 

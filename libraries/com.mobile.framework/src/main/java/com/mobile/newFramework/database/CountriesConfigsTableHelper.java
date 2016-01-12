@@ -59,7 +59,7 @@ public class CountriesConfigsTableHelper extends BaseTable {
      */
     @Override
     public String create() {
-        return "CREATE TABLE ? (" +
+        return "CREATE TABLE %s (" +
                 _ID +           " INTEGER PRIMARY KEY, " +
                 _COUNTRY_NAME +     " TEXT," + 
                 _COUNTRY_URL +      " TEXT," + 

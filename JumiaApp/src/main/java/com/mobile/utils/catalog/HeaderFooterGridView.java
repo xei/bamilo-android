@@ -86,7 +86,7 @@ public class HeaderFooterGridView extends RecyclerView {
         }
     }
 
-    public void setHeaderView(@Nullable View banner) {
+    public void setHeaderView(@Nullable String banner) {
         Adapter adapter = getAdapter();
         if(adapter instanceof HeaderFooterInterface) {
             mGridLayoutManager.showHeaderView();
