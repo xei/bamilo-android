@@ -17,6 +17,11 @@ public class FormListItem implements IJSONSerializable, Parcelable {
 	private int mValue;
 	private String mLabel;
 
+	public FormListItem(int mValue,String mLabel){
+		this.mValue= mValue;
+		this.mLabel = mLabel;
+	}
+
 	/**
 	 * Empty constructor
 	 * @throws JSONException

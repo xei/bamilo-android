@@ -341,7 +341,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         if(isSameAddress){
             // Set top container
             mTopTitle.setText(getString(R.string.billing_def_shipping_label));
-            mTopTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            //mTopTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             // Set Shipping Address (checked)
             mTopRadioGroup.setCheckedItem(0);
             addAddress(mTopRadioGroup, addresses.getShippingAddress());
