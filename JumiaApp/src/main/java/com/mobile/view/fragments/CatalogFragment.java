@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -245,6 +246,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mGridView.setGridLayoutManager(mNumberOfColumns);
         mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.addOnScrollListener(onRecyclerScrollListener);
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridView.post(new Runnable() {
             @Override
             public void run() {

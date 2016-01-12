@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.ImageResolutionHelper;
 import com.mobile.newFramework.utils.output.Print;
@@ -22,9 +23,8 @@ import java.util.Map;
  * @author GuilhermeSilva
  * @modified Paulo Carvalho
  *
- * TODO: USE Product Object
  */
-public class PurchaseCartItem implements IJSONSerializable, Parcelable {
+public class PurchaseCartItem extends ProductRegular {
 
     /**
      * Create parcelable
@@ -38,26 +38,16 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
             return new PurchaseCartItem[size];
         }
     };
-    private String imageUrl;
-    private String productUrl;
-    private String mSKU;
+
     private String mSimpleSku;
     private long quantity;
     private int maxQuantity;
-    private String configId;
-    private String name;
-    private String brand;
-    private Map<String, String> simpleData;
     private String variation;
+    private String mAttributeSetId;
+
     private String price;
     private String specialPrice;
     private double savingPercentage;
-    private double priceVal = 0;
-    private double specialPriceVal = 0;
-    private double mPriceValueConverted = 0;
-    private double mSpecialPriceConverted = 0;
-    private String mCategoriesIds;
-    private String mAttributeSetId;
 
     public PurchaseCartItem() {
 
@@ -71,27 +61,16 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
      * Parcel constructor
      */
     private PurchaseCartItem(Parcel in) {
-        imageUrl = in.readString();
-        productUrl = in.readString();
-        mSKU = in.readString();
+        super(in);
         mSimpleSku = in.readString();
         quantity = in.readLong();
         maxQuantity = in.readInt();
-        configId = in.readString();
-        name = in.readString();
         specialPrice = in.readString();
         savingPercentage = in.readDouble();
         price = in.readString();
-        simpleData = new HashMap<>();
-        in.readMap(simpleData, String.class.getClassLoader());
         variation = in.readString();
-        priceVal = in.readDouble();
-        specialPriceVal = in.readDouble();
-        mPriceValueConverted = in.readDouble();
         mSpecialPriceConverted = in.readDouble();
-        mCategoriesIds = in.readString();
         mAttributeSetId = in.readString();
-        brand = in.readString();
     }
 
     /*
@@ -106,22 +85,18 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
         Print.d("ON INITIALIZE");
 
         try {
-            imageUrl = getImageUrl(jsonObject.getString(RestConstants.IMAGE));
-            productUrl = jsonObject.optString(RestConstants.URL);
-            mSKU = jsonObject.getString(RestConstants.SKU);
+            super.initialize(jsonObject);
+            mImageUrl = getImageUrl(jsonObject.getString(RestConstants.IMAGE));
             mSimpleSku = jsonObject.getString(RestConstants.SIMPLE_SKU);
             quantity = jsonObject.getLong(RestConstants.QUANTITY);
             maxQuantity = jsonObject.getInt(RestConstants.MAX_QUANTITY);
-            name = jsonObject.getString(RestConstants.NAME);
-            brand = jsonObject.getString(RestConstants.BRAND);
             mAttributeSetId = jsonObject.optString(RestConstants.ATTRIBUTE_SET_ID);
             variation = jsonObject.optString(RestConstants.VARIATION);
-            mCategoriesIds = jsonObject.optString(RestConstants.ID_CATALOG_CATEGORY);
             // Fix NAFAMZ-7848
             // Throw JSONException if JSON_PRICE_TAG is not present
             String priceJSON = jsonObject.getString(RestConstants.PRICE);
             if (CurrencyFormatter.isNumber(priceJSON)) {
-                priceVal = jsonObject.getDouble(RestConstants.PRICE);
+                mPrice = jsonObject.getDouble(RestConstants.PRICE);
                 price = priceJSON;
                 //price = CurrencyFormatter.formatCurrency(priceJSON);
             } else {
@@ -130,22 +105,22 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
                 price = "";
             }
 
-            mPriceValueConverted = jsonObject.optDouble(RestConstants.PRICE_CONVERTED, 0d);
+            mPriceConverted = jsonObject.optDouble(RestConstants.PRICE_CONVERTED, 0d);
 
             // Fix NAFAMZ-7848
             String specialPriceJSON = jsonObject.optString(RestConstants.SPECIAL_PRICE);
             if (CurrencyFormatter.isNumber(specialPriceJSON)) {
-                specialPriceVal = jsonObject.getDouble(RestConstants.SPECIAL_PRICE);
+                mSpecialPrice = jsonObject.getDouble(RestConstants.SPECIAL_PRICE);
                 specialPrice = specialPriceJSON;
                 // specialPrice = CurrencyFormatter.formatCurrency();
             } else {
-                specialPriceVal = priceVal;
+                mSpecialPrice = mPrice;
                 specialPrice = price;
             }
 
             mSpecialPriceConverted = jsonObject.optDouble(RestConstants.SPECIAL_PRICE_CONVERTED, 0d);
 
-            savingPercentage = 100 - specialPriceVal / priceVal * 100;
+            savingPercentage = 100 - mSpecialPrice / mPrice * 100;
 
 
         } catch (JSONException e) {
@@ -168,27 +143,6 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
     @Override
     public int getRequiredJson() {
         return RequiredJson.METADATA;
-    }
-
-    /**
-     * @return the imageUrl
-     */
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    /**
-     * @return the productUrl
-     */
-    public String getProductUrl() {
-        return productUrl;
-    }
-
-    /**
-     * @return The product SKU (short form)
-     */
-    public String getConfigSKU() {
-        return mSKU;
     }
 
     /**
@@ -220,45 +174,17 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @return the brand
-     */
-    public String getBrand() {
-        return brand;
-    }
-
-    /**
      * @return the special price
      */
-    public String getSpecialPrice() {
+    public String getSpecialPriceString() {
         return specialPrice;
     }
 
     /**
-     * @return the special price
-     */
-    public Double getSpecialPriceVal() {
-        return specialPriceVal;
-    }
-
-    /**
      * @return the price
      */
-    public String getPrice() {
+    public String getPriceString() {
         return price;
-    }
-
-    /**
-     * @return the price
-     */
-    public Double getPriceVal() {
-        return priceVal;
     }
 
     /**
@@ -266,13 +192,6 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
      */
     public double getSavingPercentage() {
         return savingPercentage;
-    }
-
-    /**
-     * @return the simpleData
-     */
-    public Map<String, String> getSimpleData() {
-        return simpleData;
     }
 
     public String getVariation() {
@@ -291,19 +210,12 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @return category id from the item
-     */
-    public String getCategoriesIds() {
-        return mCategoriesIds;
-    }
-
-    /**
      * Return the price or special price used for tracking
      *
      * @author sergiopereira
      */
     public double getPriceForTracking() {
-        return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceValueConverted;
+        return mSpecialPriceConverted > 0 ? mSpecialPriceConverted : mPriceConverted;
     }
 
     /**
@@ -343,26 +255,16 @@ public class PurchaseCartItem implements IJSONSerializable, Parcelable {
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(imageUrl);
-        dest.writeString(productUrl);
-        dest.writeString(mSKU);
+        super.writeToParcel(dest,flags);
         dest.writeString(mSimpleSku);
         dest.writeLong(quantity);
         dest.writeInt(maxQuantity);
-        dest.writeString(configId);
-        dest.writeString(name);
         dest.writeString(specialPrice);
         dest.writeDouble(savingPercentage);
         dest.writeString(price);
-        dest.writeMap(simpleData);
         dest.writeString(variation);
-        dest.writeDouble(priceVal);
-        dest.writeDouble(specialPriceVal);
-        dest.writeDouble(mPriceValueConverted);
         dest.writeDouble(mSpecialPriceConverted);
-        dest.writeString(mCategoriesIds);
         dest.writeString(mAttributeSetId);
-        dest.writeString(brand);
     }
 
 }

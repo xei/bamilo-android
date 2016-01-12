@@ -444,7 +444,7 @@ public class AdjustTracker {
                 AdjustEvent eventCartLoadedFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_cart));
                 json = new JSONObject();
                 try {
-                    json.put(AdjustKeys.SKU, item.getConfigSKU());
+                    json.put(AdjustKeys.SKU, item.getSku());
                     json.put(AdjustKeys.CURRENCY, EURO_CURRENCY);
                     json.put(AdjustKeys.QUANTITY, item.getQuantity());
                     json.put(AdjustKeys.PRICE, item.getPriceForTracking());
@@ -460,8 +460,8 @@ public class AdjustTracker {
 
                 //FB - View Cart
                 eventCartLoadedFB = getFBBaseParameters(eventCartLoadedFB, bundle);
-                eventCartLoadedFB.addCallbackParameter(AdjustKeys.SKU, item.getConfigSKU());
-                eventCartLoadedFB.addPartnerParameter(AdjustKeys.SKU, item.getConfigSKU());
+                eventCartLoadedFB.addCallbackParameter(AdjustKeys.SKU, item.getSku());
+                eventCartLoadedFB.addPartnerParameter(AdjustKeys.SKU, item.getSku());
                 eventCartLoadedFB.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                 eventCartLoadedFB.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                 eventCartLoadedFB.addCallbackParameter(AdjustKeys.QUANTITY, String.valueOf(item.getQuantity()));

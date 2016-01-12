@@ -71,6 +71,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private boolean isChecked;
     private boolean isPrefixField;
     private boolean isDisabled;
+    private String mPlaceHolder;
 
     @SuppressWarnings("unused")
     public interface OnDataSetReceived {
@@ -97,6 +98,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mPaymentInfoList = new HashMap<>();
         this.mFormat = "dd-MM-yyyy";
         this.isDisabled = false;
+        this.mPlaceHolder = "";
     }
 
     /*
@@ -171,6 +173,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             isDisabled = jsonObject.optBoolean(RestConstants.DISABLED);
             mFormat = jsonObject.optString(RestConstants.FORMAT);
             isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), "before");
+            mPlaceHolder = jsonObject.optString(RestConstants.PLACE_HOLDER);
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
 
             // Case RULES
@@ -342,6 +345,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             }
             jsonObject.put(RestConstants.DATASET, dataSetArray);
             jsonObject.put(RestConstants.DATASET_SOURCE, mDataSetSource);
+            jsonObject.put(RestConstants.PLACE_HOLDER,mPlaceHolder);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -372,6 +376,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     @Override
     public FormInputType getInputType() {
         return mInputType;
+    }
+
+    @Override
+    public String getPlaceHolder() {
+        return mPlaceHolder;
     }
 
     @Override
@@ -491,6 +500,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mDataSetRating);
         dest.writeValue(mDataSet);
         dest.writeString(mDataSetSource);
+        dest.writeString(mPlaceHolder);
         dest.writeString(mApiCall);
         dest.writeValue(mPaymentInfoList);
         dest.writeString(mId);
@@ -532,6 +542,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mDataSetRating = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
         mDataSet = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
         mDataSetSource = in.readString();
+        mPlaceHolder = in.readString();
         mApiCall = in.readString();
         mPaymentInfoList = (HashMap) in.readValue(HashMap.class.getClassLoader());
         mId = in.readString();
