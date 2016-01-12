@@ -55,7 +55,7 @@ public class LastViewedTableHelper extends BaseTable {
      */
     @Override
     public String create() {
-        return new StringBuilder("CREATE TABLE ?")
+        return new StringBuilder("CREATE TABLE %s")
                 .append(" (")
                 .append(_ID).append(" INTEGER PRIMARY KEY, ")
                 .append(_PRODUCT_SKU).append(" TEXT ")

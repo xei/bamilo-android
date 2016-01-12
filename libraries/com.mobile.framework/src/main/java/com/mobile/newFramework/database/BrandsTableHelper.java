@@ -50,7 +50,7 @@ public class BrandsTableHelper extends BaseTable {
     @Override
     public String create() {
         return new StringBuilder()
-                .append("CREATE TABLE ?")
+                .append("CREATE TABLE %s")
                 .append(" (")
                 .append(Columns.ID).append(" INTEGER PRIMARY KEY, ")
                 .append(Columns.NAME).append(" TEXT, ")
