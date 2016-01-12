@@ -46,6 +46,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -67,7 +68,6 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author sergiopereira
@@ -627,6 +627,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.variation = item.getVariation();
                 values.productSku = item.getSku();
                 values.maxQuantity = item.getMaxQuantity();
+                values.shop_first = item.isShopFirst();
 
                 Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
@@ -708,6 +709,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
         prodItem.isNew = (TextView) view.findViewById(R.id.new_arrival_badge);
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
+        prodItem.shopFirstImage = (ImageView) view.findViewById(R.id.item_shop_first);
 
         prodItem.pBar = view.findViewById(R.id.image_loading_progress);
         prodItem.deleteBtn = (TextView) view.findViewById(R.id.button_delete);
@@ -720,6 +722,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         // Hide is New badge because shopping cart product has no info regarding this attribute
         prodItem.isNew.setVisibility(View.GONE);
+        // Hide shop view image if is_shop is false
+        prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
                 R.drawable.no_image_small);
@@ -966,6 +970,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public String variation;
         public int maxQuantity;
         public String productSku;
+        public boolean shop_first;
     }
 
     /**
@@ -981,6 +986,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public View pBar;
         public TextView deleteBtn;
         public CartItemValues itemValues;
+        public ImageView shopFirstImage;
 
         /*
          * (non-Javadoc)
@@ -997,6 +1003,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             pBar = null;
             deleteBtn = null;
             isNew = null;
+            shopFirstImage = null;
             super.finalize();
         }
     }
