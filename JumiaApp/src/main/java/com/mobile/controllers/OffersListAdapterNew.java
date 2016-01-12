@@ -1,13 +1,12 @@
 package com.mobile.controllers;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.Button;
@@ -27,7 +26,7 @@ import java.util.List;
  * @author Paulo Carvalho
  * 
  */
-public class OffersListAdapterNew extends BaseAdapter {
+public class OffersListAdapterNew extends RecyclerView.Adapter<OffersListAdapterNew.ProductOfferHolder> {
 
     public final static String TAG = OffersListAdapterNew.class.getSimpleName();
 
@@ -45,20 +44,6 @@ public class OffersListAdapterNew extends BaseAdapter {
     ArrayList<ProductOffer> offers = new ArrayList<>();
 
     /**
-     * A representation of each item on the list
-     */
-    static class Item {
-        public Button offerAddToCart;
-        public TextView offerPrice;
-        public TextView offerSpecialPrice;
-        public TextView offerProductOwner;
-        public RatingBar offerRating;
-        public TextView offerReview;
-        public TextView offerDeliveryTime;
-        public TextView variations;
-    }
-
-    /**
      * the constructor for this adapter
      *
      */
@@ -72,67 +57,16 @@ public class OffersListAdapterNew extends BaseAdapter {
     /*
      * (non-Javadoc)
      * 
-     * @see android.widget.Adapter#getCount()
-     */
-    @Override
-    public int getCount() {
-        return offers == null ? 0 : offers.size();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.widget.Adapter#getItem(int)
-     */
-    @Override
-    public Object getItem(int position) {
-        return offers.get(position);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see android.widget.Adapter#getItemId(int)
      */
 
     @Override
-    public long getItemId(int position) {
-        return position;
+    public ProductOfferHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ProductOfferHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.other_sellers_list_item, parent, false));
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
-     */
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-
-        View itemView = convertView;
-        final Item item;
-        if (itemView == null) {
-
-            // Inflate a New Item View
-            itemView = inflater.inflate(R.layout.other_sellers_list_item, parent, false);
-            item = new Item();
-
-            // item.textView = (TextView) itemView.findViewById( R.id.text);
-            item.offerAddToCart = (Button) itemView.findViewById(R.id.offer_addcart);
-            item.offerPrice = (TextView) itemView.findViewById(R.id.offer_price);
-            item.offerSpecialPrice = (TextView) itemView.findViewById(R.id.offer_price_normal);
-            item.offerProductOwner = (TextView) itemView.findViewById(R.id.offer_owner_name);
-
-            item.offerRating = (RatingBar) itemView.findViewById(R.id.item_rating);
-            item.offerReview = (TextView) itemView.findViewById(R.id.item_reviews);
-            item.offerDeliveryTime = (TextView) itemView.findViewById(R.id.offer_item_delivery);
-            item.variations = (TextView) itemView.findViewById(R.id.button_variant);
-            itemView.setTag(item);
-
-        } else {
-
-            item = (Item) itemView.getTag();
-        }
-
+    public void onBindViewHolder(ProductOfferHolder item, int position) {
         final ProductOffer productOffer = offers.get(position);
         ProductUtils.setPriceRules(productOffer, item.offerPrice, item.offerSpecialPrice);
         item.offerProductOwner.setText(productOffer.getSeller().getName());
@@ -169,22 +103,42 @@ public class OffersListAdapterNew extends BaseAdapter {
             item.variations.setVisibility(View.GONE);
         }
 
-        return itemView;
     }
 
-
-
-
-    /**
-     * #FIX: java.lang.IllegalArgumentException: The observer is null.
-     * 
-     * @solution from : https://code.google.com/p/android/issues/detail?id=22946
-     */
     @Override
-    public void unregisterDataSetObserver(DataSetObserver observer) {
-        if (observer != null) {
-            super.unregisterDataSetObserver(observer);
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemCount() {
+        return offers.size();
+    }
+
+    public class ProductOfferHolder extends RecyclerView.ViewHolder {
+
+        private Button offerAddToCart;
+        private TextView offerPrice;
+        private TextView offerSpecialPrice;
+        private TextView offerProductOwner;
+        private RatingBar offerRating;
+        private TextView offerReview;
+        private TextView offerDeliveryTime;
+        private TextView variations;
+
+        public ProductOfferHolder(View itemView) {
+            super(itemView);
+            offerAddToCart = (Button) itemView.findViewById(R.id.offer_addcart);
+            offerPrice = (TextView) itemView.findViewById(R.id.offer_price);
+            offerSpecialPrice = (TextView) itemView.findViewById(R.id.offer_price_normal);
+            offerProductOwner = (TextView) itemView.findViewById(R.id.offer_owner_name);
+
+            offerRating = (RatingBar) itemView.findViewById(R.id.item_rating);
+            offerReview = (TextView) itemView.findViewById(R.id.item_reviews);
+            offerDeliveryTime = (TextView) itemView.findViewById(R.id.offer_item_delivery);
+            variations = (TextView) itemView.findViewById(R.id.button_variant);
         }
+
     }
 
 }

@@ -363,7 +363,7 @@
     <string name="open">ouvrir</string>
     <string name="close">fermé</string>
     <string name="choose_language">choix de langue</string>
-    <string name="language">langue</string>
+    <string name="language">Langue</string>
     <string name="country">Pays</string>
     <string name="birthday_label">anniversaire</string>
     <string name="birthday_error">Choisissez votre date de naissance</string>

@@ -9,43 +9,44 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_specs_title"
         style="@style/HeaderStyle"
-        android:text="@string/seller_info"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:text="@string/seller_info" />
 
     <!--CONTENT -->
+
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_name"
-        style="@style/TextBody_1"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
+        style="@style/TextBody_1.ShopFirstDrawRight"
         android:layout_marginBottom="16dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
+        android:layout_marginEnd="@dimen/dimen_10dp"
+        android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:layout_marginStart="@dimen/layout_padding"
+        android:textColor="@color/black" />
 
     <!-- DELIVERY TIME -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_delivery_info"
         style="@style/TextHeader"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/layout_padding"
         android:layout_marginStart="@dimen/layout_padding"
-        android:layout_marginBottom="16dp"
         android:textColor="@color/black"
         android:visibility="gone" />
 
 
     <!-- WARRANTY: OPTIONAL -->
-    
+
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_warranty"
         style="@style/TextHeader"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/layout_padding"
         android:layout_marginStart="@dimen/layout_padding"
-        android:layout_marginBottom="16dp"
         android:drawableLeft="@drawable/ic_warranty"
-        android:drawableStart="@drawable/ic_warranty"
         android:drawablePadding="16dp"
+        android:drawableStart="@drawable/ic_warranty"
         android:textColor="@color/black"
         android:visibility="gone" />
 
@@ -55,7 +56,9 @@
         android:id="@+id/pdv_seller_overseas_delivery_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/layout_padding"
         android:layout_marginLeft="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/layout_padding"
         android:layout_marginStart="@dimen/layout_padding"
         android:orientation="horizontal"
         android:paddingBottom="16dp"
@@ -67,8 +70,8 @@
             android:id="@+id/pdv_seller_overseas_delivery_title"
             style="@style/TextHeader"
             android:drawableLeft="@drawable/ic_overseas"
-            android:drawableStart="@drawable/ic_overseas"
             android:drawablePadding="16dp"
+            android:drawableStart="@drawable/ic_overseas"
             android:textColor="@color/black" />
 
         <!-- TEXT BLACK -->
@@ -81,7 +84,7 @@
             android:layout_marginStart="40dp"
             android:singleLine="false"
             android:textColor="@color/black"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <!-- TEXT ORANGE -->
 
@@ -93,7 +96,7 @@
             android:layout_marginStart="40dp"
             android:singleLine="false"
             android:textColor="@color/color_accent"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <!-- LINK -->
 
@@ -104,10 +107,10 @@
             android:layout_marginLeft="40dp"
             android:layout_marginStart="40dp"
             android:clickable="true"
-            android:singleLine="false"
             android:paddingTop="16dp"
+            android:singleLine="false"
             android:textColor="@color/color_accent"
-            android:visibility="visible"/>
+            android:visibility="visible" />
 
     </RelativeLayout>
 

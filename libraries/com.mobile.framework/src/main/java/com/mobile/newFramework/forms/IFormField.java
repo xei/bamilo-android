@@ -7,13 +7,13 @@ import java.util.Map;
 
 public interface IFormField {
 
-    Form getParent();
-
     String getId();
 
     String getKey();
 
     String getName();
+
+    String getPlaceHolder();
 
     FormInputType getInputType();
 

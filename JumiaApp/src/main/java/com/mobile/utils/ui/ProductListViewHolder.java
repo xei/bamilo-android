@@ -33,6 +33,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
     public ImageView favourite;
     public ImageView headerImage;
     public View verticalDivider;
+    public ImageView shopFirst;
 
     /**
      * Constructor
@@ -54,6 +55,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
         headerImage = (ImageView) view.findViewById(R.id.catalog_header_image);
         verticalDivider = view.findViewById(R.id.vdivider);
         ratingContainer = (ViewGroup)view.findViewById(R.id.rating_container);
+        shopFirst = (ImageView)view.findViewById(R.id.item_shop_first);
     }
 }
 

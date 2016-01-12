@@ -10,8 +10,8 @@ public class FormFieldOption extends FormField {
     /**
      * Constructor
      */
-    public FormFieldOption(Form form) {
-        super(form);
+    public FormFieldOption() {
+        super();
     }
 
     @Override

@@ -20,5 +20,5 @@
     <!-- MY ORDERS -->
     <item name="my_account_fragment"            type="layout">@layout/_v8_my_account_fragment</item>
     <item name="my_orders_fragment_main"        type="layout">@layout/_v8_my_orders_fragment_main</item>
-
+    <item name="shopping_basket"                type="layout">@layout/_v8_shopping_basket</item>
 </resources>

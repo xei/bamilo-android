@@ -778,6 +778,13 @@
         <item name="android:src">@drawable/ic_overseas_corner</item>
     </style>
 
+    <style name="TextBody_1.ShopFirstDrawRight">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:drawableEnd">@drawable/ic_shop_first_alias</item>
+        <item name="android:drawableRight">@drawable/ic_shop_first_alias</item>
+        <item name="android:drawablePadding">@dimen/dimen_10dp</item>
+    </style>
+
     <!-- MY ACCOUNT -->
 
     <style name="HeaderMyAccountStyle" parent="HeaderStyle">
@@ -801,6 +808,13 @@
     <style name="BottomSheetAnimation.Window" parent="@android:style/Animation.Activity">
         <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
+    </style>
+
+    <style name="ShopFirstStyle">
+        <item name="android:src">@drawable/ic_shop_first_alias</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/dimen_4dp</item>
     </style>
 
 </resources>

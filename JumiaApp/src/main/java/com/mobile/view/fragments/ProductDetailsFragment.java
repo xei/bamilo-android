@@ -1,11 +1,14 @@
 package com.mobile.view.fragments;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -33,6 +36,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
@@ -45,6 +49,7 @@ import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -512,7 +517,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mDiscountPercentageText.setEnabled(true);
             } else {
                 mDiscountPercentageText.setEnabled(false);
-                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800));
+                mDiscountPercentageText.setTextColor(ContextCompat.getColor(getContext(), R.color.black_800));
             }
         }
     }
@@ -529,18 +534,28 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             //changeFashion: rating style is changed if vertical is fashion
             if (mProduct.isFashion()) {
+                setProgressForRTLPreJelly(mProductFashionRating);
                 mProductFashionRating.setRating((float) mProduct.getAvgRating());
                 mProductRating.setVisibility(View.GONE);
                 mProductFashionRating.setVisibility(View.VISIBLE);
             } else {
+                setProgressForRTLPreJelly(mProductRating);
                 mProductRating.setRating((float) mProduct.getAvgRating());
                 mProductRating.setVisibility(View.VISIBLE);
             }
             String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
             mProductRatingCount.setText(rating);
         }
+    }
 
-   //     mProductRating.setVisibility(View.VISIBLE);
+    /**
+     * Rotate the view 180ª case RTL and pre API 17.
+     * @param progressBar
+     */
+    private void setProgressForRTLPreJelly(RatingBar progressBar) {
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
+            //TODO: adapt assets for preJelly versions.
+        }
     }
 
     /**
@@ -552,13 +567,27 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Set seller view
             mSellerContainer.setVisibility(View.VISIBLE);
             // Name
-            TextView sellerName = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_name);
+            final TextView sellerName = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_name);
+            // Set name
             sellerName.setText(mProduct.getSeller().getName());
-
+            // Set shop first
+            if (!mProduct.isShopFirst() || ShopSelector.isRtlShop()) {
+                DeviceInfoHelper.executeCodeBasedOnJellyBeanMr1Version(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+                    @Override
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    public void highVersionCallback() {
+                        sellerName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                    }
+                    @Override
+                    public void lowerVersionCallback() {
+                        sellerName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    }
+                });
+            }
+            // Set listener
             if(TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
                 sellerName.setOnClickListener(this);
             }
-
             // Case global seller
             if(mProduct.getSeller().isGlobal()) {
                 // Set global button
@@ -1119,6 +1148,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onDialogListClickView(View view) {
         onClick(view);
+    }
+
+    @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
+
     }
 
     @Override

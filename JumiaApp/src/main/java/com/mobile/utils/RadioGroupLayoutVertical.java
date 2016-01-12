@@ -2,6 +2,9 @@ package com.mobile.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +75,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         int idx;
         generatedForms = new HashMap<>();
         for (idx = 0; idx < mItems.size(); idx++) {
-            Print.i(TAG, "code1subForms updateRadioGroup : " + mItems.get(idx) + " formsMap size : " + formsMap.size());
+            //Print.i(TAG, "code1subForms updateRadioGroup : " + mItems.get(idx) + " formsMap size : " + formsMap.size());
             if (formsMap.containsKey(mItems.get(idx))) {
                 createRadioButton(idx, mPaymentInfo, true);
             } else if (mPaymentInfo != null && mPaymentInfo.size() > 0 && mPaymentInfo.containsKey(mItems.get(idx))) {
@@ -115,7 +118,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         final RadioButton button = (RadioButton) container.findViewById(R.id.radio_shipping);
 
         if (addInnerForm) {
-            Print.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
+            //Print.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
             DynamicForm formGenerator = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)));
             generatedForms.put(idx, formGenerator);
             extras.addView(formGenerator.getContainer());
@@ -172,7 +175,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         int radioButtonID = mGroup.getCheckedRadioButtonId();
         View radioButton = mGroup.findViewById(radioButtonID);
         int idx = mGroup.indexOfChild(radioButton);
-        Print.i(TAG, "code1validate radioButtonId : " + radioButtonID + " idx : " + idx);
+        //Print.i(TAG, "code1validate radioButtonId : " + radioButtonID + " idx : " + idx);
         return idx;
     }
 
@@ -240,6 +243,24 @@ public class RadioGroupLayoutVertical extends RadioGroup {
 
     public String getSelectedFieldName() {
         return mItems.get(mGroup.getCheckedRadioButtonId());
+    }
+
+    /**
+     * Saves the sub field state (Payment Checkbox).
+     */
+    public void saveSubFieldState(@NonNull Bundle state) {
+        if (generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null) {
+            generatedForms.get(mGroup.getCheckedRadioButtonId()).saveFormState(state);
+        }
+    }
+
+    /**
+     * Loads the saved state (Payment Checkbox).
+     */
+    public void loadSubFieldState(@Nullable Bundle state) {
+        if (generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null) {
+            generatedForms.get(mGroup.getCheckedRadioButtonId()).loadSaveFormState(state);
+        }
     }
 
 }
