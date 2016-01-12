@@ -51,7 +51,7 @@ public class CategoriesTableHelper extends BaseTable {
     @Override
     public String create() {
         return new StringBuilder()
-                .append("CREATE TABLE ?")
+                .append("CREATE TABLE %s")
                 .append(" (")
                 .append(Columns.URL_KEY).append(" TEXT PRIMARY KEY, ")
                 .append(Columns.NAME).append(" TEXT, ")

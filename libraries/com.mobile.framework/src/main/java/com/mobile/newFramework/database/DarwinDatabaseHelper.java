@@ -110,7 +110,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         for (BaseTable table : mTables) {
             Print.i(TAG, "ON CREATE TABLE: " + table.getName());
-            db.execSQL(table.create(), new String[]{table.getName()});
+            db.execSQL(String.format(table.create(), table.getName()));
         }
     }
 
