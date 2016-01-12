@@ -1,9 +1,7 @@
 package com.mobile.newFramework.objects.cart;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
-import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -13,9 +11,6 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Shopping Cart Item used when an item is added to the shopping cart
