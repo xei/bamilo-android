@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.utils.ui.ProductUtils;
