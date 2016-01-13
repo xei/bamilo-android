@@ -327,9 +327,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         getBaseActivity().hideKeyboard();
         if (!TextUtils.isEmpty(mVoucher)) {
             if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
-                ContentValues mContentValues = new ContentValues();
-                mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
-                triggerSubmitVoucher(mContentValues);
+                triggerSubmitVoucher(mVoucher);
             } else {
                 triggerRemoveVoucher();
             }
@@ -470,8 +468,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         triggerContentEvent(new SetStepPaymentHelper(), SetStepPaymentHelper.createBundle(endpoint, values), this);
     }
     
-    private void triggerSubmitVoucher(ContentValues values) {
-        triggerContentEventProgress(new AddVoucherHelper(), AddVoucherHelper.createBundle(values), this);
+    private void triggerSubmitVoucher(String code) {
+        triggerContentEventProgress(new AddVoucherHelper(), AddVoucherHelper.createBundle(code), this);
     }
     
     private void triggerRemoveVoucher() {
