@@ -1,9 +1,12 @@
-package com.mobile.newFramework.utils.debug;
+package com.mobile.app;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
 
 import com.facebook.stetho.Stetho;
+import com.facebook.stetho.okhttp.StethoInterceptor;
+import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.rest.AigRestAdapter;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.squareup.leakcanary.LeakCanary;
@@ -14,9 +17,9 @@ import com.squareup.leakcanary.RefWatcher;
  */
 public class DebugTools {
 
-    public static boolean IS_DEBUGGABLE = false;
-
     private static final String TAG = DebugTools.class.getSimpleName();
+
+    private static boolean isDebuggable = false;
 
     private static RefWatcher sRefWatcher;
 
@@ -32,15 +35,19 @@ public class DebugTools {
      */
     public static void initialize(Application application) {
         // Get flag from application
-        IS_DEBUGGABLE = DeviceInfoHelper.isDebuggable(application);
+        isDebuggable = DeviceInfoHelper.isDebuggable(application);
         // Validate and initialize
-        if (IS_DEBUGGABLE) {
+        if (isDebuggable) {
             // Logs
             Print.initializeAndroidMode(application);
             // #LEAK :: https://github.com/square/leakcanary
             sRefWatcher = LeakCanary.install(application);
             // #STETHO :: http://facebook.github.io/stetho/
             Stetho.initializeWithDefaults(application);
+            // #RETROFIT
+            AigRestAdapter.enableDebug();
+            // #OK HTTP
+            AigHttpClient.getInstance(application).addDebugNetworkInterceptors(new StethoInterceptor());
             // Warning
             Print.w(TAG, "WARNING: APPLICATION IN DEBUG MODE");
         }
@@ -49,8 +56,9 @@ public class DebugTools {
     /**
      * Execute callbacks based on debuggable build type.
      */
+    @SuppressWarnings("unused")
     public static void execute(@NonNull IBuildTypeCode callback) {
-        if (IS_DEBUGGABLE) {
+        if (isDebuggable) {
             callback.onDebugBuildType();
         }
     }
@@ -58,8 +66,9 @@ public class DebugTools {
     /**
      * Watch weak reference.
      */
+    @SuppressWarnings("unused")
     public static void watch(Object watchedReference) {
-        if (IS_DEBUGGABLE) {
+        if (isDebuggable) {
             sRefWatcher.watch(watchedReference);
         }
     }

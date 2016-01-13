@@ -214,7 +214,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         // Get next step
         NextStepStruct nextStepStruct = (NextStepStruct)baseResponse.getContentData();
         FragmentType nextFragment = nextStepStruct.getFragmentType();
-        nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.SHIPPING_METHODS;
+        nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_SHIPPING;
         getBaseActivity().onSwitchFragment(nextFragment, null, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -335,7 +335,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
      */
     protected void onClickCreateAddressButton() {
         Print.i(TAG, "ON CLICK: LOGIN");
-        getBaseActivity().onSwitchFragment(FragmentType.CREATE_ADDRESS, null, FragmentController.ADD_TO_BACK_STACK);
+        getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_CREATE_ADDRESS, null, FragmentController.ADD_TO_BACK_STACK);
     }
 
     @Override
@@ -357,7 +357,7 @@ public class CheckoutMyAddressesFragment extends MyAddressesFragment {
         if(selectedAddress != null){
             Bundle bundle = new Bundle();
             bundle.putInt(EditAddressFragment.SELECTED_ADDRESS, selectedAddress.getId());
-            getBaseActivity().onSwitchFragment(FragmentType.EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Print.i(TAG, "SELECTED ADDRESS ID: " + addressId + " NO MATCH");
         }

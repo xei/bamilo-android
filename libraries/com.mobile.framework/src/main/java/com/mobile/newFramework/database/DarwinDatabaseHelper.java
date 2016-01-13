@@ -155,7 +155,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         // Drop table
         db.execSQL(String.format(DROP_TABLE, tableName));
         // Create table
-        db.execSQL(table.create(), new String[]{tableName});
+        db.execSQL(String.format(table.create(), table.getName()));
     }
     
     /**
@@ -169,7 +169,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         // Get temporary table name
         String tempTableName = currentTableName + "_temp_" + newVersion;
         // Create temporary table
-        db.execSQL(table.create(), new String[]{tempTableName});
+        db.execSQL(String.format(table.create(), tempTableName));
         // Match columns
         ArrayList<String> common = matchColumns(db, tempTableName, currentTableName);
         // Validate columns and copy
