@@ -31,6 +31,7 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -399,8 +400,14 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
                         TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
+                        // Set Facebook login flag false
+                        CustomerUtils.setFacebookLogin(getBaseActivity(),false);
+                    } else if (eventType == EventType.AUTO_LOGIN_EVENT) {
+                        TrackerDelegator.trackLoginSuccessful(customer, true, false);
                     } else {
-                        TrackerDelegator.trackLoginSuccessful(customer, true, true);
+                        TrackerDelegator.trackLoginSuccessful(customer, false, true);
+                        // Set Facebook login flag true
+                        CustomerUtils.setFacebookLogin(getBaseActivity(),true);
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
