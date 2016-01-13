@@ -1038,7 +1038,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 holder.itemView.setTag(R.id.position, -1);
                 holder.mBannerImageView.setVisibility(View.GONE);
                 // Set image
-                RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, null, R.drawable.no_image_large);
                 RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
 
                     @Override
