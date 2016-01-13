@@ -1032,7 +1032,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private void setHeaderImage(CampaignItemHolder holder){
             if(!TextUtils.isEmpty(mBannerImage)){
                 // set listener
-                holder.itemView.setOnClickListener(this);
+//                holder.itemView.setOnClickListener(this);
                 // just in order to have a position tag in order to not crash on the onCLick
                 holder.itemView.setTag(R.id.position, -1);
                 // Set image
