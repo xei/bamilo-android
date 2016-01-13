@@ -1,10 +1,12 @@
 package com.mobile.newFramework.utils;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 
@@ -151,6 +153,25 @@ public class CustomerUtils {
 			return Long.toHexString(0x9ad8aa75257645bl).toCharArray();
 		}
 
+	}
+
+	/**
+	 * returns the flag that shows if the user logged in via Facebook
+	 * @return true or false
+	 */
+	public static boolean isFacebookLogin(Activity activity) {
+		SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+		return sharedPrefs.getBoolean(Darwin.KEY_LOGIN_FACEBOOK, false);
+	}
+
+	/**
+	 * set flat that controls if the user logged in via Facebook
+	 */
+	public static void setFacebookLogin(Activity activity, boolean isFacebookLogin) {
+		SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPrefs.edit();
+		editor.putBoolean(Darwin.KEY_LOGIN_FACEBOOK, isFacebookLogin);
+		editor.apply();
 	}
 
 }

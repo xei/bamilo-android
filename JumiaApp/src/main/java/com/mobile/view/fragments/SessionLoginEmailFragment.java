@@ -23,6 +23,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -340,6 +341,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 // Get customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
+                // Set Facebook login flag false
+                CustomerUtils.setFacebookLogin(getBaseActivity(), false);
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
                 // Finish
