@@ -73,9 +73,9 @@ public class CategoriesTableHelper extends BaseTable {
 
             // Create query
             String query = new StringBuilder("select ").append(Columns.VIEW_COUNT).append(" from ").append(TABLE_NAME)
-                    .append(" where ").append(Columns.URL_KEY).append(" = '?'").toString();
+                    .append(" where ").append(Columns.URL_KEY).append(" = ?").toString();
             Print.i(TAG, "SQL RESULT query :  " + query);
-            Cursor cursor = db.rawQuery(query, new String[]{id});
+            Cursor cursor = db.rawQuery(query, new String[]{"'"+id+"'"});
 
             int count = 0;
             if (cursor != null && cursor.getCount() > 0) {
