@@ -7,7 +7,6 @@ import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.configs.HeaderConstants;
 import com.mobile.newFramework.rest.errors.AigErrorHandler;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.debug.DebugTools;
 
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -22,6 +21,8 @@ import retrofit.RestAdapter;
  *  - Error handler<br/>
  */
 public class AigRestAdapter {
+
+    private static boolean isDebuggable = false;
 
     /**
      * Interface to perform a request
@@ -40,7 +41,7 @@ public class AigRestAdapter {
     public static RestAdapter getRestAdapter(Request request) {
         // Create a rest adapter
         RestAdapter.Builder builder = new RestAdapter.Builder()
-                .setLogLevel(getLogLevel())
+                .setLogLevel(isDebuggable ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                 .setClient(AigHttpClient.getInstance())
                 .setEndpoint(request.getEndPoint())
                 .setRequestInterceptor(new HttpHeaderRequestInterceptor(request.getCache()));
@@ -53,10 +54,11 @@ public class AigRestAdapter {
     }
 
     /**
-     * Get log level based in Androlog
+     * Enable the debug mode (DebugTools).
      */
-    private static RestAdapter.LogLevel getLogLevel() {
-        return DebugTools.IS_DEBUGGABLE ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE;
+    @SuppressWarnings("unused")
+    public static void enableDebug() {
+        isDebuggable = true;
     }
 
     /**
