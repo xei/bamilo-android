@@ -544,9 +544,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void onClickEditAddressesButton() {
         Print.i(TAG, "ON CLICK: EditAddresses");
-        if (!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
-            FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
-            getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString())) {
+            FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_FINISH.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -555,9 +555,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void onClickEditShippingMethodButton() {
         Print.i(TAG, "ON CLICK: EditShippingMethod");
-        if (!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
-            FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
-            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString())) {
+            FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_FINISH.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_SHIPPING, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -568,9 +568,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void onClickEditPaymentOptionsButton() {
         Print.i(TAG, "ON CLICK: EditPaymentOptions");
-        if (!getBaseActivity().popBackStackUntilTag(FragmentType.PAYMENT_METHODS.toString())) {
-            FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
-            getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_PAYMENT.toString())) {
+            FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_FINISH.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_PAYMENT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 

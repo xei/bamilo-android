@@ -547,9 +547,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
         // Checkout Tab
         TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
-        mCheckoutTabLayout.setOnTabSelectedListener(mCheckoutOnTabSelectedListener);
-
-
     }
     
     /*
@@ -1626,11 +1623,16 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // CASE TAB_CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
         // CASE TAB_CHECKOUT_BILLING
         if (step == ConstantsCheckout.CHECKOUT_BILLING) {
-            popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString());
+            String last = FragmentController.getInstance().getLastEntry();
+            // Validate last entry to support create and edit address (rotation)
+            if(!TextUtils.equals(last, FragmentType.CHECKOUT_CREATE_ADDRESS.toString()) &&
+               !TextUtils.equals(last, FragmentType.CHECKOUT_EDIT_ADDRESS.toString())) {
+                popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString());
+            }
         }
         // CASE TAB_CHECKOUT_SHIPPING
         else if (step == ConstantsCheckout.CHECKOUT_SHIPPING ) {
-            popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
+            popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString());
         }
         // CASE TAB_CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
     }

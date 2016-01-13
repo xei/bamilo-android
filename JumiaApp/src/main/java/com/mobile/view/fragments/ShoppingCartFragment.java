@@ -82,15 +82,14 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private long mBeginRequestMillis;
     private List<PurchaseCartItem> items;
     private LinearLayout lView;
-    private Button checkoutButton;
+    private Button mCheckoutButton;
     private Button mCallToOrderButton;
     private DialogListFragment dialogList;
-    private TextView couponButton;
-    private EditText voucherCode;
-    private String mVoucher = null;
-    private boolean removeVoucher = false;
+    private TextView mCouponButton;
+    private EditText mVoucherView;
+    private String mVoucherCode = null;
+    private boolean isToRemoveVoucher = false;
     private String itemRemoved_sku;
-    private String itemRemoved_price;
     private String mPhone2Call = "";
     private double itemRemoved_price_tracking = 0d;
     private long itemRemoved_quantity;
@@ -165,7 +164,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mBeginRequestMillis = System.currentTimeMillis();
         // Case deep link
         if (!TextUtils.isEmpty(mItemsToCartDeepLink)) addItemsToCart(mItemsToCartDeepLink);
-            // Case normal
+        // Case normal
         else triggerGetShoppingCart();
         // Track page
         TrackerDelegator.trackPage(TrackingPage.CART, getLoadTime(), false);
@@ -218,7 +217,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void releaseVars() {
         lView = null;
-        checkoutButton = null;
+        mCheckoutButton = null;
         dialogList = null;
     }
 
@@ -259,7 +258,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private void triggerRemoveItem(PurchaseCartItem item) {
 
         itemRemoved_sku = item.getConfigSimpleSKU();
-        itemRemoved_price = String.valueOf(item.getSpecialPrice());
         itemRemoved_price_tracking = item.getPriceForTracking();
         itemRemoved_quantity = item.getQuantity();
         itemRemoved_rating = -1d;
@@ -269,10 +267,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             itemRemoved_cart_value = totalValue.toString();
         } else
             itemRemoved_cart_value = cartValue;
-
-        if (itemRemoved_price == null) {
-            itemRemoved_price = String.valueOf(item.getPrice());
-        }
 
         triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
     }
@@ -304,17 +298,17 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Set the ShoppingCart layout using inflate
      */
     public void setAppContentLayout(View view) {
-        checkoutButton = (Button) view.findViewById(R.id.checkout_button);
+        mCheckoutButton = (Button) view.findViewById(R.id.checkout_button);
         mCallToOrderButton = (Button) view.findViewById(R.id.checkout_call_to_order);
-        voucherCode = (EditText) view.findViewById(R.id.voucher_name);
-        couponButton = (TextView) view.findViewById(R.id.voucher_btn);
+        mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
+        mCouponButton = (TextView) view.findViewById(R.id.voucher_btn);
         mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
         prepareCouponView();
     }
 
     public void setListeners() {
         // checkoutButton.setOnClickListener(checkoutClickListener);
-        checkoutButton.setOnTouchListener(new OnTouchListener() {
+        mCheckoutButton.setOnTouchListener(new OnTouchListener() {
             private DialogGenericFragment messageDialog;
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -400,16 +394,16 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         switch (eventType) {
             case ADD_VOUCHER:
                 PurchaseEntity addVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getContentData();
-                couponButton.setText(getString(R.string.voucher_remove));
+                mCouponButton.setText(getString(R.string.voucher_remove));
                 hideActivityProgress();
-                removeVoucher = true;
+                isToRemoveVoucher = true;
                 displayShoppingCart(addVoucherPurchaseEntity);
                 return true;
             case REMOVE_VOUCHER:
                 PurchaseEntity removeVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getContentData();
-                couponButton.setText(getString(R.string.voucher_use));
+                mCouponButton.setText(getString(R.string.voucher_use));
                 hideActivityProgress();
-                removeVoucher = false;
+                isToRemoveVoucher = false;
                 displayShoppingCart(removeVoucherPurchaseEntity);
                 return true;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
@@ -510,7 +504,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         switch (eventType) {
             case ADD_VOUCHER:
             case REMOVE_VOUCHER:
-                voucherCode.setText("");
+                mVoucherView.setText("");
                 break;
             case ADD_ITEMS_TO_SHOPPING_CART_EVENT:
                 showNoItems();
@@ -576,7 +570,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     voucherLabel.setText(getString(R.string.my_order_voucher_label));
                 } else {
                     voucherContainer.setVisibility(View.GONE);
-                    couponButton.setText(getString(R.string.voucher_use));
+                    mCouponButton.setText(getString(R.string.voucher_use));
                     // Clean Voucher
                     removeVoucher();
                 }
@@ -665,8 +659,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void changeVoucher(String voucher) {
         Print.d(TAG, "changeVoucher to " + voucher);
-        mVoucher = voucher;
-        removeVoucher = true;
+        mVoucherCode = voucher;
+        isToRemoveVoucher = true;
         prepareCouponView();
     }
 
@@ -675,10 +669,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void removeVoucher() {
         Print.d(TAG, "removeVoucher");
-        mVoucher = null;
-        removeVoucher = false;
+        mVoucherCode = null;
+        isToRemoveVoucher = false;
         // Clean Voucher field
-        voucherCode.setText("");
+        mVoucherView.setText("");
         prepareCouponView();
     }
 
@@ -763,6 +757,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                     prodItem.quantityBtn.setBackground(null);
                 }
                 @Override
+                @SuppressWarnings("deprecation")
                 public void lowerVersionCallback() {
                     prodItem.quantityBtn.setBackgroundDrawable(null);
                 }
@@ -913,28 +908,28 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
     private void prepareCouponView() {
-        if (!TextUtils.isEmpty(mVoucher)) {
-            voucherCode.setText(mVoucher);
-            voucherCode.setFocusable(false);
+        if (!TextUtils.isEmpty(mVoucherCode)) {
+            mVoucherView.setText(mVoucherCode);
+            mVoucherView.setFocusable(false);
         } else {
-            voucherCode.setFocusable(true);
-            voucherCode.setFocusableInTouchMode(true);
+            mVoucherView.setFocusable(true);
+            mVoucherView.setFocusableInTouchMode(true);
         }
-        UIUtils.scrollToViewByClick(mNestedScroll, voucherCode);
+        UIUtils.scrollToViewByClick(mNestedScroll, mVoucherView);
 
-        if (removeVoucher) {
-            couponButton.setText(getString(R.string.voucher_remove));
+        if (isToRemoveVoucher) {
+            mCouponButton.setText(getString(R.string.voucher_remove));
         }
-        couponButton.setOnClickListener(new OnClickListener() {
+        mCouponButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                mVoucher = voucherCode.getText().toString();
+                mVoucherCode = mVoucherView.getText().toString();
                 getBaseActivity().hideKeyboard();
-                if (!TextUtils.isEmpty(mVoucher)) {
+                if (!TextUtils.isEmpty(mVoucherCode)) {
                     ContentValues mContentValues = new ContentValues();
-                    mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
+                    mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucherCode);
                     //Print.i(TAG, "code1coupon : " + mVoucher);
-                    if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
+                    if (getString(R.string.voucher_use).equalsIgnoreCase(mCouponButton.getText().toString())) {
                         triggerSubmitVoucher(mContentValues);
                     } else {
                         triggerRemoveVoucher();

@@ -545,13 +545,13 @@ public class FragmentController {
                         //and will redirected to the shopping cart fragment, making it the top one
                         if(
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.LOGIN.toString()) &&
-                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CREATE_ADDRESS.toString()) &&
-                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.EDIT_ADDRESS.toString()) &&
-                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ADDRESSES.toString()) &&
-                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.MY_ORDER.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_CREATE_ADDRESS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_EDIT_ADDRESS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_MY_ADDRESSES.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_FINISH.toString()) &&
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_EXTERNAL_PAYMENT.toString()) &&
-                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.SHIPPING_METHODS.toString()) &&
-                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.PAYMENT_METHODS.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_SHIPPING.toString()) &&
+                            !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_PAYMENT.toString()) &&
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_THANKS.toString()) &&
                             !backstackTypes.get(i).equalsIgnoreCase(FragmentType.CHECKOUT_BASKET.toString()) &&
                             // CASE CHOOSE_COUNTRY FROM SPLASH SCREEN
