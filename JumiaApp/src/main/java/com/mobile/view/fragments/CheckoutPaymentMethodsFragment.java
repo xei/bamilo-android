@@ -25,6 +25,7 @@ import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.MultiStepPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -60,7 +61,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
     private TextView couponButton;
 
-    private String mVoucher = null;
+    private String mVoucherCode;
 
     private boolean removeVoucher = false;
 
@@ -75,6 +76,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private ScrollView mScrollView;
 
     private View mVoucherContainer;
+
+    private boolean isShowingNoPaymentNecessary;
 
     /**
      * Empty constructor
@@ -119,6 +122,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         // Validate the saved values 
         if(savedInstanceState != null){
             mSavedState = savedInstanceState;
+            mVoucherCode = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
         }
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_PAYMENT);
     }
@@ -189,6 +193,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         // Save the form state
         if(mDynamicForm != null) {
             mDynamicForm.saveFormState(outState);
+        }
+        // Save voucher
+        if(mVoucherView != null) {
+            outState.putString(ConstantsIntentExtra.ARG_1, mVoucherView.getText().toString());
         }
     }
 
@@ -275,7 +283,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         mDynamicForm.loadSaveFormState(mSavedState);
         mPaymentContainer.refreshDrawableState();
         prepareCouponView();
-        validatePaymentIsAvailable();
+        validatePaymentIsAvailableOrIsNecessary();
         showFragmentContentContainer();
     }
 
@@ -294,11 +302,19 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     /*
      * Disable the next button case No payment options available
      */
-    private void validatePaymentIsAvailable() {
+    @SuppressWarnings("ConstantConditions")
+    private void validatePaymentIsAvailableOrIsNecessary() {
         try {
-            // Case No payment options available hide button
-            //noinspection ConstantConditions
-            mCheckoutButtonNext.setVisibility(getView().findViewById(R.id.text_information) == null ? View.VISIBLE : View.GONE);
+            // Get input type to validate the form
+            FormInputType type = (FormInputType) getView().findViewById(R.id.text_information).getTag();
+            // Case no payment necessary
+            if(type == FormInputType.infoMessage) {
+                isShowingNoPaymentNecessary = true;
+            }
+            // Case no payment available
+            else if(type == FormInputType.errorMessage) {
+                mCheckoutButtonNext.setVisibility(View.GONE);
+            }
         } catch (NullPointerException e) {
             //...
         }
@@ -306,8 +322,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
     private void prepareCouponView() {
         mVoucherView = (EditText) mVoucherContainer.findViewById(R.id.voucher_name);
-        if (!TextUtils.isEmpty(mVoucher)) {
-            mVoucherView.setText(mVoucher);
+        if (!TextUtils.isEmpty(mVoucherCode)) {
+            mVoucherView.setText(mVoucherCode);
         }
         UIUtils.scrollToViewByClick(mScrollView, mVoucherView);
         couponButton = (TextView) mVoucherContainer.findViewById(R.id.voucher_btn);
@@ -323,11 +339,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     }
 
     private void validateCoupon() {
-        mVoucher = mVoucherView.getText().toString();
+        mVoucherCode = mVoucherView.getText().toString();
         getBaseActivity().hideKeyboard();
-        if (!TextUtils.isEmpty(mVoucher)) {
+        if (!TextUtils.isEmpty(mVoucherCode)) {
             if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
-                triggerSubmitVoucher(mVoucher);
+                triggerSubmitVoucher(mVoucherCode);
             } else {
                 triggerRemoveVoucher();
             }
@@ -355,17 +371,16 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private void updateVoucher(PurchaseEntity orderSummary) {
         if (orderSummary != null) {
             if (orderSummary.hasCouponDiscount()) {
-                mVoucher = orderSummary.getCouponCode();
-                if (!TextUtils.isEmpty(mVoucher)) {
+                mVoucherCode = orderSummary.getCouponCode();
+                if (!TextUtils.isEmpty(mVoucherCode)) {
                     removeVoucher = true;
                     prepareCouponView();
-                    mVoucherView.setText(mVoucher);
+                    mVoucherView.setText(mVoucherCode);
                     mVoucherView.setFocusable(false);
                 } else {
-                    mVoucher = null;
+                    mVoucherCode = null;
                 }
             } else {
-                mVoucherView.setText("");
                 mVoucherView.setFocusable(true);
                 mVoucherView.setFocusableInTouchMode(true);
             }
@@ -411,12 +426,18 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Switch to FINISH
             getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
-        case ADD_VOUCHER:
         case REMOVE_VOUCHER:
+            mVoucherView.setText("");
+        case ADD_VOUCHER:
             couponButton.setText(getString(eventType == EventType.ADD_VOUCHER ? R.string.voucher_remove : R.string.voucher_use));
             removeVoucher = eventType == EventType.ADD_VOUCHER;
             hideActivityProgress();
             setOrderInfo((PurchaseEntity) baseResponse.getContentData());
+            // Case voucher removed and is showing no payment necessary
+            if(isShowingNoPaymentNecessary) {
+                isShowingNoPaymentNecessary = false;
+                triggerGetPaymentMethods();
+            }
             break;
         default:
             break;
@@ -452,7 +473,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             break;
         case ADD_VOUCHER:
         case REMOVE_VOUCHER:
-            mVoucherView.setText("");
             hideActivityProgress();
             break;
         default:

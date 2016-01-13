@@ -136,7 +136,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dimen_60px"
         android:layout_marginStart="@dimen/dimen_60px"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/basket_voucher_label"

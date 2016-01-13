@@ -84,7 +84,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private TextView mCouponButton;
     private EditText mVoucherView;
     private String mVoucherCode = null;
-    private boolean isToRemoveVoucher = false;
     private String mItemRemovedSku;
     private String mPhone2Call = "";
     private double mItemRemovedPriceTracking = 0d;
@@ -92,7 +91,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private double mItemRemovedRating;
     private String mItemRemovedCartValue;
     private String mItemsToCartDeepLink;
-    private NestedScrollView mNestedScroll;
     private int selectedPosition;
     private long crrQuantity;
 
@@ -222,49 +220,37 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void setAppContentLayout(View view) {
         mCheckoutButton = (Button) view.findViewById(R.id.checkout_button);
         mCallToOrderButton = (Button) view.findViewById(R.id.checkout_call_to_order);
-        mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
-        mCouponButton = (TextView) view.findViewById(R.id.voucher_btn);
-        mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
         mTotalContainer = view.findViewById(R.id.total_container);
-    }
-
-    /**
-     * Replace voucher and update Coupon field
-     */
-    private void changeVoucher(String voucher) {
-        Print.d(TAG, "changeVoucher to " + voucher);
-        mVoucherCode = voucher;
-        isToRemoveVoucher = true;
-        setCouponView();
-    }
-
-    /**
-     * Clean Voucher field
-     */
-    private void removeVoucher() {
-        Print.d(TAG, "removeVoucher");
-        mVoucherCode = null;
-        isToRemoveVoucher = false;
-        // Clean Voucher field
-        mVoucherView.setText("");
-        setCouponView();
-    }
-
-    private void setCouponView() {
-        if (!TextUtils.isEmpty(mVoucherCode) && isToRemoveVoucher) {
-            mVoucherView.setText(mVoucherCode);
-            mVoucherView.setFocusable(false);
-            mVoucherView.setFocusableInTouchMode(false);
-        } else {
-            mVoucherView.setFocusable(true);
-            mVoucherView.setFocusableInTouchMode(true);
-        }
+        // Set nested scroll and voucher view
+        mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
+        NestedScrollView mNestedScroll = (NestedScrollView) view.findViewById(R.id.shoppingcart_nested_scroll);
         UIUtils.scrollToViewByClick(mNestedScroll, mVoucherView);
-
-        if (isToRemoveVoucher) {
-            mCouponButton.setText(getString(R.string.voucher_remove));
-        }
+        // Set voucher button
+        mCouponButton = (TextView) view.findViewById(R.id.voucher_btn);
         mCouponButton.setOnClickListener(this);
+    }
+
+    /**
+     * Show the use voucher layout
+     */
+    private void showUseVoucher() {
+        Print.d(TAG, "SHOWING USE VOUCHER");
+        mVoucherView.setText(TextUtils.isNotEmpty(mVoucherCode) ? mVoucherCode : "");
+        mVoucherView.setFocusable(true);
+        mVoucherView.setFocusableInTouchMode(true);
+        mCouponButton.setText(getString(R.string.voucher_use));
+
+    }
+
+    /**
+     * Show the remove voucher layout
+     */
+    private void showRemoveVoucher() {
+        Print.d(TAG, "SHOWING REMOVE VOUCHER");
+        mVoucherView.setText(mVoucherCode);
+        mVoucherView.setFocusable(false);
+        mVoucherView.setFocusableInTouchMode(false);
+        mCouponButton.setText(getString(R.string.voucher_remove));
     }
 
     /**
@@ -509,16 +495,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         switch (eventType) {
             case ADD_VOUCHER:
                 PurchaseEntity addVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getContentData();
-                mCouponButton.setText(getString(R.string.voucher_remove));
                 hideActivityProgress();
-                isToRemoveVoucher = true;
                 displayShoppingCart(addVoucherPurchaseEntity);
                 break;
             case REMOVE_VOUCHER:
                 PurchaseEntity removeVoucherPurchaseEntity = (PurchaseEntity) baseResponse.getContentData();
-                mCouponButton.setText(getString(R.string.voucher_use));
                 hideActivityProgress();
-                isToRemoveVoucher = false;
+                mVoucherCode = null;
                 displayShoppingCart(removeVoucherPurchaseEntity);
                 break;
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
@@ -660,7 +643,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
             final View voucherContainer = getView().findViewById(R.id.voucher_info_container);
 
-            TextView voucherLabel = (TextView) getView().findViewById(R.id.basket_voucher_label);
             // Get and set the cart value
             setTotal(cart);
 
@@ -668,23 +650,18 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
 
             // Set voucher
-            if (cart.hasCouponDiscount()) {
-                double couponDiscountValue = cart.getCouponDiscount();
-                if (couponDiscountValue >= 0) {
-                    voucherValue.setText("- " + CurrencyFormatter.formatCurrency(new BigDecimal(couponDiscountValue).toString()));
-                    voucherContainer.setVisibility(View.VISIBLE);
-                    // Change Coupon
-                    changeVoucher(cart.getCouponCode());
-                    voucherLabel.setText(getString(R.string.my_order_voucher_label));
-                } else {
-                    voucherContainer.setVisibility(View.GONE);
-                    mCouponButton.setText(getString(R.string.voucher_use));
-                    // Clean Voucher
-                    removeVoucher();
-                }
+            if (cart.hasCouponDiscount() && cart.getCouponDiscount() >= 0) {
+                // Set voucher value
+                String discount = String.format(getString(R.string.placeholder_discount), CurrencyFormatter.formatCurrency(cart.getCouponDiscount()));
+                voucherValue.setText(discount);
+                voucherContainer.setVisibility(View.VISIBLE);
+                // Set voucher code
+                mVoucherCode = cart.getCouponCode();
+                showRemoveVoucher();
             } else {
-                // Set the current voucher state
-                setCouponView();
+                // Set voucher
+                voucherContainer.setVisibility(View.GONE);
+                showUseVoucher();
             }
 
             // Price

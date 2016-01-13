@@ -265,7 +265,7 @@ public class DynamicFormItem {
                     break;
                 case infoMessage:
                 case errorMessage:
-                    buildText(params);
+                    buildMessage(params);
                     break;
                 default:
                     Print.w(TAG, "buildControl: Field type not supported (" + this.entry.getInputType() + ") - " + this.entry.getInputType());
@@ -1253,12 +1253,13 @@ public class DynamicFormItem {
     }
 
 
-    private void buildText(RelativeLayout.LayoutParams params) {
+    private void buildMessage(RelativeLayout.LayoutParams params) {
         this.control.setLayoutParams(params);
         this.control.setPadding(0, 10, 0, 10);
         ((RelativeLayout)this.control).setGravity(Gravity.CENTER);
         TextView textView = (TextView) View.inflate(this.context, R.layout.text_view_info, null);
-        textView.setText(entry.getValue());
+        textView.setText(entry.getLabel());
+        textView.setTag(entry.getInputType());
         this.control.addView(textView);
     }
 
