@@ -29,7 +29,7 @@ public class ConstantsIntentExtra {
 
     // ########### Products ###########
 
-    public static final String CONTENT_URL = mPackage + "ContentUrl";
+//    public static final String CONTENT_URL = mPackage + "ContentUrl";
     public static final String PRODUCT_SKU = mPackage + "ProductSku";
     public static final String IS_ZOOM_AVAILABLE = mPackage + "ZoomAvailable";
     public static final String INFINITE_SLIDE_SHOW = mPackage + "InfiniteScroll";
@@ -88,6 +88,7 @@ public class ConstantsIntentExtra {
     // ########### DEEP LINK ##############    
     public static final String DEEP_LINK_TAG = "u";
     public static final String DEEP_LINK_ORIGIN = "deepLinkOrigin";
+    public static final String TARGET_TYPE = mPackage + "TargetType";
 
     // ########### MAINTANCE ##############
     public static final String IN_MAINTANCE = "is_in_maintance";

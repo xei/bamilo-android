@@ -59,8 +59,8 @@ public class SectionsTablesHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
      */
     @Override
-    public String create(String table) {
-        return "CREATE TABLE " + table + " (" + 
+    public String create() {
+        return "CREATE TABLE %s (" +
                 Columns.ID +            " INTEGER PRIMARY KEY, " + 
                 Columns.NAME +          " TEXT UNIQUE, " + 
                 Columns.MD5 +           " TEXT, " + 

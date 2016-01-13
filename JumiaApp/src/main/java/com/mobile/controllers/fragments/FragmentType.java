@@ -66,7 +66,8 @@ public enum FragmentType {
     COMBO_PAGE,
     LOGIN_EMAIL,
     CATALOG_SELLER,
-    CATALOG_BRAND;
+    CATALOG_BRAND,
+    CATALOG_DEEPLINK;
 
 
 

@@ -35,15 +35,17 @@ public class CountrySettingsAdapter extends BaseAdapter{
 
     private CountryLanguageInformation countryObject;
     private LayoutInflater mInflater;
+    private boolean mSingleShop = false;
 
     public CountrySettingsAdapter(Context context, CountryLanguageInformation countryObject){
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.countryObject = countryObject;
+        mSingleShop = ShopSelector.isSingleShopCountry();
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return mSingleShop ? 1 : 2;
     }
 
     @Override
@@ -61,7 +63,7 @@ public class CountrySettingsAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if(convertView == null){
-            view = mInflater.inflate((position == MyAccountFragment.POSITION_COUNTRY) ? R.layout.country_settings_list_item : R.layout._def_my_account_language_item, parent, false);
+            view = mInflater.inflate((position == MyAccountFragment.POSITION_COUNTRY && !mSingleShop) ? R.layout.country_settings_list_item : R.layout._def_my_account_language_item, parent, false);
         } else {
             view = convertView;
         }
@@ -69,14 +71,11 @@ public class CountrySettingsAdapter extends BaseAdapter{
         TextView country = (TextView) view.findViewById(R.id.option_name);
         TextView info = (TextView) view.findViewById(R.id.option_info);
 
-        if(position == MyAccountFragment.POSITION_COUNTRY){
+        if(!mSingleShop && position == MyAccountFragment.POSITION_COUNTRY){
             country.setText(R.string.country);
             info.setText(countryObject.countryName);
             ImageView flag = (ImageView)view.findViewById(R.id.flag);
             RocketImageLoader.instance.loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_small);
-            if(ShopSelector.isSingleShopCountry()) {
-                view.setOnClickListener(null);
-            }
         } else {
             country.setText(R.string.language);
             info.setText(countryObject.languages.getSelectedLanguage().getLangName());

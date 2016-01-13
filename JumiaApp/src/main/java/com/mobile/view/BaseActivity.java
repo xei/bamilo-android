@@ -1099,7 +1099,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TrackerDelegator.trackSearchSuggestions(searchText);
         // Data
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
@@ -1409,7 +1409,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
 //    public void showKeyboard() {
 //        // Log.d( TAG, "showKeyboard" );
-//        Print.i(TAG, "code1here showKeyboard");
+//        //Print.i(TAG, "code1here showKeyboard");
 //        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
 //        // use the above as the method below does not always work

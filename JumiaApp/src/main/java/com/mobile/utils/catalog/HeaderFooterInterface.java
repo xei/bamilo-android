@@ -14,5 +14,5 @@ public interface HeaderFooterInterface {
     void showFooterView();
     void hideFooterView();
     void setHeader(@Nullable Banner banner);
-    void setHeader(@Nullable View banner);
+    void setHeader(@Nullable  String banner);
 }

@@ -11,10 +11,12 @@ import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
@@ -108,6 +110,10 @@ public class ProductUtils {
         } else {
             fragment.showWarningSuccessMessage(baseResponse.getSuccessMessage(), eventType);
         }
+    }
+
+    public static void setShopFirst(@NonNull ProductRegular productBase, @NonNull View badge){
+        badge.setVisibility((!productBase.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
     }
 
 }

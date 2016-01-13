@@ -168,7 +168,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     protected void executeSearchRequest(String searchText) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);

@@ -1,6 +1,5 @@
 package com.mobile.newFramework.utils;
 
-import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 
 /**
@@ -19,12 +18,6 @@ public class Constants {
     public static final String BUNDLE_PATH_KEY = RestConstants.PATH;
     public static final String BUNDLE_PRIORITY_KEY = RestConstants.PRIORITY;
     public static final String BUNDLE_EVENT_TASK = RestConstants.TASK;
-
-    /**
-     * Handler messages
-     */
-
-    public static final int SUCCESS = IntConstants.SUCCESS;
 
     /**
      * ######## Device Info ########

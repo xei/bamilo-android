@@ -196,7 +196,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             int errorCode = baseResponse.getError().getCode();
             EventType eventType = baseResponse.getEventType();
 
-            Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
+            //Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
                 showDevInfo();
             }
@@ -329,7 +329,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError() != null ? baseResponse.getError().getCode() : ErrorCode.NO_ERROR;
 
-        Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
+        //Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
 
         if (dialog != null && dialog.isVisible()) {
             try {
@@ -589,7 +589,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-                Print.i(TAG, "code1configs received response correctly!!!");
+                //Print.i(TAG, "code1configs received response correctly!!!");
                 // Auto country selection
                 LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
             } else {

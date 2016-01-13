@@ -9,6 +9,7 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 /**
@@ -40,12 +41,16 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
 
     @Override
     public void onBind(BaseTeaserGroupType group) {
-        BaseTeaserObject leftX = group.getData().get(0);
-        BaseTeaserObject rightX = group.getData().get(1);
-        RocketImageLoader.instance.loadImage(leftX.getImage(), leftImage, leftProgress, R.drawable.no_image_large);
-        RocketImageLoader.instance.loadImage(rightX.getImage(), rightImage, rightProgress, R.drawable.no_image_large);
-        TeaserViewFactory.setClickableView(leftContainer, leftX, mParentClickListener, 0);
-        TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener, 1);
+        try {
+            BaseTeaserObject leftX = group.getData().get(0);
+            BaseTeaserObject rightX = group.getData().get(1);
+            RocketImageLoader.instance.loadImage(leftX.getImage(), leftImage, leftProgress, R.drawable.no_image_large);
+            RocketImageLoader.instance.loadImage(rightX.getImage(), rightImage, rightProgress, R.drawable.no_image_large);
+            TeaserViewFactory.setClickableView(leftContainer, leftX, mParentClickListener, 0);
+            TeaserViewFactory.setClickableView(rightContainer, rightX, mParentClickListener, 1);
+        } catch (IndexOutOfBoundsException e) {
+            UIUtils.showOrHideViews(View.GONE, leftContainer, rightContainer);
+        }
     }
 
 }

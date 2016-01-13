@@ -46,7 +46,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
 
     private static Context CONTEXT;
     
-    private BaseTable mTables[] = {
+    private final BaseTable[] mTables = {
             new ImageResolutionTableHelper(),
             new CategoriesTableHelper(),
             new SectionsTablesHelper(),
@@ -110,7 +110,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         for (BaseTable table : mTables) {
             Print.i(TAG, "ON CREATE TABLE: " + table.getName());
-            db.execSQL(table.create(table.getName()));
+            db.execSQL(String.format(table.create(), table.getName()));
         }
     }
 
@@ -155,7 +155,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         // Drop table
         db.execSQL(String.format(DROP_TABLE, tableName));
         // Create table
-        db.execSQL(table.create(tableName));
+        db.execSQL(table.create(), new String[]{tableName});
     }
     
     /**
@@ -169,7 +169,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         // Get temporary table name
         String tempTableName = currentTableName + "_temp_" + newVersion;
         // Create temporary table
-        db.execSQL(table.create(tempTableName));
+        db.execSQL(table.create(), new String[]{tempTableName});
         // Match columns
         ArrayList<String> common = matchColumns(db, tempTableName, currentTableName);
         // Validate columns and copy

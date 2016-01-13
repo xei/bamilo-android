@@ -91,7 +91,7 @@ public class JumiaWearableListenerService extends WearableListenerService {
             } else if ("/wearperformsearch".equals(uri.getPath())) {
                 Print.e(TAG, "PERFORMED VOICE SEARCH");
                 String searchTerm = dataMap.getString(EXTRA_SEARCH_TERM);
-                Print.i(TAG, "code1search : searchterm : " + searchTerm);
+                //Print.i(TAG, "code1search : searchterm : " + searchTerm);
                 String countryISO = ShopPreferences.getShopCountryISO(getApplicationContext());
                 if (countryISO == null) {
 //                    sendErrorToWear("Ups! error while loading information!");
@@ -171,11 +171,11 @@ public class JumiaWearableListenerService extends WearableListenerService {
                     DataApi.DataItemResult result = Wearable.DataApi.putDataItem(sGoogleApiClient, requests[0].asPutDataRequest()).await();
                     if (result.getStatus().isSuccess()) {
                         Print.e("WEAR", "doInBackground 3");
-                        Print.i(TAG, "code1DataMap: success! " + requests[0].getDataMap() + " sent to: " + node.getDisplayName());
+                        //Print.i(TAG, "code1DataMap: success! " + requests[0].getDataMap() + " sent to: " + node.getDisplayName());
                     } else {
                         Print.e("WEAR", "doInBackground 4");
                         // Log an error
-                        Print.i(TAG, "code1DataMap ERROR: failed to send DataMap");
+                        //Print.i(TAG, "code1DataMap ERROR: failed to send DataMap");
                     }
                 }
 

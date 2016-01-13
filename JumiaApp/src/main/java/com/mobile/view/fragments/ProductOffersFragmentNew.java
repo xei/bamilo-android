@@ -320,7 +320,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             Bundle bundle = new Bundle();
             String targetUrl = offer.getSeller().getTarget();
             String targetTitle = offer.getSeller().getName();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putString(ConstantsIntentExtra.DATA, targetUrl);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);

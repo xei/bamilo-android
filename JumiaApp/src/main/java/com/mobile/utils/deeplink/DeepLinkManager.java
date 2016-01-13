@@ -1,5 +1,6 @@
 package com.mobile.utils.deeplink;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -68,7 +70,6 @@ public class DeepLinkManager {
     private static final String RECENT_SEARCHES_TAG = "rc";
     private static final String FAVORITES_TAG = "w";
     private static final String SHOPS_IN_SHOP_TAG = "ss";
-    public static final String FRAGMENT_TYPE_TAG = "fragment_type";
     public static final String PDV_SIZE_TAG = "size";
     public static final String COUNTRY_TAG = "country";
 
@@ -264,7 +265,7 @@ public class DeepLinkManager {
         TeaserCampaign campaign = new TeaserCampaign(campaignId.replace("-", " "), campaignId);
         teaserCampaigns.add(campaign);
         bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CAMPAIGNS);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CAMPAIGNS);
         return bundle;
     }
 
@@ -280,7 +281,7 @@ public class DeepLinkManager {
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.ARG_1, orderId);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.ORDER_STATUS);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.ORDER_STATUS);
         return bundle;
     }
 
@@ -295,12 +296,12 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO SEARCH: " + query);
         // Create bundle
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, query);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, query);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG);
         return bundle;
     }
 
@@ -322,13 +323,13 @@ public class DeepLinkManager {
         if (segments.size() > 2) {
             // Add SKUs for HEADLESS_CART
             simpleSkuArray = segments.get(PATH_DATA_POS);
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, simpleSkuArray);
+            bundle.putString(ConstantsIntentExtra.DATA, simpleSkuArray);
             Print.i(TAG, "DEEP LINK TO CART WITH: " + simpleSkuArray + " " + fragmentType.toString());
         }
         // Create bundle for fragment
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, fragmentType);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, fragmentType);
         return bundle;
     }
 
@@ -353,7 +354,7 @@ public class DeepLinkManager {
         bundle.putString(PDV_SIZE_TAG, size);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
         bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.PRODUCT_DETAILS);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.PRODUCT_DETAILS);
         return bundle;
     }
 
@@ -367,7 +368,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO LOGIN");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.LOGIN);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.LOGIN);
         return bundle;
     }
 
@@ -381,7 +382,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO REGISTER");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.REGISTER);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.REGISTER);
         return bundle;
     }
 
@@ -396,7 +397,7 @@ public class DeepLinkManager {
         Bundle bundle = new Bundle();
         bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.LOGIN);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.LOGIN);
         return bundle;
     }
 
@@ -410,7 +411,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO RECENT VIEWED");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENTLY_VIEWED_LIST);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.RECENTLY_VIEWED_LIST);
         return bundle;
     }
 
@@ -424,7 +425,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO RECENT SEARCHES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.RECENT_SEARCHES_LIST);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.RECENT_SEARCHES_LIST);
         return bundle;
     }
 
@@ -438,7 +439,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK TO FAVOURITES");
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DEEP_LINK_TAG, TAG);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.WISH_LIST);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.WISH_LIST);
         return bundle;
     }
 
@@ -451,7 +452,7 @@ public class DeepLinkManager {
     private static Bundle processHomeLink() {
         Print.i(TAG, "DEEP LINK TO HOME");
         Bundle bundle = new Bundle();
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.HOME);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.HOME);
         return bundle;
     }
 
@@ -469,16 +470,19 @@ public class DeepLinkManager {
         // case ng/c/womens-dresses&sort=price&dir=asc
         String deeplinkUrl = data.toString();
         if(segments.size() >= MIN_SEGMENTS){
-            String catalogUrlKey = "?category=" + segments.get(PATH_DATA_POS);
-            //String catalogUrlKey = deeplinkUrl.substring(deeplinkUrl.indexOf('?'));
+            String catalogUrlKey = "?category=" +segments.get(PATH_DATA_POS);
             Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
 
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, catalogUrlKey);
+            ContentValues deepLinkValues = new ContentValues();
+            if (TextUtils.isNotEmpty(catalogUrlKey))
+                deepLinkValues = RestUrlUtils.getQueryParameters(catalogUrlKey);
+
+            bundle.putParcelable(ConstantsIntentExtra.DATA, deepLinkValues);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             bundle.putString(ConstantsIntentExtra.CATALOG_QUERIE, deeplinkUrl);
             bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
-            bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.CATALOG);
+            bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEPLINK);
         }
 
         return bundle;
@@ -498,7 +502,7 @@ public class DeepLinkManager {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, innerShopId.replaceAll("-", " "));
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, innerShopId);
-        bundle.putSerializable(FRAGMENT_TYPE_TAG, FragmentType.INNER_SHOP);
+        bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.INNER_SHOP);
         return bundle;
     }
 
@@ -703,7 +707,7 @@ public class DeepLinkManager {
             Print.i(TAG, "DEEP LINK: VALID INTENT");
             // Get extras from notifications
             bundle = new Bundle();
-            bundle.putSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG, FragmentType.CHOOSE_COUNTRY);
+            bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CHOOSE_COUNTRY);
             bundle.putBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, true);
         }
         Print.i(TAG, "DEEP LINK: INVALID INTENT");
@@ -835,7 +839,7 @@ public class DeepLinkManager {
         Print.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
         if (bundle != null) {
             // Get fragment type
-            FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
+            FragmentType fragmentType = (FragmentType) bundle.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
             //Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
             // Validate fragment type
             if (fragmentType != FragmentType.UNKNOWN) {
