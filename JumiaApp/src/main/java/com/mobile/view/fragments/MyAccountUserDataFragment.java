@@ -1,8 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -19,10 +17,9 @@ import com.mobile.helpers.account.GetUserDataFormHelper;
 import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.helpers.account.SetUserDataHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -247,8 +244,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      */
     private void init() {
         triggerGetUserDataForm();
-        SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        if(!sharedPrefs.getBoolean(Darwin.KEY_LOGIN_FACEBOOK, false)){
+        if(!CustomerUtils.isFacebookLogin(getBaseActivity())){
             triggerGetChangePasswordForm();
             mChangePasswordFormContainer.setVisibility(View.VISIBLE);
             mChangePasswordTitle.setVisibility(View.VISIBLE);

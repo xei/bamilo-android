@@ -2,9 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Patterns;
@@ -25,7 +23,6 @@ import com.mobile.helpers.session.LoginAutoHelper;
 import com.mobile.helpers.session.LoginFacebookHelper;
 import com.mobile.helpers.session.LoginGuestHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
@@ -34,7 +31,7 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
-import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -399,24 +396,19 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                 // Case valid next step
                 if(nextStepFromApi != FragmentType.UNKNOWN) {
                     Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
-
-                    SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPrefs.edit();
-
                     // Tracking
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
                         TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
                         // Set Facebook login flag false
-                        editor.putBoolean(Darwin.KEY_LOGIN_FACEBOOK, false);
+                        CustomerUtils.setFacebookLogin(getBaseActivity(),false);
                     } else if (eventType == EventType.AUTO_LOGIN_EVENT) {
                         TrackerDelegator.trackLoginSuccessful(customer, true, false);
                     } else {
                         TrackerDelegator.trackLoginSuccessful(customer, false, true);
                         // Set Facebook login flag true
-                        editor.putBoolean(Darwin.KEY_LOGIN_FACEBOOK, true);
+                        CustomerUtils.setFacebookLogin(getBaseActivity(),true);
                     }
-                    editor.apply();
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
 
