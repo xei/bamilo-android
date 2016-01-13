@@ -249,7 +249,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        Print.d(TAG, "ON SAVE INSTANCE STATE");
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
         super.onSaveInstanceState(outState);
         // Retain the old state
         if(mSavedState != null) {
@@ -259,7 +259,10 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         if(mDynamicForm != null) {
             mDynamicForm.saveFormState(outState);
         }
+        // Save form type
         outState.putBoolean(SHOWING_FORM, isShowingRatingForm);
+        // Save for foreground
+        mSavedState = outState;
     }
 
     /*

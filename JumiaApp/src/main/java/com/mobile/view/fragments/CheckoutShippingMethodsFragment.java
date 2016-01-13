@@ -353,7 +353,7 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
         // Get next step
         NextStepStruct methodStruct = (NextStepStruct) baseResponse.getContentData();
         FragmentType nextFragment = methodStruct.getFragmentType();
-        nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.PAYMENT_METHODS;
+        nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_PAYMENT;
         getBaseActivity().onSwitchFragment(nextFragment, null, FragmentController.ADD_TO_BACK_STACK);
     }
 
