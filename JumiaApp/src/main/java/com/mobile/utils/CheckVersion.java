@@ -91,14 +91,17 @@ public class CheckVersion {
         if (!checkVersionInfo())
             return false;
 
-        if (checkResult == FORCED_AVAILABLE) {
-            sNeedsToShowDialog = true;
-        } else if ( checkResult == OPTIONAL_AVAILABLE) {
-            sNeedsToShowDialog = !getRemindMeLater();
-        } else if ( checkResult == OPTIONAL_AVAILABLE_IGNORED) {
-            sNeedsToShowDialog = false;
-        } else {
-            sNeedsToShowDialog = false;
+        switch (checkResult) {
+            case FORCED_AVAILABLE:
+                sNeedsToShowDialog = true;
+                break;
+            case OPTIONAL_AVAILABLE:
+                sNeedsToShowDialog = !getRemindMeLater();
+                break;
+            case OPTIONAL_AVAILABLE_IGNORED:
+            default:
+                sNeedsToShowDialog = false;
+                break;
         }
         return sNeedsToShowDialog;
     }
