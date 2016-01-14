@@ -253,8 +253,8 @@ public class CheckVersion {
         String packageName = sContext.getPackageName();
 
         String url;
-        if (packageName.startsWith("com.jumia.android.dev")
-                || packageName.startsWith("com.jumia.android.live"))
+        if (packageName.startsWith("com.mobile.jumia.dev")
+                || packageName.startsWith("com.mobile.jumia.weekly"))
             packageName = "com.jumia.android";
 
         url = PLAY_MARKET_QUERY + packageName;
