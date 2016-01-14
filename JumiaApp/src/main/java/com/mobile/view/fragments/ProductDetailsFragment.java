@@ -549,12 +549,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
-     * Rotate the view 180ª case RTL and pre API 17.
+     * Mirror rating stars case RTL and pre API 17.
      * @param progressBar
      */
     private void setProgressForRTLPreJelly(RatingBar progressBar) {
         if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
-            //TODO: adapt assets for preJelly versions.
+            progressBar.setScaleX(-1.0f);
+            progressBar.setScaleY(1.0f);
         }
     }
 
