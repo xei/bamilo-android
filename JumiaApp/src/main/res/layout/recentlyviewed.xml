@@ -3,18 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <GridView
+    <com.mobile.utils.catalog.HeaderFooterGridView
         android:id="@+id/recentlyviewed_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:listSelector="@drawable/selector_list_item_highlight"
         android:numColumns="@integer/favourite_num_columns"
-        android:layout_above="@+id/button_line" />
-
-
-    <View style="@style/divider_horizontal"
-        android:id="@+id/button_line" android:layout_above="@+id/recentlyviewed_button_grey"/>
+        android:layout_above="@+id/recentlyviewed_button_grey" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/recentlyviewed_button_grey"
