@@ -1,16 +1,15 @@
 package com.mobile.controllers;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
@@ -25,7 +24,7 @@ import java.util.ArrayList;
  * @modified sergiopereira
  *
  */
-public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
+public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAdapter.ProductMultipleHolder> {
 
     public final static String TAG = RecentlyViewedAdapter.class.getSimpleName();
 
@@ -35,22 +34,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
 
     private Class<? extends ProductMultiple> itemsClass;
 
-    /**
-     * A representation of each item on the list
-     */
-    public static class Item {
-        private ImageView image;
-        private TextView name;
-        private TextView discount;
-        private TextView price;
-        private TextView percentage;
-        private TextView brand;
-        private TextView newArrivalBadge;
-        private TextView varianceButton;
-        private View addToCartButton;
-        private View deleteButton;
-        private View container;
-    }
+    private ArrayList<ProductMultiple> items;
 
     /**
      * Constructor
@@ -60,80 +44,13 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
      * @author sergiopereira
      */
     public RecentlyViewedAdapter(Context context, ArrayList<ProductMultiple> items, OnClickListener parentListener) {
-        super(context, R.layout.addabletocart_item, items);
+        this.items = items;
         mInflater = LayoutInflater.from(context);
         mOnClickParentListener = parentListener;
 
         if (!items.isEmpty()) {
             itemsClass = items.get(0).getClass();
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.widget.Adapter#getView(int, android.view.View, android.view.ViewGroup)
-     */
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        // Log.i(TAG, "ON GET VIEW: " + position);
-        // Validate view
-        View itemView;
-        // If the view already exists there is no need to inflate it again
-        if (convertView != null) itemView = convertView;
-        // Inflate the view
-        else itemView = mInflater.inflate(R.layout.addabletocart_item, parent, false);
-        // Get the class associated to the view
-        Item prodItem = getItemView(itemView);
-        // Get addableToCart
-        ProductMultiple addableToCart = getItem(position);
-        // Set Image
-        setImage(prodItem, addableToCart);
-        // Set brand, name and price
-        setTextContent(prodItem, addableToCart);
-        // Set variation
-        ProductUtils.setVariationContent(prodItem.varianceButton, addableToCart);
-        // Set clickable views
-        setClickableViews(position, prodItem.container, prodItem.addToCartButton, prodItem.varianceButton);
-        // Return view
-        return itemView;
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.widget.ArrayAdapter#notifyDataSetChanged()
-     */
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-        Print.i(TAG, "ON DATA SET CHANGED");
-    }
-
-    /**
-     * Get the recycled view
-     * @return ItemView
-     * @author sergiopereira
-     */
-    private Item getItemView(View itemView){
-        Item item;
-        if (itemView.getTag(R.id.recycled_view) == null) {
-            // Create tag
-            item = new Item();
-            item.container = itemView.findViewById(R.id.addabletocart_item_container);
-            item.newArrivalBadge = (TextView) itemView.findViewById(R.id.new_arrival_badge);
-            item.image = (ImageView) itemView.findViewById(R.id.item_image);
-            item.name = (TextView) itemView.findViewById(R.id.item_name);
-            item.brand = (TextView) itemView.findViewById(R.id.item_brand);
-            item.price = (TextView) itemView.findViewById(R.id.item_regprice);
-            item.discount = (TextView) itemView.findViewById(R.id.item_discount);
-            item.percentage = (TextView) itemView.findViewById(R.id.item_percentage);
-            item.varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
-            item.addToCartButton = itemView.findViewById(R.id.button_shop);
-            item.deleteButton = itemView.findViewById(R.id.button_delete);
-            itemView.setTag(R.id.recycled_view, item);
-        } else {
-            item = (Item) itemView.getTag(R.id.recycled_view);
-        }
-        return item;
     }
 
     /**
@@ -148,32 +65,13 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
         }
     }
 
-//    /**
-//     * Set the variation container
-//     * @author sergiopereira
-//     */
-//    private void setVariationContent(Item prodItem, ProductMultiple product){
-//        // Set simple button
-//        if(product.hasMultiSimpleVariations()) {
-//            // Set simple value
-//            String simpleVariationValue = "...";
-//            if(product.hasSelectedSimpleVariation()) {
-//                simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
-//            }
-//            prodItem.varianceButton.setText(simpleVariationValue);
-//            prodItem.varianceButton.setVisibility(View.VISIBLE);
-//        } else {
-//            prodItem.varianceButton.setVisibility(View.INVISIBLE);
-//        }
-//    }
-
     /**
      * Set the image view
      * @param prodItem
      * @param addableToCart
      * @author sergiopereira
      */
-    private void setImage(Item prodItem, ProductMultiple addableToCart){
+    private void setImage(ProductMultipleHolder prodItem, ProductMultiple addableToCart){
         // Set is new image
         prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
@@ -186,7 +84,7 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
      * @param addableToCart
      * @author sergiopereira
      */
-    private void setTextContent(Item prodItem, ProductMultiple addableToCart) {
+    private void setTextContent(ProductMultipleHolder prodItem, ProductMultiple addableToCart) {
         if (addableToCart != null) {
             // Set brand
             String brand = addableToCart.getBrand();
@@ -207,4 +105,59 @@ public class RecentlyViewedAdapter extends ArrayAdapter<ProductMultiple> {
             }
         }
     }
+
+    @Override
+    public ProductMultipleHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ProductMultipleHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addabletocart_item, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(ProductMultipleHolder holder, int position) {
+        // Get addableToCart
+        ProductMultiple addableToCart = this.items.get(position);
+        // Set Image
+        setImage(holder, addableToCart);
+        // Set brand, name and price
+        setTextContent(holder, addableToCart);
+        // Set variation
+        ProductUtils.setVariationContent(holder.varianceButton, addableToCart);
+        // Set clickable views
+        setClickableViews(position, holder.container, holder.addToCartButton, holder.varianceButton);
+    }
+
+    @Override
+    public int getItemCount() {
+        return items.size();
+    }
+
+    public class ProductMultipleHolder extends RecyclerView.ViewHolder {
+
+        private ImageView image;
+        private TextView name;
+        private TextView discount;
+        private TextView price;
+        private TextView percentage;
+        private TextView brand;
+        private TextView newArrivalBadge;
+        private TextView varianceButton;
+        private View addToCartButton;
+        private View deleteButton;
+        private View container;
+
+        public ProductMultipleHolder(View itemView) {
+            super(itemView);
+            image = (ImageView) itemView.findViewById(R.id.item_image);
+            name = (TextView) itemView.findViewById(R.id.item_name);
+            discount = (TextView) itemView.findViewById(R.id.item_discount);
+            price = (TextView) itemView.findViewById(R.id.item_regprice);
+            percentage = (TextView) itemView.findViewById(R.id.item_percentage);
+            brand = (TextView) itemView.findViewById(R.id.item_brand);
+            newArrivalBadge = (TextView) itemView.findViewById(R.id.new_arrival_badge);
+            varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
+            addToCartButton = itemView.findViewById(R.id.button_shop);
+            deleteButton = itemView.findViewById(R.id.button_delete);
+            container = itemView.findViewById(R.id.addabletocart_item_container);
+        }
+    }
+
 }
