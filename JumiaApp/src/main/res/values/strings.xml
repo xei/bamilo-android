@@ -475,4 +475,6 @@
     <string name="buy">buy</string>
     <string name="size">Size %s</string>
     <string name="no_translate">NO TRANSLATE IS A TEST</string>
+    <string name="added_success">Added successfully.</string>
+    <string name="removed_success">Removed successfully.</string>
 </resources>
