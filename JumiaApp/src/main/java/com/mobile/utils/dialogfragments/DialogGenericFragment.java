@@ -231,7 +231,10 @@ public class DialogGenericFragment extends DialogFragment {
     /**
      *
      */
-    public static DialogGenericFragment createServerErrorDialog(final Activity activity, final OnClickListener retryClickListener, boolean finishActivity) {
+    public static DialogGenericFragment createServerErrorDialog(
+            final Activity activity,
+            final OnClickListener retryClickListener,
+            boolean finishActivity) {
         return createErrorDialog(
                 activity.getString(R.string.server_error_title),
                 activity.getString(R.string.server_error),
@@ -276,5 +279,27 @@ public class DialogGenericFragment extends DialogFragment {
         return dialog;
     }
 
+    /**
+     * Create an info dialog.
+     */
+    public static DialogGenericFragment createInfoDialog(String title, String message, String button) {
+
+        final DialogGenericFragment dialog = DialogGenericFragment.newInstance(
+                true,
+                false,
+                title,
+                message,
+                button,
+                null, null);
+
+        dialog.clickListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismissAllowingStateLoss();
+            }
+        };
+
+        return dialog;
+    }
 
 }
