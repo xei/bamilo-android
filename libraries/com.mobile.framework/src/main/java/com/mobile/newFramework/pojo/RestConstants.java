@@ -110,7 +110,7 @@ public class RestConstants {
     public static final String RESULTS = "results";
     public static final String PRODUCT_COUNT = "product_count";
     public static final String IMAGES = "images";
-    public static final String ID_CATALOG_CATEGORY = "id_catalog_category";
+    public static final String ID_CHANGE_QUANTITY = "id_change_quantity";
     public static final String URL_KEY = "url_key";
     public static final String CHILDREN = "children";
     public static final String CART = "cart";
@@ -142,7 +142,6 @@ public class RestConstants {
     public static final String SAVE_PRICE = "save_price";
     public static final String STOCK_PERCENTAGE = "stock_percentage";
     public static final String HAS_UNIQUE_SIZE = "has_unique_size";
-    public static final String SIZES = "sizes";
     public static final String SIZE = "size";
     public static final String REMAINING_TIME = "remaining_time";
     public static final String UNIX_TIME = "unix_time";
@@ -305,7 +304,7 @@ public class RestConstants {
     public static final String ANDROID = "android";
     public static final String CUSTOMER_DEVICE = "customer_device";
     public static final String PRE_ORDER = "pre_order";
-    public static final String HAS_SELLER = "has_seller";
     public static final String SHOP_FIRST = "shop_first";
     public static final String PLACE_HOLDER = "placeholder";
+    public static final String COUPONCODE = "couponcode";
 }
