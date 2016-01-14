@@ -83,7 +83,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private DialogListFragment dialogList;
     private TextView mCouponButton;
     private EditText mVoucherView;
-    private String mVoucherCode = null;
+    private String mVoucherCode;
     private String mItemRemovedSku;
     private String mPhone2Call = "";
     private double mItemRemovedPriceTracking = 0d;
@@ -180,7 +180,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         // Save the voucher code
         if(mVoucherView != null) {
-            outState.putString(ConstantsIntentExtra.ARG_1, mVoucherView.getText().toString());
+            mVoucherCode = mVoucherView.getText().toString();
+            outState.putString(ConstantsIntentExtra.ARG_1, mVoucherCode);
         }
     }
 
