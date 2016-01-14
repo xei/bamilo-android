@@ -751,7 +751,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
         prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
         prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
-        prodItem.isNew = (TextView) view.findViewById(R.id.new_arrival_badge);
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
         prodItem.shopFirstImage = (ImageView) view.findViewById(R.id.item_shop_first);
 
@@ -764,8 +763,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         String imageUrl = prodItem.itemValues.image;
 
-        // Hide is New badge because shopping cart product has no info regarding this attribute
-        prodItem.isNew.setVisibility(View.GONE);
         // Hide shop view image if is_shop is false
         prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
 
@@ -919,7 +916,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public TextView priceView;
         public TextView quantityBtn;
         public ImageView productView;
-        public TextView isNew;
         public View pBar;
         public TextView deleteBtn;
         public CartItemValues itemValues;
@@ -939,7 +935,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             productView = null;
             pBar = null;
             deleteBtn = null;
-            isNew = null;
             shopFirstImage = null;
             super.finalize();
         }
