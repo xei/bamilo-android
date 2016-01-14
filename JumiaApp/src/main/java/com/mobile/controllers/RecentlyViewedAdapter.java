@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * @modified sergiopereira
  *
  */
-public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAdapter.ProductMultipleHolder> {
+public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAdapter.ProductItemHolder> {
 
     public final static String TAG = RecentlyViewedAdapter.class.getSimpleName();
 
@@ -71,7 +71,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
      * @param addableToCart
      * @author sergiopereira
      */
-    private void setImage(ProductMultipleHolder prodItem, ProductMultiple addableToCart){
+    private void setImage(ProductItemHolder prodItem, ProductMultiple addableToCart){
         // Set is new image
         prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
@@ -84,7 +84,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
      * @param addableToCart
      * @author sergiopereira
      */
-    private void setTextContent(ProductMultipleHolder prodItem, ProductMultiple addableToCart) {
+    private void setTextContent(ProductItemHolder prodItem, ProductMultiple addableToCart) {
         if (addableToCart != null) {
             // Set brand
             String brand = addableToCart.getBrand();
@@ -107,12 +107,12 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
     }
 
     @Override
-    public ProductMultipleHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ProductMultipleHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addabletocart_item, parent, false));
+    public ProductItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new ProductItemHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.addabletocart_item, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(ProductMultipleHolder holder, int position) {
+    public void onBindViewHolder(ProductItemHolder holder, int position) {
         // Get addableToCart
         ProductMultiple addableToCart = this.items.get(position);
         // Set Image
@@ -130,7 +130,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
         return items.size();
     }
 
-    public class ProductMultipleHolder extends RecyclerView.ViewHolder {
+    public class ProductItemHolder extends RecyclerView.ViewHolder {
 
         private ImageView image;
         private TextView name;
@@ -144,7 +144,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
         private View deleteButton;
         private View container;
 
-        public ProductMultipleHolder(View itemView) {
+        public ProductItemHolder(View itemView) {
             super(itemView);
             image = (ImageView) itemView.findViewById(R.id.item_image);
             name = (TextView) itemView.findViewById(R.id.item_name);
