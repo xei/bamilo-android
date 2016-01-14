@@ -40,8 +40,7 @@ public class CurrencyFormatter {
      */
     private static Locale apiLocale;
     private static boolean initialized = false;
-    //private static boolean isLocaleAvailable;
-    
+
     /**
      * Initializes the Currency formatter.
      * This function accesses the content data in order to access the currency language and country of the currency.
@@ -50,7 +49,6 @@ public class CurrencyFormatter {
     	currencyCode = currCode;
         apiLocale = Locale.US;
         initialized = true;
-        //isLocaleAvailable = isLocaleAvailable(Locale.getDefault());
         // Load currency configurations
         loadCurrencyInformation(context);
         
@@ -67,19 +65,7 @@ public class CurrencyFormatter {
         
         Print.i(TAG, "CURRENCY: currency code = " + currency.getCurrencyCode() + " fraction digits = " + currency.getDefaultFractionDigits());
     }
-    
-//    /**
-//     * Validate locale is available.
-//     * @return true or false
-//     */
-//    private static boolean isLocaleAvailable(Locale localeRequired) {
-//        for (Locale loc : DecimalFormat.getAvailableLocales()) {
-//            if (loc.getCountry().equalsIgnoreCase(localeRequired.getCountry())) return true;
-//        }
-//        return false;
-//    }
-    
-    
+
     /**
      * Load currency info from country configurations.
      */

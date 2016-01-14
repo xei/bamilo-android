@@ -56,17 +56,4 @@ public enum MessagesUtils {
         return GENERIC_MESSAGE.successMessageId;
     }
 
-    public static int getErrorMessageId(EventType eventType){
-        if (eventType != null){
-            for (MessagesUtils messageUtils  : MessagesUtils.values()) {
-                if(messageUtils.toString().equalsIgnoreCase(eventType.toString())){
-                    return messageUtils.errorMessageId;
-                }
-            }
-        }
-
-        return GENERIC_MESSAGE.errorMessageId;
-    }
-
-
 }

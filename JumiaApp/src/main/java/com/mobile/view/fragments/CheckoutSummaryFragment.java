@@ -423,6 +423,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                         int id = v.getId();
                         if (id == R.id.button1) {
                             dismissDialogFragment();
+                            JumiaApplication.INSTANCE.setCart(null);
+                            getBaseActivity().updateCartInfo();
                             getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         }
                     }
