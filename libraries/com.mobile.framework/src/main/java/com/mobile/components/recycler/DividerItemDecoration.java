@@ -111,7 +111,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int left;
             final int right;
-            if (ShopSelector.isRtl() && !DeviceInfoHelper.isPreJellyBeanMR1()) {
+            if (ShopSelector.isRtl() && !DeviceInfoHelper.isPreJellyBeanMR2()) {
                 left = child.getLeft() + params.leftMargin + Math.round(ViewCompat.getTranslationX(child));
                 right = left + mDivider.getIntrinsicHeight();
             } else {

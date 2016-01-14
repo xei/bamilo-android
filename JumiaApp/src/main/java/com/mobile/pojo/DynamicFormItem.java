@@ -55,6 +55,7 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.RadioGroupLayout;
@@ -265,7 +266,7 @@ public class DynamicFormItem {
                     break;
                 case infoMessage:
                 case errorMessage:
-                    buildText(params);
+                    buildMessage(params);
                     break;
                 default:
                     Print.w(TAG, "buildControl: Field type not supported (" + this.entry.getInputType() + ") - " + this.entry.getInputType());
@@ -1253,12 +1254,13 @@ public class DynamicFormItem {
     }
 
 
-    private void buildText(RelativeLayout.LayoutParams params) {
+    private void buildMessage(RelativeLayout.LayoutParams params) {
         this.control.setLayoutParams(params);
         this.control.setPadding(0, 10, 0, 10);
         ((RelativeLayout)this.control).setGravity(Gravity.CENTER);
         TextView textView = (TextView) View.inflate(this.context, R.layout.text_view_info, null);
-        textView.setText(entry.getValue());
+        textView.setText(entry.getLabel());
+        textView.setTag(entry.getInputType());
         this.control.addView(textView);
     }
 
@@ -1557,7 +1559,8 @@ public class DynamicFormItem {
             count++;
             TextView label = (TextView) ratingLine.findViewById(R.id.option_label);
             RatingBar starts = (RatingBar) ratingLine.findViewById(R.id.option_stars);
-            starts.setTag(RATING_BAR_TAG + pairs.getKey().toString());
+            setProgressForRTLPreJelly(starts);
+            starts.setTag(RATING_BAR_TAG + pairs.getKey());
             starts.setTag(R.id.rating_bar_id, pairs.getKey().toString());
             label.setText("" + pairs.getValue());
             linearLayout.addView(ratingLine);
@@ -1590,6 +1593,18 @@ public class DynamicFormItem {
 
         this.control.addView(this.dataControl);
 
+    }
+
+
+    /**
+     * Mirror rating stars case RTL and pre API 17.
+     * @param progressBar
+     */
+    private void setProgressForRTLPreJelly(View progressBar) {
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
+            progressBar.setScaleX(-1.0f);
+            progressBar.setScaleY(1.0f);
+        }
     }
 
     private SharedPreferences getSharedPref() {

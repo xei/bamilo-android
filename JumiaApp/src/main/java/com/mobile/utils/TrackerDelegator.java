@@ -1313,4 +1313,39 @@ public class TrackerDelegator {
             Print.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
         }
     }
+
+    public static void trackAddToCartGTM(PurchaseCartItem item, int quantity, String mItemRemovedCartValue) {
+        try {
+            double prods = item.getQuantity();
+            Bundle params = new Bundle();
+
+            params.putString(TrackerDelegator.SKU_KEY, item.getConfigSimpleSKU());
+
+            params.putLong(TrackerDelegator.START_TIME_KEY, System.currentTimeMillis());
+            params.putDouble(TrackerDelegator.PRICE_KEY, item.getPriceForTracking());
+            params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
+            params.putDouble(TrackerDelegator.RATING_KEY, -1d);
+            params.putString(TrackerDelegator.NAME_KEY, item.getName());
+            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategories());
+            params.putString(TrackerDelegator.CARTVALUE_KEY, mItemRemovedCartValue);
+
+            if (quantity > prods) {
+                prods = quantity - prods;
+                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.SHOPPINGCART);
+                for (int i = 0; i < prods; i++) {
+                    TrackerDelegator.trackProductAddedToCart(params);
+                }
+            } else {
+                prods = prods - quantity;
+                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+                for (int i = 0; i < prods; i++) {
+                    TrackerDelegator.trackProductRemoveFromCart(params);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }
