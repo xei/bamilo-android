@@ -322,22 +322,22 @@ public class MainFragmentActivity extends BaseActivity {
             case FORGOT_PASSWORD:
                 fragment = SessionForgotPasswordFragment.getInstance();
                 break;
-            case MY_ADDRESSES:
+            case CHECKOUT_MY_ADDRESSES:
                 fragment = CheckoutMyAddressesFragment.getInstance();
                 break;
-            case CREATE_ADDRESS:
+            case CHECKOUT_CREATE_ADDRESS:
                 fragment = CheckoutCreateAddressFragment.getInstance();
                 break;
-            case EDIT_ADDRESS:
+            case CHECKOUT_EDIT_ADDRESS:
                 fragment = CheckoutEditAddressFragment.getInstance(bundle);
                 break;
-            case SHIPPING_METHODS:
+            case CHECKOUT_SHIPPING:
                 fragment = CheckoutShippingMethodsFragment.getInstance();
                 break;
-            case PAYMENT_METHODS:
+            case CHECKOUT_PAYMENT:
                 fragment = CheckoutPaymentMethodsFragment.getInstance();
                 break;
-            case MY_ORDER:
+            case CHECKOUT_FINISH:
                 fragment = CheckoutFinishFragment.getInstance(bundle);
                 break;
             case CHECKOUT_THANKS:

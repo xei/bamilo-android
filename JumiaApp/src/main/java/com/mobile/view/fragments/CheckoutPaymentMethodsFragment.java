@@ -405,7 +405,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Get next step
             NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
             FragmentType nextFragment = nextStepStruct.getFragmentType();
-            nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.MY_ORDER;
+            nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_FINISH;
             // Tracking
             String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
             String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();

@@ -54,15 +54,15 @@ public class CheckoutStepManager {
         // Case not valid next step (null or empty)
         if(TextUtils.isEmpty(nextStep)) return fragmentType;
         // Create addresses step
-        else if (nextStep.equalsIgnoreCase(CREATE_ADDRESS_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
+        else if (nextStep.equalsIgnoreCase(CREATE_ADDRESS_STEP)) fragmentType = FragmentType.CHECKOUT_CREATE_ADDRESS;
         // Billing and shipping address step
-        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.MY_ADDRESSES;
+        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CHECKOUT_MY_ADDRESSES;
         // Shipping method step
-        else if (nextStep.equalsIgnoreCase(SHIPPING_STEP)) fragmentType = FragmentType.SHIPPING_METHODS;
+        else if (nextStep.equalsIgnoreCase(SHIPPING_STEP)) fragmentType = FragmentType.CHECKOUT_SHIPPING;
         // Payment method step
-        else if (nextStep.equalsIgnoreCase(PAYMENT_STEP)) fragmentType = FragmentType.PAYMENT_METHODS;
+        else if (nextStep.equalsIgnoreCase(PAYMENT_STEP)) fragmentType = FragmentType.CHECKOUT_PAYMENT;
         // Order step
-        else if (nextStep.equalsIgnoreCase(ORDER_STEP)) fragmentType = FragmentType.MY_ORDER;
+        else if (nextStep.equalsIgnoreCase(ORDER_STEP)) fragmentType = FragmentType.CHECKOUT_FINISH;
         // Return next fragment type
         Print.i(TAG, "NEXT STEP FRAGMENT: " + fragmentType.toString());
         return fragmentType;
@@ -76,12 +76,12 @@ public class CheckoutStepManager {
     public static String[] getAllNativeCheckout() {
         return new String[]{
                 FragmentType.LOGIN.toString(),
-                FragmentType.MY_ADDRESSES.toString(),
-                FragmentType.CREATE_ADDRESS.toString(),
-                FragmentType.EDIT_ADDRESS.toString(),
-                FragmentType.SHIPPING_METHODS.toString(),
-                FragmentType.PAYMENT_METHODS.toString(),
-                FragmentType.MY_ORDER.toString(),
+                FragmentType.CHECKOUT_MY_ADDRESSES.toString(),
+                FragmentType.CHECKOUT_CREATE_ADDRESS.toString(),
+                FragmentType.CHECKOUT_EDIT_ADDRESS.toString(),
+                FragmentType.CHECKOUT_SHIPPING.toString(),
+                FragmentType.CHECKOUT_PAYMENT.toString(),
+                FragmentType.CHECKOUT_FINISH.toString(),
                 FragmentType.CHECKOUT_THANKS.toString()
         };
     }
@@ -195,9 +195,9 @@ public class CheckoutStepManager {
             Print.i(TAG, "NEXT STEP FROM API: " + nextStepType.toString());
             // Case comes from MY_ACCOUNT
             if(mParentFragmentType == FragmentType.MY_ACCOUNT) {
-                if(nextStepType == FragmentType.CREATE_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_CREATE_ADDRESS;
-                else if(nextStepType == FragmentType.EDIT_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_EDIT_ADDRESS;
-                else if(nextStepType == FragmentType.MY_ADDRESSES) nextStepType = FragmentType.MY_ACCOUNT_MY_ADDRESSES;
+                if(nextStepType == FragmentType.CHECKOUT_CREATE_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_CREATE_ADDRESS;
+                else if(nextStepType == FragmentType.CHECKOUT_EDIT_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_EDIT_ADDRESS;
+                else if(nextStepType == FragmentType.CHECKOUT_MY_ADDRESSES) nextStepType = FragmentType.MY_ACCOUNT_MY_ADDRESSES;
             }
             // Clean stack for new native checkout on the back stack (auto login)
             activity.removeAllNativeCheckoutFromBackStack();
