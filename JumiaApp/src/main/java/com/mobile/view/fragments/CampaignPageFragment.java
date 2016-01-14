@@ -3,6 +3,7 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -1029,14 +1030,38 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
         }
 
-        private void setHeaderImage(CampaignItemHolder holder){
+        private void setHeaderImage(final CampaignItemHolder holder){
             if(!TextUtils.isEmpty(mBannerImage)){
                 // set listener
-                holder.itemView.setOnClickListener(this);
+//                holder.itemView.setOnClickListener(this);
                 // just in order to have a position tag in order to not crash on the onCLick
                 holder.itemView.setTag(R.id.position, -1);
+                holder.mBannerImageView.setVisibility(View.GONE);
                 // Set image
-                RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, null, R.drawable.no_image_large);
+                RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
+
+                    @Override
+                    public void onLoadedSuccess(String url, Bitmap bitmap) {
+                        // Show content
+                        holder.mBannerImageView.setImageBitmap(bitmap);
+                        holder.mBannerImageView.setVisibility(View.VISIBLE);
+                        bannerState = VISIBLE;
+                    }
+
+                    @Override
+                    public void onLoadedError() {
+                        holder.mBannerImageView.setVisibility(View.GONE);
+                        mGridView.hideHeaderView();
+                        bannerState = HIDDEN;
+                    }
+
+                    @Override
+                    public void onLoadedCancel() {
+                        holder.mBannerImageView.setVisibility(View.GONE);
+                        mGridView.hideHeaderView();
+                        bannerState = HIDDEN;
+                    }
+                });
             }
         }
     }
