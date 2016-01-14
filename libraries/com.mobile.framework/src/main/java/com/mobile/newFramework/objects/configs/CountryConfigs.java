@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class CountryConfigs implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = CountryConfigs.class.getSimpleName();
+    //private static final String TAG = CountryConfigs.class.getSimpleName();
 
     public static final String CURRENCY_LEFT_POSITION = "1";
 
@@ -201,62 +201,6 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     public boolean isRichRelevanceEnabled() {
         return mIsRichRelevanceEnabled;
-    }
-
-    public void setCurrencyIso(String mCurrencyIso) {
-        this.mCurrencyIso = mCurrencyIso;
-    }
-
-    public void setCurrencySymbol(String mCurrencySymbol) {
-        this.mCurrencySymbol = mCurrencySymbol;
-    }
-
-    public void setNoDecimals(int mNoDecimals) {
-        this.mNoDecimals = mNoDecimals;
-    }
-
-    public void setThousandsSep(String mThousandsSep) {
-        this.mThousandsSep = mThousandsSep;
-    }
-
-    public void setDecimalsSep(String mDecimalsSep) {
-        this.mDecimalsSep = mDecimalsSep;
-    }
-
-    public void setGaId(String mGaId) {
-        this.mGaId = mGaId;
-    }
-
-    public void setGTMId(String mGTMId) {
-        this.mGTMId = mGTMId;
-    }
-
-    public void setPhoneNumber(String mPhoneNumber) {
-        this.mPhoneNumber = mPhoneNumber;
-    }
-
-    public void setCsEmail(String mCsEmail) {
-        this.mCsEmail = mCsEmail;
-    }
-
-    public void setIsRatingEnable(boolean isRatingEnable) {
-        this.isRatingEnable = isRatingEnable;
-    }
-
-    public void setIsReviewEnable(boolean isReviewEnable) {
-        this.isReviewEnable = isReviewEnable;
-    }
-
-    public void setIsRatingLoginRequired(boolean isRatingLoginRequired) {
-        this.isRatingLoginRequired = isRatingLoginRequired;
-    }
-
-    public void setIsFacebookAvailable(boolean isFacebookAvailable) {
-        this.isFacebookAvailable = isFacebookAvailable;
-    }
-
-    public void setIsReviewLoginRequired(boolean isReviewLoginRequired) {
-        this.isReviewLoginRequired = isReviewLoginRequired;
     }
 
     public String getGaId() {

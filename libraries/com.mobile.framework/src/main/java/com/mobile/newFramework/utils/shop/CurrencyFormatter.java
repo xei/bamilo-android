@@ -40,7 +40,7 @@ public class CurrencyFormatter {
      */
     private static Locale apiLocale;
     private static boolean initialized = false;
-    private static boolean isLocaleAvailable;
+    //private static boolean isLocaleAvailable;
     
     /**
      * Initializes the Currency formatter.
@@ -50,7 +50,7 @@ public class CurrencyFormatter {
     	currencyCode = currCode;
         apiLocale = Locale.US;
         initialized = true;
-        isLocaleAvailable = isLocaleAvailable(Locale.getDefault());
+        //isLocaleAvailable = isLocaleAvailable(Locale.getDefault());
         // Load currency configurations
         loadCurrencyInformation(context);
         
@@ -68,16 +68,16 @@ public class CurrencyFormatter {
         Print.i(TAG, "CURRENCY: currency code = " + currency.getCurrencyCode() + " fraction digits = " + currency.getDefaultFractionDigits());
     }
     
-    /**
-     * Validate locale is available.
-     * @return true or false
-     */
-    private static boolean isLocaleAvailable(Locale localeRequired) {
-        for (Locale loc : DecimalFormat.getAvailableLocales()) {
-            if (loc.getCountry().equalsIgnoreCase(localeRequired.getCountry())) return true;
-        }
-        return false;
-    }
+//    /**
+//     * Validate locale is available.
+//     * @return true or false
+//     */
+//    private static boolean isLocaleAvailable(Locale localeRequired) {
+//        for (Locale loc : DecimalFormat.getAvailableLocales()) {
+//            if (loc.getCountry().equalsIgnoreCase(localeRequired.getCountry())) return true;
+//        }
+//        return false;
+//    }
     
     
     /**
@@ -168,22 +168,6 @@ public class CurrencyFormatter {
         return DecimalFormat.getCurrencyInstance();
     }
     
-    /**
-     * Creates the number format for devices 2.x.
-     * @return NumberFormat
-     * @author GuilhermeSilva
-     */
-    @Deprecated
-	private static NumberFormat createNumberFormatter() {
-		//Log.d( TAG, "createNumberFormatter for android 2.x");
-		NumberFormat formatter;
-		Locale formatterLocale;
-		if (!isLocaleAvailable) formatterLocale = Locale.ENGLISH;
-		else formatterLocale = Locale.getDefault();
-		formatter = DecimalFormat.getCurrencyInstance(formatterLocale);
-		return formatter;
-	}
-
 	public static String getCurrencyCode() {
     	return currencyCode;
     }
