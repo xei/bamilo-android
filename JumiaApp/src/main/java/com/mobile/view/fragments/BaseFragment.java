@@ -835,6 +835,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case FORGET_PASSWORD_EVENT:
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
+            case ADD_VOUCHER:
+            case REMOVE_VOUCHER:
                 handleSuccessTaskEvent(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), eventType);
                 return true;
             default:

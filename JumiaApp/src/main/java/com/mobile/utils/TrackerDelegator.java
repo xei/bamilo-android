@@ -976,7 +976,7 @@ public class TrackerDelegator {
             screenName = sContext.getString(page.getName());
         }
 
-        if(!"".equalsIgnoreCase(screenName))
+        if(TextUtils.isNotEmpty(screenName))
             GTMManager.get().gtmTrackViewScreen(screenName, loadTime);
     }
 

@@ -65,6 +65,7 @@ import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListLis
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.pdv.RelatedProductsAdapter;
 import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -534,28 +535,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             //changeFashion: rating style is changed if vertical is fashion
             if (mProduct.isFashion()) {
-                setProgressForRTLPreJelly(mProductFashionRating);
+                UIUtils.setProgressForRTLPreJellyMr2(mProductFashionRating);
                 mProductFashionRating.setRating((float) mProduct.getAvgRating());
                 mProductRating.setVisibility(View.GONE);
                 mProductFashionRating.setVisibility(View.VISIBLE);
             } else {
-                setProgressForRTLPreJelly(mProductRating);
+                UIUtils.setProgressForRTLPreJellyMr2(mProductRating);
                 mProductRating.setRating((float) mProduct.getAvgRating());
                 mProductRating.setVisibility(View.VISIBLE);
             }
             String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
             mProductRatingCount.setText(rating);
-        }
-    }
-
-    /**
-     * Mirror rating stars case RTL and pre API 17.
-     * @param progressBar
-     */
-    private void setProgressForRTLPreJelly(RatingBar progressBar) {
-        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
-            progressBar.setScaleX(-1.0f);
-            progressBar.setScaleY(1.0f);
         }
     }
 

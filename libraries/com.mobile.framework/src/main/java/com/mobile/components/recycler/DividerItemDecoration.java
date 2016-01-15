@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -111,15 +112,21 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int left;
             final int right;
+            // if RTL we need to invert the divider draw
             if (ShopSelector.isRtl() && !DeviceInfoHelper.isPreJellyBeanMR2()) {
-                left = child.getLeft() + params.leftMargin + Math.round(ViewCompat.getTranslationX(child));
-                right = left + mDivider.getIntrinsicHeight();
+                right = child.getLeft();
+                left = right - mDivider.getIntrinsicHeight();
             } else {
                 left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
                 right = left + mDivider.getIntrinsicHeight();
             }
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
+
+            // If the element belongs to the start of the screen or the end, we don't need to draw the divider
+            if(left != 0 && right != 0 && left != parent.getWidth() && right != parent.getWidth()){
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
+
         }
     }
 

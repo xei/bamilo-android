@@ -362,8 +362,8 @@
     <string name="reviews_plural">သံုးသပ္ခ်က္ %d ခု</string>
     <string name="open">ဖြင့္ရန္</string>
     <string name="close">ပိတ္ရန္</string>
-    <string name="choose_language">ဘာသာစကား ေရြးခ်ယ္ပါ</string>
-    <string name="language">ဘာသာစကား</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="language">Language</string>
     <string name="country">ႏိုင္ငံ</string>
     <string name="birthday_label">ေမြးရက္</string>
     <string name="birthday_error">မွန္ကန္ေသာေမြးေန႕ေမြးရက္ကိုသာ ေရြးခ်ယ္ပါ</string>
