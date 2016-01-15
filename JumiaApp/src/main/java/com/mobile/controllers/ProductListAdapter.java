@@ -6,11 +6,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -96,6 +100,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
     protected void setSpecificViewForListLayout(ProductListViewHolder holder, ProductRegular item) {
         // Validate list views
         if(holder.rating != null && holder.reviews != null) {
+            UIUtils.setProgressForRTLPreJellyMr2(holder.rating);
             // Show rating
             if (item.getAvgRating() > 0) {
                 holder.rating.setRating((float) item.getAvgRating());

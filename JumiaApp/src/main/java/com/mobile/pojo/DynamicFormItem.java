@@ -1559,7 +1559,7 @@ public class DynamicFormItem {
             count++;
             TextView label = (TextView) ratingLine.findViewById(R.id.option_label);
             RatingBar starts = (RatingBar) ratingLine.findViewById(R.id.option_stars);
-            setProgressForRTLPreJelly(starts);
+            UIUtils.setProgressForRTLPreJellyMr2(starts);
             starts.setTag(RATING_BAR_TAG + pairs.getKey());
             starts.setTag(R.id.rating_bar_id, pairs.getKey().toString());
             label.setText("" + pairs.getValue());
@@ -1593,18 +1593,6 @@ public class DynamicFormItem {
 
         this.control.addView(this.dataControl);
 
-    }
-
-
-    /**
-     * Mirror rating stars case RTL and pre API 17.
-     * @param progressBar
-     */
-    private void setProgressForRTLPreJelly(View progressBar) {
-        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
-            progressBar.setScaleX(-1.0f);
-            progressBar.setScaleY(1.0f);
-        }
     }
 
     private SharedPreferences getSharedPref() {
