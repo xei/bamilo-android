@@ -706,6 +706,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 values.productSku = item.getSku();
                 values.maxQuantity = item.getMaxQuantity();
                 values.shop_first = item.isShopFirst();
+                values.shop_first_overlay = item.getShopFirstOverlay();
 
                 Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
 
@@ -768,6 +769,16 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.isNew.setVisibility(View.GONE);
         // Hide shop view image if is_shop is false
         prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+        //set event if is visible
+        if(prodItem.shopFirstImage.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(prodItem.itemValues.shop_first_overlay))
+            prodItem.shopFirstImage.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DialogGenericFragment.createInfoDialog(null, prodItem.itemValues.shop_first_overlay, getString(R.string.ok_label)).show(getActivity().getSupportFragmentManager(), null);
+                }
+            });
+
+
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
                 R.drawable.no_image_small);
@@ -908,6 +919,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public int maxQuantity;
         public String productSku;
         public boolean shop_first;
+        public String shop_first_overlay;
     }
 
     /**

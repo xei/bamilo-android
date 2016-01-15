@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -60,6 +61,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -584,6 +586,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                         sellerName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     }
                 });
+
+            }else if(mProduct.isShopFirst() && TextUtils.isNotEmpty(mProduct.getShopFirstOverlay())){
+                sellerName.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if(event.getAction() == MotionEvent.ACTION_UP) {
+                            if(!ShopSelector.isRtl() &&  event.getRawX() >= sellerName.getRight() - sellerName.getTotalPaddingRight()
+                                    || ShopSelector.isRtl() && event.getRawX() <= sellerName.getTotalPaddingLeft() ){
+                                // Show dialog with overlay content
+                                DialogGenericFragment.createInfoDialog(null, mProduct.getShopFirstOverlay(), getString(R.string.ok_label)).show(getActivity().getSupportFragmentManager(), null);
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+                });
             }
             // Set listener
             if(TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
@@ -633,6 +651,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mSellerContainer.setVisibility(View.GONE);
         }
     }
+
+
 
     /**
      * Change and put the title in the correct position within the layout if it's fashion or not
@@ -1388,6 +1408,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void triggerGetProductBundle(String sku) {
         triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku), this);
     }
+
+
 
     private class ComboItemClickListener implements OnClickListener {
         ViewGroup bundleItemView;
