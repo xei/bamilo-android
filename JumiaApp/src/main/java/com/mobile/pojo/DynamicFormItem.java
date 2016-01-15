@@ -1787,11 +1787,6 @@ public class DynamicFormItem {
         mandatory.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         // Set next id to parent
         container.setId(parent.getNextId());
-        // Set error control
-        if (hasRules()) {
-            this.errorControl = createErrorControl(container.getId(), RelativeLayout.LayoutParams.MATCH_PARENT);
-            this.control.addView(this.errorControl);
-        }
         // Save
         this.dataControl = text;
         this.mandatoryControl = mandatory;
@@ -1799,6 +1794,11 @@ public class DynamicFormItem {
         this.dataControl.setContentDescription(this.entry.getKey());
         // Add container
         group.addView(container);
+        // Set error control
+        if (hasRules()) {
+            this.errorControl = createErrorControl(container.getId(), RelativeLayout.LayoutParams.MATCH_PARENT);
+            group.addView(this.errorControl);
+        }
         // Return the view
         return container;
     }

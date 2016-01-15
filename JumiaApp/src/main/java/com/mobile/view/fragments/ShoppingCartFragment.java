@@ -328,7 +328,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void onClickCheckoutButton() {
         // Case has voucher to submit
-        if (!android.text.TextUtils.isEmpty(mVoucherView.getText()) && !mCouponButton.getText().toString().equalsIgnoreCase(getString(R.string.voucher_remove))) {
+        if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(mCouponButton.getText(), getString(R.string.voucher_remove))) {
             onClickVoucherButton();
         }
         // Case checkout
@@ -354,7 +354,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mVoucherCode = mVoucherView.getText().toString();
         getBaseActivity().hideKeyboard();
         if (!TextUtils.isEmpty(mVoucherCode)) {
-            if (getString(R.string.voucher_use).equalsIgnoreCase(mCouponButton.getText().toString())) {
+            if (TextUtils.equals(getString(R.string.voucher_use), mCouponButton.getText().toString())) {
                 triggerSubmitVoucher(mVoucherCode);
             } else {
                 triggerRemoveVoucher();
@@ -770,7 +770,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
                 R.drawable.no_image_small);
 
-        if (!prodItem.itemValues.price.equals(prodItem.itemValues.price_disc)) {
+        if (!TextUtils.equals(prodItem.itemValues.price, prodItem.itemValues.price_disc)) {
             prodItem.priceView.setText(prodItem.itemValues.price_disc);
             prodItem.priceView.setVisibility(View.VISIBLE);
         } else {
