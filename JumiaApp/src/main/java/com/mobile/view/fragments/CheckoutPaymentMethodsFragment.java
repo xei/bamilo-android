@@ -3,7 +3,6 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -33,6 +32,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.CheckoutStepManager;
@@ -242,7 +242,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         int id = view.getId();
         // Submit
         if (id == R.id.checkout_button_enter) {
-            if (!TextUtils.isEmpty(mVoucherView.getText()) && !couponButton.getText().toString().equalsIgnoreCase(getString(R.string.voucher_remove))) {
+            if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(couponButton.getText(), getString(R.string.voucher_remove))) {
                 validateCoupon();
             } else {
                 onClickSubmitPaymentButton();
@@ -342,7 +342,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         mVoucherCode = mVoucherView.getText().toString();
         getBaseActivity().hideKeyboard();
         if (!TextUtils.isEmpty(mVoucherCode)) {
-            if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
+            if (TextUtils.equals(getString(R.string.voucher_use), couponButton.getText())) {
                 triggerSubmitVoucher(mVoucherCode);
             } else {
                 triggerRemoveVoucher();
@@ -381,6 +381,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                     mVoucherCode = null;
                 }
             } else {
+                mVoucherView.setText(TextUtils.isNotEmpty(mVoucherCode) ? mVoucherCode : "" );
                 mVoucherView.setFocusable(true);
                 mVoucherView.setFocusableInTouchMode(true);
             }
@@ -427,7 +428,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
         case REMOVE_VOUCHER:
-            mVoucherView.setText("");
+            mVoucherCode = null;
         case ADD_VOUCHER:
             couponButton.setText(getString(eventType == EventType.ADD_VOUCHER ? R.string.voucher_remove : R.string.voucher_use));
             removeVoucher = eventType == EventType.ADD_VOUCHER;
