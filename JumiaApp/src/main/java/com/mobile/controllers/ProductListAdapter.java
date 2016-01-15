@@ -14,6 +14,7 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -99,7 +100,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
     protected void setSpecificViewForListLayout(ProductListViewHolder holder, ProductRegular item) {
         // Validate list views
         if(holder.rating != null && holder.reviews != null) {
-            setProgressForRTLPreJelly(holder.rating);
+            UIUtils.setProgressForRTLPreJellyMr2(holder.rating);
             // Show rating
             if (item.getAvgRating() > 0) {
                 holder.rating.setRating((float) item.getAvgRating());
@@ -113,17 +114,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
                 holder.rating.setVisibility(View.INVISIBLE);
                 holder.reviews.setText("");
             }
-        }
-    }
-
-    /**
-     * Mirror rating stars case RTL and pre API 17.
-     * @param progressBar
-     */
-    private void setProgressForRTLPreJelly(RatingBar progressBar) {
-        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
-            progressBar.setScaleX(-1.0f);
-            progressBar.setScaleY(1.0f);
         }
     }
 

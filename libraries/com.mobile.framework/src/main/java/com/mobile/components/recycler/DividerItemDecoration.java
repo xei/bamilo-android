@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -112,14 +113,17 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             final int left;
             final int right;
             if (ShopSelector.isRtl() && !DeviceInfoHelper.isPreJellyBeanMR2()) {
-                left = child.getLeft() + params.leftMargin + Math.round(ViewCompat.getTranslationX(child));
-                right = left + mDivider.getIntrinsicHeight();
+                right = child.getLeft();
+                left = right - mDivider.getIntrinsicHeight();
             } else {
                 left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
                 right = left + mDivider.getIntrinsicHeight();
             }
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
+            if(left != 0 && right != 0){
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
+
         }
     }
 
