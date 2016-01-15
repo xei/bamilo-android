@@ -13,7 +13,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
 
 /**
@@ -168,5 +171,16 @@ public class UIUtils {
         spannableString.setSpan(new ForegroundColorSpan(firstColor), 0, first.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(secondColor), first.length(), first.length() + second.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannableString;
+    }
+
+    /**
+     * Mirror rating stars case RTL and pre API 17.
+     * @param progressBar
+     */
+    public static void setProgressForRTLPreJellyMr2(View progressBar) {
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
+            progressBar.setScaleX(-1.0f);
+            progressBar.setScaleY(1.0f);
+        }
     }
 }
