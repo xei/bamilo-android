@@ -83,7 +83,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private DialogListFragment dialogList;
     private TextView mCouponButton;
     private EditText mVoucherView;
-    private String mVoucherCode = null;
+    private String mVoucherCode;
     private String mItemRemovedSku;
     private String mPhone2Call = "";
     private double mItemRemovedPriceTracking = 0d;
@@ -180,7 +180,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         // Save the voucher code
         if(mVoucherView != null) {
-            outState.putString(ConstantsIntentExtra.ARG_1, mVoucherView.getText().toString());
+            mVoucherCode = mVoucherView.getText().toString();
+            outState.putString(ConstantsIntentExtra.ARG_1, mVoucherCode);
         }
     }
 
@@ -752,7 +753,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
         prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
         prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
-        prodItem.isNew = (TextView) view.findViewById(R.id.new_arrival_badge);
         prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
         prodItem.shopFirstImage = (ImageView) view.findViewById(R.id.item_shop_first);
 
@@ -765,8 +765,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         String imageUrl = prodItem.itemValues.image;
 
-        // Hide is New badge because shopping cart product has no info regarding this attribute
-        prodItem.isNew.setVisibility(View.GONE);
         // Hide shop view image if is_shop is false
         prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
         //set event if is visible
@@ -931,7 +929,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public TextView priceView;
         public TextView quantityBtn;
         public ImageView productView;
-        public TextView isNew;
         public View pBar;
         public TextView deleteBtn;
         public CartItemValues itemValues;
@@ -951,7 +948,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             productView = null;
             pBar = null;
             deleteBtn = null;
-            isNew = null;
             shopFirstImage = null;
             super.finalize();
         }

@@ -555,7 +555,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param progressBar
      */
     private void setProgressForRTLPreJelly(RatingBar progressBar) {
-        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
             progressBar.setScaleX(-1.0f);
             progressBar.setScaleY(1.0f);
         }
