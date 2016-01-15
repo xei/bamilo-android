@@ -40,7 +40,8 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_my_order_payment_name"
-                style="@style/SubListItemStyle" />
+                style="@style/SubListItemStyle"
+                android:gravity="center_vertical"/>
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_my_order_payment_coupon"
