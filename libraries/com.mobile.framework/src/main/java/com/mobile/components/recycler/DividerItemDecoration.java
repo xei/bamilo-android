@@ -112,6 +112,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int left;
             final int right;
+            // if RTL we need to invert the divider draw
             if (ShopSelector.isRtl() && !DeviceInfoHelper.isPreJellyBeanMR2()) {
                 right = child.getLeft();
                 left = right - mDivider.getIntrinsicHeight();
@@ -119,7 +120,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
                 left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
                 right = left + mDivider.getIntrinsicHeight();
             }
-            if(left != 0 && right != 0){
+
+            // If the element belongs to the start of the screen or the end, we don't need to draw the divider
+            if(left != 0 && right != 0 && left != parent.getWidth() && right != parent.getWidth()){
                 mDivider.setBounds(left, top, right, bottom);
                 mDivider.draw(c);
             }
