@@ -29,10 +29,10 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
@@ -315,9 +315,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
             //shop first image
             ImageView shopFirstImageView = (ImageView) cartItemView.findViewById(R.id.item_shop_first);
-            shopFirstImageView.setVisibility((!item.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
-            //Set event if jumiafirst is visible and overlay != ""
-            if(shopFirstImageView.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(item.getShopFirstOverlay())) {
+       //     shopFirstImageView.setVisibility((!item.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+            ProductUtils.setShopFirst(item, shopFirstImageView);
+
+     /*       if(shopFirstImageView.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(item.getShopFirstOverlay())) {
                 final String overlayInfo = item.getShopFirstOverlay();
                 shopFirstImageView.setOnClickListener(new OnClickListener() {
                     @Override
@@ -325,8 +326,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                         DialogGenericFragment.createInfoDialog(null, overlayInfo, getString(R.string.ok_label)).show(getActivity().getSupportFragmentManager(), null);
                     }
                 });
-            }
+            }*/
 
+            //Set event if jumiafirst is visible and overlay != ""
+            ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
 
             String imageUrl = item.getImageUrl();
             ImageView mImageView = (ImageView) cartItemView.findViewById(R.id.image_view);

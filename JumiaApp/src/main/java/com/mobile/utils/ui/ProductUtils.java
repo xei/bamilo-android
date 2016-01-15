@@ -3,6 +3,7 @@ package com.mobile.utils.ui;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
@@ -18,6 +19,7 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
@@ -115,5 +117,39 @@ public class ProductUtils {
     public static void setShopFirst(@NonNull ProductRegular productBase, @NonNull View badge){
         badge.setVisibility((!productBase.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
     }
+
+
+/**
+ * Shows a dialog with shopOverlayInfo content if clicking on a shopFirst badge or shopFirst drawable in a textView
+ *  - if the shopfirst logo is visible and overlay info is not empty, the dialog show up
+ *  - Else if overlay Info is empty, the logo is not clickable even visible
+ * */
+    public static void showShopFirstOverlayMessage(final @NonNull BaseFragment fragment,final @NonNull ProductRegular productBase,final @NonNull View shopFirstView){
+        if(shopFirstView.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(productBase.getShopFirstOverlay())) {
+            //If badge is included in a textView: PDV case
+            if(shopFirstView instanceof TextView){
+                shopFirstView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if(UIUtils.drawableClicked(((TextView) shopFirstView), event)) {
+                            DialogGenericFragment.createInfoDialog(null, productBase.getShopFirstOverlay(), fragment.getString(R.string.ok_label)).show(fragment.getActivity().getSupportFragmentManager(), null);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+            }else { //if is an image
+                shopFirstView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogGenericFragment.createInfoDialog(null, productBase.getShopFirstOverlay(), fragment.getString(R.string.ok_label)).show(fragment.getActivity().getSupportFragmentManager(), null);
+                    }
+                });
+            }
+        }
+    }
+
+
 
 }

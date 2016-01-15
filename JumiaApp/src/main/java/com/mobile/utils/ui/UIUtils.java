@@ -13,7 +13,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
 
 /**
@@ -168,5 +170,19 @@ public class UIUtils {
         spannableString.setSpan(new ForegroundColorSpan(firstColor), 0, first.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableString.setSpan(new ForegroundColorSpan(secondColor), first.length(), first.length() + second.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannableString;
+    }
+
+
+    /**
+     * Method to detect if a drawable existing at left or right in a TextView was clicked
+     * */
+    public static boolean drawableClicked(TextView view, MotionEvent event){
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            if((!ShopSelector.isRtl() &&  event.getX() >= view.getRight() - view.getTotalPaddingRight())
+                    || (ShopSelector.isRtl() && event.getX() <= view.getTotalPaddingLeft()) ){
+                return true;
+            }
+        }
+        return false;
     }
 }
