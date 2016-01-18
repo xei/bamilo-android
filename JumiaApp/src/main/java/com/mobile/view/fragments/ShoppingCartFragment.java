@@ -617,9 +617,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mBeginRequestMillis = System.currentTimeMillis();
     }
 
-    /*
 
-     */
+
+
+    /**
+     * Display shopping cart info
+     * */
     private void displayShoppingCart(PurchaseEntity cart) {
         Print.d(TAG, "displayShoppingCart");
         if(cart == null){
@@ -693,27 +696,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             // TODO Validate this method
             for (int i = 0; i < items.size(); i++) {
                 PurchaseCartItem item = items.get(i);
-     /*           CartItemValues values = new CartItemValues();
-                values.is_checked = false;
-                values.product_name = item.getName();
-                values.price = CurrencyFormatter.formatCurrency(item.getPrice());
-                values.product_id = 0;
-                values.quantity = item.getQuantity();
-                values.image = item.getImageUrl();
-                values.price_disc = CurrencyFormatter.formatCurrency(item.getSpecialPrice());
-                values.discount_value = (double) Math.round(item.getSavingPercentage());
-                values.min_delivery_time = 0;
-                values.max_delivery_time = 99;
-                values.variation = item.getVariation();
-                values.productSku = item.getSku();
-                values.maxQuantity = item.getMaxQuantity();
-                values.shop_first = item.isShopFirst();
-                values.shop_first_overlay = item.getShopFirstOverlay();
-
-                Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());*/
-
-          //      lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
-
                 lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), item));
 
                 if(!TextUtils.equals(item.getPriceString(), item.getSpecialPriceString())){
@@ -843,104 +825,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
 
 
-/*
-    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
 
-        View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
-
-        final Item prodItem = new Item();
-        prodItem.itemValues = item;
-        // Log.d( TAG, "getView: productName = " + itemValues.product_name);
-
-        prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
-        prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
-        prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
-        prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
-        prodItem.shopFirstImage = (ImageView) view.findViewById(R.id.item_shop_first);
-
-        prodItem.pBar = view.findViewById(R.id.image_loading_progress);
-        prodItem.deleteBtn = (TextView) view.findViewById(R.id.button_delete);
-        view.setTag(prodItem);
-
-        prodItem.itemName.setText(prodItem.itemValues.product_name);
-        prodItem.itemName.setSelected(true);
-
-        String imageUrl = prodItem.itemValues.image;
-
-        // Hide shop view image if is_shop is false
-        prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
-        //set event if is visible
-        if(prodItem.shopFirstImage.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(prodItem.itemValues.shop_first_overlay))
-            prodItem.shopFirstImage.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    DialogGenericFragment.createInfoDialog(null, prodItem.itemValues.shop_first_overlay, getString(R.string.ok_label)).show(getActivity().getSupportFragmentManager(), null);
-                }
-            });
-
-
-
-        RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
-                R.drawable.no_image_small);
-
-        if (!TextUtils.equals(prodItem.itemValues.price, prodItem.itemValues.price_disc)) {
-            prodItem.priceView.setText(prodItem.itemValues.price_disc);
-            prodItem.priceView.setVisibility(View.VISIBLE);
-        } else {
-            prodItem.priceView.setText(prodItem.itemValues.price);
-            prodItem.priceView.setVisibility(android.view.View.VISIBLE);
-        }
-        prodItem.deleteBtn.setTag(R.id.position, position);
-        prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                deleteSelectedElements(view);
-            }
-        });
-
-        prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.itemValues.quantity) + "  ");
-        if(prodItem.itemValues.maxQuantity > 1) {
-            prodItem.quantityBtn.setEnabled(true);
-            prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    prodItem.itemValues.is_checked = true;
-                    showQuantityDialog(position);
-                }
-            });
-        } else {
-            prodItem.quantityBtn.setEnabled(false);
-            DeviceInfoHelper.executeCodeBasedOnJellyBeanVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-                @Override
-                @SuppressLint("NewApi")
-                public void highVersionCallback() {
-                    prodItem.quantityBtn.setBackground(null);
-                }
-                @Override
-                @SuppressWarnings("deprecation")
-                public void lowerVersionCallback() {
-                    prodItem.quantityBtn.setBackgroundDrawable(null);
-                }
-            });
-
-        }
-
-        // Save the position to process the click on item
-        view.setTag(R.id.target_sku, item.productSku);
-        view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    goToProductDetails((String) v.getTag(R.id.target_sku));
-                } catch (NullPointerException e) {
-                    Print.w(TAG, "WARNING: NPE ON GET CLICKED TAG");
-                }
-            }
-        });
-
-        return view;
-    }
-*/
 
     /**
      * Function to redirect to the selected product details.
@@ -1004,24 +889,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
 
 
-/*
-    public static class CartItemValues {
-        public Boolean is_checked;
-        public String product_name;
-        public String price;
-        public String price_disc;
-        public Integer product_id;
-        public long quantity;
-        public String image;
-        public Double discount_value;
-        public Integer min_delivery_time;
-        public Integer max_delivery_time;
-        public String variation;
-        public int maxQuantity;
-        public String productSku;
-        public boolean shop_first;
-        public String shop_first_overlay;
-    }*/
 
     /**
      * A representation of each item on the list
@@ -1034,7 +901,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public ImageView productView;
         public View pBar;
         public TextView deleteBtn;
-  //      public CartItemValues itemValues;
         public PurchaseCartItem cartItem;
         public ImageView shopFirstImage;
 
