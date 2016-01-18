@@ -970,7 +970,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 return;
             }
 
-            setData(holder, mItems.get(position), position);
+            setData(holder, mItems.get(position - 1), position - 1);
         }
 
         @Override
@@ -991,7 +991,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
         @Override
         public int getItemCount() {
-            return mItems.size();
+            return mItems.size() + 1;
         }
 
         @Override
