@@ -13,7 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.RatingBar;
+import android.widget.TextView;
 
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -182,5 +182,19 @@ public class UIUtils {
             progressBar.setScaleX(-1.0f);
             progressBar.setScaleY(1.0f);
         }
+    }
+
+
+    /**
+     * Method to detect if a drawable existing at left or right in a TextView was clicked
+     * */
+    public static boolean drawableClicked(TextView view, MotionEvent event){
+        if(event.getAction() == MotionEvent.ACTION_UP) {
+            if((!ShopSelector.isRtl() &&  event.getX() >= view.getRight() - view.getTotalPaddingRight())
+                    || (ShopSelector.isRtl() && event.getX() <= view.getTotalPaddingLeft()) ){
+                return true;
+            }
+        }
+        return false;
     }
 }

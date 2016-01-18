@@ -28,6 +28,7 @@ public class ProductRegular extends ProductBase {
     protected int mTotalRatings;
     private int mBrandId;
     private boolean shopFirst;
+    private String shopFirstOverlay;
 
     /**
      * Empty constructor
@@ -59,7 +60,7 @@ public class ProductRegular extends ProductBase {
         }
         // Is new
         isNew = jsonObject.optBoolean(RestConstants.IS_NEW);
-        // Wish List flag
+        // Wish List flag>>>>>>>>>>
         if (jsonObject.optBoolean(RestConstants.IS_WISH_LIST)) {
             WishListCache.add(mSku);
         }
@@ -73,6 +74,7 @@ public class ProductRegular extends ProductBase {
         }
 
         shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST, false);
+        shopFirstOverlay = jsonObject.optString(RestConstants.SHOP_FIRST_OVERLAY);
 
         return true;
     }
@@ -139,6 +141,10 @@ public class ProductRegular extends ProductBase {
         return "";
     }
 
+    public String getShopFirstOverlay() {
+        return shopFirstOverlay;
+    }
+
 
     /*
 	 * ############ PARCELABLE ############
@@ -156,6 +162,7 @@ public class ProductRegular extends ProductBase {
         mTotalReviews = in.readInt();
         mTotalRatings = in.readInt();
         shopFirst = in.readByte() != 0x00;
+        shopFirstOverlay = in.readString();
     }
 
     @Override
@@ -171,6 +178,7 @@ public class ProductRegular extends ProductBase {
         dest.writeInt(mTotalReviews);
         dest.writeInt(mTotalRatings);
         dest.writeByte((byte) (shopFirst ? 0x01 : 0x00));
+        dest.writeString(shopFirstOverlay);
     }
 
     @Override
