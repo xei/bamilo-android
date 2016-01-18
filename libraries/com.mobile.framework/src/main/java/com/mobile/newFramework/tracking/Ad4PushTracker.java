@@ -1,14 +1,9 @@
-/**
- *
- */
 package com.mobile.newFramework.tracking;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 
 import com.ad4screen.sdk.A4S;
 import com.ad4screen.sdk.analytics.Cart;
@@ -34,6 +29,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 /**
+ * Accengage
  * @author nunocastro
  * @modified sergiopereira
  */
@@ -50,15 +46,10 @@ public class Ad4PushTracker {
     private Context mContext;
 
     private static final String AD4PUSH_PREFERENCES = "Ad4PushPreferences";
-
     private static final String VIEW_STATE = "view";
-
     private static final String PURCHASES_COUNTER = "aggregatedNumberOfPurchases";
     private static final String PURCHASES_SUM_VALUE = "aggregatedValueOfPurchases";
-    private static final String WISHLIST_NUMBER = "aggregatedNumberOfWishlistItems";
-
     private static final String STATUS_IN_APP = "statusInApp";
-    private static final String WISHLIST_STATUS = "wishlistStatus";
     private static final String WISHLIST_PRODUCT = "lastFavouritesProduct";
     private static final String SHOP_COUNTRY = "shopCountry";
     private static final String COUNTRY_CODE = "countryCode";
@@ -105,7 +96,6 @@ public class Ad4PushTracker {
     private static final int EVENT_LOGIN = 1001;
     private static final int EVENT_FACEBOOK_CONNECT = 1002;
     private static final int EVENT_FIRST_OPEN_APP = 1003;
-    // private static final int EVENT_ADD_TO_WHISHLIST = 1005;
 
     private static final String HAS_OPENED_APP = "app_opened";
 
@@ -124,7 +114,6 @@ public class Ad4PushTracker {
     /**
      * NEW IN 2.6
      */
-    private static final String LAST_PURCHASED_CATEGORY = "lastPurchasedCategory"; // API v1.8
     private static final String PUSH_NOTIFICATION_OPENED = "lastPNOpened";
     private static final String ATTRIBUTE_SET_ID = "attributeSetID"; // API v1.8
     private static final String LAST_VIEWED_CATEGORY = "lastViewedCategory";
@@ -137,12 +126,9 @@ public class Ad4PushTracker {
     private static final String LAST_CART_PRODUCT_SKU = "lastCartProductSKU";
     private static final String LAST_PRODUCT_REVIEWED = "lastProductReviewed";
     private static final String LAST_PRODUCT_SHARED = "lastProductShared";
-    private static final String PURCHASE_GRAND_TOTAL_USER = "purchaseGrandTotalUser"; // API v1.8
     private static final String LAST_CATEGORY_ADDED_TO_CART = "lastCategoryAddedToCart";
 
     HashMap<TrackingPage, String> screens;
-
-    private Handler handler;
 
     /**
      * Get singleton instance of Ad4PushTracker.
@@ -156,8 +142,6 @@ public class Ad4PushTracker {
 
     /**
      * Startup the Ad4PushTracker.
-     *
-     * @param context
      * @author sergiopereira
      */
     public static void startup(Context context) {
@@ -221,48 +205,46 @@ public class Ad4PushTracker {
     /**
      * ####### BASE #######
      */
-
-    /**
-     *
-     * @param activity
-     */
-    public void startActivity(Activity activity) {
-        if (null != mA4S && isEnabled) {
-            Print.i(TAG, "Started Activity -> " + activity.getLocalClassName());
-            mA4S.startActivity(activity);
-        }
-    }
-
-    /**
-     *
-     * @param activity
-     */
-    public void stopActivity(Activity activity) {
-        if (null != mA4S && isEnabled) {
-            Print.i(TAG, "Stopped Activity -> " + activity.getLocalClassName());
-            mA4S.stopActivity(activity);
-        }
-    }
-
-    /**
-     * Mark this activity to receive in app messages from Ad4Push service.
-     *
-     * @param activity
-     * @author sergiopereira
-     */
-    public void startActivityForInAppMessages(Activity activity) {
-        if (null != mA4S && isEnabled) {
-            Print.d(TAG, "ON START ACTIVITY ONLY FOR IN-APP MSG: " + activity.getLocalClassName());
-            startActivity(activity);
-            setPushNotificationLocked(true);
-        } else
-            Print.w(TAG, "WARNING: A4S IS NULL OR IS DISABLED");
-    }
+//
+//    /**
+//     *
+//     * @param activity
+//     */
+//    public void startActivity(Activity activity) {
+//        if (null != mA4S && isEnabled) {
+//            Print.i(TAG, "Started Activity -> " + activity.getLocalClassName());
+//            mA4S.startActivity(activity);
+//        }
+//    }
+//
+//    /**
+//     *
+//     * @param activity
+//     */
+//    public void stopActivity(Activity activity) {
+//        if (null != mA4S && isEnabled) {
+//            Print.i(TAG, "Stopped Activity -> " + activity.getLocalClassName());
+//            mA4S.stopActivity(activity);
+//        }
+//    }
+//
+//    /**
+//     * Mark this activity to receive in app messages from Ad4Push service.
+//     *
+//     * @param activity
+//     * @author sergiopereira
+//     */
+//    public void startActivityForInAppMessages(Activity activity) {
+//        if (null != mA4S && isEnabled) {
+//            Print.d(TAG, "ON START ACTIVITY ONLY FOR IN-APP MSG: " + activity.getLocalClassName());
+//            startActivity(activity);
+//            setPushNotificationLocked(true);
+//        } else
+//            Print.w(TAG, "WARNING: A4S IS NULL OR IS DISABLED");
+//    }
 
     /**
      * Lock or unlock the push notifications.
-     *
-     * @param bool
      * @author sergiopereira
      */
     public void setPushNotificationLocked(boolean bool) {
@@ -274,8 +256,6 @@ public class Ad4PushTracker {
 
     /**
      * Lock or unlock the in-app messages.
-     *
-     * @param bool
      * @author sergiopereira
      */
     public void setInAppDisplayLocked(boolean bool) {
@@ -291,19 +271,16 @@ public class Ad4PushTracker {
             mA4S.putState(VIEW_STATE, view);
         }
     }
-
-    /**
-     * Stop all services from ad4push SDK
-     *
-     * @param context
-     * @param isToStop
-     */
-    private void stopingSDK(Context context, boolean isToStop) {
-        if (null != mA4S) {
-            Print.d(TAG, "Stop SDK:" + isToStop);
-            A4S.setDoNotTrackEnabled(context, isToStop);
-        }
-    }
+//
+//    /**
+//     * Stop all services from ad4push SDK
+//     */
+//    private void stopingSDK(Context context, boolean isToStop) {
+//        if (null != mA4S) {
+//            Print.d(TAG, "Stop SDK:" + isToStop);
+//            A4S.setDoNotTrackEnabled(context, isToStop);
+//        }
+//    }
 
     /**
      * Enables or disables GCM Push notifications for this device.
@@ -321,8 +298,6 @@ public class Ad4PushTracker {
 
     /**
      * Clear the shared prefs.
-     *
-     * @param context
      * @author sergiopereira
      */
     public static void clearAllSavedData(Context context) {
@@ -336,8 +311,6 @@ public class Ad4PushTracker {
 
     /**
      * Track a empty user id if not has credentials for auto login.
-     *
-     * @param userNeverLoggedIn
      * @author sergiopereira
      */
     public void trackEmptyUserId(boolean userNeverLoggedIn) {
@@ -369,20 +342,16 @@ public class Ad4PushTracker {
 
     /**
      * First open
-     *
-     * @param info
      */
     public void trackAppFirstOpen(Bundle info) {
         if (isEnabled) {
             SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
             boolean alreadyOpened = settings.getBoolean(HAS_OPENED_APP, false);
-
             if (!alreadyOpened) {
                 String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
                 mA4S.trackEvent(EVENT_FIRST_OPEN_APP, "firstOpenDate=" + currentDateAndTime);
-                alreadyOpened = true;
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean(HAS_OPENED_APP, alreadyOpened);
+                editor.putBoolean(HAS_OPENED_APP, true);
                 editor.apply();
             }
         }
@@ -399,10 +368,6 @@ public class Ad4PushTracker {
 
     /**
      * Track login.
-     *
-     * @param customerId
-     * @param firstName
-     * @param lastName
      */
     public void trackLogin(String customerId, String firstName, String lastName, String customerDob, String gender) {
         if (isEnabled) {
@@ -455,11 +420,6 @@ public class Ad4PushTracker {
 
     /**
      * Track register and guest signup.
-     *
-     * @param customerId
-     * @param customerGender
-     * @param firstName
-     * @param lastName
      */
     public void trackSignup(String customerId, String customerGender, String firstName, String lastName, String customerDob) {
         if (isEnabled) {
@@ -483,9 +443,6 @@ public class Ad4PushTracker {
 
     /**
      * Track checkout started.
-     *
-     * @param cartQt
-     * @param cartValue
      */
     public void trackCheckoutStarted(int cartQt, double cartValue, String attributeIds) {
         if (isEnabled) {
@@ -499,7 +456,7 @@ public class Ad4PushTracker {
         }
     }
 
-    public void trackCheckoutEnded(String transactionId, Double grandTotal, Double cartValue, Double average, int orderCount, String coupon, String attributeIds) {
+    public void trackCheckoutEnded(Double grandTotal, Double cartValue, Double average, int orderCount, String coupon, String attributeIds) {
 
         // String currency = CurrencyFormatter.getCurrencyCode();
         String currency = CurrencyFormatter.EURO_CODE;
@@ -548,8 +505,6 @@ public class Ad4PushTracker {
 
     /**
      * Track the add item to favorites.
-     *
-     * @param productSKU
      */
     public void trackAddToFavorites(String productSKU) {
         if (isEnabled) {
@@ -591,11 +546,6 @@ public class Ad4PushTracker {
 
     /**
      * Track the add item to cart.
-     *
-     * @param sku
-     * @param price
-     * @param name
-     * @param category
      */
     public void trackAddToCart(String sku, double price, String name, String category) {
         if (isEnabled) {
@@ -658,9 +608,6 @@ public class Ad4PushTracker {
 
     /**
      * Track catalog filters.
-     *
-     * @param filters
-     * @author sergiopereira
      */
     public void trackCatalogFilter(ContentValues filters) {
         if (isEnabled) {
@@ -692,9 +639,6 @@ public class Ad4PushTracker {
 
     /**
      * Track the new cart.
-     *
-     * @param cartValue
-     * @author sergiopereira
      */
     public void trackCart(double cartValue, int cartCount, String attributeIds) {
         if (isEnabled) {
@@ -816,8 +760,6 @@ public class Ad4PushTracker {
 
     /**
      *
-     * @param context
-     * @return
      */
     public static boolean getActiveAd4Push(Context context) {
         SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES_PERSIST, Context.MODE_PRIVATE);
@@ -826,8 +768,6 @@ public class Ad4PushTracker {
 
     /**
      *
-     * @param context
-     * @param isActive
      */
     public static void setActiveAd4Push(Context context, boolean isActive) {
         SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES_PERSIST, Context.MODE_PRIVATE);
@@ -851,7 +791,7 @@ public class Ad4PushTracker {
                     String id = adInfo.getId();
                     Bundle bundle = new Bundle();
                     bundle.putString("gps_adid", id);
-                    mA4S.updateDeviceInfo(bundle);
+                    A4S.get(mContext).updateDeviceInfo(bundle);
                 } catch (IllegalStateException | GooglePlayServicesRepairableException | IOException | GooglePlayServicesNotAvailableException | NullPointerException e) {
                     e.printStackTrace();
                 }
