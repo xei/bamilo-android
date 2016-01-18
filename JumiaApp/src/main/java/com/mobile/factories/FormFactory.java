@@ -149,6 +149,7 @@ public class FormFactory {
         Print.d(TAG, "createGenericForm: createNewsletterForm");
 
         // TODO: Add title and description for Homepage Newsletter Form
+        // TODO: Customize Radio Group for Homepage Newsletter Form (images for options)
 
 
         // Create each form field
