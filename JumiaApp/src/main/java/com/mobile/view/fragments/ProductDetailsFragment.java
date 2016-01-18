@@ -586,24 +586,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 });
 
             }else if(mProduct.isShopFirst()){
-
                 ProductUtils.showShopFirstOverlayMessage(this,mProduct, sellerName);
-
-       /*         sellerName.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-
-                        if(event.getAction() == MotionEvent.ACTION_UP) {
-                            if(!ShopSelector.isRtl() &&  event.getRawX() >= sellerName.getRight() - sellerName.getTotalPaddingRight()
-                                    || ShopSelector.isRtl() && event.getRawX() <= sellerName.getTotalPaddingLeft() ){
-                                // Show dialog with overlay content
-                                DialogGenericFragment.createInfoDialog(null, mProduct.getShopFirstOverlay(), getString(R.string.ok_label)).show(getActivity().getSupportFragmentManager(), null);
-                                return true;
-                            }
-                        }
-                        return false;
-                    }
-                });*/
             }
             // Set listener
             if(TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
