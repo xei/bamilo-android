@@ -1559,7 +1559,7 @@ public class DynamicFormItem {
             count++;
             TextView label = (TextView) ratingLine.findViewById(R.id.option_label);
             RatingBar starts = (RatingBar) ratingLine.findViewById(R.id.option_stars);
-            setProgressForRTLPreJelly(starts);
+            UIUtils.setProgressForRTLPreJellyMr2(starts);
             starts.setTag(RATING_BAR_TAG + pairs.getKey());
             starts.setTag(R.id.rating_bar_id, pairs.getKey().toString());
             label.setText("" + pairs.getValue());
@@ -1593,18 +1593,6 @@ public class DynamicFormItem {
 
         this.control.addView(this.dataControl);
 
-    }
-
-
-    /**
-     * Mirror rating stars case RTL and pre API 17.
-     * @param progressBar
-     */
-    private void setProgressForRTLPreJelly(View progressBar) {
-        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
-            progressBar.setScaleX(-1.0f);
-            progressBar.setScaleY(1.0f);
-        }
     }
 
     private SharedPreferences getSharedPref() {
@@ -1799,11 +1787,6 @@ public class DynamicFormItem {
         mandatory.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         // Set next id to parent
         container.setId(parent.getNextId());
-        // Set error control
-        if (hasRules()) {
-            this.errorControl = createErrorControl(container.getId(), RelativeLayout.LayoutParams.MATCH_PARENT);
-            this.control.addView(this.errorControl);
-        }
         // Save
         this.dataControl = text;
         this.mandatoryControl = mandatory;
@@ -1811,6 +1794,11 @@ public class DynamicFormItem {
         this.dataControl.setContentDescription(this.entry.getKey());
         // Add container
         group.addView(container);
+        // Set error control
+        if (hasRules()) {
+            this.errorControl = createErrorControl(container.getId(), RelativeLayout.LayoutParams.MATCH_PARENT);
+            group.addView(this.errorControl);
+        }
         // Return the view
         return container;
     }
