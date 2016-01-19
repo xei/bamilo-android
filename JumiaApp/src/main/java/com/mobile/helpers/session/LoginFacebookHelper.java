@@ -23,7 +23,7 @@ import com.mobile.newFramework.utils.output.Print;
  */
 public class LoginFacebookHelper extends SuperBaseHelper {
     
-    private static String TAG = GetLoginFormHelper.class.getSimpleName();
+    private static final String TAG = GetLoginFormHelper.class.getSimpleName();
 
     boolean saveCredentials = true;
 

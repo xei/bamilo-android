@@ -42,7 +42,7 @@ public class RocketImageLoader {
     // values, if necessary
     public static int NO_VALUE_INTEGER = -1;
 
-    private static int FILE_DISC_CACHE_SIZE = 50 * 1024 * 1024; // TODO depend
+    private static final int FILE_DISC_CACHE_SIZE = 50 * 1024 * 1024; // TODO depend
                                                                 // of
                                                                 // capabilities
                                                                 // of device,
