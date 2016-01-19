@@ -29,7 +29,6 @@ public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
     public static final String PRICE = "price";
     public static final String COLOR = "color_family";
     public static final String RATING = "rating";
-    public static final String CATEGORY = "category";
 
     public CatalogFilter(){
     }
@@ -133,13 +132,4 @@ public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
         this.optionType = (Class) in.readSerializable();
     }
 
-//    public static final Parcelable.Creator<CatalogFilter> CREATOR = new Parcelable.Creator<CatalogFilter>() {
-//        public CatalogFilter createFromParcel(Parcel source) {
-//            return new CatalogFilter(source);
-//        }
-//
-//        public CatalogFilter[] newArray(int size) {
-//            return new CatalogFilter[size];
-//        }
-//    };
 }
