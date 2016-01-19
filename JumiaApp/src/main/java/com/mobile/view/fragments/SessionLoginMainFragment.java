@@ -28,7 +28,6 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CustomerUtils;
@@ -39,7 +38,6 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -447,53 +445,14 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
             case AUTO_LOGIN_EVENT:
                 // Logout
                 LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
-                // Tracking
-                TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, eventType == EventType.AUTO_LOGIN_EVENT ? GTMValues.EMAILAUTH : GTMValues.FACEBOOK);
             case GUEST_LOGIN_EVENT:
                 // Tracking
-                if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
-                // Show warning
-                int errorCode = baseResponse.getError().getCode();
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    if (!showErrorDialog(baseResponse.getValidateMessage(), R.string.error_signup_title)) {
-                        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.no_connect_dialog_content));
-                    }
-                } else {
-                    showUnexpectedErrorWarning();
-                }
+                TrackerDelegator.trackSessionFailed(eventType);
                 // Show content
                 showFragmentContentContainer();
                 break;
             default:
                 break;
-        }
-    }
-
-    /**
-     * Dialog used to show an error
-     */
-    private boolean showErrorDialog(String errors, int titleId) {
-        Print.d(TAG, "SHOW ERROR DIALOG");
-        if (TextUtils.isNotEmpty(errors)) {
-            showFragmentContentContainer();
-            dialog = DialogGenericFragment.newInstance(true, false,
-                    getString(titleId),
-                    errors,
-                    getString(R.string.ok_label),
-                    "",
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = v.getId();
-                            if (id == R.id.button1) {
-                                dismissDialogFragment();
-                            }
-                        }
-                    });
-            dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-            return true;
-        } else {
-            return false;
         }
     }
 
