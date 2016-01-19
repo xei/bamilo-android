@@ -205,43 +205,6 @@ public class Ad4PushTracker {
     /**
      * ####### BASE #######
      */
-//
-//    /**
-//     *
-//     * @param activity
-//     */
-//    public void startActivity(Activity activity) {
-//        if (null != mA4S && isEnabled) {
-//            Print.i(TAG, "Started Activity -> " + activity.getLocalClassName());
-//            mA4S.startActivity(activity);
-//        }
-//    }
-//
-//    /**
-//     *
-//     * @param activity
-//     */
-//    public void stopActivity(Activity activity) {
-//        if (null != mA4S && isEnabled) {
-//            Print.i(TAG, "Stopped Activity -> " + activity.getLocalClassName());
-//            mA4S.stopActivity(activity);
-//        }
-//    }
-//
-//    /**
-//     * Mark this activity to receive in app messages from Ad4Push service.
-//     *
-//     * @param activity
-//     * @author sergiopereira
-//     */
-//    public void startActivityForInAppMessages(Activity activity) {
-//        if (null != mA4S && isEnabled) {
-//            Print.d(TAG, "ON START ACTIVITY ONLY FOR IN-APP MSG: " + activity.getLocalClassName());
-//            startActivity(activity);
-//            setPushNotificationLocked(true);
-//        } else
-//            Print.w(TAG, "WARNING: A4S IS NULL OR IS DISABLED");
-//    }
 
     /**
      * Lock or unlock the push notifications.
@@ -271,16 +234,6 @@ public class Ad4PushTracker {
             mA4S.putState(VIEW_STATE, view);
         }
     }
-//
-//    /**
-//     * Stop all services from ad4push SDK
-//     */
-//    private void stopingSDK(Context context, boolean isToStop) {
-//        if (null != mA4S) {
-//            Print.d(TAG, "Stop SDK:" + isToStop);
-//            A4S.setDoNotTrackEnabled(context, isToStop);
-//        }
-//    }
 
     /**
      * Enables or disables GCM Push notifications for this device.
@@ -492,14 +445,8 @@ public class Ad4PushTracker {
             prefs.putDouble(PURCHASES_SUM_VALUE, ordersSum);
             prefs.putInt(PURCHASES_COUNTER, purchasesNumber);
             prefs.putString(ATTRIBUTE_SET_ID, attributeIds);
-            // Clean other values
-            //XXX
-//            prefs.putInt(FAVORITES_TO_CART_SKU, 0);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK CHECKOUT ENDED: " + prefs.toString());
-            // Purchase purchase = new Purchase(transactionId,
-            // CurrencyFormatter.getCurrencyCode(), cartValue);
-            // mA4S.trackPurchase(purchase);
         }
     }
 
