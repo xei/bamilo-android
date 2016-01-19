@@ -1,4 +1,4 @@
-package com.mobile.components.widget;
+package com.mobile.components._unused_;
 
 import android.content.Context;
 import android.content.res.TypedArray;
