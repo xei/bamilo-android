@@ -13,29 +13,19 @@
     <item name="checkout_my_order_products"             type="layout">@layout/_v8_checkout_my_order_products</item>
     <item name="checkout_my_order_shipping_address"     type="layout">@layout/_v8_checkout_my_order_shipping_address</item>
     <item name="checkout_my_order_shipping_method"      type="layout">@layout/_v8_checkout_my_order_shipping_method</item>
-    <!--<item name="checkout_my_order_main"                 type="layout">@layout/_v8_checkout_my_order_main</item>-->
     <item name="checkout_summary_list_item"             type="layout">@layout/_v8_checkout_summary_list_item</item>
     <item name="checkout_summary_products"              type="layout">@layout/_v8_checkout_summary_products</item>
     <item name="checkout_summary_shipping_address"      type="layout">@layout/_v8_checkout_summary_shipping_address</item>
     <item name="checkout_summary_shipping_method"       type="layout">@layout/_v8_checkout_summary_shipping_method</item>
-    <!--<item name="checkout_summary_total"                 type="layout">@layout/_v8_checkout_summary_total</item>-->
     <item name="checkout_payment_methods"               type="layout">@layout/_v8_checkout_payment_methods</item>
     <item name="checkout_address_item"                  type="layout">@layout/_v8_checkout_address_item</item>
     <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_v8_checkout_sameaddress_checkbox</item>
-    <item name="checkout_my_addresses_add_new"          type="layout">@layout/_v8_checkout_my_addresses_add_new</item>
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_v8_checkout_shipping_pickup_station</item>
     <item name="checkout_shipping_fee_time"             type="layout">@layout/_v8_checkout_shipping_fee_time</item>
     <item name="checkout_header"                        type="layout">@layout/_v8_checkout_header</item>
-    <!--<item name="checkout_thanks"                        type="layout">@layout/_v8_checkout_thanks</item>-->
-    <!--<item name="checkout_create_address_main" 	        type="layout">@layout/_v8_checkout_create_address_main</item>-->
-    <!--<item name="checkout_edit_address_main" 	        type="layout">@layout/_v8_checkout_edit_address_main</item>-->
-    <!--<item name="checkout_my_addresses" 			        type="layout">@layout/_v8_checkout_my_addresses</item>-->
-    <!--<item name="checkout_shipping_main" 		        type="layout">@layout/_v8_checkout_shipping_main</item>-->
-    <!--<item name="checkout_payment_main" 			        type="layout">@layout/_v8_checkout_payment_main</item>-->
     <item name="checkout_total_layout" 			        type="layout">@layout/_v8_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_v8_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_v8_price_rules_element</item>
-    <!--<item name="fulfillment_main"                       type="layout">@layout/_v8_fulfillment_main</item>-->
     <item name="fulfillment_product"                    type="layout">@layout/_v8_fulfillment_product</item>
 
     <!-- FORMS -->
@@ -58,7 +48,6 @@
     <!-- CATALOG -->
     <item name="catalog_fragment_main"                  type="layout">@layout/_v8_catalog_fragment_main</item>
     <item name="catalog_fragment_tool_bar"              type="layout">@layout/_v8_catalog_fragment_tool_bar</item>
-    <!--<item name="catalog_fragment_wizard_favourite"      type="layout">@layout/_v8_catalog_fragment_wizard_favourite</item>-->
     <item name="catalog_fragment_no_result"             type="layout">@layout/_v8_catalog_fragment_no_result</item>
     <item name="filters_main"                           type="layout">@layout/_v8_filters_main</item>
     <item name="filter_bottom_buttons"                  type="layout">@layout/_v8_filter_bottom_buttons</item>
@@ -85,8 +74,6 @@
     <item name="config_confirmation_msg" 	            type="layout">@layout/_v8_config_confirmation_msg</item>
 
     <!-- MY ORDERS -->
-    <!--<item name="track_order_fragment"                   type="layout">@layout/_v8_track_order_fragment</item>-->
-    <!--<item name="order_history_main"                     type="layout">@layout/_v8_order_history_main</item>-->
     <item name="order_status_fragment"                  type="layout">@layout/_v8_order_status_fragment</item>
     <item name="gen_order_list"                         type="layout">@layout/_v8_gen_order_list</item>
     <item name="my_orders_list_item"                    type="layout">@layout/_v8_my_orders_list_item</item>
@@ -148,7 +135,7 @@
 
     <item name="product_item_bundle"                    type="layout">@layout/_v8_product_item_bundle</item>
     <item name="shopping_basket_product_element"        type="layout">@layout/_v8_shopping_basket_product_element</item>
-    <item name="checkout_summary_product_element" type="layout">@layout/_v8_checkout_summary_product_element</item>
+    <item name="checkout_summary_product_element"       type="layout">@layout/_v8_checkout_summary_product_element</item>
     <item name="tip_share_layout"                       type="layout">@layout/_v8_tip_share_layout</item>
     <item name="dialog_list_content"                    type="layout">@layout/_v8_dialog_list_content</item>
     <item name="reviews_fragment_item"                  type="layout">@layout/_v8_reviews_fragment_item</item>
@@ -179,15 +166,15 @@
     <item name="simple_email_notification_option"       type="layout">@layout/_v8_simple_email_notification_option</item>
 
     <!-- COMBOS -->
-    <item name="bottom_combo"                                  type="layout">@layout/_v8_bottom_combo</item>
-    <item name="pdv_combo_item_list"                           type="layout">@layout/_v8_pdv_combo_item_list</item>
-    <item name="pdv_fragment_bundle_item"                      type="layout">@layout/_v8_pdv_fragment_bundle_item</item>
-    <item name="pdv_fragment_combo_item"                       type="layout">@layout/_v8_pdv_fragment_combo_item</item>
-    <item name="pdv_fragment_combos"                           type="layout">@layout/_v8_pdv_fragment_combos</item>
+    <item name="bottom_combo"                           type="layout">@layout/_v8_bottom_combo</item>
+    <item name="pdv_combo_item_list"                    type="layout">@layout/_v8_pdv_combo_item_list</item>
+    <item name="pdv_fragment_bundle_item"               type="layout">@layout/_v8_pdv_fragment_bundle_item</item>
+    <item name="pdv_fragment_combo_item"                type="layout">@layout/_v8_pdv_fragment_combo_item</item>
+    <item name="pdv_fragment_combos"                    type="layout">@layout/_v8_pdv_fragment_combos</item>
 
     <!-- REVIEWS DESCRIPTION SPECIFICATIONS -->
-    <item name="product_summary_fragment"           type="layout">@layout/_v8_product_summary_fragment</item>
-    <item name="product_specs_container_item"       type="layout">@layout/_v8_product_specs_container_item</item>
+    <item name="product_summary_fragment"               type="layout">@layout/_v8_product_summary_fragment</item>
+    <item name="product_specs_container_item"           type="layout">@layout/_v8_product_specs_container_item</item>
     <item name="review_list"                            type="layout">@layout/_v8_review_list</item>
     <item name="ratings_board"                          type="layout">@layout/_v8_ratings_board</item>
 
@@ -195,12 +182,12 @@
     <item name="shopping_basket_product_element_container"     type="layout">@layout/_v8_shopping_basket_product_element_container</item>
 
     <!-- other offers -->
-    <item name="product_offers_main_new"                       type="layout">@layout/_v8_product_offers_main_new</item>
-    <item name="other_sellers_list_item"                       type="layout">@layout/_v8_other_sellers_list_item</item>
-    <item name="other_sellers_info"                            type="layout">@layout/_v8_other_sellers_info</item>
+    <item name="product_offers_main_new"                type="layout">@layout/_v8_product_offers_main_new</item>
+    <item name="other_sellers_list_item"                type="layout">@layout/_v8_other_sellers_list_item</item>
+    <item name="other_sellers_info"                     type="layout">@layout/_v8_other_sellers_info</item>
 
     <!--ROOT SSL ERROR CONTACT INFO-->
-    <item name="contacts_info" type="layout">@layout/_v8_contacts_info</item>
+    <item name="contacts_info"                          type="layout">@layout/_v8_contacts_info</item>
 
 
 </resources>
