@@ -53,7 +53,7 @@ public enum MessagesUtils {
 
 
 /***
- * Allows to get an error message Id by eventType;
+ * Allows to get a message Id by eventType (error or success);
  * @param eventType - The event type
  * @param isError - Defines the id type to return: if true returns an errorMessageId, if false returns successMessageId
  * */
