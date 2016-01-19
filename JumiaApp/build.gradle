@@ -33,13 +33,12 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 15
         targetSdkVersion 22
-        multiDexEnabled false // Disabling multidex support. We are using proguard for debug build type.
     }
 
     dexOptions {
         jumboMode = true
         incremental true
-        javaMaxHeapSize "2048M"
+        javaMaxHeapSize "4G"
     }
 
     signingConfigs {
@@ -90,11 +89,12 @@ android {
         debug {
             applicationIdSuffix ".dev"
             debuggable true
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-project-pro.txt',
-                    'proguard-project-debug.txt',
-                    'proguard-project-dev.txt'
+            // # Building Apps with Over 65K Methods
+            // 1. Using multi dex support
+            multiDexEnabled true
+            // 2. Using proguard to reduce number of methods
+            //minifyEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-pro.txt', 'proguard-project-debug.txt', 'proguard-project-dev.txt'
         }
         live {
             applicationIdSuffix ".live"

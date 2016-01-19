@@ -10,13 +10,6 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 22
-        multiDexEnabled false // Disabling multidex support. We are using proguard for debug build type.
-    }
-
-    dexOptions {
-        jumboMode = true
-        incremental true
-        javaMaxHeapSize "2048M"
     }
 
 }
