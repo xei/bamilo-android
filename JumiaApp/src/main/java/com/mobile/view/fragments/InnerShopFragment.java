@@ -19,6 +19,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -296,7 +297,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         // Validate target
         if (TextUtils.isNotEmpty(sku)) {
             // Get url
-            gotoProduct(sku);
+            gotoProduct(view);
         } else {
             super.onClick(view);
         }
@@ -367,19 +368,28 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     /**
      * Goto Product.
-     *
-     * @param sku The product sku
      */
-    private void gotoProduct(String sku) {
-        Print.i(TAG, "PDV: " + sku);
-        if (TextUtils.isNotEmpty(sku)) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
-            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
-        }
+    private void gotoProduct(View view) {
+
+            // Get title
+            String title = (String) view.getTag(R.id.target_title);
+
+            // Get target link
+            @TargetLink.Type String link = (String) view.getTag(R.id.target_link);
+
+            // Get origin id
+            int id = (int) view.getTag(R.id.target_teaser_origin);
+
+            // Get teaser group type
+            TeaserGroupType origin = TeaserGroupType.values()[id];
+
+            // Parse target link
+            boolean result = new TargetLink(getWeakBaseActivity(), link)
+                    .addTitle(title)
+                    .setOrigin(origin)
+                    .retainBackStackEntries()
+                    .run();
+
     }
 
     /**

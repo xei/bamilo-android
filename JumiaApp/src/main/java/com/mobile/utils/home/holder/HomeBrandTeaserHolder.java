@@ -43,4 +43,9 @@ public class HomeBrandTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
+    @Override
+    public void onDestroy() {
+
+    }
+
 }

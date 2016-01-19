@@ -40,4 +40,9 @@ public class HomeFeaturedTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
+    @Override
+    public void onDestroy() {
+
+    }
+
 }
