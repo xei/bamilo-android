@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'newrelic'
+apply plugin: 'usea4s'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
 
