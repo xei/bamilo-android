@@ -109,11 +109,11 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
-    /**
-     * Get the default position
-     * @param size The number of items
-     * @return int
-     */
+//    /**
+//     * Get the default position
+//     * @param size The number of items
+//     * @return int
+//     */
 //    @Deprecated
 //    private int getDefaultPosition(int size) {
 //        int position;

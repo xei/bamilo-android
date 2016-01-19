@@ -23,10 +23,11 @@ public class DebugApplication extends JumiaApplication {
      * Enable debug tools
      */
     @Override
-    public void onApplicationCreate() {
+    public void onCreate() {
         // #DEBUG Install debug tools only for debug version
         DebugTools.initialize(this);
         // Call super
-        super.onApplicationCreate();
+        super.onCreate();
     }
+
 }
