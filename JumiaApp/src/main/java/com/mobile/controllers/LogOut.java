@@ -88,8 +88,13 @@ public class LogOut {
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         // Update layouts to clean cart info
         baseActivity.updateCartInfo();
-        // Inform parent activity
-        baseActivity.onLogOut();
+        try {
+            // Inform parent activity
+            baseActivity.onLogOut();
+        } catch (IllegalStateException e){
+            e.printStackTrace();
+        }
+
         // Tracking
         TrackerDelegator.clearTransactionCount();
     }

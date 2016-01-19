@@ -42,7 +42,7 @@ public class RocketImageLoader {
     // values, if necessary
     public static int NO_VALUE_INTEGER = -1;
 
-    private static int FILE_DISC_CACHE_SIZE = 50 * 1024 * 1024; // TODO depend
+    private static final int FILE_DISC_CACHE_SIZE = 50 * 1024 * 1024; // TODO depend
                                                                 // of
                                                                 // capabilities
                                                                 // of device,
@@ -403,7 +403,7 @@ public class RocketImageLoader {
     
     private void initVolley() {
         volleyRequestQueue = newRequestQueue(context, null);
-        volleyImageLoader = new ImageLoader(volleyRequestQueue, new BitmapLruCache());
+        volleyImageLoader = new ImageLoader(volleyRequestQueue, new BitmapLruCache(context));
     }
 
     public void preload(final String imageUrl, final RocketImageLoaderListener listener) {
@@ -471,7 +471,7 @@ public class RocketImageLoader {
     public void loadImages(final ArrayList<String> urls, final RocketImageLoaderLoadImagesListener rocketImageLoaderLoadImagesListener){
         RocketImageLoaderListener rocketImageLoaderListener = new RocketImageLoaderListener() {
             private int images = 0;
-            private ArrayList<ImageHolder> successUrls = new ArrayList<>();
+            private final ArrayList<ImageHolder> successUrls = new ArrayList<>();
             
             @Override
             public void onLoadedSuccess(String url, Bitmap bitmap) {

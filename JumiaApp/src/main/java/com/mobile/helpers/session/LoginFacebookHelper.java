@@ -23,7 +23,7 @@ import com.mobile.newFramework.utils.output.Print;
  */
 public class LoginFacebookHelper extends SuperBaseHelper {
     
-    private static String TAG = GetLoginFormHelper.class.getSimpleName();
+    private static final String TAG = GetLoginFormHelper.class.getSimpleName();
 
     boolean saveCredentials = true;
 
@@ -55,6 +55,11 @@ public class LoginFacebookHelper extends SuperBaseHelper {
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getContentData();
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
         baseResponse.getMetadata().setData(nextStepStruct);
+
+        if(loginCustomer == null){
+            onRequestError(baseResponse);
+            return;
+        }
 
         // Save customer
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
