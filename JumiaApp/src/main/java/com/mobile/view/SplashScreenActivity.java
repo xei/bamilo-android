@@ -137,8 +137,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Print.i(TAG, "ON RESUME");
         // Intercept event
         shouldHandleEvent = true;
-//        // Start Accengage for this activity
-//        Ad4PushTracker.get().startActivity(this);
         // Show animated map
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(SPLASH_DURATION_IN);
@@ -155,8 +153,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-//        // Stop Accengage for this activity
-//        Ad4PushTracker.get().stopActivity(this);
         // Validate dialog
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();

@@ -160,8 +160,6 @@ public class MainFragmentActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         Print.d(TAG, "ON RESUME");
-//        //
-//        Ad4PushTracker.get().startActivity(this);
     }
 
     /*
@@ -173,8 +171,6 @@ public class MainFragmentActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-//        //
-//        Ad4PushTracker.get().stopActivity(this);
     }
 
     /*
