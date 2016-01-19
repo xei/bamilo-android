@@ -89,6 +89,7 @@ public class CheckoutStepManager {
     /**
      * Method used to set the total bar for MyAccount.
      */
+    @Deprecated
     public static void setTotalBarForMyAccount(@NonNull View view) {
         // Hide total view
         view.findViewById(R.id.checkout_total_label).setVisibility(View.GONE);

@@ -6,7 +6,7 @@
 
     <com.mobile.components.customfontviews.TextView
         style="@style/SingleLineStyle"
-        android:text="@string/billing_add_label"
+        android:text="@string/address_add_new_label"
         android:textAllCaps="true"
         />
 

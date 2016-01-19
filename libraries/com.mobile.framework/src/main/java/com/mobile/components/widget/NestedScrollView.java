@@ -49,7 +49,9 @@ import de.akquinet.android.androlog.Log;
  * @solution
  * - Bug in 23.0.1 ::: NestedScrollView in CHeesesquare first onclick ignored<br>
  * - Temporary solution until next version ::: https://code.google.com/p/android/issues/detail?id=178041
+ * @deprecated - Please use the NestedScrollView from android support v23.+
  */
+@Deprecated
 public class NestedScrollView extends FrameLayout implements NestedScrollingParent, NestedScrollingChild {
 
     static final int ANIMATED_SCROLL_GAP = 250;

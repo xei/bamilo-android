@@ -9,7 +9,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/address_billing_title"
         style="@style/HeaderStyle"
-        android:text="@string/billing_billing_label"
+        android:text="@string/address_billing_label"
         android:textStyle="bold"/>
 
     <!-- FORM -->

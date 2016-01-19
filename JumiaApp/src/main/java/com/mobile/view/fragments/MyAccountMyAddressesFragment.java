@@ -37,7 +37,7 @@ import java.util.HashMap;
  * @version 1.0
  * @date 2015/02/24
  */
-public class MyAccountMyAddressesFragment extends MyAddressesFragment{
+public class MyAccountMyAddressesFragment extends MyAddressesFragment {
 
     private static final String TAG = MyAccountMyAddressesFragment.class.getSimpleName();
 

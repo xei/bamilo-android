@@ -24,7 +24,6 @@ import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
 import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
 import com.mobile.view.fragments.CheckoutFinishFragment;
-import com.mobile.view.fragments.CheckoutMyAddressesFragment;
 import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
@@ -37,8 +36,9 @@ import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
-import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
+import com.mobile.view.fragments.MyAddressesFragmentNew_1;
+import com.mobile.view.fragments.MyAddressesFragmentNew_2;
 import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
@@ -323,7 +323,8 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = SessionForgotPasswordFragment.getInstance();
                 break;
             case CHECKOUT_MY_ADDRESSES:
-                fragment = CheckoutMyAddressesFragment.getInstance();
+                //fragment = CheckoutMyAddressesFragment.getInstance();
+                fragment = MyAddressesFragmentNew_2.newInstance();
                 break;
             case CHECKOUT_CREATE_ADDRESS:
                 fragment = CheckoutCreateAddressFragment.getInstance();
@@ -370,7 +371,8 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = ProductOffersFragmentNew.newInstance(bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
-                fragment = MyAccountMyAddressesFragment.newInstance();
+                //fragment = MyAccountMyAddressesFragment.newInstance();
+                fragment = MyAddressesFragmentNew_1.newInstance();
                 break;
             case MY_ACCOUNT_CREATE_ADDRESS:
                 fragment = MyAccountCreateAddressFragment.newInstance(bundle);

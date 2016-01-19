@@ -9,7 +9,7 @@
     <!-- TITLE -->
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/checkout_addresses_default_title"
+        android:id="@+id/checkout_address_title"
         style="@style/HeaderStyle"
         android:text="@string/billing_def_shipping_label" />
 

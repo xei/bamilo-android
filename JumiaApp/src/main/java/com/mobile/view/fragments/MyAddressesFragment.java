@@ -84,7 +84,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
         // Get the main scroll view that can be null
         mMainScrollView = (ScrollView) view.findViewById(R.id.checkout_addresses_one_scroll);
         // Get containers
-        mTopTitle = (TextView) view.findViewById(R.id.checkout_addresses_default_title);
+        mTopTitle = (TextView) view.findViewById(R.id.checkout_address_title);
         mTopRadioGroup = (GenericRadioGroup) view.findViewById(R.id.checkout_addresses_default_container);
         mTopRadioGroup.setOnCheckedChangeListener(this);
         mBottomTitle = (TextView) view.findViewById(R.id.checkout_addresses_other_title);
@@ -350,7 +350,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             // Hide add button
             mTopAddContainer.setVisibility(View.GONE);
             // Set bottom container
-            mBottomTitle.setText(getString(R.string.billing_others_label));
+            mBottomTitle.setText(getString(R.string.address_others_label));
             // Add billing address if different
             if(!addresses.hasDefaultShippingAndBillingAddress()) addAddress(mBottomRadioGroup, addresses.getBillingAddress());
             // Set the other addresses
@@ -361,7 +361,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             Address billingAddress = addresses.getBillingAddress();
 
             // Set top container
-            mTopTitle.setText(getString(R.string.billing_shipping_label));
+            mTopTitle.setText(getString(R.string.address_shipping_label));
             // mTopTitle.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.btn_addaddress_orange, 0);
             // Set Shipping Address (checked) and others
             mTopRadioGroup.setCheckedItem(0);
@@ -376,7 +376,7 @@ public abstract class MyAddressesFragment extends BaseFragment implements IRespo
             // Show add button
             mTopAddContainer.setVisibility(View.VISIBLE);
             // Set bottom container
-            mBottomTitle.setText(getString(R.string.billing_billing_label));
+            mBottomTitle.setText(getString(R.string.address_billing_label));
             // Set Billing address (checked) and others
             mBottomRadioGroup.setCheckedItem(0);
             addAddress(mBottomRadioGroup, billingAddress);

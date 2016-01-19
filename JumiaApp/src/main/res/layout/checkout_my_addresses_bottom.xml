@@ -10,7 +10,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_addresses_other_title"
         style="@style/HeaderStyle"
-        android:text="@string/billing_others_label" />
+        android:text="@string/address_others_label" />
 
     <com.mobile.utils.GenericRadioGroup
         android:id="@+id/checkout_addresses_other_container"

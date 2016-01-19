@@ -110,6 +110,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         mGridView = (HeaderFooterGridView) view.findViewById(R.id.recentlyviewed_grid);
         mGridView.setHasFixedSize(true);
         mGridView.setGridLayoutManager(getResources().getInteger(R.integer.favourite_num_columns));
+        mGridView.setNestedScrollingEnabled(false);
         mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
