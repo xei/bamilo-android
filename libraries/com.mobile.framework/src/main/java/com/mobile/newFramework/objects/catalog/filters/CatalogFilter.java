@@ -30,13 +30,7 @@ public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
     public static final String COLOR = "color_family";
     public static final String RATING = "rating";
 
-    public CatalogFilter(){
-    }
-
-    public CatalogFilter(JSONObject jsonObject) throws JSONException {
-        this();
-        initialize(jsonObject);
-    }
+    public CatalogFilter(){}
 
     protected String id;
     protected boolean multi;
