@@ -62,4 +62,9 @@ public class HomeShopTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
+    @Override
+    public void onDestroy() {
+
+    }
+
 }

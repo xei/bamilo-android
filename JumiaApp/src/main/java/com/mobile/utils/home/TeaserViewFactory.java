@@ -72,6 +72,7 @@ public class TeaserViewFactory {
     public static void onDetachedViewHolder(ArrayList<BaseTeaserViewHolder> viewHolders) {
         if(CollectionUtils.isNotEmpty(viewHolders)) {
             for (BaseTeaserViewHolder viewHolder : viewHolders) {
+                viewHolder.onDestroy();
                 ViewGroup parent = (ViewGroup) viewHolder.itemView.getParent();
                 if (parent != null) {
                     parent.removeView(viewHolder.itemView);

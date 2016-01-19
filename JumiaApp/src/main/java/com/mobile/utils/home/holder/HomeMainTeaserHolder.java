@@ -109,6 +109,11 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
+    @Override
+    public void onDestroy() {
+
+    }
+
     /**
      * Get the default position
      * @param size The number of items

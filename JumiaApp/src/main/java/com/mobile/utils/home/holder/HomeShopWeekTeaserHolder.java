@@ -53,5 +53,10 @@ public class HomeShopWeekTeaserHolder extends BaseTeaserViewHolder {
         }
     }
 
+    @Override
+    public void onDestroy() {
+
+    }
+
 }
 
