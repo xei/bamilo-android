@@ -1207,7 +1207,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 ProductComplete product = (ProductComplete) baseResponse.getContentData();
                 // Validate product
                 if (product == null || product.getName() == null) {
-                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    showWarningErrorMessage(getString(R.string.product_could_not_retrieved));
                     getBaseActivity().onBackPressed();
                     return;
                 }
@@ -1270,7 +1270,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 break;
             case GET_PRODUCT_DETAIL:
-                showContinueShopping();
+                if(mNavSource.equals(getString(R.string.gcorderdetailitem))){
+                    showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
+                    getBaseActivity().onBackPressed();
+
+               }else{
+                    showContinueShopping();
+                }
+                break;
             default:
                 break;
         }
