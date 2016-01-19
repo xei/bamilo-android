@@ -1,5 +1,6 @@
 package com.mobile.app;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,7 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 
-import com.ad4screen.sdk.A4SApplication;
+import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.facebook.FacebookSdk;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -41,8 +42,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-public class JumiaApplication extends A4SApplication {
+@UseA4S
+public class JumiaApplication extends Application {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
     // Components
@@ -57,32 +58,24 @@ public class JumiaApplication extends A4SApplication {
     // Account variables
     public static Customer CUSTOMER;
     private PersistentSessionStore mCustomerUtils;
-
-    /**
-     * Cart
-     */
+    // Cart
     private PurchaseEntity cart;
-
-    /**
-     * Forms
-     */
+    // Forms
     public Form reviewForm;
     public Form ratingForm;
-
+    // Countries
     public ArrayList<CountryObject> countriesAvailable = null;
-
-    // for tracking
+    // Tracking
     private HashMap<String, String> bannerSkus = new HashMap<>();
-
     // Search
     public String mSavedSearchTerm;
 
-    /*
-     * (non-Javadoc)
-     * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
+    /**
+     * Create application
      */
     @Override
-    public void onApplicationCreate() {
+    public void onCreate() {
+        super.onCreate();
         // ON APPLICATION CREATE
         Print.i(TAG, "ON APPLICATION CREATE");
         // Save instance

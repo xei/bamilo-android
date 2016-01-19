@@ -248,7 +248,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     private void showPreferences(View view) {
         notificationList = (ViewGroup)view.findViewById(R.id.notification_list);
         MyAccountNotificationsAdapter notificationSettingsAdapter = new MyAccountNotificationsAdapter(
-                getActivity(),
+                getBaseActivity().getApplicationContext(),
                 getResources().getStringArray(R.array.app_notification_array),
                 getResources().getIntArray(R.array.app_notification_array_checkboxes));
 
