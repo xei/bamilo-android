@@ -309,9 +309,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers().values()) {
-            // Case Form NewsLetter
+            // Case Form NewsLetter disable until feature is fully implemented.
             if(baseTeaserType.getType() == TeaserGroupType.FORM_NEWSLETTER){
+                /*
                 Form form = null;
+
                 try{
                     form = ((TeaserFormObject) baseTeaserType.getData().get(0)).getForm();
                 } catch (Exception e){
@@ -322,7 +324,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     DynamicForm mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.NEWSLETTER_FORM,inflater.getContext(),form);
                     mContainer.addView(mDynamicForm.getContainer());
                 }
-
+                */
             } else {
                 // Create view
                 BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
