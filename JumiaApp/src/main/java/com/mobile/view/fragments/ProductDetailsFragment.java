@@ -1269,19 +1269,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Validate type
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
-            case REMOVE_PRODUCT_FROM_WISH_LIST:
-            case ADD_PRODUCT_TO_WISH_LIST:
-                break;
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                break;
             case GET_PRODUCT_DETAIL:
-                if(mNavSource.equals(getString(R.string.gcorderdetailitem))){
-                    showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
-                    getBaseActivity().onBackPressed();
-
-               }else{
-                    showContinueShopping();
-                }
+                showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
+                getBaseActivity().onBackPressed();
                 break;
             default:
                 break;

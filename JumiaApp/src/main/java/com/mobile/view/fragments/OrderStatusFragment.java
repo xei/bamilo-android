@@ -273,7 +273,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcorderdetailitem);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
 
     }
