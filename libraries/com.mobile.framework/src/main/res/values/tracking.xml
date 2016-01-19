@@ -59,6 +59,7 @@
     <string name="gcheckout">Checkout</string>
     <string name="gcampaign">Campaign</string>
     <string name="grelateditem">RelatedItem</string>
+    <string name="gcorderdetailitem">OrderDetailsItem</string>
 
     <!-- HOME TEASERS -->
     <string name="gmainbanner">Main_Teaser</string>
