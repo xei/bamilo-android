@@ -69,8 +69,4 @@ public abstract class BaseTeaserViewHolder { //extends RecyclerView.ViewHolder {
      */
     public abstract void onBind(BaseTeaserGroupType group);
 
-    /**
-     * Method to execute something when onDestroy is called
-     */
-    public abstract void onDestroy();
 }

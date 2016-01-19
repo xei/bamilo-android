@@ -367,26 +367,20 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * Goto Product.
      */
     private void gotoProduct(View view) {
-
-            // Get title
-            String title = (String) view.getTag(R.id.target_title);
-
-            // Get target link
-            @TargetLink.Type String link = (String) view.getTag(R.id.target_link);
-
-            // Get origin id
-            int id = (int) view.getTag(R.id.target_teaser_origin);
-
-            // Get teaser group type
-            TeaserGroupType origin = TeaserGroupType.values()[id];
-
-            // Parse target link
-            boolean result = new TargetLink(getWeakBaseActivity(), link)
-                    .addTitle(title)
-                    .setOrigin(origin)
-                    .retainBackStackEntries()
-                    .run();
-
+        // Get title
+        String title = (String) view.getTag(R.id.target_title);
+        // Get target link
+        @TargetLink.Type String link = (String) view.getTag(R.id.target_link);
+        // Get origin id
+        int id = (int) view.getTag(R.id.target_teaser_origin);
+        // Get teaser group type
+        TeaserGroupType origin = TeaserGroupType.values()[id];
+        // Parse target link
+        new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(title)
+                .setOrigin(origin)
+                .retainBackStackEntries()
+                .run();
     }
 
     /**

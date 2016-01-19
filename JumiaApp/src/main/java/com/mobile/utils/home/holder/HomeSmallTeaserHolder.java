@@ -23,7 +23,7 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
 
     private boolean secondTime = false;
 
-    private final Context context;
+    private Context context;
 
     /**
      * Constructor
@@ -53,11 +53,6 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
             // Set adapter
             horizontal.setAdapter(new HomeSmallTeaserAdapter(group.getData(), mParentClickListener, minItemWidth));
         }
-    }
-
-    @Override
-    public void onDestroy() {
-
     }
 
     /**

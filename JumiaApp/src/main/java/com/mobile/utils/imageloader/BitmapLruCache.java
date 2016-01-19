@@ -10,8 +10,7 @@ import com.android.volley.toolbox.ImageLoader.ImageCache;
 public class BitmapLruCache extends LruCache<String, Bitmap> implements ImageCache {
     
     public static int getDefaultLruCacheSize(Context ctx) {
-        final DisplayMetrics displayMetrics = ctx.getResources().
-                getDisplayMetrics();
+        final DisplayMetrics displayMetrics = ctx.getResources().getDisplayMetrics();
         final int screenWidth = displayMetrics.widthPixels;
         final int screenHeight = displayMetrics.heightPixels;
         // 4 bytes per pixel

@@ -31,7 +31,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
     public HorizontalListView horizontalListView;
-    private final TextView sectionTitle;
+    private TextView sectionTitle;
     /**
      * Constructor
      */
@@ -61,11 +61,6 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
         } else {
             Log.i(TAG, "BRAND_TEASERS: ADAPTER IS NOT NULL");
         }
-    }
-
-    @Override
-    public void onDestroy() {
-
     }
 
     /**
