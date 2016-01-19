@@ -32,6 +32,7 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
@@ -312,6 +313,23 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
             // Name
             ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
+            //shop first image
+            ImageView shopFirstImageView = (ImageView) cartItemView.findViewById(R.id.item_shop_first);
+       //     shopFirstImageView.setVisibility((!item.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+            ProductUtils.setShopFirst(item, shopFirstImageView);
+
+     /*       if(shopFirstImageView.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(item.getShopFirstOverlay())) {
+                final String overlayInfo = item.getShopFirstOverlay();
+                shopFirstImageView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogGenericFragment.createInfoDialog(null, overlayInfo, getString(R.string.ok_label)).show(getActivity().getSupportFragmentManager(), null);
+                    }
+                });
+            }*/
+
+            //Set event if jumiafirst is visible and overlay != ""
+            ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
 
             String imageUrl = item.getImageUrl();
             ImageView mImageView = (ImageView) cartItemView.findViewById(R.id.image_view);

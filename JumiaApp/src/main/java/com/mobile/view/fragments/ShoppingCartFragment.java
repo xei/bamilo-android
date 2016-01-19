@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,7 +43,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
@@ -53,6 +53,7 @@ import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -616,9 +617,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mBeginRequestMillis = System.currentTimeMillis();
     }
 
-    /*
 
-     */
+
+
+    /**
+     * Display shopping cart info
+     * */
     private void displayShoppingCart(PurchaseEntity cart) {
         Print.d(TAG, "displayShoppingCart");
         if(cart == null){
@@ -692,25 +696,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             // TODO Validate this method
             for (int i = 0; i < items.size(); i++) {
                 PurchaseCartItem item = items.get(i);
-                CartItemValues values = new CartItemValues();
-                values.is_checked = false;
-                values.product_name = item.getName();
-                values.price = CurrencyFormatter.formatCurrency(item.getPrice());
-                values.product_id = 0;
-                values.quantity = item.getQuantity();
-                values.image = item.getImageUrl();
-                values.price_disc = CurrencyFormatter.formatCurrency(item.getSpecialPrice());
-                values.discount_value = (double) Math.round(item.getSavingPercentage());
-                values.min_delivery_time = 0;
-                values.max_delivery_time = 99;
-                values.variation = item.getVariation();
-                values.productSku = item.getSku();
-                values.maxQuantity = item.getMaxQuantity();
-                values.shop_first = item.isShopFirst();
+                lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), item));
 
-                Print.d(TAG, "HAS VARIATION: " + values.variation + " " + item.getVariation());
-
-                lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), values));
                 if(!TextUtils.equals(item.getPriceString(), item.getSpecialPriceString())){
                     cartHasReducedItem = true;
                 }
@@ -740,14 +727,16 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
 
-
-    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, CartItemValues item) {
+/**
+ * Fill view item with PurchaseCartItem data
+ * */
+    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, PurchaseCartItem item) {
 
         View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
 
         final Item prodItem = new Item();
-        prodItem.itemValues = item;
-        // Log.d( TAG, "getView: productName = " + itemValues.product_name);
+        prodItem.cartItem = item;
+        Log.d( TAG, "getView: productName = " + item.getName());
 
         prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
         prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
@@ -759,24 +748,30 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         prodItem.deleteBtn = (TextView) view.findViewById(R.id.button_delete);
         view.setTag(prodItem);
 
-        prodItem.itemName.setText(prodItem.itemValues.product_name);
+        prodItem.itemName.setText(prodItem.cartItem.getName());
         prodItem.itemName.setSelected(true);
 
-        String imageUrl = prodItem.itemValues.image;
+        String imageUrl = prodItem.cartItem.getImageUrl();
 
         // Hide shop view image if is_shop is false
-        prodItem.shopFirstImage.setVisibility((!prodItem.itemValues.shop_first || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+        ProductUtils.setShopFirst( prodItem.cartItem , prodItem.shopFirstImage);
+        //Show shop first overlay message
+        ProductUtils.showShopFirstOverlayMessage(this,prodItem.cartItem, prodItem.shopFirstImage);
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
                 R.drawable.no_image_small);
 
-        if (!TextUtils.equals(prodItem.itemValues.price, prodItem.itemValues.price_disc)) {
-            prodItem.priceView.setText(prodItem.itemValues.price_disc);
+        String price = CurrencyFormatter.formatCurrency(prodItem.cartItem.getPrice());
+        String price_disc =  CurrencyFormatter.formatCurrency(prodItem.cartItem.getSpecialPrice());
+
+        if (!price.equals(price_disc)) {
+            prodItem.priceView.setText(price_disc);
             prodItem.priceView.setVisibility(View.VISIBLE);
         } else {
-            prodItem.priceView.setText(prodItem.itemValues.price);
+            prodItem.priceView.setText(price);
             prodItem.priceView.setVisibility(android.view.View.VISIBLE);
         }
+
         prodItem.deleteBtn.setTag(R.id.position, position);
         prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -785,13 +780,13 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
         });
 
-        prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.itemValues.quantity) + "  ");
-        if(prodItem.itemValues.maxQuantity > 1) {
+        prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.cartItem.getQuantity()) + "  ");
+        if(prodItem.cartItem.getMaxQuantity() > 1) {
             prodItem.quantityBtn.setEnabled(true);
             prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    prodItem.itemValues.is_checked = true;
+                    prodItem.cartItem.setIsChecked(true);
                     showQuantityDialog(position);
                 }
             });
@@ -813,7 +808,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
 
         // Save the position to process the click on item
-        view.setTag(R.id.target_sku, item.productSku);
+        view.setTag(R.id.target_sku, item.getSku());
         view.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -827,6 +822,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         return view;
     }
+
+
+
+
 
     /**
      * Function to redirect to the selected product details.
@@ -891,23 +890,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
 
 
-    public static class CartItemValues {
-        public Boolean is_checked;
-        public String product_name;
-        public String price;
-        public String price_disc;
-        public Integer product_id;
-        public long quantity;
-        public String image;
-        public Double discount_value;
-        public Integer min_delivery_time;
-        public Integer max_delivery_time;
-        public String variation;
-        public int maxQuantity;
-        public String productSku;
-        public boolean shop_first;
-    }
-
     /**
      * A representation of each item on the list
      */
@@ -919,7 +901,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         public ImageView productView;
         public View pBar;
         public TextView deleteBtn;
-        public CartItemValues itemValues;
+        public PurchaseCartItem cartItem;
         public ImageView shopFirstImage;
 
         /*
@@ -929,7 +911,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
          */
         @Override
         protected void finalize() throws Throwable {
-            itemValues = null;
+            cartItem = null;
             itemName = null;
             priceView = null;
             quantityBtn = null;

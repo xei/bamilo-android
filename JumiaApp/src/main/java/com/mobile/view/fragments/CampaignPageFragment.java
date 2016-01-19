@@ -969,8 +969,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 setHeaderImage(holder);
                 return;
             }
-
-            setData(holder, mItems.get(position), position);
+            // get position - 1 to ignore header position.
+            setData(holder, mItems.get(position - 1), position - 1);
         }
 
         @Override
@@ -981,7 +981,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         }
 
         /**
-         *Validate if the current position is the header view.
+         * Validate if the current position is the header view.
          * @param position - the current position
          * @return true or false
          */
@@ -991,7 +991,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
         @Override
         public int getItemCount() {
-            return mItems.size();
+            // increment item count to include header.
+            return mItems.size() + 1;
         }
 
         @Override

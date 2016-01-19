@@ -6,11 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
 
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.utils.ui.ProductUtils;
