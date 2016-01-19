@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:paddingRight="10dp"
+            android:paddingRight="@dimen/dimen_10dp"
             android:src="@drawable/selector_btn_edit" />
 
         <!-- ITEM -->
