@@ -17,14 +17,11 @@
     <string name="bamilo_not_available">Bamilo is currently not available</string>
     <string name="billing_choose_address">Please choose an address!</string>
     <string name="billing_def_shipping_label">Default Shipping Address</string>
-
-
     <string name="address_shipping_billing_label">Shipping/Billing Address</string>
     <string name="address_shipping_label">Shipping Address</string>
     <string name="address_billing_label">Billing Address</string>
     <string name="address_others_label">Other Addresses</string>
     <string name="address_add_new_label">Add new address</string>
-
     <string name="billing_same_label">Billing to the same address</string>
     <string name="brands_label">Brands</string>
     <string name="bundle_title">Frequently Bought Together</string>

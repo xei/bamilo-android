@@ -21,16 +21,10 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 
 /**
- * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
- * <p/>
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential.
- *
- * @author ricardosoares
- * @version 1.0
- * @date 2015/02/24
+ * Class used to represent customer addresses in the account context.
+ * @author sergio pereira
  */
-public class MyAccountAddressesFragment extends AddressesFragment {
+public class MyAccountAddressesFragment extends BaseAddressesFragment {
 
     private static final String TAG = MyAccountAddressesFragment.class.getSimpleName();
 

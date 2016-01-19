@@ -245,8 +245,6 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         }
         // Bottom reached
         boolean isBottomReached = totalItemCount != 0 && (firstVisibleItem + visibleItemCount + 1) == totalItemCount;
-        Log.i(TAG, "LOADING MORE DATA: " + totalItemCount + " " + firstVisibleItem + " " + (visibleItemCount + 1) + " " + totalItemCount);
-        Log.i(TAG, "LOADING MORE DATA: " + isBottomReached + " " + isLoadingMore + " " + mPageIndex + " " + mMaxPages);
         // Validate
         if (isBottomReached && !isLoadingMore && mPageIndex < mMaxPages) {
             Log.i(TAG, "LOADING MORE DATA");

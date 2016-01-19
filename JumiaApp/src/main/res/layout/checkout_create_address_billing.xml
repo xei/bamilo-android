@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/margin_20px"
         android:orientation="vertical"
         android:paddingLeft="@dimen/rounded_margin_mid"
-        android:paddingRight="@dimen/rounded_margin_mid"></LinearLayout>
+        android:paddingRight="@dimen/rounded_margin_mid"/>
 
     <Space
         android:layout_width="match_parent"

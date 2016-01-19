@@ -28,16 +28,10 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 
 /**
- * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
- * <p/>
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential.
- *
- * @author ricardosoares
- * @version 1.0
- * @date 2015/02/24
+ * Class used to represent customer addresses int the checkout context.
+ * @author sergio pereira
  */
-public class CheckoutAddressesFragment extends AddressesFragment {
+public class CheckoutAddressesFragment extends BaseAddressesFragment {
 
     private static final String TAG = CheckoutAddressesFragment.class.getSimpleName();
 
@@ -202,8 +196,7 @@ public class CheckoutAddressesFragment extends AddressesFragment {
      */
     private void triggerSetMultiStepAddresses(int billing, int shipping) {
         Print.d(TAG, "TRIGGER SET BILLING");
-        // TODO
-        triggerContentEvent(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle("" + billing, "" + shipping), this);
+        triggerContentEvent(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
     }
 
     /**

@@ -24,25 +24,19 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
- * <p/>
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential.
- *
- * @author ricardosoares
- * @version 1.0
- * @date 2015/02/24
+ * The base class used to show the customer addresses for Account and Checkout.
+ * @author sergio pereira
  */
-public abstract class AddressesFragment extends BaseFragment implements IResponseCallback {
+public abstract class BaseAddressesFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = AddressesFragment.class.getSimpleName();
+    private static final String TAG = BaseAddressesFragment.class.getSimpleName();
     private ViewGroup mShippingView;
     private ViewGroup mBillingView;
     private ViewGroup mOthersView;
     protected Addresses mAddresses;
 
 
-    public AddressesFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @StringRes int titleResId, @ConstantsCheckout.CheckoutType int titleCheckout) {
+    public BaseAddressesFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @StringRes int titleResId, @ConstantsCheckout.CheckoutType int titleCheckout) {
         super(enabledMenuItems, action, R.layout.checkout_addresses, titleResId, ADJUST_CONTENT, titleCheckout);
     }
 
@@ -86,7 +80,7 @@ public abstract class AddressesFragment extends BaseFragment implements IRespons
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Get addresses
-        if(mAddresses == null || mShippingView.getChildCount() == 1) {
+        if(mAddresses == null || onlyHasTitleChild(mShippingView)) {
             triggerGetForm();
         } else {
             showFragmentContentContainer();
@@ -120,6 +114,10 @@ public abstract class AddressesFragment extends BaseFragment implements IRespons
     /*
      * ############# LAYOUT #############
      */
+
+    protected boolean onlyHasTitleChild(ViewGroup group) {
+        return group.getChildCount() == 1;
+    }
 
     protected void showAddresses(Addresses addresses) {
         // Save addresses

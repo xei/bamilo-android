@@ -113,7 +113,7 @@ public class DialogDatePickerFragment extends DialogFragment implements OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(R.style.Theme_Custom_Dialog_NoTitle_DatePicker, R.style.Theme_Custom_Dialog_NoTitle_DatePicker);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_Custom_Dialog_NoTitle_DatePicker);
     }
 
     /*
