@@ -2,12 +2,10 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ScrollView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -35,22 +33,22 @@ import java.util.Set;
  * @version 1.0
  * @date 2015/02/24
  */
-public abstract class MyAddressesFragmentNew extends BaseFragment implements IResponseCallback {
+public abstract class AddressesFragment extends BaseFragment implements IResponseCallback {
 
-    private static final String TAG = MyAddressesFragmentNew.class.getSimpleName();
+    private static final String TAG = AddressesFragment.class.getSimpleName();
     private ViewGroup mShippingView;
     private ViewGroup mBillingView;
     private ViewGroup mOthersView;
-    private ScrollView mMainScrollView;
     protected Addresses mAddresses;
 
-    public MyAddressesFragmentNew(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState) {
-        super(enabledMenuItems, action, layoutResId, titleResId, adjustState);
+
+    public AddressesFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @StringRes int titleResId, @ConstantsCheckout.CheckoutType int titleCheckout) {
+        super(enabledMenuItems, action, R.layout.checkout_addresses, titleResId, ADJUST_CONTENT, titleCheckout);
     }
 
-    public MyAddressesFragmentNew(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState, @ConstantsCheckout.CheckoutType int titleCheckout) {
-        super(enabledMenuItems, action, layoutResId, titleResId, adjustState, titleCheckout);
-    }
+    /*
+     * ############# LIFE CYCLE #############
+     */
 
     @Override
     public void onAttach(Activity activity) {
@@ -68,8 +66,6 @@ public abstract class MyAddressesFragmentNew extends BaseFragment implements IRe
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        // Get scroll
-        mMainScrollView = (ScrollView) view.findViewById(R.id.checkout_addresses_one_scroll);
         // Get sections
         mShippingView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_shipping);
         mBillingView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_billing);
@@ -121,7 +117,7 @@ public abstract class MyAddressesFragmentNew extends BaseFragment implements IRe
         Print.i(TAG, "ON DESTROY");
     }
 
-    /**
+    /*
      * ############# LAYOUT #############
      */
 
@@ -205,30 +201,30 @@ public abstract class MyAddressesFragmentNew extends BaseFragment implements IRe
         editBtn.setOnClickListener(this);
     }
 
-    /**
-     * Clean the view
-     */
-    protected void cleanContainers(){
-        if(mMainScrollView != null) mMainScrollView.fullScroll(ScrollView.FOCUS_UP);
-//        if(mShippingView != null) mShippingView.removeAllViews();
-//        if(mBillingView != null) mBillingView.removeAllViews();
-//        if(mOthersView != null) mOthersView.removeAllViews();
-    }
-
-    /**
+    /*
      * ############# REQUESTS #############
      */
 
     protected void triggerGetForm() {
-        cleanContainers();
         triggerGetAddresses();
     }
 
     protected abstract void triggerGetAddresses();
 
-    /**
+    /*
      * ############# CLICK LISTENER #############
      */
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
+     */
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        onResume();
+    }
+
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -243,16 +239,6 @@ public abstract class MyAddressesFragmentNew extends BaseFragment implements IRe
         else if (id == R.id.checkout_address_item_btn_edit) onClickEditAddressButton(view);
         // Unknown view
         else super.onClick(view);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-        onResume();
     }
 
     /**

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -29,26 +30,30 @@ import java.util.EnumSet;
  * @version 1.0
  * @date 2015/02/24
  */
-public class MyAddressesFragmentNew_1 extends MyAddressesFragmentNew {
+public class MyAccountAddressesFragment extends AddressesFragment {
 
-    private static final String TAG = MyAddressesFragmentNew_1.class.getSimpleName();
+    private static final String TAG = MyAccountAddressesFragment.class.getSimpleName();
 
     /**
-     * Get instance
-     *
-     * @return MyAddressesFragment
+     * Get new instance
      */
-    public static MyAddressesFragmentNew_1 newInstance() {
-        return new MyAddressesFragmentNew_1();
+    public static MyAccountAddressesFragment newInstance() {
+        return new MyAccountAddressesFragment();
     }
 
-    public MyAddressesFragmentNew_1() {
+    /**
+     * Constructor
+     */
+    public MyAccountAddressesFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MY_ACCOUNT_MY_ADDRESSES,
-                R.layout._def_checkout_my_addresses_new,
                 R.string.my_addresses,
-                ADJUST_CONTENT);
+                ConstantsCheckout.NO_CHECKOUT);
     }
+
+    /*
+     * ############# LIFE CYCLE #############
+     */
 
     @Override
     public void onAttach(Activity activity) {
@@ -109,7 +114,7 @@ public class MyAddressesFragmentNew_1 extends MyAddressesFragmentNew {
         Print.i(TAG, "ON DESTROY");
     }
 
-    /**
+    /*
      * ############# REQUESTS #############
      */
 
@@ -118,18 +123,9 @@ public class MyAddressesFragmentNew_1 extends MyAddressesFragmentNew {
         triggerContentEvent(new GetMyAddressesHelper(), null, this);
     }
 
-    /**
+    /*
      * ############# CLICK LISTENER #############
      */
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
-     */
-    @Override
-    protected void onClickRetryButton(View view) {
-        super.onClickRetryButton(view);
-    }
 
     /**
      * Process the click on edit button.</br>
@@ -154,7 +150,7 @@ public class MyAddressesFragmentNew_1 extends MyAddressesFragmentNew {
         getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 
-    /**
+    /*
      * ############# RESPONSE #############
      */
 
@@ -181,9 +177,9 @@ public class MyAddressesFragmentNew_1 extends MyAddressesFragmentNew {
     }
 
     /*
- * (non-Javadoc)
- * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
- */
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
+     */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         // Validate fragment visibility
@@ -208,6 +204,5 @@ public class MyAddressesFragmentNew_1 extends MyAddressesFragmentNew {
                 break;
         }
     }
-
 
 }

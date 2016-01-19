@@ -37,29 +37,32 @@ import java.util.EnumSet;
  * @version 1.0
  * @date 2015/02/24
  */
-public class MyAddressesFragmentNew_2 extends MyAddressesFragmentNew {
+public class CheckoutAddressesFragment extends AddressesFragment {
 
-    private static final String TAG = MyAddressesFragmentNew_2.class.getSimpleName();
+    private static final String TAG = CheckoutAddressesFragment.class.getSimpleName();
 
     private View mCheckoutTotalBar;
 
     /**
-     * Get instance
-     *
-     * @return MyAddressesFragment
+     * Get new instance
      */
-    public static MyAddressesFragmentNew_2 newInstance() {
-        return new MyAddressesFragmentNew_2();
+    public static CheckoutAddressesFragment newInstance() {
+        return new CheckoutAddressesFragment();
     }
 
-    public MyAddressesFragmentNew_2() {
-        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MY_ACCOUNT_MY_ADDRESSES,
-                R.layout._def_checkout_my_addresses_new,
-                R.string.my_addresses,
-                ADJUST_CONTENT,
+    /**
+     * Constructor
+     */
+    public CheckoutAddressesFragment() {
+        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
+                NavigationAction.CHECKOUT,
+                R.string.checkout_label,
                 ConstantsCheckout.CHECKOUT_BILLING);
     }
+
+    /*
+     * ############# LIFE CYCLE #############
+     */
 
     @Override
     public void onAttach(Activity activity) {
@@ -121,9 +124,10 @@ public class MyAddressesFragmentNew_2 extends MyAddressesFragmentNew {
         Print.i(TAG, "ON DESTROY");
     }
 
-    /**
+    /*
      * ############# CLICK LISTENER #############
      */
+
     /*
      * (non-Javadoc)
      * @see android.view.View.OnClickListener#onClick(android.view.View)
