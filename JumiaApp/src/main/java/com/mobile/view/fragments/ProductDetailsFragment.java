@@ -574,6 +574,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                         sellerName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
                     }
                 });
+
+            }else if(mProduct.isShopFirst()){
+                ProductUtils.showShopFirstOverlayMessage(this,mProduct, sellerName);
             }
             // Set listener
             if(TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
@@ -623,6 +626,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mSellerContainer.setVisibility(View.GONE);
         }
     }
+
+
 
     /**
      * Change and put the title in the correct position within the layout if it's fashion or not
@@ -1378,6 +1383,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void triggerGetProductBundle(String sku) {
         triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku), this);
     }
+
+
 
     private class ComboItemClickListener implements OnClickListener {
         ViewGroup bundleItemView;

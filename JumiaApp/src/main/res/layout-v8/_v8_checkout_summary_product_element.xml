@@ -16,6 +16,14 @@
         android:text="Name"
         android:textColor="@color/black"/>
 
+    <!-- SHOP FIRST IMAGE -->
+    <ImageView
+        android:id="@+id/item_shop_first"
+        style="@style/ShopFirstStyle"
+        android:layout_below="@id/item_name"
+        android:layout_alignParentRight="true"/>
+
+
     <!-- PRICE -->
 
     <com.mobile.components.customfontviews.TextView
@@ -23,11 +31,12 @@
         style="@style/TextCaption"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@id/item_name"
+        android:layout_below="@id/item_shop_first"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/dimen_60px"
         android:text="Price"
         android:textColor="@color/black_800"
+        android:layout_alignParentRight="true"
         android:textSize="@dimen/text_xs"/>
 
     <!-- Divider -->

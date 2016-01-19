@@ -44,6 +44,9 @@ public class PurchaseCartItem extends ProductRegular {
     private String specialPrice;
     private double savingPercentage;
 
+
+    private boolean isChecked;  //not parsed: to show dialog in shoppingCartFragment
+
     public PurchaseCartItem() {
 
     }
@@ -202,6 +205,10 @@ public class PurchaseCartItem extends ProductRegular {
         if (modUrl != null)
             return modUrl;
         return url;
+    }
+
+    public void setIsChecked(boolean isChecked){
+        this.isChecked = isChecked;
     }
 
     /**

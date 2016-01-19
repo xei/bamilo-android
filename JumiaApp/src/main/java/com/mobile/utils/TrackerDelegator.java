@@ -30,6 +30,7 @@ import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -384,6 +385,13 @@ public class TrackerDelegator {
         //GTM
         GTMManager.get().gtmTrackRegisterFailed(location);
     }
+
+    public static void trackSessionFailed(EventType eventType) {
+        if(eventType == EventType.FACEBOOK_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.FACEBOOK);
+        else if(eventType == EventType.AUTO_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+        if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
+    }
+
 
     /**
      * For Web Checkout

@@ -305,6 +305,7 @@ public class RestConstants {
     public static final String CUSTOMER_DEVICE = "customer_device";
     public static final String PRE_ORDER = "pre_order";
     public static final String SHOP_FIRST = "shop_first";
+    public static final String SHOP_FIRST_OVERLAY = "shop_first_overlay";
     public static final String PLACE_HOLDER = "placeholder";
     public static final String COUPONCODE = "couponcode";
 }

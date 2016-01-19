@@ -81,7 +81,6 @@ public class FormFactory {
         switch (formType) {
             case FormConstants.LOGIN_FORM:
             case FormConstants.REGISTRATION_FORM:
-            case FormConstants.NEWSLETTER_FORM:
             case FormConstants.FORGET_PASSWORD_FORM:
             case FormConstants.CHANGE_PASSWORD_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
@@ -93,6 +92,9 @@ public class FormFactory {
                 break;
             case FormConstants.PAYMENT_DETAILS_FORM:
                 parent = createGenericForm(context, form, createParams(context, R.dimen.form_no_top_margin));
+                break;
+            case FormConstants.NEWSLETTER_FORM:
+                parent = createNewsletterForm(context, form, createParams(context, R.dimen.form_no_top_margin));
                 break;
         }
         return parent;
@@ -117,6 +119,37 @@ public class FormFactory {
         viewGroup.setLayoutParams(frmParams);
         // Create dynamic form
         DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
+        // Create each form field
+        for (IFormField frmEntry : form.getFields()) {
+            Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
+            DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, frmEntry);
+            dynamicForm.addControl(dynamicFormItem, ctrlParams);
+        }
+        return dynamicForm;
+    }
+
+
+    /**
+     */
+    private DynamicForm createNewsletterForm(Context context, Form form, ViewGroup.LayoutParams ctrlParams) {
+        // Validate
+        if(context == null){
+            return null;
+        }
+        // Root view group
+        LinearLayout viewGroup = new LinearLayout(context);
+        LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        viewGroup.setOrientation(LinearLayout.VERTICAL);
+//        frmParams.setMargins(context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp));
+        viewGroup.setLayoutParams(frmParams);
+        viewGroup.setBackgroundColor(context.getResources().getColor(R.color.black_800));
+        viewGroup.setPadding(context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp));
+        // Create dynamic form
+        DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
+        Print.d(TAG, "createGenericForm: createNewsletterForm");
+
+        // TODO: Add title and description for Homepage Newsletter Form
+
         // Create each form field
         for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());

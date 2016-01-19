@@ -68,7 +68,7 @@ public class Customer implements IJSONSerializable, Parcelable {
                 }
             }
         } catch (JSONException e) {
-            Print.e(TAG, "ERROR: JSE ON PARSING CUSTOMER", e);
+            Print.w(TAG, "WARNING: JSE ON PARSING CUSTOMER");
             return false;
         }
         return true;
