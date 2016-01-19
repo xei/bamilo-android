@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.checkout.GetOrderStatusHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -237,6 +239,9 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 // Set reorder button
                 holder.reorder.setTag(R.id.target_simple_sku, item.getSku());
                 holder.reorder.setOnClickListener(this);
+                //View set tag
+                holder.itemView.setTag(R.id.target_simple_sku, item.getSku());
+                holder.itemView.setOnClickListener(this);
                 // Add to parent
                 group.addView(holder.itemView);
             }
@@ -251,9 +256,28 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     public void onClick(View view) {
         // Case reorder
         if(view.getId() == R.id.order_status_item_button_reorder)  onClickReOrder(view);
+        //case order item
+        else if(view.getId() == R.id.order_list_item)  goToProductDetails(view);
         // Case default
         else super.onClick(view);
     }
+
+
+
+/**
+ * Go to PDV detail of the order item
+ * */
+    private void goToProductDetails(View view){
+        String sku = (String) view.getTag(R.id.target_simple_sku);
+        Print.d(TAG, "ON CLICK PRODUCT " + sku);
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcorderdetailitem);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+    }
+
 
     private void onClickReOrder(View view) {
         // Get sku from view
