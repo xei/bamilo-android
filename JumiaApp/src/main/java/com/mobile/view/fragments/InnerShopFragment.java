@@ -370,7 +370,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * Goto Product.
      */
     private void gotoProduct(View view) {
-        if (TextUtils.isNotEmpty((String) view.getTag(R.id.target_link))) {
 
             // Get title
             String title = (String) view.getTag(R.id.target_title);
@@ -391,9 +390,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
                     .retainBackStackEntries()
                     .run();
 
-        } else {
-            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
-        }
     }
 
     /**
