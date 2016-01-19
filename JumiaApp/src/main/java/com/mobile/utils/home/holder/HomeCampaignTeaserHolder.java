@@ -64,7 +64,10 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
 
     @Override
     public void onDestroy() {
-        counter.cancel();
+        if(counter != null){
+            counter.cancel();
+        }
+
     }
 
     @Override
