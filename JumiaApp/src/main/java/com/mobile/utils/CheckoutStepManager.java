@@ -171,11 +171,7 @@ public class CheckoutStepManager {
         if (nextStepFromParent != null && nextStepFromParent != FragmentType.UNKNOWN) {
             Print.i(TAG, "NEXT STEP FROM PARENT: " + nextStepFromParent.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-            Bundle args = new Bundle();
-            if(arguments != null)
-                args = arguments;
-            args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
-            activity.onSwitchFragment(nextStepFromParent, args, FragmentController.ADD_TO_BACK_STACK);
+            activity.onSwitchFragment(nextStepFromParent,arguments, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Print.i(TAG, "NEXT STEP FROM PARENT: BACK");
             activity.onBackPressed();
