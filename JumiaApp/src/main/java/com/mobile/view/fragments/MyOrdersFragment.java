@@ -233,7 +233,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
             isErrorOnLoadingMore = false;
         }
         // Bottom reached
-        boolean isBottomReached = totalItemCount != 0 && visibleItemCount + 1 == totalItemCount;
+        boolean isBottomReached = totalItemCount != 0 && (firstVisibleItem + visibleItemCount + 1) == totalItemCount;
         // Validate
         if (isBottomReached && !isLoadingMore && mPageIndex < mMaxPages) {
             Log.i(TAG, "LOADING MORE DATA");
@@ -295,17 +295,16 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                 MyOrder orders = (MyOrder) baseResponse.getContentData();
                 ArrayList<Order> orderList = orders.getOrders();
                 // Get max pages
+                mPageIndex = orders.getCurrentPage();
                 mMaxPages = orders.getTotalPages();
                 // Validate
                 if (CollectionUtils.isEmpty(orderList) && mPageIndex == 1) {
                     showErrorFragment(ErrorLayoutFactory.NO_ORDERS_LAYOUT, this);
-                } else {
-                    if (mPageIndex > 1) {
-                        appendToList(orderList);
-                        isLoadingMore = false;
-                    } else
-                        showOrders(orderList);
-                }
+                } else if (mPageIndex > 1) {
+                    appendToList(orderList);
+                    isLoadingMore = false;
+                } else
+                    showOrders(orderList);
                 break;
             default:
                 break;

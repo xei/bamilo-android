@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
     <RelativeLayout
         android:id="@+id/checkout_address_item_content"
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            />
+            android:visibility="gone"/>
 
         <!-- EDIT BUTTON -->
 
@@ -29,8 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/selector_btn_edit"
-            android:paddingRight="10dp"/>
+            android:paddingRight="@dimen/dimen_10dp"
+            android:src="@drawable/selector_btn_edit" />
 
         <!-- ITEM -->
 
@@ -41,12 +41,13 @@
             android:layout_marginRight="@dimen/dimen_20px"
             android:layout_toLeftOf="@+id/checkout_address_item_radio_btn"
             android:layout_toRightOf="@+id/checkout_address_item_btn_edit"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_name"
                 style="@style/TextCaption"
                 android:textColor="@color/black" />
+
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_street"
                 style="@style/TextCaption"
@@ -55,24 +56,25 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_region"
                 style="@style/TextCaption"
-                android:textColor="@color/black_700"  />
+                android:textColor="@color/black_700" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_postcode"
                 style="@style/TextCaption"
-                android:textColor="@color/black_700"  />
+                android:textColor="@color/black_700" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_address_item_phone"
                 style="@style/TextCaption"
-                android:textColor="@color/black_700"  />
+                android:textColor="@color/black_700" />
 
         </LinearLayout>
 
     </RelativeLayout>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/black_300"/>
+        android:background="@color/black_300" />
 </RelativeLayout>

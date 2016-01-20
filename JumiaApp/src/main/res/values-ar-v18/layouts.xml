@@ -20,7 +20,6 @@
     <item name="checkout_payment_methods"               type="layout">@layout/_def_checkout_payment_methods</item>
     <item name="checkout_address_item"                  type="layout">@layout/_def_checkout_address_item</item>
     <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_def_checkout_sameaddress_checkbox</item>
-    <item name="checkout_my_addresses_add_new"          type="layout">@layout/_def_checkout_my_addresses_add_new</item>
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_def_checkout_shipping_pickup_station</item>
     <item name="checkout_shipping_fee_time"             type="layout">@layout/_def_checkout_shipping_fee_time</item>
     <item name="checkout_header"                        type="layout">@layout/_def_checkout_header</item>

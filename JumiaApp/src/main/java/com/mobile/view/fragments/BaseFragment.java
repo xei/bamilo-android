@@ -946,6 +946,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 // Case form submission
                 case REVIEW_RATING_PRODUCT_EVENT:
                 case LOGIN_EVENT:
+                case GUEST_LOGIN_EVENT:
                 case REGISTER_ACCOUNT_EVENT:
                 case EDIT_USER_DATA_EVENT:
                 case CHANGE_PASSWORD_EVENT:

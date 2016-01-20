@@ -44,7 +44,7 @@ public class SetStepAddressesHelper extends SuperBaseHelper {
         baseResponse.getMetadata().setData(nextStepStruct);
     }
 
-    public static Bundle createBundle(String billing, String shipping) {
+    public static Bundle createBundle(int billing, int shipping) {
         ContentValues values = new ContentValues();
         values.put(RestConstants.ADDRESSES_BILLING_ID, billing);
         values.put(RestConstants.ADDRESSES_SHIPPING_ID, shipping);

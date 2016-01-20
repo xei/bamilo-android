@@ -1398,7 +1398,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 baseActivityProgressDialog = null;
             }
         } catch (IllegalStateException e) {
-            // ...
+            e.printStackTrace();
         }
     }
 

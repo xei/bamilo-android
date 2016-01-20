@@ -8,7 +8,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewStub;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
@@ -49,7 +48,6 @@ import com.mobile.utils.catalog.UICatalogHelper;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
-import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
@@ -91,8 +89,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private String mTitle;
 
     private View mNoResultStub;
-
-    private ViewStub mWizardStub;
 
     private ContentValues mCurrentFilterValues = new ContentValues();
 
@@ -236,8 +232,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mTopButton.setOnClickListener(this);
         // Get feature box
         mNoResultStub = view.findViewById(R.id.catalog_no_result_stub);
-        // Get wizard
-        mWizardStub = (ViewStub) view.findViewById(R.id.catalog_wizard_stub);
         // Get grid view
         mGridView = (HeaderFooterGridView) view.findViewById(R.id.catalog_grid_view);
         mGridView.setHasFixedSize(true);
@@ -676,23 +670,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         else if (id == R.id.catalog_button_top) {
             onClickGotoTopButton();
         }
-        // Case wizard
-        else if (id == R.id.catalog_wizard_button_ok) {
-            onClickWizardButton();
-        }
         // Case default
         else {
             super.onClick(view);
         }
-    }
-
-    /**
-     * Process the click on wizard button
-     */
-    private void onClickWizardButton() {
-        Print.i(TAG, "ON CLICK FILTER BUTTON");
-        WizardPreferences.changeState(getBaseActivity(), WizardPreferences.WizardType.CATALOG);
-        mWizardStub.setVisibility(View.GONE);
     }
 
     private void onClickFilterButton(){

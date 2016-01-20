@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <com.mobile.components.customfontviews.TextView
         style="@style/SingleLineStyle"
-        android:text="@string/billing_add_label"
-        android:textAllCaps="true"
-        />
+        android:text="@string/address_add_new_label"
+        android:textAllCaps="true" />
 
 </LinearLayout>

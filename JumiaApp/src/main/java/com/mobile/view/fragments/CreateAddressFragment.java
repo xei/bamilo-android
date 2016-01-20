@@ -821,7 +821,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
                 e.printStackTrace();
             }
             // Set title
-            mShippingTitle.setText(getString(R.string.billing_shipping_label));
+            mShippingTitle.setText(getString(R.string.address_shipping_label));
             // Hide billing container
             mBillingIncludeContainer.setVisibility(View.VISIBLE);
         }

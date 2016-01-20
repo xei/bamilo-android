@@ -41,7 +41,11 @@ public class LogOut {
             // Clean customer data
             cleanCustomerData(baseActivity);
             // Inform activity to update views
-            baseActivity.onLogOut();
+            try {
+                baseActivity.onLogOut();
+            } catch (IllegalStateException e){
+                e.printStackTrace();
+            }
         }
     }
 
