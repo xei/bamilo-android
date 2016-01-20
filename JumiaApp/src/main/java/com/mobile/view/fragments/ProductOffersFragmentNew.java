@@ -121,6 +121,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         mProductName = (TextView) view.findViewById(R.id.offer_product_name);
         mProductBrand = (TextView) view.findViewById(R.id.offer_product_brand);
         mOffersList = (HeaderFooterGridView) view.findViewById(R.id.offers_list);
+        mOffersList.setNestedScrollingEnabled(false);
         mOffersList.setHasFixedSize(true);
         mOffersList.setGridLayoutManager(getResources().getInteger(R.integer.favourite_num_columns));
         mOffersList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
