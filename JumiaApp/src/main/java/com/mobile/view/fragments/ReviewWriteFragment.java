@@ -73,6 +73,9 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     private DialogGenericFragment dialog_review_submitted;
 
+    /**
+     * flag used to avoid sending more than one rating/review on double click
+     */
     private boolean isExecutingSendReview = false;
 
     private String mCompleteProductSku = "";
@@ -460,7 +463,9 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
      */
     private void formsValidation(){
         if (!isExecutingSendReview) {
+            // avoid sending more than one rating/review on double click
             isExecutingSendReview = true;
+
             if(mDynamicForm != null){
                 if(!mDynamicForm.validate())
                     return;
