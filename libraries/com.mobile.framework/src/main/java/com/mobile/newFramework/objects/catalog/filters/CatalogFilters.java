@@ -52,10 +52,7 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
     private CatalogFilter getCatalogType(JSONObject jsonObject) throws JSONException {
         String id = jsonObject.getString(RestConstants.ID);
 
-        /* Temporary: category is being ignored temporarily because it has a different behavior */
-        if(id.equals(CatalogFilter.CATEGORY)){
-          return null;
-        } else if(id.equals(CatalogFilter.RATING)){
+        if(id.equals(CatalogFilter.RATING)){
             return new CatalogRatingFilter(jsonObject);
         } else if(id.equals(CatalogFilter.PRICE)){
             return new CatalogPriceFilter(jsonObject);
