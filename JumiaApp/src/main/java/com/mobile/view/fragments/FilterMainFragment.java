@@ -260,8 +260,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
         /**
          * Constructor
-         * @param context
-         * @param objects
          */
         public FiltersArrayAdapter(Context context, List<CatalogFilter> objects) {
             super(context, layout, objects);

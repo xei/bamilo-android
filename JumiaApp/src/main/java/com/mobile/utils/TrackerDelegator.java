@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -823,7 +824,7 @@ public class TrackerDelegator {
     /**
      * Tracking add product to favorites
      */
-    public static void trackAddToFavorites(ProductRegular completeProduct) {
+    public static void trackAddToFavorites(@NonNull ProductRegular completeProduct) {
         String productSku = completeProduct.getSku();
         String productBrand = completeProduct.getBrand();
         double productPrice = completeProduct.getPriceForTracking();
@@ -863,7 +864,7 @@ public class TrackerDelegator {
      * Tracking remove product from favorites
      * h375id
      */
-    public static void trackRemoveFromFavorites(ProductRegular completeProduct) {
+    public static void trackRemoveFromFavorites(@NonNull ProductRegular completeProduct) {
         String productSku = completeProduct.getSku();
         double price = completeProduct.getPriceForTracking();
         double averageRatingTotal = completeProduct.getAvgRating();

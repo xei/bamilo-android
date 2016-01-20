@@ -1,6 +1,5 @@
 package com.mobile.view;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -83,7 +82,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
-import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -226,7 +224,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                                         @Override
                                         public void onClick(View v) {
                                             if (v.getId() == R.id.button2) {
-                                                LogOut.perform(new WeakReference<Activity>(BaseActivity.this));
+                                                LogOut.perform(new WeakReference<>(BaseActivity.this));
                                             }
                                             dialogLogout.dismiss();
                                         }
@@ -1426,18 +1424,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
     }
 
+    /**
+     * NOTE: Others sign out methods are performed in {@link LogOut}.
+     */
     public void onLogOut() {
-        /*
-         * NOTE: Others sign out methods are performed in {@link LogOut}.
-         */
-        // Logout Facebook
-        FacebookHelper.facebookLogout();
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home
         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         // Hide progress
         dismissProgress();
+        // Inform user
         showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.logout_success));
     }
 

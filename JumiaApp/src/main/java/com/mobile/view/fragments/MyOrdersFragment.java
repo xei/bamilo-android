@@ -1,6 +1,5 @@
 package com.mobile.view.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AbsListView;
@@ -10,7 +9,6 @@ import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.LogOut;
 import com.mobile.controllers.OrdersAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -19,10 +17,8 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.Order;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -31,10 +27,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -173,12 +167,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
         if (!JumiaApplication.isCustomerLoggedIn()) {
-            // Remove this entry from back stack
-            FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ORDERS.toString());
-            // Goto Login and next WishList
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ORDERS);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            onLoginRequired();
         }
         // Case first time
         else if (CollectionUtils.isEmpty(mOrdersList)) {
@@ -336,29 +325,25 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         }
 
         EventType eventType = baseResponse.getEventType();
-        int errorCode = baseResponse.getError().getCode();
         switch (eventType) {
             case GET_MY_ORDERS_LIST_EVENT:
                 Print.w("ORDER", "ERROR Visible");
                 isErrorOnLoadingMore = true;
-                //used for when the user session expires on the server side
-                try {
-                    if (errorCode == ErrorCode.REQUEST_ERROR) {
-                        Map errorMessages = baseResponse.getErrorMessages();
-                        if (CollectionUtils.isNotEmpty(errorMessages)) {
-                            if (errorMessages.containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN)) {
-                                LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
-                                onValidateDataState();
-                            }
-                        }
-                    }
-                } catch (ClassCastException | NullPointerException e) {
-                    showFragmentErrorRetry();
-                }
+                showFragmentErrorRetry();
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onLoginRequired() {
+        // Remove this entry from back stack
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ORDERS.toString());
+        // Goto Login and next WishList
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ORDERS);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
 }
