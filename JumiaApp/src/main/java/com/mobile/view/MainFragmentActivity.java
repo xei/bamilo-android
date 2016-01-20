@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
-import com.ad4screen.sdk.Tag;
+import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -67,7 +67,7 @@ import java.util.List;
 /**
  * @author sergiopereira
  */
-@Tag(name = "MainActivity")
+@UseA4S
 public class MainFragmentActivity extends BaseActivity {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
@@ -160,8 +160,6 @@ public class MainFragmentActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         Print.d(TAG, "ON RESUME");
-        //
-        Ad4PushTracker.get().startActivity(this);
     }
 
     /*
@@ -173,8 +171,6 @@ public class MainFragmentActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        //
-        Ad4PushTracker.get().stopActivity(this);
     }
 
     /*

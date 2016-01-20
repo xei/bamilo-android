@@ -141,7 +141,6 @@
         <!-- ############# AD4Push GCM ############## -->
         <!-- ######################################## -->
 
-
         <!-- ############# AD4Push: A4SService ############# -->
         <service
             android:name="com.ad4screen.sdk.A4SService"

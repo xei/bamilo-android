@@ -57,6 +57,13 @@ public abstract class BaseTeaserViewHolder { //extends RecyclerView.ViewHolder {
     }
 
     /**
+     * Method to execute something when onDestroy is called
+     */
+    public void onDestroy() {
+        // ...
+    }
+
+    /**
      * Method to set the view
      * @param group The teaser group
      */

@@ -643,7 +643,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     public void showWarningSuccessMessage(@Nullable String message, @Nullable EventType eventType) {
-        int id = MessagesUtils.getSuccessMessageId(eventType);
+        int id = MessagesUtils.getMessageId(eventType, false);
         if(getBaseActivity() != null && id > 0) {
             String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(id);
             getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
@@ -661,7 +661,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         showWarningErrorMessage(message, null);
     }
     public void showWarningErrorMessage(@Nullable String message, @Nullable EventType eventType) {
-        int id = MessagesUtils.getSuccessMessageId(eventType);
+        int id = MessagesUtils.getMessageId(eventType, true);
         if(getBaseActivity() != null) {
             String text = TextUtils.isNotEmpty(message) ? message : id > 0 ? getBaseActivity().getString(id) : null;
             if(text != null)
