@@ -315,20 +315,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
             //shop first image
             ImageView shopFirstImageView = (ImageView) cartItemView.findViewById(R.id.item_shop_first);
-       //     shopFirstImageView.setVisibility((!item.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
             ProductUtils.setShopFirst(item, shopFirstImageView);
-
-     /*       if(shopFirstImageView.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(item.getShopFirstOverlay())) {
-                final String overlayInfo = item.getShopFirstOverlay();
-                shopFirstImageView.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        DialogGenericFragment.createInfoDialog(null, overlayInfo, getString(R.string.ok_label)).show(getActivity().getSupportFragmentManager(), null);
-                    }
-                });
-            }*/
-
-            //Set event if jumiafirst is visible and overlay != ""
             ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
 
             String imageUrl = item.getImageUrl();
