@@ -384,6 +384,10 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
             RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
+            //shop first image
+            ImageView shopFirstImageView = (ImageView) prodInflateView.findViewById(R.id.shop_first_item);
+            ProductUtils.setShopFirst(item, shopFirstImageView);
+            ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
             // Brand
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrand());
             // Name

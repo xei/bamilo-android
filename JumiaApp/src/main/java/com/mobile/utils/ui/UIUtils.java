@@ -189,7 +189,7 @@ public class UIUtils {
      * Method to detect if a drawable existing at left or right in a TextView was clicked
      * */
     public static boolean drawableClicked(TextView view, MotionEvent event){
-        if(event.getAction() == MotionEvent.ACTION_UP) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
             if((!ShopSelector.isRtl() &&  event.getX() >= view.getRight() - view.getTotalPaddingRight())
                     || (ShopSelector.isRtl() && event.getX() <= view.getTotalPaddingLeft()) ){
                 return true;
