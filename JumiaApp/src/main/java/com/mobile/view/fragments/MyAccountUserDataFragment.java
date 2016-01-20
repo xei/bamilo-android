@@ -286,7 +286,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      *  method that changes the user data
      */
     private void triggerChangeUserData() {
-        if (mUserDataForm.validate()) {
+        if (mUserDataForm != null && mUserDataForm.validate()) {
             triggerContentEvent(new SetUserDataHelper(), SetUserDataHelper.createBundle(mUserDataForm.getForm().getAction(), mUserDataForm.save()), this);
         }
     }
