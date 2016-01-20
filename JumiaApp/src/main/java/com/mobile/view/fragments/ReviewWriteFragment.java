@@ -73,6 +73,8 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     private DialogGenericFragment dialog_review_submitted;
 
+    private boolean isExecutingSendReview = false;
+
     private String mCompleteProductSku = "";
 
     private View mainContainer;
@@ -263,6 +265,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 completeProduct = (ProductComplete) parcelableProduct;
             }
         }
+        isExecutingSendReview = false;
         if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
             getView().findViewById(R.id.product_info_container).setVisibility(View.GONE);
             getView().findViewById(R.id.shadow).setVisibility(View.GONE);
@@ -456,31 +459,34 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
      * function that validates if the form is correctly filled
      */
     private void formsValidation(){
-        if(mDynamicForm != null){
-            if(!mDynamicForm.validate())
-                return;
-        } else if (ratingForm != null) {
-            if(isShowingRatingForm)
-                mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), ratingForm);
-            else if(reviewForm != null)
-                mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), reviewForm);
+        if (!isExecutingSendReview) {
+            isExecutingSendReview = true;
+            if(mDynamicForm != null){
+                if(!mDynamicForm.validate())
+                    return;
+            } else if (ratingForm != null) {
+                if(isShowingRatingForm)
+                    mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), ratingForm);
+                else if(reviewForm != null)
+                    mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), reviewForm);
 
-            if(!mDynamicForm.validate())
-                return;
-        } else {
-            triggerRatingForm();
-        }
-        if(isShowingRatingForm){
-            if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
-                showLoginFragment();
+                if(!mDynamicForm.validate())
+                    return;
             } else {
-                executeSendReview(ratingForm.getAction(), mDynamicForm);
+                triggerRatingForm();
             }
-        } else {
-            if(getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null){
-                showLoginFragment();
+            if (isShowingRatingForm) {
+                if (getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null) {
+                    showLoginFragment();
+                } else {
+                    executeSendReview(ratingForm.getAction(), mDynamicForm);
+                }
             } else {
-                executeSendReview(reviewForm.getAction(), mDynamicForm);
+                if (getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, true) && JumiaApplication.CUSTOMER == null) {
+                    showLoginFragment();
+                } else {
+                    executeSendReview(reviewForm.getAction(), mDynamicForm);
+                }
             }
         }
     }
@@ -596,6 +602,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                             @Override
                             public void onClick(View v) {
                                 dialog_review_submitted.dismiss();
+                                isExecutingSendReview = false;
                                 if (getBaseActivity() != null) {
                                     if(nestedFragment){
                                         cleanForm();
@@ -611,6 +618,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 dialog_review_submitted.setCancelable(false);
                 dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
                 hideActivityProgress();
+                isExecutingSendReview = false;
                 cleanForm();
                 break;
 
@@ -672,6 +680,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         // Hide progress
         hideActivityProgress();
 
+        isExecutingSendReview = false;
         // Generic errors
         if(super.handleErrorEvent(baseResponse)) return;
 
@@ -693,6 +702,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             case REVIEW_RATING_PRODUCT_EVENT:
                 showFormValidateMessages(mDynamicForm, baseResponse, eventType);
                 hideActivityProgress();
+                isExecutingSendReview = false;
                 break;
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
