@@ -480,7 +480,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
-        shippingAddressView.findViewById(R.id.checkout_address_item_radio_btn).setVisibility(View.GONE);
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
         container.addView(shippingAddressView);
     }

@@ -15,13 +15,13 @@
     <string name="back_label">RETOUR</string>
     <string name="back_level">Retour au niveau précédent</string>
     <string name="bamilo_not_available">Bamilo n\'est pas disponible actuellement</string>
-    <string name="billing_add_label">Ajouter une adresse</string>
-    <string name="billing_billing_label">Adresse de Facturation</string>
+    <string name="address_add_new_label">Ajouter une adresse</string>
+    <string name="address_billing_label">Adresse de Facturation</string>
     <string name="billing_choose_address">Veuillez sélectionner une adresse</string>
     <string name="billing_def_shipping_label">Adresse de livraison par défaut</string>
-    <string name="billing_others_label">Autres adresses</string>
+    <string name="address_others_label">Autres adresses</string>
     <string name="billing_same_label">Facturer à la même adresse</string>
-    <string name="billing_shipping_label">Adresse de Livraison</string>
+    <string name="address_shipping_label">Adresse de Livraison</string>
     <string name="brands_label">Marques</string>
     <string name="bundle_title">Généralement  achetés ensemble</string>
     <string name="bundle_total_price">Prix total:</string>

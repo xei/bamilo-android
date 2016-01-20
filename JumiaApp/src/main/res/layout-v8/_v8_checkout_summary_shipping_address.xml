@@ -19,7 +19,7 @@
             style="@style/rounded_box_title_grey"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
-            android:text="@string/billing_shipping_label" />
+            android:text="@string/address_shipping_label" />
 
         <ImageView
             android:id="@+id/checkout_summary_shipping_address_btn_edit"

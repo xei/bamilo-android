@@ -369,7 +369,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
-        shippingAddressView.findViewById(R.id.checkout_address_item_radio_btn).setVisibility(View.GONE);
 
         // Only use region if is available
         StringBuilder regionString = new StringBuilder();

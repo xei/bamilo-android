@@ -9,7 +9,7 @@
     <!-- TITLE -->
     <com.mobile.components.customfontviews.TextView
         style="@style/HeaderStyle"
-        android:text="@string/billing_shipping_label" />
+        android:text="@string/address_shipping_label" />
 
     <RelativeLayout
         android:layout_width="match_parent"

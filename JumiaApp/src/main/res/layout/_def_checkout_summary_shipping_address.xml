@@ -11,7 +11,7 @@
 
         <com.mobile.components.customfontviews.TextView
             style="@style/HeaderStyle"
-            android:text="@string/billing_shipping_label" />
+            android:text="@string/address_shipping_label" />
 
         <ImageView
             android:id="@+id/checkout_summary_shipping_address_btn_edit"
