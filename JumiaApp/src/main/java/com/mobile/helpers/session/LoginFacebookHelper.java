@@ -56,11 +56,6 @@ public class LoginFacebookHelper extends SuperBaseHelper {
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
         baseResponse.getMetadata().setData(nextStepStruct);
 
-        if(loginCustomer == null){
-            onRequestError(baseResponse);
-            return;
-        }
-
         // Save customer
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Save credentials
