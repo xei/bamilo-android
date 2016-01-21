@@ -15,13 +15,9 @@
     <string name="back_label">پیچھے</string>
     <string name="back_level">پچھلا درجہ</string>
     <string name="bamilo_not_available">فی الوقت میسر نہیں ہے</string>
-    <string name="address_add_new_label">نیا پتا شامل کریں</string>
-    <string name="address_billing_label">بل بھیجنے کا پتہ</string>
     <string name="billing_choose_address">براہِ کرم ایک پتا چنیں!</string>
     <string name="billing_def_shipping_label">پہلے سے طے شدہ ترسیلی پتا</string>
-    <string name="address_others_label">دوسرا پتا</string>
     <string name="billing_same_label">بلنگ اسی پتے پر کریں</string>
-    <string name="address_shipping_label">ترسیلی پتا</string>
     <string name="brands_label">برانڈز</string>
     <string name="bundle_title">اکثر ایک ساتھ خریدے جانے والی اشیاء</string>
     <string name="bundle_total_price">کُل قیمت:</string>
