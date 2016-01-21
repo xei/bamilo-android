@@ -15,13 +15,9 @@
     <string name="back_label">الرجوع</string>
     <string name="back_level">مستوى الرجوع</string>
     <string name="bamilo_not_available">باميلو غير متاح الآن</string>
-    <string name="address_add_new_label">إضافة عنوان جديد</string>
-    <string name="address_billing_label">عنوان إرسال الفواتير</string>
     <string name="billing_choose_address">برجاء تحديد العنوان!</string>
     <string name="billing_def_shipping_label">عنوان الشحن الإفتراضي</string>
-    <string name="address_others_label">عناوين أخرى</string>
     <string name="billing_same_label">إرسال الفواتير إلى نفس العنوان</string>
-    <string name="address_shipping_label">عنوان الشحن</string>
     <string name="brands_label">الماركات</string>
     <string name="bundle_title">يتم شرائهما معًا</string>
     <string name="bundle_total_price">السعر الكلي:</string>

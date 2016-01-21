@@ -14,13 +14,9 @@
     <string name="back_label">VOLTAR</string>
     <string name="back_level">Voltar ao nível anterior</string>
     <string name="bamilo_not_available">Bamilo não está disponível de momento</string>
-    <string name="address_add_new_label">Adicionar nova morada</string>
-    <string name="address_billing_label">Morada de Faturação</string>
     <string name="billing_choose_address">Por favor selecione uma morada!</string>
     <string name="billing_def_shipping_label">Morada de Faturação Principal</string>
-    <string name="address_others_label">Outras Moradas</string>
     <string name="billing_same_label">Faturar na mesma morada</string>
-    <string name="address_shipping_label">Morada de Entrega</string>
     <string name="brands_label">Marcas</string>
     <string name="bundle_title">Produtos frequentemente comprados juntos</string>
     <string name="bundle_total_price">Valor Total</string>
