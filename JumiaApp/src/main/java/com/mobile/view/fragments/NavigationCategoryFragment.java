@@ -277,7 +277,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
     public void onAppendData(FragmentType next, String title, String id, Bundle data) {
         // Create bundle for catalog
         data.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-        String catalogUrlKey = "?category=" +id;
+        final String catalogUrlKey = "?category=" +id;
 
         ContentValues deepLinkValues = new ContentValues();
         if (com.mobile.newFramework.utils.TextUtils.isNotEmpty(catalogUrlKey))
