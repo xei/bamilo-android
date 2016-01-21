@@ -10,6 +10,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.EditText;
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
@@ -59,32 +60,21 @@ import java.util.Set;
 public abstract class EditAddressFragment extends BaseFragment implements IResponseCallback, IcsAdapterView.OnItemSelectedListener {
 
     private static final String TAG = EditAddressFragment.class.getSimpleName();
-
     public static final String SELECTED_ADDRESS = "selected_address";
-
     public static final int INVALID_ADDRESS_ID = -1;
-
     protected ViewGroup mEditFormContainer;
-
     protected DynamicForm mEditFormGenerator;
-
     protected Form mFormResponse;
-
     protected ArrayList<AddressRegion> mRegions;
-
     protected int mAddressId;
-
     protected PurchaseEntity orderSummary;
-
     protected boolean isCityIdAnEditText = false;
-
     private Bundle mFormSavedState;
 
-    public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state) {
-        super(enabledMenuItems, action, R.layout.checkout_edit_address_main, titleResId, adjust_state);
-    }
-
-    public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, int titleCheckout) {
+    /**
+     * Constructor
+     */
+    public EditAddressFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, int titleResId, @KeyboardState int adjust_state, @ConstantsCheckout.CheckoutType int titleCheckout) {
         super(enabledMenuItems, action, R.layout.checkout_edit_address_main, titleResId, adjust_state, titleCheckout);
     }
 
@@ -230,7 +220,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             setRegions(mEditFormGenerator, mRegions);
         }
         // Define if CITY is a List or Text
-        isCityIdAnEditText = (mEditFormGenerator.getItemByKey(RestConstants.CITY).getEditControl() instanceof EditText);
+        DynamicFormItem item = mEditFormGenerator.getItemByKey(RestConstants.CITY);
+        isCityIdAnEditText = item != null && item.getEditControl() instanceof EditText;
         // Show selected address content
         mEditFormContainer.refreshDrawableState();
     }
@@ -542,23 +533,21 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-
+        // Get type
         EventType eventType = baseResponse.getEventType();
-
+        // Validate
         if(isOnStoppingProcess || eventType == null){
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
-            Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
+            Print.i(TAG, "SUPER HANDLE ERROR EVENT");
             return;
         }
-
+        // Validate
         int errorCode = baseResponse.getError().getCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
-
+        Print.i(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         switch (eventType) {
             case GET_EDIT_ADDRESS_FORM_EVENT:
                 onGetEditAddressFormErrorEvent(baseResponse);
@@ -570,7 +559,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 onGetCitiesErrorEvent(baseResponse);
                 break;
             case GET_POSTAL_CODE_EVENT:
-                onGetPostalCodesErrorEvent(baseResponse);
+                onGetPostalCodesErrorEvent();
                 break;
             case EDIT_ADDRESS_EVENT:
                 onEditAddressErrorEvent(baseResponse);
@@ -592,7 +581,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         Print.w(TAG, "RECEIVED GET_CITIES_EVENT");
     }
 
-    protected void onGetPostalCodesErrorEvent(BaseResponse baseResponse) {
+    protected void onGetPostalCodesErrorEvent() {
         Print.w(TAG, "RECEIVED GET_POSTAL_CODES_EVENT");
     }
 
