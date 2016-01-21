@@ -497,6 +497,8 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     }
 
     /**
+     * TODO: temporary solution until we have an uniform and improved login handling
+     *
      * store product SKU in bundle and switch to login fragment
      */
     private void showLoginFragment() {
