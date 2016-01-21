@@ -233,7 +233,7 @@ public class DynamicFormItem {
             this.control.setId(parent.getNextId());
             switch (this.entry.getInputType()) {
                 case checkBox:
-                    buildCheckBoxInflated(params, controlWidth);
+                    buildCheckBox(params);
                     break;
                 case checkBoxLink:
                     buildCheckBoxForTerms(params, controlWidth);
@@ -1032,18 +1032,8 @@ public class DynamicFormItem {
         this.control.addView(dataContainer);
     }
 
-    private void buildCheckBoxInflated(RelativeLayout.LayoutParams params, int controlWidth) {
-        //int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+    private void buildCheckBox(RelativeLayout.LayoutParams params) {
         this.control.setLayoutParams(params);
-//        //#RTL
-//        if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//        } else {
-//            // data controls
-//            params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        }
-
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
@@ -1076,7 +1066,9 @@ public class DynamicFormItem {
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
         params.rightMargin = formPadding;
-        this.dataControl = View.inflate(this.context, R.layout.gen_form_check_box, null);
+        // Get check box
+        CheckBox checkBox = (CheckBox) View.inflate(this.context, R.layout.gen_form_check_box, null);
+        this.dataControl = checkBox;
         this.dataControl.setId(parent.getNextId());
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -1086,18 +1078,18 @@ public class DynamicFormItem {
         this.dataControl.setContentDescription(this.entry.getKey());
         this.dataControl.setFocusable(false);
         this.dataControl.setFocusableInTouchMode(false);
-        ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
-
+        checkBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
         // Set default value
         if (Boolean.parseBoolean(this.entry.getValue())) {
-            ((CheckBox) this.dataControl).setChecked(true);
+            checkBox.setChecked(true);
         }
-
-        this.dataControl.setVisibility(View.VISIBLE);
-
+        // Validate disabled flag
+        if (this.entry.isDisabledField()) {
+            disableView(checkBox);
+        }
+        // Add
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
-
         this.control.addView(dataContainer);
     }
 
@@ -1737,11 +1729,8 @@ public class DynamicFormItem {
         // Get password eye
         CheckBox box = (CheckBox) container.findViewById(R.id.text_field_password_check_box);
         // Set disabled
-        if(this.parent.getForm().getType() == FormConstants.USER_DATA_FORM && this.entry.isDisabledField()){
-            text.setEnabled(false);
-            text.setClickable(false);
-            text.setFocusable(false);
-            text.setTextColor(ContextCompat.getColor(context, R.color.black_700));
+        if (this.parent.getForm().getType() == FormConstants.USER_DATA_FORM && this.entry.isDisabledField()) {
+            disableView(text);
         }
         // Set icon
         if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
@@ -1881,5 +1870,14 @@ public class DynamicFormItem {
 
     }
 
+    /**
+     * Disable a view.
+     */
+    private void disableView(View view) {
+        view.setEnabled(false);
+        view.setClickable(false);
+        view.setFocusable(false);
+        if(view instanceof android.widget.TextView) ((android.widget.TextView) view).setTextColor(ContextCompat.getColor(context, R.color.black_700));
+    }
 
 }
