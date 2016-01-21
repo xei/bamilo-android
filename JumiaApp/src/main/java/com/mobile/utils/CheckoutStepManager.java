@@ -168,14 +168,11 @@ public class CheckoutStepManager {
      */
     private static void goToNextStepFromParent(BaseActivity activity, FragmentType nextStepFromParent, Bundle arguments) {
         // Validate the next step
-        if (nextStepFromParent != null && nextStepFromParent != FragmentType.UNKNOWN) {
+        if (nextStepFromParent != null && nextStepFromParent != FragmentType.UNKNOWN
+                && nextStepFromParent != FragmentType.WRITE_REVIEW) {
             Print.i(TAG, "NEXT STEP FROM PARENT: " + nextStepFromParent.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-            Bundle args = new Bundle();
-            if(arguments != null)
-                args = arguments;
-            args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
-            activity.onSwitchFragment(nextStepFromParent, args, FragmentController.ADD_TO_BACK_STACK);
+            activity.onSwitchFragment(nextStepFromParent,arguments, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Print.i(TAG, "NEXT STEP FROM PARENT: BACK");
             activity.onBackPressed();
