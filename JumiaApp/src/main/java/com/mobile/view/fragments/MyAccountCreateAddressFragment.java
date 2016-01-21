@@ -15,7 +15,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -37,7 +36,6 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
 
     private static final String TAG = MyAccountCreateAddressFragment.class.getSimpleName();
 
-    protected boolean isFirstUserAddress;
 
     /**
      * Fragment used to create an address
@@ -64,12 +62,6 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bundle bundle = getArguments();
-
-        if(bundle != null) {
-            isFirstUserAddress = bundle.getBoolean(TrackerDelegator.LOGIN_KEY, false);
-        }
     }
 
     @Override
@@ -118,12 +110,9 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
                 triggerCreateAddress(billingFormGenerator.getForm().getAction(), mBillValues);
             }
         } else {
-            if(isFirstUserAddress){
-                FragmentController.getInstance().popLastEntry(FragmentType.MY_ACCOUNT_CREATE_ADDRESS.toString());
-                getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                getBaseActivity().onBackPressed();
-            }
+            FragmentController.getInstance().popLastEntry(FragmentType.MY_ACCOUNT_CREATE_ADDRESS.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.MY_ACCOUNT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+
             showWarningSuccessMessage(baseResponse.getSuccessMessage(), R.string.create_addresses_success);
         }
     }
