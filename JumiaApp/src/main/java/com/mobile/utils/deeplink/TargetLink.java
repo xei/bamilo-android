@@ -134,7 +134,6 @@ public class TargetLink {
         // ##### Get type and value
         String type = targetLink[TARGET_TYPE_POSITION];
         String id = targetLink[TARGET_ID_POSITION];
-        android.util.Log.i(TAG, "3link : "+type);
         // ##### Get fragment type
         FragmentType nextFragmentType = getFragmentType(type);
         if (nextFragmentType == FragmentType.UNKNOWN) {
