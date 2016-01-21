@@ -33,6 +33,7 @@
             style="@style/SubListItemStyle"
             android:layout_width="wrap_content"
             android:paddingRight="@dimen/dimen_60px"
+            android:layout_alignParentRight="true"
             android:gravity="right|center_vertical" />
     </RelativeLayout>
 

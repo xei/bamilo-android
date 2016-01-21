@@ -27,10 +27,9 @@ public abstract class BaseTable {
     
     /**
      * Returns the SQL instruction to create the table.
-     * @param table name
      * @return String.
      * @author sergiopereira
      */
-    public abstract String create(String table);
+    public abstract String create();
     
 }

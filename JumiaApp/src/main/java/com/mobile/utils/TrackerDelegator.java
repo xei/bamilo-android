@@ -30,6 +30,7 @@ import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -385,6 +386,13 @@ public class TrackerDelegator {
         GTMManager.get().gtmTrackRegisterFailed(location);
     }
 
+    public static void trackSessionFailed(EventType eventType) {
+        if(eventType == EventType.FACEBOOK_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.FACEBOOK);
+        else if(eventType == EventType.AUTO_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+        if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
+    }
+
+
     /**
      * For Web Checkout
      */
@@ -468,7 +476,7 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().trackPurchase(order.number, order.valueConverted, order.items);
         // AD4
-        Ad4PushTracker.get().trackCheckoutEnded(order.number, order.valueConverted, order.value, order.average, order.items.size(), order.coupon, "");
+        Ad4PushTracker.get().trackCheckoutEnded(order.valueConverted, order.value, order.average, order.items.size(), order.coupon, "");
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
@@ -536,7 +544,7 @@ public class TrackerDelegator {
         //GA Banner Flow
         trackBannerClick(items);
         // Ad4
-        Ad4PushTracker.get().trackCheckoutEnded(orderNr, grandTotal, cartValue, averageValue, numberOfItems, coupon, attributeIdList);
+        Ad4PushTracker.get().trackCheckoutEnded(grandTotal, cartValue, averageValue, numberOfItems, coupon, attributeIdList);
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
@@ -976,7 +984,7 @@ public class TrackerDelegator {
             screenName = sContext.getString(page.getName());
         }
 
-        if(!"".equalsIgnoreCase(screenName))
+        if(TextUtils.isNotEmpty(screenName))
             GTMManager.get().gtmTrackViewScreen(screenName, loadTime);
     }
 
@@ -1313,4 +1321,39 @@ public class TrackerDelegator {
             Print.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
         }
     }
+
+    public static void trackAddToCartGTM(PurchaseCartItem item, int quantity, String mItemRemovedCartValue) {
+        try {
+            double prods = item.getQuantity();
+            Bundle params = new Bundle();
+
+            params.putString(TrackerDelegator.SKU_KEY, item.getConfigSimpleSKU());
+
+            params.putLong(TrackerDelegator.START_TIME_KEY, System.currentTimeMillis());
+            params.putDouble(TrackerDelegator.PRICE_KEY, item.getPriceForTracking());
+            params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
+            params.putDouble(TrackerDelegator.RATING_KEY, -1d);
+            params.putString(TrackerDelegator.NAME_KEY, item.getName());
+            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategories());
+            params.putString(TrackerDelegator.CARTVALUE_KEY, mItemRemovedCartValue);
+
+            if (quantity > prods) {
+                prods = quantity - prods;
+                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.SHOPPINGCART);
+                for (int i = 0; i < prods; i++) {
+                    TrackerDelegator.trackProductAddedToCart(params);
+                }
+            } else {
+                prods = prods - quantity;
+                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+                for (int i = 0; i < prods; i++) {
+                    TrackerDelegator.trackProductRemoveFromCart(params);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

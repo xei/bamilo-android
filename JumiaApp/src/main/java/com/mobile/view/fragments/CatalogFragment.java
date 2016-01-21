@@ -8,12 +8,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewStub;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -49,7 +49,6 @@ import com.mobile.utils.catalog.UICatalogHelper;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
-import com.mobile.utils.dialogfragments.WizardPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
@@ -92,8 +91,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private String mTitle;
 
     private View mNoResultStub;
-
-    private ViewStub mWizardStub;
 
     private ContentValues mCurrentFilterValues = new ContentValues();
 
@@ -164,9 +161,11 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Get title
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             // Get catalog type (Hash/Seller/Brand)
-            FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.FRAGMENT_TYPE);
+            FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
             if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
             else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
+            else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
+
             else mQueryValues.put(RestConstants.HASH, mKey);
             // Get sort
             if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
@@ -206,16 +205,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         TrackerDelegator.trackCategoryView();
     }
 
-//    /**
-//     * Function that removes the parameters from the url in order to have the complete url without parameters
-//     */
-//    private void removeParametersFromQuery(final Uri.Builder builder){
-//        builder.clearQuery();
-//        mKey = builder.toString();
-//    }
-
-
-
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -245,14 +234,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mTopButton.setOnClickListener(this);
         // Get feature box
         mNoResultStub = view.findViewById(R.id.catalog_no_result_stub);
-        // Get wizard
-        mWizardStub = (ViewStub) view.findViewById(R.id.catalog_wizard_stub);
         // Get grid view
         mGridView = (HeaderFooterGridView) view.findViewById(R.id.catalog_grid_view);
         mGridView.setHasFixedSize(true);
         mGridView.setGridLayoutManager(mNumberOfColumns);
         mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.addOnScrollListener(onRecyclerScrollListener);
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridView.post(new Runnable() {
             @Override
             public void run() {
@@ -683,23 +672,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         else if (id == R.id.catalog_button_top) {
             onClickGotoTopButton();
         }
-        // Case wizard
-        else if (id == R.id.catalog_wizard_button_ok) {
-            onClickWizardButton();
-        }
         // Case default
         else {
             super.onClick(view);
         }
-    }
-
-    /**
-     * Process the click on wizard button
-     */
-    private void onClickWizardButton() {
-        Print.i(TAG, "ON CLICK FILTER BUTTON");
-        WizardPreferences.changeState(getBaseActivity(), WizardPreferences.WizardType.CATALOG);
-        mWizardStub.setVisibility(View.GONE);
     }
 
     private void onClickFilterButton(){

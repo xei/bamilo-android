@@ -6,10 +6,10 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical|left|start"
     android:orientation="vertical"
-    android:paddingEnd="@dimen/layout_padding"
-    android:paddingLeft="@dimen/layout_padding"
-    android:paddingRight="@dimen/layout_padding"
-    android:paddingStart="@dimen/layout_padding"
+    android:paddingEnd="@dimen/dimen_16dp"
+    android:paddingLeft="@dimen/dimen_16dp"
+    android:paddingRight="@dimen/dimen_16dp"
+    android:paddingStart="@dimen/dimen_16dp"
     >
 
     <!-- SELLER INFO -->
@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:textStyle="bold"
-
         />
 
     <!-- SMALL RATING -->
@@ -61,7 +60,6 @@
             color="@color/black_800"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_mid"
             android:layout_marginStart="@dimen/margin_mid"
            />
@@ -88,10 +86,10 @@
         style="@style/TextCaption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="10dp"
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_16dp"
         android:text="3 - 8 days"
         android:textColor="@color/black"
-
         />
 
 

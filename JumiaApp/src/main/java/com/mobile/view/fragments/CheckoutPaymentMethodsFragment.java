@@ -2,9 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,6 +24,7 @@ import com.mobile.helpers.voucher.AddVoucherHelper;
 import com.mobile.helpers.voucher.RemoveVoucherHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.MultiStepPayment;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -33,9 +32,9 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
-import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -44,7 +43,6 @@ import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.Iterator;
 
 /**
  * 
@@ -63,11 +61,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
 
     private TextView couponButton;
 
-    private String mVoucher = null;
+    private String mVoucherCode;
 
     private boolean removeVoucher = false;
 
-    private ContentValues mSavedState;
+    private Bundle mSavedState;
     
     private String paymentName = "";
 
@@ -78,6 +76,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private ScrollView mScrollView;
 
     private View mVoucherContainer;
+
+    private boolean isShowingNoPaymentNecessary;
 
     /**
      * Empty constructor
@@ -121,8 +121,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         Print.i(TAG, "ON CREATE");
         // Validate the saved values 
         if(savedInstanceState != null){
-            // Get the ship content values
-            mSavedState = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
+            mSavedState = savedInstanceState;
+            mVoucherCode = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
         }
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_PAYMENT);
     }
@@ -181,10 +181,23 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        if(mDynamicForm != null){
-            JumiaApplication.INSTANCE.lastPaymentSelected = mDynamicForm.getSelectedValueIndex();
-        }
+    }
 
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
+     */
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // Save the form state
+        if(mDynamicForm != null) {
+            mDynamicForm.saveFormState(outState);
+        }
+        // Save voucher
+        if(mVoucherView != null) {
+            outState.putString(ConstantsIntentExtra.ARG_1, mVoucherView.getText().toString());
+        }
     }
 
     /*
@@ -229,7 +242,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         int id = view.getId();
         // Submit
         if (id == R.id.checkout_button_enter) {
-            if (!TextUtils.isEmpty(mVoucherView.getText()) && !couponButton.getText().toString().equalsIgnoreCase(getString(R.string.voucher_remove))) {
+            if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(couponButton.getText(), getString(R.string.voucher_remove))) {
                 validateCoupon();
             } else {
                 onClickSubmitPaymentButton();
@@ -259,32 +272,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onActivityResult(int, int, android.content.Intent)
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.Fragment#onSaveInstanceState(android.os.Bundle)
-     */
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        // Save the current selected item
-        try {
-            ContentValues values = mDynamicForm.save();
-            if(values.size() > 0)
-                outState.putParcelable(ConstantsIntentExtra.DATA, values);
-        } catch (Exception e) {
-            Print.w(TAG, "TRY SAVE FORM BUT IS NULL");
-        }
-    }
-
     /**
      * Load the dynamic form
      */
@@ -293,10 +280,10 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         mPaymentContainer.removeAllViews();
         mPaymentContainer.addView(mDynamicForm.getContainer());
-        loadSavedValues(mSavedState, mDynamicForm.iterator());
+        mDynamicForm.loadSaveFormState(mSavedState);
         mPaymentContainer.refreshDrawableState();
         prepareCouponView();
-        validatePaymentIsAvailable();
+        validatePaymentIsAvailableOrIsNecessary();
         showFragmentContentContainer();
     }
 
@@ -315,37 +302,28 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     /*
      * Disable the next button case No payment options available
      */
-    private void validatePaymentIsAvailable() {
+    @SuppressWarnings("ConstantConditions")
+    private void validatePaymentIsAvailableOrIsNecessary() {
         try {
-            // Case No payment options available hide button
-            //noinspection ConstantConditions
-            mCheckoutButtonNext.setVisibility(getView().findViewById(R.id.text_information) == null ? View.VISIBLE : View.GONE);
+            // Get input type to validate the form
+            FormInputType type = (FormInputType) getView().findViewById(R.id.text_information).getTag();
+            // Case no payment necessary
+            if(type == FormInputType.infoMessage) {
+                isShowingNoPaymentNecessary = true;
+            }
+            // Case no payment available
+            else if(type == FormInputType.errorMessage) {
+                mCheckoutButtonNext.setVisibility(View.GONE);
+            }
         } catch (NullPointerException e) {
             //...
         }
     }
 
-    /**
-     * Load the saved values and update the form
-     */
-    private void loadSavedValues(ContentValues savedValues, Iterator<DynamicFormItem> iter){
-        // Load save state
-        if (savedValues != null){
-            while (iter.hasNext()){
-                try {
-                    iter.next().setSelectedPaymentMethod(JumiaApplication.INSTANCE.lastPaymentSelected);
-                    iter.next().loadState(mSavedState);
-                } catch (Exception e) {
-                    Print.w(TAG, "CAN'T LOAD THE SAVED STATE");
-                }
-            }
-        }
-    }
-
     private void prepareCouponView() {
         mVoucherView = (EditText) mVoucherContainer.findViewById(R.id.voucher_name);
-        if (!TextUtils.isEmpty(mVoucher)) {
-            mVoucherView.setText(mVoucher);
+        if (!TextUtils.isEmpty(mVoucherCode)) {
+            mVoucherView.setText(mVoucherCode);
         }
         UIUtils.scrollToViewByClick(mScrollView, mVoucherView);
         couponButton = (TextView) mVoucherContainer.findViewById(R.id.voucher_btn);
@@ -361,13 +339,11 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     }
 
     private void validateCoupon() {
-        mVoucher = mVoucherView.getText().toString();
+        mVoucherCode = mVoucherView.getText().toString();
         getBaseActivity().hideKeyboard();
-        if (!TextUtils.isEmpty(mVoucher)) {
-            if (getString(R.string.voucher_use).equalsIgnoreCase(couponButton.getText().toString())) {
-                ContentValues mContentValues = new ContentValues();
-                mContentValues.put(AddVoucherHelper.VOUCHER_PARAM, mVoucher);
-                triggerSubmitVoucher(mContentValues);
+        if (!TextUtils.isEmpty(mVoucherCode)) {
+            if (TextUtils.equals(getString(R.string.voucher_use), couponButton.getText())) {
+                triggerSubmitVoucher(mVoucherCode);
             } else {
                 triggerRemoveVoucher();
             }
@@ -395,17 +371,17 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
     private void updateVoucher(PurchaseEntity orderSummary) {
         if (orderSummary != null) {
             if (orderSummary.hasCouponDiscount()) {
-                mVoucher = orderSummary.getCouponCode();
-                if (!TextUtils.isEmpty(mVoucher)) {
+                mVoucherCode = orderSummary.getCouponCode();
+                if (!TextUtils.isEmpty(mVoucherCode)) {
                     removeVoucher = true;
                     prepareCouponView();
-                    mVoucherView.setText(mVoucher);
+                    mVoucherView.setText(mVoucherCode);
                     mVoucherView.setFocusable(false);
                 } else {
-                    mVoucher = null;
+                    mVoucherCode = null;
                 }
             } else {
-                mVoucherView.setText("");
+                mVoucherView.setText(TextUtils.isNotEmpty(mVoucherCode) ? mVoucherCode : "" );
                 mVoucherView.setFocusable(true);
                 mVoucherView.setFocusableInTouchMode(true);
             }
@@ -443,7 +419,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Get next step
             NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
             FragmentType nextFragment = nextStepStruct.getFragmentType();
-            nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.MY_ORDER;
+            nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_FINISH;
             // Tracking
             String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
             String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
@@ -451,12 +427,18 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             // Switch to FINISH
             getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
             break;
-        case ADD_VOUCHER:
         case REMOVE_VOUCHER:
+            mVoucherCode = null;
+        case ADD_VOUCHER:
             couponButton.setText(getString(eventType == EventType.ADD_VOUCHER ? R.string.voucher_remove : R.string.voucher_use));
             removeVoucher = eventType == EventType.ADD_VOUCHER;
             hideActivityProgress();
             setOrderInfo((PurchaseEntity) baseResponse.getContentData());
+            // Case voucher removed and is showing no payment necessary
+            if(isShowingNoPaymentNecessary) {
+                isShowingNoPaymentNecessary = false;
+                triggerGetPaymentMethods();
+            }
             break;
         default:
             break;
@@ -492,7 +474,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
             break;
         case ADD_VOUCHER:
         case REMOVE_VOUCHER:
-            mVoucherView.setText("");
             hideActivityProgress();
             break;
         default:
@@ -508,8 +489,8 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         triggerContentEvent(new SetStepPaymentHelper(), SetStepPaymentHelper.createBundle(endpoint, values), this);
     }
     
-    private void triggerSubmitVoucher(ContentValues values) {
-        triggerContentEventProgress(new AddVoucherHelper(), AddVoucherHelper.createBundle(values), this);
+    private void triggerSubmitVoucher(String code) {
+        triggerContentEventProgress(new AddVoucherHelper(), AddVoucherHelper.createBundle(code), this);
     }
     
     private void triggerRemoveVoucher() {

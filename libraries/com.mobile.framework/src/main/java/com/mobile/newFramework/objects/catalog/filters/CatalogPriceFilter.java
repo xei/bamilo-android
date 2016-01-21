@@ -3,6 +3,7 @@ package com.mobile.newFramework.objects.catalog.filters;
 import android.content.ContentValues;
 import android.os.Parcel;
 
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -68,7 +69,7 @@ public class CatalogPriceFilter extends CatalogFilter {
         }
 
         if(hasAppliedCheckBoxOption()) {
-            values.put(option.getCheckBoxOption().getId(), true);
+            values.put(option.getCheckBoxOption().getId(), IntConstants.TRUE);
         }
         return values;
     }

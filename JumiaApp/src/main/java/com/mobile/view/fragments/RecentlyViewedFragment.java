@@ -4,11 +4,12 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.GridView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.RecentlyViewedAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -33,6 +34,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
@@ -57,7 +59,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     private ArrayList<ProductMultiple> mProducts;
 
-    private GridView mGridView;
+    private HeaderFooterGridView mGridView;
 
     private View mClickedBuyButton;
 
@@ -105,7 +107,13 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get grid view
-        mGridView = (GridView) view.findViewById(R.id.recentlyviewed_grid);
+        mGridView = (HeaderFooterGridView) view.findViewById(R.id.recentlyviewed_grid);
+        mGridView.setHasFixedSize(true);
+        mGridView.setGridLayoutManager(getResources().getInteger(R.integer.favourite_num_columns));
+        mGridView.setNestedScrollingEnabled(false);
+        mGridView.setItemAnimator(new DefaultItemAnimator());
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
         // Get clear all button
         mClearAllButton = (TextView) view.findViewById(R.id.recentlyviewed_button_grey);
         mClearAllButton.setOnClickListener(this);

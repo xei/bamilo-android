@@ -6,13 +6,12 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,7 +33,6 @@ import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.catalog.Banner;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
-import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -48,7 +46,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.catalog.HeaderFooterInterface;
 import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.dialogfragments.DialogCampaignItemSizeListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
@@ -180,8 +177,11 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             }
         });
 
-        mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.catalog_grid_num_columns));
+        mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.campaign_num_columns));
+
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
+        mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
+        mGridView.setHasFixedSize(true);
         // Validate the current state
         getAndShowCampaign();
     }
@@ -322,58 +322,31 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      * @return View
      * @author sergiopereira
      */
-    private View getBannerView(){
-        // Inflate the banner layout
-        final View bannerView = LayoutInflater.from(getActivity()).inflate(R.layout.campaign_fragment_banner, mGridView, false);
-        // Get the image view
-        final ImageView imageView = (ImageView) bannerView.findViewById(R.id.campaign_banner);
-        // Load the bitmap
+    private void getBannerView(){
         String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
-        RocketImageLoader.instance.loadImage(url, imageView, false, new RocketImageLoader.RocketImageLoaderListener() {
-
-            @Override
-            public void onLoadedSuccess(String url, Bitmap bitmap) {
-                // Show content
-                imageView.setImageBitmap(bitmap);
-                bannerState = VISIBLE;
-                showContent(bannerView);
-            }
-
-            @Override
-            public void onLoadedError() {
-                bannerView.setVisibility(View.GONE);
-                mGridView.hideHeaderView();
-                bannerState = HIDDEN;
-                // Show content
-                showContent(bannerView);
-            }
-
-            @Override
-            public void onLoadedCancel() {
-                bannerView.setVisibility(View.GONE);
-                mGridView.hideHeaderView();
-                bannerState = HIDDEN;
-                // Show content
-                showContent(bannerView);
-            }
-        });
-
-        // Return the banner
-        return bannerView;
+        mGridView.setHeaderView(url);
+        bannerState = VISIBLE;
+        mGridView.showHeaderView();
+        showContent();
     }
 
     /**
      * Show only the content view
      * @author sergiopereira
      */
-    private synchronized void showContent(View bannerView) {
+    private synchronized void showContent() {
         // Validate the current data
         if (mGridView.getAdapter() == null) {
-            // Add banner to header
-            if (bannerState != HIDDEN) mGridView.setHeaderView(bannerView);
             // Set adapter
             CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), mIOnProductClick);
             mGridView.setAdapter(mArrayAdapter);
+            // Add banner to header
+            if (bannerState != HIDDEN) {
+                // Load the bitmap
+                String url = (getResources().getBoolean(R.bool.isTablet)) ? mCampaign.getTabletBanner() : mCampaign.getMobileBanner();
+                mGridView.setHeaderView(url);
+                mGridView.showHeaderView();
+            }
         }
         // Show content
         mGridView.refreshDrawableState();
@@ -636,17 +609,25 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
     public class CampaignAdapter extends RecyclerView.Adapter<CampaignItemHolder> implements OnClickListener, OnItemSelectedListener, HeaderFooterInterface {
 
-        // private static final int YELLOW_PERCENTAGE = 34 < X < 64
+        private static final int ITEM_VIEW_TYPE_HEADER = 0;
+
+        public static final int ITEM_VIEW_TYPE_LIST = 1;
 
         private static final int GREEN_PERCENTAGE = 64;
 
         private static final int ORANGE_PERCENTAGE = 34;
+
+        private static final int HEADER_POSITION = 0;
 
         private final LayoutInflater mInflater;
 
         private final IOnProductClick mOnClickListener;
 
         private final ArrayList<CampaignItem> mItems;
+
+        private boolean isToShowHeader = false;
+
+        private String mBannerImage;
 
         /**
          * Constructor
@@ -665,7 +646,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
          * Set the campaign data
          * @author sergiopereira
          */
-        private void setData(CampaignItemHolder view, CampaignItem item, int position) {
+        private void setData(final CampaignItemHolder view, CampaignItem item, int position) {
             //Log.d(TAG, "SET DATA");
             // Set stock off
             setStockOff(view, item);
@@ -695,12 +676,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             int remainingTime = item.getRemainingTime();
             // Set itemView's remainingTime to be used by handler
             view.mRemainingTime = remainingTime;
-            // start handler processing
-            if(remainingTime > 0){
-                Message msg = new Message();
-                msg.obj = view;
-                mHandler.sendMessageDelayed(msg, 1000);
-            }
             // update Timer
             updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
         }
@@ -711,7 +686,18 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
          *
          * Update Timer with remaining Time or show "Offer Ended" when time remaining reaches 0
          */
-        private void updateTimer(TextView timer, View timerContainer, View buttonBuy, View offerEnded, View name, View image, int remainingTime, View imageContainer) {
+        private void updateTimer(final TextView timer, final View timerContainer, final View buttonBuy, final View offerEnded, final View name, final View image, final int remainingTime, final View imageContainer) {
+            // start handler processing
+            if(remainingTime > 0){
+                timer.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        // update Timer
+                        updateTimer(timer, timerContainer, buttonBuy, offerEnded, name, image, remainingTime, imageContainer);
+                    }
+                }, 1000);
+            }
+
 //            Print.d(TAG, "updateTimer");
             if (remainingTime > 0) {
 //                Print.d(TAG, "Product with remainingTime");
@@ -971,39 +957,47 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
         @Override
         public CampaignItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new CampaignItemHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.campaign_fragment_list_item, parent, false));
+            int layout = R.layout.campaign_fragment_list_item;
+            if(viewType == ITEM_VIEW_TYPE_HEADER) layout = R.layout._def_campaign_fragment_header;
+            return new CampaignItemHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
         }
 
         @Override
         public void onBindViewHolder(CampaignItemHolder holder, int position) {
-            setData(holder, mItems.get(position), position);
+            // Case header
+            if(isHeader(position)){
+                setHeaderImage(holder);
+                return;
+            }
+            // get position - 1 to ignore header position.
+            setData(holder, mItems.get(position - 1), position - 1);
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            // Case header
+            if(isHeader(position)) return ITEM_VIEW_TYPE_HEADER;
+            return ITEM_VIEW_TYPE_LIST;
+        }
+
+        /**
+         * Validate if the current position is the header view.
+         * @param position - the current position
+         * @return true or false
+         */
+        private boolean isHeader(int position) {
+            return isToShowHeader && position == HEADER_POSITION;
         }
 
         @Override
         public int getItemCount() {
-            return mItems.size();
+            // increment item count to include header.
+            return mItems.size() + 1;
         }
-
-
-        /**
-         * Handler used to update Timer every second, when user is not scrolling
-         */
-        private final Handler mHandler = new Handler() {
-            public void handleMessage(android.os.Message msg) {
-                // only update if is not detected a fling (fast scrolling) on gridview
-                if (!isScrolling) {
-                    CampaignItemHolder mCampaignItemHolder = (CampaignItemHolder) msg.obj;
-                    updateTimer(mCampaignItemHolder.mTimer, mCampaignItemHolder.mTimerContainer, mCampaignItemHolder.mButtonBuy, mCampaignItemHolder.mOfferEnded
-                            , mCampaignItemHolder.mName, mCampaignItemHolder.mImage,mCampaignItemHolder. mRemainingTime, mCampaignItemHolder.mImageContainer);
-                }
-                this.sendEmptyMessageDelayed(0, 1000);
-            }
-        };
-
 
         @Override
         public void showHeaderView() {
-
+            isToShowHeader = true;
         }
 
         @Override
@@ -1027,8 +1021,49 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         }
 
         @Override
-        public void setHeader(@Nullable View banner) {
+        public void setHeader(@Nullable String banner) {
+            if(banner == null) {
+                hideHeaderView();
+            } else {
+                mBannerImage = banner;
+                showHeaderView();
+            }
 
+        }
+
+        private void setHeaderImage(final CampaignItemHolder holder){
+            if(!TextUtils.isEmpty(mBannerImage)){
+                // set listener
+//                holder.itemView.setOnClickListener(this);
+                // just in order to have a position tag in order to not crash on the onCLick
+                holder.itemView.setTag(R.id.position, -1);
+                holder.mBannerImageView.setVisibility(View.GONE);
+                // Set image
+                RocketImageLoader.instance.loadImage(mBannerImage, holder.mBannerImageView, false, new RocketImageLoader.RocketImageLoaderListener() {
+
+                    @Override
+                    public void onLoadedSuccess(String url, Bitmap bitmap) {
+                        // Show content
+                        holder.mBannerImageView.setImageBitmap(bitmap);
+                        holder.mBannerImageView.setVisibility(View.VISIBLE);
+                        bannerState = VISIBLE;
+                    }
+
+                    @Override
+                    public void onLoadedError() {
+                        holder.mBannerImageView.setVisibility(View.GONE);
+                        mGridView.hideHeaderView();
+                        bannerState = HIDDEN;
+                    }
+
+                    @Override
+                    public void onLoadedCancel() {
+                        holder.mBannerImageView.setVisibility(View.GONE);
+                        mGridView.hideHeaderView();
+                        bannerState = HIDDEN;
+                    }
+                });
+            }
         }
     }
 
@@ -1055,6 +1090,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private final View mTimerContainer;
         private final TextView mTimer;
         private int mRemainingTime;
+        private final ImageView mBannerImageView;
 
         public CampaignItemHolder(View itemView) {
             super(itemView);
@@ -1094,6 +1130,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             mTimerContainer = itemView.findViewById(R.id.campaign_item_stock_timer_container);
             // Get timer
             mTimer = (TextView) itemView.findViewById(R.id.campaign_item_stock_timer);
+            // Get banner
+            mBannerImageView = (ImageView) itemView.findViewById(R.id.campaign_header_image);
 
         }
     }

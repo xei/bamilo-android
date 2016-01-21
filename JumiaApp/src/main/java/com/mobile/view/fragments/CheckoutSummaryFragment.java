@@ -3,7 +3,6 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,11 +26,13 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
@@ -312,14 +313,20 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
             // Name
             ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
+            //shop first image
+            ImageView shopFirstImageView = (ImageView) cartItemView.findViewById(R.id.item_shop_first);
+            ProductUtils.setShopFirst(item, shopFirstImageView);
+            ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
 
             String imageUrl = item.getImageUrl();
             ImageView mImageView = (ImageView) cartItemView.findViewById(R.id.image_view);
             View pBar = cartItemView.findViewById(R.id.image_loading_progress);
             RocketImageLoader.instance.loadImage(imageUrl, mImageView, pBar, R.drawable.no_image_small);
             // Price
-            String price = item.getPrice();
-            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
+            String price = item.getPriceString();
+            if(!TextUtils.equals(price, item.getSpecialPriceString())){
+                price = item.getSpecialPriceString();
+            }
             ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
@@ -362,7 +369,6 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
-        shippingAddressView.findViewById(R.id.checkout_address_item_radio_btn).setVisibility(View.GONE);
 
         // Only use region if is available
         StringBuilder regionString = new StringBuilder();
@@ -421,6 +427,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                         int id = v.getId();
                         if (id == R.id.button1) {
                             dismissDialogFragment();
+                            JumiaApplication.INSTANCE.setCart(null);
+                            getBaseActivity().updateCartInfo();
                             getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         }
                     }
@@ -502,8 +510,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void onClickEditAddessButton() {
         Print.i(TAG, "ON CLICK: EDIT ADDRESS");
-        if (!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
-            getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString())) {
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -512,8 +520,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
      */
     private void onClickEditMethodButton() {
         Print.i(TAG, "ON CLICK: EDIT METHOD");
-        if (!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
-            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString())) {
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_SHIPPING, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 

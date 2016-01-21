@@ -168,14 +168,6 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
-        // Set vertical divider
-        if(level == ITEM_VIEW_TYPE_GRID) {
-            holder.verticalDivider.setVisibility(View.VISIBLE);
-        } else if (isTabletInLandscape) {
-            holder.verticalDivider.setVisibility(View.VISIBLE);
-        } else {
-            holder.verticalDivider.setVisibility(View.GONE);
-        }
     }
 
     /**
@@ -233,25 +225,6 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
         notifyDataSetChanged();
     }
     
-//    /**
-//     * Append the new data to the current data.
-//     * @param newDataSet - the new data
-//     */
-//    public void updateData(ArrayList<Product> newDataSet){
-//        CollectionUtils.addAll(mDataSet, newDataSet);
-//        notifyDataSetChanged();
-//    }
-//
-//    /**
-//     * Replace the current data and update the adapter.
-//     * @param newDataSet - the new data
-//     */
-//    public void replaceData(ArrayList<Product> newDataSet){
-//        mDataSet = newDataSet;
-//
-//        notifyDataSetChanged();
-//    }
-
     /**
      * Get the product from the current data.
      * @param position - the respective product position
@@ -311,7 +284,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
     }
 
     @Override
-    public void setHeader(@Nullable View banner) {
+    public void setHeader(@Nullable String banner) {
 
     }
 

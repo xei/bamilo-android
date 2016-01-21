@@ -547,9 +547,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
         // Checkout Tab
         TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
-        mCheckoutTabLayout.setOnTabSelectedListener(mCheckoutOnTabSelectedListener);
-
-
     }
     
     /*
@@ -1099,7 +1096,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TrackerDelegator.trackSearchSuggestions(searchText);
         // Data
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
@@ -1403,13 +1400,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 baseActivityProgressDialog = null;
             }
         } catch (IllegalStateException e) {
-            // ...
+            e.printStackTrace();
         }
     }
 
 //    public void showKeyboard() {
 //        // Log.d( TAG, "showKeyboard" );
-//        Print.i(TAG, "code1here showKeyboard");
+//        //Print.i(TAG, "code1here showKeyboard");
 //        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
 //        // use the above as the method below does not always work
@@ -1626,11 +1623,16 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // CASE TAB_CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
         // CASE TAB_CHECKOUT_BILLING
         if (step == ConstantsCheckout.CHECKOUT_BILLING) {
-            popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString());
+            String last = FragmentController.getInstance().getLastEntry();
+            // Validate last entry to support create and edit address (rotation)
+            if(!TextUtils.equals(last, FragmentType.CHECKOUT_CREATE_ADDRESS.toString()) &&
+               !TextUtils.equals(last, FragmentType.CHECKOUT_EDIT_ADDRESS.toString())) {
+                popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString());
+            }
         }
         // CASE TAB_CHECKOUT_SHIPPING
         else if (step == ConstantsCheckout.CHECKOUT_SHIPPING ) {
-            popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
+            popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString());
         }
         // CASE TAB_CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
     }

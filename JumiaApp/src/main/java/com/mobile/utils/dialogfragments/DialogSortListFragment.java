@@ -34,8 +34,6 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 
 	private static final long DELAY_DISMISS = 250;
 
-	public static final int NO_INITIAL_POSITION = -1;
-
 	private String mTitle;
 
 	private ArrayList<String> mItems;
@@ -71,13 +69,6 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 
 	/**
 	 * Called from Shopping cart.
-	 * @param fragment
-	 * @param listener
-	 * @param id
-	 * @param title
-	 * @param items
-	 * @param initialPosition
-	 * @return
 	 */
 	public static DialogSortListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, int initialPosition) {
 	    Print.d(TAG, "NEW INSTANCE");

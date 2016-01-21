@@ -25,8 +25,7 @@ public class CheckoutStepLogin extends CheckoutStepObject {
         super.initialize(jsonObject);
         // Customer
         customer = new Customer();
-        customer.initialize(jsonObject);
-        return true;
+        return customer.initialize(jsonObject);
     }
 
     public Customer getCustomer() {

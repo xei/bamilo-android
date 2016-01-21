@@ -55,8 +55,8 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
      */
     @Override
-    public String create(String table) {
-        return "CREATE TABLE " + table + " (" + 
+    public String create() {
+        return "CREATE TABLE %s (" +
                 _ID +           " INTEGER PRIMARY KEY, " + 
                 _QUERY +        " TEXT," +  
                 _TIME_STAMP +   " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" + 
@@ -103,7 +103,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
 		Print.i(TAG, "SQL QUERY: " + query);
 		// Return
-		return getRecentQueries(query);
+		return getRecentQueries(query, null);
     }
     
     /**
@@ -117,12 +117,12 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 		// Select the best resolution
 		String query =	"SELECT DISTINCT " + _QUERY + " " +
 			    		"FROM " + TABLE_NAME + " " +
-			    		"WHERE " + _QUERY + " LIKE '%" + searchText + "%' " + 
+			    		"WHERE " + _QUERY + " LIKE ? " +
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
 		Print.i(TAG, "SQL QUERY: " + query);
 		// Return
-		return getRecentQueries(query);
+		return getRecentQueries(query, new String[]{"'%"+searchText+"%'"});
     }
 
     /**
@@ -153,7 +153,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @author sergiopereira
      * @throws InterruptedException 
      */
-    public static synchronized ArrayList<Suggestion> getRecentQueries(String query) throws InterruptedException{
+    private static synchronized ArrayList<Suggestion> getRecentQueries(String query, String[] queryParams) throws InterruptedException{
     	Print.i(TAG, "SQL QUERY: " + query);
     	// Lock access
     	// DarwinDatabaseSemaphore.getInstance().getLock();
@@ -163,7 +163,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 		ArrayList<Suggestion> recentSuggestions = new ArrayList<>();
 		// 
         try {
-            Cursor cursor = db.rawQuery(query, null);
+            Cursor cursor = db.rawQuery(query, queryParams);
             if (cursor != null && cursor.getCount() > 0) {
                 Print.d(TAG, "QUERY RESULT SIZE: " + cursor.getCount());
                 // Move to first position

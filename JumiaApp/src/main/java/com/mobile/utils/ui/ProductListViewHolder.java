@@ -32,7 +32,7 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
     public TextView newArrivalBadge;
     public ImageView favourite;
     public ImageView headerImage;
-    public View verticalDivider;
+    public ImageView shopFirst;
 
     /**
      * Constructor
@@ -52,8 +52,8 @@ public class ProductListViewHolder extends RecyclerView.ViewHolder {
         newArrivalBadge = (TextView) view.findViewById(R.id.new_arrival_badge);
         favourite = (ImageView) view.findViewById(R.id.image_is_favourite);
         headerImage = (ImageView) view.findViewById(R.id.catalog_header_image);
-        verticalDivider = view.findViewById(R.id.vdivider);
         ratingContainer = (ViewGroup)view.findViewById(R.id.rating_container);
+        shopFirst = (ImageView)view.findViewById(R.id.item_shop_first);
     }
 }
 

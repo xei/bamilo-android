@@ -2,7 +2,6 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +30,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
@@ -39,6 +39,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
@@ -383,6 +384,10 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
             RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
+            //shop first image
+            ImageView shopFirstImageView = (ImageView) prodInflateView.findViewById(R.id.shop_first_item);
+            ProductUtils.setShopFirst(item, shopFirstImageView);
+            ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
             // Brand
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrand());
             // Name
@@ -390,8 +395,10 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Quantity
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, item.getQuantity()));
             // Price
-            String price = item.getPrice();
-            if (!item.getPrice().equals(item.getSpecialPrice())) price = item.getSpecialPrice();
+            String price = item.getPriceString();
+            if(!TextUtils.equals(price, item.getSpecialPriceString())){
+                price = item.getSpecialPriceString();
+            }
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));
             // Variation
             String variation = item.getVariation();
@@ -409,6 +416,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 prodInflateView.findViewById(R.id.my_order_item_divider).setVisibility(View.GONE);
             }
 
+            ProductUtils.setShopFirst(item, prodInflateView.findViewById(R.id.shop_first_item));
             // Add item view
             mProductsContainer.addView(prodInflateView);
         }
@@ -472,7 +480,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
-        shippingAddressView.findViewById(R.id.checkout_address_item_radio_btn).setVisibility(View.GONE);
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
         container.addView(shippingAddressView);
     }
@@ -540,9 +547,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void onClickEditAddressesButton() {
         Print.i(TAG, "ON CLICK: EditAddresses");
-        if (!getBaseActivity().popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString())) {
-            FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
-            getBaseActivity().onSwitchFragment(FragmentType.MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString())) {
+            FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_FINISH.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_MY_ADDRESSES, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -551,9 +558,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void onClickEditShippingMethodButton() {
         Print.i(TAG, "ON CLICK: EditShippingMethod");
-        if (!getBaseActivity().popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString())) {
-            FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
-            getBaseActivity().onSwitchFragment(FragmentType.SHIPPING_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString())) {
+            FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_FINISH.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_SHIPPING, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 
@@ -564,9 +571,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void onClickEditPaymentOptionsButton() {
         Print.i(TAG, "ON CLICK: EditPaymentOptions");
-        if (!getBaseActivity().popBackStackUntilTag(FragmentType.PAYMENT_METHODS.toString())) {
-            FragmentController.getInstance().popLastEntry(FragmentType.MY_ORDER.toString());
-            getBaseActivity().onSwitchFragment(FragmentType.PAYMENT_METHODS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if (!getBaseActivity().popBackStackUntilTag(FragmentType.CHECKOUT_PAYMENT.toString())) {
+            FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_FINISH.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_PAYMENT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
     }
 

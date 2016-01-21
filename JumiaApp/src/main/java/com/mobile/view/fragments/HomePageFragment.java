@@ -5,25 +5,21 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.widget.NestedScrollView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.factories.FormFactory;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.CategoriesTableHelper;
-import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -34,7 +30,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -309,7 +304,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers().values()) {
-            // Case Form NewsLetter
+            // Case Form NewsLetter disable until feature is fully implemented.
+            /*
             if(baseTeaserType.getType() == TeaserGroupType.FORM_NEWSLETTER){
                 Form form = null;
                 try{
@@ -324,6 +320,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 }
 
             } else {
+            */
                 // Create view
                 BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
                 if (viewHolder != null) {
@@ -334,7 +331,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     // Save
                     mViewHolders.add(viewHolder);
                 }
-            }
+            // }
         }
         // Restore the scroll state
         //restoreScrollState();
@@ -475,12 +472,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         BaseTeaserGroupType campaignGroup = mHomePage.getTeasers().get(group.getType());
         // Case from campaigns
         if (group == TeaserGroupType.CAMPAIGNS) {
-            Print.i(TAG, "code1campaigns group == TeaserGroupType.CAMPAIGNS");
+            //Print.i(TAG, "code1campaigns group == TeaserGroupType.CAMPAIGNS");
             campaigns = TargetLink.createCampaignList(campaignGroup);
         }
         // Case from other
         else {
-            Print.i(TAG, "code1campaigns createCampaignList");
+            //Print.i(TAG, "code1campaigns createCampaignList");
             campaigns = TargetLink.createCampaignList(title, id);
         }
         return campaigns;

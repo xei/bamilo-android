@@ -17,7 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
-import com.ad4screen.sdk.Tag;
+import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -61,7 +61,7 @@ import java.util.zip.ZipFile;
  * @date 25/04/2013
  * @description
  */
-@Tag(name = "SplashScreenActivity")
+@UseA4S
 public class SplashScreenActivity extends FragmentActivity implements IResponseCallback, OnClickListener {
 
     private final static String TAG = SplashScreenActivity.class.getSimpleName();
@@ -137,8 +137,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Print.i(TAG, "ON RESUME");
         // Intercept event
         shouldHandleEvent = true;
-        // Start Accengage for this activity
-        Ad4PushTracker.get().startActivity(this);
         // Show animated map
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(SPLASH_DURATION_IN);
@@ -155,8 +153,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        // Stop Accengage for this activity
-        Ad4PushTracker.get().stopActivity(this);
         // Validate dialog
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();
@@ -196,7 +192,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             int errorCode = baseResponse.getError().getCode();
             EventType eventType = baseResponse.getEventType();
 
-            Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
+            //Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
                 showDevInfo();
             }
@@ -329,7 +325,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError() != null ? baseResponse.getError().getCode() : ErrorCode.NO_ERROR;
 
-        Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
+        //Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
 
         if (dialog != null && dialog.isVisible()) {
             try {
@@ -589,7 +585,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-                Print.i(TAG, "code1configs received response correctly!!!");
+                //Print.i(TAG, "code1configs received response correctly!!!");
                 // Auto country selection
                 LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
             } else {

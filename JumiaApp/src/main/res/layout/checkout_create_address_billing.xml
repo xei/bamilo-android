@@ -9,7 +9,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/address_billing_title"
         style="@style/HeaderStyle"
-        android:text="@string/billing_billing_label"
+        android:text="@string/address_billing_label"
         android:textStyle="bold"/>
 
     <!-- FORM -->
@@ -22,7 +22,7 @@
         android:layout_marginTop="@dimen/margin_20px"
         android:orientation="vertical"
         android:paddingLeft="@dimen/rounded_margin_mid"
-        android:paddingRight="@dimen/rounded_margin_mid"></LinearLayout>
+        android:paddingRight="@dimen/rounded_margin_mid"/>
 
     <Space
         android:layout_width="match_parent"

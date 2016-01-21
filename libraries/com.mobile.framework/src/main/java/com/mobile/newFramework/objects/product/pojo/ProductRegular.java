@@ -27,6 +27,8 @@ public class ProductRegular extends ProductBase {
     protected int mTotalReviews;
     protected int mTotalRatings;
     private int mBrandId;
+    private boolean shopFirst;
+    private String shopFirstOverlay;
     protected String mTarget;
     /**
      * Empty constructor
@@ -58,7 +60,7 @@ public class ProductRegular extends ProductBase {
         }
         // Is new
         isNew = jsonObject.optBoolean(RestConstants.IS_NEW);
-        // Wish List flag
+        // Wish List flag>>>>>>>>>>
         if (jsonObject.optBoolean(RestConstants.IS_WISH_LIST)) {
             WishListCache.add(mSku);
         }
@@ -70,7 +72,11 @@ public class ProductRegular extends ProductBase {
             mTotalRatings = ratings.optInt(RestConstants.RATINGS_TOTAL);
             mTotalReviews = ratings.optInt(RestConstants.REVIEWS_TOTAL);
         }
+
+        shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST, false);
+        shopFirstOverlay = jsonObject.optString(RestConstants.SHOP_FIRST_OVERLAY);
         mTarget = jsonObject.optString(RestConstants.TARGET);
+
         return true;
     }
 
@@ -136,6 +142,10 @@ public class ProductRegular extends ProductBase {
         return "";
     }
 
+    public String getShopFirstOverlay() {
+        return shopFirstOverlay;
+    }
+
     public String getTarget() {
         return mTarget;
     }
@@ -155,6 +165,8 @@ public class ProductRegular extends ProductBase {
         mAvgRating = in.readDouble();
         mTotalReviews = in.readInt();
         mTotalRatings = in.readInt();
+        shopFirst = in.readByte() != 0x00;
+        shopFirstOverlay = in.readString();
         mTarget = in.readString();
     }
 
@@ -170,6 +182,8 @@ public class ProductRegular extends ProductBase {
         dest.writeDouble(mAvgRating);
         dest.writeInt(mTotalReviews);
         dest.writeInt(mTotalRatings);
+        dest.writeByte((byte) (shopFirst ? 0x01 : 0x00));
+        dest.writeString(shopFirstOverlay);
         dest.writeString(mTarget);
     }
 
@@ -191,4 +205,7 @@ public class ProductRegular extends ProductBase {
         }
     };
 
+    public boolean isShopFirst() {
+        return shopFirst;
+    }
 }

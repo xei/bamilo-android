@@ -6,18 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RatingBar;
 
 import com.mobile.components.absspinner.IcsAdapterView;
-import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
-import com.mobile.newFramework.forms.IFormField;
-import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.utils.RadioGroupLayout;
 import com.mobile.view.R;
 
 import java.lang.ref.WeakReference;
@@ -157,99 +152,19 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     }
 
     /**
-     * Fills a hashmap with the values from the form.
-     * Only used to send the info of the form to the server.
+     * Fills a ContentValues with the values from the form.
+     * Only used to submit the form.
+     *
      * @return A hashmap containing the values from the form
      */
-    public ContentValues save() {
+    public @NonNull ContentValues save() {
         ContentValues model = new ContentValues();
         for (DynamicFormItem control : this) {
-            // Case metadata
-            if (control != null && control.getType() == FormInputType.metadata) {
-                control.addSubFormFieldValues(model);
-                model.put(control.getName(), control.getValue());
-            }
-            // Case radio group vertical
-            else if (null != control && control.getType() == FormInputType.radioGroup && control.isRadioGroupLayoutVertical()) {
-                ContentValues mValues = control.getSubFormsValues();
-                if (mValues != null) {
-                    model.putAll(mValues);
-                }
-                model.put("name", control.getRadioGroupLayoutVerticalSelectedFieldName());
-                model.put(control.getName(), control.getValue());
-            }
-            // Case list from api call
-            else if (control != null && control.getType() == FormInputType.list ) {
-                saveListSelection(control, model);
-            }
-            // Case related number
-            else if (control != null && control.getType() == FormInputType.relatedNumber ) {
-                // Get number
-                String number = control.getValue();
-                if (TextUtils.isNotEmpty(number)) {
-                    model.put(control.getName(), number);
-                    // Get related option
-                    IFormField related = control.getEntry().getRelatedField();
-                    // Validate related type
-                    FormInputType relatedType = related.getInputType();
-                    // Only send the related info if the main is filled
-
-                    if(relatedType == FormInputType.radioGroup) {
-                        RadioGroupLayout group = (RadioGroupLayout) control.getControl().findViewWithTag(DynamicFormItem.RELATED_RADIO_GROUP_TAG);
-                        // Get selected position
-                        int idx = group.getSelectedIndex();
-                        // Get option value from related item
-                        String value = related.getOptions().get(idx).getValue();
-                        model.put(related.getName(), value);
-                    }
-                    else if (relatedType == FormInputType.list) {
-                        IcsSpinner spinner = (IcsSpinner) control.getControl().findViewWithTag(DynamicFormItem.RELATED_LIST_GROUP_TAG);
-                        FormListItem item = (FormListItem) spinner.getSelectedItem();
-                        if (item != null) {
-                            model.put(related.getName(), item.getValue());
-                        }
-                    }
-                }
-
-            }
-            // Case ratings
-            else if (null != control && control.getType() == FormInputType.rating) {
-                RatingBar bar = (RatingBar) control.getControl().findViewWithTag(DynamicFormItem.RATING_BAR_TAG);
-                Map<String, String> ratingMap = control.getEntry().getDateSetRating();
-                if(CollectionUtils.isNotEmpty(ratingMap)){
-                    for (int i = 0; i < ratingMap.size(); i++){
-                        model.put(bar.getTag(R.id.rating_bar_id).toString(), (int) bar.getRating());
-                    }
-                }
-            }
-            // Case default
-            else if (null != control && null != control.getValue()) {
-                model.put(control.getName(), control.getValue());
-            }
+            control.save(model);
         }
-
         return model;
     }
 
-    /**
-     * Save value from form list item. (Regions and Cities)
-     */
-    private void saveListSelection(DynamicFormItem control, ContentValues model) {
-        ViewGroup mRegionGroup = (ViewGroup) control.getControl();
-        IcsSpinner spinner = (IcsSpinner) mRegionGroup.getChildAt(0);
-        FormListItem mSelectedRegion = (FormListItem) spinner.getSelectedItem();
-        if(mSelectedRegion != null)
-            model.put(control.getName(), mSelectedRegion.getValue());
-    }
-
-    public int getSelectedValueIndex() {
-        for (DynamicFormItem control : this) {
-            if (null != control && control.getType() == FormInputType.radioGroup && control.isRadioGroupLayoutVertical()) {
-                return control.getSubFormsSelectedIndex();
-            }
-        }
-        return -1;
-    }
 
     /**
      * Resets all the fields on the form to their original values.

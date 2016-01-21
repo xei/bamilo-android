@@ -1,7 +1,6 @@
 package com.mobile.utils.catalog;
 
 import android.support.annotation.Nullable;
-import android.view.View;
 
 import com.mobile.newFramework.objects.catalog.Banner;
 
@@ -14,5 +13,5 @@ public interface HeaderFooterInterface {
     void showFooterView();
     void hideFooterView();
     void setHeader(@Nullable Banner banner);
-    void setHeader(@Nullable View banner);
+    void setHeader(@Nullable  String banner);
 }

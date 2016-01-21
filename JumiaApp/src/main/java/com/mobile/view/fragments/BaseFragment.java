@@ -643,7 +643,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     public void showWarningSuccessMessage(@Nullable String message, @Nullable EventType eventType) {
-        int id = MessagesUtils.getSuccessMessageId(eventType);
+        int id = MessagesUtils.getMessageId(eventType, false);
         if(getBaseActivity() != null && id > 0) {
             String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(id);
             getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
@@ -661,7 +661,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         showWarningErrorMessage(message, null);
     }
     public void showWarningErrorMessage(@Nullable String message, @Nullable EventType eventType) {
-        int id = MessagesUtils.getSuccessMessageId(eventType);
+        int id = MessagesUtils.getMessageId(eventType, true);
         if(getBaseActivity() != null) {
             String text = TextUtils.isNotEmpty(message) ? message : id > 0 ? getBaseActivity().getString(id) : null;
             if(text != null)
@@ -835,6 +835,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case FORGET_PASSWORD_EVENT:
             case REMOVE_PRODUCT_FROM_WISH_LIST:
             case ADD_PRODUCT_TO_WISH_LIST:
+            case ADD_VOUCHER:
+            case REMOVE_VOUCHER:
                 handleSuccessTaskEvent(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), eventType);
                 return true;
             default:
@@ -944,6 +946,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 // Case form submission
                 case REVIEW_RATING_PRODUCT_EVENT:
                 case LOGIN_EVENT:
+                case GUEST_LOGIN_EVENT:
                 case REGISTER_ACCOUNT_EVENT:
                 case EDIT_USER_DATA_EVENT:
                 case CHANGE_PASSWORD_EVENT:

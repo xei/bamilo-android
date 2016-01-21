@@ -10,6 +10,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.EditText;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.address.EditAddressHelper;
@@ -101,7 +102,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Get arguments
         Bundle arguments = getArguments() != null ? getArguments() : savedInstanceState;
         if (arguments != null) {
-            mAddressId = arguments.getInt(EditAddressFragment.SELECTED_ADDRESS, INVALID_ADDRESS_ID);
+            mAddressId = arguments.getInt(ConstantsIntentExtra.ARG_1, INVALID_ADDRESS_ID);
         }
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_EDIT_ADDRESS);
     }

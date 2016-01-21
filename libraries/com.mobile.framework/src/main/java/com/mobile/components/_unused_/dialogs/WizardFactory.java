@@ -1,22 +1,19 @@
-package com.mobile.utils.dialogfragments;
+package com.mobile.components._unused_.dialogs;
 
 
 import android.content.Context;
 
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 
+@SuppressWarnings("unused")
 public class WizardFactory {
     
     public static final String TAG = WizardFactory.class.getSimpleName();
 
     /**
      * Factory used to show a wizard for first time
-     * @param type
-     * @param context
-     * @author sergiopereira
      */
-    public static void show(WizardType type, Context context) {
+    public static void show(WizardPreferences.WizardType type, Context context) {
         // Validate if is first time
         if(!WizardPreferences.isFirstTime(context, type)) return;
         // Show the wizard    

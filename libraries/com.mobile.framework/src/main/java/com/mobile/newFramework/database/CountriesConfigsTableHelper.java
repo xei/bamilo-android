@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
 
@@ -59,8 +58,8 @@ public class CountriesConfigsTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
      */
     @Override
-    public String create(String table) {
-        return "CREATE TABLE " + table + " (" + 
+    public String create() {
+        return "CREATE TABLE %s (" +
                 _ID +           " INTEGER PRIMARY KEY, " +
                 _COUNTRY_NAME +     " TEXT," + 
                 _COUNTRY_URL +      " TEXT," + 
@@ -125,7 +124,7 @@ public class CountriesConfigsTableHelper extends BaseTable {
     		while (cursor.moveToNext()) {
     			CountryObject mCountry = new CountryObject();
     			mCountry.setCountryName(cursor.getString(1));
-    			Print.i(TAG, "code1mcountry : " + mCountry.getCountryName());
+//    			//Print.i(TAG, "code1mcountry : " + mCountry.getCountryName());
     			mCountry.setCountryUrl(cursor.getString(2));
     			mCountry.setCountryFlag(cursor.getString(3));
     			mCountry.setCountryIso(cursor.getString(4));

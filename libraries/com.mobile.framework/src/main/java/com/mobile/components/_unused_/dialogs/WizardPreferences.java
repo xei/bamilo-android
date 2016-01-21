@@ -1,11 +1,10 @@
-package com.mobile.utils.dialogfragments;
+package com.mobile.components._unused_.dialogs;
 
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
-import com.mobile.constants.ConstantsSharedPrefs;
 import com.mobile.newFramework.utils.output.Print;
 
 public class WizardPreferences {
@@ -21,11 +20,11 @@ public class WizardPreferences {
     }
 
     private static final String TAG = WizardPreferences.class.getSimpleName();
+
+    public static String WIZARDS_SHARED_PREFERENCES = "wizards_prefs";
     
     /**
      * Function used to save session token
-     * 
-     * @param token
      * @author sergiopereira
      */
     public static void changeState(Context context, WizardType type) {
@@ -36,7 +35,7 @@ public class WizardPreferences {
         }
         Print.d(TAG, "WIZARD SAVE PREFS: TYPE " + type.toString());
         // Get shared prefs
-        SharedPreferences sharedPreferences = context.getSharedPreferences(ConstantsSharedPrefs.WIZARDS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(WIZARDS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         // Save
         Editor editor = sharedPreferences.edit();
         switch (type) {
@@ -66,10 +65,6 @@ public class WizardPreferences {
 
     /**
      * Function used to get the session token
-     * 
-     * @param context
-     * @return token or null
-     * @author sergiopereira
      */
     public static Boolean isFirstTime(Context context, WizardType type) {
         // Validate context
@@ -79,7 +74,7 @@ public class WizardPreferences {
         }
         Print.d(TAG, "WIZARD GET PREFS: TYPE " + type.toString());
         // Get prefs
-        SharedPreferences sharedPreferences = context.getSharedPreferences(ConstantsSharedPrefs.WIZARDS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(WIZARDS_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         Boolean value = true;
         switch (type) {
         case HOME:

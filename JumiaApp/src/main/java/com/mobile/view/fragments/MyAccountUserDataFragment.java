@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
@@ -18,6 +19,7 @@ import com.mobile.helpers.account.SetUserDataHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -47,6 +49,10 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     private DynamicForm mChangePasswordForm;
 
     private Bundle mFormSavedState;
+
+    private TextView mChangePasswordTitle;
+
+    private TextView mChangePasswordButton;
     /**
      * Empty constructor
      */
@@ -227,7 +233,9 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     public void setAppContentLayout(View mainView) {
         mUserDataFormContainer = (LinearLayout) mainView.findViewById(R.id.user_data_container);
         mChangePasswordFormContainer = (LinearLayout) mainView.findViewById(R.id.change_password_layout);
-        mainView.findViewById(R.id.change_password_save_button).setOnClickListener(this);
+        mChangePasswordTitle = (TextView) mainView.findViewById(R.id.change_password_title);
+        mChangePasswordButton = (TextView) mainView.findViewById(R.id.change_password_save_button);
+        mChangePasswordButton.setOnClickListener(this);
         mainView.findViewById(R.id.user_data_save_button).setOnClickListener(this);
     }
 
@@ -235,8 +243,18 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      * call methods to fill layout with forms
      */
     private void init() {
-        triggerGetChangePasswordForm();
         triggerGetUserDataForm();
+        if(!CustomerUtils.isFacebookLogin(getBaseActivity())){
+            triggerGetChangePasswordForm();
+            mChangePasswordFormContainer.setVisibility(View.VISIBLE);
+            mChangePasswordTitle.setVisibility(View.VISIBLE);
+            mChangePasswordButton.setVisibility(View.VISIBLE);
+        } else {
+            mChangePasswordFormContainer.setVisibility(View.GONE);
+            mChangePasswordTitle.setVisibility(View.GONE);
+            mChangePasswordButton.setVisibility(View.GONE);
+        }
+
     }
 
     /**
@@ -268,7 +286,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      *  method that changes the user data
      */
     private void triggerChangeUserData() {
-        if (mUserDataForm.validate()) {
+        if (mUserDataForm != null && mUserDataForm.validate()) {
             triggerContentEvent(new SetUserDataHelper(), SetUserDataHelper.createBundle(mUserDataForm.getForm().getAction(), mUserDataForm.save()), this);
         }
     }

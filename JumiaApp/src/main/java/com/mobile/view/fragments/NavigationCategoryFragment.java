@@ -151,7 +151,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         CategoriesTableHelper.updateCategoryCounter(category.getUrlKey(), category.getName());
         // Close navigation
         getBaseActivity().closeNavigationDrawer();
-        Print.i(TAG, "code1categoy : getApiUrl: "+category.getTargetLink()+" category.getName(): " +category.getName());
+        //Print.i(TAG, "code1categoy : getApiUrl: "+category.getTargetLink()+" category.getName(): " +category.getName());
         mCategory = category;
         @TargetLink.Type String link = category.getTargetLink();
         // Parse target link

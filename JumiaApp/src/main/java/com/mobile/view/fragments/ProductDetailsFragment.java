@@ -1,11 +1,14 @@
 package com.mobile.view.fragments;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,6 +66,7 @@ import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListLis
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.pdv.RelatedProductsAdapter;
 import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -516,7 +520,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mDiscountPercentageText.setEnabled(true);
             } else {
                 mDiscountPercentageText.setEnabled(false);
-                mDiscountPercentageText.setTextColor(getResources().getColor(R.color.black_800));
+                mDiscountPercentageText.setTextColor(ContextCompat.getColor(getContext(), R.color.black_800));
             }
         }
     }
@@ -533,31 +537,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             //changeFashion: rating style is changed if vertical is fashion
             if (mProduct.isFashion()) {
-                if(ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1() ){
-                    setProgressForRTLPreJelly(mProductFashionRating, (float) mProduct.getAvgRating(), mProductFashionRating.getMax());
-                }
+                UIUtils.setProgressForRTLPreJellyMr2(mProductFashionRating);
                 mProductFashionRating.setRating((float) mProduct.getAvgRating());
-
                 mProductRating.setVisibility(View.GONE);
                 mProductFashionRating.setVisibility(View.VISIBLE);
             } else {
-                if(ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()){
-                    setProgressForRTLPreJelly(mProductRating, (float) mProduct.getAvgRating(), mProductRating.getMax());
-                }
+                UIUtils.setProgressForRTLPreJellyMr2(mProductRating);
                 mProductRating.setRating((float) mProduct.getAvgRating());
-
                 mProductRating.setVisibility(View.VISIBLE);
             }
             String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
             mProductRatingCount.setText(rating);
         }
-
-   //     mProductRating.setVisibility(View.VISIBLE);
-    }
-
-    private void setProgressForRTLPreJelly(RatingBar progressBar, float progress, int maxTotal){
-        progressBar.setRotation(180.0f);
-
     }
 
     /**
@@ -569,13 +560,30 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             // Set seller view
             mSellerContainer.setVisibility(View.VISIBLE);
             // Name
-            TextView sellerName = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_name);
+            final TextView sellerName = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_name);
+            // Set name
             sellerName.setText(mProduct.getSeller().getName());
+            // Set shop first
+            if (!mProduct.isShopFirst() || ShopSelector.isRtlShop()) {
+                DeviceInfoHelper.executeCodeBasedOnJellyBeanMr1Version(new DeviceInfoHelper.IDeviceVersionBasedCode() {
+                    @Override
+                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+                    public void highVersionCallback() {
+                        sellerName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                    }
+                    @Override
+                    public void lowerVersionCallback() {
+                        sellerName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    }
+                });
 
+            }else if(mProduct.isShopFirst()){
+                ProductUtils.showShopFirstOverlayMessage(this,mProduct, sellerName);
+            }
+            // Set listener
             if(TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
                 sellerName.setOnClickListener(this);
             }
-
             // Case global seller
             if(mProduct.getSeller().isGlobal()) {
                 // Set global button
@@ -620,6 +628,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mSellerContainer.setVisibility(View.GONE);
         }
     }
+
+
 
     /**
      * Change and put the title in the correct position within the layout if it's fashion or not
@@ -1217,7 +1227,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 ProductComplete product = (ProductComplete) baseResponse.getContentData();
                 // Validate product
                 if (product == null || product.getName() == null) {
-                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    showWarningErrorMessage(getString(R.string.product_could_not_retrieved));
                     getBaseActivity().onBackPressed();
                     return;
                 }
@@ -1274,13 +1284,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Validate type
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
-            case REMOVE_PRODUCT_FROM_WISH_LIST:
-            case ADD_PRODUCT_TO_WISH_LIST:
-                break;
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                break;
             case GET_PRODUCT_DETAIL:
-                showContinueShopping();
+                showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
+                getBaseActivity().onBackPressed();
+                break;
             default:
                 break;
         }
@@ -1388,6 +1395,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void triggerGetProductBundle(String sku) {
         triggerContentEvent(new GetProductBundleHelper(), GetProductBundleHelper.createBundle(sku), this);
     }
+
+
 
     private class ComboItemClickListener implements OnClickListener {
         ViewGroup bundleItemView;

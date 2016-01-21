@@ -3,6 +3,7 @@ package com.mobile.utils.ui;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
@@ -11,11 +12,14 @@ import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
@@ -23,16 +27,13 @@ public class ProductUtils {
 
     public static void setPriceRules(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice){
         String priceRange = productBase.getPriceRange();
-
-        //If ProductMultiple already has simple
-        if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
-
-            setPrice(((ProductMultiple) productBase).getSelectedSimple(), price, specialPrice);
-
         //If hasn't simple but has range
-        }else if(TextUtils.isNotEmpty(priceRange)){
+        if(TextUtils.isNotEmpty(priceRange)){
             specialPrice.setText(priceRange);
             price.setText("");
+        //If ProductMultiple already has simple
+        }else if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
+            setPrice(((ProductMultiple) productBase).getSelectedSimple(), price, specialPrice);
         } else {
             setPrice(productBase, price, specialPrice);
         }
@@ -112,5 +113,43 @@ public class ProductUtils {
             fragment.showWarningSuccessMessage(baseResponse.getSuccessMessage(), eventType);
         }
     }
+
+    public static void setShopFirst(@NonNull ProductRegular productBase, @NonNull View badge){
+        badge.setVisibility((!productBase.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+    }
+
+
+/**
+ * Shows a dialog with shopOverlayInfo content if clicking on a shopFirst badge or shopFirst drawable in a textView
+ *  - if the shopfirst logo is visible and overlay info is not empty, the dialog show up
+ *  - Else if overlay Info is empty, the logo is not clickable even visible
+ * */
+    public static void showShopFirstOverlayMessage(final @NonNull BaseFragment fragment,final @NonNull ProductRegular productBase,final @NonNull View shopFirstView){
+        if(shopFirstView.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(productBase.getShopFirstOverlay())) {
+            //If badge is included in a textView: PDV case
+            if(shopFirstView instanceof TextView){
+                shopFirstView.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if(UIUtils.drawableClicked(((TextView) shopFirstView), event)) {
+                            DialogGenericFragment.createInfoDialog(null, productBase.getShopFirstOverlay(), fragment.getString(R.string.ok_label)).show(fragment.getActivity().getSupportFragmentManager(), null);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+
+            }else { //if is an image
+                shopFirstView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        DialogGenericFragment.createInfoDialog(null, productBase.getShopFirstOverlay(), fragment.getString(R.string.ok_label)).show(fragment.getActivity().getSupportFragmentManager(), null);
+                    }
+                });
+            }
+        }
+    }
+
+
 
 }

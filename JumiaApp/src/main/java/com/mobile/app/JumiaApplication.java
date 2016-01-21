@@ -1,15 +1,14 @@
 package com.mobile.app;
 
-import android.content.ContentValues;
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
-import com.ad4screen.sdk.A4SApplication;
+import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.facebook.FacebookSdk;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -32,7 +31,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.ImageResolutionHelper;
 import com.mobile.newFramework.utils.SingletonMap;
 import com.mobile.newFramework.utils.cache.WishListCache;
-import com.mobile.newFramework.utils.debug.DebugTools;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
@@ -44,8 +42,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-public class JumiaApplication extends A4SApplication {
+@UseA4S
+public class JumiaApplication extends Application {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
     // Components
@@ -60,50 +58,24 @@ public class JumiaApplication extends A4SApplication {
     // Account variables
     public static Customer CUSTOMER;
     private PersistentSessionStore mCustomerUtils;
-
-    /**
-     * Cart
-     */
+    // Cart
     private PurchaseEntity cart;
-
-    /**
-     * Forms
-     */
+    // Forms
     public Form reviewForm;
     public Form ratingForm;
-    public Form mSellerReviewForm;
-    private static ContentValues ratingReviewValues;
-    public static boolean isSellerReview = false;
-    private static HashMap<String, String> sFormReviewValues = new HashMap<>();
-
-    public int lastPaymentSelected = -1;
-
+    // Countries
     public ArrayList<CountryObject> countriesAvailable = null;
-
-    // for tracking
+    // Tracking
     private HashMap<String, String> bannerSkus = new HashMap<>();
-
     // Search
     public String mSavedSearchTerm;
 
     /**
-     * attachBaseContext
+     * Create application
      */
     @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(base);
-        // Enabled multi dex
-        MultiDex.install(this);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
-     */
-    @Override
-    public void onApplicationCreate() {
-        // #DEBUG Install debug tools only for debug version
-        DebugTools.initialize(this);
+    public void onCreate() {
+        super.onCreate();
         // ON APPLICATION CREATE
         Print.i(TAG, "ON APPLICATION CREATE");
         // Save instance
@@ -147,7 +119,7 @@ public class JumiaApplication extends A4SApplication {
         for (ApplicationComponent component : COMPONENTS.values()) {
             int result = component.init(getApplicationContext());
             if (result != ErrorCode.NO_ERROR) {
-                Print.i(TAG, "code1configs : " + result);
+                //Print.i(TAG, "code1configs : " + result);
                 handleEvent(result, null, initializationHandler);
                 return;
             }
@@ -155,7 +127,7 @@ public class JumiaApplication extends A4SApplication {
 
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
-        Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
+        //Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
         // Initialize check version, disabled for Samsung (check_version_enabled)
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
         CheckVersion.init(getApplicationContext());
@@ -237,40 +209,6 @@ public class JumiaApplication extends A4SApplication {
     }
 
     /**
-     * clean and return last saved rating
-     *
-     * @return last saved review
-     */
-    public static ContentValues getRatingReviewValues() {
-        return JumiaApplication.ratingReviewValues;
-    }
-
-    /**
-     * clean current rating
-     */
-    public static void cleanRatingReviewValues() {
-        JumiaApplication.ratingReviewValues = null;
-    }
-
-    public static void setRatingReviewValues(ContentValues ratingReviewValues) {
-        JumiaApplication.ratingReviewValues = ratingReviewValues;
-    }
-
-    /**
-     * get the values from the write review form
-     * @return sFormReviewValues
-     */
-    public HashMap<String,String> getFormReviewValues(){
-        return JumiaApplication.sFormReviewValues;
-    }
-    /**
-     * HashMap used to store the values from the write review form
-     */
-    public void setFormReviewValues(HashMap<String, String> sFormReviewValues){
-        JumiaApplication.sFormReviewValues = sFormReviewValues;
-    }
-
-    /**
      * Clean current memory.
      */
     public void cleanAllPreviousCountryValues() {
@@ -283,9 +221,6 @@ public class JumiaApplication extends A4SApplication {
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
-        isSellerReview = false;
-        ratingReviewValues = null;
-        sFormReviewValues = null;
         WishListCache.clean();
         AdjustTracker.resetTransactionCount(getApplicationContext());
         clearBannerFlowSkus();
@@ -297,7 +232,6 @@ public class JumiaApplication extends A4SApplication {
         } catch (IOException e) {
             Print.e(TAG, "Error clearing requests cache", e);
         }
-        mSellerReviewForm = null;
     }
 
     /**

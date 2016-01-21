@@ -3,14 +3,12 @@ package com.mobile.newFramework.rest;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.mobile.newFramework.rest.configs.AigConfigurations;
 import com.mobile.newFramework.rest.configs.HeaderConstants;
 import com.mobile.newFramework.rest.cookies.AigCookieManager;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
 import com.mobile.newFramework.rest.errors.NoConnectivityException;
 import com.mobile.newFramework.utils.NetworkConnectivity;
-import com.mobile.newFramework.utils.debug.DebugTools;
 import com.mobile.newFramework.utils.output.Print;
 import com.squareup.okhttp.Cache;
 import com.squareup.okhttp.Interceptor;
@@ -166,7 +164,7 @@ public class AigHttpClient extends OkClient {
         okHttpClient.setReadTimeout(AigConfigurations.SOCKET_TIMEOUT, TimeUnit.MILLISECONDS);
         okHttpClient.setConnectTimeout(AigConfigurations.CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
         // INTERCEPTORS
-        addInterceptors(okHttpClient);
+        okHttpClient.interceptors().add(new RedirectResponseInterceptor());
         // Return client
         return okHttpClient;
     }
@@ -204,28 +202,22 @@ public class AigHttpClient extends OkClient {
     }
 
     /**
-     * Add some http interceptors to debug.
+     * Add debug network interceptor (DebugTools).
      */
     @SuppressWarnings("unused")
-    private static void addInterceptors(final OkHttpClient okHttpClient) {
-        okHttpClient.interceptors().add(new RedirectResponseInterceptor());
-        DebugTools.execute(new DebugTools.IBuildTypeCode() {
-            @Override
-            public void onDebugBuildType() {
-                // #STETHO :: Enable Network Inspection
-                okHttpClient.networkInterceptors().add(new StethoInterceptor());
-                //okHttpClient.interceptors().add(new RequestDebuggerInterceptor());
-                //okHttpClient.interceptors().add(new ResponseDebuggerInterceptor());
-            }
-        });
+    public void addDebugNetworkInterceptors(Interceptor interceptor) {
+        mOkHttpClient.networkInterceptors().add(interceptor);
     }
 
+    /**
+     * Interceptor used to validate 301 redirects.<br>
+     * - If the server returns an 301 error code after an https request,
+     * we should try to perform the same request with http,
+     * we need to use the returned Location and keep the body info.
+     */
     private static class RedirectResponseInterceptor implements Interceptor {
         @Override
         public Response intercept(Chain chain) throws IOException {
-            // Handle Redirects
-            // If the server returns an 301 error code after an https request we should try to perform the same request with http
-            // We need to use the returned Location and keep the body info.
             Response response = chain.proceed(chain.request());
             if(response.networkResponse().code() == HttpURLConnection.HTTP_MOVED_PERM){
                 Request request = chain.request();
@@ -236,17 +228,11 @@ public class AigHttpClient extends OkClient {
                     // retry the request
                     response = chain.proceed(recoveryRequest);
                 }
-
                 Print.w(TAG, "############ OK HTTP: REDIRECT RESPONSE INTERCEPTOR ############");
-                // Print.d(TAG, "Headers:          \n" + response.headers());
-                // Print.d(TAG, "Message:            " + response.message());
-                // Print.d(TAG, "Redirect:           " + response.isRedirect());
-                // Print.d(TAG, "Cache response:     " + response.cacheResponse());
                 Print.w(TAG, "Network response:   " + response.networkResponse());
                 Print.w(TAG, "> Request:          " + response.request());
                 Print.w(TAG, "> Method:           " + chain.request().method());
                 Print.w(TAG, "######################################################\n");
-
             }
             return response;
         }

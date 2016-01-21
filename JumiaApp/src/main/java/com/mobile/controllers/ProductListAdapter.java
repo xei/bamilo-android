@@ -11,6 +11,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -43,6 +44,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         holder.brand.setText(item.getBrand());
         // Show / Hide New Arrival Badge
         holder.newArrivalBadge.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
+        //Show/Hide Shop First
+        ProductUtils.setShopFirst(item,holder.shopFirst);
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image
@@ -94,6 +97,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
     protected void setSpecificViewForListLayout(ProductListViewHolder holder, ProductRegular item) {
         // Validate list views
         if(holder.rating != null && holder.reviews != null) {
+            UIUtils.setProgressForRTLPreJellyMr2(holder.rating);
             // Show rating
             if (item.getAvgRating() > 0) {
                 holder.rating.setRating((float) item.getAvgRating());

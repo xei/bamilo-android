@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
-import com.ad4screen.sdk.Tag;
+import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -20,11 +20,11 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
+import com.mobile.view.fragments.CheckoutAddressesFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
 import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
 import com.mobile.view.fragments.CheckoutFinishFragment;
-import com.mobile.view.fragments.CheckoutMyAddressesFragment;
 import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
@@ -33,11 +33,11 @@ import com.mobile.view.fragments.ComboFragment;
 import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
+import com.mobile.view.fragments.MyAccountAddressesFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
-import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
@@ -67,7 +67,7 @@ import java.util.List;
 /**
  * @author sergiopereira
  */
-@Tag(name = "MainActivity")
+@UseA4S
 public class MainFragmentActivity extends BaseActivity {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
@@ -160,8 +160,6 @@ public class MainFragmentActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         Print.d(TAG, "ON RESUME");
-        //
-        Ad4PushTracker.get().startActivity(this);
     }
 
     /*
@@ -173,8 +171,6 @@ public class MainFragmentActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        //
-        Ad4PushTracker.get().stopActivity(this);
     }
 
     /*
@@ -253,6 +249,7 @@ public class MainFragmentActivity extends BaseActivity {
                 break;
             case CATALOG_SELLER:
             case CATALOG_BRAND:
+            case CATALOG_DEEPLINK:
             case CATALOG:
                 // Default
                 removeEntries = true;
@@ -261,8 +258,11 @@ public class MainFragmentActivity extends BaseActivity {
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                 }
-                // Put the catalog type
-                bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, type);
+                // Put the target type
+                bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
+                // Put the type
+                type = FragmentType.CATALOG;
+                // Create instance
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:
@@ -318,22 +318,22 @@ public class MainFragmentActivity extends BaseActivity {
             case FORGOT_PASSWORD:
                 fragment = SessionForgotPasswordFragment.getInstance();
                 break;
-            case MY_ADDRESSES:
-                fragment = CheckoutMyAddressesFragment.getInstance();
+            case CHECKOUT_MY_ADDRESSES:
+                fragment = CheckoutAddressesFragment.newInstance();
                 break;
-            case CREATE_ADDRESS:
+            case CHECKOUT_CREATE_ADDRESS:
                 fragment = CheckoutCreateAddressFragment.getInstance();
                 break;
-            case EDIT_ADDRESS:
+            case CHECKOUT_EDIT_ADDRESS:
                 fragment = CheckoutEditAddressFragment.getInstance(bundle);
                 break;
-            case SHIPPING_METHODS:
+            case CHECKOUT_SHIPPING:
                 fragment = CheckoutShippingMethodsFragment.getInstance();
                 break;
-            case PAYMENT_METHODS:
+            case CHECKOUT_PAYMENT:
                 fragment = CheckoutPaymentMethodsFragment.getInstance();
                 break;
-            case MY_ORDER:
+            case CHECKOUT_FINISH:
                 fragment = CheckoutFinishFragment.getInstance(bundle);
                 break;
             case CHECKOUT_THANKS:
@@ -366,7 +366,7 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = ProductOffersFragmentNew.newInstance(bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
-                fragment = MyAccountMyAddressesFragment.newInstance();
+                fragment = MyAccountAddressesFragment.newInstance();
                 break;
             case MY_ACCOUNT_CREATE_ADDRESS:
                 fragment = MyAccountCreateAddressFragment.newInstance(bundle);

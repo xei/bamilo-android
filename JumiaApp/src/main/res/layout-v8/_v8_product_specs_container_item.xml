@@ -19,6 +19,8 @@
         android:layout_width="wrap_content"
         android:singleLine="false"
         android:text="aaaa"
+        android:layout_gravity="right"
+        android:gravity="right"
         android:layout_marginRight="8dp"
         android:layout_marginEnd="8dp"
         />
@@ -28,11 +30,7 @@
         android:id="@+id/item_center"
         android:layout_width="1dp"
         android:background="@color/black_400"
-        android:layout_toRightOf="@id/specs_item_value"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/specs_item_value"
-        android:layout_alignTop="@+id/specs_item_value"
-        />
+        android:layout_height="wrap_content" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/specs_item_key"
@@ -42,6 +40,8 @@
         android:layout_width="@dimen/specs_column_with"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
+        android:layout_gravity="left"
+        android:gravity="left"
         android:text="aaa"
 
         />

@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="horizontal"
     android:weightSum="2"
-    android:layoutDirection="ltr">
+    android:layoutDirection="ltr"
+    android:baselineAligned="false">
 
     <!-- ORDER STATUS -->
 

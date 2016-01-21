@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'newrelic'
+apply plugin: 'usea4s'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
 
@@ -32,13 +33,12 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 15
         targetSdkVersion 22
-        multiDexEnabled false // Disabling multidex support. We are using proguard for debug build type.
     }
 
     dexOptions {
         jumboMode = true
         incremental true
-        javaMaxHeapSize "2048M"
+        javaMaxHeapSize "4G"
     }
 
     signingConfigs {
@@ -89,20 +89,32 @@ android {
         debug {
             applicationIdSuffix ".dev"
             debuggable true
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-pro.txt', 'proguard-project-dev.txt'
+            // # Building Apps with Over 65K Methods
+            // 1. Using multi dex support
+            multiDexEnabled true
+            // 2. Using proguard to reduce number of methods
+            //minifyEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-pro.txt', 'proguard-project-debug.txt', 'proguard-project-dev.txt'
         }
         live {
             applicationIdSuffix ".live"
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-live.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-project-pro.txt',
+                    'proguard-project-debug.txt'
+            android.sourceSets {
+                live.java.srcDirs = ['src/debug/java']
+                live.manifest.srcFile 'src/debug/AndroidManifest.xml'
+            }
         }
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-project-pro.txt',
+                    'proguard-project-market.txt'
         }
     }
 
@@ -117,6 +129,7 @@ android {
             versionCode getAppVersionCode(58)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
+            //buildTypes.debug.manifestPlaceholders = [APP_ID: "123456"]
         }
 
         jumiaPreInstall {
@@ -219,7 +232,22 @@ dependencies {
     /** LOCAL LIBS **/
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:com.mobile.framework')
+    /** DEBUG **/
+    // #MULTIDEX
+    debugCompile 'com.android.support:multidex:1.0.1'
+    liveCompile 'com.android.support:multidex:1.0.1'
+    // #STETHO :: http://facebook.github.io/stetho/
+    debugCompile 'com.facebook.stetho:stetho:1.2.0'
+    debugCompile 'com.facebook.stetho:stetho-okhttp:1.2.0'
+    liveCompile 'com.facebook.stetho:stetho:1.2.0'
+    liveCompile 'com.facebook.stetho:stetho-okhttp:1.2.0'
+    // #LEAK :: https://github.com/square/leakcanary
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    liveCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    //releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     /** Android wear releases **/
+    debugWearApp project(path:':JumiaWear')
+    liveWearApp project(path:':JumiaWear', configuration: 'jumiaLive')
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')

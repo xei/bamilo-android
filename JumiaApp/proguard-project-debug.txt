@@ -37,15 +37,19 @@
 #-verbose
 ##################################################################################
 
-## BEGIN REMOVE LOG CODE #########################################
-#-assumenosideeffects class de.akquinet.android.androlog.Log {
-#    public static boolean isLoggable(java.lang.String, int);
-#    public static int v(...);
-#    public static int i(...);
-#    public static int w(...);
-#    public static int d(...);
-#    public static int e(...);
-#}
-#####################################################################
+## BEGIN LEAK CANARY #############################################################
+-keep class org.eclipse.mat.** { *; }
+-keep class com.squareup.leakcanary.** { *; }
+-keep class com.squareup.haha.** { *; }
+-dontwarn com.squareup.haha.guava.**
+-dontwarn com.squareup.haha.perflib.**
+-dontwarn com.squareup.haha.trove.**
+-dontwarn com.squareup.leakcanary.**
+##################################################################################
+
+## BEGIN STETHO #############################################################
+-keep class com.facebook.stetho.** { *; }
+-dontwarn com.facebook.stetho.**
+##################################################################################
 
 ## MERGE FROM proguard-project-base.txt #########################################

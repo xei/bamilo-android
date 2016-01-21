@@ -357,8 +357,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
      * This method is invoked when the user wants to create a review.
      */
     private void writeReview() {
-        // Clean previous write review form values
-        JumiaApplication.cleanRatingReviewValues();
         Bundle args = new Bundle();
         args.putString(ConstantsIntentExtra.PRODUCT_SKU, mProductSku);
         args.putParcelable(ConstantsIntentExtra.PRODUCT, selectedProduct);
@@ -682,7 +680,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
 
         //if is rtl, the progress bars shows up with inverted progression
-        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
             setProgressForRTLPreJelly(progressBarFive, Integer.parseInt(mProductRatingPage.getByStarValue(FIVE_STAR_PROGRESS)), maxTotal);
             setProgressForRTLPreJelly(progressBarFour, Integer.parseInt(mProductRatingPage.getByStarValue(FOUR_STAR_PROGRESS)), maxTotal);
             setProgressForRTLPreJelly(progressBarThree, Integer.parseInt(mProductRatingPage.getByStarValue(THREE_STAR_PROGRESS)), maxTotal);

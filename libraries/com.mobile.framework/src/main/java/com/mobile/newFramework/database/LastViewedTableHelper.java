@@ -54,8 +54,8 @@ public class LastViewedTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
      */
     @Override
-    public String create(String table) {
-        return new StringBuilder("CREATE TABLE ").append(table)
+    public String create() {
+        return new StringBuilder("CREATE TABLE %s")
                 .append(" (")
                 .append(_ID).append(" INTEGER PRIMARY KEY, ")
                 .append(_PRODUCT_SKU).append(" TEXT ")
@@ -97,9 +97,9 @@ public class LastViewedTableHelper extends BaseTable {
     private static boolean verifyIfExist(String sku) {
         boolean result = false;
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        String query = "SELECT count(*) FROM " + TABLE_NAME + " WHERE " + _PRODUCT_SKU + " = '" + sku + "'";
+        String query = "SELECT count(*) FROM " + TABLE_NAME + " WHERE " + _PRODUCT_SKU + " = ?";
         Print.i(TAG, "SQL RESULT query :  " + query);
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursor = db.rawQuery(query, new String[]{sku});
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();
             result = cursor.getInt(0) >= 1;
@@ -164,10 +164,10 @@ public class LastViewedTableHelper extends BaseTable {
      */
     public static void removeLastViewed(String sku) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + _PRODUCT_SKU + " = '" + sku + "'";
+        String query = "DELETE FROM " + TABLE_NAME + " WHERE " + _PRODUCT_SKU + " = ?";
         Print.i(TAG, "REMOVING PRODUCT SKU :  " + sku);
         Print.i(TAG, "SQL RESULT query :  " + query);
-        db.execSQL(query);
+        db.execSQL(query, new String[]{sku});
         db.close();
     }
 
