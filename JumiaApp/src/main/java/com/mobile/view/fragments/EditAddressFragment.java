@@ -476,17 +476,19 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     /**
      * ############# RESPONSE #############
      */
-    /**
-     * Filter the success response
-     * @return boolean
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
      */
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
         if(isOnStoppingProcess || eventType == null){
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         switch (eventType) {
@@ -532,27 +534,26 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             default:
                 break;
         }
-
-        return true;
     }
 
-    /**
-     * Filter the error response
-     * @return boolean
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
      */
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
 
         EventType eventType = baseResponse.getEventType();
 
         if(isOnStoppingProcess || eventType == null){
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE ACTIVITY HANDLE ERROR EVENT");
-            return true;
+            return;
         }
 
         int errorCode = baseResponse.getError().getCode();
@@ -577,8 +578,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             default:
                 break;
         }
-
-        return false;
     }
 
     protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse){
@@ -599,27 +598,6 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
 
     protected void onEditAddressErrorEvent(BaseResponse baseResponse){
         Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
-    }
-
-    /**
-     * ########### RESPONSE LISTENER ###########
-     */
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        onErrorEvent(baseResponse);
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle)
-     */
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
     }
 
 }
