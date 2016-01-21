@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/rounded_margin_mid" >
+    android:paddingBottom="@dimen/rounded_margin_mid">
 
     <!-- TITLE -->
 
@@ -11,39 +11,17 @@
         android:id="@+id/checkout_address_form_shipping_title"
         style="@style/HeaderStyle"
         android:text="@string/action_label_add_address"
-        android:textStyle="bold"/>
+        android:textStyle="bold" />
 
-    <!-- CONTENT -->
+    <!-- FORM -->
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/checkout_address_form_shipping_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="vertical" >
-
-        <!-- FORM -->
-
-        <LinearLayout
-            android:id="@+id/checkout_address_form_shipping_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_20px"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/rounded_margin_mid"
-            android:paddingRight="@dimen/rounded_margin_mid" >
-        </LinearLayout>
-
-        <!-- BILLING CHECK BOX -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/form_check_padding"
-            android:paddingRight="@dimen/form_check_padding"
-            android:layout_below="@id/checkout_address_form_shipping_container" >
-
-            <include layout="@layout/checkout_sameaddress_checkbox" />
-        </LinearLayout>
-    </RelativeLayout>
+        android:layout_marginTop="@dimen/margin_20px"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/rounded_margin_mid"
+        android:paddingRight="@dimen/rounded_margin_mid" />
 
 </LinearLayout>

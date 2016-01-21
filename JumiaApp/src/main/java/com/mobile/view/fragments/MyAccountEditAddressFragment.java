@@ -3,12 +3,14 @@ package com.mobile.view.fragments;
 import android.os.Bundle;
 import android.view.View;
 
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -42,7 +44,8 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MY_ACCOUNT,
                 R.string.edit_address,
-                ADJUST_CONTENT);
+                ADJUST_CONTENT,
+                ConstantsCheckout.NO_CHECKOUT);
     }
 
     @Override
@@ -53,12 +56,8 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        View orderSummaryLayout = view.findViewById(super.ORDER_SUMMARY_CONTAINER);
-        if(orderSummaryLayout != null){
-            orderSummaryLayout.setVisibility(View.GONE);
-        }
-
+        // Hide order summary
+        UIUtils.showOrHideViews(View.GONE, view.findViewById(super.ORDER_SUMMARY_CONTAINER));
     }
 
     @Override

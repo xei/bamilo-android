@@ -192,15 +192,6 @@ public class DynamicFormItem {
     }
 
     /**
-     * Gets the Mandatory View control. This is the part of the control that handles the user input
-     *
-     * @return The View that represents the control
-     */
-    public View getMandatoryControl() {
-        return mandatoryControl;
-    }
-
-    /**
      * Sets the error text for this control, concerning the input of the user
      *
      * @param value The error message to display in case of a validation error
@@ -1061,7 +1052,7 @@ public class DynamicFormItem {
 
         //Data control
 
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
