@@ -22,6 +22,7 @@ import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
@@ -154,6 +155,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         //Print.i(TAG, "code1categoy : getApiUrl: "+category.getTargetLink()+" category.getName(): " +category.getName());
         mCategory = category;
         @TargetLink.Type String link = category.getTargetLink();
+        Print.i(TAG, "code1link : goToCatalog : "+link);
         // Parse target link
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(category.getName()).addAppendListener(this).run();
         if(!result) {
@@ -275,8 +277,16 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
     public void onAppendData(FragmentType next, String title, String id, Bundle data) {
         // Create bundle for catalog
         data.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+        String catalogUrlKey = "?category=" +id;
+
+        ContentValues deepLinkValues = new ContentValues();
+        if (com.mobile.newFramework.utils.TextUtils.isNotEmpty(catalogUrlKey))
+            deepLinkValues = RestUrlUtils.getQueryParameters(catalogUrlKey);
+
+        data.putParcelable(ConstantsIntentExtra.DATA, deepLinkValues);
         data.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         data.putString(ConstantsIntentExtra.NAVIGATION_PATH, mCategory.getCategoryPath());
         data.putString(ConstantsIntentExtra.CATALOG_SOURCE, mCategory.getType());
+        data.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_CATEGORY);
     }
 }
