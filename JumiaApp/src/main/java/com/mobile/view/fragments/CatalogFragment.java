@@ -155,7 +155,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ARGUMENTS: " + arguments);
+            Print.i(TAG, "code1scrollto ARGUMENTS: " + arguments);
             // Get key
             mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // Get title
@@ -164,7 +164,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
             if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
             else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
-            else if(type == FragmentType.CATALOG_DEEPLINK || type == FragmentType.CATALOG_CATEGORY) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
+            else if(type == FragmentType.CATALOG_DEEPLINK || type == FragmentType.CATALOG_CATEGORY) mQueryValues.put(RestConstants.CATEGORY, mKey);
 
             else mQueryValues.put(RestConstants.HASH, mKey);
             // Get sort

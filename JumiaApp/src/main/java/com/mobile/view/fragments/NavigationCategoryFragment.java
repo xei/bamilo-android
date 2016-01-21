@@ -277,16 +277,8 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
     public void onAppendData(FragmentType next, String title, String id, Bundle data) {
         // Create bundle for catalog
         data.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-        final String catalogUrlKey = "?category=" +id;
-
-        ContentValues deepLinkValues = new ContentValues();
-        if (com.mobile.newFramework.utils.TextUtils.isNotEmpty(catalogUrlKey))
-            deepLinkValues = RestUrlUtils.getQueryParameters(catalogUrlKey);
-
-        data.putParcelable(ConstantsIntentExtra.DATA, deepLinkValues);
         data.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         data.putString(ConstantsIntentExtra.NAVIGATION_PATH, mCategory.getCategoryPath());
         data.putString(ConstantsIntentExtra.CATALOG_SOURCE, mCategory.getType());
-        data.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_CATEGORY);
     }
 }
