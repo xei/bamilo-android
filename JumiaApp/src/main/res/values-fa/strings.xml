@@ -15,13 +15,9 @@
     <string name="back_label">بازگشت</string>
     <string name="back_level">مرحله قابل</string>
     <string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>
-    <string name="address_add_new_label">اضافه کردن آدرس جدید</string>
-    <string name="address_billing_label">نشانی دریافت صورت حساب</string>
     <string name="billing_choose_address">لطفا یک نشانی را انتخاب نمایید</string>
     <string name="billing_def_shipping_label">نشانی پیش فرضی جهت ارسال کالا</string>
-    <string name="address_others_label">نشانی های دیگر</string>
     <string name="billing_same_label">ارسال صورت حساب به همان نشانی</string>
-    <string name="address_shipping_label">نشانی دریافت کننده</string>
     <string name="brands_label">برندها</string>
     <string name="bundle_title">معمولا با هم خریداری شده</string>
     <string name="bundle_total_price">قیمت کل:</string>

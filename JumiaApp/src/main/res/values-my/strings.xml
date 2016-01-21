@@ -15,13 +15,9 @@
     <string name="back_label">ေနာက္သို႔</string>
     <string name="back_level">ၿပီးခဲ့ေသာအဆင့္သို႔ ျပန္သြားရန္</string>
     <string name="bamilo_not_available">Bamilo အား လက္ရွိအခ်ိန္အတြင္း မရရွိႏိုင္ေသးပါ။</string>
-    <string name="address_add_new_label">လိပ္စာအသစ္ ျဖည္႔ရန္</string>
-    <string name="address_billing_label">ေငြေပးေခ်မည္႔လိပ္စာ</string>
     <string name="billing_choose_address">ေက်းဇူးျပဳ ၍ လိပ္စာေရြးခ်ယ္ပါ</string>
     <string name="billing_def_shipping_label">သယ္ယူပို႔ေဆာင္ရန္ ပံုေသလိပ္စာ</string>
-    <string name="address_others_label">အျခားလိပ္စာမ်ား</string>
     <string name="billing_same_label">တူညီေသာလိပ္စာျဖင့္ ေငြေပးေခ်ရန္</string>
-    <string name="address_shipping_label">သယ္ယူပို႔ေဆာင္ရန္လိပ္စာ</string>
     <string name="brands_label">တံဆိပ္မ်ား</string>
     <string name="bundle_title">တြဲဖက္၀ယ္ယူၾကေသာပစၥည္းမ်ား</string>
     <string name="bundle_total_price">စုစုေပါင္းတန္ဖိုး:</string>
