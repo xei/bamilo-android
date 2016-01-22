@@ -41,7 +41,6 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.social.FacebookHelper;
 import com.mobile.view.R;
 
-import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 
 /**
@@ -445,7 +444,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
             case FACEBOOK_LOGIN_EVENT:
             case AUTO_LOGIN_EVENT:
                 // Logout
-                LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
+                LogOut.perform(getWeakBaseActivity());
             case GUEST_LOGIN_EVENT:
                 // Show warning
                 showWarningErrorMessage(baseResponse.getValidateMessage(), eventType);
