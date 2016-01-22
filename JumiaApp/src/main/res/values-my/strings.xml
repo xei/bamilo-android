@@ -17,6 +17,11 @@
     <string name="bamilo_not_available">Bamilo အား လက္ရွိအခ်ိန္အတြင္း မရရွိႏိုင္ေသးပါ။</string>
     <string name="billing_choose_address">ေက်းဇူးျပဳ ၍ လိပ္စာေရြးခ်ယ္ပါ</string>
     <string name="billing_def_shipping_label">သယ္ယူပို႔ေဆာင္ရန္ ပံုေသလိပ္စာ</string>
+    <string name="address_shipping_billing_label">ကုန္ပစၥည္းပို႕ေဆာင္ရန္/ေငြေခ်ရန္လိပ္စာ</string>
+    <string name="address_shipping_label">ေပးပို႕ရန္လိပ္စာ</string>
+    <string name="address_billing_label">ေငြေခ်ရန္ လိပ္စာ</string>
+    <string name="address_others_label">အျခားလိပ္စာမ်ား</string>
+    <string name="address_add_new_label">လိပ္စာအသစ္ ျဖည္႕ရန္</string>
     <string name="billing_same_label">တူညီေသာလိပ္စာျဖင့္ ေငြေပးေခ်ရန္</string>
     <string name="brands_label">တံဆိပ္မ်ား</string>
     <string name="bundle_title">တြဲဖက္၀ယ္ယူၾကေသာပစၥည္းမ်ား</string>
@@ -28,10 +33,15 @@
     <string name="campaign_save">သင္ သက္သာၿပီး</string>
     <string name="campaign_stock_alert">သင္ေရြးခ်ယ္ထားေသာ ကုန္ပစၥည္းမွာ လက္က်န္မရွိေတာ့ပါ</string>
     <string name="campaigns_label">အထူးေလွ်ာ႕ေစ်းမ်ား</string>
+    <string name="campaign_unavailable_title">အစီအစဥ္ၿပီးဆံုးသြားပါၿပီ</string>
+    <string name="campaign_unavailable_description">သို႕ေသာ္သင့္အတြက္အျခားေလွ်ာ႕ေစ်းအစီအစဥ္မ်ားရွိပါေသးသည္</string>
+    <string name="campaign_offer_ended">အစီအစဥ္ ျပီးဆံုးပါျပီ!</string>
+    <string name="campaign_timer_end">ကုန္ဆံုးရက္</string>
     <string name="cancel_label">ပယ္ဖ်က္ရန္</string>
     <string name="cart_label">ေစ်း၀ယ္တြန္းလွည္း</string>
     <string name="catalog_edit_filters">စစ္ထုတ္ျခင္းမ်ားကို ျပင္ဆင္ရန္</string>
     <string name="catalog_no_results">သင္စစ္ထုတ္ထားခ်က္မ်ားႏွင့္ ကိုက္ညီျခင္းမရွိပါ/ပိုမိုတိက်စြာ စစ္ထုတ္ျပီး ထပ္မံၾကိဳးစားၾကည္႕ပါ</string>
+    <string name="catalog_no_results_details">စစ္ထုတ္ခ်က္မ်ာကိုအနည္းငယ္ေလွ်ာ႕ၿပီးျပန္လည္ႀကိဳးစားၾကည္႕ပါ</string>
     <string name="categories_label">အမ်ိဳးအစားမ်ား  </string>
     <string name="categories_label_uppercase">အမ်ိဳးအစားမ်ား</string>
     <string name="categories_name_all">အားလံုးအတြက္</string>
@@ -70,6 +80,7 @@
     <string name="error_no_connection">No connection</string>
     <string name="error_occured">တစ္စံုတရာ မွားယြင္းေနပါသည္။</string>
     <string name="error_please_try_again">ေဒတာရယူရာတြင္ ျပသနာအနည္းငယ္ရွိေနပါ၍ ထပ္မံၾကိဳးစားၾကည္႕ပါ။</string>
+    <string name="error_problem_fetching_data">အခ်က္အလက္မ်ား ရယူရာတြင္ တစ္စံုတရာ မွားယြင္းေနပါသည္။</string>
     <string name="error_register_alreadyexists">ဤအီးေမးလ္မွာရွိၿပီးျဖစ္ပါသည္။ ေက်းဇူးျပဳ၍ အျခားတစ္ခု ေရြးခ်ယ္ပါ။</string>
     <string name="error_register_title">စာရင္းသြင္း၍ မရပါ။</string>
     <string name="error_signup_title">Signup မေအာင္ျမင္ပါ</string>
@@ -150,6 +161,7 @@
     <string name="nav_country_warning">ႏိုင္ငံေျပာင္းလဲပါက ေစ်း၀ယ္လွည္းအားရွင္းလင္းၿပီး Logout ျဖစ္သြားမည္။ ေျပာင္းရန္ေသခ်ာပါသလား?</string>
     <string name="nav_track_order">ေအာ္ဒါေျခရာခံရန္</string>
     <string name="navigation_cart_empty">သင္၏လွည္းအတြင္းဘာမွမရွိပါ</string>
+    <string name="new_arrival_badge">အသစ္မ်ား</string>
     <string name="new_password_hint">Password အသစ္</string>
     <string name="new_password_label">Password အသစ္</string>
     <string name="newsletter_saved_message">သင္၏ email notifications settings အားသိမ္းဆည္းၿပီးပါၿပီ</string>
@@ -325,6 +337,7 @@
     <string name="yes_label">Yes</string>
     <string name="your_cart">သင္၏ေစ်း၀ယ္လွည္း</string>
     <string name="your_order">သင္၏ေအာ္ဒါ</string>
+    <string name="install_android">%s Android App အင္စေတာလုပ္ရန္</string>
     <string name="share_the_app">App ကို မွ်ေ၀မည္</string>
     <string name="can_share_app_with_friends">သူငယ္ခ်င္းမ်ားကို ေဒါင္းလုတ္ယူရန္ လင့္ခ္ မွ်ေ၀ႏုိင္ပါသည္</string>
     <string name="app_social">App မွ်ေ၀ရန္</string>
@@ -358,6 +371,7 @@
     <string name="open">ဖြင့္ရန္</string>
     <string name="close">ပိတ္ရန္</string>
     <string name="choose_language">Choose Language</string>
+    <string name="shop_settings">shop ဆက္တင္မ်ား</string>
     <string name="language">Language</string>
     <string name="country">ႏိုင္ငံ</string>
     <string name="birthday_label">ေမြးရက္</string>
@@ -379,6 +393,7 @@
     <string name="buy_the_look">အလန္းစားစတိုင္ကို ၀ယ္ယူဆင္ျမန္းလုိက္ပါ</string>
     <string name="pdv_size">ဆိုဒ္/အေရာင္</string>
     <string name="buy_now_button">၀ယ္ယူမည္</string>
+    <string name="pre_order">ႀကိဳတင္မွာယူရန္</string>
     <string name="saved">မွတ္သားထားေသာပစၥည္းမ်ား</string>
     <string name="products_added_saved">ပစၥည္းအားသိမ္းဆည္းျပီးပါျပီ</string>
     <string name="products_removed_saved">သိမ္းဆည္းထားေသာစာရင္းအားပယ္ဖ်က္ျပီးပါျပီ</string>
@@ -419,6 +434,7 @@
     <string name="create_label">ျပဳလုပ္မည္</string>
     <string name="change_password">Password ေျပာင္းလဲရန္</string>
     <string name="continue_without_log_in">Log in မ၀င္ဘဲ ဆက္လက္လုပ္ေဆာင္မည္</string>
+    <string name="placeholder_discount">-%s</string>
     <string name="edit_user_success">အသံုးျပဳသူအခ်က္အလက္အားျပင္ဆင္ၿပီးပါၿပီ</string>
     <string name="password">Password</string>
     <string name="more">အျခား</string>
@@ -441,6 +457,7 @@
     <string name="delivered_label">ပို႕ေဆာင္ၿပီးပါၿပီ</string>
     <string name="order_number">ေအာ္ဒါအမွတ္ %s</string>
     <string name="billing">ေငြေခ်မည္႕လိပ္စာ</string>
+    <string name="first_and_second_placeholders">%1$s %2$s</string>
     <string name="qty_placeholder">Qty: %s</string>
     <string name="reorder_label">ေအာ္ဒါထပ္မွာရန္</string>
     <string name="order_status_date">%1$s %2$s</string>
@@ -451,4 +468,12 @@
     <string name="customer_service_info">စံုစမ္းလိုပါက Customer Service သို႕ဆက္သြယ္လုိက္ပါ</string>
     <string name="phone_contact">ဖုန္း :</string>
     <string name="email_contact">အီးေမးလ္ :</string>
+    <string name="logout_success">Log out ထြက္ၿပီးပါၿပီ</string>
+    <!-- NEW 2.9 -->
+    <string name="percentage">%s%%</string>
+    <string name="error_add_bundle_to_shopping_cart">တြဲဖက္ကုန္ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းအတြင္း ထည္႕သြင္း၍မရပါ။ ျပန္လည္ႀကိဳးစားၾကည္႕ပါ။</string>
+    <string name="buy">၀ယ္ရန္</string>
+    <string name="size">ဆိုဒ္/အေရာင္ %s</string>
+    <string name="added_success">ထည္႕သြင္းၿပီးပါၿပီ</string>
+    <string name="removed_success">ဖယ္ရွားၿပီးပါၿပီ</string>
 </resources>
