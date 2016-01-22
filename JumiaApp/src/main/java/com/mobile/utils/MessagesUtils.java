@@ -1,5 +1,7 @@
 package com.mobile.utils;
 
+import android.support.annotation.Nullable;
+
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.view.R;
 
@@ -57,7 +59,7 @@ public enum MessagesUtils {
  * @param eventType - The event type
  * @param isError - Defines the id type to return: if true returns an errorMessageId, if false returns successMessageId
  * */
-    public static int getMessageId(EventType eventType, boolean isError){
+    public static int getMessageId(@Nullable EventType eventType, boolean isError){
 
         if (eventType != null){
             for (MessagesUtils messageUtils  : MessagesUtils.values()) {

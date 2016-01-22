@@ -23,12 +23,12 @@ import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.objects.home.HomePageObject;
-import com.mobile.newFramework.objects.home.object.TeaserRichRelevanceObject;
 import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
+import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
@@ -155,7 +155,7 @@ public interface AigApiInterface {
     String getHome = "getHome";
 
     @GET("/{path}")
-    void getRichRelevance(@Path(value="path", encode=false) String path, Callback<BaseResponse<TeaserRichRelevanceObject>> callback);
+    void getRichRelevance(@Path(value="path", encode=false) String path, Callback<BaseResponse<RichRelevance>> callback);
     String getRichRelevance = "getRichRelevance";
 
     @GET("/")

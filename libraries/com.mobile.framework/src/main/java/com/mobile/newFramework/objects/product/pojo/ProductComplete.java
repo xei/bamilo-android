@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
+import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.objects.product.Seller;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -39,6 +40,7 @@ public class ProductComplete extends ProductMultiple {
     private boolean hasOffers;
     private int mTotalOffers;
     private ArrayList<ProductRegular> mRelatedProducts;
+    private RichRelevance mRichRelevance;
     private ArrayList<ProductSpecification> mProductSpecs;
     private ArrayList<Variation> mProductVariations;
     private String mShareUrl;
@@ -111,6 +113,12 @@ public class ProductComplete extends ProductMultiple {
                         mRelatedProducts.add(relatedProduct);
                     }
                 }
+            }
+            // Recommended products -> Rich Relevance
+            JSONObject recommendedProductObject = jsonObject.optJSONObject(RestConstants.RECOMMENDED_PRODUCTS);
+            if (recommendedProductObject != null) {
+                mRichRelevance = new RichRelevance();
+                mRichRelevance.initialize(recommendedProductObject);
             }
             // Summary
             JSONObject summaryObject = jsonObject.optJSONObject(RestConstants.SUMMARY);
@@ -201,7 +209,19 @@ public class ProductComplete extends ProductMultiple {
     }
 
     public ArrayList<ProductRegular> getRelatedProducts() {
-        return mRelatedProducts;
+        // if Rich relevance is active and have products send those products
+        if(mRichRelevance != null && CollectionUtils.isNotEmpty(mRichRelevance.getRichRelevanceProducts()))
+            return mRichRelevance.getRichRelevanceProducts();
+        else
+            return mRelatedProducts;
+    }
+
+    public RichRelevance getRichRelevance() {
+        return mRichRelevance;
+    }
+
+    public void setRichRelevance(RichRelevance richRelevance) {
+        mRichRelevance = richRelevance;
     }
 
     public String getShareUrl() {
@@ -256,6 +276,7 @@ public class ProductComplete extends ProductMultiple {
         dest.writeString(mShortDescription);
         dest.writeByte((byte) (isFashion ? 1 : 0));
         dest.writeByte((byte) (isPreOrder ? 1 : 0));
+        dest.writeParcelable(mRichRelevance, flags);
 
     }
 
@@ -279,6 +300,7 @@ public class ProductComplete extends ProductMultiple {
         mShortDescription = in.readString();
         isFashion = in.readByte() == 1;
         isPreOrder = in.readByte() == 1;
+        mRichRelevance = in.readParcelable(RichRelevance.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<ProductComplete> CREATOR = new Parcelable.Creator<ProductComplete>() {
