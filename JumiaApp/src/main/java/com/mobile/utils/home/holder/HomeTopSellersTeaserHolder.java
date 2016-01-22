@@ -80,18 +80,13 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
                 Print.i(TAG, "SUCCESS RICH RELEVANCE");
                 RichRelevance richRelevanceObject = (RichRelevance) baseResponse.getContentData();
 
-                if(richRelevanceObject != null){
-                    ArrayList<ProductRegular> richRelevanceTeaserObjects = richRelevanceObject.getRichRelevanceProducts();
+                ArrayList<ProductRegular> richRelevanceTeaserObjects = richRelevanceObject.getRichRelevanceProducts();
                     if(!CollectionUtils.isEmpty(richRelevanceTeaserObjects) && mParentClickListener != null && horizontalListView != null){
                         horizontalListView.setAdapter(new HomeRichRelevanceTeaserAdapter(richRelevanceTeaserObjects, mParentClickListener));
                         sectionTitle.setText(richRelevanceObject.getTitle());
                     } else {
                         onRequestError(baseResponse);
                     }
-                } else {
-                    onRequestError(baseResponse);
-                }
-
             }
             @Override
             public void onRequestError(BaseResponse baseResponse) {
