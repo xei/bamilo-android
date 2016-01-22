@@ -589,16 +589,14 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(mDynamicForm));
 
                 TrackerDelegator.trackItemReview(params, isShowingRatingForm);
-                getBaseActivity().showWarningMessage(
-                        WarningFactory.SUCCESS_MESSAGE,
-                        getString(R.string.submit_text));
+                showWarningSuccessMessage(getString(R.string.submit_text));
 
                 hideActivityProgress();
                 isExecutingSendReview = false;
                 cleanForm();
 
                 //Validate if fragment is nested
-                if(getParentFragment() instanceof ReviewsFragment){
+                if(isNestedFragment){
                     getBaseActivity().onBackPressed();
                 } else {
                     // Remove entries until specific tag
@@ -631,7 +629,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 Print.d(TAG, "GOT GET_PRODUCT_EVENT");
                 if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
                     getActivity().onBackPressed();
-                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    showWarningErrorMessage(getString(R.string.product_could_not_retrieved));
                 } else {
                     completeProduct = (ProductComplete) baseResponse.getContentData();
                     // triggerAutoLogin();
@@ -691,7 +689,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 break;
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
-                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    showWarningErrorMessage(getString(R.string.product_could_not_retrieved));
                     showFragmentContentContainer();
                     try {
                         getBaseActivity().onBackPressed();

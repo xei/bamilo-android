@@ -243,7 +243,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
         // Update base components, like items on action bar
-        if (!isNestedFragment && enabledMenuItems != null) {
+        if (!isNestedFragment && enabledMenuItems != null && getBaseActivity() != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems + " " + action);
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
             // Method used to set a bottom margin
@@ -615,14 +615,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Show BaseActivity progress loading
      */
     protected void showActivityProgress() {
-        getBaseActivity().showProgress();
+        if(getBaseActivity() != null) {
+            getBaseActivity().showProgress();
+        }
     }
 
     /**
      * Hide BaseActivity progress loading
      */
     protected void hideActivityProgress() {
-        getBaseActivity().dismissProgress();
+        if(getBaseActivity() != null) {
+            getBaseActivity().dismissProgress();
+        }
     }
 
 
@@ -643,29 +647,49 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     public void showWarningSuccessMessage(@Nullable String message, @Nullable EventType eventType) {
-        int id = MessagesUtils.getMessageId(eventType, false);
-        if(getBaseActivity() != null && id > 0) {
-            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(id);
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
-        }
+        showWarningMessage(WarningFactory.SUCCESS_MESSAGE, message, eventType);
     }
 
     public void showWarningSuccessMessage(@Nullable String message, int fallback) {
-        if(getBaseActivity() != null) {
-            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
-            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
+        if(TextUtils.isEmpty(message)) {
+            showWarningMessage(WarningFactory.SUCCESS_MESSAGE, fallback);
+        }
+        else {
+            showWarningMessage(WarningFactory.SUCCESS_MESSAGE, message);
         }
     }
 
     public void showWarningErrorMessage(@Nullable String message) {
         showWarningErrorMessage(message, null);
     }
+
     public void showWarningErrorMessage(@Nullable String message, @Nullable EventType eventType) {
-        int id = MessagesUtils.getMessageId(eventType, true);
+        showWarningMessage(WarningFactory.ERROR_MESSAGE, message, eventType);
+    }
+
+    private void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact,
+                                    @Nullable String message,
+                                    @Nullable EventType eventType) {
+        if(TextUtils.isEmpty(message) && eventType != null) {
+            int id = MessagesUtils.getMessageId(eventType, true);
+            if (id > 0) {
+                showWarningMessage(warningFact, id);
+            }
+        }
+        else {
+            showWarningMessage(warningFact, message);
+        }
+    }
+
+    private void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact,
+                                    @StringRes final int stringId) {
+        showWarningMessage(warningFact, getBaseActivity().getString(stringId));
+    }
+
+    private void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact,
+                                    final String message) {
         if(getBaseActivity() != null) {
-            String text = TextUtils.isNotEmpty(message) ? message : id > 0 ? getBaseActivity().getString(id) : null;
-            if(text != null)
-                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, text);
+            getBaseActivity().showWarningMessage(warningFact, message);
         }
     }
 
@@ -1076,7 +1100,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void onClickContinueButton() {
-        getBaseActivity().onBackPressed();
+        if(getBaseActivity() != null) {
+            getBaseActivity().onBackPressed();
+        }
     }
 
     /**
@@ -1085,9 +1111,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     private void onClickMaintenanceChooseCountry() {
-        // Show Change country
-        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-        getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if(getBaseActivity() != null) {
+            // Show Change country
+            getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /*
