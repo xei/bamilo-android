@@ -20,6 +20,7 @@ import java.util.Map;
  * Class used to help with collections.<br>
  * Copy from import org.apache.commons.collections4.ListUtils;
  */
+@SuppressWarnings("unused")
 public class CollectionUtils {
 
 
@@ -209,6 +210,10 @@ public class CollectionUtils {
 
     public static boolean containsKey(Bundle bundle, String key) {
         return !isEmpty(bundle) && bundle.containsKey(key);
+    }
+
+    public static boolean containsKey(Map map, String key) {
+        return !isEmpty(map) && map.containsKey(key);
     }
 
     public static void reverseArray(Object[] array) {

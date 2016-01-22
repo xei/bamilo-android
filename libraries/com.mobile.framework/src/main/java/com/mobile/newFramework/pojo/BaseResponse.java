@@ -36,9 +36,7 @@ public class BaseResponse<T> {
 
     public BaseResponse(EventType eventType, @ErrorCode.Code int errorCode) {
         setEventType(eventType);
-        AigError aigError = new AigError();
-        aigError.setCode(errorCode);
-        setError(aigError);
+        setError(new AigError().setCode(errorCode));
     }
 
     public boolean hadSuccess() {

@@ -27,7 +27,6 @@ import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
@@ -57,7 +56,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.Map;
 
 import de.akquinet.android.androlog.Log;
 
@@ -1022,14 +1020,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                 hideActivityProgress();
                 // Validate error
                 if (!super.handleErrorEvent(baseResponse)) {
-                    try {
-                        Map errorMessages = baseResponse.getErrorMessages();
-                        if (errorMessages != null && (errorMessages.containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN) || errorMessages.containsKey(ErrorConstants.ERROR_ADDING_ITEM))) {
-                            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        }
-                    } catch (ClassCastException | NullPointerException e) {
-                        showUnexpectedErrorWarning();
-                    }
+                    showUnexpectedErrorWarning();
                 }
                 break;
             case GET_CATALOG_EVENT:

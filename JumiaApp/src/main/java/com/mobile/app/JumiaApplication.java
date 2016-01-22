@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
@@ -190,6 +191,7 @@ public class JumiaApplication extends Application {
     /**
      * @return the cart
      */
+    @Nullable
     public PurchaseEntity getCart() {
         return this.cart;
     }
@@ -197,7 +199,7 @@ public class JumiaApplication extends Application {
     /**
      * @param cart the cart to set
      */
-    public void setCart(PurchaseEntity cart) {
+    public void setCart(@Nullable PurchaseEntity cart) {
         this.cart = cart;
     }
 

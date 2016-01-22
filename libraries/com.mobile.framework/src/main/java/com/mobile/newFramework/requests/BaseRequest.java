@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigRestAdapter;
 import com.mobile.newFramework.rest.errors.AigBaseException;
-import com.mobile.newFramework.rest.errors.AigError;
-import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.rest.interfaces.AigResponseCallback;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -78,9 +76,6 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
         }
         // Validate error response
         else {
-            AigError aigError = new AigError();
-            aigError.setCode(ErrorCode.REQUEST_ERROR);
-            baseResponse.setError(aigError);
             this.mRequester.onRequestError(baseResponse);
         }
     }

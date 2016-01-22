@@ -22,7 +22,6 @@ import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.ErrorConstants;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
@@ -206,7 +205,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
         if (!JumiaApplication.isCustomerLoggedIn()) {
-            switchToLoginFragment();
+            onLoginRequired();
         }
         // Case first time
         else if (mWishList == null || sForceReloadWishListFromNetwork) {
@@ -461,10 +460,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         }
     }
 
-    /**
-     * Request login
-     */
-    private void switchToLoginFragment() {
+    @Override
+    protected void onLoginRequired() {
         // Pop entries until home
         getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
         // Goto Login and next WishList
@@ -543,28 +540,21 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        // Call super
+        if(super.handleErrorEvent(baseResponse)) {
+            Log.i(TAG, "SUPER HANDLE THE ERROR!");
+            return;
+        }
         // Hide progress
         hideActivityProgress();
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             case REMOVE_PRODUCT_FROM_WISH_LIST:
-                super.handleErrorEvent(baseResponse);
                 break;
             case GET_WISH_LIST:
             default:
-                // Validate error
-                if (!super.handleErrorEvent(baseResponse)) {
-                    try {
-                        if (baseResponse.getErrorMessages().containsKey(ErrorConstants.CUSTOMER_NOT_LOGGED_IN)) {
-                            switchToLoginFragment();
-                        } else {
-                            showContinueShopping();
-                        }
-                    } catch (ClassCastException | NullPointerException e) {
-                        showContinueShopping();
-                    }
-                }
+                showContinueShopping();
                 isErrorOnLoadingMore = isLoadingMoreData;
                 setLoadingMore(false);
                 break;
