@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.objects.product.pojo.ProductRichRelevance;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
@@ -23,6 +22,7 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
     private String mType;
     private boolean mHasData;
     private String mTitle;
+    private String mTarget;
     private ArrayList<ProductRegular> mRichRelevanceProducts = new ArrayList<>();
 
     /**
@@ -36,18 +36,25 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
         // Get rich relevance
         mType = jsonObject.getString(RestConstants.TYPE);
         // Title
-        mTitle = jsonObject.getString(RestConstants.TITLE);
+        mTitle = jsonObject.optString(RestConstants.TITLE);
         // Has Data
         mHasData = jsonObject.optBoolean(RestConstants.HAS_DATA);
-        // Products
-        JSONArray richRelevanceData = jsonObject.getJSONArray(RestConstants.DATA);
-        if(richRelevanceData != null && richRelevanceData.length() > 0){
-            for (int i = 0; i < richRelevanceData.length() ; i++) {
-                ProductRichRelevance richRelevanceProduct = new ProductRichRelevance();
-                if(richRelevanceProduct.initialize(richRelevanceData.getJSONObject(i)))
-                    mRichRelevanceProducts.add(richRelevanceProduct);
+
+        if(mHasData){
+            // Products
+            JSONArray richRelevanceData = jsonObject.getJSONArray(RestConstants.DATA);
+            if(richRelevanceData != null && richRelevanceData.length() > 0){
+                for (int i = 0; i < richRelevanceData.length() ; i++) {
+                    ProductRegular richRelevanceProduct = new ProductRegular();
+                    if(richRelevanceProduct.initialize(richRelevanceData.getJSONObject(i)))
+                        mRichRelevanceProducts.add(richRelevanceProduct);
+                }
             }
+        } else {
+            // Has Data
+            mTarget = jsonObject.getString(RestConstants.TARGET);
         }
+
         return true;
     }
 
@@ -61,6 +68,9 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
         return RequiredJson.METADATA;
     }
 
+    public String getTarget() {
+        return mTarget;
+    }
 
     public String getType() {
         return mType;
@@ -84,10 +94,11 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
         mTitle = in.readString();
         if (in.readByte() == 0x01) {
             mRichRelevanceProducts = new ArrayList<>();
-            in.readList(mRichRelevanceProducts, ProductRichRelevance.class.getClassLoader());
+            in.readList(mRichRelevanceProducts, ProductRegular.class.getClassLoader());
         } else {
             mRichRelevanceProducts = null;
         }
+        mTarget = in.readString();
     }
 
     @Override
@@ -106,6 +117,7 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mRichRelevanceProducts);
         }
+        dest.writeString(mTarget);
     }
 
     @SuppressWarnings("unused")

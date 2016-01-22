@@ -116,9 +116,10 @@ public class ProductComplete extends ProductMultiple {
             }
             // Recommended products -> Rich Relevance
             JSONObject recommendedProductObject = jsonObject.optJSONObject(RestConstants.RECOMMENDED_PRODUCTS);
-            if (recommendedProductObject != null)
+            if (recommendedProductObject != null) {
+                mRichRelevance = new RichRelevance();
                 mRichRelevance.initialize(recommendedProductObject);
-
+            }
             // Summary
             JSONObject summaryObject = jsonObject.optJSONObject(RestConstants.SUMMARY);
             if (summaryObject != null) {
@@ -217,6 +218,10 @@ public class ProductComplete extends ProductMultiple {
 
     public RichRelevance getRichRelevance() {
         return mRichRelevance;
+    }
+
+    public void setRichRelevance(RichRelevance richRelevance) {
+        mRichRelevance = richRelevance;
     }
 
     public String getShareUrl() {

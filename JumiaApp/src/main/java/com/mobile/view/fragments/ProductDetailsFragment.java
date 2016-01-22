@@ -30,6 +30,7 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
+import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -39,9 +40,9 @@ import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
+import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
-import com.mobile.newFramework.objects.product.pojo.ProductRichRelevance;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -807,6 +808,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * Method used to create the view
      */
     private void setRelatedItems() {
+        //FIXME
         if (CollectionUtils.isNotEmpty(mProduct.getRelatedProducts())) {
 
             if(mProduct.getRichRelevance() != null && TextUtils.isNotEmpty(mProduct.getRichRelevance().getTitle()))
@@ -816,6 +818,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             relatedGridView.setExpanded(true);
             relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, mProduct.getRelatedProducts()));
             relatedGridView.setOnItemClickListener(this);
+            mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {
             mRelatedProductsView.setVisibility(View.GONE);
         }
@@ -1099,8 +1102,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
-        if(mProduct.getRelatedProducts().get(position) instanceof ProductRichRelevance)
-            mRelatedRichRelevanceHash = ((ProductRichRelevance)mProduct.getRelatedProducts().get(position)).getRichRelevanceClickHash();
+        mRelatedRichRelevanceHash = mProduct.getRelatedProducts().get(position).getRichRelevanceClickHash();
 
         new TargetLink(getWeakBaseActivity(), target)
                 .addAppendListener(this)
@@ -1195,6 +1197,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
     }
 
+    private void triggerRichRelevance(String target) {
+        triggerContentEvent(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(TargetLink.getIdFromTargetLink(target)), this);
+    }
     /*
      * ############## RESPONSE ##############
      */
@@ -1233,6 +1238,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
                 // Save product
                 mProduct = product;
+                // Verify if there's Rich Relevance request to make
+                if(product.getRichRelevance() != null && !product.getRichRelevance().isHasData())
+                    triggerRichRelevance(mProduct.getRichRelevance().getTarget());
 
                 if(CollectionUtils.isNotEmpty(mProduct.getImageList())){
                     sSharedSelectedPosition = !ShopSelector.isRtl() ? IntConstants.DEFAULT_POSITION : mProduct.getImageList().size()-1;
@@ -1263,6 +1271,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mProduct.setProductBundle(bundleList);
                 // build combo section from here
                 buildComboSection(bundleList);
+                break;
+            case GET_RICH_RELEVANCE_EVENT:
+                RichRelevance productRichRelevance = (RichRelevance) baseResponse.getContentData();
+                mProduct.setRichRelevance(productRichRelevance);
+                setRelatedItems();
+                break;
             default:
                 break;
         }
@@ -1287,6 +1301,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             case GET_PRODUCT_DETAIL:
                 showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
                 getBaseActivity().onBackPressed();
+                break;
+            case GET_RICH_RELEVANCE_EVENT:
+                setRelatedItems();
                 break;
             default:
                 break;

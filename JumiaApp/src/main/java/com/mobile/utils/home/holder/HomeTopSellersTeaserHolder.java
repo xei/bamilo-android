@@ -9,8 +9,8 @@ import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
-import com.mobile.newFramework.objects.home.object.TeaserRichRelevanceObject;
+import com.mobile.newFramework.objects.product.RichRelevance;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
@@ -76,12 +76,13 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
             @Override
             public void onRequestComplete(BaseResponse baseResponse) {
                 Print.i(TAG, "SUCCESS RICH RELEVANCE");
-                TeaserRichRelevanceObject topSellers = (TeaserRichRelevanceObject) baseResponse.getContentData();
-                if(topSellers != null){
-                    ArrayList<BaseTeaserObject> topSellersTeaserObjects = topSellers.getRichTeaserGroupType().getData();
-                    if(!CollectionUtils.isEmpty(topSellersTeaserObjects) && mParentClickListener != null && horizontalListView != null){
-                        horizontalListView.setAdapter(new HomeTopSellersTeaserAdapter(topSellersTeaserObjects, mParentClickListener));
-                        sectionTitle.setText(topSellers.getRichTeaserGroupType().getTitle());
+                RichRelevance richRelevanceObject = (RichRelevance) baseResponse.getContentData();
+
+                if(richRelevanceObject != null){
+                    ArrayList<ProductRegular> richRelevanceTeaserObjects = richRelevanceObject.getRichRelevanceProducts();
+                    if(!CollectionUtils.isEmpty(richRelevanceTeaserObjects) && mParentClickListener != null && horizontalListView != null){
+                        horizontalListView.setAdapter(new HomeRichRelevanceTeaserAdapter(richRelevanceTeaserObjects, mParentClickListener));
+                        sectionTitle.setText(richRelevanceObject.getTitle());
                     } else {
                         onRequestError(baseResponse);
                     }
