@@ -30,6 +30,7 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
+import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -39,6 +40,7 @@ import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
+import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -81,7 +83,7 @@ import de.akquinet.android.androlog.Log;
  * @author Michael Kroez
  * @modified spereira
  */
-public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnDialogListListener {
+public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnDialogListListener, TargetLink.OnAppendDataListener {
 
     private final static String TAG = ProductDetailsFragment.class.getSimpleName();
 
@@ -116,6 +118,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private View mGlobalButton;
     private View mOffersContainer;
     private String mRichRelevanceHash;
+    private String mRelatedRichRelevanceHash;
 
     /**
      * Empty constructor
@@ -805,11 +808,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * Method used to create the view
      */
     private void setRelatedItems() {
+        //FIXME
         if (CollectionUtils.isNotEmpty(mProduct.getRelatedProducts())) {
+
+            if(mProduct.getRichRelevance() != null && TextUtils.isNotEmpty(mProduct.getRichRelevance().getTitle()))
+                ((TextView)mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mProduct.getRichRelevance().getTitle());
+
             ExpandedGridViewComponent relatedGridView = (ExpandedGridViewComponent) mRelatedProductsView.findViewById(R.id.pdv_related_grid_view);
             relatedGridView.setExpanded(true);
             relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, mProduct.getRelatedProducts()));
             relatedGridView.setOnItemClickListener(this);
+            mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {
             mRelatedProductsView.setVisibility(View.GONE);
         }
@@ -1092,11 +1101,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        String sku = (String) view.getTag(R.id.target_sku);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
-        bundle.putBoolean(ConstantsIntentExtra.IS_RELATED_ITEM, true);
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
+        mRelatedRichRelevanceHash = mProduct.getRelatedProducts().get(position).getRichRelevanceClickHash();
+
+        new TargetLink(getWeakBaseActivity(), target)
+                .addAppendListener(this)
+                .retainBackStackEntries()
+                .run();
+    }
+
+    @Override
+    public void onAppendData(FragmentType next, String title, String id, Bundle data) {
+        if(TextUtils.isNotEmpty(mRelatedRichRelevanceHash))
+            data.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRelatedRichRelevanceHash );
     }
 
     /**
@@ -1180,6 +1197,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
     }
 
+    private void triggerRichRelevance(String target) {
+        triggerContentEvent(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(TargetLink.getIdFromTargetLink(target)), this);
+    }
     /*
      * ############## RESPONSE ##############
      */
@@ -1218,6 +1238,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 }
                 // Save product
                 mProduct = product;
+                // Verify if there's Rich Relevance request to make
+                if(product.getRichRelevance() != null && !product.getRichRelevance().isHasData())
+                    triggerRichRelevance(mProduct.getRichRelevance().getTarget());
 
                 if(CollectionUtils.isNotEmpty(mProduct.getImageList())){
                     sSharedSelectedPosition = !ShopSelector.isRtl() ? IntConstants.DEFAULT_POSITION : mProduct.getImageList().size()-1;
@@ -1248,6 +1271,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mProduct.setProductBundle(bundleList);
                 // build combo section from here
                 buildComboSection(bundleList);
+                break;
+            case GET_RICH_RELEVANCE_EVENT:
+                RichRelevance productRichRelevance = (RichRelevance) baseResponse.getContentData();
+                mProduct.setRichRelevance(productRichRelevance);
+                setRelatedItems();
+                break;
             default:
                 break;
         }
@@ -1272,6 +1301,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             case GET_PRODUCT_DETAIL:
                 showWarningErrorMessage(baseResponse.getErrorMessage(), eventType);
                 getBaseActivity().onBackPressed();
+                break;
+            case GET_RICH_RELEVANCE_EVENT:
+                setRelatedItems();
                 break;
             default:
                 break;

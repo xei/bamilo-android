@@ -339,7 +339,6 @@
     <string name="create_edit_address">إنشاء العنوان أو تعديل بياناته</string>
     <string name="string_more_choices">المزيد من الخيارات</string>
     <string name="addresses_saved_message">تم حفظ إعدادات العناوين الخاصة بك</string>
-    <string name="dialog_to_product">إلى تفاصيل المنتج</string>
     <string name="address_creation_failed_title">لم ينجح إنشاء العنوان</string>
     <string name="address_creation_failed_main">برجاء ملء البيانات بشكل صحيح.</string>
     <string name="see_more_offers">شاهد المزيد من العروض</string>

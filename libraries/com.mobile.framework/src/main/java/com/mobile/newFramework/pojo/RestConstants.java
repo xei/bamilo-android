@@ -80,6 +80,7 @@ public class RestConstants {
     public static final String IS_NEW = "is_new";
     public static final String SIZE_GUIDE = "size_guide";
     public static final String RELATED_PRODUCTS = "related_products";
+    public static final String RECOMMENDED_PRODUCTS = "recommended_products";
     public static final String RATINGS_TOTAL = "ratings_total";
     public static final String RATING_REVIEWS_SUMMARY = "rating_reviews_summary";
     public static final String AVERAGE = "average";

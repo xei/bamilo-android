@@ -339,7 +339,6 @@
     <string name="create_edit_address">Créez ou modifiez vos adresses</string>
     <string name="string_more_choices">Plus de choix</string>
     <string name="addresses_saved_message">Les paramètres de vos adresses ont été enregistrés.</string>
-    <string name="dialog_to_product">Détails du produit</string>
     <string name="address_creation_failed_title">La création d\'adresse a échoué</string>
     <string name="address_creation_failed_main">Veuillez remplir correctement tous les champs du formulaire.</string>
     <string name="see_more_offers">Voir plus d\'offres</string>
