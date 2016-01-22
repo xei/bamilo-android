@@ -244,7 +244,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
         mMaintenanceView.setOnInflateListener(this);
         // Update base components, like items on action bar
-        if (!isNestedFragment && enabledMenuItems != null && getBaseActivity() != null) {
+        if (!isNestedFragment && enabledMenuItems != null) {
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems + " " + action);
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
             // Method used to set a bottom margin
@@ -652,11 +652,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     public void showWarningSuccessMessage(@Nullable String message, int fallback) {
-        if(TextUtils.isEmpty(message)) {
-            showWarningMessage(WarningFactory.SUCCESS_MESSAGE, fallback);
-        }
-        else {
-            showWarningMessage(WarningFactory.SUCCESS_MESSAGE, message);
+        if(getBaseActivity() != null) {
+            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
         }
     }
 
@@ -671,26 +669,14 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact,
                                     @Nullable String message,
                                     @Nullable EventType eventType) {
-        if(TextUtils.isEmpty(message) && eventType != null) {
+        if(TextUtils.isNotEmpty(message)) {
+            getBaseActivity().showWarningMessage(warningFact, message);
+        }
+        else  {
             int id = MessagesUtils.getMessageId(eventType, true);
             if (id > 0) {
-                showWarningMessage(warningFact, id);
+                getBaseActivity().showWarningMessage(warningFact, getBaseActivity().getString(id));
             }
-        }
-        else {
-            showWarningMessage(warningFact, message);
-        }
-    }
-
-    private void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact,
-                                    @StringRes final int stringId) {
-        showWarningMessage(warningFact, getBaseActivity().getString(stringId));
-    }
-
-    private void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact,
-                                    final String message) {
-        if(getBaseActivity() != null) {
-            getBaseActivity().showWarningMessage(warningFact, message);
         }
     }
 
