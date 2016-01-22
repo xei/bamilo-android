@@ -32,12 +32,13 @@ public class TargetLink {
     // TARGET TYPES CONSTANTS
     public static final String PDV = "product_detail";
     public static final String CATALOG = "catalog";
+    public static final String CATALOG_CATEGORY = "catalog_category";
     public static final String CATALOG_BRAND = "catalog_brand";
     public static final String CATALOG_SELLER = "catalog_seller";
     public static final String CAMPAIGN = "campaign";
     public static final String STATIC_PAGE = "static_page";
     public static final String UNKNOWN = "unknown";
-    @StringDef({PDV, CATALOG, CATALOG_BRAND, CATALOG_SELLER, CAMPAIGN, STATIC_PAGE, UNKNOWN})
+    @StringDef({PDV, CATALOG, CATALOG_CATEGORY, CATALOG_BRAND, CATALOG_SELLER, CAMPAIGN, STATIC_PAGE, UNKNOWN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type {}
 
@@ -63,9 +64,9 @@ public class TargetLink {
     private static final int TARGET_ID_POSITION = 1;
     private static final String TARGET_LINK_DELIMITER = "::";
 
-    private WeakReference<BaseActivity> mActivity;
+    private final WeakReference<BaseActivity> mActivity;
     private String mTitle;
-    private String mTarget;
+    private final String mTarget;
     private TeaserGroupType mOrigin;
     private OnAppendDataListener mAppendDataListener;
     private OnCampaignListener mCampaignListener;
@@ -129,6 +130,7 @@ public class TargetLink {
             Log.w(TAG, "WARNING: INVALID TARGET LINK: " + mTarget);
             return false;
         }
+
         // ##### Get type and value
         String type = targetLink[TARGET_TYPE_POSITION];
         String id = targetLink[TARGET_ID_POSITION];
@@ -173,6 +175,9 @@ public class TargetLink {
         // Case catalog
         else if (TextUtils.equals(CATALOG, type)) {
             fragmentType = FragmentType.CATALOG;
+        }// Case CATALOG_CATEGORY
+        else if (TextUtils.equals(CATALOG_CATEGORY, type)) {
+            fragmentType = FragmentType.CATALOG_CATEGORY;
         }
         // Case catalog brand
         else if (TextUtils.equals(CATALOG_BRAND, type)) {
