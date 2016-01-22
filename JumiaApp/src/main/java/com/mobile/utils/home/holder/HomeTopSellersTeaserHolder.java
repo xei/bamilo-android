@@ -53,6 +53,8 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
             horizontalListView.setHasFixedSize(true);
             // Set adapter
             if(group.hasData()){
+                if(TextUtils.isNotEmpty(group.getTitle()))
+                    sectionTitle.setText(group.getTitle());
                 horizontalListView.setAdapter(new HomeTopSellersTeaserAdapter(group.getData(), mParentClickListener));
             } else {
                 if(CollectionUtils.isNotEmpty(group.getData()))
