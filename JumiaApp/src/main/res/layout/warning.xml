@@ -28,7 +28,7 @@
         android:layout_height="match_parent"
         android:layout_toEndOf="@id/warning_image"
         android:layout_toRightOf="@id/warning_image"
-        android:gravity="center_vertical|center_horizontal"
+        android:gravity="center"
         android:text="@string/stale_warning"
         android:textColor="@android:color/white"
         android:textSize="@dimen/warning_text_size" />
