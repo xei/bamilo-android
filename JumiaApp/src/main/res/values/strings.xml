@@ -352,7 +352,6 @@
     <string name="create_edit_address">Create or edit your addresses</string>
     <string name="string_more_choices">More Choices</string>
     <string name="addresses_saved_message">Your addresses settings have been saved.</string>
-    <string name="dialog_to_product">To Product Details</string>
     <string name="address_creation_failed_title">Address creation failed</string>
     <string name="address_creation_failed_main">Please fill correctly all form fields.</string>
     <string name="see_more_offers">SEE MORE OFFERS</string>

@@ -339,7 +339,6 @@
     <string name="create_edit_address">نشانی‌های خود را ایجاد و ویرایش کنید.</string>
     <string name="string_more_choices">انتخاب‌های بیشتر</string>
     <string name="addresses_saved_message">تنظیمات نشانی‌های شما ذخیره شده است.</string>
-    <string name="dialog_to_product">جزئیات محصول</string>
     <string name="address_creation_failed_title">ثبت نشانی با مشکل مواجه شد.</string>
     <string name="address_creation_failed_main">لطفا تمام موارد را بطورصحیح وارد کنید.</string>
     <string name="see_more_offers">پیشنهادات دیگر</string>
