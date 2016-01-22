@@ -30,6 +30,8 @@
         android:layout_gravity="center"
         android:layout_marginEnd="@dimen/my_account_gen_dimen"
         android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:drawableLeft="@drawable/_gen_selector_check_box"
+        android:button="@null"
         android:gravity="center"/>
 
 

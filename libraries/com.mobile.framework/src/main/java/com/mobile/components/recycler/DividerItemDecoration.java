@@ -81,7 +81,6 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin + Math.round(ViewCompat.getTranslationY(child));
             final int bottom = top + mDivider.getIntrinsicHeight();
-            // Print.i("drawHorizontal", "code1count : top : "+top + " bottom: "+bottom);
             mDivider.setBounds(left, top, right, bottom);
             mDivider.draw(c);
         }
