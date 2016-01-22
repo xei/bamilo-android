@@ -20,10 +20,10 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="@dimen/checkout_main_container"
+        android:background="@drawable/drop_shadow_right"
         android:orientation="vertical"
         app:divider="@drawable/divider_horizontal_black_700"
-        app:showDividers="middle"
-        android:background="@drawable/drop_shadow_right">
+        app:showDividers="middle">
 
         <!-- CONTENT -->
 
@@ -34,24 +34,10 @@
             android:layout_weight="1"
             android:scrollbars="none">
 
-            <!-- FORMS -->
+            <!-- SHIPPING FORM -->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+            <include layout="@layout/checkout_create_address_shipping" />
 
-                <!-- SHIPPING FORM -->
-
-                <include layout="@layout/checkout_create_address_shipping" />
-
-                <!-- BILLING FORM -->
-
-                <include
-                    android:id="@+id/checkout_address_form_include_billing"
-                    layout="@layout/checkout_create_address_billing"
-                    android:visibility="gone" />
-            </LinearLayout>
         </ScrollView>
 
         <!-- NEXT BUTTON -->

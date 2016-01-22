@@ -33,9 +33,12 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
     private ViewGroup mShippingView;
     private ViewGroup mBillingView;
     private ViewGroup mOthersView;
+    private View mButtonBottom;
     protected Addresses mAddresses;
 
-
+    /**
+     * Constructor
+     */
     public BaseAddressesFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @StringRes int titleResId, @ConstantsCheckout.CheckoutType int titleCheckout) {
         super(enabledMenuItems, action, R.layout.checkout_addresses, titleResId, ADJUST_CONTENT, titleCheckout);
     }
@@ -66,7 +69,8 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
         mOthersView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_other);
         // Set buttons
         view.findViewById(R.id.checkout_addresses_button_add_top).setOnClickListener(this);
-        view.findViewById(R.id.checkout_addresses_button_add_bottom).setOnClickListener(this);
+        mButtonBottom = view.findViewById(R.id.checkout_addresses_button_add_bottom);
+        mButtonBottom.setOnClickListener(this);
     }
 
     @Override
@@ -143,6 +147,7 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
             addAddresses(mOthersView, addresses.getAddresses());
         } else {
             mOthersView.setVisibility(View.GONE);
+            mButtonBottom.setVisibility(View.GONE);
         }
         // Show container
         showFragmentContentContainer();

@@ -15,24 +15,10 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <!-- FORMS -->
+        <!-- SHIPPING FORM -->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        <include layout="@layout/checkout_create_address_shipping" />
 
-            <!-- SHIPPING FORM -->
-
-            <include layout="@layout/checkout_create_address_shipping" />
-
-            <!-- BILLING FORM -->
-
-            <include
-                android:id="@+id/checkout_address_form_include_billing"
-                layout="@layout/checkout_create_address_billing"
-                android:visibility="gone" />
-        </LinearLayout>
     </ScrollView>
 
     <!-- NEXT BUTTON -->

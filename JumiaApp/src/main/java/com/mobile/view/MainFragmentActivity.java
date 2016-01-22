@@ -250,6 +250,7 @@ public class MainFragmentActivity extends BaseActivity {
             case CATALOG_SELLER:
             case CATALOG_BRAND:
             case CATALOG_DEEPLINK:
+            case CATALOG_CATEGORY:
             case CATALOG:
                 // Default
                 removeEntries = true;

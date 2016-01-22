@@ -106,6 +106,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private boolean mSortOrFilterApplied; // Flag to reload or not an initial catalog in case generic error
 
+    private int mCatalogGridPosition = IntConstants.INVALID_POSITION;
+
     private String mCategoryTree;
 
     private ContentValues mQueryValues = new ContentValues();
@@ -155,7 +157,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ARGUMENTS: " + arguments);
+            Print.i(TAG, "code1scrollto ARGUMENTS: " + arguments);
             // Get key
             mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // Get title
@@ -165,6 +167,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
             else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
             else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
+            else if(type == FragmentType.CATALOG_CATEGORY) mQueryValues.put(RestConstants.CATEGORY, mKey);
 
             else mQueryValues.put(RestConstants.HASH, mKey);
             // Get sort
@@ -199,6 +202,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCurrentFilterValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES);
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
+            mCatalogGridPosition = savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, IntConstants.INVALID_POSITION);
         }
 
         // Track most viewed category
@@ -306,6 +310,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE");
         // Save the current content
+        outState.putInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES, mQueryValues);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_PAGE, mCatalogPage);
@@ -1155,6 +1160,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Add listener
         adapter.setOnViewHolderClickListener(this);
         mGridView.setAdapter(adapter);
+        if(mCatalogGridPosition > 0){
+            mGridView.getLayoutManager().scrollToPosition(mCatalogGridPosition);
+        }
+
     }
 
 }

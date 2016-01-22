@@ -3,6 +3,7 @@ package com.mobile.factories;
 import android.content.Context;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.util.LayoutDirection;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -120,9 +121,9 @@ public class FormFactory {
         // Create dynamic form
         DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
         // Create each form field
-        for (IFormField frmEntry : form.getFields()) {
-            Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
-            DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, frmEntry);
+        for (IFormField entry : form.getFields()) {
+            Print.d(TAG, "FORM ITEM KEY: " + entry.getKey() + " TYPE: " + entry.getInputType());
+            DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, entry);
             dynamicForm.addControl(dynamicFormItem, ctrlParams);
         }
         return dynamicForm;
@@ -140,9 +141,8 @@ public class FormFactory {
         LinearLayout viewGroup = new LinearLayout(context);
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         viewGroup.setOrientation(LinearLayout.VERTICAL);
-//        frmParams.setMargins(context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp));
         viewGroup.setLayoutParams(frmParams);
-        viewGroup.setBackgroundColor(context.getResources().getColor(R.color.black_800));
+        viewGroup.setBackgroundColor(ContextCompat.getColor(context, R.color.black_800));
         viewGroup.setPadding(context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp));
         // Create dynamic form
         DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
