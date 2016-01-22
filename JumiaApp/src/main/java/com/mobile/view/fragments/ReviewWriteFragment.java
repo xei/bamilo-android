@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
@@ -42,7 +41,6 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -71,8 +69,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
     private LinearLayout ratingContainer;
 
-    private DialogGenericFragment dialog_review_submitted;
-
     /**
      * flag used to avoid sending more than one rating/review on double click
      */
@@ -89,8 +85,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     private DynamicForm mDynamicForm;
 
     private boolean isShowingRatingForm = true;
-
-    private boolean nestedFragment = true;
 
     private Bundle mSavedState;
 
@@ -595,38 +589,22 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(mDynamicForm));
 
                 TrackerDelegator.trackItemReview(params, isShowingRatingForm);
-                String buttonMessageText = getResources().getString(R.string.dialog_to_product);
+                getBaseActivity().showWarningMessage(
+                        WarningFactory.SUCCESS_MESSAGE,
+                        getString(R.string.submit_text));
 
-                //Validate if fragment is nested
-                nestedFragment = getParentFragment() instanceof ReviewsFragment;
-
-                dialog_review_submitted = DialogGenericFragment.newInstance(true, false,
-                        getString(R.string.submit_title),
-                        getResources().getString(R.string.submit_text),
-                        buttonMessageText,
-                        "",
-                        new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog_review_submitted.dismiss();
-                                isExecutingSendReview = false;
-                                if (getBaseActivity() != null) {
-                                    if(nestedFragment){
-                                        cleanForm();
-                                        getBaseActivity().onBackPressed();
-                                    } else {
-                                        // Remove entries until specific tag
-                                        getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
-                                    }
-                                }
-                            }
-                        });
-                // Fixed back bug
-                dialog_review_submitted.setCancelable(false);
-                dialog_review_submitted.show(getActivity().getSupportFragmentManager(), null);
                 hideActivityProgress();
                 isExecutingSendReview = false;
                 cleanForm();
+
+                //Validate if fragment is nested
+                if(getParentFragment() instanceof ReviewsFragment){
+                    getBaseActivity().onBackPressed();
+                } else {
+                    // Remove entries until specific tag
+                    getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
+                }
+
                 break;
 
             case GET_FORM_RATING_EVENT:
