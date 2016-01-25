@@ -5,7 +5,7 @@
     <string name="action_label_add_address">လိပ္စာအသစ္ ျဖည္႔ရန္</string>
     <string name="action_label_basket">ျခင္းေတာင္း</string>
     <string name="action_label_logout">Logout</string>
-    <string name="action_label_search_hint">ရွာေဖြမည္ %s</string>
+    <string name="action_label_search_hint">ရွာေဖြရန္ %s</string>
     <string name="action_label_share">ေ၀မွ်ရန္</string>
     <string name="add_address">လိပ္စာ ျဖည္႔ရန္</string>
     <string name="add_to_shopping_cart">၀ယ္ယူမည္</string>
@@ -40,7 +40,7 @@
     <string name="cancel_label">ပယ္ဖ်က္ရန္</string>
     <string name="cart_label">ေစ်း၀ယ္တြန္းလွည္း</string>
     <string name="catalog_edit_filters">စစ္ထုတ္ျခင္းမ်ားကို ျပင္ဆင္ရန္</string>
-    <string name="catalog_no_results">သင္စစ္ထုတ္ထားခ်က္မ်ားႏွင့္ ကိုက္ညီျခင္းမရွိပါ/ပိုမိုတိက်စြာ စစ္ထုတ္ျပီး ထပ္မံၾကိဳးစားၾကည္႕ပါ</string>
+    <string name="catalog_no_results">သင္ရွာလုိေသာအခ်က္အလက္မ်ားရွာမေတြ႕ပါ</string>
     <string name="catalog_no_results_details">စစ္ထုတ္ခ်က္မ်ာကိုအနည္းငယ္ေလွ်ာ႕ၿပီးျပန္လည္ႀကိဳးစားၾကည္႕ပါ</string>
     <string name="categories_label">အမ်ိဳးအစားမ်ား  </string>
     <string name="categories_label_uppercase">အမ်ိဳးအစားမ်ား</string>
@@ -155,7 +155,7 @@
     <string name="my_order_voucher_label">ေဘာက္ခ်ာ  </string>
     <string name="my_orders_label">ကြ်ႏု္ပ္၏ေအာ္ဒါမ်ား</string>
     <string name="my_profile">ကြ်ႏု္ပ္၏ Profile</string>
-    <string name="myaccount_userdata">သံုးစြဲသူအခ်က္အလက္</string>
+    <string name="myaccount_userdata">ပရိုဖုိင္</string>
     <string name="name">အမည္</string>
     <string name="nav_country">ႏိုင္ငံေရြးခ်ယ္ပါ</string>
     <string name="nav_country_warning">ႏိုင္ငံေျပာင္းလဲပါက ေစ်း၀ယ္လွည္းအားရွင္းလင္းၿပီး Logout ျဖစ္သြားမည္။ ေျပာင္းရန္ေသခ်ာပါသလား?</string>
@@ -170,7 +170,7 @@
     <string name="no_connect_dialog_content">Internet connectionကိုစစ္ေဆးၿပီး ထပ္မံႀကိဳးစားပါ!</string>
     <string name="no_internet_access_warning_title">No Internet Access!</string>
     <string name="no_label">No</string>
-    <string name="notifications">Notifications</string>
+    <string name="notifications">သတင္းေပးခ်က္မ်ား</string>
     <string name="myaccount_email_notifications">အီးေမးလ္သို႕အေၾကာင္းၾကားစာမ်ား ပို႕ေပးျခင္း</string>
     <string name="notifications_summary">အထူးကမ္းလွမ္းခ်က္မ်ားႏွင့္ ေနာက္ဆံုး Updates မ်ားလက္ခံရန္</string>
     <string name="off_label">OFF</string>
@@ -225,8 +225,8 @@
     <string name="products_sort_name">ကုန္ပစၥည္းအမည္</string>
     <string name="products_sort_newin">ေနာက္ဆံုးေပၚမ်ား</string>
     <string name="products_sort_popularity">လူၾကိဳက္မ်ားမွဳ</string>
-    <string name="products_sort_pricedown">အနည္းဆံုးေစ်း</string>
-    <string name="products_sort_priceup">အမ််ားဆံုးေစ်း</string>
+    <string name="products_sort_pricedown">အမ်ားဆံုးေစ်းမွစ၍</string>
+    <string name="products_sort_priceup">အနည္းဆံုးေစ်းမွစ၍</string>
     <string name="products_tip_swipe_text">အမ်ိဳးအစားခြဲျခားပံုေျပာင္းရန္ဘယ္ညာ တစ္ဘက္ဘက္သို႔ေရႊ႕ပါ</string>
     <string name="promotion_tip_tap_text">ကုဒ္အားclipboardသို႕ ေကာ္ပီကူးရန္ အေပၚရွိအကြက္ကို ႏွိပ္ျပီး လြယ္ကူစြာ ေငြေပးေခ်ပါ။</string>
     <string name="rating_option_error_message">အဆင့္သတ္မွတ္ေပးျခင္းမ်ားအားလံုး ျဖည္႔ေပးရပါမည္။</string>
@@ -282,7 +282,7 @@
     <string name="shoppingcart_title">ကြ်ႏု္ပ္၏ေစ်း၀ယ္လွည္း</string>
     <string name="show_more">အျခား &#8230;</string>
     <string name="sign_in">Sign In</string>
-    <string name="sign_out">Sign Out</string>
+    <string name="sign_out">ထြက္ရန္</string>
     <string name="signup_label">Signup</string>
     <string name="size_guide_label">အရြယ္အစားလမ္းညႊန္</string>
     <string name="size_label">အရြယ္အစား</string>
@@ -444,7 +444,7 @@
     <string name="cart_total_price">စုစုေပါင္း တန္ဖိုးမွာ %s ျဖစ္ပါသည္</string>
     <string name="cta_button_view_cart">ေစ်း၀ယ္လွည္းကိုၾကည္႕ရန္</string>
     <string name="cta_link_continue_shopping">ဆက္လက္ေစ်း၀ယ္မည္</string>
-    <string name="up_to_date">ေခတ္ေပၚပစၥည္း</string>
+    <string name="up_to_date">ေနာက္ဆံုးဗားရွင္း</string>
     <string name="rate_the_app">App အားအမွတ္ေပးရန္</string>
     <string name="order_track_check">ကြ်ႏု္ပ္၏ေအာ္ဒါမ်ား ေအာက္တြင္ သင္၏ေအာ္ဒါအေျခအေနကို စစ္ေဆးႏုိင္ပါသည္</string>
     <string name="select_city">ၿမိဳ႕ ေရြးခ်ယ္ပါ</string>
@@ -458,7 +458,7 @@
     <string name="order_number">ေအာ္ဒါအမွတ္ %s</string>
     <string name="billing">ေငြေခ်မည္႕လိပ္စာ</string>
     <string name="first_and_second_placeholders">%1$s %2$s</string>
-    <string name="qty_placeholder">Qty: %s</string>
+    <string name="qty_placeholder">အေရအတြက္: %s</string>
     <string name="reorder_label">ေအာ္ဒါထပ္မွာရန္</string>
     <string name="order_status_date">%1$s %2$s</string>
     <string name="order_pending">မေရာက္ရွိေသးပါ</string>
