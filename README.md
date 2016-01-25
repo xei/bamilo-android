@@ -12,11 +12,17 @@ Jumia Android
 
 [![Get it on HockeyApp](https://s3.amazonaws.com/onelogin-assets/images/icons/hockeyapp.png)](https://rink.hockeyapp.net/manage/apps/33641)
 
-#### Contributors
-* [GitHub](https://github.com/SILVEROAKLDA/JUMIAAND/graphs/contributors)
+#### Mobile and MobApi versions
+* [Versions](https://confluence.africainternetgroup.com/display/NAFAMZ/Mobile+apps+and+API+versions)
+
+#### MobApi documentation
+* [API documentation](http://jenkins2.ri.lan.com/job/Jumia_API_Documentation/HTML_Report/index.html)
+
+#### Third party libraries
+* [SDKs and libraries](https://confluence.africainternetgroup.com/pages/viewpage.action?spaceKey=NAFAMZ&title=Android+app+SDKs+and+libraries)
 
 #### Translations
 * [Webtranslateit](https://webtranslateit.com/en/projects/11029-Jumia-Mobile-Apps/files)
 
-#### Third party libraries
-* [SDKs and libraries](https://wiki.jira.rocket-internet.de/pages/viewpage.action?title=Android+app+SDKs+and+libraries&spaceKey=NAFAMZ)
+#### Contributors
+* [GitHub](https://github.com/SILVEROAKLDA/JUMIAAND/graphs/contributors)

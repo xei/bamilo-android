@@ -2,12 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/dimen_mat_8px"
-    android:orientation="vertical">
+    android:orientation="vertical"
+   >
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/home_teaser_top_seller_section_title"
         style="@style/HeaderTeaser"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_8dp"
+        android:layout_marginBottom="@dimen/dimen_5dp"
         android:text="@string/top_sellers" />
 
     <com.mobile.components.recycler.HorizontalListView

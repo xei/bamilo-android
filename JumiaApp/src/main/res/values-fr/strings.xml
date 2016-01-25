@@ -17,6 +17,11 @@
     <string name="bamilo_not_available">Bamilo n\'est pas disponible actuellement</string>
     <string name="billing_choose_address">Veuillez sélectionner une adresse</string>
     <string name="billing_def_shipping_label">Adresse de livraison par défaut</string>
+    <string name="address_shipping_billing_label">Adresse de facturation / livraison</string>
+    <string name="address_shipping_label">Adresse Livraison</string>
+    <string name="address_billing_label">Adresse Facturation</string>
+    <string name="address_others_label">Autres adresses</string>
+    <string name="address_add_new_label">Ajouter une adresse</string>
     <string name="billing_same_label">Facturer à la même adresse</string>
     <string name="brands_label">Marques</string>
     <string name="bundle_title">Généralement  achetés ensemble</string>
@@ -28,6 +33,8 @@
     <string name="campaign_save">Vous économisez</string>
     <string name="campaign_stock_alert">Désolé, l\'article sélectionné n\'est plus en stock.</string>
     <string name="campaigns_label">Offres</string>
+    <string name="campaign_offer_ended">Promo Expirée!</string>
+    <string name="campaign_timer_end">Se termine le:</string>
     <string name="cancel_label">Annuler</string>
     <string name="cart_label">Panier</string>
     <string name="catalog_edit_filters">Modifier les filtres</string>
@@ -150,6 +157,7 @@
     <string name="nav_country_warning">Vous êtes sur le point de changer le pays. Ceci va effacer votre panier et vous serez déconnecté. Etes-vous sur ?</string>
     <string name="nav_track_order">Suivi de commande</string>
     <string name="navigation_cart_empty">Votre panier est vide</string>
+    <string name="new_arrival_badge">Nouveau</string>
     <string name="new_password_hint">Nouveau mot de passe</string>
     <string name="new_password_label">Nouveau mot de passe</string>
     <string name="newsletter_saved_message">Vos préférences Mails ont été enregistrées</string>
@@ -358,6 +366,7 @@
     <string name="open">ouvrir</string>
     <string name="close">fermé</string>
     <string name="choose_language">choix de langue</string>
+    <string name="shop_settings">Paramètres boutique</string>
     <string name="language">Langue</string>
     <string name="country">Pays</string>
     <string name="birthday_label">anniversaire</string>
@@ -379,6 +388,7 @@
     <string name="buy_the_look">Acheter le Look</string>
     <string name="pdv_size">taille</string>
     <string name="buy_now_button">Acheter</string>
+    <string name="pre_order">pré-commander</string>
     <string name="saved">Sauvegardé</string>
     <string name="products_added_saved">Article ajouté avec succès à votre liste d\'envies</string>
     <string name="products_removed_saved">Article retiré de votre liste d\'envies</string>
@@ -418,6 +428,7 @@
     <string name="create_label">créer</string>
     <string name="change_password">Changer le mot de passe</string>
     <string name="continue_without_log_in">Continuer sans s\'identifier</string>
+    <string name="placeholder_discount">-%s</string>
     <string name="edit_user_success">Informations client modifier avec succès</string>
     <string name="password">Mot de passe</string>
     <string name="more">Plus</string>
@@ -451,4 +462,7 @@
     <string name="phone_contact">Téléphone :</string>
     <string name="email_contact">Email :</string>
     <string name="buy">Achète</string>
+    <string name="size">Taille %s</string>
+    <string name="added_success">Ajouté avec succès.</string>
+    <string name="removed_success">Retiré avec succès.</string>
 </resources>
