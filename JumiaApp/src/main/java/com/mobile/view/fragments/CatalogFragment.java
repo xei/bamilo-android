@@ -271,7 +271,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME mCatalogGridPosition "+mCatalogGridPosition);
+        Print.i(TAG, "ON RESUME");
         // Track current catalog page
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
 
