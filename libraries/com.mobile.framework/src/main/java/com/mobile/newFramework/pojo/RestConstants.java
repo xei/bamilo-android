@@ -287,7 +287,7 @@ public class RestConstants {
     public static final String HASH = "hash";
     public static final String RICH_RELEVANCE_ENABLED = "rich_relevance_enabled";
     public static final String REQ = "req";
-    public static final String CLICK_REQUEST = "req";
+    public static final String CLICK_REQUEST = "click_request";
     public static final String PARMS = "params";
     public static final String PARAM = "param";
     public static final String BUNDLE_ID = "bundle_id";
