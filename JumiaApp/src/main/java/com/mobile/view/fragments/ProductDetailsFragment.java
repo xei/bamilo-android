@@ -1,12 +1,10 @@
 package com.mobile.view.fragments;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -51,7 +49,6 @@ import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -238,20 +235,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         final Bundle args = getArguments();
         if(args != null) {
             if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
-                if(JumiaApplication.isCustomerLoggedIn()){
-                    ProductComplete mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
+                ProductComplete mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
+                if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
                 }
-
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
-            } else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
-                if(JumiaApplication.isCustomerLoggedIn()){
-                    ProductComplete mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+            }
+            else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
+                ProductComplete mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+                if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
                     triggerRemoveFromWishList(mClicked.getSku());
                     TrackerDelegator.trackRemoveFromFavorites(mClicked);
                 }
-
                 args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
             }
 
@@ -566,20 +562,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             sellerName.setText(mProduct.getSeller().getName());
             // Set shop first
             if (!mProduct.isShopFirst() || ShopSelector.isRtlShop()) {
-                DeviceInfoHelper.executeCodeBasedOnJellyBeanMr1Version(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-                    @Override
-                    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-                    public void highVersionCallback() {
-                        sellerName.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-                    }
-                    @Override
-                    public void lowerVersionCallback() {
-                        sellerName.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    }
-                });
-
-            }else if(mProduct.isShopFirst()){
-                ProductUtils.showShopFirstOverlayMessage(this,mProduct, sellerName);
+                sellerName.setCompoundDrawables(null, null, null, null);
+            } else if (mProduct.isShopFirst()) {
+                ProductUtils.showShopFirstOverlayMessage(this, mProduct, sellerName);
             }
             // Set listener
             if(TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
