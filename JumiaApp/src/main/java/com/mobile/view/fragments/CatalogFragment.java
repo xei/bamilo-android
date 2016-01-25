@@ -1152,7 +1152,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Add listener
         adapter.setOnViewHolderClickListener(this);
         mGridView.setAdapter(adapter);
-        if(mCatalogGridPosition >= IntConstants.INVALID_POSITION){
+        if(mCatalogGridPosition >= IntConstants.DEFAULT_POSITION){
             mGridView.getLayoutManager().scrollToPosition(mCatalogGridPosition);
         }
 
