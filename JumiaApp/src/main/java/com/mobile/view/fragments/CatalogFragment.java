@@ -307,7 +307,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE");
-        mCatalogGridPosition = ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        if(mGridView != null){
+            mCatalogGridPosition = ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
+
         // Save the current content
         outState.putInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, mCatalogGridPosition);
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
