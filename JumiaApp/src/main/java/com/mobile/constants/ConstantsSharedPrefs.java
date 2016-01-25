@@ -18,22 +18,9 @@ package com.mobile.constants;
  * 
  */
 public class ConstantsSharedPrefs {
-    /**
-     * Shared Preferences name
-     */
-    public static String KEY_SHOW_TIPS = "show_tips";
-    public static String KEY_SHOW_PRODUCTS_TIPS = "show_products_tips";
-    public static String KEY_SHOW_PRODUCT_DETAILS_TIPS = "show_product_details_tips";
-    public static String KEY_SHOW_GALLERY_TIPS = "show_gallery_tips";
 
-    public static String KEY_SHOW_LIST_LAYOUT = "showList";
-
-    public static String KEY_COUNTRY = "country";
-
-    public static String WIZARDS_SHARED_PREFERENCES = "wizards_prefs";
-
-    public static String KEY_REMEMBERED_EMAIL = "remembered_email";
+    public static final String KEY_REMEMBERED_EMAIL = "remembered_email";
     
-    public static String KEY_CATALOG_VIEW = "catalog_layout_columns";
+    public static final String KEY_CATALOG_VIEW = "catalog_layout_columns";
 
 }

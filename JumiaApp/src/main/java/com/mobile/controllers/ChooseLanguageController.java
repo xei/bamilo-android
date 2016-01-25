@@ -84,7 +84,7 @@ public class ChooseLanguageController {
         String iso = country.getCountryIso();
         String url = country.getCountryUrl();
         // Get languages
-        if(iso.toLowerCase().equals(countryIso) && TextUtils.equals(countryUrl, url)) {
+        if(iso.equalsIgnoreCase(countryIso) && TextUtils.equals(countryUrl, url)) {
             languages = CountryPersistentConfigs.getLanguages(settings);
         }
         // Return languages

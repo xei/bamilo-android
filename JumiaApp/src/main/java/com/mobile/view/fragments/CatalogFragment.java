@@ -279,20 +279,18 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         final Bundle args = getArguments();
         if(args != null) {
             if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
-                if(JumiaApplication.isCustomerLoggedIn()){
-                    ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
+                ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
+                if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
                     triggerAddToWishList(mClicked.getSku());
                     TrackerDelegator.trackAddToFavorites(mClicked);
                 }
-
                 args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
             } else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
-                if(JumiaApplication.isCustomerLoggedIn()){
-                    ProductRegular mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+                ProductRegular mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+                if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
                     triggerRemoveFromWishList(mClicked.getSku());
                     TrackerDelegator.trackRemoveFromFavorites(mClicked);
                 }
-
                 args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
             }
 
@@ -917,12 +915,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void triggerGetCatalogPage(int page) {
         Print.i(TAG, "TRIGGER GET PAGINATED CATALOG");
-
-//        // TODO Validate if is to use complete URL or not
-//        if (TextUtils.isNotEmpty(mKey)) {
-//            mQueryValues.put(GetCatalogPageHelper.HASH, mKey);
-//        }
-
         // Create catalog request parameters
         mQueryValues.put(RestConstants.PAGE, page);
         // Get filters
