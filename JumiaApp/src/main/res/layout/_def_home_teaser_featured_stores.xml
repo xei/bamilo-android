@@ -18,6 +18,8 @@
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/dimen_mat_2px"
         android:paddingRight="@dimen/dimen_mat_2px"
+        android:verticalSpacing="@dimen/dimen_3dp"
+        android:horizontalSpacing="@dimen/dimen_3dp"
         android:numColumns="@integer/home_featured_stores_teaser_num_columns"
         android:scrollbars="none" />
 

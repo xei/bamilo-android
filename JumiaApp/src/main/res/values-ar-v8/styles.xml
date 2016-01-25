@@ -46,7 +46,7 @@
     <style name="SmallTeaserStyle" parent="CardViewFlatStyle">
         <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginRight">@dimen/dimen_mat_4px</item>
+        <item name="android:layout_marginRight">@dimen/dimen_3dp</item>
     </style>
 
     <!-- PRODUCT TEASER -->
