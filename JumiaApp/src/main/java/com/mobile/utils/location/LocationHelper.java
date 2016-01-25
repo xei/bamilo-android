@@ -20,6 +20,7 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
 
@@ -252,7 +253,7 @@ public class LocationHelper implements LocationListener {
                 CountryObject countryObject =JumiaApplication.INSTANCE.countriesAvailable.get(i);
                 String supportedCountry = countryObject.getCountryIso();
                 //Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
-                if (supportedCountry.equalsIgnoreCase(countryCode)){
+                if (TextUtils.equalsIgnoreCase(supportedCountry, countryCode)){
                     Print.d(TAG, "MATCH: SHOP ID " + i);
                     ChooseLanguageController.setLanguageBasedOnDevice(countryObject.getLanguages(), countryCode);
                     ShopPreferences.setShopId(context, i);
