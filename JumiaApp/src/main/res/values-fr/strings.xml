@@ -450,4 +450,5 @@
     <string name="customer_service_info">SVP, veuillez contacter notre service client pour plus d\'informations</string>
     <string name="phone_contact">Téléphone :</string>
     <string name="email_contact">Email :</string>
+    <string name="buy">Achète</string>
 </resources>
