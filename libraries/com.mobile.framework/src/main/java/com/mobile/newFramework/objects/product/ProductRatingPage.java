@@ -22,7 +22,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
     private String productSku;
     private String productName;
-    private ArrayList<RatingStar> ratingTypes;
+    private final ArrayList<RatingStar> ratingTypes;
     private int minStarSize;
     private int maxStarSize;
     private int average;
@@ -35,7 +35,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	//added
 	private JSONObject byStarsObject;
-	private int mBasedOn;
 
 	public ProductRatingPage() {
 	    productName = "";
@@ -48,16 +47,19 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	    average = -1;
 	    sellerUrl = "";
 	    sellerName = "";
-		mBasedOn = 0;
+	}
+
+	public int getMaxStarSize() {
+		return maxStarSize;
 	}
 
 	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-	 * )
-	 */
+         * (non-Javadoc)
+         *
+         * @see
+         * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+         * )
+         */
 	@Override
 	public boolean initialize(JSONObject dataObject) throws JSONException {
 
@@ -83,7 +85,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		JSONObject ratingsObject = dataObject.optJSONObject(RestConstants.RATINGS);
 
 		if (ratingsObject != null) {
-			mBasedOn = ratingsObject.optInt(RestConstants.BASED_ON);
 
             JSONArray ratingTypes = ratingsObject.optJSONArray(RestConstants.BY_TYPE);
             if (ratingTypes != null && ratingTypes.length() > 0) {
@@ -167,8 +168,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
         return ratingTypes;
     }
 
-
-	public int getmBasedOn() { return mBasedOn;}
 
     /**
      * field user for seller only

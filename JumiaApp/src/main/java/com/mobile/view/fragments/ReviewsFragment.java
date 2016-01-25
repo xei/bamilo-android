@@ -207,7 +207,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
      */
     private void fillAverageRatingData(ProductRatingPage productRatingPage) {
         ArrayList<RatingStar> ratingTypes = productRatingPage.getRatingTypes();
-        int basedOn = productRatingPage.getmBasedOn();
+        int maxStarSize = productRatingPage.getMaxStarSize();
 
         txAverageRatings = (TextView) mRatingsBoard.findViewById(R.id.averageValue);
 
@@ -218,14 +218,14 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
             averageStar = String.valueOf(ratingTypes.get(0).getRating());
 
 
-        String average = String.valueOf(averageStar) + " / " + String.valueOf(basedOn);
+        String average = String.valueOf(averageStar) + " / " + String.valueOf(maxStarSize);
 
         if (ShopSelector.isRtl()) {
 
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                average = String.valueOf(basedOn) + " \\ " + String.valueOf(averageStar);
+                average = String.valueOf(maxStarSize) + " \\ " + String.valueOf(averageStar);
             } else {
-                average = String.valueOf(averageStar) + " \\ " + String.valueOf(basedOn);
+                average = String.valueOf(averageStar) + " \\ " + String.valueOf(maxStarSize);
                 txAverageRatings.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             }
         }

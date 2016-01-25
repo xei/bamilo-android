@@ -326,6 +326,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onPause() {
         super.onPause();
+        if(mGridView != null){
+            mCatalogGridPosition = ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+        }
+
         Print.i(TAG, "ON PAUSE");
     }
 
@@ -702,6 +706,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues);
+        mCatalogGridPosition = IntConstants.DEFAULT_POSITION;
         //Remove old filters from final request values
         for (String key : mCurrentFilterValues.keySet()) {
             mQueryValues.remove(key);
@@ -1134,20 +1139,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
-//    private boolean validateCompleteURL(){
-//        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY)) {
-//            if (!com.mobile.newFramework.utils.TextUtils.isEmpty(mCompleteUrl))
-//                return true;
-//        }
-//        return false;
-//    }
-
     private void setCatalogAdapter(CatalogPage catalogPage){
         CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
         // Add listener
         adapter.setOnViewHolderClickListener(this);
         mGridView.setAdapter(adapter);
-        if(mCatalogGridPosition > 0){
+        if(mCatalogGridPosition >= IntConstants.DEFAULT_POSITION){
             mGridView.getLayoutManager().scrollToPosition(mCatalogGridPosition);
         }
 
