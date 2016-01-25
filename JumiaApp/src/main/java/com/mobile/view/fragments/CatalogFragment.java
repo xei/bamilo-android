@@ -155,7 +155,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "code1scrollto ARGUMENTS: " + arguments);
+            Print.i(TAG, "ON scrollto ARGUMENTS: " + arguments);
             // Get key
             mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // Get title
@@ -193,7 +193,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
         // Get data from saved instance
         if (savedInstanceState != null) {
-            Print.i(TAG, "SAVED STATE: " + savedInstanceState);
+            Print.i(TAG, "ON SAVED STATE: " + savedInstanceState);
             mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mQueryValues = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES);
             mCatalogPage = savedInstanceState.getParcelable(ConstantsIntentExtra.CATALOG_PAGE);
@@ -271,7 +271,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onResume() {
         super.onResume();
-        Print.i(TAG, "ON RESUME");
+        Print.i(TAG, "ON RESUME mCatalogGridPosition "+mCatalogGridPosition);
         // Track current catalog page
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
 
@@ -307,8 +307,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE");
+        mCatalogGridPosition = ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         // Save the current content
-        outState.putInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition());
+        outState.putInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, mCatalogGridPosition);
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES, mQueryValues);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_PAGE, mCatalogPage);
