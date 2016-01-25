@@ -236,7 +236,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
         TextView txTotalCustomersMessage = (TextView) mRatingsBoard.findViewById(R.id.badgeValue);
         String from = resources.getString(R.string.from_avg_rat);
         String customers = resources.getString(R.string.from_avg_cus);
-        txTotalCustomersMessage.setText(from + " " + selectedProduct.getTotalRatings() + " " + customers);
+        txTotalCustomersMessage.setText(from + " " + productRatingPage.getBasedOn() + " " + customers);
 
     }
 

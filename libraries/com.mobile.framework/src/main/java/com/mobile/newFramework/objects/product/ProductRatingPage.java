@@ -16,18 +16,18 @@ import java.util.ArrayList;
 /**
  * Class that represents the response from the get products rating
  * @author nutzer2
- * 
+ *
  */
 public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
-    private String productSku;
-    private String productName;
-    private final ArrayList<RatingStar> ratingTypes;
-    private int minStarSize;
-    private int maxStarSize;
-    private int average;
-    private String sellerUrl;
-    private String sellerName;
+	private String productSku;
+	private String productName;
+	private final ArrayList<RatingStar> ratingTypes;
+	private int minStarSize;
+	private int maxStarSize;
+	private int average;
+	private String sellerUrl;
+	private String sellerName;
 	private int commentsCount;
 	private ArrayList<ProductReviewComment> reviewComments;
 	private int currentPage;
@@ -35,18 +35,20 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	//added
 	private JSONObject byStarsObject;
+	private int mBasedOn;
 
 	public ProductRatingPage() {
-	    productName = "";
-	    productSku = "";
-	    commentsCount = 0;
-	    ratingTypes = new ArrayList<>();
-	    reviewComments = new ArrayList<>();
-	    minStarSize = 1;
-	    maxStarSize = 5;
-	    average = -1;
-	    sellerUrl = "";
-	    sellerName = "";
+		productName = "";
+		productSku = "";
+		commentsCount = 0;
+		ratingTypes = new ArrayList<>();
+		reviewComments = new ArrayList<>();
+		minStarSize = 1;
+		maxStarSize = 5;
+		average = -1;
+		sellerUrl = "";
+		sellerName = "";
+		mBasedOn = 0;
 	}
 
 	public int getMaxStarSize() {
@@ -66,63 +68,64 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		reviewComments = new ArrayList<>();
 
 		// just used for seller reviews
-		 sellerName = dataObject.optString(RestConstants.NAME);
-		 sellerUrl = dataObject.optString(RestConstants.URL);
+		sellerName = dataObject.optString(RestConstants.NAME);
+		sellerUrl = dataObject.optString(RestConstants.URL);
 
 		JSONObject productObject = dataObject.optJSONObject(RestConstants.PRODUCT);
 		if (productObject != null) {
-            productName = productObject.optString(RestConstants.NAME);
-            productSku = productObject.optString(RestConstants.SKU);
-        }
-        JSONObject starSizeObject = dataObject.optJSONObject(RestConstants.STARS_SIZE);
+			productName = productObject.optString(RestConstants.NAME);
+			productSku = productObject.optString(RestConstants.SKU);
+		}
+		JSONObject starSizeObject = dataObject.optJSONObject(RestConstants.STARS_SIZE);
 
 		if(starSizeObject != null){
-		    minStarSize = starSizeObject.optInt(RestConstants.NAME, 1);
-		    maxStarSize =  starSizeObject.optInt(RestConstants.NAME, 5);
+			minStarSize = starSizeObject.optInt(RestConstants.NAME, 1);
+			maxStarSize =  starSizeObject.optInt(RestConstants.NAME, 5);
 		}
 
 
 		JSONObject ratingsObject = dataObject.optJSONObject(RestConstants.RATINGS);
 
 		if (ratingsObject != null) {
+			mBasedOn = ratingsObject.optInt(RestConstants.BASED_ON);
 
-            JSONArray ratingTypes = ratingsObject.optJSONArray(RestConstants.BY_TYPE);
-            if (ratingTypes != null && ratingTypes.length() > 0) {
-                for (int i = 0; i < ratingTypes.length(); i++) {
+			JSONArray ratingTypes = ratingsObject.optJSONArray(RestConstants.BY_TYPE);
+			if (ratingTypes != null && ratingTypes.length() > 0) {
+				for (int i = 0; i < ratingTypes.length(); i++) {
 
-                    JSONObject ratingType = ratingTypes.getJSONObject(i);
+					JSONObject ratingType = ratingTypes.getJSONObject(i);
 
-                    RatingStar type = new RatingStar();
-                    type.initialize(ratingType);
+					RatingStar type = new RatingStar();
+					type.initialize(ratingType);
 
-                    this.ratingTypes.add(type);
-                }
-            }
+					this.ratingTypes.add(type);
+				}
+			}
 
 			//added by_stars for ratings page
 			byStarsObject = ratingsObject.optJSONObject("by_stars");
 
 
-        }
-        JSONObject reviewsObject = dataObject.optJSONObject(RestConstants.REVIEWS);
+		}
+		JSONObject reviewsObject = dataObject.optJSONObject(RestConstants.REVIEWS);
 		if(reviewsObject != null){
-		    commentsCount = reviewsObject.optInt(RestConstants.TOTAL, 0);
+			commentsCount = reviewsObject.optInt(RestConstants.TOTAL, 0);
 
-	        // comments.
-	        JSONArray comments = reviewsObject.optJSONArray(RestConstants.COMMENTS);
+			// comments.
+			JSONArray comments = reviewsObject.optJSONArray(RestConstants.COMMENTS);
 
-	        // just used for seller reviews
-	        average = reviewsObject.optInt(RestConstants.AVERAGE, -1);
+			// just used for seller reviews
+			average = reviewsObject.optInt(RestConstants.AVERAGE, -1);
 
-	        if(comments != null){
-	            int size = comments.length();
-	            ProductReviewComment reviewComment;
-	            for (int i = 0; i < size; i++) {
-	                reviewComment = new ProductReviewComment();
-	                reviewComment.initialize(comments.getJSONObject(i));
-	                reviewComments.add(reviewComment);
-	            }
-	        }
+			if(comments != null){
+				int size = comments.length();
+				ProductReviewComment reviewComment;
+				for (int i = 0; i < size; i++) {
+					reviewComment = new ProductReviewComment();
+					reviewComment.initialize(comments.getJSONObject(i));
+					reviewComments.add(reviewComment);
+				}
+			}
 
 			JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.PAGINATION);
 			if(paginationObject != null){
@@ -165,31 +168,33 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	}
 
 	public ArrayList<RatingStar> getRatingTypes() {
-        return ratingTypes;
-    }
+		return ratingTypes;
+	}
 
 
-    /**
-     * field user for seller only
-     * @return
-     */
+	public int getBasedOn() { return mBasedOn;}
+
+	/**
+	 * field user for seller only
+	 * @return
+	 */
 	public int getAverage() {
-        return average;
-    }
+		return average;
+	}
 
 
-    @Override
+	@Override
 	public int describeContents() {
 		return 0;
 	}
 
 	public String getProductSku() {
-        return productSku;
-    }
+		return productSku;
+	}
 
-    public String getProductName() {
-        return productName;
-    }
+	public String getProductName() {
+		return productName;
+	}
 
 
 	/**
@@ -207,27 +212,28 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	}
 
 
-    @Override
+	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-	    dest.writeString(productName);
-	    dest.writeString(productSku);
-	    dest.writeList(ratingTypes);
+		dest.writeString(productName);
+		dest.writeString(productSku);
+		dest.writeList(ratingTypes);
 		dest.writeInt(commentsCount);
 		dest.writeList(reviewComments);
 		dest.writeInt(minStarSize);
 		dest.writeInt(maxStarSize);
 		dest.writeInt(average);
-	    dest.writeString(sellerName);
-        dest.writeString(sellerUrl);
+		dest.writeString(sellerName);
+		dest.writeString(sellerUrl);
 		dest.writeInt(currentPage);
 		dest.writeInt(totalPages);
+		dest.writeInt(mBasedOn);
 	}
 
 	private ProductRatingPage(Parcel in) {
-	    productName = in.readString();
-	    productSku = in.readString();
-	    ratingTypes = new ArrayList<>();
-	    in.readList(ratingTypes, RatingStar.class.getClassLoader());
+		productName = in.readString();
+		productSku = in.readString();
+		ratingTypes = new ArrayList<>();
+		in.readList(ratingTypes, RatingStar.class.getClassLoader());
 		commentsCount = in.readInt();
 		reviewComments = new ArrayList<>();
 		in.readList(reviewComments, ProductReviewComment.class.getClassLoader());
@@ -238,18 +244,18 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		sellerUrl = in.readString();
 		currentPage = in.readInt();
 		totalPages = in.readInt();
-
+		mBasedOn = in.readInt();
 	}
 
-    public static final Creator<ProductRatingPage> CREATOR = new Creator<ProductRatingPage>() {
-        public ProductRatingPage createFromParcel(Parcel in) {
-            return new ProductRatingPage(in);
-        }
+	public static final Creator<ProductRatingPage> CREATOR = new Creator<ProductRatingPage>() {
+		public ProductRatingPage createFromParcel(Parcel in) {
+			return new ProductRatingPage(in);
+		}
 
-        public ProductRatingPage[] newArray(int size) {
-            return new ProductRatingPage[size];
-        }
-    };
+		public ProductRatingPage[] newArray(int size) {
+			return new ProductRatingPage[size];
+		}
+	};
 
 	public int getCurrentPage() {
 		return currentPage;

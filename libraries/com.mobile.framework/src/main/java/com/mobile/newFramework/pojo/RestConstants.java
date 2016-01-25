@@ -98,6 +98,7 @@ public class RestConstants {
     public static final String REVIEW = "review";
     public static final String IS_ENABLE = "is_enable";
     public static final String REQUIRED_LOGIN = "required_login";
+    public static final String BASED_ON = "based_on";
     public static final String TOTAL_STARS = "total_stars";
     public static final String VARIATIONS = "variations";
     public static final String BUNDLE = "bundle";
