@@ -201,6 +201,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSelectedSort = CatalogSort.values()[savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_SORT)];
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
             mCatalogGridPosition = savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, IntConstants.INVALID_POSITION);
+            Log.i(TAG, "code1position onCreate: "+mCatalogGridPosition);
         }
 
         // Track most viewed category
@@ -700,6 +701,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
      */
     private void onSubmitFilterValues(ContentValues filterValues) {
         Print.i(TAG, "ON SUBMIT FILTER VALUES: " + filterValues);
+        mCatalogGridPosition = IntConstants.DEFAULT_POSITION;
+        Log.i(TAG, "code1position onSubmitFilterValues: "+mCatalogGridPosition);
         //Remove old filters from final request values
         for (String key : mCurrentFilterValues.keySet()) {
             mQueryValues.remove(key);
@@ -1138,20 +1141,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
-//    private boolean validateCompleteURL(){
-//        if (!mQueryValues.containsKey(GetCatalogPageHelper.CATEGORY) && !mQueryValues.containsKey(GetCatalogPageHelper.QUERY)) {
-//            if (!com.mobile.newFramework.utils.TextUtils.isEmpty(mCompleteUrl))
-//                return true;
-//        }
-//        return false;
-//    }
-
     private void setCatalogAdapter(CatalogPage catalogPage){
         CatalogGridAdapter adapter = new CatalogGridAdapter(getBaseActivity(), catalogPage.getProducts());
         // Add listener
         adapter.setOnViewHolderClickListener(this);
         mGridView.setAdapter(adapter);
-        if(mCatalogGridPosition > 0){
+        if(mCatalogGridPosition >= 0){
+            Log.i(TAG, "code1position setCatalogAdapter: "+mCatalogGridPosition);
             mGridView.getLayoutManager().scrollToPosition(mCatalogGridPosition);
         }
 

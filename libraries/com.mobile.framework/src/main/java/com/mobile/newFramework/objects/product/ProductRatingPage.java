@@ -22,7 +22,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
     private String productSku;
     private String productName;
-    private ArrayList<RatingStar> ratingTypes;
+    private final ArrayList<RatingStar> ratingTypes;
     private int minStarSize;
     private int maxStarSize;
     private int average;
@@ -51,13 +51,17 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		mBasedOn = 0;
 	}
 
+	public int getMaxStarSize() {
+		return maxStarSize;
+	}
+
 	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-	 * )
-	 */
+         * (non-Javadoc)
+         *
+         * @see
+         * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+         * )
+         */
 	@Override
 	public boolean initialize(JSONObject dataObject) throws JSONException {
 
