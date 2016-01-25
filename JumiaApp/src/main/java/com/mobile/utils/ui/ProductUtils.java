@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
@@ -33,6 +32,7 @@ public class ProductUtils {
             price.setText("");
         //If ProductMultiple already has simple
         }else if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
+            //noinspection ConstantConditions
             setPrice(((ProductMultiple) productBase).getSelectedSimple(), price, specialPrice);
         } else {
             setPrice(productBase, price, specialPrice);
@@ -50,21 +50,6 @@ public class ProductUtils {
         // Case normal
         else {
             specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
-            price.setText("");
-        }
-    }
-
-    @Deprecated
-    private static void setPrice(CampaignItemSize campaignItemSize, TextView price, TextView specialPrice){
-
-        if (campaignItemSize.hasDiscount()) {
-            specialPrice.setText(CurrencyFormatter.formatCurrency(campaignItemSize.specialPrice));
-            price.setText(CurrencyFormatter.formatCurrency(campaignItemSize.price));
-            price.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-        // Case normal
-        else {
-            specialPrice.setText(CurrencyFormatter.formatCurrency(campaignItemSize.price));
             price.setText("");
         }
     }

@@ -60,7 +60,7 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
             products = new ArrayList<>();
             try{
 
-                if (featuredBoxObject != null && featuredBoxObject.length() > 0) {
+                if (featuredBoxObject.length() > 0) {
                     // get products only from the first list
                     JSONObject productsCategoryObject = featuredBoxObject.getJSONObject(0);
                     if (productsCategoryObject != null) {
