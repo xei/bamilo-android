@@ -64,7 +64,6 @@ import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
@@ -1720,18 +1719,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, isFBLogin);
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
                 TrackerDelegator.trackLoginSuccessful(params);
-                trackPageAdjust();
             }
         });
-    }
-
-    /**
-     * Track Page only for adjust
-     */
-    private void trackPageAdjust() {
-        Bundle bundle = new Bundle();
-        bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
-        TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
     }
 
     public boolean communicateBetweenFragments(String tag, Bundle bundle){

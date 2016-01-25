@@ -439,6 +439,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         // Voucher
         if (mOrderFinish.hasCouponDiscount()) {
             mVoucherValue.setText(getString(R.string.placeholder_discount, CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount())));
+            mVoucherView.setVisibility(View.VISIBLE);
         } else {
             mVoucherView.setVisibility(View.GONE);
         }
