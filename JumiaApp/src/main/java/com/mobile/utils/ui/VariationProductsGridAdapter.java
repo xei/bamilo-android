@@ -89,6 +89,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
         UIUtils.showOrHideViews(View.GONE, holder.percentage, holder.ratingContainer, holder.favourite, holder.newArrivalBadge);
+        ProductUtils.setShopFirst(item, holder.shopFirst);
 
     }
     
