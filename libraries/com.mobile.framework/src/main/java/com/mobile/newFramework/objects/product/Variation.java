@@ -25,6 +25,7 @@ public class Variation implements IJSONSerializable, Parcelable {
     private String brand;
     private double price;
     private double specialPrice;
+    private boolean shopFirst;
 
 
     public Variation() {
@@ -42,6 +43,7 @@ public class Variation implements IJSONSerializable, Parcelable {
             brand = jsonObject.getString(RestConstants.BRAND);
             price = jsonObject.getDouble(RestConstants.PRICE);
             specialPrice = jsonObject.getDouble(RestConstants.SPECIAL_PRICE);
+            shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST, false);
 
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the variation ", e);
@@ -70,6 +72,7 @@ public class Variation implements IJSONSerializable, Parcelable {
             brand = jsonObject.getString(RestConstants.BRAND);
             price = jsonObject.getDouble(RestConstants.PRICE);
             specialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
+            shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST);
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the variation ", e);
         }
@@ -92,6 +95,7 @@ public class Variation implements IJSONSerializable, Parcelable {
             jsonObject.put(RestConstants.BRAND, brand);
             jsonObject.put(RestConstants.PRICE, price);
             jsonObject.put(RestConstants.SPECIAL_PRICE, specialPrice);
+            jsonObject.put(RestConstants.SHOP_FIRST, specialPrice);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -140,6 +144,10 @@ public class Variation implements IJSONSerializable, Parcelable {
         return specialPrice > 0 && specialPrice != Double.NaN;
     }
 
+    public boolean isShopFirst() {
+        return shopFirst;
+    }
+
 
     private String getImageUrl(String url) {
         String modUrl = ImageResolutionHelper.replaceResolution(url);
@@ -164,6 +172,7 @@ public class Variation implements IJSONSerializable, Parcelable {
         dest.writeString(brand);
         dest.writeDouble(price);
         dest.writeDouble(specialPrice);
+        dest.writeByte((byte) (shopFirst ? 0x01 : 0x00));
     }
 
     private Variation(Parcel in) {
@@ -176,6 +185,7 @@ public class Variation implements IJSONSerializable, Parcelable {
         brand = in.readString();
         price = in.readDouble();
         specialPrice = in.readDouble();
+        shopFirst = in.readByte() != 0x00;
     }
 
     public static final Parcelable.Creator<Variation> CREATOR = new Parcelable.Creator<Variation>() {

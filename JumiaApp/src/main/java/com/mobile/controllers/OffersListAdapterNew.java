@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 
 import com.mobile.components.customfontviews.Button;
@@ -102,6 +103,7 @@ public class OffersListAdapterNew extends RecyclerView.Adapter<OffersListAdapter
         } else {
             item.variations.setVisibility(View.GONE);
         }
+        ProductUtils.setShopFirst(productOffer,item.shopFirst);
 
     }
 
@@ -125,6 +127,7 @@ public class OffersListAdapterNew extends RecyclerView.Adapter<OffersListAdapter
         private TextView offerReview;
         private TextView offerDeliveryTime;
         private TextView variations;
+        private ImageView shopFirst;
 
         public ProductOfferHolder(View itemView) {
             super(itemView);
@@ -137,6 +140,7 @@ public class OffersListAdapterNew extends RecyclerView.Adapter<OffersListAdapter
             offerReview = (TextView) itemView.findViewById(R.id.item_reviews);
             offerDeliveryTime = (TextView) itemView.findViewById(R.id.offer_item_delivery);
             variations = (TextView) itemView.findViewById(R.id.button_variant);
+            shopFirst = (ImageView) itemView.findViewById(R.id.item_shop_first);
         }
 
     }

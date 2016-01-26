@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
@@ -101,6 +102,11 @@ public class ProductUtils {
 
     public static void setShopFirst(@NonNull ProductRegular productBase, @NonNull View badge){
         badge.setVisibility((!productBase.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+    }
+
+
+    public static void setShopFirst(@NonNull Variation productVariation, @NonNull View badge){
+        badge.setVisibility((!productVariation.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
     }
 
 
