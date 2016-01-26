@@ -156,21 +156,21 @@ public class CustomerUtils {
 	}
 
 	/**
-	 * returns the flag that shows if the user logged in via Facebook
+	 * returns the flag that shows if is possible to change password or not
 	 * @return true or false
 	 */
-	public static boolean isFacebookLogin(Activity activity) {
+	public static boolean isChangePasswordHidden(Activity activity) {
 		SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-		return sharedPrefs.getBoolean(Darwin.KEY_LOGIN_FACEBOOK, false);
+		return sharedPrefs.getBoolean(Darwin.KEY_CHANGE_PASSWORD, false);
 	}
 
 	/**
-	 * set flat that controls if the user logged in via Facebook
+	 * set flag that controls if is possible to change password or not
 	 */
-	public static void setFacebookLogin(Activity activity, boolean isFacebookLogin) {
+	public static void setChangePasswordVisibility(Activity activity, boolean isHideChangePassword) {
 		SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = sharedPrefs.edit();
-		editor.putBoolean(Darwin.KEY_LOGIN_FACEBOOK, isFacebookLogin);
+		editor.putBoolean(Darwin.KEY_CHANGE_PASSWORD, isHideChangePassword);
 		editor.apply();
 	}
 

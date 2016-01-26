@@ -244,7 +244,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      */
     private void init() {
         triggerGetUserDataForm();
-        if(!CustomerUtils.isFacebookLogin(getBaseActivity())){
+        if(!CustomerUtils.isChangePasswordHidden(getBaseActivity())){
             triggerGetChangePasswordForm();
             mChangePasswordFormContainer.setVisibility(View.VISIBLE);
             mChangePasswordTitle.setVisibility(View.VISIBLE);

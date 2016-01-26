@@ -324,7 +324,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
                 // Set facebook login
-                CustomerUtils.setFacebookLogin(getBaseActivity(), false);
+                CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 break;
             case GET_REGISTRATION_FORM_EVENT:
                 mForm = (Form) baseResponse.getContentData();

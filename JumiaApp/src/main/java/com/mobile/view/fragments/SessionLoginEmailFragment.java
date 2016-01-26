@@ -341,8 +341,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 // Get customer
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
-                // Set Facebook login flag false
-                CustomerUtils.setFacebookLogin(getBaseActivity(), false);
+                // Set hide change password
+                CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
                 // Finish

@@ -396,14 +396,14 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
                         TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
-                        // Set Facebook login flag false
-                        CustomerUtils.setFacebookLogin(getBaseActivity(),false);
+                        // Set hide change password
+                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(),true);
                     } else if (eventType == EventType.AUTO_LOGIN_EVENT) {
                         TrackerDelegator.trackLoginSuccessful(customer, true, false);
                     } else {
                         TrackerDelegator.trackLoginSuccessful(customer, false, true);
-                        // Set Facebook login flag true
-                        CustomerUtils.setFacebookLogin(getBaseActivity(),true);
+                        // Set hide change password
+                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(),true);
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
