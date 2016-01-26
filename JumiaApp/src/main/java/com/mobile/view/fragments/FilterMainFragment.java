@@ -245,13 +245,10 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     private void processOnClickDone() {
         Print.d(TAG, "CLICKED ON: DONE");
         toCancelFilters = false;
-
         Bundle bundle = new Bundle();
         bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
-
         getBaseActivity().communicateBetweenFragments(FragmentType.CATALOG.toString(), bundle);
         getBaseActivity().onBackPressed();
-
     }
 
     private class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {

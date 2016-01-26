@@ -711,13 +711,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         for (String key : mCurrentFilterValues.keySet()) {
             mQueryValues.remove(key);
         }
-
         // Save the current filter values
         mCurrentFilterValues = filterValues;
-
         // Flag to reload or not an initial catalog in case generic error
         mSortOrFilterApplied = true;
-
         // Track catalog filtered
         TrackerDelegator.trackCatalogFilter(mCurrentFilterValues);
     }
