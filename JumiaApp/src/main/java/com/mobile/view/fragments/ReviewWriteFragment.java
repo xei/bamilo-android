@@ -457,9 +457,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
      */
     private void formsValidation(){
         if (!isExecutingSendReview) {
-            // avoid sending more than one rating/review on double click
-            isExecutingSendReview = true;
-
             if(mDynamicForm != null){
                 if(!mDynamicForm.validate())
                     return;
@@ -487,6 +484,8 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                     executeSendReview(reviewForm.getAction(), mDynamicForm);
                 }
             }
+            // avoid sending more than one rating/review on double click
+            isExecutingSendReview = true;
         }
     }
 
@@ -595,13 +594,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 isExecutingSendReview = false;
                 cleanForm();
 
-                //Validate if fragment is nested
-                if(isNestedFragment){
-                    getBaseActivity().onBackPressed();
-                } else {
-                    // Remove entries until specific tag
-                    getBaseActivity().popBackStackUntilTag(FragmentType.PRODUCT_DETAILS.toString());
-                }
+                getBaseActivity().onBackPressed();
 
                 break;
 
