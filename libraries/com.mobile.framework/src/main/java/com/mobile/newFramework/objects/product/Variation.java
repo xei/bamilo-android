@@ -72,7 +72,7 @@ public class Variation implements IJSONSerializable, Parcelable {
             brand = jsonObject.getString(RestConstants.BRAND);
             price = jsonObject.getDouble(RestConstants.PRICE);
             specialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
-            shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST, false);
+            shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST);
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the variation ", e);
         }
