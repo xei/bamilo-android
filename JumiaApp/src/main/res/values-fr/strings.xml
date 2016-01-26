@@ -33,12 +33,15 @@
     <string name="campaign_save">Vous économisez</string>
     <string name="campaign_stock_alert">Désolé, l\'article sélectionné n\'est plus en stock.</string>
     <string name="campaigns_label">Offres</string>
+    <string name="campaign_unavailable_title">Cette compagne est terminé</string>
+    <string name="campaign_unavailable_description">Ainsi, nous avons beaucoup d\'autres offres qui vous attendent.</string>
     <string name="campaign_offer_ended">Promo Expirée!</string>
     <string name="campaign_timer_end">Se termine le:</string>
     <string name="cancel_label">Annuler</string>
     <string name="cart_label">Panier</string>
     <string name="catalog_edit_filters">Modifier les filtres</string>
     <string name="catalog_no_results">Aucun résultat correspondant à vos critères. Vous pouvez réessayer avec des filtres moins spécifiques\n</string>
+    <string name="catalog_no_results_details">Vous pouvez essayer d\'utiliser des filtres moins restrictifs</string>
     <string name="categories_label">Catégories</string>
     <string name="categories_label_uppercase">CATÉGORIES</string>
     <string name="categories_name_all">Tout pour</string>
@@ -77,6 +80,7 @@
     <string name="error_no_connection">Pas de connexion</string>
     <string name="error_occured">Une erreur s\'est produite</string>
     <string name="error_please_try_again">Nous avons eu un léger problème lors de la récupération des donnés. Veuillez réessayer.</string>
+    <string name="error_problem_fetching_data">Nous avons rencontré un problème pour rafraîchir les données</string>
     <string name="error_register_alreadyexists">Cet email existe déjà. Veuillez SVP en choisir un autre.</string>
     <string name="error_register_title">L\'inscription a échoué</string>
     <string name="error_signup_title">La création de compte a échoué</string>
@@ -333,6 +337,7 @@
     <string name="yes_label">Oui</string>
     <string name="your_cart">Votre panier</string>
     <string name="your_order">Votre commande</string>
+    <string name="install_android">Installez la %s Android App en un instant</string>
     <string name="share_the_app">Partagez l\'Application</string>
     <string name="can_share_app_with_friends">Vous pouvez maintenant partager l\'application avec vos amis</string>
     <string name="app_social">Communauté de l\'App</string>
@@ -413,6 +418,7 @@
     <string name="shipment">Colis %1$d sur %2$d</string>
     <string name="delivery_time_placeholder">Temps de livraison : %1$d à %2$d jours</string>
     <string name="product_specifications">Caractéristiques</string>
+    <string name="ssl_error_host_mismatch">Le nom du host ne correspond pas au certificat : %s</string>
     <string name="ssl_error_generic">Une erreur SSL s\'est produite: %s</string>
     <string name="save_for_later">Sauvegarder pour plus tard</string>
     <string name="remove_from_saved">Supprimer des articles enregistrés</string>
@@ -451,6 +457,7 @@
     <string name="delivered_label">Livré</string>
     <string name="order_number">Numéro de commande %s</string>
     <string name="billing">Facturation</string>
+    <string name="first_and_second_placeholders">%1$s %2$s</string>
     <string name="qty_placeholder">Qté: %s</string>
     <string name="reorder_label">Recommander</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
@@ -461,6 +468,10 @@
     <string name="customer_service_info">SVP, veuillez contacter notre service client pour plus d\'informations</string>
     <string name="phone_contact">Téléphone :</string>
     <string name="email_contact">Email :</string>
+    <string name="logout_success">Vous êtes déconnecté avec succès</string>
+    <!-- NEW 2.9 -->
+    <string name="percentage">%s%%</string>
+    <string name="error_add_bundle_to_shopping_cart">Une erreur inconnue s\'est produite. Réessayez plus tard.</string>
     <string name="buy">Achète</string>
     <string name="size">Taille %s</string>
     <string name="added_success">Ajouté avec succès.</string>
