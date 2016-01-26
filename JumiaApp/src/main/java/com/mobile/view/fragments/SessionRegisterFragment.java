@@ -14,7 +14,6 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
-import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -32,6 +31,7 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -251,7 +251,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         }
         // Case terms and conditions from form
         else if (id == R.id.textview_terms) {
-            onClickTermsAndConditions();
+            onClickTermsAndConditions(view);
         }
         // Case default
         else {
@@ -259,9 +259,9 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         }
     }
 
-    private void onClickTermsAndConditions() {
+    private void onClickTermsAndConditions(View view) {
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.KEY, GetStaticPageHelper.TERMS_PAGE);
+        bundle.putString(RestConstants.KEY, TargetLink.getIdFromTargetLink(view.getTag().toString()));
         bundle.putString(RestConstants.TITLE, getString(R.string.terms_and_conditions));
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

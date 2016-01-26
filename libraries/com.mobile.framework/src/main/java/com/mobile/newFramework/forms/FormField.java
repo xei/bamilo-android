@@ -58,6 +58,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private FormInputType mInputType;
     private String mLabel;
     private String mLinkText;
+    private String mLinkTarget;
     private String mFormat;
     private String mScenario;
     private ArrayList<IFormField> mOptions;
@@ -94,6 +95,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mDataSetListener = null;
         this.mScenario = null;
         this.mLinkText = "";
+        this.mLinkTarget = "";
         this.mDataSetRating = new LinkedHashMap<>();
         this.mPaymentInfoList = new HashMap<>();
         this.mFormat = "dd-MM-yyyy";
@@ -168,13 +170,19 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mLabel = jsonObject.optString(RestConstants.LABEL);
             mValue = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
             mScenario = jsonObject.optString(RestConstants.SCENARIO);
-            mLinkText = jsonObject.optString(RestConstants.LINK_TEXT);
             isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
             isDisabled = jsonObject.optBoolean(RestConstants.DISABLED);
             mFormat = jsonObject.optString(RestConstants.FORMAT);
             isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), "before");
             mPlaceHolder = jsonObject.optString(RestConstants.PLACE_HOLDER);
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
+
+            // Case Link
+            JSONObject linkObject = jsonObject.optJSONObject(RestConstants.LINK);
+            if(linkObject != null){
+                mLinkText = linkObject.optString(RestConstants.LABEL);
+                mLinkTarget = linkObject.optString(RestConstants.TARGET);
+            }
 
             // Case RULES
             JSONObject validationObject = jsonObject.optJSONObject(RestConstants.RULES);
@@ -336,7 +344,14 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             jsonObject.put(RestConstants.NAME, mName);
             jsonObject.put(RestConstants.LABEL, mLabel);
             jsonObject.put(RestConstants.VALUE, mValue);
-            jsonObject.put(RestConstants.TERMS, mLinkText);
+
+            if(TextUtils.isNotEmpty(mLinkText) && TextUtils.isNotEmpty(mLinkTarget)){
+                JSONObject linkObject = new JSONObject();
+                linkObject.put(RestConstants.LABEL, mLinkText);
+                linkObject.put(RestConstants.TARGET, mLinkTarget);
+                jsonObject.put(RestConstants.LINK, linkObject);
+            }
+
             // validation
             jsonObject.put(RestConstants.RULES, mValidation.toJSON());
             JSONArray dataSetArray = new JSONArray();
@@ -391,6 +406,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     @Override
     public String getLinkText() {
         return this.mLinkText;
+    }
+
+    @Override
+    public String getLinkTarget() {
+        return this.mLinkTarget;
     }
 
     @Override
@@ -509,6 +529,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mInputType);
         dest.writeString(mLabel);
         dest.writeString(mLinkText);
+        dest.writeString(mLinkTarget);
         dest.writeString(mFormat);
         dest.writeString(mScenario);
         if (mOptions == null) {
@@ -551,6 +572,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mInputType = (FormInputType) in.readValue(FormInputType.class.getClassLoader());
         mLabel = in.readString();
         mLinkText = in.readString();
+        mLinkTarget = in.readString();
         mFormat = in.readString();
         mScenario = in.readString();
         if (in.readByte() == 0x01) {
