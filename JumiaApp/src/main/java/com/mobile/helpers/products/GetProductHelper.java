@@ -42,7 +42,7 @@ public class GetProductHelper extends SuperBaseHelper {
         ContentValues values = new ContentValues();
         values.put(RestConstants.SKU, sku);
         if(TextUtils.isNotEmpty(richRelevanceHash)) {
-            values.put(RestConstants.CLICK_REQUEST, richRelevanceHash);
+            values.put(RestConstants.REQ, richRelevanceHash);
         }
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);

@@ -2,6 +2,8 @@ package com.mobile.constants;
 
 import android.support.annotation.IntDef;
 
+import com.mobile.controllers.fragments.FragmentType;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -41,5 +43,37 @@ public class ConstantsCheckout {
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface CheckoutType{}
+
+    /**
+     * method that associates checkout step position with specific fragment
+     * @param position
+     * @return fragment at the current position
+     */
+    public static FragmentType getFragmentType (int position) {
+        FragmentType fragmentType;
+
+        switch (position){
+            case CHECKOUT_BILLING:
+                fragmentType = FragmentType.CHECKOUT_MY_ADDRESSES;
+                break;
+            case CHECKOUT_SHIPPING:
+                fragmentType = FragmentType.CHECKOUT_SHIPPING;
+                break;
+            case CHECKOUT_PAYMENT:
+                fragmentType = FragmentType.CHECKOUT_PAYMENT;
+                break;
+            case CHECKOUT_ORDER:
+                fragmentType = FragmentType.CHECKOUT_FINISH;
+                break;
+            case CHECKOUT_THANKS:
+                fragmentType = FragmentType.CHECKOUT_THANKS;
+                break;
+            case NO_CHECKOUT:
+            default:
+                fragmentType = FragmentType.UNKNOWN;
+                break;
+        }
+        return fragmentType;
+    }
 
 }

@@ -1596,19 +1596,15 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     public void onCheckoutHeaderClickListener(int step) {
         Print.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER " + step);
-        // CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
+        FragmentType fragmentType = ConstantsCheckout.getFragmentType(step);
 
-        // CHECKOUT_BILLING  - step == 1
-        // If selected tab is CHECKOUT_SHIPPING or CHECKOUT_PAYMENT, allow click
-        if (step == ConstantsCheckout.CHECKOUT_BILLING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.CHECKOUT_BILLING) {
-            selectCheckoutStep(step);
+        if (fragmentType != FragmentType.UNKNOWN && mCheckoutTabLayout.getSelectedTabPosition() > step) {
+            if (FragmentController.getInstance().hasEntry(fragmentType.toString())) {
+                selectCheckoutStep(step);
+            } else {
+                onSwitchFragment(fragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
         }
-        // CHECKOUT_SHIPPING  - step == 2
-        // If selected tab is the CHECKOUT_PAYMENT, allow click
-        else if (step == ConstantsCheckout.CHECKOUT_SHIPPING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.CHECKOUT_SHIPPING) {
-            selectCheckoutStep(step);
-        }
-        // CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
     }
 
     /**
