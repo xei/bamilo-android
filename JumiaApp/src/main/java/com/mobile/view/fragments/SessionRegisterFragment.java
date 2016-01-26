@@ -24,6 +24,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -322,6 +323,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 getActivity().onBackPressed();
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
+                // Set facebook login
+                CustomerUtils.setFacebookLogin(getBaseActivity(), false);
                 break;
             case GET_REGISTRATION_FORM_EVENT:
                 mForm = (Form) baseResponse.getContentData();
