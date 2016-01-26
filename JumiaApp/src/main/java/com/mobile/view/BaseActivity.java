@@ -84,7 +84,6 @@ import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
-import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
 import java.lang.ref.WeakReference;
@@ -1447,6 +1446,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public abstract void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack);
 
     /**
+     * This method should be implemented by fragment activity to manage the communications between fragments. Each fragment should call this method.
+     */
+    public abstract boolean communicateBetweenFragments(String tag, Bundle bundle);
+
+    /**
      * Method used to switch fragment on UI with/without back stack support
      */
     public void fragmentManagerTransition(int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack) {
@@ -1719,21 +1723,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         });
     }
 
-    public boolean communicateBetweenFragments(String tag, Bundle bundle){
-        Fragment fragment =  getSupportFragmentManager().findFragmentByTag(tag);
-        if(fragment != null){
-            ((BaseFragment)fragment).notifyFragment(bundle);
-            return true;
-        }
-        return false;
-    }
-
     public void showWarning(@WarningFactory.WarningErrorType final int warningFact){
         warningFactory.showWarning(warningFact);
     }
 
     public void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact, final String message){
-
         warningFactory.showWarning(warningFact, message);
     }
 
@@ -1741,17 +1735,4 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         warningFactory.hideWarning();
     }
 
-//    /**
-//     * Shows server overload page
-//     */
-//    public void showOverLoadView(){
-//
-//        Intent intent = new Intent(getApplicationContext(), OverLoadErrorActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//        startActivity(intent);
-//        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//        //if(getSupportFragmentManager() != null){
-//        //    OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(),null);
-//        //}
-//    }
 }
