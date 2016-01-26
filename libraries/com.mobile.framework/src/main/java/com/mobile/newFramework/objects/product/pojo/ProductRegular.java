@@ -52,6 +52,7 @@ public class ProductRegular extends ProductBase {
     protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mName = jsonObject.optString(RestConstants.NAME);
+        // TODO
         // This fallback validation was added for the case where the response from the RR request
         // is the fallback top sellers, where the product name comes in the "title" field.
         // it should be analysed if should be fixed on next release.
