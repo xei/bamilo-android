@@ -408,6 +408,19 @@ public class MainFragmentActivity extends BaseActivity {
         fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
     }
 
+    /**
+     * Fragment communication
+     */
+    @Override
+    public boolean communicateBetweenFragments(String tag, Bundle bundle) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment != null) {
+            ((BaseFragment) fragment).notifyFragment(bundle);
+            return true;
+        }
+        return false;
+    }
+
     /*
      * (non-Javadoc)
      * 
