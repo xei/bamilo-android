@@ -2,6 +2,7 @@ package com.mobile.utils.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -31,6 +32,7 @@ import com.mobile.view.R;
  * @modified Andre Lopes
  *
  */
+@SuppressWarnings("unused")
 public class UIUtils {
 
     public static final String TAG = UIUtils.class.getSimpleName();
@@ -49,8 +51,6 @@ public class UIUtils {
         return Math.round(dp * context.getResources().getDisplayMetrics().scaledDensity );
     }
 
-
-    
     /**
      * Show or hide a set of views.
      * @param visibility The visibility parameter for all.
@@ -146,8 +146,6 @@ public class UIUtils {
     /**
      * method responsible for scrolling a scrollview for 60dp
      * This is used for editexts that show in a layout inside a toolbar
-     * @param scrollView
-     * @param viewToDetectTouch
      */
     public static void scrollToViewByClick(final View scrollView, final View viewToDetectTouch){
         viewToDetectTouch.setOnTouchListener(new View.OnTouchListener() {
@@ -175,7 +173,6 @@ public class UIUtils {
 
     /**
      * Mirror rating stars case RTL and pre API 17.
-     * @param progressBar
      */
     public static void setProgressForRTLPreJellyMr2(View progressBar) {
         if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
@@ -197,4 +194,16 @@ public class UIUtils {
         }
         return false;
     }
+
+    /**
+     * Method used to set a right compound drawable in the respective view. (RTL support)
+     */
+    public static void setDrawableRight(@NonNull TextView view, @DrawableRes int drawable) {
+        if (ShopSelector.isRtl()) {
+            view.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
+        } else {
+            view.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+        }
+    }
+
 }

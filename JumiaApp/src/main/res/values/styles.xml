@@ -780,8 +780,6 @@
 
     <style name="TextBody_1.ShopFirstDrawRight">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:drawableEnd">@drawable/ic_shop_first_alias</item>
-        <item name="android:drawableRight">@drawable/ic_shop_first_alias</item>
         <item name="android:drawablePadding">@dimen/dimen_10dp</item>
     </style>
 

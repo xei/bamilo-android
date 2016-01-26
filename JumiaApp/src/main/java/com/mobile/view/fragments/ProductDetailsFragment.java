@@ -560,10 +560,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             final TextView sellerName = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_name);
             // Set name
             sellerName.setText(mProduct.getSeller().getName());
-            // Set shop first
-            if (!mProduct.isShopFirst() || ShopSelector.isRtlShop()) {
-                sellerName.setCompoundDrawables(null, null, null, null);
-            } else if (mProduct.isShopFirst()) {
+            // Set shop first except B project
+            if (mProduct.isShopFirst() && !ShopSelector.isRtlShop()) {
                 ProductUtils.showShopFirstOverlayMessage(this, mProduct, sellerName);
             }
             // Set listener
