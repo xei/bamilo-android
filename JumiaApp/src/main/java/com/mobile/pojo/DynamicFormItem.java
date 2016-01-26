@@ -950,7 +950,7 @@ public class DynamicFormItem {
         mCheckBox.setTag("checkbox");
         mCheckBox.setContentDescription(this.entry.getKey());
 
-        mCheckBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
+        mCheckBox.setText(this.entry.getLabel().trim().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
 
         if (this.entry.getValue().equals("1")) {
             mCheckBox.setChecked(true);
@@ -959,7 +959,7 @@ public class DynamicFormItem {
         TextView mLinkTextView = (TextView) this.dataControl.findViewById(R.id.textview_terms);
         //Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
-        mLinkTextView.setTag(this.entry.getKey());
+        mLinkTextView.setTag(this.entry.getLinkTarget());
         mLinkTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
