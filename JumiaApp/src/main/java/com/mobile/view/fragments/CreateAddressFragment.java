@@ -371,8 +371,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && cities.get(0).getValue() != 0) {
-            cities.add(0, new AddressCity(0, v.getEntry().getPlaceHolder()));
+        if (TextUtils.isEmpty(v.getEntry().getValue()) && cities.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION) {
+            cities.add(IntConstants.DEFAULT_POSITION, new AddressCity(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
         }
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
@@ -389,6 +389,10 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         spinner.setOnItemSelectedListener(this);
         v.setEditControl(spinner);
         group.addView(spinner);
+        // Validate if first position is the prompt
+        if (cities.get(IntConstants.DEFAULT_POSITION).getValue() == IntConstants.DEFAULT_POSITION) {
+            showFragmentContentContainer();
+        }
     }
 
     /**
