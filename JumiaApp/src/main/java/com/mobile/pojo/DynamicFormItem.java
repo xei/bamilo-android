@@ -514,10 +514,13 @@ public class DynamicFormItem {
                 break;
             case list:
                 ViewGroup viewGroup = (ViewGroup) getControl();
-                IcsSpinner spinner = (IcsSpinner) viewGroup.getChildAt(0);
-                FormListItem selectedItem = (FormListItem) spinner.getSelectedItem();
-                if(selectedItem != null) {
-                    values.put(getName(), selectedItem.getValue());
+                View view = viewGroup.getChildAt(0);
+                if(view instanceof IcsSpinner) {
+                    IcsSpinner spinner = (IcsSpinner) view;
+                    FormListItem selectedItem = (FormListItem) spinner.getSelectedItem();
+                    if(selectedItem != null) {
+                        values.put(getName(), selectedItem.getValue());
+                    }
                 }
                 break;
             case relatedNumber:
@@ -864,6 +867,9 @@ public class DynamicFormItem {
                             result &= bar.getRating() != 0.0;
                         }
                     }
+                    break;
+                case list:
+                    result = (((ViewGroup) getControl()).getChildAt(0) instanceof IcsSpinner);
                     break;
                 default:
                     break;

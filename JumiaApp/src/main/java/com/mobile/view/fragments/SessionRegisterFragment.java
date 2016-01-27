@@ -125,25 +125,14 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         // Get create button
         View mCreateButton = view.findViewById(R.id.register_button_create);
         mCreateButton.setOnClickListener(this);
-        // Validate the current state
-        onValidateState();
-    }
-
-    private void onValidateState() {
-        // Case form is empty
-        if (mForm == null) {
-            triggerRegisterForm();
-        }
-        // Case load form
-        else {
-            loadForm(mForm);
-        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+        // Validate the current state
+        onValidateState();
     }
 
     @Override
@@ -201,7 +190,21 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     }
 
     /**
-     *
+     * Validate form
+     */
+    private void onValidateState() {
+        // Case form is empty
+        if (mForm == null) {
+            triggerRegisterForm();
+        }
+        // Case load form
+        else {
+            loadForm(mForm);
+        }
+    }
+
+    /**
+     * Create dynamic form
      */
     private void loadForm(Form form) {
         // Create form view
