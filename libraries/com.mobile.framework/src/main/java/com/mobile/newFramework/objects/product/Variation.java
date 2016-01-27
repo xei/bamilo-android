@@ -37,14 +37,11 @@ public class Variation implements IJSONSerializable, Parcelable {
         try {
             link = jsonObject.getString(RestConstants.LINK);
             image = getImageUrl(jsonObject.getString(RestConstants.IMAGE));
-
-            //added new tags
             name = jsonObject.getString(RestConstants.NAME);
             brand = jsonObject.getString(RestConstants.BRAND);
             price = jsonObject.getDouble(RestConstants.PRICE);
             specialPrice = jsonObject.getDouble(RestConstants.SPECIAL_PRICE);
-            shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST, false);
-
+            shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST);
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the variation ", e);
             return false;
