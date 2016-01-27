@@ -34,9 +34,7 @@ public class FilterRatingFragment extends FilterCheckFragment {
     private static final String TAG = FilterRatingFragment.class.getSimpleName();
 
     /**
-     *
-     * @param bundle
-     * @return
+     * New instance
      */
     public static FilterRatingFragment newInstance(Bundle bundle) {
         Print.d(TAG, "NEW INSTANCE: BRAND");
@@ -58,19 +56,16 @@ public class FilterRatingFragment extends FilterCheckFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             MultiFilterOptionInterface option = getItem(position);
-            if(option instanceof CatalogRatingFilterOption){
+            if (option instanceof CatalogRatingFilterOption) {
                 // Validate current view
                 if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_rating, null);
                 RatingBar ratingBar = ((RatingBar) convertView.findViewById(R.id.dialog_item_rating));
                 ratingBar.setNumStars(((CatalogRatingFilter) mFilter).getMax());
                 ratingBar.setRating(((CatalogRatingFilterOption) option).getAverage());
                 // Set check box
-
                 setProductsCount((TextView) convertView.findViewById(R.id.dialog_products_count), option);
-
                 setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
             }
-
             return convertView;
         }
     }

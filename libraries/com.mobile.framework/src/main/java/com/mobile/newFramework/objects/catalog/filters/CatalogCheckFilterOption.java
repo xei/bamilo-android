@@ -23,18 +23,17 @@ import org.json.JSONObject;
  */
 public class CatalogCheckFilterOption extends CatalogFilterOption implements MultiFilterOptionInterface {
 
-    public CatalogCheckFilterOption(){}
-
-    public CatalogCheckFilterOption(JSONObject jsonObject) throws JSONException {
-        this();
-        initialize(jsonObject);
-    }
-
     protected String id;
     protected String label;
     protected String val;
-
     protected boolean selected;
+
+    /**
+     * Empty constructor
+     */
+    public CatalogCheckFilterOption(){
+        // ...
+    }
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
