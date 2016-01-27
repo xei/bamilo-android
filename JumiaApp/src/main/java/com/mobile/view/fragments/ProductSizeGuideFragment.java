@@ -280,7 +280,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        showSizeGuide(mImageView, mSizeGuideUrl);
+        onClickContinueButton();
     }
 
 }
