@@ -677,7 +677,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set itemView's remainingTime to be used by handler
             view.mRemainingTime = remainingTime;
             view.mTimer.setTag(item.getName());
-            Print.i("code1", "code1tag : setData : "+ item.getName());
             // update Timer
             updateTimer(view, view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
         }
@@ -689,12 +688,10 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             MyRunnable(final CampaignItemHolder view, final int remainingTime) {
                 this.mView = view;
                 this.mName = this.mView.mName.getText().toString();
-                Print.i("code1", "code1tagMyRunnable : "+this.mName +" xx "+ this.mView.mName.getText());
                 this.mRemainingTime = remainingTime;
             }
 
             public void run() {
-                Print.i("code1", "code1tagMyRunnablerun||| : "+this.mName +" xx "+ this.mView.mName.getText());
                 if(com.mobile.newFramework.utils.TextUtils.equalsIgnoreCase(this.mView.mName.getText().toString(), this.mName)){
                     // update Timer
                     updateTimer(this.mView, this.mView.mTimer, this.mView.mTimerContainer, this.mView.mButtonBuy, this.mView.mOfferEnded, this.mView.mName, this.mView.mImage, this.mRemainingTime, this.mView.mImageContainer);
@@ -977,7 +974,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         public CampaignItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             int layout = R.layout.campaign_fragment_list_item;
             if(viewType == ITEM_VIEW_TYPE_HEADER) layout = R.layout._def_campaign_fragment_header;
-            Print.i("code1", "code1tag : onCreateViewHolder");
             return new CampaignItemHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
         }
 
@@ -988,7 +984,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 setHeaderImage(holder);
                 return;
             }
-            Print.i("code1", "code1tag : onBindViewHolder");
             // get position - 1 to ignore header position.
             setData(holder, mItems.get(position - 1), position - 1);
         }
