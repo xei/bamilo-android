@@ -217,6 +217,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
             mDynamicForm.setInitialValue(FormInputType.email, mCustomerEmail);
         }
         // Add form view
+        mFormContainer.removeAllViews();
         mFormContainer.addView(mDynamicForm.getContainer());
         // Show
         showFragmentContentContainer();
