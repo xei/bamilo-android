@@ -681,11 +681,11 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             updateTimer(view, view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
         }
 
-        private class MyRunnable implements Runnable {
+        private class CampaignRunnable implements Runnable {
             private final CampaignItemHolder mView;
             private final int mRemainingTime;
             private final String mName;
-            MyRunnable(final CampaignItemHolder view, final int remainingTime) {
+            CampaignRunnable(final CampaignItemHolder view, final int remainingTime) {
                 this.mView = view;
                 this.mName = this.mView.mName.getText().toString();
                 this.mRemainingTime = remainingTime;
@@ -710,7 +710,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // start handler processing
             if(remainingTime > 0 ){
 
-                timer.postDelayed(new MyRunnable(view, remainingTime), 1000);
+                timer.postDelayed(new CampaignRunnable(view, remainingTime), 1000);
             }
 
 //            Print.d(TAG, "updateTimer");
