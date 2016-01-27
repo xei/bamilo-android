@@ -646,7 +646,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
          * Set the campaign data
          * @author sergiopereira
          */
-        private void setData(final CampaignItemHolder view, CampaignItem item, int position) {
+        private void setData(final CampaignItemHolder view, final CampaignItem item, final int position) {
             //Log.d(TAG, "SET DATA");
             // Set stock off
             setStockOff(view, item);
@@ -676,8 +676,31 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             int remainingTime = item.getRemainingTime();
             // Set itemView's remainingTime to be used by handler
             view.mRemainingTime = remainingTime;
+            view.mTimer.setTag(item.getName());
+            Print.i("code1", "code1tag : setData : "+ item.getName());
             // update Timer
-            updateTimer(view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
+            updateTimer(view, view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
+        }
+
+        private class MyRunnable implements Runnable {
+            private final CampaignItemHolder mView;
+            private final int mRemainingTime;
+            private final String mName;
+            MyRunnable(final CampaignItemHolder view, final int remainingTime) {
+                this.mView = view;
+                this.mName = this.mView.mName.getText().toString();
+                Print.i("code1", "code1tagMyRunnable : "+this.mName +" xx "+ this.mView.mName.getText());
+                this.mRemainingTime = remainingTime;
+            }
+
+            public void run() {
+                Print.i("code1", "code1tagMyRunnablerun||| : "+this.mName +" xx "+ this.mView.mName.getText());
+                if(com.mobile.newFramework.utils.TextUtils.equalsIgnoreCase(this.mView.mName.getText().toString(), this.mName)){
+                    // update Timer
+                    updateTimer(this.mView, this.mView.mTimer, this.mView.mTimerContainer, this.mView.mButtonBuy, this.mView.mOfferEnded, this.mView.mName, this.mView.mImage, this.mRemainingTime, this.mView.mImageContainer);
+                }
+
+            }
         }
 
         /**
@@ -686,16 +709,11 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
          *
          * Update Timer with remaining Time or show "Offer Ended" when time remaining reaches 0
          */
-        private void updateTimer(final TextView timer, final View timerContainer, final View buttonBuy, final View offerEnded, final View name, final View image, final int remainingTime, final View imageContainer) {
+        private void updateTimer(final CampaignItemHolder view, final TextView timer, final View timerContainer, final View buttonBuy, final View offerEnded, final View name, final View image, final int remainingTime, final View imageContainer) {
             // start handler processing
-            if(remainingTime > 0){
-                timer.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        // update Timer
-                        updateTimer(timer, timerContainer, buttonBuy, offerEnded, name, image, remainingTime, imageContainer);
-                    }
-                }, 1000);
+            if(remainingTime > 0 ){
+
+                timer.postDelayed(new MyRunnable(view, remainingTime), 1000);
             }
 
 //            Print.d(TAG, "updateTimer");
@@ -959,16 +977,18 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         public CampaignItemHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             int layout = R.layout.campaign_fragment_list_item;
             if(viewType == ITEM_VIEW_TYPE_HEADER) layout = R.layout._def_campaign_fragment_header;
+            Print.i("code1", "code1tag : onCreateViewHolder");
             return new CampaignItemHolder(LayoutInflater.from(parent.getContext()).inflate(layout, parent, false));
         }
 
         @Override
-        public void onBindViewHolder(CampaignItemHolder holder, int position) {
+        public void onBindViewHolder(final CampaignItemHolder holder, final int position) {
             // Case header
             if(isHeader(position)){
                 setHeaderImage(holder);
                 return;
             }
+            Print.i("code1", "code1tag : onBindViewHolder");
             // get position - 1 to ignore header position.
             setData(holder, mItems.get(position - 1), position - 1);
         }
@@ -1092,7 +1112,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private int mRemainingTime;
         private final ImageView mBannerImageView;
 
-        public CampaignItemHolder(View itemView) {
+        public CampaignItemHolder(final View itemView) {
             super(itemView);
             // Get stock off
             mStockOff = (TextView) itemView.findViewById(R.id.campaign_item_stock_off);
