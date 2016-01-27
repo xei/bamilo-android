@@ -41,7 +41,7 @@ public class TextUtils {
      * Returns true if the first string is equals to second string ignoring case.
      */
     public static boolean equalsIgnoreCase(String a, String b) {
-        return !isNotEmpty(a) && a.equalsIgnoreCase(b);
+        return isNotEmpty(a) && a.equalsIgnoreCase(b);
     }
 
     /**
