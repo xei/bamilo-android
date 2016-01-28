@@ -21,6 +21,7 @@ import com.mobile.controllers.MyAccountNotificationsAdapter;
 import com.mobile.controllers.MyAccountSettingsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.helpers.configs.GetFaqTermsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.catalog.ITargeting;
@@ -291,11 +292,22 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
             ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
                 public void run() {
+                    // Get Country Configs to update currency.
+                    triggerGetCountryConfigs();
                     getBaseActivity().restartAppFlow();
                 }
             });
         }
     }
+
+
+    /**
+     * Trigger to get the country configurations
+     */
+    private void triggerGetCountryConfigs(){
+        JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
+    }
+
 
     /**
      *  Handles the item click of childs of options list.
