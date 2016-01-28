@@ -387,9 +387,11 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      */
     @Override
     public void onClick(View view) {
-        super.onClick(view);
-        // Validated clicked view
-        onClickTeaserItem(view);
+        if(view != null){
+            super.onClick(view);
+            // Validated clicked view
+            onClickTeaserItem(view);
+        }
     }
 
     /**
