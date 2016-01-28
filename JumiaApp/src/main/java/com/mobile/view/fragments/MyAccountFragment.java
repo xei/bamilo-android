@@ -4,6 +4,8 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -24,6 +26,8 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.helpers.configs.GetFaqTermsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.database.SectionsTablesHelper;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
@@ -32,6 +36,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -292,8 +297,8 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
             ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
                 public void run() {
-                    // Get Country Configs to update currency.
-                    triggerGetCountryConfigs();
+                    // Clear Country Configs to force update.
+                    clearCountryConfigs();
                     getBaseActivity().restartAppFlow();
                 }
             });
@@ -304,8 +309,8 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     /**
      * Trigger to get the country configurations
      */
-    private void triggerGetCountryConfigs(){
-        JumiaApplication.INSTANCE.sendRequest(new GetCountryConfigsHelper(), null, this);
+    private void clearCountryConfigs(){
+        SectionsTablesHelper.deleteConfigurations();
     }
 
 
