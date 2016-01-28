@@ -387,10 +387,15 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
      */
     @Override
     public void onClick(View view) {
-        if(view != null){
-            super.onClick(view);
+        super.onClick(view);
+        /**
+         * Try fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/163/crash_reasons/108483846
+         */
+        try {
             // Validated clicked view
             onClickTeaserItem(view);
+        } catch (NullPointerException e) {
+            showUnexpectedErrorWarning();
         }
     }
 
