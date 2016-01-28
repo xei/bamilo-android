@@ -4,8 +4,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -23,10 +21,8 @@ import com.mobile.controllers.MyAccountNotificationsAdapter;
 import com.mobile.controllers.MyAccountSettingsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.helpers.configs.GetFaqTermsHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.SectionsTablesHelper;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.statics.MobileAbout;
@@ -36,7 +32,6 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
