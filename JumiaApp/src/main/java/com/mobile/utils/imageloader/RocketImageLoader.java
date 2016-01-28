@@ -348,7 +348,7 @@ public class RocketImageLoader {
     
     private void initVolley() {
         volleyRequestQueue = newRequestQueue(context, null);
-        volleyImageLoader = new ImageLoader(volleyRequestQueue, new BitmapLruCache(context));
+        volleyImageLoader = new ImageLoader(volleyRequestQueue, new BitmapLruCache());
     }
 
 //    public void preload(final String imageUrl, final RocketImageLoaderListener listener) {

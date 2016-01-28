@@ -323,10 +323,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 // Tracking
                 if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-                // Finish
-                getActivity().onBackPressed();
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
+                // Finish
+                getActivity().onBackPressed();
                 // Set facebook login
                 CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 break;
