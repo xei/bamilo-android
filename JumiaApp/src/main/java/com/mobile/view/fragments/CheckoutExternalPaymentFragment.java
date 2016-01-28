@@ -266,7 +266,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         }
         Print.d(TAG, "Loading Url: " + paymentUrl);
         // Track
-        String userId = JumiaApplication.CUSTOMER.getIdAsString();
+        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
         String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
         String payment = mPaymentSubmitted.getName();
         TrackerDelegator.trackPaymentMethod(userId, email, payment);
