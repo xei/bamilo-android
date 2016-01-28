@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.mobile.newFramework.objects.configs.Section;
+import com.mobile.newFramework.objects.configs.Sections;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
@@ -137,6 +138,14 @@ public class SectionsTablesHelper extends BaseTable {
 		}
 
 		return sections;
+	}
+
+	/**
+	 *
+	 */
+	public static void deleteConfigurations() {
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+		db.delete(TABLE_NAME, Columns.NAME + " = ? ", new String[]{Section.SECTION_NAME_CONFIGURATIONS});
 	}
     
 }

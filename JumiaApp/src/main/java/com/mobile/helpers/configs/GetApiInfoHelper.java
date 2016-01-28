@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class GetApiInfoHelper extends SuperBaseHelper {
     
-    private static String TAG = GetApiInfoHelper.class.getSimpleName();
+    private static final String TAG = GetApiInfoHelper.class.getSimpleName();
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
@@ -76,62 +76,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     }
 
-
-
-//    /*
-//     * (non-Javadoc)
-//     * @see com.mobile.helpers.BaseHelper#generateRequestBundle(android.os.Bundle)
-//     */
-//    @Override
-//    public Bundle generateRequestBundle(Bundle args) {
-//        Bundle bundle = new Bundle();
-//        bundle.putString(Constants.BUNDLE_URL_KEY, EventType.GET_API_INFO.action);
-//        bundle.putBoolean(Constants.BUNDLE_PRIORITY_KEY, HelperPriorityConfiguration.IS_PRIORITARY);
-//        bundle.putSerializable(Constants.BUNDLE_TYPE_KEY, RequestType.GET);
-//        bundle.putString(Constants.BUNDLE_MD5_KEY, Utils.uniqueMD5(EVENT_TYPE.name()));
-//        bundle.putBoolean(IMetaData.MD_IGNORE_CACHE, true);
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
-//        return bundle;
-//    }
-    
-//    /*
-//     * (non-Javadoc)
-//     * @see com.mobile.helpers.BaseHelper#parseResponseBundle(android.os.Bundle, org.json.JSONObject)
-//     */
-//    @Override
-//    public Bundle parseResponseBundle(Bundle bundle, JSONObject jsonObject) {
-//        Log.d(TAG, "ON PARSE RESPONSE");
-//        // Validate sections
-//        JSONArray sessionJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
-//        ArrayList<Section> outDatedSections = null;
-//        if (sessionJSONArray != null) {
-//            // Get old sections
-//            List<Section> oldSections = SectionsTablesHelper.getSections();
-//            // Get new sections
-//            List<Section> sections = parseSections(sessionJSONArray);
-//            // Get out dated sections
-//            outDatedSections = checkSections(oldSections, sections);
-//            // Save all new sections
-//            SectionsTablesHelper.saveSections(sections);
-//        }
-//        // Validate out dated sections
-//        if (CollectionUtils.isNotEmpty(outDatedSections)) {
-//            clearOutDatedMainSections(outDatedSections, bundle);
-//        }
-//        // VERSION
-//        VersionInfo info = new VersionInfo();
-//        try {
-//            info.initialize(jsonObject);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//        JumiaApplication.INSTANCE.setMobApiVersionInfo(info);
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
-//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, info);
-//
-//        return bundle;
-//    }
-
     /**
      * Clears the database of outdated sections
      * @param apiInformationStruct
@@ -142,24 +86,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         for (Section section : sections) {
             // Case teasers
             switch (section.getName()) {
-                /*
-                // Case zip codes
-                case Section.SECTION_NAME_GET_3_HOUR_DELIVERY_ZIPCODES:
-                    ZipCodesTableHelper.clearZipCodes(db);
-                    break;
-                // Case static blocks
-                case Section.SECTION_NAME_STATIC_BLOCKS:
-                    StaticBlocksTableHelper.clearStaticBlocks(db);
-                    break;
-                // Case segments
-                case Section.SECTION_NAME_SEGMENTS:
-                    SegmentTeasersTableHelper.clearSegmentTeasers(db);
-                    break;
-                // Case brands
-                case Section.SECTION_NAME_BRANDS:
-                    BrandsTableHelper.clearBrands(db);
-                    break;
-                 */
                 case Section.SECTION_NAME_TEASERS:
 
                     // TODO: REMOVE FROM NEW FRAMEWORK
@@ -260,35 +186,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         }
         return null;
     }
-    
-//    /*
-//     * (non-Javadoc)
-//     * @see com.mobile.helpers.BaseHelper#parseErrorBundle(android.os.Bundle)
-//     */
-//    @Override
-//    public Bundle parseErrorBundle(Bundle bundle) {
-//        Log.d(TAG, "ON PARSE ERROR BUNDLE");
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
-//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-//        return bundle;
-//    }
-//
-//    /*
-//     * (non-Javadoc)
-//     * @see com.mobile.helpers.BaseHelper#parseResponseErrorBundle(android.os.Bundle)
-//     */
-//    @Override
-//    public Bundle parseResponseErrorBundle(Bundle bundle) {
-//        Log.d(TAG, "ON RESPONSE ERROR BUNDLE");
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, EventType.GET_API_INFO);
-//        bundle.putBoolean(Constants.BUNDLE_ERROR_OCURRED_KEY, true);
-//        return bundle;
-//    }
-//
-//    @Override
-//    public Bundle parseResponseErrorBundle(Bundle bundle, JSONObject jsonObject) {
-//        return parseResponseErrorBundle(bundle);
-//    }
 
     public class ApiInformationStruct extends ApiInformation {
         private boolean sectionNameConfigurations;
