@@ -160,7 +160,7 @@ android {
         shop {
             applicationId "com.shop.android"
             versionName "1.7"
-            versionCode getAppVersionCode(12)
+            versionCode getAppVersionCode(11)
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
         }
@@ -168,7 +168,7 @@ android {
         shopPreInstall {
             applicationId "com.shop.android"
             versionName "1.7"
-            versionCode 12
+            versionCode 11
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
             android.sourceSets {
@@ -182,7 +182,7 @@ android {
         daraz {
             applicationId "com.daraz.android"
             versionName "1.7"
-            versionCode getAppVersionCode(13)
+            versionCode getAppVersionCode(12)
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
         }
@@ -190,7 +190,7 @@ android {
         darazPreInstall {
             applicationId "com.daraz.android"
             versionName "1.7"
-            versionCode 13
+            versionCode 12
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
             android.sourceSets {
