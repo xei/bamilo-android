@@ -80,6 +80,7 @@ public class Darwin {
 	public static final String KEY_SELECTED_COUNTRY_HAS_CART_POPUP = "selected_country_has_cart_popup";
 	public static final String KEY_SELECTED_FACEBOOK_IS_AVAILABLE = "selected_facebook_is_available";
 	public static final String KEY_SELECTED_MORE_INFO = "selected_more_info";
+	public static final String KEY_SELECTED_COUNTRY_HAS_RICH_RELEVANCE = "selected_country_has_rich_relevance";
 	
 	public static final String KEY_SELECTED_RATING_ENABLE = "selected_rating_enable";
 	public static final String KEY_SELECTED_RATING_REQUIRED_LOGIN = "selected_rating_required_login";
@@ -89,6 +90,7 @@ public class Darwin {
 	public static final String KEY_COUNTRY_CONFIGS_AVAILABLE = "country_configs_available";
 
 	public static final String KEY_COUNTRY_USER_AGENT_AUTH_KEY = "user_agent_authentication";
+	public static final String KEY_CHANGE_PASSWORD = "change_password";
 
 	/**
 	 * Prevent this class from being instantiated. Make this class into a

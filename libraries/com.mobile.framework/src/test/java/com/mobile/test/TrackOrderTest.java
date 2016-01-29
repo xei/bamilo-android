@@ -19,16 +19,15 @@ public class TrackOrderTest extends BaseTestCase {
         HashMap<String, String> data = new HashMap<>();
         data.put("ordernr", "306552459");
         requestBundle = new RequestBundle.Builder()
-                .setUrl(" http://www.jumia.com.ng/mobapi/v1.7/order/trackingorder")
+                .setEndPoint(" http://www.jumia.com.ng/mobapi/v1.7/order/trackingorder")
                 .setCache(EventType.TRACK_ORDER_EVENT.cacheTime)
-                .setData(data)
+                .addQueryData(data)
                 .build();
     }
 
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        //new TrackOrder(requestBundle, this).execute();
         new BaseRequest(requestBundle, this).execute(AigApiInterface.trackOrder);
         try {
             mCountDownLatch.await();

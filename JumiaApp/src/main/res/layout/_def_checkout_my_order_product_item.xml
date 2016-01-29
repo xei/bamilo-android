@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/my_order_item_divider"
@@ -72,5 +72,18 @@
         android:layout_below="@id/my_order_item_price"
         android:textColor="@color/black"
         android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/shop_first_item"
+        style="@style/ShopFirstStyle"
+        android:layout_alignLeft="@id/my_order_item_name"
+        android:layout_alignStart="@id/my_order_item_name"
+        android:layout_below="@id/my_order_item_variation"
+        />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_10dp"
+        android:layout_below="@id/shop_first_item"/>
 
 </RelativeLayout>

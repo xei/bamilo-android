@@ -7,19 +7,21 @@ import java.util.Map;
 
 public interface IFormField {
 
-    Form getParent();
-
     String getId();
 
     String getKey();
 
     String getName();
 
+    String getPlaceHolder();
+
     FormInputType getInputType();
 
     String getLabel();
 
     String getLinkText();
+
+    String getLinkTarget();
 
     String getFormat();
 
@@ -35,9 +37,7 @@ public interface IFormField {
 
     void setValue(String value);
 
-    Map<String, IFormField> getSubFormFields();
-
-    Map<String, String> getDataCalls();
+    String getApiCall();
 
     Map<String, String> getDateSetRating();
 

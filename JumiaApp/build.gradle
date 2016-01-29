@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'newrelic'
+apply plugin: 'usea4s'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
 
@@ -24,19 +25,20 @@ def getAppVersionCode(int releaseVersionCode) {
 android {
 
     compileSdkVersion 23
-    buildToolsVersion '23.0.1'
+    buildToolsVersion '23.0.2'
 
     useLibrary 'org.apache.http.legacy'
-
-    dexOptions {
-        jumboMode true
-    }
 
     defaultConfig {
         applicationId "com.mobile.view"
         minSdkVersion 15
         targetSdkVersion 22
-        resConfigs "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+    }
+
+    dexOptions {
+        jumboMode = true
+        incremental true
+        javaMaxHeapSize "4G"
     }
 
     signingConfigs {
@@ -46,13 +48,6 @@ android {
             storePassword "jumia123"
             keyAlias "jumia"
             keyPassword "jumia123"
-        }
-
-        jumiaBlackberrySigning {
-            storeFile file("keystores/jumia_blackberry.keystore")
-            storePassword "jumiablackberry"
-            keyAlias "jumia_blackberry"
-            keyPassword "jumiablackberry"
         }
 
         jumiaMtnngSigning {
@@ -94,18 +89,32 @@ android {
         debug {
             applicationIdSuffix ".dev"
             debuggable true
+            // # Building Apps with Over 65K Methods
+            // 1. Using multi dex support
+            multiDexEnabled true
+            // 2. Using proguard to reduce number of methods
+            //minifyEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-pro.txt', 'proguard-project-debug.txt', 'proguard-project-dev.txt'
         }
         live {
             applicationIdSuffix ".live"
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-live.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-project-pro.txt',
+                    'proguard-project-debug.txt'
+            android.sourceSets {
+                live.java.srcDirs = ['src/debug/java']
+                live.manifest.srcFile 'src/debug/AndroidManifest.xml'
+            }
         }
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-market.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                    'proguard-project-pro.txt',
+                    'proguard-project-market.txt'
         }
     }
 
@@ -116,16 +125,17 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.8.1"
-            versionCode getAppVersionCode(57)
+            versionName "2.9.1"
+            versionCode getAppVersionCode(59)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
+            //buildTypes.debug.manifestPlaceholders = [APP_ID: "123456"]
         }
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.8.1"
-            versionCode 57
+            versionName "2.9.1"
+            versionCode 59
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -135,7 +145,7 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.8.1"
+            versionName "2.9.1"
             versionCode 59
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "ar"
@@ -144,32 +154,21 @@ android {
             }
         }
 
-        jumiaBlackberry {
-            applicationId "com.jumia.blackberry"
-            versionName "2.8.1"
-            versionCode 13
-            signingConfig signingConfigs.jumiaBlackberrySigning
-            resConfigs "en", "fr", "ar"
-            android.sourceSets {
-                jumiaBlackberry.res.srcDirs = ['src/jumia/res', 'src/jumiaBlackberry/res']
-            }
-        }
-
         /**
          * #################### SHOP ####################
          */
         shop {
             applicationId "com.shop.android"
-            versionName "1.6"
-            versionCode getAppVersionCode(10)
+            versionName "1.7"
+            versionCode getAppVersionCode(11)
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
         }
 
         shopPreInstall {
             applicationId "com.shop.android"
-            versionName "1.6"
-            versionCode 10
+            versionName "1.7"
+            versionCode 11
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
             android.sourceSets {
@@ -182,16 +181,16 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.6"
-            versionCode getAppVersionCode(11)
+            versionName "1.7"
+            versionCode getAppVersionCode(12)
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
         }
 
         darazPreInstall {
             applicationId "com.daraz.android"
-            versionName "1.6"
-            versionCode 11
+            versionName "1.7"
+            versionCode 12
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
             android.sourceSets {
@@ -204,8 +203,8 @@ android {
          */
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "1.8"
-            versionCode getAppVersionCode(13)
+            versionName "1.9"
+            versionCode getAppVersionCode(15)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }
@@ -213,19 +212,42 @@ android {
     }
 
     lintOptions {
-//        disable 'NewApi', 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
         disable 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
         abortOnError false
         disable 'ExtraTranslation','MissingTranslation'
     }
 
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileNameRemoveReferences = outputFile.name.replace('JumiaApp', "App")
+                output.outputFile = new File(outputFile.parent, fileNameRemoveReferences)
+            }
+        }
+    }
 }
 
 dependencies {
     /** LOCAL LIBS **/
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:com.mobile.framework')
+    /** DEBUG **/
+    // #MULTIDEX
+    debugCompile 'com.android.support:multidex:1.0.1'
+    liveCompile 'com.android.support:multidex:1.0.1'
+    // #STETHO :: http://facebook.github.io/stetho/
+    debugCompile 'com.facebook.stetho:stetho:1.2.0'
+    debugCompile 'com.facebook.stetho:stetho-okhttp:1.2.0'
+    liveCompile 'com.facebook.stetho:stetho:1.2.0'
+    liveCompile 'com.facebook.stetho:stetho-okhttp:1.2.0'
+    // #LEAK :: https://github.com/square/leakcanary
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    liveCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    //releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     /** Android wear releases **/
+    debugWearApp project(path:':JumiaWear')
+    liveWearApp project(path:':JumiaWear', configuration: 'jumiaLive')
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
@@ -309,4 +331,77 @@ task testCalabash << {
     //testCalabash -Pcountry=NG
     //calabash-android run /home/mobile/rocket/jenkins/workspace/Jumia_Calabash_2.2_NG/AutomatedTests/pt.rocket.jumia.dev/bin/JumiaDev-debug.apk --t @Calabash_Tests country=${COUNTRY} -f json -o cucumber.json -f html -o test.html -f pretty
     executeWaitAndPrintCmd(['calabash-android', 'run', './JumiaApp/build/outputs/apk/JumiaApp-jumia-debug.apk', '--t', '@Calabash_Tests', 'country=$country'])
+}
+
+/**
+ * #################### WebTranslateIt ####################
+ * DEPENDENCIES: This task depends on wti gem file to be installed and on mail binary.
+ */
+
+/**
+ * Task that pulls translation string files from WebTranslateIt service.
+ */
+task wtiPushNewStrings << {
+    def STRINGS = "./JumiaApp/src/main/res/"
+    println " - Pushing new strings to WebTranslateIt " + new Date()
+    def proc = "wti push".execute(null, new File(STRINGS))
+    proc.waitFor()
+    String result = proc.text
+    println result
+    //check if there are new strings pushed and push them to git develop branch when on jenkins
+    if (result.contains('Accepted')) {// Accepted appears when there is new strings to upload
+        sendEmailToTeam("Pushed new strings to WebTranslateIt", result)
+    }
+}
+
+/**
+ * Task that pulls translation string files from WebTranslateIt service.
+ */
+task wtiPullTranslations << {
+    def STRINGS = "./JumiaApp/src/main/res/"
+    println " - Pulling translations from WebTranslateIt " + new Date()
+    def proc = "wti pull".execute(null, new File(STRINGS))
+    proc.waitFor()
+    String result = proc.text
+    println result
+    //check if there are new translations and push them to git develop branch when on jenkins
+    if (result.find('values.*OK') != null) {// OK appears when new translations
+        gitCommitAndPush("HEAD:development", STRINGS, "'[Jenkins::Jumia] - Uploading new translations from wti'")
+        sendEmailToTeam("New translation strings from WebTranslateIt pushed to github", result)
+    } else {
+        println " - - No translation to push..."
+    }
+}
+
+/**
+ * Method that performs a commit and a push to git develop branch possible changed translation string files.
+ */
+def gitCommitAndPush(String branch, String directory, String message) {
+    // perform add->commit->push
+    println " - - Commit and psuh to git " + branch
+    // save credentials on file, get git user and pass from env vars
+    def STORAGE_CRED_FILE = "/tmp/credentials.git"
+    String user = System.getenv('GIT_USER')
+    String pass = System.getenv('GIT_PASS')
+    new File(STORAGE_CRED_FILE).write("https://" + user + ":" + pass + "@github.com")
+    // set git credentials
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.name', "'mobile-rocket-porto'"])
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'user.email', "'mobilerocketporto@gmail.com'"])
+    executeWaitAndPrintCmd(['git', 'config', '--local', 'credential.helper', 'store', ("--file=" + STORAGE_CRED_FILE)])
+    // perform add->commit->push
+    executeWaitAndPrintCmd(['git', 'add', directory])
+    executeWaitAndPrintCmd(['git', 'commit', '-m', message]);
+    executeWaitAndPrintCmd(['git', 'push', 'origin', branch])
+}
+
+/**
+ * Method that sends an email to all dev team
+ * @param content The content of the email that will be sent.
+ */
+def sendEmailToTeam(String subject, String content) {
+    def TEMP_FILE = "/tmp/jumia_email_wit.txt"
+    def recipients = "sergio.pereira@africainternetgroup.com"
+    content = content.replaceAll(/\033\[[0-9;]*m/, "") //remove possible shell color chars
+    new File(TEMP_FILE).write(content)
+    executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < ' + TEMP_FILE ])
 }

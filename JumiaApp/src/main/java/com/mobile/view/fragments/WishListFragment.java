@@ -5,7 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
@@ -18,13 +17,12 @@ import com.mobile.helpers.wishlist.GetWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.WishList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -36,8 +34,8 @@ import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * WishList fragment with pagination.
@@ -82,10 +80,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
     public WishListFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Saved,
+                NavigationAction.SAVED,
                 R.layout._def_wishlist_fragment,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -207,7 +205,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
         if (!JumiaApplication.isCustomerLoggedIn()) {
-            switchToLoginFragment();
+            onLoginRequired();
         }
         // Case first time
         else if (mWishList == null || sForceReloadWishListFromNetwork) {
@@ -248,7 +246,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Show the wish list container as first time.
      */
     protected void showWishListContainer(WishList wishList) {
-        WishListGridAdapter listAdapter = new WishListGridAdapter(wishList.getProducts(), new OnWishListViewHolderClickListener() {
+        WishListGridAdapter listAdapter = new WishListGridAdapter(getBaseActivity(), wishList.getProducts(), new OnWishListViewHolderClickListener() {
             @Override
             public void onItemClick(View view) {
                 WishListFragment.this.onItemClick(view);
@@ -404,6 +402,11 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     }
 
     @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
+
+    }
+
+    @Override
     public void onDialogListDismiss() {
         mClickedBuyButton = null;
     }
@@ -415,7 +418,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON ITEM CLICK");
         String sku = (String) view.getTag(R.id.target_sku);
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -457,10 +460,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         }
     }
 
-    /**
-     * Request login
-     */
-    private void switchToLoginFragment() {
+    @Override
+    protected void onLoginRequired() {
         // Pop entries until home
         getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
         // Goto Login and next WishList
@@ -511,20 +512,17 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         super.handleSuccessEvent(baseResponse);
         // Validate event type
         switch (eventType) {
-            case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                showAddToCartCompleteMessage(baseResponse);
-                break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
                 removeSelectedPosition();
-                showInfoAddToSaved();
                 break;
             case GET_WISH_LIST:
-            default:
                 // Hide loading more
                 setLoadingMore(false);
                 // Show content
-                WishList wishList = (WishList) baseResponse.getMetadata().getData();
+                WishList wishList = (WishList) baseResponse.getContentData();
                 showContent(wishList);
+                break;
+            default:
                 break;
         }
     }
@@ -542,35 +540,21 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
             Log.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        // Call super
+        if(super.handleErrorEvent(baseResponse)) {
+            Log.i(TAG, "SUPER HANDLE THE ERROR!");
+            return;
+        }
         // Hide progress
         hideActivityProgress();
         // Validate event type
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-                if (!super.handleErrorEvent(baseResponse)) {
-                    showInfoAddToShoppingCartOOS();
-                }
-                break;
             case REMOVE_PRODUCT_FROM_WISH_LIST:
-                if (!super.handleErrorEvent(baseResponse)) {
-                    showUnexpectedErrorWarning();
-                }
                 break;
             case GET_WISH_LIST:
             default:
-                // Validate error
-                if (!super.handleErrorEvent(baseResponse)) {
-                    try {
-                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                        if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
-                            switchToLoginFragment();
-                        } else {
-                            showContinueShopping();
-                        }
-                    } catch (ClassCastException | NullPointerException e) {
-                        showContinueShopping();
-                    }
-                }
+                showContinueShopping();
                 isErrorOnLoadingMore = isLoadingMoreData;
                 setLoadingMore(false);
                 break;
@@ -581,7 +565,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * ######## SCROLL STATE ########
      */
 
-    private OnScrollListener onScrollListener = new OnScrollListener() {
+    private final OnScrollListener onScrollListener = new OnScrollListener() {
 
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

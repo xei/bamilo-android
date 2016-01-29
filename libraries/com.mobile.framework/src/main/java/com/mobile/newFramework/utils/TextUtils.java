@@ -38,6 +38,13 @@ public class TextUtils {
     }
 
     /**
+     * Returns true if the first string is equals to second string ignoring case.
+     */
+    public static boolean equalsIgnoreCase(String a, String b) {
+        return isNotEmpty(a) && a.equalsIgnoreCase(b);
+    }
+
+    /**
      * Returns true if a and b are equal, including if they are both null.
      * <p><i>Note: In platform versions 1.1 and earlier, this method only worked well if
      * both the arguments were instances of String.</i></p>
@@ -128,4 +135,5 @@ public class TextUtils {
         }
         return sb.toString();
     }
+
 }

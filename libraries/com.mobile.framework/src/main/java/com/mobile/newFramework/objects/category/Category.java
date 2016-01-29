@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
  */
 public class Category implements IJSONSerializable, Parcelable {
 
+    private static final String TAG = Category.class.getName();
     private String mType;
 
     private String mName;
@@ -33,7 +35,7 @@ public class Category implements IJSONSerializable, Parcelable {
 
     private String mUrlKey;
 
-    private String mApiUrl;
+    private String mTargetLink;
 
     private String mImage;
 
@@ -99,10 +101,10 @@ public class Category implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @return the apiUrl
+     * @return the target link
      */
-    public String getApiUrl() {
-        return mApiUrl;
+    public String getTargetLink() {
+        return mTargetLink;
     }
 
     /**
@@ -128,19 +130,19 @@ public class Category implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        mType = jsonObject.optString(RestConstants.JSON_CATEGORY_TYPE_TAG);
-        if(isSection){
-            mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG).toUpperCase();
-        } else {
-            mName = jsonObject.optString(RestConstants.JSON_CATEGORY_LABEL_TAG);
+        mType = jsonObject.optString(RestConstants.TYPE);
+        mName = jsonObject.optString(RestConstants.LABEL);
+        if(isSection && TextUtils.isNotEmpty(mName)) {
+            mName = mName.toUpperCase();
         }
-        mImage = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
-        mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
-        mApiUrl = jsonObject.optString(RestConstants.JSON_API_URL_TAG);
-        mUrlKey = jsonObject.optString(RestConstants.JSON_URL_KEY_TAG);
-        mPath = jsonObject.optString(RestConstants.JSON_CATEGORY_URL_TAG);
+        mImage = jsonObject.optString(RestConstants.IMAGE);
+        mUrlKey = jsonObject.optString(RestConstants.URL_KEY);
+        mTargetLink = jsonObject.optString(RestConstants.TARGET);
+        mUrlKey = jsonObject.optString(RestConstants.URL_KEY);
+        mPath = jsonObject.optString(RestConstants.URL);
+//        //Print.i(TAG, "code1categoy : getApiUrl: " + mTargetLink + " category.getName(): " + mName);
         // Get sub categories
-        JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
+        JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.CHILDREN);
         if (childrenArray != null) {
             mSubCategories = new ArrayList<>();
             for (int i = 0; i < childrenArray.length(); ++i) {
@@ -159,9 +161,9 @@ public class Category implements IJSONSerializable, Parcelable {
 
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_CATEGORY_TYPE_TAG, mType);
-            jsonObject.put(RestConstants.JSON_CATEGORY_LABEL_TAG, mName);
-            jsonObject.put(RestConstants.JSON_URL_KEY_TAG, mUrlKey);
+            jsonObject.put(RestConstants.TYPE, mType);
+            jsonObject.put(RestConstants.LABEL, mName);
+            jsonObject.put(RestConstants.URL_KEY, mUrlKey);
 
             JSONArray childrenArray = new JSONArray();
 
@@ -169,7 +171,7 @@ public class Category implements IJSONSerializable, Parcelable {
                 childrenArray.put(child.toJSON());
             }
 
-            jsonObject.put(RestConstants.JSON_CHILDREN_TAG, childrenArray);
+            jsonObject.put(RestConstants.CHILDREN, childrenArray);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -178,8 +180,8 @@ public class Category implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
 
@@ -206,7 +208,7 @@ public class Category implements IJSONSerializable, Parcelable {
         dest.writeString(mType);
         dest.writeString(mName);
         dest.writeString(mUrlKey);
-        dest.writeString(mApiUrl);
+        dest.writeString(mTargetLink);
         dest.writeList(mSubCategories);
         dest.writeString(mImage);
     }
@@ -218,7 +220,7 @@ public class Category implements IJSONSerializable, Parcelable {
         mType = in.readString();
         mName = in.readString();
         mUrlKey = in.readString();
-        mApiUrl = in.readString();
+        mTargetLink = in.readString();
         mSubCategories = new ArrayList<>();
         in.readList(mSubCategories, Category.class.getClassLoader());
         mImage = in.readString();

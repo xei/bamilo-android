@@ -1,8 +1,5 @@
 package com.mobile.newFramework.database;
 
-import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
-
-
 /**
  * Base table class.
  * @author sergiopereira
@@ -11,14 +8,15 @@ public abstract class BaseTable {
     
     /**
      * Returns the table type used on upgrade database.<br>
-     * - {@link TableType#CACHE}: Drop old and create a new table.<br>
-     * - {@link TableType#FREEZE}: Retain table.<br>
-     * - {@link TableType#PERSIST}: Upgrade the table trying copy the old content for the new table schema. 
+     * - {@link DarwinDatabaseHelper#CACHE}: Drop old and create a new table.<br>
+     * - {@link DarwinDatabaseHelper#FREEZE}: Retain table.<br>
+     * - {@link DarwinDatabaseHelper#PERSIST}: Upgrade the table trying copy the old content for the new table schema.
      * WARNING: Not support table rename and some update types.<br>
      * @return TableType for upgrade
      * @author sergiopereira
      */
-    public abstract TableType getUpgradeType();
+    @DarwinDatabaseHelper.UpgradeType
+    public abstract int getUpgradeType();
     
     /**
      * Returns the table name.
@@ -29,10 +27,9 @@ public abstract class BaseTable {
     
     /**
      * Returns the SQL instruction to create the table.
-     * @param table name
      * @return String.
      * @author sergiopereira
      */
-    public abstract String create(String table);
+    public abstract String create();
     
 }

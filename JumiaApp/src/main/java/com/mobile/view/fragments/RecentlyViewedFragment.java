@@ -4,11 +4,12 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.GridView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.RecentlyViewedAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -18,6 +19,8 @@ import com.mobile.helpers.products.GetRecentlyViewedHelper;
 import com.mobile.helpers.products.ValidateProductHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
+import com.mobile.newFramework.objects.cart.AddedItemStructure;
 import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
@@ -26,12 +29,12 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
@@ -56,7 +59,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
 
     private ArrayList<ProductMultiple> mProducts;
 
-    private GridView mGridView;
+    private HeaderFooterGridView mGridView;
 
     private View mClickedBuyButton;
 
@@ -67,10 +70,10 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      */
     public RecentlyViewedFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.RecentlyViewed,
+                NavigationAction.RECENTLY_VIEWED,
                 R.layout.recentlyviewed,
                 R.string.recently_viewed,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /**
@@ -104,7 +107,13 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get grid view
-        mGridView = (GridView) view.findViewById(R.id.recentlyviewed_grid);
+        mGridView = (HeaderFooterGridView) view.findViewById(R.id.recentlyviewed_grid);
+        mGridView.setHasFixedSize(true);
+        mGridView.setGridLayoutManager(getResources().getInteger(R.integer.favourite_num_columns));
+        mGridView.setNestedScrollingEnabled(false);
+        mGridView.setItemAnimator(new DefaultItemAnimator());
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
         // Get clear all button
         mClearAllButton = (TextView) view.findViewById(R.id.recentlyviewed_button_grey);
         mClearAllButton.setOnClickListener(this);
@@ -202,7 +211,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      * @author Andre Lopes
      */
     protected void showEmpty() {
-        getBaseActivity().warningFactory.hideWarning();
+        getBaseActivity().hideWarningMessage();
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(null);
         showErrorFragment(ErrorLayoutFactory.NO_RECENTLY_VIEWED_LAYOUT, this);
@@ -261,7 +270,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     protected void onClickVariation(View view) {
         try {
             // Hide warning
-            getBaseActivity().warningFactory.hideWarning();
+            getBaseActivity().hideWarningMessage();
             // Show dialog
             int position = Integer.parseInt(view.getTag().toString());
             ProductMultiple addableToCart = mProducts.get(position);
@@ -280,7 +289,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             int position = Integer.parseInt(view.getTag().toString());
             ProductMultiple addableToCart = mProducts.get(position);
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, addableToCart.getSku());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, addableToCart.getSku());
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } catch (NullPointerException e) {
@@ -356,7 +365,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         } catch (IndexOutOfBoundsException e) {
             Print.w(TAG, "WARNING: IOB ON ADD ITEM TO CART", e);
             if(mAdapter != null) mAdapter.notifyDataSetChanged();
-            showInfoAddToShoppingCartFailed();
+            showWarningErrorMessage(getString(R.string.error_add_to_shopping_cart));
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON ADD ITEM TO CART", e);
             view.setEnabled(false);
@@ -440,7 +449,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         switch (eventType) {
             case GET_RECENTLY_VIEWED_LIST:
                 Print.i(TAG, "ON RESPONSE COMPLETE: GET_RECENTLY_VIEWED_LIST");
-                list = (ArrayList<String>)baseResponse.getMetadata().getData();
+                list = (ArrayList<String>)baseResponse.getContentData();
                 if (!CollectionUtils.isEmpty(list)) {
                     triggerValidateRecentlyViewed(list);
                 } else {
@@ -449,12 +458,11 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.i(TAG, "ON RESPONSE COMPLETE: ADD_ITEM_TO_SHOPPING_CART_EVENT");
-                showAddToCartCompleteMessage(baseResponse);
-                int position = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getCurrentPos();
+                int position = ((AddedItemStructure) baseResponse.getMetadata().getData()).getCurrentPos();
                 updateLayoutAfterAction(position);
                 break;
             case VALIDATE_PRODUCTS:
-                mProducts = (ValidProductList) baseResponse.getMetadata().getData();
+                mProducts = (ValidProductList) baseResponse.getContentData();
                 if (!CollectionUtils.isEmpty(mProducts)) {
                     showContent();
                 } else {
@@ -497,7 +505,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.d(TAG, "ON RESPONSE ERROR: ADD_ITEM_TO_SHOPPING_CART_EVENT");
                 hideActivityProgress();
-                showInfoAddToShoppingCartOOS();
                 break;
             case VALIDATE_PRODUCTS:
                 Print.d(TAG, "ON RESPONSE ERROR: VALIDATE_PRODUCTS");
@@ -523,14 +530,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
      * send a array of products sku's to be validated by the API
      */
     private void triggerValidateRecentlyViewed(ArrayList<String> list) {
-        ContentValues values = new ContentValues();
-        for (int i = 0; i < list.size(); i++) {
-            values.put(String.format(ValidateProductHelper.VALIDATE_PRODUCTS_KEY, i), list.get(i));
-        }
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(Constants.BUNDLE_EVENT_TASK, EventTask.NORMAL_TASK);
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new ValidateProductHelper(), bundle, this);
+        triggerContentEvent(new ValidateProductHelper(), ValidateProductHelper.createBundle(list), this);
     }
 
     /**
@@ -564,6 +564,11 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public void onDialogListClickView(View view) {
         // Process the click in the main method
         onClick(view);
+    }
+
+    @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
+
     }
 
     @Override

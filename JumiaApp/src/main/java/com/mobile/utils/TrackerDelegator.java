@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
 import com.mobile.newFramework.objects.checkout.ExternalOrder;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
@@ -29,6 +31,7 @@ import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -384,6 +387,13 @@ public class TrackerDelegator {
         GTMManager.get().gtmTrackRegisterFailed(location);
     }
 
+    public static void trackSessionFailed(EventType eventType) {
+        if(eventType == EventType.FACEBOOK_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.FACEBOOK);
+        else if(eventType == EventType.AUTO_LOGIN_EVENT) TrackerDelegator.trackLoginFailed(true, GTMValues.LOGIN, GTMValues.EMAILAUTH);
+        if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
+    }
+
+
     /**
      * For Web Checkout
      */
@@ -467,12 +477,12 @@ public class TrackerDelegator {
         // GA
         AnalyticsGoogle.get().trackPurchase(order.number, order.valueConverted, order.items);
         // AD4
-        Ad4PushTracker.get().trackCheckoutEnded(order.number, order.valueConverted, order.value, order.average, order.items.size(), order.coupon, "");
+        Ad4PushTracker.get().trackCheckoutEnded(order.valueConverted, order.value, order.average, order.items.size(), order.coupon, "");
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : "n.a.");
+        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : AdjustTracker.NOT_AVAILABLE);
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
@@ -535,12 +545,12 @@ public class TrackerDelegator {
         //GA Banner Flow
         trackBannerClick(items);
         // Ad4
-        Ad4PushTracker.get().trackCheckoutEnded(orderNr, grandTotal, cartValue, averageValue, numberOfItems, coupon, attributeIdList);
+        Ad4PushTracker.get().trackCheckoutEnded(grandTotal, cartValue, averageValue, numberOfItems, coupon, attributeIdList);
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
         bundle.putString(AdjustTracker.CURRENCY_ISO, CurrencyFormatter.getCurrencyCode());
-        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : "n.a.");
+        bundle.putString(AdjustTracker.USER_ID, customer != null ? customer.getIdAsString() : AdjustTracker.NOT_AVAILABLE);
         bundle.putParcelable(AdjustTracker.CUSTOMER, customer);
         bundle.putBoolean(AdjustTracker.DEVICE, sContext.getResources().getBoolean(R.bool.isTablet));
         bundle.putBoolean(AdjustTracker.IS_FIRST_CUSTOMER, isFirstCustomer);
@@ -675,7 +685,7 @@ public class TrackerDelegator {
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, type);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, type);
         trackProductAddedToCart(bundle);
     }
 
@@ -690,7 +700,7 @@ public class TrackerDelegator {
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
         bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.PRODUCTDETAILPAGE);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, type);
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, type);
         trackProductAddedToCart(bundle);
     }
 
@@ -734,8 +744,8 @@ public class TrackerDelegator {
         // FB
         FacebookTracker.get(sContext).trackAddedToCart(sku, price, JumiaApplication.SHOP_ID, appVersion);
         //GA Banner Flow
-        if (bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE) != null) {
-            JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE));
+        if (bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE) != null) {
+            JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE));
         }
 
     }
@@ -806,15 +816,15 @@ public class TrackerDelegator {
      */
     public static void trackCampaignView(TeaserCampaign teaserCampaign) {
         // GA
-        AnalyticsGoogle.get().trackGenericPage(teaserCampaign != null ? teaserCampaign.getTargetTitle() : "n.a.");
+        AnalyticsGoogle.get().trackGenericPage(teaserCampaign != null ? teaserCampaign.getTitle() : AdjustTracker.NOT_AVAILABLE);
         // Ad4Push
-        Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign != null ? teaserCampaign.getCampaignId() : "n.a.");
+        Ad4PushTracker.get().trackLastViewedCampaign(teaserCampaign != null ? teaserCampaign.getId() : AdjustTracker.NOT_AVAILABLE);
     }
 
     /**
      * Tracking add product to favorites
      */
-    public static void trackAddToFavorites(ProductRegular completeProduct) {
+    public static void trackAddToFavorites(@NonNull ProductRegular completeProduct) {
         String productSku = completeProduct.getSku();
         String productBrand = completeProduct.getBrand();
         double productPrice = completeProduct.getPriceForTracking();
@@ -854,7 +864,7 @@ public class TrackerDelegator {
      * Tracking remove product from favorites
      * h375id
      */
-    public static void trackRemoveFromFavorites(ProductRegular completeProduct) {
+    public static void trackRemoveFromFavorites(@NonNull ProductRegular completeProduct) {
         String productSku = completeProduct.getSku();
         double price = completeProduct.getPriceForTracking();
         double averageRatingTotal = completeProduct.getAvgRating();
@@ -952,9 +962,10 @@ public class TrackerDelegator {
      * Tracking add address for GTM
      *
      */
-    public static void trackFailedPayment(String paymentMethod, double transactionTotal) {
-        // GTM
-        GTMManager.get().gtmTrackFailedPayment(paymentMethod, transactionTotal, EUR_CURRENCY);
+    public static void trackFailedPayment(String paymentMethod, PurchaseEntity order) {
+        if (order != null) {
+            GTMManager.get().gtmTrackFailedPayment(paymentMethod, order.getCartValueEuroConverted(), EUR_CURRENCY);
+        }
     }
 
     /**
@@ -974,7 +985,7 @@ public class TrackerDelegator {
             screenName = sContext.getString(page.getName());
         }
 
-        if(!"".equalsIgnoreCase(screenName))
+        if(TextUtils.isNotEmpty(screenName))
             GTMManager.get().gtmTrackViewScreen(screenName, loadTime);
     }
 
@@ -1159,8 +1170,8 @@ public class TrackerDelegator {
     /**
      * fires a GA event every time the user taps on one of the home teasers
      */
-    public static void trackBannerClicked(TeaserGroupType groupType, String targetUrl, int position){
-        AnalyticsGoogle.get().trackEventBannerClick(getCategoryFromTeaserGroupType(groupType), targetUrl, position);
+    public static void trackBannerClicked(TeaserGroupType groupType, String targetKey, int position){
+        AnalyticsGoogle.get().trackEventBannerClick(getCategoryFromTeaserGroupType(groupType), targetKey, position);
     }
 
     /**
@@ -1311,4 +1322,39 @@ public class TrackerDelegator {
             Print.w(TAG, "WARNING: NPE ON TRACK CHECKOUT STEP");
         }
     }
+
+    public static void trackAddToCartGTM(PurchaseCartItem item, int quantity, String mItemRemovedCartValue) {
+        try {
+            double prods = item.getQuantity();
+            Bundle params = new Bundle();
+
+            params.putString(TrackerDelegator.SKU_KEY, item.getConfigSimpleSKU());
+
+            params.putLong(TrackerDelegator.START_TIME_KEY, System.currentTimeMillis());
+            params.putDouble(TrackerDelegator.PRICE_KEY, item.getPriceForTracking());
+            params.putLong(TrackerDelegator.QUANTITY_KEY, 1);
+            params.putDouble(TrackerDelegator.RATING_KEY, -1d);
+            params.putString(TrackerDelegator.NAME_KEY, item.getName());
+            params.putString(TrackerDelegator.CATEGORY_KEY, item.getCategories());
+            params.putString(TrackerDelegator.CARTVALUE_KEY, mItemRemovedCartValue);
+
+            if (quantity > prods) {
+                prods = quantity - prods;
+                params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.SHOPPINGCART);
+                for (int i = 0; i < prods; i++) {
+                    TrackerDelegator.trackProductAddedToCart(params);
+                }
+            } else {
+                prods = prods - quantity;
+                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gshoppingcart);
+                for (int i = 0; i < prods; i++) {
+                    TrackerDelegator.trackProductRemoveFromCart(params);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

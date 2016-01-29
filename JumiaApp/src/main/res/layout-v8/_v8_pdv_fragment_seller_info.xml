@@ -9,25 +9,26 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_specs_title"
         style="@style/HeaderStyle"
-        android:text="@string/seller_info"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:text="@string/seller_info" />
 
     <!--CONTENT -->
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_name"
-        style="@style/TextBody_1"
-        android:layout_marginRight="@dimen/layout_padding"
-        android:textColor="@color/black"
+        style="@style/TextBody_1.ShopFirstDrawRight"
+        android:layout_gravity="right"
         android:layout_marginBottom="16dp"
-        android:textStyle="bold"/>
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/layout_padding"
+        android:textColor="@color/black" />
 
     <!-- DELIVERY TIME -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_delivery_info"
         style="@style/TextHeader"
-        android:layout_marginRight="@dimen/layout_padding"
         android:layout_marginBottom="16dp"
+        android:layout_marginRight="@dimen/layout_padding"
         android:textColor="@color/black"
         android:visibility="gone" />
 
@@ -36,10 +37,10 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_warranty"
         style="@style/TextHeader"
-        android:layout_marginRight="@dimen/layout_padding"
         android:layout_marginBottom="16dp"
-        android:drawableRight="@drawable/ic_warranty"
+        android:layout_marginRight="@dimen/layout_padding"
         android:drawablePadding="16dp"
+        android:drawableRight="@drawable/ic_warranty"
         android:textColor="@color/black"
         android:visibility="gone" />
 
@@ -49,6 +50,7 @@
         android:id="@+id/pdv_seller_overseas_delivery_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/layout_padding"
         android:layout_marginRight="@dimen/layout_padding"
         android:orientation="horizontal"
         android:paddingBottom="16dp"
@@ -59,8 +61,8 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_seller_overseas_delivery_title"
             style="@style/TextHeader"
-            android:drawableRight="@drawable/ic_overseas"
             android:drawablePadding="16dp"
+            android:drawableRight="@drawable/ic_overseas"
             android:textColor="@color/black" />
 
         <!-- TEXT BLACK -->

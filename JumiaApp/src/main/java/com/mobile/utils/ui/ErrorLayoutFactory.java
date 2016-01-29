@@ -1,6 +1,8 @@
 package com.mobile.utils.ui;
 
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,9 @@ import android.widget.TextView;
 
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -46,7 +51,27 @@ public class ErrorLayoutFactory {
 
     public static final int UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT = 12;
 
-    private View mErrorLayout;
+    public static final int CAMPAIGN_UNAVAILABLE_LAYOUT = 13;
+
+    @IntDef({
+            NO_NETWORK_LAYOUT,
+            UNEXPECTED_ERROR_LAYOUT,
+            CART_EMPTY_LAYOUT,
+            NO_FAVOURITES_LAYOUT,
+            NO_RECENT_SEARCHES_LAYOUT,
+            NO_RECENTLY_VIEWED_LAYOUT,
+            CONTINUE_SHOPPING_LAYOUT,
+            CATALOG_NO_RESULTS,
+            CATALOG_UNEXPECTED_ERROR,
+            NO_ORDERS_LAYOUT,
+            SSL_ERROR_LAYOUT,
+            UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT,
+            CAMPAIGN_UNAVAILABLE_LAYOUT
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface LayoutErrorType{}
+
+    private final View mErrorLayout;
 
     private int actualError;
 
@@ -63,10 +88,13 @@ public class ErrorLayoutFactory {
         mErrorLayout = errorLayout;
     }
 
-    public void showErrorLayout(int error) {
+    public void showErrorLayout(@LayoutErrorType int error) {
         if(actualError != error) {
             //build
             switch (error) {
+                case CAMPAIGN_UNAVAILABLE_LAYOUT:
+                    buildCampaignUnavailableErrorLayout(error);
+                    break;
                 case UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT:
                     buildUnknownCheckoutStepErrorLayout();
                     break;
@@ -107,6 +135,17 @@ public class ErrorLayoutFactory {
         }
         //show
         show();
+    }
+
+    /**
+     * Show error layout in case of invalid campaign
+     *
+     * @param error
+     */
+    public void buildCampaignUnavailableErrorLayout(int error){
+        showGenericError(error, R.drawable.ic_campaigns2, R.string.campaign_unavailable_title,
+                R.string.campaign_unavailable_description, R.string.continue_shopping,
+                R.color.white, R.color.color_accent, false);
     }
 
     private void buildNoFavouritesLayout(int error){
@@ -178,6 +217,32 @@ public class ErrorLayoutFactory {
         actualError = error;
     }
 
+    /**
+     * Show generic error message with button
+     *
+     * @param error
+     * @param image
+     * @param principalMessage
+     * @param detailMessage
+     * @param buttonMessage
+     * @param buttonTextColor
+     * @param buttonBackground
+     * @param rotationVisible
+     */
+    private void showGenericError(int error, int image, int principalMessage, int detailMessage,
+                                  int buttonMessage, int buttonTextColor, int buttonBackground,
+                                  boolean rotationVisible) {
+        new Builder()
+                .setImage(image)
+                .setPrincipalMessage(principalMessage)
+                .setDetailMessage(detailMessage)
+                .setButtonMessage(buttonMessage)
+                .setButtonTextColor(buttonTextColor)
+                .setRotationVisible(rotationVisible)
+                .setButtonBackground(buttonBackground);
+        actualError = error;
+    }
+
     private void buildNoNetworkLayout() {
         new Builder()
                 .setImage(R.drawable.img_connect)
@@ -189,23 +254,25 @@ public class ErrorLayoutFactory {
         actualError = NO_NETWORK_LAYOUT;
     }
 
-    private void buildUnexpectedErrorLayout(){
+    private void buildUnexpectedErrorLayout() {
         new Builder()
                 .setImage(R.drawable.ic_warning)
-                .setPrincipalMessageVisible(false)
+                .setPrincipalMessage(R.string.error_problem_fetching_data)
                 .setDetailMessage(R.string.server_error)
-                .setRotationVisible(true)
-                .setButtonMessage(R.string.try_again_retry)
-                .setButtonBackground(R.color.black_700);
+                .setRotationVisible(false)
+                .setButtonMessage(R.string.continue_shopping)
+                .setButtonTextColor(R.color.white)
+                .setButtonBackground(R.color.color_accent);
         actualError = UNEXPECTED_ERROR_LAYOUT;
     }
 
     private void buildCartEmptyLayout(){
         new Builder()
-                .setImage(R.drawable.img_emptycart)
+                .setImage(R.drawable.ico_empty_cart)
                 .setPrincipalMessage(R.string.order_no_items)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.continue_shopping)
+                .setButtonTextColor(R.color.white)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
         actualError = CART_EMPTY_LAYOUT;
@@ -214,9 +281,10 @@ public class ErrorLayoutFactory {
     private void buildContinueShoppingLayout() {
         new Builder()
                 .setImage(R.drawable.ic_warning)
-                .setPrincipalMessageVisible(false)
+                .setPrincipalMessage(R.string.error_problem_fetching_data)
                 .setDetailMessage(R.string.server_error)
                 .setButtonMessage(R.string.continue_shopping)
+                .setButtonTextColor(R.color.white)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
         actualError = CONTINUE_SHOPPING_LAYOUT;
@@ -224,9 +292,11 @@ public class ErrorLayoutFactory {
 
     private void buildCatalogNoResultsLayout(){
         new Builder()
-                .setImage(R.drawable.img_filternoresults)
+                .setImage(R.drawable.ic_filter_empty)
                 .setPrincipalMessage(R.string.catalog_no_results)
-                .setDetailMessageVisible(false)
+                .setDetailMessageVisible(true)
+                .setDetailMessage(R.string.catalog_no_results_details)
+                .setButtonTextColor(R.color.white)
                 .setButtonMessage(R.string.catalog_edit_filters)
                 .setRotationVisible(false)
                 .setButtonBackground(R.color.color_accent);
@@ -235,7 +305,7 @@ public class ErrorLayoutFactory {
 
     private void buildCatalogUnexpectedErrorLayout(){
         new Builder()
-                .setImage(R.drawable.img_filternoresults)
+                .setImage(R.drawable.ic_filter_empty)
                 .setPrincipalMessage(R.string.server_error)
                 .setDetailMessageVisible(false)
                 .setButtonMessage(R.string.catalog_edit_filters)
@@ -285,6 +355,11 @@ public class ErrorLayoutFactory {
 
         Builder setButtonVisible(boolean isToShow){
             mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(isToShow ? View.VISIBLE : View.GONE);
+            return this;
+        }
+
+        Builder setButtonTextColor(@ColorRes int color){
+            ((TextView)mErrorLayout.findViewById(R.id.fragment_root_error_button_message)).setTextColor(mErrorLayout.getContext().getResources().getColor(color));
             return this;
         }
 

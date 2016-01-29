@@ -3,16 +3,16 @@
  */
 package com.mobile.helpers.products;
 
-import android.net.Uri;
-import android.os.Bundle;
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.HelperPriorityConfiguration;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 
 /**
@@ -25,18 +25,11 @@ public class GetProductBundleHelper extends SuperBaseHelper {
 
     protected static String TAG = GetProductBundleHelper.class.getSimpleName();
 
-    public static final String PRODUCT_SKU = "productSku";
-
-
     @Override
     public EventType getEventType() {
         return EventType.GET_PRODUCT_BUNDLE;
     }
 
-    @Override
-    protected String getRequestUrl(android.os.Bundle args) {
-        return RestUrlUtils.completeUri(Uri.parse(EventType.GET_PRODUCT_BUNDLE.action + args.getString(PRODUCT_SKU))).toString();
-    }
 
     @Override
     public boolean hasPriority() {
@@ -45,7 +38,7 @@ public class GetProductBundleHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductBundle);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.getProductBundles);
     }
 
 
@@ -53,9 +46,10 @@ public class GetProductBundleHelper extends SuperBaseHelper {
      * Method used to create a request bundle.
      */
     public static Bundle createBundle(String sku) {
-        // Item data
+        ContentValues values = new ContentValues();
+        values.put(RestConstants.SKU, sku);
         Bundle bundle = new Bundle();
-        bundle.putString(GetProductBundleHelper.PRODUCT_SKU, sku);
+        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
     }
 

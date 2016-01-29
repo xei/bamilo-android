@@ -39,14 +39,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
         super();
     }
 
-    /**
-     * Constructor
-     *
-     * @throws JSONException
-     */
-    public Addresses(JSONObject jsonObject) throws JSONException {
-        initialize(jsonObject);
-    }
 
     /*
      * (non-Javadoc)
@@ -55,7 +47,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         Print.d("INITIALIZE");
-
         // Get shipping address and save it
         JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.SHIPPING);
         if (jsonShip != null) {
@@ -64,7 +55,6 @@ public class Addresses implements IJSONSerializable, Parcelable {
         } else {
             throw new JSONException("");
         }
-        //addresses.put("" + shippingAddress.getIdCustomerAddress(), shippingAddress);
         // Get billing address and save it
         JSONObject jsonBil = jsonObject.optJSONObject(RestConstants.BILLING);
         if (jsonBil != null) {
@@ -74,7 +64,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
             throw new JSONException("");
         }
         // Get other addresses
-        JSONArray jsonOthersArray = jsonObject.optJSONArray(RestConstants.JSON_OTHER_TAG);
+        JSONArray jsonOthersArray = jsonObject.optJSONArray(RestConstants.OTHER);
         if (jsonOthersArray != null && jsonOthersArray.length() > 0) {
             JSONObject jsonOtherAddress;
             for (int i = 0; i < jsonOthersArray.length(); i++) {
@@ -97,7 +87,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 
@@ -211,7 +201,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
     /**
      * Parcel constructor
      */
-    private Addresses(Parcel in) {
+    protected Addresses(Parcel in) {
         shippingAddress = in.readParcelable(Address.class.getClassLoader());
         billingAddress = in.readParcelable(Address.class.getClassLoader());
         addresses = new HashMap<>();

@@ -3,7 +3,6 @@ package com.mobile.view.fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -16,29 +15,22 @@ import android.widget.ScrollView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.helpers.products.GetProductHelper;
-import com.mobile.helpers.teasers.GetShopInShopHelper;
+import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.home.TeaserCampaign;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
-import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.rest.RestUrlUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
-import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
 /**
@@ -58,7 +50,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     private String mTitle;
 
-    private String mUrl;
+    private String mPageId;
 
     private ViewGroup mMainContainer;
 
@@ -85,10 +77,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     public InnerShopFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Unknown,
+                NavigationAction.UNKNOWN,
                 R.layout.shop_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -103,13 +95,13 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         Bundle arguments = getArguments();
         if (arguments != null) {
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mUrl = arguments.getString(ConstantsIntentExtra.CONTENT_URL);
-            Print.i(TAG, "RECEIVED DATA: " + mTitle + " " + mUrl);
+            mPageId = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
+            Print.i(TAG, "RECEIVED DATA: " + mTitle + " " + mPageId);
         }
         // Get data from saved instance
         if (savedInstanceState != null) {
             mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mUrl = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_URL);
+            mPageId = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_ID);
         }
     }
 
@@ -149,7 +141,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVED INSTANCE STATE");
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-        outState.putString(ConstantsIntentExtra.CONTENT_URL, mUrl);
+        outState.putString(ConstantsIntentExtra.CONTENT_ID, mPageId);
     }
 
     @Override
@@ -190,8 +182,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void onValidateDataState() {
         // Get data
-        if (!TextUtils.isEmpty(mUrl)) {
-            triggerGetShop(mUrl);
+        if (!TextUtils.isEmpty(mPageId)) {
+            triggerGetShop(mPageId);
         }
         // Case unexpected error
         else {
@@ -284,24 +276,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     /**
      * Trigger to get the CMS block for shop.
      *
-     * @param url The shop service
+     * @param page The shop service
      */
-    private void triggerGetShop(String url) {
-        Bundle bundle = new Bundle();
-        String staticPageKey = getStaticPageKey(url);
-        bundle.putString(Constants.BUNDLE_URL_KEY, staticPageKey);
-        triggerContentEvent(new GetShopInShopHelper(), bundle, this);
-    }
-
-    /**
-     * extract static page key from the static page url
-     */
-    private String getStaticPageKey(String url){
-        if(!TextUtils.isEmpty(url)){
-            Uri myUri = Uri.parse(url);
-            return myUri.getQueryParameter(GetShopInShopHelper.INNER_SHOP_TAG);
-        }
-        return "";
+    private void triggerGetShop(String page) {
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(page), this);
     }
 
     /*
@@ -312,11 +290,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     public void onClick(View view) {
         Print.i(TAG, "ON CLICK");
         // Get featured box item type
-        String url = (String) view.getTag(R.id.target_url);
+        String sku = (String) view.getTag(R.id.target_link);
         // Validate target
-        if (TextUtils.isNotEmpty(url)) {
+        if (TextUtils.isNotEmpty(sku)) {
             // Get url
-            gotoProduct(url);
+            gotoProduct(view);
         } else {
             super.onClick(view);
         }
@@ -336,7 +314,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * The web client to intercept the clicks in the deep links to show the respective view:<br> - Case product: the link is pdv::http://... - Case catalog: the
      * link is catalog::http://... - Case campaign: the link is campaign::http://...
      */
-    private WebViewClient mInnerShopWebClient = new WebViewClient() {
+    private final WebViewClient mInnerShopWebClient = new WebViewClient() {
 
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
@@ -350,6 +328,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             Print.i(TAG, "ON PAGE FINISHED: " + url);
         }
 
+        @SuppressWarnings("deprecation")
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             super.onReceivedError(view, errorCode, description, failingUrl);
@@ -373,86 +352,35 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      * @param link The deep link
      */
     private void processDeepLink(String link) {
-
-        TargetHelper targetHelper = new TargetHelper(link);
-
-        // Target
-        String target = targetHelper.getTarget();
-        // Link
-        String url = targetHelper.getTargetValue();
-
-        // Validate deep link
-        if (TextUtils.isNotEmpty(target) && TextUtils.isNotEmpty(url)) {
-
-            // Case pdv
-            if (TextUtils.equals(TargetHelper.TARGET_TYPE_PDV, target)) {
-                gotoProduct(url);
-            }
-            // Case catalog
-            else if (TextUtils.equals(TargetHelper.TARGET_TYPE_CATALOG, target)) {
-                gotoCatalog(url);
-            }
-            // Case campaign
-            else if (TextUtils.equals(TargetHelper.TARGET_TYPE_CAMPAIGN, target)) {
-                gotoCampaign(url);
-            }
-            // Case unknown
-            else {
-                Print.w(TAG, "WARNING UNKNOWN TARGET: " + target + " " + url);
-            }
+        // Parse target link
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(mTitle)
+                .setOrigin(mGroupType)
+                .retainBackStackEntries()
+                .run();
+        if(!result) {
+            showUnexpectedErrorWarning();
         }
     }
 
     /**
      * Goto Product.
-     *
-     * @param url The product url
      */
-    private void gotoProduct(String url) {
-        Print.i(TAG, "PDV: " + url);
-        // Validate sku TODO: SHOULD RECEIVE SKU
-        String sku = RestUrlUtils.getQueryValue(url, GetProductHelper.SKU_TAG);
-        if (TextUtils.isNotEmpty(sku)) {
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
-        }
-    }
-
-    /**
-     * Goto Catalog.
-     *
-     * @param url The catalog url
-     */
-    private void gotoCatalog(String url) {
-        Print.i(TAG, "CATALOG: " + url);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
-        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Goto Campaign.
-     *
-     * @param url The campaign url
-     */
-    private void gotoCampaign(String url) {
-        Print.i(TAG, "CAMPAIGN: " + url);
-        Bundle bundle = new Bundle();
-        ArrayList<TeaserCampaign> teaserCampaigns = new ArrayList<>();
-        TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(mTitle);
-        campaign.setUrl(url);
-        teaserCampaigns.add(campaign);
-        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, teaserCampaigns);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
-        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
+    private void gotoProduct(View view) {
+        // Get title
+        String title = (String) view.getTag(R.id.target_title);
+        // Get target link
+        @TargetLink.Type String link = (String) view.getTag(R.id.target_link);
+        // Get origin id
+        int id = (int) view.getTag(R.id.target_teaser_origin);
+        // Get teaser group type
+        TeaserGroupType origin = TeaserGroupType.values()[id];
+        // Parse target link
+        new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(title)
+                .setOrigin(origin)
+                .retainBackStackEntries()
+                .run();
     }
 
     /**
@@ -469,7 +397,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             return;
         }
         // Get static page
-        StaticPage mShopPage = (StaticPage) baseResponse.getMetadata().getData();
+        StaticPage mShopPage = (StaticPage) baseResponse.getContentData();
         //  Case valid success response
         if (mShopPage != null) {
             onLoadShopData(mShopPage);
@@ -502,4 +430,5 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             showContinueShopping();
         }
     }
+
 }

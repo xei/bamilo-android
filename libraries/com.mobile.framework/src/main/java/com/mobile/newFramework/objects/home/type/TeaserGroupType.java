@@ -10,6 +10,7 @@ public enum TeaserGroupType {
 
     MAIN_TEASERS("main_teasers"),
     SMALL_TEASERS("small_teasers"),
+    FORM_NEWSLETTER("form_newsletter"),
     CAMPAIGNS("campaigns"),
     SHOP_TEASERS("shop_teasers"),
     BRAND_TEASERS("brand_teasers"),
@@ -37,17 +38,6 @@ public enum TeaserGroupType {
         mType = type;
         mPosition = -1;
     }
-
-//    /**
-//     * Constructor
-//     *
-//     * @param type The group key
-//     * @param position The list position of the item that was clicked, for tracking purpose
-//     */
-//    TeaserGroupType(String type, int position) {
-//        mType = type;
-//        mPosition = -1;
-//    }
 
     /**
      * Get the group key

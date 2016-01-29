@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.checkout.GetOrderStatusHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -72,10 +74,10 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
      */
     public OrderStatusFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
+                NavigationAction.MY_ORDERS,
                 R.layout.order_status_fragment,
                 R.string.order_status_label,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     @Override
@@ -195,7 +197,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     private void showAddress(@NonNull ViewGroup view, @Nullable String title, @Nullable Address address) {
         if (address != null) {
             ((TextView) view.findViewById(R.id.order_status_address_item_title)).setText(title);
-            String name = getString(R.string.first_and_second, address.getFirstName(), address.getLastName());
+            String name = getString(R.string.first_and_second_placeholders, address.getFirstName(), address.getLastName());
             ((TextView) view.findViewById(R.id.order_status_address_item_name)).setText(name);
             ((TextView) view.findViewById(R.id.order_status_address_item_street)).setText(address.getAddress());
             ((TextView) view.findViewById(R.id.order_status_address_item_region)).setText(address.getCity());
@@ -226,7 +228,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 // Set brand
                 holder.brand.setText(item.getBrand());
                 // Set quantity
-                holder.quantity.setText(getString(R.string.quantity, item.getQuantity()));
+                holder.quantity.setText(getString(R.string.qty_placeholder, item.getQuantity()));
                 // Set price
                 ProductUtils.setPriceRules(item, holder.price, holder.discount);
                 // Set delivery
@@ -237,6 +239,9 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 // Set reorder button
                 holder.reorder.setTag(R.id.target_simple_sku, item.getSku());
                 holder.reorder.setOnClickListener(this);
+                //View set tag
+                holder.itemView.setTag(R.id.target_simple_sku, item.getSku());
+                holder.itemView.setOnClickListener(this);
                 // Add to parent
                 group.addView(holder.itemView);
             }
@@ -251,9 +256,27 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     public void onClick(View view) {
         // Case reorder
         if(view.getId() == R.id.order_status_item_button_reorder)  onClickReOrder(view);
+        //case order item
+        else if(view.getId() == R.id.order_list_item)  goToProductDetails(view);
         // Case default
         else super.onClick(view);
     }
+
+
+
+/**
+ * Go to PDV detail of the order item
+ * */
+    private void goToProductDetails(View view){
+        String sku = (String) view.getTag(R.id.target_simple_sku);
+        Print.d(TAG, "ON CLICK PRODUCT " + sku);
+        // Create bundle
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
+        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+    }
+
 
     private void onClickReOrder(View view) {
         // Get sku from view
@@ -279,7 +302,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     }
 
     private void triggerOrder(String orderNr) {
-        EventTask task = isNestedFragment ? EventTask.SMALL_TASK : EventTask.NORMAL_TASK;
+        EventTask task = isNestedFragment ? EventTask.ACTION_TASK : EventTask.NORMAL_TASK;
         triggerContentEvent(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNr, task), this);
     }
 
@@ -302,11 +325,10 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                showAddToCartCompleteMessage(baseResponse);
                 break;
             case TRACK_ORDER_EVENT:
                 // Get order status
-                OrderStatus order = (OrderStatus) baseResponse.getMetadata().getData();
+                OrderStatus order = (OrderStatus) baseResponse.getContentData();
                 if (order != null) {
                     showOrderStatus(order);
                 } else {
@@ -334,7 +356,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 hideActivityProgress();
-                showInfoAddToShoppingCartOOS();
                 break;
             case TRACK_ORDER_EVENT:
                 showFragmentErrorRetry();

@@ -17,7 +17,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.account.GetNewslettersFormHelper;
 import com.mobile.helpers.account.SubscribeNewslettersHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.NewsletterOption;
@@ -25,13 +24,12 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -73,10 +71,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     public MyAccountEmailNotificationFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccountEmailNotification,
+                NavigationAction.MY_ACCOUNT_EMAIL_NOTIFICATION,
                 R.layout.my_account_email_notification_fragment,
                 R.string.myaccount_email_notifications,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -236,12 +234,10 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /**
      * Generate the newsletter option and add it to container
      */
-    private void generateNewsletterOptions(ArrayList<NewsletterOption> newsletterOptions,
-            LinearLayout newsletterList) {
+    private void generateNewsletterOptions(ArrayList<NewsletterOption> newsletterOptions, LinearLayout newsletterList) {
         for (int i = 0; i < newsletterOptions.size(); i++) {
             View view = mInflater.inflate(R.layout.simple_email_notification_option, newsletterList, false);
             CheckBox checkBox = (CheckBox) view.findViewById(R.id.newsletter_option);
-
             checkBox.setTag("" + i);
             checkBox.setText(newsletterOptions.get(i).label);
             checkBox.setChecked(newsletterOptions.get(i).isSubscrided);
@@ -317,7 +313,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
                 values.put(dummyKey, "");
             }
 
-            triggerSubscribeNewsletters(values);
+            triggerSubscribeNewsletters(mNewslettersForm.getAction(), values);
             // Tracking subscritption
             TrackerDelegator.trackNewsletterSubscription(isSubscribed, GTMValues.MYACCOUNT);
         } catch (NullPointerException e) {
@@ -332,11 +328,9 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /**
      * Trigger to subscribe newsletters
      */
-    private void triggerSubscribeNewsletters(ContentValues values) {
+    private void triggerSubscribeNewsletters(String action, ContentValues values) {
         Print.i(TAG, "TRIGGER: SUBSCRIBE");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new SubscribeNewslettersHelper(), bundle, this);
+        triggerContentEvent(new SubscribeNewslettersHelper(), SubscribeNewslettersHelper.createBundle(action, values), this);
     }
 
     /**
@@ -361,23 +355,23 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
     /**
      * Filter the success response
      */
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT");
         EventType eventType = baseResponse.getEventType();
 
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
 
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
             Print.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
-            // Get the form
             // Save the form
-            mNewslettersForm = (Form)baseResponse.getMetadata().getData();
+            mNewslettersForm = (Form)baseResponse.getContentData();
             // Clean options
             mNewsletterOptions = null;
             // Show the form
@@ -386,40 +380,37 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         case SUBSCRIBE_NEWSLETTERS_EVENT:
             Print.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
             // Show toast
-            Toast.makeText(getBaseActivity(), getString(R.string.newsletter_saved_message), Toast.LENGTH_LONG).show();
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.newsletter_saved_message));
             // Goto back
             getBaseActivity().onBackPressed();
             break;
         default:
             break;
         }
-
-        return true;
     }
 
     /**
      * Filter the error response
      */
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
         EventType eventType = baseResponse.getEventType();
-
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
+            return;
         }
-
         // Generic error
         if (super.handleErrorEvent(baseResponse)) {
             Print.d(TAG, "BASE FRAGMENT HANDLE ERROR EVENT");
-            return true;
+            return;
         }
 
         showFragmentContentContainer();
 
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
+        int errorCode = baseResponse.getError().getCode();
+        Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         switch (eventType) {
         case GET_NEWSLETTERS_FORM_EVENT:
             Print.d(TAG, "RECEIVED GET_NEWSLETTERS_FORM_EVENT");
@@ -427,13 +418,11 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
             break;
         case SUBSCRIBE_NEWSLETTERS_EVENT:
             Print.d(TAG, "RECEIVED SUBSCRIBE_NEWSLETTERS_EVENT");
-            Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
             break;
         default:
             break;
         }
-
-        return false;
     }
 
     /**
@@ -443,30 +432,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
      */
     private void goBackWarningUser() {
         getBaseActivity().onBackPressed();
-        Toast.makeText(getBaseActivity(), getString(R.string.error_please_try_again), Toast.LENGTH_LONG).show();
-    }
-
-    /*
-     * ########### RESPONSE LISTENER ###########
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.interfaces.IResponseCallback#onRequestError(android.os.Bundle)
-     */
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        onErrorEvent(baseResponse);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.mobile.interfaces.IResponseCallback#onRequestComplete(android.os.Bundle )
-     */
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
     }
 
     /*

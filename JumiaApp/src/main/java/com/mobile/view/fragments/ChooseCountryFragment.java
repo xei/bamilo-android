@@ -15,7 +15,6 @@ import com.mobile.controllers.CountryAdapter;
 import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.CountriesConfigsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
@@ -72,10 +71,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
      */
     public ChooseCountryFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Country,
+                NavigationAction.COUNTRY,
                 R.layout.change_country,
                 ShopSelector.getShopId() != null ? R.string.nav_country : IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -116,6 +115,10 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             // Get and show new available countries
             isChangeCountry = true;
             triggerGetAvailableCountries();
+            // Remove the JUMIA icon when is only for change country
+            if (getBaseActivity().getSupportActionBar() != null)
+                getBaseActivity().getSupportActionBar().setCustomView(null);
+
         } else {
             // Show available countries from memory/database, loaded in splash screen.
             isChangeCountry = false;
@@ -315,7 +318,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
              * Save the Selected Country Configs
              * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
              */
-            Print.i(TAG, "code1DarwinComponent : selected : " + country.getCountryName());
+            //Print.i(TAG, "code1DarwinComponent : selected : " + country.getCountryName());
             editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
             editor.apply();
             // Clean memory
@@ -393,7 +396,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             case GET_GLOBAL_CONFIGURATIONS:
                 Print.d(TAG, "RECEIVED GET_GLOBAL_CONFIGURATIONS");
                 // Get countries
-                JumiaApplication.INSTANCE.countriesAvailable = (AvailableCountries) baseResponse.getMetadata().getData();
+                JumiaApplication.INSTANCE.countriesAvailable = (AvailableCountries) baseResponse.getContentData();
                 // Show countries
                 showAvailableCountries();
                 showFragmentContentContainer();
@@ -417,7 +420,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
         }
         // Get event type and error type
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
         
         if(super.handleErrorEvent(baseResponse)) return;

@@ -3,20 +3,18 @@ package com.mobile.view.fragments;
 import android.os.Bundle;
 import android.view.View;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.newFramework.ErrorCode;
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
+import com.mobile.utils.ui.UIUtils;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
@@ -44,9 +42,10 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
 
     public MyAccountEditAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
+                NavigationAction.MY_ACCOUNT,
                 R.string.edit_address,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT,
+                ConstantsCheckout.NO_CHECKOUT);
     }
 
     @Override
@@ -57,33 +56,28 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        View orderSummaryLayout = view.findViewById(super.ORDER_SUMMARY_CONTAINER);
-        if(orderSummaryLayout != null){
-            orderSummaryLayout.setVisibility(View.GONE);
-        }
-
+        // Hide order summary
+        UIUtils.showOrHideViews(View.GONE, view.findViewById(super.ORDER_SUMMARY_CONTAINER));
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        initializeFormData();
+    }
 
+    private void initializeFormData() {
         // Get and show form
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
-            triggerInitForm();
-        } else if(mFormResponse != null && mRegions != null){
+        if(mFormResponse != null && mRegions != null){
             loadEditAddressForm(mFormResponse);
         } else {
             triggerEditAddressForm();
         }
-
     }
 
     @Override
     protected void onClickRetryButton() {
-        //TODO retry error when this method has access to eventType
-        triggerInitForm();
+        initializeFormData();
     }
 
     protected void onGetEditAddressFormErrorEvent(BaseResponse baseResponse){
@@ -102,20 +96,18 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
     }
 
     protected void onEditAddressErrorEvent(BaseResponse baseResponse){
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            @SuppressWarnings("unchecked")
-            Map<String, List<String>> errors = baseResponse.getErrorMessages();
-            showErrorDialog(errors);
+            showFormValidateMessages(mEditFormGenerator, baseResponse, EventType.EDIT_ADDRESS_EVENT);
             showFragmentContentContainer();
         } else {
-            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode.name());
+            Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);
             onErrorOccurred();
         }
     }
 
     private void onErrorOccurred(){
-        Toast.makeText(getBaseActivity(), getResources().getString(R.string.error_please_try_again), Toast.LENGTH_SHORT).show();
         getBaseActivity().onBackPressed();
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
     }
 }

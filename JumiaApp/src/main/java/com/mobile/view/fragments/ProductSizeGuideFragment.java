@@ -9,13 +9,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.mobile.components._unused_.dialogs.WizardPreferences;
+import com.mobile.components._unused_.dialogs.WizardPreferences.WizardType;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.utils.NetworkConnectivity;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.dialogfragments.WizardPreferences;
-import com.mobile.utils.dialogfragments.WizardPreferences.WizardType;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.imageloader.RocketImageLoader.RocketImageLoaderListener;
 import com.mobile.utils.photoview.PhotoView;
@@ -54,10 +54,10 @@ public class ProductSizeGuideFragment extends BaseFragment {
      */
     public ProductSizeGuideFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Product,
+                NavigationAction.PRODUCT,
                 R.layout.product_size_guide_main,
                 R.string.size_guide_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -280,7 +280,7 @@ public class ProductSizeGuideFragment extends BaseFragment {
     @Override
     protected void onClickRetryButton(View view) {
         super.onClickRetryButton(view);
-        showSizeGuide(mImageView, mSizeGuideUrl);
+        onClickContinueButton();
     }
 
 }

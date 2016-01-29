@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.os.Bundle;
@@ -11,17 +8,16 @@ import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 
@@ -46,9 +42,9 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
      */
     public CheckoutEditAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.string.checkout_label,
-                KeyboardState.ADJUST_CONTENT,
+                ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_BILLING);
     }
 
@@ -71,9 +67,7 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
 
     private void initializeFormData() {
         // Get and show form
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().isEmpty()){
-            triggerInitForm();
-        } else if(mFormResponse != null && orderSummary != null && mRegions != null){
+        if(mFormResponse != null && orderSummary != null && mRegions != null){
             loadEditAddressForm(mFormResponse);
         } else {
             triggerEditAddressForm();
@@ -115,11 +109,9 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
 
     protected void onEditAddressErrorEvent(BaseResponse baseResponse){
         super.onEditAddressErrorEvent(baseResponse);
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            @SuppressWarnings("unchecked")
-            Map<String, List<String>> errors = baseResponse.getErrorMessages();
-            showErrorDialog(errors);
+            showFormValidateMessages(mEditFormGenerator, baseResponse, EventType.EDIT_ADDRESS_EVENT);
         } else {
             Print.w(TAG, "RECEIVED GET_CITIES_EVENT: " + errorCode);
             super.showUnexpectedErrorWarning();

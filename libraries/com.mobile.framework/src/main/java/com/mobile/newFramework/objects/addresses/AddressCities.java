@@ -38,7 +38,7 @@ public class AddressCities extends ArrayList<AddressCity> implements IJSONSerial
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		// For each item
-		JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+		JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.DATA);
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = jsonArray.getJSONObject(i);
 			add(new AddressCity(json));
@@ -57,7 +57,7 @@ public class AddressCities extends ArrayList<AddressCity> implements IJSONSerial
 	}
 
 	@Override
-	public RequiredJson getRequiredJson() {
+	public int getRequiredJson() {
 		return RequiredJson.METADATA;
 	}
 

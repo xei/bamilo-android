@@ -32,20 +32,20 @@ import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.products.GetReviewsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.product.ProductRatingPage;
 import com.mobile.newFramework.objects.product.ProductReviewComment;
 import com.mobile.newFramework.objects.product.RatingStar;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -54,7 +54,7 @@ import java.util.ArrayList;
  * @author sergiopereira
  * @modified manuelsilva
  */
-public class ReviewsFragment extends BaseFragment {
+public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = ReviewsFragment.class.getSimpleName();
 
@@ -207,7 +207,7 @@ public class ReviewsFragment extends BaseFragment {
      */
     private void fillAverageRatingData(ProductRatingPage productRatingPage) {
         ArrayList<RatingStar> ratingTypes = productRatingPage.getRatingTypes();
-        int basedOn = productRatingPage.getmBasedOn();
+        int maxStarSize = productRatingPage.getMaxStarSize();
 
         txAverageRatings = (TextView) mRatingsBoard.findViewById(R.id.averageValue);
 
@@ -218,14 +218,14 @@ public class ReviewsFragment extends BaseFragment {
             averageStar = String.valueOf(ratingTypes.get(0).getRating());
 
 
-        String average = String.valueOf(averageStar) + " / " + String.valueOf(basedOn);
+        String average = String.valueOf(averageStar) + " / " + String.valueOf(maxStarSize);
 
         if (ShopSelector.isRtl()) {
 
             if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                average = String.valueOf(basedOn) + " \\ " + String.valueOf(averageStar);
+                average = String.valueOf(maxStarSize) + " \\ " + String.valueOf(averageStar);
             } else {
-                average = String.valueOf(averageStar) + " \\ " + String.valueOf(basedOn);
+                average = String.valueOf(averageStar) + " \\ " + String.valueOf(maxStarSize);
                 txAverageRatings.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
             }
         }
@@ -236,7 +236,7 @@ public class ReviewsFragment extends BaseFragment {
         TextView txTotalCustomersMessage = (TextView) mRatingsBoard.findViewById(R.id.badgeValue);
         String from = resources.getString(R.string.from_avg_rat);
         String customers = resources.getString(R.string.from_avg_cus);
-        txTotalCustomersMessage.setText(from + " " + selectedProduct.getTotalRatings() + " " + customers);
+        txTotalCustomersMessage.setText(from + " " + productRatingPage.getBasedOn() + " " + customers);
 
     }
 
@@ -261,7 +261,7 @@ public class ReviewsFragment extends BaseFragment {
                 values.put(GetProductHelper.SKU_TAG, mProductSku);
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-                triggerContentEvent(new GetProductHelper(), bundle, mCallBack);
+                triggerContentEvent(new GetProductHelper(), bundle, this);
 
             } else {
                 showFragmentErrorRetry();
@@ -403,102 +403,7 @@ public class ReviewsFragment extends BaseFragment {
 
     }
 
-    protected void onSuccessEvent(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            if(eventType == EventType.GET_PRODUCT_REVIEWS){
-                pageNumber--;
-            }
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
 
-        switch (eventType) {
-            case GET_PRODUCT_REVIEWS:
-                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
-
-                // Validate the current rating page
-                if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
-
-                if (productRatingPage.getCurrentPage() != 0 && productRatingPage.getTotalPages() != 0) {
-                    pageNumber = productRatingPage.getCurrentPage();
-                    totalPages = productRatingPage.getTotalPages();
-                }
-                //fill header after getting RatingPage object
-                fillAverageRatingData(productRatingPage);
-                //added: fill progress bars
-                setProgressRating(selectedProduct.getTotalRatings());
-                // Append the new page to the current
-                displayReviews(productRatingPage, true);
-                showFragmentContentContainer();
-                break;
-            case GET_PRODUCT_DETAIL:
-                if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
-                    Toast.makeText(getActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-                    getActivity().onBackPressed();
-                    return;
-                } else {
-                    selectedProduct = (ProductComplete) baseResponse.getMetadata().getData();
-                    setAppContentLayout();
-                    // Waiting for the fragment comunication
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            showFragmentContentContainer();
-                        }
-                    }, 300);
-                }
-
-            default:
-                break;
-        }
-    }
-
-    protected void onErrorEvent(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-
-        if(eventType == EventType.GET_PRODUCT_REVIEWS){
-            pageNumber--;
-        }
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        // Generic errors
-        if (super.handleErrorEvent(baseResponse)) return;
-
-        // Hide Loading from triggers
-        showFragmentContentContainer();
-
-        switch (eventType) {
-            case GET_PRODUCT_REVIEWS:
-                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getMetadata().getData();
-
-                // Validate current rating page
-                if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
-                // Append the new page to the current
-                displayReviews(productRatingPage, true);
-                break;
-            case GET_PRODUCT_DETAIL:
-                if (!errorCode.isNetworkError()) {
-                    Toast.makeText(getBaseActivity(), getString(R.string.product_could_not_retrieved), Toast.LENGTH_LONG).show();
-
-                    try {
-                        getBaseActivity().onBackPressed();
-                    } catch (IllegalStateException e) {
-                        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-                    }
-                    return;
-                }
-            default:
-                break;
-        }
-    }
 
 
     private void displayReviews(ProductRatingPage productRatingPage, boolean isFromApi) {
@@ -600,7 +505,7 @@ public class ReviewsFragment extends BaseFragment {
 
                             @Override
                             public void onClick(View v) {
-                                Print.d(TAG, "review clicked: username = " + userName.getText().toString());
+                                Print.d(TAG, "review clicked: username = " + userName.getText());
                                 goToReview(review, stringCor[0]);
                             }
                         });
@@ -661,7 +566,7 @@ public class ReviewsFragment extends BaseFragment {
      */
     private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar, int average) {
 
-
+        int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         int starsLayout = R.layout.reviews_fragment_rating_samlltype_item;
 
         if (isBigStar)
@@ -685,7 +590,7 @@ public class ReviewsFragment extends BaseFragment {
 
                 typeLine.setOrientation(LinearLayout.HORIZONTAL);
                 //#RTL
-                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+
                 if (ShopSelector.isRtl() && currentapiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
                     typeLine.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
                 }
@@ -702,8 +607,12 @@ public class ReviewsFragment extends BaseFragment {
 
                         final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
                         final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
+                        if (ShopSelector.isRtl() && currentapiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            userRating.setRating(userRating.getMax() - (float) ratingOptionArray.get(j).getRating());
+                        } else {
+                            userRating.setRating((float) ratingOptionArray.get(j).getRating());
+                        }
 
-                        userRating.setRating((float) ratingOptionArray.get(j).getRating());
                         if (numLines > 1)    //just show title if has more than 1 rating type
                             ratingTitle.setText(ratingOptionArray.get(j).getTitle());
                         else
@@ -735,7 +644,11 @@ public class ReviewsFragment extends BaseFragment {
 
             final TextView ratingTitle = (TextView) rateTypeView.findViewById(R.id.title_type);
             final RatingBar userRating = (RatingBar) rateTypeView.findViewById(R.id.rating_value);
-
+            if (ShopSelector.isRtl() && currentapiVersion < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                userRating.setRating(userRating.getMax() - average);
+            } else {
+                userRating.setRating(average);
+            }
             userRating.setRating(average);
             ratingTitle.setVisibility(View.GONE);
 
@@ -752,7 +665,6 @@ public class ReviewsFragment extends BaseFragment {
      */
     private void setProgressRating(int maxTotal) {
         //get progress bars and value numbers
-
         progressBarFive = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFive);
         progressBarFour = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFour);
         progressBarThree = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarThree);
@@ -768,22 +680,12 @@ public class ReviewsFragment extends BaseFragment {
 
 
         //if is rtl, the progress bars shows up with inverted progression
-        if (ShopSelector.isRtl() && android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            progressBarFive.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(FIVE_STAR_PROGRESS)));
-            progressBarFive.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
-            progressBarFour.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(FOUR_STAR_PROGRESS)));
-            progressBarFour.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
-            progressBarThree.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(THREE_STAR_PROGRESS)));
-            progressBarThree.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
-            progressBarTwo.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(TWO_STAR_PROGRESS)));
-            progressBarTwo.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
-            progressBarOne.setProgress(maxTotal - Integer.parseInt(mProductRatingPage.getByStarValue(ONE_STAR_PROGRESS)));
-            progressBarOne.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
-
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
+            setProgressForRTLPreJelly(progressBarFive, Integer.parseInt(mProductRatingPage.getByStarValue(FIVE_STAR_PROGRESS)), maxTotal);
+            setProgressForRTLPreJelly(progressBarFour, Integer.parseInt(mProductRatingPage.getByStarValue(FOUR_STAR_PROGRESS)), maxTotal);
+            setProgressForRTLPreJelly(progressBarThree, Integer.parseInt(mProductRatingPage.getByStarValue(THREE_STAR_PROGRESS)), maxTotal);
+            setProgressForRTLPreJelly(progressBarTwo, Integer.parseInt(mProductRatingPage.getByStarValue(TWO_STAR_PROGRESS)), maxTotal);
+            setProgressForRTLPreJelly(progressBarOne, Integer.parseInt(mProductRatingPage.getByStarValue(ONE_STAR_PROGRESS)), maxTotal);
 
         } else {
             progressBarFive.setProgress(Integer.parseInt(mProductRatingPage.getByStarValue(FIVE_STAR_PROGRESS)));
@@ -812,26 +714,29 @@ public class ReviewsFragment extends BaseFragment {
 
     }
 
+    private void setProgressForRTLPreJelly(ProgressBar progressBar, int progress, int maxTotal){
+        if( progress == 0 && maxTotal == 0){
+            progressBar.setProgress(0);
+            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress));
+        } else {
+            progressBar.setProgressDrawable(getResources().getDrawable(R.drawable.ratings_progress_inverted));
+            progressBar.setProgress(maxTotal - progress);
+        }
+
+    }
+
     /**
      * TRIGGERS
      *
      * @author sergiopereira
      */
     private void triggerReviews(String sku, int pageNumber) {
-        ContentValues values = new ContentValues();
 
-        values.put(GetReviewsHelper.SKU, sku);
-        values.put(GetReviewsHelper.PAGE, pageNumber);
-        values.put(GetReviewsHelper.PER_PAGE, REVIEWS_PER_PAGE);
-        values.put(GetReviewsHelper.REST_PARAM_RATING, true);
-
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         // Show loading layout for first time
         if (pageNumber == 1) {
-            triggerContentEvent(new GetReviewsHelper(), bundle, mCallBack);
+            triggerContentEvent(new GetReviewsHelper(), GetReviewsHelper.createBundle(sku,pageNumber), this);
         } else {
-            triggerContentEventNoLoading(new GetReviewsHelper(), bundle, mCallBack);
+            triggerContentEventNoLoading(new GetReviewsHelper(), GetReviewsHelper.createBundle(sku,pageNumber), this);
         }
     }
 
@@ -840,18 +745,8 @@ public class ReviewsFragment extends BaseFragment {
      *
      * @author sergiopereira
      */
-    IResponseCallback mCallBack = new IResponseCallback() {
 
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-            onErrorEvent(baseResponse);
-        }
 
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-            onSuccessEvent(baseResponse);
-        }
-    };
 
     private SharedPreferences getSharedPref() {
         if (sharedPrefs == null) {
@@ -900,5 +795,113 @@ public class ReviewsFragment extends BaseFragment {
             writeReview();
         }
 
+    }
+
+
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        EventType eventType = baseResponse.getEventType();
+        Print.i(TAG, "ON SUCCESS EVENT type= "+ eventType);
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            if(eventType == EventType.GET_PRODUCT_REVIEWS){
+                pageNumber--;
+            }
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+
+
+        switch (eventType) {
+            case GET_PRODUCT_REVIEWS:
+                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getContentData();
+
+                // Validate the current rating page
+                if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
+
+                if (productRatingPage.getCurrentPage() != 0 && productRatingPage.getTotalPages() != 0) {
+                    pageNumber = productRatingPage.getCurrentPage();
+                    totalPages = productRatingPage.getTotalPages();
+                }
+                //fill header after getting RatingPage object
+                fillAverageRatingData(productRatingPage);
+                //added: fill progress bars
+                setProgressRating(selectedProduct.getTotalRatings());
+                // Append the new page to the current
+                displayReviews(productRatingPage, true);
+                showFragmentContentContainer();
+                break;
+            case GET_PRODUCT_DETAIL:
+                if (((ProductComplete) baseResponse.getMetadata().getData()).getName() == null) {
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+                    getActivity().onBackPressed();
+                    return;
+                } else {
+                    selectedProduct = (ProductComplete) baseResponse.getContentData();
+                    setAppContentLayout();
+                    // Waiting for the fragment comunication
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            showFragmentContentContainer();
+                        }
+                    }, 300);
+                }
+
+            default:
+                break;
+        }
+    }
+
+
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Print.w(TAG, "ON ERROR EVENT");
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Generic errors
+        if (super.handleErrorEvent(baseResponse)) return;
+
+        // Hide Loading from triggers
+        showFragmentContentContainer();
+
+        EventType eventType = baseResponse.getEventType();
+        int errorCode = baseResponse.getError().getCode();
+        Print.d(TAG, "onErrorEvent: type = " + eventType + " code = " + errorCode);
+
+        if(eventType == EventType.GET_PRODUCT_REVIEWS){
+            pageNumber--;
+        }
+
+        switch (eventType) {
+            case GET_PRODUCT_REVIEWS:
+                ProductRatingPage productRatingPage = (ProductRatingPage) baseResponse.getContentData();
+
+                // Validate current rating page
+                if (mProductRatingPage == null) mProductRatingPage = productRatingPage;
+                // Append the new page to the current
+                displayReviews(productRatingPage, true);
+                break;
+            case GET_PRODUCT_DETAIL:
+                if (!ErrorCode.isNetworkError(errorCode)) {
+                    getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
+
+                    try {
+                        getBaseActivity().onBackPressed();
+                    } catch (IllegalStateException e) {
+                        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+                    }
+                    return;
+                }
+            default:
+                break;
+        }
     }
 }

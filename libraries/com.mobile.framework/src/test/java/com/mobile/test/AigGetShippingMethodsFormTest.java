@@ -13,12 +13,12 @@ public class AigGetShippingMethodsFormTest extends AigTestCase {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_SHIPPING_METHODS_EVENT;
+        return EventType.GET_MULTI_STEP_SHIPPING;
     }
 
     @Override
     public String getAigInterfaceName() {
-        return AigApiInterface.getShippingMethodsForm;
+        return AigApiInterface.getMultiStepShipping;
     }
 
     @Override

@@ -13,9 +13,9 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.ui.ToastManager;
 import com.mobile.utils.ui.VariationProductsGridAdapter;
 import com.mobile.utils.ui.VariationProductsGridView;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -48,10 +48,10 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
      */
     public VariationsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Variations,
+                NavigationAction.VARIATIONS,
                 R.layout.product_list_page,
                 R.string.variations,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
 
@@ -62,7 +62,7 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ARGUMENTS: " + arguments.toString());
+            Print.i(TAG, "ARGUMENTS: " + arguments);
             mProductComplete = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
         }
 
@@ -86,14 +86,6 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         mGridVariations.setHasFixedSize(true);
     }
 
-
-
-
-    @Override
-    public void onHeaderClick(String targetType, String url, String title) {
-
-    }
-
     @Override
     public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
         // Get item
@@ -102,19 +94,26 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         if (product != null) {
             // Show product
             Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, product.getSKU());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, product.getSKU());
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             // Goto PDV
             getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
-            ToastManager.show(getBaseActivity(), ToastManager.ERROR_OCCURRED);
+            getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_occured));
         }
     }
 
-    @Override
-    public void onWishListClick(View view, RecyclerView.Adapter<?> adapter, int position) {
 
+
+    @Override
+    public void onViewHolderItemClick(View view,RecyclerView.Adapter<?> adapter, int position) {
+
+    }
+
+    @Override
+    public void onHeaderClick(String target, String title) {
+        // ...
     }
 }

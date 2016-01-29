@@ -83,9 +83,10 @@ public class ImageUrls  implements Parcelable, IJSONSerializable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
+
 
     @Override
     public int describeContents() {

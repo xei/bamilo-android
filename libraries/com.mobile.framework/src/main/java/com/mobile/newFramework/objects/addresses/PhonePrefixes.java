@@ -32,7 +32,7 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // For each item
-        JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.DATA);
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject json = jsonArray.getJSONObject(i);
             // Create
@@ -55,12 +55,8 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
         return null;
     }
 
-    /**
-     * ############### IJSON ###############
-     */
-
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 
@@ -70,8 +66,6 @@ public class PhonePrefixes extends ArrayList<PhonePrefix> implements IJSONSerial
 
     /**
      * return a prefix position by knowing it's value
-     * @param value
-     * @return
      */
     public int getPositionFromValue(String value) {
         if(TextUtils.isNotEmpty(value)){

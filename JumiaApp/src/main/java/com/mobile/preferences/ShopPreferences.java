@@ -85,7 +85,7 @@ public class ShopPreferences {
          * KEY_SELECTED_COUNTRY_ID will contain the Country ISO that will be use to identify the selected country al over the App.
          */
         CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition);
-        Print.i(TAG, "code1DarwinComponent : selected : " + countryObject.getCountryName());
+        //Print.i(TAG, "code1DarwinComponent : selected : " + countryObject.getCountryName());
         editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
         CountryPersistentConfigs.writePreferences(editor, countryObject);
         editor.apply();

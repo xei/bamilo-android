@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.objects.configs.Section;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -22,14 +21,14 @@ public class SectionsTablesHelper extends BaseTable {
 	
 	public static final String TABLE_NAME = "section";
 	
-	public static interface Columns {
+	public interface Columns {
 		String ID = "id";
 		String NAME = "name";
 		String MD5 = "md5";
 		String URL = "url";
 	}
-    
-    public static interface Projection {
+
+    public interface Projection {
     	int ID = 0;
     	int NAME = 1;
     	int MD5 = 2;
@@ -41,8 +40,9 @@ public class SectionsTablesHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#getUpgradeType()
      */
     @Override
-    public TableType getUpgradeType() {
-        return TableType.PERSIST;
+	@DarwinDatabaseHelper.UpgradeType
+    public int getUpgradeType() {
+        return DarwinDatabaseHelper.PERSIST;
     }
 
     /*
@@ -59,8 +59,8 @@ public class SectionsTablesHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
      */
     @Override
-    public String create(String table) {
-        return "CREATE TABLE " + table + " (" + 
+    public String create() {
+        return "CREATE TABLE %s (" +
                 Columns.ID +            " INTEGER PRIMARY KEY, " + 
                 Columns.NAME +          " TEXT UNIQUE, " + 
                 Columns.MD5 +           " TEXT, " + 
@@ -137,6 +137,14 @@ public class SectionsTablesHelper extends BaseTable {
 		}
 
 		return sections;
+	}
+
+	/**
+	 *
+	 */
+	public static void deleteConfigurations() {
+		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
+		db.delete(TABLE_NAME, Columns.NAME + " = ? ", new String[]{Section.SECTION_NAME_CONFIGURATIONS});
 	}
     
 }

@@ -1,9 +1,10 @@
 package com.mobile.utils;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,10 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.utils.TextViewUtils;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
@@ -32,10 +34,10 @@ public class CheckoutStepManager {
     
     private static final String TAG = CheckoutStepManager.class.getSimpleName();
 
-    public final static String ADDRESSES_STEP = "createAddress";
-    public final static String BILLING_STEP = "addresses";
-    public final static String SHIPPING_STEP = "shippingMethod";
-    public final static String PAYMENT_STEP = "paymentMethod";
+    public final static String CREATE_ADDRESS_STEP = "createAddress";
+    public final static String ADDRESSES_STEP = "addresses";
+    public final static String SHIPPING_STEP = "shipping";
+    public final static String PAYMENT_STEP = "payment";
     public final static String ORDER_STEP = "finish";
 
     public static final int CHECKOUT_TOTAL_MAX_LINES = 2;
@@ -45,20 +47,22 @@ public class CheckoutStepManager {
      * @param nextStep The next step
      * @return {@link FragmentType}
      */
-    public static FragmentType getNextFragment(String nextStep) {
+    public static FragmentType getNextFragment(@Nullable String nextStep) {
         Print.i(TAG, "NEXT STEP STRING: " + nextStep);
         // Default case
         FragmentType fragmentType = FragmentType.UNKNOWN;
+        // Case not valid next step (null or empty)
+        if(TextUtils.isEmpty(nextStep)) return fragmentType;
         // Create addresses step
-        if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CREATE_ADDRESS;
+        else if (nextStep.equalsIgnoreCase(CREATE_ADDRESS_STEP)) fragmentType = FragmentType.CHECKOUT_CREATE_ADDRESS;
         // Billing and shipping address step
-        else if (nextStep.equalsIgnoreCase(BILLING_STEP)) fragmentType = FragmentType.MY_ADDRESSES;
+        else if (nextStep.equalsIgnoreCase(ADDRESSES_STEP)) fragmentType = FragmentType.CHECKOUT_MY_ADDRESSES;
         // Shipping method step
-        else if (nextStep.equalsIgnoreCase(SHIPPING_STEP)) fragmentType = FragmentType.SHIPPING_METHODS;
+        else if (nextStep.equalsIgnoreCase(SHIPPING_STEP)) fragmentType = FragmentType.CHECKOUT_SHIPPING;
         // Payment method step
-        else if (nextStep.equalsIgnoreCase(PAYMENT_STEP)) fragmentType = FragmentType.PAYMENT_METHODS;
+        else if (nextStep.equalsIgnoreCase(PAYMENT_STEP)) fragmentType = FragmentType.CHECKOUT_PAYMENT;
         // Order step
-        else if (nextStep.equalsIgnoreCase(ORDER_STEP)) fragmentType = FragmentType.MY_ORDER;
+        else if (nextStep.equalsIgnoreCase(ORDER_STEP)) fragmentType = FragmentType.CHECKOUT_FINISH;
         // Return next fragment type
         Print.i(TAG, "NEXT STEP FRAGMENT: " + fragmentType.toString());
         return fragmentType;
@@ -72,12 +76,12 @@ public class CheckoutStepManager {
     public static String[] getAllNativeCheckout() {
         return new String[]{
                 FragmentType.LOGIN.toString(),
-                FragmentType.MY_ADDRESSES.toString(),
-                FragmentType.CREATE_ADDRESS.toString(),
-                FragmentType.EDIT_ADDRESS.toString(),
-                FragmentType.SHIPPING_METHODS.toString(),
-                FragmentType.PAYMENT_METHODS.toString(),
-                FragmentType.MY_ORDER.toString(),
+                FragmentType.CHECKOUT_MY_ADDRESSES.toString(),
+                FragmentType.CHECKOUT_CREATE_ADDRESS.toString(),
+                FragmentType.CHECKOUT_EDIT_ADDRESS.toString(),
+                FragmentType.CHECKOUT_SHIPPING.toString(),
+                FragmentType.CHECKOUT_PAYMENT.toString(),
+                FragmentType.CHECKOUT_FINISH.toString(),
                 FragmentType.CHECKOUT_THANKS.toString()
         };
     }
@@ -99,29 +103,26 @@ public class CheckoutStepManager {
     /**
      * Method used for showing checkout total at checkout steps.
      *
-     * @param view ViewStub or View with TextView (checkout_total_label).
+     * @param view           ViewStub or View with TextView (checkout_total_label).
      * @param purchaseEntity OrderSummary to get total
      */
-    public static void setTotalBar(@NonNull View view, @NonNull PurchaseEntity purchaseEntity){
-        double value = purchaseEntity.getTotal();
-        if(value > 0){
-            Resources resources = view.getResources();
-            final String title = resources.getString(R.string.order_summary_total_label);
-            final String finalValue = CurrencyFormatter.formatCurrency(value).replaceAll("\\s","");
-            final int color1 = resources.getColor(R.color.black);
-            final int color2 = resources.getColor(R.color.black_800);
-            final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
-            titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
-            titleTextView.setText(TextViewUtils.setSpan(title + " ", finalValue, color1, color2));
-            titleTextView.post(new Runnable() {
-                @Override
-                public void run() {
-                    if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
-                        titleTextView.setText(TextViewUtils.setSpan(title + "\n", finalValue, color1, color2));
-                    }
+    public static void setTotalBar(@NonNull View view, @NonNull PurchaseEntity purchaseEntity) {
+        Context context = view.getContext();
+        final String title = context.getString(R.string.order_summary_total_label);
+        final String finalValue = CurrencyFormatter.formatCurrency(purchaseEntity.getTotal());
+        final int color1 = ContextCompat.getColor(context, R.color.black);
+        final int color2 = ContextCompat.getColor(context, R.color.black_800);
+        final AutoResizeTextView titleTextView = ((AutoResizeTextView) view.findViewById(R.id.checkout_total_label));
+        titleTextView.setMaxLines(CHECKOUT_TOTAL_MAX_LINES);
+        titleTextView.setText(UIUtils.setSpan(title + " ", finalValue, color1, color2));
+        titleTextView.post(new Runnable() {
+            @Override
+            public void run() {
+                if (titleTextView.getLineCount() >= CHECKOUT_TOTAL_MAX_LINES) {
+                    titleTextView.setText(UIUtils.setSpan(title + "\n", finalValue, color1, color2));
                 }
-            });
-        }
+            }
+        });
     }
 
     public static void showPriceRules(Context context, ViewGroup priceRulesContainer, HashMap<String, String> priceRules) {
@@ -135,7 +136,7 @@ public class CheckoutStepManager {
                 // Set label
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_label)).setText(key);
                 // Set value
-                String text = String.format(context.getString(R.string.format_discount_value), CurrencyFormatter.formatCurrency(priceRules.get(key)));
+                String text = String.format(context.getString(R.string.placeholder_discount), CurrencyFormatter.formatCurrency(priceRules.get(key)));
                 ((TextView) priceRuleElement.findViewById(R.id.price_rules_value)).setText(text);
                 priceRulesContainer.addView(priceRuleElement);
             }
@@ -153,26 +154,25 @@ public class CheckoutStepManager {
      * @param nextStepFromApi - The next step from Api, used case is in checkout process
      * @author spereira
      */
-    public static void validateLoggedNextStep(BaseActivity activity, boolean isInCheckoutProcess, FragmentType mParentFragmentType, FragmentType nextStepFromParent, FragmentType nextStepFromApi) {
+    public static void validateLoggedNextStep(BaseActivity activity, boolean isInCheckoutProcess, FragmentType mParentFragmentType, FragmentType nextStepFromParent, FragmentType nextStepFromApi, Bundle arguments) {
         // Case next step from api
         if(isInCheckoutProcess) {
             goToCheckoutNextStepFromApi(activity, mParentFragmentType, nextStepFromApi);
         } else {
-            goToNextStepFromParent(activity, nextStepFromParent);
+            goToNextStepFromParent(activity, nextStepFromParent, arguments);
         }
     }
 
     /**
      * Method used to switch the step
      */
-    private static void goToNextStepFromParent(BaseActivity activity, FragmentType nextStepFromParent) {
+    private static void goToNextStepFromParent(BaseActivity activity, FragmentType nextStepFromParent, Bundle arguments) {
         // Validate the next step
-        if (nextStepFromParent != null && nextStepFromParent != FragmentType.UNKNOWN) {
+        if (nextStepFromParent != null && nextStepFromParent != FragmentType.UNKNOWN
+                && nextStepFromParent != FragmentType.WRITE_REVIEW) {
             Print.i(TAG, "NEXT STEP FROM PARENT: " + nextStepFromParent.toString());
             FragmentController.getInstance().popLastEntry(FragmentType.LOGIN.toString());
-            Bundle args = new Bundle();
-            args.putBoolean(TrackerDelegator.LOGIN_KEY, true);
-            activity.onSwitchFragment(nextStepFromParent, args, FragmentController.ADD_TO_BACK_STACK);
+            activity.onSwitchFragment(nextStepFromParent,arguments, FragmentController.ADD_TO_BACK_STACK);
         } else {
             Print.i(TAG, "NEXT STEP FROM PARENT: BACK");
             activity.onBackPressed();
@@ -192,9 +192,9 @@ public class CheckoutStepManager {
             Print.i(TAG, "NEXT STEP FROM API: " + nextStepType.toString());
             // Case comes from MY_ACCOUNT
             if(mParentFragmentType == FragmentType.MY_ACCOUNT) {
-                if(nextStepType == FragmentType.CREATE_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_CREATE_ADDRESS;
-                else if(nextStepType == FragmentType.EDIT_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_EDIT_ADDRESS;
-                else if(nextStepType == FragmentType.MY_ADDRESSES) nextStepType = FragmentType.MY_ACCOUNT_MY_ADDRESSES;
+                if(nextStepType == FragmentType.CHECKOUT_CREATE_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_CREATE_ADDRESS;
+                else if(nextStepType == FragmentType.CHECKOUT_EDIT_ADDRESS) nextStepType = FragmentType.MY_ACCOUNT_EDIT_ADDRESS;
+                else if(nextStepType == FragmentType.CHECKOUT_MY_ADDRESSES) nextStepType = FragmentType.MY_ACCOUNT_MY_ADDRESSES;
             }
             // Clean stack for new native checkout on the back stack (auto login)
             activity.removeAllNativeCheckoutFromBackStack();

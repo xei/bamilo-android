@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.utils.output.Print;
 
 /**
@@ -30,8 +29,9 @@ public class BrandsTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#getType()
      */
     @Override
-    public TableType getUpgradeType() {
-        return TableType.PERSIST;
+    @DarwinDatabaseHelper.UpgradeType
+    public int getUpgradeType() {
+        return DarwinDatabaseHelper.PERSIST;
     }
 
     /*
@@ -48,9 +48,9 @@ public class BrandsTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
      */
     @Override
-    public String create(String tableName) {
+    public String create() {
         return new StringBuilder()
-                .append("CREATE TABLE ").append(tableName)
+                .append("CREATE TABLE %s")
                 .append(" (")
                 .append(Columns.ID).append(" INTEGER PRIMARY KEY, ")
                 .append(Columns.NAME).append(" TEXT, ")
@@ -70,9 +70,9 @@ public class BrandsTableHelper extends BaseTable {
         try {
             // Create query
             String query = new StringBuilder("select ").append(Columns.VIEW_COUNT).append(" from ").append(TABLE_NAME)
-                    .append(" where ").append(Columns.NAME).append(" = '").append(brandName).append("'").toString();
+                    .append(" where ").append(Columns.NAME).append(" = ?").toString();
             Print.i(TAG, "SQL RESULT query :  " + query);
-            Cursor cursor = db.rawQuery(query, null);
+            Cursor cursor = db.rawQuery(query, new String[]{brandName});
 
             int count = 0;
             if (cursor != null && cursor.getCount() > 0) {
@@ -85,12 +85,12 @@ public class BrandsTableHelper extends BaseTable {
                     .append("INSERT OR REPLACE INTO ").append(TABLE_NAME)
                     .append("(" + Columns.NAME + "," + Columns.VIEW_COUNT + ") ")
                     .append("VALUES ( ")
-                    .append("(").append(DatabaseUtils.sqlEscapeString(brandName)).append("), ")
+                    .append("(?), ")
                     .append(count + 1)
                     .append(" )")
                     .toString();
             // Execute
-            db.execSQL(insertOrReplace);
+            db.execSQL(insertOrReplace, new String[]{DatabaseUtils.sqlEscapeString(brandName)});
             Print.i(TAG, "ON INCREASE COUNTER: " + brandName);
         } catch (IllegalStateException | SQLiteException e) {
             Print.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);

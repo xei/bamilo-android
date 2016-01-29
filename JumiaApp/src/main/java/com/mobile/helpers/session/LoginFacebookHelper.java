@@ -23,7 +23,7 @@ import com.mobile.newFramework.utils.output.Print;
  */
 public class LoginFacebookHelper extends SuperBaseHelper {
     
-    private static String TAG = GetLoginFormHelper.class.getSimpleName();
+    private static final String TAG = GetLoginFormHelper.class.getSimpleName();
 
     boolean saveCredentials = true;
 
@@ -34,7 +34,7 @@ public class LoginFacebookHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.SMALL_TASK;
+        return EventTask.ACTION_TASK;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class LoginFacebookHelper extends SuperBaseHelper {
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
         // Save customer
-        CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getMetadata().getData();
+        CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getContentData();
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
         baseResponse.getMetadata().setData(nextStepStruct);
 

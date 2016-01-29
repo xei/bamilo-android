@@ -1,6 +1,7 @@
 package com.mobile.newFramework.objects.catalog.filters;
 
 import android.os.Parcel;
+import android.support.annotation.NonNull;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -35,8 +36,8 @@ public class CatalogRatingFilterOption extends CatalogFilterOption implements Mu
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        val = jsonObject.getString(RestConstants.JSON_VAL_TAG);
-        average = jsonObject.getInt(RestConstants.JSON_RATINGS_AVERAGE_TAG);
+        val = jsonObject.getString(RestConstants.VAL);
+        average = jsonObject.getInt(RestConstants.AVERAGE);
         return super.initialize(jsonObject);
     }
 
@@ -46,8 +47,8 @@ public class CatalogRatingFilterOption extends CatalogFilterOption implements Mu
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     @Override
@@ -56,6 +57,7 @@ public class CatalogRatingFilterOption extends CatalogFilterOption implements Mu
     }
 
     @Override
+    @NonNull
     public String getLabel() {
         return average+"";
     }
@@ -66,6 +68,7 @@ public class CatalogRatingFilterOption extends CatalogFilterOption implements Mu
     }
 
     @Override
+    @NonNull
     public String getVal() {
         return val;
     }

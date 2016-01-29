@@ -1,5 +1,6 @@
 package com.mobile.controllers;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
@@ -22,12 +24,16 @@ import java.util.ArrayList;
  */
 public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapter.WishListProductViewHolder> implements View.OnClickListener {
 
-    private ArrayList<ProductMultiple> products;
-    private OnWishListViewHolderClickListener listener;
+    private final ArrayList<ProductMultiple> products;
+    private final OnWishListViewHolderClickListener listener;
 
-    public WishListGridAdapter(ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
+    private final boolean isTabletInLandscape;
+
+
+    public WishListGridAdapter(Context context, ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
         this.products = products;
         this.listener = listener;
+        this.isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(context);
     }
 
     /**
@@ -40,16 +46,17 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         public TextView price;
         public TextView percentage;
         public TextView brand;
-        public View isNew;
+        public TextView newArrivalBadge;
         public TextView varianceButton;
         public View addToCartButton;
         public View deleteButton;
         public View container;
+        public View vDivider;
 
         public WishListProductViewHolder(View view){
             super(view);
             container = itemView.findViewById(R.id.addabletocart_item_container);
-            isNew = itemView.findViewById(R.id.item_image_is_new);
+            newArrivalBadge = (TextView) itemView.findViewById(R.id.new_arrival_badge);
             image = (ImageView) itemView.findViewById(R.id.item_image);
             name = (TextView) itemView.findViewById(R.id.item_name);
             brand = (TextView) itemView.findViewById(R.id.item_brand);
@@ -59,6 +66,12 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
             varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
             addToCartButton = itemView.findViewById(R.id.button_shop);
             deleteButton = itemView.findViewById(R.id.button_delete);
+            vDivider = itemView.findViewById(R.id.vdivider);
+            if(isTabletInLandscape){
+                vDivider.setVisibility(View.VISIBLE);
+            } else {
+                vDivider.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -76,7 +89,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         // Set brand, name and price
         setTextContent(holder, item);
         // Set variation
-        setVariationContent(holder, item);
+        ProductUtils.setVariationContent(holder.varianceButton, item);
         // Set clickable views
         setClickableViews(position, holder.container, holder.deleteButton, holder.addToCartButton, holder.varianceButton);
     }
@@ -98,25 +111,25 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         }
     }
 
-    /**
-     * Set the variation container
-     *
-     * @author sergiopereira
-     */
-    private void setVariationContent(WishListProductViewHolder prodItem, ProductMultiple product) {
-        // Set simple button
-        if(product.hasMultiSimpleVariations()) {
-            // Set simple value
-            String simpleVariationValue = "...";
-            if(product.hasSelectedSimpleVariation()) {
-                simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
-            }
-            prodItem.varianceButton.setText(simpleVariationValue);
-            prodItem.varianceButton.setVisibility(View.VISIBLE);
-        } else {
-            prodItem.varianceButton.setVisibility(View.INVISIBLE);
-        }
-    }
+//    /**
+//     * Set the variation container
+//     *
+//     * @author sergiopereira
+//     */
+//    private void setVariationContent(WishListProductViewHolder prodItem, ProductMultiple product) {
+//        // Set simple button
+//        if(product.hasMultiSimpleVariations()) {
+//            // Set simple value
+//            String simpleVariationValue = "...";
+//            if(product.hasSelectedSimpleVariation()) {
+//                simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
+//            }
+//            prodItem.varianceButton.setText(simpleVariationValue);
+//            prodItem.varianceButton.setVisibility(View.VISIBLE);
+//        } else {
+//            prodItem.varianceButton.setVisibility(View.INVISIBLE);
+//        }
+//    }
 
     /**
      * Set the image view
@@ -125,7 +138,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
      */
     private void setImage(WishListProductViewHolder prodItem, ProductMultiple addableToCart) {
         // Set is new image
-        prodItem.isNew.setSelected(addableToCart.isNew());
+        prodItem.newArrivalBadge.setVisibility(addableToCart.isNew() ? View.VISIBLE : View.GONE);
         // Set image
         RocketImageLoader.instance.loadImage(addableToCart.getImageUrl(), prodItem.image, null, R.drawable.no_image_small);
     }

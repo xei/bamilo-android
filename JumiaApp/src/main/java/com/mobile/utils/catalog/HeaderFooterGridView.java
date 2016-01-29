@@ -54,7 +54,10 @@ public class HeaderFooterGridView extends RecyclerView {
 
     public void hideHeaderView() {
         mGridLayoutManager.hideHeaderView();
-        ((CatalogGridAdapter) getAdapter()).hideHeaderView();
+        if(getAdapter() instanceof HeaderFooterInterface) {
+            mGridLayoutManager.showHeaderView();
+            ((HeaderFooterInterface) getAdapter()).showHeaderView();
+        }
     }
 
     public void showFooterView() {
@@ -74,6 +77,14 @@ public class HeaderFooterGridView extends RecyclerView {
     }
 
     public void setHeaderView(@Nullable Banner banner) {
+        Adapter adapter = getAdapter();
+        if(adapter instanceof HeaderFooterInterface) {
+            mGridLayoutManager.showHeaderView();
+            ((HeaderFooterInterface) adapter).setHeader(banner);
+        }
+    }
+
+    public void setHeaderView(@Nullable String banner) {
         Adapter adapter = getAdapter();
         if(adapter instanceof HeaderFooterInterface) {
             mGridLayoutManager.showHeaderView();

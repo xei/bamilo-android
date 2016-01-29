@@ -1,6 +1,5 @@
 package com.mobile.view;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +13,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
@@ -24,7 +24,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -65,12 +64,12 @@ import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.CheckVersion;
@@ -82,11 +81,9 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
-import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
-import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
 import java.lang.ref.WeakReference;
@@ -120,7 +117,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private static final int SEARCH_EDIT_SIZE = 2;
 
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
-    public static KeyboardState currentAdjustState;
+
+    @KeyboardState
+    public static int currentAdjustState;
 
     //protected View contentContainer;
     private final int activityLayoutId;
@@ -129,7 +128,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public DrawerLayout mDrawerLayout;
     public ActionBarDrawerToggle mDrawerToggle;
     public MenuItem mSearchMenuItem;
-    public WarningFactory warningFactory;
+    private WarningFactory warningFactory;
     protected DialogFragment dialog;
     protected SearchView mSearchView;
     protected SearchAutoComplete mSearchAutoComplete;
@@ -137,7 +136,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     //private final int contentLayoutId;
     // REMOVED FINAL ATTRIBUTE
-    private NavigationAction action;
+    @NavigationAction.Type private int action;
     private Set<MyMenuItem> menuItems;
     private DialogProgressFragment baseActivityProgressDialog;
     private DialogGenericFragment dialogLogout;
@@ -192,11 +191,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         @Override
         public void onClick(View v) {
             boolean hideMyProfile = true;
-
-            NavigationAction navAction = (NavigationAction) v.getTag(R.id.nav_action);
-            if (navAction != null && getAction() != navAction) {
+            @NavigationAction.Type
+            int navAction = (int) v.getTag(R.id.nav_action);
+            if (getAction() != navAction) {
                 switch (navAction) {
-                    case MyProfile:
+                    case NavigationAction.MY_PROFILE:
                         // MY PROFILE
                         hideMyProfile = false;
                         // Close Drawer
@@ -206,11 +205,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                             myProfileActionProvider.showSpinner();
                         }
                         break;
-                    case Home:
+                    case NavigationAction.HOME:
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_HOME);
                         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
-                    case LoginOut:
+                    case NavigationAction.LOGIN_OUT:
                         // SIGN IN
                         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
                             FragmentManager fm = getSupportFragmentManager();
@@ -223,7 +222,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                                         @Override
                                         public void onClick(View v) {
                                             if (v.getId() == R.id.button2) {
-                                                LogOut.perform(new WeakReference<Activity>(BaseActivity.this));
+                                                LogOut.perform(new WeakReference<>(BaseActivity.this));
                                             }
                                             dialogLogout.dismiss();
                                         }
@@ -234,7 +233,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                             onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         }
                         break;
-                    case Saved:
+                    case NavigationAction.SAVED:
                         // FAVOURITES
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
                         // Validate customer is logged in
@@ -247,27 +246,27 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                             onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         }
                         break;
-                    case RecentSearches:
+                    case NavigationAction.RECENT_SEARCHES:
                         // RECENT SEARCHES
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
                         onSwitchFragment(FragmentType.RECENT_SEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
-                    case RecentlyViewed:
+                    case NavigationAction.RECENTLY_VIEWED:
                         // RECENTLY VIEWED
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
                         onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
-                    case MyAccount:
+                    case NavigationAction.MY_ACCOUNT:
                         // MY ACCOUNT
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                         onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
-                    case MyOrders:
+                    case NavigationAction.MY_ORDERS:
                         // TRACK ORDER
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
                         onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
-                    case Country:
+                    case NavigationAction.COUNTRY:
                         onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     default:
@@ -277,7 +276,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             } else {
                 Print.d(TAG, "selected navAction is already being shown");
             }
-
             // only hide dropdown for Spinner if hideMyProfile flag is activated
             if (hideMyProfile && myProfileActionProvider != null) {
                 myProfileActionProvider.dismissSpinner();
@@ -302,20 +300,18 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
-    public BaseActivity(NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
-        this(R.layout.main, action, enabledMenuItems, userEvents, titleResId, contentLayoutId);
+    public BaseActivity(@NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
+        this(R.layout.main, action, enabledMenuItems, titleResId);
     }
 
     /**
      * Constructor
      */
-    public BaseActivity(int activityLayoutId, NavigationAction action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
+    public BaseActivity(int activityLayoutId, @NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, int titleResId) {
         this.activityLayoutId = activityLayoutId;
-        //this.userEvents = userEvents;
-        this.action = action != null ? action : NavigationAction.Unknown;
+        this.action = action;
         this.menuItems = enabledMenuItems;
         this.titleResId = titleResId;
-        //this.contentLayoutId = contentLayoutId;
     }
 
     /*
@@ -449,8 +445,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-
-        // Disabled for Samsung and Blackberry (check_version_enabled)
+        // Check version, disabled for Samsung (check_version_enabled)
         CheckVersion.run(getApplicationContext());
 
         /**
@@ -474,8 +469,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onResumeFragments() {
         super.onResumeFragments();
         /**
-         * Validate current version to show the upgrade dialog.
-         * Disabled for Samsung and Blackberry (check_version_enabled).
+         * Validate current version to show the upgrade dialog, disabled for Samsung (check_version_enabled).
          */
         if (CheckVersion.needsToShowDialog()) {
             CheckVersion.showDialog(this);
@@ -496,16 +490,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Method used to update the sliding menu and items on action bar. Called from BaseFragment
      */
-    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, NavigationAction newNavAction, int actionBarTitleResId, int checkoutStep) {
+    public void updateBaseComponents(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int newNavAction, int actionBarTitleResId, int checkoutStep) {
         Print.i(TAG, "ON UPDATE BASE COMPONENTS");
-        // Update the app bar layout
-        setAppBarLayout(this.action, newNavAction);
         // Update options menu and search bar
-        menuItems = enabledMenuItems;
-        hideKeyboard();
+        this.menuItems = enabledMenuItems;
+        // Update the current nav action
+        int oldNavAction = this.action;
+        this.action = newNavAction;
+        // Update the app bar layout
+        setAppBarLayout(oldNavAction, newNavAction);
+        // Update Options Menu
         invalidateOptionsMenu();
-        // Update the sliding menu
-        this.action = newNavAction != null ? newNavAction : NavigationAction.Unknown;
         // Select step on Checkout
         setCheckoutHeader(checkoutStep);
         // Set actionbarTitle
@@ -548,16 +543,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
         // Checkout Tab
         TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
-        mCheckoutTabLayout.setOnTabSelectedListener(mCheckoutOnTabSelectedListener);
-
-
     }
     
     /*
      * ############## CONTENT VIEWS ##############
      */
 
-    private void setAppBarLayout(NavigationAction oldNavAction, NavigationAction newNavAction) {
+    private void setAppBarLayout(@NavigationAction.Type int oldNavAction, @NavigationAction.Type int newNavAction) {
         try {
             // Case action without tab layout
             if (!TabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
@@ -639,7 +631,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void setupContentViews() {
         Print.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
         // Get the application horizontalListView
-        //contentContainer = findViewById(R.id.rocket_app_content);
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));
@@ -829,7 +820,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             Print.w(TAG, "WARNING: INVALID FLAG, USE VISIBLE/INVISIBLE FROM View.");
         }
     }    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
+         public void onTabUnselected(TabLayout.Tab tab) {
         // ...
     }
 
@@ -847,7 +838,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             mDrawerToggle.setDrawerIndicatorEnabled(true);
         }
     }    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
+         public void onTabReselected(TabLayout.Tab tab) {
         // ...
     }
     
@@ -933,8 +924,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSearchView.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         mSearchAutoComplete.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         // Set text color for old android versions
-        mSearchAutoComplete.setTextColor(getResources().getColor(R.color.search_edit_color));
-        mSearchAutoComplete.setHintTextColor(getResources().getColor(R.color.search_hint_color));
+        mSearchAutoComplete.setTextColor(ContextCompat.getColor(getApplicationContext(), R.color.search_edit_color));
+        mSearchAutoComplete.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.search_hint_color));
         // Initial state
         MenuItemCompat.collapseActionView(mSearchMenuItem);
         // Calculate the max width to fill action bar
@@ -980,8 +971,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
                 // Get text suggestion
                 String text = selectedSuggestion.getResult();
-                // Clean edit text
-                mSearchAutoComplete.setText("");
+                //Save searched text
+                JumiaApplication.INSTANCE.setSearchedTerm(text);
                 mSearchAutoComplete.dismissDropDown();
                 // Collapse search view
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
@@ -989,9 +980,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 GetSearchSuggestionsHelper.saveSearchQuery(text);
                 // Show query
                 showSearchCategory(text);
-                if (JumiaApplication.INSTANCE != null) {
-                    JumiaApplication.INSTANCE.trackSearch = true;
-                }
             }
         });
 
@@ -1031,8 +1019,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     if (TextUtils.isEmpty(searchTerm)) {
                         return false;
                     }
-                    // Clean edit text
-                    textView.setText("");
+                    //Save searched text
+                    JumiaApplication.INSTANCE.setSearchedTerm(searchTerm);
                     // Collapse search view
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
                     // Save query
@@ -1055,6 +1043,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 closeNavigationDrawer();
                 isSearchComponentOpened = true;
                 setActionMenuItemsVisibility(false);
+                // Re-set the searched text if it exists
+                mSearchAutoComplete.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        String searchedTerm = JumiaApplication.INSTANCE.getSearchedTerm();
+                        if (TextUtils.isNotEmpty(searchedTerm)) {
+                            mSearchAutoComplete.setText(searchedTerm);
+                            mSearchAutoComplete.setSelection(searchedTerm.length());
+                        }
+                    }
+                });
                 return true;
             }
 
@@ -1074,6 +1073,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
+                    Print.i(TAG,"SEARCH ON FOCUS CHANGE");
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
                     setActionMenuItemsVisibility(true);
                 }
@@ -1089,11 +1089,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void showSearchCategory(String searchText) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
         // Tracking
-        JumiaApplication.INSTANCE.trackSearchCategory = true;
         TrackerDelegator.trackSearchSuggestions(searchText);
         // Data
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
@@ -1131,7 +1130,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 // Hide search bar
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
                 // Clean autocomplete
-                mSearchAutoComplete.setText("");
+//                mSearchAutoComplete.setText("");
                 // Show hidden items
                 setActionMenuItemsVisibility(true);
                 // Forced the IME option on collapse
@@ -1156,9 +1155,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         beginInMillis = System.currentTimeMillis();
         String text = mSearchAutoComplete.getText().toString();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
-        Bundle bundle = new Bundle();
-        bundle.putString(GetSearchSuggestionsHelper.SEACH_PARAM, text);
-        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), bundle,
+        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(text),
                 new IResponseCallback() {
                     @Override
                     public void onRequestComplete(BaseResponse baseResponse) {
@@ -1197,7 +1194,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processErrorSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
 
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
 
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
@@ -1222,7 +1219,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processSuccessSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
@@ -1261,11 +1258,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     public void updateCartInfo() {
         Print.d(TAG, "ON UPDATE CART INFO");
-//        if (JumiaApplication.INSTANCE.getCart() != null) {
-//            Log.d(TAG, "updateCartInfo value = "
-//                    + JumiaApplication.INSTANCE.getCart().getCartValue() + " quantity = "
-//                    + JumiaApplication.INSTANCE.getCart().getCartCount());
-//        }
         updateCartInfoInActionBar();
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
     }
@@ -1329,14 +1321,15 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * @return the action
      */
-    public NavigationAction getAction() {
+    @NavigationAction.Type
+    public int getAction() {
         return action;
     }
 
     /**
      * Set action
      */
-    public void setAction(NavigationAction action) {
+    public void setAction(@NavigationAction.Type int action) {
         this.action = action;
     }
 
@@ -1403,13 +1396,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 baseActivityProgressDialog = null;
             }
         } catch (IllegalStateException e) {
-            // ...
+            e.printStackTrace();
         }
     }
 
 //    public void showKeyboard() {
 //        // Log.d( TAG, "showKeyboard" );
-//        Print.i(TAG, "code1here showKeyboard");
+//        //Print.i(TAG, "code1here showKeyboard");
 //        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
 //        // use the above as the method below does not always work
@@ -1429,18 +1422,18 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
     }
 
+    /**
+     * NOTE: Others sign out methods are performed in {@link LogOut}.
+     */
     public void onLogOut() {
-        /*
-         * NOTE: Others sign out methods are performed in {@link LogOut}.
-         */
-        // Logout Facebook
-        FacebookHelper.facebookLogout();
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home
         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         // Hide progress
         dismissProgress();
+        // Inform user
+        showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.logout_success));
     }
 
     /**
@@ -1451,6 +1444,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * This method should be implemented by fragment activity to manage the work flow for fragments. Each fragment should call this method.
      */
     public abstract void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack);
+
+    /**
+     * This method should be implemented by fragment activity to manage the communications between fragments. Each fragment should call this method.
+     */
+    public abstract boolean communicateBetweenFragments(String tag, Bundle bundle);
 
     /**
      * Method used to switch fragment on UI with/without back stack support
@@ -1536,51 +1534,25 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Set the current checkout step otherwise return false
      */
-    public boolean setCheckoutHeader(int checkoutStep) {
-        Print.d(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
-        int visibility = View.VISIBLE;
-        boolean result = true;
+    public void setCheckoutHeader(@ConstantsCheckout.CheckoutType int checkoutStep) {
+        Print.i(TAG, "SET CHECKOUT HEADER STEP ID: " + checkoutStep);
         switch (checkoutStep) {
             case ConstantsCheckout.CHECKOUT_ABOUT_YOU:
-                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_ABOUT_YOU);
-                updateBaseComponentsInCheckout(visibility);
-                break;
             case ConstantsCheckout.CHECKOUT_BILLING:
-                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_BILLING);
-                updateBaseComponentsInCheckout(visibility);
-                break;
             case ConstantsCheckout.CHECKOUT_SHIPPING:
-                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_SHIPPING);
-                updateBaseComponentsInCheckout(visibility);
-                break;
             case ConstantsCheckout.CHECKOUT_PAYMENT:
-                selectCheckoutStep(ConstantsCheckout.TAB_CHECKOUT_PAYMENT);
-                updateBaseComponentsInCheckout(visibility);
+                selectCheckoutStep(checkoutStep);
+                updateBaseComponentsInCheckout(View.VISIBLE);
                 break;
             case ConstantsCheckout.CHECKOUT_ORDER:
             case ConstantsCheckout.CHECKOUT_THANKS:
-                visibility = View.GONE;
-                updateBaseComponentsInCheckout(visibility);
+                updateBaseComponentsInCheckout(View.GONE);
                 break;
-//            case ConstantsCheckout.CHECKOUT_NO_SET_HEADER:
-//                // Hide title and total
-//                hideTitle();
-//                findViewById(R.id.totalProducts).setVisibility(View.GONE);
-//                break;
             case ConstantsCheckout.NO_CHECKOUT:
-                visibility = View.GONE;
-                result = false;
-                updateBaseComponentsOutCheckout(visibility);
-                break;
             default:
-                Print.e(TAG, "checkoutStep unknown");
-                visibility = View.GONE;
-                result = false;
-                updateBaseComponentsOutCheckout(visibility);
+                updateBaseComponentsOutCheckout(View.GONE);
                 break;
         }
-        // Return value
-        return result;
     }
 
     /**
@@ -1628,19 +1600,15 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     public void onCheckoutHeaderClickListener(int step) {
         Print.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER " + step);
-        // CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
+        FragmentType fragmentType = ConstantsCheckout.getFragmentType(step);
 
-        // CHECKOUT_BILLING  - step == 1
-        // If selected tab is CHECKOUT_SHIPPING or CHECKOUT_PAYMENT, allow click
-        if (step == ConstantsCheckout.TAB_CHECKOUT_BILLING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.TAB_CHECKOUT_BILLING) {
-            selectCheckoutStep(step);
+        if (fragmentType != FragmentType.UNKNOWN && mCheckoutTabLayout.getSelectedTabPosition() > step) {
+            if (FragmentController.getInstance().hasEntry(fragmentType.toString())) {
+                selectCheckoutStep(step);
+            } else {
+                onSwitchFragment(fragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
         }
-        // CHECKOUT_SHIPPING  - step == 2
-        // If selected tab is the CHECKOUT_PAYMENT, allow click
-        else if (step == ConstantsCheckout.TAB_CHECKOUT_SHIPPING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.TAB_CHECKOUT_SHIPPING) {
-            selectCheckoutStep(step);
-        }
-        // CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
     }
 
     /**
@@ -1650,12 +1618,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void onCheckoutHeaderSelectedListener(int step) {
         // CASE TAB_CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
         // CASE TAB_CHECKOUT_BILLING
-        if (step == ConstantsCheckout.TAB_CHECKOUT_BILLING) {
-            popBackStackUntilTag(FragmentType.MY_ADDRESSES.toString());
+        if (step == ConstantsCheckout.CHECKOUT_BILLING) {
+            String last = FragmentController.getInstance().getLastEntry();
+            // Validate last entry to support create and edit address (rotation)
+            if(!TextUtils.equals(last, FragmentType.CHECKOUT_CREATE_ADDRESS.toString()) &&
+               !TextUtils.equals(last, FragmentType.CHECKOUT_EDIT_ADDRESS.toString())) {
+                popBackStackUntilTag(FragmentType.CHECKOUT_MY_ADDRESSES.toString());
+            }
         }
         // CASE TAB_CHECKOUT_SHIPPING
-        else if (step == ConstantsCheckout.TAB_CHECKOUT_SHIPPING ) {
-            popBackStackUntilTag(FragmentType.SHIPPING_METHODS.toString());
+        else if (step == ConstantsCheckout.CHECKOUT_SHIPPING ) {
+            popBackStackUntilTag(FragmentType.CHECKOUT_SHIPPING.toString());
         }
         // CASE TAB_CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
     }
@@ -1746,40 +1719,20 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, isFBLogin);
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
                 TrackerDelegator.trackLoginSuccessful(params);
-                trackPageAdjust();
             }
         });
     }
 
-    /**
-     * Track Page only for adjust
-     */
-    private void trackPageAdjust() {
-        Bundle bundle = new Bundle();
-        bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
-        TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
+    public void showWarning(@WarningFactory.WarningErrorType final int warningFact){
+        warningFactory.showWarning(warningFact);
     }
 
-    public boolean communicateBetweenFragments(String tag, Bundle bundle){
-        Fragment fragment =  getSupportFragmentManager().findFragmentByTag(tag);
-        if(fragment != null){
-            ((BaseFragment)fragment).notifyFragment(bundle);
-            return true;
-        }
-        return false;
+    public void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact, final String message){
+        warningFactory.showWarning(warningFact, message);
     }
 
-//    /**
-//     * Shows server overload page
-//     */
-//    public void showOverLoadView(){
-//
-//        Intent intent = new Intent(getApplicationContext(), OverLoadErrorActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//        startActivity(intent);
-//        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//        //if(getSupportFragmentManager() != null){
-//        //    OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(),null);
-//        //}
-//    }
+    public void hideWarningMessage(){
+        warningFactory.hideWarning();
+    }
+
 }

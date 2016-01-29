@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
-    android:layout_height="@dimen/catalog_list_item_height">
+    android:minHeight="@dimen/catalog_list_item_height"
+    android:layout_height="wrap_content">
 
     <include
         android:id="@+id/image_loadable"
@@ -15,15 +16,19 @@
         android:layout_marginStart="@dimen/margin_60px"
         android:background="@color/color_accent" />
 
-    <ImageView
-        android:id="@+id/image_is_new"
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerInParent="false"
-        android:src="@drawable/selector_is_new" />
+        android:layout_marginTop="@dimen/dimen_30px"
+        android:layout_marginLeft="@dimen/dimen_30px"
+        android:layout_marginStart="@dimen/dimen_30px"
+        android:gravity="center"
+        android:text="@string/new_arrival_badge" />
 
     <!-- INFORMATION -->
 
@@ -84,16 +89,25 @@
         android:text="Price"
         android:textColor="@color/black_800" />
 
+    <ImageView
+        style="@style/ShopFirstStyle"
+        android:id="@+id/item_shop_first"
+        android:layout_below="@id/item_discount"
+        android:layout_alignLeft="@id/item_brand"
+        android:layout_alignStart="@id/item_brand"
+        android:visibility="gone"/>
+
     <RelativeLayout
         android:id="@+id/rating_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_name"
-        android:layout_alignParentBottom="true"
         android:layout_alignStart="@id/item_name"
         android:layout_marginBottom="@dimen/margin_30px"
         android:gravity="start|left|center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/item_shop_first"
+        android:layout_marginTop="@dimen/dimen_6dp">
 
         <RatingBar
             android:id="@+id/item_rating"
@@ -140,18 +154,5 @@
         android:layout_marginEnd="@dimen/rounded_margin_mid"
         android:layout_marginRight="@dimen/rounded_margin_mid"
         android:gravity="center" />
-
-    <View
-        android:id="@+id/divider"
-        style="@style/HorizontalListDivider"
-        android:layout_alignParentBottom="true"
-        android:visibility="visible" />
-
-    <View
-        android:id="@+id/vdivider"
-        style="@style/VerticalListDivider"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:visibility="gone" />
 
 </RelativeLayout>

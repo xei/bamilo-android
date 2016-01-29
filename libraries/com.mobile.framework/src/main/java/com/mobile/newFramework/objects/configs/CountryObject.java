@@ -195,18 +195,18 @@ public class CountryObject implements IJSONSerializable, Parcelable {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+        name = jsonObject.optString(RestConstants.NAME);
         url = jsonObject.optString(RestConstants.URL);
         if (url != null) {
             // This is necessary otherwise Uri.Builder will encode the authority
             url = url.replace("/mobapi/", "");
         }
-        flag = jsonObject.optString(RestConstants.JSON_FLAG_TAG);
-        iso = jsonObject.optString(RestConstants.JSON_COUNTRY_ISO);
-        forceHttps = jsonObject.optBoolean(RestConstants.JSON_FORCE_HTTPS, false);
-        isLive = jsonObject.optInt(RestConstants.JSON_IS_LIVE, 0) == 1;
+        flag = jsonObject.optString(RestConstants.FLAG);
+        iso = jsonObject.optString(RestConstants.COUNTRY_ISO);
+        forceHttps = jsonObject.optBoolean(RestConstants.FORCE_HTTPS, false);
+        isLive = jsonObject.optInt(RestConstants.IS_LIVE, 0) == 1;
         // Used only for access dev servers
-        userAgentToAccessDevServers = jsonObject.optString(RestConstants.JSON_USER_AGENT_TAG);
+        userAgentToAccessDevServers = jsonObject.optString(RestConstants.USER_AGENT);
         try {
             languages = new Languages(jsonObject);
         }catch (JSONException ex){
@@ -222,8 +222,8 @@ public class CountryObject implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     public Languages getLanguages() {

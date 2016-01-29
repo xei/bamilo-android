@@ -55,21 +55,21 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(@NonNull JSONObject jsonObject) {
         // Get required
-        JSONObject required = jsonObject.optJSONObject(RestConstants.JSON_REQUIRED_TAG);
+        JSONObject required = jsonObject.optJSONObject(RestConstants.REQUIRED);
         // Get message
         if (required != null) {
             isRequired = true;
-            message = required.optString(RestConstants.JSON_MESSAGE_IN_MESSAGES_TAG);
+            message = required.optString(RestConstants.MESSAGE);
         }
         // Get range
-        min = jsonObject.optInt(RestConstants.JSON_MIN_TAG, MIN_CHARACTERS);
-        max = jsonObject.optInt(RestConstants.JSON_MAX_TAG, MAX_CHARACTERS);
+        min = jsonObject.optInt(RestConstants.MIN, MIN_CHARACTERS);
+        max = jsonObject.optInt(RestConstants.MAX, MAX_CHARACTERS);
         // Get regex
-        regex = jsonObject.optString(RestConstants.JSON_REGEX_TAG, DEFAULT_REGEX);
+        regex = jsonObject.optString(RestConstants.REGEX, DEFAULT_REGEX);
         // Get match
-        JSONObject matchObject = jsonObject.optJSONObject(RestConstants.JSON_MATCH_TAG);
+        JSONObject matchObject = jsonObject.optJSONObject(RestConstants.MATCH);
         if (matchObject != null) {
-            regex = matchObject.optString(RestConstants.JSON_PATTERN_TAG, DEFAULT_REGEX);
+            regex = matchObject.optString(RestConstants.PATTERN, DEFAULT_REGEX);
         }
         return true;
     }
@@ -97,10 +97,10 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(RestConstants.JSON_REQUIRED_TAG, isRequired);
-            jsonObject.put(RestConstants.JSON_MIN_TAG, min);
-            jsonObject.put(RestConstants.JSON_MAX_TAG, max);
-            jsonObject.put(RestConstants.JSON_REGEX_TAG, regex);
+            jsonObject.put(RestConstants.REQUIRED, isRequired);
+            jsonObject.put(RestConstants.MIN, min);
+            jsonObject.put(RestConstants.MAX, max);
+            jsonObject.put(RestConstants.REGEX, regex);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -108,8 +108,8 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
 

@@ -1,6 +1,5 @@
 package com.mobile.view.fragments;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 
@@ -10,26 +9,24 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
 
 /**
- *
  * @author sergiopereira
- *
  */
-public class CheckoutCreateAddressFragment extends CreateAddressFragment{
+public class CheckoutCreateAddressFragment extends CreateAddressFragment {
 
     private static final String TAG = CheckoutCreateAddressFragment.class.getSimpleName();
 
@@ -37,8 +34,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
     /**
      * Fragment used to create an address
-     * @return CheckoutCreateAddressFragment
-     * @author sergiopereira
      */
     public static CheckoutCreateAddressFragment getInstance() {
         return new CheckoutCreateAddressFragment();
@@ -46,13 +41,12 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
 
     /**
      * Empty constructor
-     * @author sergiopereira
      */
     public CheckoutCreateAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.string.checkout_label,
-                KeyboardState.ADJUST_CONTENT,
+                ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_BILLING);
     }
 
@@ -72,17 +66,15 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     public void onResume() {
         super.onResume();
         // Get and show form
-        if(JumiaApplication.INSTANCE.getFormDataRegistry() == null || JumiaApplication.INSTANCE.getFormDataRegistry().size() == 0){
-            triggerInitForm();
-        } else if(mFormShipping != null &&  mFormBilling!= null && orderSummary != null && regions != null){
-            loadCreateAddressForm(mFormShipping, mFormBilling);
+        if (mFormShipping != null && orderSummary != null && regions != null) {
+            loadCreateAddressForm(mFormShipping);
         } else {
             triggerCreateAddressForm();
         }
     }
 
-    protected void loadCreateAddressForm(Form formShipping,Form formBilling) {
-        super.loadCreateAddressForm(formShipping,formBilling);
+    protected void loadCreateAddressForm(Form formShipping) {
+        super.loadCreateAddressForm(formShipping);
         // Show order summary
         super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, orderSummary);
         // Set the checkout total bar
@@ -92,7 +84,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     protected void onClickRetryButton() {
         Bundle bundle = new Bundle();
-        if(null != JumiaApplication.CUSTOMER){
+        if (null != JumiaApplication.CUSTOMER) {
             bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.SHOPPING_CART);
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
@@ -105,26 +97,16 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
         super.onCreateAddressSuccessEvent(baseResponse);
         //GTM
         TrackerDelegator.trackAddAddress(true);
-        // Waiting for both responses
-        if(!mIsSameCheckBox.isChecked() && !oneAddressCreated){
-            oneAddressCreated = true;
-
-            if (null != billingFormGenerator) {
-                ContentValues mBillValues = createContentValues(billingFormGenerator, ISNT_DEFAULT_SHIPPING_ADDRESS, IS_DEFAULT_BILLING_ADDRESS);
-                triggerCreateAddress(mBillValues, true);
-            }
-            return ;
-        }
-
         // Get next step
-        FragmentType nextFragment = ((NextStepStruct)baseResponse.getMetadata().getData()).getFragmentType();
-        if(nextFragment == null || nextFragment == FragmentType.UNKNOWN){
+        FragmentType nextFragment = ((NextStepStruct) baseResponse.getMetadata().getData()).getFragmentType();
+        if (nextFragment == null || nextFragment == FragmentType.UNKNOWN) {
             Print.w(TAG, "NEXT STEP IS UNKNOWN OR NULL -> FALL BACK MY_ADDRESSES");
-            nextFragment = FragmentType.MY_ADDRESSES;
+            nextFragment = FragmentType.CHECKOUT_MY_ADDRESSES;
         }
-        Toast.makeText(getBaseActivity(), getString(R.string.create_addresses_success), Toast.LENGTH_SHORT).show();
-        FragmentController.getInstance().popLastEntry(FragmentType.CREATE_ADDRESS.toString());
+
+        FragmentController.getInstance().popLastEntry(FragmentType.CHECKOUT_CREATE_ADDRESS.toString());
         getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        showWarningSuccessMessage(baseResponse.getSuccessMessage(), baseResponse.getEventType());
     }
 
     @Override
@@ -148,12 +130,12 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment{
     @Override
     protected void onCreateAddressErrorEvent(BaseResponse baseResponse) {
         super.onCreateAddressErrorEvent(baseResponse);
-        //GTM
+        // GTM
         TrackerDelegator.trackAddAddress(false);
         // Error
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         if (errorCode == ErrorCode.REQUEST_ERROR) {
-            showErrorDialog(getString(R.string.address_creation_failed_main), getString(R.string.address_creation_failed_title));
+            showFormValidateMessages(shippingFormGenerator, baseResponse, EventType.CREATE_ADDRESS_EVENT);
         } else {
             Print.w(TAG, "RECEIVED CREATE_ADDRESS_EVENT: " + errorCode);
             super.showUnexpectedErrorWarning();

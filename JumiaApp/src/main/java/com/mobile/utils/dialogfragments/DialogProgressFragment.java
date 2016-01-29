@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,12 @@ public class DialogProgressFragment extends DialogFragment {
     
     private final static String TAG = DialogProgressFragment.class.getSimpleName();
 
-    
     /**
      * Empty constructor
      */
-    public DialogProgressFragment() {}
+    public DialogProgressFragment() {
+        // ...
+    }
     
     /**
      *
@@ -45,7 +47,7 @@ public class DialogProgressFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(R.style.Theme_Jumia_Dialog_Progress, R.style.Theme_Jumia_Dialog_Progress);
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Custom_Dialog_Progress);
     }
     
     /*
@@ -73,7 +75,7 @@ public class DialogProgressFragment extends DialogFragment {
         // Hide title divider
         int dividerId = dialog.getContext().getResources().getIdentifier("titleDivider","id", "android");
         View divider = dialog.findViewById(dividerId);
-        if(divider != null) divider.setBackgroundColor(getResources().getColor(R.color.transparent));
+        if(divider != null) divider.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.transparent));
         // Return layout
         return dialog;
     }

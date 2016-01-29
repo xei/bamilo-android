@@ -40,7 +40,7 @@ public class PriceFilterCheckBoxOption implements IJSONSerializable, SingleFilte
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         id = jsonObject.getString(RestConstants.ID);
         label = jsonObject.getString(RestConstants.LABEL);
-        name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
+        name = jsonObject.optString(RestConstants.NAME);
         type = jsonObject.optString(RestConstants.TYPE);
         return true;
     }
@@ -51,8 +51,8 @@ public class PriceFilterCheckBoxOption implements IJSONSerializable, SingleFilte
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     public String getId() {

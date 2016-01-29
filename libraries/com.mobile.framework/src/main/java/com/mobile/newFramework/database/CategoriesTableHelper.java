@@ -5,7 +5,6 @@ import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.mobile.newFramework.database.DarwinDatabaseHelper.TableType;
 import com.mobile.newFramework.utils.output.Print;
 
 /**
@@ -31,8 +30,9 @@ public class CategoriesTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#getType()
      */
     @Override
-    public TableType getUpgradeType() {
-        return TableType.CACHE;
+    @DarwinDatabaseHelper.UpgradeType
+    public int getUpgradeType() {
+        return DarwinDatabaseHelper.CACHE;
     }
     
     /*
@@ -49,9 +49,9 @@ public class CategoriesTableHelper extends BaseTable {
      * @see com.mobile.newFramework.database.BaseTable#create(java.lang.String)
      */
     @Override
-    public String create(String tableName) {
+    public String create() {
         return new StringBuilder()
-                .append("CREATE TABLE ").append(tableName)
+                .append("CREATE TABLE %s")
                 .append(" (")
                 .append(Columns.URL_KEY).append(" TEXT PRIMARY KEY, ")
                 .append(Columns.NAME).append(" TEXT, ")
@@ -64,18 +64,18 @@ public class CategoriesTableHelper extends BaseTable {
     /**
      * Method used to increment the counter for respective category.
      *
-     * @param categoryUrlKey urlkey that will be used as identifier
+     * @param id hash that will be used as identifier
      * @param categoryName category name
      */
-    public static void updateCategoryCounter(String categoryUrlKey, String categoryName) {
+    public static void updateCategoryCounter(String id, String categoryName) {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         try {
 
             // Create query
             String query = new StringBuilder("select ").append(Columns.VIEW_COUNT).append(" from ").append(TABLE_NAME)
-                    .append(" where ").append(Columns.URL_KEY).append(" = '").append(categoryUrlKey).append("'").toString();
+                    .append(" where ").append(Columns.URL_KEY).append(" = ?").toString();
             Print.i(TAG, "SQL RESULT query :  " + query);
-            Cursor cursor = db.rawQuery(query, null);
+            Cursor cursor = db.rawQuery(query, new String[]{"'"+id+"'"});
 
             int count = 0;
             if (cursor != null && cursor.getCount() > 0) {
@@ -88,13 +88,13 @@ public class CategoriesTableHelper extends BaseTable {
                     .append("INSERT OR REPLACE INTO ").append(TABLE_NAME)
                     .append("(" + Columns.NAME + "," + Columns.URL_KEY + "," + Columns.VIEW_COUNT + ") ")
                     .append("VALUES ( ")
-                    .append("(").append(DatabaseUtils.sqlEscapeString(categoryName)).append("), ")
-                    .append("(").append(DatabaseUtils.sqlEscapeString(categoryUrlKey)).append("), ")
+                    .append("(").append("?").append("), ")
+                    .append("(").append("?").append("), ")
                     .append(count + 1)
                     .append(" )")
                     .toString();
             // Execute
-            db.execSQL(insertOrReplace);
+            db.execSQL(insertOrReplace, new String[]{DatabaseUtils.sqlEscapeString(categoryName), DatabaseUtils.sqlEscapeString(id)});
             Print.i(TAG, "ON INCREASE COUNTER: " + categoryName);
         } catch (SQLException e) {
             Print.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);

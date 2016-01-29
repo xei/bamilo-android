@@ -34,6 +34,7 @@
             style="@style/SubListItemStyle"
             android:layout_marginLeft="@dimen/dimen_60px"
             android:layout_marginStart="@dimen/dimen_60px"
+            android:gravity="center_vertical"
             />
     </RelativeLayout>
 

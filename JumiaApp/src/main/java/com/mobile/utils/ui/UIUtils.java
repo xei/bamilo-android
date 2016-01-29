@@ -2,14 +2,22 @@ package com.mobile.utils.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
 
 /**
@@ -24,6 +32,7 @@ import com.mobile.view.R;
  * @modified Andre Lopes
  *
  */
+@SuppressWarnings("unused")
 public class UIUtils {
 
     public static final String TAG = UIUtils.class.getSimpleName();
@@ -42,8 +51,6 @@ public class UIUtils {
         return Math.round(dp * context.getResources().getDisplayMetrics().scaledDensity );
     }
 
-
-    
     /**
      * Show or hide a set of views.
      * @param visibility The visibility parameter for all.
@@ -111,10 +118,7 @@ public class UIUtils {
         Context context = imageView.getContext();
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
         imageView.setImageResource(id);
-
     }
-
-
 
     /**
      * Animate a view sliding from down to top
@@ -135,8 +139,71 @@ public class UIUtils {
     public static void animateSlideDown(@NonNull View animatedView) {
         animatedView.clearAnimation();
         animatedView.setVisibility(View.VISIBLE);
-        Animation animation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_down);
-        animatedView.startAnimation(animation);
+        Animation downAnimation = AnimationUtils.loadAnimation(animatedView.getContext(), R.anim.slide_down);
+        animatedView.startAnimation(downAnimation);
     }
-    
+
+    /**
+     * method responsible for scrolling a scrollview for 60dp
+     * This is used for editexts that show in a layout inside a toolbar
+     */
+    public static void scrollToViewByClick(final View scrollView, final View viewToDetectTouch){
+        viewToDetectTouch.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP){
+                    scrollView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.scrollBy(0, dpToPx(60, scrollView.getContext().getResources().getDisplayMetrics().scaledDensity));
+                        }
+                    }, 500);
+                }
+                return false;
+            }
+        });
+    }
+
+    public static SpannableString setSpan(String first, String second, int firstColor, int secondColor){
+        SpannableString spannableString = new SpannableString(first + second);
+        spannableString.setSpan(new ForegroundColorSpan(firstColor), 0, first.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableString.setSpan(new ForegroundColorSpan(secondColor), first.length(), first.length() + second.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannableString;
+    }
+
+    /**
+     * Mirror rating stars case RTL and pre API 17.
+     */
+    public static void setProgressForRTLPreJellyMr2(View progressBar) {
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
+            progressBar.setScaleX(-1.0f);
+            progressBar.setScaleY(1.0f);
+        }
+    }
+
+
+    /**
+     * Method to detect if a drawable existing at left or right in a TextView was clicked
+     * */
+    public static boolean drawableClicked(TextView view, MotionEvent event){
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            if((!ShopSelector.isRtl() &&  event.getX() >= view.getRight() - view.getTotalPaddingRight())
+                    || (ShopSelector.isRtl() && event.getX() <= view.getTotalPaddingLeft()) ){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Method used to set a right compound drawable in the respective view. (RTL support)
+     */
+    public static void setDrawableRight(@NonNull TextView view, @DrawableRes int drawable) {
+        if (ShopSelector.isRtl()) {
+            view.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
+        } else {
+            view.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+        }
+    }
+
 }

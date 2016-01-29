@@ -20,51 +20,51 @@ public enum EventType {
 
     INITIALIZE,
 
-    INIT_FORMS("http:/forms/index/", AigRestContract.MAX_CACHE_TIME),
-
     GET_CATEGORIES_EVENT("http:/catalog/categories/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCTS_EVENT("http:/search/find/", AigRestContract.NO_CACHE),
+    GET_CATALOG_EVENT("http:/search/find/"),
 
-    LOGIN_EVENT("https:/customer/login/", AigRestContract.NO_CACHE),
+    LOGIN_EVENT("https:/customer/login/"),
 
-    EMAIL_CHECK("http:/customer/emailcheck/", AigRestContract.NO_CACHE),
+    AUTO_LOGIN_EVENT(LOGIN_EVENT.action),
 
-    FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin/", AigRestContract.NO_CACHE),
+    EMAIL_CHECK("http:/customer/emailcheck/"),
+
+    FACEBOOK_LOGIN_EVENT("https:/customer/facebooklogin/"),
 
     GET_LOGIN_FORM_EVENT("http:/forms/login/", AigRestContract.MAX_CACHE_TIME),
 
-    LOGOUT_EVENT("https:/customer/logout/", AigRestContract.NO_CACHE),
+    LOGOUT_EVENT("https:/customer/logout/"),
 
     GET_HOME_EVENT("http:/main/home/", AigRestContract.MAX_CACHE_TIME),
 
     GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", AigRestContract.DEFAULT_CACHE_TIME),
 
-    ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/order/add/", AigRestContract.NO_CACHE),
+    ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/cart/addproduct/"),
 
-    ADD_ITEMS_TO_SHOPPING_CART_EVENT("https:/order/addmultiple/", AigRestContract.NO_CACHE),
+    ADD_ITEMS_TO_SHOPPING_CART_EVENT("https:/cart/addmultiple/"),
 
-    REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/order/remove/", AigRestContract.NO_CACHE),
+    REMOVE_ITEM_FROM_SHOPPING_CART_EVENT("https:/cart/removeproduct/"),
 
-    GET_SHOPPING_CART_ITEMS_EVENT("https:/order/cartdata/", AigRestContract.NO_CACHE),
+    GET_SHOPPING_CART_ITEMS_EVENT("https:/cart/getdata/"),
 
     GET_REGISTRATION_FORM_EVENT("http:/forms/register/", AigRestContract.MAX_CACHE_TIME),
 
     GET_CHANGE_PASSWORD_FORM_EVENT("http:/forms/changepassword/", AigRestContract.MAX_CACHE_TIME),
 
-    CHANGE_PASSWORD_EVENT("https:/customer/changepassword/", AigRestContract.NO_CACHE),
+    CHANGE_PASSWORD_EVENT,
 
     GET_FORGET_PASSWORD_FORM_EVENT("http:/forms/forgotpassword/", AigRestContract.MAX_CACHE_TIME),
 
-    EDIT_USER_DATA_FORM_EVENT("http:/forms/edit/", AigRestContract.NO_CACHE),
+    EDIT_USER_DATA_FORM_EVENT("http:/forms/edit/"),
 
-    EDIT_USER_DATA_EVENT("http:/customer/edit/", AigRestContract.NO_CACHE),
+    EDIT_USER_DATA_EVENT,
 
-    FORGET_PASSWORD_EVENT("https:/customer/forgotpassword/", AigRestContract.NO_CACHE),
+    FORGET_PASSWORD_EVENT,
 
-    REGISTER_ACCOUNT_EVENT("https:/customer/create/", AigRestContract.NO_CACHE),
+    REGISTER_ACCOUNT_EVENT,
 
-    GET_TERMS_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
+    GET_STATIC_PAGE("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
 
     GET_FORM_REVIEW_EVENT("http:/forms/review/", AigRestContract.MAX_CACHE_TIME),
 
@@ -74,51 +74,43 @@ public enum EventType {
 
     REVIEW_RATING_PRODUCT_EVENT,
 
-    CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT("https:/order/cartchange/", AigRestContract.NO_CACHE),
+    CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT("https:/cart/updateproduct/"),
 
     GET_FORMS_DATA_SET_LIST_EVENT,
 
-    GET_API_INFO("http:/main/md5/", AigRestContract.NO_CACHE),
+    GET_API_INFO("http:/main/md5/"),
 
-    GET_CUSTOMER("https:/customer/getdetails/", AigRestContract.NO_CACHE),
+    GET_CUSTOMER("https:/customer/getdetails/"),
 
     GET_RESOLUTIONS("http:/main/imageresolutions/", AigRestContract.MAX_CACHE_TIME),
 
-    TRACK_ORDER_EVENT("http:/order/trackingorder/", AigRestContract.NO_CACHE),
+    TRACK_ORDER_EVENT("http:/customer/trackingorder/"),
 
     /**
      * NATIVE CHECKOUT EVENTS
      */
 
-    GET_SIGNUP_FORM_EVENT("registersignup", AigRestContract.MAX_CACHE_TIME),
+    GET_SIGNUP_FORM_EVENT("http:/forms/registersignup/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_SIGNUP_FORM_FALLBACK_EVENT("http:/forms/registersignup/", AigRestContract.MAX_CACHE_TIME),
-
-    GUEST_LOGIN_EVENT("https:/customer/createsignup/", AigRestContract.NO_CACHE),
+    GUEST_LOGIN_EVENT("https:/customer/createsignup/"),
 
     GET_CREATE_ADDRESS_FORM_EVENT("http:/forms/addresscreate/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_EDIT_ADDRESS_FORM_EVENT("addressedit", AigRestContract.MAX_CACHE_TIME),
+    GET_EDIT_ADDRESS_FORM_EVENT("http:/forms/addressedit/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_EDIT_ADDRESS_FORM_FALLBACK_EVENT("http:/forms/addressedit/", AigRestContract.MAX_CACHE_TIME),
+    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/getaddresslist/"),
 
-    GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/getaddresslist/", AigRestContract.NO_CACHE),
+    SET_DEFAULT_ADDRESS("https:/customer/makedefaultaddress/"),
 
-    SET_DEFAULT_ADDRESS("https:/customer/makedefaultaddress/", AigRestContract.NO_CACHE),
+    SET_DEFAULT_SHIPPING_ADDRESS(SET_DEFAULT_ADDRESS.action),
 
-    SET_DEFAULT_SHIPPING_ADDRESS(SET_DEFAULT_ADDRESS.action, AigRestContract.NO_CACHE),
+    SET_DEFAULT_BILLING_ADDRESS(SET_DEFAULT_ADDRESS.action),
 
-    SET_DEFAULT_BILLING_ADDRESS(SET_DEFAULT_ADDRESS.action, AigRestContract.NO_CACHE),
+    CREATE_ADDRESS_EVENT,
 
-    CREATE_ADDRESS_EVENT("https:/customer/addresscreate/", AigRestContract.NO_CACHE),
+    CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/"),
 
-    CREATE_ADDRESS_SIGNUP_EVENT("https:/customer/address/create/", AigRestContract.NO_CACHE),
-
-    EDIT_ADDRESS_EVENT("https:/customer/addressedit/", AigRestContract.NO_CACHE),
-
-    GET_BILLING_FORM_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
-
-    SET_BILLING_ADDRESS_EVENT("https:/multistep/addresses/", AigRestContract.NO_CACHE),
+    EDIT_ADDRESS_EVENT,
 
     GET_REGIONS_EVENT,
 
@@ -128,67 +120,73 @@ public enum EventType {
 
     GET_PHONE_PREFIXES,
 
-    GET_SHIPPING_METHODS_EVENT("https:/multistep/shippingmethod/", AigRestContract.DEFAULT_CACHE_TIME),
+    GET_MY_ORDERS_LIST_EVENT("http:/customer/orderlist/"),
 
-    SET_SHIPPING_METHOD_EVENT("https:/multistep/shippingmethod/", AigRestContract.DEFAULT_CACHE_TIME),
+    ADD_VOUCHER("http:/cart/addvoucher/"),
 
-    GET_PAYMENT_METHODS_EVENT("https:/multistep/paymentmethod/", AigRestContract.DEFAULT_CACHE_TIME),
+    REMOVE_VOUCHER("http:/cart/removevoucher/"),
 
-    SET_PAYMENT_METHOD_EVENT("https:/multistep/paymentmethod/", AigRestContract.DEFAULT_CACHE_TIME),
+    GET_CAMPAIGN_EVENT("http:/campaign/get/"),
 
-    GET_MY_ORDERS_LIST_EVENT("http:/order/list/", AigRestContract.NO_CACHE),
+    GET_NEWSLETTERS_FORM_EVENT("http:/forms/managenewsletters/"),
 
-    CHECKOUT_FINISH_EVENT("https:/multistep/finish/", AigRestContract.NO_CACHE),
-
-    NATIVE_CHECKOUT_AVAILABLE("http:/main/getconfig/module/configuration/key/native_checkout_mobile_api/", AigRestContract.NO_CACHE),
-
-    ADD_VOUCHER("http:/order/addvoucher/", AigRestContract.NO_CACHE),
-
-    REMOVE_VOUCHER("http:/order/removevoucher/", AigRestContract.NO_CACHE),
-
-    GET_CAMPAIGN_EVENT("http:/campaign/get/", AigRestContract.NO_CACHE),
-
-    GET_NEWSLETTERS_FORM_EVENT("managenewsletters", AigRestContract.NO_CACHE),
-
-    GET_NEWSLETTERS_FORM_FALLBACK_EVENT("http:/forms/managenewsletters/", AigRestContract.NO_CACHE),
-
-    SUBSCRIBE_NEWSLETTERS_EVENT("https:/customer/managenewsletters/", AigRestContract.NO_CACHE),
+    SUBSCRIBE_NEWSLETTERS_EVENT,
 
     GET_GLOBAL_CONFIGURATIONS,
 
-    GET_COUNTRY_CONFIGURATIONS("http:/main/getconfigurations/", AigRestContract.NO_CACHE),
-
-    HOME_NEWSLETTERS_SIGNUP_FORM_EVENT,
-
-    HOME_NEWSLETTERS_SIGNUP_FORM_FALLBACK_EVENT("https:/newsletter/signup/", AigRestContract.MAX_CACHE_TIME),
+    GET_COUNTRY_CONFIGURATIONS("http:/main/getconfigurations/"),
 
     GET_FAVOURITE_LIST,
 
     GET_RECENTLY_VIEWED_LIST,
 
-    GET_PRODUCT_BUNDLE("http:/catalog/bundle/sku/", AigRestContract.NO_CACHE),
+    GET_PRODUCT_BUNDLE("http:/catalog/bundle/"),
 
-    ADD_PRODUCT_BUNDLE("http:/order/addbundle/", AigRestContract.NO_CACHE),
+    ADD_PRODUCT_BUNDLE("http:/cart/addbundle/"),
 
     GET_SELLER_REVIEWS,
 
-    VALIDATE_PRODUCTS("http:/catalog/validate/", AigRestContract.NO_CACHE),
+    VALIDATE_PRODUCTS("http:/catalog/validate/"),
 
-    GET_SHOP_EVENT("http:/main/getstatic/", AigRestContract.MAX_CACHE_TIME),
+    GET_SHOP_EVENT("http:/main/getstatic/key/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCT_DETAIL("http:/catalog/detail/", AigRestContract.NO_CACHE),
+    GET_PRODUCT_DETAIL("http:/catalog/detail/"),
 
     GET_PRODUCT_REVIEWS(GET_PRODUCT_DETAIL.action, AigRestContract.MAX_CACHE_TIME),
 
-    GET_PRODUCT_OFFERS(GET_PRODUCT_DETAIL.action, AigRestContract.NO_CACHE),
+    GET_PRODUCT_OFFERS(GET_PRODUCT_DETAIL.action),
 
-    ADD_PRODUCT_TO_WISH_LIST("http:/wishlist/addproduct/", AigRestContract.NO_CACHE),
+    ADD_PRODUCT_TO_WISH_LIST("http:/wishlist/addproduct/"),
 
-    REMOVE_PRODUCT_FROM_WISH_LIST("http:/wishlist/removeproduct/", AigRestContract.NO_CACHE),
+    REMOVE_PRODUCT_FROM_WISH_LIST("http:/wishlist/removeproduct/"),
 
-    GET_WISH_LIST("http:/wishlist/getproducts/", AigRestContract.NO_CACHE),
+    GET_WISH_LIST("http:/wishlist/getproducts/"),
 
-    GET_FAQ_TERMS("http:/main/getfaqandterms/", AigRestContract.MAX_CACHE_TIME);
+    GET_FAQ_TERMS("http:/main/getfaqandterms/", AigRestContract.MAX_CACHE_TIME),
+
+    GET_RICH_RELEVANCE_EVENT("http:/richrelevance/request/"),
+
+    // ############# MULTI STEP CHECKOUT #############
+
+    SET_MULTI_STEP_ADDRESSES("https:/multistep/addresses/"),
+
+    GET_MULTI_STEP_ADDRESSES("https:/multistep/getstepaddresses/"),
+
+    GET_MULTI_STEP_SHIPPING("https:/multistep/getstepshipping/"),
+
+    SET_MULTI_STEP_SHIPPING,
+
+    GET_MULTI_STEP_PAYMENT("https:/multistep/getsteppayment/"),
+
+    SET_MULTI_STEP_PAYMENT,
+
+    GET_MULTI_STEP_FINISH("https:/multistep/getstepfinish/"),
+
+    SET_MULTI_STEP_FINISH("https:/multistep/finish/"),
+
+    // ############# CART #############
+
+    CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/");
 
 
     public final String action;
@@ -209,6 +207,13 @@ public enum EventType {
      */
     EventType() {
         this(null, AigRestContract.NO_CACHE);
+    }
+
+    /**
+     * Endpoint constructor with no cache
+     */
+    EventType(String s) {
+        this(s, AigRestContract.NO_CACHE);
     }
 
 }

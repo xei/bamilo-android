@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -24,44 +27,40 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
+import com.mobile.controllers.LogOut;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.rest.RestUrlUtils;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.pojo.DynamicForm;
+import com.mobile.utils.MessagesUtils;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.deeplink.DeepLinkManager;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
 import java.util.Set;
 
 /**
@@ -79,7 +78,8 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final int NO_INFLATE_LAYOUT = 0;
 
-    private NavigationAction action;
+    @NavigationAction.Type
+    private int action;
 
     protected DialogFragment dialog;
 
@@ -89,6 +89,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     protected int titleResId;
 
+    @ConstantsCheckout.CheckoutType
     protected int checkoutStep;
 
     protected Boolean isNestedFragment = false;
@@ -111,13 +112,16 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     private ViewStub mMaintenanceView;
 
-    protected long mLoadTime = 0l; // For tacking
+    protected long mLoadTime = 0; // For tacking
 
-    private Locale mLocale;
+    public static final int NO_ADJUST_CONTENT = 0;
+    public static final int ADJUST_CONTENT = 1;
+    @IntDef({NO_ADJUST_CONTENT, ADJUST_CONTENT})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface KeyboardState{}
 
-    public enum KeyboardState {NO_ADJUST_CONTENT, ADJUST_CONTENT}
-
-    private KeyboardState adjustState = KeyboardState.ADJUST_CONTENT;
+    @KeyboardState
+    private int adjustState = ADJUST_CONTENT;
 
     protected TeaserGroupType mGroupType;
 
@@ -128,12 +132,12 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = titleResId;
-        this.adjustState = adjust_state;
+        this.adjustState = adjustState;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
@@ -150,17 +154,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Constructor with layout to inflate used only by Checkout fragments
      */
-    public BaseFragment(Set<MyMenuItem> enabledMenuItems, NavigationAction action, @LayoutRes int layoutResId, @StringRes int titleResId, KeyboardState adjust_state, int titleCheckout) {
+    public BaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int  adjustState, @ConstantsCheckout.CheckoutType int titleCheckout) {
         this.enabledMenuItems = enabledMenuItems;
         this.action = action;
         this.mInflateLayoutResId = layoutResId;
         this.titleResId = titleResId;
-        this.adjustState = adjust_state;
+        this.adjustState = adjustState;
         this.checkoutStep = titleCheckout;
     }
 
     /**
-     * #### LIFE CICLE ####
+     * #### LIFE CYCLE ####
      */
 
     /*
@@ -176,7 +180,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -184,7 +188,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onCreate(savedInstanceState);
         Bundle arguments = getArguments();
         if(arguments != null){
-            mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE);
+            mGroupType =(TeaserGroupType) arguments.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE);
             mDeepLinkOrigin = arguments.getInt(ConstantsIntentExtra.DEEP_LINK_ORIGIN, DeepLinkManager.FROM_UNKNOWN);
         }
     }
@@ -248,26 +252,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
-    /**
-     * Show the summary order if the view is present
-     *
-     * @author sergiopereira
-     */
-    public void showOrderSummaryIfPresent(int checkoutStep, PurchaseEntity orderSummary) {
-        // Get order summary
-        if (isOrderSummaryPresent) {
-            Print.i(TAG, "ORDER SUMMARY IS PRESENT");
-            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-            ft.replace(ORDER_SUMMARY_CONTAINER, CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary));
-            ft.commit();
-        } else {
-            Print.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
-        }
-    }
-
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -287,14 +274,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
         isOnStoppingProcess = false;
 
-        if (getBaseActivity() != null && !isNestedFragment) {
-            getBaseActivity().warningFactory.hideWarning();
-        }
-
         /**
          * Adjust state for each fragment type.
          */
-        if (!isNestedFragment || action == NavigationAction.Country) {
+        if (!isNestedFragment || action == NavigationAction.COUNTRY) {
             updateAdjustState(this.adjustState, true);
         }
 
@@ -311,11 +294,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     @Override
     public void onPause() {
         super.onPause();
-        /**
-         * Restore locale if called the forceInputAlignToLeft(). 
-         * Fix the input text align to right 
-         */
-        restoreInputLocale();
     }
 
     /*
@@ -351,6 +329,34 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         super.onDestroy();
     }
 
+    /*
+     * #### CHECKOUT SUMMARY FRAGMENT ####
+     */
+
+    /**
+     * Show the summary order if the view is present
+     * On rotate, tries use the old fragment from ChildFragmentManager.
+     * @author sergiopereira
+     */
+    public void showOrderSummaryIfPresent(int checkoutStep, PurchaseEntity orderSummary) {
+        // Get order summary
+        if (isOrderSummaryPresent) {
+            Print.i(TAG, "ORDER SUMMARY IS PRESENT");
+            CheckoutSummaryFragment fragment = (CheckoutSummaryFragment) getChildFragmentManager().findFragmentByTag(CheckoutSummaryFragment.TAG + "_" + checkoutStep);
+            if(fragment == null) {
+                fragment = CheckoutSummaryFragment.getInstance(checkoutStep, orderSummary);
+            } else {
+                // Used to update when is applied a voucher
+                fragment.onUpdate(checkoutStep, orderSummary);
+            }
+            FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+            ft.replace(ORDER_SUMMARY_CONTAINER, fragment, CheckoutSummaryFragment.TAG + "_" + checkoutStep);
+            ft.commit();
+        } else {
+            Print.i(TAG, "ORDER SUMMARY IS NOT PRESENT");
+        }
+    }
+
     /**
      * #### MEMORY ####
      */
@@ -358,6 +364,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * This method should be used when we known that the system clean data of application
      */
+    @Deprecated
     public void restartAllFragments() {
         Print.w(TAG, "IMPORTANT DATA IS NULL - GOTO HOME -> " + mainActivity);
         final BaseActivity activity = getBaseActivity();
@@ -383,42 +390,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public void onLowMemory() {
         super.onLowMemory();
         Print.i(TAG, "ON LOW MEMORY");
-//        // TODO - Validate this is necessary
-//        if (getView() != null && isHidden()) {
-//            unbindDrawables(getView());
-//        }
     }
-
-//    /**
-//     * Recycle bitmaps
-//     * @see <p>http://stackoverflow.com/questions/10314527/caused-by-java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget</p>
-//     *      <p>http://stackoverflow.com/questions/1949066/java-lang-outofmemoryerror-bitmap-size-exceeds-vm-budget-android</p>
-//     */
-//    public void unbindDrawables(View view) {
-//        Print.i(TAG, "UNBIND DRAWABLES");
-//        try {
-//
-//            if (view.getBackground() != null) {
-//                view.getBackground().setCallback(null);
-//            } else if (view instanceof ViewGroup) {
-//                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-//                    unbindDrawables(((ViewGroup) view).getChildAt(i));
-//                }
-//                if (view instanceof AdapterView<?>) {
-//                    return;
-//                }
-//
-//                try {
-//                    ((ViewGroup) view).removeAllViews();
-//                } catch (IllegalArgumentException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//        } catch (RuntimeException e) {
-//            Print.w(TAG, "" + e);
-//        }
-//    }
 
     /**
      * #### BACK PRESSED ####
@@ -495,6 +467,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
+     * Create a BaseActivity weak reference.
+     */
+    public WeakReference<BaseActivity> getWeakBaseActivity() {
+        return new WeakReference<>(getBaseActivity());
+    }
+
+    /**
      * Set screen response to keyboard request
      *
      * @param newAdjustState
@@ -503,7 +482,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      *            if <code>true</code> the adjustState is replaced by <code>newAdjustState</code>
      * @author Andre Lopes
      */
-    private void updateAdjustState(KeyboardState newAdjustState, boolean force) {
+    private void updateAdjustState(@KeyboardState int newAdjustState, boolean force) {
         if (getBaseActivity() != null) {
             // Let that the definition of the softInputMode can be forced if the flag force is true
             if (force || BaseActivity.currentAdjustState != newAdjustState) {
@@ -604,7 +583,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Show error layout based on type. if the view is not inflated, it will be in first place.
      */
-    protected final void showErrorFragment(int type, OnClickListener listener){
+    protected final void showErrorFragment(@ErrorLayoutFactory.LayoutErrorType int type, OnClickListener listener){
         if(mErrorView instanceof ViewStub){
             // If not inflated yet
             mErrorView.setTag(mErrorView.getId(), type);
@@ -637,58 +616,81 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Show BaseActivity progress loading
      */
     protected void showActivityProgress() {
-        getBaseActivity().showProgress();
+        if(getBaseActivity() != null) {
+            getBaseActivity().showProgress();
+        }
     }
 
     /**
      * Hide BaseActivity progress loading
      */
     protected void hideActivityProgress() {
-        getBaseActivity().dismissProgress();
+        if(getBaseActivity() != null) {
+            getBaseActivity().dismissProgress();
+        }
     }
 
 
     protected void showNoNetworkWarning() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.NO_INTERNET, getString(R.string.no_internet_access_warning_title));
+        getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getBaseActivity().getString(R.string.no_internet_access_warning_title));
         hideActivityProgress();
         showFragmentContentContainer();
     }
 
     protected void showUnexpectedErrorWarning() {
-        getBaseActivity().warningFactory.showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
+        getBaseActivity().showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
         showFragmentContentContainer();
         hideActivityProgress();
     }
 
-    public void showInfoAddToShoppingCartCompleted() {
+    public void showWarningSuccessMessage(@Nullable String message) {
+        showWarningSuccessMessage(message, null);
+    }
+
+    public void showWarningSuccessMessage(@Nullable String message, @Nullable EventType eventType) {
+        showWarningMessage(WarningFactory.SUCCESS_MESSAGE, message, eventType);
+    }
+
+    public void showWarningSuccessMessage(@Nullable String message, int fallback) {
         if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ADDED_ITEM_TO_CART, getString(R.string.added_to_shop_cart_dialog_text));
+            String text = TextUtils.isNotEmpty(message) ? message : getBaseActivity().getString(fallback);
+            getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, text);
         }
     }
 
-    public void showInfoAddToShoppingCartFailed() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_ADD_TO_CART, getString(R.string.error_add_to_shopping_cart));
+    public void showWarningErrorMessage(@Nullable String message) {
+        showWarningErrorMessage(message, null);
+    }
+
+    public void showWarningErrorMessage(@Nullable String message, @Nullable EventType eventType) {
+        showWarningMessage(WarningFactory.ERROR_MESSAGE, message, eventType);
+    }
+
+    private void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact,
+                                    @Nullable String message,
+                                    @Nullable EventType eventType) {
+        if(TextUtils.isNotEmpty(message)) {
+            getBaseActivity().showWarningMessage(warningFact, message);
+        }
+        else  {
+            int id = MessagesUtils.getMessageId(eventType, true);
+            if (id > 0) {
+                getBaseActivity().showWarningMessage(warningFact, getBaseActivity().getString(id));
+            }
         }
     }
 
-    public void showInfoLoginSuccess() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.LOGIN_SUCCESS, getString(R.string.succes_login));
+    /**
+     * Method used to show validation messages for a form submission.
+     */
+    public void showFormValidateMessages(@Nullable DynamicForm dynamicForm, @NonNull BaseResponse response, @NonNull EventType type) {
+        if(dynamicForm != null) {
+            dynamicForm.showValidateMessages(response.getValidateMessages());
+        } else {
+            showWarningErrorMessage(response.getValidateMessage(), type);
         }
     }
 
-    public void showInfoAddToShoppingCartOOS() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.ERROR_OUT_OF_STOCK, getString(R.string.product_outof_stock));
-        }
-    }
-
-    public void showInfoAddToSaved() {
-        if(getBaseActivity() != null) {
-            getBaseActivity().warningFactory.showWarning(WarningFactory.REMOVE_FROM_SAVED, getString(R.string.products_removed_saved));
-        }
-    }
 
     /**
      * Set the inflated stub
@@ -729,7 +731,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         try {
             boolean isSingleShop = getResources().getBoolean(R.bool.is_single_shop_country);
             SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getString(R.string.app_name));
+            String country = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, getBaseActivity().getString(R.string.app_name));
             TextView fallbackBest = (TextView) inflated.findViewById(R.id.fallback_best);
             TextView fallbackCountry = (TextView) inflated.findViewById(R.id.fallback_country);
             View countryD = inflated.findViewById(R.id.fallback_country_double);
@@ -774,13 +776,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
     protected void onInflateErrorLayout(ViewStub viewStub, View inflated) {
         Print.i(TAG, "ON INFLATE STUB: ERROR LAYOUT");
-
         mErrorView = inflated;
-
         // Init error factory
         mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
-        showErrorFragment((int) viewStub.getTag(viewStub.getId()), (OnClickListener) viewStub.getTag(R.id.stub_listener));
-
+        @ErrorLayoutFactory.LayoutErrorType int type = (int) viewStub.getTag(viewStub.getId());
+        showErrorFragment(type, (OnClickListener) viewStub.getTag(R.id.stub_listener));
     }
 
     /**
@@ -804,17 +804,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      */
 
     /**
-     * Restore the saved locale {@link #onResume()} if not null.
-     *
-     * @author sergiopereira
-     */
-    protected void restoreInputLocale() {
-        if (mLocale != null) {
-            Locale.setDefault(mLocale);
-        }
-    }
-
-    /**
      * Get load time used for tracking
      *
      * @author paulo
@@ -836,21 +825,26 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         Print.i(TAG, "ON HANDLE SUCCESS EVENT");
         // Validate event
         EventType eventType = baseResponse.getEventType();
+
         switch (eventType) {
-            case GET_SHOPPING_CART_ITEMS_EVENT:
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
+            case ADD_PRODUCT_BUNDLE:
+                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
+            case GET_SHOPPING_CART_ITEMS_EVENT:
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
+            case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:
                 getBaseActivity().updateCartInfo();
-                return true;
-            case LOGOUT_EVENT:
-                Print.i(TAG, "LOGOUT EVENT");
-                getBaseActivity().onLogOut();
                 return true;
             case GUEST_LOGIN_EVENT:
             case FACEBOOK_LOGIN_EVENT:
             case LOGIN_EVENT:
-                // TODO ADD HERE COMMON METHODS
+            case AUTO_LOGIN_EVENT:
+            case FORGET_PASSWORD_EVENT:
+            case REMOVE_PRODUCT_FROM_WISH_LIST:
+            case ADD_PRODUCT_TO_WISH_LIST:
+            case ADD_VOUCHER:
+            case REMOVE_VOUCHER:
+                handleSuccessTaskEvent(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), eventType);
                 return true;
             default:
                 break;
@@ -860,112 +854,142 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     /**
      * Handle error response.
-     * @param baseResponse The error bundle
+     * @param response The error bundle
      * @return intercept or not
      */
     @SuppressWarnings("unchecked")
-    public boolean handleErrorEvent(final BaseResponse baseResponse) {
+    public boolean handleErrorEvent(final BaseResponse response) {
         Print.i(TAG, "ON HANDLE ERROR EVENT");
-
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        EventTask eventTask = baseResponse.getEventTask();
-
-        if (!baseResponse.isPrioritary()) {
+        // Validate priority
+        if (!response.isPriority()) {
             return false;
         }
-
-        if (errorCode == null) {
-            return false;
+        // Hide keyboard if error screen shows
+        if (getBaseActivity() != null) {
+            getBaseActivity().hideKeyboard();
         }
-
+        // Validate error code
+        int errorCode = response.getError().getCode();
         Print.i(TAG, "ON HANDLE ERROR EVENT: " + errorCode);
-        if (errorCode.isNetworkError()) {
-            switch (errorCode) {
-                case IO:
-                case CONNECT_ERROR:
-                    if(eventTask == EventTask.SMALL_TASK) {
-                        showUnexpectedErrorWarning();
-                    } else {
-                        showFragmentErrorRetry();
-                    }
-                    return true;
-                case TIME_OUT:
-                case NO_NETWORK:
-                    // Show no network layout
-                    if(eventTask == EventTask.SMALL_TASK){
-                        showNoNetworkWarning();
-                    } else {
-                        showFragmentNoNetworkRetry();
-                    }
-                    return true;
-                case HTTP_STATUS:
-                    // Case HOME show retry otherwise show continue
-                    if(action == NavigationAction.Home) {
-                        showFragmentErrorRetry();
-                    } else {
-                        showContinueShopping();
-                    }
-                    return true;
-                case SSL:
-                case SERVER_IN_MAINTENANCE:
-                    showFragmentMaintenance();
-                    return true;
-                case REQUEST_ERROR:
-                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    String dialogMsg = "";
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                    }
-                    if (validateMessages != null) {
-                        for (String message : validateMessages) {
-                            dialogMsg += message + "\n";
-                        }
-                    } else {
-                        for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
-                            dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-                        }
-                    }
-                    if (dialogMsg.equals("")) {
-                        dialogMsg = getString(R.string.validation_errortext);
-                    }
-                    // showContentContainer();
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.validation_title), dialogMsg,
-                            getResources().getString(R.string.ok_label), "", new OnClickListener() {
+        // Case network error
+        if (ErrorCode.isNetworkError(errorCode)) {
+            return handleNetworkError(errorCode, response.getEventTask());
+        }
+        // Case request error
+        else {
+            return handleRequestError(errorCode, response);
+        }
+    }
 
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(getActivity().getSupportFragmentManager(), null);
-                    return true;
-                case SERVER_OVERLOAD:
-                    if(getBaseActivity() != null){
-                        ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
-                        showFragmentErrorRetry();
-                    }
-                    return true;
+    /**
+     * Handle request errors
+     */
+    public boolean handleRequestError(int errorCode, BaseResponse response) {
+        switch (errorCode) {
+            case ErrorCode.ERROR_PARSING_SERVER_DATA:
+                showFragmentMaintenance();
+                return true;
+            case ErrorCode.CUSTOMER_NOT_LOGGED_IN:
+                onLoginRequired();
+                return true;
+            default:
+                // Show warning messages
+                handleErrorTaskEvent(response.getErrorMessage(), response.getEventTask(), response.getEventType());
+                return false;
+        }
+    }
+
+    /**
+     * Handle network events.
+     */
+    public boolean handleNetworkError(int errorCode, EventTask eventTask) {
+        boolean result = true;
+        switch (errorCode) {
+            case ErrorCode.IO:
+            case ErrorCode.CONNECT_ERROR:
+                if (eventTask == EventTask.ACTION_TASK) {
+                    showUnexpectedErrorWarning();
+                } else {
+                    showFragmentErrorRetry();
+                }
+                break;
+            case ErrorCode.TIME_OUT:
+            case ErrorCode.NO_CONNECTIVITY:
+                // Show no network layout
+                if (eventTask == EventTask.ACTION_TASK) {
+                    showNoNetworkWarning();
+                } else {
+                    showFragmentNoNetworkRetry();
+                }
+                break;
+            case ErrorCode.HTTP_STATUS:
+                // Case HOME show retry otherwise show continue
+                if (action == NavigationAction.HOME) {
+                    showFragmentErrorRetry();
+                } else {
+                    showContinueShopping();
+                }
+                break;
+            case ErrorCode.SSL:
+            case ErrorCode.SERVER_IN_MAINTENANCE:
+                showFragmentMaintenance();
+                break;
+            case ErrorCode.SERVER_OVERLOAD:
+                if (getBaseActivity() != null) {
+                    ActivitiesWorkFlow.showOverLoadErrorActivity(getBaseActivity());
+                    showFragmentErrorRetry();
+                }
+                break;
+            default:
+                result = false;
+                break;
+        }
+        return result;
+    }
+
+    /**
+     * Handle task events.
+     */
+    public void handleErrorTaskEvent(final String errorMessage, final EventTask eventTask, final EventType eventType) {
+        if (eventTask == EventTask.ACTION_TASK) {
+            switch (eventType) {
+                // Case form submission
+                case REVIEW_RATING_PRODUCT_EVENT:
+                case LOGIN_EVENT:
+                case GUEST_LOGIN_EVENT:
+                case REGISTER_ACCOUNT_EVENT:
+                case EDIT_USER_DATA_EVENT:
+                case CHANGE_PASSWORD_EVENT:
+                case FORGET_PASSWORD_EVENT:
+                case CREATE_ADDRESS_EVENT:
+                case EDIT_ADDRESS_EVENT:
+                case SET_MULTI_STEP_SHIPPING:
+                case SET_MULTI_STEP_PAYMENT:
+                    // If the error message is empty used the showFormValidateMessages(form)
+                    if(TextUtils.isEmpty(errorMessage)) break;
+                // Case other tasks
                 default:
+                    showWarningErrorMessage(errorMessage, eventType);
                     break;
             }
         }
-        // Case unexpected error from server data
-        else if (errorCode == ErrorCode.ERROR_PARSING_SERVER_DATA) {
-            showFragmentMaintenance();
+    }
+
+    public void handleSuccessTaskEvent(final String successMessage, final EventTask eventTask, final EventType eventType) {
+        if(eventTask == EventTask.ACTION_TASK){
+            showWarningSuccessMessage(successMessage, eventType);
         }
+    }
 
-        /**
-         * TODO: CREATE A METHOD TO DO SOMETHING WHEN IS RECEIVED THE ERROR CUSTOMER_NOT_LOGGED_IN
-         * // CODE_CUSTOMER_NOT_LOGGED_IN should be an ErrorCode
-         * // CASE REQUEST_ERROR && CUSTOMER_NOT_LOGGED_IN
-         */
-
-        return false;
+    /**
+     * Request login.
+     * TODO : Find a generic solution for login
+     */
+    protected void onLoginRequired() {
+        // Clean all customer data
+        LogOut.cleanCustomerData(getBaseActivity());
+        // Goto login
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
 
     /*
@@ -1073,7 +1097,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     protected void onClickContinueButton() {
-        getBaseActivity().onBackPressed();
+        if(getBaseActivity() != null) {
+            getBaseActivity().onBackPressed();
+        }
     }
 
     /**
@@ -1082,9 +1108,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * @author sergiopereira
      */
     private void onClickMaintenanceChooseCountry() {
-        // Show Change country
-        getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
-        getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        if(getBaseActivity() != null) {
+            // Show Change country
+            getBaseActivity().popBackStackUntilTag(FragmentType.HOME.toString());
+            getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /*
@@ -1099,91 +1127,5 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             dialog.dismissAllowingStateLoss();
         }
     }
-
-    /**
-     * Process the product click
-     * @author sergiopereira
-     */
-    protected void onClickProduct(String sku, Bundle bundle) {
-        Print.i(TAG, "ON CLICK PRODUCT");
-        if (sku != null) {
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-        } else {
-            Print.i(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Get sku parameter from a product detail complete URL
-     */
-    protected String getSkuFromUrl(String url) {
-        if(TextUtils.isNotEmpty(url)){
-            return RestUrlUtils.getQueryValue(url, RestConstants.SKU);
-        }
-        return null;
-    }
-
-
-    /**
-     * Process the click on shops in shop
-     *
-     * @param url    The url for CMS block
-     * @param title  The shop title
-     * @param bundle The new bundle
-     */
-    protected void onClickInnerShop(String url, String title, Bundle bundle) {
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Process the catalog click
-     */
-    protected void onClickCatalog(String targetUrl, String targetTitle, Bundle bundle) {
-        Print.i(TAG, "ON CLICK CATALOG");
-        if (targetUrl != null) {
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
-            getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, true);
-        } else {
-            Print.w(TAG, "WARNING: URL IS NULL");
-        }
-    }
-
-    /**
-     * Create an array with a single campaign
-     */
-    protected ArrayList<TeaserCampaign> createSingleCampaign(String targetTitle, String targetUrl) {
-        ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
-        TeaserCampaign campaign = new TeaserCampaign();
-        campaign.setTitle(targetTitle);
-        campaign.setUrl(targetUrl);
-        campaigns.add(campaign);
-        return campaigns;
-    }
-
-    /**
-     * validate if it show regular warning or confirmation cart message
-     * @param baseResponse
-     */
-    protected void showAddToCartCompleteMessage(BaseResponse baseResponse){
-        //if has cart popup, show configurable confirmation message with cart total price
-        if(CountryPersistentConfigs.hasCartPopup(getBaseActivity().getApplicationContext())){
-            PurchaseEntity purchaseEntity = ((ShoppingCartAddItemHelper.AddItemStruct) baseResponse.getMetadata().getData()).getPurchaseEntity();
-            getBaseActivity().mConfirmationCartMessageView.showMessage(purchaseEntity.getTotal());
-        }
-        else{
-            //show regular message add item to cart
-            showInfoAddToShoppingCartCompleted();
-        }
-    }
-
 
 }

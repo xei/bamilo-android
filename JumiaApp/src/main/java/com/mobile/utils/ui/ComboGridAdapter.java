@@ -16,7 +16,6 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -166,19 +165,21 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         setSpecificViewForListLayout(holder, item);
         // Set prices
         setProductPrice(holder, item);
+        // Set variation
+        ProductUtils.setVariationContent(holder.variation, item);
+        holder.variation.setTag(R.id.position, position);
+        holder.variation.setOnClickListener(this);
         //set selection
         holder.cbItem.setChecked(item.isChecked());
-        //set variation if has multiple variations and there is a selected variation
-        if (item.hasMultiSimpleVariations() && item.getSelectedSimple() != null) {
-            ProductSimple productSimple = item.getSelectedSimple();
-            holder.variation.setText(productSimple.getVariationValue());
-            holder.variation.setVisibility(View.VISIBLE);
-        }
+        holder.cbItem.setTag(R.id.position, position);
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
-        holder.itemView.setOnClickListener(this);
-    }
 
+        if(!item.getSku().equals(mProductSku)) {
+            holder.cbItem.setOnClickListener(this);
+            holder.itemView.setOnClickListener(this);
+        }
+    }
 
     /**
      * Set the product price.
@@ -256,16 +257,27 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
 
     @Override
     public void onClick(View view) {
-        if (mOnViewHolderClicked != null) {
-            // position
-            int position = (Integer) view.getTag(R.id.position);
-            ProductBundle productBundle = mDataSet.get(position);
-            if (!mProductSku.equals(productBundle.getSku())) {
-                CheckBox cb = (CheckBox) view.findViewById(R.id.item_check);
-                cb.setChecked(!cb.isChecked());
+
+        // position
+        int position = (Integer) view.getTag(R.id.position);
+
+        if (mOnViewHolderClicked != null){
+            //if is checkbox
+            if(view.getId() == R.id.item_check || view.getId() == R.id.choosen_variation) {
+                mOnViewHolderClicked.onViewHolderItemClick(view,this,position);
+            }
+            //if is choose size
+//            else if(view.getId() == R.id.choosen_variation){
+//                if (mOnViewHolderClicked != null)
+//                    mOnViewHolderClicked.onViewHolderItemClick(view,this,position);
+//            }
+            else{
+                //if is the whole view
                 mOnViewHolderClicked.onViewHolderClick(this, position);
             }
         }
+
+
     }
 
 

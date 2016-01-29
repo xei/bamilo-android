@@ -12,22 +12,20 @@ import org.json.JSONObject;
  */
 public class ShippingMethodOption {
 
-    public String shippingMethod;
+    public String value;
     public String label;
     public String deliveryTime;
     public long shippingFee;
 
     public ShippingMethodOption() {
-        this.shippingMethod = "";
-        this.label = "";
-        this.deliveryTime = "";
+        super();
     }
 
-    public void initialize(String key, JSONObject jsonObject) {
-        this.shippingMethod = key;
+    public void initialize(JSONObject jsonObject) {
         this.label = jsonObject.optString(RestConstants.LABEL);
         this.deliveryTime = jsonObject.optString(RestConstants.DELIVERY_TIME);
-        this.shippingFee = jsonObject.optLong(RestConstants.JSON_SHIPPING_FEE_TAG);
+        this.value = jsonObject.optString(RestConstants.VALUE);
+        this.shippingFee = jsonObject.optLong(RestConstants.SHIPPING_FEE);
     }
 
 }

@@ -19,6 +19,7 @@ import com.mobile.newFramework.objects.catalog.FeaturedItemBrand;
 import com.mobile.newFramework.objects.catalog.FeaturedItemProduct;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -60,7 +61,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         int count;
 
         int featureListSize = this.mFeaturedList.size();
-        Print.d(TAG, "featureListSize: " + featureListSize);
         int pageIndex = featureListSize / this.partialSize;
 
         if (featureListSize % this.partialSize == 0) {
@@ -68,7 +68,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         } else {
             count = pageIndex + 1;
         }
-        Print.d(TAG, "count: " + count);
         return count;
     }
 
@@ -149,13 +148,13 @@ public class FeaturedItemsAdapter extends PagerAdapter {
             FragmentType search = FragmentType.PRODUCT_DETAILS;
             // change behaviour depending on type of FeaturedItem
             if (featuredItem instanceof FeaturedItemProduct) {
-                bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, ((FeaturedItemProduct) featuredItem).getSku());
+                bundle.putString(ConstantsIntentExtra.CONTENT_ID, ((FeaturedItemProduct) featuredItem).getSku());
                 navigationSourceId = R.string.gsearch;
                 search = FragmentType.PRODUCT_DETAILS;
             } else if (featuredItem instanceof FeaturedItemBrand) {
-                bundle.putString(ConstantsIntentExtra.CONTENT_URL, featuredItem.getUrl());
+                bundle.putString(ConstantsIntentExtra.CONTENT_ID, TargetLink.getIdFromTargetLink(featuredItem.getTarget()));
                 navigationSourceId = R.string.gsearch;
-                search = FragmentType.CATALOG;
+                search = FragmentType.CATALOG_BRAND;
                 // add title for Brands
                 bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, featuredItem.getName());
             }
@@ -190,13 +189,12 @@ public class FeaturedItemsAdapter extends PagerAdapter {
                 TextView textView = (TextView) mElement.findViewById(idPrice);
                 double price = ((FeaturedItemProduct) featuredItem).getPrice();
                 double special = ((FeaturedItemProduct) featuredItem).getSpecialPrice();
-                if(Double.isNaN(special) && special > 0) {
+                if(!Double.isNaN(special) && special > 0) {
                     textView.setText(CurrencyFormatter.formatCurrency(special));
                 } else {
                     textView.setText(CurrencyFormatter.formatCurrency(price));
                 }
             }
-            // RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img);
             RocketImageLoader.instance.loadImage(featuredItem.getImageUrl(), img, progress, R.drawable.no_image_large);
         } else {
             Print.e(TAG, "setViewForFeaturedItem for index: " + index + " with no layout available!");

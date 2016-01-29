@@ -16,9 +16,7 @@ import java.util.Iterator;
 
 public class VersionInfo implements IJSONSerializable, Parcelable {
 
-    private final static String TAG = VersionInfo.class.getSimpleName();
-
-    //private final static String JSON_VERSION_TAG = "version";
+    public final static String TAG = VersionInfo.class.getSimpleName();
 
     private final HashMap<String, Version> mVersions;
 
@@ -29,9 +27,7 @@ public class VersionInfo implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         try {
-
-            JSONObject versionInfo = jsonObject.getJSONObject(RestConstants.JSON_VERSION_TAG);
-
+            JSONObject versionInfo = jsonObject.getJSONObject(RestConstants.VERSION);
             @SuppressWarnings("unchecked")
             Iterator<String> iter = versionInfo.keys();
             while( iter.hasNext()) {
@@ -42,10 +38,8 @@ public class VersionInfo implements IJSONSerializable, Parcelable {
                 mVersions.put( packageName, version);
             }
         } catch (JSONException e ) {
-//            Log.e(TAG, "error parsing json: ", e);
             return false;
         }
-
         return true;
     }
     @Override
@@ -54,13 +48,13 @@ public class VersionInfo implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
-    public void addEntry(String key, Version version) {
-        mVersions.put(key, version);
-    }
+//    public void addEntry(String key, Version version) {
+//        mVersions.put(key, version);
+//    }
 
     public HashMap<String, Version> getMap() {
         return mVersions;

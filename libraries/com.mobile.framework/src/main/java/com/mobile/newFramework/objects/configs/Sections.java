@@ -22,7 +22,7 @@ public class Sections extends LinkedList<Section> implements IJSONSerializable, 
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        JSONArray sectionsJSONArray = jsonObject.optJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray sectionsJSONArray = jsonObject.optJSONArray(RestConstants.DATA);
         for (int i = 0; i < sectionsJSONArray.length(); ++i) {
             JSONObject sessionObject = sectionsJSONArray.optJSONObject(i);
             Section section = new Section();
@@ -38,7 +38,7 @@ public class Sections extends LinkedList<Section> implements IJSONSerializable, 
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

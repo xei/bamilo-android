@@ -2,39 +2,32 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ListAdapter;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.OffersListAdapterNew;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.OfferList;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class used to show the product offers
@@ -59,7 +52,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     private TextView mProductBrand;
 
-    private GridView mOffersList;
+    private HeaderFooterGridView mOffersList;
 
     private ProductOffer offerAddToCart;
 
@@ -79,10 +72,10 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
      */
     public ProductOffersFragmentNew() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Offers,
+                NavigationAction.OFFERS,
                 R.layout.product_offers_main_new,
                 R.string.other_sellers,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -108,7 +101,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         // Get data
-        mCompleteProductSku = arguments.getString(ConstantsIntentExtra.PRODUCT_SKU);
+        mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
         mCompleteProductName = arguments.getString(ConstantsIntentExtra.PRODUCT_NAME);
         mCompleteBrand = arguments.getString(ConstantsIntentExtra.PRODUCT_BRAND);
 
@@ -127,7 +120,12 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         // Get views
         mProductName = (TextView) view.findViewById(R.id.offer_product_name);
         mProductBrand = (TextView) view.findViewById(R.id.offer_product_brand);
-        mOffersList = (GridView) view.findViewById(R.id.offers_list);
+        mOffersList = (HeaderFooterGridView) view.findViewById(R.id.offers_list);
+        mOffersList.setNestedScrollingEnabled(false);
+        mOffersList.setHasFixedSize(true);
+        mOffersList.setGridLayoutManager(getResources().getInteger(R.integer.favourite_num_columns));
+        mOffersList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mOffersList.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
     }
     
     /*
@@ -163,7 +161,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(ConstantsIntentExtra.PRODUCT_SKU, mCompleteProductSku);
+        outState.putString(ConstantsIntentExtra.CONTENT_ID, mCompleteProductSku);
         outState.putString(ConstantsIntentExtra.PRODUCT_NAME, mCompleteProductName);
         if(productOffers != null && CollectionUtils.isEmpty(productOffers.getOffers())){
             outState.putParcelable(PRODUCT_OFFERS, productOffers);
@@ -224,7 +222,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         mProductBrand.setText(mCompleteBrand);
         OffersListAdapterNew offersAdapter = new OffersListAdapterNew(getActivity().getApplicationContext(),productOffers.getOffers(), this);
         mOffersList.setAdapter(offersAdapter);
-        mOffersList.setOnItemClickListener(this);
+        mOffersList.setOnClickListener(this);
     }
 
 
@@ -272,7 +270,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
-            productOffers = (OfferList)baseResponse.getMetadata().getData();
+            productOffers = (OfferList)baseResponse.getContentData();
             setAppContent();
             showFragmentContentContainer();
             hideActivityProgress();
@@ -281,7 +279,6 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
             getBaseActivity().updateCartInfo();
             hideActivityProgress();
             showFragmentContentContainer();
-            showAddToCartCompleteMessage(baseResponse);
             break;
         default:
             break;
@@ -290,79 +287,22 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-
         // Validate fragment visibility
         if (isOnStoppingProcess) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        // Hide progress
         hideActivityProgress();
-        
-        if (super.handleErrorEvent(baseResponse)) {
-            return;
-        }
+        // Super
+        if (super.handleErrorEvent(baseResponse)) return;
+        // Validate type
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType);
         switch (eventType) {
         case GET_PRODUCT_OFFERS:
-            hideActivityProgress();
             showFragmentContentContainer();
             showFragmentErrorRetry();
-            break;
-        case ADD_ITEM_TO_SHOPPING_CART_EVENT:
-//            mBundleButton.setEnabled(true);
-//            isAddingProductToCart = false;
-            hideActivityProgress();
-            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-
-                if (errorMessages != null) {
-                    int titleRes = R.string.error_add_to_cart_failed;
-                    int msgRes = -1;
-
-                    String message = null;
-                    if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_SOLD_OUT)) {
-                        msgRes = R.string.product_outof_stock;
-                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_PRODUCT_ADD_OVERQUANTITY)) {
-                        msgRes = R.string.error_add_to_shopping_cart_quantity;
-                    } else if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_ORDER_PRODUCT_ERROR_ADDING)) {
-                        List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                        if (validateMessages != null && validateMessages.size() > 0) {
-                            message = validateMessages.get(0);
-                        } else {
-                            msgRes = R.string.error_add_to_cart_failed;
-                        }
-                    }
-
-                    if (msgRes != -1) {
-                        message = getString(msgRes);
-                    } else if (message == null) {
-                        return;
-                    }
-
-                    FragmentManager fm = getFragmentManager();
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(titleRes),
-                            message,
-                            getString(R.string.ok_label), "", new OnClickListener() {
-
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(fm, null);
-                    return;
-                }
-            }
-            if (!errorCode.isNetworkError()) {
-                addToShoppingCartFailed();
-                return;
-            }
             break;
         default:
             break;
@@ -379,9 +319,9 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         ProductOffer offer = productOffers.getOffers().get(position);
         if(offer.getSeller() != null){
             Bundle bundle = new Bundle();
-            String targetUrl = offer.getSeller().getUrl();
+            String targetUrl = offer.getSeller().getTarget();
             String targetTitle = offer.getSeller().getName();
-            bundle.putString(ConstantsIntentExtra.CONTENT_URL, targetUrl);
+            bundle.putString(ConstantsIntentExtra.DATA, targetUrl);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, targetTitle);
             bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, targetUrl);
@@ -417,16 +357,6 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         }
     }
 
-    private void executeAddToShoppingCartCompleted() {
-        super.showInfoAddToShoppingCartCompleted();
-
-    }
-    
-    private void addToShoppingCartFailed() {
-        super.showInfoAddToShoppingCartFailed() ;
-
-    }
-
     @Override
     public void onDialogListItemSelect(int position) {
         if(offerAddToCart != null){
@@ -441,11 +371,13 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     }
 
     @Override
+    public void onDialogSizeListClickView(int position, CampaignItem item) {
+
+    }
+
+    @Override
     public void onDialogListDismiss() {
-        ListAdapter listAdapter = mOffersList.getAdapter();
-        if(listAdapter instanceof OffersListAdapterNew){
-            ((OffersListAdapterNew) listAdapter).notifyDataSetChanged();
-        }
+       mOffersList.getAdapter().notifyDataSetChanged();
     }
 
     @Override

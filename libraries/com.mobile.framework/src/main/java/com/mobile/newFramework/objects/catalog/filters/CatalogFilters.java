@@ -33,7 +33,7 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        JSONArray filtersArray = jsonObject.getJSONArray(RestConstants.JSON_FILTERS_TAG);
+        JSONArray filtersArray = jsonObject.getJSONArray(RestConstants.FILTERS);
 
         for(int i = 0; i< filtersArray.length();i++){
             try {
@@ -52,10 +52,7 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
     private CatalogFilter getCatalogType(JSONObject jsonObject) throws JSONException {
         String id = jsonObject.getString(RestConstants.ID);
 
-        /* Temporary: category is being ignored temporarily because it has a different behavior */
-        if(id.equals(CatalogFilter.CATEGORY)){
-          return null;
-        } else if(id.equals(CatalogFilter.RATING)){
+        if(id.equals(CatalogFilter.RATING)){
             return new CatalogRatingFilter(jsonObject);
         } else if(id.equals(CatalogFilter.PRICE)){
             return new CatalogPriceFilter(jsonObject);
@@ -70,7 +67,7 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 }

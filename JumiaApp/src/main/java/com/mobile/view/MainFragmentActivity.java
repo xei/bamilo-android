@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
-import com.ad4screen.sdk.Tag;
+import com.a4s.sdk.plugins.annotations.UseA4S;
+import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -15,16 +16,15 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
+import com.mobile.view.fragments.CheckoutAddressesFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
 import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
-import com.mobile.view.fragments.CheckoutMyAddressesFragment;
-import com.mobile.view.fragments.CheckoutMyOrderFragment;
+import com.mobile.view.fragments.CheckoutFinishFragment;
 import com.mobile.view.fragments.CheckoutPaymentMethodsFragment;
 import com.mobile.view.fragments.CheckoutShippingMethodsFragment;
 import com.mobile.view.fragments.CheckoutThanksFragment;
@@ -33,11 +33,11 @@ import com.mobile.view.fragments.ComboFragment;
 import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
+import com.mobile.view.fragments.MyAccountAddressesFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
-import com.mobile.view.fragments.MyAccountMyAddressesFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
@@ -64,12 +64,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-//import com.mobile.view.fragments.CheckoutAboutYouFragment;
-
 /**
  * @author sergiopereira
  */
-@Tag(name = "MainActivity")
+@UseA4S
 public class MainFragmentActivity extends BaseActivity {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
@@ -84,7 +82,7 @@ public class MainFragmentActivity extends BaseActivity {
      * Constructor
      */
     public MainFragmentActivity() {
-        super(NavigationAction.Unknown,
+        super(NavigationAction.UNKNOWN,
                 EnumSet.noneOf(MyMenuItem.class),
                 EnumSet.noneOf(EventType.class),
                 0,
@@ -107,18 +105,9 @@ public class MainFragmentActivity extends BaseActivity {
             Print.d(TAG, "################### SAVED INSTANCE IS NULL");
             // Initialize fragment controller
             FragmentController.getInstance().init();
-            // Get deep link
-            Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(getIntent());
-            // Validate deep link
-            boolean isDeepLinkLaunch = isValidDeepLinkNotification(mDeepLinkBundle);
-            // Track open app event for all tracker but Adjust
-            TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
-            // Invalid deep link
-            if (!isDeepLinkLaunch) {
+            // Case invalid deep link goto HOME else goto deep link
+            if (!DeepLinkManager.onSwitchToDeepLink(this, getIntent())) {
                 onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            } else {
-                // Adjust reattribution
-                TrackerDelegator.deeplinkReattribution(getIntent());
             }
 
         } else {
@@ -134,7 +123,7 @@ public class MainFragmentActivity extends BaseActivity {
             if (!CollectionUtils.isEmpty(backStackTypes)) {
                 FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, mCurrentFragmentType);
             } else {
-                Print.d(TAG, "COULDN'T RECOVER BACKSTACK");
+                Print.d(TAG, "COULDN'T RECOVER BACK STACK");
             }
         }
 
@@ -158,12 +147,8 @@ public class MainFragmentActivity extends BaseActivity {
         Print.d(TAG, "ON NEW INTENT");
         // For AD4 - http://wiki.accengage.com/android/doku.php?id=sub-classing-any-activity-type
         this.setIntent(intent);
-        // Get deep link
-        Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(intent);
         // Validate deep link
-        boolean isDeepLinkLaunch = isValidDeepLinkNotification(mDeepLinkBundle);
-        //track open app event for all tracker but Adjust
-        TrackerDelegator.trackAppOpen(getApplicationContext(), isDeepLinkLaunch);
+        DeepLinkManager.onSwitchToDeepLink(this, intent);
     }
 
     /*
@@ -175,8 +160,6 @@ public class MainFragmentActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         Print.d(TAG, "ON RESUME");
-        //
-        Ad4PushTracker.get().startActivity(this);
     }
 
     /*
@@ -188,8 +171,6 @@ public class MainFragmentActivity extends BaseActivity {
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        //
-        Ad4PushTracker.get().stopActivity(this);
     }
 
     /*
@@ -223,7 +204,7 @@ public class MainFragmentActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Print.d(TAG, "ON SAVED INSTANCE STATE: " + mCurrentFragmentType.toString());
+        Print.d(TAG, "ON SAVED INSTANCE STATE: " + mCurrentFragmentType);
         ArrayList<String> frags = new ArrayList<>();
         try {
             String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
@@ -250,13 +231,12 @@ public class MainFragmentActivity extends BaseActivity {
      */
     @Override
     public void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack) {
-        //
-        warningFactory.hideWarning();
-        // 
+        // Hide confirmation message
+        mConfirmationCartMessageView.hideMessage();
+        // Hide keyboard
         hideKeyboard();
-
+        // Remove entries from back stack
         boolean removeEntries = false;
-
         // Validate fragment type
         switch (type) {
             case HOME:
@@ -267,13 +247,23 @@ public class MainFragmentActivity extends BaseActivity {
                 }
                 fragment = HomePageFragment.newInstance(bundle);
                 break;
+            case CATALOG_SELLER:
+            case CATALOG_BRAND:
+            case CATALOG_DEEPLINK:
+            case CATALOG_CATEGORY:
             case CATALOG:
+                // Default
+                removeEntries = true;
+                // Get indications to remove old entries or not
                 if (CollectionUtils.containsKey(bundle, ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES)) {
                     removeEntries = bundle.getBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
                     bundle.remove(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES);
-                } else {
-                    removeEntries = true;
                 }
+                // Put the target type
+                bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
+                // Put the type
+                type = FragmentType.CATALOG;
+                // Create instance
                 fragment = CatalogFragment.getInstance(bundle);
                 break;
             case PRODUCT_DETAILS:
@@ -329,29 +319,29 @@ public class MainFragmentActivity extends BaseActivity {
             case FORGOT_PASSWORD:
                 fragment = SessionForgotPasswordFragment.getInstance();
                 break;
-            case MY_ADDRESSES:
-                fragment = CheckoutMyAddressesFragment.getInstance();
+            case CHECKOUT_MY_ADDRESSES:
+                fragment = CheckoutAddressesFragment.newInstance();
                 break;
-            case CREATE_ADDRESS:
+            case CHECKOUT_CREATE_ADDRESS:
                 fragment = CheckoutCreateAddressFragment.getInstance();
                 break;
-            case EDIT_ADDRESS:
+            case CHECKOUT_EDIT_ADDRESS:
                 fragment = CheckoutEditAddressFragment.getInstance(bundle);
                 break;
-            case SHIPPING_METHODS:
+            case CHECKOUT_SHIPPING:
                 fragment = CheckoutShippingMethodsFragment.getInstance();
                 break;
-            case PAYMENT_METHODS:
+            case CHECKOUT_PAYMENT:
                 fragment = CheckoutPaymentMethodsFragment.getInstance();
                 break;
-            case MY_ORDER:
-                fragment = CheckoutMyOrderFragment.getInstance(bundle);
+            case CHECKOUT_FINISH:
+                fragment = CheckoutFinishFragment.getInstance(bundle);
                 break;
             case CHECKOUT_THANKS:
                 fragment = CheckoutThanksFragment.getInstance(bundle);
                 break;
             case CHECKOUT_EXTERNAL_PAYMENT:
-                fragment = CheckoutExternalPaymentFragment.getInstance();
+                fragment = CheckoutExternalPaymentFragment.getInstance(bundle);
                 break;
             case CAMPAIGNS:
                 fragment = CampaignsFragment.newInstance(bundle);
@@ -377,7 +367,7 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = ProductOffersFragmentNew.newInstance(bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
-                fragment = MyAccountMyAddressesFragment.newInstance();
+                fragment = MyAccountAddressesFragment.newInstance();
                 break;
             case MY_ACCOUNT_CREATE_ADDRESS:
                 fragment = MyAccountCreateAddressFragment.newInstance(bundle);
@@ -401,7 +391,9 @@ public class MainFragmentActivity extends BaseActivity {
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;
         }
-
+        // Clear search term
+        if(type != FragmentType.CATALOG && type != FragmentType.FILTERS)
+            JumiaApplication.INSTANCE.setSearchedTerm("");
 
         // Validate menu flag and pop entries until home
         if (removeEntries) {
@@ -413,7 +405,20 @@ public class MainFragmentActivity extends BaseActivity {
         mCurrentFragmentType = type;
 
         // Transition
-        fragmentManagerTransition(R.id.rocket_app_content, fragment, type, addToBackStack);
+        fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
+    }
+
+    /**
+     * Fragment communication
+     */
+    @Override
+    public boolean communicateBetweenFragments(String tag, Bundle bundle) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment != null) {
+            ((BaseFragment) fragment).notifyFragment(bundle);
+            return true;
+        }
+        return false;
     }
 
     /*
@@ -442,6 +447,11 @@ public class MainFragmentActivity extends BaseActivity {
      */
     private void onProcessBackPressed() {
         fragment = getActiveFragment();
+
+        // Clear search term
+        if(fragment.getTag().equals(FragmentType.CATALOG.toString()))
+            JumiaApplication.INSTANCE.setSearchedTerm("");
+
         // Case navigation opened
         if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
             Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
@@ -450,6 +460,9 @@ public class MainFragmentActivity extends BaseActivity {
         // Case fragment not allow back pressed
         else if (fragment == null || !fragment.allowBackPressed()) {
             Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
+            // Hide Keyboard
+            hideKeyboard();
+            // Back
             fragmentManagerBackPressed();
         }
         // Case fragment allow back pressed
@@ -487,37 +500,6 @@ public class MainFragmentActivity extends BaseActivity {
 
     public boolean isInMaintenance() {
         return isInMaintenance;
-    }
-
-    // ####################### DEEP LINK #######################
-
-    /**
-     * Validate and process intent from notification
-     *
-     * @param bundle The deep link intent
-     * @return valid or invalid
-     */
-    private boolean isValidDeepLinkNotification(Bundle bundle) {
-        Print.i(TAG, "DEEP LINK: VALIDATE INTENT FROM NOTIFICATION");
-        if (bundle != null) {
-            // Get fragment type
-            FragmentType fragmentType = (FragmentType) bundle.getSerializable(DeepLinkManager.FRAGMENT_TYPE_TAG);
-            //Print.d(TAG, "DEEP LINK FRAGMENT TYPE: " + fragmentType.toString());
-            // Validate fragment type
-            if (fragmentType != FragmentType.UNKNOWN) {
-                // Restart back stack and fragment manager
-                FragmentController.getInstance().popAllBackStack(this);
-                // Validate this step to maintain the base TAG
-                onSwitchFragment(FragmentType.HOME, bundle, FragmentController.ADD_TO_BACK_STACK);
-                // Switch to fragment with respective bundle
-                if(fragmentType != FragmentType.HOME) {
-                    onSwitchFragment(fragmentType, bundle, FragmentController.ADD_TO_BACK_STACK);
-                }
-                return true;
-            }
-        }
-        Print.i(TAG, "DEEP LINK: INVALID INTENT");
-        return false;
     }
 
 }

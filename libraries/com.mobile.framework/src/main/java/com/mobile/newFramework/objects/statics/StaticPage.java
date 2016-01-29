@@ -28,20 +28,24 @@ public class StaticPage implements IJSONSerializable, Parcelable {
 
     private String mHtml;
 
+    private String mType;
+
     private ArrayList<StaticFeaturedBox> mFeaturedBoxes;
 
     /**
      * Empty constructor for JSON converter
      */
+    @SuppressWarnings("unused")
     public StaticPage() {
     }
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get html
-        mHtml = jsonObject.optString(RestConstants.JSON_HTML_TAG);
+        mHtml = jsonObject.optString(RestConstants.HTML);
+        mType = jsonObject.getString(RestConstants.TYPE);
         // Get featured box (optional)
-        JSONArray array = jsonObject.optJSONArray(RestConstants.JSON_FEATURED_BOX_TAG);
+        JSONArray array = jsonObject.optJSONArray(RestConstants.FEATURED_BOX);
         if(array != null && array.length() > 0) {
             mFeaturedBoxes = new ArrayList<>();
             for (int i = 0; i < array.length(); i++) {
@@ -64,7 +68,7 @@ public class StaticPage implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.OBJECT_DATA;
     }
 
@@ -82,6 +86,10 @@ public class StaticPage implements IJSONSerializable, Parcelable {
 
     public boolean hasHtml() {
         return !TextUtils.isEmpty(mHtml);
+    }
+
+    public String getType() {
+        return mType;
     }
 
     /*

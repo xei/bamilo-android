@@ -4,14 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.widget.NestedScrollView;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.teasers.GetHomeHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -20,9 +20,7 @@ import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.home.HomePageObject;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
-import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
-import com.mobile.newFramework.objects.home.type.TeaserTargetType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
@@ -36,10 +34,10 @@ import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
-import com.mobile.utils.ui.ToastFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -50,7 +48,7 @@ import java.util.EnumSet;
  *
  * @author sergiopereira
  */
-public class HomePageFragment extends BaseFragment implements IResponseCallback {
+public class HomePageFragment extends BaseFragment implements IResponseCallback, TargetLink.OnAppendDataListener, TargetLink.OnCampaignListener {
 
     private static final String TAG = HomePageFragment.class.getSimpleName();
 
@@ -68,6 +66,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
 
     private int[] mScrollSavedPosition;
 
+    private String mRichRelevanceHash;
     /**
      * Constructor via bundle
      *
@@ -85,10 +84,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     public HomePageFragment() {
         super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
-                NavigationAction.Home,
+                NavigationAction.HOME,
                 R.layout.home_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
         // Init position
         HomeMainTeaserHolder.viewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
     }
@@ -304,17 +303,35 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         Print.i(TAG, "BUILD HOME PAGE");
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
-        for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers()) {
-            // Create view
-            BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
-            if (viewHolder != null) {
-                // Set view
-                viewHolder.onBind(baseTeaserType);
-                // Add to container
-                mContainer.addView(viewHolder.itemView);
-                // Save
-                mViewHolders.add(viewHolder);
-            }
+        for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers().values()) {
+            // Case Form NewsLetter disable until feature is fully implemented.
+            /*
+            if(baseTeaserType.getType() == TeaserGroupType.FORM_NEWSLETTER){
+                Form form = null;
+                try{
+                    form = ((TeaserFormObject) baseTeaserType.getData().get(0)).getForm();
+                } catch (Exception e){
+                    e.printStackTrace();
+                }
+                if(form != null){
+                    //TODO needs to be created the correct layout for this form, ticket NAFAMZ-14045
+                    DynamicForm mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.NEWSLETTER_FORM,inflater.getContext(),form);
+                    mContainer.addView(mDynamicForm.getContainer());
+                }
+
+            } else {
+            */
+                // Create view
+                BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
+                if (viewHolder != null) {
+                    // Set view
+                    viewHolder.onBind(baseTeaserType);
+                    // Add to container
+                    mContainer.addView(viewHolder.itemView);
+                    // Save
+                    mViewHolders.add(viewHolder);
+                }
+            // }
         }
         // Restore the scroll state
         //restoreScrollState();
@@ -370,152 +387,105 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
      */
     @Override
     public void onClick(View view) {
-        // Validated clicked view
-        if(!onClickTeaserItem(view)) {
-            super.onClick(view);
+        super.onClick(view);
+        /**
+         * Try fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/163/crash_reasons/108483846
+         */
+        try {
+            // Validated clicked view
+            onClickTeaserItem(view);
+        } catch (NullPointerException e) {
+            showUnexpectedErrorWarning();
         }
     }
 
     /**
      * Process the click on teaser
      */
-    private boolean onClickTeaserItem(View view) {
+    private void onClickTeaserItem(View view) {
         Print.i(TAG, "ON CLICK TEASER ITEM");
-        // Flag to mark as intercepted
-        boolean intercepted = true;
-        // Get type
-        String targetType = (String) view.getTag(R.id.target_type);
-        // validate the state of the view when clicking on the retry button on the Home page
-        if(TextUtils.isEmpty(targetType)){
-          return false;
-        }
-        // Get url
-        String targetUrl = (String) view.getTag(R.id.target_url);
         // Get title
-        String targetTitle = (String) view.getTag(R.id.target_title);
+        String title = (String) view.getTag(R.id.target_title);
+        // Get target link
+        @TargetLink.Type String link = (String) view.getTag(R.id.target_link);
         // Get origin id
-        int origin = (int) view.getTag(R.id.target_teaser_origin);
-        // Get Sku
-        String targetSku = (String) view.getTag(R.id.target_sku);
+        int id = (int) view.getTag(R.id.target_teaser_origin);
+        Print.i(TAG, "CLICK TARGET: LINK:" + link + " TITLE:" + title + " ORIGIN:" + id);
         // Get teaser group type
-        TeaserGroupType originGroupType = TeaserGroupType.values()[origin];
-        if(view.getTag(R.id.target_list_position) != null){
-            originGroupType.setTrackingPosition((int) view.getTag(R.id.target_list_position));
-            TrackerDelegator.trackBannerClicked(originGroupType, targetUrl, (int) view.getTag(R.id.target_list_position));
+        TeaserGroupType origin = TeaserGroupType.values()[id];
+        if (view.getTag(R.id.target_list_position) != null) {
+            origin.setTrackingPosition((int) view.getTag(R.id.target_list_position));
+            TrackerDelegator.trackBannerClicked(origin, TargetLink.getIdFromTargetLink(link), (int) view.getTag(R.id.target_list_position));
         }
-        Print.i(TAG, "CLICK TARGET: TYPE:" + targetType + " TITLE:" + targetTitle + " URL:" + targetUrl);
-        // Get target type
-        TeaserTargetType target = TeaserTargetType.byString(targetType);
-        switch (target) {
-            case CATALOG:
-                gotoCatalog(targetTitle, targetUrl, originGroupType);
-                break;
-            case CAMPAIGN:
-                gotoCampaignPage(targetTitle, targetUrl, originGroupType);
-                break;
-            case STATIC_PAGE:
-                gotoStaticPage(targetTitle, targetUrl, originGroupType);
-                break;
-            case PRODUCT_DETAIL:
-                //TODO this validation is only temporary, and should be removed in next release
-                if(TextUtils.isEmpty(targetSku))
-                    targetSku = getSkuFromUrl(targetUrl);
-                gotoProductDetail(targetSku, originGroupType);
-                break;
-            case UNKNOWN:
-            default:
-                intercepted = false;
-                Print.w(TAG, "WARNING: RECEIVED UNKNOWN TARGET TYPE: " + targetType);
-                break;
-        }
-        return intercepted;
-    }
 
-    /**
-     * Goto catalog page
-     */
-    private void gotoCatalog(String title, String url, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO CATALOG PAGE: " + title + " " + url);
-        // Update counter for tracking
-        CategoriesTableHelper.updateCategoryCounter(url, title);
-        // Go to bundle
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
-        bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Goto product detail using Sku
-     */
-    private void gotoProductDetail(String sku, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO PRODUCT DETAIL: " + sku);
-        if(TextUtils.isNotEmpty(sku)){
-            Bundle bundle = new Bundle();
-            bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, sku);
-            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        if(origin == TeaserGroupType.TOP_SELLERS){
+            // Get Rich Relevance hash
+            mRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
         } else {
-            ToastFactory.ERROR_PRODUCT_NOT_RETRIEVED.show(getBaseActivity());
+            mRichRelevanceHash = "";
+        }
+        // Parse target link
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(title)
+                .setOrigin(origin)
+                .addAppendListener(this)
+                .addCampaignListener(this)
+                .retainBackStackEntries()
+                .run();
+        // Validate result
+        if(!result) {
+            showUnexpectedErrorWarning();
         }
     }
 
     /**
-     * Goto static page
+     * Append some data
      */
-    private void gotoStaticPage(String title, String url, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO STATIC PAGE: " + title + " " + url);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, url);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-        getBaseActivity().onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
+    @Override
+    public void onAppendData(FragmentType next, String title, String id, Bundle bundle) {
+        if(next == FragmentType.PRODUCT_DETAILS) {
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaserprod_prefix);
+            if(TextUtils.isNotEmpty(mRichRelevanceHash)){
+                bundle.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRichRelevanceHash );
+            }
+        }
+        else if(next == FragmentType.CATALOG) {
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gteaser_prefix);
+            CategoriesTableHelper.updateCategoryCounter(id, title);
+        }
     }
 
     /**
-     * Goto campaign page
+     * Process create the bundle for campaigns.
      */
-    private void gotoCampaignPage(String targetTitle, String targetUrl, TeaserGroupType groupType) {
-        Print.i(TAG, "GOTO CAMPAIGN PAGE: " + targetTitle + " " + targetUrl);
-        // Get group
-        BaseTeaserGroupType group = mHomePage.getTeasers().get(groupType.ordinal());
-        // Case campaign origin
+    @NonNull
+    @Override
+    public Bundle onTargetCampaign(String title, String id, TeaserGroupType origin) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, origin);
+        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, createCampaignsData(title, id, origin));
+        return bundle;
+    }
+
+    /**
+     * Create a list with campaigns.
+     */
+    @NonNull
+    private ArrayList<TeaserCampaign> createCampaignsData(@NonNull String title, @NonNull String id, TeaserGroupType group) {
+        Print.i(TAG, "GOTO CAMPAIGN PAGE: " + title + " " + id);
+        // Object
         ArrayList<TeaserCampaign> campaigns;
-        if (groupType == TeaserGroupType.CAMPAIGNS) {
-            campaigns = createCampaign(group);
+        // Get group
+        BaseTeaserGroupType campaignGroup = mHomePage.getTeasers().get(group.getType());
+        // Case from campaigns
+        if (group == TeaserGroupType.CAMPAIGNS) {
+            //Print.i(TAG, "code1campaigns group == TeaserGroupType.CAMPAIGNS");
+            campaigns = TargetLink.createCampaignList(campaignGroup);
         }
-        // Case other origin
+        // Case from other
         else {
-            campaigns = new ArrayList<>();
-            TeaserCampaign campaign = new TeaserCampaign();
-            campaign.setTitle(targetTitle);
-            campaign.setUrl(targetUrl);
-            campaigns.add(campaign);
-        }
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(CampaignsFragment.CAMPAIGNS_TAG, campaigns);
-        bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, groupType);
-        // Switch
-        getBaseActivity().onSwitchFragment(FragmentType.CAMPAIGNS, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Create an array with a single campaign
-     * @return ArrayList with one campaign
-     * @author sergiopereira
-     */
-    private ArrayList<TeaserCampaign> createCampaign(BaseTeaserGroupType group) {
-        ArrayList<TeaserCampaign> campaigns = new ArrayList<>();
-        for (BaseTeaserObject baseTeaserObject : group.getData()) {
-            TeaserCampaign campaign = new TeaserCampaign();
-            campaign.setTitle(baseTeaserObject.getTitle());
-            campaign.setUrl(baseTeaserObject.getUrl());
-            campaigns.add(campaign);
+            //Print.i(TAG, "code1campaigns createCampaignList");
+            campaigns = TargetLink.createCampaignList(title, id);
         }
         return campaigns;
     }
@@ -566,7 +536,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback 
         switch (eventType) {
             case GET_HOME_EVENT:
                 Print.i(TAG, "ON SUCCESS RESPONSE: GET_HOME_EVENT");
-                HomePageObject homePage = (HomePageObject) baseResponse.getMetadata().getData();
+                HomePageObject homePage = (HomePageObject) baseResponse.getContentData();
                 if (homePage != null && homePage.hasTeasers()) {
                     Print.i(TAG, "SHOW HOME PAGE: " + homePage.hasTeasers());
                     // Save home page

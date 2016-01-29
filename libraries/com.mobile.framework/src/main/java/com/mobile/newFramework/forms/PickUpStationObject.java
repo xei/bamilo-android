@@ -5,7 +5,6 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.checkout.Region;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +33,6 @@ public class PickUpStationObject implements Parcelable {
     private ArrayList<String> paymentMethods;
     private ArrayList<Region> regions;
     private long shippingFee;
-    //private String pickupStationRegionId;
 
     /**
      * Empty Constructor
@@ -46,7 +44,7 @@ public class PickUpStationObject implements Parcelable {
     /**
      * @return the id_pickupstation
      */
-    public String getIdPickupstation() {
+    public String getIdPickupStation() {
         return pickupId;
     }
 
@@ -55,13 +53,6 @@ public class PickUpStationObject implements Parcelable {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
     }
 
     /**
@@ -79,24 +70,10 @@ public class PickUpStationObject implements Parcelable {
     }
 
     /**
-     * @param image the image to set
-     */
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    /**
      * @return the address
      */
     public String getAddress() {
         return address;
-    }
-
-    /**
-     * @param address the address to set
-     */
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     /**
@@ -107,24 +84,10 @@ public class PickUpStationObject implements Parcelable {
     }
 
     /**
-     * @param place the place to set
-     */
-    public void setPlace(String place) {
-        this.place = place;
-    }
-
-    /**
      * @return the city
      */
     public String getCity() {
         return city;
-    }
-
-    /**
-     * @param city the city to set
-     */
-    public void setCity(String city) {
-        this.city = city;
     }
 
     /**
@@ -143,60 +106,41 @@ public class PickUpStationObject implements Parcelable {
 
     /**
      * Get the shipping fee
+     *
      * @return long
      */
     public long getShippingFee() {
         return shippingFee;
     }
 
-    /**
-     * @param regions the regions to set
-     */
-    public void setRegions(ArrayList<Region> regions) {
-        this.regions = regions;
-    }
-
-    public void initialize(JSONObject jsonObject) {
-        //this.pickupStationRegionId = jsonObject.optString(RestConstants.JSON_PICKUP_ID_PICKUP_STATION_REGION);
-        this.pickupStationId = jsonObject.optString(RestConstants.JSON_PICKUP_STATION_ID);
-        this.name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
-        this.pickupId = jsonObject.optString(RestConstants.JSON_PICKUP_ID);
-        this.image = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
-        this.address = jsonObject.optString(RestConstants.JSON_PICKUP_ADDRESS);
-        this.place = jsonObject.optString(RestConstants.JSON_PICKUP_PLACE);
-        this.city = jsonObject.optString(RestConstants.JSON_PICKUP_CITY);
-        this.openingHours = jsonObject.optString(RestConstants.JSON_PICKUP_OPENING_HOURS);
-        this.shippingFee = jsonObject.optLong(RestConstants.JSON_SHIPPING_FEE_TAG);
-
+    public void initialize(JSONObject jsonObject) throws JSONException {
+        // Save info
+        this.pickupStationId = jsonObject.optString(RestConstants.ID_PICKUPSTATION);
+        this.name = jsonObject.optString(RestConstants.NAME);
+        this.pickupId = jsonObject.optString(RestConstants.PICKUP_ID);
+        this.image = jsonObject.optString(RestConstants.IMAGE);
+        this.address = jsonObject.optString(RestConstants.ADDRESS);
+        this.place = jsonObject.optString(RestConstants.PLACE);
+        this.city = jsonObject.optString(RestConstants.CITY);
+        this.openingHours = jsonObject.optString(RestConstants.OPENING_HOURS);
+        this.shippingFee = jsonObject.optLong(RestConstants.SHIPPING_FEE);
+        // Save payment methods
         this.paymentMethods = new ArrayList<>();
-        JSONArray arrayPaymentMethod;
-        try {
-            arrayPaymentMethod = jsonObject.getJSONArray(RestConstants.JSON_PICKUP_PAYMENT_METHOD);
-            for (int i = 0; i < arrayPaymentMethod.length(); i++) {
-                this.paymentMethods.add(arrayPaymentMethod.get(i).toString());
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        JSONArray arrayPaymentMethod = jsonObject.getJSONArray(RestConstants.PAYMENT_METHOD);
+        for (int i = 0; i < arrayPaymentMethod.length(); i++) {
+            this.paymentMethods.add(arrayPaymentMethod.getString(i));
         }
-
-
+        // Save regions
         this.regions = new ArrayList<>();
-        JSONObject arrayRegions;
-        try {
-            arrayRegions = jsonObject.getJSONObject(RestConstants.JSON_PICKUP_REGIONS);
-            Iterator<?> keys = arrayRegions.keys();
-            while (keys.hasNext()) {
-                String key = keys.next().toString();
-                Print.i(TAG, "code1adding key : " + key);
-                Region mRegion = new Region(key, arrayRegions.getString(key));
-                this.regions.add(mRegion);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        JSONObject arrayRegions = jsonObject.getJSONObject(RestConstants.REGIONS);
+        Iterator<?> keys = arrayRegions.keys();
+        while (keys.hasNext()) {
+            String key = keys.next().toString();
+//            //Print.i(TAG, "code1adding key : " + key);
+            Region mRegion = new Region(key, arrayRegions.getString(key));
+            this.regions.add(mRegion);
         }
-
     }
-
 
     @Override
     public int describeContents() {
@@ -219,7 +163,6 @@ public class PickUpStationObject implements Parcelable {
         place = in.readString();
         city = in.readString();
         openingHours = in.readString();
-        //pickupStationRegionId = in.readString();
         paymentMethods = new ArrayList<>();
         in.readList(paymentMethods, String.class.getClassLoader());
         regions = new ArrayList<>();

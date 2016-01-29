@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
+import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.objects.product.Seller;
 import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -39,10 +40,12 @@ public class ProductComplete extends ProductMultiple {
     private boolean hasOffers;
     private int mTotalOffers;
     private ArrayList<ProductRegular> mRelatedProducts;
+    private RichRelevance mRichRelevance;
     private ArrayList<ProductSpecification> mProductSpecs;
     private ArrayList<Variation> mProductVariations;
     private String mShareUrl;
     private boolean isFashion;
+    private boolean isPreOrder;
 
     /**
      * Complete product empty constructor.
@@ -52,8 +55,8 @@ public class ProductComplete extends ProductMultiple {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return RequiredJson.OBJECT_DATA;
+    public int getRequiredJson() {
+        return RequiredJson.METADATA;
     }
 
     /*
@@ -73,11 +76,11 @@ public class ProductComplete extends ProductMultiple {
             //has offers
             hasOffers = false;
             // Share url
-            mShareUrl = jsonObject.optString(RestConstants.JSON_SHARE_URL_TAG);
+            mShareUrl = jsonObject.optString(RestConstants.SHARE_URL);
             // Bundle
-            hasBundle = jsonObject.optBoolean(RestConstants.JSON_HAS_BUNDLE_TAG);
+            hasBundle = jsonObject.optBoolean(RestConstants.BUNDLE);
             // Images
-            JSONArray imageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_LIST_TAG);
+            JSONArray imageArray = jsonObject.optJSONArray(RestConstants.IMAGE_LIST);
             if (imageArray != null && imageArray.length() > 0) {
                 mImageList = new ArrayList<>();
                 for (int i = 0; i < imageArray.length(); ++i) {
@@ -87,21 +90,21 @@ public class ProductComplete extends ProductMultiple {
                 }
             }
             // Seller
-            JSONObject sellerObject = jsonObject.optJSONObject(RestConstants.JSON_SELLER_TAG);
+            JSONObject sellerObject = jsonObject.optJSONObject(RestConstants.SELLER_ENTITY);
             if (sellerObject != null) {
                 mSeller = new Seller(sellerObject);
             }
             //Offers
-            JSONObject offers = jsonObject.optJSONObject(RestConstants.JSON_OFFERS_TAG);
+            JSONObject offers = jsonObject.optJSONObject(RestConstants.OFFERS);
             if (offers != null) {
-                mMinPriceOffer = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_TAG);
-                mMinPriceOfferConverted = offers.optDouble(RestConstants.JSON_OFFERS_MIN_PRICE_CONVERTED_TAG);
-                mTotalOffers = offers.optInt(RestConstants.JSON_TOTAL_TAG);
+                mMinPriceOffer = offers.optDouble(RestConstants.MIN_PRICE);
+                mMinPriceOfferConverted = offers.optDouble(RestConstants.MIN_PRICE_CONVERTED);
+                mTotalOffers = offers.optInt(RestConstants.TOTAL);
                 hasOffers = true;
 
             }
             // Related products
-            JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.JSON_RELATED_PRODUCTS);
+            JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.RELATED_PRODUCTS);
             if (relatedProductsJsonArray != null && relatedProductsJsonArray.length() > 0) {
                 mRelatedProducts = new ArrayList<>();
                 for (int i = 0; i < relatedProductsJsonArray.length(); i++) {
@@ -111,14 +114,20 @@ public class ProductComplete extends ProductMultiple {
                     }
                 }
             }
+            // Recommended products -> Rich Relevance
+            JSONObject recommendedProductObject = jsonObject.optJSONObject(RestConstants.RECOMMENDED_PRODUCTS);
+            if (recommendedProductObject != null) {
+                mRichRelevance = new RichRelevance();
+                mRichRelevance.initialize(recommendedProductObject);
+            }
             // Summary
-            JSONObject summaryObject = jsonObject.optJSONObject(RestConstants.JSON_SUMMARY_TAG);
+            JSONObject summaryObject = jsonObject.optJSONObject(RestConstants.SUMMARY);
             if (summaryObject != null) {
-                mDescription = summaryObject.optString(RestConstants.JSON_DESCRIPTION_TAG);
-                mShortDescription = summaryObject.optString(RestConstants.JSON_SHORT_DESC_TAG);
+                mDescription = summaryObject.optString(RestConstants.DESCRIPTION);
+                mShortDescription = summaryObject.optString(RestConstants.SHORT_DESCRIPTION);
             }
             // Specifications
-            JSONArray specificationsArray = jsonObject.optJSONArray(RestConstants.JSON_SPECIFICATIONS_TAG);
+            JSONArray specificationsArray = jsonObject.optJSONArray(RestConstants.SPECIFICATIONS);
             if (specificationsArray != null && specificationsArray.length() > 0) {
                 mProductSpecs = new ArrayList<>();
                 for (int i = 0; i < specificationsArray.length(); i++) {
@@ -128,7 +137,7 @@ public class ProductComplete extends ProductMultiple {
                 }
             }
             // Variations
-            JSONArray variationsArray = jsonObject.optJSONArray(RestConstants.JSON_VARIATIONS_TAG);
+            JSONArray variationsArray = jsonObject.optJSONArray(RestConstants.VARIATIONS);
             if (variationsArray != null && variationsArray.length() > 0) {
                 mProductVariations = new ArrayList<>();
                 for (int i = 0; i < variationsArray.length(); i++) {
@@ -137,6 +146,7 @@ public class ProductComplete extends ProductMultiple {
                     mProductVariations.add(variation);
                 }
             }
+            isPreOrder = Boolean.parseBoolean(jsonObject.optString(RestConstants.PRE_ORDER));
 
         } catch (JSONException e) {
             Print.e(TAG, "Error initializing the complete product", e);
@@ -199,7 +209,19 @@ public class ProductComplete extends ProductMultiple {
     }
 
     public ArrayList<ProductRegular> getRelatedProducts() {
-        return mRelatedProducts;
+        // if Rich relevance is active and have products send those products
+        if(mRichRelevance != null && CollectionUtils.isNotEmpty(mRichRelevance.getRichRelevanceProducts()))
+            return mRichRelevance.getRichRelevanceProducts();
+        else
+            return mRelatedProducts;
+    }
+
+    public RichRelevance getRichRelevance() {
+        return mRichRelevance;
+    }
+
+    public void setRichRelevance(RichRelevance richRelevance) {
+        mRichRelevance = richRelevance;
     }
 
     public String getShareUrl() {
@@ -213,6 +235,10 @@ public class ProductComplete extends ProductMultiple {
     public boolean hasOffers() { return hasOffers; }
 
     public double getMinPriceOffer() { return mMinPriceOffer;}
+
+    public boolean isPreOrder() {
+        return isPreOrder;
+    }
 
     /*
      * ############ PARCELABLE ############
@@ -249,6 +275,8 @@ public class ProductComplete extends ProductMultiple {
         dest.writeList(mRelatedProducts);
         dest.writeString(mShortDescription);
         dest.writeByte((byte) (isFashion ? 1 : 0));
+        dest.writeByte((byte) (isPreOrder ? 1 : 0));
+        dest.writeParcelable(mRichRelevance, flags);
 
     }
 
@@ -271,6 +299,8 @@ public class ProductComplete extends ProductMultiple {
         in.readList(mRelatedProducts, ProductRegular.class.getClassLoader());
         mShortDescription = in.readString();
         isFashion = in.readByte() == 1;
+        isPreOrder = in.readByte() == 1;
+        mRichRelevance = in.readParcelable(RichRelevance.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<ProductComplete> CREATOR = new Parcelable.Creator<ProductComplete>() {

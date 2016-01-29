@@ -17,7 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 
-import com.ad4screen.sdk.Tag;
+import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
@@ -29,14 +29,14 @@ import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -47,10 +47,6 @@ import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 
-import java.text.SimpleDateFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -65,7 +61,7 @@ import java.util.zip.ZipFile;
  * @date 25/04/2013
  * @description
  */
-@Tag(name = "SplashScreenActivity")
+@UseA4S
 public class SplashScreenActivity extends FragmentActivity implements IResponseCallback, OnClickListener {
 
     private final static String TAG = SplashScreenActivity.class.getSimpleName();
@@ -106,7 +102,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Set view
         setContentView(R.layout.splash_screen);
         // Get map
-        mMainMapImage = findViewById(R.id.jumiaMap);
+        mMainMapImage = findViewById(R.id.splashMap);
         // Get fall back layout
         mMainFallBackStub = findViewById(R.id.splash_screen_maintenance_stub);
         // Get retry layout
@@ -141,8 +137,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         Print.i(TAG, "ON RESUME");
         // Intercept event
         shouldHandleEvent = true;
-        // Start Accengage for this activity
-        Ad4PushTracker.get().startActivity(this);
         // Show animated map
         Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
         animationFadeIn.setDuration(SPLASH_DURATION_IN);
@@ -159,8 +153,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     protected void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        // Stop Accengage for this activity
-        Ad4PushTracker.get().stopActivity(this);
         // Validate dialog
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();
@@ -197,10 +189,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     Handler initializationHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             BaseResponse baseResponse = (BaseResponse) msg.obj;
-            ErrorCode errorCode = baseResponse.getError().getErrorCode();
+            int errorCode = baseResponse.getError().getCode();
             EventType eventType = baseResponse.getEventType();
 
-            Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
+            //Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
                 showDevInfo();
             }
@@ -288,15 +280,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         devText.append("\nVersion Name: " + pInfo.versionName);
         devText.append("\nVersion Code: " + pInfo.versionCode);
-        devText.append("\nInstallation: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
-        devText.append("\nUpdate: " + SimpleDateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
+        devText.append("\nInstallation: " + java.text.DateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
+        devText.append("\nUpdate: " + java.text.DateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
 
 
         try {
             ZipFile zf = new ZipFile(getApplicationInfo().sourceDir);
             ZipEntry ze = zf.getEntry("classes.dex");
             zf.close();
-            devText.append("\nBuild: " + SimpleDateFormat.getInstance().format(new java.util.Date(ze.getTime())));
+            devText.append("\nBuild: " + java.text.DateFormat.getInstance().format(new java.util.Date(ze.getTime())));
             //ze = null;
             //zf = null;
         } catch (Exception e) {
@@ -307,17 +299,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         devText.append("\nDevice Model: " + android.os.Build.MODEL);
         devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
     }
-
-//    /*
-//     * (non-Javadoc)
-//     * @see android.app.Activity#onUserLeaveHint()
-//    */
-//    @Override
-//    public void onUserLeaveHint() {
-//        super.onUserLeaveHint();
-//        Print.e(TAG, "onUserLeaveHint");
-//        shouldHandleEvent = false;
-//    }
 
     /**
      * ######## RESPONSES ########
@@ -342,9 +323,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         mLastSuccessResponse = baseResponse;
 
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError() != null ? baseResponse.getError().getErrorCode() : null;
+        int errorCode = baseResponse.getError() != null ? baseResponse.getError().getCode() : ErrorCode.NO_ERROR;
 
-        Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
+        //Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
 
         if (dialog != null && dialog.isVisible()) {
             try {
@@ -493,7 +474,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessApiEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS API EVENT");
-        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct)baseResponse.getMetadata().getData();
+        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct)baseResponse.getContentData();
         // Validate out dated sections
         if (apiInformation.isSectionNameConfigurations()) {
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
@@ -529,46 +510,39 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         // Get data
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
 
-        @SuppressWarnings("unchecked")
-        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
         Print.i(TAG, "ERROR CODE: " + errorCode);
-        if (errorCode.isNetworkError()) {
+        if (ErrorCode.isNetworkError(errorCode)) {
             switch (errorCode) {
-                case IO:
-                case CONNECT_ERROR:
-                case HTTP_STATUS:
+                case ErrorCode.IO:
+                case ErrorCode.CONNECT_ERROR:
+                case ErrorCode.HTTP_STATUS:
                     showUnexpectedError();
                     break;
-                case TIME_OUT:
-                case NO_NETWORK:
+                case ErrorCode.TIME_OUT:
+                case ErrorCode.NO_CONNECTIVITY:
                     showFragmentRetry();
                     break;
-                case SSL:
-                case SERVER_IN_MAINTENANCE:
+                case ErrorCode.SSL:
+                case ErrorCode.SERVER_IN_MAINTENANCE:
                     setLayoutMaintenance(eventType);
                     break;
-                case REQUEST_ERROR:
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    String dialogMsg = "";
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
+                case ErrorCode.REQUEST_ERROR:
+                    // Generic error message
+                    String msg = baseResponse.getErrorMessage();
+                    if(TextUtils.isNotEmpty(baseResponse.getErrorMessage())) {
+                        msg = getString(R.string.validation_errortext);
                     }
-                    if (validateMessages != null) {
-                        for (String message : validateMessages) {
-                            dialogMsg += message + "\n";
-                        }
-                    } else {
-                        for (Entry<String, ? extends List<String>> entry : errorMessages.entrySet()) {
-                            dialogMsg += entry.getKey() + ": " + entry.getValue().get(0) + "\n";
-                        }
-                    }
-                    if (dialogMsg.equals("")) {
-                        dialogMsg = getString(R.string.validation_errortext);
-                    }
-                    dialog = DialogGenericFragment.newInstance(true, false, getString(R.string.validation_title), dialogMsg,
-                            getResources().getString(R.string.ok_label), "", new OnClickListener() {
+
+                    dialog = DialogGenericFragment.newInstance(
+                            true,
+                            false,
+                            getString(R.string.validation_title),
+                            msg,
+                            getResources().getString(R.string.ok_label),
+                            "",
+                            new OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     int id = v.getId();
@@ -579,7 +553,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                             });
                     dialog.show(getSupportFragmentManager(), null);
                     break;
-                case SERVER_OVERLOAD:
+                case ErrorCode.SERVER_OVERLOAD:
                     Print.w("SHOW OVERLOAD");
                     ActivitiesWorkFlow.showOverLoadErrorActivity(this);
                     break;
@@ -611,7 +585,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         }
         else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
             if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
-                Print.i(TAG, "code1configs received response correctly!!!");
+                //Print.i(TAG, "code1configs received response correctly!!!");
                 // Auto country selection
                 LocationHelper.getInstance().autoCountrySelection(getApplicationContext(), initializationHandler);
             } else {
@@ -670,7 +644,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         showErrorLayout(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
     }
 
-    protected void showErrorLayout(int type, OnClickListener onClickListener){
+    protected void showErrorLayout(@ErrorLayoutFactory.LayoutErrorType int type, OnClickListener onClickListener){
         // Show no network
         if(mErrorFallBackStub instanceof ViewStub) {
             mErrorFallBackStub = ((ViewStub)mErrorFallBackStub).inflate();

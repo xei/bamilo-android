@@ -12,14 +12,13 @@
         android:adjustViewBounds="false"
         android:scaleType="fitCenter" />
 
-    <ImageView
-        android:id="@+id/item_image_is_new"
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|left|start"
-        android:layout_marginLeft="@dimen/margin_small"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginTop="@dimen/margin_small"
-        android:src="@drawable/selector_is_new" />
+        android:text="@string/new_arrival_badge"
+        android:visibility="gone"/>
 
 </FrameLayout>

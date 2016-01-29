@@ -22,16 +22,16 @@ public class SetShippingMethodTest extends BaseTestCase {
         data.put("shippingMethodForm[shipping_method]", "UniversalShippingMatrix");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/shippingmethod/")
-                .setCache(EventType.SET_SHIPPING_METHOD_EVENT.cacheTime)
-                .setData(data)
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/shippingmethod/")
+                .setCache(EventType.SET_MULTI_STEP_SHIPPING.cacheTime)
+                .addQueryData(data)
                 .build();
     }
 
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.setShippingMethod);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setMultiStepShipping);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

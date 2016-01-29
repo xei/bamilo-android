@@ -3,13 +3,16 @@ package com.mobile.newFramework.forms;
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntDef;
 
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 public class PaymentMethodForm implements Parcelable {
 
@@ -26,7 +29,8 @@ public class PaymentMethodForm implements Parcelable {
 
     private int payment_type;
     private String action;
-    private RequestType method;
+    @RequestType
+    private int method;
     private String id;
     private String name;
     private String redirect;
@@ -34,11 +38,14 @@ public class PaymentMethodForm implements Parcelable {
     private String order_nr;
     private String customer_first_name;
     private String customer_last_name;
-    private boolean cameFromWebCheckout;
 
-    public enum RequestType {
-        GET, POST, DELETE, PUT
-    }
+    public static final int GET = 0;
+    public static final int POST = 1;
+    public static final int DELETE = 2;
+    public static final int PUT = 3;
+    @IntDef({ GET, POST, DELETE, PUT })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface RequestType {}
 
     public PaymentMethodForm() {
 
@@ -65,9 +72,9 @@ public class PaymentMethodForm implements Parcelable {
         JSONObject mJSONObject = jsonObject.optJSONObject("payment");
         if (mJSONObject == null || mJSONObject.length() == 0) {
             setPaymentType(METHOD_OTHER);
-            setOrderNumber(jsonObject.optString(RestConstants.JSON_ORDER_NUMBER_TAG));
+            setOrderNumber(jsonObject.optString(RestConstants.ORDER_NR));
             return;
-        } 
+        }
 
         String type = mJSONObject.optString(RestConstants.TYPE);
         if (type.equalsIgnoreCase(PAYMENT_METHOD_AUTO_SUBMIT_EXTERNAL)) {
@@ -82,28 +89,28 @@ public class PaymentMethodForm implements Parcelable {
 
         String method = mJSONObject.optString(RestConstants.METHOD);
         if (method.equalsIgnoreCase("get")) {
-            setMethod(RequestType.GET);
+            setMethod(GET);
         } else {
-            setMethod(RequestType.POST);
+            setMethod(POST);
         }
 
         try {
-            JSONObject formJson = mJSONObject.optJSONObject(RestConstants.JSON_FORM_TAG);
+            JSONObject formJson = mJSONObject.optJSONObject(RestConstants.FORM);
             if(formJson == null || formJson.length() == 0 ){
                 String url = mJSONObject.optString(RestConstants.URL);
                 setAction(url);
                 return;
             }
 
-            setAction(formJson.optString(RestConstants.JSON_ACTION_TAG));
+            setAction(formJson.optString(RestConstants.ACTION));
             setId(formJson.optString(RestConstants.ID));
-            setName(formJson.optString(RestConstants.JSON_NAME_TAG));
+            setName(formJson.optString(RestConstants.NAME));
 
             ContentValues mContentValues = new ContentValues();
-            JSONArray mJSONArray = formJson.getJSONArray(RestConstants.JSON_FIELDS_TAG);
+            JSONArray mJSONArray = formJson.getJSONArray(RestConstants.FIELDS);
             for (int i = 0; i < mJSONArray.length(); i++) {
                 JSONObject element = mJSONArray.getJSONObject(i);
-                String key = element.getString(RestConstants.JSON_KEY_TAG);
+                String key = element.getString(RestConstants.KEY);
                 if (!key.equalsIgnoreCase("redirect")) {
                     mContentValues.put(key, element.getString(RestConstants.VALUE));
                 } else if (key.equalsIgnoreCase("redirect") || key.equalsIgnoreCase("return_url")){
@@ -111,69 +118,13 @@ public class PaymentMethodForm implements Parcelable {
                     mContentValues.put(key, element.getString(RestConstants.VALUE));
                 }
             }
-            Print.i(TAG, "code1content : " + mContentValues.toString());
+//            //Print.i(TAG, "code1content : " + mContentValues.toString());
             setContentValues(mContentValues);
 
         } catch (JSONException e) {
             e.printStackTrace();
             
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.os.Parcelable#describeContents()
-     */
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
-     */
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(payment_type);
-        dest.writeString(action);
-        dest.writeSerializable(method);
-        dest.writeString(id);
-        dest.writeString(name);
-        dest.writeString(redirect);
-        dest.writeParcelable(contentValues, flags);
-        dest.writeString(order_nr);
-        dest.writeString(customer_first_name);
-        dest.writeString(customer_last_name);
-        dest.writeBooleanArray(new boolean[] {cameFromWebCheckout});
-    }
-
-    /**
-     * Parcel constructor
-     * 
-     * @param in
-     */
-    private PaymentMethodForm(Parcel in) {
-        payment_type = in.readInt();
-        action = in.readString();
-        method = (RequestType) in.readSerializable();
-        id = in.readString();
-        name = in.readString();
-        redirect = in.readString();
-        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
-        order_nr = in.readString();
-        customer_first_name = in.readString();
-        customer_last_name = in.readString();
-        in.readBooleanArray(new boolean[] {cameFromWebCheckout});
-    }
-
-    /**
-     * @return the payment_type
-     */
-    public int getPaymentType() {
-        return payment_type;
     }
 
     /**
@@ -206,7 +157,8 @@ public class PaymentMethodForm implements Parcelable {
     /**
      * @return the method
      */
-    public RequestType getMethod() {
+    @RequestType
+    public int getMethod() {
         return method;
     }
 
@@ -214,8 +166,15 @@ public class PaymentMethodForm implements Parcelable {
      * @param method
      *            the method to set
      */
-    public void setMethod(RequestType method) {
+    public void setMethod(@RequestType int method) {
         this.method = method;
+    }
+
+    public boolean isExternalPayment() {
+        return payment_type == METHOD_SUBMIT_EXTERNAL ||
+                payment_type == METHOD_AUTO_SUBMIT_EXTERNAL ||
+                payment_type == METHOD_AUTO_REDIRECT_EXTERNAL ||
+                payment_type == METHOD_RENDER_INTERNAL;
     }
 
     /**
@@ -249,15 +208,6 @@ public class PaymentMethodForm implements Parcelable {
     }
 
     /**
-     * The url to catch when the external provider redirects to success page.
-     * 
-     * @return the redirect
-     */
-    public String getRedirect() {
-        return redirect;
-    }
-
-    /**
      * Set the url to catch when the external provider redirects to success page.
      * 
      * @param redirect
@@ -287,13 +237,6 @@ public class PaymentMethodForm implements Parcelable {
     }
 
     /**
-     * @return the order_nr
-     */
-    public String getOrderNumber() {
-        return order_nr;
-    }
-
-    /**
      * @param order_nr
      *            the order_nr to set
      */
@@ -301,49 +244,56 @@ public class PaymentMethodForm implements Parcelable {
         this.order_nr = order_nr;
     }
 
-    /**
-     * @return the customer_first_name
+    /*
+     * ############## PARCELABLE ##############
      */
-    public String getCustomerFirstName() {
-        return customer_first_name;
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.os.Parcelable#describeContents()
+     */
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.os.Parcelable#writeToParcel(android.os.Parcel, int)
+     */
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(payment_type);
+        dest.writeString(action);
+        dest.writeInt(method);
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(redirect);
+        dest.writeParcelable(contentValues, flags);
+        dest.writeString(order_nr);
+        dest.writeString(customer_first_name);
+        dest.writeString(customer_last_name);
     }
 
     /**
-     * @param customer_first_name
-     *            the customer_first_name to set
+     * Parcel constructor
      */
-    public void setCustomerFirstName(String customer_first_name) {
-        this.customer_first_name = customer_first_name;
+    @SuppressWarnings("ResourceType")
+    private PaymentMethodForm(Parcel in) {
+        payment_type = in.readInt();
+        action = in.readString();
+        method = in.readInt();
+        id = in.readString();
+        name = in.readString();
+        redirect = in.readString();
+        contentValues = in.readParcelable(ContentValues.class.getClassLoader());
+        order_nr = in.readString();
+        customer_first_name = in.readString();
+        customer_last_name = in.readString();
     }
 
-    /**
-     * @return the customer_last_name
-     */
-    public String getCustomerLastName() {
-        return customer_last_name;
-    }
-
-    /**
-     * @param customer_last_name
-     *            the customer_last_name to set
-     */
-    public void setCustomerLastName(String customer_last_name) {
-        this.customer_last_name = customer_last_name;
-    }
-
-    /**
-     * @return the cameFromWebCheckout
-     */
-    public boolean isCameFromWebCheckout() {
-        return cameFromWebCheckout;
-    }
-
-    /**
-     * @param cameFromWebCheckout the cameFromWebCheckout to set
-     */
-    public void setCameFromWebCheckout(boolean cameFromWebCheckout) {
-        this.cameFromWebCheckout = cameFromWebCheckout;
-    }
 
     /**
      * Create parcelable

@@ -46,9 +46,9 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
 
     private boolean isToShowFooter;
 
-    private boolean isTabletInLandscape;
+    private final boolean isTabletInLandscape;
     
-    private Context mContext;
+    private final Context mContext;
     
     private int mLastPosition = -1;
 
@@ -56,9 +56,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
 
     private String mBannerImage;
 
-    private String mUrl;
-
-    private String mTargetType;
+    private String mTarget;
 
     private String mTitle;
 
@@ -170,14 +168,6 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
-        // Set vertical divider
-        if(level == ITEM_VIEW_TYPE_GRID) {
-            holder.verticalDivider.setVisibility(View.VISIBLE);
-        } else if (isTabletInLandscape) {
-            holder.verticalDivider.setVisibility(View.VISIBLE);
-        } else {
-            holder.verticalDivider.setVisibility(View.GONE);
-        }
     }
 
     /**
@@ -235,25 +225,6 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
         notifyDataSetChanged();
     }
     
-//    /**
-//     * Append the new data to the current data.
-//     * @param newDataSet - the new data
-//     */
-//    public void updateData(ArrayList<Product> newDataSet){
-//        CollectionUtils.addAll(mDataSet, newDataSet);
-//        notifyDataSetChanged();
-//    }
-//
-//    /**
-//     * Replace the current data and update the adapter.
-//     * @param newDataSet - the new data
-//     */
-//    public void replaceData(ArrayList<Product> newDataSet){
-//        mDataSet = newDataSet;
-//
-//        notifyDataSetChanged();
-//    }
-
     /**
      * Get the product from the current data.
      * @param position - the respective product position
@@ -285,11 +256,11 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             int position = (Integer) view.getTag(R.id.position);
             // Case favourite
             if (id == R.id.image_is_favourite) {
-                mOnViewHolderClicked.onWishListClick(view, this, position);
+                mOnViewHolderClicked.onViewHolderItemClick(view, this, position);
             }
             // Case header
             else if (id == R.id.catalog_header_image_frame) {
-                mOnViewHolderClicked.onHeaderClick(mTargetType, mUrl, mTitle);
+                mOnViewHolderClicked.onHeaderClick(mTarget, mTitle);
             }
             // Case item
             else {
@@ -306,11 +277,15 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             hideHeaderView();
         } else {
             mBannerImage = !isTabletInLandscape ? banner.getPhoneImage() : banner.getTabletImage();
-            mUrl = banner.getUrl();
             mTitle = banner.getTitle();
-            mTargetType = banner.getTargetType();
+            mTarget = banner.getTarget();
             showHeaderView();
         }
+    }
+
+    @Override
+    public void setHeader(@Nullable String banner) {
+
     }
 
     /**

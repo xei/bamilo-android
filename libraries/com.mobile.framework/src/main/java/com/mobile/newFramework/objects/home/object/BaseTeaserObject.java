@@ -2,6 +2,7 @@ package com.mobile.newFramework.objects.home.object;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
@@ -17,21 +18,15 @@ import org.json.JSONObject;
  */
 public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
-    protected String mName;
-
     protected String mTitle;
 
     protected String mSubTitle;
-
-    protected String mUrl;
-
-    protected String mSku;
 
     protected String mImagePhone;
 
     protected String mImageTablet;
 
-    protected String mTargetType;
+    protected String mTargetLink;
 
     protected long mTimerInMillis;
 
@@ -48,20 +43,12 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
      * ########## GETTERS ##########
      */
 
-    public String getName() {
-        return mName;
-    }
-
     public String getTitle() {
         return mTitle;
     }
 
     public String getSubTitle() {
         return mSubTitle;
-    }
-
-    public String getUrl() {
-        return mUrl;
     }
 
     public String getImage() {
@@ -72,8 +59,8 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         return isTablet ? mImageTablet : mImagePhone;
     }
 
-    public String getTargetType() {
-        return mTargetType;
+    public String getTargetLink() {
+        return mTargetLink;
     }
 
     public boolean hasTimer() {
@@ -92,10 +79,6 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
         return mTeaserTypeId;
     }
 
-    public String getSku() {
-        return mSku;
-    }
-
     /*
      * ########## JSON ##########
      */
@@ -106,29 +89,23 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Get sku
-        mSku = jsonObject.optString(RestConstants.SKU);
-        // Get name
-        mName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
         // Get title
-        mTitle = jsonObject.optString(RestConstants.JSON_TITLE_TAG);
+        mTitle = jsonObject.optString(RestConstants.TITLE);
         // Get sub title
-        mSubTitle = jsonObject.optString(RestConstants.JSON_SUB_TITLE_TAG);
-        // Get url
-        mUrl = jsonObject.getString(RestConstants.URL);
-        // Get target type
-        mTargetType = jsonObject.optString(RestConstants.JSON_TARGET_TYPE_TAG);
+        mSubTitle = jsonObject.optString(RestConstants.SUB_TITLE);
+        // Get target link
+        mTargetLink = jsonObject.optString(RestConstants.TARGET);
         // Get timer in seconds and convert to millis
-        mTimerInMillis = jsonObject.optLong(RestConstants.JSON_UNIX_TIME_TAG) * DateTimeUtils.UNIT_SEC_TO_MILLIS;
+        mTimerInMillis = jsonObject.optLong(RestConstants.UNIX_TIME) * DateTimeUtils.UNIT_SEC_TO_MILLIS;
         // Validate images
-        if (jsonObject.has(RestConstants.JSON_IMAGE_TAG)) {
+        if (jsonObject.has(RestConstants.IMAGE)) {
             // Get image
-            mImagePhone = mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+            mImagePhone = mImageTablet = jsonObject.optString(RestConstants.IMAGE);
         } else {
             // Get image phone
-            mImagePhone = jsonObject.optString(RestConstants.JSON_IMAGE_PORTRAIT_TAG);
+            mImagePhone = jsonObject.optString(RestConstants.IMAGE_PORTRAIT);
             // Get image tablet
-            mImageTablet = jsonObject.optString(RestConstants.JSON_IMAGE_LANDSCAPE_TAG);
+            mImageTablet = jsonObject.optString(RestConstants.IMAGE_LANDSCAPE);
         }
         return false;
     }
@@ -139,8 +116,8 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     /*
@@ -154,27 +131,21 @@ public class BaseTeaserObject implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.mSku);
-        dest.writeString(this.mName);
         dest.writeString(this.mTitle);
         dest.writeString(this.mSubTitle);
-        dest.writeString(this.mUrl);
         dest.writeString(this.mImagePhone);
         dest.writeString(this.mImageTablet);
-        dest.writeString(this.mTargetType);
+        dest.writeString(this.mTargetLink);
         dest.writeLong(this.mTimerInMillis);
         dest.writeInt(this.mTeaserTypeId);
     }
 
     protected BaseTeaserObject(Parcel in) {
-        this.mSku = in.readString();
-        this.mName = in.readString();
         this.mTitle = in.readString();
         this.mSubTitle = in.readString();
-        this.mUrl = in.readString();
         this.mImagePhone = in.readString();
         this.mImageTablet = in.readString();
-        this.mTargetType = in.readString();
+        this.mTargetLink = in.readString();
         this.mTimerInMillis = in.readLong();
         this.mTeaserTypeId = in.readInt();
     }

@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/campaign_image_height"
-    android:orientation="vertical">
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:background="@drawable/selector_list_item_highlight">
 
     <!-- IMAGE -->
 
     <RelativeLayout
         android:id="@+id/image_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/selector_list_item_highlight" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        >
 
         <ImageView
             android:id="@+id/image_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/campaign_image_height"
             android:layout_centerInParent="true"
-            android:scaleType="fitCenter" />
+            android:layout_marginLeft="@dimen/dimen_92dp"
+            android:layout_marginRight="@dimen/dimen_92dp"
+            />
 
         <ProgressBar
             android:id="@+id/campaign_loading_progress"
@@ -35,10 +38,92 @@
             android:background="@drawable/background_soldout"
             android:fontFamily="roboto_bold"
             android:gravity="center"
-            android:text="@string/campaing_offer_ended"
+            android:text="@string/campaign_offer_ended"
             android:textColor="@color/grey_dark"
             android:textSize="@dimen/text_m"
             android:visibility="gone" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:gravity="center_horizontal">
+
+        <!-- PRICE -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_price"
+            style="@style/TextList_2"
+            android:layout_width="wrap_content"
+            android:layout_alignBottom="@id/campaign_item_discount"
+            android:layout_alignTop="@id/campaign_item_discount"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black_800"
+            />
+
+        <!-- DISCOUNT -->
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_discount"
+            style="@style/TextList_1"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:ellipsize="marquee"
+            android:layout_toRightOf="@id/campaign_item_price"
+            android:gravity="left|bottom"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/red_basic"
+            />
+
+
+
+    </RelativeLayout>
+
+    <!-- SAVE VALUE -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        >
+
+        <!-- SAVE VALUE -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_save_value"
+            style="@style/TextInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:layout_centerVertical="true"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/campaign_save"
+            android:textColor="@color/green_basic"
+            />
+
+        <!-- SAVE LABEL -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/campaign_item_save_label"
+            style="@style/TextCaption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:maxLines="1"
+            android:layout_toRightOf="@id/campaign_item_save_value"
+            android:layout_marginLeft="@dimen/margin_small"
+            android:layout_centerVertical="true"
+            android:singleLine="true"
+            android:text="@string/campaign_save"
+            android:textColor="@color/black"
+            />
+
     </RelativeLayout>
 
     <!-- SIZE CONTAINER -->
@@ -46,64 +131,23 @@
     <RelativeLayout
         android:id="@+id/campaign_item_size_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/campaign_size_container_height"
-        android:orientation="vertical"
-        android:visibility="visible" >
-
-        <!-- DIVIDER -->
-
-        <View
-            android:id="@+id/campaign_item_size_divider"
-            style="@style/divider_horizontal_campaign"
-            android:layout_alignParentTop="true" />
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:visibility="invisible" >
 
         <!-- SIZE TEXT -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_size_label"
+            style="@style/TextCaption"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/campaign_item_size_divider"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="@dimen/margin_large"
-            android:fontFamily="roboto_regular"
-            android:gravity="center"
+            android:layout_centerInParent="true"
             android:maxLines="1"
-            android:paddingRight="@dimen/margin_mid"
             android:singleLine="true"
-            android:text="@string/campaign_choose_size"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_xs" />
-
-        <!-- SIZE SPINNER -->
-
-        <!--<com.mobile.components.absspinner.IcsSpinner-->
-            <!--android:id="@+id/campaign_item_size_spinner"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_alignTop="@id/campaign_item_size_label"-->
-            <!--android:layout_toLeftOf="@id/campaign_item_size_label"-->
-            <!--android:background="@drawable/spinner_background_holo_orange"-->
-            <!--android:clickable="true"-->
-            <!--android:textColor="@color/grey_middle"-->
-            <!--android:textSize="@dimen/text_xs" />-->
-
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/campaign_item_size_spinner"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignTop="@id/campaign_item_size_label"
-            android:layout_toLeftOf="@id/campaign_item_size_label"
-            android:background="@drawable/spinner_background"
-            android:ellipsize="end"
-            android:singleLine="true"
-            android:text="@string/product_variant_placeholder"
-            android:textColor="@color/grey_middle"
-            android:textSize="@dimen/text_xs"
-            android:visibility="visible" />
-
-        <!-- android:spinnerMode="dropdown" android:spinnerMode="dropdown" -->
+            android:text="@string/size_label"
+            android:textColor="@color/black"
+            />
     </RelativeLayout>
 
 </LinearLayout>

@@ -6,7 +6,6 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.pojo.RestConstants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,26 +57,9 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
                 return false;
             }
             sku = jsonObject.getString(RestConstants.SKU);
-            price = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
-            mSpecialPrice = jsonObject.getDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
-            // get url from first image which has url
-            JSONArray imageArray = jsonObject.optJSONArray(RestConstants.JSON_IMAGE_TAG);
-            if (imageArray != null) {
-                int imageArraySize = imageArray.length();
-                if (imageArraySize > 0) {
-                    boolean isImageUrlDefined = false;
+            price = jsonObject.getDouble(RestConstants.PRICE);
+            mSpecialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
 
-                    int index = 0;
-                    while (!isImageUrlDefined && index < imageArraySize) {
-                        JSONObject imageObject = imageArray.getJSONObject(index);
-                        if (imageObject != null) {
-                            imageUrl = imageObject.optString(RestConstants.URL);
-                            isImageUrlDefined = true;
-                        }
-                        index++;
-                    }
-                }
-            }
         } catch (JSONException e) {
             e.printStackTrace();
             return false;
@@ -93,7 +75,7 @@ public class FeaturedItemProduct extends FeaturedItem implements Parcelable {
     public JSONObject toJSON() {
         JSONObject jsonObject = super.toJSON();
         try {
-            jsonObject.put(RestConstants.JSON_PRICE_TAG, price);
+            jsonObject.put(RestConstants.PRICE, price);
         } catch (JSONException e) {
             e.printStackTrace();
             return null;

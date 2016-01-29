@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
+import com.mobile.newFramework.objects.cart.AddedItemStructure;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
@@ -56,7 +57,7 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.SMALL_TASK;
+        return EventTask.ACTION_TASK;
     }
 
     @Override
@@ -76,47 +77,18 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        //TODO move to observable
-        PurchaseEntity cart = (PurchaseEntity) baseResponse.getMetadata().getData();
+        PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
         TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
-
-//        bundle.putInt(PRODUCT_POS_TAG, mCurrentPos);
-//        bundle.putParcelable(Constants.BUNDLE_RESPONSE_KEY, cart);
-
-        AddItemStruct addItemStruct = new AddItemStruct();
+        AddedItemStructure addItemStruct = new AddedItemStructure();
         addItemStruct.setPurchaseEntity(cart);
         addItemStruct.setCurrentPos(mCurrentPos);
         baseResponse.getMetadata().setData(addItemStruct);
-        /*
-         * LastViewed
-         */
         // Validate if is to remove from LastViewed
         if (isToRemoveFromLastViewed && !TextUtils.isEmpty(mCurrentSku)) {
             LastViewedTableHelper.removeLastViewed(mCurrentSku);
-        }
-    }
-
-    public class AddItemStruct {
-        private PurchaseEntity purchaseEntity;
-        private int currentPos;
-
-        public PurchaseEntity getPurchaseEntity() {
-            return purchaseEntity;
-        }
-
-        void setPurchaseEntity(PurchaseEntity purchaseEntity) {
-            this.purchaseEntity = purchaseEntity;
-        }
-
-        public int getCurrentPos() {
-            return currentPos;
-        }
-
-        void setCurrentPos(int currentPos) {
-            this.currentPos = currentPos;
         }
     }
 

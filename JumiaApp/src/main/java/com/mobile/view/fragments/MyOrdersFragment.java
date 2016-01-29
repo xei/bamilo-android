@@ -1,8 +1,6 @@
 package com.mobile.view.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -11,17 +9,14 @@ import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.LogOut;
 import com.mobile.controllers.OrdersAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.account.GetMyOrdersListHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.objects.orders.MyOrder;
 import com.mobile.newFramework.objects.orders.Order;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.Errors;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -32,11 +27,10 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+
+import de.akquinet.android.androlog.Log;
 
 /**
  * @author Paulo Carvalho
@@ -66,10 +60,10 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
      */
     public MyOrdersFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyOrders,
+                NavigationAction.MY_ORDERS,
                 R.layout.my_orders_fragment_main,
                 R.string.my_orders_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /**
@@ -173,12 +167,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Validate customer is logged in
         if (!JumiaApplication.isCustomerLoggedIn()) {
-            // Remove this entry from back stack
-            FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ORDERS.toString());
-            // Goto Login and next WishList
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ORDERS);
-            getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+            onLoginRequired();
         }
         // Case first time
         else if (CollectionUtils.isEmpty(mOrdersList)) {
@@ -244,7 +233,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
             isErrorOnLoadingMore = false;
         }
         // Bottom reached
-        boolean isBottomReached = totalItemCount != 0 && visibleItemCount + 1 == totalItemCount;
+        boolean isBottomReached = totalItemCount != 0 && (firstVisibleItem + visibleItemCount + 1) == totalItemCount;
         // Validate
         if (isBottomReached && !isLoadingMore && mPageIndex < mMaxPages) {
             Log.i(TAG, "LOADING MORE DATA");
@@ -303,20 +292,19 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_MY_ORDERS_LIST_EVENT:
-                MyOrder orders = (MyOrder) baseResponse.getMetadata().getData();
+                MyOrder orders = (MyOrder) baseResponse.getContentData();
                 ArrayList<Order> orderList = orders.getOrders();
                 // Get max pages
+                mPageIndex = orders.getCurrentPage();
                 mMaxPages = orders.getTotalPages();
                 // Validate
                 if (CollectionUtils.isEmpty(orderList) && mPageIndex == 1) {
                     showErrorFragment(ErrorLayoutFactory.NO_ORDERS_LAYOUT, this);
-                } else {
-                    if (mPageIndex > 1) {
-                        appendToList(orderList);
-                        isLoadingMore = false;
-                    } else
-                        showOrders(orderList);
-                }
+                } else if (mPageIndex > 1) {
+                    appendToList(orderList);
+                    isLoadingMore = false;
+                } else
+                    showOrders(orderList);
                 break;
             default:
                 break;
@@ -336,29 +324,25 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
         }
 
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
         switch (eventType) {
             case GET_MY_ORDERS_LIST_EVENT:
                 Print.w("ORDER", "ERROR Visible");
                 isErrorOnLoadingMore = true;
-                //used for when the user session expires on the server side
-                try {
-                    if (errorCode == ErrorCode.REQUEST_ERROR) {
-                        Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                        if (errorMessages != null) {
-                            if (errorMessages.get(RestConstants.JSON_ERROR_TAG).contains(Errors.CODE_CUSTOMER_NOT_LOGGED_IN)) {
-                                LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
-                                onValidateDataState();
-                            }
-                        }
-                    }
-                } catch (ClassCastException | NullPointerException e) {
-                    showFragmentErrorRetry();
-                }
+                showFragmentErrorRetry();
                 break;
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onLoginRequired() {
+        // Remove this entry from back stack
+        FragmentController.getInstance().removeAllEntriesWithTag(FragmentType.MY_ORDERS.toString());
+        // Goto Login and next WishList
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_ORDERS);
+        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
 }

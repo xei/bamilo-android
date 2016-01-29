@@ -2,10 +2,10 @@
 <resources>
 
     <!-- Global Country Configuration -->
-    <string name="jumia_global_shopname">Jumia</string>
-    <string name="jumia_global_server">www.jumia.com</string>
-    <string name="jumia_global_restbase_path">mobapi</string>
-    <string name="jumia_global_api_version">mobapi/v1.9</string>
+    <string name="global_shopname">Jumia</string>
+    <string name="global_server">www.jumia.com</string>
+    <string name="global_restbase_path">mobapi</string>
+    <string name="global_api_version">mobapi/v2.0</string>
     
     <!-- Share App -->
 	<string name="share_app_link">https://play.google.com/store/apps/details?id=com.jumia.android&amp;hl=en</string>

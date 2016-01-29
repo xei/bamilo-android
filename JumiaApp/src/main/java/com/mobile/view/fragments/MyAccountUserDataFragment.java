@@ -1,7 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,10 +17,9 @@ import com.mobile.helpers.account.GetUserDataFormHelper;
 import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.helpers.account.SetUserDataHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -32,8 +30,6 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class that shows the personal information of the user, ant let's him change it
@@ -52,20 +48,20 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     private DynamicForm mChangePasswordForm;
 
-    private TextView mSaveUserDataButton;
-
-    private TextView mSavePasswordButton;
-
     private Bundle mFormSavedState;
+
+    private TextView mChangePasswordTitle;
+
+    private TextView mChangePasswordButton;
     /**
      * Empty constructor
      */
     public MyAccountUserDataFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccountUserData,
+                NavigationAction.MY_ACCOUNT_USER_DATA,
                 R.layout.my_account_user_data_fragment,
                 R.string.myaccount_userdata,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /**
@@ -111,9 +107,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         Print.i(TAG, "ON VIEW CREATED");
         if (null != JumiaApplication.CUSTOMER) {
             setAppContentLayout(view);
-            init();
-        } else {
-            showFragmentErrorRetry();
         }
     }
 
@@ -126,6 +119,11 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+        if (null != JumiaApplication.CUSTOMER) {
+            init();
+        } else {
+            showFragmentErrorRetry();
+        }
     }
 
     /*
@@ -152,11 +150,30 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         Bundle bundle = new Bundle();
         if(mUserDataForm != null) {
             mUserDataForm.saveFormState(bundle);
+            mFormSavedState = bundle;
         }
         if(mChangePasswordForm != null) {
             mChangePasswordForm.saveFormState(bundle);
+            mFormSavedState = bundle;
         }
-        mFormSavedState = bundle;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        Print.i(TAG, "ON SAVE INSTANCE STATE");
+        if (mUserDataForm != null) {
+            // save edited data in user data form
+            mUserDataForm.saveFormState(outState);
+        }
+        if (mChangePasswordForm != null) {
+            // save edited data in change password form
+            mChangePasswordForm.saveFormState(outState);
+        }
+
+        if (mUserDataForm == null && mChangePasswordForm == null) {
+            outState = mFormSavedState;
+        }
+        super.onSaveInstanceState(outState);
     }
 
     /*
@@ -214,50 +231,37 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      * Inflates this activity layout into the main template layout
      */
     public void setAppContentLayout(View mainView) {
-
         mUserDataFormContainer = (LinearLayout) mainView.findViewById(R.id.user_data_container);
         mChangePasswordFormContainer = (LinearLayout) mainView.findViewById(R.id.change_password_layout);
-
-        mSaveUserDataButton = (TextView) mainView.findViewById(R.id.change_password_save_button);
-        mSaveUserDataButton.setOnClickListener(this);
-        mSavePasswordButton = (TextView) mainView.findViewById(R.id.user_data_save_button);
-        mSavePasswordButton.setOnClickListener(this);
+        mChangePasswordTitle = (TextView) mainView.findViewById(R.id.change_password_title);
+        mChangePasswordButton = (TextView) mainView.findViewById(R.id.change_password_save_button);
+        mChangePasswordButton.setOnClickListener(this);
+        mainView.findViewById(R.id.user_data_save_button).setOnClickListener(this);
     }
 
     /**
      * call methods to fill layout with forms
      */
     private void init() {
-        triggerGetChangePasswordForm();
         triggerGetUserDataForm();
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Print.i(TAG, "ON SAVE INSTANCE STATE");
-        if (mUserDataForm != null) {
-            mUserDataForm.saveFormState(outState);
+        if(!CustomerUtils.isChangePasswordHidden(getBaseActivity())){
+            triggerGetChangePasswordForm();
+            mChangePasswordFormContainer.setVisibility(View.VISIBLE);
+            mChangePasswordTitle.setVisibility(View.VISIBLE);
+            mChangePasswordButton.setVisibility(View.VISIBLE);
+        } else {
+            mChangePasswordFormContainer.setVisibility(View.GONE);
+            mChangePasswordTitle.setVisibility(View.GONE);
+            mChangePasswordButton.setVisibility(View.GONE);
         }
-        if (mChangePasswordForm != null) {
-            mChangePasswordForm.saveFormState(outState);
-        }
-    }
 
-    /**
-     * Method responsible for showing warning bar with error validation message
-     * @param hint
-     * @param isUserDataError
-     */
-    private void displayErrorHint(String hint, boolean isUserDataError) {
-        getBaseActivity().warningFactory.showWarning(isUserDataError ? WarningFactory.USER_DATA_VALIDATION : WarningFactory.CHANGE_PASSWORD_VALIDATION, hint);
     }
 
     /**
      * function used to fill the layout section with the user data form
-     * @param userForm
      */
     private void fillUserDataForm(Form userForm){
+        mUserDataFormContainer.removeAllViews();
         mUserDataForm = FormFactory.getSingleton().CreateForm(FormConstants.USER_DATA_FORM,getBaseActivity(),userForm);
         // Load saved state
         mUserDataForm.loadSaveFormState(mFormSavedState);
@@ -270,7 +274,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     /**
      * function used to fill the layout section with the change password form
-     * @param passwordForm
      */
     protected void fillChangePasswordForm(Form passwordForm) {
         mChangePasswordForm = FormFactory.getSingleton().CreateForm(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),passwordForm);
@@ -283,9 +286,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      *  method that changes the user data
      */
     private void triggerChangeUserData() {
-        if (mUserDataForm.validate()) {
-            ContentValues values = mUserDataForm.save();
-            triggerContentEvent(new SetUserDataHelper(), SetUserDataHelper.createBundle(values), this);
+        if (mUserDataForm != null && mUserDataForm.validate()) {
+            triggerContentEvent(new SetUserDataHelper(), SetUserDataHelper.createBundle(mUserDataForm.getForm().getAction(), mUserDataForm.save()), this);
         }
     }
 
@@ -294,7 +296,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      */
     public void triggerChangePassword() {
         if (mChangePasswordForm.validate()) {
-            triggerContentEvent(new SetChangePasswordHelper(), SetUserDataHelper.createBundle(mChangePasswordForm.save()), this);
+            triggerContentEvent(new SetChangePasswordHelper(), SetChangePasswordHelper.createBundle(mChangePasswordForm.getForm().getAction(), mChangePasswordForm.save()), this);
         }
     }
 
@@ -319,12 +321,12 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
         switch (eventType) {
             case GET_CHANGE_PASSWORD_FORM_EVENT:
-                Form passwordForm = (Form)baseResponse.getMetadata().getData();
+                Form passwordForm = (Form)baseResponse.getContentData();
                 fillChangePasswordForm(passwordForm);
                 Print.i(TAG, "GET CHANGE PASSWORD FORM");
                 break;
             case EDIT_USER_DATA_FORM_EVENT:
-                Form userForm = (Form)baseResponse.getMetadata().getData();
+                Form userForm = (Form)baseResponse.getContentData();
                 fillUserDataForm(userForm);
                 showFragmentContentContainer();
                 Print.i(TAG, "GET USER DATA FORM");
@@ -332,14 +334,14 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
             case CHANGE_PASSWORD_EVENT:
                 Print.d(TAG, "changePasswordEvent: Password changed with success");
                 if (null != getActivity()) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.CHANGE_PASSWORD_SUCCESS, getString(R.string.password_changed));
+                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.password_changed));
                     showFragmentContentContainer();
                 }
                 break;
             case EDIT_USER_DATA_EVENT:
                 Print.d(TAG, "editUserEvent: user data edit with success fsdfsdffd ");
                 if (null != getActivity()) {
-                    getBaseActivity().warningFactory.showWarning(WarningFactory.USER_DATA_SUCCESS, getString(R.string.edit_user_success));
+                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE,  getBaseActivity().getResources().getString(R.string.edit_user_success));
                     showFragmentContentContainer();
                 }
                 break;
@@ -358,64 +360,23 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
+        // Call super
         if (super.handleErrorEvent(baseResponse)) {
             return;
         }
-
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-
+        // Validate type
         switch (eventType) {
             case GET_CHANGE_PASSWORD_FORM_EVENT:
             case EDIT_USER_DATA_FORM_EVENT:
                 showFragmentErrorRetry();
                 break;
             case CHANGE_PASSWORD_EVENT:
-                Print.d(TAG, "changePasswordEvent: Password changed was not successful");
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                    if (errorMessages == null) {
-                        return;
-                    }
-                    showFragmentContentContainer();
-
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                    }
-
-                    String errorMessage;
-                    if (validateMessages.size() == 0) {
-                        return;
-                    }
-                    errorMessage = validateMessages.get(0);
-                    displayErrorHint(errorMessage, false);
-                    showFragmentContentContainer();
-                }
+                showFragmentContentContainer();
+                showFormValidateMessages(mChangePasswordForm, baseResponse, eventType);
                 break;
             case EDIT_USER_DATA_EVENT:
-                Print.d(TAG, "EditUserData: Edit user was not successful");
-                if (errorCode == ErrorCode.REQUEST_ERROR) {
-                    Map<String, List<String>> errorMessages = baseResponse.getErrorMessages();
-                    if (errorMessages == null) {
-                        return;
-                    }
-                    showFragmentContentContainer();
-
-                    List<String> validateMessages = errorMessages.get(RestConstants.JSON_VALIDATE_TAG);
-                    if (validateMessages == null || validateMessages.isEmpty()) {
-                        validateMessages = errorMessages.get(RestConstants.JSON_ERROR_TAG);
-                    }
-
-                    String errorMessage;
-                    if (validateMessages.size() == 0) {
-                        return;
-                    }
-                    errorMessage = validateMessages.get(0);
-                    displayErrorHint(errorMessage, true);
-                    showFragmentContentContainer();
-
-                }
+                showFragmentContentContainer();
+                showFormValidateMessages(mUserDataForm, baseResponse, eventType);
                 break;
             default:
                 break;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -8,6 +5,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
@@ -29,15 +27,14 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
@@ -51,20 +48,18 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     private static final String TAG = CheckoutThanksFragment.class.getSimpleName();
 
-    private static String order_number;
+    private String mOrderShipping;
     
-    private String orderShipping;
+    private String mOrderTax;
     
-    private String orderTax;
-    
-    private String paymentMethod;
+    private String mPaymentMethod;
 
     private double mGrandTotalValue;
-    
+
+    private String mOrderNumber;
+
     /**
      * Get instance
-     * 
-     * @return
      */
     public static CheckoutThanksFragment getInstance(Bundle bundle) {
         CheckoutThanksFragment fragment = new CheckoutThanksFragment();
@@ -77,10 +72,10 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     public CheckoutThanksFragment() {
         super(EnumSet.noneOf(MyMenuItem.class),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.layout.checkout_thanks,
                 R.string.checkout_label,
-                KeyboardState.NO_ADJUST_CONTENT,
+                NO_ADJUST_CONTENT,
                 ConstantsCheckout.CHECKOUT_THANKS);
     }
 
@@ -96,18 +91,13 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         Print.i(TAG, "ON CREATE");
         // Get values
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
-        if(arguments != null &&
-                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING) &&
-                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX) &&
-                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD) &&
-                getArguments().containsKey(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL)){
-            
-            orderShipping = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING);
-            orderTax = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX);
-            paymentMethod = getArguments().getString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD);
-            mGrandTotalValue = getArguments().getDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL);
+        if(arguments != null){
+            mOrderNumber = getArguments().getString(RestConstants.ORDER_NUMBER);
+            mOrderShipping = getArguments().getString(RestConstants.TRANSACTION_SHIPPING);
+            mOrderTax = getArguments().getString(RestConstants.TRANSACTION_TAX);
+            mPaymentMethod = getArguments().getString(RestConstants.PAYMENT_METHOD);
+            mGrandTotalValue = getArguments().getDouble(RestConstants.ORDER_GRAND_TOTAL);
         }
-        
     }
 
     @Override
@@ -133,10 +123,11 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_SHIPPING, orderShipping);
-        outState.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TAX, orderTax);
-        outState.putString(ConstantsCheckout.CHECKOUT_THANKS_PAYMENT_METHOD, paymentMethod);
-        outState.putDouble(ConstantsCheckout.CHECKOUT_THANKS_ORDER_TOTAL, mGrandTotalValue);
+        outState.putString(RestConstants.ORDER_NUMBER, mOrderNumber);
+        outState.putString(RestConstants.TRANSACTION_SHIPPING, mOrderShipping);
+        outState.putString(RestConstants.TRANSACTION_TAX, mOrderTax);
+        outState.putString(RestConstants.PAYMENT_METHOD, mPaymentMethod);
+        outState.putDouble(RestConstants.ORDER_GRAND_TOTAL, mGrandTotalValue);
     }
 
     @Override
@@ -161,27 +152,21 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      * Show content
      */
     private void prepareLayout(View view) {
-        
-        // String order_number = args.getString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR);
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null && JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber() != null) {
-            order_number = JumiaApplication.INSTANCE.getPaymentMethodForm().getOrderNumber();
-            // Track purchase
-            if(!JumiaApplication.INSTANCE.getPaymentMethodForm().isCameFromWebCheckout()) trackPurchase();
-        }
-        
-        // Clean cart and payment
-        JumiaApplication.INSTANCE.setCart(new PurchaseEntity());
-        JumiaApplication.INSTANCE.setPaymentMethodForm(null);
+        // Track purchase
+        trackPurchase();
+        // Clean cart
+        triggerClearCart();
+        JumiaApplication.INSTANCE.setCart(null);
         // Update cart info
         getBaseActivity().updateCartInfo();
         // Order number
         TextView tV = (TextView) view.findViewById(R.id.order_number_id);
-        tV.setText(order_number);
+        tV.setText(mOrderNumber);
         tV.setOnClickListener(this);
         // Continue button
         view.findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
         // Add a link to order status
-        setOrderStatusLink(order_number);
+        setOrderStatusLink(mOrderNumber);
     }
 
     /**
@@ -192,7 +177,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      *      SpannableString</href>
      */
     private void setOrderStatusLink(String orderNumber) {
-
         // Get strings
         String mainText = getString(R.string.order_track_check);
         String text = getString(R.string.order_track_link);
@@ -214,14 +198,15 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     }
 
     private void triggerClearCart() {
-        Print.i(TAG, "TRIGGER: CHECKOUT FINISH");
+        Print.i(TAG, "TRIGGER: CLEAR CART FINISH");
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
     }
 
+    // TODO: move this method for TrackerDelegator and try unify with TrackerDelegator.trackPurchaseNativeCheckout
     private void trackPurchase() {
-        if (JumiaApplication.INSTANCE.getCart() != null) {
+        if (JumiaApplication.INSTANCE.getCart() != null && CollectionUtils.isNotEmpty(JumiaApplication.INSTANCE.getCart().getCartItems())) {
             Bundle params = new Bundle();
-            params.putString(TrackerDelegator.ORDER_NUMBER_KEY, order_number);
+            params.putString(TrackerDelegator.ORDER_NUMBER_KEY, mOrderNumber);
             params.putDouble(TrackerDelegator.VALUE_KEY, JumiaApplication.INSTANCE.getCart().getPriceForTracking());
             params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
             params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
@@ -229,16 +214,13 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             params.putInt(TrackerDelegator.CART_COUNT, JumiaApplication.INSTANCE.getCart().getCartCount());
             params.putDouble(TrackerDelegator.GRAND_TOTAL, mGrandTotalValue);
 
-            if(!TextUtils.isEmpty(orderShipping) && !TextUtils.isEmpty(orderTax) && !TextUtils.isEmpty(paymentMethod)){
-                params.putString(TrackerDelegator.SHIPPING_KEY, orderShipping);
-                params.putString(TrackerDelegator.TAX_KEY, orderTax);
-                params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, paymentMethod);
+            if(!TextUtils.isEmpty(mOrderShipping) && !TextUtils.isEmpty(mOrderTax) && !TextUtils.isEmpty(mPaymentMethod)){
+                params.putString(TrackerDelegator.SHIPPING_KEY, mOrderShipping);
+                params.putString(TrackerDelegator.TAX_KEY, mOrderTax);
+                params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, mPaymentMethod);
             }
             TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems(), JumiaApplication.INSTANCE.getCart().getAttributeSetIdList());
         }
-
-        triggerClearCart();
-        JumiaApplication.INSTANCE.setCart(null);
     }
 
     /*--
@@ -298,12 +280,12 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     class TouchableSpan extends ClickableSpan {
         private boolean mIsPressed;
-        private int mNormalTextColor;
-        private int mPressedTextColor;
+        private final int mNormalTextColor;
+        private final int mPressedTextColor;
 
         public TouchableSpan(int normalTextColorRes, int pressedTextColorRes) {
-            mNormalTextColor = getResources().getColor(normalTextColorRes);
-            mPressedTextColor = getResources().getColor(pressedTextColorRes);
+            mNormalTextColor = ContextCompat.getColor(getContext(), normalTextColorRes);
+            mPressedTextColor = ContextCompat.getColor(getContext(), pressedTextColorRes);
         }
 
         public void setPressed(boolean isSelected) {
@@ -329,9 +311,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     /**
      * Process the click on the spannable string
-     * 
-     * @param view
-     * @author sergiopereira
      */
     private void onClickSpannableString(View view) {
         // Remove all checkout process entries
@@ -344,7 +323,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             bundle.putString(ConstantsIntentExtra.ARG_1, view.getTag().toString());
             getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
-
     }
 
     /*
@@ -385,15 +363,12 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     
     /**
      * Process the click on order number
-     * @param v
-     * @author sergiopereira
      */
     @SuppressWarnings("deprecation")
     private void onClickOrderNumber(View v){
         ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipMan.setPrimaryClip(ClipData.newPlainText("simple text",((TextView) v).getText()));
-
-        Toast.makeText(getActivity(), getString(R.string.copied_to_clipboard),Toast.LENGTH_SHORT).show();
+        ClipMan.setPrimaryClip(ClipData.newPlainText("simple text", ((TextView) v).getText()));
+        showWarningSuccessMessage(getString(R.string.copied_to_clipboard));
     }
     
     /**
@@ -421,42 +396,23 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         return true;
     }
 
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        onSuccessEvent(baseResponse);
-
-    }
-
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        onErrorEvent(baseResponse);
-
-    }
-
     /**
      * Process the success event
-     * 
-     * @param baseResponse
-     * @return
      */
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
-        return true;
     }
 
     /**
      * Process the error event
-     * 
-     * @param baseResponse
-     * @return
      */
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        Print.i(TAG, "ON ERROR EVENT: " + eventType.toString() + " " + errorCode);
-
-        return false;
+        int errorCode = baseResponse.getError().getCode();
+        Print.i(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
     }
 
 }

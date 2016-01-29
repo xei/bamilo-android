@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.output.Print;
@@ -39,6 +40,7 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
 	private String mTitle;
 
 	private ProductMultiple mProduct;
+	private CampaignItem mCampaignItem;
 
 	private Context mContext;
 
@@ -54,6 +56,8 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         void onDialogListItemSelect(int position);
 
         void onDialogListClickView(View view);
+
+        void onDialogSizeListClickView(int position, CampaignItem item);
 
         void onDialogListDismiss();
     }
@@ -79,6 +83,20 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         return dialogListFragment;
     }
 
+    /**
+     * Create new instance for CampaignItem
+     */
+    public static DialogSimpleListFragment newInstance(Context context, String title, CampaignItem product, OnDialogListListener listListener) {
+        Print.d(TAG, "NEW INSTANCE");
+        DialogSimpleListFragment dialogListFragment = new DialogSimpleListFragment();
+        dialogListFragment.mContext = context;
+        dialogListFragment.mListener = listListener;
+        dialogListFragment.mTitle = title;
+        dialogListFragment.mCampaignItem = product;
+        dialogListFragment.mProduct = product;
+        return dialogListFragment;
+    }
+
 	/*
 	 * (non-Javadoc)
 	 * @see android.support.v4.app.DialogFragment#onCreate(android.os.Bundle)
@@ -86,8 +104,6 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-	    //setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Jumia_Dialog_NoTitle);
-        //setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_Jumia_Dialog_Bottom_Sheet);
 	}
 
     /*
@@ -236,7 +252,9 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
             @Override
             public void run() {
                 dismiss();
-                if (mListener != null) {
+                if (mListener != null && mCampaignItem != null) {
+                    mListener.onDialogSizeListClickView(position, mCampaignItem);
+                } else if(mListener != null){
                     mListener.onDialogListItemSelect(position);
                 }
             }
@@ -255,10 +273,10 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         private final ArrayList<ProductSimple> mItems;
 
         private int mCheckedPosition = ProductMultiple.NO_DEFAULT_SIMPLE_POS;
-		
-		private LayoutInflater mInflater;
-		
-		/**
+
+        private final LayoutInflater mInflater;
+
+        /**
 		 * Constructor
 		 */
 		public DialogListAdapter(ArrayList<ProductSimple> simples) {

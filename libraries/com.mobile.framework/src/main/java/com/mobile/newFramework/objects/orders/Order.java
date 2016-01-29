@@ -54,9 +54,9 @@ public class Order implements IJSONSerializable, Parcelable {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        mNumber = jsonObject.getInt(RestConstants.JSON_NUMBER_TAG);
-        mDate = jsonObject.optString(RestConstants.JSON_ORDER_DATE_TAG);
-        mTotal = jsonObject.optDouble(RestConstants.JSON_ORDER_TOTAL_TAG);
+        mNumber = jsonObject.getInt(RestConstants.NUMBER);
+        mDate = jsonObject.optString(RestConstants.DATE);
+        mTotal = jsonObject.optDouble(RestConstants.TOTAL);
         return true;
     }
 
@@ -71,7 +71,7 @@ public class Order implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

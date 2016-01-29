@@ -34,7 +34,7 @@ public class GlobalSeller implements IJSONSerializable, Parcelable {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        name = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+        name = jsonObject.optString(RestConstants.NAME);
         deliveryTime = jsonObject.getString(RestConstants.DELIVERY_TIME);
         isGlobal = jsonObject.getBoolean(RestConstants.IS_GLOBAL);
         if(isGlobal){
@@ -42,8 +42,8 @@ public class GlobalSeller implements IJSONSerializable, Parcelable {
             info = global.getString(RestConstants.CMS_INFO);
             shippingInfo = global.getString(RestConstants.SHIPPING);
             JSONObject linkObject = global.getJSONObject(RestConstants.LINK);
-            staticText = linkObject.getString(RestConstants.TEXT);
-            staticLink = linkObject.getString(RestConstants.URL);
+            staticText = linkObject.optString(RestConstants.TEXT);
+            staticLink = linkObject.optString(RestConstants.URL);
         }
 
         return true;
@@ -55,8 +55,8 @@ public class GlobalSeller implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     @Override

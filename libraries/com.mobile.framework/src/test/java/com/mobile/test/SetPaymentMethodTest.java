@@ -23,9 +23,9 @@ public class SetPaymentMethodTest extends BaseTestCase {
         data.put("name", "Cash On Delivery");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/paymentmethod/")
-                .setCache(EventType.SET_SHIPPING_METHOD_EVENT.cacheTime)
-                .setData(data)
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/paymentmethod/")
+                .setCache(EventType.SET_MULTI_STEP_SHIPPING.cacheTime)
+                .addQueryData(data)
                 .build();
     }
 
@@ -33,7 +33,7 @@ public class SetPaymentMethodTest extends BaseTestCase {
     public void testRequest() {
         Print.d("TEST REQUEST");
         //new SetPaymentMethod(requestBundle, this).execute();
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.setPaymentMethod);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setMultiStepPayment);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

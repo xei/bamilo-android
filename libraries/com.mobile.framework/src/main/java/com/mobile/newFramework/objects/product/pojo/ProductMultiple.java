@@ -44,14 +44,14 @@ public class ProductMultiple extends ProductRegular {
 
     protected final boolean initializeProductMultiple(JSONObject jsonObject) throws JSONException {
         // Size guide
-        mSizeGuideUrl = jsonObject.optString(RestConstants.JSON_SIZE_GUIDE_URL_TAG);
+        mSizeGuideUrl = jsonObject.optString(RestConstants.SIZE_GUIDE);
         // Get variation name
         mVariationName = jsonObject.optString(RestConstants.VARIATION_NAME);
         mVariationsAvailable = jsonObject.optString(RestConstants.VARIATIONS_AVAILABLE_LIST);
         // Default selected simple position
         mSelectedSimplePosition = jsonObject.optInt(RestConstants.VARIATION_DEFAULT_POSITION, NO_DEFAULT_SIMPLE_POS);
         // Simples
-        JSONArray simpleArray = jsonObject.getJSONArray(RestConstants.JSON_SIMPLES_TAG);
+        JSONArray simpleArray = jsonObject.getJSONArray(RestConstants.SIMPLES);
         int size = simpleArray.length();
         if (size > 0) {
             mSimples = new ArrayList<>();
@@ -76,6 +76,10 @@ public class ProductMultiple extends ProductRegular {
 
     public ArrayList<ProductSimple> getSimples() {
         return mSimples;
+    }
+
+    private boolean hasSimples() {
+        return CollectionUtils.isNotEmpty(mSimples);
     }
 
     public boolean hasOwnSimpleVariation() {
@@ -128,7 +132,7 @@ public class ProductMultiple extends ProductRegular {
             return  getOwnSimpleVariation();
         }
         // Case Multi simple variations
-        else if(hasMultiSimpleVariations() && hasSelectedSimpleVariation()) {
+        else if(hasSimples() && hasMultiSimpleVariations() && hasSelectedSimpleVariation()) {
             return getSelectedSimpleVariation();
         }
         // Case invalid

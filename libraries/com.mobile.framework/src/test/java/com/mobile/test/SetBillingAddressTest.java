@@ -24,16 +24,16 @@ public class SetBillingAddressTest extends BaseTestCase {
         data.put("billingForm[shippingAddressDifferent]", "0");
 
         requestBundle = new RequestBundle.Builder()
-                .setUrl("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/billing/")
-                .setCache(EventType.SET_BILLING_ADDRESS_EVENT.cacheTime)
-                .setData(data)
+                .setEndPoint("http://alice-staging.jumia.com.ng/mobapi/v1.7/multistep/billing/")
+                .setCache(EventType.SET_MULTI_STEP_ADDRESSES.cacheTime)
+                .addQueryData(data)
                 .build();
     }
 
     @SmallTest
     public void testRequest() {
         Print.d("TEST REQUEST");
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.setBillingAddress);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.setMultiStepAddresses);
         try {
             mCountDownLatch.await();
         } catch (InterruptedException e) {

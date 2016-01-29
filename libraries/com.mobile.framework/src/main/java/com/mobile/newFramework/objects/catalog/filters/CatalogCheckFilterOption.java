@@ -23,24 +23,23 @@ import org.json.JSONObject;
  */
 public class CatalogCheckFilterOption extends CatalogFilterOption implements MultiFilterOptionInterface {
 
-    public CatalogCheckFilterOption(){}
-
-    public CatalogCheckFilterOption(JSONObject jsonObject) throws JSONException {
-        this();
-        initialize(jsonObject);
-    }
-
     protected String id;
     protected String label;
     protected String val;
-
     protected boolean selected;
+
+    /**
+     * Empty constructor
+     */
+    public CatalogCheckFilterOption(){
+        // ...
+    }
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         id = jsonObject.optString(RestConstants.ID);
         label = jsonObject.getString(RestConstants.LABEL);
-        val = jsonObject.getString(RestConstants.JSON_VAL_TAG);
+        val = jsonObject.getString(RestConstants.VAL);
         return super.initialize(jsonObject);
     }
 
@@ -50,8 +49,8 @@ public class CatalogCheckFilterOption extends CatalogFilterOption implements Mul
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     @Override

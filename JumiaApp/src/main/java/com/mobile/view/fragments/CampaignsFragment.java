@@ -50,10 +50,10 @@ public class CampaignsFragment extends BaseFragment {
      */
     public CampaignsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.Unknown,
+                NavigationAction.CAMPAIGN,
                 R.layout.campaign_fragment_main,
                 R.string.campaigns_label,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -186,7 +186,7 @@ public class CampaignsFragment extends BaseFragment {
      */
     private class CampaignPagerAdapter extends FragmentPagerAdapter {
         
-        private ArrayList<TeaserCampaign> mCampaigns;
+        private final ArrayList<TeaserCampaign> mCampaigns;
         
         /**
          * Constructor
@@ -206,7 +206,7 @@ public class CampaignsFragment extends BaseFragment {
         @Override
         public Fragment getItem(int position) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(ConstantsIntentExtra.BANNER_TRACKING_TYPE, mGroupType);
+            bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             bundle.putParcelable(CampaignPageFragment.TAG, this.mCampaigns.get(position));
             return CampaignPageFragment.getInstance(bundle);
         }
@@ -226,17 +226,9 @@ public class CampaignsFragment extends BaseFragment {
          */
         @Override
         public CharSequence getPageTitle(int position) {
-            return mCampaigns.get(position).getTargetTitle().toUpperCase();
+            return mCampaigns.get(position).getTitle().toUpperCase();
         }
         
     }
 
-    /*
-    @Override
-    protected void onClickMaintenanceRetryButton() {
-        mCampaignPagerAdapter = new CampaignPagerAdapter(getChildFragmentManager(), mCampaigns);
-        mCampaignPager.setAdapter(mCampaignPagerAdapter);
-        mCampaignPagerTabStrip.setViewPager(mCampaignPager);
-    }
-    */
 }

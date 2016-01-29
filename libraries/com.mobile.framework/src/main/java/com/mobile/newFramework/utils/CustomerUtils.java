@@ -1,10 +1,12 @@
 package com.mobile.newFramework.utils;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.security.ObscuredSharedPreferences;
 
@@ -151,6 +153,25 @@ public class CustomerUtils {
 			return Long.toHexString(0x9ad8aa75257645bl).toCharArray();
 		}
 
+	}
+
+	/**
+	 * returns the flag that shows if is possible to change password or not
+	 * @return true or false
+	 */
+	public static boolean isChangePasswordHidden(Activity activity) {
+		SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+		return sharedPrefs.getBoolean(Darwin.KEY_CHANGE_PASSWORD, false);
+	}
+
+	/**
+	 * set flag that controls if is possible to change password or not
+	 */
+	public static void setChangePasswordVisibility(Activity activity, boolean isHideChangePassword) {
+		SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+		SharedPreferences.Editor editor = sharedPrefs.edit();
+		editor.putBoolean(Darwin.KEY_CHANGE_PASSWORD, isHideChangePassword);
+		editor.apply();
 	}
 
 }

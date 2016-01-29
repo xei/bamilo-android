@@ -6,7 +6,9 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
@@ -20,7 +22,7 @@ import java.util.ArrayList;
  *
  * @author sergiopereira
  */
-public class CampaignItem extends ProductRegular implements IJSONSerializable {
+public class CampaignItem extends ProductMultiple implements IJSONSerializable {
 
     private double mSavePrice;
 
@@ -29,12 +31,6 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
     private boolean hasUniqueSize;
 
     private int mRemainingTime;
-
-    private ArrayList<CampaignItemSize> mSizes;
-
-    private CampaignItemSize mSelectedSize;
-
-    private int mSelectedSizePosition;
 
     /**
      * Empty constructor
@@ -55,22 +51,13 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
 
         super.initialize(jsonObject);
 
-        mSavePrice = jsonObject.optDouble(RestConstants.JSON_SAVE_PRICE_TAG, 0d);
-        mStockPercentage = jsonObject.optInt(RestConstants.JSON_STOCK_PERCENTAGE_TAG, 0);
+        mSavePrice = jsonObject.optDouble(RestConstants.SAVE_PRICE, 0d);
+        mStockPercentage = jsonObject.optInt(RestConstants.STOCK_PERCENTAGE, 0);
 
-        hasUniqueSize = jsonObject.optBoolean(RestConstants.JSON_HAS_UNIQUE_SIZE_TAG);
-        mRemainingTime = jsonObject.optInt(RestConstants.JSON_REMAINING_TIME_TAG, -1);
+        hasUniqueSize = jsonObject.optBoolean(RestConstants.HAS_UNIQUE_SIZE);
+        mRemainingTime = jsonObject.optInt(RestConstants.REMAINING_TIME, -1);
 
-        // Save sizes
-        JSONArray sizesA = jsonObject.optJSONArray(RestConstants.JSON_SIZES_TAG);
-        if (sizesA != null && sizesA.length() > 0) {
-            mSizes = new ArrayList<>();
-            for (int i = 0; i < sizesA.length(); i++) {
-                JSONObject sizeO = sizesA.optJSONObject(i);
-                if (sizeO != null)
-                    mSizes.add(new CampaignItemSize(sizeO));
-            }
-        }
+        setSelectedSimplePosition(0);
 
         return true;
     }
@@ -96,8 +83,8 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
 	/*
@@ -115,27 +102,6 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
      */
     public int getStockPercentage() {
         return mStockPercentage;
-    }
-
-    /**
-     * @return the mSizes
-     */
-    public ArrayList<CampaignItemSize> getSizes() {
-        return mSizes;
-    }
-
-    /**
-     * @return the mSelectedSize
-     */
-    public CampaignItemSize getSelectedSize() {
-        return mSelectedSize;
-    }
-
-    /**
-     * @return the mSelectedSizePosition
-     */
-    public int getSelectedSizePosition() {
-        return mSelectedSizePosition;
     }
 
     /***
@@ -156,44 +122,10 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
     }
 
     /**
-     * @return the hasSizes except itself
-     */
-    public boolean hasSizes() {
-        return mSizes != null && mSizes.size() > 0;
-    }
-
-    /**
-     * @return the hasSizes
-     */
-    public boolean hasSelectedSize() {
-        return hasSizes() && mSelectedSizePosition >= 0 && mSelectedSizePosition < mSizes.size();
-    }
-
-    /**
      * @return the hasSizes
      */
     public boolean hasStock() {
         return mStockPercentage > 0;
-    }
-
-	/*
-	 * ########### Setters ###########
-	 */
-
-    /**
-     * @param mSelectedSize
-     *            the mSelectedSize to set
-     */
-    public void setSelectedSize(CampaignItemSize mSelectedSize) {
-        this.mSelectedSize = mSelectedSize;
-    }
-
-    /**
-     * @param mSelectedSizePosition
-     *            the mSelectedSizePosition to set
-     */
-    public void setSelectedSizePosition(int mSelectedSizePosition) {
-        this.mSelectedSizePosition = mSelectedSizePosition;
     }
 
     /**
@@ -213,14 +145,6 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
         dest.writeInt(mStockPercentage);
         dest.writeByte((byte) (hasUniqueSize ? 0x01 : 0x00));
         dest.writeInt(mRemainingTime);
-        if (mSizes == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeList(mSizes);
-        }
-        dest.writeValue(mSelectedSize);
-        dest.writeInt(mSelectedSizePosition);
     }
 
     protected CampaignItem(Parcel in) {
@@ -229,14 +153,6 @@ public class CampaignItem extends ProductRegular implements IJSONSerializable {
         mStockPercentage = in.readInt();
         hasUniqueSize = in.readByte() != 0x00;
         mRemainingTime = in.readInt();
-        if (in.readByte() == 0x01) {
-            mSizes = new ArrayList<>();
-            in.readList(mSizes, CampaignItemSize.class.getClassLoader());
-        } else {
-            mSizes = null;
-        }
-        mSelectedSize = (CampaignItemSize) in.readValue(CampaignItemSize.class.getClassLoader());
-        mSelectedSizePosition = in.readInt();
     }
 
     @SuppressWarnings("unused")

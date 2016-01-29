@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Jumia :: MATERIAL THEME-->
+    <!-- Project :: MATERIAL THEME-->
 
-    <style name="Theme.Jumia" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="Theme.Custom" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- #### Custom Material Color Palette -->
         <!-- Color for the app bar -->
         <item name="colorPrimary">@color/appBar</item>
@@ -22,37 +22,37 @@
         <item name="android:editTextColor">@color/white</item>
         <item name="editTextColor">@color/white</item>
         <!-- #### Action Bar -->
-        <item name="android:actionBarTheme">@style/Widget.Jumia.ActionBar</item>
-        <item name="actionBarTheme">@style/Widget.Jumia.ActionBar</item>
-        <item name="android:actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
-        <item name="actionButtonStyle">@style/Widget.Jumia.ActionButton</item>
+        <item name="android:actionBarTheme">@style/Widget.Custom.ActionBar</item>
+        <item name="actionBarTheme">@style/Widget.Custom.ActionBar</item>
+        <item name="android:actionButtonStyle">@style/Widget.Custom.ActionButton</item>
+        <item name="actionButtonStyle">@style/Widget.Custom.ActionButton</item>
         <!-- #### Radio Button View -->
-        <item name="android:radioButtonStyle">@style/Widget.Jumia.RadioButton</item>
+        <item name="android:radioButtonStyle">@style/Widget.Custom.RadioButton</item>
         <!-- #### Check Box View -->
-        <item name="android:checkboxStyle">@style/Widget.Jumia.CheckBox</item>
+        <item name="android:checkboxStyle">@style/Widget.Custom.CheckBox</item>
         <!-- #### List View -->
-        <item name="android:listViewStyle">@style/Widget.Jumia.ListView</item>
+        <item name="android:listViewStyle">@style/Widget.Custom.ListView</item>
         <!-- #### Custom Spinner View -->
-        <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Jumia.Spinner.Style</item>
+        <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Custom.Spinner.Style</item>
         <!-- #### View Page Indicator -->
-        <item name="vpiCirclePageIndicatorStyle">@style/Widget.JumiaCirclePageIndicator</item>
+        <item name="vpiCirclePageIndicatorStyle">@style/Widget.CustomCirclePageIndicator</item>
         <!-- #### Button View -->
-        <item name="android:buttonStyle">@style/Widget.Jumia.Button</item>
-        <item name="buttonStyle">@style/Widget.Jumia.Button</item>
+        <item name="android:buttonStyle">@style/Widget.Custom.Button</item>
+        <item name="buttonStyle">@style/Widget.Custom.Button</item>
     </style>
 
     <!-- Theme for ActionBar from support library compatibility -->
-    <style name="Widget.Jumia.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+    <style name="Widget.Custom.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
         <!-- Apply the color filter for AB -->
         <item name="android:colorControlNormal">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
         <!-- Apply the ArrowStyle for AB -->
-        <item name="drawerArrowStyle">@style/Widget.Jumia.DrawerArrowStyle</item>
+        <item name="drawerArrowStyle">@style/Widget.Custom.DrawerArrowStyle</item>
         <!-- To apply the color filter over indicator in Android v5.0.1 -->
         <!--<item name="homeAsUpIndicator">@drawable/abc_ic_ab_back_mtrl_am_alpha</item>-->
         <!-- Apply the search view style -->
-        <item name="android:searchViewStyle">@style/Widget.Jumia.SearchView</item>
-        <item name="searchViewStyle">@style/Widget.Jumia.SearchView</item>
+        <item name="android:searchViewStyle">@style/Widget.Custom.SearchView</item>
+        <item name="searchViewStyle">@style/Widget.Custom.SearchView</item>
 
         <!-- remove shadow below action bar -->
         <item name="android:elevation">0dp</item>
@@ -62,13 +62,13 @@
     </style>
 
     <!-- Style for DrawerArrow from support library compatibility -->
-    <style name="Widget.Jumia.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+    <style name="Widget.Custom.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
         <item name="color">@color/white</item>
     </style>
 
     <!-- Style for ActionBar Buttons from support library compatibility -->
-    <style name="Widget.Jumia.ActionButton" parent="@style/Base.Widget.AppCompat.ActionButton">
+    <style name="Widget.Custom.ActionButton" parent="@style/Base.Widget.AppCompat.ActionButton">
         <item name="android:layout_marginTop">4dip</item>
         <item name="android:layout_marginBottom">4dip</item>
         <item name="android:paddingLeft">8dip</item>
@@ -77,7 +77,7 @@
     </style>
 
     <!-- Search view from support library compatibility -->
-    <style name="Widget.Jumia.SearchView" parent="Widget.AppCompat.SearchView.ActionBar">
+    <style name="Widget.Custom.SearchView" parent="Widget.AppCompat.SearchView.ActionBar">
         <!--<item name="queryBackground">@drawable/selector_textfield_orange</item>-->
         <!--<item name="closeIcon">@drawable/btn_clearsearchfield</item>-->
         <!--<item name="searchIcon">@drawable/selector_search_edit_icon</item>-->
@@ -88,30 +88,30 @@
 
     <!-- Radio Button -->
 
-    <style name="Widget.Jumia.RadioButton" parent="android:Widget.CompoundButton.RadioButton">
+    <style name="Widget.Custom.RadioButton" parent="android:Widget.CompoundButton.RadioButton">
         <!--<item name="android:listChoiceIndicatorSingle">@drawable/_gen_selector_radio_button</item>-->
         <item name="android:button">@drawable/_gen_selector_radio_button</item>
     </style>
 
     <!-- Check Box -->
 
-    <style name="Widget.Jumia.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
+    <style name="Widget.Custom.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <!--<item name="android:listChoiceIndicatorMultiple">@drawable/_gen_selector_check_box</item>-->
         <item name="android:button">@drawable/_gen_selector_check_box</item>
     </style>
 
     <!-- List View -->
-    <style name="Widget.Jumia.ListView" parent="android:Widget.ListView.White">
+    <style name="Widget.Custom.ListView" parent="android:Widget.ListView.White">
         <item name="android:cacheColorHint">@android:color/transparent</item>
         <item name="android:divider">@color/grey_light</item>
     </style>
 
     <!-- Button View -->
-    <style name="Widget.Jumia.Button" parent="Widget.AppCompat.Button">
+    <style name="Widget.Custom.Button" parent="Widget.AppCompat.Button">
     </style>
 
     <!-- Base Dialog -->
-    <style name="Theme.Jumia.Dialog" parent="@android:style/Theme.Dialog">
+    <style name="Theme.Custom.Dialog" parent="@android:style/Theme.Dialog">
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowActionBar" tools:targetApi="honeycomb">false</item>
         <item name="android:windowActionModeOverlay" tools:targetApi="honeycomb">true</item>
@@ -126,19 +126,19 @@
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 
-    <style name="Theme.Jumia.Dialog.NoTitle" parent="@android:style/Theme.Dialog">
+    <style name="Theme.Custom.Dialog.NoTitle" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_shadow</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFrame">@null</item>
     </style>
 
-    <style name="Theme.Jumia.Dialog.NoTitle.DatePicker">
+    <style name="Theme.Custom.Dialog.NoTitle.DatePicker">
         <item name="android:windowFrame">@null</item>
     </style>
 
     <!-- Progress dialog -->
-    <style name="Theme.Jumia.Dialog.Progress" parent="@android:style/Theme.Material.Dialog.NoActionBar">
+    <style name="Theme.Custom.Dialog.Progress" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_shadow</item>
         <item name="android:windowMinWidthMajor" tools:targetApi="honeycomb">@null</item>
         <item name="android:windowMinWidthMinor" tools:targetApi="honeycomb">@null</item>
@@ -147,7 +147,7 @@
     </style>
 
     <!-- Circle page indicator from attr:CirclePageIndicator -->
-    <style name="Widget.JumiaCirclePageIndicator" parent="Widget">
+    <style name="Widget.CustomCirclePageIndicator" parent="Widget">
         <item name="fillColor">@color/color_accent</item>
         <item name="pageColor">@color/grey_middlelight</item>
         <item name="snap">true</item>

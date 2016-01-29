@@ -27,7 +27,8 @@ public class ProductRegular extends ProductBase {
     protected int mTotalReviews;
     protected int mTotalRatings;
     private int mBrandId;
-
+    protected String mTarget;
+    protected String mRichRelevanceClickHash;
     /**
      * Empty constructor
      */
@@ -48,28 +49,38 @@ public class ProductRegular extends ProductBase {
 
     protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
-        mName = jsonObject.getString(RestConstants.JSON_NAME_TAG);
-        mBrand = jsonObject.getString(RestConstants.JSON_BRAND_TAG);
-        mBrandId = jsonObject.optInt(RestConstants.JSON_BRAND_ID_TAG);
+        mName = jsonObject.optString(RestConstants.NAME);
+        // TODO
+        // This fallback validation was added for the case where the response from the RR request
+        // is the fallback top sellers, where the product name comes in the "title" field.
+        // it should be analysed if should be fixed on next release.
+        if(TextUtils.isEmpty(mName))
+            mName = jsonObject.optString(RestConstants.TITLE);
+
+        mBrand = jsonObject.getString(RestConstants.BRAND);
+        mBrandId = jsonObject.optInt(RestConstants.BRAND_ID);
         // Optional TODO FIX THIS
-        mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_TAG);
+        mImageUrl = jsonObject.optString(RestConstants.IMAGE);
         if(TextUtils.isEmpty(mImageUrl)) {
-            mImageUrl = jsonObject.optString(RestConstants.JSON_IMAGE_URL_TAG);
+            mImageUrl = jsonObject.optString(RestConstants.IMAGE_URL);
         }
         // Is new
-        isNew = jsonObject.optBoolean(RestConstants.JSON_IS_NEW_TAG);
-        // Wish List flag
-        if (jsonObject.optBoolean(RestConstants.JSON_IS_WISH_LIST_TAG)) {
+        isNew = jsonObject.optBoolean(RestConstants.IS_NEW);
+        // Wish List flag>>>>>>>>>>
+        if (jsonObject.optBoolean(RestConstants.IS_WISH_LIST)) {
             WishListCache.add(mSku);
         }
-        mCategories = jsonObject.optString(RestConstants.JSON_CATEGORIES_TAG);
+        mCategories = jsonObject.optString(RestConstants.CATEGORIES);
         // Rating
-        JSONObject ratings = jsonObject.optJSONObject(RestConstants.JSON_RATINGS_SUMMARY_TAG);
+        JSONObject ratings = jsonObject.optJSONObject(RestConstants.RATING_REVIEWS_SUMMARY);
         if (ratings != null) {
-            mAvgRating = ratings.optDouble(RestConstants.JSON_RATINGS_AVERAGE_TAG);
-            mTotalRatings = ratings.optInt(RestConstants.JSON_RATINGS_TOTAL_TAG);
-            mTotalReviews = ratings.optInt(RestConstants.JSON_REVIEWS_TOTAL_TAG);
+            mAvgRating = ratings.optDouble(RestConstants.AVERAGE);
+            mTotalRatings = ratings.optInt(RestConstants.RATINGS_TOTAL);
+            mTotalReviews = ratings.optInt(RestConstants.REVIEWS_TOTAL);
         }
+        mTarget = jsonObject.optString(RestConstants.TARGET);
+        // Click Request
+        mRichRelevanceClickHash = jsonObject.optString(RestConstants.CLICK_REQUEST);
         return true;
     }
 
@@ -79,8 +90,8 @@ public class ProductRegular extends ProductBase {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     /*
@@ -136,6 +147,14 @@ public class ProductRegular extends ProductBase {
     }
 
 
+    public String getTarget() {
+        return mTarget;
+    }
+
+    public String getRichRelevanceClickHash() {
+        return mRichRelevanceClickHash;
+    }
+
     /*
 	 * ############ PARCELABLE ############
 	 */
@@ -151,6 +170,8 @@ public class ProductRegular extends ProductBase {
         mAvgRating = in.readDouble();
         mTotalReviews = in.readInt();
         mTotalRatings = in.readInt();
+        mTarget = in.readString();
+        mRichRelevanceClickHash = in.readString();
     }
 
     @Override
@@ -165,6 +186,8 @@ public class ProductRegular extends ProductBase {
         dest.writeDouble(mAvgRating);
         dest.writeInt(mTotalReviews);
         dest.writeInt(mTotalRatings);
+        dest.writeString(mTarget);
+        dest.writeString(mRichRelevanceClickHash);
     }
 
     @Override
@@ -184,5 +207,6 @@ public class ProductRegular extends ProductBase {
             return new ProductRegular[size];
         }
     };
+
 
 }

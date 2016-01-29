@@ -7,7 +7,7 @@
     <!-- TITLE -->
     <com.mobile.components.customfontviews.TextView
         style="@style/HeaderStyle"
-        android:text="@string/billing_billing_label" />
+        android:text="@string/address_billing_label" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,6 +42,7 @@
             style="@style/SubListItemStyle"
             android:layout_marginLeft="@dimen/dimen_60px"
             android:layout_marginStart="@dimen/dimen_60px"
+            android:gravity="center_vertical"
             android:text="@string/my_order_is_same" />
     </RelativeLayout>
 

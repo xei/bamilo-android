@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.mobile.constants.ConstantsCheckout;
@@ -17,15 +16,14 @@ import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.session.GetLoginFormHelper;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -33,12 +31,9 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Class used to represent the form login via email.
@@ -61,10 +56,10 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
      */
     public SessionLoginEmailFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.LoginOut,
+                NavigationAction.LOGIN_OUT,
                 R.layout.session_login_email_fragment,
                 R.string.login_label,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /**
@@ -137,8 +132,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         view.findViewById(R.id.login_email_button_password).setOnClickListener(this);
         // Get continue button
         view.findViewById(R.id.login_email_button_create).setOnClickListener(this);
-        // Validate state
-        onValidateState();
     }
 
     /*
@@ -149,6 +142,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     @Override
     public void onStart() {
         super.onStart();
+        // Validate state
+        onValidateState();
         Print.i(TAG, "ON START");
     }
 
@@ -253,6 +248,9 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getContext(), form);
         // Load saved state
         mDynamicForm.loadSaveFormState(mFormSavedState);
+
+        if(mFormContainer.getChildCount() > 0)
+            mFormContainer.removeAllViews();
         // Add form view
         mFormContainer.addView(mDynamicForm.getContainer());
         // Show
@@ -341,17 +339,17 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         switch (eventType) {
             case LOGIN_EVENT:
                 // Get customer
-                NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getMetadata().getData();
+                NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 Customer customer = ((CheckoutStepLogin) nextStepStruct.getCheckoutStepObject()).getCustomer();
+                // Set hide change password
+                CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 // Tracking
                 TrackerDelegator.trackLoginSuccessful(customer, false, false);
-                // Notify user
-                showInfoLoginSuccess();
                 // Finish
                 getActivity().onBackPressed();
                 return;
             case GET_LOGIN_FORM_EVENT:
-                mForm = (Form) baseResponse.getMetadata().getData();
+                mForm = (Form) baseResponse.getContentData();
                 loadForm(mForm);
             default:
                 break;
@@ -371,7 +369,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         }
         // Validate error
         EventType eventType = baseResponse.getEventType();
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
+        int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
         // Case login form
         if (eventType == EventType.GET_LOGIN_FORM_EVENT) {
@@ -382,34 +380,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
             // Tracking
             TrackerDelegator.trackLoginFailed(false, GTMValues.LOGIN, GTMValues.EMAILAUTH);
             // Validate and show errors
-            if (errorCode == ErrorCode.REQUEST_ERROR) {
-                Print.d(TAG, "SHOW DIALOG");
-                Map<String, List<String>> errors = baseResponse.getErrorMessages();
-                List<String> errorMessages = null;
-                if (errors != null) {
-                    errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
-                }
-                if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-                    showFragmentContentContainer();
-                    dialog = DialogGenericFragment.newInstance(true, false,
-                            getString(R.string.error_login_title),
-                            errorMessages.get(0),
-                            getString(R.string.ok_label), "", new OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    int id = v.getId();
-                                    if (id == R.id.button1) {
-                                        dismissDialogFragment();
-                                    }
-                                }
-                            });
-                    dialog.show(getBaseActivity().getSupportFragmentManager(), null);
-                } else {
-                    showUnexpectedErrorWarning();
-                }
-            } else {
-                showFragmentErrorRetry();
-            }
+            showFragmentContentContainer();
+            showFormValidateMessages(mDynamicForm, baseResponse, eventType);
         }
     }
 

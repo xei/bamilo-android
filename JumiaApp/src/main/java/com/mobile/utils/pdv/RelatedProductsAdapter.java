@@ -53,7 +53,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         // Set prices
         setProductPrice(holder, item);
         // Set tag
-        holder.itemView.setTag(R.id.target_sku, item.getSku());
+        holder.itemView.setTag(R.id.target_sku, item.getTarget());
         // Return convert view
         return convertView;
     }

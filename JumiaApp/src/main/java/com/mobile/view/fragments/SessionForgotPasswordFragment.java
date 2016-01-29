@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -19,30 +16,25 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author sergiopereira
  * 
  */
-public class SessionForgotPasswordFragment extends BaseFragment {
+public class SessionForgotPasswordFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = SessionForgotPasswordFragment.class.getSimpleName();
 
-    protected DynamicForm dynamicForm;
+    protected DynamicForm mDynamicForm;
 
     private LinearLayout container;
 
@@ -54,7 +46,6 @@ public class SessionForgotPasswordFragment extends BaseFragment {
 
     /**
      * 
-     * @return
      */
     public static SessionForgotPasswordFragment getInstance() {
         return new SessionForgotPasswordFragment();
@@ -65,10 +56,10 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      */
     public SessionForgotPasswordFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.ForgotPassword,
+                NavigationAction.LOGIN_OUT,
                 R.layout.forgotpassword,
                 R.string.forgotpass_header,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
 
     /*
@@ -91,7 +82,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        dynamicForm = null;
+        mDynamicForm = null;
     }
 
     @Override
@@ -134,10 +125,8 @@ public class SessionForgotPasswordFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (null != dynamicForm) {
-            for (DynamicFormItem item : dynamicForm) {
-                item.saveState(outState);
-            }
+        if (null != mDynamicForm) {
+            mDynamicForm.saveFormState(outState);
             savedInstanceState = outState;
         }
     }
@@ -188,7 +177,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         mButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (dynamicForm.validate()) {
+                if (mDynamicForm.validate()) {
                     requestPassword();
                 }
             }
@@ -199,8 +188,7 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * 
      */
     private void requestPassword() {
-        ContentValues values = dynamicForm.save();
-        triggerForgot(values);
+        triggerForgot(mDynamicForm.getForm().getAction(), mDynamicForm.save());
     }
 
     /**
@@ -208,8 +196,8 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      */
     private void displayForm(Form form) {
         Print.d(TAG, "DISPLAY FORM");
-        dynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.FORGET_PASSWORD_FORM, getActivity(), form);
-        DynamicFormItem item = dynamicForm.getItemByKey("email");
+        mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.FORGET_PASSWORD_FORM, getActivity(), form);
+        DynamicFormItem item = mDynamicForm.getItemByKey(RestConstants.EMAIL);
         if (item == null)
             return;
         if (item.getEditControl() != null) {
@@ -221,111 +209,15 @@ public class SessionForgotPasswordFragment extends BaseFragment {
             return;
         }
         container = (LinearLayout) getView().findViewById(R.id.form_container);
-        container.addView(dynamicForm.getContainer());
+        container.addView(mDynamicForm.getContainer());
 
         // Show save state
-        if (null != this.savedInstanceState && null != dynamicForm) {
-            Iterator<DynamicFormItem> iter = dynamicForm.getIterator();
-            while (iter.hasNext()) {
-                DynamicFormItem dItem = iter.next();
-                dItem.loadState(savedInstanceState);
-            }
+        if (null != this.savedInstanceState && null != mDynamicForm) {
+            mDynamicForm.loadSaveFormState(savedInstanceState);
         }
     }
 
-    protected boolean onSuccessEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "ON SUCCESS EVENT");
 
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-
-        showFragmentContentContainer();
-        EventType eventType = baseResponse.getEventType();
-
-        switch (eventType) {
-        case INIT_FORMS:
-        case GET_FORGET_PASSWORD_FORM_EVENT:
-            Print.d(TAG, "FORGET_PASSWORD_FORM");
-            Form form = (Form)baseResponse.getMetadata().getData();
-            if (null != form) {
-                this.formResponse = form;
-                displayForm(form);
-            }
-            break;
-        case FORGET_PASSWORD_EVENT:
-            Print.i(TAG, "FORGET_PASSWORD_EVENT successful");
-            dialog = DialogGenericFragment.newInstance(
-                    true, false,
-                    getString(R.string.forgotten_password_resulttitle),
-                    getString(R.string.forgotten_password_successtext), 
-                    getString(R.string.ok_label), 
-                    "",
-                    new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            int id = v.getId();
-                            if (id == R.id.button1) {
-                                dismissDialogFragment();
-                            }
-                        }
-                    });
-            dialog.show(getActivity().getSupportFragmentManager(), null);
-            break;
-        default:
-            break;
-        }
-        return true;
-    }
-
-    protected boolean onErrorEvent(BaseResponse baseResponse) {
-        Print.d(TAG, "ON ERROR EVENT");
-
-        // Validate fragment visibility
-        if (isOnStoppingProcess) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return true;
-        }
-
-        if (super.handleErrorEvent(baseResponse)) {
-            return true;
-        }
-
-        EventType eventType = baseResponse.getEventType();
-        // ErrorCode errorCode = (ErrorCode) bundle.getSerializable(Constants.BUNDLE_ERROR_KEY);
-
-        if (eventType == EventType.FORGET_PASSWORD_EVENT) {
-            Print.d(TAG, "FORGET_PASSWORD_EVENT");
-
-            Map<String, List<String>> errors = baseResponse.getErrorMessages();
-            List<String> errorMessages = null;
-            if (errors != null) {
-                errorMessages = errors.get(RestConstants.JSON_VALIDATE_TAG);
-            }
-            if (errors != null && errorMessages != null && errorMessages.size() > 0) {
-                showFragmentContentContainer();
-                dialog = DialogGenericFragment.newInstance(true, false,
-                        getString(R.string.error_forgotpassword_title),
-                        errorMessages.get(0),
-                        getString(R.string.ok_label),
-                        "",
-                        new OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                int id = v.getId();
-                                if (id == R.id.button1) {
-                                    dismissDialogFragment();
-                                }
-                            }
-                        });
-                dialog.show(getActivity().getSupportFragmentManager(), null);
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * TRIGGERS
@@ -333,33 +225,14 @@ public class SessionForgotPasswordFragment extends BaseFragment {
      * @author sergiopereira
      */
     private void triggerForgotForm() {
-        triggerContentEvent(new GetForgotPasswordFormHelper(), null, mCallBack);
+        triggerContentEvent(new GetForgotPasswordFormHelper(), null, this);
     }
 
-    private void triggerForgot(ContentValues values) {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEvent(new SetForgotPasswordHelper(), bundle, mCallBack);
+    private void triggerForgot(String action, ContentValues values) {
+        triggerContentEvent(new SetForgotPasswordHelper(), SetForgotPasswordHelper.createBundle(action, values), this);
         getBaseActivity().hideKeyboard();
     }
 
-    /**
-     * CALLBACK
-     * 
-     * @author sergiopereira
-     */
-    IResponseCallback mCallBack = new IResponseCallback() {
-        @Override
-        public void onRequestError(BaseResponse baseResponse) {
-            onErrorEvent(baseResponse);
-        }
-
-        @Override
-        public void onRequestComplete(BaseResponse baseResponse) {
-            onSuccessEvent(baseResponse);
-        }
-    };
-    
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onClickRetryButton(android.view.View)
@@ -370,4 +243,54 @@ public class SessionForgotPasswordFragment extends BaseFragment {
         onResume();
     }
 
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Print.d(TAG, "ON SUCCESS EVENT");
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Call super
+        super.handleSuccessEvent(baseResponse);
+        // Show container
+        showFragmentContentContainer();
+        // Validate event
+        EventType eventType = baseResponse.getEventType();
+        Print.i(TAG, "onSuccessEvent eventType : " + eventType);
+        switch (eventType) {
+            case GET_FORGET_PASSWORD_FORM_EVENT:
+                Print.d(TAG, "FORGET_PASSWORD_FORM");
+                Form form = (Form) baseResponse.getContentData();
+                if (null != form) {
+                    this.formResponse = form;
+                    displayForm(form);
+                } else {
+                    showFragmentErrorRetry();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+        // Call super
+        if (super.handleErrorEvent(baseResponse)) {
+            return;
+        }
+        // Validate type
+        showFragmentContentContainer();
+        EventType eventType = baseResponse.getEventType();
+        Print.i(TAG, "ON ERROR EVENT: " + eventType);
+        if (eventType == EventType.FORGET_PASSWORD_EVENT) {
+            showFormValidateMessages(mDynamicForm, baseResponse, eventType);
+        }
+    }
 }

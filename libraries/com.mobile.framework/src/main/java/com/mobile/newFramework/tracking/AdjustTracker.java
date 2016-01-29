@@ -54,7 +54,7 @@ import java.util.Locale;
 public class AdjustTracker {
     
     private final static String TAG = AdjustTracker.class.getSimpleName();
-    
+
     public static final String BEGIN_TIME = "beginTime";
     public static final String USER_ID = "userId";
     public static final String CURRENCY_ISO = "currencyIso";
@@ -145,7 +145,7 @@ public class AdjustTracker {
     
     private static AdjustTracker sInstance;
     
-    private static final String NOT_AVAILABLE = "n.a.";
+    public static final String NOT_AVAILABLE = "n.a.";
 
 //    public final static String ENCODING_SCHEME = "UTF-8";
 
@@ -444,7 +444,7 @@ public class AdjustTracker {
                 AdjustEvent eventCartLoadedFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_cart));
                 json = new JSONObject();
                 try {
-                    json.put(AdjustKeys.SKU, item.getConfigSKU());
+                    json.put(AdjustKeys.SKU, item.getSku());
                     json.put(AdjustKeys.CURRENCY, EURO_CURRENCY);
                     json.put(AdjustKeys.QUANTITY, item.getQuantity());
                     json.put(AdjustKeys.PRICE, item.getPriceForTracking());
@@ -460,8 +460,8 @@ public class AdjustTracker {
 
                 //FB - View Cart
                 eventCartLoadedFB = getFBBaseParameters(eventCartLoadedFB, bundle);
-                eventCartLoadedFB.addCallbackParameter(AdjustKeys.SKU, item.getConfigSKU());
-                eventCartLoadedFB.addPartnerParameter(AdjustKeys.SKU, item.getConfigSKU());
+                eventCartLoadedFB.addCallbackParameter(AdjustKeys.SKU, item.getSku());
+                eventCartLoadedFB.addPartnerParameter(AdjustKeys.SKU, item.getSku());
                 eventCartLoadedFB.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                 eventCartLoadedFB.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
                 eventCartLoadedFB.addCallbackParameter(AdjustKeys.QUANTITY, String.valueOf(item.getQuantity()));
@@ -500,7 +500,7 @@ public class AdjustTracker {
 
             case APP_OPEN:
                 Print.i(TAG, "APP_OPEN:" + Adjust.isEnabled());
-                Print.i(TAG, "code1adjust is APP_OPEN " + Adjust.isEnabled());
+//                //Print.i(TAG, "code1adjust is APP_OPEN " + Adjust.isEnabled());
                 AdjustEvent eventAppOpen = new AdjustEvent(mContext.getString(R.string.adjust_token_launch));
 
                 eventAppOpen.addCallbackParameter(AdjustKeys.APP_VERSION, getAppVersion());

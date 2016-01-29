@@ -40,7 +40,7 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get order number
-        mOrderNumber = jsonObject.getString(RestConstants.JSON_ORDER_NUMBER_TAG);
+        mOrderNumber = jsonObject.getString(RestConstants.ORDER_NR);
         // Get payment url
         mPaymentUrl = null;
         // Validate payment content
@@ -49,8 +49,8 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
             mPaymentMethodForm = new PaymentMethodForm();
             mPaymentMethodForm.initialize(jsonObject);
             // Order
-            if (jsonObject.has(RestConstants.JSON_ORDER_NUMBER_TAG)) {
-                mOrderNumber = jsonObject.optString(RestConstants.JSON_ORDER_NUMBER_TAG);
+            if (jsonObject.has(RestConstants.ORDER_NR)) {
+                mOrderNumber = jsonObject.optString(RestConstants.ORDER_NR);
             }
             // Get url
             JSONObject jsonPayment = jsonObject.optJSONObject(RestConstants.PAYMENT);
@@ -83,7 +83,7 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 

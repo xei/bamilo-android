@@ -35,7 +35,7 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
     private static String TAG = GetAvailableCountriesHelper.class.getSimpleName();
 
     @Override
-    protected String getRequestUrl(Bundle args) {
+    protected String getEndPoint(Bundle args) {
         return JumiaApplication.INSTANCE.getApplicationContext().getString(R.string.countries_url);
     }
 
@@ -47,7 +47,7 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        AvailableCountries availableCountries = (AvailableCountries) baseResponse.getMetadata().getData();
+        AvailableCountries availableCountries = (AvailableCountries) baseResponse.getContentData();
 
         //TODO move to observable
         // Gets the previous Countries list

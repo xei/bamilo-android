@@ -1,16 +1,15 @@
 package com.mobile.helpers.address;
 
-import android.net.Uri;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
-import com.mobile.newFramework.rest.RestUrlUtils;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.utils.deeplink.TargetLink;
 
 /**
  * Helper used to get the phone prefixes.
@@ -26,13 +25,8 @@ public class PhonePrefixesHelper extends SuperBaseHelper {
     }
 
     @Override
-    protected String getRequestUrl(Bundle args) {
-        return RestUrlUtils.completeUri(Uri.parse(args.getString(Constants.BUNDLE_URL_KEY))).toString();
-    }
-
-    @Override
     public EventTask getEventTask() {
-        return EventTask.SMALL_TASK;
+        return EventTask.ACTION_TASK;
     }
 
     @Override
@@ -42,7 +36,7 @@ public class PhonePrefixesHelper extends SuperBaseHelper {
 
     public static Bundle createBundle(String url) {
         Bundle bundle = new Bundle();
-        bundle.putString(Constants.BUNDLE_URL_KEY, url);
+        bundle.putString(Constants.BUNDLE_END_POINT_KEY, "/" + TargetLink.getIdFromTargetLink(url));
         return bundle;
     }
 

@@ -14,7 +14,7 @@ public class Categories extends ArrayList<Category> implements IJSONSerializable
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.DATA);
         int length = categoriesArray.length();
         // For each child
         for (int i = 0; i < length; ++i) {
@@ -47,7 +47,7 @@ public class Categories extends ArrayList<Category> implements IJSONSerializable
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 }

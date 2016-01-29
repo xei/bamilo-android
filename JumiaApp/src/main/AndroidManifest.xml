@@ -67,7 +67,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="@bool/rtl_enabled"
-        android:theme="@style/Theme.Jumia"
+        android:theme="@style/Theme.Custom"
         tools:ignore="UnusedAttribute" >
         <activity
             android:name=".SplashScreenActivity"
@@ -140,7 +140,6 @@
         <!-- ######################################## -->
         <!-- ############# AD4Push GCM ############## -->
         <!-- ######################################## -->
-
 
         <!-- ############# AD4Push: A4SService ############# -->
         <service

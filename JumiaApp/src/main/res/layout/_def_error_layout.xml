@@ -9,7 +9,7 @@
         style="@style/TextDisplay_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="@dimen/margin_48dp"
         android:gravity="center"
         android:singleLine="false"
         android:text="@string/error_no_connection"
@@ -17,11 +17,11 @@
 
     <ImageView
         android:id="@+id/fragment_root_error_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dimen_340px"
+        android:layout_height="@dimen/dimen_340px"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/margin_90px"
-        android:layout_marginTop="@dimen/margin_90px" />
+        android:layout_marginBottom="@dimen/margin_28dp"
+        android:layout_marginTop="@dimen/margin_28dp" />
 
 
     <com.mobile.components.customfontviews.TextView

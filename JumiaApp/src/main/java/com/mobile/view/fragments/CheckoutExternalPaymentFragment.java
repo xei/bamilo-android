@@ -17,7 +17,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -30,13 +29,13 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.tracking.TrackingEvent;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
-import com.mobile.utils.ui.ToastManager;
 import com.mobile.view.R;
 import com.newrelic.agent.android.util.NetworkFailure;
 
@@ -73,18 +72,21 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     private boolean isRequestedPage;
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
 
     private Customer customer;
+
+    private PaymentMethodForm mPaymentSubmitted;
 
     /**
      * Get instance
      */
-    public static CheckoutExternalPaymentFragment getInstance() {
+    public static CheckoutExternalPaymentFragment getInstance(Bundle bundle) {
         CheckoutExternalPaymentFragment fragment = new CheckoutExternalPaymentFragment();
         fragment.webview = null;
         fragment.paymentUrl = null;
         fragment.failedPageRequest = null;
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -93,27 +95,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
      */
     public CheckoutExternalPaymentFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
-                NavigationAction.Checkout,
+                NavigationAction.CHECKOUT,
                 R.layout.checkoutweb,
                 R.string.checkout_label,
-                KeyboardState.NO_ADJUST_CONTENT,
-                ConstantsCheckout.NO_CHECKOUT);
+                NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
-    }
-
-    @Override
-    public boolean allowBackPressed() {
-        if (webview == null) {
-            Print.d(TAG, "onBackPressed");
-        } else {
-            Print.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
-        }
-        boolean result = false;
-        if (webview != null && webview.canGoBack() && webview.hasFocus()) {
-            webview.goBack();
-            result = true;
-        }
-        return result;
     }
 
     /*
@@ -138,6 +124,11 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         TrackerDelegator.trackCheckoutStep(TrackingEvent.CHECKOUT_STEP_EXTERNAL_PAYMENT);
+        // Get arguments
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mPaymentSubmitted = arguments.getParcelable(ConstantsIntentExtra.DATA);
+        }
     }
 
     /*
@@ -231,6 +222,21 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     }
 
     @Override
+    public boolean allowBackPressed() {
+        if (webview == null) {
+            Print.d(TAG, "onBackPressed");
+        } else {
+            Print.d(TAG, "onBackPressed: webview.canGoBackup = " + webview.canGoBack() + " webview.hasFocus() = " + webview.hasFocus());
+        }
+        boolean result = false;
+        if (webview != null && webview.canGoBack() && webview.hasFocus()) {
+            webview.goBack();
+            result = true;
+        }
+        return result;
+    }
+
+    @Override
     public void onLowMemory() {
         super.onLowMemory();
         Print.e(getTag(), "LOW MEM");
@@ -252,25 +258,23 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     private void startCheckout() {
         showFragmentLoading();
         webview.clearView();
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null) {
-            paymentUrl = JumiaApplication.INSTANCE.getPaymentMethodForm().getAction();
+        if (mPaymentSubmitted != null) {
+            paymentUrl = mPaymentSubmitted.getAction();
         } else {
             super.showFragmentErrorRetry();
             return;
         }
         Print.d(TAG, "Loading Url: " + paymentUrl);
         // Track
-        String userId = JumiaApplication.CUSTOMER.getIdAsString();
+        String userId = JumiaApplication.CUSTOMER != null ? JumiaApplication.CUSTOMER.getIdAsString() : "";
         String email = JumiaApplication.INSTANCE.getCustomerUtils().getEmail();
-        String payment = JumiaApplication.INSTANCE.getPaymentMethodForm().getName();
+        String payment = mPaymentSubmitted.getName();
         TrackerDelegator.trackPaymentMethod(userId, email, payment);
 
         List<NameValuePair> parameters = new ArrayList<>();
 
-        if (JumiaApplication.INSTANCE.getPaymentMethodForm() != null
-                && JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null
-                && JumiaApplication.INSTANCE.getPaymentMethodForm().getMethod() == PaymentMethodForm.RequestType.POST) {
-            Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
+        if (mPaymentSubmitted.getContentValues() != null && mPaymentSubmitted.getMethod() == PaymentMethodForm.POST) {
+            Set<Entry<String, Object>> mValues = mPaymentSubmitted.getContentValues().valueSet();
             for (Entry<String, Object> entry : mValues) {
                 if (entry.getKey().equalsIgnoreCase("tc")) {
                     parameters.add(new BasicNameValuePair(entry.getKey(), "1"));
@@ -279,18 +283,18 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 }
             }
 
-            Print.i(TAG, "code1content parameters: " + parameters.toString());
+            //Print.i(TAG, "code1content parameters: " + parameters);
             UrlEncodedFormEntity entity;
             try {
                 entity = new UrlEncodedFormEntity(parameters);
-                Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters.toString());
+                Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters);
                 //setProxy();
                 webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if (JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues() != null) {
-            Set<Entry<String, Object>> mValues = JumiaApplication.INSTANCE.getPaymentMethodForm().getContentValues().valueSet();
+        } else if (mPaymentSubmitted.getContentValues() != null) {
+            Set<Entry<String, Object>> mValues = mPaymentSubmitted.getContentValues().valueSet();
             //setProxy();
             for (Entry<String, Object> entry : mValues) {
                 if (!paymentUrl.contains("?")) {
@@ -309,6 +313,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     }
 
     private void prepareCookieStore() {
+
+        if (DeviceInfoHelper.isPosLollipop()) {
+            // AppRTC requires third party cookies to work
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.setAcceptThirdPartyCookies(webview, true);
+        }
         // GET COOKIES FROM FRAMEWORK
         List<HttpCookie> cookies = AigHttpClient.getInstance().getCookies();
 
@@ -376,7 +386,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            Print.i(TAG, "code1payment : onPageFinished");
+            //Print.i(TAG, "code1payment : onPageFinished");
             Print.d(TAG, "onPageFinished: url = " + url);
             if (wasLoadingErrorPage) {
                 Print.d(TAG, "onPageFinished: resetting error page information");
@@ -414,7 +424,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         @Override
         public void onLoadResource(WebView view, String url) {
             super.onLoadResource(view, url);
-            Print.i(TAG, "code1payment : onLoadResource");
+            //Print.i(TAG, "code1payment : onLoadResource");
             try {
                 Print.d(TAG, "onLoadResource: url = " + url);
             } catch (OutOfMemoryError e) {
@@ -432,7 +442,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
-            Print.i(TAG, "code1payment : onPageStarted : " + url);
+            //Print.i(TAG, "code1payment : onPageStarted : " + url);
             Print.d(TAG, "onPageStarted: url = " + url);
             if (url.equals(failedPageRequest)) {
                 return;
@@ -454,19 +464,19 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
          */
         @Override
         public void onReceivedSslError(WebView view, @NonNull SslErrorHandler handler, SslError error) {
-            Print.i(TAG, "code1payment : onReceivedSslError : " + error);
+            //Print.i(TAG, "code1payment : onReceivedSslError : " + error);
             Print.w(TAG, "Received ssl error: " + error);
             if (error.getPrimaryError() == SslError.SSL_IDMISMATCH) {
-                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_SSL_HOST_MISMATCH, error);
+                showWarningErrorMessage(getString(R.string.ssl_error_host_mismatch));
             } else {
-                ToastManager.show(CheckoutExternalPaymentFragment.this.getContext(), ToastManager.ERROR_SSL_GENERIC, error);
+                showWarningErrorMessage(getString(R.string.ssl_error_generic));
             }
             // Case in dev continue
             if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
                 handler.proceed();
             } else {
                 String url = view.getUrl();
-                NewRelicTracker.noticeFailureTransaction(url, beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
+                NewRelicTracker.noticeFailureTransaction(url, "https", beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
                 onReceivedError(view, error.getPrimaryError(), error.toString(), url);
                 handler.cancel();
             }
@@ -491,18 +501,18 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                             trackPurchase(result);
                         }
                     });
-                    final Bundle bundle = new Bundle();
-                    bundle.putString(ConstantsIntentExtra.SUCCESS_INFORMATION, content);
 
-                    String order_number = "";
-                    if (result.has(RestConstants.JSON_ORDER_NUMBER_TAG)) {
-                        order_number = result.optString(RestConstants.JSON_ORDER_NUMBER_TAG);
-                    } else if (result.has("orderNr")) {
-                        order_number = result.optString("orderNr");
+                    // Get order number
+                    String orderNumber = "";
+                    if (result.has(RestConstants.ORDER_NR)) {
+                        orderNumber = result.optString(RestConstants.ORDER_NR);
+                    } else if (result.has(RestConstants.ORDERNr)) {
+                        orderNumber = result.optString(RestConstants.ORDERNr);
                     }
-
-                    bundle.putString(ConstantsCheckout.CHECKOUT_THANKS_ORDER_NR, order_number);
-
+                    // Create bundle for last checkout step
+                    final Bundle bundle = new Bundle();
+                    bundle.putString(RestConstants.ORDER_NUMBER, orderNumber);
+                    // Switch
                     getBaseActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -530,7 +540,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
         EventType eventType = baseResponse.getEventType();
         switch (eventType) {
             case GET_CUSTOMER:
-                customer = (Customer)baseResponse.getMetadata().getData();
+                customer = (Customer)baseResponse.getContentData();
                 JumiaApplication.CUSTOMER = customer;
                 break;
             case GET_SHOPPING_CART_ITEMS_EVENT:

@@ -6,10 +6,13 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.IntDef;
 
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 
 /**
@@ -31,14 +34,19 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     private static final String COPY_TABLE = "INSERT OR IGNORE INTO %1$s (%2$s) SELECT %2$s FROM %3$s";
     
     private static final String INFO_TABLE = "PRAGMA table_info('%1$s')";
-    
-    public enum TableType { CACHE, PERSIST, FREEZE }
+
+    public static final int CACHE = 0;      // Drop old and create a new table.
+    public static final int PERSIST = 1;    // Upgrade the table trying copy the old content for the new table schema.
+    public static final int FREEZE = 2;     // Retain table.
+    @IntDef({CACHE, PERSIST, FREEZE})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface UpgradeType {}
     
     private static DarwinDatabaseHelper db;
 
     private static Context CONTEXT;
     
-    private BaseTable mTables[] = {
+    private final BaseTable[] mTables = {
             new ImageResolutionTableHelper(),
             new CategoriesTableHelper(),
             new SectionsTablesHelper(),
@@ -102,7 +110,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         for (BaseTable table : mTables) {
             Print.i(TAG, "ON CREATE TABLE: " + table.getName());
-            db.execSQL(table.create(table.getName()));
+            db.execSQL(String.format(table.create(), table.getName()));
         }
     }
 
@@ -147,7 +155,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         // Drop table
         db.execSQL(String.format(DROP_TABLE, tableName));
         // Create table
-        db.execSQL(table.create(tableName));
+        db.execSQL(String.format(table.create(), table.getName()));
     }
     
     /**
@@ -161,7 +169,7 @@ public class DarwinDatabaseHelper extends SQLiteOpenHelper {
         // Get temporary table name
         String tempTableName = currentTableName + "_temp_" + newVersion;
         // Create temporary table
-        db.execSQL(table.create(tempTableName));
+        db.execSQL(String.format(table.create(), tempTableName));
         // Match columns
         ArrayList<String> common = matchColumns(db, tempTableName, currentTableName);
         // Validate columns and copy

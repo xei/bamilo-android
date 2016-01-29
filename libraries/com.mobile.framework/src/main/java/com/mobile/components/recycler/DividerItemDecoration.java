@@ -26,6 +26,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.shop.ShopSelector;
+
 public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     private static final int[] ATTRS = new int[]{
@@ -36,7 +39,7 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
     public static final int VERTICAL_LIST = LinearLayoutManager.VERTICAL;
 
-    private Drawable mDivider;
+    private final Drawable mDivider;
 
     private int mOrientation;
 
@@ -54,6 +57,9 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         mOrientation = orientation;
     }
 
+    /**
+     * TODO : Use {@link #onDraw(Canvas, RecyclerView, RecyclerView.State)}
+     */
     @Override
     public void onDraw(Canvas c, RecyclerView parent) {
         if (mOrientation == VERTICAL_LIST) {
@@ -63,13 +69,15 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    public void drawVertical(Canvas c, RecyclerView parent) {
-        final int left = parent.getPaddingLeft();
-        final int right = parent.getWidth() - parent.getPaddingRight();
-
+    /**
+     * draws horizontal divider on the bottom of each child
+     */
+    public void drawHorizontal(Canvas c, RecyclerView parent) {
         final int childCount = parent.getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View child = parent.getChildAt(i);
+            final int left = child.getLeft();
+            final int right = child.getRight();
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
             final int top = child.getBottom() + params.bottomMargin + Math.round(ViewCompat.getTranslationY(child));
             final int bottom = top + mDivider.getIntrinsicHeight();
@@ -78,21 +86,42 @@ public class DividerItemDecoration extends RecyclerView.ItemDecoration {
         }
     }
 
-    public void drawHorizontal(Canvas c, RecyclerView parent) {
-        final int top = parent.getPaddingTop();
-        final int bottom = parent.getHeight() - parent.getPaddingBottom();
+    /**
+     * draws vertical divider from top of first element in view
+     * to the bottom of the last element.
+     * the divider is drawn on either right side or left if LTR or RTL language
+     */
+    public void drawVertical(Canvas c, RecyclerView parent) {
 
         final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
+        for (int i = 0; i < childCount; i++){
             final View child = parent.getChildAt(i);
+            final int bottom = child.getBottom();
+            final int top = child.getTop();
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
-            final int left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
-            final int right = left + mDivider.getIntrinsicHeight();
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
+            final int left;
+            final int right;
+            // if RTL we need to invert the divider draw
+            if (ShopSelector.isRtl() && !DeviceInfoHelper.isPreJellyBeanMR2()) {
+                right = child.getLeft();
+                left = right - mDivider.getIntrinsicHeight();
+            } else {
+                left = child.getRight() + params.rightMargin + Math.round(ViewCompat.getTranslationX(child));
+                right = left + mDivider.getIntrinsicHeight();
+            }
+
+            // If the element belongs to the start of the screen or the end, we don't need to draw the divider
+            if(left != 0 && right != 0 && left != parent.getWidth() && right != parent.getWidth()){
+                mDivider.setBounds(left, top, right, bottom);
+                mDivider.draw(c);
+            }
+
         }
     }
 
+    /**
+     * TODO : Use {@link #getItemOffsets(Rect, View, RecyclerView, State)}
+     */
     @Override
     public void getItemOffsets(Rect outRect, int itemPosition, RecyclerView parent) {
         if (mOrientation == VERTICAL_LIST) {

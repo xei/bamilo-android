@@ -24,7 +24,9 @@ import org.json.JSONObject;
  * @version 1.0
  * @date 2015/10/14
  *
+ * @deprecated Please use TargetLink.
  */
+@Deprecated
 public class TargetHelper implements ITargeting, IJSONSerializable, Parcelable {
 
     public static final int DEEP_LINK_SIZE = 2;
@@ -107,8 +109,8 @@ public class TargetHelper implements ITargeting, IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     protected TargetHelper(Parcel in) {

@@ -54,7 +54,7 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
             // Base
             super.initialize(jsonObject);
             // Leader
-            bundleProductLeaderPos = jsonObject.getInt(RestConstants.JSON_BUNDLE_PRODUCT_LEADER_POS);
+            bundleProductLeaderPos = jsonObject.getInt(RestConstants.LEADER_SIMPLE_POSITION);
         } catch (JSONException e) {
             return false;
         }
@@ -72,13 +72,13 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
-    public int getBundleProductLeaderPos() {
-        return bundleProductLeaderPos;
-    }
+//    public int getBundleProductLeaderPos() {
+//        return bundleProductLeaderPos;
+//    }
 
     public boolean isChecked() {
         return isChecked;

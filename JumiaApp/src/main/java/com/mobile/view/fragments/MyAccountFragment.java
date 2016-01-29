@@ -23,12 +23,12 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetFaqTermsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.database.SectionsTablesHelper;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -71,6 +71,9 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     public final static int POSITION_LANGUAGE = 1;
 
     public final static int NOTIFICATION_STATUS = 0;
+
+    public final static int EMAIL_NOTIFICATION_STATUS = 1;
+
     private ViewGroup optionsList;
     
     private ViewGroup appSocialList;
@@ -97,10 +100,10 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
      */
     public MyAccountFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MyAccount,
+                NavigationAction.MY_ACCOUNT,
                 R.layout.my_account_fragment,
                 R.string.account_name,
-                KeyboardState.NO_ADJUST_CONTENT);
+                NO_ADJUST_CONTENT);
     }
 
     /*
@@ -245,7 +248,11 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
      */
     private void showPreferences(View view) {
         notificationList = (ViewGroup)view.findViewById(R.id.notification_list);
-        MyAccountNotificationsAdapter notificationSettingsAdapter = new MyAccountNotificationsAdapter(getActivity(), getResources().getStringArray(R.array.app_notification_array));
+        MyAccountNotificationsAdapter notificationSettingsAdapter = new MyAccountNotificationsAdapter(
+                getBaseActivity().getApplicationContext(),
+                getResources().getStringArray(R.array.app_notification_array),
+                getResources().getIntArray(R.array.app_notification_array_checkboxes));
+
 
         new AdapterBuilder(notificationList, notificationSettingsAdapter, this).buildLayout();
     }
@@ -263,7 +270,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     private void showChooseLanguage(View view) {
         chooseLanguageList = (ViewGroup)view.findViewById(R.id.language_list);
         CountrySettingsAdapter.CountryLanguageInformation countryInformation = CountryPersistentConfigs.getCountryInformation(getActivity());
-        chooseLanguageList.setTag(R.string.choose_language, countryInformation);
+        chooseLanguageList.setTag(R.string.shop_settings, countryInformation);
         CountrySettingsAdapter countrySettingsAdapter = new CountrySettingsAdapter(getActivity(), countryInformation);
 
         new AdapterBuilder(chooseLanguageList, countrySettingsAdapter, this).buildLayout();
@@ -276,23 +283,31 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     private void handleOnChooseLanguageItemClick(ViewGroup parent, int position) {
         // Case country
-        if (position == POSITION_COUNTRY) {
-            // Case multi shop
-            if(!ShopSelector.isSingleShopCountry()) {
-                getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-            }
+        if (!ShopSelector.isSingleShopCountry() && position == POSITION_COUNTRY) {
+            getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
         // Case language
-        else if (position == POSITION_LANGUAGE) {
-            CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.choose_language);
+        else {
+            CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.shop_settings);
             ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
                 public void run() {
+                    // Clear Country Configs to force update.
+                    clearCountryConfigs();
                     getBaseActivity().restartAppFlow();
                 }
             });
         }
     }
+
+
+    /**
+     * Trigger to get the country configurations
+     */
+    private void clearCountryConfigs(){
+        SectionsTablesHelper.deleteConfigurations();
+    }
+
 
     /**
      *  Handles the item click of childs of options list.
@@ -327,7 +342,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         switch (position) {
             case POSITION_SHARE_APP:
                 String text;
-                String preText = getString(R.string.install_jumia_android, getString(R.string.app_name_placeholder));
+                String preText = getString(R.string.install_android, getString(R.string.app_name_placeholder));
                 if(ShopSelector.isRtl()){
                     text = getString(R.string.share_app_link) + " " + preText;
                 } else {
@@ -350,14 +365,11 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     private void handleOnNotifcationListItemClick(ViewGroup parent, int position) {
         switch (position) {
             case NOTIFICATION_STATUS:
-                boolean isEnabled = Ad4PushTracker.getActiveAd4Push(getActivity().getApplicationContext());
-                if(isEnabled){
-                    Ad4PushTracker.setActiveAd4Push(getActivity().getApplicationContext(), !isEnabled);
-                    ((CheckBox)parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG)).setChecked(!isEnabled);
-                } else {
-                    Ad4PushTracker.setActiveAd4Push(getActivity().getApplicationContext(), !isEnabled);
-                    ((CheckBox)parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG)).setChecked(!isEnabled);
-                }
+                CheckBox m = (CheckBox) parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG);
+                m.setChecked(!m.isChecked());
+                break;
+            case EMAIL_NOTIFICATION_STATUS:
+                processOnClickEmailNotification();
                 break;
             default:
                 break;
@@ -452,8 +464,8 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     private void onClickStaticPageButton(String key, String label) {
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.JSON_KEY_TAG, key);
-        bundle.putString(RestConstants.JSON_TITLE_TAG, label);
+        bundle.putString(RestConstants.KEY, key);
+        bundle.putString(RestConstants.TITLE, label);
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 

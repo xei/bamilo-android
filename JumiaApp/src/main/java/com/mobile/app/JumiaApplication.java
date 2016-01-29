@@ -1,24 +1,21 @@
 package com.mobile.app;
 
-import android.content.ContentValues;
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.ad4screen.sdk.A4SApplication;
+import com.a4s.sdk.plugins.annotations.UseA4S;
 import com.facebook.FacebookSdk;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.DarwinDatabaseHelper;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.FormData;
-import com.mobile.newFramework.forms.PaymentInfo;
-import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.VersionInfo;
@@ -27,6 +24,7 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.cookies.ISessionCookie;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.ApptimizeTracking;
@@ -44,10 +42,9 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
-
-public class JumiaApplication extends A4SApplication {
+@UseA4S
+public class JumiaApplication extends Application {
 
     private static final String TAG = JumiaApplication.class.getSimpleName();
     // Components
@@ -62,52 +59,30 @@ public class JumiaApplication extends A4SApplication {
     // Account variables
     public static Customer CUSTOMER;
     private PersistentSessionStore mCustomerUtils;
-
-    /**
-     * General Persistent Variables
-     */
-    /**
-     * Cart
-     */
-    private Map<String, Map<String, String>> itemSimpleDataRegistry = new HashMap<>();
+    // Cart
     private PurchaseEntity cart;
-
-    /**
-     * Forms
-     */
-    private HashMap<String, FormData> formDataRegistry = new HashMap<>();
-    private PaymentMethodForm paymentMethodForm;
-    public Form reviewForm; // TODO use an alternative to persist form on rotation
-    public Form ratingForm; // TODO use an alternative to persist form on rotation
-    public Form mSellerReviewForm; // TODO use an alternative to persist form on rotation
-    private static ContentValues ratingReviewValues;
-    public static boolean isSellerReview = false;
-    private static HashMap<String, String> sFormReviewValues = new HashMap<>();
-
-    /**
-     * Payment methods Info
-     */
-    private static HashMap<String, PaymentInfo> paymentsInfoList;
-    public int lastPaymentSelected = -1;
-
+    // Forms
+    public Form reviewForm;
+    public Form ratingForm;
+    // Countries
     public ArrayList<CountryObject> countriesAvailable = null;
-
-    // for tracking
-    public boolean trackSearch = true;
-    public boolean trackSearchCategory = true;
+    // Tracking
     private HashMap<String, String> bannerSkus = new HashMap<>();
+    // Search
+    public String mSavedSearchTerm;
 
-    /*
-     * (non-Javadoc)
-     * @see com.ad4screen.sdk.A4SApplication#onApplicationCreate()
+    /**
+     * Create application
      */
     @Override
-    public void onApplicationCreate() {
-        Print.initializeAndroidMode(getApplicationContext());
+    public void onCreate() {
+        super.onCreate();
+        // ON APPLICATION CREATE
         Print.i(TAG, "ON APPLICATION CREATE");
+        // Save instance
         INSTANCE = this;
         // Init image loader
-        RocketImageLoader.init(this);
+        RocketImageLoader.init(getApplicationContext());
         // Init apptimize
         ApptimizeTracking.startup(getApplicationContext());
         // Init darwin database, set the context
@@ -119,9 +94,7 @@ public class JumiaApplication extends A4SApplication {
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
         // Init cached data
         countriesAvailable = new ArrayList<>();
-        setItemSimpleDataRegistry(new HashMap<String, Map<String, String>>());
         setCart(null);
-        setFormDataRegistry(new HashMap<String, FormData>());
 
         /**
          * Fix a crash report, when app try recover from background
@@ -145,9 +118,9 @@ public class JumiaApplication extends A4SApplication {
         AnalyticsGoogle.clearCheckoutStarted();
 
         for (ApplicationComponent component : COMPONENTS.values()) {
-            ErrorCode result = component.init(getApplicationContext());
+            int result = component.init(getApplicationContext());
             if (result != ErrorCode.NO_ERROR) {
-                Print.i(TAG, "code1configs : " + result);
+                //Print.i(TAG, "code1configs : " + result);
                 handleEvent(result, null, initializationHandler);
                 return;
             }
@@ -155,22 +128,16 @@ public class JumiaApplication extends A4SApplication {
 
         SHOP_ID = ShopPreferences.getShopId(getApplicationContext());
         SHOP_NAME = ShopPreferences.getShopName(getApplicationContext());
-        Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
-        // Disabled for Samsung and Blackberry (check_version_enabled)
+        //Print.i(TAG, "code1configs : SHOP_ID : " + SHOP_ID + " SHOP_NAME : " + SHOP_NAME);
+        // Initialize check version, disabled for Samsung (check_version_enabled)
         CheckVersion.clearDialogSeenInLaunch(getApplicationContext());
-        // Disabled for Samsung and Blackberry (check_version_enabled)
         CheckVersion.init(getApplicationContext());
         //
         handleEvent(ErrorCode.NO_ERROR, EventType.INITIALIZE, initializationHandler);
     }
 
-    public synchronized void handleEvent(ErrorCode errorType, EventType eventType, Handler initializationHandler) {
+    public synchronized void handleEvent(@ErrorCode.Code int errorType, EventType eventType, Handler initializationHandler) {
         Print.d(TAG, "ON HANDLE");
-        // isInitializing = false;
-//        Bundle bundle = new Bundle();
-//        bundle.putSerializable(Constants.BUNDLE_ERROR_KEY, errorType);
-//        bundle.putSerializable(Constants.BUNDLE_EVENT_TYPE_KEY, eventType);
-
         Print.d(TAG, "Handle initialization result: " + errorType);
         Message msg = new Message();
         msg.obj = new BaseResponse<>(eventType, errorType);
@@ -224,6 +191,7 @@ public class JumiaApplication extends A4SApplication {
     /**
      * @return the cart
      */
+    @Nullable
     public PurchaseEntity getCart() {
         return this.cart;
     }
@@ -231,29 +199,8 @@ public class JumiaApplication extends A4SApplication {
     /**
      * @param cart the cart to set
      */
-    public void setCart(PurchaseEntity cart) {
+    public void setCart(@Nullable PurchaseEntity cart) {
         this.cart = cart;
-    }
-
-    /**
-     * @param itemSimpleDataRegistry the itemSimpleDataRegistry to set
-     */
-    public void setItemSimpleDataRegistry(Map<String, Map<String, String>> itemSimpleDataRegistry) {
-        this.itemSimpleDataRegistry = itemSimpleDataRegistry;
-    }
-
-    /**
-     * @return the formDataRegistry
-     */
-    public HashMap<String, FormData> getFormDataRegistry() {
-        return formDataRegistry;
-    }
-
-    /**
-     * @param formDataRegistry the formDataRegistry to set
-     */
-    public void setFormDataRegistry(HashMap<String, FormData> formDataRegistry) {
-        this.formDataRegistry = formDataRegistry;
     }
 
     /**
@@ -263,83 +210,19 @@ public class JumiaApplication extends A4SApplication {
         return CUSTOMER != null;
     }
 
-    public void setPaymentMethodForm(PaymentMethodForm paymentMethodForm) {
-        this.paymentMethodForm = paymentMethodForm;
-    }
-
-    public PaymentMethodForm getPaymentMethodForm() {
-        return this.paymentMethodForm;
-    }
-
-    /**
-     * clean and return last saved rating
-     *
-     * @return last saved review
-     */
-    public static ContentValues getRatingReviewValues() {
-        return JumiaApplication.ratingReviewValues;
-    }
-
-    /**
-     * clean current rating
-     */
-    public static void cleanRatingReviewValues() {
-        JumiaApplication.ratingReviewValues = null;
-    }
-
-    public static void setRatingReviewValues(ContentValues ratingReviewValues) {
-        JumiaApplication.ratingReviewValues = ratingReviewValues;
-    }
-
-    /**
-     * @return the paymentsInfoList
-     */
-    public static HashMap<String, PaymentInfo> getPaymentsInfoList() {
-        return paymentsInfoList;
-    }
-
-    /**
-     * get the values from the write review form
-     * @return sFormReviewValues
-     */
-    public HashMap<String,String> getFormReviewValues(){
-        return JumiaApplication.sFormReviewValues;
-    }
-    /**
-     * HashMap used to store the values from the write review form
-     */
-    public void setFormReviewValues(HashMap<String, String> sFormReviewValues){
-        JumiaApplication.sFormReviewValues = sFormReviewValues;
-    }
-
-    /**
-     * @param paymentsInfoList
-     *            the paymentsInfoList to set
-     */
-    public static void setPaymentsInfoList(HashMap<String, PaymentInfo> paymentsInfoList) {
-        JumiaApplication.paymentsInfoList = paymentsInfoList;
-    }
-
     /**
      * Clean current memory.
      */
     public void cleanAllPreviousCountryValues() {
         cleanAllPreviousLanguageValues();
         setCart(null);
-        setFormDataRegistry(new HashMap<String, FormData>());
         CUSTOMER = null;
         getCustomerUtils().save();
         mCustomerUtils = null;
         cart = null;
-        paymentsInfoList = null;
-        itemSimpleDataRegistry.clear();
-        formDataRegistry.clear();
         countriesAvailable.clear();
         reviewForm = null;
         ratingForm = null;
-        isSellerReview = false;
-        ratingReviewValues = null;
-        sFormReviewValues = null;
         WishListCache.clean();
         AdjustTracker.resetTransactionCount(getApplicationContext());
         clearBannerFlowSkus();
@@ -351,8 +234,6 @@ public class JumiaApplication extends A4SApplication {
         } catch (IOException e) {
             Print.e(TAG, "Error clearing requests cache", e);
         }
-        paymentMethodForm = null;
-        mSellerReviewForm = null;
     }
 
     /**
@@ -392,6 +273,23 @@ public class JumiaApplication extends A4SApplication {
      */
     public void clearBannerFlowSkus() {
         bannerSkus = null;
+    }
+
+
+    /**
+     * Save last searched term
+     */
+    public void setSearchedTerm(String searchTerm) {
+        mSavedSearchTerm =  searchTerm;
+    }
+
+    /**
+     * returns the saved searched term
+     *
+     * @return searched term
+     */
+    public String getSearchedTerm() {
+        return mSavedSearchTerm;
     }
 
 }

@@ -122,12 +122,12 @@ public class OrderItem implements IJSONSerializable, Parcelable {
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 
-	    mProductQuantity = jsonObject.optInt(RestConstants.JSON_QUANTITY_TAG);
-	    mProductUnitPrice = jsonObject.optDouble(RestConstants.JSON_ORDER_UNIT_PRICE_TAG);
-	    mProductSku = jsonObject.optString(RestConstants.JSON_ORDER_CONF_SKU_TAG);
+	    mProductQuantity = jsonObject.optInt(RestConstants.QUANTITY);
+	    mProductUnitPrice = jsonObject.optDouble(RestConstants.UNIT_PRICE);
+	    mProductSku = jsonObject.optString(RestConstants.CONFIG_SKU);
 	    mProductSimpleSku = jsonObject.optString(RestConstants.SKU);
-	    mProductTotal = jsonObject.optDouble(RestConstants.JSON_ORDER_TOTAL_TAG);
-	    mProductName = jsonObject.optString(RestConstants.JSON_NAME_TAG);
+	    mProductTotal = jsonObject.optDouble(RestConstants.TOTAL);
+	    mProductName = jsonObject.optString(RestConstants.NAME);
 
 		return true;
 
@@ -144,8 +144,8 @@ public class OrderItem implements IJSONSerializable, Parcelable {
 	}
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     protected OrderItem(Parcel in) {

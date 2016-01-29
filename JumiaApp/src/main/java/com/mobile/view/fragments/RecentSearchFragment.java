@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.SearchSuggestionsAdapter;
@@ -57,10 +58,10 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
      */
     public RecentSearchFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.RecentSearches,
+                NavigationAction.RECENT_SEARCHES,
                 R.layout.recentsearches,
                 R.string.recent_searches,
-                KeyboardState.ADJUST_CONTENT);
+                ADJUST_CONTENT);
     }
     
     /**
@@ -167,7 +168,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     protected void executeSearchRequest(String searchText) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, null);
+        bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
@@ -198,7 +199,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
         case GET_SEARCH_SUGGESTIONS_EVENT:
             Print.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
 
-            ArrayList<Suggestion> response = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getMetadata().getData();
+            ArrayList<Suggestion> response = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
             if (response != null) {
                 mRecentSearches = response;
                 if (!mRecentSearches.isEmpty()) {
@@ -212,6 +213,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                             String text = selectedSuggestion.getResult();
                             GetSearchSuggestionsHelper.saveSearchQuery(text);
                             executeSearchRequest(text);
+                            JumiaApplication.INSTANCE.setSearchedTerm(text);
                         }
                     });
 

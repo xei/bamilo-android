@@ -12,17 +12,17 @@
     <string name="added_bundle_to_shop_cart_dialog_text">کالاها به سبد خرید اضافه گردیدند</string>
     <string name="added_to_shop_cart_dialog_text">کالا به سبد خرید شما اضافه شد.</string>
     <string name="all_label">همه</string>
-    <string name="app_name">بامیلو</string>
     <string name="back_label">بازگشت</string>
     <string name="back_level">مرحله قابل</string>
     <string name="bamilo_not_available">بامیلو در حال حاضر در دسترس نمی باشد.</string>
-    <string name="billing_add_label">اضافه کردن آدرس جدید</string>
-    <string name="billing_billing_label">نشانی دریافت صورت حساب</string>
     <string name="billing_choose_address">لطفا یک نشانی را انتخاب نمایید</string>
     <string name="billing_def_shipping_label">نشانی پیش فرضی جهت ارسال کالا</string>
-    <string name="billing_others_label">نشانی های دیگر</string>
+    <string name="address_shipping_billing_label">نشانی</string>
+    <string name="address_shipping_label">نشانی دریافت کننده</string>
+    <string name="address_billing_label">نشانی دریافت صورت حساب</string>
+    <string name="address_others_label">نشانی های دیگر</string>
+    <string name="address_add_new_label">اضافه کردن نشانی جدید</string>
     <string name="billing_same_label">ارسال صورت حساب به همان نشانی</string>
-    <string name="billing_shipping_label">نشانی دریافت کننده</string>
     <string name="brands_label">برندها</string>
     <string name="bundle_title">معمولا با هم خریداری شده</string>
     <string name="bundle_total_price">قیمت کل:</string>
@@ -33,12 +33,15 @@
     <string name="campaign_save">میزان تخفیف</string>
     <string name="campaign_stock_alert">متاسفیم. موجودی کالا به اتمام رسیده است.</string>
     <string name="campaigns_label">کمپین ها</string>
-    <string name="campaing_offer_ended">زمان پیشنهاد به پایان رسیده است</string>
-    <string name="campaing_timer_end">پایان</string>
+    <string name="campaign_unavailable_title">پیشنهاد به پایان رسیده است</string>
+    <string name="campaign_unavailable_description">با این حال، پیشنهادات بی نظیری انتظار شما را میکشند.</string>
+    <string name="campaign_offer_ended">زمان پیشنهاد به پایان رسیده است</string>
+    <string name="campaign_timer_end">تاریخ اتمام</string>
     <string name="cancel_label">لغو</string>
     <string name="cart_label">سبد خرید</string>
     <string name="catalog_edit_filters">ویرایش فیلترها</string>
     <string name="catalog_no_results">نتیجه ای در این فیلتر یافت نشد.\nشما می توانید فیلتر دیگری را انتخاب نمایید</string>
+    <string name="catalog_no_results_details">فیلتر های کمتری را برای جستجوی خود امتحان کنید.</string>
     <string name="categories_label">مجموعه ها</string>
     <string name="categories_label_uppercase">مجموعه ها</string>
     <string name="categories_name_all">همه کالاهای</string>
@@ -77,6 +80,7 @@
     <string name="error_no_connection">ارتباط قطع است</string>
     <string name="error_occured">خطایی رخ داده است.</string>
     <string name="error_please_try_again">دریافت اطلاعات با مشکل مواجه شد. لطفا دوباره امتحان کنید.</string>
+    <string name="error_problem_fetching_data">بازیابی اطلاعات دچار مشکل شده است.</string>
     <string name="error_register_alreadyexists">ایمیل وارد شده در سیستم موجود می باشد. لطفا ایمیل دیگری را انتخاب نمایید.</string>
     <string name="error_register_title">ثبت نام با مشکل مواجه شد</string>
     <string name="error_signup_title">ثبت نام با مشکل مواجه شد</string>
@@ -145,21 +149,19 @@
     <string name="my_order_no_orders_label">شما هیچ سفارشی ثبت نکرده اید.</string>
     <string name="my_order_number_label">شماره</string>
     <string name="my_order_payment">روش های پرداخت</string>
-    <string name="my_order_qty">تعداد</string>
-    <string name="my_order_quantity_label">تعداد</string>
     <string name="my_order_ship_fee_label">هزینه ارسال</string>
     <string name="my_order_total_label">مجموع</string>
     <string name="my_order_tracking_label">رهگیری سفارش</string>
     <string name="my_order_voucher_label">کوپن</string>
     <string name="my_orders_label">سفارشات من</string>
     <string name="my_profile">صفحه مشخصات کاربری</string>
-    <string name="myaccount_email_notifications">اطلاع از طریق پست الکترونیکی</string>
     <string name="myaccount_userdata">اطلاعات کاربر</string>
     <string name="name">نام</string>
     <string name="nav_country">انتخاب کشور</string>
     <string name="nav_country_warning">شما در حال تغییرکشور هستید. این فرایند سبد خرید شما را خالی خواهد نمود و شما از حساب کاربری خارج خواهید شد. آیا برای ادامه مطمئن هستید؟</string>
     <string name="nav_track_order">رهگیری سفارش من</string>
     <string name="navigation_cart_empty">سبد خرید شما خالی است</string>
+    <string name="new_arrival_badge">جدید</string>
     <string name="new_password_hint">رمز عبور جدید</string>
     <string name="new_password_label">رمز عبور جدید</string>
     <string name="newsletter_saved_message">تنظیمات اطلاع از طریق ایمیل ذخیره شد.</string>
@@ -168,8 +170,8 @@
     <string name="no_connect_dialog_content">لطفا اتصال به اینترنت را چک کنید و دوباره امتحان نمایید</string>
     <string name="no_internet_access_warning_title">اتصال به اینترنت وجود ندارد!</string>
     <string name="no_label">خیر</string>
-    <string name="no_payment">نیازی به پرداخت نیست.</string>
     <string name="notifications">اطلاعیه ها</string>
+    <string name="myaccount_email_notifications">اطلاع از طریق پست الکترونیکی</string>
     <string name="notifications_summary">دریافت پیشنهادات اختصاصی و بروزرسانی ها</string>
     <string name="off_label">تخفیف</string>
     <string name="ok_label">تایید</string>
@@ -335,7 +337,7 @@
     <string name="yes_label">آری</string>
     <string name="your_cart">سبد خرید شم</string>
     <string name="your_order">سفارش شما</string>
-    <string name="install_jumia_android">برنامه  %s Android بامیلو را نصب کنید.</string>
+    <string name="install_android">نصب نرم افزار ‎%s‎ در یک چشم بهم زدن</string>
     <string name="share_the_app">برنامه را به اشتراک بگذار</string>
     <string name="can_share_app_with_friends">هم اکنون می توانید برنامه را با دوستان خود به اشتراک بگذارید</string>
     <string name="app_social">آیکون شبکه های اجتماعی</string>
@@ -349,9 +351,7 @@
     <string name="my_addresses">نشانی‌های من</string>
     <string name="create_edit_address">نشانی‌های خود را ایجاد و ویرایش کنید.</string>
     <string name="string_more_choices">انتخاب‌های بیشتر</string>
-    <string name="string_vat_included">(شامل مالیات بر ارزش افزوده)</string>
     <string name="addresses_saved_message">تنظیمات نشانی‌های شما ذخیره شده است.</string>
-    <string name="dialog_to_product">جزئیات محصول</string>
     <string name="address_creation_failed_title">ثبت نشانی با مشکل مواجه شد.</string>
     <string name="address_creation_failed_main">لطفا تمام موارد را بطورصحیح وارد کنید.</string>
     <string name="see_more_offers">پیشنهادات دیگر</string>
@@ -371,6 +371,7 @@
     <string name="open">باز کردن</string>
     <string name="close">بستن</string>
     <string name="choose_language">زبان مورد نظر خود را انتخاب کنید</string>
+    <string name="shop_settings">تنظیمات</string>
     <string name="language">زبان</string>
     <string name="country">کشور</string>
     <string name="birthday_label">تاریخ تولد</string>
@@ -392,6 +393,7 @@
     <string name="buy_the_look">مجموعه پیشنهادی</string>
     <string name="pdv_size">اندازه</string>
     <string name="buy_now_button">خرید کنید</string>
+    <string name="pre_order">پیش سفارش</string>
     <string name="saved">ذخیره شد</string>
     <string name="products_added_saved">کالا به موارد ذخیره شده افزوده شد</string>
     <string name="products_removed_saved">کالا از موارد ذخیره شده حذف شد</string>
@@ -412,12 +414,10 @@
     <string name="description1">توضیحات</string>
     <string name="rat_rev">نظرات و پیشنهادها</string>
     <string name="fulfilled_by">تامین کننده: ‎%s‎</string>
-    <string name="qty_placeholder">تعداد: %d</string>
     <string name="policy">قوانین و سیاست ها</string>
     <string name="shipment">روش ارسال ‎%1$d‎ از ‎%2$d‎</string>
     <string name="delivery_time_placeholder">زمان تحویل: ‎%1$d‎ - ‎%2$d‎ روز کاری</string>
     <string name="product_specifications">مشخصات کالا</string>
-    <!-- NEW 2.8 -->
     <string name="ssl_error_host_mismatch">نام میزبان با گواهینامه SSL مطابقت ندارد: %s</string>
     <string name="ssl_error_generic">خطای SSL: %s</string>
     <string name="save_for_later">ذخیره در کالاهای مورد علاقه</string>
@@ -434,7 +434,7 @@
     <string name="create_label">ایجاد</string>
     <string name="change_password">تغییر رمز عبور</string>
     <string name="continue_without_log_in">ادامه بدون ورود به حساب کاربری</string>
-    <string name="format_discount_value">-‎%s‎</string>
+    <string name="placeholder_discount">-‎%s‎</string>
     <string name="edit_user_success">ویرایش اطلاعات کاربر موفقیت‌آمیز بود.</string>
     <string name="password">رمز عبور</string>
     <string name="more">بیشتر</string>
@@ -457,8 +457,8 @@
     <string name="delivered_label">تحویل داده شد</string>
     <string name="order_number">شمار سفارش ‎%s‎</string>
     <string name="billing">صورت حساب</string>
-    <string name="first_and_second">‎%2$s‎‎ %1$s‎</string>
-    <string name="quantity">تعداد ‎%s‎</string>
+    <string name="first_and_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
+    <string name="qty_placeholder">تعداد: %s</string>
     <string name="reorder_label">سفارش مجدد</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
     <string name="order_pending">در انتظار بررسی</string>
@@ -468,4 +468,12 @@
     <string name="customer_service_info">برای اطلاعات بیشتر، لطفاً با واحد پشتیبانی تماس بگیرید.</string>
     <string name="phone_contact">شماره تلفن:</string>
     <string name="email_contact">آدرس ایمیل</string>
+    <string name="logout_success">از حساب کاربری خارج شدید</string>
+    <!-- NEW 2.9 -->
+    <string name="percentage">%s%%</string>
+    <string name="error_add_bundle_to_shopping_cart">امکان افزوده شدن این مجموعه کالا موجود نیست. لطفا دوباره تلاش کنید.</string>
+    <string name="buy">خرید کنید</string>
+    <string name="size">اندازه ‎%s‎</string>
+    <string name="added_success">با موفقیت افزوده شد.</string>
+    <string name="removed_success">با موفقیت حذف گردید.</string>
 </resources>

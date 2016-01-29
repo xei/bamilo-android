@@ -1,8 +1,6 @@
-/**
- * 
- */
 package com.mobile.helpers.address;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.NextStepStruct;
@@ -12,8 +10,10 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.utils.deeplink.TargetLink;
 
 /**
  * Helper used to create an address 
@@ -22,10 +22,6 @@ import com.mobile.newFramework.utils.EventType;
 public class CreateAddressHelper extends SuperBaseHelper {
     
     public static String TAG = CreateAddressHelper.class.getSimpleName();
-    
-    public static final String IS_FROM_SIGNUP = "fromSignup";
-    
-    public static final String IS_BILLING = "isBilling";
 
     @Override
     public EventType getEventType() {
@@ -34,16 +30,7 @@ public class CreateAddressHelper extends SuperBaseHelper {
 
     @Override
     protected EventTask setEventTask() {
-        return EventTask.SMALL_TASK;
-    }
-
-    @Override
-    protected RequestBundle createRequest(Bundle args) {
-        // Validate origin
-        if(args.getBoolean(IS_FROM_SIGNUP) && !args.getBoolean(IS_BILLING)){
-            mEventType = EventType.CREATE_ADDRESS_SIGNUP_EVENT;
-        }
-        return super.createRequest(args);
+        return EventTask.ACTION_TASK;
     }
 
     @Override
@@ -54,9 +41,16 @@ public class CreateAddressHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        CheckoutStepObject checkoutStep = (CheckoutStepObject) baseResponse.getMetadata().getData();
+        CheckoutStepObject checkoutStep = (CheckoutStepObject) baseResponse.getContentData();
         NextStepStruct nextStepStruct = new NextStepStruct(checkoutStep);
         baseResponse.getMetadata().setData(nextStepStruct);
+    }
+
+    public static Bundle createBundle(String endpoint, ContentValues values) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.BUNDLE_END_POINT_KEY, "/" + TargetLink.getIdFromTargetLink(endpoint));
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        return bundle;
     }
 
 }

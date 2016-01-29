@@ -1,16 +1,18 @@
 package com.mobile.utils.home;
 
 import android.content.Context;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeBrandTeaserHolder;
 import com.mobile.utils.home.holder.HomeCampaignTeaserHolder;
@@ -72,6 +74,9 @@ public class TeaserViewFactory {
     public static void onDetachedViewHolder(ArrayList<BaseTeaserViewHolder> viewHolders) {
         if(CollectionUtils.isNotEmpty(viewHolders)) {
             for (BaseTeaserViewHolder viewHolder : viewHolders) {
+                // Destroy view holder content
+                viewHolder.onDestroy();
+                // Remove view holder from parent
                 ViewGroup parent = (ViewGroup) viewHolder.itemView.getParent();
                 if (parent != null) {
                     parent.removeView(viewHolder.itemView);
@@ -87,16 +92,40 @@ public class TeaserViewFactory {
      * @param listener The callback
      */
     public static void setClickableView(View view, BaseTeaserObject teaser, View.OnClickListener listener, int position) {
+        Print.i(TAG,"ANY TEASER CLICK");
         if (listener != null) {
-            String title = !TextUtils.isEmpty(teaser.getName()) ? teaser.getName() : teaser.getTitle();
-            view.setTag(R.id.target_title, title);
-            view.setTag(R.id.target_type, teaser.getTargetType());
-            view.setTag(R.id.target_url, teaser.getUrl());
+            view.setTag(R.id.target_title, teaser.getTitle());
+            view.setTag(R.id.target_link, teaser.getTargetLink());
             view.setTag(R.id.target_teaser_origin, teaser.getTeaserTypeId());
             // Set position of the clicked teaser, for tracking purpose
             view.setTag(R.id.target_list_position, position);
-            view.setTag(R.id.target_sku, teaser.getSku());
 
+            if(teaser instanceof TeaserTopSellerObject){
+                view.setTag(R.id.target_rr_hash, ((TeaserTopSellerObject) teaser).getRichRelevanceClickHash());
+            }
+
+            view.setOnClickListener(listener);
+        }
+    }
+    /**
+     * Set a teaser clickable for Rich Relevance products
+     * @param view The view
+     * @param product The product
+     * @param listener The callback
+     */
+    public static void setRichRelevanceClickableView(View view, ProductRegular product, View.OnClickListener listener, int position, TeaserGroupType teaserGroupType) {
+        Print.i(TAG,"TOP SELLER RR");
+        if (listener != null) {
+            view.setTag(R.id.target_title, product.getName());
+            view.setTag(R.id.target_link, product.getTarget());
+
+            if(teaserGroupType != null)
+            view.setTag(R.id.target_teaser_origin,teaserGroupType.ordinal());
+
+            // Set position of the clicked teaser, for tracking purpose
+            view.setTag(R.id.target_list_position, position);
+            view.setTag(R.id.target_rr_hash, product.getRichRelevanceClickHash());
+            Print.i(TAG,"TOP SELLER RR TEASER CLICK:"+product.getRichRelevanceClickHash());
             view.setOnClickListener(listener);
         }
     }

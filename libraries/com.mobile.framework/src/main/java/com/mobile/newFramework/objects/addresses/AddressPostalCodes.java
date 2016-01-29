@@ -34,7 +34,7 @@ public class AddressPostalCodes extends ArrayList<AddressPostalCode> implements 
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		// For each item
-		JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+		JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.DATA);
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject json = jsonArray.getJSONObject(i);
 			add(new AddressPostalCode(json));
@@ -53,7 +53,7 @@ public class AddressPostalCodes extends ArrayList<AddressPostalCode> implements 
 	}
 
 	@Override
-	public RequiredJson getRequiredJson() {
+	public int getRequiredJson() {
 		return RequiredJson.METADATA;
 	}
 

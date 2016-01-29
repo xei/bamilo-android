@@ -592,7 +592,7 @@
     <style name="Widget" />
 
     <!-- CUSTOM SPINNER STYLE -->
-    <style name="Widget.Jumia.Spinner.Style" parent="Widget">
+    <style name="Widget.Custom.Spinner.Style" parent="Widget">
         <item name="android:background">@drawable/spinner_background</item>
         <item name="android:dropDownSelector">@drawable/custom_list_selector_holo_dark</item>
         <item name="android:popupBackground">@drawable/custom_menu_dropdown_panel_holo_light</item>
@@ -710,9 +710,9 @@
     <!-- SMALL TEASER -->
     <style name="SmallTeaserStyle" parent="CardViewFlatStyle">
         <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
-        <item name="android:layout_height">@dimen/home_small_teaser_item_height</item>
-        <item name="android:layout_marginLeft">@dimen/dimen_mat_4px</item>
-        <item name="android:layout_marginStart">@dimen/dimen_mat_4px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_3dp</item>
+        <item name="android:layout_marginStart">@dimen/dimen_3dp</item>
     </style>
 
     <!-- PRODUCT TEASER -->
@@ -761,21 +761,26 @@
     <!-- PDV -->
 
     <style name="PDVWishListButtonStyle" parent="WishListButtonStyle">
-        <item name="android:layout_alignParentLeft">true</item>
-        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
         <item name="android:layout_alignParentTop">true</item>
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
     </style>
 
     <style name="PDVGlobalSellerButtonStyle" >
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:background">@null</item>
         <item name="android:src">@drawable/ic_overseas_corner</item>
+    </style>
+
+    <style name="TextBody_1.ShopFirstDrawRight">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:drawablePadding">@dimen/dimen_10dp</item>
     </style>
 
     <!-- MY ACCOUNT -->
@@ -787,7 +792,7 @@
 
     <!-- MATERIAL BOTTOM SHEET -->
 
-    <style name="Theme_Jumia_Dialog_Bottom_Sheet" parent="@android:style/Theme.Dialog">
+    <style name="Theme_Custom_Dialog_Bottom_Sheet" parent="@android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsTranslucent">false</item>
@@ -801,6 +806,13 @@
     <style name="BottomSheetAnimation.Window" parent="@android:style/Animation.Activity">
         <item name="android:windowEnterAnimation">@anim/abc_slide_in_bottom</item>
         <item name="android:windowExitAnimation">@anim/abc_slide_out_bottom</item>
+    </style>
+
+    <style name="ShopFirstStyle">
+        <item name="android:src">@drawable/ic_shop_first_alias</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/dimen_4dp</item>
     </style>
 
 </resources>

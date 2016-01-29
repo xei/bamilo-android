@@ -29,15 +29,8 @@ public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
     public static final String PRICE = "price";
     public static final String COLOR = "color_family";
     public static final String RATING = "rating";
-    public static final String CATEGORY = "category";
 
-    public CatalogFilter(){
-    }
-
-    public CatalogFilter(JSONObject jsonObject) throws JSONException {
-        this();
-        initialize(jsonObject);
-    }
+    public CatalogFilter(){}
 
     protected String id;
     protected boolean multi;
@@ -47,13 +40,15 @@ public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        id = jsonObject.getString(RestConstants.ID);
-        name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
-        multi = jsonObject.getBoolean(RestConstants.JSON_MULTI);
-        filterSeparator = multi ? jsonObject.getString(RestConstants.JSON_FILTER_SEPARATOR) : jsonObject.optString(RestConstants.JSON_FILTER_SEPARATOR);
+        id = jsonObject.optString(RestConstants.ID);
+        name = jsonObject.getString(RestConstants.NAME);
+        multi = jsonObject.getBoolean(RestConstants.MULTI);
+        filterSeparator = multi ? jsonObject.getString(RestConstants.FILTER_SEPARATOR) : jsonObject.optString(RestConstants.FILTER_SEPARATOR);
 
-        if(jsonObject.has(RestConstants.JSON_FIELDS_TAG)) {
-            parseFields(jsonObject.optJSONArray(RestConstants.JSON_FIELDS_TAG));
+        if(jsonObject.has(RestConstants.FIELDS)) {
+            parseFields(jsonObject.optJSONArray(RestConstants.FIELDS));
+        } else if(jsonObject.has(RestConstants.SPECIAL_PRICE)){
+            parseFields(jsonObject.optJSONObject(RestConstants.SPECIAL_PRICE));
         }
 
         setOptionType(id);
@@ -70,14 +65,17 @@ public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
     protected void parseFields(JSONArray fieldsArray) throws JSONException {
     }
 
+    protected void parseFields(JSONObject fieldsArray) throws JSONException {
+    }
+
     @Override
     public JSONObject toJSON() {
         return null;
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
     public String getId() {
@@ -128,13 +126,4 @@ public abstract class CatalogFilter implements IJSONSerializable, Parcelable {
         this.optionType = (Class) in.readSerializable();
     }
 
-//    public static final Parcelable.Creator<CatalogFilter> CREATOR = new Parcelable.Creator<CatalogFilter>() {
-//        public CatalogFilter createFromParcel(Parcel source) {
-//            return new CatalogFilter(source);
-//        }
-//
-//        public CatalogFilter[] newArray(int size) {
-//            return new CatalogFilter[size];
-//        }
-//    };
 }

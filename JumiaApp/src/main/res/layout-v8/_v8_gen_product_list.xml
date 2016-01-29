@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
-    android:layout_height="@dimen/catalog_list_item_height" >
+    android:minHeight="@dimen/catalog_list_item_height"
+    android:layout_height="wrap_content" >
 
     <include
         android:id="@+id/image_loadable"
@@ -14,14 +15,16 @@
         layout="@layout/image_loadable"
         android:background="@color/color_accent" />
 
-    <ImageView
-        android:id="@+id/image_is_new"
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:layout_centerInParent="false"
-        android:src="@drawable/selector_is_new" />
+        android:layout_marginTop="@dimen/dimen_30px"
+        android:layout_marginRight="@dimen/dimen_30px"
+        android:text="@string/new_arrival_badge" />
 
     <!-- INFORMATION -->
 
@@ -76,16 +79,23 @@
         android:text="Price"
         android:textColor="@color/black_800" />
 
+    <ImageView
+        style="@style/ShopFirstStyle"
+        android:id="@+id/item_shop_first"
+        android:layout_below="@id/item_discount"
+        android:layout_alignRight="@id/item_brand"
+        android:visibility="gone"/>
+
     <LinearLayout
         android:id="@+id/rating_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/item_name"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin_30px"
-        android:layout_marginTop="@dimen/margin_30px"
         android:gravity="center_vertical|right"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_below="@id/item_shop_first"
+        android:layout_marginTop="@dimen/dimen_6dp">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
@@ -115,7 +125,8 @@
         android:layout_alignParentTop="true"
         android:padding="@dimen/rounded_margin_mid"
         android:paddingTop="@dimen/catalog_item_vertical_padding"
-        android:src="@drawable/selector_favorite" />
+        android:src="@drawable/selector_favorite"
+        android:layout_below="@id/item_shop_first"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
@@ -126,17 +137,5 @@
         android:layout_alignBottom="@id/rating_container"
         android:layout_marginLeft="@dimen/rounded_margin_mid"
         android:gravity="center" />
-
-    <View
-        android:id="@+id/divider"
-        style="@style/HorizontalListDivider"
-        android:visibility="visible"
-        android:layout_alignParentBottom="true" />
-
-    <View
-        android:id="@+id/vdivider"
-        style="@style/VerticalListDivider"
-        android:visibility="gone"
-        android:layout_alignParentLeft="true" />
 
 </RelativeLayout>

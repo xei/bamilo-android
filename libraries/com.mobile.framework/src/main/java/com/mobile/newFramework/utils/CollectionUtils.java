@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.os.Bundle;
 import android.util.SparseArray;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -18,6 +20,7 @@ import java.util.Map;
  * Class used to help with collections.<br>
  * Copy from import org.apache.commons.collections4.ListUtils;
  */
+@SuppressWarnings("unused")
 public class CollectionUtils {
 
 
@@ -157,6 +160,14 @@ public class CollectionUtils {
         }
     }
 
+    public static boolean isEmpty(Map map) {
+        return map == null || map.isEmpty();
+    }
+
+    public static boolean isNotEmpty(Map map) {
+        return !isEmpty(map);
+    }
+
     public static boolean isEmpty(Collection<?> coll) {
         return coll == null || coll.isEmpty();
     }
@@ -189,8 +200,20 @@ public class CollectionUtils {
         return !isEmpty(bundle);
     }
 
+    public static boolean isEmpty(JSONArray jsonArray) {
+        return jsonArray == null || jsonArray.length() == 0;
+    }
+
+    public static boolean isNotEmpty(JSONArray jsonArray) {
+        return !isEmpty(jsonArray);
+    }
+
     public static boolean containsKey(Bundle bundle, String key) {
         return !isEmpty(bundle) && bundle.containsKey(key);
+    }
+
+    public static boolean containsKey(Map map, String key) {
+        return !isEmpty(map) && map.containsKey(key);
     }
 
     public static void reverseArray(Object[] array) {

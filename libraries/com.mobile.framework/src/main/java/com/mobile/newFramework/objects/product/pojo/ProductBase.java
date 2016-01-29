@@ -26,6 +26,8 @@ public class ProductBase implements Parcelable, IJSONSerializable {
     protected double mSpecialPriceConverted;
     protected int mMaxSavingPercentage;
     private String mPriceRange;
+    private boolean shopFirst;
+    private String shopFirstOverlay;
 
     /**
      * Empty constructor
@@ -44,14 +46,16 @@ public class ProductBase implements Parcelable, IJSONSerializable {
 
     protected final boolean initializeProductBase(JSONObject jsonObject) throws JSONException {
         // Mandatory
-        mSku = jsonObject.getString(RestConstants.SKU);
-        mPrice = jsonObject.getDouble(RestConstants.JSON_PRICE_TAG);
+        mSku = jsonObject.optString(RestConstants.SKU);
+        mPrice = jsonObject.getDouble(RestConstants.PRICE);
         // Optional
-        mPriceConverted = jsonObject.optDouble(RestConstants.JSON_PRICE_CONVERTED_TAG);
-        mSpecialPrice = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_TAG);
-        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.JSON_SPECIAL_PRICE_CONVERTED_TAG);
-        mMaxSavingPercentage = jsonObject.optInt(RestConstants.JSON_MAX_SAVING_PERCENTAGE_TAG);
+        mPriceConverted = jsonObject.optDouble(RestConstants.PRICE_CONVERTED);
+        mSpecialPrice = jsonObject.optDouble(RestConstants.SPECIAL_PRICE);
+        mSpecialPriceConverted = jsonObject.optDouble(RestConstants.SPECIAL_PRICE_CONVERTED);
+        mMaxSavingPercentage = jsonObject.optInt(RestConstants.MAX_SAVING_PERCENTAGE);
         mPriceRange = jsonObject.optString(RestConstants.PRICE_RANGE);
+        shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST);
+        shopFirstOverlay = jsonObject.optString(RestConstants.SHOP_FIRST_OVERLAY);
         return true;
     }
 
@@ -64,8 +68,8 @@ public class ProductBase implements Parcelable, IJSONSerializable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
-        return null;
+    public int getRequiredJson() {
+        return RequiredJson.NONE;
     }
 
 
@@ -101,6 +105,15 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         return mPriceRange;
     }
 
+    public String getShopFirstOverlay() {
+        return shopFirstOverlay;
+    }
+
+    public boolean isShopFirst() {
+        return shopFirst;
+    }
+
+
     /*
 	 * ############ PARCELABLE ############
 	 */
@@ -119,6 +132,8 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         dest.writeDouble(mSpecialPriceConverted);
         dest.writeInt(mMaxSavingPercentage);
         dest.writeString(mPriceRange);
+        dest.writeByte((byte) (shopFirst ? 0x01 : 0x00));
+        dest.writeString(shopFirstOverlay);
     }
 
     protected ProductBase(Parcel in) {
@@ -129,6 +144,9 @@ public class ProductBase implements Parcelable, IJSONSerializable {
         mSpecialPriceConverted = in.readDouble();
         mMaxSavingPercentage = in.readInt();
         mPriceRange = in.readString();
+        shopFirst = in.readByte() != 0x00;
+        shopFirstOverlay = in.readString();
+
     }
 
     public static final Creator<ProductBase> CREATOR = new Creator<ProductBase>() {

@@ -19,6 +19,9 @@
     <dimen name="margin_120px">40dp</dimen>
     <dimen name="margin_140px">46dp</dimen>
     <dimen name="margin_150px">50dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+    <dimen name="margin_28dp">28dp</dimen>
+    <dimen name="margin_48dp">48dp</dimen>
 
     <!-- BASE DIMENSIONS: PX TO DP -->
     <dimen name="dimen_3px">1dp</dimen>
@@ -79,6 +82,32 @@
     <dimen name="dimen_780px">260dp</dimen>
     <dimen name="dimen_810px">270dp</dimen>
 
+
+    <dimen name="dimen_0dp">0dp</dimen>
+    <dimen name="dimen_1dp">1dp</dimen>
+    <dimen name="dimen_1_5dp">1.5dp</dimen>
+    <dimen name="dimen_3dp">3dp</dimen>
+    <dimen name="dimen_4dp">4dp</dimen>
+    <dimen name="dimen_5dp">5dp</dimen>
+    <dimen name="dimen_6dp">6dp</dimen>
+    <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_12dp">12dp</dimen>
+    <dimen name="dimen_16dp">16dp</dimen>
+    <dimen name="dimen_20dp">20dp</dimen>
+    <dimen name="dimen_25dp">25dp</dimen>
+    <dimen name="dimen_26dp">26dp</dimen>
+    <dimen name="dimen_40dp">40dp</dimen>
+    <dimen name="dimen_48dp">48dp</dimen>
+    <dimen name="dimen_70dp">70dp</dimen>
+    <dimen name="dimen_90dp">90dp</dimen>
+    <dimen name="dimen_92dp">92dp</dimen>
+    <dimen name="dimen_100dp">100dp</dimen>
+    <dimen name="dimen_320dp">320dp</dimen>
+
+
+
+
     <!-- MATERIAL: Typographic scale & basic styles -->
     <dimen name="dimen_display_4">112sp</dimen>
     <dimen name="dimen_display_3">56sp</dimen>
@@ -137,6 +166,8 @@
     <dimen name="text_m">16sp</dimen>
     <dimen name="text_l">18sp</dimen>
     <dimen name="text_xl">20sp</dimen>
+    <dimen name="text_8sp">8sp</dimen>
+    <dimen name="text_16sp">16sp</dimen>
     <!-- dimen name="text_xxl">22sp</dimen -->
 
 
@@ -269,9 +300,9 @@
     <integer name="activate_go_top_buttom_line">6</integer>
     <integer name="activate_go_top_buttom_line_grid">3</integer>
     <integer name="activate_go_top_buttom_line_single">2</integer>
-    <dimen name="catalog_list_item_height">116dp</dimen>
-    <dimen name="catalog_grid_item_height">210dp</dimen>
-    <dimen name="catalog_single_item_height">425dp</dimen>
+    <dimen name="catalog_list_item_height">120dp</dimen>
+    <dimen name="catalog_grid_item_height">220dp</dimen>
+    <dimen name="catalog_single_item_height">435dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>
     <dimen name="catalog_list_item_image_height">98.33dp</dimen>
     <dimen name="catalog_list_item_image_padding">13.33dp</dimen>
@@ -360,6 +391,7 @@
     <dimen name="form_spinner_left_margin">5dp</dimen>
     <dimen name="form_spinner_dropdown_left_margin">2dp</dimen>
     <dimen name="form_top_margin">@dimen/margin_60px</dimen>
+    <dimen name="form_no_top_margin">0dp</dimen>
     <dimen name="form_radiobutton_shipping_margin">@dimen/margin_30px</dimen>
     <dimen name="form_btn_address_padding_fix">@dimen/margin_30px</dimen>
     <dimen name="form_payment_left_margin">@dimen/margin_50px</dimen>

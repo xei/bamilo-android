@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Handler;
+import android.support.annotation.IntDef;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -22,26 +23,35 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 public class CheckVersion {
 
     private static final String TAG = CheckVersion.class.getSimpleName();
 
     private static final String PLAY_MARKET_QUERY = "market://details?id=";
 
-    private final static String VERSION_UNWANTED_KEY = "version_unwanted";
+    private static final String VERSION_UNWANTED_KEY = "version_unwanted";
     private static final String DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY = "update_seen";
 
     private static long sLastUpdate = 0;
     private static final long UPDATE_INTERVAL_MILLIS = 60 * 60 * 1000;
 
-    enum UpdateStatus {
-        NOT_AVAILABLE,
-        FORCED_AVAILABLE,
-        OPTIONAL_AVAILABLE,
-        OPTIONAL_AVAILABLE_IGNORED
-    }
+    private static final int NOT_AVAILABLE = 0;
+    private static final int FORCED_AVAILABLE = 1;
+    private static final int OPTIONAL_AVAILABLE = 2;
+    private static final int OPTIONAL_AVAILABLE_IGNORED = 3;
+    @IntDef({
+            NOT_AVAILABLE,
+            FORCED_AVAILABLE,
+            OPTIONAL_AVAILABLE,
+            OPTIONAL_AVAILABLE_IGNORED
+    })
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface UpdateStatus{}
 
-    private static UpdateStatus checkResult;
+    private static @UpdateStatus int checkResult;
 
     private static final int NO_VERSION_UNWANTED = -1;
 
@@ -49,13 +59,9 @@ public class CheckVersion {
 
     private static int unwantedVersion = NO_VERSION_UNWANTED;
 
-    private static DialogFragment sDialog;
-
     private static SharedPreferences sSharedPrefs;
     
     private static boolean sNeedsToShowDialog;
-
-    private static FragmentManager fm;
 
     private static boolean isEnabled = false;
     
@@ -84,15 +90,18 @@ public class CheckVersion {
         updateUnwantedVersionFromPrefs();
         if (!checkVersionInfo())
             return false;
-        Print.i(TAG, "code1checkversion checkResult : " + checkResult);
-        if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
-            sNeedsToShowDialog = true;
-        } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE) {
-            sNeedsToShowDialog = !getRemindMeLater();
-        } else if ( checkResult == UpdateStatus.OPTIONAL_AVAILABLE_IGNORED) {
-            sNeedsToShowDialog = false;
-        } else {
-            sNeedsToShowDialog = false;
+
+        switch (checkResult) {
+            case FORCED_AVAILABLE:
+                sNeedsToShowDialog = true;
+                break;
+            case OPTIONAL_AVAILABLE:
+                sNeedsToShowDialog = !getRemindMeLater();
+                break;
+            case OPTIONAL_AVAILABLE_IGNORED:
+            default:
+                sNeedsToShowDialog = false;
+                break;
         }
         return sNeedsToShowDialog;
     }
@@ -101,15 +110,16 @@ public class CheckVersion {
         return sNeedsToShowDialog;
     }
 
-    public static void showDialog(FragmentActivity activity) { 
-        
-        if (checkResult == UpdateStatus.FORCED_AVAILABLE) {
-            sDialog = createForcedUpdateDialog(activity);
+    public static void showDialog(FragmentActivity activity) {
+
+        final DialogFragment dialogFragment;
+        if (checkResult == FORCED_AVAILABLE) {
+            dialogFragment = createForcedUpdateDialog(activity);
         } else {
-            sDialog = createOptionalUpdateDialog(activity);
+            dialogFragment = createOptionalUpdateDialog(activity);
         }
         
-        fm = activity.getSupportFragmentManager();
+        final FragmentManager fm = activity.getSupportFragmentManager();
         
         try {
             // Validate activity state
@@ -118,9 +128,9 @@ public class CheckVersion {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        sDialog.show(fm, null);
+                        dialogFragment.show(fm, null);
                     }
-                }, 1000l);
+                }, 1000L);
             }
         } catch (IllegalStateException e) {
             Print.w(TAG, "WARNING: ISE ON SHOW VERSION DIALOG", e);
@@ -147,22 +157,25 @@ public class CheckVersion {
     }    
 
     private static DialogFragment createOptionalUpdateDialog(Activity activity) {
-        return DialogGenericFragment.newInstance(true, false,
+        DialogGenericFragment dialog = DialogGenericFragment.newInstance(true, false,
                 sContext.getString(R.string.upgrade_optional_title),
                 sContext.getString(R.string.upgrade_optional_text, sContext.getString(R.string.app_name_placeholder)),
                 sContext.getString(R.string.no_label),
                 sContext.getString(R.string.upgrade_remindmelater),
                 sContext.getString(R.string.upgrade_proceed),
-                new OptionalUpdateClickListener(activity));
+                null);
+        dialog.setOnClickListener(new OptionalUpdateClickListener(activity, dialog));
+        return dialog;
     }
 
     private static DialogFragment createForcedUpdateDialog(Activity activity) {
-        DialogFragment dialog = DialogGenericFragment.newInstance(true, false,
+        DialogGenericFragment dialog = DialogGenericFragment.newInstance(true, false,
                 sContext.getString(R.string.upgrade_forced_title),
                 sContext.getString(R.string.upgrade_forced_text, sContext.getString(R.string.app_name_placeholder)),
                 sContext.getString(R.string.close_app),
                 sContext.getString(R.string.upgrade_proceed),
-                new ForceUpdateClickListener(activity));
+                null);
+        dialog.setOnClickListener(new ForceUpdateClickListener(activity, dialog));
         dialog.setCancelable(false);
         return dialog;
     }
@@ -184,15 +197,15 @@ public class CheckVersion {
         }
 
         if (crrAppVersion < infoVersion.getMinimumVersion()) {
-            checkResult = UpdateStatus.FORCED_AVAILABLE;
+            checkResult = FORCED_AVAILABLE;
         } else if (crrAppVersion < infoVersion.getCurrentVersion()) {
             if (unwantedVersion == infoVersion.getCurrentVersion()) {
-                checkResult = UpdateStatus.OPTIONAL_AVAILABLE_IGNORED;
+                checkResult = OPTIONAL_AVAILABLE_IGNORED;
             } else {
-                checkResult = UpdateStatus.OPTIONAL_AVAILABLE;
+                checkResult = OPTIONAL_AVAILABLE;
             }
         } else {
-            checkResult = UpdateStatus.NOT_AVAILABLE;
+            checkResult = NOT_AVAILABLE;
         }
 
         Print.d(TAG, "checkVersionInfo: appVersion = " + crrAppVersion);
@@ -261,14 +274,16 @@ public class CheckVersion {
 
     private static class OptionalUpdateClickListener implements View.OnClickListener {
         private Activity mActivity;
+        private DialogGenericFragment mDialog;
         
-        public OptionalUpdateClickListener( Activity activity) {
+        public OptionalUpdateClickListener(Activity activity, DialogGenericFragment dialog) {
             mActivity = activity;
+            mDialog = dialog;
         }
 
         @Override
         public void onClick(View v) {
-            sDialog.dismissAllowingStateLoss();
+            mDialog.dismissAllowingStateLoss();
 
             int id = v.getId();
             if (id == R.id.button1) {
@@ -285,14 +300,16 @@ public class CheckVersion {
 
     private static class ForceUpdateClickListener implements View.OnClickListener {
         private Activity mActivity;
+        private DialogGenericFragment mDialog;
         
-        public ForceUpdateClickListener( Activity activity) {
+        public ForceUpdateClickListener(Activity activity, DialogGenericFragment dialog) {
             mActivity = activity;
+            mDialog = dialog;
         }
         
         @Override
         public void onClick(View v) {
-            sDialog.dismissAllowingStateLoss();
+            mDialog.dismissAllowingStateLoss();
 
             int id = v.getId();
             if (id == R.id.button1) {

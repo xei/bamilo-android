@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.objects.checkout.Fulfillment;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
 
@@ -32,6 +33,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private double mSubTotalConverted;
     private int mCartCount;
     private double mVatValue;
+    private String mVatLabel;
     private double mShippingValue;
     private double mExtraCosts;
     private double mSumCostsValue;
@@ -43,6 +45,8 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private String mPaymentMethod;
     private Address mBillingAddress;
     private Address mShippingAddress;
+    private boolean mIsVatEnabled;
+    private ArrayList<Fulfillment> mFulfillmentList;
 
     /**
      * Constructor
@@ -52,38 +56,40 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public boolean initialize(JSONObject jsonObject) throws JSONException {
+    public boolean initialize(JSONObject json) throws JSONException {
         // Cart entity
-        JSONObject cartEntity = jsonObject.getJSONObject(RestConstants.CART_ENTITY);
+        JSONObject jsonObject = json.getJSONObject(RestConstants.CART_ENTITY);
         // Total
-        mTotal = cartEntity.getDouble(RestConstants.TOTAL);
-        mTotalConverted = cartEntity.getDouble(RestConstants.TOTAL_CONVERTED);
+        mTotal = jsonObject.getDouble(RestConstants.TOTAL);
+        mTotalConverted = jsonObject.getDouble(RestConstants.TOTAL_CONVERTED);
         // Get cart sub total
-        mSubTotal = cartEntity.optDouble(RestConstants.SUB_TOTAL);
-        mSubTotalConverted = cartEntity.optDouble(RestConstants.SUB_TOTAL_CONVERTED);
+        mSubTotal = jsonObject.optDouble(RestConstants.SUB_TOTAL);
+        mSubTotalConverted = jsonObject.optDouble(RestConstants.SUB_TOTAL_CONVERTED);
         // Vat
-        JSONObject vatObject = cartEntity.optJSONObject(RestConstants.VAT);
+        JSONObject vatObject = jsonObject.optJSONObject(RestConstants.VAT);
         if (vatObject != null) {
             mVatValue = vatObject.optDouble(RestConstants.VALUE);
+            mVatLabel = vatObject.optString(RestConstants.LABEL);
+            mIsVatEnabled = vatObject.optBoolean(RestConstants.LABEL_CONFIGURATION);
         }
         // Delivery
-        JSONObject deliveryObject = cartEntity.optJSONObject(RestConstants.DELIVERY);
+        JSONObject deliveryObject = jsonObject.optJSONObject(RestConstants.DELIVERY);
         if (deliveryObject != null) {
             mShippingValue = deliveryObject.optDouble(RestConstants.AMOUNT);
         }
         // Coupon
-        JSONObject couponObject = cartEntity.optJSONObject(RestConstants.COUPON);
+        JSONObject couponObject = jsonObject.optJSONObject(RestConstants.COUPON);
         if (couponObject != null) {
             mCouponCode = couponObject.optString(RestConstants.CODE);
             mCouponDiscount = couponObject.optDouble(RestConstants.VALUE);
         }
         // Costs
-        mSumCostsValue = cartEntity.optDouble(RestConstants.SUM_COSTS_VALUE);
+        mSumCostsValue = jsonObject.optDouble(RestConstants.SUM_COSTS_VALUE);
         // Extra costs
-        mExtraCosts = cartEntity.optDouble(RestConstants.EXTRA_COSTS);
+        mExtraCosts = jsonObject.optDouble(RestConstants.EXTRA_COSTS);
         // Get cart count
-        mCartCount = cartEntity.getInt(RestConstants.TOTAL_PRODUCTS);
-        JSONArray cartArray = cartEntity.getJSONArray(RestConstants.PRODUCTS);
+        mCartCount = jsonObject.getInt(RestConstants.TOTAL_PRODUCTS);
+        JSONArray cartArray = jsonObject.getJSONArray(RestConstants.PRODUCTS);
         mCartItems = new ArrayList<>();
         for (int i = 0; i < cartArray.length(); i++) {
             JSONObject cartObject = cartArray.getJSONObject(i);
@@ -92,7 +98,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             mCartItems.add(item);
         }
         // Price rules
-        JSONArray priceRules = cartEntity.optJSONArray(RestConstants.PRICE_RULES);
+        JSONArray priceRules = jsonObject.optJSONArray(RestConstants.PRICE_RULES);
         if (priceRules != null && priceRules.length() > 0) {
             mPriceRules = new HashMap<>();
             for (int i = 0; i < priceRules.length(); i++) {
@@ -103,29 +109,36 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             }
         }
         // Get shipping method
-        JSONObject jsonShip = cartEntity.optJSONObject(RestConstants.SHIPPING_METHOD);
+        JSONObject jsonShip = jsonObject.optJSONObject(RestConstants.SHIPPING_METHOD);
         if (jsonShip != null) {
             mShippingMethod = jsonShip.optString(RestConstants.METHOD);
         }
         // Get payment method
-        JSONObject jsonPay = cartEntity.optJSONObject(RestConstants.PAYMENT_METHOD);
+        JSONObject jsonPay = jsonObject.optJSONObject(RestConstants.PAYMENT_METHOD);
         if (jsonPay != null) {
             mPaymentMethod = jsonPay.optString(RestConstants.LABEL);
         }
         // Get billing address
-        JSONObject jsonBilAddress = cartEntity.optJSONObject(RestConstants.JSON_ORDER_BIL_ADDRESS_TAG);
+        JSONObject jsonBilAddress = jsonObject.optJSONObject(RestConstants.BILLING_ADDRESS);
         if (jsonBilAddress != null) {
             mBillingAddress = new Address();
             mBillingAddress.initialize(jsonBilAddress);
         }
         // Get shipping address
-        JSONObject jsonShipAddress = cartEntity.optJSONObject(RestConstants.JSON_ORDER_SHIP_ADDRESS_TAG);
+        JSONObject jsonShipAddress = jsonObject.optJSONObject(RestConstants.SHIPPING_ADDRESS);
         if (jsonShipAddress != null) {
             mShippingAddress = new Address();
             mShippingAddress.initialize(jsonShipAddress);
         }
+        // Get fulfilment
+        JSONArray fulfillmentArray = jsonObject.optJSONArray(RestConstants.FULFILLMENT);
+        if(fulfillmentArray != null) {
+            mFulfillmentList = new ArrayList<>();
+            for (int i = 0; i < fulfillmentArray.length(); i++) {
+                mFulfillmentList.add(new Fulfillment(fulfillmentArray.getJSONObject(i)));
+            }
+        }
         return true;
-
     }
 
     /*
@@ -139,7 +152,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 
@@ -161,6 +174,10 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
     public double getVatValue() {
         return this.mVatValue;
+    }
+
+    public String getVatLabel() {
+        return this.mVatLabel;
     }
 
     public double getShippingValue() {
@@ -215,6 +232,10 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         return mBillingAddress;
     }
 
+    public ArrayList<Fulfillment> getFulfillmentList() {
+        return mFulfillmentList;
+    }
+
     /**
      * ########### VALIDATORS ###########
      */
@@ -228,7 +249,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     }
 
     public boolean isVatLabelEnable() {
-        return mVatValue > 0 && mVatValue != Double.NaN;
+        return mIsVatEnabled;
     }
 
     public boolean hasShippingAddress() {
@@ -253,9 +274,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
      */
     public String getAttributeSetIdList() {
         String attributeList = "";
-        PurchaseCartItem item;
         if(mCartItems != null && mCartItems.size() > 0){
-
             for (int i = 0; i < mCartItems.size() ; i++) {
                 if (TextUtils.isEmpty(attributeList)) {
                     attributeList = mCartItems.get(i).getAttributeSetId();
@@ -263,7 +282,6 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
                     attributeList = attributeList +";"+ mCartItems.get(i).getAttributeSetId();
                 }
             }
-
         }
         return attributeList;
     }
@@ -295,6 +313,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         dest.writeDouble(mSubTotalConverted);
         dest.writeInt(mCartCount);
         dest.writeDouble(mVatValue);
+        dest.writeString(mVatLabel);
         dest.writeDouble(mShippingValue);
         dest.writeDouble(mExtraCosts);
         dest.writeDouble(mSumCostsValue);
@@ -311,6 +330,13 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         dest.writeString(mPaymentMethod);
         dest.writeValue(mBillingAddress);
         dest.writeValue(mShippingAddress);
+        dest.writeByte((byte) (mIsVatEnabled ? 1 : 0));
+        if (mFulfillmentList == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mFulfillmentList);
+        }
     }
 
     /**
@@ -323,6 +349,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         mSubTotalConverted = in.readDouble();
         mCartCount = in.readInt();
         mVatValue = in.readDouble();
+        mVatLabel = in.readString();
         mShippingValue = in.readDouble();
         mExtraCosts = in.readDouble();
         mSumCostsValue = in.readDouble();
@@ -340,6 +367,13 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         mPaymentMethod = in.readString();
         mBillingAddress = (Address) in.readValue(Address.class.getClassLoader());
         mShippingAddress = (Address) in.readValue(Address.class.getClassLoader());
+        mIsVatEnabled = in.readByte() == 1;
+        if (in.readByte() == 0x01) {
+            mFulfillmentList = new ArrayList<>();
+            in.readList(mFulfillmentList, Fulfillment.class.getClassLoader());
+        } else {
+            mFulfillmentList = null;
+        }
     }
 
     /**

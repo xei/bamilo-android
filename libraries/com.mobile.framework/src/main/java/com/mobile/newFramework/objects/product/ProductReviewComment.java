@@ -47,17 +47,17 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) {
 
-        ratingStars = new ArrayList<RatingStar>();
+        ratingStars = new ArrayList<>();
         try {
-            title = jsonObject.getString(RestConstants.JSON_TITLE_TAG);
-            comment = jsonObject.getString(RestConstants.JSON_COMMENT_TAG);
-            name = jsonObject.getString(RestConstants.JSON_NAME_TAG);
-            date = jsonObject.getString(RestConstants.JSON_COMMENT_DATE_TAG);
-            totalStars = jsonObject.getInt(RestConstants.JSON_TOTAL_STARS_TAG);
+            title = jsonObject.getString(RestConstants.TITLE);
+            comment = jsonObject.getString(RestConstants.COMMENT);
+            name = jsonObject.getString(RestConstants.NAME);
+            date = jsonObject.getString(RestConstants.DATE);
+            totalStars = jsonObject.getInt(RestConstants.TOTAL_STARS);
             //only for seller reviews
-            average = jsonObject.optInt(RestConstants.JSON_RATINGS_AVERAGE_TAG,-1);
+            average = jsonObject.optInt(RestConstants.AVERAGE,-1);
 
-            JSONArray stars = jsonObject.optJSONArray(RestConstants.JSON_STARS_TAG);
+            JSONArray stars = jsonObject.optJSONArray(RestConstants.STARS);
             if (stars != null) {
                 int size = stars.length();
                 Print.d("STAR " + size);
@@ -91,7 +91,7 @@ public class ProductReviewComment implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.COMPLETE_JSON;
     }
 

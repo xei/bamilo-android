@@ -9,7 +9,6 @@ public class BitmapLruCache extends LruCache<String, Bitmap> implements ImageCac
     
     public static int getDefaultLruCacheSize() {
         final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-
         return maxMemory / 8;
     }
 

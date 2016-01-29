@@ -15,19 +15,19 @@ import com.mobile.components.AnimatedExpandableListView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.CategoriesListAdapter;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.categories.GetCategoriesHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.ErrorCode;
 import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
 
@@ -38,13 +38,14 @@ import java.util.ArrayList;
  *
  * @author sergiopereira
  */
-public class NavigationCategoryFragment extends BaseFragment implements IResponseCallback, OnGroupClickListener, OnChildClickListener {
+public class NavigationCategoryFragment extends BaseFragment implements IResponseCallback, OnGroupClickListener, OnChildClickListener, TargetLink.OnAppendDataListener {
 
     private static final String TAG = NavigationCategoryFragment.class.getSimpleName();
 
     private AnimatedExpandableListView mCategoryList;
 
     private ArrayList<Category> mCategories;
+    private Category mCategory;
 
 
     /**
@@ -150,16 +151,16 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         CategoriesTableHelper.updateCategoryCounter(category.getUrlKey(), category.getName());
         // Close navigation
         getBaseActivity().closeNavigationDrawer();
-        // Create bundle for catalog
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_URL, category.getApiUrl());
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, category.getName());
-        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, category.getCategoryPath());
-        bundle.putString(ConstantsIntentExtra.CATALOG_SOURCE, category.getType());
-        // Goto Catalog
-        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+        //Print.i(TAG, "code1categoy : getApiUrl: "+category.getTargetLink()+" category.getName(): " +category.getName());
+        mCategory = category;
+        @TargetLink.Type String link = category.getTargetLink();
+        Print.i(TAG, "code1link : goToCatalog : "+link);
+        // Parse target link
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(category.getName()).addAppendListener(this).run();
+        if(!result) {
+            showUnexpectedErrorWarning();
+        }
+
     }
 
     /**
@@ -175,7 +176,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         // Validate fragment state
         if (isOnStoppingProcess) return;
         // Get categories
-        mCategories = (Categories) baseResponse.getMetadata().getData();
+        mCategories = (Categories) baseResponse.getContentData();
         if (CollectionUtils.isNotEmpty(mCategories)) {
             // Show categories
             showCategoryList(mCategories);
@@ -194,8 +195,8 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         Print.i(TAG, "ON ERROR EVENT");
         // Validate fragment state
         if (isOnStoppingProcess) return;
-        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-        if (errorCode == ErrorCode.TIME_OUT || errorCode == ErrorCode.NO_NETWORK) {
+        int errorCode = baseResponse.getError().getCode();
+        if (errorCode == ErrorCode.TIME_OUT || errorCode == ErrorCode.NO_CONNECTIVITY) {
             showFragmentNoNetworkRetry();
         } else {
             showRetry();
@@ -265,10 +266,18 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         }
         // Case is not a section
         else if (!category.isSection()) {
-            Print.i(TAG, "PARENT GO TO CATALOG:" + category.getApiUrl());
+            Print.i(TAG, "PARENT GO TO CATALOG:" + category.getTargetLink());
             goToCatalog(category);
         }
         return true;
     }
 
+    @Override
+    public void onAppendData(FragmentType next, String title, String id, Bundle data) {
+        // Create bundle for catalog
+        data.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
+        data.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
+        data.putString(ConstantsIntentExtra.NAVIGATION_PATH, mCategory.getCategoryPath());
+        data.putString(ConstantsIntentExtra.CATALOG_SOURCE, mCategory.getType());
+    }
 }

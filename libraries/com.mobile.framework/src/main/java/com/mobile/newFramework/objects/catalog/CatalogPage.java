@@ -72,16 +72,16 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
         // Get data
-        mCategoryId = metadataObject.optString(RestConstants.JSON_CATEGORIES_TAG);
-        mBrandId = metadataObject.optString(RestConstants.JSON_BRANDS_TAG);
-        mName = metadataObject.optString(RestConstants.JSON_TITLE_TAG);
-        mSearchTerm = metadataObject.optString(RestConstants.JSON_SEARCH_TERM_TAG);
-        mTotal = metadataObject.optInt(RestConstants.JSON_TOTAL_PRODUCTS_TAG);
+        mCategoryId = metadataObject.optString(RestConstants.CATEGORIES);
+        mBrandId = metadataObject.optString(RestConstants.BRANDS);
+        mName = metadataObject.optString(RestConstants.TITLE);
+        mSearchTerm = metadataObject.optString(RestConstants.SEARCH_TERM);
+        mTotal = metadataObject.optInt(RestConstants.TOTAL_PRODUCTS);
         // Set the max pages that application can request
         mMaxPages = calcMaxPages();
         // Get products
         mProducts = new ArrayList<>();
-        JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.JSON_RESULTS_TAG);
+        JSONArray productObjectArray = metadataObject.getJSONArray(RestConstants.RESULTS);
         for (int i = 0; i < productObjectArray.length(); ++i) {
             JSONObject productObject = productObjectArray.getJSONObject(i);
             ProductRegular product = new ProductRegular();
@@ -118,8 +118,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
         filters = new CatalogFilters(metadataObject);
 
         //Get Banner
-        if(!metadataObject.isNull(RestConstants.JSON_BANNER_TAG)){
-            JSONObject bannerObject = metadataObject.getJSONObject(RestConstants.JSON_BANNER_TAG);
+        if(!metadataObject.isNull(RestConstants.BANNER)){
+            JSONObject bannerObject = metadataObject.getJSONObject(RestConstants.BANNER);
             Banner banner = new Banner();
             banner.initialize(bannerObject);
             mCatalogBanner = banner;
@@ -176,9 +176,11 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
         return null;
     }
 
-    public RequiredJson getRequiredJson(){
+    @Override
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
+
     /**
      * Calculate the max request per page.
      * @return number or pages

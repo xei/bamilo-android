@@ -38,22 +38,13 @@ public class PickupStationsAdapter extends ArrayAdapter<PickUpStationObject> {
         public View info;
     }
 
-    public PickupStationsAdapter(Context context, List<PickUpStationObject> objects) {
-        super(context, R.layout.checkout_shipping_pickup_station, objects);
-        this.objects = objects;
-        this.context = context;
-        this.checks = new boolean[objects.size()];
-        this.checks[0] = true;
-        this.pickUpStationObject = objects.get(0);
-    }
-
     public PickupStationsAdapter(Context context, List<PickUpStationObject> objects, int selected) {
         super(context, R.layout.checkout_shipping_pickup_station, objects);
         this.objects = objects;
         this.context = context;
         this.checks = new boolean[objects.size()];
         this.checks[selected] = true;
-        com.mobile.newFramework.utils.output.Print.i(TAG, "code1pus : before PickupStationsAdapter position " + selected);
+        //com.mobile.newFramework.utils.output.Print.i(TAG, "code1pus : before PickupStationsAdapter position " + selected);
         this.pickUpStationObject = objects.get(0);
     }
 

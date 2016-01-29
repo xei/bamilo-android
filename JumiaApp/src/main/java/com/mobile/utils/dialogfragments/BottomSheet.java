@@ -19,7 +19,7 @@ public class BottomSheet extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_Jumia_Dialog_Bottom_Sheet);
+        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Theme_Custom_Dialog_Bottom_Sheet);
     }
 
     @NonNull
@@ -48,7 +48,7 @@ public class BottomSheet extends DialogFragment {
             // Get item height
             int height = max * (int) getResources().getDimension(R.dimen.action_bar_height);
             // Set the new height
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, height);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height);
             view.setLayoutParams(params);
         }
     }

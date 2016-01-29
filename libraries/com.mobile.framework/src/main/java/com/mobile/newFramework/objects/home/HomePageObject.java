@@ -15,8 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -27,11 +27,12 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
 
     public static final String TAG = HomePageObject.class.getSimpleName();
 
-    private ArrayList<BaseTeaserGroupType> mTeasers;
+    private LinkedHashMap<String, BaseTeaserGroupType> mTeasers;
 
     /**
      * Empty constructor
      */
+    @SuppressWarnings("unused")
     public HomePageObject() {
         super();
     }
@@ -45,7 +46,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
      *
      * @return An array list
      */
-    public ArrayList<BaseTeaserGroupType> getTeasers() {
+    public LinkedHashMap<String, BaseTeaserGroupType> getTeasers() {
         return mTeasers;
     }
 
@@ -71,10 +72,10 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get teaser
-        JSONArray data = jsonObject.getJSONArray(RestConstants.JSON_DATA_TAG);
+        JSONArray data = jsonObject.getJSONArray(RestConstants.DATA);
         int size = data.length();
         if (size > 0) {
-            mTeasers = new ArrayList<>();
+            mTeasers = new LinkedHashMap<>();
             // Save unordered response
             Map<String, BaseTeaserGroupType> map = new HashMap<>();
             for (int i = 0; i < size; i++) {
@@ -92,7 +93,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
                 BaseTeaserGroupType group = map.get(type.getType());
                 // Append case not null
                 if (group != null) {
-                    mTeasers.add(group);
+                    mTeasers.put(type.getType(), group);
                 }
             }
         } else {
@@ -112,7 +113,7 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
     }
 
     @Override
-    public RequiredJson getRequiredJson() {
+    public int getRequiredJson() {
         return RequiredJson.METADATA;
     }
 
@@ -136,10 +137,6 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
         } catch (JSONException e) {
             Print.w(TAG, "WARNING: ON PARSE GROUP TYPE: " + groupType, e);
         }
-        // Discard groups without items
-        if (teaserGroup != null && !teaserGroup.hasData()) {
-            teaserGroup = null;
-        }
         // Return the group or null
         return teaserGroup;
     }
@@ -159,14 +156,15 @@ public class HomePageObject implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(mTeasers);
+            dest.writeMap(mTeasers);
+
         }
     }
 
     private HomePageObject(Parcel in) {
         if (in.readByte() == 0x01) {
-            mTeasers = new ArrayList<>();
-            in.readList(mTeasers, BaseTeaserGroupType.class.getClassLoader());
+            mTeasers = new LinkedHashMap<>();
+           in.readMap(mTeasers, LinkedHashMap.class.getClassLoader());
         } else {
             mTeasers = null;
         }

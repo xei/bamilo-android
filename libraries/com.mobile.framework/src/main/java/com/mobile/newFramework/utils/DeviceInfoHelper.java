@@ -2,6 +2,7 @@ package com.mobile.newFramework.utils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
@@ -232,6 +233,13 @@ public class DeviceInfoHelper {
         Print.i(TAG, "GET SIM CONTRY CODE: " + iso);
         return iso;
     }
+
+    /**
+     * Application is debuggable.
+     */
+    public static boolean isDebuggable(Application application) {
+        return 0 != (application.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE);
+    }
     
     /*
      * ############### NETWORK #################
@@ -298,24 +306,8 @@ public class DeviceInfoHelper {
         // Return
         return msg;
     }
-    
-//    /**
-//     * Get the Screen size inches
-//     * @param context The application context
-//     * @return float
-//     * @author sergiopereira
-//     */
-//    public static Float getScreenSizeInches(Context context) {
-//        DisplayMetrics dm = new DisplayMetrics();
-//        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-//        windowManager.getDefaultDisplay().getMetrics(dm);
-//        double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
-//        double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
-//        double screenInches = Math.sqrt(x + y);
-//        return (float) Math.round(screenInches * 10) / 10;
-//    }
 
-    /**
+    /*
      * ############### ORIENTATION #################
      */
 
@@ -348,6 +340,10 @@ public class DeviceInfoHelper {
         return context.getResources().getBoolean(R.bool.isTablet);
     }
 
+    /*
+     * ############### VERSION CODE #################
+     */
+
     public interface IDeviceVersionBasedCode{
         void highVersionCallback();
         void lowerVersionCallback();
@@ -375,19 +371,32 @@ public class DeviceInfoHelper {
         }
     }
 
+    /**
+     * Execute callbacks based on Jelly Bean MR2 version (API 18).
+     */
     public static void executeCodeExcludingJellyBeanMr2Version(Runnable run){
         executeCodeExcludingVersion(Build.VERSION_CODES.JELLY_BEAN_MR2, run);
     }
 
     /**
-     * Execute callbacks based on Jelly Bean version.
+     * Execute callbacks based on Jelly Bean version (API 16).
      */
     public static void executeCodeBasedOnJellyBeanVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
         executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, iDeviceVersionBasedCode);
     }
 
+    /**
+     * Execute callbacks based on Jelly Bean MR1 version (API 17).
+     */
     public static void executeCodeBasedOnJellyBeanMr1Version(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
         executeCodeBasedOnVersion(Build.VERSION_CODES.JELLY_BEAN_MR1, iDeviceVersionBasedCode);
     }
 
+    public static boolean isPosLollipop(){
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    }
+
+    public static boolean isPreJellyBeanMR2(){
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2;
+    }
 }

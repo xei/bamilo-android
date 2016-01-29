@@ -30,13 +30,16 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
-        android:layout_toLeftOf="@+id/dialog_item_color_box"
-        android:layout_width="wrap_content"
+        android:layout_toRightOf="@+id/dialog_products_count"
+        android:layout_toLeftOf="@id/dialog_item_color_box"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"
         android:textColor="@color/black"
         android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
+        android:singleLine="true"
+        android:ellipsize="end"
         android:fontFamily="roboto_regular"
         android:textSize="16sp" />
 
@@ -46,7 +49,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/dialog_item_title"
+        android:layout_toRightOf="@id/dialog_item_checkbox"
+        android:layout_marginLeft="10dp"
         android:fontFamily="roboto_regular"
         android:textSize="16sp" />
 
