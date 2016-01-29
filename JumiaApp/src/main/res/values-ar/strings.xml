@@ -40,7 +40,7 @@
     <string name="cancel_label">إلغاء</string>
     <string name="cart_label">عربة التسوق</string>
     <string name="catalog_edit_filters">تعديل الاختيارات</string>
-    <string name="catalog_no_results">لا توجد نتائج لاختياراتك.\nيمكنك تجربة البحث عن اختيارات أقل</string>
+    <string name="catalog_no_results">لا توجد نتائج لاختياراتك.</string>
     <string name="catalog_no_results_details">يمكنك محاولة استخدام مرشحات أقل تقييدا</string>
     <string name="categories_label">الفئات</string>
     <string name="categories_label_uppercase">الفئات</string>
@@ -155,7 +155,7 @@
     <string name="my_order_voucher_label">قسيمة شراء</string>
     <string name="my_orders_label">طلباتي</string>
     <string name="my_profile">الملف الخاص بي</string>
-    <string name="myaccount_userdata">بيانات المستخدم</string>
+    <string name="myaccount_userdata">حسابك</string>
     <string name="name">الاسم</string>
     <string name="nav_country">اختر دولة</string>
     <string name="nav_country_warning">أنت على وشك تغيير الدولة. ولذلك ستصبح عربة التسوق خالية ويتم تسجيل الخروج. هل أنت متأكد أنك تريد الاستمرار؟</string>
@@ -465,7 +465,7 @@
     <string name="no_orders_message">ليس لديكم أي طلب.</string>
     <string name="no_orders">لم يتم القيام بأي طلبات</string>
     <string name="an_error_occurred">يوجد خطأ ما</string>
-    <string name="customer_service_info">من فضلكم, المرجو الاتصال بمصلحة الزبناء للمزيد من المعلومات,</string>
+    <string name="customer_service_info">من فضلكم, المرجو الاتصال بمصلحة الزبناء للمزيد من المعلومات.</string>
     <string name="phone_contact">الهاتف :</string>
     <string name="email_contact">البريد الإلكتروني:</string>
     <string name="logout_success">لقد تم تسجيل الخروج</string>

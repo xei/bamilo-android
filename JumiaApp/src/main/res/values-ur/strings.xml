@@ -32,6 +32,7 @@
     <string name="cart_label">ٹوکری</string>
     <string name="catalog_edit_filters">چھلنی میں ترامیم کریں</string>
     <string name="catalog_no_results">آپ کے چھاننے کے معیار کے مماثل کوئی نتیجہ نہیں نکلا۔\nآپ چھلنی کی تفصیلات کچھ کم کرنے کے بعد دوبارہ کوشش کر سکتے ہیں۔ </string>
+    <string name="catalog_no_results_details">آپ کم مخصوص آردو استعمال کر سکتے ہین</string>
     <string name="categories_label">زمرے</string>
     <string name="categories_label_uppercase">زمرہ جات</string>
     <string name="categories_name_all">تمام کے لیے</string>
@@ -325,6 +326,7 @@
     <string name="yes_label">ہاں</string>
     <string name="your_cart">آپ کی ٹوکری</string>
     <string name="your_order">آپ کا آرڈر</string>
+    <string name="install_android">آندرہیڑ آپپ  ‎%s‎انسٹل کرین ایک پل مین</string>
     <string name="share_the_app">ایپ کو پھیلائیں</string>
     <string name="can_share_app_with_friends">اب آپ ایپ کو اپنے دوستوں کے ساتھ شریک کر سکتے ہیں</string>
     <string name="app_social">سماجی ایپ</string>
@@ -358,6 +360,7 @@
     <string name="open">کھولیے</string>
     <string name="close">بند کیجیے</string>
     <string name="choose_language">زباں کا انتخاب کریں</string>
+    <string name="shop_settings">دکان سیٹنگیں</string>
     <string name="language">زباں</string>
     <string name="country">ملک</string>
     <string name="birthday_label">سالگرہ</string>
@@ -441,6 +444,7 @@
     <string name="delivered_label">ڈیلورڈ</string>
     <string name="order_number">حکم/آڈڑ نمبر ‎%s‎</string>
     <string name="billing">بلنگ</string>
+    <string name="first_and_second_placeholders">%1$s %2$s</string>
     <string name="qty_placeholder">مقدار:  %s</string>
     <string name="reorder_label">ترتیب</string>
     <string name="order_status_date">‎&lt;b>‎‎%1$s‎‎&lt;/b>\n‎‎%2$s‎</string>
@@ -451,4 +455,5 @@
     <string name="customer_service_info">برائ مھربانی مزید معلومات ھماری کسٹومر سپورٹ سے رجوع کرین</string>
     <string name="phone_contact">فون رابطے</string>
     <string name="email_contact">ای میل</string>
+    <string name="logout_success">کامیابی کے ساتھ لاگ آوٹ</string>
 </resources>

@@ -26,7 +26,7 @@
     <string name="brands_label">Marques</string>
     <string name="bundle_title">Généralement  achetés ensemble</string>
     <string name="bundle_total_price">Prix total:</string>
-    <string name="buy_now">Acheter maintenant</string>
+    <string name="buy_now">Acheter</string>
     <string name="call_to_order">Appeler</string>
     <string name="campaign_choose_size">Sélectionnez votre taille</string>
     <string name="campaign_ramaining_stock">Stock Restant:</string>
@@ -40,7 +40,7 @@
     <string name="cancel_label">Annuler</string>
     <string name="cart_label">Panier</string>
     <string name="catalog_edit_filters">Modifier les filtres</string>
-    <string name="catalog_no_results">Aucun résultat correspondant à vos critères. Vous pouvez réessayer avec des filtres moins spécifiques\n</string>
+    <string name="catalog_no_results">Aucun résultat correspondant à vos critères.</string>
     <string name="catalog_no_results_details">Vous pouvez essayer d\'utiliser des filtres moins restrictifs</string>
     <string name="categories_label">Catégories</string>
     <string name="categories_label_uppercase">CATÉGORIES</string>
@@ -465,7 +465,7 @@
     <string name="no_orders_message">Vous n\'avez aucune commande.</string>
     <string name="no_orders">Vous n\'avez rien commandé</string>
     <string name="an_error_occurred">Il y a eu un problème.</string>
-    <string name="customer_service_info">SVP, veuillez contacter notre service client pour plus d\'informations</string>
+    <string name="customer_service_info">Veuillez contacter notre service client pour plus d\'informations.</string>
     <string name="phone_contact">Téléphone :</string>
     <string name="email_contact">Email :</string>
     <string name="logout_success">Vous êtes déconnecté avec succès</string>
