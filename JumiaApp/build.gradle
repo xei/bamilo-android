@@ -159,16 +159,16 @@ android {
          */
         shop {
             applicationId "com.shop.android"
-            versionName "1.7"
-            versionCode getAppVersionCode(11)
+            versionName "1.7.1"
+            versionCode getAppVersionCode(12)
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
         }
 
         shopPreInstall {
             applicationId "com.shop.android"
-            versionName "1.7"
-            versionCode 11
+            versionName "1.7.1"
+            versionCode 12
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
             android.sourceSets {
