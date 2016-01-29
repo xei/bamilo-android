@@ -17,6 +17,11 @@
     <string name="bamilo_not_available">فی الوقت میسر نہیں ہے</string>
     <string name="billing_choose_address">براہِ کرم ایک پتا چنیں!</string>
     <string name="billing_def_shipping_label">پہلے سے طے شدہ ترسیلی پتا</string>
+    <string name="address_shipping_billing_label">شپنگ/بل کی ادائیگی کا پتہ</string>
+    <string name="address_shipping_label">پتہ شپنگ</string>
+    <string name="address_billing_label">بل کی ادائیگی کا پتہ</string>
+    <string name="address_others_label">دیگر پتے</string>
+    <string name="address_add_new_label">نیے پتہ کا اضافہ کریں</string>
     <string name="billing_same_label">بلنگ اسی پتے پر کریں</string>
     <string name="brands_label">برانڈز</string>
     <string name="bundle_title">اکثر ایک ساتھ خریدے جانے والی اشیاء</string>
@@ -28,6 +33,10 @@
     <string name="campaign_save">آپ کی بچت</string>
     <string name="campaign_stock_alert">معذرت! جو شے آپ نے پسند کی، وہ بِک چکی ہے۔</string>
     <string name="campaigns_label">مہمات</string>
+    <string name="campaign_unavailable_title">یہ مہم ختم ہو گی ہے</string>
+    <string name="campaign_unavailable_description">باوجود اس کے، اور بھی بہترین فراہم آپ ک انتظار مین ہین.</string>
+    <string name="campaign_offer_ended">پیشکش ختم ہوی!</string>
+    <string name="campaign_timer_end">وقتِ اختتام:</string>
     <string name="cancel_label">منسوخ</string>
     <string name="cart_label">ٹوکری</string>
     <string name="catalog_edit_filters">چھلنی میں ترامیم کریں</string>
@@ -71,6 +80,7 @@
     <string name="error_no_connection">کوئی رابطہ میسر نہیں ہے</string>
     <string name="error_occured">معذرت! ایک غلطی درپیش آگئی۔</string>
     <string name="error_please_try_again">ہمیں ڈیٹا کے حصول میں ایک معمولی مسئلہ درپیش ہے۔ براہِ کرم دوبارہ کوشش کریں۔</string>
+    <string name="error_problem_fetching_data">مسئلہ بازیافت کوائف</string>
     <string name="error_register_alreadyexists">یہ ای میل پہلے سے موجود ہے۔ براہِ مہربانی کوئی دوسرا منتخب کریں۔</string>
     <string name="error_register_title">اندراج ناکام</string>
     <string name="error_signup_title">اندراج ناکام</string>
@@ -151,6 +161,7 @@
     <string name="nav_country_warning">آپ ملک تبدیل کرنے والے ہیں۔ یہ عمل ٹوکری خالی کر دے گا اور آپ کو لاگ آؤٹ کر دے گا۔ کیا آپ پھر بھی یہ کرنا چاہتےہیں؟</string>
     <string name="nav_track_order">میرے آرڈر کا پیچھا کریں</string>
     <string name="navigation_cart_empty">آپ کی ٹوکری خالی ہے</string>
+    <string name="new_arrival_badge">نیا</string>
     <string name="new_password_hint">نیا پاسورڈ</string>
     <string name="new_password_label">نیا پاسورڈ</string>
     <string name="newsletter_saved_message">آپ کی ای میل اطلاعات کی ترجیحات محفوظ کر لی گئی ہیں۔</string>
@@ -382,6 +393,7 @@
     <string name="buy_the_look">مکمل لک خریدیں</string>
     <string name="pdv_size">ناپ</string>
     <string name="buy_now_button">ابھی خریدیں</string>
+    <string name="pre_order">پیشکی آرڈر</string>
     <string name="saved">انتخابات محفوظ</string>
     <string name="products_added_saved">آشْیاں محفوظ کر دی گئی ہیں</string>
     <string name="products_removed_saved">محفوظ آشْیاں ہٹا دی گئی ہیں</string>
@@ -422,6 +434,7 @@
     <string name="create_label">بنایۓ</string>
     <string name="change_password">پاسورڈ بدلین</string>
     <string name="continue_without_log_in">اکآونٹ مین داخل ھوی بنا جاری رکھین</string>
+    <string name="placeholder_discount">-%s</string>
     <string name="edit_user_success">یوزر معلومات کامیابی سے تبدیل ھو  چکی ھے</string>
     <string name="password">پاس ورڈ</string>
     <string name="more">مزید</string>
@@ -456,4 +469,11 @@
     <string name="phone_contact">فون رابطے</string>
     <string name="email_contact">ای میل</string>
     <string name="logout_success">کامیابی کے ساتھ لاگ آوٹ</string>
+    <!-- NEW 2.9 -->
+    <string name="percentage">%s%%</string>
+    <string name="error_add_bundle_to_shopping_cart">خریداری کی ٹوکری مین ایس بنڈل کا اضافہ نہیں ہو سکا ۔ بعد ازاں دوبارہ کوشش کریں ۔</string>
+    <string name="buy">خریدیں</string>
+    <string name="size">سائز ‎%s‎</string>
+    <string name="added_success">کامیابی ک ساتھ اضافہ کیا۔</string>
+    <string name="removed_success">کامیابی ک ساتھ ہٹا دیا گیا.</string>
 </resources>
