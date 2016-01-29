@@ -9,32 +9,10 @@ import com.mobile.newFramework.rest.configs.AigRestContract;
 
 import de.akquinet.android.androlog.Log;
 
+@SuppressWarnings("unused")
 public class RestUrlUtils {
 
     private final static String TAG = RestUrlUtils.class.getSimpleName();
-
-//    /**
-//     *
-//     *  Return the complete url of uri. Port is added if possible.
-//     *
-//     */
-//    public static String completeUrlWithPort(Uri uri) {
-//        String completeUrl = completeUri(uri).toString();
-//        try {
-//            URL url = new URL(completeUrl);
-//            URIBuilder uriBuilder = new URIBuilder(completeUrl);
-//            uriBuilder.setPort(url.getDefaultPort());
-//            completeUrl = uriBuilder.toString();
-//        } catch (MalformedURLException | URISyntaxException e) {
-//            e.printStackTrace();
-//        }
-//
-//        if (Darwin.logDebugEnabled) {
-//            Log.d(TAG, "completeUriWithPort: uri = " + completeUrl);
-//        }
-//
-//        return completeUrl;
-//    }
 
     public static Uri completeUri(Uri uri) {
         //
@@ -83,15 +61,10 @@ public class RestUrlUtils {
 
     /**
      * Get all parameters from url string query and insert them all on ContentValues.
-     * Syntax example: ?category=womens-dresses&sort=price&dir=asc
-     * @param rawQuery
+     * Syntax example: ?category=womens-dresses&sort=price&dir=asc&brand=ax-paris::new-look
      */
     public static ContentValues getQueryParameters(@NonNull String rawQuery) {
         Uri uri = Uri.parse(rawQuery);
-
-        if (uri.isOpaque()) {
-            throw new UnsupportedOperationException("This isn't a hierarchical URI.");
-        }
 
         ContentValues queryValues = new ContentValues();
 

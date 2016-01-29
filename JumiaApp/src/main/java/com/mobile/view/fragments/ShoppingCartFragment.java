@@ -173,6 +173,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
+        if(mVoucherView != null) {
+            mVoucherCode = mVoucherView.getText().toString();
+        }
     }
 
     @Override

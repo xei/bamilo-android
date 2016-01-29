@@ -23,6 +23,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetFaqTermsHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.database.SectionsTablesHelper;
 import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
@@ -291,11 +292,22 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
             ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
                 public void run() {
+                    // Clear Country Configs to force update.
+                    clearCountryConfigs();
                     getBaseActivity().restartAppFlow();
                 }
             });
         }
     }
+
+
+    /**
+     * Trigger to get the country configurations
+     */
+    private void clearCountryConfigs(){
+        SectionsTablesHelper.deleteConfigurations();
+    }
+
 
     /**
      *  Handles the item click of childs of options list.

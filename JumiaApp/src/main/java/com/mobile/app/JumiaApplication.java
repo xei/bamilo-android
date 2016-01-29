@@ -82,7 +82,7 @@ public class JumiaApplication extends Application {
         // Save instance
         INSTANCE = this;
         // Init image loader
-        RocketImageLoader.init(this);
+        RocketImageLoader.init(getApplicationContext());
         // Init apptimize
         ApptimizeTracking.startup(getApplicationContext());
         // Init darwin database, set the context
