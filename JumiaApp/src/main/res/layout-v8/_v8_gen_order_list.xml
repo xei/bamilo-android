@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
     android:id="@+id/order_list_item"
-    android:layout_height="150dp"
+    android:layout_height="158dp"
     android:baselineAligned="false"
     android:gravity="center"
     android:orientation="horizontal"
