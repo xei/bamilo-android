@@ -1,5 +1,7 @@
 package com.mobile.utils;
 
+import android.support.annotation.Nullable;
+
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.view.R;
 
@@ -33,7 +35,9 @@ public enum MessagesUtils {
 
     ADD_VOUCHER(R.string.error_occured, R.string.added_success),
 
-    REMOVE_VOUCHER(R.string.error_occured, R.string.removed_success);
+    REMOVE_VOUCHER(R.string.error_occured, R.string.removed_success),
+
+    GET_PRODUCT_DETAIL(R.string.product_could_not_retrieved, -1);
 
     public final int errorMessageId;
     public final int successMessageId;
@@ -48,16 +52,24 @@ public enum MessagesUtils {
         this.successMessageId = successMessageId;
     }
 
-    public static int getSuccessMessageId(EventType eventType){
+
+
+/***
+ * Allows to get a message Id by eventType (error or success);
+ * @param eventType - The event type
+ * @param isError - Defines the id type to return: if true returns an errorMessageId, if false returns successMessageId
+ * */
+    public static int getMessageId(@Nullable EventType eventType, boolean isError){
+
         if (eventType != null){
             for (MessagesUtils messageUtils  : MessagesUtils.values()) {
                 if(messageUtils.toString().equalsIgnoreCase(eventType.toString())){
-                    return messageUtils.successMessageId;
+                    return ((isError)? messageUtils.errorMessageId :  messageUtils.successMessageId);
                 }
             }
         }
 
-        return GENERIC_MESSAGE.successMessageId;
+        return ((isError)? GENERIC_MESSAGE.errorMessageId :  GENERIC_MESSAGE.successMessageId);
     }
 
 }

@@ -14,7 +14,6 @@ import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
-import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.session.GetRegisterFormHelper;
 import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -24,6 +23,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
+import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -31,6 +31,7 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
@@ -124,25 +125,14 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         // Get create button
         View mCreateButton = view.findViewById(R.id.register_button_create);
         mCreateButton.setOnClickListener(this);
-        // Validate the current state
-        onValidateState();
-    }
-
-    private void onValidateState() {
-        // Case form is empty
-        if (mForm == null) {
-            triggerRegisterForm();
-        }
-        // Case load form
-        else {
-            loadForm(mForm);
-        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
         Print.i(TAG, "ON START");
+        // Validate the current state
+        onValidateState();
     }
 
     @Override
@@ -200,7 +190,21 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     }
 
     /**
-     *
+     * Validate form
+     */
+    private void onValidateState() {
+        // Case form is empty
+        if (mForm == null) {
+            triggerRegisterForm();
+        }
+        // Case load form
+        else {
+            loadForm(mForm);
+        }
+    }
+
+    /**
+     * Create dynamic form
      */
     private void loadForm(Form form) {
         // Create form view
@@ -216,6 +220,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
             mDynamicForm.setInitialValue(FormInputType.email, mCustomerEmail);
         }
         // Add form view
+        mFormContainer.removeAllViews();
         mFormContainer.addView(mDynamicForm.getContainer());
         // Show
         showFragmentContentContainer();
@@ -250,7 +255,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         }
         // Case terms and conditions from form
         else if (id == R.id.textview_terms) {
-            onClickTermsAndConditions();
+            onClickTermsAndConditions(view);
         }
         // Case default
         else {
@@ -258,9 +263,9 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         }
     }
 
-    private void onClickTermsAndConditions() {
+    private void onClickTermsAndConditions(View view) {
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.KEY, GetStaticPageHelper.TERMS_PAGE);
+        bundle.putString(RestConstants.KEY, TargetLink.getIdFromTargetLink(view.getTag().toString()));
         bundle.putString(RestConstants.TITLE, getString(R.string.terms_and_conditions));
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
@@ -318,10 +323,12 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
                 // Tracking
                 if(isSubscribingNewsletter) TrackerDelegator.trackNewsletterGTM("", GTMValues.REGISTER);
                 TrackerDelegator.trackSignupSuccessful(GTMValues.REGISTER);
-                // Finish
-                getActivity().onBackPressed();
                 // Notify user
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.succes_login));
+                // Finish
+                getActivity().onBackPressed();
+                // Set facebook login
+                CustomerUtils.setChangePasswordVisibility(getBaseActivity(), false);
                 break;
             case GET_REGISTRATION_FORM_EVENT:
                 mForm = (Form) baseResponse.getContentData();

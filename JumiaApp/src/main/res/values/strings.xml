@@ -15,13 +15,14 @@
     <string name="back_label">BACK</string>
     <string name="back_level">back level</string>
     <string name="bamilo_not_available">Bamilo is currently not available</string>
-    <string name="billing_add_label">Add new address</string>
-    <string name="billing_billing_label">Billing Address</string>
     <string name="billing_choose_address">Please choose an address!</string>
     <string name="billing_def_shipping_label">Default Shipping Address</string>
-    <string name="billing_others_label">Other Addresses</string>
+    <string name="address_shipping_billing_label">Shipping/Billing Address</string>
+    <string name="address_shipping_label">Shipping Address</string>
+    <string name="address_billing_label">Billing Address</string>
+    <string name="address_others_label">Other Addresses</string>
+    <string name="address_add_new_label">Add new address</string>
     <string name="billing_same_label">Billing to the same address</string>
-    <string name="billing_shipping_label">Shipping Address</string>
     <string name="brands_label">Brands</string>
     <string name="bundle_title">Frequently Bought Together</string>
     <string name="bundle_total_price">Total Price:</string>
@@ -351,7 +352,6 @@
     <string name="create_edit_address">Create or edit your addresses</string>
     <string name="string_more_choices">More Choices</string>
     <string name="addresses_saved_message">Your addresses settings have been saved.</string>
-    <string name="dialog_to_product">To Product Details</string>
     <string name="address_creation_failed_title">Address creation failed</string>
     <string name="address_creation_failed_main">Please fill correctly all form fields.</string>
     <string name="see_more_offers">SEE MORE OFFERS</string>
@@ -474,7 +474,6 @@
     <string name="error_add_bundle_to_shopping_cart">This bundle could not be added to the shopping cart. Please try again later.</string>
     <string name="buy">buy</string>
     <string name="size">Size %s</string>
-    <string name="no_translate">NO TRANSLATE IS A TEST</string>
     <string name="added_success">Added successfully.</string>
     <string name="removed_success">Removed successfully.</string>
 </resources>

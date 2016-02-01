@@ -17,24 +17,16 @@
     <item name="checkout_summary_products"              type="layout">@layout/_def_checkout_summary_products</item>
     <item name="checkout_summary_shipping_address"      type="layout">@layout/_def_checkout_summary_shipping_address</item>
     <item name="checkout_summary_shipping_method"       type="layout">@layout/_def_checkout_summary_shipping_method</item>
-    <!--<item name="checkout_summary_total"                 type="layout">@layout/_def_checkout_summary_total</item>-->
     <item name="checkout_payment_methods"               type="layout">@layout/_def_checkout_payment_methods</item>
     <item name="checkout_address_item"                  type="layout">@layout/_def_checkout_address_item</item>
-    <item name="checkout_sameaddress_checkbox" type="layout">@layout/_def_checkout_sameaddress_checkbox</item>
-    <item name="checkout_my_addresses_add_new"          type="layout">@layout/_def_checkout_my_addresses_add_new</item>
+    <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_def_checkout_sameaddress_checkbox</item>
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_def_checkout_shipping_pickup_station</item>
     <item name="checkout_shipping_fee_time"             type="layout">@layout/_def_checkout_shipping_fee_time</item>
     <item name="checkout_header"                        type="layout">@layout/_def_checkout_header</item>
     <item name="checkout_thanks"                        type="layout">@layout/_def_checkout_thanks</item>
-    <item name="checkout_create_address_main" 	        type="layout">@layout/_def_checkout_create_address_main</item>
-    <!--<item name="checkout_edit_address_main" 	        type="layout">@layout/_def_checkout_edit_address_main</item>-->
-    <!--<item name="checkout_my_addresses" 			        type="layout">@layout/_def_checkout_my_addresses</item>-->
-    <!--<item name="checkout_shipping_main" 		        type="layout">@layout/_def_checkout_shipping_main</item>-->
-    <!--<item name="checkout_payment_main" 			        type="layout">@layout/_def_checkout_payment_main</item>-->
     <item name="checkout_total_layout" 			        type="layout">@layout/_def_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_def_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_def_price_rules_element</item>
-    <!--<item name="fulfillment_main"                       type="layout">@layout/_def_fulfillment_main</item>-->
     <item name="fulfillment_product"                    type="layout">@layout/_def_fulfillment_product</item>
 
     <!-- FORMS -->
@@ -46,7 +38,7 @@
     <item name="shopping_basket_subtotal_element"       type="layout">@layout/_def_shopping_basket_subtotal_element</item>
 
     <!-- ACTION BAR -->
-    <item name="action_bar_myprofile_layout" type="layout">@layout/_def_action_bar_myprofile_layout</item>
+    <item name="action_bar_myprofile_layout"            type="layout">@layout/_def_action_bar_myprofile_layout</item>
     <item name="action_bar_menu_item_layout"            type="layout">@layout/_def_action_bar_menu_item_layout</item>
     <item name="recent_search_suggestion_list_item"     type="layout">@layout/_def_recent_search_suggestion_list_item</item>
     <item name="search_suggestion_list_item"            type="layout">@layout/_def_search_suggestion_list_item</item>
@@ -90,8 +82,8 @@
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_def_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_def_config_confirmation_msg</item>
-    <item name="pdv_fragment_combo_item" type="layout">@layout/_def_pdv_fragment_combo_item</item>
-    <item name="pdv_fragment_combos" type="layout">@layout/_def_pdv_fragment_combos</item>
+    <item name="pdv_fragment_combo_item"                type="layout">@layout/_def_pdv_fragment_combo_item</item>
+    <item name="pdv_fragment_combos"                    type="layout">@layout/_def_pdv_fragment_combos</item>
 
     <!-- MY ORDERS -->
     <item name="my_orders_list_item"                    type="layout">@layout/_def_my_orders_list_item</item>
@@ -99,7 +91,6 @@
     <item name="gen_order_list"                         type="layout">@layout/_def_gen_order_list</item>
 
     <!-- HOME -->
-    <!--<item name="home_fragment_main"                     type="layout">@layout/_def_home_fragment_main</item>-->
     <item name="home_teaser_brand"                      type="layout">@layout/_def_home_teaser_brand</item>
     <item name="home_teaser_brand_item"                 type="layout">@layout/_def_home_teaser_brand_item</item>
     <item name="home_teaser_campaign"                   type="layout">@layout/_def_home_teaser_campaign</item>
@@ -136,7 +127,7 @@
     <item name="my_account_user_data_fragment"          type="layout">@layout/_def_my_account_user_data_fragment</item>
     <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
     <item name="my_account_app_version"                 type="layout">@layout/_def_my_account_app_version</item>
-    <item name="my_account_notification_item" type="layout">@layout/_def_my_account_notification_item</item>
+    <item name="my_account_notification_item"           type="layout">@layout/_def_my_account_notification_item</item>
 
 
     <!-- DYNAMIC -->
@@ -169,7 +160,6 @@
     <item name="form_button"                            type="layout">@layout/_def_form_button</item>
     <item name="form_radiolayout"                       type="layout">@layout/_def_form_radiolayout</item>
     <item name="login_remember_checkbox"                type="layout">@layout/_def_login_remember_checkbox</item>
-    <!--<item name="form_spinner_dropdown_item"             type="layout">@layout/_v8_form_spinner_dropdown_item</item>-->
     <item name="order_history_item"                     type="layout">@layout/_def_order_history_item</item>
     <item name="rating_bar_component"                   type="layout">@layout/_def_rating_bar_component</item>
 
@@ -201,15 +191,13 @@
     <item name="product_gallery_fragment"               type="layout">@layout/_def_product_gallery_fragment</item>
 
     <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
-    <!--<item name="form_spinner_item"                      type="layout">@layout/_v8_form_spinner_item</item>-->
     <item name="review_fragment"                        type="layout">@layout/_def_review_fragment</item>
-    <item name="simple_email_notification_option" type="layout">@layout/_def_simple_email_notification_option</item>
+    <item name="simple_email_notification_option"       type="layout">@layout/_def_simple_email_notification_option</item>
 
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
-    <!--<item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>-->
 
     <!--ROOT SSL ERROR CONTACT INFO-->
-    <item name="contacts_info" type="layout">@layout/_def_contacts_info</item>
+    <item name="contacts_info"                          type="layout">@layout/_def_contacts_info</item>
 
 </resources>

@@ -39,8 +39,6 @@
         android:id="@+id/tab_cart_text"
         style="@style/TextCaption"
         android:layout_width="wrap_content"
-        android:layout_below="@id/tab_cart_image"
-        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/cart_label"

@@ -93,9 +93,7 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
             if(parcelableProduct instanceof ProductComplete){
                 mCompleteProduct = (ProductComplete) parcelableProduct;
-                if(mCompleteProduct != null){
-                    mCompleteProductSku = mCompleteProduct.getSku();
-                }
+                mCompleteProductSku = mCompleteProduct.getSku();
             }
         }
     }

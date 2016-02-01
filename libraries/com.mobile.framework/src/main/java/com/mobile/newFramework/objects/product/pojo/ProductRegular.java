@@ -27,9 +27,8 @@ public class ProductRegular extends ProductBase {
     protected int mTotalReviews;
     protected int mTotalRatings;
     private int mBrandId;
-    private boolean shopFirst;
-    private String shopFirstOverlay;
-
+    protected String mTarget;
+    protected String mRichRelevanceClickHash;
     /**
      * Empty constructor
      */
@@ -50,7 +49,14 @@ public class ProductRegular extends ProductBase {
 
     protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
-        mName = jsonObject.getString(RestConstants.NAME);
+        mName = jsonObject.optString(RestConstants.NAME);
+        // TODO
+        // This fallback validation was added for the case where the response from the RR request
+        // is the fallback top sellers, where the product name comes in the "title" field.
+        // it should be analysed if should be fixed on next release.
+        if(TextUtils.isEmpty(mName))
+            mName = jsonObject.optString(RestConstants.TITLE);
+
         mBrand = jsonObject.getString(RestConstants.BRAND);
         mBrandId = jsonObject.optInt(RestConstants.BRAND_ID);
         // Optional TODO FIX THIS
@@ -72,10 +78,9 @@ public class ProductRegular extends ProductBase {
             mTotalRatings = ratings.optInt(RestConstants.RATINGS_TOTAL);
             mTotalReviews = ratings.optInt(RestConstants.REVIEWS_TOTAL);
         }
-
-        shopFirst = jsonObject.optBoolean(RestConstants.SHOP_FIRST, false);
-        shopFirstOverlay = jsonObject.optString(RestConstants.SHOP_FIRST_OVERLAY);
-
+        mTarget = jsonObject.optString(RestConstants.TARGET);
+        // Click Request
+        mRichRelevanceClickHash = jsonObject.optString(RestConstants.CLICK_REQUEST);
         return true;
     }
 
@@ -141,10 +146,14 @@ public class ProductRegular extends ProductBase {
         return "";
     }
 
-    public String getShopFirstOverlay() {
-        return shopFirstOverlay;
+
+    public String getTarget() {
+        return mTarget;
     }
 
+    public String getRichRelevanceClickHash() {
+        return mRichRelevanceClickHash;
+    }
 
     /*
 	 * ############ PARCELABLE ############
@@ -161,8 +170,8 @@ public class ProductRegular extends ProductBase {
         mAvgRating = in.readDouble();
         mTotalReviews = in.readInt();
         mTotalRatings = in.readInt();
-        shopFirst = in.readByte() != 0x00;
-        shopFirstOverlay = in.readString();
+        mTarget = in.readString();
+        mRichRelevanceClickHash = in.readString();
     }
 
     @Override
@@ -177,8 +186,8 @@ public class ProductRegular extends ProductBase {
         dest.writeDouble(mAvgRating);
         dest.writeInt(mTotalReviews);
         dest.writeInt(mTotalRatings);
-        dest.writeByte((byte) (shopFirst ? 0x01 : 0x00));
-        dest.writeString(shopFirstOverlay);
+        dest.writeString(mTarget);
+        dest.writeString(mRichRelevanceClickHash);
     }
 
     @Override
@@ -199,7 +208,5 @@ public class ProductRegular extends ProductBase {
         }
     };
 
-    public boolean isShopFirst() {
-        return shopFirst;
-    }
+
 }

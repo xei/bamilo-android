@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:clickable="false"
     android:orientation="vertical"
+    android:layout_marginTop="@dimen/dimen_5dp"
     android:paddingLeft="@dimen/dimen_mat_4px"
     android:paddingRight="@dimen/dimen_mat_4px">
 

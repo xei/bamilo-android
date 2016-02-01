@@ -60,12 +60,21 @@
             color="@color/black_800"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margin_mid"
             android:layout_marginStart="@dimen/margin_mid"
            />
 
     </LinearLayout>
+
+
+    <!-- SHOP FIRST IMAGE -->
+    <ImageView
+        android:id="@+id/item_shop_first"
+        style="@style/ShopFirstStyle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/ratingContainer" />
+
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_variant"

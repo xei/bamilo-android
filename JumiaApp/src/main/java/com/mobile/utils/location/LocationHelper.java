@@ -20,6 +20,7 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
 
@@ -53,7 +54,6 @@ public class LocationHelper implements LocationListener {
     
     /**
      * Get instance of the Location Helper
-     * @return
      */
     public static LocationHelper getInstance(){
         if(locationHelper == null) locationHelper = new LocationHelper();
@@ -66,8 +66,6 @@ public class LocationHelper implements LocationListener {
      * <p>- SIM card
      * <p>- Last known location from location manager
      * <p>- Current location from location manager (GPS or Network)
-     * @param context
-     * @param callback
      * @author sergiopereira
      */
     public void autoCountrySelection(Context context, Handler callback){
@@ -84,7 +82,7 @@ public class LocationHelper implements LocationListener {
         // From geo location
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         // From last known geo location
-        if(getContryFromLastKnownLocation(locationManager)) return;
+        if(getCountryFromLastKnownLocation(locationManager)) return;
         // From current geo location
         if(getCountryFromCurrentLocation(locationManager)) return;
 
@@ -98,9 +96,6 @@ public class LocationHelper implements LocationListener {
 
     /**
      * Get the country code from Network configurations
-     * @param deviceManager
-     * @return true or false
-     * @author sergiopereira
      */
     private boolean getCountryFromNetwork(TelephonyManager deviceManager){
         String networkCountry = deviceManager.getNetworkCountryIso();
@@ -115,9 +110,6 @@ public class LocationHelper implements LocationListener {
     
     /**
      * Get the country code from SIM card
-     * @param deviceManager
-     * @return true or false
-     * @author sergiopereira
      */
     private boolean getCountryFromSim(TelephonyManager deviceManager) {
         String simCountry = deviceManager.getSimCountryIso();
@@ -133,11 +125,8 @@ public class LocationHelper implements LocationListener {
     
     /**
      * Get the country code from the last known location using the GeoCoder api.
-     * @param locationManager
-     * @return true or false
-     * @author sergiopereira
      */
-    private boolean getContryFromLastKnownLocation(LocationManager locationManager){
+    private boolean getCountryFromLastKnownLocation(LocationManager locationManager){
         try {
             
             String bestProvider = getBestLocationProvider(locationManager);
@@ -167,9 +156,6 @@ public class LocationHelper implements LocationListener {
     
     /**
      * Get the country code from current location requested to location manager using the GeoCoder api.
-     * @param locationManager
-     * @return true or false
-     * @author sergiopereira
      */
     private boolean getCountryFromCurrentLocation(LocationManager locationManager) {
         try {
@@ -194,9 +180,6 @@ public class LocationHelper implements LocationListener {
     
     /**
      * Get the best location provider GPS or Network 
-     * @param locationManager
-     * @return String
-     * @author sergiopereira
      */
     private String getBestLocationProvider(LocationManager locationManager){
 //        Criteria criteria = new Criteria();
@@ -255,8 +238,6 @@ public class LocationHelper implements LocationListener {
     
     /**
      * Method used to select the shop id validating the received country code is supported by application.
-     * @param countryCode
-     * @return true or false
      */
     public boolean isCountryAvailable(String countryCode) {
         // Filter country code 
@@ -272,7 +253,7 @@ public class LocationHelper implements LocationListener {
                 CountryObject countryObject =JumiaApplication.INSTANCE.countriesAvailable.get(i);
                 String supportedCountry = countryObject.getCountryIso();
                 //Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
-                if (supportedCountry.equalsIgnoreCase(countryCode.toLowerCase())){
+                if (TextUtils.equalsIgnoreCase(supportedCountry, countryCode)){
                     Print.d(TAG, "MATCH: SHOP ID " + i);
                     ChooseLanguageController.setLanguageBasedOnDevice(countryObject.getLanguages(), countryCode);
                     ShopPreferences.setShopId(context, i);
@@ -357,11 +338,7 @@ public class LocationHelper implements LocationListener {
     
     /**
      * Method used to revert the GEO location
-     * @param lat
-     * @param lng
-     * @return true or false
-     * @author sergiopereira
-     * @see http://stackoverflow.com/questions/11082681/get-country-from-coordinates
+     * @see <a href="http://stackoverflow.com/questions/11082681/get-country-from-coordinates">get-country-from-coordinates</a>
      */
     private String getCountryCodeFomGeoCoder(double lat, double lng) {
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
@@ -384,7 +361,6 @@ public class LocationHelper implements LocationListener {
     
     /**
      * Send the message REQUIRES_USER_INTERACTION to callback
-     * @author sergiopereira
      */
     private void sendUserInteractionMessage(EventType eventType, @ErrorCode.Code int errorType){
         Print.d(TAG, "SEND MESSAGE: " + eventType + " " + errorType);
@@ -395,7 +371,6 @@ public class LocationHelper implements LocationListener {
     
     /**
      * Send the INITIALIZE message to JumiaApplication
-     * @author sergiopereira
      */
     public void sendInitializeMessage(){
         Print.d(TAG, "SEND MESSAGE: INITIALIZE");
@@ -404,7 +379,6 @@ public class LocationHelper implements LocationListener {
 
     /**
      * set location helper context and callback
-     * @param ctx
      */
     public void initializeLocationHelper (Context ctx, Handler callback){
         this.context = ctx;

@@ -15,13 +15,14 @@
     <string name="back_label">الرجوع</string>
     <string name="back_level">مستوى الرجوع</string>
     <string name="bamilo_not_available">باميلو غير متاح الآن</string>
-    <string name="billing_add_label">إضافة عنوان جديد</string>
-    <string name="billing_billing_label">عنوان إرسال الفواتير</string>
     <string name="billing_choose_address">برجاء تحديد العنوان!</string>
     <string name="billing_def_shipping_label">عنوان الشحن الإفتراضي</string>
-    <string name="billing_others_label">عناوين أخرى</string>
+    <string name="address_shipping_billing_label">عنوان الفواتير/الشحن</string>
+    <string name="address_shipping_label">عنوان الشحن</string>
+    <string name="address_billing_label">عنوان إرسال الفواتير</string>
+    <string name="address_others_label">عناوين أخرى</string>
+    <string name="address_add_new_label">إضافة عنوان جديد</string>
     <string name="billing_same_label">إرسال الفواتير إلى نفس العنوان</string>
-    <string name="billing_shipping_label">عنوان الشحن</string>
     <string name="brands_label">الماركات</string>
     <string name="bundle_title">يتم شرائهما معًا</string>
     <string name="bundle_total_price">السعر الكلي:</string>
@@ -32,10 +33,15 @@
     <string name="campaign_save">أنت توفر</string>
     <string name="campaign_stock_alert">عفوًا، المنتج الذي قمت باختياره غير متوفر</string>
     <string name="campaigns_label">العروض</string>
+    <string name="campaign_unavailable_title">هذا العرض قد انتهى</string>
+    <string name="campaign_unavailable_description">مع ذلك ، لدينا الكثير من العروض الاخرى الرائعة في انتظاركم .</string>
+    <string name="campaign_offer_ended">انتهى العرض!</string>
+    <string name="campaign_timer_end">تنتهي في:</string>
     <string name="cancel_label">إلغاء</string>
     <string name="cart_label">عربة التسوق</string>
     <string name="catalog_edit_filters">تعديل الاختيارات</string>
-    <string name="catalog_no_results">لا توجد نتائج لاختياراتك.\nيمكنك تجربة البحث عن اختيارات أقل</string>
+    <string name="catalog_no_results">لا توجد نتائج لاختياراتك.</string>
+    <string name="catalog_no_results_details">يمكنك محاولة استخدام مرشحات أقل تقييدا</string>
     <string name="categories_label">الفئات</string>
     <string name="categories_label_uppercase">الفئات</string>
     <string name="categories_name_all">الكل لـ</string>
@@ -74,6 +80,7 @@
     <string name="error_no_connection">لا يوجد اتصال</string>
     <string name="error_occured">عفوًا، حدث خطأ.</string>
     <string name="error_please_try_again">نواجه حاليًا مشكلة صغيرة في الوصول إلى البيانات. برجاء المحاولة مرة أخرى.</string>
+    <string name="error_problem_fetching_data">حدثت مشكلة بسيطة أثناء إعداد البيانات.</string>
     <string name="error_register_alreadyexists">هذا البريد الإلكتروني موجود بالفعل. برجاء اختيار بريد آخر.</string>
     <string name="error_register_title">لم ينجح التسجيل</string>
     <string name="error_signup_title">لم ينجح الدخول</string>
@@ -148,12 +155,13 @@
     <string name="my_order_voucher_label">قسيمة شراء</string>
     <string name="my_orders_label">طلباتي</string>
     <string name="my_profile">الملف الخاص بي</string>
-    <string name="myaccount_userdata">بيانات المستخدم</string>
+    <string name="myaccount_userdata">حسابك</string>
     <string name="name">الاسم</string>
     <string name="nav_country">اختر دولة</string>
     <string name="nav_country_warning">أنت على وشك تغيير الدولة. ولذلك ستصبح عربة التسوق خالية ويتم تسجيل الخروج. هل أنت متأكد أنك تريد الاستمرار؟</string>
     <string name="nav_track_order">متابعة الطلب</string>
     <string name="navigation_cart_empty">عربة التسوق الخاصة بي فارغة</string>
+    <string name="new_arrival_badge">جديد</string>
     <string name="new_password_hint">كلمة مرور جديدة</string>
     <string name="new_password_label">كلمة مرور جديدة</string>
     <string name="newsletter_saved_message">تم حفظ إعدادات إخطارات البريد الإلكتروني الخاص بك</string>
@@ -329,6 +337,7 @@
     <string name="yes_label">نعم</string>
     <string name="your_cart">عربة التسوق الخاصة بك</string>
     <string name="your_order">الطلب الخاص بك</string>
+    <string name="install_android">حمل ‎%s‎ تطبيق اندرويد الان</string>
     <string name="share_the_app">مشاركة التطبيق</string>
     <string name="can_share_app_with_friends">يمكنك الآن مشاركة التطبيق مع أصدقائك</string>
     <string name="app_social">تطبيق مواقع التواصل الإجتماعى</string>
@@ -343,7 +352,6 @@
     <string name="create_edit_address">إنشاء العنوان أو تعديل بياناته</string>
     <string name="string_more_choices">المزيد من الخيارات</string>
     <string name="addresses_saved_message">تم حفظ إعدادات العناوين الخاصة بك</string>
-    <string name="dialog_to_product">إلى تفاصيل المنتج</string>
     <string name="address_creation_failed_title">لم ينجح إنشاء العنوان</string>
     <string name="address_creation_failed_main">برجاء ملء البيانات بشكل صحيح.</string>
     <string name="see_more_offers">شاهد المزيد من العروض</string>
@@ -363,6 +371,7 @@
     <string name="open">فتح</string>
     <string name="close">إغلاق</string>
     <string name="choose_language">اختر اللغة</string>
+    <string name="shop_settings">إعدادات المتجر</string>
     <string name="language">اللغة</string>
     <string name="country">الدولة</string>
     <string name="birthday_label">تاريخ الميلاد</string>
@@ -384,6 +393,7 @@
     <string name="buy_the_look">احصل على هذا المظهر</string>
     <string name="pdv_size">المقاس</string>
     <string name="buy_now_button">شراء الآن</string>
+    <string name="pre_order">حجز المنتج</string>
     <string name="saved">تم الحفظ</string>
     <string name="products_added_saved">تم إضافة المنتجات للحفظ</string>
     <string name="products_removed_saved">تم حذف المنتج من قائمة الحفظ</string>
@@ -424,6 +434,7 @@
     <string name="create_label">إنشاء</string>
     <string name="change_password">تغيير كلمة المرور</string>
     <string name="continue_without_log_in">الاستمرار بدون تسجيل الدخول</string>
+    <string name="placeholder_discount">‎%s‎-</string>
     <string name="edit_user_success">لقج تم تغيير معلومات المستخدم بنجاح</string>
     <string name="password">كلمة المرور</string>
     <string name="more">المزيد</string>
@@ -446,6 +457,7 @@
     <string name="delivered_label">تم توصيل</string>
     <string name="order_number">رقم الطلب‎%s‎</string>
     <string name="billing">الفواتير</string>
+    <string name="first_and_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
     <string name="qty_placeholder">الكمية: %s</string>
     <string name="reorder_label">إعادة الطلب</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
@@ -453,7 +465,15 @@
     <string name="no_orders_message">ليس لديكم أي طلب.</string>
     <string name="no_orders">لم يتم القيام بأي طلبات</string>
     <string name="an_error_occurred">يوجد خطأ ما</string>
-    <string name="customer_service_info">من فضلكم, المرجو الاتصال بمصلحة الزبناء للمزيد من المعلومات,</string>
+    <string name="customer_service_info">من فضلكم, المرجو الاتصال بمصلحة الزبناء للمزيد من المعلومات.</string>
     <string name="phone_contact">الهاتف :</string>
     <string name="email_contact">البريد الإلكتروني:</string>
+    <string name="logout_success">لقد تم تسجيل الخروج</string>
+    <!-- NEW 2.9 -->
+    <string name="percentage">‎%s‎%%</string>
+    <string name="error_add_bundle_to_shopping_cart">لا يمكن أن تضيف هذه المنتجات إلى عربة التسوق . يرجى المحاولة في وقت لاحق.</string>
+    <string name="buy">شراء</string>
+    <string name="size">مقاس ‎%s‎</string>
+    <string name="added_success">تمت الأضافه بنجاح.</string>
+    <string name="removed_success">تم الحذف بنجاح.</string>
 </resources>

@@ -71,8 +71,7 @@
         <include
             layout="@layout/other_sellers_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/price"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

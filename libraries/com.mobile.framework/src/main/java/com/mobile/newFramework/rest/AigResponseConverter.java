@@ -7,6 +7,8 @@ import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.AigError;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 
@@ -75,12 +77,17 @@ public class AigResponseConverter implements Converter {
         response.setSuccess(jsonObject.optBoolean(RestConstants.SUCCESS));
         // Get messages
         parseResponseMessages(response, jsonObject);
+        // Validate error messages
+        validateErrorMessages(response);
         // Get data
         parseResponseData(response, jsonObject, dataType);
         // return response
         return response;
     }
 
+    /**
+     * Method used to save md5 and data.
+     */
     private void parseResponseData(@NonNull BaseResponse<?> response, @NonNull JSONObject json, Type type) throws NullPointerException, JSONException, IllegalAccessException, ClassNotFoundException, InstantiationException {
         // Case success get metadata || Case error get metadata if exists
         if(response.hadSuccess() || json.has(RestConstants.METADATA)) {
@@ -106,6 +113,20 @@ public class AigResponseConverter implements Converter {
     }
 
     /**
+     * Validate the error code and create respective {@link AigError}.
+     */
+    private void validateErrorMessages(@NonNull BaseResponse<?> baseResponse) {
+        // Case CUSTOMER_NOT_LOGGED_IN (231)
+        if (CollectionUtils.containsKey(baseResponse.getErrorMessages(), String.valueOf(ErrorCode.CUSTOMER_NOT_LOGGED_IN))) {
+            baseResponse.setError(new AigError().setCode(ErrorCode.CUSTOMER_NOT_LOGGED_IN));
+        }
+        // Case generic REQUEST_ERROR
+        else {
+            baseResponse.setError(new AigError().setCode(ErrorCode.REQUEST_ERROR));
+        }
+    }
+
+    /**
      * Method used to parse messages.
      */
     private HashMap<String, String> parseMessages(@Nullable JSONArray json) {
@@ -115,9 +136,12 @@ public class AigResponseConverter implements Converter {
             for (int i = 0; i < json.length(); i++) {
                 JSONObject item = json.optJSONObject(i);
                 if (item != null) {
-                    String reason = item.has(RestConstants.REASON) ? item.optString(RestConstants.REASON) : item.optString(RestConstants.FIELD);
-                    String message = item.optString(RestConstants.MESSAGE);
-                    map.put(reason, message);
+                    // Case error message
+                    String key = item.has(RestConstants.CODE) ? item.optString(RestConstants.CODE) : item.optString(RestConstants.REASON);
+                    // Case validation message
+                    if(item.has(RestConstants.FIELD)) key = item.optString(RestConstants.FIELD);
+                    // Save <key, message>
+                    map.put(key, item.optString(RestConstants.MESSAGE));
                 }
             }
         }

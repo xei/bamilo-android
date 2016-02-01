@@ -192,15 +192,6 @@ public class DynamicFormItem {
     }
 
     /**
-     * Gets the Mandatory View control. This is the part of the control that handles the user input
-     *
-     * @return The View that represents the control
-     */
-    public View getMandatoryControl() {
-        return mandatoryControl;
-    }
-
-    /**
      * Sets the error text for this control, concerning the input of the user
      *
      * @param value The error message to display in case of a validation error
@@ -233,7 +224,7 @@ public class DynamicFormItem {
             this.control.setId(parent.getNextId());
             switch (this.entry.getInputType()) {
                 case checkBox:
-                    buildCheckBoxInflated(params, controlWidth);
+                    buildCheckBox(params);
                     break;
                 case checkBoxLink:
                     buildCheckBoxForTerms(params, controlWidth);
@@ -523,10 +514,13 @@ public class DynamicFormItem {
                 break;
             case list:
                 ViewGroup viewGroup = (ViewGroup) getControl();
-                IcsSpinner spinner = (IcsSpinner) viewGroup.getChildAt(0);
-                FormListItem selectedItem = (FormListItem) spinner.getSelectedItem();
-                if(selectedItem != null) {
-                    values.put(getName(), selectedItem.getValue());
+                View view = viewGroup.getChildAt(0);
+                if(view instanceof IcsSpinner) {
+                    IcsSpinner spinner = (IcsSpinner) view;
+                    FormListItem selectedItem = (FormListItem) spinner.getSelectedItem();
+                    if(selectedItem != null) {
+                        values.put(getName(), selectedItem.getValue());
+                    }
                 }
                 break;
             case relatedNumber:
@@ -874,6 +868,9 @@ public class DynamicFormItem {
                         }
                     }
                     break;
+                case list:
+                    result = (((ViewGroup) getControl()).getChildAt(0) instanceof IcsSpinner);
+                    break;
                 default:
                     break;
             }
@@ -959,7 +956,7 @@ public class DynamicFormItem {
         mCheckBox.setTag("checkbox");
         mCheckBox.setContentDescription(this.entry.getKey());
 
-        mCheckBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
+        mCheckBox.setText(this.entry.getLabel().trim().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " ");
 
         if (this.entry.getValue().equals("1")) {
             mCheckBox.setChecked(true);
@@ -968,7 +965,7 @@ public class DynamicFormItem {
         TextView mLinkTextView = (TextView) this.dataControl.findViewById(R.id.textview_terms);
         //Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
-        mLinkTextView.setTag(this.entry.getKey());
+        mLinkTextView.setTag(this.entry.getLinkTarget());
         mLinkTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1032,18 +1029,8 @@ public class DynamicFormItem {
         this.control.addView(dataContainer);
     }
 
-    private void buildCheckBoxInflated(RelativeLayout.LayoutParams params, int controlWidth) {
-        //int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+    private void buildCheckBox(RelativeLayout.LayoutParams params) {
         this.control.setLayoutParams(params);
-//        //#RTL
-//        if (ShopSelector.isRtl() && currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-//            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-//        } else {
-//            // data controls
-//            params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-//        }
-
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
@@ -1071,12 +1058,14 @@ public class DynamicFormItem {
 
         //Data control
 
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 
         int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
         params.leftMargin = formPadding;
         params.rightMargin = formPadding;
-        this.dataControl = View.inflate(this.context, R.layout.gen_form_check_box, null);
+        // Get check box
+        CheckBox checkBox = (CheckBox) View.inflate(this.context, R.layout.gen_form_check_box, null);
+        this.dataControl = checkBox;
         this.dataControl.setId(parent.getNextId());
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
@@ -1086,18 +1075,18 @@ public class DynamicFormItem {
         this.dataControl.setContentDescription(this.entry.getKey());
         this.dataControl.setFocusable(false);
         this.dataControl.setFocusableInTouchMode(false);
-        ((CheckBox) this.dataControl).setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
-
+        checkBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
         // Set default value
         if (Boolean.parseBoolean(this.entry.getValue())) {
-            ((CheckBox) this.dataControl).setChecked(true);
+            checkBox.setChecked(true);
         }
-
-        this.dataControl.setVisibility(View.VISIBLE);
-
+        // Validate disabled flag
+        if (this.entry.isDisabledField()) {
+            disableView(checkBox);
+        }
+        // Add
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
-
         this.control.addView(dataContainer);
     }
 
@@ -1737,11 +1726,8 @@ public class DynamicFormItem {
         // Get password eye
         CheckBox box = (CheckBox) container.findViewById(R.id.text_field_password_check_box);
         // Set disabled
-        if(this.parent.getForm().getType() == FormConstants.USER_DATA_FORM && this.entry.isDisabledField()){
-            text.setEnabled(false);
-            text.setClickable(false);
-            text.setFocusable(false);
-            text.setTextColor(ContextCompat.getColor(context, R.color.black_700));
+        if (this.parent.getForm().getType() == FormConstants.USER_DATA_FORM && this.entry.isDisabledField()) {
+            disableView(text);
         }
         // Set icon
         if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
@@ -1881,5 +1867,14 @@ public class DynamicFormItem {
 
     }
 
+    /**
+     * Disable a view.
+     */
+    private void disableView(View view) {
+        view.setEnabled(false);
+        view.setClickable(false);
+        view.setFocusable(false);
+        if(view instanceof android.widget.TextView) ((android.widget.TextView) view).setTextColor(ContextCompat.getColor(context, R.color.black_700));
+    }
 
 }

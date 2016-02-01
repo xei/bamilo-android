@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'newrelic'
+apply plugin: 'usea4s'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
 
@@ -32,13 +33,12 @@ android {
         applicationId "com.mobile.view"
         minSdkVersion 15
         targetSdkVersion 22
-        multiDexEnabled false // Disabling multidex support. We are using proguard for debug build type.
     }
 
     dexOptions {
         jumboMode = true
         incremental true
-        javaMaxHeapSize "2048M"
+        javaMaxHeapSize "4G"
     }
 
     signingConfigs {
@@ -89,11 +89,12 @@ android {
         debug {
             applicationIdSuffix ".dev"
             debuggable true
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'),
-                    'proguard-project-pro.txt',
-                    'proguard-project-debug.txt',
-                    'proguard-project-dev.txt'
+            // # Building Apps with Over 65K Methods
+            // 1. Using multi dex support
+            multiDexEnabled true
+            // 2. Using proguard to reduce number of methods
+            //minifyEnabled true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-project-pro.txt', 'proguard-project-debug.txt', 'proguard-project-dev.txt'
         }
         live {
             applicationIdSuffix ".live"
@@ -124,8 +125,8 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.9"
-            versionCode getAppVersionCode(58)
+            versionName "2.9.1"
+            versionCode getAppVersionCode(59)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             //buildTypes.debug.manifestPlaceholders = [APP_ID: "123456"]
@@ -133,8 +134,8 @@ android {
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.9"
-            versionCode 58
+            versionName "2.9.1"
+            versionCode 59
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -144,8 +145,8 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.9"
-            versionCode 58
+            versionName "2.9.1"
+            versionCode 59
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -158,16 +159,16 @@ android {
          */
         shop {
             applicationId "com.shop.android"
-            versionName "1.6.1"
-            versionCode getAppVersionCode(11)
+            versionName "1.7.1"
+            versionCode getAppVersionCode(12)
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
         }
 
         shopPreInstall {
             applicationId "com.shop.android"
-            versionName "1.6.1"
-            versionCode 11
+            versionName "1.7.1"
+            versionCode 12
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
             android.sourceSets {
@@ -180,7 +181,7 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.6.1"
+            versionName "1.7"
             versionCode getAppVersionCode(12)
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
@@ -188,7 +189,7 @@ android {
 
         darazPreInstall {
             applicationId "com.daraz.android"
-            versionName "1.6.1"
+            versionName "1.7"
             versionCode 12
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
@@ -202,8 +203,8 @@ android {
          */
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "1.8.1"
-            versionCode getAppVersionCode(14)
+            versionName "1.9"
+            versionCode getAppVersionCode(15)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }

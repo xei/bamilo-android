@@ -49,14 +49,4 @@
         android:inflatedId="@+id/catalog_no_result_stub_inflate"
         android:layout="@layout/catalog_fragment_no_result" />
 
-    <!-- WIZARD CONTAINER -->
-
-    <ViewStub
-        android:id="@+id/catalog_wizard_stub"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:inflatedId="@+id/catalog_wizard_stub_inflate"
-        android:layout="@layout/catalog_fragment_wizard" />
-
 </RelativeLayout>

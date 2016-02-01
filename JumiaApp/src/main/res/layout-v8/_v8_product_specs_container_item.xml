@@ -30,11 +30,7 @@
         android:id="@+id/item_center"
         android:layout_width="1dp"
         android:background="@color/black_400"
-        android:layout_toRightOf="@id/specs_item_value"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/specs_item_value"
-        android:layout_alignTop="@+id/specs_item_value"
-        />
+        android:layout_height="wrap_content" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/specs_item_key"

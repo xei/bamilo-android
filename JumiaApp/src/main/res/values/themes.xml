@@ -138,7 +138,7 @@
     </style>
 
     <!-- Progress dialog -->
-    <style name="Theme.Custom.Dialog.Progress" parent="@android:style/Theme.Material.Dialog.NoActionBar">
+    <style name="Theme.Custom.Dialog.Progress" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@drawable/dialog_shadow</item>
         <item name="android:windowMinWidthMajor" tools:targetApi="honeycomb">@null</item>
         <item name="android:windowMinWidthMinor" tools:targetApi="honeycomb">@null</item>

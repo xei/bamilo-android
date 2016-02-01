@@ -5,11 +5,11 @@ import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.TextView;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.campaign.CampaignItemSize;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.objects.product.pojo.ProductBase;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
@@ -33,6 +33,7 @@ public class ProductUtils {
             price.setText("");
         //If ProductMultiple already has simple
         }else if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
+            //noinspection ConstantConditions
             setPrice(((ProductMultiple) productBase).getSelectedSimple(), price, specialPrice);
         } else {
             setPrice(productBase, price, specialPrice);
@@ -50,21 +51,6 @@ public class ProductUtils {
         // Case normal
         else {
             specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
-            price.setText("");
-        }
-    }
-
-    @Deprecated
-    private static void setPrice(CampaignItemSize campaignItemSize, TextView price, TextView specialPrice){
-
-        if (campaignItemSize.hasDiscount()) {
-            specialPrice.setText(CurrencyFormatter.formatCurrency(campaignItemSize.specialPrice));
-            price.setText(CurrencyFormatter.formatCurrency(campaignItemSize.price));
-            price.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }
-        // Case normal
-        else {
-            specialPrice.setText(CurrencyFormatter.formatCurrency(campaignItemSize.price));
             price.setText("");
         }
     }
@@ -119,19 +105,27 @@ public class ProductUtils {
     }
 
 
-/**
- * Shows a dialog with shopOverlayInfo content if clicking on a shopFirst badge or shopFirst drawable in a textView
- *  - if the shopfirst logo is visible and overlay info is not empty, the dialog show up
- *  - Else if overlay Info is empty, the logo is not clickable even visible
- * */
-    public static void showShopFirstOverlayMessage(final @NonNull BaseFragment fragment,final @NonNull ProductRegular productBase,final @NonNull View shopFirstView){
-        if(shopFirstView.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(productBase.getShopFirstOverlay())) {
+    public static void setShopFirst(@NonNull Variation productVariation, @NonNull View badge){
+        badge.setVisibility((!productVariation.isShopFirst() || ShopSelector.isRtlShop()) ? View.GONE : View.VISIBLE);
+    }
+
+
+    /**
+     * Shows a dialog with shopOverlayInfo content if clicking on a shopFirst badge or shopFirst drawable in a textView
+     * - if the shopfirst logo is visible and overlay info is not empty, the dialog show up
+     * - Else if overlay Info is empty, the logo is not clickable even visible
+     */
+    public static void showShopFirstOverlayMessage(final @NonNull BaseFragment fragment, final @NonNull ProductRegular productBase, final @NonNull View shopFirstView) {
+        if (shopFirstView.getVisibility() == View.VISIBLE && TextUtils.isNotEmpty(productBase.getShopFirstOverlay())) {
             //If badge is included in a textView: PDV case
-            if(shopFirstView instanceof TextView){
+            if (shopFirstView instanceof TextView) {
+                // Add shop first drawable
+                UIUtils.setDrawableRight((TextView) shopFirstView, R.drawable.ic_shop_first_alias);
+                // Set listener
                 shopFirstView.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
-                        if(UIUtils.drawableClicked(((TextView) shopFirstView), event)) {
+                        if (UIUtils.drawableClicked(((TextView) v), event)) {
                             DialogGenericFragment.createInfoDialog(null, productBase.getShopFirstOverlay(), fragment.getString(R.string.ok_label)).show(fragment.getActivity().getSupportFragmentManager(), null);
                             return true;
                         }
@@ -139,7 +133,7 @@ public class ProductUtils {
                     }
                 });
 
-            }else { //if is an image
+            } else { //if is an image
                 shopFirstView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

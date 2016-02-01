@@ -61,7 +61,6 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_edit_button_enter"
                 style="@style/AigButton.Active"
-                android:layout_alignParentBottom="true"
                 android:text="@string/save_changes_label" />
         </LinearLayout>
     </RelativeLayout>

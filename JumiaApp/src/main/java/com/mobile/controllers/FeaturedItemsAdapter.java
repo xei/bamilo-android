@@ -61,7 +61,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         int count;
 
         int featureListSize = this.mFeaturedList.size();
-        Print.d(TAG, "featureListSize: " + featureListSize);
         int pageIndex = featureListSize / this.partialSize;
 
         if (featureListSize % this.partialSize == 0) {
@@ -69,7 +68,6 @@ public class FeaturedItemsAdapter extends PagerAdapter {
         } else {
             count = pageIndex + 1;
         }
-        Print.d(TAG, "count: " + count);
         return count;
     }
 

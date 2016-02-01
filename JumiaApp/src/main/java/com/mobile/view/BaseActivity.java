@@ -1,6 +1,5 @@
 package com.mobile.view;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -65,7 +64,6 @@ import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
-import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
@@ -83,11 +81,9 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
-import com.mobile.utils.social.FacebookHelper;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
-import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
 import java.lang.ref.WeakReference;
@@ -226,7 +222,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                                         @Override
                                         public void onClick(View v) {
                                             if (v.getId() == R.id.button2) {
-                                                LogOut.perform(new WeakReference<Activity>(BaseActivity.this));
+                                                LogOut.perform(new WeakReference<>(BaseActivity.this));
                                             }
                                             dialogLogout.dismiss();
                                         }
@@ -1400,7 +1396,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 baseActivityProgressDialog = null;
             }
         } catch (IllegalStateException e) {
-            // ...
+            e.printStackTrace();
         }
     }
 
@@ -1426,18 +1422,17 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
     }
 
+    /**
+     * NOTE: Others sign out methods are performed in {@link LogOut}.
+     */
     public void onLogOut() {
-        /*
-         * NOTE: Others sign out methods are performed in {@link LogOut}.
-         */
-        // Logout Facebook
-        FacebookHelper.facebookLogout();
         // Track logout
         TrackerDelegator.trackLogoutSuccessful();
         // Goto Home
         onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         // Hide progress
         dismissProgress();
+        // Inform user
         showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.logout_success));
     }
 
@@ -1449,6 +1444,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * This method should be implemented by fragment activity to manage the work flow for fragments. Each fragment should call this method.
      */
     public abstract void onSwitchFragment(FragmentType type, Bundle bundle, Boolean addToBackStack);
+
+    /**
+     * This method should be implemented by fragment activity to manage the communications between fragments. Each fragment should call this method.
+     */
+    public abstract boolean communicateBetweenFragments(String tag, Bundle bundle);
 
     /**
      * Method used to switch fragment on UI with/without back stack support
@@ -1600,19 +1600,15 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     public void onCheckoutHeaderClickListener(int step) {
         Print.i(TAG, "PROCESS CLICK ON CHECKOUT HEADER " + step);
-        // CHECKOUT_ABOUT_YOU - step == 0 - click is never allowed
+        FragmentType fragmentType = ConstantsCheckout.getFragmentType(step);
 
-        // CHECKOUT_BILLING  - step == 1
-        // If selected tab is CHECKOUT_SHIPPING or CHECKOUT_PAYMENT, allow click
-        if (step == ConstantsCheckout.CHECKOUT_BILLING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.CHECKOUT_BILLING) {
-            selectCheckoutStep(step);
+        if (fragmentType != FragmentType.UNKNOWN && mCheckoutTabLayout.getSelectedTabPosition() > step) {
+            if (FragmentController.getInstance().hasEntry(fragmentType.toString())) {
+                selectCheckoutStep(step);
+            } else {
+                onSwitchFragment(fragmentType, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            }
         }
-        // CHECKOUT_SHIPPING  - step == 2
-        // If selected tab is the CHECKOUT_PAYMENT, allow click
-        else if (step == ConstantsCheckout.CHECKOUT_SHIPPING && mCheckoutTabLayout.getSelectedTabPosition() > ConstantsCheckout.CHECKOUT_SHIPPING) {
-            selectCheckoutStep(step);
-        }
-        // CHECKOUT_PAYMENT IS THE LAST  - step == 3 - click is never allowed
     }
 
     /**
@@ -1723,27 +1719,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 params.putBoolean(TrackerDelegator.FACEBOOKLOGIN_KEY, isFBLogin);
                 params.putString(TrackerDelegator.LOCATION_KEY, GTMValues.HOME);
                 TrackerDelegator.trackLoginSuccessful(params);
-                trackPageAdjust();
             }
         });
-    }
-
-    /**
-     * Track Page only for adjust
-     */
-    private void trackPageAdjust() {
-        Bundle bundle = new Bundle();
-        bundle.putLong(AdjustTracker.BEGIN_TIME, mLaunchTime);
-        TrackerDelegator.trackPageForAdjust(TrackingPage.HOME, bundle);
-    }
-
-    public boolean communicateBetweenFragments(String tag, Bundle bundle){
-        Fragment fragment =  getSupportFragmentManager().findFragmentByTag(tag);
-        if(fragment != null){
-            ((BaseFragment)fragment).notifyFragment(bundle);
-            return true;
-        }
-        return false;
     }
 
     public void showWarning(@WarningFactory.WarningErrorType final int warningFact){
@@ -1751,7 +1728,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     public void showWarningMessage(@WarningFactory.WarningErrorType final int warningFact, final String message){
-
         warningFactory.showWarning(warningFact, message);
     }
 
@@ -1759,17 +1735,4 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         warningFactory.hideWarning();
     }
 
-//    /**
-//     * Shows server overload page
-//     */
-//    public void showOverLoadView(){
-//
-//        Intent intent = new Intent(getApplicationContext(), OverLoadErrorActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//        startActivity(intent);
-//        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-//        //if(getSupportFragmentManager() != null){
-//        //    OverlayDialogFragment.getInstance(R.layout.kickout_page).show(getSupportFragmentManager(),null);
-//        //}
-//    }
 }

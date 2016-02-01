@@ -1,5 +1,6 @@
 package com.mobile.newFramework.rest.errors;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.IntDef;
 
 import java.lang.annotation.Retention;
@@ -29,6 +30,7 @@ public class ErrorCode {
     public static final int NO_COUNTRIES_CONFIGS = 12;
     public static final int NO_COUNTRY_CONFIGS_AVAILABLE = 13;
     public static final int SERVER_OVERLOAD = 429;
+    public static final int CUSTOMER_NOT_LOGGED_IN = 231;
 
     @IntDef({
             NO_ERROR,
@@ -49,11 +51,13 @@ public class ErrorCode {
             SERVER_IN_MAINTENANCE,
             NO_COUNTRIES_CONFIGS,
             NO_COUNTRY_CONFIGS_AVAILABLE,
-            SERVER_OVERLOAD
+            SERVER_OVERLOAD,
+            CUSTOMER_NOT_LOGGED_IN
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface Code {}
 
+    @SuppressLint("SwitchIntDef")
     public static boolean isNetworkError(@Code int error) {
         switch (error) {
             case NO_CONNECTIVITY:

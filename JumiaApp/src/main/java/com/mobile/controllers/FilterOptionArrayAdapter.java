@@ -22,16 +22,15 @@ import com.mobile.view.R;
  *
  */
  public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionInterface> implements AdapterView.OnItemClickListener{
-        
+
     protected static int layout = R.layout.list_sub_item_2;
 
     protected CatalogCheckFilter catalogFilter;
 
     private SparseArray<MultiFilterOptionInterface> mCurrentSelectedOptions;
+
     /**
      * Constructor
-     * @param context
-     * @param catalogCheckFilter
      */
     public FilterOptionArrayAdapter(Context context, CatalogCheckFilter catalogCheckFilter) {
         super(context, layout, catalogCheckFilter.getFilterOptions());
@@ -46,16 +45,12 @@ import com.mobile.view.R;
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get Filter
-
         MultiFilterOptionInterface option = getItem(position);
-
         // Validate current view
         if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
         // Set title
         ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
-
         setProductsCount((TextView) convertView.findViewById(R.id.dialog_products_count), option);
-
         // Set check box
         setCheckboxBehavior(((CheckBox) convertView.findViewById(R.id.dialog_item_checkbox)), option);
         // Return the filter view

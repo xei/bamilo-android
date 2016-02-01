@@ -1,9 +1,8 @@
 package com.mobile.newFramework.objects.checkout;
 
-import android.support.annotation.Nullable;
-
 import com.mobile.newFramework.objects.customer.Customer;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -21,16 +20,14 @@ public class CheckoutStepLogin extends CheckoutStepObject {
     }
 
     @Override
-    public boolean initialize(JSONObject jsonObject) {
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Next checkout step
         super.initialize(jsonObject);
         // Customer
         customer = new Customer();
-        customer.initialize(jsonObject);
-        return true;
+        return customer.initialize(jsonObject);
     }
 
-    @Nullable
     public Customer getCustomer() {
         return customer;
     }

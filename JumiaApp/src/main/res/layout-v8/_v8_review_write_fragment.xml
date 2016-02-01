@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dimen_10dp">
 
         <include
             android:id="@+id/product_info_container"
             layout="@layout/product_details_fragment_header" />
 
         <View
-            android:layout_below="@id/product_info_container"
-            style="@style/divider_horizontal"/>
+            style="@style/divider_horizontal"
+            android:layout_below="@id/product_info_container" />
 
         <!-- SHADOW -->
 
@@ -25,10 +27,10 @@
 
         <include
             android:id="@+id/write_review_layout"
+            layout="@layout/review_write_fragment_nested"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/shadow"
-            layout="@layout/review_write_fragment_nested" />
+            android:layout_below="@id/shadow" />
     </RelativeLayout>
 
 </ScrollView>

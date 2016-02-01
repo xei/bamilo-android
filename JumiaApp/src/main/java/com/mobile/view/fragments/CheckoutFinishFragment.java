@@ -384,6 +384,10 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Image
             ImageView imageView = (ImageView) prodInflateView.findViewById(R.id.image_view);
             RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
+            //shop first image
+            ImageView shopFirstImageView = (ImageView) prodInflateView.findViewById(R.id.shop_first_item);
+            ProductUtils.setShopFirst(item, shopFirstImageView);
+            ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
             // Brand
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrand());
             // Name
@@ -435,6 +439,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         // Voucher
         if (mOrderFinish.hasCouponDiscount()) {
             mVoucherValue.setText(getString(R.string.placeholder_discount, CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount())));
+            mVoucherView.setVisibility(View.VISIBLE);
         } else {
             mVoucherView.setVisibility(View.GONE);
         }
@@ -476,7 +481,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
-        shippingAddressView.findViewById(R.id.checkout_address_item_radio_btn).setVisibility(View.GONE);
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
         container.addView(shippingAddressView);
     }

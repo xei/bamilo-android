@@ -39,10 +39,8 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.social.FacebookHelper;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
-import java.lang.ref.WeakReference;
 import java.util.EnumSet;
 
 /**
@@ -398,14 +396,14 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
                     if (eventType == EventType.GUEST_LOGIN_EVENT) {
                         TrackerDelegator.storeFirstCustomer(customer);
                         TrackerDelegator.trackSignupSuccessful(GTMValues.CHECKOUT);
-                        // Set Facebook login flag false
-                        CustomerUtils.setFacebookLogin(getBaseActivity(),false);
+                        // Set hide change password
+                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(),true);
                     } else if (eventType == EventType.AUTO_LOGIN_EVENT) {
                         TrackerDelegator.trackLoginSuccessful(customer, true, false);
                     } else {
                         TrackerDelegator.trackLoginSuccessful(customer, false, true);
-                        // Set Facebook login flag true
-                        CustomerUtils.setFacebookLogin(getBaseActivity(),true);
+                        // Set hide change password
+                        CustomerUtils.setChangePasswordVisibility(getBaseActivity(),true);
                     }
                     // Validate the next step
                     CheckoutStepManager.validateLoggedNextStep(getBaseActivity(), isInCheckoutProcess, mParentFragmentType, mNextStepFromParent, nextStepFromApi, getArguments());
@@ -438,14 +436,18 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
+                // Show warning
+                showWarningErrorMessage(getString(R.string.error_invalid_email));
+                // Show content
                 showFragmentContentContainer();
-                getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_invalid_email));
                 break;
             case FACEBOOK_LOGIN_EVENT:
             case AUTO_LOGIN_EVENT:
                 // Logout
-                LogOut.perform(new WeakReference<Activity>(getBaseActivity()));
+                LogOut.perform(getWeakBaseActivity());
             case GUEST_LOGIN_EVENT:
+                // Show warning
+                showWarningErrorMessage(baseResponse.getValidateMessage(), eventType);
                 // Tracking
                 TrackerDelegator.trackSessionFailed(eventType);
                 // Show content

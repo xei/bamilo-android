@@ -1,12 +1,9 @@
 package com.mobile.controllers;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.session.GetLogoutHelper;
-import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.utils.TrackerDelegator;
@@ -27,56 +24,35 @@ import java.lang.ref.WeakReference;
  * Proprietary and confidential.
  * 
  * @author Sergio Pereira
- * @modifyed: Nuno Castro
- * @modified: Manuel Silva
- * 
- * @version 1.5
- * 
- *          2012/06/19
- * 
+ *
  */
 public class LogOut {
 
     /**
      * Performs the Logout
-     * 
-     * @param activityRef
-     *            The activity where the logout is called from
-     *            
-     * TODO: Improve this method, if is being discarded the server response why we perform a request...
-     * 
      */
-    public static void perform(final WeakReference<Activity> activityRef) {
-
-        BaseActivity baseActivity = (BaseActivity) activityRef.get();
+    public static void perform(@NonNull final WeakReference<BaseActivity> activityRef) {
+        BaseActivity baseActivity = activityRef.get();
         if (baseActivity != null) {
+            // Show progress
             baseActivity.showProgress();
+            // Try notify mob api
+            JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, null);
+            // Clean customer data
+            cleanCustomerData(baseActivity);
+            // Inform activity to update views
+            try {
+                baseActivity.onLogOut();
+            } catch (IllegalStateException e){
+                e.printStackTrace();
+            }
         }
-
-        JumiaApplication.INSTANCE.sendRequest(new GetLogoutHelper(), null, new IResponseCallback() {
-
-            @Override
-            public void onRequestError(BaseResponse baseResponse) {
-                BaseActivity baseActivity = (BaseActivity) activityRef.get();
-                if (baseActivity != null) {
-                    cleanData(baseActivity);
-                }
-            }
-
-            @Override
-            public void onRequestComplete(BaseResponse baseResponse) {
-                BaseActivity baseActivity = (BaseActivity) activityRef.get();
-                if (baseActivity != null) {
-                    cleanData(baseActivity);
-                }
-            }
-        });
     }
-    
+
     /**
      * Clear cart data from memory and other components.
      */
-    private static void cleanData(BaseActivity baseActivity) {
+    public static void cleanCustomerData(BaseActivity baseActivity) {
         // Facebook logout
         FacebookHelper.facebookLogout();
         // Clear cookies, cart, credentials
@@ -84,12 +60,10 @@ public class LogOut {
         // Clean wish list
         WishListCache.clean();
         // Clean cart
-        JumiaApplication.INSTANCE.setCart(new PurchaseEntity());
+        JumiaApplication.INSTANCE.setCart(null);
         JumiaApplication.INSTANCE.getCustomerUtils().clearCredentials();
         // Update layouts to clean cart info
         baseActivity.updateCartInfo();
-        // Inform parent activity
-        baseActivity.onLogOut();
         // Tracking
         TrackerDelegator.clearTransactionCount();
     }
