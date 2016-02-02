@@ -21,21 +21,17 @@ public class ConstantsIntentExtra {
 
     // ########### BASE ###########
     public static final String IS_NESTED_FRAGMENT = mPackage + "isNestedFragment";
-    public static final String CONTENT_DATA = mPackage + "ContentData";
     public static final String CONTENT_ID = mPackage + "ContentId";
 
     // ########### Search ###########
     public static final String SEARCH_QUERY = mPackage + "SearchStr";
 
     // ########### Products ###########
-
-//    public static final String CONTENT_URL = mPackage + "ContentUrl";
     public static final String PRODUCT_SKU = mPackage + "ProductSku";
     public static final String IS_ZOOM_AVAILABLE = mPackage + "ZoomAvailable";
     public static final String INFINITE_SLIDE_SHOW = mPackage + "InfiniteScroll";
     public static final String SHOW_HORIZONTAL_LIST_VIEW = mPackage + "ShowHorizontalListView";
     public static final String SHOW_RELATED_ITEMS = mPackage + "ShowRelatedItems";
-    public static final String IS_RELATED_ITEM = mPackage + "RelatedItem";
     public static final String SIZE_GUIDE_URL = mPackage + "SizeGuideUrl";
     public static final String PRODUCT_NAME = mPackage + "ProductName";
     public static final String IMAGE_LIST = mPackage + "ProductImages";
@@ -45,7 +41,6 @@ public class ConstantsIntentExtra {
 
     // ########### Checkout ###########
     public static final String CONTENT_TITLE = mPackage + "ContentTitle";
-    public static final String SUCCESS_INFORMATION = mPackage + "SuccessInformation";
 
     // ########### REVIEW ##############
     public static final String REVIEW_TITLE = mPackage + "ReviewTitle";
@@ -61,9 +56,7 @@ public class ConstantsIntentExtra {
     public static final String UTM_STRING = "UTM";
 
     // ########### Categories ##############
-    public static final String CATEGORY_LEVEL = mPackage + "CategoryLevel";
     public static final String CATEGORY_TREE_NAME = mPackage + "CategoryTreeName";
-    public static final String CATALOG_SOURCE = mPackage + "isFromNavigationDrawer";
 
     // ########### Catalog ##############
     public static final String CATALOG_PAGE = mPackage + "catalogPage";
@@ -71,7 +64,6 @@ public class ConstantsIntentExtra {
     public static final String CATALOG_FILTER_VALUES = mPackage + "catalogFilter";
     public static final String CATALOG_SORT = mPackage + "catalogSort";
     public static final String CATALOG_CHANGES_APPLIED = mPackage + "catalogChangesApplied";
-    public static final String CATALOG_QUERIE = mPackage + "catalogQuerie";
     public static final String CATALOG_PAGE_POSITION = mPackage + "catalogPagePosition";
 
     // ########### Home ##############
@@ -100,7 +92,6 @@ public class ConstantsIntentExtra {
 
     // ########### MY ORDER ##############
     public static final String ORDER_FINISH = mPackage + "OrderFinish";
-    public static final String ORDER_SUMMARY = mPackage + "OrderSummary";
 
     // ############ BANNER TRACKING ###############
     public static final String TRACKING_ORIGIN_TYPE = "bannerGroupType";
@@ -110,14 +101,12 @@ public class ConstantsIntentExtra {
 
     public static final String DATA = mPackage + "data";
     public static final String FLAG_1 = mPackage + "flag1";
-    public static final String FLAG_2 = mPackage + "flag2";
     public static final String ARG_1 = mPackage + "arg1";
     public static final String ARG_2 = mPackage + "arg2";
     public static final String ARG_3 = mPackage + "arg3";
 
 
-    // ########## RICH RELEVANE ############
-
+    // ########## RICH RELEVANCE ############
     public static final String RICH_RELEVANCE_HASH = mPackage + "RichRelevanceHash";
 
 
