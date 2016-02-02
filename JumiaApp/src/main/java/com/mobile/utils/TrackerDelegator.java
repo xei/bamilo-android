@@ -753,14 +753,13 @@ public class TrackerDelegator {
     /**
      *
      */
-    public static void trackProduct(ProductRegular mCompleteProduct, String source, String path, boolean isRelatedItem) {
+    public static void trackProduct(ProductRegular mCompleteProduct, String source, String path) {
         Bundle bundle = new Bundle();
         bundle.putString(TrackerDelegator.SOURCE_KEY, source);
         bundle.putString(TrackerDelegator.PATH_KEY, path);
         bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
         bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
-        bundle.putBoolean(TrackerDelegator.RELATED_ITEM, isRelatedItem);
         bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
         bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getAvgRating());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
