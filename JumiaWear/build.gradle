@@ -57,14 +57,14 @@ android {
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), '../JumiaApp/proguard-project-live.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
         }
 
         release {
             debuggable false
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), '../JumiaApp/proguard-project-market.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
         }
     }
 

@@ -279,7 +279,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         data.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         data.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         data.putString(ConstantsIntentExtra.NAVIGATION_PATH, mCategory.getCategoryPath());
-        data.putString(ConstantsIntentExtra.CATALOG_SOURCE, mCategory.getType());
         data.putString(RestConstants.MAIN_CATEGORY, mCategory.getMainCategory());
     }
 }
