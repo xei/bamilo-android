@@ -22,6 +22,7 @@ import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
@@ -279,5 +280,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         data.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         data.putString(ConstantsIntentExtra.NAVIGATION_PATH, mCategory.getCategoryPath());
         data.putString(ConstantsIntentExtra.CATALOG_SOURCE, mCategory.getType());
+        data.putString(RestConstants.MAIN_CATEGORY, mCategory.getMainCategory());
     }
 }

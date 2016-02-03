@@ -42,6 +42,8 @@ public class Category implements IJSONSerializable, Parcelable {
     private ArrayList<Category> mSubCategories;
 
     private boolean isSection;
+
+    private String mMainCategory;   //content category
     /**
      * Category empty constructor.
      */
@@ -123,6 +125,15 @@ public class Category implements IJSONSerializable, Parcelable {
         return mImage;
     }
 
+    /**
+     *
+     * @return content category string
+     */
+    public String getMainCategory() {
+        return mMainCategory;
+    }
+
+
     /*
      * (non-Javadoc)
      *
@@ -140,6 +151,7 @@ public class Category implements IJSONSerializable, Parcelable {
         mTargetLink = jsonObject.optString(RestConstants.TARGET);
         mUrlKey = jsonObject.optString(RestConstants.URL_KEY);
         mPath = jsonObject.optString(RestConstants.URL);
+        mMainCategory = jsonObject.optString(RestConstants.MAIN_CATEGORY);
 //        //Print.i(TAG, "code1categoy : getApiUrl: " + mTargetLink + " category.getName(): " + mName);
         // Get sub categories
         JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.CHILDREN);
@@ -211,6 +223,7 @@ public class Category implements IJSONSerializable, Parcelable {
         dest.writeString(mTargetLink);
         dest.writeList(mSubCategories);
         dest.writeString(mImage);
+        dest.writeString(mMainCategory);
     }
 
     /**
@@ -224,6 +237,7 @@ public class Category implements IJSONSerializable, Parcelable {
         mSubCategories = new ArrayList<>();
         in.readList(mSubCategories, Category.class.getClassLoader());
         mImage = in.readString();
+        mMainCategory = in.readString();
     }
 
     /**
