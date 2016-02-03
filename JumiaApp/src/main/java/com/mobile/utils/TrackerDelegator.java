@@ -690,7 +690,7 @@ public class TrackerDelegator {
     }
 
 
-    public static void trackProductAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type) {
+    public static void trackProductAddedToCart(ProductRegular product, TeaserGroupType type) {
         Bundle bundle = new Bundle();
         bundle.putString(TrackerDelegator.SKU_KEY, product.getSku());
         bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
