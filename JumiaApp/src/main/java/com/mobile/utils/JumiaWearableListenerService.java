@@ -51,8 +51,6 @@ public class JumiaWearableListenerService extends WearableListenerService {
 
     /**
      * callBack that is called every time there is some change in the service flow.
-     *
-     * @param dataEvents
      */
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
@@ -114,8 +112,6 @@ public class JumiaWearableListenerService extends WearableListenerService {
 
     /**
      * method that sends a DataMapRequest with the error message to the wear app.
-     *
-     * @param errorMessage
      */
     public void sendErrorToWear(String errorMessage) {
         PutDataMapRequest putRequest = PutDataMapRequest.create("/errormessage");
@@ -130,8 +126,6 @@ public class JumiaWearableListenerService extends WearableListenerService {
 
     /**
      * function that parses a DataMap object into a bundle Object.
-     *
-     * @param datamap
      * @return bundle
      */
     private Bundle buildBundleForNotification(DataMap datamap) {

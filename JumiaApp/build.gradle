@@ -125,8 +125,8 @@ android {
          */
         jumia {
             applicationId "com.jumia.android"
-            versionName "2.9.1"
-            versionCode getAppVersionCode(59)
+            versionName "3.0"
+            versionCode getAppVersionCode(60)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             //buildTypes.debug.manifestPlaceholders = [APP_ID: "123456"]
@@ -134,8 +134,8 @@ android {
 
         jumiaPreInstall {
             applicationId "com.jumia.android"
-            versionName "2.9.1"
-            versionCode 59
+            versionName "3.0"
+            versionCode 60
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -145,8 +145,8 @@ android {
 
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
-            versionName "2.9.1"
-            versionCode 59
+            versionName "3.0"
+            versionCode 60
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -159,16 +159,16 @@ android {
          */
         shop {
             applicationId "com.shop.android"
-            versionName "1.7.1"
-            versionCode getAppVersionCode(12)
+            versionName "1.8"
+            versionCode getAppVersionCode(13)
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
         }
 
         shopPreInstall {
             applicationId "com.shop.android"
-            versionName "1.7.1"
-            versionCode 12
+            versionName "1.8"
+            versionCode 13
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
             android.sourceSets {
@@ -181,16 +181,16 @@ android {
          */
         daraz {
             applicationId "com.daraz.android"
-            versionName "1.7"
-            versionCode getAppVersionCode(12)
+            versionName "1.8"
+            versionCode getAppVersionCode(13)
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
         }
 
         darazPreInstall {
             applicationId "com.daraz.android"
-            versionName "1.7"
-            versionCode 12
+            versionName "1.8"
+            versionCode 13
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
             android.sourceSets {
@@ -203,8 +203,8 @@ android {
          */
         bamilo {
             applicationId "com.bamilo.android"
-            versionName "1.9"
-            versionCode getAppVersionCode(15)
+            versionName "2.0"
+            versionCode getAppVersionCode(16)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }
