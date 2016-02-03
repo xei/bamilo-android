@@ -128,18 +128,7 @@ public class FacebookTracker {
         logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP);
     }
 
-    /**
-     * Track added item to cart.
-     * @param sku - the product sku
-     * @param price - the product price
-     * @param shopCountry
-     * @param appVersion
-     * @author sergiopereira
-     */
-    public void trackAddedToCart(String sku, double price, String shopCountry, String appVersion) {
-        Log.i(TAG, "TRACK ADD TO CART: " + sku + " " + price);
-     //   trackItem(AppEventsConstants.EVENT_NAME_ADDED_TO_CART, sku, price, shopCountry, appVersion);
-    }
+
 
     /**
      * Track Catalog view.
