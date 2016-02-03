@@ -7,7 +7,7 @@
         android:id="@+id/email_notifications_title"
         style="@style/HeaderStyle"
         android:layout_alignParentTop="true"
-        android:text="@string/newsletters_label"
+        android:text="@string/newsletter_label"
         android:textStyle="bold" />
 
     <ScrollView

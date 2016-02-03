@@ -73,7 +73,7 @@ public class MyAccountEmailNotificationFragment extends BaseFragment implements 
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MY_ACCOUNT_EMAIL_NOTIFICATION,
                 R.layout.my_account_email_notification_fragment,
-                R.string.myaccount_email_notifications,
+                R.string.newsletter_label,
                 NO_ADJUST_CONTENT);
     }
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -61,6 +62,7 @@ import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
 import com.mobile.utils.datepicker.DatePickerDialog;
+import com.mobile.utils.dialogfragments.DialogFormFragment;
 import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
@@ -218,26 +220,36 @@ public class DynamicFormItem {
      */
     private void buildControl() {
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        int controlWidth = RelativeLayout.LayoutParams.MATCH_PARENT;
         if (null != this.entry) {
             this.control = new RelativeLayout(this.context);
             this.control.setId(parent.getNextId());
             switch (this.entry.getInputType()) {
+
+                case title:
+                    buildTitle();
+                    break;
+                case switchRadio:
+                    buildRelatedSwitchWithRadioGroup(params);
+                    break;
+                case relatedScreenRadio:
+                    buildRelatedScreenRadio();
+                    break;
+
                 case checkBox:
                     buildCheckBox(params);
                     break;
                 case checkBoxLink:
-                    buildCheckBoxForTerms(params, controlWidth);
+                    buildCheckBoxForTerms(params, RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case radioGroup:
-                    buildRadioGroup(params, controlWidth);
+                    buildRadioGroup(params, RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case list:
-                    buildList(params, controlWidth);
+                    buildList(params, RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case metadata:
                 case date:
-                    buildDate(controlWidth);
+                    buildDate(RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case number:
                 case email:
@@ -252,7 +264,7 @@ public class DynamicFormItem {
                     buildHide();
                     break;
                 case rating:
-                    buildRatingOptionsTerms(controlWidth);
+                    buildRatingOptionsTerms(RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case infoMessage:
                 case errorMessage:
@@ -1397,8 +1409,7 @@ public class DynamicFormItem {
 
         ImageView icon = (ImageView) radioGroupContainer.findViewById(R.id.radio_field_icon);
 
-        if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
-                || this.parent.getForm().getType() == FormConstants.USER_DATA_FORM) {
+        if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM || this.parent.getForm().getType() == FormConstants.USER_DATA_FORM) {
             UIUtils.setDrawableByString(icon, ICON_PREFIX + this.entry.getKey());
             icon.setVisibility(View.VISIBLE);
         }
@@ -1446,7 +1457,7 @@ public class DynamicFormItem {
     /**
      * Generates a Vertical RadioGroup
      */
-    private void createRadioGroupVertical(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+    private ViewGroup createRadioGroupVertical(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, ViewGroup dataContainer) {
 
         RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context, R.layout.form_radiolistlayout, null);
         //Preselection
@@ -1526,6 +1537,8 @@ public class DynamicFormItem {
         radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), formsMap, paymentInfoMap, defaultSelect);
         // Add view
         this.control.addView(dataContainer);
+
+        return radioGroup;
     }
 
 
@@ -1714,6 +1727,94 @@ public class DynamicFormItem {
 
     }
 
+    private boolean hasRelatedField() {
+        return this.entry.getRelatedField() != null;
+    }
+
+    /**
+     * TODO
+     */
+    private void buildTitle() {
+        // Get field container
+        TextView title = (TextView) View.inflate(this.context, R.layout._def_gen_form_title, null);
+        // Set field
+        title.setText(this.entry.getLabel());
+        // Add view
+        this.control.addView(title);
+    }
+
+    /**
+     * TODO
+     */
+    private View buildRelatedSwitchWithRadioGroup(RelativeLayout.LayoutParams params) {
+        // Get field container
+        ViewGroup container = (ViewGroup) View.inflate(this.context, R.layout._def_gen_form_switch, null);
+        // Get switch button
+        SwitchCompat switchButton = (SwitchCompat) container.findViewById(R.id.switch_field);
+        // Set text
+        switchButton.setText(this.entry.getLabel());
+        // Validate related field
+        if (hasRelatedField()) {
+            // Build related field
+            final ViewGroup radioGroup = createRadioGroupVertical(MANDATORYSIGNALSIZE, params, container);
+            // Set listener
+            switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    // Validate state
+                    if (isChecked) {
+                        radioGroup.setVisibility(View.VISIBLE);
+                    } else {
+                        radioGroup.setVisibility(View.GONE);
+                    }
+                }
+            });
+        }
+        // Set default value
+        switchButton.setChecked(Boolean.parseBoolean(this.entry.getValue()));
+        // Return the container
+        return container;
+    }
+
+    /**
+     * TODO
+     */
+    private void buildRelatedScreenRadio() {
+        // Get field container
+        View container = View.inflate(this.context, R.layout._def_gen_form_related_screen_radio, null);
+        // Set title
+        ((TextView) container.findViewById(R.id.title)).setText(this.entry.getLabel());
+        // Set sub title
+        ((TextView) container.findViewById(R.id.sub_title)).setText("Sub title");
+        // Set button
+        TextView button = (TextView) container.findViewById(R.id.button);
+        // Set button state
+        if (Boolean.parseBoolean(this.entry.getValue())) {
+            // Set active state
+            button.setText("Active");
+            button.setEnabled(true);
+        } else {
+            // Set inactive state
+            button.setText("Inactive");
+            button.setEnabled(false);
+            // Show other views
+        }
+        // Set click behavior
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Validate state
+                Print.d("SHOW DIALOG");
+                new DialogFormFragment();
+            }
+        });
+        // Add view
+        this.control.addView(container);
+    }
+
+    /**
+     * Build editable text field
+     */
     private View buildEditableTextField(ViewGroup group) {
         // Get text field container
         View container = View.inflate(this.context, R.layout.gen_form_text_field, null);

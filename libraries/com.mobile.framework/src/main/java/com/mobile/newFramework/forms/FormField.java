@@ -31,6 +31,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     protected final static String TAG = FormField.class.getSimpleName();
 
     // Supported Types
+
+    public static final String TITLE = "section_title";
+    public static final String SWITCH_RADIO = "switch_radio";
+    public static final String RELATED_SCREEN_RADIO = "related_screen_radio";
+
     public static final String RADIO = "radio";
     private static final String STRING = "string";
     private static final String EMAIL = "email";
@@ -114,6 +119,17 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         try {
             String formFieldString = jsonObject.optString(RestConstants.TYPE);
             switch (formFieldString) {
+
+                case TITLE:
+                    mInputType = FormInputType.title;
+                    break;
+                case SWITCH_RADIO:
+                    mInputType = FormInputType.switchRadio;
+                    break;
+                case RELATED_SCREEN_RADIO:
+                    mInputType = FormInputType.relatedScreenRadio;
+                    break;
+
                 case STRING:
                     mInputType = FormInputType.text;
                     break;

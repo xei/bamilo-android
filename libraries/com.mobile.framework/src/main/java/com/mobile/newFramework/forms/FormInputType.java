@@ -21,5 +21,9 @@ public enum FormInputType {
     rating,
     relatedNumber,
     errorMessage,
-    infoMessage
+    infoMessage,
+
+    title,
+    switchRadio,
+    relatedScreenRadio
 }

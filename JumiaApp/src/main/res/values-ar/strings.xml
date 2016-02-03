@@ -165,7 +165,7 @@
     <string name="new_password_hint">كلمة مرور جديدة</string>
     <string name="new_password_label">كلمة مرور جديدة</string>
     <string name="newsletter_saved_message">تم حفظ إعدادات إخطارات البريد الإلكتروني الخاص بك</string>
-    <string name="newsletters_label">النشرات الإخبارية</string>
+    <string name="newsletter_label">النشرات الإخبارية</string>
     <string name="next_button">التالي</string>
     <string name="no_connect_dialog_content">يُرجى فحص الاتصال بالإنترنت الخاص بك والمحاولة مرة أخرى!</string>
     <string name="no_internet_access_warning_title">لا يمكنك الدخول على الإنترنت!</string>

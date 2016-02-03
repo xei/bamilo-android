@@ -175,20 +175,25 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
-    <style name="AigButton.WhiteWithBlack_800" >
+    <style name="AigButton.Text" >
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="AigButton.Text.Black_800" >
         <item name="android:textColor">@color/black_800</item>
         <item name="android:layout_margin">2dp</item>
     </style>
 
-    <style name="AigButton.TextOrange" >
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@null</item>
+    <style name="AigButton.Text.Orange" >
         <item name="android:textColor">@color/accent</item>
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
+    </style>
+
+    <style name="AigButton.Text.Blue">
+        <item name="android:textColor">@color/blue1</item>
     </style>
 
     <!-- RADIO BUTTON -->

@@ -113,7 +113,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_item_button_reorder"
-            style="@style/AigButton.TextOrange"
+            style="@style/AigButton.Text.Orange"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
