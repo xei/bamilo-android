@@ -309,4 +309,5 @@ public class RestConstants {
     public static final String SHOP_FIRST_OVERLAY = "shop_first_overlay";
     public static final String PLACE_HOLDER = "placeholder";
     public static final String COUPONCODE = "couponcode";
+    public static final String USER_SUBSCRIBED = "user_subscribed";
 }

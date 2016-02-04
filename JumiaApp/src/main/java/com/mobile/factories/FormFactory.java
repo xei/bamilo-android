@@ -3,18 +3,21 @@ package com.mobile.factories;
 import android.content.Context;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import android.text.TextWatcher;
 import android.util.LayoutDirection;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mobile.constants.FormConstants;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.view.R;
+
+import org.w3c.dom.Text;
 
 /**
  * A Singleton factory for the creation of dynamic forms based on information returned by the framework <p/><br>
@@ -45,7 +48,9 @@ public class FormFactory {
             R.drawable.ic_form_gender,
             R.drawable.ic_form_national_id,
             R.drawable.ic_form_password,
-            R.drawable.ic_form_phone
+            R.drawable.ic_form_phone,
+            R.drawable.ic_form_female,
+            R.drawable.ic_form_male
     };
 
     /**
@@ -95,11 +100,14 @@ public class FormFactory {
                 parent = createGenericForm(context, form, createParams(context, R.dimen.form_no_top_margin));
                 break;
             case FormConstants.NEWSLETTER_FORM:
+                form.hideAsterisks();// Used to hide asterisks because everything is mandatory
                 parent = createNewsletterForm(context, form, createParams(context, R.dimen.form_no_top_margin));
                 break;
         }
         return parent;
     }
+
+
 
     /**
      * This is used as base to create the given form. Here all the controls are instantiated.
@@ -142,21 +150,17 @@ public class FormFactory {
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         viewGroup.setOrientation(LinearLayout.VERTICAL);
         viewGroup.setLayoutParams(frmParams);
-        viewGroup.setBackgroundColor(ContextCompat.getColor(context, R.color.black_800));
-        viewGroup.setPadding(context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp));
         // Create dynamic form
         DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
         Print.d(TAG, "createGenericForm: createNewsletterForm");
-
-        // TODO: Add title and description for Homepage Newsletter Form
-        // TODO: Customize Radio Group for Homepage Newsletter Form (images for options)
-
 
         // Create each form field
         for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
             DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, frmEntry);
             dynamicForm.addControl(dynamicFormItem, ctrlParams);
+            Print.i(TAG, "code1watcher createGenericForm : ");
+
         }
         return dynamicForm;
     }

@@ -191,6 +191,12 @@
         <item name="android:paddingRight">0dp</item>
     </style>
 
+    <style name="AigButton.Black_800_Orange1" >
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColor">@drawable/selector_black_orange</item>
+        <item name="android:layout_margin">2dp</item>
+    </style>
+
     <!-- RADIO BUTTON -->
 
     <style name="FormRadioButton" parent="SingleLineStyle">

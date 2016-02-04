@@ -381,6 +381,11 @@ public interface AigApiInterface {
     String setMultiStepFinish = "setMultiStepFinish";
 
 
+    @FormUrlEncoded
+    @POST("/")
+    void formEvent(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String formEvent = "formEvent";
+
     /*
      * ########## HTTP PUT ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0
      */
