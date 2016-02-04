@@ -100,7 +100,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private TextView mDiscountPercentageText;
     private TextView mSaveForLater;
     private TextView mBuyButton;
-    private boolean isRelatedItem = false;
     private ViewGroup mTableBundles;
     private ViewGroup mSellerContainer;
     private ViewGroup mDescriptionView;
@@ -420,8 +419,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get source and path
         mNavSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
         mNavPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-        // Determine if related items should be shown
-        isRelatedItem = bundle.getBoolean(ConstantsIntentExtra.IS_RELATED_ITEM);
         mProduct = bundle.getParcelable(ProductComplete.class.getSimpleName());
     }
 
@@ -474,7 +471,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Show container
         showFragmentContentContainer();
         // Tracking
-        TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath, isRelatedItem);
+        TrackerDelegator.trackProduct(mProduct, mNavSource, mNavPath);
     }
 
     /**
@@ -943,7 +940,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (simple != null) {
             triggerAddItemToCart(mProduct.getSku(), simple.getSku());
             // Tracking
-            TrackerDelegator.trackProductAddedToCart(mProduct, simple.getSku(), mGroupType);
+            TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
         }
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {

@@ -163,6 +163,7 @@ public class RestConstants {
     public static final String SUB_TITLE = "sub_title";
     public static final String META = "meta";
     public static final String CATEGORY = "category";
+    public static final String MAIN_CATEGORY = "main_category";
     public static final String PAIDPRICE_CONVERTED = "paidprice_converted";
     public static final String SECTION_NAME = "section_name";
     public static final String SECTION_MD5 = "section_md5";
