@@ -165,12 +165,8 @@
     <string name="adjust_token_view_cart">k220tx</string>
     <string name="adjust_token_transaction_confirmation">4mrofw</string>
     <!-- FB audience -->
-    <string name="adjust_token_fb_home">z2ltzy</string>
     <string name="adjust_token_fb_view_listing">iuvlys</string>
     <string name="adjust_token_fb_view_product">h375id</string>
-    <string name="adjust_token_fb_search">mlc8i5</string>
-    <string name="adjust_token_fb_view_wishlist">l3zco3</string>
-    <string name="adjust_token_fb_view_cart">cvjbaa</string>
     <string name="adjust_token_fb_add_to_cart">txism9</string>
     <string name="adjust_token_fb_transaction_confirmation">25981k</string>
     <!-- End of Adjust Tracking Parameters -->

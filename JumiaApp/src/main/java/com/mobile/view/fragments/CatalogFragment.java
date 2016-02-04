@@ -108,6 +108,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private String mCategoryTree;
 
+    private String mMainCategory;
+
     private ContentValues mQueryValues = new ContentValues();
 
     private ProductRegular mWishListItemClicked = null;
@@ -115,6 +117,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private int mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_LIST;
 
     private String mKey;
+
 
     /**
      * Create and return a new instance.
@@ -165,7 +168,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
             else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
             else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
-            else if(type == FragmentType.CATALOG_CATEGORY) mQueryValues.put(RestConstants.CATEGORY, mKey);
+            else if(type == FragmentType.CATALOG_CATEGORY) {
+                mQueryValues.put(RestConstants.CATEGORY, mKey);
+            }
 
             else mQueryValues.put(RestConstants.HASH, mKey);
             // Get sort
@@ -189,6 +194,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             }
             // Verify if catalog page was open via navigation drawer
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
+            //Get category content/main category
+            mMainCategory = arguments.getString(RestConstants.MAIN_CATEGORY);
         }
 
         // Get data from saved instance
@@ -404,7 +411,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Case catalog was recover
         else {
             onRecoverCatalogContainer(mCatalogPage);
-            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree);
+            TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
         }
     }
 
@@ -986,7 +993,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
             onUpdateCatalogContainer(catalogPage);
             if (catalogPage.getPage() == 1) {
-                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree);
+                TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);
             }
         }
         // Case invalid success response

@@ -690,9 +690,9 @@ public class TrackerDelegator {
     }
 
 
-    public static void trackProductAddedToCart(ProductRegular product, String simpleSku, TeaserGroupType type) {
+    public static void trackProductAddedToCart(ProductRegular product, TeaserGroupType type) {
         Bundle bundle = new Bundle();
-        bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
+        bundle.putString(TrackerDelegator.SKU_KEY, product.getSku());
         bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
         bundle.putString(TrackerDelegator.NAME_KEY, product.getName());
         bundle.putString(TrackerDelegator.BRAND_KEY, product.getBrand());
@@ -741,8 +741,6 @@ public class TrackerDelegator {
         AdjustTracker.get().trackEvent(sContext, TrackingEvent.ADD_TO_CART, params);
         //GTM
         GTMManager.get().gtmTrackAddToCart(sku, price, brand, EUR_CURRENCY, discount, rating, category, subCategory, location);
-        // FB
-        FacebookTracker.get(sContext).trackAddedToCart(sku, price, JumiaApplication.SHOP_ID, appVersion);
         //GA Banner Flow
         if (bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE) != null) {
             JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE));
@@ -1248,7 +1246,7 @@ public class TrackerDelegator {
      * Track catalog page
      * Fire the track catalog page for Adjust Tracker
      */
-    public static void trackCatalogPageContent(CatalogPage catalogPage, String categoryTree) {
+    public static void trackCatalogPageContent(CatalogPage catalogPage, String categoryTree, String mainCategory) {
 
         if (catalogPage != null) {
             // Track Adjust screen
@@ -1271,6 +1269,11 @@ public class TrackerDelegator {
             if (!TextUtils.isEmpty(catalogPage.getBrandId())) {
                 bundle.putString(AdjustTracker.BRAND_ID, catalogPage.getBrandId());
             }
+            //send content category even empty
+            if (mainCategory != null) {
+                bundle.putString(AdjustTracker.MAIN_CATEGORY, mainCategory);
+            }
+
             TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_LIST_SORTED, bundle);
 
             // Search
