@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
@@ -61,6 +62,10 @@ public class PurchaseItem implements Parcelable {
      */
     private void parseItem(JSONObject itemJson) throws JSONException {
         sku = itemJson.getString(RestConstants.SKU);
+        // TODO: sku must come from API without the simple - (NAFAMZ-15777 3.c)
+        if(TextUtils.contains(sku, "-")) {
+            sku = sku.split("-")[0];
+        }
         name = itemJson.getString(RestConstants.NAME);
         paidPriceConverted = itemJson.optDouble(RestConstants.PAIDPRICE_CONVERTED, 0d);
         quantity = itemJson.optInt(RestConstants.QUANTITY, 0);

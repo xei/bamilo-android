@@ -26,15 +26,9 @@ public class FacebookTracker {
 
     private static final String EVENT_PARAM_VALUE_TO_SUM = "_valueToSum";
 
-    private static final String EVENT_PARAM_CONTENT_CATEGORY= "content_category";
-
     private static final String EVENT_PARAM_SHOP_COUNTRY = "shop_country";
 
     private static final String EVENT_PARAM_APP_VERSION = "app_version";
-
-    private static final String EVENT_VIEW_CONTENT_PRODUCT = "fb_mobile_content_view_productDetailPage";
-
-    private static final String EVENT_VIEW_CONTENT_CATEGORY = "fb_mobile_content_view_categoryPage";
 
     private static FacebookTracker sFacebookTracker;
 
@@ -134,18 +128,7 @@ public class FacebookTracker {
         logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP);
     }
 
-    /**
-     * Track added item to cart.
-     * @param sku - the product sku
-     * @param price - the product price
-     * @param shopCountry
-     * @param appVersion
-     * @author sergiopereira
-     */
-    public void trackAddedToCart(String sku, double price, String shopCountry, String appVersion) {
-        Log.i(TAG, "TRACK ADD TO CART: " + sku + " " + price);
-//        trackItem(AppEventsConstants.EVENT_NAME_ADDED_TO_CART, sku, price, shopCountry, appVersion);
-    }
+
 
     /**
      * Track Catalog view.

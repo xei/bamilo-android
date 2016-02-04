@@ -26,13 +26,10 @@ import com.adjust.sdk.LogLevel;
 import com.adjust.sdk.OnAttributionChangedListener;
 import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
-import com.mobile.newFramework.objects.cart.PurchaseCartItem;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerGender;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
-import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.tracking.gtm.GTMKeys;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
@@ -72,6 +69,7 @@ public class AdjustTracker {
     public static final String CART = "cart";
     public static final String DEVICE = "device";
     public static final String CATEGORY = "category";
+    public static final String MAIN_CATEGORY = "main_category";
     public static final String CATEGORY_ID = "categoryId";
     public static final String BRAND_ID = "brand_id";
     public static final String TREE = "tree";
@@ -311,12 +309,6 @@ public class AdjustTracker {
 
             }   
             Adjust.trackEvent(eventHomeScreen);
-            
-            //FB - View Homescreen
-            AdjustEvent eventHomeScreenFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_home));
-            eventHomeScreenFB = getFBBaseParameters(eventHomeScreenFB, bundle);
-            Adjust.trackEvent(eventHomeScreenFB);
-            
             break;
 
         case PRODUCT_DETAIL_LOADED:
@@ -414,8 +406,8 @@ public class AdjustTracker {
             eventCatalogSortedFB.addPartnerParameter(AdjustKeys.APP_VERSION, getAppVersion());
             eventCatalogSortedFB.addCallbackParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
             eventCatalogSortedFB.addPartnerParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
-            eventCatalogSortedFB.addCallbackParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(CATEGORY));
-            eventCatalogSortedFB.addPartnerParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(CATEGORY));
+            eventCatalogSortedFB.addCallbackParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(MAIN_CATEGORY));
+            eventCatalogSortedFB.addPartnerParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(MAIN_CATEGORY));
 
             Adjust.trackEvent(eventCatalogSortedFB);
             break;
@@ -434,53 +426,7 @@ public class AdjustTracker {
                 }
 
             }   
-  
-            PurchaseEntity cart = bundle.getParcelable(CART);
-            JSONObject json;
-            
-            int productCount = 0;
-            String countString = "";
-            for (PurchaseCartItem item : cart.getCartItems()) {
-                AdjustEvent eventCartLoadedFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_cart));
-                json = new JSONObject();
-                try {
-                    json.put(AdjustKeys.SKU, item.getSku());
-                    json.put(AdjustKeys.CURRENCY, EURO_CURRENCY);
-                    json.put(AdjustKeys.QUANTITY, item.getQuantity());
-                    json.put(AdjustKeys.PRICE, item.getPriceForTracking());
-                    
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }               
-//                   Log.e("Adjust","PRODUCT:"+json.toString());
-                eventCartLoaded.addCallbackParameter(AdjustKeys.PRODUCT + countString, json.toString());
-                eventCartLoaded.addPartnerParameter(AdjustKeys.PRODUCT + countString, json.toString());
 
-                countString = String.valueOf(++productCount);
-
-                //FB - View Cart
-                eventCartLoadedFB = getFBBaseParameters(eventCartLoadedFB, bundle);
-                eventCartLoadedFB.addCallbackParameter(AdjustKeys.SKU, item.getSku());
-                eventCartLoadedFB.addPartnerParameter(AdjustKeys.SKU, item.getSku());
-                eventCartLoadedFB.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                eventCartLoadedFB.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                eventCartLoadedFB.addCallbackParameter(AdjustKeys.QUANTITY, String.valueOf(item.getQuantity()));
-                eventCartLoadedFB.addPartnerParameter(AdjustKeys.QUANTITY, String.valueOf(item.getQuantity()));
-                eventCartLoadedFB.addCallbackParameter(AdjustKeys.DISCOUNT, item.hasDiscount() ? "y" : "n");
-                eventCartLoadedFB.addPartnerParameter(AdjustKeys.DISCOUNT, item.hasDiscount() ? "y" : "n");
-                eventCartLoadedFB.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
-                eventCartLoadedFB.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(item.getPriceForTracking()));
-                eventCartLoadedFB.addCallbackParameter(AdjustKeys.TOTAL_CART, String.valueOf(cart.getCartValueEuroConverted()));
-                eventCartLoadedFB.addPartnerParameter(AdjustKeys.TOTAL_CART, String.valueOf(cart.getCartValueEuroConverted()));
-                
-                // fbParameters.put(AdjustKeys.SIZE, item.getVariation());
-                // fbParameters.put(AdjustKeys.COLOUR, item.getVariation());
-                // fbParameters.put(AdjustKeys.VARIATION, item.getVariation());            
-                // parameters.put(AdjustKeys.BRAND, item.getBrand());               
-                
-                Adjust.trackEvent(eventCartLoadedFB);
-            }
-            
             Adjust.trackEvent(eventCartLoaded);
             break;
         
@@ -741,80 +687,7 @@ public class AdjustTracker {
                     }
                 }
                 Adjust.trackEvent(eventSearch);
-
-                //FB - Search
-                AdjustEvent eventSearchFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_search));
-                eventSearchFB = getFBBaseParameters(eventSearchFB, bundle);
-                if (bundle.containsKey(CATEGORY) && !TextUtils.isEmpty(bundle.getString(CATEGORY))){
-                    eventSearchFB.addCallbackParameter(AdjustKeys.CATEGORY, bundle.getString(CATEGORY));
-                    eventSearchFB.addPartnerParameter(AdjustKeys.CATEGORY, bundle.getString(CATEGORY));
-                }
-
-                if (bundle.containsKey(CATEGORY_ID) && !TextUtils.isEmpty(bundle.getString(CATEGORY_ID))){
-                    eventSearchFB.addCallbackParameter(AdjustKeys.CATEGORY_ID, bundle.getString(CATEGORY_ID));
-                    eventSearchFB.addPartnerParameter(AdjustKeys.CATEGORY_ID, bundle.getString(CATEGORY_ID));
-                }
-
-
-                eventSearchFB.addCallbackParameter(AdjustKeys.QUERY, bundle.getString(SEARCH_TERM));
-                eventSearchFB.addPartnerParameter(AdjustKeys.QUERY, bundle.getString(SEARCH_TERM));
-                Adjust.trackEvent(eventSearchFB);
                 break;
-
-            case VIEW_WISHLIST:
-                //FB - View Wishlist
-                AdjustEvent eventViewWishlist = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_wishlist));
-                eventViewWishlist = getFBBaseParameters(eventViewWishlist, bundle);
-
-                ArrayList<ProductMultiple> favourites = bundle.getParcelableArrayList(FAVORITES);
-
-                Double WishlistTotal = 0.0;
-
-                if (null != favourites) {
-
-                    for (ProductMultiple fav : favourites) {
-                        WishlistTotal += fav.getPriceForTracking();
-                    }
-
-                    for (ProductMultiple fav : favourites) {
-
-                        eventViewWishlist.addCallbackParameter(AdjustKeys.BRAND, fav.getBrand());
-                        eventViewWishlist.addPartnerParameter(AdjustKeys.BRAND, fav.getBrand());
-                        eventViewWishlist.addCallbackParameter(AdjustKeys.TOTAL_WISHLIST, WishlistTotal.toString());
-                        eventViewWishlist.addPartnerParameter(AdjustKeys.TOTAL_WISHLIST, WishlistTotal.toString());
-
-//                        if( null != fav.getAttributes() && !TextUtils.isEmpty(fav.getAttributes().get("color"))){
-//                        	 parameters.put(AdjustKeys.COLOUR, fav.getAttributes().get("color"));
-//                        }
-//                        fbParams.put(AdjustKeys.SKU + countString, fav.getSku());
-                        eventViewWishlist.addCallbackParameter(AdjustKeys.SKU, fav.getSku());
-                        eventViewWishlist.addPartnerParameter(AdjustKeys.SKU, fav.getSku());
-                        eventViewWishlist.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                        eventViewWishlist.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                        eventViewWishlist.addCallbackParameter(AdjustKeys.QUANTITY, "1");
-                        eventViewWishlist.addPartnerParameter(AdjustKeys.QUANTITY, "1");
-                        eventViewWishlist.addCallbackParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
-                        eventViewWishlist.addPartnerParameter(AdjustKeys.DISCOUNT, fav.hasDiscount() ? "y" : "n");
-
-                        if (fav.hasSelectedSimpleVariation()) {
-                            try {
-                                //noinspection ConstantConditions
-                                eventViewWishlist.addCallbackParameter(AdjustKeys.SIZE, fav.getSelectedSimple().getVariationValue());
-                                eventViewWishlist.addPartnerParameter(AdjustKeys.SIZE, fav.getSelectedSimple().getVariationValue());
-                            } catch (NullPointerException e) {
-                                // ...
-                            }
-                        }
-
-                        eventViewWishlist.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
-                        eventViewWishlist.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(fav.getPriceForTracking()));
-                        Adjust.trackEvent(eventViewWishlist);
-                    }
-                } else {
-                    Adjust.trackEvent(eventViewWishlist);
-                }
-                break;
-
             default:
                 break;
         }
