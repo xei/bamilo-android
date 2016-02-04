@@ -122,7 +122,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
 		Print.i(TAG, "SQL QUERY: " + query);
 		// Return
-		return getRecentQueries(query, new String[]{"'%"+searchText+"%'"});
+        return getRecentQueries(query, new String[]{searchText+"%"});
     }
 
     /**
