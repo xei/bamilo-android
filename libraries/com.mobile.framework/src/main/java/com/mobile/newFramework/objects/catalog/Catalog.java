@@ -8,7 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by rsoares on 5/29/15.
+ * Class used to represent a catalog response.
  */
 public class Catalog implements IJSONSerializable{
 
@@ -18,10 +18,10 @@ public class Catalog implements IJSONSerializable{
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        if(jsonObject.has(RestConstants.FEATURED_BOX)){
-            featuredBox = new FeaturedBox(jsonObject);
-        } else {
+        if (jsonObject.has(RestConstants.RESULTS)) {
             catalogPage = new CatalogPage(jsonObject);
+        } else {
+            featuredBox = new FeaturedBox(jsonObject);
         }
         return true;
     }

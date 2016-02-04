@@ -10,6 +10,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FeaturedItemsAdapter;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.FeaturedItem;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
@@ -84,7 +85,7 @@ public class FeaturedBoxHelper {
             textViewSearchTips.setText(searchTips);
         }
     }
-    
+
     /**
      * Show view pager with products.
      */
@@ -96,12 +97,12 @@ public class FeaturedBoxHelper {
         }
         // Feature box products: view pager
         ArrayList<FeaturedItem> featureBoxProducts = featuredBox.getProducts();
-        if(featureBoxProducts != null && !featureBoxProducts.isEmpty()){
+        if (CollectionUtils.isNotEmpty(featureBoxProducts)) {
             view.findViewById(R.id.featured_products).setVisibility(View.VISIBLE);
             generateFeaturedProductsLayout(context, view, featureBoxProducts, partialSize);
         }
     }
-    
+
     /**
      * Show view pager with brands.
      */
@@ -113,7 +114,7 @@ public class FeaturedBoxHelper {
         }
         // Feature box brands: view pager
         ArrayList<FeaturedItem> featureBoxBrands = featuredBox.getBrands();
-        if(featureBoxBrands != null && !featureBoxBrands.isEmpty()){
+        if (CollectionUtils.isNotEmpty(featureBoxBrands)) {
             view.findViewById(R.id.featured_brands).setVisibility(View.VISIBLE);
             generateFeaturedBrandsLayout(context, view, featureBoxBrands, partialSize);
         }
