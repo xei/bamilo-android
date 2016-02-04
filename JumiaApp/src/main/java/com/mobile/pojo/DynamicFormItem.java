@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Editable;
@@ -224,12 +225,12 @@ public class DynamicFormItem {
             this.control = new RelativeLayout(this.context);
             this.control.setId(parent.getNextId());
             switch (this.entry.getInputType()) {
-
                 case title:
                     buildTitle();
                     break;
+
                 case switchRadio:
-                    buildRelatedSwitchWithRadioGroup(params);
+                    buildRelatedSwitchWithRadioGroup();
                     break;
                 case relatedScreenRadio:
                     buildRelatedScreenRadio();
@@ -381,7 +382,7 @@ public class DynamicFormItem {
         radioGroup.setItems(new ArrayList<>(entry.getOptions()), 0);
         // Set selection that comes from server
         for (int i = 0; i < entry.getOptions().size(); i++) {
-            if(entry.getOptions().get(i).isDefaultSelection()){
+            if(entry.getOptions().get(i).isChecked()){
                 radioGroup.setSelection(i);
             }
         }
@@ -527,10 +528,10 @@ public class DynamicFormItem {
             case list:
                 ViewGroup viewGroup = (ViewGroup) getControl();
                 View view = viewGroup.getChildAt(0);
-                if(view instanceof IcsSpinner) {
+                if (view instanceof IcsSpinner) {
                     IcsSpinner spinner = (IcsSpinner) view;
                     FormListItem selectedItem = (FormListItem) spinner.getSelectedItem();
-                    if(selectedItem != null) {
+                    if (selectedItem != null) {
                         values.put(getName(), selectedItem.getValue());
                     }
                 }
@@ -569,9 +570,24 @@ public class DynamicFormItem {
                     }
                 }
                 break;
+            case switchRadio:
+                // TODO
+                // Case checked
+                // Get radio button option
+                break;
+            case checkBox:
+                // Case contains a non empty value for checked state.
+                // Otherwise get the default behavior.
+                if (!TextUtils.isEmpty(this.entry.getValue())) {
+                    if (((CheckBox) this.dataControl).isChecked()) {
+                        values.put(getName(), this.entry.getValue());
+                    }
+                    break;
+                }
             default:
-                if (null != getValue()) {
-                    values.put(getName(), getValue());
+                String value = getValue();
+                if (null != value) {
+                    values.put(getName(), value);
                 }
                 break;
         }
@@ -1732,7 +1748,7 @@ public class DynamicFormItem {
     }
 
     /**
-     * TODO
+     * Build a section title
      */
     private void buildTitle() {
         // Get field container
@@ -1746,34 +1762,41 @@ public class DynamicFormItem {
     /**
      * TODO
      */
-    private View buildRelatedSwitchWithRadioGroup(RelativeLayout.LayoutParams params) {
+    private View buildRelatedSwitchWithRadioGroup() {
         // Get field container
-        ViewGroup container = (ViewGroup) View.inflate(this.context, R.layout._def_gen_form_switch, null);
+        ViewGroup container = (ViewGroup) View.inflate(this.context, R.layout._def_gen_form_switch_radio, null);
+        // Build related field
+        final ViewGroup radioGroup = buildVerticalRadioGroup(container, this.entry.getRelatedField());
         // Get switch button
         SwitchCompat switchButton = (SwitchCompat) container.findViewById(R.id.switch_field);
         // Set text
         switchButton.setText(this.entry.getLabel());
-        // Validate related field
-        if (hasRelatedField()) {
-            // Build related field
-            final ViewGroup radioGroup = createRadioGroupVertical(MANDATORYSIGNALSIZE, params, container);
-            // Set listener
-            switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    // Validate state
-                    if (isChecked) {
-                        radioGroup.setVisibility(View.VISIBLE);
-                    } else {
-                        radioGroup.setVisibility(View.GONE);
-                    }
-                }
-            });
-        }
+        // Set listener
+        switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // Validate state
+                radioGroup.setVisibility(isChecked ? View.VISIBLE : View.GONE);
+            }
+        });
         // Set default value
-        switchButton.setChecked(Boolean.parseBoolean(this.entry.getValue()));
+        switchButton.setChecked(this.entry.isChecked());
         // Return the container
         return container;
+    }
+
+    /**
+     * Generates a Vertical RadioGroup
+     */
+    private ViewGroup buildVerticalRadioGroup(@NonNull ViewGroup container, @NonNull IFormField entry) {
+        // Get group
+        RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context, R.layout.form_radiolistlayout, null);
+        // Set options
+        radioGroup.setItems(entry.getDataSet(), entry.getValue());
+        // Add view
+        container.addView(radioGroup);
+        // Return
+        return radioGroup;
     }
 
     /**
@@ -1785,7 +1808,7 @@ public class DynamicFormItem {
         // Set title
         ((TextView) container.findViewById(R.id.title)).setText(this.entry.getLabel());
         // Set sub title
-        ((TextView) container.findViewById(R.id.sub_title)).setText("Sub title");
+        ((TextView) container.findViewById(R.id.sub_title)).setText(this.entry.getSubLabel());
         // Set button
         TextView button = (TextView) container.findViewById(R.id.button);
         // Set button state

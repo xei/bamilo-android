@@ -38,12 +38,11 @@ public class RestConstants {
     public static final String TYPE = "type";
     public static final String KEY = "key";
     public static final String LABEL = "label";
+    public static final String SUBLABEL = "sublabel";
     public static final String DATASET = "dataset";
     public static final String VALUE = "value";
     public static final String DATASET_SOURCE = "dataset_source";
     public static final String SCENARIO = "scenario";
-    public static final String TERMS = "terms";
-    public static final String LINK_TEXT = "link_text";
     public static final String REGISTER_NEWSLETTER_CATEGORIES_SUBSCRIBED = "register[newsletter_categories_subscribed]";
     public static final String DELIVERY_TIME = "delivery_time";
     public static final String RELATED_DATA = "related_data";
@@ -153,8 +152,6 @@ public class RestConstants {
     public static final String ADDRESS_2 = "address2";
     public static final String CITY = "city";
     public static final String POSTCODE = "postcode";
-    public static final String IS_DEFAULT_BILLING = "is_default_billing";
-    public static final String IS_DEFAULT_SHIPPING = "is_default_shipping";
     public static final String VALIDATE = "validate";
     public static final String ERROR = "error";
     public static final String STARS = "stars";
@@ -310,4 +307,5 @@ public class RestConstants {
     public static final String SHOP_FIRST_OVERLAY = "shop_first_overlay";
     public static final String PLACE_HOLDER = "placeholder";
     public static final String COUPONCODE = "couponcode";
+    public static final String BEFORE = "before";
 }

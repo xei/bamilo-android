@@ -25,6 +25,7 @@ import com.mobile.view.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class RadioGroupLayoutVertical extends RadioGroup {
     private final static String TAG = RadioGroupLayoutVertical.class.getSimpleName();
@@ -54,6 +55,22 @@ public class RadioGroupLayoutVertical extends RadioGroup {
     private void init() {
         mInflater = LayoutInflater.from(getContext());
         mGroup = this;
+    }
+
+    public void setItems(@NonNull Map<String, String> items, @Nullable String defaultKey) {
+        try {
+            mGroup.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        // Add options
+        for (Map.Entry<String, String> entry : items.entrySet()) {
+            RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, null, false);
+            button.setTag(entry.getKey());
+            button.setText(entry.getValue());
+            button.setChecked(TextUtils.equals(entry.getKey(), defaultKey));
+            mGroup.addView(button);
+        }
     }
 
     public void setItems(ArrayList<String> items, HashMap<String, Form> map, HashMap<String, PaymentInfo> paymentInfoMap, int defaultSelected) {

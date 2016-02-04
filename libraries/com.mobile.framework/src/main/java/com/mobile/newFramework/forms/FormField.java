@@ -62,6 +62,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String mName;
     private FormInputType mInputType;
     private String mLabel;
+    private String mSubLabel;
     private String mLinkText;
     private String mLinkTarget;
     private String mFormat;
@@ -119,10 +120,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         try {
             String formFieldString = jsonObject.optString(RestConstants.TYPE);
             switch (formFieldString) {
-
                 case TITLE:
                     mInputType = FormInputType.title;
                     break;
+
                 case SWITCH_RADIO:
                     mInputType = FormInputType.switchRadio;
                     break;
@@ -184,12 +185,13 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mKey = jsonObject.optString(RestConstants.KEY); // Used for form images
             mName = jsonObject.optString(RestConstants.NAME);
             mLabel = jsonObject.optString(RestConstants.LABEL);
+            mSubLabel = jsonObject.optString(RestConstants.SUBLABEL);
             mValue = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
             mScenario = jsonObject.optString(RestConstants.SCENARIO);
             isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
             isDisabled = jsonObject.optBoolean(RestConstants.DISABLED);
             mFormat = jsonObject.optString(RestConstants.FORMAT);
-            isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), "before");
+            isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), RestConstants.BEFORE);
             mPlaceHolder = jsonObject.optString(RestConstants.PLACE_HOLDER);
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
 
@@ -420,6 +422,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     @Override
+    public String getSubLabel() {
+        return mLabel;
+    }
+
+    @Override
     public String getLinkText() {
         return this.mLinkText;
     }
@@ -496,7 +503,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     @Override
-    public boolean isDefaultSelection() {
+    public boolean isChecked() {
         return isChecked;
     }
 
@@ -544,6 +551,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeString(mName);
         dest.writeValue(mInputType);
         dest.writeString(mLabel);
+        dest.writeString(mSubLabel);
         dest.writeString(mLinkText);
         dest.writeString(mLinkTarget);
         dest.writeString(mFormat);
@@ -587,6 +595,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mName = in.readString();
         mInputType = (FormInputType) in.readValue(FormInputType.class.getClassLoader());
         mLabel = in.readString();
+        mSubLabel = in.readString();
         mLinkText = in.readString();
         mLinkTarget = in.readString();
         mFormat = in.readString();
