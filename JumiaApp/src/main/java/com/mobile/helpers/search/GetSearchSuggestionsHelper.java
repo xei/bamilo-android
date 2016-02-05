@@ -80,12 +80,12 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
         //TODO move to observable
         // Get recent queries
-        ArrayList<Suggestion> suggestions = new ArrayList<>();
+        ArrayList<Suggestion> recentQueries = new ArrayList<>();
         try {
             if(TextUtils.isEmpty(mQuery)) {
-                suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
+                recentQueries = SearchRecentQueriesTableHelper.getAllRecentQueries();
             } else {
-                suggestions = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
+                recentQueries = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
             }
         } catch (SQLiteException e) {
             Print.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
@@ -94,8 +94,8 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         }
         //
         Suggestions searchSuggestions = (Suggestions) baseResponse.getContentData();
-        CollectionUtils.addAll(suggestions, searchSuggestions);
-
+        //add the recent searches in database to the suggestions
+        CollectionUtils.addAll(searchSuggestions, recentQueries, 0);
         SuggestionsStruct suggestionsStruct = new SuggestionsStruct(searchSuggestions);
         suggestionsStruct.setSearchParam(mQuery);
         baseResponse.getMetadata().setData(suggestionsStruct);
