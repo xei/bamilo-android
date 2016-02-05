@@ -1017,6 +1017,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     String searchTerm = textView.getText().toString();
                     Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
                     if (TextUtils.isEmpty(searchTerm)) {
+                        getSuggestions();
                         return false;
                     }
                     //Save searched text
@@ -1208,7 +1209,14 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             return;
         }
         // Hide dropdown
-        mSearchAutoComplete.dismissDropDown();
+        if(suggestionsStruct.size() == 0)
+            mSearchAutoComplete.dismissDropDown();
+        else{
+            //show dropdown with recent queries
+            SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct, requestQuery);
+            mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
+            mSearchAutoComplete.showDropDown();
+        }
     }
 
     /**
