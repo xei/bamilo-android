@@ -3,21 +3,17 @@ package com.mobile.factories;
 import android.content.Context;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
-import android.text.TextWatcher;
 import android.util.LayoutDirection;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.mobile.constants.FormConstants;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.view.R;
-
-import org.w3c.dom.Text;
 
 /**
  * A Singleton factory for the creation of dynamic forms based on information returned by the framework <p/><br>
@@ -152,14 +148,12 @@ public class FormFactory {
         viewGroup.setLayoutParams(frmParams);
         // Create dynamic form
         DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
-        Print.d(TAG, "createGenericForm: createNewsletterForm");
 
         // Create each form field
         for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
             DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, frmEntry);
             dynamicForm.addControl(dynamicFormItem, ctrlParams);
-            Print.i(TAG, "code1watcher createGenericForm : ");
 
         }
         return dynamicForm;

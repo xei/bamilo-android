@@ -105,7 +105,7 @@ public class DynamicFormItem {
     public final static String BIRTHDATE_TAG = "birthday_tag";
     public final static String RELATED_GROUP_SEPARATOR = "::";
     private final static String TAG = DynamicFormItem.class.getSimpleName();
-    private static final String ICON_PREFIX = "ic_form_";
+    public static final String ICON_PREFIX = "ic_form_";
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
     private final static int MANDATORYSIGNALMARGIN = 15;

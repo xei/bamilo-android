@@ -245,11 +245,7 @@ public class UIUtils {
     public static void setDrawableLeftByString(@NonNull TextView view, String name) {
         Context context = view.getContext();
         int drawable = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
-        if (ShopSelector.isRtl()) {
-            view.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
-        } else {
-            view.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
-        }
+        setDrawableLeft(view, drawable);
     }
 
 }

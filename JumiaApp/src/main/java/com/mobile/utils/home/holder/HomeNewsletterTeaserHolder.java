@@ -36,10 +36,9 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
     public static final String SHOW_LOADING = "show_loading";
-    public static final String HIDE_LOADING = "hide_loading";
 
-    public ViewGroup mContainerView;
-    public Button mSubmit;
+    private final ViewGroup mContainerView;
+    private final Button mSubmit;
     protected DynamicForm mNewsLetterForm;
     /**
      * Constructor
@@ -69,11 +68,8 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
             if(item.getEditControl() instanceof EditText){
                 ((EditText) item.getEditControl()).addTextChangedListener(mTextWatcher);
                 ((EditText) item.getEditControl()).setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                if(TextUtils.isNotEmpty(((EditText) item.getEditControl()).getText())){
-                    mSubmit.setEnabled(true);
-                } else {
-                    mSubmit.setEnabled(false);
-                }
+
+                mSubmit.setEnabled(TextUtils.isNotEmpty(((EditText) item.getEditControl()).getText()));
             }
 
         }
@@ -86,11 +82,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(TextUtils.isEmpty(s)){
-                mSubmit.setEnabled(false);
-            } else {
-                mSubmit.setEnabled(true);
-            }
+            mSubmit.setEnabled(TextUtils.isNotEmpty(s));
         }
 
         @Override
@@ -101,7 +93,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-            if(mNewsLetterForm.validate()){
+            if(v != null && mParentClickListener != null && mNewsLetterForm != null && mNewsLetterForm.validate()){
                 v.setTag(SHOW_LOADING);
                 mParentClickListener.onClick(v);
                 JumiaApplication.INSTANCE.sendRequest(new FormHelper(), FormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), new IResponseCallback() {
@@ -114,11 +106,6 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
                     }
                     @Override
                     public void onRequestError(BaseResponse baseResponse) {
-                        if(baseResponse.getErrorMessages() != null && baseResponse.getErrorMessages().containsKey("ALREADY_SUBSCRIBED")){
-                            UIUtils.hideViewFadeOut(itemView);
-                            baseResponse.setSuccess(true);
-                            baseResponse.setSuccessMessages((HashMap<String, String>) baseResponse.getErrorMessages());
-                        }
                         v.setTag(baseResponse);
                         mParentClickListener.onClick(v);
                     }
