@@ -214,7 +214,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
      */
     private void validateVisibleTabs(){
         Bundle arguments = getArguments();
-
+        mTabsCount = 3;
         if(arguments != null){
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
             if(parcelableProduct instanceof ProductComplete){
