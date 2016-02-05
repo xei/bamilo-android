@@ -27,14 +27,14 @@ public class ProductUtils {
 
     public static void setPriceRules(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice){
         String priceRange = productBase.getPriceRange();
-        //If hasn't simple but has range
-        if(TextUtils.isNotEmpty(priceRange)){
-            specialPrice.setText(priceRange);
-            price.setText("");
         //If ProductMultiple already has simple
-        }else if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
+        if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
             //noinspection ConstantConditions
             setPrice(((ProductMultiple) productBase).getSelectedSimple(), price, specialPrice);
+            //If hasn't simple but has range
+        } else if(TextUtils.isNotEmpty(priceRange)){
+            specialPrice.setText(priceRange);
+            price.setText("");
         } else {
             setPrice(productBase, price, specialPrice);
         }
