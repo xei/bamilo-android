@@ -310,4 +310,9 @@ public class RestConstants {
     public static final String SHOP_FIRST_OVERLAY = "shop_first_overlay";
     public static final String PLACE_HOLDER = "placeholder";
     public static final String COUPONCODE = "couponcode";
+    public static final String SUGGESTER_PROVIDER = "suggester_provider";
+    public static final String ALGOLIA = "algolia";
+    public static final String APPLICATION_ID = "application_id";
+    public static final String SUGGESTER_API_KEY = "suggester_api_key";
+    public static final String NAMESPACE_PREFIX = "namespace_prefix";
 }

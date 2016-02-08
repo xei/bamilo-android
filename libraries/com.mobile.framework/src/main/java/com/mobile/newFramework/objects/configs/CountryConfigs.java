@@ -52,6 +52,10 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private List<TargetHelper> mobileAbout;
     private boolean hasCartPopup;
     private boolean mIsRichRelevanceEnabled;
+    private String mSuggesterProvider;
+    private String mApplicationId;
+    private String mSuggesterApiKey;
+    private String mNamespacePrefix;
 
     /**
      * Empty constructor
@@ -74,6 +78,10 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         isFacebookAvailable = false;
         hasCartPopup = false;
         mIsRichRelevanceEnabled = false;
+        mSuggesterProvider = null;
+        mApplicationId = null;
+        mSuggesterApiKey = null;
+        mNamespacePrefix = null;
     }
 
     /**
@@ -105,10 +113,15 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
                 "\nrating_login: " + isRatingLoginRequired +
                 "\nreview: " + isReviewEnable +
                 "\nhas_cart_popup: " + hasCartPopup +
-                "\nrich_relevance_enabled: " + mIsRichRelevanceEnabled
-
+                "\nrich_relevance_enabled: " + mIsRichRelevanceEnabled +
+                "\nsuggester_provider: " + mSuggesterProvider +
+                "\napplication_id: " + mApplicationId +
+                "\nsuggester_api_key: " + mSuggesterApiKey +
+                "\nnamespace_prefix: " + mNamespacePrefix
                 ;
     }
+
+
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
@@ -157,6 +170,14 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         hasCartPopup = jsonObject.optBoolean(RestConstants.HAS_CART_POPUP);
         // Get if Rich Relevance is enabled
         mIsRichRelevanceEnabled = jsonObject.optBoolean(RestConstants.RICH_RELEVANCE_ENABLED);
+        //Algolia/Api configurations
+        mSuggesterProvider = jsonObject.optString(RestConstants.SUGGESTER_PROVIDER);
+        JSONObject jsonAlgolia = jsonObject.optJSONObject(RestConstants.ALGOLIA);
+        if(jsonAlgolia != null){
+            mApplicationId = jsonAlgolia.getString(RestConstants.APPLICATION_ID);
+            mSuggesterApiKey = jsonAlgolia.getString(RestConstants.SUGGESTER_API_KEY);
+            mNamespacePrefix = jsonAlgolia.getString(RestConstants.NAMESPACE_PREFIX);
+        }
         return true;
     }
 
@@ -239,6 +260,14 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         return isFacebookAvailable;
     }
 
+    public String getmSuggesterProvider() { return mSuggesterProvider; }
+
+    public String getmApplicationId() { return mApplicationId; }
+
+    public String getmSuggesterApiKey() { return mSuggesterApiKey; }
+
+    public String getmNamespacePrefix() { return mNamespacePrefix; }
+
     protected CountryConfigs(Parcel in) {
         mCurrencyIso = in.readString();
         mCurrencySymbol = in.readString();
@@ -257,6 +286,10 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         isFacebookAvailable = in.readByte() != 0x00;
         hasCartPopup = in.readByte() != 0x00;
         mIsRichRelevanceEnabled = in.readByte() != 0x00;
+        mSuggesterProvider = in.readString();
+        mApplicationId = in.readString();
+        mSuggesterApiKey = in.readString();
+        mNamespacePrefix = in.readString();
     }
 
     @Override
@@ -283,6 +316,10 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         dest.writeByte((byte) (isFacebookAvailable ? 0x01 : 0x00));
         dest.writeByte((byte) (hasCartPopup ? 0x01 : 0x00));
         dest.writeByte((byte) (mIsRichRelevanceEnabled ? 0x01 : 0x00));
+        dest.writeString(mSuggesterProvider);
+        dest.writeString(mApplicationId);
+        dest.writeString(mSuggesterApiKey);
+        dest.writeString(mNamespacePrefix);
     }
 
     @SuppressWarnings("unused")
