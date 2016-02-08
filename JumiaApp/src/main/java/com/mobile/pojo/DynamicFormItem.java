@@ -172,12 +172,6 @@ public class DynamicFormItem {
         return this.entry.getValidation().message;
     }
 
-    public void setTextWatcher(final TextWatcher textWatcher) {
-        if(getEditControl() != null){
-            ((EditText) getEditControl()).addTextChangedListener(textWatcher);
-        }
-    }
-
     /**
      * Gets the control.
      *

@@ -20,26 +20,20 @@ import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
-import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
-
-import java.util.HashMap;
 
 /**
  *
  */
 public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
 
-    private static final String TAG = TeaserViewFactory.class.getSimpleName();
-    public static final String SHOW_LOADING = "show_loading";
-
     private final ViewGroup mContainerView;
     private final Button mSubmit;
     protected DynamicForm mNewsLetterForm;
+
     /**
      * Constructor
      */
