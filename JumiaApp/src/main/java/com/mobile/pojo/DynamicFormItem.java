@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -46,6 +47,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
+import com.mobile.newFramework.forms.NewsletterOption;
 import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.addresses.PhonePrefix;
@@ -103,7 +105,7 @@ public class DynamicFormItem {
     public final static String BIRTHDATE_TAG = "birthday_tag";
     public final static String RELATED_GROUP_SEPARATOR = "::";
     private final static String TAG = DynamicFormItem.class.getSimpleName();
-    private static final String ICON_PREFIX = "ic_form_";
+    public static final String ICON_PREFIX = "ic_form_";
     private final static int ERRORTEXTSIZE = 14;
     private final static int MANDATORYSIGNALSIZE = 18;
     private final static int MANDATORYSIGNALMARGIN = 15;
@@ -166,6 +168,12 @@ public class DynamicFormItem {
 
     public String getMessage() {
         return this.entry.getValidation().message;
+    }
+
+    public void setTextWatcher(final TextWatcher textWatcher) {
+        if(getEditControl() != null){
+            ((EditText) getEditControl()).addTextChangedListener(textWatcher);
+        }
     }
 
     /**
@@ -366,7 +374,7 @@ public class DynamicFormItem {
             }
         });
         // Set options
-        radioGroup.setItems(new ArrayList<>(entry.getOptions()), 0);
+        radioGroup.setItems(new ArrayList<>(entry.getOptions()), 0, null);
         // Set selection that comes from server
         for (int i = 0; i < entry.getOptions().size(); i++) {
             if(entry.getOptions().get(i).isDefaultSelection()){
@@ -1398,7 +1406,7 @@ public class DynamicFormItem {
         ImageView icon = (ImageView) radioGroupContainer.findViewById(R.id.radio_field_icon);
 
         if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
-                || this.parent.getForm().getType() == FormConstants.USER_DATA_FORM) {
+                || this.parent.getForm().getType() == FormConstants.USER_DATA_FORM ) {
             UIUtils.setDrawableByString(icon, ICON_PREFIX + this.entry.getKey());
             icon.setVisibility(View.VISIBLE);
         }
@@ -1438,8 +1446,13 @@ public class DynamicFormItem {
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
             }
         });
+        ArrayList<String> keySet = new ArrayList<>();
+        for (NewsletterOption nOption : ((FormField) this.entry).getNewsletterOptions()) {
+            Print.i(TAG, "code1key : "+nOption.key);
+            keySet.add(nOption.key);
+        }
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), defaultSelect, keySet);
 
-        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), defaultSelect);
         this.control.addView(dataContainer);
     }
 
@@ -1768,6 +1781,7 @@ public class DynamicFormItem {
                 text.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
                 break;
         }
+
         // Set mandatory
         mandatory.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         // Set next id to parent

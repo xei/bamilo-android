@@ -12,7 +12,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="5dp"
         android:contentDescription="@string/app_name"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <com.mobile.utils.RadioGroupLayout
         android:id="@+id/radio_group_container"
