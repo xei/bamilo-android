@@ -297,14 +297,12 @@
 
     <style name="form_radiobutton_style" parent="form_style">
         <item name="android:layout_marginLeft">0dp</item>
-        <item name="android:layout_marginRight">@dimen/margin_30px</item>
-        <item name="android:layout_marginStart">0dp</item>
-        <item name="android:layout_marginEnd">@dimen/margin_30px</item>
         <item name="android:layout_gravity">top</item>
-        <item name="android:button">@null</item>
-        <item name="android:drawablePadding">8dp</item>
-        <item name="android:drawableLeft">@drawable/_gen_selector_radio_button</item>
-        <item name="android:drawableStart">@drawable/_gen_selector_radio_button</item>
+        <item name="android:layout_marginRight">@dimen/dimen_32dp</item>
+        <item name="android:layout_marginEnd">@dimen/dimen_32dp</item>
+        <item name="android:drawablePadding">@dimen/dimen_6dp</item>
+        <item name="android:paddingLeft">@dimen/dimen_6dp</item>
+        <item name="android:paddingStart">@dimen/dimen_6dp</item>
     </style>
 
     <style name="starRatingBarSmall" parent="@android:style/Widget.RatingBar">

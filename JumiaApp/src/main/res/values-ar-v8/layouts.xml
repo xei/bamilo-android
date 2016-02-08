@@ -81,6 +81,7 @@
     <!-- HOME -->
     <item name="home_teaser_campaign"                   type="layout">@layout/_v8_home_teaser_campaign</item>
     <item name="home_teaser_featured_stores_item"       type="layout">@layout/_v8_home_teaser_featured_stores_item</item>
+    <item name="home_teaser_newsletter"                 type="layout">@layout/_v8_home_teaser_newsletter</item>
 
     <!-- NAVIGATION DRAWER -->
     <item name="navigation_fragment_main"               type="layout">@layout/_v8_navigation_fragment_main</item>

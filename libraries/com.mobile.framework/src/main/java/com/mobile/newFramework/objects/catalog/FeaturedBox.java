@@ -6,8 +6,9 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.CollectionUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,22 +22,22 @@ import java.util.ArrayList;
  *
  * @author Andre Lopes
  * @modified sergiopereira
- *
  */
 public class FeaturedBox implements IJSONSerializable, Parcelable {
 
-    public static final String TAG = FeaturedBox.class.getSimpleName();
+    private String mProductsTitle;
+    private String mBrandsTitle;
+    private String mSearchTips;
+    private String mErrorMessage;
+    private String mNoticeMessage;
+    private ArrayList<FeaturedItem> mBrands;
+    private ArrayList<FeaturedItem> mProducts;
 
-    private String productsTitle;
-    private String brandsTitle;
-    private String searchTips;
-    private String errorMessage;
-    private String noticeMessage;
-    private ArrayList<FeaturedItem> brands;
-    private ArrayList<FeaturedItem> products;
-
+    /**
+     * Empty constructor
+     */
     public FeaturedBox() {
-
+        // ...
     }
 
     public FeaturedBox(JSONObject metadataObject) throws JSONException {
@@ -53,83 +54,54 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
      */
     @Override
     public boolean initialize(JSONObject metadataObject) throws JSONException {
-//        Log.d(TAG, "FILTER: FEATURED BOX");
-        JSONArray featuredBoxObject = metadataObject.getJSONArray(RestConstants.FEATURED_BOX);
-        if (featuredBoxObject != null) {
-            // one List for all products
-            products = new ArrayList<>();
-            try{
-
-                if (featuredBoxObject.length() > 0) {
-                    // get products only from the first list
-                    JSONObject productsCategoryObject = featuredBoxObject.getJSONObject(0);
-                    if (productsCategoryObject != null) {
-                        // get title
-                        if (TextUtils.isEmpty(productsTitle)) {
-                            productsTitle = productsCategoryObject.optString(RestConstants.TITLE);
-                        }
-
-                        JSONArray productsObject = productsCategoryObject.getJSONArray(RestConstants.PRODUCTS);
-                        if (productsObject != null && productsObject.length() > 0) {
-                            // get products
-                            for (int j = 0; j < productsObject.length(); j++) {
-                                JSONObject productObject = productsObject.getJSONObject(j);
-                                FeaturedItemProduct product = new FeaturedItemProduct();
-
-                                // only use products properly initialized
-                                if (product.initialize(productObject)) {
-                                    products.add(product);
-                                }
-                            }
-                        }
+        // Products
+        JSONArray featuredBoxObject = metadataObject.optJSONArray(RestConstants.FEATURED_BOX);
+        if (CollectionUtils.isNotEmpty(featuredBoxObject)) {
+            // First item
+            JSONObject productsCategoryObject = featuredBoxObject.getJSONObject(IntConstants.DEFAULT_POSITION);
+            // Title
+            mProductsTitle = productsCategoryObject.optString(RestConstants.TITLE);
+            // Products
+            JSONArray productsObject = productsCategoryObject.getJSONArray(RestConstants.PRODUCTS);
+            if (CollectionUtils.isNotEmpty(productsObject)) {
+                mProducts = new ArrayList<>();
+                for (int j = 0; j < productsObject.length(); j++) {
+                    // Only use products properly initialized
+                    FeaturedItemProduct product = new FeaturedItemProduct();
+                    if (product.initialize(productsObject.getJSONObject(j))) {
+                        mProducts.add(product);
                     }
                 }
-            } catch(JSONException ex){
-//                Log.e(TAG, "ERROR PARSING FEATURE BOX");
             }
-            // one list for all brands
-            brands = new ArrayList<>();
-
-            try{
-                JSONArray featuredBrandboxObject = metadataObject.getJSONArray(RestConstants.FEATURED_BRANDBOX);
-                if (featuredBrandboxObject != null && featuredBrandboxObject.length() > 0) {
-                    // get brands only from the first list
-                    JSONObject brandsCategoryObject = featuredBrandboxObject.getJSONObject(0);
-                    if (brandsCategoryObject != null) {
-                        // get title from fist list of brands
-                        if (TextUtils.isEmpty(brandsTitle)) {
-                            brandsTitle = brandsCategoryObject.optString(RestConstants.TITLE);
-                        }
-
-                        JSONArray brandsObject = brandsCategoryObject.getJSONArray(RestConstants.BRANDS);
-                        if (brandsObject != null && brandsObject.length() > 0) {
-                            // get brands
-                            for (int j = 0; j < brandsObject.length(); j++) {
-                                JSONObject brandObject = brandsObject.getJSONObject(j);
-                                FeaturedItemBrand brand = new FeaturedItemBrand();
-
-                                // only use brands properly initialized
-                                if (brand.initialize(brandObject)) {
-                                    brands.add(brand);
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch(JSONException ex){
-//                Log.e(TAG, "ERROR PARSING FEATURE BRAND BOX");
-            }
-
-            JSONObject searchTipsObject = metadataObject.optJSONObject(RestConstants.SEARCH_TIPS);
-            if (searchTipsObject != null) {
-                searchTips = searchTipsObject.optString(RestConstants.TEXT);
-            }
-
-            errorMessage = metadataObject.getString(RestConstants.ERROR_MESSAGE);
-
-            noticeMessage = metadataObject.getString(RestConstants.NOTICE_MESSAGE);
         }
-
+        // Brands
+        JSONArray featuredBrandBoxObject = metadataObject.optJSONArray(RestConstants.FEATURED_BRANDBOX);
+        if (CollectionUtils.isNotEmpty(featuredBrandBoxObject)) {
+            // First item
+            JSONObject brandsCategoryObject = featuredBrandBoxObject.getJSONObject(IntConstants.DEFAULT_POSITION);
+            // Title
+            mBrandsTitle = brandsCategoryObject.optString(RestConstants.TITLE);
+            // Brands
+            JSONArray brandsObject = brandsCategoryObject.getJSONArray(RestConstants.BRANDS);
+            if (CollectionUtils.isNotEmpty(brandsObject)) {
+                mBrands = new ArrayList<>();
+                for (int j = 0; j < brandsObject.length(); j++) {
+                    // Only use products properly initialized
+                    FeaturedItemBrand brand = new FeaturedItemBrand();
+                    if (brand.initialize(brandsObject.getJSONObject(j))) {
+                        mBrands.add(brand);
+                    }
+                }
+            }
+        }
+        // Search tips
+        JSONObject searchTipsObject = metadataObject.optJSONObject(RestConstants.SEARCH_TIPS);
+        if (searchTipsObject != null) {
+            mSearchTips = searchTipsObject.optString(RestConstants.TEXT);
+        }
+        // Messages
+        mErrorMessage = metadataObject.getString(RestConstants.ERROR_MESSAGE);
+        mNoticeMessage = metadataObject.getString(RestConstants.NOTICE_MESSAGE);
         return true;
     }
 
@@ -149,31 +121,31 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
     }
 
     public String getProductsTitle() {
-        return productsTitle;
+        return mProductsTitle;
     }
 
     public ArrayList<FeaturedItem> getProducts() {
-        return products;
+        return mProducts;
     }
 
     public String getBrandsTitle() {
-        return brandsTitle;
+        return mBrandsTitle;
     }
 
     public ArrayList<FeaturedItem> getBrands() {
-        return brands;
+        return mBrands;
     }
 
     public String getSearchTips() {
-        return searchTips;
+        return mSearchTips;
     }
 
     public String getErrorMessage() {
-        return errorMessage;
+        return mErrorMessage;
     }
 
     public String getNoticeMessage() {
-        return noticeMessage;
+        return mNoticeMessage;
     }
 
     /*
@@ -181,23 +153,23 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
      */
 
     protected FeaturedBox(Parcel in) {
-        productsTitle = in.readString();
+        mProductsTitle = in.readString();
         if (in.readByte() == 0x01) {
-            products = new ArrayList<>();
-            in.readList(products, FeaturedItem.class.getClassLoader());
+            mProducts = new ArrayList<>();
+            in.readList(mProducts, FeaturedItem.class.getClassLoader());
         } else {
-            products = null;
+            mProducts = null;
         }
-        brandsTitle = in.readString();
+        mBrandsTitle = in.readString();
         if (in.readByte() == 0x01) {
-            brands = new ArrayList<>();
-            in.readList(brands, FeaturedItem.class.getClassLoader());
+            mBrands = new ArrayList<>();
+            in.readList(mBrands, FeaturedItem.class.getClassLoader());
         } else {
-            brands = null;
+            mBrands = null;
         }
-        searchTips = in.readString();
-        errorMessage = in.readString();
-        noticeMessage = in.readString();
+        mSearchTips = in.readString();
+        mErrorMessage = in.readString();
+        mNoticeMessage = in.readString();
     }
 
     @Override
@@ -207,23 +179,23 @@ public class FeaturedBox implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(productsTitle);
-        if (products == null) {
+        dest.writeString(mProductsTitle);
+        if (mProducts == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(products);
+            dest.writeList(mProducts);
         }
-        dest.writeString(brandsTitle);
-        if (brands == null) {
+        dest.writeString(mBrandsTitle);
+        if (mBrands == null) {
             dest.writeByte((byte) (0x00));
         } else {
             dest.writeByte((byte) (0x01));
-            dest.writeList(brands);
+            dest.writeList(mBrands);
         }
-        dest.writeString(searchTips);
-        dest.writeString(errorMessage);
-        dest.writeString(noticeMessage);
+        dest.writeString(mSearchTips);
+        dest.writeString(mErrorMessage);
+        dest.writeString(mNoticeMessage);
     }
 
     public static final Parcelable.Creator<FeaturedBox> CREATOR = new Parcelable.Creator<FeaturedBox>() {
