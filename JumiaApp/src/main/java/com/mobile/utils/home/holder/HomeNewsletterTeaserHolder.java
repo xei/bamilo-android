@@ -20,14 +20,11 @@ import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
-
-import java.util.HashMap;
 
 /**
  *
