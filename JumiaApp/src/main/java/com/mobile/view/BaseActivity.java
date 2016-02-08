@@ -992,6 +992,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
@@ -1003,6 +1004,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 handle.removeCallbacks(run);
                 if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened) {
                     handle.postDelayed(run, SEARCH_EDIT_DELAY);
+                } else if(TextUtils.isEmpty(s) && isSearchComponentOpened){
+                    getSuggestions();
                 }
             }
         });
@@ -1017,6 +1020,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     String searchTerm = textView.getText().toString();
                     Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
                     if (TextUtils.isEmpty(searchTerm)) {
+                        getSuggestions();
                         return false;
                     }
                     //Save searched text
@@ -1051,6 +1055,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                         if (TextUtils.isNotEmpty(searchedTerm)) {
                             mSearchAutoComplete.setText(searchedTerm);
                             mSearchAutoComplete.setSelection(searchedTerm.length());
+                        } else {
+                            getSuggestions();
                         }
                     }
                 });
@@ -1208,7 +1214,14 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             return;
         }
         // Hide dropdown
-        mSearchAutoComplete.dismissDropDown();
+        if(suggestionsStruct.size() == 0)
+            mSearchAutoComplete.dismissDropDown();
+        else{
+            //show dropdown with recent queries
+            SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct, requestQuery);
+            mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
+            mSearchAutoComplete.showDropDown();
+        }
     }
 
     /**
