@@ -128,6 +128,7 @@
     <item name="home_teaser_shop_item"                  type="layout">@layout/_def_home_teaser_shop_item</item>
     <item name="home_teaser_shop_week"                  type="layout">@layout/_def_home_teaser_shop_week</item>
     <item name="home_teaser_small"                      type="layout">@layout/_def_home_teaser_small</item>
+    <item name="home_teaser_newsletter"                 type="layout">@layout/_def_home_teaser_newsletter</item>
     <item name="home_teaser_small_item"                 type="layout">@layout/_def_home_teaser_small_item</item>
     <item name="home_teaser_top_sellers"                type="layout">@layout/_def_home_teaser_top_sellers</item>
     <item name="home_teaser_top_sellers_item"           type="layout">@layout/_def_home_teaser_top_sellers_item</item>

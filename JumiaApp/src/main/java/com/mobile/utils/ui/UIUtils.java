@@ -2,8 +2,10 @@ package com.mobile.utils.ui;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -114,6 +116,29 @@ public class UIUtils {
         }
     }
 
+    public static void hideViewFadeOut(@NonNull final View view) {
+        if (view.getVisibility() == View.VISIBLE) {
+            Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.fade_out);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    view.setVisibility(View.GONE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+
+                }
+            });
+            view.startAnimation(animation);
+        }
+    }
+
     public static void setDrawableByString(@NonNull ImageView imageView, String name) {
         Context context = imageView.getContext();
         int id = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
@@ -204,6 +229,23 @@ public class UIUtils {
         } else {
             view.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
         }
+    }
+
+    /**
+     * Method used to set a right compound drawable in the respective view. (RTL support)
+     */
+    public static void setDrawableLeft(@NonNull TextView view, @DrawableRes int drawable) {
+        if (ShopSelector.isRtl()) {
+            view.setCompoundDrawablesWithIntrinsicBounds(0, 0, drawable, 0);
+        } else {
+            view.setCompoundDrawablesWithIntrinsicBounds(drawable, 0, 0, 0);
+        }
+    }
+
+    public static void setDrawableLeftByString(@NonNull TextView view, String name) {
+        Context context = view.getContext();
+        int drawable = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
+        setDrawableLeft(view, drawable);
     }
 
 }

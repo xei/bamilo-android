@@ -153,10 +153,10 @@ public class BaseTeaserGroupType implements IJSONSerializable, Parcelable {
      */
     private BaseTeaserObject getFormTeaser(JSONObject jsonObject){
         BaseTeaserObject teaser = new TeaserFormObject(mType.ordinal());
-//        // Create Home page Newsletter form
-//        if(mType == TeaserGroupType.FORM_NEWSLETTER){
-//            teaser = new TeaserFormObject(mType.ordinal());
-//        }
+        // Create Home page Newsletter form
+        if(mType == TeaserGroupType.FORM_NEWSLETTER){
+            teaser = new TeaserFormObject(mType.ordinal());
+        }
         // Initialize
         try {
             teaser.initialize(jsonObject);

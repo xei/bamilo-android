@@ -186,7 +186,8 @@ public enum EventType {
 
     // ############# CART #############
 
-    CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/");
+    CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/"),
+    FORM_EVENT;
 
 
     public final String action;

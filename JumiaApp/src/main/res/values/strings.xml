@@ -476,4 +476,6 @@
     <string name="size">Size %s</string>
     <string name="added_success">Added successfully.</string>
     <string name="removed_success">Removed successfully.</string>
+    <string name="sign_up_newsletter">Sign Up to our Newsletter</string>
+    <string name="sign_up_newsletter_description">For exclusive acess to sales previews, new arrivals, trends and promotions</string>
 </resources>
