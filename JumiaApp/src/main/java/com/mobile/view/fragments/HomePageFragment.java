@@ -349,15 +349,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         super.onClick(view);
 
         if(view.getId() == R.id.send_newsletter){
-            if(view.getTag() instanceof BaseResponse){
-                getBaseActivity().dismissProgress();
-                final BaseResponse response = (BaseResponse) view.getTag();
-                if(response.hadSuccess()) showWarningSuccessMessage(response.getSuccessMessage());
-                else showWarningErrorMessage(response.getErrorMessage());
-            } else {
-                getBaseActivity().showProgress();
-            }
-
+            getBaseActivity().showProgress();
         } else {
             /**
              * Try fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/163/crash_reasons/108483846
@@ -520,6 +512,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     showFragmentFallBack();
                 }
                 break;
+            case FORM_EVENT:// Newsletter Form Response
+                getBaseActivity().dismissProgress();
+                showWarningSuccessMessage(baseResponse.getSuccessMessage());
+                break;
             default:
                 break;
         }
@@ -548,6 +544,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             case GET_HOME_EVENT:
                 Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
                 showFragmentFallBack();
+                break;
+            case FORM_EVENT:// Newsletter Form Response
+                getBaseActivity().dismissProgress();
+                showWarningErrorMessage(baseResponse.getErrorMessage());
                 break;
             default:
                 break;

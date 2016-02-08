@@ -94,20 +94,19 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
         @Override
         public void onClick(final View v) {
             if(v != null && mParentClickListener != null && mNewsLetterForm != null && mNewsLetterForm.validate()){
-                v.setTag(SHOW_LOADING);
                 mParentClickListener.onClick(v);
                 JumiaApplication.INSTANCE.sendRequest(new FormHelper(), FormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), new IResponseCallback() {
                     @Override
                     public void onRequestComplete(BaseResponse baseResponse) {
+                        if(mParentClickListener instanceof IResponseCallback){
+                            ((IResponseCallback) mParentClickListener).onRequestComplete(baseResponse);
+                            UIUtils.hideViewFadeOut(itemView);
+                        }
 
-                        v.setTag(baseResponse);
-                        mParentClickListener.onClick(v);
-                        UIUtils.hideViewFadeOut(itemView);
                     }
                     @Override
                     public void onRequestError(BaseResponse baseResponse) {
-                        v.setTag(baseResponse);
-                        mParentClickListener.onClick(v);
+                        ((IResponseCallback) mParentClickListener).onRequestError(baseResponse);
                     }
                 });
 
