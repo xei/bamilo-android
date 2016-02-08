@@ -174,9 +174,9 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         mSuggesterProvider = jsonObject.optString(RestConstants.SUGGESTER_PROVIDER);
         JSONObject jsonAlgolia = jsonObject.optJSONObject(RestConstants.ALGOLIA);
         if(jsonAlgolia != null){
-            mApplicationId = jsonAlgolia.getString(RestConstants.APPLICATION_ID);
-            mSuggesterApiKey = jsonAlgolia.getString(RestConstants.SUGGESTER_API_KEY);
-            mNamespacePrefix = jsonAlgolia.getString(RestConstants.NAMESPACE_PREFIX);
+            mApplicationId = jsonAlgolia.optString(RestConstants.APPLICATION_ID);
+            mSuggesterApiKey = jsonAlgolia.optString(RestConstants.SUGGESTER_API_KEY);
+            mNamespacePrefix = jsonAlgolia.optString(RestConstants.NAMESPACE_PREFIX);
         }
         return true;
     }
@@ -260,13 +260,13 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         return isFacebookAvailable;
     }
 
-    public String getmSuggesterProvider() { return mSuggesterProvider; }
+    public String getSuggesterProvider() { return mSuggesterProvider; }
 
-    public String getmApplicationId() { return mApplicationId; }
+    public String getApplicationId() { return mApplicationId; }
 
-    public String getmSuggesterApiKey() { return mSuggesterApiKey; }
+    public String getSuggesterApiKey() { return mSuggesterApiKey; }
 
-    public String getmNamespacePrefix() { return mNamespacePrefix; }
+    public String getNamespacePrefix() { return mNamespacePrefix; }
 
     protected CountryConfigs(Parcel in) {
         mCurrencyIso = in.readString();
