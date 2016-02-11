@@ -32,6 +32,7 @@ public class UICatalogHelper {
     public static void setFilterButtonState(View button, boolean hasFilterValues) {
         try {
             button.setSelected(hasFilterValues);
+            button.setEnabled(hasFilterValues);
             Log.d(TAG, "SET FILTER BUTTON STATE: " + button.isSelected());
         } catch (NullPointerException e) {
             Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
