@@ -26,6 +26,7 @@
             android:layout_gravity="center"
             android:drawableLeft="@drawable/selector_catalog_filter"
             android:drawableStart="@drawable/selector_catalog_filter"
+            android:enabled="false"
             android:text="@string/filter_label" />
 
 
