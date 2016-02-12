@@ -43,6 +43,9 @@ public class AlgoliaHelper {
     private final static String QUERY = "query";
     private final static String ID_CATALOG_CATEGORY = "id_catalog_category";
 
+    private final static int HITS_PER_PAGE = 3;
+    private final static int MAX_NUMBER_OFF_FACETS = 4;
+
     private SuggestionsStruct mSuggestionsStruct;
     private final Context mContext;
 
@@ -70,10 +73,10 @@ public class AlgoliaHelper {
         List<IndexQuery> queries = new ArrayList<IndexQuery>();
 
         Query queryProductsPopular = new Query(searchQuery)
-                .setHitsPerPage(3)
+                .setHitsPerPage(HITS_PER_PAGE)
                 .setAttributesToRetrieve(attributesToRetrieve)
                 .setFacets(facets)
-                .setMaxNumberOfFacets(4)
+                .setMaxNumberOfFacets(MAX_NUMBER_OFF_FACETS)
                 .setAttributesToHighlight(facets);
 
         queries.add(new IndexQuery(mNamespacePrefix+_PRODUCTS_POPULAR, queryProductsPopular));

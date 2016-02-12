@@ -2,6 +2,7 @@ package com.mobile.newFramework.objects.search;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntDef;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
@@ -11,6 +12,8 @@ import com.mobile.newFramework.utils.TextUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 
 /**
@@ -20,9 +23,12 @@ import org.json.JSONObject;
  */
 public class Suggestion implements IJSONSerializable, Parcelable {
 
-    public static final int SUGGESTION_PRODUCT = 0;
-    public static final int SUGGESTION_SHOP_IN_SHOP = 1;
-    public static final int SUGGESTION_CATEGORY = 2;
+    public static final int SUGGESTION_PRODUCT = 0; //
+    public static final int SUGGESTION_SHOP_IN_SHOP = 1; //
+    public static final int SUGGESTION_CATEGORY = 2; //
+    @IntDef({SUGGESTION_PRODUCT, SUGGESTION_SHOP_IN_SHOP, SUGGESTION_CATEGORY})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface SuggestionType {}
 
 	public final static String TAG = Suggestion.class.getSimpleName();
 

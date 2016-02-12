@@ -34,6 +34,8 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     public static final String STRING_END_PLACEHOLDER = " %s";
 
+    public static final String ALGOLIA = "algolia";
+
     private String mCurrencyIso;
     private String mCurrencySymbol;
     private String mCurrencyPosition;
@@ -175,7 +177,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         mIsRichRelevanceEnabled = jsonObject.optBoolean(RestConstants.RICH_RELEVANCE_ENABLED);
         //Algolia/Api configurations
         mSuggesterProvider = jsonObject.optString(RestConstants.SUGGESTER_PROVIDER);
-        if(TextUtils.equalsIgnoreCase(mSuggesterProvider, "algolia")){
+        if(TextUtils.equalsIgnoreCase(mSuggesterProvider, ALGOLIA)){
             mUseAlgolia = true;
         }
         JSONObject jsonAlgolia = jsonObject.optJSONObject(RestConstants.ALGOLIA);
