@@ -28,7 +28,7 @@ sourceSets {
 
 dependencies {
     // https://wiki.jira.rocket-internet.de/pages/viewpage.action?title=Android+app+SDKs+and+libraries&spaceKey=NAFAMZ
-    /** REMOTE MAVEN LIBS  **/
+    /** REMOTE MAVEN LIBS      **/
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
@@ -36,18 +36,18 @@ dependencies {
     compile 'com.android.support:support-annotations:23.1.1'
     // https://github.com/mcxiaoke/android-volley
     compile 'com.mcxiaoke.volley:library:1.0.19'
-    /** FRAMEWORK **/
+    /** FRAMEWORK     **/
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.6.0'
-    /** GOOGLE PLAY SERVICE **/
+    /** GOOGLE PLAY SERVICE     **/
     compile 'com.google.android.gms:play-services-analytics:7.5.0'
     compile 'com.google.android.gms:play-services-location:7.5.0'
     compile 'com.google.android.gms:play-services-ads:7.5.0'
     compile 'com.google.android.gms:play-services-wearable:7.5.0'
-    /** SOCIALS **/
+    /** SOCIALS     **/
     // https://developers.facebook.com/docs/android
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
-    /** TRACKERS **/
+    /** TRACKERS     **/
     // http://mvnrepository.com/artifact/com.newrelic.agent.android
     compile 'com.newrelic.agent.android:android-agent:5.3.3'
     // https://bintray.com/accengage/maven/A4SSDK/
@@ -56,10 +56,12 @@ dependencies {
     compile 'com.adjust.sdk:adjust-android:4.1.2'
     // https://github.com/bitstadium/HockeySDK-Android
     compile 'net.hockeyapp.android:HockeySDK:3.6.0'
-    /** LOCAL **/
+    /** ALGOLIA    **/
+        compile 'com.algolia:algoliasearch-android:2.6.0@aar'
+    /** LOCAL     **/
     compile fileTree(dir: 'libs', exclude: ['json.jar'], include: ['*.jar'])
     compile files('libs/A4SSDK-GooglePlayServices-1.6.jar')
-    /** TESTS **/
+    /** TESTS     **/
     testCompile 'junit:junit:4.12'
     testCompile files('libs/json.jar')
 }

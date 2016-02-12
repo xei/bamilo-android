@@ -20,9 +20,19 @@ import org.json.JSONObject;
  */
 public class Suggestion implements IJSONSerializable, Parcelable {
 
+    public static final int SUGGESTION_PRODUCT = 0;
+    public static final int SUGGESTION_SHOP_IN_SHOP = 1;
+    public static final int SUGGESTION_CATEGORY = 2;
+
 	public final static String TAG = Suggestion.class.getSimpleName();
 
-	private String result;
+	private int mType;
+
+	private String mQuery;
+
+	private String mResult;
+
+	private String mTarget;
 
 	private int value;
 
@@ -43,7 +53,7 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 			if (jsonObject != null) {
 				String item = jsonObject.getString(RestConstants.ITEM);
 				if (!TextUtils.isEmpty(item)) {
-					result = item;
+					mResult = item;
 					value = jsonObject.getInt(RestConstants.RELEVANCE);
 					return true;
 				}
@@ -74,18 +84,38 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 	 * @return string
 	 */
 	public String getResult() {
-		return result;
+		return mResult;
 	}
 
-//	public int getResultValue() {
-//		return value;
-//	}
+	public String getQuery() {
+		return mQuery;
+	}
+
+    public String getTarget() {
+		return mTarget;
+	}
+
+	public int getType() {
+		return mType;
+	}
+
+	public void setType(int type) {
+		mType = type;
+	}
 
 	/**
 	 * Set the suggestion string
 	 */
 	public void setResult(String recentSuggestion) {
-		this.result = recentSuggestion;
+		this.mResult = recentSuggestion;
+	}
+	public void setQuery(String query) {
+		this.mQuery = query;
+	}
+
+
+    public void setTarget(String target) {
+		this.mTarget = target;
 	}
 
 	/**
@@ -119,13 +149,15 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 	 */
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(result);
+		dest.writeString(mResult);
 		dest.writeInt(value);
+		dest.writeInt(mType);
 	}
 
 	private Suggestion(Parcel in) {
-		result = in.readString();
+		mResult = in.readString();
 		value = in.readInt();
+		mType = in.readInt();
 	}
 
     public static final Creator<Suggestion> CREATOR = new Creator<Suggestion>() {

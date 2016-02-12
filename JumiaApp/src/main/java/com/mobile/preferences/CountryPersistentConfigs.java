@@ -3,6 +3,7 @@ package com.mobile.preferences;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
@@ -75,6 +76,8 @@ public class CountryPersistentConfigs {
         mEditor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
 
         saveMoreInfo(mEditor, countryConfigs.getMobileAbout());
+
+        saveAlgoliaInfo(mEditor, countryConfigs.getApplicationId(), countryConfigs.getSuggesterApiKey(), countryConfigs.getNamespacePrefix(), countryConfigs.isAlgoliaSearchEngine());
 
         //has_cart_popup
         mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, countryConfigs.hasCartPopup());
@@ -220,6 +223,23 @@ public class CountryPersistentConfigs {
     public static void saveMoreInfo(SharedPreferences.Editor mEditor, @Nullable List<TargetHelper> moreInfo){
         String json = new Gson().toJson(moreInfo);
         mEditor.putString(Darwin.KEY_SELECTED_MORE_INFO, json);
+    }
+
+    public static void saveAlgoliaInfo(SharedPreferences.Editor mEditor, @Nullable final String appId, final String suggesterAPIKey, final String namespacePrefix, final boolean useAlgolia){
+        mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_USE, useAlgolia);
+        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_APP_ID, appId);
+        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_API_KEY, suggesterAPIKey);
+        mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_PREFIX, namespacePrefix);
+    }
+
+    public static boolean isUseAlgolia(Context context){
+        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_USE, false);
+    }
+
+    public static String getAlgoliaInfoByKey(Context context, @NonNull final String key){
+        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        return settings.getString(key, null);
     }
 
     @Nullable
