@@ -434,7 +434,7 @@
     <string name="create_label">Create</string>
     <string name="change_password">Change password</string>
     <string name="continue_without_log_in">Continue without log in</string>
-    <string name="placeholder_discount">-%s</string>
+    <string name="placeholder_discount">- %s</string>
     <string name="edit_user_success">User data edit with success</string>
     <string name="password">Password</string>
     <string name="more">More</string>
