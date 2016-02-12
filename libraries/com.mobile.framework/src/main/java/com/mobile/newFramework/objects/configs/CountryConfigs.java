@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +34,8 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     public static final String STRING_END_PLACEHOLDER = " %s";
 
+    public static final String ALGOLIA = "algolia";
+
     private String mCurrencyIso;
     private String mCurrencySymbol;
     private String mCurrencyPosition;
@@ -56,6 +59,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private String mApplicationId;
     private String mSuggesterApiKey;
     private String mNamespacePrefix;
+    private boolean mUseAlgolia;
 
     /**
      * Empty constructor
@@ -82,6 +86,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         mApplicationId = null;
         mSuggesterApiKey = null;
         mNamespacePrefix = null;
+        mUseAlgolia = false;
     }
 
     /**
@@ -172,6 +177,9 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         mIsRichRelevanceEnabled = jsonObject.optBoolean(RestConstants.RICH_RELEVANCE_ENABLED);
         //Algolia/Api configurations
         mSuggesterProvider = jsonObject.optString(RestConstants.SUGGESTER_PROVIDER);
+        if(TextUtils.equalsIgnoreCase(mSuggesterProvider, ALGOLIA)){
+            mUseAlgolia = true;
+        }
         JSONObject jsonAlgolia = jsonObject.optJSONObject(RestConstants.ALGOLIA);
         if(jsonAlgolia != null){
             mApplicationId = jsonAlgolia.optString(RestConstants.APPLICATION_ID);
@@ -268,6 +276,8 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     public String getNamespacePrefix() { return mNamespacePrefix; }
 
+    public boolean isAlgoliaSearchEngine() { return mUseAlgolia; }
+
     protected CountryConfigs(Parcel in) {
         mCurrencyIso = in.readString();
         mCurrencySymbol = in.readString();
@@ -290,6 +300,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         mApplicationId = in.readString();
         mSuggesterApiKey = in.readString();
         mNamespacePrefix = in.readString();
+        mUseAlgolia = in.readByte() != 0x00;
     }
 
     @Override
@@ -320,6 +331,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         dest.writeString(mApplicationId);
         dest.writeString(mSuggesterApiKey);
         dest.writeString(mNamespacePrefix);
+        dest.writeByte((byte) (mUseAlgolia ? 0x01 : 0x00));
     }
 
     @SuppressWarnings("unused")

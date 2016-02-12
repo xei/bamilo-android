@@ -21,18 +21,32 @@ public class Suggestions extends ArrayList<Suggestion> implements IJSONSerializa
 
 	public final static String TAG = Suggestions.class.getSimpleName();
 
+	private static final int FIRST_POSITION = 0;
+	private static final int SECOND_POSITION = 1;
+
 	public Suggestions(){}
 
 	public Suggestions(List<Suggestion> suggestions){
-		for(Suggestion suggestion : suggestions){
-			add(suggestion);
-		}
+		setSuggestions(suggestions);
 	}
 
 	public Suggestions(Suggestions suggestions){
 		this((List)suggestions);
 	}
 
+	public void setSuggestions(List<Suggestion> suggestions){
+		for(Suggestion suggestion : suggestions){
+			// Order categories after ShopInShop and before Products
+			if(suggestion.getType() == Suggestion.SUGGESTION_CATEGORY && size() > FIRST_POSITION && get(FIRST_POSITION).getType() == Suggestion.SUGGESTION_SHOP_IN_SHOP){
+				add(SECOND_POSITION,suggestion);
+			} else if(suggestion.getType() == Suggestion.SUGGESTION_CATEGORY && size() > FIRST_POSITION){
+				add(FIRST_POSITION,suggestion);
+			} else {
+				add(suggestion);
+			}
+
+		}
+	}
 	@Override
 	public int getRequiredJson() {
 		return RequiredJson.METADATA;

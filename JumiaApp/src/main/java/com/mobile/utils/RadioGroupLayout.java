@@ -98,7 +98,7 @@ public class RadioGroupLayout extends LinearLayout {
 
         for (int idx = 0; idx < mItems.size(); idx++) {
             RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup, false);
-            UIUtils.setDrawableLeftByString(button, DynamicFormItem.ICON_PREFIX + mItemsKeys.get(idx).toString().toLowerCase());
+            if(mItemsKeys.size() > idx) UIUtils.setDrawableLeftByString(button, DynamicFormItem.ICON_PREFIX + mItemsKeys.get(idx).toString().toLowerCase());
             button.setId(idx);
             button.setText(mItems.get(idx).toString());
             button.setTextColor(ContextCompat.getColor(getContext(),R.color.white));

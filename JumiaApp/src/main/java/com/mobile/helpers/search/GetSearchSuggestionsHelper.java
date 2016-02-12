@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.algolia.search.saas.APIClient;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
@@ -168,43 +169,20 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     /**
      * Save the recent query on the database
-     * @param query
+     * @param suggestion
      * @author sergiopereira
      */
-    public static void saveSearchQuery(final String query){
-        Print.d(TAG, "SAVE SEARCH QUERY: " + query);
+    public static void saveSearchQuery(final Suggestion suggestion){
+        Print.d(TAG, "SAVE SEARCH QUERY: " + suggestion.getResult());
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    SearchRecentQueriesTableHelper.insertQuery(query);
+                    SearchRecentQueriesTableHelper.insertQuery(suggestion);
                 } catch (Exception e){
                     // ...
                 }
             }
         }).start();
-    }
-
-    public class SuggestionsStruct extends Suggestions {
-
-        private String searchParam;
-
-        public SuggestionsStruct(){}
-
-        public SuggestionsStruct(Suggestions suggestions){
-            super(suggestions);
-        }
-
-        public SuggestionsStruct(List<Suggestion> suggestions){
-            super(suggestions);
-        }
-
-        public String getSearchParam() {
-            return searchParam;
-        }
-
-        public void setSearchParam(String searchParam) {
-            this.searchParam = searchParam;
-        }
     }
 }
