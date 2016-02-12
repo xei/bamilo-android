@@ -7,6 +7,7 @@
     <style name="HeaderStyle" parent="@style/TextHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
+        <item name="android:minHeight">48dp</item>
         <item name="android:gravity">right|bottom</item>
         <item name="android:paddingBottom">12dp</item>
         <item name="android:paddingRight">20dp</item>
@@ -55,7 +56,7 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <!-- FORM TODO : UPDATE v2.8 -->
+    <!-- FORM -->
 
     <style name="FormButtonSpinner">
         <item name="android:layout_width">match_parent</item>
@@ -65,6 +66,19 @@
         <item name="android:textSize">16sp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">right|center_vertical</item>
+    </style>
+
+    <!-- CHECK BOX -->
+
+    <style name="FormCheckBox" parent="SingleLineStyle"/>
+
+    <style name="FormCheckBox.Right">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/_gen_selector_check_box</item>
+        <item name="android:drawableRight">@null</item>
+        <item name="android:drawableEnd">@null</item>
     </style>
 
     <!-- RADIO BUTTON -->
@@ -77,7 +91,17 @@
         <item name="android:drawableRight">@drawable/_gen_selector_radio_button</item>
     </style>
 
-    <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES -->
+    <style name="FormRadioButton.Right">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/_gen_selector_radio_button</item>
+        <item name="android:drawableRight">@null</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:singleLine">false</item>
+    </style>
+
+    <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ -->
 
 
 </resources>

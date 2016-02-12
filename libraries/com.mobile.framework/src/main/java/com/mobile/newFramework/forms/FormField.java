@@ -588,6 +588,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeByte((byte) (isChecked ? 0x01 : 0x00));
         dest.writeByte((byte) (isPrefixField ? 0x01 : 0x00));
         dest.writeByte((byte) (isDisabled ? 0x01 : 0x00));
+        dest.writeByte((byte) (isVerticalOrientation ? 0x01 : 0x00));
     }
 
     /**
@@ -632,6 +633,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         isChecked = in.readByte() != 0x00;
         isPrefixField = in.readByte() != 0x00;
         isDisabled = in.readByte() != 0x00;
+        isVerticalOrientation = in.readByte() != 0x00;
     }
 
     /**

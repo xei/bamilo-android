@@ -12,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.pojo.DynamicForm;
@@ -45,13 +46,15 @@ public class SwitchRadioField extends DynamicFormItem implements IDynamicFormIte
     @Override
     public  void build(@NonNull RelativeLayout.LayoutParams params) {
         // Get field container
-        ViewGroup container = (ViewGroup) View.inflate(context, R.layout._def_gen_form_switch_radio, null);
+        ViewGroup container = (ViewGroup) View.inflate(context, R.layout.gen_form_switch_radio, null);
         // Build related field
         mRelatedRadioGroup = buildVerticalRadioGroup(container, entry.getRelatedField(), params);
         // Get switch button
         mSwitchButton = (SwitchCompat) container.findViewById(R.id.switch_field);
         // Set text
-        mSwitchButton.setText(entry.getLabel());
+        TextView v8SwitchTextView = (TextView) container.findViewById(R.id.switch_text);
+        if(v8SwitchTextView != null) v8SwitchTextView.setText(entry.getLabel());
+        else mSwitchButton.setText(entry.getLabel());
         // Set listener
         mSwitchButton.setOnCheckedChangeListener(this);
         // Set default value using performing click event

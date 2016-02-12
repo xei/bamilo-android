@@ -57,7 +57,7 @@ public class DialogFormFragment extends DialogGenericFragment implements View.On
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout._def_dialog_generic_form, container);
+        return inflater.inflate(R.layout.dialog_generic_form, container);
     }
 
     @Override

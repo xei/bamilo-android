@@ -44,7 +44,7 @@ public class ScreenRadioField extends DynamicFormItem implements IDynamicFormIte
     @Override
     public void build(@NonNull RelativeLayout.LayoutParams params) {
         // Get field container
-        View container = View.inflate(context, R.layout._def_gen_form_screen_radio, null);
+        View container = View.inflate(context, R.layout.gen_form_screen_radio, null);
         // Set title
         ((TextView) container.findViewById(R.id.title)).setText(entry.getLabel());
         // Set sub title

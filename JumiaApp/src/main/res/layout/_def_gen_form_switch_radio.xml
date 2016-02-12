@@ -9,7 +9,9 @@
 
     <!-- SWITCH BUTTON -->
 
-    <include layout="@layout/_def_gen_form_switch" />
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/switch_field"
+        style="@style/SwitchStyle" />
 
     <!-- RELATED DATA -->
 

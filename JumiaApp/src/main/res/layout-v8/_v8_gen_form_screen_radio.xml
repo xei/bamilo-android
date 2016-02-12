@@ -10,20 +10,18 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button"
         style="@style/AigButton.Text.Blue"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:text="@string/active_label" />
+        android:text="@string/active_label"
+        android:paddingLeft="0dp" />
 
     <!-- TITLE -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/title"
         style="@style/TextList_1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@id/checkout_button_enter"
-        android:layout_toStartOf="@id/checkout_button_enter"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/checkout_button_enter"
         tools:text="Title" />
 
     <!-- SUB TITLE -->
@@ -31,11 +29,9 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/sub_title"
         style="@style/TextBody_1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/title"
-        android:layout_toLeftOf="@id/checkout_button_enter"
-        android:layout_toStartOf="@id/checkout_button_enter"
+        android:layout_toRightOf="@id/checkout_button_enter"
         android:singleLine="false"
         tools:text="Sub Title" />
 

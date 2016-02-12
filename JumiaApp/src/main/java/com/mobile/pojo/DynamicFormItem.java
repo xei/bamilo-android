@@ -1432,6 +1432,8 @@ public class DynamicFormItem {
         // Case this forms show dividers
         if (parent.getForm().getType() == FormConstants.NEWSLETTER_PREFERENCES_FORM ||
             parent.getForm().getType() == FormConstants.NEWSLETTER_UN_SUBSCRIBE_FORM) {
+            // For RTL
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             // Set dividers
             radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable.divider_horizontal_black_300));
             radioGroup.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
