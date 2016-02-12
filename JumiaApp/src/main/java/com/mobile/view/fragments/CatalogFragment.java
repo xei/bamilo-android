@@ -537,13 +537,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Set title
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
         // Show layout
-//        showFragmentEmpty(stringId, R.drawable.img_filternoresults, R.string.catalog_edit_filters, new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Print.d(TAG, "ON CLICK: FILTER BUTTON");
-//                onClickFilterButton();
-//            }
-//        });
         showErrorFragment(stringId, new OnClickListener() {
             @Override
             public void onClick(View v) {
