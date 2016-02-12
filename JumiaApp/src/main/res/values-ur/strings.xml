@@ -434,7 +434,7 @@
     <string name="create_label">بنایۓ</string>
     <string name="change_password">پاسورڈ بدلین</string>
     <string name="continue_without_log_in">اکآونٹ مین داخل ھوی بنا جاری رکھین</string>
-    <string name="placeholder_discount">%s -</string>
+    <string name="placeholder_discount">- ‎%s‎</string>
     <string name="edit_user_success">یوزر معلومات کامیابی سے تبدیل ھو  چکی ھے</string>
     <string name="password">پاس ورڈ</string>
     <string name="more">مزید</string>
