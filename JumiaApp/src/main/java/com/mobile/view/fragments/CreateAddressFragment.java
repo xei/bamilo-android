@@ -247,7 +247,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
         // Shipping form
         if (shippingFormGenerator == null) {
-            shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+            shippingFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
             mShippingFormContainer.removeAllViews();
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
@@ -255,7 +255,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             // Have to create set a Dynamic form in order to not have the parent dependencies.
             // this happens when user goes from create address to another screen through the overflow menu, and presses back.
             // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
-            shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+            shippingFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
         }
@@ -263,7 +263,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         shippingFormGenerator.loadSaveFormState(mShippingFormSavedState);
         // Define if CITY is a List or Text
         DynamicFormItem item = shippingFormGenerator.getItemByKey(RestConstants.CITY);
-        isCityIdAnEditText = item != null && item.getEditControl() instanceof EditText;
+        isCityIdAnEditText = item != null && item.getDataControl() instanceof EditText;
         // Validate Regions
         if (regions == null) {
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.REGION);
@@ -281,7 +281,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get region item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.REGION);
         // Clean group
-        ViewGroup group = (ViewGroup) v.getControl();
+        ViewGroup group = v.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
@@ -302,7 +302,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         spinner.setOnItemSelectedListener(this);
-        v.setEditControl(spinner);
+        v.setDataControl(spinner);
         group.addView(spinner);
         // Show invisible content to trigger spinner listeners
         showGhostFragmentContentContainer();
@@ -366,7 +366,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get city item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.CITY);
         // Clean group
-        ViewGroup group = (ViewGroup) v.getControl();
+        ViewGroup group = v.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
@@ -387,7 +387,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         spinner.setOnItemSelectedListener(this);
-        v.setEditControl(spinner);
+        v.setDataControl(spinner);
         group.addView(spinner);
         // Validate if first position is the prompt
         if (cities.get(IntConstants.DEFAULT_POSITION).getValue() == IntConstants.DEFAULT_POSITION) {
@@ -402,7 +402,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get city item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.POSTCODE);
         // Clean group
-        ViewGroup group = (ViewGroup) v.getControl();
+        ViewGroup group = v.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
@@ -422,7 +422,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             processSpinners(spinner, RestConstants.POSTCODE);
         }
         spinner.setOnItemSelectedListener(this);
-        v.setEditControl(spinner);
+        v.setDataControl(spinner);
         group.addView(spinner);
     }
 

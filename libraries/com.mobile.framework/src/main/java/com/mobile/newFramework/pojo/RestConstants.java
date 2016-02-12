@@ -38,7 +38,7 @@ public class RestConstants {
     public static final String TYPE = "type";
     public static final String KEY = "key";
     public static final String LABEL = "label";
-    public static final String SUBLABEL = "sublabel";
+    public static final String SUB_LABEL = "sub_label";
     public static final String DATASET = "dataset";
     public static final String VALUE = "value";
     public static final String DATASET_SOURCE = "dataset_source";
@@ -92,6 +92,7 @@ public class RestConstants {
     public static final String STARS_SIZE = "stars_size";
     public static final String DATA_SET = "data_set";
     public static final String DISPLAY_TITLE = "display_title";
+    public static final String DISPLAY = "display";
     public static final String ID_RATING_TYPE = "id_rating_type";
     public static final String RATING = "rating";
     public static final String REVIEW = "review";
@@ -314,4 +315,5 @@ public class RestConstants {
     public static final String SUGGESTER_API_KEY = "suggester_api_key";
     public static final String NAMESPACE_PREFIX = "namespace_prefix";
     public static final String BEFORE = "before";
+    public static final String UNSUBSCRIBE_SECTION = "unsubscribe_section";
 }

@@ -23,6 +23,14 @@ public class Print {
         Log.init(context);
     }
 
+    public static void i(String message) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.i(message);
+        } else {
+            System.out.println(message);
+        }
+    }
+
     public static void i(String tag, String message) {
         if (defaultLogMode == ANDROID_MODE) {
             Log.i(tag, message);

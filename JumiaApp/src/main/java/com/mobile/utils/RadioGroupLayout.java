@@ -128,4 +128,8 @@ public class RadioGroupLayout extends LinearLayout {
         }
     }
 
+    public String getSelectedFieldValue() {
+        return getItemByIndex(getSelectedIndex());
+    }
+
 }

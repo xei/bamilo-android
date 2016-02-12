@@ -128,7 +128,9 @@ public enum EventType {
 
     GET_CAMPAIGN_EVENT("http:/campaign/get/"),
 
-    GET_NEWSLETTERS_FORM_EVENT("http:/forms/managenewsletters/"),
+    GET_NEWSLETTER_PREFERENCES_FORM_EVENT("http:/forms/managenewsletterpreferences/"),
+
+    GET_NEWSLETTER_UN_SUBSCRIBE_FORM("http:/forms/unsubscribenewsletters/"),
 
     SUBSCRIBE_NEWSLETTERS_EVENT,
 
@@ -187,7 +189,8 @@ public enum EventType {
     // ############# CART #############
 
     CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/"),
-    FORM_EVENT;
+
+    SUBMIT_FORM;
 
 
     public final String action;

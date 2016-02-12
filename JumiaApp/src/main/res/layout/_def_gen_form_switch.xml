@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.SwitchCompat xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/switch_field"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="SwitchCompat (SDK v7+)"
-    android:textOff="OFF"
-    android:textOn="ON"
-    app:showText="true" />
+    style="@style/SwitchStyle" />
 

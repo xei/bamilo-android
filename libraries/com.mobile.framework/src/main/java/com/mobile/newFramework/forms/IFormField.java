@@ -56,4 +56,6 @@ public interface IFormField {
     boolean isPrefixField();
 
     boolean isDisabledField();
+
+    boolean isVerticalOrientation();
 }

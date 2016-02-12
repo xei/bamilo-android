@@ -478,4 +478,6 @@
     <string name="removed_success">Removed successfully.</string>
     <string name="sign_up_newsletter">Sign Up to our Newsletter</string>
     <string name="sign_up_newsletter_description">For exclusive acess to sales previews, new arrivals, trends and promotions</string>
+    <string name="active_label">Active</string>
+    <string name="inactive_label">Inactive</string>
 </resources>

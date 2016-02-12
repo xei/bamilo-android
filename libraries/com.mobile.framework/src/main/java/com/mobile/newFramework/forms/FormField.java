@@ -31,12 +31,13 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     protected final static String TAG = FormField.class.getSimpleName();
 
     // Supported Types
-
-    public static final String TITLE = "section_title";
-    public static final String SWITCH_RADIO = "switch_radio";
-    public static final String RELATED_SCREEN_RADIO = "related_screen_radio";
-
+    // Type "radio_group" is different for iOS but for Android is the same as "radio".
+    private static final String SCREEN_TITLE = "screen_title";
+    private static final String SECTION_TITLE = "section_title";
+    private static final String SWITCH_RADIO = "switch_radio";
+    public static final String SCREEN_RADIO = "screen_radio";
     public static final String RADIO = "radio";
+    private static final String RADIO_GROUP = "radio_group";
     private static final String STRING = "string";
     private static final String EMAIL = "email";
     private static final String DATE = "date";
@@ -79,12 +80,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private boolean isPrefixField;
     private boolean isDisabled;
     private String mPlaceHolder;
+    private boolean isVerticalOrientation;
 
     @SuppressWarnings("unused")
     public interface OnDataSetReceived {
         void DataSetReceived(Map<String, String> dataSet);
     }
-
 
     /**
      * FormField param constructor
@@ -120,17 +121,18 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         try {
             String formFieldString = jsonObject.optString(RestConstants.TYPE);
             switch (formFieldString) {
-                case TITLE:
-                    mInputType = FormInputType.title;
+                case SCREEN_TITLE:
+                    mInputType = FormInputType.screenTitle;
                     break;
-
+                case SECTION_TITLE:
+                    mInputType = FormInputType.sectionTitle;
+                    break;
                 case SWITCH_RADIO:
                     mInputType = FormInputType.switchRadio;
                     break;
-                case RELATED_SCREEN_RADIO:
-                    mInputType = FormInputType.relatedScreenRadio;
+                case SCREEN_RADIO:
+                    mInputType = FormInputType.screenRadio;
                     break;
-
                 case STRING:
                     mInputType = FormInputType.text;
                     break;
@@ -150,6 +152,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     mInputType = FormInputType.password;
                     break;
                 case RADIO:
+                case RADIO_GROUP:
                     mInputType = FormInputType.radioGroup;
                     break;
                 case LIST:
@@ -185,7 +188,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mKey = jsonObject.optString(RestConstants.KEY); // Used for form images
             mName = jsonObject.optString(RestConstants.NAME);
             mLabel = jsonObject.optString(RestConstants.LABEL);
-            mSubLabel = jsonObject.optString(RestConstants.SUBLABEL);
+            mSubLabel = jsonObject.optString(RestConstants.SUB_LABEL);
             mValue = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
             mScenario = jsonObject.optString(RestConstants.SCENARIO);
             isChecked = jsonObject.optBoolean(RestConstants.CHECKED);
@@ -194,6 +197,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), RestConstants.BEFORE);
             mPlaceHolder = jsonObject.optString(RestConstants.PLACE_HOLDER);
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
+
+            // Orientation
+            isVerticalOrientation = TextUtils.equals(jsonObject.optString(RestConstants.DISPLAY), RestConstants.VERTICAL);
 
             // Case Link
             JSONObject linkObject = jsonObject.optJSONObject(RestConstants.LINK);
@@ -423,7 +429,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     @Override
     public String getSubLabel() {
-        return mLabel;
+        return mSubLabel;
     }
 
     @Override
@@ -515,6 +521,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     @Override
     public boolean isDisabledField() {
         return isDisabled;
+    }
+
+    @Override
+    public boolean isVerticalOrientation() {
+        return isVerticalOrientation;
     }
 
     public HashMap<String, Form> getPaymentMethodsField(){

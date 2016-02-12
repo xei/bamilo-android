@@ -14,7 +14,7 @@ public class AigGetNewsletterFormTest extends AigTestCase {
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_NEWSLETTERS_FORM_EVENT;
+        return EventType.GET_NEWSLETTER_PREFERENCES_FORM_EVENT;
     }
 
     @Override
