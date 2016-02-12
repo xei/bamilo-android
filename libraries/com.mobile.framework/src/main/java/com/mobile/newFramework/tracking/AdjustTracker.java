@@ -33,6 +33,7 @@ import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.tracking.gtm.GTMKeys;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.NetworkConnectivity;
 import com.mobile.newFramework.utils.output.Print;
@@ -40,6 +41,7 @@ import com.mobile.newFramework.utils.output.Print;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -156,6 +158,9 @@ public class AdjustTracker {
     private static final String EURO_CURRENCY = "EUR";
 
     private static final String PRODUCT_CONTENT_TYPE = "product";
+
+    private static final String PRICE_DECIMAL_FORMAT = "0.00";
+
     public static AdjustTracker get() {
         if (sInstance == null) {
             sInstance = new AdjustTracker();
@@ -270,7 +275,7 @@ public class AdjustTracker {
         editor.putString(GTMKeys.INSTALLCREATIVE, creative);
         editor.apply();
     }
-    
+
     public void trackScreen(TrackingPage screen, Bundle bundle) {
         if (!isEnabled) {
             return;
@@ -321,7 +326,7 @@ public class AdjustTracker {
                     eventPDVScreen.addCallbackParameter(AdjustKeys.GENDER, gender);
                     eventPDVScreen.addPartnerParameter(AdjustKeys.GENDER, gender);
                 }
-            }   
+            }
             ProductComplete prod = bundle.getParcelable(PRODUCT);
 //            parameters.put(AdjustKeys.SKU, prod.getSku());
             eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, prod.getSku());
@@ -339,18 +344,24 @@ public class AdjustTracker {
 
 
             Adjust.trackEvent(eventPDVScreen);
-            
+
             // FB - View Product
             AdjustEvent eventPDVScreenFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_product));
+            // format sku as array
+            String fbSkuList = convertParameterToStringArray(prod.getSku());
+            //format price with 2 c.d.
+            String formattedPrice = formatPriceForTracking(prod.getPriceForTracking(),PRICE_DECIMAL_FORMAT);
 
             eventPDVScreenFB = getFBTrackerBaseParameters(eventPDVScreenFB, bundle);
 
-            eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, String.valueOf(prod.getPriceForTracking()));
-            eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, String.valueOf(prod.getPriceForTracking()));
-            eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, prod.getSku());
-            eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, prod.getSku());
+            eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
+            eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
+            eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
+            eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
+
             Adjust.trackEvent(eventPDVScreenFB);
-            
+
+
             break;
             
         case PRODUCT_LIST_SORTED:  //View Listing
@@ -436,7 +447,45 @@ public class AdjustTracker {
         }
     }
 
-    public void trackEvent(Context context, TrackingEvent eventTracked, Bundle bundle) {
+
+    /**
+     * Return a string representing an array of string parameters  - only for facebook tracking purposes
+     * */
+    private String convertParameterToStringArray(String parameter){
+        return new StringBuilder().append("[\"").append(parameter).append("\"]").toString();
+    }
+
+
+    /**
+     * Return a string representing an array of string parameters provided in a List parameter - only for facebook tracking purposes
+     * */
+    private String convertListParameterToStringArray(List <String> parametersList){
+        StringBuilder sb = new StringBuilder();
+
+        if(CollectionUtils.isNotEmpty(parametersList)){
+            sb.append("[");
+            for (String sku : parametersList) {
+                sb.append("\"").append(sku).append("\"").append(",");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            sb.append("]");
+        }
+
+        return sb.toString();
+    }
+
+
+    /**
+     * Returns a string price formated with format
+     * */
+    public String formatPriceForTracking(double priceForTracking, String format){
+        return new DecimalFormat(format).format(priceForTracking);
+
+    }
+
+
+
+    public void trackEvent(Context context,TrackingEvent eventTracked, Bundle bundle) {
         if (!isEnabled) {
             return;
         }
@@ -500,21 +549,17 @@ public class AdjustTracker {
                         Adjust.trackEvent(eventFirstCustomer);
                     }
 
-                    ArrayList<String> skus = bundle.getStringArrayList(TRANSACTION_ITEM_SKUS);
-                    StringBuilder sbSkus = new StringBuilder();
-                    sbSkus.append("[");
-                    for (String sku : skus) {
-                        sbSkus.append(sku).append(",");
-                    }
-                    sbSkus.deleteCharAt(sbSkus.length() - 1);
-                    sbSkus.append("]");
+                    //convert list to an array in a string
+                    String skuList = convertListParameterToStringArray(bundle.getStringArrayList(TRANSACTION_ITEM_SKUS));
+                    //format price with 2 c.d.
+                    String formattedPrice = formatPriceForTracking(bundle.getDouble(TRANSACTION_VALUE),PRICE_DECIMAL_FORMAT);
 
                     // Track Revenue (Sale or Guest Sale)
                     String eventString = bundle.getBoolean(IS_GUEST_CUSTOMER) ? mContext.getString(R.string.adjust_token_guest_sale) : mContext.getString(R.string.adjust_token_sale);
                     AdjustEvent eventRevenue = new AdjustEvent(eventString);
                     eventRevenue = getBaseParameters(eventRevenue, bundle);
-                    eventRevenue.addCallbackParameter(AdjustKeys.SKUS, sbSkus.toString());
-                    eventRevenue.addPartnerParameter(AdjustKeys.SKUS, sbSkus.toString());
+                    eventRevenue.addCallbackParameter(AdjustKeys.SKUS, skuList);
+                    eventRevenue.addPartnerParameter(AdjustKeys.SKUS, skuList);
 
                     eventRevenue.addCallbackParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
                     eventRevenue.addPartnerParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
@@ -564,10 +609,10 @@ public class AdjustTracker {
                     AdjustEvent eventTransactionFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_transaction_confirmation));
 
                     eventTransactionFB = getFBTrackerBaseParameters(eventTransactionFB, bundle);
-                    eventTransactionFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, String.valueOf(bundle.getDouble(TRANSACTION_VALUE)));
-                    eventTransactionFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, String.valueOf(bundle.getDouble(TRANSACTION_VALUE)));
-                    eventTransactionFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, sbSkus.toString());
-                    eventTransactionFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, sbSkus.toString());
+                    eventTransactionFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
+                    eventTransactionFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
+                    eventTransactionFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, skuList);
+                    eventTransactionFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, skuList);
                     Adjust.trackEvent(eventTransactionFB);
 
                 } catch (Exception e) {
@@ -592,12 +637,16 @@ public class AdjustTracker {
                 Adjust.trackEvent(eventAddToCart);
 
                 AdjustEvent eventAddToCartFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_add_to_cart));
+                //convert string to array string
+                String skuArray = convertParameterToStringArray(bundle.getString(PRODUCT_SKU));
+                // format price to 2 c.d.
+                String formattedPrice = formatPriceForTracking(bundle.getDouble(VALUE),PRICE_DECIMAL_FORMAT);
 
                 eventAddToCartFB = getFBTrackerBaseParameters(eventAddToCartFB, bundle);
-                eventAddToCartFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, String.valueOf(bundle.getDouble(VALUE)));
-                eventAddToCartFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, String.valueOf(bundle.getDouble(VALUE)));
-                eventAddToCartFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, bundle.getString(PRODUCT_SKU));
-                eventAddToCartFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, bundle.getString(PRODUCT_SKU));
+                eventAddToCartFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
+                eventAddToCartFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
+                eventAddToCartFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, skuArray);
+                eventAddToCartFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, skuArray);
                 Adjust.trackEvent(eventAddToCartFB);
 
                 break;

@@ -88,34 +88,14 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
             product.initialize(productObject);
             mProducts.add(product);
         }
-        // Get filters
+        try {
+            // Get filters
+            filters = new CatalogFilters(metadataObject);
+        } catch (JSONException e){
+            filters = new ArrayList<>();
+            e.printStackTrace();
+        }
 
-        // Get category filter
-        /*
-        if (!metadataObject.isNull(RestConstants.JSON_CATEGORIES_TAG)) {
-            // Validate array
-            JSONArray categoriesArray = metadataObject.optJSONArray(RestConstants.JSON_CATEGORIES_TAG);
-            if(categoriesArray != null && categoriesArray.length() > 0)
-                parseCategoryFilter(categoriesArray);
-            else
-                Log.d(TAG, "THERE IS NO CATEGORY FILTER");
-        }*/
-
-        // Get the other filters
-        /* TODO: uncomment to support filters
-        if(!metadataObject.isNull(RestConstants.JSON_FILTERS_TAG)){
-            JSONArray jsonArray = metadataObject.getJSONArray(RestConstants.JSON_FILTERS_TAG);
-            for (int i = 0; i < jsonArray.length(); i++) {
-                // Get JSON filter
-                JSONObject jsonFilter = jsonArray.getJSONObject(i);
-                // Create catalog filter
-                CatalogFilter catalogFilter = new CatalogFilter(jsonFilter);
-                // save filter
-                mFilters.add(catalogFilter);
-            }
-        }*/
-
-        filters = new CatalogFilters(metadataObject);
 
         //Get Banner
         if(!metadataObject.isNull(RestConstants.BANNER)){
