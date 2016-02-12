@@ -18,6 +18,7 @@ import com.mobile.controllers.SearchSuggestionsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
+import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.objects.search.Suggestion;
@@ -199,7 +200,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
         case GET_SEARCH_SUGGESTIONS_EVENT:
             Print.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
 
-            ArrayList<Suggestion> response = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
+            ArrayList<Suggestion> response = (SuggestionsStruct)baseResponse.getContentData();
             if (response != null) {
                 mRecentSearches = response;
                 if (!mRecentSearches.isEmpty()) {
@@ -211,7 +212,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                             Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
                             Suggestion selectedSuggestion = (Suggestion) mRecentSearchesList.getItemAtPosition(position);
                             String text = selectedSuggestion.getResult();
-                            GetSearchSuggestionsHelper.saveSearchQuery(text);
+                            GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
                             executeSearchRequest(text);
                             JumiaApplication.INSTANCE.setSearchedTerm(text);
                         }

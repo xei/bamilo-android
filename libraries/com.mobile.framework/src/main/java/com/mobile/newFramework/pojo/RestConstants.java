@@ -316,4 +316,11 @@ public class RestConstants {
     public static final String APPLICATION_ID = "application_id";
     public static final String SUGGESTER_API_KEY = "suggester_api_key";
     public static final String NAMESPACE_PREFIX = "namespace_prefix";
+    // Algolia related
+    public static final String HITS = "hits";
+    public static final String LOCALIZABLE_ATTRIBUTES = "localizable_attributes";
+    public static final String FACET_CATEGORY = "facet_category";
+    public static final String FACETS = "facets";
+    public static final String DOMAIN = "domain";
+    public static final String DOMAIN_URL = "domain_url";
 }

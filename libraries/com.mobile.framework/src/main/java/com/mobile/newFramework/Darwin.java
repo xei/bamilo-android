@@ -81,7 +81,11 @@ public class Darwin {
 	public static final String KEY_SELECTED_FACEBOOK_IS_AVAILABLE = "selected_facebook_is_available";
 	public static final String KEY_SELECTED_MORE_INFO = "selected_more_info";
 	public static final String KEY_SELECTED_COUNTRY_HAS_RICH_RELEVANCE = "selected_country_has_rich_relevance";
-	
+	public static final String KEY_SELECTED_COUNTRY_ALGOLIA_USE = "selected_country_algolia_use";
+	public static final String KEY_SELECTED_COUNTRY_ALGOLIA_APP_ID = "selected_country_algolia_application_id";
+	public static final String KEY_SELECTED_COUNTRY_ALGOLIA_API_KEY = "selected_country_algolia_suggester_api_key";
+	public static final String KEY_SELECTED_COUNTRY_ALGOLIA_PREFIX = "selected_country_algolia_namespace_prefix";
+
 	public static final String KEY_SELECTED_RATING_ENABLE = "selected_rating_enable";
 	public static final String KEY_SELECTED_RATING_REQUIRED_LOGIN = "selected_rating_required_login";
 	public static final String KEY_SELECTED_REVIEW_ENABLE = "selected_review_enable";
