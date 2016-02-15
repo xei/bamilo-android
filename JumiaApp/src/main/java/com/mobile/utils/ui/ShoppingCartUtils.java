@@ -1,5 +1,6 @@
 package com.mobile.utils.ui;
 
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
@@ -61,7 +62,7 @@ public class ShoppingCartUtils {
      * Shows purchased entity's VAT info if it comes enabled from API
      *
      * */
-    public static void showVATInfo(PurchaseEntity purchaseEntity, TextView vatLabelTextView, TextView vatValueTextView){
+    public static void showVATInfo(@NonNull PurchaseEntity purchaseEntity, @NonNull TextView vatLabelTextView, @NonNull TextView vatValueTextView){
         if(purchaseEntity.isVatLabelEnable()) {
             vatLabelTextView.setVisibility(View.VISIBLE);
             vatValueTextView.setVisibility(View.VISIBLE);
