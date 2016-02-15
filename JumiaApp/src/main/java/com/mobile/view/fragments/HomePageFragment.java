@@ -512,7 +512,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     showFragmentFallBack();
                 }
                 break;
-            case FORM_EVENT:// Newsletter Form Response
+            case SUBMIT_FORM:// Newsletter Form Response
                 getBaseActivity().dismissProgress();
                 showWarningSuccessMessage(baseResponse.getSuccessMessage());
                 break;
@@ -545,7 +545,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
                 showFragmentFallBack();
                 break;
-            case FORM_EVENT:// Newsletter Form Response
+            case SUBMIT_FORM:// Newsletter Form Response
                 getBaseActivity().dismissProgress();
                 showWarningErrorMessage(baseResponse.getErrorMessage());
                 break;

@@ -165,7 +165,7 @@
     <string name="new_password_hint">رمز عبور جدید</string>
     <string name="new_password_label">رمز عبور جدید</string>
     <string name="newsletter_saved_message">تنظیمات اطلاع از طریق ایمیل ذخیره شد.</string>
-    <string name="newsletters_label">خبرنامه ها</string>
+    <string name="newsletter_label">خبرنامه ها</string>
     <string name="next_button">ادامه</string>
     <string name="no_connect_dialog_content">لطفا اتصال به اینترنت را چک کنید و دوباره امتحان نمایید</string>
     <string name="no_internet_access_warning_title">اتصال به اینترنت وجود ندارد!</string>

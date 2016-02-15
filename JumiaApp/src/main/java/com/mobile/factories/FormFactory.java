@@ -77,14 +77,14 @@ public class FormFactory {
      *
      * @return An instance of a DynamicForm with the form representation implemented
      */
-    public DynamicForm CreateForm(int formType, Context context, Form form) {
+    public DynamicForm create(@FormConstants.DynamicFormTypes int formType, Context context, Form form) {
         DynamicForm parent = null;
-        //Print.i(TAG, "code1register CREATING FORM : " + formType);
         switch (formType) {
             case FormConstants.LOGIN_FORM:
             case FormConstants.REGISTRATION_FORM:
             case FormConstants.FORGET_PASSWORD_FORM:
             case FormConstants.CHANGE_PASSWORD_FORM:
+            case FormConstants.RATING_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
             case FormConstants.USER_DATA_FORM:
             case FormConstants.ADDRESS_EDIT_FORM:
@@ -92,6 +92,9 @@ public class FormFactory {
                 form.setType(formType);  // Used to show icons (LOGIN|REGISTER|USER_DATA)
                 parent = createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
                 break;
+            case FormConstants.NEWSLETTER_UN_SUBSCRIBE_FORM:
+            case FormConstants.NEWSLETTER_PREFERENCES_FORM:
+                form.setType(formType);  // Used for dividers
             case FormConstants.PAYMENT_DETAILS_FORM:
                 parent = createGenericForm(context, form, createParams(context, R.dimen.form_no_top_margin));
                 break;
@@ -127,7 +130,7 @@ public class FormFactory {
         // Create each form field
         for (IFormField entry : form.getFields()) {
             Print.d(TAG, "FORM ITEM KEY: " + entry.getKey() + " TYPE: " + entry.getInputType());
-            DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, entry);
+            DynamicFormItem dynamicFormItem = DynamicFormItem.newInstance(dynamicForm, context, entry);
             dynamicForm.addControl(dynamicFormItem, ctrlParams);
         }
         return dynamicForm;

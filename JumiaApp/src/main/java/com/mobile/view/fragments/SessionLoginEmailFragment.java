@@ -245,7 +245,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
      */
     private void loadForm(Form form) {
         // Create form view
-        mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.LOGIN_FORM, getContext(), form);
+        mDynamicForm = FormFactory.getSingleton().create(FormConstants.LOGIN_FORM, getContext(), form);
         // Load saved state
         mDynamicForm.loadSaveFormState(mFormSavedState);
 

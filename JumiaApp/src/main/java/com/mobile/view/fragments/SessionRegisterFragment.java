@@ -208,11 +208,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
      */
     private void loadForm(Form form) {
         // Create form view
-        mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM, getActivity(), form);
-        // Set request callback
-        mDynamicForm.setRequestCallBack(this); // Form FormInputType.relatedNumber
-        // Set click listener
-        mDynamicForm.setOnClickListener(this); // From FormInputType.checkBoxLink
+        mDynamicForm = FormFactory.getSingleton()
+                .create(FormConstants.REGISTRATION_FORM, getActivity(), form)
+                .addOnClickListener(this) // From FormInputType.checkBoxLink
+                .addRequestCallBack(this); // Form FormInputType.relatedNumber
         // Load saved state
         mDynamicForm.loadSaveFormState(mFormSavedState);
         // Set initial value

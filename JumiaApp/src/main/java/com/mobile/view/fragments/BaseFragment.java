@@ -1128,4 +1128,11 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         }
     }
 
+    /**
+     * Method used to know the fragment state
+     */
+    public boolean isFragmentUIActive() {
+        return isAdded() && !isDetached() && !isRemoving();
+    }
+
 }

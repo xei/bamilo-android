@@ -45,7 +45,7 @@
     <!-- SHARE -->
     <string-array name="app_notification_array">
         <item>@string/notifications</item>
-        <item>@string/myaccount_email_notifications</item>
+        <item>@string/newsletter_label</item>
     </string-array>
 
     <!--
