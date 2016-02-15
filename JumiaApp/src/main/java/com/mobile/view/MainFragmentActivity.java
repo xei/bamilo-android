@@ -36,8 +36,8 @@ import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountAddressesFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
-import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
+import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
@@ -347,7 +347,7 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = CampaignsFragment.newInstance(bundle);
                 break;
             case EMAIL_NOTIFICATION:
-                fragment = MyAccountEmailNotificationFragment.newInstance();
+                fragment = MyAccountNewslettersFragment.newInstance();
                 break;
             case WISH_LIST:
                 removeEntries = true;
