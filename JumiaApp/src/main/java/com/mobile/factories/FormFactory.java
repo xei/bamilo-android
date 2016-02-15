@@ -77,13 +77,14 @@ public class FormFactory {
      *
      * @return An instance of a DynamicForm with the form representation implemented
      */
-    public DynamicForm create(int formType, Context context, Form form) {
+    public DynamicForm create(@FormConstants.DynamicFormTypes int formType, Context context, Form form) {
         DynamicForm parent = null;
         switch (formType) {
             case FormConstants.LOGIN_FORM:
             case FormConstants.REGISTRATION_FORM:
             case FormConstants.FORGET_PASSWORD_FORM:
             case FormConstants.CHANGE_PASSWORD_FORM:
+            case FormConstants.RATING_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
             case FormConstants.USER_DATA_FORM:
             case FormConstants.ADDRESS_EDIT_FORM:

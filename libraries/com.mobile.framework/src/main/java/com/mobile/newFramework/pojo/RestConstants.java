@@ -33,6 +33,7 @@ public class RestConstants {
     public static final String URL = "url";
     public static final String ZOOM = "zoom";
     public static final String FORM = "form";
+    public static final String FORMS = "forms";
     public static final String METHOD = "method";
     public static final String FIELDS = "fields";
     public static final String TYPE = "type";

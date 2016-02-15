@@ -140,7 +140,7 @@ public class ScreenRadioField extends DynamicFormItem implements IDynamicFormIte
                 // Show loading
                 parent.showActivityProgress();
                 // Get form and show loading
-                parent.triggerContentEvent(new GetNewsletterUnSubscribeFormHelper(), null, this);
+                parent.triggerContentEvent(new GetNewsletterUnSubscribeFormHelper(), GetNewsletterUnSubscribeFormHelper.createBundle(entry.getApiCall()), this);
             }
             // Case un subscribed
             else {

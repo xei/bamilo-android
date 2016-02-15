@@ -15,7 +15,8 @@ import com.mobile.pojo.IDynamicFormItemField;
 import com.mobile.view.R;
 
 /**
- * Created by spereira on 2/9/16.
+ * Class used to represent a section title.
+ * @author spereira
  */
 public class SectionTitleField extends DynamicFormItem implements IDynamicFormItemField {
 

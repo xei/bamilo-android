@@ -252,12 +252,12 @@ public class DynamicFormItem {
             this.control.setLayoutParams(params);
             this.control.setId(parent.getNextId());
 
-            // New approach
+            // TODO : Use new approach
             if (this instanceof IDynamicFormItemField) {
                 ((IDynamicFormItemField) this).build(params);
             }
 
-            // Old approach
+            // Deprecated : Old approach
             switch (this.entry.getInputType()) {
                 case checkBoxLink:
                     buildCheckBoxForTerms(params, RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -836,12 +836,12 @@ public class DynamicFormItem {
         boolean result = true;
         if (hasRules() && this.errorControl != null) {
 
-            // New approach
+            // TODO : Use new approach
             if(this instanceof IDynamicFormItemField) {
                 result = ((IDynamicFormItemField) this).validate(true);
             }
 
-            // Old approach
+            // Deprecated: Old approach
             switch (this.entry.getInputType()) {
                 case checkBoxLink:
                     if (this.entry.getValidation().isRequired())

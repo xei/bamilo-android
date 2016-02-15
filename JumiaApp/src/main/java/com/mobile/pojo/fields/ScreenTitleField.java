@@ -16,6 +16,7 @@ import com.mobile.view.R;
 
 /**
  * Class used to represent a screen title field.
+ * @author spereira
  */
 public class ScreenTitleField extends DynamicFormItem implements IDynamicFormItemField {
 

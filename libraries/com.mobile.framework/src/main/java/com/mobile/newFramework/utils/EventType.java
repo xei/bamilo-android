@@ -130,7 +130,7 @@ public enum EventType {
 
     GET_NEWSLETTER_PREFERENCES_FORM_EVENT("http:/forms/managenewsletterpreferences/"),
 
-    GET_NEWSLETTER_UN_SUBSCRIBE_FORM("http:/forms/unsubscribenewsletters/"),
+    GET_NEWSLETTER_UN_SUBSCRIBE_FORM(),
 
     SUBSCRIBE_NEWSLETTERS_EVENT,
 
