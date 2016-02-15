@@ -674,16 +674,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
             // Price
             priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
+            //VAT
+            ShoppingCartUtils.showVATInfo(cart,vatIncludedLabel,vatValue);
 
-            if(cart.isVatLabelEnable()) {
-                vatIncludedLabel.setVisibility(View.VISIBLE);
-                vatValue.setVisibility(View.VISIBLE);
-                vatValue.setText(CurrencyFormatter.formatCurrency(cart.getVatValue()));
-                vatIncludedLabel.setText(cart.getVatLabel());
-            } else {
-                vatValue.setVisibility(View.GONE);
-                vatIncludedLabel.setVisibility(View.GONE);
-            }
 
             ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
 

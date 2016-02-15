@@ -450,16 +450,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         //show vat if configuration is enabled
         TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
         TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
-
-        if(mOrderFinish.isVatLabelEnable()){
-            vatValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getVatValue()));
-            vatIncludedLabel.setText(mOrderFinish.getVatLabel());
-            vatIncludedLabel.setVisibility(View.VISIBLE);
-            vatValue.setVisibility(View.VISIBLE);
-        }else{
-            vatIncludedLabel.setVisibility(View.GONE);
-            vatValue.setVisibility(View.GONE);
-        }
+        ShoppingCartUtils.showVATInfo(mOrderFinish, vatIncludedLabel, vatValue);
     }
 
     /**

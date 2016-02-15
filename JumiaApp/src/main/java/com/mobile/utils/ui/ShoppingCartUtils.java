@@ -56,4 +56,20 @@ public class ShoppingCartUtils {
             extraCostsContainer.setVisibility(View.GONE);
         }
     }
+
+    /**
+     * Shows purchased entity's VAT info if it comes enabled from API
+     *
+     * */
+    public static void showVATInfo(PurchaseEntity purchaseEntity, TextView vatLabelTextView, TextView vatValueTextView){
+        if(purchaseEntity.isVatLabelEnable()) {
+            vatLabelTextView.setVisibility(View.VISIBLE);
+            vatValueTextView.setVisibility(View.VISIBLE);
+            vatValueTextView.setText(CurrencyFormatter.formatCurrency(purchaseEntity.getVatValue()));
+            vatLabelTextView.setText(purchaseEntity.getVatLabel());
+        } else {
+            vatValueTextView.setVisibility(View.GONE);
+            vatLabelTextView.setVisibility(View.GONE);
+        }
+    }
 }
