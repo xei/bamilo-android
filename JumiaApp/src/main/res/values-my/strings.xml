@@ -165,7 +165,6 @@
     <string name="new_password_hint">Password အသစ္</string>
     <string name="new_password_label">Password အသစ္</string>
     <string name="newsletter_saved_message">သင္၏ email notifications settings အားသိမ္းဆည္းၿပီးပါၿပီ</string>
-    <string name="newsletter_label">သတင္းလႊာမ်ား</string>
     <string name="next_button">ေနာက္ထပ္</string>
     <string name="no_connect_dialog_content">Internet connectionကိုစစ္ေဆးၿပီး ထပ္မံႀကိဳးစားပါ!</string>
     <string name="no_internet_access_warning_title">No Internet Access!</string>
