@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- ##### MERGE: SHOP BASE AND RELEASE ##### -->
+
+    <!-- ######################################## -->
+    <!-- ############### ADJUST ################# -->
+    <!-- ######################################## -->
+
+    <!-- Organic Tracker : iu1hoz -->
+    <!-- Paid Tracker : iu1hoz -->
+
+    <string name="adjust_default_tracker">iu1hoz</string>
+
+</resources>

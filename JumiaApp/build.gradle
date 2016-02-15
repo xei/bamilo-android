@@ -143,6 +143,17 @@ android {
             }
         }
 
+        jumiaNokiaX {
+            applicationId "com.jumia.android"
+            versionName "3.0"
+            versionCode 60
+            signingConfig signingConfigs.jumiaSigning
+            resConfigs "en", "fr", "ar"
+            android.sourceSets {
+                jumiaNokiaX.res.srcDirs = ['src/jumia/res', 'src/jumiaRelease/res', 'src/jumiaNokiaX/res']
+            }
+        }
+
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
             versionName "3.0"
@@ -176,6 +187,18 @@ android {
             }
         }
 
+        shopNokiaX {
+            applicationId "com.shop.android"
+            versionName "1.8"
+            versionCode 13
+            signingConfig signingConfigs.shopSigning
+            resConfigs "en", "my"
+            android.sourceSets {
+                shopNokiaX.res.srcDirs = ['src/shop/res', 'src/shopRelease/res', 'src/shopNokiaX/res']
+            }
+        }
+
+
         /**
          * #################### DARAZ ####################
          */
@@ -195,6 +218,17 @@ android {
             resConfigs "en", "ur"
             android.sourceSets {
                 darazPreInstall.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazPreInstall/res']
+            }
+        }
+
+        darazNokiaX {
+            applicationId "com.daraz.android"
+            versionName "1.8"
+            versionCode 13
+            signingConfig signingConfigs.darazSigning
+            resConfigs "en", "ur"
+            android.sourceSets {
+                darazNokiaX.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazNokiaX/res']
             }
         }
 
