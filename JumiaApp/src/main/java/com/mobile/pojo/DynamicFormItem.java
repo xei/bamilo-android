@@ -114,6 +114,7 @@ public class DynamicFormItem {
     protected final static int ERRORTEXTSIZE = 14;
     protected final static int MANDATORYSIGNALSIZE = 18;
     protected final static int MANDATORYSIGNALMARGIN = 15;
+    private final static int TWO_OPTIONS = 2;
     protected static String DATE_FORMAT = "dd-MM-yyyy";
     protected final Context context;
     protected final DynamicForm parent;
@@ -172,7 +173,12 @@ public class DynamicFormItem {
         this.errorText = context.getString(R.string.dynamic_errortext);
         this.errorColor = ContextCompat.getColor(context, R.color.red_basic);
         this.hideAsterisks = parent.getForm().isToHideAsterisks();
-        buildControl();
+        // Build TODO: Remove validation when all items are IDynamicFormItemField.
+        if (this instanceof IDynamicFormItemField) {
+            build();
+        } else {
+            buildControl();
+        }
     }
 
     public IFormField getEntry() {
@@ -241,8 +247,28 @@ public class DynamicFormItem {
     }
 
     /**
-     * Creates the control with all the validation settings and mandatory representations
+     * Creates the control with all the validation settings and mandatory representations.
      */
+    private void build() {
+        if (null != this.entry) {
+            // Build base
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            this.control = new RelativeLayout(this.context);
+            this.control.setLayoutParams(params);
+            this.control.setId(parent.getNextId());
+            // TODO: Remove validation when all items are IDynamicFormItemField.
+            if (this instanceof IDynamicFormItemField) {
+                ((IDynamicFormItemField) this).build(params);
+            }
+        }
+    }
+
+    /**
+     * Creates the control with all the validation settings and mandatory representations.
+     * @deprecated Use the form item as IDynamicFormItemField and use {@link #build()}
+     * There is ticket to improve all form fields, NAFAMZ-16058.
+     */
+    @Deprecated
     private void buildControl() {
         // Validate entry
         if (null != this.entry) {
@@ -251,13 +277,7 @@ public class DynamicFormItem {
             this.control = new RelativeLayout(this.context);
             this.control.setLayoutParams(params);
             this.control.setId(parent.getNextId());
-
-            // TODO : Use new approach
-            if (this instanceof IDynamicFormItemField) {
-                ((IDynamicFormItemField) this).build(params);
-            }
-
-            // Deprecated : Old approach
+            //
             switch (this.entry.getInputType()) {
                 case checkBoxLink:
                     buildCheckBoxForTerms(params, RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -836,7 +856,7 @@ public class DynamicFormItem {
         boolean result = true;
         if (hasRules() && this.errorControl != null) {
 
-            // TODO : Use new approach
+            // Use the new approach IDynamicFormItemField
             if(this instanceof IDynamicFormItemField) {
                 result = ((IDynamicFormItemField) this).validate(true);
             }
@@ -1075,7 +1095,9 @@ public class DynamicFormItem {
             params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
 
-        if (this.entry.isVerticalOrientation() || this.entry.getDataSet().size() > 2 || this.parent.getForm().getFields().get(0).getPaymentMethodsField() != null) {
+        if (this.entry.isVerticalOrientation() ||
+                this.entry.getDataSet().size() > TWO_OPTIONS ||
+                this.parent.getForm().getFields().get(IntConstants.DEFAULT_POSITION).getPaymentMethodsField() != null) {
             Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
             createRadioGroupVertical(params, dataContainer);
         } else {
@@ -1516,7 +1538,7 @@ public class DynamicFormItem {
             // Get payment info from form
             paymentInfoMap = this.parent.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList();
         } catch (NullPointerException e) {
-            // ...
+            Print.w("WARNING: NPE ON BUILD PAYMENT RADIO GROUP VERTICAL");
         }
 
         // Create options

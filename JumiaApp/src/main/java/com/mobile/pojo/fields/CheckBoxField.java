@@ -24,6 +24,9 @@ import com.mobile.view.R;
 /**
  * Class used to represent check box form field.
  * @author spereira
+ *
+ * TODO: Improve this component, NAFAMZ-16058
+ *
  */
 public class CheckBoxField extends DynamicFormItem implements IDynamicFormItemField {
 
@@ -80,7 +83,7 @@ public class CheckBoxField extends DynamicFormItem implements IDynamicFormItemFi
     }
 
     /**
-     * TODO: Improve this component
+     * Build check box
      */
     private void buildCheckBox(RelativeLayout.LayoutParams params, @LayoutRes int layout) {
         this.control.setLayoutParams(params);
