@@ -287,8 +287,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         //add place holder by default if value = ""; ignore if added already
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && regions.get(0).getValue() != 0) {
-            regions.add(0, new AddressRegion(0, v.getEntry().getPlaceHolder()));
+        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(regions) || regions.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
+            regions.add(IntConstants.DEFAULT_POSITION, new AddressRegion(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
         }
 
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
@@ -371,7 +371,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && cities.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION) {
+        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(cities) || cities.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
             cities.add(IntConstants.DEFAULT_POSITION, new AddressCity(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
         }
         // Create adapter
@@ -408,8 +408,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         //add place holder from API by default if value = ""; ignore if added already
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && postalCodes.get(0).getValue() != 0) {
-            postalCodes.add(0, new AddressPostalCode(0, v.getEntry().getPlaceHolder()));
+        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(postalCodes) || postalCodes.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
+            postalCodes.add(IntConstants.DEFAULT_POSITION, new AddressPostalCode(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
         }
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
