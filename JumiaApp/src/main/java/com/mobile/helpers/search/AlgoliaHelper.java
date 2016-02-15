@@ -18,7 +18,6 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
-import com.mobile.view.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

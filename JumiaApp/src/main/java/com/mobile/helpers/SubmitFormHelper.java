@@ -12,17 +12,16 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.utils.deeplink.TargetLink;
 
 /**
- * Helper used to perform a request for any kind of form regardless the type.
+ * Helper used to perform a submission for any kind of form regardless the type and is waiting a void response (Callback<BaseResponse<Void>>).<br>
  * Please don't use this helper if you have different formEvents to be handled on the same context.
  * @author Manuel Silva
+ * @modified sergiopereira
  */
-public class FormHelper extends SuperBaseHelper {
-    
-    protected static String TAG = FormHelper.class.getSimpleName();
+public class SubmitFormHelper extends SuperBaseHelper {
 
     @Override
     public EventType getEventType() {
-        return EventType.FORM_EVENT;
+        return EventType.SUBMIT_FORM;
     }
 
     @Override
@@ -32,7 +31,7 @@ public class FormHelper extends SuperBaseHelper {
 
     @Override
     protected void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.editAddress);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.submitFormAction);
     }
 
     public static Bundle createBundle(String endpoint, ContentValues values) {

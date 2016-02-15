@@ -19,6 +19,8 @@ public interface IFormField {
 
     String getLabel();
 
+    String getSubLabel();
+
     String getLinkText();
 
     String getLinkTarget();
@@ -49,9 +51,11 @@ public interface IFormField {
 
     ArrayList<IFormField> getOptions();
 
-    boolean isDefaultSelection();
+    boolean isChecked();
 
     boolean isPrefixField();
 
     boolean isDisabledField();
+
+    boolean isVerticalOrientation();
 }

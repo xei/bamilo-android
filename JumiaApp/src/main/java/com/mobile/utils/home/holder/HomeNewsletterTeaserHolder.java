@@ -12,7 +12,7 @@ import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
-import com.mobile.helpers.FormHelper;
+import com.mobile.helpers.SubmitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
@@ -22,7 +22,6 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
-import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
@@ -31,12 +30,10 @@ import com.mobile.view.R;
  */
 public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
 
-    private static final String TAG = TeaserViewFactory.class.getSimpleName();
-    public static final String SHOW_LOADING = "show_loading";
-
     private final ViewGroup mContainerView;
     private final Button mSubmit;
     protected DynamicForm mNewsLetterForm;
+
     /**
      * Constructor
      */
@@ -59,14 +56,14 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
         }
         if(form != null){
             form.setType(FormConstants.NEWSLETTER_FORM);
-            mNewsLetterForm = FormFactory.getSingleton().CreateForm(FormConstants.NEWSLETTER_FORM, mContext,form);
+            mNewsLetterForm = FormFactory.getSingleton().create(FormConstants.NEWSLETTER_FORM, mContext,form);
             mContainerView.addView(mNewsLetterForm.getContainer());
             DynamicFormItem item = mNewsLetterForm.getItemByKey(RestConstants.EMAIL);
-            if(item.getEditControl() instanceof EditText){
-                ((EditText) item.getEditControl()).addTextChangedListener(mTextWatcher);
-                ((EditText) item.getEditControl()).setTextColor(ContextCompat.getColor(mContext, R.color.white));
+            if(item.getDataControl() instanceof EditText){
+                ((EditText) item.getDataControl()).addTextChangedListener(mTextWatcher);
+                ((EditText) item.getDataControl()).setTextColor(ContextCompat.getColor(mContext, R.color.white));
 
-                mSubmit.setEnabled(TextUtils.isNotEmpty(((EditText) item.getEditControl()).getText()));
+                mSubmit.setEnabled(TextUtils.isNotEmpty(((EditText) item.getDataControl()).getText()));
             }
 
         }
@@ -92,7 +89,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
         public void onClick(final View v) {
             if(v != null && mParentClickListener != null && mNewsLetterForm != null && mNewsLetterForm.validate()){
                 mParentClickListener.onClick(v);
-                JumiaApplication.INSTANCE.sendRequest(new FormHelper(), FormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), new IResponseCallback() {
+                JumiaApplication.INSTANCE.sendRequest(new SubmitFormHelper(), SubmitFormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), new IResponseCallback() {
                     @Override
                     public void onRequestComplete(BaseResponse baseResponse) {
                         if(mParentClickListener instanceof IResponseCallback){
