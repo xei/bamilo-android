@@ -447,6 +447,10 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         mTotalValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
         // Show price rules
         CheckoutStepManager.showPriceRules(getBaseActivity(), mPriceRulesContainer, mOrderFinish.getPriceRules());
+        //show vat if configuration is enabled
+        TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
+        TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
+        ShoppingCartUtils.showVATInfo(mOrderFinish, vatIncludedLabel, vatValue);
     }
 
     /**
