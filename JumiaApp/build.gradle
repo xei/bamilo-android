@@ -262,11 +262,23 @@ android {
     }
 }
 
+/**
+ * Used to fix:
+ * Error:Execution failed for task ':app:handleJumiaLiveMicroApk'.
+ *  > The main and the micro apps do not have the same package name.
+ */
+configurations {
+    jumiaLiveWearApp
+    shopLiveWearApp
+    bamiloLiveWearApp
+    darazLiveWearApp
+}
+
 dependencies {
-    /** LOCAL LIBS **/
+    /** ############### LOCAL LIBS ############### **/
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:com.mobile.framework')
-    /** DEBUG **/
+    /** ############### DEBUG TOOLS ############### **/
     // #MULTIDEX
     debugCompile 'com.android.support:multidex:1.0.1'
     liveCompile 'com.android.support:multidex:1.0.1'
@@ -278,16 +290,21 @@ dependencies {
     // #LEAK :: https://github.com/square/leakcanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     liveCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
-    //releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
-    /** Android wear releases **/
-    debugWearApp project(path:':JumiaWear')
-    liveWearApp project(path:':JumiaWear', configuration: 'jumiaLive')
+    /** ############### WEAR APP ############### **/
+    // ### JUMIA WEAR APP
+    jumiaLiveWearApp project(path:':JumiaWear', configuration: 'jumiaLive')
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
+    // ### BAMILO WEAR APP
+    bamiloLiveWearApp project(path: ':JumiaWear', configuration: 'bamiloLive')
     bamiloWearApp project(path: ':JumiaWear', configuration: 'bamiloRelease')
+    // ### SHOP WEAR APP
+    shopLiveWearApp project(path: ':JumiaWear', configuration: 'shopLive')
     shopWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
     shopPreInstallWearApp project(path: ':JumiaWear', configuration: 'shopRelease')
+    // ### DARAZ WEAR APP
+    darazLiveWearApp project(path: ':JumiaWear', configuration: 'darazLive')
     darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
     darazPreInstallWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
 }
