@@ -58,7 +58,7 @@ public class AlgoliaHelper {
 
     public void getSuggestions(@NonNull final String searchQuery){
         if(mAlgoliaAPIClient == null){
-            Print.i(TAG , "code1algolia: ERROR: mAlgoliaAPIClient is null");
+            Print.i(TAG , "ERROR: mAlgoliaAPIClient is null");
             return;
         }
 
@@ -95,7 +95,6 @@ public class AlgoliaHelper {
                 final Suggestions suggestions = getProductsAndShopSuggestions(result, searchTerm);
                 mSuggestionsStruct = new SuggestionsStruct(suggestions);
                 mSuggestionsStruct.setSearchParam(searchTerm);
-                Print.i(TAG, "code1highlight : "+ result);
                 response.getMetadata().setData(mSuggestionsStruct);
 
                 getCategoriesNames(result);

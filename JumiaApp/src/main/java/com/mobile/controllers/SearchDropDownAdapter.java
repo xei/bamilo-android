@@ -115,7 +115,6 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
      *
      */
     private void setColorOnSpecialQuery(TextView textView, String titleString, String highlight, String query) {
-        Print.i(TAG, "code1highlight: "+highlight+" titleString : "+titleString);
         int index = titleString.toLowerCase().indexOf(query.toLowerCase());
         int indexHighlitght = titleString.toLowerCase().indexOf(highlight.toLowerCase());
         if(index != -1 && indexHighlitght != -1) {
