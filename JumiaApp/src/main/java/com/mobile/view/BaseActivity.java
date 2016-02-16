@@ -1127,7 +1127,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         @TargetLink.Type String link = suggestion.getTarget();
         Print.i(TAG, "code1link : goToCatalog : "+link);
         // Parse target link
-        boolean result = new TargetLink(new WeakReference<BaseActivity>(this), link).addTitle(suggestion.getResult()).run();
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
         if(!result) {
             // Data
             Bundle bundle = new Bundle();
@@ -1150,7 +1150,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
         @TargetLink.Type String link = suggestion.getTarget();
         // Parse target link
-        boolean result = new TargetLink(new WeakReference<BaseActivity>(this), link).addTitle(suggestion.getResult()).run();
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
         if(!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
@@ -1169,7 +1169,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
         @TargetLink.Type String link = suggestion.getTarget();
         // Parse target link
-        boolean result = new TargetLink(new WeakReference<BaseActivity>(this), link).addTitle(suggestion.getResult()).run();
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
         if(!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
