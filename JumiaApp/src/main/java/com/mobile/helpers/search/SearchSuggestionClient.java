@@ -34,7 +34,7 @@ public class SearchSuggestionClient {
                 e.printStackTrace();
             }
         } else if(useAlgolia && searchTerm.length() > 2){
-            new AlgoliaHelper(context, JumiaApplication.INSTANCE.getAlgoliaClient(), responseCallback).getSuggestions(searchTerm);
+            new AlgoliaHelper(context, responseCallback).getSuggestions(searchTerm);
         } else {
             JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(searchTerm), responseCallback);
         }

@@ -34,7 +34,7 @@ import java.util.List;
 public class AlgoliaHelper {
     private static final String TAG = AlgoliaHelper.class.getName();
     // Algolia Client
-    private final APIClient mAlgoliaAPIClient;
+    private APIClient mAlgoliaAPIClient;
     private final IResponseCallback mIResponseCallback;
     private final String mNamespacePrefix;
     private final static String _CATEGORIES = "_categories";
@@ -49,15 +49,15 @@ public class AlgoliaHelper {
     private SuggestionsStruct mSuggestionsStruct;
     private final Context mContext;
 
-    public AlgoliaHelper(Context context, APIClient algoliaAPIClient, IResponseCallback responseCallback) {
+
+    public AlgoliaHelper(Context context, IResponseCallback responseCallback) {
         this.mContext = context;
-        this.mAlgoliaAPIClient = algoliaAPIClient;
         this.mIResponseCallback = responseCallback;
         this.mNamespacePrefix = CountryPersistentConfigs.getAlgoliaInfoByKey(context, Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_PREFIX);
     }
 
     public void getSuggestions(@NonNull final String searchQuery){
-        if(mAlgoliaAPIClient == null){
+        if(getAlgoliaClient() == null){
             Print.i(TAG , "ERROR: mAlgoliaAPIClient is null");
             return;
         }
@@ -239,6 +239,13 @@ public class AlgoliaHelper {
         }
 
         return suggestions;
+    }
+
+    private APIClient getAlgoliaClient() {
+        if(mAlgoliaAPIClient == null){
+            mAlgoliaAPIClient = new APIClient(CountryPersistentConfigs.getAlgoliaInfoByKey(mContext, Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_APP_ID), CountryPersistentConfigs.getAlgoliaInfoByKey(mContext, Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_API_KEY));
+        }
+        return mAlgoliaAPIClient;
     }
 
 }

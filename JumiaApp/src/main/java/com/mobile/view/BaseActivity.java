@@ -1323,7 +1323,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             return;
         }
         // Validate current search
-        if (!mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+        if (!TextUtils.equals(mSearchAutoComplete.getText().toString(), requestQuery)) {
             Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
             return;
         }
@@ -1793,5 +1793,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void hideWarningMessage(){
         warningFactory.hideWarning();
     }
+
+    /**
+     * Create a BaseActivity weak reference.
+     */
+    public WeakReference<BaseActivity> getWeakBaseActivity() {
+        return new WeakReference<>(this);
+    }
+
 
 }
