@@ -59,15 +59,60 @@ public class Suggestions extends ArrayList<Suggestion> implements IJSONSerializa
 	@Override
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		try {
-			JSONArray suggestionsArray = jsonObject.getJSONArray(RestConstants.SUGGESTIONS);
-            for (int i = 0; i < suggestionsArray.length(); ++i) {
-                Suggestion suggestion = new Suggestion();
-                suggestion.initialize(suggestionsArray.getJSONObject(i));
-                this.add(suggestion);
+            String query = jsonObject.getString(RestConstants.SUGGESTION_QUERY);
+
+			if(jsonObject.has(RestConstants.SHOPS)){
+				JSONArray shops = jsonObject.optJSONArray(RestConstants.SHOPS);
+				for (int i = 0; i < shops.length(); i++) {
+					Suggestion suggestion = new Suggestion();
+					suggestion.initialize(shops.getJSONObject(i));
+					suggestion.setQuery(query);
+                    suggestion.setType(Suggestion.SUGGESTION_SHOP_IN_SHOP);
+					this.add(suggestion);
+				}
+			}
+
+
+			if(jsonObject.has(RestConstants.CATEGORIES)){
+				JSONArray categories = jsonObject.optJSONArray(RestConstants.CATEGORIES);
+				for (int i = 0; i < categories.length(); i++) {
+					Suggestion suggestion = new Suggestion();
+					suggestion.initialize(categories.getJSONObject(i));
+					suggestion.setQuery(query);
+                    suggestion.setType(Suggestion.SUGGESTION_CATEGORY);
+					this.add(suggestion);
+				}
+			}
+
+			if(jsonObject.has(RestConstants.PRODUCTS)){
+				JSONArray products = jsonObject.optJSONArray(RestConstants.PRODUCTS);
+				if(products != null){
+					for (int i = 0; i < products.length(); i++) {
+						Suggestion suggestion = new Suggestion();
+						suggestion.initialize(products.getJSONObject(i));
+                        suggestion.setQuery(query);
+                        suggestion.setType(Suggestion.SUGGESTION_PRODUCT);
+						this.add(suggestion);
+					}
+				}
+			}
+
+            if(jsonObject.has(RestConstants.QUERIES)){
+                JSONArray queries = jsonObject.optJSONArray(RestConstants.QUERIES);
+                for (int i = 0; i < queries.length(); i++) {
+                    Suggestion suggestion = new Suggestion();
+                    suggestion.initialize(queries.getJSONObject(i));
+                    suggestion.setQuery(query);
+                    suggestion.setType(Suggestion.SUGGESTION_OTHER);
+                    this.add(suggestion);
+                }
             }
+
+            return true;
 		} catch (JSONException e) {
-			//Log.d(TAG, "error parsing json: ", e);
+			e.printStackTrace();
 		}
+
 		return false;
 	}
 
