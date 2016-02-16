@@ -11,6 +11,7 @@ import com.algolia.search.saas.TaskParams;
 import com.algolia.search.saas.listeners.APIClientListener;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -95,7 +96,7 @@ public class AlgoliaHelper {
                 final Suggestions suggestions = getProductsAndShopSuggestions(result, searchTerm);
                 mSuggestionsStruct = new SuggestionsStruct(suggestions);
                 mSuggestionsStruct.setSearchParam(searchTerm);
-
+                Print.i(TAG, "code1highlight : "+ result);
                 response.getMetadata().setData(mSuggestionsStruct);
 
                 getCategoriesNames(result);
@@ -106,8 +107,17 @@ public class AlgoliaHelper {
             @Override
             public void APIError(APIClient client, TaskParams.Client context, AlgoliaException e) {
                 BaseResponse response = new BaseResponse();
-                response.getMetadata().setData(null);
-                mIResponseCallback.onRequestError(response);
+                ArrayList<Suggestion> suggestions = new ArrayList<Suggestion>();
+                try {
+                    suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+                mSuggestionsStruct = new SuggestionsStruct(suggestions);
+                mSuggestionsStruct.setSearchParam(searchQuery);
+                BaseResponse baseResponse = new BaseResponse();
+                baseResponse.getMetadata().setData(mSuggestionsStruct);
+                mIResponseCallback.onRequestComplete(baseResponse);
             }
         });
 

@@ -9,6 +9,7 @@ import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,7 +27,8 @@ public class Suggestion implements IJSONSerializable, Parcelable {
     public static final int SUGGESTION_PRODUCT = 0; //
     public static final int SUGGESTION_SHOP_IN_SHOP = 1; //
     public static final int SUGGESTION_CATEGORY = 2; //
-    @IntDef({SUGGESTION_PRODUCT, SUGGESTION_SHOP_IN_SHOP, SUGGESTION_CATEGORY})
+    public static final int SUGGESTION_OTHER = 3; //
+    @IntDef({SUGGESTION_PRODUCT, SUGGESTION_SHOP_IN_SHOP, SUGGESTION_CATEGORY, SUGGESTION_OTHER})
     @Retention(RetentionPolicy.SOURCE)
     public @interface SuggestionType {}
 
@@ -57,15 +59,12 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		try {
 			if (jsonObject != null) {
-				String item = jsonObject.getString(RestConstants.ITEM);
-				if (!TextUtils.isEmpty(item)) {
-					mResult = item;
-					value = jsonObject.getInt(RestConstants.RELEVANCE);
-					return true;
-				}
+                mResult = jsonObject.getString(RestConstants.NAME);
+                mTarget = jsonObject.getString(RestConstants.TARGET);
+                return true;
 			}
 		} catch (JSONException e) {
-			//Log.d(TAG, "error parsing json: ", e);
+			e.printStackTrace();
 		}
 		return false;
 	}

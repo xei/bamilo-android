@@ -68,6 +68,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
     public static Bundle createBundle(String query) {
         ContentValues values = new ContentValues();
         values.put(RestConstants.QUERY, query);
+        Print.i(TAG, "code1query : "+query);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         bundle.putString(SEARCH_PARAM, query);
@@ -83,7 +84,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         // Get recent queries
         ArrayList<Suggestion> recentQueries = new ArrayList<>();
         try {
-            if(TextUtils.isEmpty(mQuery)) {
+            if(TextUtils.isEmpty(mQuery) ) {
                 recentQueries = SearchRecentQueriesTableHelper.getAllRecentQueries();
             } else {
                 recentQueries = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
