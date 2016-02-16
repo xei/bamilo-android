@@ -59,7 +59,12 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 	public boolean initialize(JSONObject jsonObject) throws JSONException {
 		try {
 			if (jsonObject != null) {
-                mResult = jsonObject.getString(RestConstants.NAME);
+                if(jsonObject.has(RestConstants.SUB_STRING)){
+                    mResult = jsonObject.getString(RestConstants.SUB_STRING);
+                } else {
+                    mResult = jsonObject.getString(RestConstants.NAME);
+                }
+
                 mTarget = jsonObject.getString(RestConstants.TARGET);
                 return true;
 			}
