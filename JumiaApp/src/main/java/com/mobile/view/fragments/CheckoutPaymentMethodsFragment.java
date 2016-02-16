@@ -277,7 +277,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
      */
     private void loadForm(Form form) {
         Print.i(TAG, "LOAD FORM");
-        mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
+        mDynamicForm = FormFactory.getSingleton().create(FormConstants.PAYMENT_DETAILS_FORM, getActivity(), form);
         mPaymentContainer.removeAllViews();
         mPaymentContainer.addView(mDynamicForm.getContainer());
         mDynamicForm.loadSaveFormState(mSavedState);

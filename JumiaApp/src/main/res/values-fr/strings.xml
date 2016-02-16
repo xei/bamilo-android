@@ -165,7 +165,6 @@
     <string name="new_password_hint">Nouveau mot de passe</string>
     <string name="new_password_label">Nouveau mot de passe</string>
     <string name="newsletter_saved_message">Vos préférences Mails ont été enregistrées</string>
-    <string name="newsletters_label">Newsletters</string>
     <string name="next_button">Suivant</string>
     <string name="no_connect_dialog_content">Vérifiez votre connexion internet et essayez à nouveau!</string>
     <string name="no_internet_access_warning_title">Pas d\'accès internet!</string>

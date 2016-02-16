@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.algolia.search.saas.APIClient;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
@@ -22,7 +21,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**

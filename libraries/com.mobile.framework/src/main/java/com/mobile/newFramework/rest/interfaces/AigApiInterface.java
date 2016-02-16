@@ -143,6 +143,10 @@ public interface AigApiInterface {
     String getNewsletterForm = "getNewsletterForm";
 
     @GET("/")
+    void getNewsletterUnSubscribeForm(Callback<BaseResponse<Form>> callback);
+    String getNewsletterUnSubscribeForm = "getNewsletterUnSubscribeForm";
+
+    @GET("/")
     void getUserDataForm(Callback<BaseResponse<Form>> callback);
     String getUserDataForm = "getUserDataForm";
 
@@ -277,7 +281,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @POST("/")
-    void validateProducts( @Field("products[]") ArrayList<String> keys, Callback<BaseResponse<ValidProductList>> callback);
+    void validateProducts(@Field("products[]") ArrayList<String> keys, Callback<BaseResponse<ValidProductList>> callback);
     String validateProducts = "validateProducts";
 
     @FormUrlEncoded
@@ -380,11 +384,10 @@ public interface AigApiInterface {
     void setMultiStepFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<CheckoutFinish>> callback);
     String setMultiStepFinish = "setMultiStepFinish";
 
-
     @FormUrlEncoded
     @POST("/")
-    void formEvent(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
-    String formEvent = "formEvent";
+    void submitFormAction(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String submitFormAction = "submitFormAction";
 
     /*
      * ########## HTTP PUT ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0
