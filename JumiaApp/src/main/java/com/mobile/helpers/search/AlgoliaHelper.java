@@ -11,6 +11,7 @@ import com.algolia.search.saas.TaskParams;
 import com.algolia.search.saas.listeners.APIClientListener;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -33,7 +34,7 @@ import java.util.List;
 public class AlgoliaHelper {
     private static final String TAG = AlgoliaHelper.class.getName();
     // Algolia Client
-    private final APIClient mAlgoliaAPIClient;
+    private APIClient mAlgoliaAPIClient;
     private final IResponseCallback mIResponseCallback;
     private final String mNamespacePrefix;
     private final static String _CATEGORIES = "_categories";
@@ -48,16 +49,16 @@ public class AlgoliaHelper {
     private SuggestionsStruct mSuggestionsStruct;
     private final Context mContext;
 
-    public AlgoliaHelper(Context context, APIClient algoliaAPIClient, IResponseCallback responseCallback) {
+
+    public AlgoliaHelper(Context context, IResponseCallback responseCallback) {
         this.mContext = context;
-        this.mAlgoliaAPIClient = algoliaAPIClient;
         this.mIResponseCallback = responseCallback;
         this.mNamespacePrefix = CountryPersistentConfigs.getAlgoliaInfoByKey(context, Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_PREFIX);
     }
 
     public void getSuggestions(@NonNull final String searchQuery){
-        if(mAlgoliaAPIClient == null){
-            Print.i(TAG , "code1algolia: ERROR: mAlgoliaAPIClient is null");
+        if(getAlgoliaClient() == null){
+            Print.i(TAG , "ERROR: mAlgoliaAPIClient is null");
             return;
         }
 
@@ -94,7 +95,6 @@ public class AlgoliaHelper {
                 final Suggestions suggestions = getProductsAndShopSuggestions(result, searchTerm);
                 mSuggestionsStruct = new SuggestionsStruct(suggestions);
                 mSuggestionsStruct.setSearchParam(searchTerm);
-
                 response.getMetadata().setData(mSuggestionsStruct);
 
                 getCategoriesNames(result);
@@ -105,8 +105,17 @@ public class AlgoliaHelper {
             @Override
             public void APIError(APIClient client, TaskParams.Client context, AlgoliaException e) {
                 BaseResponse response = new BaseResponse();
-                response.getMetadata().setData(null);
-                mIResponseCallback.onRequestError(response);
+                ArrayList<Suggestion> suggestions = new ArrayList<Suggestion>();
+                try {
+                    suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+                mSuggestionsStruct = new SuggestionsStruct(suggestions);
+                mSuggestionsStruct.setSearchParam(searchQuery);
+                BaseResponse baseResponse = new BaseResponse();
+                baseResponse.getMetadata().setData(mSuggestionsStruct);
+                mIResponseCallback.onRequestComplete(baseResponse);
             }
         });
 
@@ -230,6 +239,13 @@ public class AlgoliaHelper {
         }
 
         return suggestions;
+    }
+
+    private APIClient getAlgoliaClient() {
+        if(mAlgoliaAPIClient == null){
+            mAlgoliaAPIClient = new APIClient(CountryPersistentConfigs.getAlgoliaInfoByKey(mContext, Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_APP_ID), CountryPersistentConfigs.getAlgoliaInfoByKey(mContext, Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_API_KEY));
+        }
+        return mAlgoliaAPIClient;
     }
 
 }

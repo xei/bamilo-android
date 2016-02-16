@@ -470,7 +470,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Create a BaseActivity weak reference.
      */
     public WeakReference<BaseActivity> getWeakBaseActivity() {
-        return new WeakReference<>(getBaseActivity());
+        return getBaseActivity().getWeakBaseActivity();
     }
 
     /**

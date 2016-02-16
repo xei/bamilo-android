@@ -321,7 +321,10 @@ public class RestConstants {
     public static final String FACET_CATEGORY = "facet_category";
     public static final String FACETS = "facets";
     public static final String DOMAIN = "domain";
-    public static final String DOMAIN_URL = "domain_url";
     public static final String BEFORE = "before";
     public static final String UNSUBSCRIBE_SECTION = "unsubscribe_section";
+    public static final String SHOPS = "shops";
+    public static final String SUGGESTION_QUERY = "query";
+    public static final String QUERIES = "queries";
+    public static final String SUB_STRING = "sub_string";
 }

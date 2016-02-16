@@ -38,7 +38,7 @@ public enum EventType {
 
     GET_HOME_EVENT("http:/main/home/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", AigRestContract.DEFAULT_CACHE_TIME),
+    GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggester/", AigRestContract.DEFAULT_CACHE_TIME),
 
     ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/cart/addproduct/"),
 

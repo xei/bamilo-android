@@ -81,7 +81,7 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         // Get recent queries
         ArrayList<Suggestion> recentQueries = new ArrayList<>();
         try {
-            if(TextUtils.isEmpty(mQuery)) {
+            if(TextUtils.isEmpty(mQuery) ) {
                 recentQueries = SearchRecentQueriesTableHelper.getAllRecentQueries();
             } else {
                 recentQueries = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);

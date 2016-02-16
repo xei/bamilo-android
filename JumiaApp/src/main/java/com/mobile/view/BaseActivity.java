@@ -74,12 +74,14 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.MyProfileActionProvider;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
@@ -984,14 +986,18 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
                 switch (selectedSuggestion.getType()){
                     case Suggestion.SUGGESTION_PRODUCT:
-                        showSearchProduct(selectedSuggestion.getTarget(), selectedSuggestion.getResult());
+                        showSearchProduct(selectedSuggestion);
                         break;
                     case Suggestion.SUGGESTION_SHOP_IN_SHOP:
-                        showSearchShopsInShop(selectedSuggestion.getTarget(), selectedSuggestion.getResult());
+                        showSearchShopsInShop(selectedSuggestion);
                         break;
-                    default:
+                    case Suggestion.SUGGESTION_CATEGORY:
                         // Show query
-                        showSearchCategory(selectedSuggestion.getTarget());
+                        showSearchCategory(selectedSuggestion);
+                        break;
+                    case Suggestion.SUGGESTION_OTHER:
+                        // Show query
+                        showSearchCategory(selectedSuggestion);
                         break;
                 }
 
@@ -1046,11 +1052,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     suggestion.setQuery(searchTerm);
                     suggestion.setResult(searchTerm);
                     suggestion.setTarget(searchTerm);
-                    suggestion.setType(Suggestion.SUGGESTION_CATEGORY);
+                    suggestion.setType(Suggestion.SUGGESTION_OTHER);
                     // Save query
                     GetSearchSuggestionsHelper.saveSearchQuery(suggestion);
                     // Show query
-                    showSearchCategory(searchTerm);
+                    showSearchCategory(suggestion);
                     return true;
                 }
                 return false;
@@ -1061,6 +1067,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
          * Set expand listener
          */
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
+            private final Handler handle = new Handler();
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Print.d(TAG, "SEARCH ON EXPAND");
@@ -1076,7 +1083,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                             mSearchAutoComplete.setText(searchedTerm);
                             mSearchAutoComplete.setSelection(searchedTerm.length());
                         } else {
-                            getSuggestions();
+                            handle.removeCallbacks(run);
+                            handle.postDelayed(run, SEARCH_EDIT_DELAY);
                         }
                     }
                 });
@@ -1112,42 +1120,62 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Execute search
      * @author sergiopereira
      */
-    protected void showSearchCategory(String searchText) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
+    protected void showSearchCategory(final Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
         // Tracking
-        TrackerDelegator.trackSearchSuggestions(searchText);
-        // Data
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.DATA, null);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
-        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-        onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        @TargetLink.Type String link = suggestion.getTarget();
+        Print.i(TAG, "code1link : goToCatalog : "+link);
+        // Parse target link
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        if(!result) {
+            // Data
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.DATA, null);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getTarget());
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+            onSwitchFragment(FragmentType.CATALOG_CATEGORY, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+
     }
 
     /**
      * Execute search for product
      */
-    protected void showSearchProduct(String sku, String title) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW "+sku);
+    protected void showSearchProduct(Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW "+suggestion.getResult());
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
 
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch_prefix);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
 
+        @TargetLink.Type String link = suggestion.getTarget();
+        // Parse target link
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        if(!result) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /**
      * Execute search for shop in shop
      */
-    protected void showSearchShopsInShop(final String innerShopId, final String title) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP "+title);
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, innerShopId);
-        onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
+    protected void showSearchShopsInShop(final Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP "+suggestion.getResult());
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+
+        @TargetLink.Type String link = suggestion.getTarget();
+        // Parse target link
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        if(!result) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
+            onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /*
@@ -1217,7 +1245,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             public void onRequestError(final BaseResponse baseResponse) {
                 processErrorSearchEvent(baseResponse);
             }
-        }, text, true);//CountryPersistentConfigs.isUseAlgolia(getApplicationContext())
+        }, text, CountryPersistentConfigs.isUseAlgolia(getApplicationContext()));
     }
 
     /**
@@ -1295,8 +1323,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             return;
         }
         // Validate current search
-        if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE
-                || !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+        if (!TextUtils.equals(mSearchAutoComplete.getText().toString(), requestQuery)) {
             Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
             return;
         }
@@ -1766,5 +1793,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void hideWarningMessage(){
         warningFactory.hideWarning();
     }
+
+    /**
+     * Create a BaseActivity weak reference.
+     */
+    public WeakReference<BaseActivity> getWeakBaseActivity() {
+        return new WeakReference<>(this);
+    }
+
 
 }

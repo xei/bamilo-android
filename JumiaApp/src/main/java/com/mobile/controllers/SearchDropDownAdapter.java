@@ -16,6 +16,8 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.search.Suggestion;
+import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -96,8 +98,12 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
      * @see <href=http://www.chrisumbel.com/article/android_textview_rich_text_spannablestring>SpannableString</href>
      */
     private void setColorOnQuery(TextView textView, String titleString, String query) {
-        int index = titleString.toLowerCase().indexOf(query.toLowerCase());
-        if(index != -1) {
+        int index = IntConstants.INVALID_POSITION;
+        if(TextUtils.isNotEmpty(query)){
+            index = titleString.toLowerCase().indexOf(query.toLowerCase());
+        }
+
+        if(index != IntConstants.INVALID_POSITION) {
             SpannableString title = new SpannableString(titleString);
             title.setSpan(new StyleSpan(Typeface.BOLD), index, index + query.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView.setText(title);
@@ -110,7 +116,6 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
      *
      */
     private void setColorOnSpecialQuery(TextView textView, String titleString, String highlight, String query) {
-        Print.i(TAG, "code1highlight: "+highlight);
         int index = titleString.toLowerCase().indexOf(query.toLowerCase());
         int indexHighlitght = titleString.toLowerCase().indexOf(highlight.toLowerCase());
         if(index != -1 && indexHighlitght != -1) {
