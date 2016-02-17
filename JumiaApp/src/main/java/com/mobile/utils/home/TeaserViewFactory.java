@@ -18,6 +18,7 @@ import com.mobile.utils.home.holder.HomeBrandTeaserHolder;
 import com.mobile.utils.home.holder.HomeCampaignTeaserHolder;
 import com.mobile.utils.home.holder.HomeFeaturedTeaserHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
+import com.mobile.utils.home.holder.HomeNewsletterTeaserHolder;
 import com.mobile.utils.home.holder.HomeShopTeaserHolder;
 import com.mobile.utils.home.holder.HomeShopWeekTeaserHolder;
 import com.mobile.utils.home.holder.HomeSmallTeaserHolder;
@@ -49,6 +50,8 @@ public class TeaserViewFactory {
                 return new HomeMainTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_main, parent, false), listener);
             case SMALL_TEASERS:
                 return new HomeSmallTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_small, parent, false), listener);
+            case FORM_NEWSLETTER:
+                return new HomeNewsletterTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_newsletter, parent, false), listener);
             case CAMPAIGNS:
                 return new HomeCampaignTeaserHolder(inflater.getContext(), inflater.inflate(R.layout.home_teaser_campaign, parent, false), listener);
             case SHOP_TEASERS:

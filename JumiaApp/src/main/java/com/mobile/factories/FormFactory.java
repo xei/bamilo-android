@@ -3,7 +3,6 @@ package com.mobile.factories;
 import android.content.Context;
 import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.util.LayoutDirection;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -45,7 +44,9 @@ public class FormFactory {
             R.drawable.ic_form_gender,
             R.drawable.ic_form_national_id,
             R.drawable.ic_form_password,
-            R.drawable.ic_form_phone
+            R.drawable.ic_form_phone,
+            R.drawable.ic_form_female,
+            R.drawable.ic_form_male
     };
 
     /**
@@ -76,14 +77,14 @@ public class FormFactory {
      *
      * @return An instance of a DynamicForm with the form representation implemented
      */
-    public DynamicForm CreateForm(int formType, Context context, Form form) {
+    public DynamicForm create(@FormConstants.DynamicFormTypes int formType, Context context, Form form) {
         DynamicForm parent = null;
-        //Print.i(TAG, "code1register CREATING FORM : " + formType);
         switch (formType) {
             case FormConstants.LOGIN_FORM:
             case FormConstants.REGISTRATION_FORM:
             case FormConstants.FORGET_PASSWORD_FORM:
             case FormConstants.CHANGE_PASSWORD_FORM:
+            case FormConstants.RATING_FORM:
                 form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
             case FormConstants.USER_DATA_FORM:
             case FormConstants.ADDRESS_EDIT_FORM:
@@ -91,15 +92,21 @@ public class FormFactory {
                 form.setType(formType);  // Used to show icons (LOGIN|REGISTER|USER_DATA)
                 parent = createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
                 break;
+            case FormConstants.NEWSLETTER_UN_SUBSCRIBE_FORM:
+            case FormConstants.NEWSLETTER_PREFERENCES_FORM:
+                form.setType(formType);  // Used for dividers
             case FormConstants.PAYMENT_DETAILS_FORM:
                 parent = createGenericForm(context, form, createParams(context, R.dimen.form_no_top_margin));
                 break;
             case FormConstants.NEWSLETTER_FORM:
+                form.hideAsterisks();// Used to hide asterisks because everything is mandatory
                 parent = createNewsletterForm(context, form, createParams(context, R.dimen.form_no_top_margin));
                 break;
         }
         return parent;
     }
+
+
 
     /**
      * This is used as base to create the given form. Here all the controls are instantiated.
@@ -123,7 +130,7 @@ public class FormFactory {
         // Create each form field
         for (IFormField entry : form.getFields()) {
             Print.d(TAG, "FORM ITEM KEY: " + entry.getKey() + " TYPE: " + entry.getInputType());
-            DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, entry);
+            DynamicFormItem dynamicFormItem = DynamicFormItem.newInstance(dynamicForm, context, entry);
             dynamicForm.addControl(dynamicFormItem, ctrlParams);
         }
         return dynamicForm;
@@ -142,19 +149,15 @@ public class FormFactory {
         LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         viewGroup.setOrientation(LinearLayout.VERTICAL);
         viewGroup.setLayoutParams(frmParams);
-        viewGroup.setBackgroundColor(ContextCompat.getColor(context, R.color.black_800));
-        viewGroup.setPadding(context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp) ,context.getResources().getDimensionPixelOffset(R.dimen.dimen_16dp));
         // Create dynamic form
         DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
-        Print.d(TAG, "createGenericForm: createNewsletterForm");
-
-        // TODO: Add title and description for Homepage Newsletter Form
 
         // Create each form field
         for (IFormField frmEntry : form.getFields()) {
             Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
             DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, frmEntry);
             dynamicForm.addControl(dynamicFormItem, ctrlParams);
+
         }
         return dynamicForm;
     }

@@ -16,10 +16,10 @@
         android:contentDescription="@string/app_name"
         android:visibility="gone" />
 
-<com.mobile.utils.RadioGroupLayout
-    android:id="@+id/radio_group_container"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_toEndOf="@+id/radio_field_icon"
-    android:layout_toRightOf="@+id/radio_field_icon"/>
+    <com.mobile.utils.RadioGroupLayout
+        android:id="@+id/radio_group_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/radio_field_icon"
+        android:layout_toRightOf="@+id/radio_field_icon" />
 </RelativeLayout>

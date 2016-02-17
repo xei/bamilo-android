@@ -470,7 +470,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
      * Create a BaseActivity weak reference.
      */
     public WeakReference<BaseActivity> getWeakBaseActivity() {
-        return new WeakReference<>(getBaseActivity());
+        return getBaseActivity().getWeakBaseActivity();
     }
 
     /**
@@ -1126,6 +1126,13 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (dialog != null) {
             dialog.dismissAllowingStateLoss();
         }
+    }
+
+    /**
+     * Method used to know the fragment state
+     */
+    public boolean isFragmentUIActive() {
+        return isAdded() && !isDetached() && !isRemoving();
     }
 
 }

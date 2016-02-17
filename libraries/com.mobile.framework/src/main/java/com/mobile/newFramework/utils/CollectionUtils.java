@@ -2,6 +2,7 @@ package com.mobile.newFramework.utils;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.SparseArray;
 
 import org.json.JSONArray;
@@ -120,6 +121,14 @@ public class CollectionUtils {
 
     public static <C> boolean addAll(Collection<C> collection, Iterable<? extends C> iterable) {
         return iterable instanceof Collection ? collection.addAll((Collection) iterable) : addAll(collection, iterable.iterator());
+    }
+
+    /**
+     * Adds the secondCollection to the first collection at any index
+     * */
+    public static void addAll(@NonNull List  firstCollection, @NonNull List secondCollection, int index){
+        if(index < firstCollection.size())
+            firstCollection.addAll(index,secondCollection);
     }
 
     public static <C> boolean addAll(Collection<C> collection, Iterator<? extends C> iterator) {

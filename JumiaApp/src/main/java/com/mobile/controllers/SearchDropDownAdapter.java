@@ -2,8 +2,10 @@ package com.mobile.controllers;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,9 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.search.Suggestion;
+import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -28,21 +33,17 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
 
     public static final String TAG = SearchDropDownAdapter.class.getSimpleName();
 
-    private LayoutInflater mInflater;
-
-    private String mQuery;
+    private final LayoutInflater mInflater;
 
     /**
      * Constructor of adapter for search drop down
      * @param context - the current context
      * @param objects - list of suggestions
-     * @param query - the current query
      * @author sergiopereira
      */
-    public SearchDropDownAdapter(Context context, List<Suggestion> objects, String query) {
+    public SearchDropDownAdapter(Context context, List<Suggestion> objects) {
         super(context, 0, 0, objects);
         mInflater = LayoutInflater.from(context);
-        mQuery = query;
     }
     
     /*
@@ -67,27 +68,24 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
         else view = convertView;
         // Get current suggestion
         Suggestion sug = getItem(position);
+
         // Get views
         TextView sugText = (TextView) view.findViewById(R.id.item_text_suggestion);
-        //TextView sugItems = (TextView) view.findViewById(R.id.item_text_n_items);
+
+        if(sug.getType() == Suggestion.SUGGESTION_CATEGORY){
+            // Set suggestion
+            setColorOnSpecialQuery(sugText, String.format(getContext().getString(R.string.search_categories_label), sug.getQuery() ,sug.getResult()), sug.getResult(), sug.getQuery());
+        } else if(sug.getType() == Suggestion.SUGGESTION_SHOP_IN_SHOP){
+            // Set suggestion
+            setColorOnSpecialQuery(sugText,  String.format(getContext().getString(R.string.search_shop_in_shop_label),sug.getResult()), sug.getResult(), sug.getQuery());
+        } else {
+            // Set suggestion
+            setColorOnQuery(sugText, sug.getResult(), sug.getQuery());
+        }
+
         // Set icon
         if(sug.isRecentQuery()) ((ImageView) view.findViewById(R.id.item_img)).setImageResource(R.drawable.ico_recent);
         else ((ImageView) view.findViewById(R.id.item_img)).setImageResource(R.drawable.magnlens);
-        // Set suggestion
-        setColorOnQuery(sugText, sug.getResult(), mQuery);
-        /*-
-        // Set number of suggestions
-        int resultValue = sug.getResultValue();
-        if (resultValue > 0) {
-            sugItems.setText("(" + resultValue + " " +
-                            ((resultValue > 1)
-                            ? getContext().getString(R.string.my_order_items_label)
-                            : getContext().getString(R.string.my_order_item_label)) +
-                            ")");
-        } else {
-            sugItems.setVisibility(View.GONE);
-        }
-        */
 
         return view;
     }
@@ -100,10 +98,30 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
      * @see <href=http://www.chrisumbel.com/article/android_textview_rich_text_spannablestring>SpannableString</href>
      */
     private void setColorOnQuery(TextView textView, String titleString, String query) {
-        int index = titleString.toLowerCase().indexOf(query.toLowerCase());
-        if(index != -1) {
+        int index = IntConstants.INVALID_POSITION;
+        if(TextUtils.isNotEmpty(query)){
+            index = titleString.toLowerCase().indexOf(query.toLowerCase());
+        }
+
+        if(index != IntConstants.INVALID_POSITION) {
             SpannableString title = new SpannableString(titleString);
             title.setSpan(new StyleSpan(Typeface.BOLD), index, index + query.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textView.setText(title);
+        } else {
+            textView.setText(titleString);
+        }
+    }
+
+    /**
+     *
+     */
+    private void setColorOnSpecialQuery(TextView textView, String titleString, String highlight, String query) {
+        int index = titleString.toLowerCase().indexOf(query.toLowerCase());
+        int indexHighlitght = titleString.toLowerCase().indexOf(highlight.toLowerCase());
+        if(index != -1 && indexHighlitght != -1) {
+            SpannableString title = new SpannableString(titleString);
+            title.setSpan(new StyleSpan(Typeface.BOLD), index, index + query.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            title.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.blue1)), indexHighlitght, indexHighlitght+highlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView.setText(title);
         } else {
             textView.setText(titleString);

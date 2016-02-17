@@ -29,8 +29,11 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 	// Table Rows
 	public static final String _ID = "id";
 	public static final String _QUERY = "query";
+	public static final String _RESULT = "result";
+	public static final String _TYPE = "type";
+	public static final String _TARGET = "target";
 	public static final String _TIME_STAMP = "timestamp";
-    
+
 	/*
 	 * (non-Javadoc)
 	 * @see com.mobile.newFramework.database.BaseTable#getUpgradeType()
@@ -58,8 +61,11 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
     public String create() {
         return "CREATE TABLE %s (" +
                 _ID +           " INTEGER PRIMARY KEY, " + 
-                _QUERY +        " TEXT," +  
-                _TIME_STAMP +   " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" + 
+                _QUERY +        " TEXT," +
+                _RESULT +        " TEXT," +
+                _TYPE +        " INTEGER DEFAULT SUGGESTION_CATEGORY," +
+                _TARGET +        " TEXT," +
+                _TIME_STAMP +   " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                  ")";
     }
     
@@ -72,17 +78,20 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @return true or false
      * @author sergiopereira
      */
-    public static synchronized boolean insertQuery(String query) throws InterruptedException, NullPointerException {
-    	Print.d(TAG, "INSERT INTO SEARCH RECENT: " + query);
+    public static synchronized boolean insertQuery(Suggestion suggestion) throws InterruptedException, NullPointerException {
+    	Print.d(TAG, "INSERT INTO SEARCH RECENT: " + suggestion.getResult());
     	// Validate arguments
-    	if(query == null) return false;
+    	if(suggestion == null) return false;
     	// Insert
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         // Delete old entries
-        db.delete(TABLE_NAME, _QUERY + " LIKE ?", new String[] {query});
+        db.delete(TABLE_NAME, _RESULT + " LIKE ?", new String[] {suggestion.getResult()});
 	    // Insert
         ContentValues values = new ContentValues();
-        values.put(SearchRecentQueriesTableHelper._QUERY, query);
+        values.put(SearchRecentQueriesTableHelper._QUERY, suggestion.getQuery());
+        values.put(SearchRecentQueriesTableHelper._RESULT, suggestion.getResult());
+        values.put(SearchRecentQueriesTableHelper._TYPE, suggestion.getType());
+        values.put(SearchRecentQueriesTableHelper._TARGET, suggestion.getTarget());
         long result = db.insert(SearchRecentQueriesTableHelper.TABLE_NAME, null, values);
         db.close();
         return result == -1;
@@ -97,7 +106,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
     public static synchronized ArrayList<Suggestion> getAllRecentQueries() throws InterruptedException{
 		Print.d(TAG, "GET LAST " + NUMBER_OF_SUGGESTIONS + " RECENT QUERIES");
 		// Select the best resolution
-		String query =	"SELECT DISTINCT " + _QUERY + " " +
+		String query =	"SELECT DISTINCT * " +
 			    		"FROM " + TABLE_NAME + " " +
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
@@ -115,14 +124,14 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
     public static synchronized ArrayList<Suggestion> getFilteredRecentQueries(String searchText) throws InterruptedException{
 		Print.d(TAG, "GET RECENT QUERIES FOR: " + searchText);
 		// Select the best resolution
-		String query =	"SELECT DISTINCT " + _QUERY + " " +
+		String query =	"SELECT DISTINCT * " +
 			    		"FROM " + TABLE_NAME + " " +
 			    		"WHERE " + _QUERY + " LIKE ? " +
 						"ORDER BY " + _TIME_STAMP + " DESC " +
 						"LIMIT " + NUMBER_OF_SUGGESTIONS;
 		Print.i(TAG, "SQL QUERY: " + query);
 		// Return
-		return getRecentQueries(query, new String[]{"'%"+searchText+"%'"});
+        return getRecentQueries(query, new String[]{"%"+searchText+"%"});
     }
 
     /**
@@ -170,10 +179,16 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
                 cursor.moveToFirst();
                 // Get items
                 while (!cursor.isAfterLast()) {
-                    String recentSuggestion = cursor.getString(0);
+                    String recentSuggestion = cursor.getString(1);
+                    String recentResult = cursor.getString(2);
+                    int recentType = cursor.getInt(3);
+                    String recentTarget = cursor.getString(4);
                     Print.d(TAG, "QUERY: " + recentSuggestion);
                     Suggestion searchSuggestion = new Suggestion();
-                    searchSuggestion.setResult(recentSuggestion);
+                    searchSuggestion.setQuery(recentSuggestion);
+                    searchSuggestion.setResult(recentResult);
+                    searchSuggestion.setType(recentType);
+                    searchSuggestion.setTarget(recentTarget);
                     searchSuggestion.setIsRecentSearch(true);
                     // Save product
                     recentSuggestions.add(searchSuggestion);

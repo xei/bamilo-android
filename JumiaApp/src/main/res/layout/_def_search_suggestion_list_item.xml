@@ -19,7 +19,8 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_suggestion"
-        style="@style/text_header"
+        style="@style/SubListItemStyle"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/item_height_normal"
         android:layout_marginEnd="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"

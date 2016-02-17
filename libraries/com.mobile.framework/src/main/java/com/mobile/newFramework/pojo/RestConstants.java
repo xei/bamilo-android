@@ -33,17 +33,17 @@ public class RestConstants {
     public static final String URL = "url";
     public static final String ZOOM = "zoom";
     public static final String FORM = "form";
+    public static final String FORMS = "forms";
     public static final String METHOD = "method";
     public static final String FIELDS = "fields";
     public static final String TYPE = "type";
     public static final String KEY = "key";
     public static final String LABEL = "label";
+    public static final String SUB_LABEL = "sub_label";
     public static final String DATASET = "dataset";
     public static final String VALUE = "value";
     public static final String DATASET_SOURCE = "dataset_source";
     public static final String SCENARIO = "scenario";
-    public static final String TERMS = "terms";
-    public static final String LINK_TEXT = "link_text";
     public static final String REGISTER_NEWSLETTER_CATEGORIES_SUBSCRIBED = "register[newsletter_categories_subscribed]";
     public static final String DELIVERY_TIME = "delivery_time";
     public static final String RELATED_DATA = "related_data";
@@ -93,6 +93,7 @@ public class RestConstants {
     public static final String STARS_SIZE = "stars_size";
     public static final String DATA_SET = "data_set";
     public static final String DISPLAY_TITLE = "display_title";
+    public static final String DISPLAY = "display";
     public static final String ID_RATING_TYPE = "id_rating_type";
     public static final String RATING = "rating";
     public static final String REVIEW = "review";
@@ -153,8 +154,6 @@ public class RestConstants {
     public static final String ADDRESS_2 = "address2";
     public static final String CITY = "city";
     public static final String POSTCODE = "postcode";
-    public static final String IS_DEFAULT_BILLING = "is_default_billing";
-    public static final String IS_DEFAULT_SHIPPING = "is_default_shipping";
     public static final String VALIDATE = "validate";
     public static final String ERROR = "error";
     public static final String STARS = "stars";
@@ -163,6 +162,7 @@ public class RestConstants {
     public static final String SUB_TITLE = "sub_title";
     public static final String META = "meta";
     public static final String CATEGORY = "category";
+    public static final String MAIN_CATEGORY = "main_category";
     public static final String PAIDPRICE_CONVERTED = "paidprice_converted";
     public static final String SECTION_NAME = "section_name";
     public static final String SECTION_MD5 = "section_md5";
@@ -309,4 +309,23 @@ public class RestConstants {
     public static final String SHOP_FIRST_OVERLAY = "shop_first_overlay";
     public static final String PLACE_HOLDER = "placeholder";
     public static final String COUPONCODE = "couponcode";
+    public static final String USER_SUBSCRIBED = "user_subscribed";
+    public static final String SUGGESTER_PROVIDER = "suggester_provider";
+    public static final String ALGOLIA = "algolia";
+    public static final String APPLICATION_ID = "application_id";
+    public static final String SUGGESTER_API_KEY = "suggester_api_key";
+    public static final String NAMESPACE_PREFIX = "namespace_prefix";
+    // Algolia related
+    public static final String HITS = "hits";
+    public static final String LOCALIZABLE_ATTRIBUTES = "localizable_attributes";
+    public static final String FACET_CATEGORY = "facet_category";
+    public static final String FACETS = "facets";
+    public static final String DOMAIN = "domain";
+    public static final String BEFORE = "before";
+    public static final String UNSUBSCRIBE_SECTION = "unsubscribe_section";
+    public static final String SHOPS = "shops";
+    public static final String SUGGESTION_QUERY = "query";
+    public static final String QUERIES = "queries";
+    public static final String SUB_STRING = "sub_string";
+    public static final String POINTER = "pointer";
 }

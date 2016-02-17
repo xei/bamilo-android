@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONObject;
 
@@ -19,10 +20,12 @@ public class NewsletterOption implements IJSONSerializable, Parcelable{
     
     public boolean isDefaut;
     
+    public String key;
+
     public String value;
-    
+
     public String label;
-    
+
     public boolean isSubscrided;
     
     public String name;
@@ -41,10 +44,11 @@ public class NewsletterOption implements IJSONSerializable, Parcelable{
      */
     @Override
     public boolean initialize(JSONObject object) {
-        isDefaut = object.optBoolean("is_default");
-        value = object.optString("value");
-        label = object.optString("label");
-        isSubscrided = object.optBoolean("user_subscribed");
+        isDefaut = object.optBoolean(RestConstants.IS_DEFAULT);
+        key = object.optString(RestConstants.KEY);
+        value = object.optString(RestConstants.VALUE);
+        label = object.optString(RestConstants.LABEL);
+        isSubscrided = object.optBoolean(RestConstants.USER_SUBSCRIBED);
         return true;
     }
 
@@ -83,6 +87,7 @@ public class NewsletterOption implements IJSONSerializable, Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeBooleanArray(new boolean[] {isDefaut});
+        dest.writeString(key);
         dest.writeString(value);
         dest.writeString(label);
         dest.writeBooleanArray(new boolean[] {isSubscrided});
@@ -94,6 +99,7 @@ public class NewsletterOption implements IJSONSerializable, Parcelable{
      */
     private NewsletterOption(Parcel in) {
         in.readBooleanArray( new boolean[] {isDefaut});
+        key = in.readString();
         value = in.readString();
         label = in.readString();
         in.readBooleanArray( new boolean[] {isSubscrided});

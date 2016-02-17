@@ -38,7 +38,7 @@ public enum EventType {
 
     GET_HOME_EVENT("http:/main/home/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggest/", AigRestContract.DEFAULT_CACHE_TIME),
+    GET_SEARCH_SUGGESTIONS_EVENT("http:/search/suggester/", AigRestContract.DEFAULT_CACHE_TIME),
 
     ADD_ITEM_TO_SHOPPING_CART_EVENT("https:/cart/addproduct/"),
 
@@ -128,7 +128,9 @@ public enum EventType {
 
     GET_CAMPAIGN_EVENT("http:/campaign/get/"),
 
-    GET_NEWSLETTERS_FORM_EVENT("http:/forms/managenewsletters/"),
+    GET_NEWSLETTER_PREFERENCES_FORM_EVENT("http:/forms/managenewsletterpreferences/"),
+
+    GET_NEWSLETTER_UN_SUBSCRIBE_FORM(),
 
     SUBSCRIBE_NEWSLETTERS_EVENT,
 
@@ -186,7 +188,9 @@ public enum EventType {
 
     // ############# CART #############
 
-    CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/");
+    CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/"),
+
+    SUBMIT_FORM;
 
 
     public final String action;

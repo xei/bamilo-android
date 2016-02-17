@@ -165,7 +165,6 @@
     <string name="new_password_hint">نیا پاسورڈ</string>
     <string name="new_password_label">نیا پاسورڈ</string>
     <string name="newsletter_saved_message">آپ کی ای میل اطلاعات کی ترجیحات محفوظ کر لی گئی ہیں۔</string>
-    <string name="newsletters_label">خبرنامہ</string>
     <string name="next_button">اگلا</string>
     <string name="no_connect_dialog_content">براہِ مہربانی اپنا انٹرنیٹ رابطہ جانچیں اور پھر کوشش کریں۔</string>
     <string name="no_internet_access_warning_title">انٹرنیٹ کی سہولت موجود نہیں ہے</string>
@@ -434,7 +433,7 @@
     <string name="create_label">بنایۓ</string>
     <string name="change_password">پاسورڈ بدلین</string>
     <string name="continue_without_log_in">اکآونٹ مین داخل ھوی بنا جاری رکھین</string>
-    <string name="placeholder_discount">-%s</string>
+    <string name="placeholder_discount">- ‎%s‎</string>
     <string name="edit_user_success">یوزر معلومات کامیابی سے تبدیل ھو  چکی ھے</string>
     <string name="password">پاس ورڈ</string>
     <string name="more">مزید</string>

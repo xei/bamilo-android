@@ -52,6 +52,8 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
+import com.mobile.helpers.search.SearchSuggestionClient;
+import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -72,12 +74,14 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.MyProfileActionProvider;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
@@ -947,7 +951,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
         // Set measures
         mSearchView.setMaxWidth(searchComponentWidth);
-        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
+        mSearchAutoComplete.setDropDownWidth(mainContentWidth);
     }
 
     /**
@@ -971,15 +975,32 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
                 // Get text suggestion
                 String text = selectedSuggestion.getResult();
+                Print.i(TAG, "code1algoliadd onItemClick: "+text);
                 //Save searched text
                 JumiaApplication.INSTANCE.setSearchedTerm(text);
                 mSearchAutoComplete.dismissDropDown();
                 // Collapse search view
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
                 // Save query
-                GetSearchSuggestionsHelper.saveSearchQuery(text);
-                // Show query
-                showSearchCategory(text);
+                GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
+
+                switch (selectedSuggestion.getType()){
+                    case Suggestion.SUGGESTION_PRODUCT:
+                        showSearchProduct(selectedSuggestion);
+                        break;
+                    case Suggestion.SUGGESTION_SHOP_IN_SHOP:
+                        showSearchShopsInShop(selectedSuggestion);
+                        break;
+                    case Suggestion.SUGGESTION_CATEGORY:
+                        // Show query
+                        showSearchCategory(selectedSuggestion);
+                        break;
+                    case Suggestion.SUGGESTION_OTHER:
+                        // Show query
+                        showSearchOther(selectedSuggestion);
+                        break;
+                }
+
             }
         });
 
@@ -992,6 +1013,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
@@ -1003,6 +1025,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 handle.removeCallbacks(run);
                 if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened) {
                     handle.postDelayed(run, SEARCH_EDIT_DELAY);
+                } else if(TextUtils.isEmpty(s) && isSearchComponentOpened){
+                    getSuggestions();
                 }
             }
         });
@@ -1017,16 +1041,22 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     String searchTerm = textView.getText().toString();
                     Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
                     if (TextUtils.isEmpty(searchTerm)) {
+                        getSuggestions();
                         return false;
                     }
                     //Save searched text
                     JumiaApplication.INSTANCE.setSearchedTerm(searchTerm);
                     // Collapse search view
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
+                    Suggestion suggestion = new Suggestion();
+                    suggestion.setQuery(searchTerm);
+                    suggestion.setResult(searchTerm);
+                    suggestion.setTarget(searchTerm);
+                    suggestion.setType(Suggestion.SUGGESTION_OTHER);
                     // Save query
-                    GetSearchSuggestionsHelper.saveSearchQuery(searchTerm);
+                    GetSearchSuggestionsHelper.saveSearchQuery(suggestion);
                     // Show query
-                    showSearchCategory(searchTerm);
+                    showSearchCategory(suggestion);
                     return true;
                 }
                 return false;
@@ -1037,6 +1067,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
          * Set expand listener
          */
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
+            private final Handler handle = new Handler();
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Print.d(TAG, "SEARCH ON EXPAND");
@@ -1051,6 +1082,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                         if (TextUtils.isNotEmpty(searchedTerm)) {
                             mSearchAutoComplete.setText(searchedTerm);
                             mSearchAutoComplete.setSelection(searchedTerm.length());
+                        } else {
+                            handle.removeCallbacks(run);
+                            handle.postDelayed(run, SEARCH_EDIT_DELAY);
                         }
                     }
                 });
@@ -1086,17 +1120,79 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Execute search
      * @author sergiopereira
      */
-    protected void showSearchCategory(String searchText) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
+    protected void showSearchCategory(final Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
         // Tracking
-        TrackerDelegator.trackSearchSuggestions(searchText);
-        // Data
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        @TargetLink.Type String link = suggestion.getTarget();
+        // Parse target link
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        if(!result) {
+            // Data
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.DATA, null);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getQuery());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+            onSwitchFragment(FragmentType.CATALOG_CATEGORY, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+
+    }
+
+    /**
+     * Execute search
+     */
+    protected void showSearchOther(final Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
+        // Tracking
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DATA, null);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
-        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
+        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getResult());
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
         onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+    }
+
+    /**
+     * Execute search for product
+     */
+    protected void showSearchProduct(Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW "+suggestion.getResult());
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+
+
+        @TargetLink.Type String link = suggestion.getTarget();
+        // Parse target link
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        if(!result) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
+    /**
+     * Execute search for shop in shop
+     */
+    protected void showSearchShopsInShop(final Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP "+suggestion.getResult());
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+
+        @TargetLink.Type String link = suggestion.getTarget();
+        // Parse target link
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        if(!result) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
+            onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /*
@@ -1153,20 +1249,20 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     private void getSuggestions() {
         beginInMillis = System.currentTimeMillis();
-        String text = mSearchAutoComplete.getText().toString();
+        final String text = mSearchAutoComplete.getText().toString();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
-        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(text),
-                new IResponseCallback() {
-                    @Override
-                    public void onRequestComplete(BaseResponse baseResponse) {
-                        processSuccessSearchEvent(baseResponse);
-                    }
+        SearchSuggestionClient mSearchSuggestionClient = new SearchSuggestionClient();
+        mSearchSuggestionClient.getSuggestions(getApplicationContext(), new IResponseCallback() {
+            @Override
+            public void onRequestComplete(final BaseResponse baseResponse) {
+                processSuccessSearchEvent(baseResponse);
+            }
 
-                    @Override
-                    public void onRequestError(BaseResponse baseResponse) {
-                        processErrorSearchEvent(baseResponse);
-                    }
-                });
+            @Override
+            public void onRequestError(final BaseResponse baseResponse) {
+                processErrorSearchEvent(baseResponse);
+            }
+        }, text, CountryPersistentConfigs.isUseAlgolia(getApplicationContext()));
     }
 
     /**
@@ -1194,7 +1290,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processErrorSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
 
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
+        SuggestionsStruct suggestionsStruct = (SuggestionsStruct)baseResponse.getContentData();
 
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
@@ -1208,7 +1304,14 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             return;
         }
         // Hide dropdown
-        mSearchAutoComplete.dismissDropDown();
+        if(suggestionsStruct.size() == 0)
+            mSearchAutoComplete.dismissDropDown();
+        else{
+            //show dropdown with recent queries
+            SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
+            mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
+            mSearchAutoComplete.showDropDown();
+        }
     }
 
     /**
@@ -1219,7 +1322,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processSuccessSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
+        SuggestionsStruct suggestionsStruct = (SuggestionsStruct)baseResponse.getContentData();
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
@@ -1237,8 +1340,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             return;
         }
         // Validate current search
-        if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE
-                || !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+        if (!TextUtils.equals(mSearchAutoComplete.getText().toString(), requestQuery)) {
             Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
             return;
         }
@@ -1248,7 +1350,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
         TrackerDelegator.trackLoadTiming(params);
-        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct, requestQuery);
+        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
         mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
         mSearchAutoComplete.showDropDown();
     }
@@ -1337,10 +1439,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Show and set title on actionbar
      */
     public void setActionBarTitle(@StringRes int actionBarTitleResId) {
-        //logoTextView.setVisibility(View.VISIBLE);
-        //logoTextView.setText(getString(actionBarTitleResId));
-        //getSupportActionBar().setDisplayShowTitleEnabled(true);
-        //getSupportActionBar().setTitle(getString(actionBarTitleResId));
         mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
     }
@@ -1350,22 +1448,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSupportActionBar.setTitle(title);
     }
 
-//    private void setAppContentLayout() {
-//        if (contentLayoutId == 0) {
-//            return;
-//        }
-//        ViewStub stub = (ViewStub) findViewById(R.id.stub_app_content);
-//        stub.setLayoutResource(contentLayoutId);
-//        contentContainer = stub.inflate();
-//    }
-
     /**
      * Hide title on actionbar
      */
     public void hideActionBarTitle() {
-        //logoTextView.setVisibility(View.GONE);
-        //getSupportActionBar().setTitle("");
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
         mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         mSupportActionBar.setTitle("");
     }
@@ -1399,16 +1485,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             e.printStackTrace();
         }
     }
-
-//    public void showKeyboard() {
-//        // Log.d( TAG, "showKeyboard" );
-//        //Print.i(TAG, "code1here showKeyboard");
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
-//        // use the above as the method below does not always work
-//        // imm.showSoftInput(getSlidingMenu().getCurrentFocus(),
-//        // InputMethodManager.SHOW_IMPLICIT);
-//    }
 
     public void hideKeyboard() {
         Print.i(TAG, "HIDE KEYBOARD");
@@ -1734,5 +1810,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void hideWarningMessage(){
         warningFactory.hideWarning();
     }
+
+    /**
+     * Create a BaseActivity weak reference.
+     */
+    public WeakReference<BaseActivity> getWeakBaseActivity() {
+        return new WeakReference<>(this);
+    }
+
 
 }

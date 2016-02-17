@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -83,6 +84,8 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
         mAdapter.setOnViewHolderClickListener(this);
         mGridVariations.setAdapter(mAdapter);
         mGridVariations.setGridLayoutManager(getResources().getInteger(R.integer.variations_num_columns));
+        mGridVariations.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mGridVariations.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridVariations.setHasFixedSize(true);
     }
 

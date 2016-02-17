@@ -47,6 +47,8 @@
         android:drawableLeft="@drawable/ic_warranty"
         android:drawablePadding="16dp"
         android:drawableStart="@drawable/ic_warranty"
+        android:maxLines="2"
+        android:singleLine="false"
         android:textColor="@color/black"
         android:visibility="gone" />
 

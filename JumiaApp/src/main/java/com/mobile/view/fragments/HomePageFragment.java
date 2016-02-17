@@ -304,34 +304,17 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers().values()) {
-            // Case Form NewsLetter disable until feature is fully implemented.
-            /*
-            if(baseTeaserType.getType() == TeaserGroupType.FORM_NEWSLETTER){
-                Form form = null;
-                try{
-                    form = ((TeaserFormObject) baseTeaserType.getData().get(0)).getForm();
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-                if(form != null){
-                    //TODO needs to be created the correct layout for this form, ticket NAFAMZ-14045
-                    DynamicForm mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.NEWSLETTER_FORM,inflater.getContext(),form);
-                    mContainer.addView(mDynamicForm.getContainer());
-                }
 
-            } else {
-            */
-                // Create view
-                BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
-                if (viewHolder != null) {
-                    // Set view
-                    viewHolder.onBind(baseTeaserType);
-                    // Add to container
-                    mContainer.addView(viewHolder.itemView);
-                    // Save
-                    mViewHolders.add(viewHolder);
-                }
-            // }
+            // Create view
+            BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
+            if (viewHolder != null) {
+                // Set view
+                viewHolder.onBind(baseTeaserType);
+                // Add to container
+                mContainer.addView(viewHolder.itemView);
+                // Save
+                mViewHolders.add(viewHolder);
+            }
         }
         // Restore the scroll state
         //restoreScrollState();
@@ -353,30 +336,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         return false;
     }
 
-//    /**
-//     * Restore the saved scroll position
-//     * @author sergiopereira
-//     */
-//    private void restoreScrollState() {
-//        Print.i(TAG, "ON RESTORE SCROLL SAVED STATE");
-//        // Has saved position
-//        if (mScrollSavedPosition != null) {
-//            // Wait until my scrollView is ready and scroll to saved position
-//            try {
-//                mScrollView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//                    @SuppressWarnings("deprecation")
-//                    @Override
-//                    public void onGlobalLayout() {
-//                        mScrollView.scrollTo(mScrollSavedPosition[0], mScrollSavedPosition[1]);
-//                        mScrollView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//                    }
-//                });
-//            } catch (NullPointerException | IllegalStateException e) {
-//                Log.w(TAG, "WARNING: EXCEPTION ON SCROLL TO SAVED STATE", e);
-//            }
-//        }
-//    }
-
     /*
      * ########### LISTENERS ###########
      */
@@ -388,14 +347,19 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        /**
-         * Try fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/163/crash_reasons/108483846
-         */
-        try {
-            // Validated clicked view
-            onClickTeaserItem(view);
-        } catch (NullPointerException e) {
-            showUnexpectedErrorWarning();
+
+        if(view.getId() == R.id.send_newsletter){
+            getBaseActivity().showProgress();
+        } else {
+            /**
+             * Try fix https://rink.hockeyapp.net/manage/apps/33641/app_versions/163/crash_reasons/108483846
+             */
+            try {
+                // Validated clicked view
+                onClickTeaserItem(view);
+            } catch (NullPointerException e) {
+                showUnexpectedErrorWarning();
+            }
         }
     }
 
@@ -548,6 +512,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     showFragmentFallBack();
                 }
                 break;
+            case SUBMIT_FORM:// Newsletter Form Response
+                getBaseActivity().dismissProgress();
+                showWarningSuccessMessage(baseResponse.getSuccessMessage());
+                break;
             default:
                 break;
         }
@@ -576,6 +544,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             case GET_HOME_EVENT:
                 Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
                 showFragmentFallBack();
+                break;
+            case SUBMIT_FORM:// Newsletter Form Response
+                getBaseActivity().dismissProgress();
+                showWarningErrorMessage(baseResponse.getErrorMessage());
                 break;
             default:
                 break;

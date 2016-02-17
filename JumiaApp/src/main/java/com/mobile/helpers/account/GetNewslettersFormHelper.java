@@ -7,15 +7,13 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
 
 /**
- * Helper used to get the form to edit an address
+ * Helper used to get the form to subscribe newsletters.
  */
 public class GetNewslettersFormHelper extends SuperBaseHelper {
-    
-    // private static String TAG = GetNewslettersFormHelper.class.getSimpleName();
 
     @Override
     public EventType getEventType() {
-        return EventType.GET_NEWSLETTERS_FORM_EVENT;
+        return EventType.GET_NEWSLETTER_PREFERENCES_FORM_EVENT;
     }
 
     @Override

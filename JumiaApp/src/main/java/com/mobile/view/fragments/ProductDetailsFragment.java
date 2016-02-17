@@ -940,7 +940,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (simple != null) {
             triggerAddItemToCart(mProduct.getSku(), simple.getSku());
             // Tracking
-            TrackerDelegator.trackProductAddedToCart(mProduct, simple.getSku(), mGroupType);
+            TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
         }
         // Case select a simple variation
         else if (mProduct.hasMultiSimpleVariations()) {
