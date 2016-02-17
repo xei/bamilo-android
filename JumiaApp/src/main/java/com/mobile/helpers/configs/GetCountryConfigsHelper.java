@@ -9,7 +9,6 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CountryPersistentConfigs;
 
 /**
@@ -41,11 +40,6 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
 
         if(!CountryPersistentConfigs.hasLanguages(JumiaApplication.INSTANCE.getApplicationContext())){
             ChooseLanguageController.setLanguageBasedOnDevice(countryConfigs.getLanguages(), countryConfigs.getCurrencyIso());
-        }
-        Print.i(TAG , "code1algolia: GetCountryConfigsHelper "+countryConfigs.isAlgoliaSearchEngine());
-        if(countryConfigs.isAlgoliaSearchEngine()){
-            Print.i(TAG , "code1algolia: setAlgoliaClient");
-            JumiaApplication.INSTANCE.setAlgoliaClient(countryConfigs.getApplicationId(), countryConfigs.getSuggesterApiKey());
         }
 
         CountryPersistentConfigs.writePreferences(JumiaApplication.INSTANCE.getApplicationContext(), countryConfigs);

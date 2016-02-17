@@ -6,12 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
-import com.algolia.search.saas.APIClient;
 import com.facebook.FacebookSdk;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -36,7 +34,6 @@ import com.mobile.newFramework.utils.ImageResolutionHelper;
 import com.mobile.newFramework.utils.SingletonMap;
 import com.mobile.newFramework.utils.cache.WishListCache;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.preferences.PersistentSessionStore;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.CheckVersion;
@@ -74,8 +71,6 @@ public class JumiaApplication extends Application {
     private HashMap<String, String> bannerSkus = new HashMap<>();
     // Search
     public String mSavedSearchTerm;
-    // Algolia Client
-    private APIClient algoliaClient;
 
     /**
      * Create application
@@ -297,18 +292,6 @@ public class JumiaApplication extends Application {
      */
     public String getSearchedTerm() {
         return mSavedSearchTerm;
-    }
-
-
-    public APIClient getAlgoliaClient() {
-        if(algoliaClient == null){
-            algoliaClient = new APIClient(CountryPersistentConfigs.getAlgoliaInfoByKey(getApplicationContext(), Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_APP_ID), CountryPersistentConfigs.getAlgoliaInfoByKey(getApplicationContext(), Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_API_KEY));
-        }
-        return algoliaClient;
-    }
-
-    public void setAlgoliaClient(@NonNull final String appId, @NonNull final String apiKey) {
-        this.algoliaClient = new APIClient(appId, apiKey);
     }
 
 }

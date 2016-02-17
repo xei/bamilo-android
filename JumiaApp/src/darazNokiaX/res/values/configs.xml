@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress XmlUnboundNsPrefix, XmlUnboundNsPrefix -->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+
+    <!-- ##### MERGE: DARAZ BASE AND RELEASE ##### -->
+
+    <!-- ######################################## -->
+    <!-- ############### ADJUST ################# -->
+    <!-- ######################################## -->
+
+    <!-- Organic Tracker : czf3ge -->
+    <!-- Paid Tracker : 1063h0 -->
+
+    <string name="adjust_default_tracker">1063h0</string>
+
+</resources>
