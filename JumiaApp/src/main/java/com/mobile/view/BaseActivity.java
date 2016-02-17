@@ -997,7 +997,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                         break;
                     case Suggestion.SUGGESTION_OTHER:
                         // Show query
-                        showSearchCategory(selectedSuggestion);
+                        showSearchOther(selectedSuggestion);
                         break;
                 }
 
