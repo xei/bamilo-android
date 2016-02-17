@@ -13,6 +13,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -409,14 +410,32 @@ public class MainFragmentActivity extends BaseActivity {
     }
 
     /**
-     * Fragment communication
+     * Fragment communication.<br>
+     * The FragmentManager has some issues to get fragment with the same tag.<br>
+     * @author spereira
      */
     @Override
     public boolean communicateBetweenFragments(String tag, Bundle bundle) {
-        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-        if (fragment != null) {
-            ((BaseFragment) fragment).notifyFragment(bundle);
-            return true;
+        // TODO : Validate if this hack is necessary in future versions (v3.0 - NAFAMZ-16192)
+        // # Hack for fragments that can have duplicated tags.
+        if (TextUtils.equals(tag, FragmentType.CATALOG.toString())) {
+            List<Fragment> fragments = getSupportFragmentManager().getFragments();
+            if (CollectionUtils.isNotEmpty(fragments)) {
+                for (Fragment fragment : fragments) {
+                    if (fragment instanceof CatalogFragment) {
+                        ((BaseFragment) fragment).notifyFragment(bundle);
+                        return true;
+                    }
+                }
+            }
+        }
+        // Right behavior
+        else {
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+            if (fragment != null) {
+                ((BaseFragment) fragment).notifyFragment(bundle);
+                return true;
+            }
         }
         return false;
     }
