@@ -1142,7 +1142,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     /**
      * Execute search
-     * @author sergiopereira
      */
     protected void showSearchOther(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
