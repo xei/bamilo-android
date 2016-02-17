@@ -335,6 +335,11 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
                 Print.d(TAG, "changePasswordEvent: Password changed with success");
                 if (null != getActivity()) {
                     getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.password_changed));
+                    //clear password fields
+                    mChangePasswordForm.clear();
+                    //clear focus
+                    mChangePasswordForm.getContainer().requestFocus();
+                    mUserDataForm.getContainer().requestFocus();
                     showFragmentContentContainer();
                 }
                 break;
