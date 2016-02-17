@@ -83,8 +83,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         try {
             if(TextUtils.isEmpty(mQuery) ) {
                 recentQueries = SearchRecentQueriesTableHelper.getAllRecentQueries();
-            } else {
-                recentQueries = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
             }
         } catch (SQLiteException e) {
             Print.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
