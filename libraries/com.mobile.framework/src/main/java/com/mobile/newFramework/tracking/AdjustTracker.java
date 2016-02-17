@@ -1,16 +1,9 @@
-/**
- * 
- */
 package com.mobile.newFramework.tracking;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,7 +28,6 @@ import com.mobile.newFramework.tracking.gtm.GTMKeys;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.NetworkConnectivity;
 import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
@@ -44,7 +36,6 @@ import org.json.JSONObject;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * @author nunocastro
@@ -75,9 +66,6 @@ public class AdjustTracker {
     public static final String CATEGORY_ID = "categoryId";
     public static final String BRAND_ID = "brand_id";
     public static final String TREE = "tree";
-    public static final String FAVORITES = "favorites";
-    public static final String PRODUCT_SIZE = "size";
-    
     public final static String ADJUST_PREFERENCES = "AdjustPreferences";
     public final static String PURCHASE_NUMBER = "aggregatedNumberOfPurchases";
 
@@ -95,7 +83,6 @@ public class AdjustTracker {
         public static final String CURRENCY_CODE = "currency_code";
         public static final String CURRENCY = "currency";
         public static final String PRICE = "price";
-        public static final String CATEGORY_TREE = "tree";
         public static final String CATEGORY = "category";
         public static final String CATEGORY_ID = "category_id";
         public static final String QUANTITY = "quantity";
@@ -106,24 +93,10 @@ public class AdjustTracker {
         public static final String PRODUCT = "product";
         public static final String KEYWORDS = "keywords";
         public static final String NEW_CUSTOMER = "new_customer";   
-        public static final String AMOUNT_TRANSACTIONS = "amount_transactions";
-        public static final String AMOUNT_SESSIONS = "amount_sessions";
-        public static final String REGION = "region";
-        public static final String CITY = "city";
-        public static final String DISCOUNT = "discount";
         public static final String BRAND = "brand";
         public static final String QUERY = "query";
         public static final String SIZE = "size";
-        public static final String COLOUR = "colour";
-        public static final String TOTAL_WISHLIST = "total_wishlist";
-//        public static final String WISHLIST_CURRENCY_CODE = "currency_code1";
-        public static final String TOTAL_CART = "total_cart";
-//        public static final String CART_CURRENCY_CODE = "cart_currency_code";//
-        public static final String TOTAL_TRANSACTION = "total_transaction"; 
-//        public static final String TRANSACTION_CURRENCY = "transaction_currency";
-//        public static final String VARIATION = "variation";
         public static final String APP_PRE_INSTALL = Constants.INFO_PRE_INSTALL;
-//        public static final String INFO_BRAND = Constants.INFO_BRAND;
         public static final String DEVICE_SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
 
         // New Adjust Facebook Audience keys
@@ -138,20 +111,13 @@ public class AdjustTracker {
     private static final String TABLET = "Tablet";
     private static final String PHONE = "Phone";
 
-    private static final String TRACKING_PREFS = "tracking_prefs";
-    private static final String SESSION_COUNTER = "sessionCounter";
-
     private static boolean isEnabled = false;
     
     private static AdjustTracker sInstance;
     
     public static final String NOT_AVAILABLE = "n.a.";
 
-//    public final static String ENCODING_SCHEME = "UTF-8";
-
     public final static String ADJUST_FIRST_TIME_KEY = "adjust_first_time";
-    
-//    private static double ADJUST_CENT_VALUE = 100d;
 
     private static Context mContext;
     
@@ -182,10 +148,7 @@ public class AdjustTracker {
     
     public AdjustTracker(Context context) {
         super();
-
         isEnabled = context.getResources().getBoolean(R.bool.adjust_enabled);
-
-
         mContext = context;
         if (isEnabled) {
             initAdjustInstance();
@@ -207,13 +170,6 @@ public class AdjustTracker {
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(ADJUST_FIRST_TIME_KEY, false);
         editor.apply();
-
-//        if (firstTimeAdjust) {
-//            isupdate = false;
-//        } else {
-//            isupdate = true;
-//        }
-        
         Print.i(TAG, "ADJUST is APP_LAUNCH " + Adjust.isEnabled());
     }
 
@@ -328,7 +284,6 @@ public class AdjustTracker {
                 }
             }
             ProductComplete prod = bundle.getParcelable(PRODUCT);
-//            parameters.put(AdjustKeys.SKU, prod.getSku());
             eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, prod.getSku());
             eventPDVScreen.addPartnerParameter(AdjustKeys.PRODUCT, prod.getSku());
 
@@ -495,7 +450,6 @@ public class AdjustTracker {
 
             case APP_OPEN:
                 Print.i(TAG, "APP_OPEN:" + Adjust.isEnabled());
-//                //Print.i(TAG, "code1adjust is APP_OPEN " + Adjust.isEnabled());
                 AdjustEvent eventAppOpen = new AdjustEvent(mContext.getString(R.string.adjust_token_launch));
 
                 eventAppOpen.addCallbackParameter(AdjustKeys.APP_VERSION, getAppVersion());
@@ -587,7 +541,6 @@ public class AdjustTracker {
                     int productCount = 0;
                     String countString = "";
                     for (PurchaseItem item : cartItems) {
-//                      AdjustEvent eventTransactionFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_transaction_confirmation));
 
                         json = new JSONObject();
                         try {
@@ -743,28 +696,10 @@ public class AdjustTracker {
 
     }
 
-//    /**
-//     * Just to aind adjust tracking debug, will be removed before going to prod
-//     * @param mp
-//     */
-//    public static void printParameters(Map mp) {
-//        Print.e("Adjust", "init ----------");
-//        Iterator it = mp.entrySet().iterator();
-//        while (it.hasNext()) {
-//            Map.Entry pairs = (Map.Entry)it.next();
-//            Print.e("Adjust", "key=" + pairs.getKey() + " value=" + pairs.getValue());
-//        }
-//    }
-    
-    
-    
     public boolean enabled() {
         return true;
     }
 
-    public void trackTiming(TrackingPage screen, Bundle bundle) {
-
-    }
 
     private AdjustEvent getBaseParameters(AdjustEvent event, Bundle bundle) {
 
@@ -790,45 +725,8 @@ public class AdjustTracker {
         return event;
     }
 
-    private AdjustEvent getFBBaseParameters(AdjustEvent event, Bundle bundle) {
-        //TODO Validate initialization
-        event = getBaseParameters(event, bundle);
-        event.addCallbackParameter(AdjustKeys.DEVICE, getDeviceType(bundle.getBoolean(DEVICE, false)));
-        event.addPartnerParameter(AdjustKeys.DEVICE, getDeviceType(bundle.getBoolean(DEVICE, false)));
-        Address address = getAddressFromLocation();
-        if (null != address) {
-            if(address.getAdminArea() != null && !"".equals(address.getAdminArea())){
-                event.addCallbackParameter(AdjustKeys.REGION, address.getAdminArea());
-                event.addPartnerParameter(AdjustKeys.REGION, address.getAdminArea());
-            }
-            if(address.getLocality() != null && !"".equals(address.getLocality())){
-                event.addCallbackParameter(AdjustKeys.CITY, address.getLocality());
-                event.addPartnerParameter(AdjustKeys.CITY, address.getLocality());
-            }
-        }
-        
-        if (bundle.getParcelable(CUSTOMER) != null) {
-            Customer customer = bundle.getParcelable(CUSTOMER);
-            String gender = getGender(customer);
-            if(!gender.equals(CustomerGender.UNKNOWN.name())){
-                event.addCallbackParameter(AdjustKeys.GENDER, gender);
-                event.addPartnerParameter(AdjustKeys.GENDER, gender);
-            }
-        }
-        event.addCallbackParameter(AdjustKeys.AMOUNT_TRANSACTIONS, getTransactionCount());
-        event.addPartnerParameter(AdjustKeys.AMOUNT_TRANSACTIONS, getTransactionCount());
-        event.addCallbackParameter(AdjustKeys.AMOUNT_SESSIONS, getSessionsCount());
-        event.addPartnerParameter(AdjustKeys.AMOUNT_SESSIONS, getSessionsCount());
-        
-        return event;
-    }
-
     /**
      * sets the SHOP_COUNTRY, APP_VERSION, FB_CONTENT_TYPE, FB_CURRENCY fields for the specific event.
-     *
-     * @param event
-     * @param bundle
-     * @return
      */
 
     private AdjustEvent getFBTrackerBaseParameters(AdjustEvent event, Bundle bundle) {
@@ -885,93 +783,13 @@ public class AdjustTracker {
         return isTablet ? TABLET : PHONE; 
     }
 
-    /**
-     * gets the number of sessions in the device
-     * 
-     * @return String
-     */
-    private String getSessionsCount() {
-        SharedPreferences settings = mContext.getSharedPreferences(TRACKING_PREFS, Context.MODE_PRIVATE);
-        return String.valueOf(settings.getInt(SESSION_COUNTER, 0));
-    }    
-
-    
-    private String getTransactionCount() {
-        SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
-        return String.valueOf(settings.getInt(PURCHASE_NUMBER, 0));
-    }    
-    
     private void increaseTransactionCount() {
         SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
         int purchasesNumber = settings.getInt(PURCHASE_NUMBER, 0);
         purchasesNumber = purchasesNumber +1;
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(PURCHASE_NUMBER, purchasesNumber);
-        editor.commit();
-    }    
-    
-    public Address getAddressFromLocation() {
-        // From geo location
-        LocationManager locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        // From last known geo location
-        return getAddressFromLastKnownLocation(locationManager);
-    }
-    
-    private Address getAddressFromLastKnownLocation(LocationManager locationManager) {
-        Address address = null;
-        try {
-            String bestProvider = getBestLocationProvider(locationManager);
-            if(bestProvider != null) {
-                Location lastKnownLocation = locationManager.getLastKnownLocation(bestProvider);
-                double lat = lastKnownLocation.getLatitude();
-                double lng = lastKnownLocation.getLongitude();
-                address = getAddressFromGeoCode(lat, lng);
-            }
-            
-        } catch (Exception e) {
-            Print.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
-        }
-        
-        return address;
-        
-    }
-    
-    private Address getAddressFromGeoCode(double lat, double lng) {
-        Address geoAddress = null;
-        Geocoder geocoder = new Geocoder(mContext, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(lat, lng, 1);
-            if (0 < addresses.size()) {
-                geoAddress = addresses.get(0);
-            }
-        } catch (Exception e) {
-            Print.w(TAG, "GET ADDRESS EXCEPTION: " + e.getMessage());
-        }
-        
-        return geoAddress;
-    }
-    
-    /**
-     * Get the best location provider GPS or Network 
-     * @param locationManager
-     * @return String
-     * @author sergiopereira
-     */
-    private String getBestLocationProvider(LocationManager locationManager){
-        // Get the best provider
-        String bestProvider = null;
-        // Validate if GPS is enabled
-        boolean isConnected = NetworkConnectivity.isConnected(mContext);
-        if(isConnected && locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            bestProvider = LocationManager.NETWORK_PROVIDER;
-        }    
-        // Validate if GPS disabled, connection and Network provider
-        if(bestProvider == null && isConnected && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            bestProvider = LocationManager.GPS_PROVIDER;
-        }
-        // Return provider
-        Print.i(TAG, "SELECTED PROVIDER: " + bestProvider);
-        return bestProvider;
+        editor.apply();
     }
 
     public static void resetTransactionCount(Context context) {
