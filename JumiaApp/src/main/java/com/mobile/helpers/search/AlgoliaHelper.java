@@ -16,6 +16,7 @@ import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -190,7 +191,7 @@ public class AlgoliaHelper {
                 final String capitalizedName = name.substring(0,1).toUpperCase() + name.substring(1);
                 suggestion.setQuery(query);
                 suggestion.setResult(capitalizedName);
-                suggestion.setTarget(target);
+                suggestion.setTarget(TextUtils.isNotEmpty(target) ? target : name);
                 suggestion.setType(Suggestion.SUGGESTION_SHOP_IN_SHOP);
                 suggestions.add(suggestion);
             }
