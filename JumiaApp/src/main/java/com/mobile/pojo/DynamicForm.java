@@ -1,22 +1,28 @@
 package com.mobile.pojo;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
+import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
@@ -50,7 +56,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
     private final ViewGroup base;
     private final HashMap<String, DynamicFormItem> controls;
-    private final IcsAdapterView.OnItemSelectedListener itemSelected_listener;
     private int lastID = 0x7f096000;
     private Form form;
     private WeakReference<View.OnClickListener> mClickListener;
@@ -60,16 +65,59 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     private WeakReference<BaseFragment> mParentFragment;
 
     /**
-     * The constructor for the DynamicForm
-     * 
-     * @param base
-     *            where the form is to be implemented. This is a ViewGroup
-     *            (Layout) that will hold the form
+     * The constructor for the DynamicForm.<br>
+     * This is a ViewGroup that will hold the form.
      */
-    public DynamicForm(ViewGroup base) {
-        this.base = base;
+    public DynamicForm(@NonNull Context context, @NonNull Form form) {
         this.controls = new LinkedHashMap<>();
-        this.itemSelected_listener = null;
+        this.base = buildBase(context);
+        this.form = form;
+    }
+
+    /**
+     * Create the view group.
+     */
+    @NonNull
+    private ViewGroup buildBase(@NonNull Context context) {
+        LinearLayoutCompat base = new LinearLayoutCompat(context);
+        LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        base.setOrientation(LinearLayoutCompat.VERTICAL);
+        base.setLayoutParams(params);
+        return base;
+    }
+
+    /**
+     * Show vertical dividers.
+     */
+    @NonNull
+    public DynamicForm showDividers(@LinearLayoutCompat.DividerMode int showDividers) {
+        ((LinearLayoutCompat) base).setDividerDrawable(ContextCompat.getDrawable(base.getContext(), R.drawable.divider_horizontal_black_300));
+        ((LinearLayoutCompat) base).setShowDividers(showDividers);
+        return this;
+    }
+
+    /**
+     * Add a margin top.
+     */
+    @NonNull
+    public DynamicForm addMarginTop(@DimenRes int dimension) {
+        int marginTop = base.getContext().getResources().getDimensionPixelSize(dimension);
+        LinearLayoutCompat.LayoutParams params = (LinearLayoutCompat.LayoutParams) base.getLayoutParams();
+        params.setMargins(params.leftMargin, marginTop, params.rightMargin, params.bottomMargin);
+        base.requestLayout();
+        return this;
+    }
+
+    /**
+     * Build the form with each form item.
+     */
+    @NonNull
+    public DynamicForm build() {
+        for (IFormField entry : form.getFields()) {
+            Print.i(TAG, "FORM ITEM KEY:" + entry.getKey() + " TYPE:" + entry.getInputType());
+            this.addControl(DynamicFormItem.newInstance(this, base.getContext(), entry));
+        }
+        return this;
     }
 
     /**
@@ -77,16 +125,12 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * 
      * @param ctrl
      *            An instance of a DynamicFormItem to be added to the form
-     * @param params
-     *            A LayoutParams instance to be used when inserting the control
-     *            into the form
      */
-    public void addControl(DynamicFormItem ctrl, ViewGroup.LayoutParams params) {
+    private void addControl(DynamicFormItem ctrl) {
         View controlView = ctrl.getControl();
         if (null != controlView) {
-            ctrl.setOnItemSelectedListener(itemSelected_listener);
             controls.put(ctrl.getKey(), ctrl);
-            base.addView(ctrl.getControl(), params);
+            base.addView(ctrl.getControl(), base.getLayoutParams());
         }
     }
 
@@ -132,17 +176,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public Form getForm() {
         return form;
-    }
-
-    /**
-     * Sets the local version of the framework form object
-     * 
-     * @param value
-     *            the form object
-     */
-    public DynamicForm setForm(Form value) {
-        form = value;
-        return this;
     }
 
     /**
