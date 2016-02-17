@@ -3,7 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dimen_20dp">
+    android:paddingBottom="@dimen/dimen_20dp"
+    android:paddingEnd="@dimen/dimen_10dp"
+    android:paddingLeft="@dimen/dimen_20dp"
+    android:paddingRight="@dimen/dimen_10dp"
+    android:paddingStart="@dimen/dimen_20dp"
+    android:paddingTop="@dimen/dimen_20dp">
 
     <!-- BUTTON -->
 
@@ -22,8 +27,8 @@
         style="@style/TextList_1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@id/checkout_button_enter"
-        android:layout_toStartOf="@id/checkout_button_enter"
+        android:layout_toLeftOf="@id/button"
+        android:layout_toStartOf="@id/button"
         tools:text="Title" />
 
     <!-- SUB TITLE -->
@@ -34,8 +39,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/title"
-        android:layout_toLeftOf="@id/checkout_button_enter"
-        android:layout_toStartOf="@id/checkout_button_enter"
+        android:layout_toLeftOf="@id/button"
+        android:layout_toStartOf="@id/button"
         android:singleLine="false"
         tools:text="Sub Title" />
 
