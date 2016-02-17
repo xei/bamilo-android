@@ -16,6 +16,7 @@ import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.objects.search.Suggestions;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
@@ -186,10 +187,11 @@ public class AlgoliaHelper {
                 Suggestion suggestion = new Suggestion();
                 JSONObject shop = shopHits.getJSONObject(j);
                 String name = shop.getString(RestConstants.DOMAIN);
+                String target = shop.optString(RestConstants.POINTER);
                 final String capitalizedName = name.substring(0,1).toUpperCase() + name.substring(1);
                 suggestion.setQuery(query);
                 suggestion.setResult(capitalizedName);
-                suggestion.setTarget(name);
+                suggestion.setTarget(TextUtils.isNotEmpty(target) ? target : name);
                 suggestion.setType(Suggestion.SUGGESTION_SHOP_IN_SHOP);
                 suggestions.add(suggestion);
             }
@@ -227,9 +229,10 @@ public class AlgoliaHelper {
                 Suggestion suggestion = new Suggestion();
                 JSONObject category = hits.getJSONObject(i).getJSONObject(RestConstants.LOCALIZABLE_ATTRIBUTES).getJSONObject(ShopSelector.getCountryCode());
                 String name = category.getString(RestConstants.NAME);
+                String target = category.getString(RestConstants.URL_KEY);
                 suggestion.setQuery(searchTerm);
                 suggestion.setResult(name);
-                suggestion.setTarget(name);
+                suggestion.setTarget(target);
                 suggestion.setType(Suggestion.SUGGESTION_CATEGORY);
                 suggestions.add(suggestion);
             }
