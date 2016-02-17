@@ -1,18 +1,12 @@
 package com.mobile.factories;
 
 import android.content.Context;
-import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
-import android.util.LayoutDirection;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.support.v7.widget.LinearLayoutCompat;
 
 import com.mobile.constants.FormConstants;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.IFormField;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
-import com.mobile.pojo.DynamicFormItem;
 import com.mobile.view.R;
 
 /**
@@ -28,11 +22,9 @@ import com.mobile.view.R;
  *
  * 2012/06/15
  *
- * @modified ricardosoares
+ * @modified spereira
  */
 public class FormFactory {
-
-    private final static String TAG = FormFactory.class.getSimpleName();
 
     private static FormFactory sFactory = null;
 
@@ -77,7 +69,7 @@ public class FormFactory {
      *
      * @return An instance of a DynamicForm with the form representation implemented
      */
-    public DynamicForm create(@FormConstants.DynamicFormTypes int formType, Context context, Form form) {
+    public DynamicForm create(@FormConstants.DynamicFormTypes int formType, @NonNull Context context, @NonNull Form form) {
         DynamicForm parent = null;
         switch (formType) {
             case FormConstants.LOGIN_FORM:
@@ -90,96 +82,23 @@ public class FormFactory {
             case FormConstants.ADDRESS_EDIT_FORM:
             case FormConstants.ADDRESS_FORM:
                 form.setType(formType);  // Used to show icons (LOGIN|REGISTER|USER_DATA)
-                parent = createGenericForm(context, form, createParams(context, R.dimen.form_top_margin));
+                parent = new DynamicForm(context, form).addMarginTop(R.dimen.form_top_margin).build();
                 break;
             case FormConstants.NEWSLETTER_UN_SUBSCRIBE_FORM:
             case FormConstants.NEWSLETTER_PREFERENCES_FORM:
                 form.setType(formType);  // Used for dividers
+                parent = new DynamicForm(context, form).showDividers(LinearLayoutCompat.SHOW_DIVIDER_MIDDLE | LinearLayoutCompat.SHOW_DIVIDER_END).build();
+                break;
             case FormConstants.PAYMENT_DETAILS_FORM:
-                parent = createGenericForm(context, form, createParams(context, R.dimen.form_no_top_margin));
+                parent = new DynamicForm(context, form).build();
                 break;
             case FormConstants.NEWSLETTER_FORM:
                 form.hideAsterisks();// Used to hide asterisks because everything is mandatory
-                parent = createNewsletterForm(context, form, createParams(context, R.dimen.form_no_top_margin));
+                parent = new DynamicForm(context, form).build();
                 break;
         }
         return parent;
     }
 
-
-
-    /**
-     * This is used as base to create the given form. Here all the controls are instantiated.
-     *
-     * @param context The context where the form is to be inserted
-     * @param form The definition provided by the framework
-     * @return n instance of a DynamicForm with the form representation implemented
-     */
-    private DynamicForm createGenericForm(Context context, Form form, ViewGroup.LayoutParams ctrlParams) {
-        // Validate
-        if(context == null){
-            return null;
-        }
-        // Root view group
-        LinearLayout viewGroup = new LinearLayout(context);
-        LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        viewGroup.setOrientation(LinearLayout.VERTICAL);
-        viewGroup.setLayoutParams(frmParams);
-        // Create dynamic form
-        DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
-        // Create each form field
-        for (IFormField entry : form.getFields()) {
-            Print.d(TAG, "FORM ITEM KEY: " + entry.getKey() + " TYPE: " + entry.getInputType());
-            DynamicFormItem dynamicFormItem = DynamicFormItem.newInstance(dynamicForm, context, entry);
-            dynamicForm.addControl(dynamicFormItem, ctrlParams);
-        }
-        return dynamicForm;
-    }
-
-
-    /**
-     */
-    private DynamicForm createNewsletterForm(Context context, Form form, ViewGroup.LayoutParams ctrlParams) {
-        // Validate
-        if(context == null){
-            return null;
-        }
-        // Root view group
-        LinearLayout viewGroup = new LinearLayout(context);
-        LinearLayout.LayoutParams frmParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        viewGroup.setOrientation(LinearLayout.VERTICAL);
-        viewGroup.setLayoutParams(frmParams);
-        // Create dynamic form
-        DynamicForm dynamicForm = new DynamicForm(viewGroup).setForm(form);
-
-        // Create each form field
-        for (IFormField frmEntry : form.getFields()) {
-            Print.d(TAG, "createGenericForm: " + frmEntry.getKey() + " inputType = " + frmEntry.getInputType());
-            DynamicFormItem dynamicFormItem = new DynamicFormItem(dynamicForm, context, frmEntry);
-            dynamicForm.addControl(dynamicFormItem, ctrlParams);
-
-        }
-        return dynamicForm;
-    }
-
-    private LinearLayout.LayoutParams createParams(@NonNull Context context, @DimenRes int dimension) {
-        LinearLayout.LayoutParams ctrlParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ctrlParams.setMargins(0, context.getResources().getDimensionPixelSize(dimension), 0, 0);
-        setRtl(ctrlParams, 0, 0);
-        return ctrlParams;
-    }
-
-    /**
-     * Prepare params for RTL.
-     */
-    private void setRtl(LinearLayout.LayoutParams ctrlParams, final int CTRLMARGIN_LEFT, final int CTRLMARGIN_RIGHT){
-        //#RTL
-        int currentApiVersion = android.os.Build.VERSION.SDK_INT;
-        if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1){
-            ctrlParams.setLayoutDirection(LayoutDirection.LOCALE);
-            ctrlParams.setMarginStart(CTRLMARGIN_LEFT);
-            ctrlParams.setMarginEnd(CTRLMARGIN_RIGHT);
-        }
-    }
 
 }
