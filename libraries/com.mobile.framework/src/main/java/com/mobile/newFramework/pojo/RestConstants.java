@@ -327,4 +327,5 @@ public class RestConstants {
     public static final String SUGGESTION_QUERY = "query";
     public static final String QUERIES = "queries";
     public static final String SUB_STRING = "sub_string";
+    public static final String POINTER = "pointer";
 }

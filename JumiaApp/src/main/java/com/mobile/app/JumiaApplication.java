@@ -17,6 +17,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.DarwinDatabaseHelper;
+import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.configs.CountryObject;
@@ -231,6 +232,7 @@ public class JumiaApplication extends Application {
         WishListCache.clean();
         AdjustTracker.resetTransactionCount(getApplicationContext());
         clearBannerFlowSkus();
+        SearchRecentQueriesTableHelper.deleteAllRecentQueries();
     }
 
     public void cleanAllPreviousLanguageValues(){
