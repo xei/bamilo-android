@@ -19,7 +19,6 @@ import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
@@ -110,7 +109,7 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+public abstract class BaseActivity extends DebugActivity implements TabLayout.OnTabSelectedListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -353,6 +352,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         setTitle(titleResId);
         // For tracking
         mLaunchTime = System.currentTimeMillis();
+        //
+        onCreatedActivity();
     }
 
     /**

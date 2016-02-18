@@ -290,6 +290,15 @@ dependencies {
     // #LEAK :: https://github.com/square/leakcanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
     liveCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    // #SCAPEL :: https://github.com/JakeWharton/scalpel
+    debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
+    // #DEBUG DRAWER :: https://github.com/palaima/DebugDrawer
+    debugCompile 'io.palaima.debugdrawer:debugdrawer:0.7.0'
+    debugCompile 'io.palaima.debugdrawer:debugdrawer-base:0.7.0'
+    debugCompile 'io.palaima.debugdrawer:debugdrawer-commons:0.7.0'
+    debugCompile 'io.palaima.debugdrawer:debugdrawer-actions:0.7.0'
+    debugCompile 'io.palaima.debugdrawer:debugdrawer-scalpel:0.7.0'
+
     /** ############### WEAR APP ############### **/
     // ### JUMIA WEAR APP
     jumiaLiveWearApp project(path:':JumiaWear', configuration: 'jumiaLive')
