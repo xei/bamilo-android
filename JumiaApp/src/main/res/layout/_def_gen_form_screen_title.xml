@@ -12,7 +12,6 @@
         style="@style/TextList_1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@id/checkout_button_enter"
         tools:text="Title" />
 
     <!-- SUB TITLE -->
@@ -23,7 +22,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/title"
-        android:layout_toLeftOf="@id/checkout_button_enter"
         android:singleLine="false"
         tools:text="Sub title" />
 

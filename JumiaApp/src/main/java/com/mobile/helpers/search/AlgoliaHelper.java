@@ -112,7 +112,8 @@ public class AlgoliaHelper {
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
-                mSuggestionsStruct = new SuggestionsStruct(suggestions);
+                mSuggestionsStruct = new SuggestionsStruct();
+                mSuggestionsStruct.setRecentSuggestions(suggestions);
                 mSuggestionsStruct.setSearchParam(searchQuery);
                 BaseResponse baseResponse = new BaseResponse();
                 baseResponse.getMetadata().setData(mSuggestionsStruct);
