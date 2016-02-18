@@ -249,6 +249,8 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
             Print.w("RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
+        // Super
+        super.handleSuccessEvent(baseResponse);
         // Validate type
         Print.i("ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
@@ -259,8 +261,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
                 showDynamicForm(mNewslettersForm);
                 break;
             case SUBMIT_FORM:
-                // Show toast
-                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.newsletter_saved_message));
                 // Goto back
                 getBaseActivity().onBackPressed();
                 break;
@@ -286,11 +286,10 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
             Print.d("BASE FRAGMENT HANDLE ERROR EVENT");
             return;
         }
-
+        // Show container
         showFragmentContentContainer();
-
-        int errorCode = baseResponse.getError().getCode();
-        Print.d("ON ERROR EVENT: " + eventType + " " + errorCode);
+        // Validate type
+        Print.i("ON ERROR EVENT: " + eventType);
         switch (eventType) {
         case GET_NEWSLETTER_PREFERENCES_FORM_EVENT:
             goBackWarningUser();

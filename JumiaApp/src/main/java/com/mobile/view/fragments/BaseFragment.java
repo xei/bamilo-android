@@ -844,6 +844,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             case ADD_PRODUCT_TO_WISH_LIST:
             case ADD_VOUCHER:
             case REMOVE_VOUCHER:
+            case SUBMIT_FORM:
                 handleSuccessTaskEvent(baseResponse.getSuccessMessage(), baseResponse.getEventTask(), eventType);
                 return true;
             default:
@@ -965,6 +966,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
                 case EDIT_ADDRESS_EVENT:
                 case SET_MULTI_STEP_SHIPPING:
                 case SET_MULTI_STEP_PAYMENT:
+                case SUBMIT_FORM:
                     // If the error message is empty used the showFormValidateMessages(form)
                     if(TextUtils.isEmpty(errorMessage)) break;
                 // Case other tasks
