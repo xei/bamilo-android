@@ -308,8 +308,8 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
      * @author sergiopereira
      */
     private void goBackWarningUser() {
-        getBaseActivity().onBackPressed();
         getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
+        getBaseActivity().onBackPressed();
     }
 
 }
