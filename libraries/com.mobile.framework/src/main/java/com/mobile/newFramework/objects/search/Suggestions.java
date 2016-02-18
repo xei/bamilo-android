@@ -22,7 +22,6 @@ public class Suggestions extends ArrayList<Suggestion> implements IJSONSerializa
 	public final static String TAG = Suggestions.class.getSimpleName();
 
 	private static final int FIRST_POSITION = 0;
-	private static final int SECOND_POSITION = 1;
 
 	public Suggestions(){}
 
@@ -35,16 +34,29 @@ public class Suggestions extends ArrayList<Suggestion> implements IJSONSerializa
 	}
 
 	public void setSuggestions(List<Suggestion> suggestions){
+		int position = FIRST_POSITION;
 		for(Suggestion suggestion : suggestions){
 			// Order categories after ShopInShop and before Products
 			if(suggestion.getType() == Suggestion.SUGGESTION_CATEGORY && size() > FIRST_POSITION && get(FIRST_POSITION).getType() == Suggestion.SUGGESTION_SHOP_IN_SHOP){
-				add(SECOND_POSITION,suggestion);
+                position += 1;
+                add(position,suggestion);
 			} else if(suggestion.getType() == Suggestion.SUGGESTION_CATEGORY && size() > FIRST_POSITION){
-				add(FIRST_POSITION,suggestion);
+				add(position,suggestion);
+                position += 1;
 			} else {
 				add(suggestion);
 			}
 
+		}
+	}
+
+    /**
+     * Keep the order of the suggestions retrieved by database recently searched.
+     * @param suggestions
+     */
+    public void setRecentSuggestions(List<Suggestion> suggestions){
+		for(Suggestion suggestion : suggestions){
+            add(suggestion);
 		}
 	}
 	@Override

@@ -997,7 +997,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                         break;
                     case Suggestion.SUGGESTION_OTHER:
                         // Show query
-                        showSearchCategory(selectedSuggestion);
+                        showSearchOther(selectedSuggestion);
                         break;
                 }
 
@@ -1056,7 +1056,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     // Save query
                     GetSearchSuggestionsHelper.saveSearchQuery(suggestion);
                     // Show query
-                    showSearchCategory(suggestion);
+                    showSearchOther(suggestion);
                     return true;
                 }
                 return false;
@@ -1125,7 +1125,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // Tracking
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
         @TargetLink.Type String link = suggestion.getTarget();
-        Print.i(TAG, "code1link : goToCatalog : "+link);
         // Parse target link
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
         if(!result) {
@@ -1133,10 +1132,28 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.DATA, null);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
-            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getTarget());
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getQuery());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
             onSwitchFragment(FragmentType.CATALOG_CATEGORY, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
+
+    }
+
+    /**
+     * Execute search
+     */
+    protected void showSearchOther(final Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
+        // Tracking
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+
+        Bundle bundle = new Bundle();
+        bundle.putString(ConstantsIntentExtra.DATA, null);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
+        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getResult());
+        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+        onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
 
     }
 

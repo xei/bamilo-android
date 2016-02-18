@@ -83,8 +83,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         try {
             if(TextUtils.isEmpty(mQuery) ) {
                 recentQueries = SearchRecentQueriesTableHelper.getAllRecentQueries();
-            } else {
-                recentQueries = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
             }
         } catch (SQLiteException e) {
             Print.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
@@ -95,7 +93,8 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         Suggestions searchSuggestions = (Suggestions) baseResponse.getContentData();
         //add the recent searches in database to the suggestions
         CollectionUtils.addAll(searchSuggestions, recentQueries, 0);
-        SuggestionsStruct suggestionsStruct = new SuggestionsStruct(searchSuggestions);
+        SuggestionsStruct suggestionsStruct = new SuggestionsStruct();
+        suggestionsStruct.setRecentSuggestions(searchSuggestions);
         suggestionsStruct.setSearchParam(mQuery);
         baseResponse.getMetadata().setData(suggestionsStruct);
 
@@ -122,7 +121,8 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         }
         Print.d(TAG, "SUGGESTION: " + suggestions.size());
 
-        SuggestionsStruct suggestionsStruct = new SuggestionsStruct(suggestions);
+        SuggestionsStruct suggestionsStruct = new SuggestionsStruct();
+        suggestionsStruct.setRecentSuggestions(suggestions);
         suggestionsStruct.setSearchParam(mQuery);
         baseResponse.getMetadata().setData(suggestionsStruct);
     }
@@ -159,7 +159,8 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
         BaseResponse baseResponse = new BaseResponse();
         super.postSuccess(baseResponse);
-        SuggestionsStruct suggestionsStruct = new SuggestionsStruct(suggestions);
+        SuggestionsStruct suggestionsStruct = new SuggestionsStruct();
+        suggestionsStruct.setRecentSuggestions(suggestions);
         suggestionsStruct.setSearchParam(mQuery);
         baseResponse.getMetadata().setData(suggestionsStruct);
         requester.onRequestComplete(baseResponse);

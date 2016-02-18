@@ -25,7 +25,8 @@ public class SearchSuggestionClient {
         if(TextUtils.isEmpty(searchTerm)) {
             try {
                 ArrayList<Suggestion> suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
-                SuggestionsStruct suggestionsStruct = new SuggestionsStruct(suggestions);
+                SuggestionsStruct suggestionsStruct = new SuggestionsStruct();
+                suggestionsStruct.setRecentSuggestions(suggestions);
                 suggestionsStruct.setSearchParam(searchTerm);
                 BaseResponse baseResponse = new BaseResponse();
                 baseResponse.getMetadata().setData(suggestionsStruct);
