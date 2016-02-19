@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
@@ -40,10 +39,6 @@ import java.util.EnumSet;
 public class MyAccountUserDataFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = MyAccountUserDataFragment.class.getSimpleName();
-
-    private static final String CURRENT_PASS = "current_password";
-
-    private static final String PASS = "password";
 
     private LinearLayout mUserDataFormContainer;
 
@@ -316,30 +311,18 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
 
     /**
-     * Reset change password fields to the initial state (cleaned, eye unchecked and unfocused)
+     * Reset change password form to the initial state (cleaned, eye unchecked and unfocused)
      * */
-    private void resetChangePasswordFields(){
+    private void resetChangePasswordForm(){
 
-        if(mFormSavedState != null){
-            mFormSavedState.remove(CURRENT_PASS);
-            mFormSavedState.remove(PASS);
-            mChangePasswordFormContainer.removeAllViews();
-            mChangePasswordForm.loadSaveFormState(mFormSavedState);
-            mChangePasswordFormContainer.addView(mChangePasswordForm.getContainer());
-
-        }else{
-            //reset eye state (checked false)
-            ((CheckBox) mChangePasswordForm.getItemByKey(CURRENT_PASS).getControl().findViewById(R.id.text_field_password_check_box))
-                    .setChecked(false);
-            ((CheckBox) mChangePasswordForm.getItemByKey(PASS).getControl().findViewById(R.id.text_field_password_check_box))
-                    .setChecked(false);
-            mChangePasswordForm.reset();
-        }
-
-        mChangePasswordForm.getContainer().requestFocus();
-
+        mChangePasswordForm.reset();
+        mChangePasswordFormContainer.removeAllViews();
+        mChangePasswordFormContainer.addView(mChangePasswordForm.getContainer());
+        mChangePasswordFormContainer.requestFocus();
 
     }
+
+
 
 
 
@@ -370,8 +353,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
                 Print.d(TAG, "changePasswordEvent: Password changed with success");
                 if (null != getActivity()) {
                     getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.password_changed));
-                    //clean password fields
-                    resetChangePasswordFields();
+                    //reset form
+                    resetChangePasswordForm();
                     mUserDataForm.getContainer().requestFocus();
                     showFragmentContentContainer();
                 }
