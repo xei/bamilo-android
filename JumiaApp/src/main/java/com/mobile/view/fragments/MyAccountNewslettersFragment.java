@@ -286,11 +286,10 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
             Print.d("BASE FRAGMENT HANDLE ERROR EVENT");
             return;
         }
-
+        // Show container
         showFragmentContentContainer();
-
-        int errorCode = baseResponse.getError().getCode();
-        Print.d("ON ERROR EVENT: " + eventType + " " + errorCode);
+        // Validate type
+        Print.i("ON ERROR EVENT: " + eventType);
         switch (eventType) {
         case GET_NEWSLETTER_PREFERENCES_FORM_EVENT:
             goBackWarningUser();

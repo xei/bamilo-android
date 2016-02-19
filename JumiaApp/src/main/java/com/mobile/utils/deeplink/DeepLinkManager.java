@@ -51,7 +51,7 @@ public class DeepLinkManager {
     public static final int FROM_URI = 1;
     public static final int FROM_UNKNOWN = -1;
     private static final int CC_SIZE = 2;
-    private static final int MIN_SEGMENTS = 3;
+    private static final int CATALOG_MIN_SEGMENTS = 3;
     private static final String DEFAULT_TAG = "default";
     private static final String CATALOG_BRAND_TAG = "b";
     private static final String CATALOG_TAG = "c";
@@ -473,7 +473,7 @@ public class DeepLinkManager {
     private static Bundle processCatalogLink(CatalogSort page, List<String> segments) {
         // Create bundle
         Bundle bundle = new Bundle();
-        if (segments.size() >= MIN_SEGMENTS) {
+        if (segments.size() >= CATALOG_MIN_SEGMENTS) {
             String catalogUrlKey = CATEGORY_KEY + segments.get(PATH_DATA_POS);
             Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
             ContentValues deepLinkValues = new ContentValues();
@@ -547,17 +547,14 @@ public class DeepLinkManager {
      *
      * @return true or false if there is a valid country from deeplink
      */
-    private static boolean checkDeepLink(Context context, Intent intent, Handler callback){
-        Print.e(TAG, "checkDeepLink:");
+    private static boolean checkDeepLink(Context context, Intent intent, Handler callback) {
         Bundle mDeepLinkBundle = DeepLinkManager.hasDeepLink(intent);
-        Print.e(TAG, "checkDeepLink:"+mDeepLinkBundle);
-        if(mDeepLinkBundle != null){
+        if (mDeepLinkBundle != null) {
             String countryCode = mDeepLinkBundle.getString(DeepLinkManager.COUNTRY_TAG);
-            Print.e(TAG, "countryCode:"+countryCode);
-            if(!TextUtils.isEmpty(countryCode)){
+            if (!TextUtils.isEmpty(countryCode)) {
                 LocationHelper.getInstance().initializeLocationHelper(context, callback);
-                if(LocationHelper.getInstance().isCountryAvailable(countryCode)){
-                    Print.i(TAG, "MATCH COUNTRY FROM DEEPLINK: " + countryCode);
+                if (LocationHelper.getInstance().isCountryAvailable(countryCode)) {
+                    Print.i(TAG, "MATCH COUNTRY FROM DEEP LINK: " + countryCode);
                     LocationHelper.getInstance().sendInitializeMessage();
                     return true;
                 }
@@ -565,9 +562,8 @@ public class DeepLinkManager {
             }
             return false;
         } else {
-          return false;
+            return false;
         }
-
     }
 
     /**
