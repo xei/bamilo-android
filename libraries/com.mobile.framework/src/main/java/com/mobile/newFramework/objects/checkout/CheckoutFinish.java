@@ -6,10 +6,16 @@ import android.os.Parcelable;
 import com.mobile.newFramework.forms.PaymentMethodForm;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.RichRelevance;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Class that represents the checkout finish step.
@@ -21,6 +27,10 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
     private String mPaymentUrl;
 
     private String mOrderNumber;
+
+    private RichRelevance mRichRelevance;
+
+    private ArrayList<ProductRegular> mRelatedProducts;
 
     /**
      * Empty constructor
@@ -43,6 +53,26 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
         mOrderNumber = jsonObject.getString(RestConstants.ORDER_NR);
         // Get payment url
         mPaymentUrl = null;
+
+        // Related products
+        JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.RELATED_PRODUCTS);
+        if (relatedProductsJsonArray != null && relatedProductsJsonArray.length() > 0) {
+            mRelatedProducts = new ArrayList<>();
+            for (int i = 0; i < relatedProductsJsonArray.length(); i++) {
+                ProductRegular relatedProduct = new ProductRegular();
+                if (relatedProduct.initialize(relatedProductsJsonArray.optJSONObject(i))) {
+                    mRelatedProducts.add(relatedProduct);
+                }
+            }
+        }
+
+        // Recommended products -> Rich Relevance
+        JSONObject recommendedProductObject = jsonObject.optJSONObject(RestConstants.RECOMMENDED_PRODUCTS);
+        if (recommendedProductObject != null) {
+            mRichRelevance = new RichRelevance();
+            mRichRelevance.initialize(recommendedProductObject);
+        }
+
         // Validate payment content
         if (jsonObject.has(RestConstants.PAYMENT)) {
             // Form
@@ -61,6 +91,8 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
                 }
             }
         }
+
+
         return true;
     }
 
@@ -70,6 +102,22 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
 
     public PaymentMethodForm getPaymentMethodForm() {
         return mPaymentMethodForm;
+    }
+
+    public ArrayList<ProductRegular> getRelatedProducts() {
+        // if Rich relevance is active and have products send those products
+        if(mRichRelevance != null && CollectionUtils.isNotEmpty(mRichRelevance.getRichRelevanceProducts()))
+            return mRichRelevance.getRichRelevanceProducts();
+        else
+            return mRelatedProducts;
+    }
+
+    public RichRelevance getRichRelevance() {
+        return mRichRelevance;
+    }
+
+    public void setRichRelevance(RichRelevance richRelevance) {
+        mRichRelevance = richRelevance;
     }
 
     /*
@@ -97,13 +145,16 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(mPaymentMethodForm);
         dest.writeString(mPaymentUrl);
-
+        dest.writeList(mRelatedProducts);
+        dest.writeParcelable(mRichRelevance, flags);
     }
 
     private CheckoutFinish(Parcel in) {
         mPaymentMethodForm = (PaymentMethodForm) in.readValue(PaymentMethodForm.class.getClassLoader());
         mPaymentUrl = in.readString();
-
+        mRelatedProducts = new ArrayList<>();
+        in.readList(mRelatedProducts, ProductRegular.class.getClassLoader());
+        mRichRelevance = in.readParcelable(RichRelevance.class.getClassLoader());
     }
 
     public static final Creator<CheckoutFinish> CREATOR = new Creator<CheckoutFinish>() {

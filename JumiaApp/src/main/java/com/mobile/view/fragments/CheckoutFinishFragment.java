@@ -25,10 +25,12 @@ import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutFinish;
+import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -664,6 +666,11 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         if (mPaymentSubmitted.isExternalPayment()) {
             Bundle bundle = new Bundle();
             bundle.putParcelable(ConstantsIntentExtra.DATA, mCheckoutFinish.getPaymentMethodForm());
+            if(mCheckoutFinish.getRichRelevance() != null) {
+                bundle.putParcelable(RestConstants.RECOMMENDED_PRODUCTS, mCheckoutFinish.getRichRelevance());
+            } else if(mCheckoutFinish.getRelatedProducts() != null){
+                bundle.putParcelableArrayList(RestConstants.RELATED_PRODUCTS, mCheckoutFinish.getRelatedProducts());
+            }
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
         // Case other
@@ -674,6 +681,17 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             bundle.putString(RestConstants.TRANSACTION_TAX, String.valueOf(mOrderFinish.getVatValue()));
             bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
             bundle.putDouble(RestConstants.ORDER_GRAND_TOTAL, mOrderFinish.getPriceForTracking());
+
+            if(mCheckoutFinish.getRichRelevance() == null && CollectionUtils.isNotEmpty(mCheckoutFinish.getRelatedProducts())) {
+                final RichRelevance richRelevance = new RichRelevance();
+                richRelevance.setRichRelevanceProducts(mCheckoutFinish.getRelatedProducts());
+                mCheckoutFinish.setRichRelevance(richRelevance);
+            }
+
+            if(mCheckoutFinish.getRichRelevance() != null){
+                bundle.putParcelable(RestConstants.RECOMMENDED_PRODUCTS, mCheckoutFinish.getRichRelevance());
+            }
+
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }
