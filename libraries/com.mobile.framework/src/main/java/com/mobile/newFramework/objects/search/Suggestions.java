@@ -49,6 +49,16 @@ public class Suggestions extends ArrayList<Suggestion> implements IJSONSerializa
 
 		}
 	}
+
+    /**
+     * Keep the order of the suggestions retrieved by database recently searched.
+     * @param suggestions
+     */
+    public void setRecentSuggestions(List<Suggestion> suggestions){
+		for(Suggestion suggestion : suggestions){
+            add(suggestion);
+		}
+	}
 	@Override
 	public int getRequiredJson() {
 		return RequiredJson.METADATA;

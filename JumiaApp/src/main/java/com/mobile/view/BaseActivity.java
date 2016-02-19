@@ -1055,7 +1055,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     // Save query
                     GetSearchSuggestionsHelper.saveSearchQuery(suggestion);
                     // Show query
-                    showSearchCategory(suggestion);
+                    showSearchOther(suggestion);
                     return true;
                 }
                 return false;

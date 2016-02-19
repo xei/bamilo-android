@@ -12,8 +12,8 @@
         style="@style/AigButton.Text.Blue"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:text="@string/active_label"
-        android:paddingLeft="0dp" />
+        android:paddingLeft="0dp"
+        android:text="@string/active_label" />
 
     <!-- TITLE -->
 
@@ -21,7 +21,7 @@
         android:id="@+id/title"
         style="@style/TextList_1"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@id/checkout_button_enter"
+        android:layout_toRightOf="@id/button"
         tools:text="Title" />
 
     <!-- SUB TITLE -->
@@ -31,7 +31,7 @@
         style="@style/TextBody_1"
         android:layout_alignParentRight="true"
         android:layout_below="@id/title"
-        android:layout_toRightOf="@id/checkout_button_enter"
+        android:layout_toRightOf="@id/button"
         android:singleLine="false"
         tools:text="Sub Title" />
 

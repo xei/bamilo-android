@@ -308,6 +308,24 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         triggerContentEvent(new GetUserDataFormHelper(), null, this);
     }
 
+
+
+    /**
+     * Reset change password form to the initial state (cleaned, eye unchecked and unfocused)
+     * */
+    private void resetChangePasswordForm(){
+
+        mChangePasswordForm.reset();
+        mChangePasswordFormContainer.removeAllViews();
+        mChangePasswordFormContainer.addView(mChangePasswordForm.getContainer());
+        mChangePasswordFormContainer.requestFocus();
+
+    }
+
+
+
+
+
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
@@ -335,10 +353,8 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
                 Print.d(TAG, "changePasswordEvent: Password changed with success");
                 if (null != getActivity()) {
                     getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.password_changed));
-                    //clear password fields
-                    mChangePasswordForm.clear();
-                    //clear focus
-                    mChangePasswordForm.getContainer().requestFocus();
+                    //reset form
+                    resetChangePasswordForm();
                     mUserDataForm.getContainer().requestFocus();
                     showFragmentContentContainer();
                 }
