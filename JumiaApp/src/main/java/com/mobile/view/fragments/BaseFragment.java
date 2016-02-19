@@ -446,7 +446,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Receive an update from other fragment
      */
-    public void notifyFragment(Bundle bundle) {
+    public void notifyFragment(@Nullable Bundle bundle) {
         //...
     }
 
