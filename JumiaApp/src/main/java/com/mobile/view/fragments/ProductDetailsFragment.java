@@ -830,8 +830,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void onClickGlobalDeliveryLinkButton() {
         Log.i(TAG, "ON CLICK GLOBAL SELLER");
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.KEY, GetStaticPageHelper.INTERNATIONAL_PRODUCT_POLICY_PAGE);
-        bundle.putString(RestConstants.TITLE, getString(R.string.policy));
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, GetStaticPageHelper.INTERNATIONAL_PRODUCT_POLICY_PAGE);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, getString(R.string.policy));
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -1083,7 +1083,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
         mRelatedRichRelevanceHash = mProduct.getRelatedProducts().get(position).getRichRelevanceClickHash();
-
         new TargetLink(getWeakBaseActivity(), target)
                 .addAppendListener(this)
                 .retainBackStackEntries()

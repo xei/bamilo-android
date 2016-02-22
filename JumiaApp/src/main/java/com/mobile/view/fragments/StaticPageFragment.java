@@ -10,7 +10,7 @@ import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -48,7 +48,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.TERMS,
                 R.layout.static_page_fragment,
-                0,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 NO_ADJUST_CONTENT);
     }
     
@@ -89,7 +89,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get title
-        String title = mStaticPageBundle.getString(RestConstants.TITLE);
+        String title = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
         title = TextUtils.isNotEmpty(title) ? title : getString(R.string.policy);
         // Title AB
         getBaseActivity().setActionBarTitle(title);
@@ -102,7 +102,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     }
 
     private void triggerStaticPage() {
-        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mStaticPageBundle.getString(RestConstants.KEY)), this);
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_ID)), this);
     }
 
     /*

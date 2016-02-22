@@ -974,7 +974,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
                 // Get text suggestion
                 String text = selectedSuggestion.getResult();
-                Print.i(TAG, "code1algoliadd onItemClick: "+text);
                 //Save searched text
                 JumiaApplication.INSTANCE.setSearchedTerm(text);
                 mSearchAutoComplete.dismissDropDown();
@@ -1125,7 +1124,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
         @TargetLink.Type String link = suggestion.getTarget();
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(suggestion.getResult())
+                .run();
         if(!result) {
             // Data
             Bundle bundle = new Bundle();
@@ -1166,7 +1167,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
         @TargetLink.Type String link = suggestion.getTarget();
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(suggestion.getResult())
+                .run();
         if(!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
@@ -1185,7 +1188,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
         @TargetLink.Type String link = suggestion.getTarget();
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        boolean result = new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(suggestion.getResult())
+                .run();
         if(!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());

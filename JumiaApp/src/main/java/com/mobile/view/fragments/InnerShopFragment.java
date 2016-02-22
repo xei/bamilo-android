@@ -92,16 +92,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         // Get data from arguments
-        Bundle arguments = getArguments();
+        Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mPageId = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
-            Print.i(TAG, "RECEIVED DATA: " + mTitle + " " + mPageId);
-        }
-        // Get data from saved instance
-        if (savedInstanceState != null) {
-            mTitle = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mPageId = savedInstanceState.getString(ConstantsIntentExtra.CONTENT_ID);
+            Print.i(TAG, "LOAD DATA: " + mTitle + " " + mPageId);
         }
     }
 
@@ -353,14 +348,12 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      */
     private void processDeepLink(String link) {
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link)
+        new TargetLink(getWeakBaseActivity(), link)
                 .addTitle(mTitle)
                 .setOrigin(mGroupType)
                 .retainBackStackEntries()
+                .enableWarningErrorMessage()
                 .run();
-        if(!result) {
-            showUnexpectedErrorWarning();
-        }
     }
 
     /**

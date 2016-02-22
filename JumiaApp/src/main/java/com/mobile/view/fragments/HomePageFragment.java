@@ -389,17 +389,14 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             mRichRelevanceHash = "";
         }
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link)
+        new TargetLink(getWeakBaseActivity(), link)
                 .addTitle(title)
                 .setOrigin(origin)
                 .addAppendListener(this)
                 .addCampaignListener(this)
                 .retainBackStackEntries()
+                .enableWarningErrorMessage()
                 .run();
-        // Validate result
-        if(!result) {
-            showUnexpectedErrorWarning();
-        }
     }
 
     /**
