@@ -64,7 +64,6 @@
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginLeft="@dimen/margin_60px"
                 android:layout_marginRight="@dimen/margin_60px"
-                android:textAllCaps="true"
                 android:text="@string/my_order_details_label"
                 />
 
