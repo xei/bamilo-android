@@ -49,14 +49,23 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
          *
          * @param view -  the view holder
          */
-        public ViewHolder(View view) {
+        public ViewHolder(View view, boolean isTeaser) {
             super(view);
-            mName = (TextView) view.findViewById(R.id.header_text);
-            mImage = (ImageView) view.findViewById(R.id.image_view);
-            mProgress = view.findViewById(R.id.image_loading_progress);
-            mBrand = (TextView) view.findViewById(R.id.item_brand);
-            mPrice = (TextView) view.findViewById(R.id.item_price);
-            mDiscount = (TextView) view.findViewById(R.id.item_discount);
+            if(isTeaser){
+                mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
+                mProgress = view.findViewById(R.id.home_teaser_item_progress);
+                mBrand = (TextView) view.findViewById(R.id.home_teaser_top_sellers_brand);
+                mName = (TextView) view.findViewById(R.id.home_teaser_top_sellers_name);
+                mPrice = (TextView) view.findViewById(R.id.home_teaser_top_sellers_price);
+            } else {
+                mName = (TextView) view.findViewById(R.id.header_text);
+                mImage = (ImageView) view.findViewById(R.id.image_view);
+                mProgress = view.findViewById(R.id.image_loading_progress);
+                mBrand = (TextView) view.findViewById(R.id.item_brand);
+                mPrice = (TextView) view.findViewById(R.id.item_price);
+                mDiscount = (TextView) view.findViewById(R.id.item_discount);
+            }
+
         }
     }
 
@@ -77,7 +86,7 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
     @Override
     public RichRelevanceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(mLayoutId, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(mLayoutId, parent, false), mIsTeaserRR);
     }
 
     /*
