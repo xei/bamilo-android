@@ -24,10 +24,12 @@ public class DebugApplication extends JumiaApplication {
      */
     @Override
     public void onCreate() {
-        // #DEBUG Install debug tools only for debug version
-        DebugTools.initialize(this);
+        // #DEBUG Install debug tools pre on create application
+        DebugTools.onCreateApplication(this);
         // Call super
         super.onCreate();
+        // #DEBUG Install debug tools pos on create application
+        DebugTools.onApplicationCreated(this);
     }
 
 }

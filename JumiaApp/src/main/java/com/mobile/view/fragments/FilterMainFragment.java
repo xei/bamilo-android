@@ -16,7 +16,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogColorFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilter;
@@ -24,6 +24,7 @@ import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogRatingFilter;
 import com.mobile.newFramework.objects.catalog.filters.FilterOptionInterface;
 import com.mobile.newFramework.objects.catalog.filters.FilterSelectionController;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -75,6 +76,9 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     private  TextView mTxFilterTitle;
 
+    /**
+     * Empty constructor
+     */
     public FilterMainFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.FILTERS,
@@ -94,20 +98,20 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         Bundle bundle = getArguments();
-
-        if(savedInstanceState != null){
+        // Saved state
+        if (savedInstanceState != null) {
             mFilters = savedInstanceState.getParcelableArrayList(FILTER_TAG);
             currentFilterPosition = savedInstanceState.getInt(FILTER_POSITION_TAG);
             Parcelable[] filterOptions = savedInstanceState.getParcelableArray(INITIAL_FILTER_VALUES);
-            filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[])filterOptions) : new FilterSelectionController(mFilters);
-
-        } else {
+            filterSelectionController = filterOptions instanceof FilterOptionInterface[] ? new FilterSelectionController(mFilters, (FilterOptionInterface[]) filterOptions) : new FilterSelectionController(mFilters);
+        }
+        // Received arguments
+        else {
             mFilters = bundle.getParcelableArrayList(FILTER_TAG);
-            currentFilterPosition = 0;
+            currentFilterPosition = IntConstants.DEFAULT_POSITION;
             filterSelectionController = new FilterSelectionController(mFilters);
         }
-
-
+        //
         toCancelFilters = true;
     }
 
@@ -117,19 +121,15 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         Print.i(TAG, "ON VIEW CREATED");
         filtersKey = (ListView)view.findViewById(R.id.filters_key);
         mTxFilterTitle = (TextView) view.findViewById(R.id.filter_title);
-
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
-
         filtersKey.setSelection(currentFilterPosition);
         loadFilterFragment(currentFilterPosition);
-
         filtersKey.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 onFiltersKeyItemClick(position);
             }
         });
-
         view.findViewById(R.id.dialog_filter_button_cancel).setOnClickListener(this);
         view.findViewById(R.id.dialog_filter_button_done).setOnClickListener(this);
     }
@@ -139,35 +139,36 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         Print.i(TAG, "ON SAVE INSTANCE");
         outState.putParcelableArray(INITIAL_FILTER_VALUES, filterSelectionController.getInitialValues());
         outState.putParcelableArrayList(FILTER_TAG, filterSelectionController.getCatalogFilters());
-        outState.putInt(FILTER_POSITION_TAG,currentFilterPosition);
+        outState.putInt(FILTER_POSITION_TAG, currentFilterPosition);
         super.onSaveInstanceState(outState);
     }
 
     private void onFiltersKeyItemClick(int position) {
-
         if(currentFilterPosition != position) {
             loadFilterFragment(position);
         }
     }
 
-    private void loadFilterFragment(int position){
+    private void loadFilterFragment(int position) {
         final CatalogFilter catalogFilter = mFilters.get(position);
         Bundle bundle = new Bundle();
         bundle.putParcelable(FILTER_TAG, catalogFilter);
 
         currentFragment = null;
-
+        // Case rating
         if (catalogFilter instanceof CatalogRatingFilter) {
             currentFragment = FilterRatingFragment.newInstance(bundle);
-        } else if (catalogFilter instanceof CatalogCheckFilter) {
-
+        }
+        // Case generic check box filter
+        else if (catalogFilter instanceof CatalogCheckFilter) {
             if (catalogFilter.getOptionType() == CatalogColorFilterOption.class) {
                 currentFragment = FilterColorFragment.newInstance(bundle);
             } else {
                 currentFragment = FilterCheckFragment.newInstance(bundle);
             }
-
-        } else if (catalogFilter instanceof CatalogPriceFilter) {
+        }
+        // Case price filter
+        else if (catalogFilter instanceof CatalogPriceFilter) {
             currentFragment = FilterPriceFragment.newInstance(bundle);
         }
 
@@ -209,7 +210,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     public void onClick(View view) {
         // Get view id
         int id = view.getId();
-
+        // Cancel
         if (id == R.id.dialog_filter_button_cancel){
             processOnClickClean();
         }
@@ -244,10 +245,13 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
      */
     private void processOnClickDone() {
         Print.d(TAG, "CLICKED ON: DONE");
+        // Get parent unique tag
+        String parentCatalogBackStackTag = FragmentController.getParentBackStackTag(this);
+        // Communicate with parent
         toCancelFilters = false;
         Bundle bundle = new Bundle();
         bundle.putParcelable(FILTER_TAG, filterSelectionController.getValues());
-        getBaseActivity().communicateBetweenFragments(FragmentType.CATALOG.toString(), bundle);
+        getBaseActivity().communicateBetweenFragments(parentCatalogBackStackTag, bundle);
         getBaseActivity().onBackPressed();
     }
 

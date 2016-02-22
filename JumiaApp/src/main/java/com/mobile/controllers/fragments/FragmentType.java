@@ -1,6 +1,9 @@
 package com.mobile.controllers.fragments;
 
 
+import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
+
 /**
  * Enum used to set the fragment types
  *
@@ -70,8 +73,6 @@ public enum FragmentType {
     CATALOG_DEEPLINK,
     CATALOG_CATEGORY;
 
-
-
     private int id;
     private final static String DIVIDER = ":";
 
@@ -92,8 +93,9 @@ public enum FragmentType {
      * Associate an id to type.
      * @param id The fragment id
      */
-    public void setId(int id) {
+    private FragmentType setId(int id) {
         this.id = id;
+        return this;
     }
 
     /**
@@ -105,6 +107,13 @@ public enum FragmentType {
     public static FragmentType getValue(String tag){
         String[] strings = tag.split(DIVIDER);
         return FragmentType.valueOf(strings[0]);
+    }
+
+    /**
+     * Get the unique identifier for back stack.
+     */
+    public static FragmentType getUniqueIdentifier(@NonNull FragmentType type, @NonNull Fragment fragment) {
+        return type.setId(fragment.hashCode());
     }
 
 }

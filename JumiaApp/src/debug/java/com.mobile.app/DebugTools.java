@@ -31,9 +31,9 @@ public class DebugTools {
     }
 
     /**
-     * Install and initialize debug tools only for debug version
+     * Install and initialize debug tools before application creation.
      */
-    public static void initialize(Application application) {
+    public static void onCreateApplication(Application application) {
         // Get flag from application
         isDebuggable = DeviceInfoHelper.isDebuggable(application);
         // Validate and initialize
@@ -42,14 +42,23 @@ public class DebugTools {
             Print.initializeAndroidMode(application);
             // #LEAK :: https://github.com/square/leakcanary
             sRefWatcher = LeakCanary.install(application);
-            // #STETHO :: http://facebook.github.io/stetho/
-            Stetho.initializeWithDefaults(application);
             // #RETROFIT
             AigRestAdapter.enableDebug();
-            // #OK HTTP
-            AigHttpClient.getInstance(application).addDebugNetworkInterceptors(new StethoInterceptor());
             // Warning
             Print.w(TAG, "WARNING: APPLICATION IN DEBUG MODE");
+        }
+    }
+
+    /**
+     * Install and initialize debug tools after application creation.
+     */
+    public static void onApplicationCreated(Application application) {
+        // Validate and initialize
+        if (isDebuggable) {
+            // #STETHO :: http://facebook.github.io/stetho/
+            Stetho.initializeWithDefaults(application);
+            // #OK HTTP
+            AigHttpClient.getInstance(application).addDebugNetworkInterceptors(new StethoInterceptor());
         }
     }
 
