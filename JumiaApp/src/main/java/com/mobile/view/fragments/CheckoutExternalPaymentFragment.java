@@ -512,7 +512,12 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
 
                     // Create bundle for last checkout step
-                    final Bundle bundle = getArguments();
+                    final Bundle bundle;
+                    if(getArguments() == null){
+                        bundle = new Bundle();
+                    } else {
+                        bundle = getArguments();
+                    }
                     bundle.putString(RestConstants.ORDER_NUMBER, orderNumber);
                     // Switch
                     getBaseActivity().runOnUiThread(new Runnable() {

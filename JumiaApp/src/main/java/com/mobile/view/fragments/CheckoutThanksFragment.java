@@ -6,30 +6,17 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
-import android.text.Selection;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.TextView.BufferType;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.ExpandedGridViewComponent;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.components.recycler.HorizontalListView;
+import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -38,7 +25,6 @@ import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.product.RichRelevance;
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -50,12 +36,10 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
-import com.mobile.utils.home.holder.CheckoutRRAdapter;
-import com.mobile.utils.pdv.RelatedProductsAdapter;
+import com.mobile.utils.home.holder.RichRelevanceAdapter;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.EnumSet;
 
 /**
@@ -185,7 +169,14 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
         ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);
 
-        UIUtils.setProgressForRTLPreJellyMr2(imageSuccess);
+
+        /**
+         * Mirror image to avoid having extra assets for each resolution for RTL.
+         */
+        if(ShopSelector.isRtl()){
+            UIUtils.mirrorView(imageSuccess);
+        }
+
         setRelatedItems();
         // Clean cart
         triggerClearCart();
@@ -219,7 +210,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             HorizontalListView relatedGridView = (HorizontalListView) mRelatedProductsView.findViewById(R.id.rich_relevance_listview);
             relatedGridView.enableRtlSupport(ShopSelector.isRtl());
             relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(10));
-            relatedGridView.setAdapter(new CheckoutRRAdapter(mRichRelevance.getRichRelevanceProducts(), this));
+            relatedGridView.setAdapter(new RichRelevanceAdapter(mRichRelevance.getRichRelevanceProducts(), this, R.layout._def_checkout_rr_item, false));
             mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {
             mRelatedProductsView.setVisibility(View.GONE);
@@ -430,21 +421,5 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         }
         Print.i(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
     }
-
-    public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
-
-        private final int mVerticalSpaceWidth;
-
-        public VerticalSpaceItemDecoration(int verticalSpaceWidth) {
-            this.mVerticalSpaceWidth = verticalSpaceWidth;
-        }
-
-            @Override
-            public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                                   RecyclerView.State state) {
-            outRect.right = mVerticalSpaceWidth;
-        }
-    }
-
 
 }

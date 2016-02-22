@@ -668,8 +668,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             bundle.putParcelable(ConstantsIntentExtra.DATA, mCheckoutFinish.getPaymentMethodForm());
             if(mCheckoutFinish.getRichRelevance() != null) {
                 bundle.putParcelable(RestConstants.RECOMMENDED_PRODUCTS, mCheckoutFinish.getRichRelevance());
-            } else if(mCheckoutFinish.getRelatedProducts() != null){
-                bundle.putParcelableArrayList(RestConstants.RELATED_PRODUCTS, mCheckoutFinish.getRelatedProducts());
             }
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
