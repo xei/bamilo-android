@@ -201,7 +201,7 @@ public class AlgoliaHelper {
             for (int i = 0; i <  hits.length(); i++){
                 Suggestion suggestion = new Suggestion();
                 JSONObject product = hits.getJSONObject(i);
-                String name = product.getJSONObject(RestConstants.LOCALIZABLE_ATTRIBUTES).getJSONObject(ShopSelector.getCountryCode()).getString("name");
+                String name = product.getJSONObject(RestConstants.LOCALIZABLE_ATTRIBUTES).getJSONObject(ShopSelector.getCountryCode()).getString(RestConstants.FRONTEND_NAME);
                 suggestion.setQuery(query);
                 suggestion.setResult(name);
                 suggestion.setTarget(product.getString(RestConstants.SKU));
