@@ -4,38 +4,40 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
-import android.text.Layout;
-import android.text.Selection;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextPaint;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.TextView.BufferType;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.HorizontalListView;
+import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
+import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.home.holder.RichRelevanceAdapter;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -44,7 +46,7 @@ import java.util.EnumSet;
  * @author sergiopereira
  * 
  */
-public class CheckoutThanksFragment extends BaseFragment implements IResponseCallback {
+public class CheckoutThanksFragment extends BaseFragment implements IResponseCallback, TargetLink.OnAppendDataListener {
 
     private static final String TAG = CheckoutThanksFragment.class.getSimpleName();
 
@@ -58,6 +60,11 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
     private String mOrderNumber;
 
+    private RichRelevance mRichRelevance;
+
+    private ViewGroup mRelatedProductsView;
+
+    private String mRelatedRichRelevanceHash;
     /**
      * Get instance
      */
@@ -97,6 +104,9 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             mOrderTax = getArguments().getString(RestConstants.TRANSACTION_TAX);
             mPaymentMethod = getArguments().getString(RestConstants.PAYMENT_METHOD);
             mGrandTotalValue = getArguments().getDouble(RestConstants.ORDER_GRAND_TOTAL);
+            if(getArguments().containsKey(RestConstants.RECOMMENDED_PRODUCTS)) {
+                mRichRelevance = getArguments().getParcelable(RestConstants.RECOMMENDED_PRODUCTS);
+            }
         }
     }
 
@@ -154,19 +164,61 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private void prepareLayout(View view) {
         // Track purchase
         trackPurchase();
+
+        // Related Products
+        mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
+        ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);
+
+
+        /**
+         * Mirror image to avoid having extra assets for each resolution for RTL.
+         */
+        if(ShopSelector.isRtl()){
+            UIUtils.mirrorView(imageSuccess);
+        }
+
+        setRelatedItems();
         // Clean cart
         triggerClearCart();
         JumiaApplication.INSTANCE.setCart(null);
         // Update cart info
         getBaseActivity().updateCartInfo();
-        // Order number
-        TextView tV = (TextView) view.findViewById(R.id.order_number_id);
-        tV.setText(mOrderNumber);
-        tV.setOnClickListener(this);
         // Continue button
         view.findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
         // Add a link to order status
         setOrderStatusLink(mOrderNumber);
+    }
+
+    /**
+     * Create Rich Relevance or Related Products View
+     */
+    private void setRelatedItems() {
+        // Verify if there's Rich Relevance request to make
+        if(mRichRelevance != null && !mRichRelevance.isHasData()){
+            triggerRichRelevance(mRichRelevance.getTarget());
+            mRelatedProductsView.setVisibility(View.GONE);
+            return;
+        }
+
+        if (mRichRelevance != null && CollectionUtils.isNotEmpty(mRichRelevance.getRichRelevanceProducts())) {
+
+            if(mRichRelevance != null && com.mobile.newFramework.utils.TextUtils.isNotEmpty(mRichRelevance.getTitle())){
+                ((TextView) mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mRichRelevance.getTitle());
+
+            }
+
+            HorizontalListView relatedGridView = (HorizontalListView) mRelatedProductsView.findViewById(R.id.rich_relevance_listview);
+            relatedGridView.enableRtlSupport(ShopSelector.isRtl());
+            relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(10));
+            relatedGridView.setAdapter(new RichRelevanceAdapter(mRichRelevance.getRichRelevanceProducts(), this, R.layout._def_checkout_rr_item, false));
+            mRelatedProductsView.setVisibility(View.VISIBLE);
+        } else {
+            mRelatedProductsView.setVisibility(View.GONE);
+        }
+    }
+
+    private void triggerRichRelevance(String target) {
+        triggerContentEvent(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(TargetLink.getIdFromTargetLink(target)), this);
     }
 
     /**
@@ -177,24 +229,12 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      *      SpannableString</href>
      */
     private void setOrderStatusLink(String orderNumber) {
-        // Get strings
-        String mainText = getString(R.string.order_track_check);
-        String text = getString(R.string.order_track_link);
-        int index = mainText.indexOf(text);
-        if (index == -1) {
-            index = 0;
-            text = mainText;
-        }
-        // Create link
-        SpannableString link = new SpannableString(mainText);
-        link.setSpan(new TouchableSpan(R.color.yellow_dark, R.color.grey_middle), index, index + text.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+
         // Set text for order status
-        TextView textView = (TextView) getView().findViewById(R.id.order_status_text);
-        textView.setTag(orderNumber);
+        Button button = (Button) getView().findViewById(R.id.order_status_text);
+        button.setTag(orderNumber);
         // Make ClickableSpans and URLSpans work
-        textView.setMovementMethod(new LinkTouchMovementMethod());
-        // Set text with span style
-        textView.setText(link, BufferType.SPANNABLE);
+        button.setOnClickListener(this);
     }
 
     private void triggerClearCart() {
@@ -223,90 +263,23 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         }
     }
 
-    /*--
-     * http://stackoverflow.com/questions/20856105/change-the-text-color-of-a-clickablespan-when-pressed/20905824#20905824
-     */
-    private class LinkTouchMovementMethod extends LinkMovementMethod {
-        private TouchableSpan mPressedSpan;
+    private void goToProduct(final View view){
+        @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
+        // Get title
+        String hash = (String) view.getTag(R.id.target_rr_hash);
 
-        @Override
-        public boolean onTouchEvent(android.widget.TextView textView, Spannable spannable, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                mPressedSpan = getPressedSpan(textView, spannable, event);
-                if (mPressedSpan != null) {
-                    mPressedSpan.setPressed(true);
-                    Selection.setSelection(spannable, spannable.getSpanStart(mPressedSpan), spannable.getSpanEnd(mPressedSpan));
-                }
-            } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                TouchableSpan touchedSpan = getPressedSpan(textView, spannable, event);
-                if (mPressedSpan != null && touchedSpan != mPressedSpan) {
-                    mPressedSpan.setPressed(false);
-                    mPressedSpan = null;
-                    Selection.removeSelection(spannable);
-                }
-            } else {
-                if (mPressedSpan != null) {
-                    mPressedSpan.setPressed(false);
-                    super.onTouchEvent(textView, spannable, event);
-                }
-                mPressedSpan = null;
-                Selection.removeSelection(spannable);
-            }
-            return true;
-        }
+        mRelatedRichRelevanceHash = hash;
 
-        private TouchableSpan getPressedSpan(android.widget.TextView textView, Spannable spannable, MotionEvent event) {
-            int x = (int) event.getX();
-            int y = (int) event.getY();
-
-            x -= textView.getTotalPaddingLeft();
-            y -= textView.getTotalPaddingTop();
-
-            x += textView.getScrollX();
-            y += textView.getScrollY();
-
-            Layout layout = textView.getLayout();
-            int line = layout.getLineForVertical(y);
-            int off = layout.getOffsetForHorizontal(line, x);
-
-            TouchableSpan[] link = spannable.getSpans(off, off, TouchableSpan.class);
-            TouchableSpan touchedSpan = null;
-            if (link.length > 0) {
-                touchedSpan = link[0];
-            }
-            return touchedSpan;
-        }
+        new TargetLink(getWeakBaseActivity(), target)
+                .addAppendListener(this)
+                .retainBackStackEntries()
+                .run();
     }
 
-    class TouchableSpan extends ClickableSpan {
-        private boolean mIsPressed;
-        private final int mNormalTextColor;
-        private final int mPressedTextColor;
-
-        public TouchableSpan(int normalTextColorRes, int pressedTextColorRes) {
-            mNormalTextColor = ContextCompat.getColor(getContext(), normalTextColorRes);
-            mPressedTextColor = ContextCompat.getColor(getContext(), pressedTextColorRes);
-        }
-
-        public void setPressed(boolean isSelected) {
-            mIsPressed = isSelected;
-        }
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            super.updateDrawState(ds);
-            ds.setColor(mIsPressed ? mPressedTextColor : mNormalTextColor);
-            ds.setUnderlineText(true);
-        }
-
-        @Override
-        public void onClick(View view) {
-            int viewId = view.getId();
-            if (viewId == R.id.order_status_text) {
-                Print.d(TAG, "ON CLICK SPAN: " + view.getId());
-                onClickSpannableString(view);
-            }
-        }
+    @Override
+    public void onAppendData(FragmentType next, String title, String id, Bundle data) {
+        if(com.mobile.newFramework.utils.TextUtils.isNotEmpty(mRelatedRichRelevanceHash))
+            data.putString(ConstantsIntentExtra.RICH_RELEVANCE_HASH, mRelatedRichRelevanceHash );
     }
 
     /**
@@ -333,13 +306,18 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onClick(View view) {
         super.onClick(view);
-        Print.d(TAG, "VIEW ID: " + view.getId() + " " + R.id.order_status_text);
+        Print.d(TAG, "VIEW ID: " + view.getId());
         // CASE continue
         if (view.getId() == R.id.btn_checkout_continue) onClickContinue();
-        // CASE order number
-        else if(view.getId() == R.id.order_number_id) onClickOrderNumber(view);   
+        // CASE order status
+        else if (view.getId() == R.id.order_status_text) {
+            Print.d(TAG, "ON CLICK SPAN: " + view.getId());
+            onClickSpannableString(view);
+        }
         // CASE default
-        else getBaseActivity().onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        else {
+            goToProduct(view);
+        }
         
     }
     
@@ -402,6 +380,27 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
+
+        // Validate fragment visibility
+        if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        // Hide dialog progress
+        hideActivityProgress();
+        // Validate event
+        super.handleSuccessEvent(baseResponse);
+
+        switch (eventType){
+            case GET_RICH_RELEVANCE_EVENT:
+                mRichRelevance = (RichRelevance) baseResponse.getContentData();
+                setRelatedItems();
+                showFragmentContentContainer();
+                break;
+            default:
+                break;
+        }
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
     }
 
@@ -412,6 +411,14 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     public void onRequestError(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError().getCode();
+        switch (eventType) {
+            case GET_RICH_RELEVANCE_EVENT:
+                setRelatedItems();
+                showFragmentContentContainer();
+                break;
+            default:
+                break;
+        }
         Print.i(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
     }
 

@@ -39,7 +39,7 @@ public class AlgoliaHelper {
     private final IResponseCallback mIResponseCallback;
     private final String mNamespacePrefix;
     private final static String _CATEGORIES = "_categories";
-    private final static String _PRODUCTS_POPULAR = "_products_popular";
+    private final static String _PRODUCTS_POPULAR = "_products_search";
     private final static String _SHOPINSHOP = "_shopinshop";
     private final static String QUERY = "query";
     private final static String ID_CATALOG_CATEGORY = "id_catalog_category";

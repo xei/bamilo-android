@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+                                              xmlns:app="http://schemas.android.com/apk/res-auto"
+                                              android:layout_width="match_parent"
+                                              android:layout_height="wrap_content"
+                                              android:orientation="vertical"
+                                              android:paddingTop="@dimen/dimen_16dp"
+                                              app:divider="@color/black_300"
+                                              app:showDividers="middle"
+    >
+
+
+    <!-- HEADER -->
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/pdv_related_title"
+        style="@style/HeaderStyle"
+        android:background="@color/white"
+        android:text="@string/may_like" />
+
+    <!-- CONTENT -->
+
+    <com.mobile.components.recycler.HorizontalListView
+        android:id="@+id/rich_relevance_listview"
+        style="@style/HorizontalListStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_230dp"
+        android:paddingTop="@dimen/dimen_10dp"
+        android:paddingBottom="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_6dp"
+        android:scrollbars="none"
+        android:background="@color/black_300"
+        />
+
+</android.support.v7.widget.LinearLayoutCompat>
