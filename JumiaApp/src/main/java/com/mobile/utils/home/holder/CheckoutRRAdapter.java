@@ -30,12 +30,6 @@ public class CheckoutRRAdapter extends RecyclerView.Adapter<CheckoutRRAdapter.Vi
 
     private final ArrayList<ProductRegular>  mDataSet;
 
-    /**
-     * Provide a reference to the views for each data item.<br>
-     * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br>
-     * @author sergiopereira
-     *
-     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView mName;
         public TextView mBrand;
