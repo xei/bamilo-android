@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/dimen_16dp"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+                                              xmlns:app="http://schemas.android.com/apk/res-auto"
+                                              android:layout_width="match_parent"
+                                              android:layout_height="wrap_content"
+                                              android:orientation="vertical"
+                                              android:paddingTop="@dimen/dimen_16dp"
+                                              app:divider="@color/black_300"
+                                              app:showDividers="middle"
     >
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black_300"
-        />
 
     <!-- HEADER -->
 
@@ -35,4 +32,4 @@
         android:background="@color/black_300"
         />
 
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>
