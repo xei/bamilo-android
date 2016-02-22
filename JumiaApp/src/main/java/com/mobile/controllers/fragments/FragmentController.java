@@ -1,11 +1,13 @@
 package com.mobile.controllers.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.WorkerThread;
@@ -413,63 +415,15 @@ public class FragmentController {
         fragmentTransaction.addToBackStack(fragmentType.toString());
         // Add the fragment to our back stack
         addEntryToBackStack(fragmentType.toString());
-        
         // Commit
-        //fragmentTransaction.commit();
         fragmentTransaction.commitAllowingStateLoss();
-        
-        // XXX
-        // FragmentManager.enableDebugLogging(true);
-        // Log.d(TAG, "START TRANSITION: " + getBackStackSize() + " " + activity.getSupportFragmentManager().getBackStackEntryCount());
-        // printAllEntries();
     }
     
     
     /**
      * ##################### OLD METHODS #####################
      */
-    
-//    /**
-//     * Method used to switch fragment on UI with/without back stack support
-//     *
-//     * @param fragment The new fragment
-//     * @param addToBackStack The flag to add or not to back stack
-//     * @author sergiopereira
-//     */
-//    @Deprecated
-//    public void fragmentManagerTransition(BaseActivity activity, int container, Fragment fragment, String tag, Boolean addToBackStack, boolean animated) {
-//        FragmentTransaction fragmentTransaction = activity.getSupportFragmentManager().beginTransaction();
-//        // Animations
-//        if(animated)
-//            fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
-//        // Replace
-//        fragmentTransaction.replace(container, fragment, tag);
-//        // BackStack
-//        if (addToBackStack)
-//            fragmentTransaction.addToBackStack(tag);
-//        // Commit
-//        fragmentTransaction.commit();
-//
-//        int backStackSize = activity.getSupportFragmentManager().getBackStackEntryCount();
-//        Print.d("BA Fragment", "FRAGMENT BACK STACK SIZE: " + backStackSize);
-//    }
-    
-    
-//    /**
-//     * Method used to perform a back stack using fragments
-//     * @author sergiopereira
-//     */
-//    @Deprecated
-//    public void fragmentManagerBackPressed(BaseActivity activity){
-//        int backStackSize = activity.getSupportFragmentManager().getBackStackEntryCount();
-//        Print.d("BA Fragment", "FRAGMENT BACK STACK SIZE: " + backStackSize);
-//        if (backStackSize == 1)
-//            activity.finish();
-//        else {
-//            activity.getSupportFragmentManager().popBackStackImmediate();
-//        }
-//    }
-    
+
     /**
      *  @param activity The current activity
      * @param tag The fragment tag
@@ -477,21 +431,7 @@ public class FragmentController {
     public void popAllBackStack(BaseActivity activity, String tag){
         activity.getSupportFragmentManager().popBackStack(tag, FragmentManager.POP_BACK_STACK_INCLUSIVE);
     }
-    
-    /**
-     *
-     * @param activity The current activity
-     * @param tag The fragment tag
-     */
-    @Deprecated
-    public void popBackStackUntilTag(BaseActivity activity, String tag) {
-        try {
-            activity.getSupportFragmentManager().popBackStackImmediate(tag, POP_BACK_STACK_NO_INCLUSIVE);
-        } catch (IllegalStateException | NullPointerException e) {
-            Print.w(TAG, "WARNING ON POP BACK STACK", e);
-        }
-    }
-    
+
     /**
      * Restore the backstack using the provided fragment list
      * This is useful for when the application is released form memory by the OS and the user opens it again.
@@ -512,11 +452,7 @@ public class FragmentController {
     }
     
     /**
-     * Validate the current state and try restore the saved state if necessary 
-     * @param activity The current activity
-     * @param backstackTypes
-     * @param originalFragments
-     * @param currentFragmentType
+     * Validate the current state and try restore the saved state if necessary
      * @author paulo
      * @modified sergiopereira
      */
@@ -528,13 +464,6 @@ public class FragmentController {
         }
         
         Print.i(TAG, "FRAGMENT CONTROLLER: TRY RECOVER BACKSTACK!");
-//        for (String backstackType : backstackTypes) {
-//            Print.i(TAG, "FRAGMENT CONTROLLER: TYPE " + backstackType);
-//        }
-//        for (Fragment originalFragment : originalFragments) {
-//            if(originalFragment != null)
-//                Print.i(TAG, "FRAGMENT CONTROLLER: FRAGMENT " + originalFragment.getTag());
-//        }
         
         List<Fragment> orderedFragments = new ArrayList<>();
         if(originalFragments.size() > 0 && backstackTypes.size() > 0){
@@ -591,6 +520,7 @@ public class FragmentController {
     /**
      * Add a child fragment to parent fragment using ChildFragmentManager.
      */
+    @SuppressWarnings("unused")
     public static void addChildFragment(Fragment parent, int container, Fragment fragment) {
         // Child Fragment manger
         FragmentTransaction fragmentTransaction = parent.getChildFragmentManager().beginTransaction();
@@ -600,6 +530,7 @@ public class FragmentController {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    @SuppressWarnings("unused")
     public static void addChildFragment(Fragment parent, int container, Fragment fragment, String tag) {
         // Child Fragment manger
         FragmentTransaction fragmentTransaction = parent.getChildFragmentManager().beginTransaction();
@@ -612,6 +543,7 @@ public class FragmentController {
     /**
      * Remove a child fragment from parent fragment using ChildFragmentManager.
      */
+    @SuppressWarnings("unused")
     public static void removeChildFragmentById(Fragment parent, int id) {
         FragmentManager manager = parent.getChildFragmentManager();
         // Find
@@ -619,6 +551,21 @@ public class FragmentController {
         // Validate and remove
         if (fragment != null) {
             manager.beginTransaction().remove(fragment).commitAllowingStateLoss();
+        }
+    }
+
+    /**
+     * Remove a child fragment from parent fragment using ChildFragmentManager.
+     */
+    @Nullable
+    @SuppressWarnings("unused")
+    public static String getParentBackStackTag(Fragment fragment) {
+        try {
+            FragmentManager manager = fragment.getActivity().getSupportFragmentManager();
+            int size = manager.getBackStackEntryCount();
+            return manager.getBackStackEntryAt(size - IntConstants.STACK_PARENT_LEVEL).getName();
+        } catch (NullPointerException e) {
+            return null;
         }
     }
 

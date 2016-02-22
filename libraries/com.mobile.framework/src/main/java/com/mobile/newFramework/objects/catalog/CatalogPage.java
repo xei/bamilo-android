@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Class used to represent a catalog page.<br>
  * @author sergiopereira
  */
-public class CatalogPage implements IJSONSerializable, Parcelable{
+public class CatalogPage implements IJSONSerializable, Parcelable {
 
     protected static final String TAG = CatalogPage.class.getSimpleName();
 
@@ -88,65 +88,17 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
             product.initialize(productObject);
             mProducts.add(product);
         }
-        try {
-            // Get filters
-            filters = new CatalogFilters(metadataObject);
-        } catch (JSONException e){
-            filters = new ArrayList<>();
-            e.printStackTrace();
-        }
-
-
-        //Get Banner
-        if(!metadataObject.isNull(RestConstants.BANNER)){
+        // Get filters
+        filters = new CatalogFilters(metadataObject);
+        // Get Banner
+        if (!metadataObject.isNull(RestConstants.BANNER)) {
             JSONObject bannerObject = metadataObject.getJSONObject(RestConstants.BANNER);
             Banner banner = new Banner();
             banner.initialize(bannerObject);
             mCatalogBanner = banner;
         }
-
         return true;
     }
-
-
-
-//    /**
-//     * Parse the JSON for categories, supported parent and leaf structure
-//     * @param categoriesArray - the json array
-//     * @throws JSONException
-//     */
-//    @SuppressWarnings("unused")
-//    private void parseCategoryFilter(JSONArray categoriesArray) throws JSONException{
-////        Log.d(TAG, "PARSE CATEGORIES: # " + categoriesArray.length());
-//        JSONArray categoryArray = null;
-//        // Get the first position
-//        JSONObject parentObject = categoriesArray.optJSONObject(0);
-//        JSONArray leafObject = categoriesArray.optJSONArray(0);
-//        // IS PARENT    - If first item is a JSON object
-//        if(parentObject != null) {
-////            Log.d(TAG, "CURRENT CATEGORY IS PARENT");
-//            categoryArray = parentObject.optJSONArray(RestConstants.JSON_CHILDREN_TAG);
-//        }
-//        // IS LEAF      - If first item is a JSON array
-//        else if(leafObject != null) {
-////            Log.d(TAG, "CURRENT CATEGORY IS LEAF");
-//            categoryArray = leafObject;
-//        }
-//        // Create category option and save it
-//        ArrayList<CatalogFilterOption> options = new ArrayList<>();
-//        if(categoryArray != null) {
-////            Log.d(TAG, "PARSE ADD TO CATALOG");
-//            for (int i = 0; i < categoryArray.length(); ++i) {
-//                JSONObject json = categoryArray.optJSONObject(i);
-//                if(json != null) {
-//                    CategoryFilterOption opt = new CategoryFilterOption(json);
-//                    options.add(opt);
-//                }
-//            }
-//        }
-//        // Create the category filter and save it
-//        mFilters.add(new CatalogFilter("category", Darwin.context.getString(R.string.framework_category_label), false, options));
-//    }
 
     /* (non-Javadoc)
      * @see com.mobile.framework.objects.IJSONSerializable#toJSON()
@@ -305,7 +257,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
         mPage = in.readInt();
         mMaxPages = in.readInt();
         if (in.readByte() == 0x01) {
-            mProducts = new ArrayList<ProductRegular>();
+            mProducts = new ArrayList<>();
             in.readList(mProducts, ProductRegular.class.getClassLoader());
         } else {
             mProducts = null;
@@ -313,7 +265,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable{
         mCatalogBanner = (Banner) in.readValue(Banner.class.getClassLoader());
         mSearchTerm = in.readString();
         if (in.readByte() == 0x01) {
-            filters = new ArrayList<CatalogFilter>();
+            filters = new ArrayList<>();
             in.readList(filters, CatalogFilter.class.getClassLoader());
         } else {
             filters = null;
