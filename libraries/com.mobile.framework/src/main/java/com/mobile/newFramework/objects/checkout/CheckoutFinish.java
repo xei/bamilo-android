@@ -56,7 +56,7 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
 
         // Related products
         JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.RELATED_PRODUCTS);
-        if (relatedProductsJsonArray != null && relatedProductsJsonArray.length() > 0) {
+        if (relatedProductsJsonArray != null && CollectionUtils.isNotEmpty(relatedProductsJsonArray)) {
             mRelatedProducts = new ArrayList<>();
             for (int i = 0; i < relatedProductsJsonArray.length(); i++) {
                 ProductRegular relatedProduct = new ProductRegular();
