@@ -85,7 +85,7 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
 
         // Set icon
         if(sug.isRecentQuery()) ((ImageView) view.findViewById(R.id.item_img)).setImageResource(R.drawable.ico_recent);
-        else ((ImageView) view.findViewById(R.id.item_img)).setImageResource(R.drawable.magnlens);
+        else view.findViewById(R.id.item_img).setVisibility(View.GONE);
 
         return view;
     }
