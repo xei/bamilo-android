@@ -25,7 +25,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
-import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
@@ -827,10 +826,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Process the click on global policy
      */
+    private static final String INTERNATIONAL_PRODUCT_POLICY_PAGE = "international-product-policy";
     private void onClickGlobalDeliveryLinkButton() {
         Log.i(TAG, "ON CLICK GLOBAL SELLER");
         Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, GetStaticPageHelper.INTERNATIONAL_PRODUCT_POLICY_PAGE);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, INTERNATIONAL_PRODUCT_POLICY_PAGE);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, getString(R.string.policy));
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }

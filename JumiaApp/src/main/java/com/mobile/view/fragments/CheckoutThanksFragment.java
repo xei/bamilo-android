@@ -1,12 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -338,17 +333,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private void onClickRetryButton() {
         getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
     }
-    
-    /**
-     * Process the click on order number
-     */
-    @SuppressWarnings("deprecation")
-    private void onClickOrderNumber(View v){
-        ClipboardManager ClipMan = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipMan.setPrimaryClip(ClipData.newPlainText("simple text", ((TextView) v).getText()));
-        showWarningSuccessMessage(getString(R.string.copied_to_clipboard));
-    }
-    
+
     /**
      * Process the click on continue
      * @author sergiopereira

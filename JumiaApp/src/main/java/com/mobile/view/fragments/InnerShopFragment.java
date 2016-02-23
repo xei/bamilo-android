@@ -306,8 +306,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     }
 
     /**
-     * The web client to intercept the clicks in the deep links to show the respective view:<br> - Case product: the link is pdv::http://... - Case catalog: the
-     * link is catalog::http://... - Case campaign: the link is campaign::http://...
+     * The web client to intercept the clicks in the deep links to show the respective view:<br>
+     * - Case product: the link is pdv::http://...  <br>
+     * - Case catalog: the link is catalog::http://... <br>
+     * - Case campaign: the link is campaign::http://... <br>
      */
     private final WebViewClient mInnerShopWebClient = new WebViewClient() {
 

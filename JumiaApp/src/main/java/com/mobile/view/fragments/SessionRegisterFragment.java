@@ -11,7 +11,6 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.session.GetRegisterFormHelper;
@@ -263,10 +262,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     }
 
     private void onClickTermsAndConditions(View view) {
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, TargetLink.getIdFromTargetLink(view.getTag().toString()));
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, getString(R.string.terms_and_conditions));
-        getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+        @TargetLink.Type String target = (String) view.getTag();
+        new TargetLink(getWeakBaseActivity(), target).addTitle(R.string.terms_and_conditions).enableWarningErrorMessage().run();
     }
 
 

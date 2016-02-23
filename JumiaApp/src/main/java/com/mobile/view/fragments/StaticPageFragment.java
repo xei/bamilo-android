@@ -29,6 +29,8 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
 
     private TextView textView;
     private Bundle mStaticPageBundle;
+    private String mTitle;
+    private String mContentId;
 
     /**
      * New instance SessionTermsFragment.
@@ -73,10 +75,10 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         // Get static page key from arguments
-        if(savedInstanceState != null && savedInstanceState.containsKey(ConstantsIntentExtra.FRAGMENT_BUNDLE)){
-            mStaticPageBundle = savedInstanceState.getBundle(ConstantsIntentExtra.FRAGMENT_BUNDLE);
-        } else {
-            mStaticPageBundle = getArguments();
+        mStaticPageBundle = savedInstanceState != null ? savedInstanceState : getArguments();
+        if (mStaticPageBundle != null) {
+            mTitle = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
+            mContentId = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_ID);
         }
     }
     
@@ -89,12 +91,11 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get title
-        String title = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
-        title = TextUtils.isNotEmpty(title) ? title : getString(R.string.policy);
+        mTitle = TextUtils.isNotEmpty(mTitle) ? mTitle : getString(R.string.policy);
         // Title AB
-        getBaseActivity().setActionBarTitle(title);
+        getBaseActivity().setActionBarTitle(mTitle);
         // Title Layout
-        ((TextView) view.findViewById(R.id.terms_title)).setText(title);
+        ((TextView) view.findViewById(R.id.terms_title)).setText(mTitle);
         // Content
         textView = (TextView) view.findViewById(R.id.terms_text);
         // Get static page
@@ -102,7 +103,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     }
 
     private void triggerStaticPage() {
-        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_ID)), this);
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mContentId), this);
     }
 
     /*

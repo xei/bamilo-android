@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
+import android.support.annotation.StringRes;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -40,7 +41,6 @@ public class TargetLink {
     public static final String STATIC_PAGE = "static_page";
     public static final String SHOP_IN_SHOP = "shop_in_shop";
     public static final String UNKNOWN = "unknown";
-
     @StringDef({PDV, CATALOG, CATALOG_CATEGORY, CATALOG_BRAND, CATALOG_SELLER, CAMPAIGN, STATIC_PAGE, SHOP_IN_SHOP, UNKNOWN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type {}
@@ -89,6 +89,14 @@ public class TargetLink {
      */
     public TargetLink addTitle(@NonNull String title) {
         this.mTitle = title;
+        return this;
+    }
+
+    /**
+     * Add a title.
+     */
+    public TargetLink addTitle(@StringRes int title) {
+        this.mTitle = mActivity.get().getString(title);
         return this;
     }
 

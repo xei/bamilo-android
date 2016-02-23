@@ -1119,16 +1119,14 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * @author sergiopereira
      */
     protected void showSearchCategory(final Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST " + suggestion.getResult());
         // Tracking
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
-        // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link)
-                .addTitle(suggestion.getResult())
-                .run();
-        if(!result) {
-            // Data
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        // Case algolia
+        if (!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.DATA, null);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
@@ -1137,7 +1135,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
             onSwitchFragment(FragmentType.CATALOG_CATEGORY, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
-
     }
 
     /**
@@ -1161,16 +1158,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Execute search for product
      */
     protected void showSearchProduct(Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW "+suggestion.getResult());
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW " + suggestion.getResult());
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
-
-
+        // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
-        // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link)
-                .addTitle(suggestion.getResult())
-                .run();
-        if(!result) {
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        // Case algolia
+        if (!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch_prefix);
@@ -1183,15 +1177,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Execute search for shop in shop
      */
     protected void showSearchShopsInShop(final Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP "+suggestion.getResult());
+        Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP " + suggestion.getResult());
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
-
+        // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
-        // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link)
-                .addTitle(suggestion.getResult())
-                .run();
-        if(!result) {
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        // Case algolia
+        if (!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
