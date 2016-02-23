@@ -123,6 +123,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             HomeMainTeaserHolder.sViewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
             HomeNewsletterTeaserHolder.sInitialValue = savedInstanceState.getString(NEWSLETTER_EMAIL_KEY);
             HomeNewsletterTeaserHolder.sInitialGender = savedInstanceState.getInt(NEWSLETTER_GENDER_KEY);
+        } else {
+            HomeNewsletterTeaserHolder.sInitialValue = null;
+            HomeNewsletterTeaserHolder.sInitialGender = IntConstants.INVALID_POSITION;
         }
     }
 
