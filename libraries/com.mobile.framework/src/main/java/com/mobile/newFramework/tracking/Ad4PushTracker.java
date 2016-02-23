@@ -50,7 +50,7 @@ public class Ad4PushTracker {
     private static final String PURCHASES_COUNTER = "aggregatedNumberOfPurchases";
     private static final String PURCHASES_SUM_VALUE = "aggregatedValueOfPurchases";
     private static final String STATUS_IN_APP = "statusInApp";
-    private static final String WISHLIST_PRODUCT = "lastFavouritesProduct";
+    private static final String WISH_LIST_PRODUCT = "lastFavouritesProduct";
     private static final String SHOP_COUNTRY = "shopCountry";
     private static final String COUNTRY_CODE = "countryCode";
     private static final String ORDER_STATUS = "orderStatus";
@@ -76,46 +76,30 @@ public class Ad4PushTracker {
     private static final String PRE_INSTALL = Constants.INFO_PRE_INSTALL;
     private static final String BRAND = Constants.INFO_BRAND;
     private static final String SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
-    // private static final String VERSION = Constants.INFO_BUNDLE_VERSION;
-
     private static final String FILTER_BRAND = "filterBrand";
     private static final String FILTER_COLOR = "filterColor";
     private static final String FILTER_CATEGORY = "filterCategory";
     private static final String FILTER_PRICE = "filterPrice";
     private static final String FILTER_SIZE = "filterSize";
-
     private static final String FILTER_BRAND_KEY = "brand";
     private static final String FILTER_COLOR_KEY = "color_family";
     private static final String FILTER_PRICE_KEY = "price";
     private static final String FILTER_CATEGORY_KEY = "productUrl";
     private static final String FILTER_SIZE_KEY = "size";
-
     private static final String STATUS_PROSPECT = "Prospect";
     private static final String STATUS_CUSTOMER = "Customer";
-
-    private static final int EVENT_LOGIN = 1001;
-    private static final int EVENT_FACEBOOK_CONNECT = 1002;
-    private static final int EVENT_FIRST_OPEN_APP = 1003;
-
     private static final String HAS_OPENED_APP = "app_opened";
-
-    // View States for In-App Messages
     private static final String HOME_VIEW = "HOME";
     private static final String CATEGORY_VIEW = "CATEGORY";
     private static final String PRODUCT_VIEW = "PRODUCT";
-    private static final String LOGIN_SIGNUP_VIEW = "ACCOUNT";
+    private static final String LOGIN_SIGN_UP_VIEW = "ACCOUNT";
     private static final String FAVORITES_VIEW = "MYFAVORITES";
     private static final String CART_VIEW = "CART";
     private static final String REGISTRATION_VIEW = "REGISTER";
-
     private static final String IS_ENABLED = "Enabled";
     private static final String AD4PUSH_PREFERENCES_PERSIST = "Ad4PushPreferencesPersist";
-
-    /**
-     * NEW IN 2.6
-     */
     private static final String PUSH_NOTIFICATION_OPENED = "lastPNOpened";
-    private static final String ATTRIBUTE_SET_ID = "attributeSetID"; // API v1.8
+    private static final String ATTRIBUTE_SET_ID = "attributeSetID";
     private static final String LAST_VIEWED_CATEGORY = "lastViewedCategory";
     private static final String MOST_VIEWED_BRAND = "mostViewedBrand";
     private static final String LAST_SORTED_BY = "lastSortedBy";
@@ -127,6 +111,11 @@ public class Ad4PushTracker {
     private static final String LAST_PRODUCT_REVIEWED = "lastProductReviewed";
     private static final String LAST_PRODUCT_SHARED = "lastProductShared";
     private static final String LAST_CATEGORY_ADDED_TO_CART = "lastCategoryAddedToCart";
+
+    private static final int EVENT_LOGIN = 1001;
+    private static final int EVENT_FACEBOOK_CONNECT = 1002;
+    private static final int EVENT_FIRST_OPEN_APP = 1003;
+
 
     HashMap<TrackingPage, String> screens;
 
@@ -174,7 +163,7 @@ public class Ad4PushTracker {
         screens.put(TrackingPage.HOME, HOME_VIEW);
         screens.put(TrackingPage.PRODUCT_LIST, CATEGORY_VIEW);
         screens.put(TrackingPage.PRODUCT_DETAIL, PRODUCT_VIEW);
-        screens.put(TrackingPage.LOGIN_SIGNUP, LOGIN_SIGNUP_VIEW);
+        screens.put(TrackingPage.LOGIN_SIGNUP, LOGIN_SIGN_UP_VIEW);
         screens.put(TrackingPage.FAVORITES, FAVORITES_VIEW);
         screens.put(TrackingPage.CART, CART_VIEW);
         screens.put(TrackingPage.REGISTRATION, REGISTRATION_VIEW);
@@ -193,12 +182,8 @@ public class Ad4PushTracker {
             Print.i(TAG, "Ad4PSUH Startup -> INITITALIZED");
             mA4S = A4S.get(mContext);
             boolean isActive = getActiveAd4Push(mContext);
-            // setPushNotificationLocked(!isActive);
-            // setInAppDisplayLocked(!isActive);
-            // stopingSDK(mContext,!isActive);
             setGCMEnabled(isActive);
             setInAppDisplayLocked(!isActive);
-
         }
     }
 
@@ -457,7 +442,7 @@ public class Ad4PushTracker {
         if (isEnabled) {
             // Create bundle
             Bundle prefs = new Bundle();
-            prefs.putString(WISHLIST_PRODUCT, productSKU);
+            prefs.putString(WISH_LIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK ADD TO FAV: " + prefs.toString());
         }
@@ -470,7 +455,7 @@ public class Ad4PushTracker {
         if (isEnabled) {
             // Create bundle
             Bundle prefs = new Bundle();
-            prefs.putString(WISHLIST_PRODUCT, productSKU);
+            prefs.putString(WISH_LIST_PRODUCT, productSKU);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK REMOVE FROM FAV: " + prefs.toString());
         }
