@@ -431,6 +431,7 @@
 
     <!-- PDV IMAGE -->
     <dimen name="pdv_image">283.33dp</dimen>
+    <dimen name="pdv_brand_height">24dp</dimen>
 
     <!-- PDV IMAGE LANDSCAPE -->
     <dimen name="pdv_image_with_var_simple">210dp</dimen>
