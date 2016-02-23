@@ -19,6 +19,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -37,7 +38,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
     private RadioGroupLayout mRadioGroupLayout;
     protected DynamicForm mNewsLetterForm;
     public static String sInitialValue;
-    public static int sInitialGender = -1;
+    public static int sInitialGender = IntConstants.INVALID_POSITION;
 
     /**
      * Constructor
