@@ -1,6 +1,7 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -11,7 +12,8 @@ import com.mobile.view.R;
 import de.akquinet.android.androlog.Log;
 
 /**
- * Created by spereira on 3/2/15.
+ * Class used to help catalog UI.
+ * @author spereira
  */
 public class UICatalogHelper {
 
@@ -25,17 +27,19 @@ public class UICatalogHelper {
         baseActivity.setActionBarTitle(name);
     }
 
-
     /**
-     * Set the filter button state, to show as selected or not.
+     * Set the filter button state, to show as selected or not.<br>
+     * The Android M (API 23) has an issue to refresh the drawable, so is used a post runnable.
      */
-    public static void setFilterButtonState(View button, boolean hasFilterValues) {
-        try {
-            button.setSelected(hasFilterValues);
-            button.setEnabled(hasFilterValues);
-            Log.d(TAG, "SET FILTER BUTTON STATE: " + button.isSelected());
-        } catch (NullPointerException e) {
-            Log.w(TAG, "BUTTON OR VALUE IS NULL", e);
+    public static void setFilterButtonState(@Nullable final View button, final boolean hasFilterValues) {
+        if (button != null) {
+            Log.i(TAG, "SET FILTER BUTTON STATE: " + button.isSelected());
+            button.post(new Runnable() {
+                @Override
+                public void run() {
+                    button.setSelected(hasFilterValues);
+                }
+            });
         }
     }
 
@@ -80,30 +84,4 @@ public class UICatalogHelper {
         }
     }
 
-
-//    /**
-//     * Show tips if is the first time the user uses the app.
-//     */
-//    public static void isToShowWizard(BaseFragment fragment, ViewStub stub, View.OnClickListener listener) {
-//        try {
-//            if (WizardPreferences.isFirstTime(fragment.getActivity(), WizardPreferences.WizardType.CATALOG)) {
-//                Log.i(TAG, "SHOW WIZARD");
-//                // Inflate view in stub
-//                stub.setVisibility(View.VISIBLE);
-//                // Get view
-//                View view = fragment.getView();
-//                // Get view and set wizard
-//                ViewPager viewPagerTips = (ViewPager) view.findViewById(R.id.catalog_wizard_viewpager);
-//                int[] tipsPages = { R.layout.catalog_fragment_wizard_favourite};
-//                TipsPagerAdapter mTipsPagerAdapter = new TipsPagerAdapter(fragment.getActivity(), fragment.getActivity().getLayoutInflater(), view, tipsPages);
-//                viewPagerTips.setAdapter(mTipsPagerAdapter);
-//                viewPagerTips.setOnPageChangeListener(new TipsOnPageChangeListener(view, tipsPages));
-//                viewPagerTips.setCurrentItem(0);
-//                view.findViewById(R.id.catalog_wizard_button_ok).setOnClickListener(listener);
-//            }
-//        } catch (NullPointerException e) {
-//            Log.w(TAG, "WARNING: NPE ON SHOW WIZARD" , e);
-//            stub.setVisibility(View.GONE);
-//        }
-//    }
 }

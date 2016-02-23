@@ -7,12 +7,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
@@ -216,7 +216,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     case NavigationAction.LOGIN_OUT:
                         // SIGN IN
                         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-                            FragmentManager fm = getSupportFragmentManager();
                             dialogLogout = DialogGenericFragment.newInstance(true, false,
                                     getString(R.string.logout_title),
                                     getString(R.string.logout_text_question),
@@ -231,7 +230,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                                             dialogLogout.dismiss();
                                         }
                                     });
-                            dialogLogout.show(fm, null);
+                            dialogLogout.show(getSupportFragmentManager(), null);
                         } else {
                             TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
                             onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -1524,7 +1523,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * This method should be implemented by fragment activity to manage the communications between fragments. Each fragment should call this method.
      */
-    public abstract boolean communicateBetweenFragments(String tag, Bundle bundle);
+    public abstract boolean communicateBetweenFragments(@Nullable String tag, @Nullable Bundle bundle);
 
     /**
      * Method used to switch fragment on UI with/without back stack support

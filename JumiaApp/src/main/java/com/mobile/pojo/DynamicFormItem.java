@@ -759,7 +759,9 @@ public class DynamicFormItem {
                     this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
                 } else {
                     this.mandatoryControl.setVisibility(View.GONE);
-                }
+                } //reset checkbox control state
+                CheckBox checkBox = (CheckBox) this.control.findViewById(R.id.text_field_password_check_box);
+                if(checkBox != null) checkBox.setChecked(false);
                 break;
             case hide:
                 break;

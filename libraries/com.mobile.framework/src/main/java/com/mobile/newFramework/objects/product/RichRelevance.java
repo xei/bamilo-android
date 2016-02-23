@@ -88,6 +88,11 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
         return mRichRelevanceProducts;
     }
 
+    public void setRichRelevanceProducts(final ArrayList<ProductRegular> richRelevanceProducts) {
+        mRichRelevanceProducts = richRelevanceProducts;
+        mHasData = true;
+    }
+
     protected RichRelevance(Parcel in) {
         mType = in.readString();
         mHasData = in.readByte() != 0x00;

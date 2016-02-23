@@ -38,6 +38,7 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
+import com.mobile.utils.home.holder.HomeNewsletterTeaserHolder;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -63,6 +64,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public static final String SCROLL_STATE_KEY = "scroll";
 
     public static final String POSITION_STATE_KEY = "position";
+    public static final String NEWSLETTER_EMAIL_KEY = "newsletter_email_key";
+    public static final String NEWSLETTER_GENDER_KEY = "newsletter_gender_key";
 
     private int[] mScrollSavedPosition;
 
@@ -119,6 +122,15 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
             HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
         }
+
+        if (savedInstanceState != null && savedInstanceState.containsKey(NEWSLETTER_EMAIL_KEY)) {
+            HomeNewsletterTeaserHolder.mInitialValue = savedInstanceState.getString(NEWSLETTER_EMAIL_KEY);
+            HomeNewsletterTeaserHolder.mInitialGender = savedInstanceState.getInt(NEWSLETTER_GENDER_KEY);
+        } else {
+            HomeNewsletterTeaserHolder.mInitialValue = null;
+            HomeNewsletterTeaserHolder.mInitialGender = -1;
+        }
+
     }
 
     /*
@@ -206,6 +218,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             for (BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders) {
                 if (baseTeaserViewHolder instanceof HomeMainTeaserHolder) {
                     outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+                } else if(baseTeaserViewHolder instanceof HomeNewsletterTeaserHolder){
+                    outState.putString(NEWSLETTER_EMAIL_KEY, ((HomeNewsletterTeaserHolder) baseTeaserViewHolder).getEditedText());
+                    outState.putInt(NEWSLETTER_GENDER_KEY, ((HomeNewsletterTeaserHolder) baseTeaserViewHolder).getSelectedGender());
                 }
             }
         }

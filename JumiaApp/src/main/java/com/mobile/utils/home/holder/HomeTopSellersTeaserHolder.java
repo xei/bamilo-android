@@ -31,7 +31,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
     public HorizontalListView horizontalListView;
-    private TextView sectionTitle;
+    private final TextView sectionTitle;
     /**
      * Constructor
      */
@@ -82,7 +82,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
 
                 ArrayList<ProductRegular> richRelevanceTeaserObjects = richRelevanceObject.getRichRelevanceProducts();
                     if(!CollectionUtils.isEmpty(richRelevanceTeaserObjects) && mParentClickListener != null && horizontalListView != null){
-                        horizontalListView.setAdapter(new HomeRichRelevanceTeaserAdapter(richRelevanceTeaserObjects, mParentClickListener));
+                        horizontalListView.setAdapter(new RichRelevanceAdapter(richRelevanceTeaserObjects, mParentClickListener, R.layout.home_teaser_top_sellers_item, true));
                         sectionTitle.setText(richRelevanceObject.getTitle());
                     } else {
                         onRequestError(baseResponse);

@@ -2,6 +2,7 @@ package com.mobile.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
@@ -13,7 +14,6 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -197,7 +197,7 @@ public class MainFragmentActivity extends BaseActivity {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.slidingmenu.lib.app.SlidingFragmentActivity#onSaveInstanceState(android
      * .os.Bundle)
@@ -225,7 +225,7 @@ public class MainFragmentActivity extends BaseActivity {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.mobile.utils.BaseActivity#onSwitchFragment(com.mobile.view.fragments
      * .FragmentType, android.os.Bundle, java.lang.Boolean)
@@ -262,14 +262,16 @@ public class MainFragmentActivity extends BaseActivity {
                 }
                 // Put the target type
                 bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
-                // Put the type
-                type = FragmentType.CATALOG;
                 // Create instance
                 fragment = CatalogFragment.getInstance(bundle);
+                // Put the type with unique identifier
+                type = FragmentType.getUniqueIdentifier(FragmentType.CATALOG, fragment);
                 break;
             case PRODUCT_DETAILS:
+                // Create instance
                 fragment = ProductDetailsFragment.getInstance(bundle);
-                type.setId(fragment.hashCode());
+                // Put the type with unique identifier
+                type = FragmentType.getUniqueIdentifier(type, fragment);
                 break;
             case PRODUCT_INFO:
                 fragment = ProductDetailsInfoFragment.getInstance(bundle);
@@ -415,27 +417,11 @@ public class MainFragmentActivity extends BaseActivity {
      * @author spereira
      */
     @Override
-    public boolean communicateBetweenFragments(String tag, Bundle bundle) {
-        // TODO : Validate if this hack is necessary in future versions (v3.0 - NAFAMZ-16192)
-        // # Hack for fragments that can have duplicated tags.
-        if (TextUtils.equals(tag, FragmentType.CATALOG.toString())) {
-            List<Fragment> fragments = getSupportFragmentManager().getFragments();
-            if (CollectionUtils.isNotEmpty(fragments)) {
-                for (Fragment fragment : fragments) {
-                    if (fragment instanceof CatalogFragment) {
-                        ((BaseFragment) fragment).notifyFragment(bundle);
-                        return true;
-                    }
-                }
-            }
-        }
-        // Right behavior
-        else {
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-            if (fragment != null) {
-                ((BaseFragment) fragment).notifyFragment(bundle);
-                return true;
-            }
+    public boolean communicateBetweenFragments(@Nullable String tag, @Nullable Bundle bundle) {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment != null) {
+            ((BaseFragment) fragment).notifyFragment(bundle);
+            return true;
         }
         return false;
     }

@@ -8,7 +8,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_suggestion"
-        style="@style/SubListItemStyle"
+        style="@style/TextBody_2"
         android:layout_height="@dimen/item_height_normal"
         android:layout_marginRight="@dimen/margin_mid"
         android:layout_toLeftOf="@+id/item_img"
