@@ -126,6 +126,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         if (savedInstanceState != null && savedInstanceState.containsKey(NEWSLETTER_EMAIL_KEY)) {
             HomeNewsletterTeaserHolder.mInitialValue = savedInstanceState.getString(NEWSLETTER_EMAIL_KEY);
             HomeNewsletterTeaserHolder.mInitialGender = savedInstanceState.getInt(NEWSLETTER_GENDER_KEY);
+        } else {
+            HomeNewsletterTeaserHolder.mInitialValue = null;
+            HomeNewsletterTeaserHolder.mInitialGender = -1;
         }
 
     }
