@@ -53,11 +53,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private static final String ERROR_MESSAGE = "error_message";
     private static final String EMPTY = "";
 
-    private LinkedHashMap<String, String> mDataSetRating;
-    private LinkedHashMap<String, String> mDataSet;
-    private String mDataSetSource;
+    private final LinkedHashMap<String, String> mDataSetRating;
+    private final LinkedHashMap<String, String> mDataSet;
+    private final String mDataSetSource;
     private String mApiCall;
-    private HashMap<String,PaymentInfo> mPaymentInfoList;
+    private final HashMap<String,PaymentInfo> mPaymentInfoList;
     private String mId;
     private String mKey;
     private String mName;
@@ -248,11 +248,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 mNewsletterOptions = new ArrayList<>();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
                     // Case the newsletter
-                    if(mKey.equals("newsletter_categories_subscribed")) {
-                        //FIXME validate if possible to remove this array, its only used on MyAccountEmailNotificationFragment
-                        //FIXME Newsletter revamp should fix this
-                        mNewsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), mName));
-                    }
+                    mNewsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), mName));
                     // Case default
                     JSONObject option = dataOptionsArray.getJSONObject(i);
                     mDataSet.put(option.optString(RestConstants.VALUE), option.optString(RestConstants.LABEL));

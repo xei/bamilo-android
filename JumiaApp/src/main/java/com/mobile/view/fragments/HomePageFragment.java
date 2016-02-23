@@ -38,6 +38,7 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.home.holder.BaseTeaserViewHolder;
 import com.mobile.utils.home.holder.HomeMainTeaserHolder;
+import com.mobile.utils.home.holder.HomeNewsletterTeaserHolder;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -63,6 +64,8 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public static final String SCROLL_STATE_KEY = "scroll";
 
     public static final String POSITION_STATE_KEY = "position";
+    public static final String NEWSLETTER_EMAIL_KEY = "newsletter_email_key";
+    public static final String NEWSLETTER_GENDER_KEY = "newsletter_gender_key";
 
     private int[] mScrollSavedPosition;
 
@@ -89,7 +92,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 IntConstants.ACTION_BAR_NO_TITLE,
                 NO_ADJUST_CONTENT);
         // Init position
-        HomeMainTeaserHolder.viewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
+        HomeMainTeaserHolder.sViewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
     }
 
     /*
@@ -115,9 +118,14 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         // Register Hockey
         HockeyStartup.register(getBaseActivity());
         // Get saved scroll position
-        if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
+        if (savedInstanceState != null) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
-            HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
+            HomeMainTeaserHolder.sViewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
+            HomeNewsletterTeaserHolder.sInitialValue = savedInstanceState.getString(NEWSLETTER_EMAIL_KEY);
+            HomeNewsletterTeaserHolder.sInitialGender = savedInstanceState.getInt(NEWSLETTER_GENDER_KEY);
+        } else {
+            HomeNewsletterTeaserHolder.sInitialValue = null;
+            HomeNewsletterTeaserHolder.sInitialGender = IntConstants.INVALID_POSITION;
         }
     }
 
@@ -206,6 +214,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             for (BaseTeaserViewHolder baseTeaserViewHolder : mViewHolders) {
                 if (baseTeaserViewHolder instanceof HomeMainTeaserHolder) {
                     outState.putInt(POSITION_STATE_KEY, ((HomeMainTeaserHolder) baseTeaserViewHolder).getViewPagerPosition());
+                } else if(baseTeaserViewHolder instanceof HomeNewsletterTeaserHolder){
+                    outState.putString(NEWSLETTER_EMAIL_KEY, ((HomeNewsletterTeaserHolder) baseTeaserViewHolder).getEditedText());
+                    outState.putInt(NEWSLETTER_GENDER_KEY, ((HomeNewsletterTeaserHolder) baseTeaserViewHolder).getSelectedGender());
                 }
             }
         }
@@ -389,17 +400,14 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
             mRichRelevanceHash = "";
         }
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link)
+        new TargetLink(getWeakBaseActivity(), link)
                 .addTitle(title)
                 .setOrigin(origin)
                 .addAppendListener(this)
                 .addCampaignListener(this)
                 .retainBackStackEntries()
+                .enableWarningErrorMessage()
                 .run();
-        // Validate result
-        if(!result) {
-            showUnexpectedErrorWarning();
-        }
     }
 
     /**

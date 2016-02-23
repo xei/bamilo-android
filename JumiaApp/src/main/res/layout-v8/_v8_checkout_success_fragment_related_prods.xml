@@ -5,8 +5,8 @@
                                               android:layout_height="wrap_content"
                                               android:orientation="vertical"
                                               android:paddingTop="@dimen/dimen_16dp"
-                                              app:divider="@color/black_300"
-                                              app:showDividers="middle"
+                                              app:divider="@drawable/divider_horizontal_black_300"
+                                              app:showDividers="beginning"
     >
 
 
@@ -16,6 +16,7 @@
         android:id="@+id/pdv_related_title"
         style="@style/HeaderStyle"
         android:background="@color/white"
+        android:paddingLeft="@dimen/dimen_20dp"
         android:text="@string/may_like" />
 
     <!-- CONTENT -->
