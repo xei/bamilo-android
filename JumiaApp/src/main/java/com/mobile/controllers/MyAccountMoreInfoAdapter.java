@@ -67,7 +67,6 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
 
         // Get the Category Name
         TextView optionsName = (TextView) view.findViewById(R.id.option_name);
-//        view.findViewById(R.id.option_info).setVisibility(View.INVISIBLE);
 
         if(position == APP_VERSION_POSITION) {
             optionsName.setText(R.string.app_version);
