@@ -57,7 +57,7 @@ public class CheckBoxField extends DynamicFormItem implements IDynamicFormItemFi
     @Override
     public void save(@NonNull ContentValues values) {
         // Case contains a non empty value for checked state.
-        if (!TextUtils.isEmpty(this.entry.getValue())) {
+        if (!TextUtils.isEmpty(this.entry.getValue()) && parent.getForm().getType() == FormConstants.NEWSLETTER_PREFERENCES_FORM) {
             if (((CheckBox) this.dataControl).isChecked()) {
                 values.put(getName(), this.entry.getValue());
                 return;
