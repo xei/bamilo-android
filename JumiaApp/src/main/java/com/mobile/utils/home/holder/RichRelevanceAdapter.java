@@ -42,7 +42,6 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
         public TextView mBrand;
         public TextView mName;
         public TextView mPrice;
-        public TextView mDiscount;
 
         /**
          * Constructor
@@ -63,7 +62,6 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
                 mProgress = view.findViewById(R.id.image_loading_progress);
                 mBrand = (TextView) view.findViewById(R.id.item_brand);
                 mPrice = (TextView) view.findViewById(R.id.item_price);
-                mDiscount = (TextView) view.findViewById(R.id.item_discount);
             }
 
         }
@@ -104,7 +102,9 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_small);
         // Set prices
-        ProductUtils.setPriceRules(item, holder.mPrice, holder.mDiscount);
+        // Set price
+        double price = item.hasDiscount() ? item.getSpecialPrice() : item.getPrice();
+        holder.mPrice.setText(CurrencyFormatter.formatCurrency(String.valueOf(price)));
 
         if(mIsTeaserRR){
             // Set listener and tags
