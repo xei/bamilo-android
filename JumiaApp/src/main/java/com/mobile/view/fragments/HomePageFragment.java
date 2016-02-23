@@ -92,7 +92,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 IntConstants.ACTION_BAR_NO_TITLE,
                 NO_ADJUST_CONTENT);
         // Init position
-        HomeMainTeaserHolder.viewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
+        HomeMainTeaserHolder.sViewPagerPosition = HomeMainTeaserHolder.DEFAULT_POSITION;
     }
 
     /*
@@ -118,16 +118,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         // Register Hockey
         HockeyStartup.register(getBaseActivity());
         // Get saved scroll position
-        if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_STATE_KEY)) {
+        if (savedInstanceState != null) {
             mScrollSavedPosition = savedInstanceState.getIntArray(SCROLL_STATE_KEY);
-            HomeMainTeaserHolder.viewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
+            HomeMainTeaserHolder.sViewPagerPosition = savedInstanceState.getInt(POSITION_STATE_KEY);
+            HomeNewsletterTeaserHolder.sInitialValue = savedInstanceState.getString(NEWSLETTER_EMAIL_KEY);
+            HomeNewsletterTeaserHolder.sInitialGender = savedInstanceState.getInt(NEWSLETTER_GENDER_KEY);
         }
-
-        if (savedInstanceState != null && savedInstanceState.containsKey(NEWSLETTER_EMAIL_KEY)) {
-            HomeNewsletterTeaserHolder.mInitialValue = savedInstanceState.getString(NEWSLETTER_EMAIL_KEY);
-            HomeNewsletterTeaserHolder.mInitialGender = savedInstanceState.getInt(NEWSLETTER_GENDER_KEY);
-        }
-
     }
 
     /*
