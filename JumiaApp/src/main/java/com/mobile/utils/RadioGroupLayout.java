@@ -80,7 +80,6 @@ public class RadioGroupLayout extends LinearLayout {
             RadioButton button = (RadioButton) mInflater.inflate(R.layout.form_radiobutton, mGroup, false);
             button.setId(idx);
             button.setText(mItems.get(idx).toString());
-
             if (idx == mDefaultSelected) button.setChecked(true);
             mGroup.addView(button, idx);
         }
@@ -101,7 +100,7 @@ public class RadioGroupLayout extends LinearLayout {
             if(mItemsKeys.size() > idx) UIUtils.setDrawableLeftByString(button, DynamicFormItem.ICON_PREFIX + mItemsKeys.get(idx).toString().toLowerCase());
             button.setId(idx);
             button.setText(mItems.get(idx).toString());
-            button.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
+            button.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
             if (idx == mDefaultSelected) button.setChecked(true);
             mGroup.addView(button, idx);
         }
