@@ -107,7 +107,7 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         // Get item
         final ProductBundle item = mDataset.get(position);
         // Set brand
-        holder.mBrand.setText(item.getBrand());
+        holder.mBrand.setText(item.getBrandName());
         // Set title
         holder.mTitle.setText(item.getName());
         // Set image

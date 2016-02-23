@@ -425,7 +425,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         String size = campaignItem.getSelectedSimple().getVariationValue();
         Boolean hasStock = campaignItem.hasStock();
         String name = campaignItem.getName();
-        String brand = campaignItem.getBrand();
+        String brand = campaignItem.getBrandName();
         double price = campaignItem.getPriceForTracking();
         int discount = campaignItem.getMaxSavingPercentage();
         Print.i(TAG, "ON CLICK BUY " + sku + " " + size + " " + hasStock);
@@ -651,7 +651,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set stock off
             setStockOff(view, item);
             // Set brand
-            view.mBrand.setText(item.getBrand());
+            view.mBrand.setText(item.getBrandName());
             // Set name
             view.mName.setText(item.getName());
             setClickableView(view.mName, position);

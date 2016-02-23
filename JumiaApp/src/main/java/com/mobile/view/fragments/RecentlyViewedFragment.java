@@ -413,7 +413,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             bundle.putString(TrackerDelegator.SKU_KEY, sku);
             bundle.putDouble(TrackerDelegator.PRICE_KEY, addableToCart.getPriceForTracking());
             bundle.putString(TrackerDelegator.NAME_KEY, addableToCart.getName());
-            bundle.putString(TrackerDelegator.BRAND_KEY, addableToCart.getBrand());
+            bundle.putString(TrackerDelegator.BRAND_KEY, addableToCart.getBrandName());
             bundle.putDouble(TrackerDelegator.RATING_KEY, addableToCart.getAvgRating());
             bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, addableToCart.getMaxSavingPercentage());
             bundle.putString(TrackerDelegator.LOCATION_KEY, GTMValues.WISHLISTPAGE);

@@ -80,7 +80,7 @@ public class HomeRichRelevanceTeaserAdapter extends RecyclerView.Adapter<HomeRic
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_large);
         // Set brand
-        holder.mBrand.setText(item.getBrand());
+        holder.mBrand.setText(item.getBrandName());
         // Set name
         holder.mName.setText(item.getName());
         // Set price
