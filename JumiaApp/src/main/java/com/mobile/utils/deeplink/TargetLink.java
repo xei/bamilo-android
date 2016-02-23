@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
+import android.support.annotation.StringRes;
 
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -14,6 +15,7 @@ import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.fragments.CampaignsFragment;
 
@@ -37,8 +39,9 @@ public class TargetLink {
     public static final String CATALOG_SELLER = "catalog_seller";
     public static final String CAMPAIGN = "campaign";
     public static final String STATIC_PAGE = "static_page";
+    public static final String SHOP_IN_SHOP = "shop_in_shop";
     public static final String UNKNOWN = "unknown";
-    @StringDef({PDV, CATALOG, CATALOG_CATEGORY, CATALOG_BRAND, CATALOG_SELLER, CAMPAIGN, STATIC_PAGE, UNKNOWN})
+    @StringDef({PDV, CATALOG, CATALOG_CATEGORY, CATALOG_BRAND, CATALOG_SELLER, CAMPAIGN, STATIC_PAGE, SHOP_IN_SHOP, UNKNOWN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type {}
 
@@ -71,6 +74,7 @@ public class TargetLink {
     private OnAppendDataListener mAppendDataListener;
     private OnCampaignListener mCampaignListener;
     private boolean isToRemoveEntries = true;
+    private boolean isToShowWarningError;
 
     /**
      * Constructor
@@ -89,6 +93,14 @@ public class TargetLink {
     }
 
     /**
+     * Add a title.
+     */
+    public TargetLink addTitle(@StringRes int title) {
+        this.mTitle = mActivity.get().getString(title);
+        return this;
+    }
+
+    /**
      * Add a click origin.
      */
     public TargetLink setOrigin(@NonNull TeaserGroupType origin) {
@@ -97,7 +109,7 @@ public class TargetLink {
     }
 
     /**
-     * Remove entries until home.
+     * Disable the pop back stack entries until home.
      */
     public TargetLink retainBackStackEntries() {
         this.isToRemoveEntries = false;
@@ -109,6 +121,14 @@ public class TargetLink {
      */
     public TargetLink addAppendListener(@NonNull OnAppendDataListener listener) {
         this.mAppendDataListener = listener;
+        return this;
+    }
+
+    /**
+     * Add a listener to build the bundle for campaign.
+     */
+    public TargetLink enableWarningErrorMessage() {
+        this.isToShowWarningError = true;
         return this;
     }
 
@@ -128,6 +148,7 @@ public class TargetLink {
         String[] targetLink = splitLink(mTarget);
         if (targetLink.length != TARGET_LINK_SIZE) {
             Log.w(TAG, "WARNING: INVALID TARGET LINK: " + mTarget);
+            showWarningErrorMessage();
             return false;
         }
 
@@ -138,6 +159,7 @@ public class TargetLink {
         FragmentType nextFragmentType = getFragmentType(type);
         if (nextFragmentType == FragmentType.UNKNOWN) {
             Print.w(TAG, "WARNING: UNKNOWN TARGET LINK: " + mTarget);
+            showWarningErrorMessage();
             return false;
         }
         // ##### Create bundle
@@ -159,6 +181,19 @@ public class TargetLink {
         }
         // Success
         return true;
+    }
+
+    /**
+     * Method used to show the generic warning message.
+     */
+    private void showWarningErrorMessage() {
+        if(isToShowWarningError) {
+            try {
+                mActivity.get().showWarning(WarningFactory.PROBLEM_FETCHING_DATA_ANIMATION);
+            } catch (NullPointerException e) {
+                Print.w("TARGET LINK WARNING: NPE ON SHOW ERROR MESSAGE");
+            }
+        }
     }
 
     /**
@@ -191,8 +226,12 @@ public class TargetLink {
         else if (TextUtils.equals(CAMPAIGN, type)) {
             fragmentType = FragmentType.CAMPAIGNS;
         }
-        // Case campaign
+        // Case static page
         else if (TextUtils.equals(STATIC_PAGE, type)) {
+            fragmentType = FragmentType.STATIC_PAGE;
+        }
+        // Case static page
+        else if (TextUtils.equals(SHOP_IN_SHOP, type)) {
             fragmentType = FragmentType.INNER_SHOP;
         }
         return fragmentType;
@@ -242,7 +281,7 @@ public class TargetLink {
      * Split the target link.
      */
     @NonNull
-    private static String[] splitLink(@NonNull String link) {
+    private static String[] splitLink(@Nullable String link) {
         return TextUtils.isEmpty(link) ? new String[]{} : TextUtils.split(link, TARGET_LINK_DELIMITER);
     }
 

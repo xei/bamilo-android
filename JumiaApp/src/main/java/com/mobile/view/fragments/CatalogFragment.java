@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -118,7 +119,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private String mKey;
 
-
     /**
      * Create and return a new instance.
      *
@@ -158,7 +158,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get data from arguments (Home/Categories/Deep link)
         Bundle arguments = getArguments();
         if (arguments != null) {
-            Print.i(TAG, "ON scrollto ARGUMENTS: " + arguments);
+            Print.i(TAG, "ON RECEIVE ARGUMENTS: " + arguments);
             // Get key
             mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // Get title
@@ -168,9 +168,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
             else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
             else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
-            else if(type == FragmentType.CATALOG_CATEGORY) {
-                mQueryValues.put(RestConstants.CATEGORY, mKey);
-            }
+            else if(type == FragmentType.CATALOG_CATEGORY) mQueryValues.put(RestConstants.CATEGORY, mKey);
 
             else mQueryValues.put(RestConstants.HASH, mKey);
             // Get sort
@@ -224,11 +222,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Print.i(TAG, "ON VIEW CREATED");
         // Load user preferences
         mLevel = Integer.parseInt(CustomerPreferences.getCatalogLayout(getBaseActivity()));
-        if (mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_GRID) {
-            mNumberOfColumns = getResources().getInteger(R.integer.catalog_grid_num_columns);
-        } else {
-            mNumberOfColumns = getResources().getInteger(R.integer.catalog_list_num_columns);
-        }
+        // Get number of columns
+        int dimen = mLevel == CatalogGridAdapter.ITEM_VIEW_TYPE_GRID ? R.integer.catalog_grid_num_columns : R.integer.catalog_list_num_columns;
+        mNumberOfColumns = getResources().getInteger(dimen);
         // Get sort button
         mSortButton = (TextView) view.findViewById(R.id.catalog_bar_button_sort);
         // Get filter button
@@ -375,7 +371,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     }
 
     @Override
-    public void notifyFragment(Bundle bundle) {
+    public void notifyFragment(@Nullable Bundle bundle) {
         super.notifyFragment(bundle);
         if(bundle != null && bundle.containsKey(FilterMainFragment.FILTER_TAG)){
             onSubmitFilterValues((ContentValues) bundle.getParcelable(FilterMainFragment.FILTER_TAG));
@@ -423,7 +419,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onRecoverCatalogContainer(CatalogPage catalogPage) {
         Print.i(TAG, "ON RECOVER CATALOG");
         // Set title bar
-
         UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
         // Set sort button
         setSortButton();
@@ -504,9 +499,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         }
         // Show container
         showFragmentContentContainer();
-
-//        UICatalogHelper.isToShowWizard(this, mWizardStub, this);
-
     }
 
     /**
@@ -1091,10 +1083,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onHeaderClick(String target, String title) {
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), target).addTitle(title).run();
-        if(!result) {
-            showUnexpectedErrorWarning();
-        }
+        new TargetLink(getWeakBaseActivity(), target)
+                .addTitle(title)
+                .enableWarningErrorMessage()
+                .run();
     }
 
     /**

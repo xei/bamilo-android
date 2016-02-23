@@ -7,12 +7,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
@@ -215,7 +215,6 @@ public abstract class BaseActivity extends DebugActivity implements TabLayout.On
                     case NavigationAction.LOGIN_OUT:
                         // SIGN IN
                         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-                            FragmentManager fm = getSupportFragmentManager();
                             dialogLogout = DialogGenericFragment.newInstance(true, false,
                                     getString(R.string.logout_title),
                                     getString(R.string.logout_text_question),
@@ -230,7 +229,7 @@ public abstract class BaseActivity extends DebugActivity implements TabLayout.On
                                             dialogLogout.dismiss();
                                         }
                                     });
-                            dialogLogout.show(fm, null);
+                            dialogLogout.show(getSupportFragmentManager(), null);
                         } else {
                             TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
                             onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -976,7 +975,6 @@ public abstract class BaseActivity extends DebugActivity implements TabLayout.On
                 Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
                 // Get text suggestion
                 String text = selectedSuggestion.getResult();
-                Print.i(TAG, "code1algoliadd onItemClick: "+text);
                 //Save searched text
                 JumiaApplication.INSTANCE.setSearchedTerm(text);
                 mSearchAutoComplete.dismissDropDown();
@@ -1122,14 +1120,14 @@ public abstract class BaseActivity extends DebugActivity implements TabLayout.On
      * @author sergiopereira
      */
     protected void showSearchCategory(final Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST " + suggestion.getResult());
         // Tracking
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
-        // Parse target link
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
-        if(!result) {
-            // Data
+        // Case algolia
+        if (!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.DATA, null);
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
@@ -1138,7 +1136,6 @@ public abstract class BaseActivity extends DebugActivity implements TabLayout.On
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
             onSwitchFragment(FragmentType.CATALOG_CATEGORY, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
-
     }
 
     /**
@@ -1162,14 +1159,13 @@ public abstract class BaseActivity extends DebugActivity implements TabLayout.On
      * Execute search for product
      */
     protected void showSearchProduct(Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW "+suggestion.getResult());
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW " + suggestion.getResult());
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
-
-
+        // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
-        // Parse target link
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
-        if(!result) {
+        // Case algolia
+        if (!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch_prefix);
@@ -1182,13 +1178,13 @@ public abstract class BaseActivity extends DebugActivity implements TabLayout.On
      * Execute search for shop in shop
      */
     protected void showSearchShopsInShop(final Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP "+suggestion.getResult());
+        Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP " + suggestion.getResult());
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
-
+        // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
-        // Parse target link
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
-        if(!result) {
+        // Case algolia
+        if (!result) {
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
@@ -1525,7 +1521,7 @@ public abstract class BaseActivity extends DebugActivity implements TabLayout.On
     /**
      * This method should be implemented by fragment activity to manage the communications between fragments. Each fragment should call this method.
      */
-    public abstract boolean communicateBetweenFragments(String tag, Bundle bundle);
+    public abstract boolean communicateBetweenFragments(@Nullable String tag, @Nullable Bundle bundle);
 
     /**
      * Method used to switch fragment on UI with/without back stack support

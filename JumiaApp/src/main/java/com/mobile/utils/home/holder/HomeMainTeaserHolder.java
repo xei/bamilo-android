@@ -25,12 +25,6 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
     public static final int DEFAULT_POSITION = 0;
-//
-//    private static final int DEFAULT_REVERSE_POSITION_PHONE = 1;
-//
-//    private static final int DEFAULT_POSITION_TABLET = 1;
-//
-//    private static final int DEFAULT_REVERSE_POSITION_TABLET = 2;
 
     private static final double PHONE_IMAGE_RATIO = 2.44d;
 
@@ -44,7 +38,7 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
 
     public View container;
 
-    public static int viewPagerPosition;
+    public static int sViewPagerPosition;
 
     public HomeMainTeaserHolder(Context context, View itemView, View.OnClickListener onClickListener) {
         super(context, itemView, onClickListener);
@@ -100,30 +94,14 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
             indicator.setViewPager(pager);
             if(isRtl) {
                 // reverse pager position for RTL
-                viewPagerPosition = adapter.getCount() - 1;
+                sViewPagerPosition = adapter.getCount() - 1;
             }
             // Set default position
-            pager.setCurrentItem(viewPagerPosition);
+            pager.setCurrentItem(sViewPagerPosition);
         } else {
             Log.i(TAG, "MAIN_TEASERS: ADAPTER IS NOT NULL");
         }
     }
-
-//    /**
-//     * Get the default position
-//     * @param size The number of items
-//     * @return int
-//     */
-//    @Deprecated
-//    private int getDefaultPosition(int size) {
-//        int position;
-//        if(!isTablet) {
-//            position = !isRtl ? DEFAULT_POSITION_PHONE : size - DEFAULT_REVERSE_POSITION_PHONE;
-//        } else {
-//            position = !isRtl ? DEFAULT_POSITION_TABLET : size - DEFAULT_REVERSE_POSITION_TABLET;
-//        }
-//        return position;
-//    }
 
     @Override
     public void applyMargin() {
@@ -131,10 +109,10 @@ public class HomeMainTeaserHolder extends BaseTeaserViewHolder {
     }
 
     public int getViewPagerPosition() {
-        viewPagerPosition = (pager.getAdapter() instanceof InfinitePagerAdapter) ?
+        sViewPagerPosition = (pager.getAdapter() instanceof InfinitePagerAdapter) ?
                 ((InfinitePagerAdapter) pager.getAdapter()).getVirtualPosition(pager.getCurrentItem())
                 : pager.getCurrentItem();
-        return viewPagerPosition;
+        return sViewPagerPosition;
     }
     
 }

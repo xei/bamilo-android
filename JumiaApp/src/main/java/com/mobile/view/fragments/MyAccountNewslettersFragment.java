@@ -141,11 +141,17 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
      */
     public void onValidateState() {
         Print.i("ON VALIDATE STATE");
-        // Validate data
+        // Case first time
         if (mNewslettersForm == null) {
             triggerGetNewslettersForm();
-        } else {
+        }
+        // Case rotate restore the form
+        else if(mNewsletterScroll.getChildCount() == 0){
             showDynamicForm(mNewslettersForm);
+        }
+        // Default, show current form
+        else {
+            showFragmentContentContainer();
         }
     }
 
@@ -308,8 +314,8 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
      * @author sergiopereira
      */
     private void goBackWarningUser() {
-        getBaseActivity().onBackPressed();
         getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
+        getBaseActivity().onBackPressed();
     }
 
 }

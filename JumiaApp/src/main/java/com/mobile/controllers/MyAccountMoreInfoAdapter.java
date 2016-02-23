@@ -31,9 +31,9 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
 
     public final static int APP_VERSION_POSITION = 0;
 
-    private List<TargetHelper> staticPages;
+    private final List<TargetHelper> staticPages;
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public MyAccountMoreInfoAdapter(@Nullable List<TargetHelper> staticPages, @NonNull Context context) {
         this.staticPages = staticPages;
@@ -67,7 +67,6 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
 
         // Get the Category Name
         TextView optionsName = (TextView) view.findViewById(R.id.option_name);
-//        view.findViewById(R.id.option_info).setVisibility(View.INVISIBLE);
 
         if(position == APP_VERSION_POSITION) {
             optionsName.setText(R.string.app_version);

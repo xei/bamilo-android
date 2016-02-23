@@ -30,7 +30,7 @@ public class SuggestionsStruct extends Suggestions {
      * Keep the order of the suggestions retrieved by database recently searched.
      */
     public void setRecentSuggestions(List<Suggestion> suggestions){
-        super.setSuggestions(suggestions);
+        super.setRecentSuggestions(suggestions);
     }
 
     public String getSearchParam() {

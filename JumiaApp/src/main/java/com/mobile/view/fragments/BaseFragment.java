@@ -36,6 +36,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
@@ -147,7 +148,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public BaseFragment(Boolean isNestedFragment, @LayoutRes int layoutResId) {
         this.isNestedFragment = isNestedFragment;
         this.mInflateLayoutResId = layoutResId;
-        this.titleResId = 0;
+        this.titleResId = IntConstants.ACTION_BAR_NO_TITLE;
         this.checkoutStep = ConstantsCheckout.NO_CHECKOUT;
     }
 
@@ -446,7 +447,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     /**
      * Receive an update from other fragment
      */
-    public void notifyFragment(Bundle bundle) {
+    public void notifyFragment(@Nullable Bundle bundle) {
         //...
     }
 

@@ -179,7 +179,7 @@
     <string name="or_text">OR</string>
     <string name="order_no_items">You have no items in the cart</string>
     <string name="order_status_label">Order Status</string>
-    <string name="order_success">Your order has been successfully registered\n with the number:</string>
+    <string name="order_success">Your order has been successfully registered.\n You can check the status through Order Details.</string>
     <string name="order_summary_label">Order Summary</string>
     <string name="order_summary_shipping_fee_label">Shipping Fee:</string>
     <string name="order_summary_shipping_method">Shipping Method</string>

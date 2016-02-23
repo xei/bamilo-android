@@ -25,8 +25,7 @@ public class GetFaqTermsHelper extends SuperBaseHelper{
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        MobileAbout mobileAbout = (MobileAbout)baseResponse.getContentData();
-
+        MobileAbout mobileAbout = (MobileAbout) baseResponse.getContentData();
         CountryPersistentConfigs.saveMoreInfo(JumiaApplication.INSTANCE.getApplicationContext(), mobileAbout);
     }
 }
