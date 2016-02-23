@@ -6,8 +6,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="@dimen/dimen_16dp"
-        app:divider="@color/black_300"
-        app:showDividers="middle"
+        app:divider="@drawable/divider_horizontal_black_300"
+        app:showDividers="beginning"
     >
     <!-- HEADER -->
 
