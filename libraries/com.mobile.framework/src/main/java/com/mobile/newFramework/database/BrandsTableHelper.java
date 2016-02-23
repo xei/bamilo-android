@@ -92,7 +92,7 @@ public class BrandsTableHelper extends BaseTable {
             // Execute
             db.execSQL(insertOrReplace, new String[]{DatabaseUtils.sqlEscapeString(brandName)});
             Print.i(TAG, "ON INCREASE COUNTER: " + brandName);
-        } catch (IllegalStateException | SQLiteException e) {
+        } catch (IllegalArgumentException | IllegalStateException | SQLiteException e) {
             Print.w(TAG, "WARNING: SQE ON INCREASE COUNTER", e);
         } finally {
             db.close();

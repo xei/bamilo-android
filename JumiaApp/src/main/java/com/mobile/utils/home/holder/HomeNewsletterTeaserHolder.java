@@ -6,7 +6,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.mobile.app.JumiaApplication;
@@ -20,9 +19,8 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.RadioGroupLayout;
@@ -34,14 +32,13 @@ import com.mobile.view.R;
  */
 public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
 
-    private static final String TAG = HomeNewsletterTeaserHolder.class.getName();
     private final ViewGroup mContainerView;
     private final Button mSubmit;
     private EditText mEditText;
     private RadioGroupLayout mRadioGroupLayout;
     protected DynamicForm mNewsLetterForm;
-    public static String mInitialValue;
-    public static int mInitialGender = -1;
+    public static String sInitialValue;
+    public static int sInitialGender = IntConstants.INVALID_POSITION;
 
     /**
      * Constructor
@@ -73,15 +70,15 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
                     mEditText = (EditText) control.getDataControl();
                     ((EditText) control.getDataControl()).addTextChangedListener(mTextWatcher);
                     ((EditText) control.getDataControl()).setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                    if(TextUtils.isNotEmpty(mInitialValue)) {
-                        mEditText.setText(mInitialValue);
+                    if(TextUtils.isNotEmpty(sInitialValue)) {
+                        mEditText.setText(sInitialValue);
                     }
                     mSubmit.setEnabled(TextUtils.isNotEmpty(((EditText) control.getDataControl()).getText()));
                 } else if(control.getDataControl() instanceof RelativeLayout &&
                         control.getDataControl().findViewById(R.id.radio_group_container) != null){ // Get Gender choice to save on rotation.
                     mRadioGroupLayout = (RadioGroupLayout) control.getDataControl().findViewById(R.id.radio_group_container);
-                    if(mInitialGender > 0 ){
-                        mRadioGroupLayout.setSelection(mInitialGender);
+                    if(sInitialGender > 0 ){
+                        mRadioGroupLayout.setSelection(sInitialGender);
                     }
                 }
             }
@@ -129,9 +126,9 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
     };
 
     public String getEditedText(){
-        return mInitialValue = mEditText.getText().toString();
+        return sInitialValue = mEditText.getText().toString();
     }
     public int getSelectedGender(){
-        return mInitialGender = mRadioGroupLayout.getSelectedIndex();
+        return sInitialGender = mRadioGroupLayout.getSelectedIndex();
     }
 }
