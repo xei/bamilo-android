@@ -19,8 +19,6 @@ public class GetStaticPageHelper extends SuperBaseHelper {
 
     public static String TAG = GetStaticPageHelper.class.getSimpleName();
 
-    public static final String INTERNATIONAL_PRODUCT_POLICY_PAGE = "international-product-policy";
-
     @Override
     public EventType getEventType() {
         return EventType.GET_STATIC_PAGE;

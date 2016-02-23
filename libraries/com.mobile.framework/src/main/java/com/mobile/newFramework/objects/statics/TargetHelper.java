@@ -37,27 +37,11 @@ public class TargetHelper implements ITargeting, IJSONSerializable, Parcelable {
 
     public static final String DEEP_LINK_DELIMITER = "::";
 
-    public static final String TARGET_TYPE_PDV = "pdv";
-
-    public static final String TARGET_TYPE_CATALOG = TargetType.CATALOG.getValue();
-
-    public static final String TARGET_TYPE_CAMPAIGN = TargetType.CAMPAIGN.getValue();
-
     private String label;
 
     private String targetType;
 
     private String value;
-
-    public TargetHelper(String label, String targetType, String value) {
-        this.label = label;
-        this.targetType = targetType;
-        this.value = value;
-    }
-
-    public TargetHelper(@NonNull String target){
-        splitTarget(target);
-    }
 
     public TargetHelper(JSONObject jsonObject) throws JSONException {
         initialize(jsonObject);

@@ -1083,10 +1083,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onHeaderClick(String target, String title) {
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), target).addTitle(title).run();
-        if(!result) {
-            showUnexpectedErrorWarning();
-        }
+        new TargetLink(getWeakBaseActivity(), target)
+                .addTitle(title)
+                .enableWarningErrorMessage()
+                .run();
     }
 
     /**

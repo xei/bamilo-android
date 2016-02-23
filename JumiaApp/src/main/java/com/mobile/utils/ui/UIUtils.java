@@ -199,9 +199,16 @@ public class UIUtils {
      */
     public static void setProgressForRTLPreJellyMr2(View progressBar) {
         if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
-            progressBar.setScaleX(-1.0f);
-            progressBar.setScaleY(1.0f);
+            mirrorView(progressBar);
         }
+    }
+
+    /**
+     * Mirror View.
+     */
+    public static void mirrorView(View view) {
+        view.setScaleX(-1.0f);
+        view.setScaleY(1.0f);
     }
 
 

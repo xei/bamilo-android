@@ -19,6 +19,7 @@ import com.mobile.factories.FormFactory;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -102,15 +103,14 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         int idx;
         generatedForms = new HashMap<>();
         for (idx = 0; idx < mItems.size(); idx++) {
-            //Print.i(TAG, "code1subForms updateRadioGroup : " + mItems.get(idx) + " formsMap size : " + formsMap.size());
             if (formsMap.containsKey(mItems.get(idx))) {
                 createRadioButton(idx, mPaymentInfo, true);
-            } else if (mPaymentInfo != null && mPaymentInfo.size() > 0 && mPaymentInfo.containsKey(mItems.get(idx))) {
+            } else if (CollectionUtils.isNotEmpty(mPaymentInfo) && mPaymentInfo.containsKey(mItems.get(idx))) {
                 createRadioButton(idx, mPaymentInfo, false);
-            } else {
-                Print.d(TAG, "code1subForms updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));
-                // Layout
-                RadioButton button;
+            }
+            // Generic radio button Layout
+            else {
+                final RadioButton button;
                 if(isRightPositionStyle) {
                     button = (RadioButton) mInflater.inflate(R.layout._def_form_radio_button_right, this, false);
                     mGroup.addView(button, idx);
@@ -119,22 +119,29 @@ public class RadioGroupLayoutVertical extends RadioGroup {
                     RadioGroup.LayoutParams layoutParams = new RadioGroup.LayoutParams(LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
                     mGroup.addView(button, idx, layoutParams);
                 }
-                //
+                // Set the button
                 button.setId(idx);
                 button.setText(mItems.get(idx));
-                button.setChecked(idx == mDefaultSelected);
             }
-
         }
+        // Set the default radio button checked
+        checkDefaultOption(mDefaultSelected);
+    }
 
-        if(mDefaultSelected != IntConstants.INVALID_POSITION){
-            for(int i = 0; i < mGroup.getChildCount(); i++) {
-                if(i == mDefaultSelected){
-                    check(mGroup.getChildAt(i).getId());
+    /**
+     * Method used to check the default option.<br>
+     * The runnable is a hack for Android Marshmallow (API 23)
+     */
+    private void checkDefaultOption(final int mDefaultSelected) {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                View child = getChildAt(mDefaultSelected);
+                if (child != null) {
+                    check(child.getId());
                 }
             }
-        }
-
+        });
     }
 
     /**
@@ -151,7 +158,6 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         final RadioButton button = (RadioButton) container.findViewById(R.id.radio_shipping);
 
         if (addInnerForm) {
-            //Print.i(TAG, "code1subForms updateRadioGroup contains : " + mItems.get(idx));
             DynamicForm formGenerator = FormFactory.getSingleton().create(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)));
             generatedForms.put(idx, formGenerator);
             extras.addView(formGenerator.getContainer());

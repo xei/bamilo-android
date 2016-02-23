@@ -25,7 +25,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
-import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.helpers.products.GetProductBundleHelper;
 import com.mobile.helpers.products.GetProductHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
@@ -847,11 +846,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * Process the click on global policy
      */
+    private static final String INTERNATIONAL_PRODUCT_POLICY_PAGE = "international-product-policy";
     private void onClickGlobalDeliveryLinkButton() {
         Log.i(TAG, "ON CLICK GLOBAL SELLER");
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.KEY, GetStaticPageHelper.INTERNATIONAL_PRODUCT_POLICY_PAGE);
-        bundle.putString(RestConstants.TITLE, getString(R.string.policy));
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, INTERNATIONAL_PRODUCT_POLICY_PAGE);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, getString(R.string.policy));
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -1103,7 +1103,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
         mRelatedRichRelevanceHash = mProduct.getRelatedProducts().get(position).getRichRelevanceClickHash();
-
         new TargetLink(getWeakBaseActivity(), target)
                 .addAppendListener(this)
                 .retainBackStackEntries()
