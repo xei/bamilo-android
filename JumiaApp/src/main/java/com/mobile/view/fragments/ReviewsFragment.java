@@ -892,7 +892,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
                     getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
-
                     try {
                         getBaseActivity().onBackPressed();
                     } catch (IllegalStateException e) {

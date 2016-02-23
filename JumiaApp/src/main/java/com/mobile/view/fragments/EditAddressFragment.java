@@ -519,8 +519,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 break;
             case EDIT_ADDRESS_EVENT:
                 Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
-                getBaseActivity().onBackPressed();
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.edit_address_success));
+                getBaseActivity().onBackPressed();
                 break;
             default:
                 break;
