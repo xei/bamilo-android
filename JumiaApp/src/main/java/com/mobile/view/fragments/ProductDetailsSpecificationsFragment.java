@@ -354,13 +354,10 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
         int errorCode = baseResponse.getError().getCode();
         Print.d(TAG, "onErrorEvent: type = " + eventType + " code = "+ errorCode);
         switch (eventType) {
-
             case GET_PRODUCT_DETAIL:
                 if (!ErrorCode.isNetworkError(errorCode)) {
                     getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.product_could_not_retrieved));
-
                     showFragmentContentContainer();
-
                     try {
                         getBaseActivity().onBackPressed();
                     } catch (IllegalStateException e) {
