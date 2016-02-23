@@ -1432,8 +1432,9 @@ public class DynamicFormItem {
         });
 
         ArrayList<String> keySet = null;
-        if (CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
-             keySet = new ArrayList<>();
+        if (this.parent.getForm().getType() == FormConstants.NEWSLETTER_FORM &&
+                CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
+            keySet = new ArrayList<>();
             for (NewsletterOption nOption : ((FormField) this.entry).getNewsletterOptions()) {
                 keySet.add(nOption.key);
             }
