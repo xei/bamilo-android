@@ -329,4 +329,5 @@ public class RestConstants {
     public static final String SUB_STRING = "sub_string";
     public static final String POINTER = "pointer";
     public static final String FRONTEND_NAME = "frontend_name";
+    public static final String BRAND_URL_KEY = "brand_url_key";
 }

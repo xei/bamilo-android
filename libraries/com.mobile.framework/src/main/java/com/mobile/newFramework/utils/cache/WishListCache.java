@@ -62,4 +62,8 @@ public class WishListCache {
         return mSku != null && data().contains(mSku);
     }
 
+    public static int size() {
+        return sCacheMap != null ? sCacheMap.size() : 0 ;
+    }
+
 }

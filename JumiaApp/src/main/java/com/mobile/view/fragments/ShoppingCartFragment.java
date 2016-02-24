@@ -407,7 +407,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         } else {
             mItemRemovedCartValue = cartValue;
         }
-        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
+        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU()), this);
     }
 
     /**

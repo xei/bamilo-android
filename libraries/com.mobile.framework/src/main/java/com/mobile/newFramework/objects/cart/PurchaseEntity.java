@@ -268,7 +268,6 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         return TextUtils.isNotEmpty(mShippingMethod);
     }
 
-
     /**
      * @return A string with all attribute set Ids separated by ;
      */

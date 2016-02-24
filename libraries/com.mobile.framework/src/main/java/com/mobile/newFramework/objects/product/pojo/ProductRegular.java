@@ -29,6 +29,8 @@ public class ProductRegular extends ProductBase {
     private int mBrandId;
     protected String mTarget;
     protected String mRichRelevanceClickHash;
+    private String mBrandKey;
+
     /**
      * Empty constructor
      */
@@ -50,15 +52,9 @@ public class ProductRegular extends ProductBase {
     protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mName = jsonObject.optString(RestConstants.NAME);
-        // TODO
-        // This fallback validation was added for the case where the response from the RR request
-        // is the fallback top sellers, where the product name comes in the "title" field.
-        // it should be analysed if should be fixed on next release.
-        if(TextUtils.isEmpty(mName))
-            mName = jsonObject.optString(RestConstants.TITLE);
-
         mBrand = jsonObject.getString(RestConstants.BRAND);
         mBrandId = jsonObject.optInt(RestConstants.BRAND_ID);
+        mBrandKey = jsonObject.optString(RestConstants.BRAND_URL_KEY);
         // Optional TODO FIX THIS
         mImageUrl = jsonObject.optString(RestConstants.IMAGE);
         if(TextUtils.isEmpty(mImageUrl)) {
@@ -66,7 +62,7 @@ public class ProductRegular extends ProductBase {
         }
         // Is new
         isNew = jsonObject.optBoolean(RestConstants.IS_NEW);
-        // Wish List flag>>>>>>>>>>
+        // Wish List flag
         if (jsonObject.optBoolean(RestConstants.IS_WISH_LIST)) {
             WishListCache.add(mSku);
         }
@@ -155,6 +151,10 @@ public class ProductRegular extends ProductBase {
         return mRichRelevanceClickHash;
     }
 
+    public String getBrandKey() {
+        return mBrandKey;
+    }
+
     /*
 	 * ############ PARCELABLE ############
 	 */
@@ -164,6 +164,7 @@ public class ProductRegular extends ProductBase {
         mName = in.readString();
         mBrand = in.readString();
         mBrandId = in.readInt();
+        mBrandKey = in.readString();
         mImageUrl = in.readString();
         mCategories = in.readString();
         isNew = in.readByte() != 0x00;
@@ -180,6 +181,7 @@ public class ProductRegular extends ProductBase {
         dest.writeString(mName);
         dest.writeString(mBrand);
         dest.writeInt(mBrandId);
+        dest.writeString(mBrandKey);
         dest.writeString(mImageUrl);
         dest.writeString(mCategories);
         dest.writeByte((byte) (isNew ? 0x01 : 0x00));
@@ -207,6 +209,5 @@ public class ProductRegular extends ProductBase {
             return new ProductRegular[size];
         }
     };
-
 
 }
