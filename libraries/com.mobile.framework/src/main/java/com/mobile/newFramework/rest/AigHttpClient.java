@@ -210,6 +210,14 @@ public class AigHttpClient extends OkClient {
     }
 
     /**
+     * Remove debug network interceptor (DebugTools).
+     */
+    @SuppressWarnings("unused")
+    public void removeDebugNetworkInterceptors(Interceptor interceptor) {
+        mOkHttpClient.networkInterceptors().remove(interceptor);
+    }
+
+    /**
      * Interceptor used to validate 301 redirects.<br>
      * - If the server returns an 301 error code after an https request,
      * we should try to perform the same request with http,

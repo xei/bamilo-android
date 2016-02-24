@@ -39,6 +39,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.app.drawer.DebugDrawerActivity;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -109,7 +110,7 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends DebugActivity implements TabLayout.OnTabSelectedListener {
+public abstract class BaseActivity extends DebugDrawerActivity implements TabLayout.OnTabSelectedListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 

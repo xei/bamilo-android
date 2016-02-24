@@ -1,4 +1,4 @@
-package com.mobile.view;
+package com.mobile.app.drawer;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +19,7 @@ import io.palaima.debugdrawer.commons.SettingsModule;
 import io.palaima.debugdrawer.scalpel.ScalpelModule;
 
 
-public class DebugActivity extends AppCompatActivity {
+public class DebugDrawerActivity extends AppCompatActivity {
 
     private DebugDrawer debugDrawer;
 
@@ -56,6 +56,7 @@ public class DebugActivity extends AppCompatActivity {
         debugDrawer = new DebugDrawer
                 .Builder(this)
                 .modules(
+                        new MobApiModel(this),
                         new ActionsModule(switchAction, buttonAction, spinnerAction),
                         new DeviceModule(this),
                         new BuildModule(this),
