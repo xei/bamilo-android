@@ -45,42 +45,105 @@ public class Ad4PushTracker {
 
     private Context mContext;
 
+    // First_Open :: User Opens the app for the first time
+    private static final String SHOP_COUNTRY = "shopCountry";
+    private static final String LANGUAGE_SELECTION = "LanguageSelection";
+    private static final String GA_AD_ID = "GaAdId";
+
+    // Last_Open :: Last time the user has opened the app
+    private static final String LAST_OPEN_DATE = "Last_Open_Date";
+
+    // Product_view :: Last product seen by the user
+    private static final String LAST_VIEWED_CATEGORY_NAME = "lastViewedCategoryName";
+    private static final String LAST_VIEWED_CATEGORY_KEY = "lastViewedCategoryKey";
+    private static final String LAST_PRODUCT_VIEWED = "LastProductViewed";
+    private static final String LAST_SKU_VIEWED = "LastSKUViewed";
+    private static final String LAST_BRAND_VIEWED_KEY = "LastBrandViewedKey";
+    private static final String LAST_BRAND_VIEWED_NAME = "LastBrandViewedName";
+
+    // Add_to_cart :: User adds a product to cart
+    // Remove_from_cart :: User removes a product from Cart
+    private static final String CART_STATUS = "cartStatus";
+    private static final String CART_VALUE = "cartValue";
+    private static final String DATE_LAST_CART_UPDATED = "DateLastCartUpdated";
+    private static final String LAST_CART_PRODUCT_NAME = "lastCartProductName";
+    private static final String LAST_CART_SKU = "lastCartSKU";
+    private static final String LAST_CATEGORY_ADDED_TO_CART_NAME = "lastCategoryAddedToCartName";
+    private static final String LAST_CATEGORY_ADDED_TO_CART_KEY = "lastCategoryAddedToCartKey";
+    private static final String LAST_BRAND_ADDED_TO_CART_KEY = "LastBrandAddedToCartKey";
+    private static final String LAST_BRAND_ADDED_TO_CART_NAME = "LastBrandAddedToCartName";
+
+    // Purchase :: User completes a purchase
+    private static final String LAST_ORDER_DATE = "lastOrderDate";
+    private static final String AGGREGATED_NUMBER_OF_PURCHASE = "aggregatedNumberOfPurchase";
+    private static final String ORDER_NUMBER = "OrderNumber";
+    private static final String LAST_BRAND_PURCHASED_KEY = "LastBrandPurchasedKey";
+    private static final String LAST_BRAND_PURCHASED_NAME = "LastBrandPurchasedName";
+    private static final String LAST_CATEGORY_PURCHASED_NAME = "lastCategoryPurchasedName";
+    private static final String LAST_CATEGORY_PURCHASED_KEY = "lastCategoryPurchasedKey";
+    private static final String LAST_PRODUCT_NAME_PURCHASED = "lastProductNamePurchased";
+    private static final String LAST_SKU_PURCHASED = "lastSKUPurchased";
+
+    // Add_to_favorite :: User adds a product to favorite
+    // Remove_from_Favorite :: User removes a product from favorite
+    private static final String WISHLIST_STATUS = "wishlistStatus";
+    private static final String LAST_WISHLIST_PRODUCT_NAME = "Last_Wishlist_Product_Name";
+    private static final String LAST_BRAND_ADDED_TO_WISHLIST_KEY = "LastBrandAddedToWishlistKey";
+    private static final String LAST_BRAND_ADDED_TO_WISHLIST_NAME = "LastBrandAddedToWishlistName";
+    private static final String LAST_CATEGORY_ADDED_TO_WISHLIST_NAME = "lastCategoryAddedToWishlistName";
+    private static final String LAST_CATEGORY_ADDED_TO_WISHLIST_KEY = "lastCategoryAddedToWishlistKey";
+    private static final String LAST_WISHLIST_SKU = "Last_Wishlist_SKU";
+
+    // Login_Registration :: User logs in to the app
+    // User_Info_Edit :: User updates his info on the app
+    private static final String USER_ID = "userID";
+    private static final String FIRST_NAME = "firstName";
+    private static final String USER_DOB = "userDOB";
+    private static final String USER_GENDER = "userGender";
+    private static final String LAST_NAME = "lastName";
+
+
+
+
+
+
+
+
+
     private static final String AD4PUSH_PREFERENCES = "Ad4PushPreferences";
+
     private static final String VIEW_STATE = "view";
     private static final String PURCHASES_COUNTER = "aggregatedNumberOfPurchases";
     private static final String PURCHASES_SUM_VALUE = "aggregatedValueOfPurchases";
     private static final String STATUS_IN_APP = "statusInApp";
-    private static final String WISH_LIST_PRODUCT = "lastFavouritesProduct";
-    private static final String SHOP_COUNTRY = "shopCountry";
+    private static final String WISH_LIST_PRODUCT = "lastFavouritesProduct"; // last_wishlist_sku
+
     private static final String COUNTRY_CODE = "countryCode";
     private static final String ORDER_STATUS = "orderStatus";
     private static final String CHECKOUT_STARTED = "started";
     private static final String CHECKOUT_FINISHED = "done";
-    private static final String USER_ID = "userID";
     private static final String USER_FIRST_NAME = "firstName";
-    private static final String USER_GENDER = "userGender";
-    private static final String USER_DOB = "userDOB";
     private static final String REGISTRATION = "registrationStatus";
     private static final String REGISTRATION_STARTED = "started";
     private static final String REGISTRATION_DONE = "done";
-    private static final String LAST_SEARCH = "lastSearch";
-    private static final String LAST_SEARCH_DATE = "lastSearchDate";
+//    private static final String LAST_SEARCH = "lastSearch";
+//    private static final String LAST_SEARCH_DATE = "lastSearchDate";
     private static final String PURCHASE_GRAND_TOTAL = "purchaseGrandTotal";
     private static final String CART_COUNTER = "cartStatus";
-    private static final String CART_VALUE = "cartValue";
-    private static final String CART_AVERAGE_VALUE = "avgCartValue";
-    private static final String PURCHASE_COUPON_STATUS = "couponStatus";
+
+//    private static final String CART_AVERAGE_VALUE = "avgCartValue";
+//    private static final String PURCHASE_COUPON_STATUS = "couponStatus";
     private static final String PURCHASE_LAST_DATE = "lastOrderDate";
     private static final String FAVORITES_TO_CART_SKU = "lastMovedFromFavtoCart";
-    private static final String MOST_VISITED_CATEGORY = "mostVisitedCategory";
-    private static final String PRE_INSTALL = Constants.INFO_PRE_INSTALL;
+//    private static final String MOST_VISITED_CATEGORY = "mostVisitedCategory";
+//    private static final String PRE_INSTALL = Constants.INFO_PRE_INSTALL;
     private static final String BRAND = Constants.INFO_BRAND;
-    private static final String SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
-    private static final String FILTER_BRAND = "filterBrand";
-    private static final String FILTER_COLOR = "filterColor";
-    private static final String FILTER_CATEGORY = "filterCategory";
-    private static final String FILTER_PRICE = "filterPrice";
-    private static final String FILTER_SIZE = "filterSize";
+//    private static final String SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
+//    private static final String FILTER_BRAND = "filterBrand";
+//    private static final String FILTER_COLOR = "filterColor";
+//    private static final String FILTER_CATEGORY = "filterCategory";
+//    private static final String FILTER_PRICE = "filterPrice";
+//    private static final String FILTER_SIZE = "filterSize";
     private static final String FILTER_BRAND_KEY = "brand";
     private static final String FILTER_COLOR_KEY = "color_family";
     private static final String FILTER_PRICE_KEY = "price";
@@ -99,17 +162,16 @@ public class Ad4PushTracker {
     private static final String IS_ENABLED = "Enabled";
     private static final String AD4PUSH_PREFERENCES_PERSIST = "Ad4PushPreferencesPersist";
     private static final String PUSH_NOTIFICATION_OPENED = "lastPNOpened";
-    private static final String ATTRIBUTE_SET_ID = "attributeSetID";
-    private static final String LAST_VIEWED_CATEGORY = "lastViewedCategory";
-    private static final String MOST_VIEWED_BRAND = "mostViewedBrand";
-    private static final String LAST_SORTED_BY = "lastSortedBy";
-    private static final String LAST_NAME = "lastName";
-    private static final String LAST_CAMPAIGN_VISITED = "lastCampaignVisited";
-    private static final String DATE_LAST_ADDED_TO_CART = "dateLastAddedToCart";
-    private static final String LAST_CART_PRODUCT_NAME = "lastCartProductName";
+//    private static final String ATTRIBUTE_SET_ID = "attributeSetID";
+
+//    private static final String MOST_VIEWED_BRAND = "mostViewedBrand";
+    //private static final String LAST_SORTED_BY = "lastSortedBy";
+//    private static final String LAST_CAMPAIGN_VISITED = "lastCampaignVisited";
+    private static final String DATE_LAST_ADDED_TO_CART = "dateLastAddedToCart"; // DateLastCartUpdated
+
     private static final String LAST_CART_PRODUCT_SKU = "lastCartProductSKU";
-    private static final String LAST_PRODUCT_REVIEWED = "lastProductReviewed";
-    private static final String LAST_PRODUCT_SHARED = "lastProductShared";
+//    private static final String LAST_PRODUCT_REVIEWED = "lastProductReviewed";
+//    private static final String LAST_PRODUCT_SHARED = "lastProductShared";
     private static final String LAST_CATEGORY_ADDED_TO_CART = "lastCategoryAddedToCart";
 
     private static final int EVENT_LOGIN = 1001;
@@ -150,7 +212,7 @@ public class Ad4PushTracker {
     /**
      * Constructor.
      *
-     * @param context The aplication context
+     * @param context The application context
      * @author sergiopereira
      */
     private Ad4PushTracker(Context context) {
@@ -163,7 +225,7 @@ public class Ad4PushTracker {
         screens.put(TrackingPage.HOME, HOME_VIEW);
         screens.put(TrackingPage.PRODUCT_LIST, CATEGORY_VIEW);
         screens.put(TrackingPage.PRODUCT_DETAIL, PRODUCT_VIEW);
-        screens.put(TrackingPage.LOGIN_SIGNUP, LOGIN_SIGN_UP_VIEW);
+        screens.put(TrackingPage.LOGIN_SIGN_UP, LOGIN_SIGN_UP_VIEW);
         screens.put(TrackingPage.FAVORITES, FAVORITES_VIEW);
         screens.put(TrackingPage.CART, CART_VIEW);
         screens.put(TrackingPage.REGISTRATION, REGISTRATION_VIEW);
@@ -247,55 +309,45 @@ public class Ad4PushTracker {
      * ############## TRACKING ##############
      */
 
-    /**
-     * Track a empty user id if not has credentials for auto login.
-     * @author sergiopereira
-     */
-    public void trackEmptyUserId(boolean userNeverLoggedIn) {
-        if (isEnabled && userNeverLoggedIn) {
-            Print.i(TAG, "USER NEVER LOGGED: TRACK EMPTY USER ID");
-            Bundle prefs = new Bundle();
-            prefs.putString(USER_ID, "0");
-            mA4S.updateDeviceInfo(prefs);
-        }
-    }
-
-    /**
-     * Method used to set some info about device.
-     *
-     * @see {@link Constants} used for device info.
-     * @author sergiopereira
-     */
-    private void setDeviceInfo(Bundle info) {
-        if (null != mA4S && isEnabled) {
-            // Get data from bundle
-            Bundle bundle = new Bundle();
-            bundle.putBoolean(PRE_INSTALL, info.getBoolean(Constants.INFO_PRE_INSTALL));
-            bundle.putString(BRAND, info.getString(Constants.INFO_BRAND));
-            bundle.putString(SIM_OPERATOR, info.getString(Constants.INFO_SIM_OPERATOR));
-            mA4S.updateDeviceInfo(bundle);
-            Print.i(TAG, "SET DEVICE INFO: " + bundle.toString());
-        }
-    }
+//    /**
+//     * Method used to set some info about device.
+//     *
+//     * @see {@link Constants} used for device info.
+//     * @author sergiopereira
+//     */
+//    private void setDeviceInfo(Bundle info) {
+//        if (null != mA4S && isEnabled) {
+//            // Get data from bundle
+//            Bundle bundle = new Bundle();
+//            bundle.putBoolean(PRE_INSTALL, info.getBoolean(Constants.INFO_PRE_INSTALL));
+//            bundle.putString(BRAND, info.getString(Constants.INFO_BRAND));
+//            bundle.putString(SIM_OPERATOR, info.getString(Constants.INFO_SIM_OPERATOR));
+//            mA4S.updateDeviceInfo(bundle);
+//            Print.i(TAG, "SET DEVICE INFO: " + bundle.toString());
+//        }
+//    }
 
     /**
      * First open
      */
-    public void trackAppFirstOpen(Bundle info) {
+    public void trackAppOpen(String shop, String language) {
         if (isEnabled) {
+            Bundle bundle = new Bundle();
             SharedPreferences settings = mContext.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
             boolean alreadyOpened = settings.getBoolean(HAS_OPENED_APP, false);
             if (!alreadyOpened) {
-                String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
-                mA4S.trackEvent(EVENT_FIRST_OPEN_APP, "firstOpenDate=" + currentDateAndTime);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean(HAS_OPENED_APP, true);
                 editor.apply();
-            }
-        }
 
-        // Set some info
-        setDeviceInfo(info);
+                bundle.putString(SHOP_COUNTRY, shop);
+                bundle.putString(LANGUAGE_SELECTION, language);
+                storeGaIdOnAccengage();
+            } else {
+                bundle.putString(LAST_OPEN_DATE, DateTimeUtils.getCurrentDateTime());
+            }
+            mA4S.updateDeviceInfo(bundle);
+        }
     }
 
     public void trackFacebookConnect(String customerId) {
@@ -386,7 +438,7 @@ public class Ad4PushTracker {
         if (isEnabled) {
             Bundle prefs = new Bundle();
             prefs.putString(ORDER_STATUS, CHECKOUT_STARTED);
-            prefs.putDouble(CART_VALUE, cartValue);
+            prefs.putDouble(LAST_CART_PRODUCT_NAME, cartValue);
             prefs.putInt(CART_COUNTER, cartQt);
             prefs.putString(ATTRIBUTE_SET_ID, attributeIds);
             mA4S.updateDeviceInfo(prefs);
@@ -421,7 +473,7 @@ public class Ad4PushTracker {
             prefs.putString(STATUS_IN_APP, STATUS_CUSTOMER);
             // Cart
             prefs.putInt(CART_COUNTER, orderCount);
-            prefs.putDouble(CART_VALUE, cartValue);
+            prefs.putDouble(LAST_CART_PRODUCT_NAME, cartValue);
             prefs.putDouble(CART_AVERAGE_VALUE, average);
             // Order
             prefs.putDouble(PURCHASE_GRAND_TOTAL, grandTotal);
@@ -575,7 +627,7 @@ public class Ad4PushTracker {
     public void trackCart(double cartValue, int cartCount, String attributeIds) {
         if (isEnabled) {
             Bundle prefs = new Bundle();
-            prefs.putDouble(CART_VALUE, cartValue);
+            prefs.putDouble(LAST_CART_PRODUCT_NAME1, cartValue);
             prefs.putInt(CART_COUNTER, cartCount);
             prefs.putString(ATTRIBUTE_SET_ID, attributeIds);
             mA4S.updateDeviceInfo(prefs);
@@ -603,7 +655,7 @@ public class Ad4PushTracker {
     public void trackLastViewedCategory(String categoryId) {
         if (isEnabled) {
             Bundle prefs = new Bundle();
-            prefs.putString(LAST_VIEWED_CATEGORY, categoryId);
+            prefs.putString(CART_VALUE1, categoryId);
             mA4S.updateDeviceInfo(prefs);
             Print.i(TAG, "TRACK VIEWED CATEGORY: " + prefs.toString());
         }
@@ -641,7 +693,7 @@ public class Ad4PushTracker {
             String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
             Bundle prefs = new Bundle();
             prefs.putString(DATE_LAST_ADDED_TO_CART, currentDateAndTime);
-            prefs.putString(LAST_CART_PRODUCT_NAME, productName);
+            prefs.putString(DATE_LAST_CART_UPDATED1, productName);
             prefs.putString(LAST_CART_PRODUCT_SKU, productSku);
             prefs.putString(LAST_CATEGORY_ADDED_TO_CART, productCategoryId);
             mA4S.updateDeviceInfo(prefs);
@@ -722,7 +774,7 @@ public class Ad4PushTracker {
                     Info adInfo = AdvertisingIdClient.getAdvertisingIdInfo(mContext);
                     String id = adInfo.getId();
                     Bundle bundle = new Bundle();
-                    bundle.putString("gps_adid", id);
+                    bundle.putString(GA_AD_ID, id);
                     A4S.get(mContext).updateDeviceInfo(bundle);
                 } catch (IllegalStateException | GooglePlayServicesRepairableException | IOException | GooglePlayServicesNotAvailableException | NullPointerException e) {
                     e.printStackTrace();
