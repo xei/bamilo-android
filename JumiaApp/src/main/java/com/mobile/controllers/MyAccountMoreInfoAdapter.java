@@ -31,9 +31,9 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
 
     public final static int APP_VERSION_POSITION = 0;
 
-    private List<TargetHelper> staticPages;
+    private final List<TargetHelper> staticPages;
 
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public MyAccountMoreInfoAdapter(@Nullable List<TargetHelper> staticPages, @NonNull Context context) {
         this.staticPages = staticPages;
