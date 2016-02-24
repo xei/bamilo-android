@@ -292,9 +292,9 @@ public class AdjustTracker {
             eventPDVScreen.addPartnerParameter(AdjustKeys.CATEGORY_ID, prod.getCategoryId());
 
             // Add brand ID
-            if(prod.getBrandId() != 0){
-                eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(prod.getBrandId()));
-                eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(prod.getBrandId()));
+            if(prod.getBrand().getId() != 0){
+                eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(prod.getBrand().getId()));
+                eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(prod.getBrand().getId()));
             }
 
 

@@ -72,6 +72,11 @@
                 android:id="@+id/pdv_rating_container"
                 layout="@layout/pdv_fragment_rating" />
 
+            <!-- BRAND SECTION -->
+            <include
+                android:id="@+id/pdv_brand_section"
+                layout="@layout/pdv_brand_section" />
+
             <!-- SPECIFICATIONS -->
             <include
                 android:id="@+id/pdv_specs_container"

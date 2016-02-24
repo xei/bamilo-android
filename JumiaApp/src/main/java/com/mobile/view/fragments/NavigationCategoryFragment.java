@@ -157,11 +157,11 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         @TargetLink.Type String link = category.getTargetLink();
         Print.i(TAG, "code1link : goToCatalog : "+link);
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(category.getName()).addAppendListener(this).run();
-        if(!result) {
-            showUnexpectedErrorWarning();
-        }
-
+        new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(category.getName())
+                .addAppendListener(this)
+                .enableWarningErrorMessage()
+                .run();
     }
 
     /**

@@ -41,7 +41,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Set name
         holder.name.setText(item.getName());
         // Set brand
-        holder.brand.setText(item.getBrand());
+        holder.brand.setText(item.getBrandName());
         // Show / Hide New Arrival Badge
         holder.newArrivalBadge.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         //Show/Hide Shop First

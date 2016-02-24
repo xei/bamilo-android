@@ -3,6 +3,7 @@ package com.mobile.newFramework.objects.product.pojo;
 import android.os.Parcel;
 
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.Brand;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.cache.WishListCache;
@@ -19,18 +20,15 @@ import org.json.JSONObject;
 public class ProductRegular extends ProductBase {
 
     protected String mName;
-    protected String mBrand;
     protected String mImageUrl;
     private String mCategories;
     protected boolean isNew;
     protected double mAvgRating;
     protected int mTotalReviews;
     protected int mTotalRatings;
-    private int mBrandId;
     protected String mTarget;
     protected String mRichRelevanceClickHash;
-    private String mBrandKey;
-
+    protected Brand mBrand;
     /**
      * Empty constructor
      */
@@ -52,9 +50,13 @@ public class ProductRegular extends ProductBase {
     protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mName = jsonObject.optString(RestConstants.NAME);
-        mBrand = jsonObject.getString(RestConstants.BRAND);
-        mBrandId = jsonObject.optInt(RestConstants.BRAND_ID);
-        mBrandKey = jsonObject.optString(RestConstants.BRAND_URL_KEY);
+        // TODO: Remove this line when all app parses brand_entity object. For now happens just in PDV
+        mBrand = new Brand(jsonObject.optString(RestConstants.BRAND), jsonObject.optInt(RestConstants.BRAND_ID));
+        JSONObject brandObject = jsonObject.optJSONObject(RestConstants.BRAND_ENTITY);
+        if(brandObject != null) {
+            mBrand.initialize(brandObject);
+        }
+
         // Optional TODO FIX THIS
         mImageUrl = jsonObject.optString(RestConstants.IMAGE);
         if(TextUtils.isEmpty(mImageUrl)) {
@@ -98,13 +100,6 @@ public class ProductRegular extends ProductBase {
         return mName;
     }
 
-    public String getBrand() {
-        return mBrand;
-    }
-
-    public int getBrandId() {
-        return mBrandId;
-    }
 
     public String getImageUrl() {
         return mImageUrl;
@@ -152,8 +147,15 @@ public class ProductRegular extends ProductBase {
     }
 
     public String getBrandKey() {
-        return mBrandKey;
+        return mBrand.getKey();
     }
+
+
+    public Brand getBrand(){ return mBrand;}
+
+    public String getBrandName(){ return mBrand.getName();}
+
+
 
     /*
 	 * ############ PARCELABLE ############
@@ -162,9 +164,6 @@ public class ProductRegular extends ProductBase {
     protected ProductRegular(Parcel in) {
         super(in);
         mName = in.readString();
-        mBrand = in.readString();
-        mBrandId = in.readInt();
-        mBrandKey = in.readString();
         mImageUrl = in.readString();
         mCategories = in.readString();
         isNew = in.readByte() != 0x00;
@@ -173,15 +172,13 @@ public class ProductRegular extends ProductBase {
         mTotalRatings = in.readInt();
         mTarget = in.readString();
         mRichRelevanceClickHash = in.readString();
+        mBrand = in.readParcelable(Brand.class.getClassLoader());
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(mName);
-        dest.writeString(mBrand);
-        dest.writeInt(mBrandId);
-        dest.writeString(mBrandKey);
         dest.writeString(mImageUrl);
         dest.writeString(mCategories);
         dest.writeByte((byte) (isNew ? 0x01 : 0x00));
@@ -190,6 +187,7 @@ public class ProductRegular extends ProductBase {
         dest.writeInt(mTotalRatings);
         dest.writeString(mTarget);
         dest.writeString(mRichRelevanceClickHash);
+        dest.writeParcelable(mBrand,flags);
     }
 
     @Override
