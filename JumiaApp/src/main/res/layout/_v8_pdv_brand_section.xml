@@ -28,28 +28,4 @@
 
 
 </RelativeLayout>
-<!--
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/PdvPriceTagStyle" >
 
-    <ImageView
-        android:id="@+id/pdv_brand_image"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/pdv_brand_text"
-        style="@style/TextList_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/pdv_brand_image"
-        android:layout_marginRight="8dp"
-        android:layout_centerVertical="true"
-        android:text="aaaaa skjdldjk"/>
-
-
-</RelativeLayout>
-    -->
