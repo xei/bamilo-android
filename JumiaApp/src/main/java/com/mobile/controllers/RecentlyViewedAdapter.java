@@ -87,7 +87,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
     private void setTextContent(RecentlyViewedHolder prodItem, ProductMultiple addableToCart) {
         if (addableToCart != null) {
             // Set brand
-            String brand = addableToCart.getBrand();
+            String brand = addableToCart.getBrandName();
             if (brand != null) {
                 brand = brand.toUpperCase();
             }

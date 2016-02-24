@@ -315,6 +315,7 @@ public class RestConstants {
     public static final String APPLICATION_ID = "application_id";
     public static final String SUGGESTER_API_KEY = "suggester_api_key";
     public static final String NAMESPACE_PREFIX = "namespace_prefix";
+    public static final String BRAND_ENTITY = "brand_entity";
     // Algolia related
     public static final String HITS = "hits";
     public static final String LOCALIZABLE_ATTRIBUTES = "localizable_attributes";

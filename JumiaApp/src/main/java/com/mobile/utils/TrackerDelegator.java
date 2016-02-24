@@ -680,7 +680,7 @@ public class TrackerDelegator {
         bundle.putString(TrackerDelegator.SKU_KEY, simpleSku);
         bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
         bundle.putString(TrackerDelegator.NAME_KEY, product.getName());
-        bundle.putString(TrackerDelegator.BRAND_KEY, product.getBrand());
+        bundle.putString(TrackerDelegator.BRAND_KEY, product.getBrandName());
         bundle.putDouble(TrackerDelegator.RATING_KEY, product.getAvgRating());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
@@ -695,7 +695,7 @@ public class TrackerDelegator {
         bundle.putString(TrackerDelegator.SKU_KEY, product.getSku());
         bundle.putDouble(TrackerDelegator.PRICE_KEY, product.getPriceForTracking());
         bundle.putString(TrackerDelegator.NAME_KEY, product.getName());
-        bundle.putString(TrackerDelegator.BRAND_KEY, product.getBrand());
+        bundle.putString(TrackerDelegator.BRAND_KEY, product.getBrandName());
         bundle.putDouble(TrackerDelegator.RATING_KEY, product.getAvgRating());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, product.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, product.getCategories());
@@ -758,7 +758,7 @@ public class TrackerDelegator {
         bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
         bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
-        bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrand());
+        bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrandName());
         bundle.putDouble(TrackerDelegator.RATING_KEY, mCompleteProduct.getAvgRating());
         bundle.putDouble(TrackerDelegator.DISCOUNT_KEY, mCompleteProduct.getMaxSavingPercentage());
         bundle.putString(TrackerDelegator.CATEGORY_KEY, mCompleteProduct.getCategories());
@@ -823,7 +823,7 @@ public class TrackerDelegator {
      */
     public static void trackAddToFavorites(@NonNull ProductRegular completeProduct) {
         String productSku = completeProduct.getSku();
-        String productBrand = completeProduct.getBrand();
+        String productBrand = completeProduct.getBrandName();
         double productPrice = completeProduct.getPriceForTracking();
         double averageRating = completeProduct.getAvgRating();
         double productDiscount = completeProduct.getMaxSavingPercentage();

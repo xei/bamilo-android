@@ -158,7 +158,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         // Set name
         holder.name.setText(item.getName());
         // Set brand
-        holder.brand.setText(item.getBrand());
+        holder.brand.setText(item.getBrandName());
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set rating and reviews
