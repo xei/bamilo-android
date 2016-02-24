@@ -80,6 +80,7 @@
     <item name="product_specs_fragment"                 type="layout">@layout/_def_product_specs_fragment</item>
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
     <item name="pdv_price_tag"                          type="layout">@layout/_def_pdv_price_tag</item>
+    <item name="pdv_brand_section"                      type="layout">@layout/_def_pdv_brand_section</item>
     <!-- COMBOS -->
     <item name="pdv_combo_item_list"                    type="layout">@layout/_def_pdv_combo_item_list</item>
     <item name="pdv_fragment_main" 	                    type="layout">@layout/_def_pdv_fragment_main</item>

@@ -7,15 +7,10 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
-import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.RestConstants;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 /**
  * Class used to represent an item associated a campaign
@@ -69,7 +64,7 @@ public class CampaignItem extends ProductMultiple implements IJSONSerializable {
      */
     @Override
     public String toString() {
-        return mBrand + " " + mName + " " + mSku + " " + mImageUrl;
+        return mBrand.getName() + " " + mName + " " + mSku + " " + mImageUrl;
     }
 
     /*

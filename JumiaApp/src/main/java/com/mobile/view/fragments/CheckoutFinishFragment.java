@@ -391,7 +391,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             ProductUtils.setShopFirst(item, shopFirstImageView);
             ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
             // Brand
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrand());
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrandName());
             // Name
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_name)).setText(item.getName());
             // Quantity
