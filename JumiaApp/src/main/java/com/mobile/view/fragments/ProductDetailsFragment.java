@@ -357,6 +357,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_seller_name) {
             goToSellerCatalog();
         }
+        // case brand link
+        else if (id == R.id.pdv_brand_text){
+            processTargetLink(view);
+        }
 
     }
 
@@ -560,7 +564,29 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
             TextView txBrandInfo = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
             txBrandInfo.setText(mProduct.getBrandName());
+
+            txBrandInfo.setTag(R.id.target_link,mProduct.getBrand().getTarget());
+            txBrandInfo.setTag(R.id.target_title,mProduct.getBrand().getName());
+
+            txBrandInfo.setOnClickListener(this);
+
         }
+    }
+
+
+    /**
+     * Go to brands target link
+     * */
+    private void processTargetLink(View view){
+        @TargetLink.Type String link = (String)view.getTag(R.id.target_link);
+        String title = (String) view.getTag(R.id.target_title);
+
+        new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(title)
+                .retainBackStackEntries()
+                .addAppendListener(this)
+                .enableWarningErrorMessage()
+                .run();
     }
 
 
