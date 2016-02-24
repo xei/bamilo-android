@@ -671,7 +671,7 @@ public class TrackerDelegator {
         // Data
         String name = product.getBrand() + " " + product.getName();
         String sku = product.getSku();
-        String brand = product.getBrand();
+        String brand = product.getBrandName();
         String category = "";
         String subCategory = "";
         double price = product.getPriceForTracking();

@@ -147,9 +147,8 @@ public class ProductRegular extends ProductBase {
     }
 
     public String getBrandKey() {
-        return mBrand.getKey();
+        return mBrand.getUrlKey();
     }
-
 
     public Brand getBrand(){ return mBrand;}
 

@@ -301,7 +301,7 @@ public class Ad4PushTracker {
             bundle.putString(LAST_PRODUCT_VIEWED, product.getName());
             bundle.putString(LAST_SKU_VIEWED, product.getSku());
             bundle.putString(LAST_BRAND_VIEWED_KEY, product.getBrandKey());
-            bundle.putString(LAST_BRAND_VIEWED_NAME, product.getBrand());
+            bundle.putString(LAST_BRAND_VIEWED_NAME, product.getBrandName());
             mA4S.updateDeviceInfo(bundle);
         }
     }
@@ -342,7 +342,7 @@ public class Ad4PushTracker {
             bundle.putString(LAST_WISHLIST_SKU, product.getSku());
             bundle.putString(LAST_WISHLIST_PRODUCT_NAME, product.getName());
             bundle.putString(LAST_BRAND_ADDED_TO_WISHLIST_KEY, product.getBrandKey());
-            bundle.putString(LAST_BRAND_ADDED_TO_WISHLIST_NAME, product.getBrand());
+            bundle.putString(LAST_BRAND_ADDED_TO_WISHLIST_NAME, product.getBrandName());
             bundle.putString(LAST_CATEGORY_ADDED_TO_WISHLIST_KEY, ShopSelector.getCountryCode()); // TODO
             bundle.putString(LAST_CATEGORY_ADDED_TO_WISHLIST_NAME, ShopSelector.getCountryCode()); // TODO
             mA4S.updateDeviceInfo(bundle);
