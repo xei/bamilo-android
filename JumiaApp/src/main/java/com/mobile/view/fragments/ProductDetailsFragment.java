@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -1310,8 +1311,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         //set total price
         TextView txTotalPrice = (TextView) mComboProductsLayout.findViewById(R.id.txTotalComboPrice);
         txTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
-        //
-        ArrayList<ProductBundle> bundleProducts = bundleList.getProducts();
+        //revert elements if RTL
+        ArrayList<ProductBundle> bundleProducts = new ArrayList<>(bundleList.getProducts());
+        if(ShopSelector.isRtl() && CollectionUtils.isNotEmpty(bundleProducts)){
+                Collections.reverse(bundleProducts);
+        }
+
         LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int count = 0;
         mTableBundles.removeAllViews();
@@ -1329,6 +1334,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mTableBundles.addView(inflater.inflate(R.layout.pdv_fragment_bundle, mTableBundles, false));
             }
             count++;
+        }
+
+        if(ShopSelector.isRtl()){
+            final HorizontalScrollView mHorizontalScrollView = (HorizontalScrollView) mComboProductsLayout.findViewById(R.id.comboGlobal).findViewById(R.id.pdv_scroll_bundle);
+            // slide the horizontal scroll view to the end to show the first element
+            mHorizontalScrollView.postDelayed(new Runnable() {
+                public void run() {
+                    mHorizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                }
+            }, 100L);
         }
 
         mComboProductsLayout.setOnClickListener(this);
