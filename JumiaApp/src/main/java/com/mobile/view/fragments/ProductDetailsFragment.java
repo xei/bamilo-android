@@ -3,6 +3,7 @@ package com.mobile.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
@@ -35,6 +37,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
+import com.mobile.newFramework.objects.product.Brand;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.RichRelevance;
@@ -559,16 +562,31 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if(!mProduct.getBrand().hasTargetAndImage()){
             mBrandView.setVisibility(View.GONE);
         }else{
-            ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
-            RocketImageLoader.instance.loadImage(mProduct.getBrand().getImageUrl(),brandImage, null, R.drawable.no_image_small);
+            Brand brand = mProduct.getBrand();
 
-            TextView txBrandInfo = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
-            txBrandInfo.setText(mProduct.getBrandName());
-
-            txBrandInfo.setTag(R.id.target_link,mProduct.getBrand().getTarget());
-            txBrandInfo.setTag(R.id.target_title,mProduct.getBrand().getName());
+            final TextView txBrandInfo = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
+            txBrandInfo.setText(brand.getName());
+            txBrandInfo.setTag(R.id.target_link,brand.getTarget());
+            txBrandInfo.setTag(R.id.target_title,brand.getName());
 
             txBrandInfo.setOnClickListener(this);
+
+            ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
+            RocketImageLoader.instance.loadImage(brand.getImageUrl(),brandImage,false, new RocketImageLoader.RocketImageLoaderListener(){
+
+                @Override
+                public void onLoadedSuccess(String imageUrl, Bitmap bitmap) {}
+
+                @Override
+                public void onLoadedError() {
+                    //image invisible and text margins ajusted
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) txBrandInfo.getLayoutParams();
+                    params.setMargins(0, 0, 0, 0);
+                }
+
+                @Override
+                public void onLoadedCancel() {}
+            });
 
         }
     }
