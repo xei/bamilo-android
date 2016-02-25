@@ -13,9 +13,9 @@
         android:layout_width="wrap_content"
         android:layout_height="@dimen/pdv_brand_height"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/layout_padding"
+        android:layout_marginRight="@dimen/dimen_16dp"
         android:layout_centerVertical="true"
-        />
+        android:scaleType="centerCrop" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_brand_text"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/pdv_brand_image"
-        android:layout_marginRight="@dimen/margin_mid"
+        android:layout_marginRight="@dimen/dimen_8dp"
         android:layout_centerVertical="true" />
 
 
