@@ -24,16 +24,17 @@ import java.util.regex.PatternSyntaxException;
  * Helper singleton class for the Google Analytics tracking library.
  * <p/>
  * <br>
- * <p/>
+ *
  * Copyright (C) 2012 Rocket Internet - All Rights Reserved
  * <p/>
- * <p/>
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited <br>
  * Proprietary and confidential.
  *
  * @author Michael Kroez
- * @version 0.1
  * @modified sergiopereira
+ * @version 0.1
+ *
  */
 public class AnalyticsGoogle {
 
@@ -78,9 +79,8 @@ public class AnalyticsGoogle {
 
     /**
      * Gets the current instance of the analytics object to use.
-     *
      * @return the global {@link GoogleAnalytics} singleton object, creating one
-     * if necessary.
+     *         if necessary.
      */
     public static AnalyticsGoogle get() {
         return (sInstance == null) ? sInstance = new AnalyticsGoogle() : sInstance;
@@ -121,7 +121,6 @@ public class AnalyticsGoogle {
 
     /**
      * Manual Dispatch
-     *
      * @author sergiopereira
      */
     public void dispatchHits() {
@@ -133,17 +132,16 @@ public class AnalyticsGoogle {
     }
 
     /**
-     * ################## CONFIGS ##################
+     * ################## CONFIGS ################## 
      */
 
     /**
      * When dry run is set, hits will not be dispatched, but will still be logged as though they were dispatched.
-     *
      * @author sergiopereira
      */
     private void validateDebugMode(boolean debugMode) {
         // Case debug mode
-        if (debugMode) {
+        if(debugMode) {
             Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
             mAnalytics.setDryRun(true);
             mAnalytics.getLogger().setLogLevel(LogLevel.VERBOSE);
@@ -152,7 +150,6 @@ public class AnalyticsGoogle {
 
     /**
      * Load keys from saved preferences
-     *
      * @author sergiopereira
      */
     private void loadKeys() {
@@ -163,9 +160,9 @@ public class AnalyticsGoogle {
     }
 
 
+
     /**
      * Update the tracker using the current key
-     *
      * @author sergiopereira
      */
     private void updateTracker() {
@@ -180,12 +177,11 @@ public class AnalyticsGoogle {
     }
 
     /**
-     * ################## BASE GA TRACKING (v4) ##################
+     * ################## BASE GA TRACKING (v4) ################## 
      */
 
     /**
      * Build and send a page
-     *
      * @author sergiopereira
      */
     private void trackPage(String path) {
@@ -203,11 +199,11 @@ public class AnalyticsGoogle {
 
     /**
      * Build and send an event.
-     *
      * @author sergiopereira
      */
     private void trackEvent(String category, String action, String label, long value) {
         Print.i(TAG, "TRACK EVENT: category->" + category + " action->" + action + " label->" + label + " value->" + value);
+
         HitBuilders.EventBuilder builder = new HitBuilders.EventBuilder()
                 .setCategory(category)
                 .setAction(action)
@@ -215,7 +211,7 @@ public class AnalyticsGoogle {
                 .setCustomDimension(PRE_INSTALL_ID, String.valueOf(getCustomData().getBoolean(Constants.INFO_PRE_INSTALL)))
                 .setCustomDimension(SIM_OPERATOR_ID, getCustomData().getString(Constants.INFO_SIM_OPERATOR));
         // Only set Value if is a valid Value
-        if (value != NO_VALUE) {
+        if(value != NO_VALUE){
             builder.setValue(value);
         }
         trackGACampaign();
@@ -225,7 +221,6 @@ public class AnalyticsGoogle {
 
     /**
      * Build and send a social action.
-     *
      * @author sergiopereira
      */
     private void trackShare(String category, String action, String target) {
@@ -245,7 +240,6 @@ public class AnalyticsGoogle {
 
     /**
      * Build and send a timing.
-     *
      * @author sergiopereira
      */
     private void trackTiming(String category, String name, long milliSeconds, String label) {
@@ -265,7 +259,6 @@ public class AnalyticsGoogle {
 
     /**
      * Build and send a transaction.
-     *
      * @author sergiopereira
      */
     private void trackTransaction(String order, long revenue, String currencyCode) {
@@ -285,7 +278,6 @@ public class AnalyticsGoogle {
 
     /**
      * Build and send a transaction item.
-     *
      * @author sergiopereira
      */
     private void trackTransactionItem(String order, String name, String sku, String category, long price, long quantity, String currencyCode) {
@@ -309,41 +301,37 @@ public class AnalyticsGoogle {
 
     /**
      * Build and send a GA campaign.
-     *
      * @author sergiopereira
      */
     protected void trackGACampaign() {
         //setting as empty string or a null object, will show on GA has "not set"
-        if (!mUtmCampaign.equals(DONT_SEND)) {
+        if(!mUtmCampaign.equals(DONT_SEND)){
             mTracker.set("&cn", mUtmCampaign);
         }
-        if (!mUtmSource.equals(DONT_SEND)) {
+        if(!mUtmSource.equals(DONT_SEND)){
             mTracker.set("&cs", mUtmSource);
         }
-        if (!mUtmMedium.equals(DONT_SEND)) {
+        if(!mUtmMedium.equals(DONT_SEND)){
             mTracker.set("&cm", mUtmMedium);
         }
     }
 
     /**
      * Enable Display Advertising features.
-     *
      * @author ricardo
      * @modified sergiopereira
      */
     private void enableAdvertisingCollection(Context context) {
         // Null if theres no ga_id from API
-        if (mTracker != null)
-            mTracker.enableAdvertisingIdCollection(context.getResources().getBoolean(R.bool.ga_advertisingIDCollection));
+        if(mTracker!= null) mTracker.enableAdvertisingIdCollection(context.getResources().getBoolean(R.bool.ga_advertisingIDCollection));
     }
 
     /**
-     * ################## SPECIFIC TRACKING ##################
+     * ################## SPECIFIC TRACKING ################## 
      */
 
     /**
      * Track a page via {@link TrackingPage}.
-     *
      * @author sergiopereira
      */
     public void trackPage(TrackingPage page) {
@@ -358,7 +346,6 @@ public class AnalyticsGoogle {
 
     /**
      * Track an event via {@link TrackingEvent}.
-     *
      * @author sergiopereira
      */
     public void trackEvent(TrackingEvent event, String label, long value) {
@@ -372,7 +359,7 @@ public class AnalyticsGoogle {
     }
 
     /**
-     * specific function to track purchase flow from home page teasers
+     * Specific function to track purchase flow from home page teasers
      */
     public void trackBannerFlowPurchase(String category, int actionInt, String label, long value) {
         // Validation
@@ -392,22 +379,22 @@ public class AnalyticsGoogle {
         // Get and send page
         String category = mContext.getString(cat);
         String action = mContext.getString(TrackingEvent.HOME_BANNER_CLICK.getAction());
-        if (position != -1) {
-            category = category + "_" + position;
+        if(position != -1){
+            category = category+"_"+position;
         }
         // Tracking
         trackEvent(category, action, label, NO_VALUE);
     }
 
     /**
-     *
+     * Track time
      */
     public void trackLoadTiming(int categoryId, long beginMillis) {
         // Validation
         if (!isEnabled) return;
         // Data
         long milliseconds = System.currentTimeMillis();
-        if (milliseconds < beginMillis || beginMillis <= 0) {
+        if ( milliseconds < beginMillis || beginMillis <= 0 ) {
             Print.d(TAG, "trackTiming ERROR : start -> " + beginMillis);
             return;
         }
@@ -420,7 +407,6 @@ public class AnalyticsGoogle {
         trackTiming(category, name, milliseconds, "duration for event");
     }
 
-
     /**
      *
      */
@@ -429,7 +415,7 @@ public class AnalyticsGoogle {
     }
 
     /**
-     *
+     * Track checkout
      */
     public void trackCheckout(List<PurchaseCartItem> items) {
         // Validation
@@ -453,16 +439,16 @@ public class AnalyticsGoogle {
     }
 
     /**
-     *
+     * Track product
      */
     public void trackProduct(TrackingEvent event, String navigationPrefix, String navigationPath, String name, String sku, Double price) {
         // Validation
         if (!isEnabled) return;
         // Data
-        if (navigationPrefix == null) navigationPrefix = "n.a.";
+        if(navigationPrefix == null) navigationPrefix = "n.a.";
         String pageView;
         String n = !TextUtils.isEmpty(name) ? name.replace(" ", "_") : "n.a.";
-        if (!TextUtils.isEmpty(navigationPath)) {
+        if(!TextUtils.isEmpty(navigationPath)){
             pageView = navigationPrefix + "_" + navigationPath + "/" + n;
         } else {
             pageView = navigationPrefix + "_" + n;
@@ -473,7 +459,7 @@ public class AnalyticsGoogle {
 
 
     /**
-     *
+     * Track payment
      */
     public void trackPaymentMethod(String email, String action) {
         // Validation
@@ -485,10 +471,9 @@ public class AnalyticsGoogle {
 
     /**
      * Tracking the purchase using the EURO currency.
-     *
-     * @param orderNr   number
+     * @param orderNr number
      * @param cartValue value euro converted
-     * @param items     list of items
+     * @param items list of items
      * @author sergiopereira
      */
     public void trackPurchase(String orderNr, double cartValue, List<PurchaseItem> items) {
@@ -510,9 +495,9 @@ public class AnalyticsGoogle {
 
 
     /**
-     *
+     * Track share
      */
-    public void trackShare(String sku) {
+    public void trackShare(String sku){
         // Validate
         if (!isEnabled) return;
         // Get data
@@ -523,9 +508,9 @@ public class AnalyticsGoogle {
     }
 
     /**
-     *
+     * Track rate
      */
-    public void trackRateProduct(String sku, Long value, String ratingLabel) {
+    public void trackRateProduct(String sku, Long value, String ratingLabel){
         // Validate
         if (!isEnabled) return;
         // Data
@@ -536,20 +521,18 @@ public class AnalyticsGoogle {
 
     /**
      * Track a page from a string value.
-     *
-     * @author sergiopereira
      */
-    public void trackGenericPage(String page) {
+    public void trackGenericPage(String page){
         // Validate
         if (!isEnabled) return;
-        // Data
+        // Data		
         trackPage(page);
     }
 
     /**
      * Share the app
      */
-    public void trackShareApp(TrackingEvent event, String label) {
+    public void trackShareApp(TrackingEvent event, String label){
         // Validate
         if (!isEnabled) return;
         // Data
@@ -559,7 +542,7 @@ public class AnalyticsGoogle {
     /**
      * Address creation
      */
-    public void trackAddressCreation(TrackingEvent event, String label) {
+    public void trackAddressCreation(TrackingEvent event, String label){
         // Validate
         if (!isEnabled) return;
         // Data
@@ -568,12 +551,12 @@ public class AnalyticsGoogle {
 
     /**
      * Google Analytics "General Campaign Measurement"
-     * <p/>
-     * Method used to create a UTM string with all the info and their constrains.
-     * <p/>
-     * specifications: https://jira.rocket-internet.de/browse/NAFAMZ-13827
      *
+     * Method used to create a UTM string with all the info and their constrains.
+     *
+     * specifications: https://jira.rocket-internet.de/browse/NAFAMZ-13827
      * @param campaignString string sent in the UTM parameter of a push notification
+     *
      */
     public void setGACampaign(String campaignString) {
         // Validation
@@ -613,21 +596,20 @@ public class AnalyticsGoogle {
 
     /**
      * Functions that receives s string and looks for the value of a specific parameter
-     *
      * @return utm parameter
      */
     public String getUtmParameter(String campaignString, String parameter) {
-        try {
+        try{
             String[] separated = campaignString.split(parameter);
-            String afterParameter = separated[1];
+            String afterParameter =separated[1];
 
-            if (afterParameter.contains("&")) {
+            if(afterParameter.contains("&")){
                 String[] separatedPost = afterParameter.split("&");
                 return separatedPost[0];
             } else {
                 return afterParameter;
             }
-        } catch (PatternSyntaxException | NullPointerException | IndexOutOfBoundsException e) {
+        } catch (PatternSyntaxException | NullPointerException | IndexOutOfBoundsException e){
             e.printStackTrace();
             return "";
         }
@@ -636,7 +618,6 @@ public class AnalyticsGoogle {
 
     /**
      * Save the custom data.
-     *
      * @author sergiopereira
      */
     public void setCustomData(Bundle data) {
@@ -648,7 +629,6 @@ public class AnalyticsGoogle {
 
     /**
      * Get the current custom data.
-     *
      * @return data
      * @author sergiopereira
      */

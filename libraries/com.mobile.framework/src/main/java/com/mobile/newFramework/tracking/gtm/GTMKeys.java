@@ -52,8 +52,6 @@ public class GTMKeys {
     public static String AVERAGERATINGTOTAL = "averageRatingTotal";
     public static String QUANTITYCART = "quantityCart";
     public static String CARTVALUE = "cartValue";
-    public static String SUBCATEGORY = "subcategory";
-    public static String PAGENUMBER = "pageNumber";
     public static String ADDRESSCORRECT = "addressCorrect";
     public static String INSTALLNETWORK = "installNetwork";
     public static String INSTALLADGROUP = "installAdgroup";

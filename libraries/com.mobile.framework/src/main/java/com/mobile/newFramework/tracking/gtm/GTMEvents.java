@@ -21,7 +21,6 @@ public class GTMEvents {
     public static String GTM_REMOVE_FROM_CART = "removeFromCart";
     public static String GTM_RATE_PRODUCT = "rateProduct";
     public static String GTM_VIEW_RATING= "viewRating";
-    public static String GTM_VIEW_CATALOG= "viewCatalog";
     public static String GTM_FILTER_CATALOG= "filterCatalog";
     public static String GTM_SORT_CATALOG= "sortCatalog";
     public static String GTM_ADD_TO_WL = "addToWL";

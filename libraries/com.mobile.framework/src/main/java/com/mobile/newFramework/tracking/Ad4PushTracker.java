@@ -234,7 +234,7 @@ public class Ad4PushTracker {
     }
 
     /**
-     *
+     * User preferences
      */
     public static boolean getActiveAd4Push(Context context) {
         SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES_PERSIST, Context.MODE_PRIVATE);
@@ -242,7 +242,7 @@ public class Ad4PushTracker {
     }
 
     /**
-     *
+     * User preferences
      */
     public static void setActiveAd4Push(Context context, boolean isActive) {
         SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES_PERSIST, Context.MODE_PRIVATE);
