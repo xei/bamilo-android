@@ -23,9 +23,9 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import java.io.IOException;
 
 /**
- * Accengage
+ * Class used for Accengage tracking
  * @author nunocastro
- * @modified sergiopereira
+ * @modified 
  */
 public class Ad4PushTracker {
 
@@ -41,7 +41,6 @@ public class Ad4PushTracker {
     private static final String AD4PUSH_PREFERENCES = "Ad4PushPreferences";
     private static final String AD4PUSH_PREFS_HAS_OPENED_APP = "app_opened";
     private static final String AD4PUSH_PREFS_IS_ENABLED = "Enabled";
-    private static final String AD4PUSH_PREFS_PUSH_NOTIFICATION_OPENED = "lastPNOpened";
 
     // First_Open :: User Opens the app for the first time
     private static final String SHOP_COUNTRY = "shopCountry";
@@ -130,7 +129,7 @@ public class Ad4PushTracker {
      * @author sergiopereira
      */
     public static void startup(Context context) {
-        Print.d(TAG, "ON STARTUP");
+        Print.i(TAG, "ON STARTUP");
         sInstance = new Ad4PushTracker(context);
     }
 
@@ -188,7 +187,7 @@ public class Ad4PushTracker {
      */
     public void setPushNotificationLocked(boolean bool) {
         if (isAvailable()) {
-            Print.d(TAG, "LOCK PUSH NOTIFICATIONS: " + bool);
+            Print.i(TAG,  "LOCK PUSH NOTIFICATIONS: " + bool);
             mA4S.setPushNotificationLocked(bool);
         }
     }
@@ -199,14 +198,14 @@ public class Ad4PushTracker {
      */
     public void setInAppDisplayLocked(boolean bool) {
         if (isAvailable()) {
-            Print.d(TAG, "LOCK IN APP MESSAGE: " + bool);
+            Print.i(TAG,  "LOCK IN APP MESSAGE: " + bool);
             mA4S.setInAppDisplayLocked(bool);
         }
     }
 
     private void trackView(String view) {
         if (isAvailable()) {
-            Print.d(TAG, "View state tracked -> " + VIEW_STATE + "=" + view);
+            Print.i(TAG,  "View state tracked -> " + VIEW_STATE + "=" + view);
             mA4S.putState(VIEW_STATE, view);
         }
     }
@@ -220,7 +219,7 @@ public class Ad4PushTracker {
      */
     private void setGCMEnabled(boolean enabled) {
         if (isAvailable()) {
-            Print.d(TAG, "setGCMEnabled:" + enabled);
+            Print.i(TAG,  "setGCMEnabled:" + enabled);
             mA4S.setGCMEnabled(enabled);
         }
     }
@@ -232,167 +231,6 @@ public class Ad4PushTracker {
     public static void clearAllSavedData(Context context) {
         SharedPreferences settings = context.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
         settings.edit().clear().apply();
-    }
-
-    /*
-     * ############## TRACKING ##############
-     */
-
-    private boolean isFirstAppOpen(@NonNull Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
-        boolean firstTime = preferences.getBoolean(AD4PUSH_PREFS_HAS_OPENED_APP, false);
-        preferences.edit().putBoolean(AD4PUSH_PREFS_HAS_OPENED_APP, true).apply();
-        return firstTime;
-    }
-
-    public void trackAppOpen() {
-        if (isAvailable()) {
-            Bundle bundle = new Bundle();
-            if (!isFirstAppOpen(mContext)) {
-                mA4S.trackEvent(EVENT_FIRST_OPEN_APP, "firstOpenDate=" + DateTimeUtils.getCurrentDateTime());
-                bundle.putString(SHOP_COUNTRY, ShopSelector.getCountryCodeIso());
-                bundle.putString(LANGUAGE_SELECTION, ShopSelector.getCountryLanguageCode());
-                storeGaIdOnAccengage();
-            } else {
-                bundle.putString(LAST_OPEN_DATE, DateTimeUtils.getCurrentDateTime());
-            }
-            Print.i(TAG, "TRACK APP OPEN: " + bundle.toString());
-            mA4S.updateDeviceInfo(bundle);
-        }
-    }
-
-    public void trackProductView(ProductRegular product) {
-        if (isAvailable()) {
-            Bundle bundle = new Bundle();
-            bundle.putString(LAST_PRODUCT_VIEWED, product.getName());
-            bundle.putString(LAST_SKU_VIEWED, product.getSku());
-            bundle.putString(LAST_BRAND_VIEWED_KEY, product.getBrandKey());
-            bundle.putString(LAST_BRAND_VIEWED_NAME, product.getBrandName());
-            bundle.putString(LAST_VIEWED_CATEGORY_NAME, product.getCategoryKey());
-            bundle.putString(LAST_VIEWED_CATEGORY_KEY, product.getCategoryName());
-            Print.i(TAG, "TRACK PRODUCT VIEW: " + bundle.toString());
-            mA4S.updateDeviceInfo(bundle);
-        }
-    }
-
-    public void trackAddToCart(PurchaseEntity purchase) {
-        if (isAvailable()) {
-            Bundle bundle = new Bundle();
-            bundle.putInt(CART_STATUS, purchase.getCartCount());
-            bundle.putDouble(CART_VALUE, purchase.getPriceForTracking());
-            bundle.putString(DATE_LAST_CART_UPDATED, DateTimeUtils.getCurrentDateTime());
-            bundle.putString(LAST_CART_PRODUCT_NAME, purchase.getLastItemAdded().getName());
-            bundle.putString(LAST_CART_SKU, purchase.getLastItemAdded().getConfigSimpleSKU());
-            bundle.putString(LAST_CATEGORY_ADDED_TO_CART_NAME, purchase.getLastItemAdded().getCategoryName());
-            bundle.putString(LAST_CATEGORY_ADDED_TO_CART_KEY, purchase.getLastItemAdded().getCategoryKey());
-            bundle.putString(LAST_BRAND_ADDED_TO_CART_KEY, purchase.getLastItemAdded().getBrandKey());
-            bundle.putString(LAST_BRAND_ADDED_TO_CART_NAME, purchase.getLastItemAdded().getBrandName());
-            Print.i(TAG, "TRACK ADD TO CART: " + bundle.toString());
-            mA4S.updateDeviceInfo(bundle);
-        }
-    }
-
-    public void trackRemoveFromCart(PurchaseEntity purchase) {
-        if (isAvailable()) {
-            Bundle bundle = new Bundle();
-            bundle.putInt(CART_STATUS, purchase.getCartCount());
-            bundle.putDouble(CART_VALUE, purchase.getPriceForTracking());
-            bundle.putString(DATE_LAST_CART_UPDATED, DateTimeUtils.getCurrentDateTime());
-            Print.i(TAG, "TRACK REMOVE FROM CART: " + bundle.toString());
-            mA4S.updateDeviceInfo(bundle);
-        }
-    }
-
-    public void trackAddToFavorites(ProductRegular product) {
-        if (isAvailable()) {
-            Bundle bundle = new Bundle();
-            bundle.putInt(WISH_LIST_STATUS, WishListCache.size() + 1);
-            bundle.putString(LAST_WISHLIST_SKU, product.getSku());
-            bundle.putString(LAST_WISHLIST_PRODUCT_NAME, product.getName());
-            bundle.putString(LAST_BRAND_ADDED_TO_WISHLIST_KEY, product.getBrandKey());
-            bundle.putString(LAST_BRAND_ADDED_TO_WISHLIST_NAME, product.getBrandName());
-            bundle.putString(LAST_CATEGORY_ADDED_TO_WISHLIST_KEY, product.getCategoryKey());
-            bundle.putString(LAST_CATEGORY_ADDED_TO_WISHLIST_NAME, product.getCategoryName());
-            Print.i(TAG, "TRACK ADD TO WISH LIST: " + bundle.toString());
-            mA4S.updateDeviceInfo(bundle);
-        }
-    }
-
-    public void trackRemoveFromWishList() {
-        if (isEnabled) {
-            Bundle bundle = new Bundle();
-            bundle.putInt(WISH_LIST_STATUS, WishListCache.size() - 1);
-            Print.i(TAG, "TRACK REMOVE FROM WISH LIST: " + bundle.toString());
-            mA4S.updateDeviceInfo(bundle);
-        }
-    }
-
-    public void trackLoginRegistration(Customer customer, boolean facebook) {
-        if (isEnabled) {
-            // Tracking user info
-            trackCustomerInfo(customer);
-            // Track event
-            mA4S.trackEvent(facebook ? EVENT_FACEBOOK : EVENT_LOGIN, "loginUserID=" + customer.getIdAsString());
-        }
-    }
-
-    public void trackCustomerInfo(Customer customer) {
-        if (isEnabled) {
-            // Create bundle
-            Bundle bundle = new Bundle();
-            bundle.putString(USER_ID, customer.getIdAsString());
-            bundle.putString(FIRST_NAME, customer.getFirstName());
-            bundle.putString(LAST_NAME, customer.getLastName());
-            bundle.putString(USER_DOB, customer.getBirthday());
-            bundle.putString(USER_GENDER, customer.getGender());
-            Print.i(TAG, "TRACKING USER INFO: " + bundle.toString());
-            mA4S.updateDeviceInfo(bundle);
-        }
-    }
-
-    public void trackPurchase(CheckoutFinish checkout, PurchaseEntity cart) {
-        if (isEnabled) {
-            // Create bundle
-            Bundle bundle = new Bundle();
-            bundle.putString(LAST_ORDER_DATE, DateTimeUtils.getCurrentDateTime());
-            bundle.putString(AGGREGATED_NUMBER_OF_PURCHASE, checkout.getOrdersCount());
-            bundle.putString(ORDER_NUMBER, checkout.getOrderNumber());
-            bundle.putInt(CART_STATUS, 0);
-            bundle.putString(LAST_BRAND_PURCHASED_KEY, cart.getLastItemAdded().getBrandKey());
-            bundle.putString(LAST_BRAND_PURCHASED_NAME, cart.getLastItemAdded().getBrandName());
-            bundle.putString(LAST_CATEGORY_PURCHASED_KEY, cart.getLastItemAdded().getCategoryKey());
-            bundle.putString(LAST_CATEGORY_PURCHASED_NAME, cart.getLastItemAdded().getCategoryName());
-            bundle.putString(LAST_PRODUCT_NAME_PURCHASED, cart.getLastItemAdded().getName());
-            bundle.putString(LAST_SKU_PURCHASED, cart.getLastItemAdded().getConfigSimpleSKU());
-            Print.i(TAG, "TRACK PURCHASE: " + bundle.toString());
-            mA4S.updateDeviceInfo(bundle);
-        }
-    }
-
-    public void trackScreen(@NonNull TrackingPage screen) {
-        switch (screen) {
-            case HOME:              trackView(HOME_VIEW); break;
-            case PRODUCT_LIST:      trackView(CATEGORY_VIEW); break;
-            case PRODUCT_DETAIL:    trackView(PRODUCT_VIEW); break;
-            case LOGIN_SIGN_UP:     trackView(LOGIN_SIGN_UP_VIEW); break;
-            case FAVORITES:         trackView(FAVORITES_VIEW); break;
-            case CART:              trackView(CART_VIEW); break;
-            case REGISTRATION:      trackView(REGISTRATION_VIEW); break;
-            default:                break;
-        }
-    }
-
-    /**
-     * Track the last date an push notification was opened
-     */
-    public void trackOpenPushNotification() {
-        if (isEnabled) {
-            String currentDateAndTime = DateTimeUtils.getCurrentDateTime();
-            Bundle prefs = new Bundle();
-            prefs.putString(AD4PUSH_PREFS_PUSH_NOTIFICATION_OPENED, currentDateAndTime);
-            mA4S.updateDeviceInfo(prefs);
-            Print.i(TAG, "TRACK PUSH NOTIFICATION: " + prefs.toString());
-        }
     }
 
     /**
@@ -412,6 +250,184 @@ public class Ad4PushTracker {
         editor.putBoolean(AD4PUSH_PREFS_IS_ENABLED, isActive);
         editor.apply();
         Ad4PushTracker.startup(context);
+    }
+
+    /*
+     * ############## TRACKING ##############
+     */
+
+    public void trackScreen(@NonNull TrackingPage screen) {
+        switch (screen) {
+            case HOME:              trackView(HOME_VIEW); break;
+            case PRODUCT_LIST:      trackView(CATEGORY_VIEW); break;
+            case PRODUCT_DETAIL:    trackView(PRODUCT_VIEW); break;
+            case LOGIN_SIGN_UP:     trackView(LOGIN_SIGN_UP_VIEW); break;
+            case FAVORITES:         trackView(FAVORITES_VIEW); break;
+            case CART:              trackView(CART_VIEW); break;
+            case REGISTRATION:      trackView(REGISTRATION_VIEW); break;
+            default:                break;
+        }
+    }
+
+    /**
+     * Get and set the flag for first app open.
+     */
+    private boolean isFirstAppOpen(@NonNull Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(AD4PUSH_PREFERENCES, Context.MODE_PRIVATE);
+        boolean firstTime = preferences.getBoolean(AD4PUSH_PREFS_HAS_OPENED_APP, false);
+        preferences.edit().putBoolean(AD4PUSH_PREFS_HAS_OPENED_APP, true).apply();
+        return firstTime;
+    }
+
+    /**
+     * Track the app open
+     */
+    public void trackAppOpen() {
+        if (isAvailable()) {
+            Bundle bundle = new Bundle();
+            if (!isFirstAppOpen(mContext)) {
+                mA4S.trackEvent(EVENT_FIRST_OPEN_APP, "firstOpenDate=" + DateTimeUtils.getCurrentDateTime());
+                bundle.putString(SHOP_COUNTRY, ShopSelector.getCountryCodeIso());
+                bundle.putString(LANGUAGE_SELECTION, ShopSelector.getCountryLanguageCode());
+                storeGaIdOnAccengage();
+            } else {
+                bundle.putString(LAST_OPEN_DATE, DateTimeUtils.getCurrentDateTime());
+            }
+            Print.i(TAG, "TRACK APP OPEN: " + bundle.toString());
+            mA4S.updateDeviceInfo(bundle);
+        }
+    }
+
+    /**
+     * Track the last product seen by the user
+     */
+    public void trackProductView(ProductRegular product) {
+        if (isAvailable()) {
+            Bundle bundle = new Bundle();
+            bundle.putString(LAST_PRODUCT_VIEWED, product.getName());
+            bundle.putString(LAST_SKU_VIEWED, product.getSku());
+            bundle.putString(LAST_BRAND_VIEWED_KEY, product.getBrandKey());
+            bundle.putString(LAST_BRAND_VIEWED_NAME, product.getBrandName());
+            bundle.putString(LAST_VIEWED_CATEGORY_NAME, product.getCategoryKey());
+            bundle.putString(LAST_VIEWED_CATEGORY_KEY, product.getCategoryName());
+            Print.i(TAG, "TRACK PRODUCT VIEW: " + bundle.toString());
+            mA4S.updateDeviceInfo(bundle);
+        }
+    }
+
+    /**
+     * User adds a product to cart
+     */
+    public void trackAddToCart(PurchaseEntity purchase) {
+        if (isAvailable()) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(CART_STATUS, purchase.getCartCount());
+            bundle.putDouble(CART_VALUE, purchase.getPriceForTracking());
+            bundle.putString(DATE_LAST_CART_UPDATED, DateTimeUtils.getCurrentDateTime());
+            bundle.putString(LAST_CART_PRODUCT_NAME, purchase.getLastItemAdded().getName());
+            bundle.putString(LAST_CART_SKU, purchase.getLastItemAdded().getConfigSimpleSKU());
+            bundle.putString(LAST_CATEGORY_ADDED_TO_CART_NAME, purchase.getLastItemAdded().getCategoryName());
+            bundle.putString(LAST_CATEGORY_ADDED_TO_CART_KEY, purchase.getLastItemAdded().getCategoryKey());
+            bundle.putString(LAST_BRAND_ADDED_TO_CART_KEY, purchase.getLastItemAdded().getBrandKey());
+            bundle.putString(LAST_BRAND_ADDED_TO_CART_NAME, purchase.getLastItemAdded().getBrandName());
+            Print.i(TAG, "TRACK ADD TO CART: " + bundle.toString());
+            mA4S.updateDeviceInfo(bundle);
+        }
+    }
+
+    /**
+     * User removes a product from cart
+     */
+    public void trackRemoveFromCart(PurchaseEntity purchase) {
+        if (isAvailable()) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(CART_STATUS, purchase.getCartCount());
+            bundle.putDouble(CART_VALUE, purchase.getPriceForTracking());
+            bundle.putString(DATE_LAST_CART_UPDATED, DateTimeUtils.getCurrentDateTime());
+            Print.i(TAG, "TRACK REMOVE FROM CART: " + bundle.toString());
+            mA4S.updateDeviceInfo(bundle);
+        }
+    }
+
+    /**
+     * User adds a product to favorite
+     */
+    public void trackAddToFavorites(ProductRegular product) {
+        if (isAvailable()) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(WISH_LIST_STATUS, WishListCache.size() + 1);
+            bundle.putString(LAST_WISHLIST_SKU, product.getSku());
+            bundle.putString(LAST_WISHLIST_PRODUCT_NAME, product.getName());
+            bundle.putString(LAST_BRAND_ADDED_TO_WISHLIST_KEY, product.getBrandKey());
+            bundle.putString(LAST_BRAND_ADDED_TO_WISHLIST_NAME, product.getBrandName());
+            bundle.putString(LAST_CATEGORY_ADDED_TO_WISHLIST_KEY, product.getCategoryKey());
+            bundle.putString(LAST_CATEGORY_ADDED_TO_WISHLIST_NAME, product.getCategoryName());
+            Print.i(TAG, "TRACK ADD TO WISH LIST: " + bundle.toString());
+            mA4S.updateDeviceInfo(bundle);
+        }
+    }
+
+    /**
+     * User removes a product from favorite
+     */
+    public void trackRemoveFromWishList() {
+        if (isEnabled) {
+            Bundle bundle = new Bundle();
+            bundle.putInt(WISH_LIST_STATUS, WishListCache.size() - 1);
+            Print.i(TAG, "TRACK REMOVE FROM WISH LIST: " + bundle.toString());
+            mA4S.updateDeviceInfo(bundle);
+        }
+    }
+
+    /**
+     * User logs in to the app
+     */
+    public void trackLoginRegistration(Customer customer, boolean facebook) {
+        if (isEnabled) {
+            // Tracking user info
+            trackCustomerInfo(customer);
+            // Track event
+            mA4S.trackEvent(facebook ? EVENT_FACEBOOK : EVENT_LOGIN, "loginUserID=" + customer.getIdAsString());
+        }
+    }
+
+    /**
+     * User updates his info on the app
+     */
+    public void trackCustomerInfo(Customer customer) {
+        if (isEnabled) {
+            // Create bundle
+            Bundle bundle = new Bundle();
+            bundle.putString(USER_ID, customer.getIdAsString());
+            bundle.putString(FIRST_NAME, customer.getFirstName());
+            bundle.putString(LAST_NAME, customer.getLastName());
+            bundle.putString(USER_DOB, customer.getBirthday());
+            bundle.putString(USER_GENDER, customer.getGender());
+            Print.i(TAG, "TRACKING USER INFO: " + bundle.toString());
+            mA4S.updateDeviceInfo(bundle);
+        }
+    }
+
+    /**
+     * User completes a purchase.
+     */
+    public void trackPurchase(CheckoutFinish checkout, PurchaseEntity cart) {
+        if (isEnabled) {
+            // Create bundle
+            Bundle bundle = new Bundle();
+            bundle.putString(LAST_ORDER_DATE, DateTimeUtils.getCurrentDateTime());
+            bundle.putString(AGGREGATED_NUMBER_OF_PURCHASE, checkout.getOrdersCount());
+            bundle.putString(ORDER_NUMBER, checkout.getOrderNumber());
+            bundle.putInt(CART_STATUS, 0);
+            bundle.putString(LAST_BRAND_PURCHASED_KEY, cart.getLastItemAdded().getBrandKey());
+            bundle.putString(LAST_BRAND_PURCHASED_NAME, cart.getLastItemAdded().getBrandName());
+            bundle.putString(LAST_CATEGORY_PURCHASED_KEY, cart.getLastItemAdded().getCategoryKey());
+            bundle.putString(LAST_CATEGORY_PURCHASED_NAME, cart.getLastItemAdded().getCategoryName());
+            bundle.putString(LAST_PRODUCT_NAME_PURCHASED, cart.getLastItemAdded().getName());
+            bundle.putString(LAST_SKU_PURCHASED, cart.getLastItemAdded().getConfigSimpleSKU());
+            Print.i(TAG, "TRACK PURCHASE: " + bundle.toString());
+            mA4S.updateDeviceInfo(bundle);
+        }
     }
 
     /**
@@ -434,7 +450,6 @@ public class Ad4PushTracker {
                 }
             }
         };
-        Thread thread = new Thread(r);
-        thread.start();
+        new Thread(r).start();
     }
 }

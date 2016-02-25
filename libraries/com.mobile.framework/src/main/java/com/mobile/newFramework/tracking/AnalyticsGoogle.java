@@ -484,17 +484,6 @@ public class AnalyticsGoogle {
     }
 
     /**
-     *
-     */
-    public void trackNativeCheckoutError(String email, String action) {
-        // Validation
-        if (!isEnabled) return;
-        // Data
-        String category = mContext.getString(R.string.gNativeCheckoutError);
-        trackEvent(category, action, email, 0L);
-    }
-
-    /**
      * Tracking the purchase using the EURO currency.
      *
      * @param orderNr   number

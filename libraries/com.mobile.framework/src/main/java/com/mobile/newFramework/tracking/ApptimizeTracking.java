@@ -6,25 +6,20 @@ import com.mobile.framework.R;
 import com.mobile.newFramework.utils.output.Print;
 
 /**
- * 
  * @author Andre Lopes
- * 
  */
 public class ApptimizeTracking {
-    private static final String TAG = ApptimizeTracking.class.getSimpleName();
 
     public static void startup(Context context) {
-        Print.d(TAG, "APPTIMIZE Startup");
-
+        Print.i("APPTIMIZE Startup");
         boolean isEnabled = context.getResources().getBoolean(R.bool.apptimize_enabled);
-
         if (isEnabled) {
-            Print.d(TAG, "Apptimize -> INITITALIZED");
+            Print.i("Apptimize -> INITITALIZED");
             //String apptimize_apikey = context.getString(R.string.apptimize_apikey);
             //Apptimize.setup(context, apptimize_apikey);
         } else {
-            Print.d(TAG, "Apptimize is not enabled");
+            Print.i("Apptimize is not enabled");
         }
     }
-    
+
 }

@@ -6,8 +6,7 @@ import android.os.Bundle;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsConstants;
 import com.facebook.appevents.AppEventsLogger;
-
-import de.akquinet.android.androlog.Log;
+import com.mobile.newFramework.utils.output.Print;
 
 
 /**
@@ -91,7 +90,7 @@ public class FacebookTracker {
      * @author sergiopereira
      */
     public void trackActivatedApp() {
-        Log.i(TAG, "TRACK: ACTIVATED APP");
+        Print.i(TAG, "TRACK: ACTIVATED APP");
         logEvent(AppEventsConstants.EVENT_NAME_ACTIVATED_APP);
     }
 
