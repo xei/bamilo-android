@@ -1,7 +1,3 @@
-/**
- * @author Manuel Silva
- * 
- */
 package com.mobile.helpers.cart;
 
 import android.content.ContentValues;
@@ -19,6 +15,7 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.TrackerDelegator;
 
 /**
  * Get Shopping Cart Items helper
@@ -52,6 +49,8 @@ public class ShoppingCartChangeItemQuantityHelper extends SuperBaseHelper {
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
+        // Track the new cart value
+        TrackerDelegator.trackAddToCart(cart);
     }
 
     public static Bundle createBundle(String sku, int quantity) {
