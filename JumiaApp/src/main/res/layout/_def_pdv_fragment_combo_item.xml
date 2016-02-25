@@ -14,7 +14,9 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:id="@+id/pdv_scroll_bundle"
+        android:layoutDirection="ltr"
+      >
 
         <LinearLayout
             android:id="@+id/pdv_bundles_container"
@@ -24,7 +26,10 @@
 
     </HorizontalScrollView>
 
-
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/black_300" />
 
     <!-- SEPARATOR -->
 
