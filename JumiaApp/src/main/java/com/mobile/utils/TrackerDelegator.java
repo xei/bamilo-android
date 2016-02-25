@@ -12,6 +12,7 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.CatalogPage;
+import com.mobile.newFramework.objects.checkout.CheckoutFinish;
 import com.mobile.newFramework.objects.checkout.ExternalOrder;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -71,11 +72,8 @@ public class TrackerDelegator {
     public static final String PAYMENT_METHOD_KEY = "payment_method";
     public static final String ORDER_NUMBER_KEY = "order_number";
     public static final String VALUE_KEY = "value";
-    public static final String SOURCE_KEY = "source";
-    public static final String PATH_KEY = "path";
     public static final String NAME_KEY = "name";
     public static final String BRAND_KEY = "brand";
-    public static final String RELATED_ITEM = "related_item";
     public static final String DISCOUNT_KEY = "discount";
     public static final String SUBCATEGORY_KEY = "sub_category";
     public static final String QUANTITY_KEY = "quantity";
@@ -86,11 +84,7 @@ public class TrackerDelegator {
 
     private static final String TRACKING_PREFS = "tracking_prefs";
     private static final String SIGNUP_KEY_FOR_LOGIN = "signup_for_login";
-
-    private static final String SESSION_COUNTER = "sessionCounter";
-    private static final String LAST_SESSION_SAVED = "lastSessionSaved";
     private static final String EUR_CURRENCY = "EUR";
-
     public static final String CART_COUNT = "cartCount";
     public static final String GRAND_TOTAL = "grandTotal";
 
@@ -384,11 +378,11 @@ public class TrackerDelegator {
     /**
      * For Native Checkout
      */
-    public static void trackPurchaseNativeCheckout(final Bundle params, final ArrayList<PurchaseCartItem> mItems, final String attributeIdList) {
+    public static void trackPurchaseNativeCheckout(final Bundle params, final ArrayList<PurchaseCartItem> mItems) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                trackNativeCheckoutPurchase(params, mItems, attributeIdList);
+                trackNativeCheckoutPurchase(params, mItems);
             }
 
         }).start();
@@ -418,14 +412,10 @@ public class TrackerDelegator {
         } else {
             Print.w(TAG, "TRACK SALE: no customer - cannot track further without customerId");
         }
-
         // Create external order
         ExternalOrder order = new ExternalOrder(result);
-
         // GA
         AnalyticsGoogle.get().trackPurchase(order.number, order.valueConverted, order.items);
-        // AD4
-        Ad4PushTracker.get().trackPurchase(order.valueConverted, order.value, order.average, order.items.size(), order.coupon, "");
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
@@ -445,24 +435,14 @@ public class TrackerDelegator {
         GTMManager.get().gtmTrackTransaction(order.items, EUR_CURRENCY, order.value, order.number, order.coupon, paymentMethod, "", "");
     }
 
-    private static void trackNativeCheckoutPurchase(Bundle params, ArrayList<PurchaseCartItem> mItems, String attributeIdList) {
+    private static void trackNativeCheckoutPurchase(Bundle params, ArrayList<PurchaseCartItem> mItems) {
         String orderNr = params.getString(ORDER_NUMBER_KEY);
-        double grandTotal = params.getDouble(GRAND_TOTAL);
         double cartValue = params.getDouble(VALUE_KEY);
         Customer customer = params.getParcelable(CUSTOMER_KEY);
         String coupon = params.getString(COUPON_KEY);
         String paymentMethod = params.getString(PAYMENT_METHOD_KEY);
         String shippingAmount = params.getString(SHIPPING_KEY);
         String taxAmount = params.getString(TAX_KEY);
-
-        int numberOfItems = params.getInt(TrackerDelegator.CART_COUNT);
-
-        Double averageValue;
-        try {
-            averageValue = cartValue / numberOfItems;
-        } catch (IllegalArgumentException e) {
-            averageValue = 0d;
-        }
 
         Print.i(TAG, "TRACK SALE: STARTED");
         Print.d(TAG, "tracking for " + ShopSelector.getShopName() + " in country " + ShopSelector.getCountryName());
@@ -489,8 +469,6 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackPurchase(orderNr, cartValue, items);
         //GA Banner Flow
         trackBannerClick(items);
-        // Ad4
-        Ad4PushTracker.get().trackPurchase(grandTotal, cartValue, averageValue, numberOfItems, coupon, attributeIdList);
         // Adjust
         Bundle bundle = new Bundle();
         bundle.putString(AdjustTracker.COUNTRY_ISO, JumiaApplication.SHOP_ID);
@@ -571,7 +549,7 @@ public class TrackerDelegator {
      * Tracking a page
      *
      */
-    public static void trackPage(TrackingPage screen, long loadTime, boolean justGTM) {
+    public static void trackPage(@NonNull TrackingPage screen, long loadTime, boolean justGTM) {
         // GTM
         trackScreenGTM(screen, loadTime);
         //
@@ -641,7 +619,6 @@ public class TrackerDelegator {
         double discount = bundle.getDouble(DISCOUNT_KEY);
         double rating = bundle.getDouble(RATING_KEY);
         String sku = bundle.getString(SKU_KEY);
-        String name = bundle.getString(NAME_KEY);
         String location = bundle.getString(LOCATION_KEY);
         // GA
         AnalyticsGoogle.get().trackEvent(TrackingEvent.ADD_TO_CART, sku, (long) price);
@@ -660,9 +637,7 @@ public class TrackerDelegator {
         if (bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE) != null) {
             JumiaApplication.INSTANCE.setBannerFlowSkus(sku, (TeaserGroupType) bundle.getSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE));
         }
-
     }
-
 
     /**
      * Tracking a complete product
@@ -682,7 +657,7 @@ public class TrackerDelegator {
         // GTM
         GTMManager.get().gtmTrackViewProduct(sku, price, brand, EUR_CURRENCY, discount, rating, category, subCategory);
         // Accengage
-        Ad4PushTracker.get().trackProductView(product, source, path);
+        Ad4PushTracker.get().trackProductView(product);
     }
 
     /**
@@ -741,10 +716,10 @@ public class TrackerDelegator {
      * Tracking remove product from favorites
      * h375id
      */
-    public static void trackRemoveFromFavorites(@NonNull ProductRegular completeProduct) {
-        String productSku = completeProduct.getSku();
-        double price = completeProduct.getPriceForTracking();
-        double averageRatingTotal = completeProduct.getAvgRating();
+    public static void trackRemoveFromFavorites(@NonNull ProductRegular product) {
+        String productSku = product.getSku();
+        double price = product.getPriceForTracking();
+        double averageRatingTotal = product.getAvgRating();
         // User
         String customerId = (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getIdAsString() : "";
         // Accengage
@@ -1156,6 +1131,20 @@ public class TrackerDelegator {
             e.printStackTrace();
         }
 
+    }
+
+
+    /**
+     *
+     */
+    public static void trackPurchase(CheckoutFinish checkoutFinish, PurchaseEntity cart) {
+        // Accengage
+        Ad4PushTracker.get().trackPurchase(checkoutFinish, cart);
+    }
+
+    public static void trackCustomerInfo(@NonNull Customer customer) {
+        // Accengage
+        Ad4PushTracker.get().trackCustomerInfo(customer);
     }
 
 }

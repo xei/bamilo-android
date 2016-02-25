@@ -194,6 +194,14 @@ public final class ShopSelector {
 		return countryCode;
 	}
 
+	public static String getCountryCodeIso(){
+		return Locale.getDefault().getCountry().toUpperCase();
+	}
+
+	public static String getCountryLanguageCode(){
+		return Locale.getDefault().getLanguage().toUpperCase();
+	}
+
 	public static boolean isSingleShopCountry() {
 		return isSingleShopCountry;
 	}

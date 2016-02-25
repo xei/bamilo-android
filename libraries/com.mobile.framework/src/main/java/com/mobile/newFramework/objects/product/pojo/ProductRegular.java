@@ -29,6 +29,9 @@ public class ProductRegular extends ProductBase {
     protected String mTarget;
     protected String mRichRelevanceClickHash;
     protected Brand mBrand;
+    private String mCategoryUrlKey;
+    private String mCategoryName;
+
     /**
      * Empty constructor
      */
@@ -43,7 +46,6 @@ public class ProductRegular extends ProductBase {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Mandatory
         super.initialize(jsonObject);
-
         return initializeProductRegular(jsonObject);
     }
 
@@ -51,17 +53,19 @@ public class ProductRegular extends ProductBase {
         // Mandatory
         mName = jsonObject.optString(RestConstants.NAME);
         // TODO: Remove this line when all app parses brand_entity object. For now happens just in PDV
-        mBrand = new Brand(jsonObject.optString(RestConstants.BRAND), jsonObject.optInt(RestConstants.BRAND_ID));
+        String brand = jsonObject.optString(RestConstants.BRAND);
+        int brandId = jsonObject.optInt(RestConstants.BRAND_ID);
+        String brandKey = jsonObject.optString(RestConstants.BRAND_URL_KEY);
+        mBrand = new Brand(brand, brandId, brandKey);
         JSONObject brandObject = jsonObject.optJSONObject(RestConstants.BRAND_ENTITY);
         if(brandObject != null) {
             mBrand.initialize(brandObject);
         }
-
-        // Optional TODO FIX THIS
+        // Category
+        mCategoryUrlKey = jsonObject.optString(RestConstants.CATEGORY_URL_KEY);
+        mCategoryName = jsonObject.optString(RestConstants.CATEGORY_NAME);
+        // Optional
         mImageUrl = jsonObject.optString(RestConstants.IMAGE);
-        if(TextUtils.isEmpty(mImageUrl)) {
-            mImageUrl = jsonObject.optString(RestConstants.IMAGE_URL);
-        }
         // Is new
         isNew = jsonObject.optBoolean(RestConstants.IS_NEW);
         // Wish List flag
@@ -154,7 +158,11 @@ public class ProductRegular extends ProductBase {
 
     public String getBrandName(){ return mBrand.getName();}
 
+    public String getCategoryKey() {
+        return mCategoryUrlKey;
+    }
 
+    public String getCategoryName(){ return mCategoryName;}
 
     /*
 	 * ############ PARCELABLE ############
@@ -172,6 +180,8 @@ public class ProductRegular extends ProductBase {
         mTarget = in.readString();
         mRichRelevanceClickHash = in.readString();
         mBrand = in.readParcelable(Brand.class.getClassLoader());
+        mCategoryName = in.readString();
+        mCategoryUrlKey = in.readString();
     }
 
     @Override
@@ -187,6 +197,8 @@ public class ProductRegular extends ProductBase {
         dest.writeString(mTarget);
         dest.writeString(mRichRelevanceClickHash);
         dest.writeParcelable(mBrand,flags);
+        dest.writeString(mCategoryName);
+        dest.writeString(mCategoryUrlKey);
     }
 
     @Override

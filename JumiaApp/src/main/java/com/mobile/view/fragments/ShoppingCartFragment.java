@@ -782,7 +782,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    prodItem.cartItem.setIsChecked(true);
                     showQuantityDialog(position);
                 }
             });
