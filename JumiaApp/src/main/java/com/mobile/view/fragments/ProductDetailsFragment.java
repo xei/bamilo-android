@@ -359,8 +359,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_seller_name) {
             goToSellerCatalog();
         }
-        // Case brand button
-        else if (id == R.id.pdv_brand_text){
+        // Case brand
+        else if (id == R.id.pdv_brand_section){
             onClickBrandButton(view);
         }
         // Case specs button
@@ -564,14 +564,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (!mProduct.getBrand().hasTarget()) {
             mBrandView.setVisibility(View.GONE);
         } else {
-            TextView button = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
+            // Set click item
             Brand brand = mProduct.getBrand();
+            mBrandView.setTag(R.id.target_link, brand.getTarget());
+            mBrandView.setTag(R.id.target_title, brand.getName());
+            mBrandView.setOnClickListener(this);
+            // Set text
+            TextView button = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
             button.setText(brand.getName());
-            button.setTag(R.id.target_link, brand.getTarget());
-            button.setTag(R.id.target_title, brand.getName());
-            button.setOnClickListener(this);
+            // Set image
             ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
-            RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, true);
+            RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_small);
         }
     }
 
