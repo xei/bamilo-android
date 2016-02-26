@@ -36,6 +36,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
+import com.mobile.newFramework.objects.product.Brand;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.RichRelevance;
@@ -358,11 +359,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_seller_name) {
             goToSellerCatalog();
         }
-        // case brand link
+        // Case brand button
         else if (id == R.id.pdv_brand_text){
-            processTargetLink(view);
+            onClickBrandButton(view);
         }
-
+        // Case specs button
+        else if(id == R.id.pdv_specs_button) {
+            onClickShowDescription(R.string.product_specifications);
+        }
     }
 
     /**
@@ -553,43 +557,23 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-/**
- * Show brand/SIS section in case of grand has image and a target link
- * */
-    private void setBrandInfo(){
-        if(!mProduct.getBrand().hasTargetAndImage()){
+    /**
+     * Show brand/SIS section in case of grand has image and a target link
+     */
+    private void setBrandInfo() {
+        if (!mProduct.getBrand().hasTarget()) {
             mBrandView.setVisibility(View.GONE);
-        }else{
+        } else {
+            TextView button = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
+            Brand brand = mProduct.getBrand();
+            button.setText(brand.getName());
+            button.setTag(R.id.target_link, brand.getTarget());
+            button.setTag(R.id.target_title, brand.getName());
+            button.setOnClickListener(this);
             ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
-            RocketImageLoader.instance.loadImage(mProduct.getBrand().getImageUrl(),brandImage, null, R.drawable.no_image_small);
-
-            TextView txBrandInfo = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
-            txBrandInfo.setText(mProduct.getBrandName());
-
-            txBrandInfo.setTag(R.id.target_link,mProduct.getBrand().getTarget());
-            txBrandInfo.setTag(R.id.target_title,mProduct.getBrand().getName());
-
-            txBrandInfo.setOnClickListener(this);
-
+            RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, true);
         }
     }
-
-
-    /**
-     * Go to brands target link
-     * */
-    private void processTargetLink(View view){
-        @TargetLink.Type String link = (String)view.getTag(R.id.target_link);
-        String title = (String) view.getTag(R.id.target_title);
-
-        new TargetLink(getWeakBaseActivity(), link)
-                .addTitle(title)
-                .retainBackStackEntries()
-                .addAppendListener(this)
-                .enableWarningErrorMessage()
-                .run();
-    }
-
 
     /**
      * Show the seller info
@@ -725,13 +709,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Button
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
-        // TODO: Move to onClick
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickShowDescription(R.string.product_specifications);
-            }
-        });
+        button.setOnClickListener(this);
     }
 
     /**
@@ -857,11 +835,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         try {
             boolean value = mProduct.isWishList();
             mWishListButton.setSelected(value);
-
             setOutOfStockButton();
         } catch (NullPointerException e) {
             Log.i(TAG, "NPE ON UPDATE WISH LIST VALUE");
         }
+    }
+
+    /**
+     * Go to brands target link
+     * */
+    private void onClickBrandButton(View view){
+        @TargetLink.Type String link = (String)view.getTag(R.id.target_link);
+        String title = (String) view.getTag(R.id.target_title);
+        new TargetLink(getWeakBaseActivity(), link).addTitle(title).retainBackStackEntries().run();
     }
 
     private void goToSellerCatalog() {
@@ -912,20 +898,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         //update bundleListObject in productComplete
         mProduct.setProductBundle(bundleList);
     }
-
-//    /**
-//     * Process the click on rating
-//     */
-//    private void onClickRating() {
-//        Log.i(TAG, "ON CLICK RATING");
-//        JumiaApplication.cleanRatingReviewValues();
-//        JumiaApplication.INSTANCE.setFormReviewValues(null);
-//        Bundle bundle = new Bundle();
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-//        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
-//        bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
-//        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
-//    }
 
     /**
      * Process the click on rating

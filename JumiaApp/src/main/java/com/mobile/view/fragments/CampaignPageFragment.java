@@ -927,7 +927,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             view.setTag(SIZE, (selectedSize != null) ? selectedSize.getVariationValue() : "");
             view.setTag(STOCK, item.hasStock());
             view.setTag(NAME, item.getName());
-            view.setTag(BRAND, item.getBrand());
+            view.setTag(BRAND, item.getBrandName());
             view.setTag(PRICE, item.getPriceForTracking());
             view.setTag(DISCOUNT, item.getMaxSavingPercentage());
             if (mOnClickListener != null){

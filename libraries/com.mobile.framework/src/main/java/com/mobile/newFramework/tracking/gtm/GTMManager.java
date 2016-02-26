@@ -407,7 +407,7 @@ public class GTMManager {
         Print.d(TAG, "gtmTrackRateProduct" + " currencyName:" + currencyName + " product.getSku():" + product.getSku() +
                 " PRODUCTPRICE:" + product.getPriceForTracking() + " currencyName:" + currencyName + " PRODUCTRATING:" + product.getAvgRating());
         Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
-                GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand().getName(), GTMKeys.PRODUCTRATING, product.getAvgRating());
+                GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrandName(), GTMKeys.PRODUCTRATING, product.getAvgRating());
         
         sendEvent(message);
 

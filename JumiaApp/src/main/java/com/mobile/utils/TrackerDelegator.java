@@ -645,7 +645,7 @@ public class TrackerDelegator {
      */
     public static void trackProduct(ProductRegular product, String source, String path) {
         // Data
-        String name = product.getBrand() + " " + product.getName();
+        String name = product.getBrandName() + " " + product.getName();
         String sku = product.getSku();
         String brand = product.getBrandName();
         String category = "";

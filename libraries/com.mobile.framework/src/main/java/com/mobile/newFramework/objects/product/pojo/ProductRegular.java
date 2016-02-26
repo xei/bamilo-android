@@ -141,7 +141,6 @@ public class ProductRegular extends ProductBase {
         return "";
     }
 
-
     public String getTarget() {
         return mTarget;
     }
@@ -155,6 +154,8 @@ public class ProductRegular extends ProductBase {
     }
 
     public Brand getBrand(){ return mBrand;}
+
+    public int getBrandId(){ return mBrand.getId();}
 
     public String getBrandName(){ return mBrand.getName();}
 
