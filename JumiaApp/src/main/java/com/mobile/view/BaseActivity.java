@@ -942,7 +942,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     private void setSearchWidthToFillOnExpand() {
-        mSearchAutoComplete.setDropDownWidth(ViewGroup.LayoutParams.MATCH_PARENT);
         mSearchAutoComplete.setDropDownHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         // Get the width of main content
         final int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
@@ -953,9 +952,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                            int oldLeft, int oldTop, int oldRight, int oldBottom) {
 
-
                     // set DropDownView width
-
                     mSearchAutoComplete.setDropDownWidth(mainContentWidth);
                     mSearchAutoComplete.setDropDownBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.search_dropdown_background));
                     mSearchAutoComplete.setDropDownHorizontalOffset(0);
@@ -1084,7 +1081,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 closeNavigationDrawer();
                 isSearchComponentOpened = true;
                 setActionMenuItemsVisibility(false);
-                setAppBarLayout(action, NavigationAction.UNKNOWN);
                 // Re-set the searched text if it exists
                 mSearchAutoComplete.post(new Runnable() {
                     @Override
@@ -1106,7 +1102,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 Print.d(TAG, "SEARCH ON COLLAPSE");
                 isSearchComponentOpened = false;
-                setAppBarLayout(NavigationAction.UNKNOWN, action);
                 setActionMenuItemsVisibility(true);
                 return true;
             }

@@ -41,6 +41,7 @@
         <!-- #### Button View -->
         <item name="android:buttonStyle">@style/Widget.Custom.Button</item>
         <item name="buttonStyle">@style/Widget.Custom.Button</item>
+        <!-- Used for Search View -->
         <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
     </style>
 

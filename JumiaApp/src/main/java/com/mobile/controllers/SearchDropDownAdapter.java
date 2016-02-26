@@ -121,12 +121,11 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
 
 
         int indexHighlitght = titleString.toLowerCase().indexOf(highlight.toLowerCase());
-        Print.i(TAG, "code1search :indexHighlitght "+indexHighlitght);
         if(indexHighlitght == 0){
             // To avoid cases where query matches category name
             indexHighlitght = query.length() + titleString.toLowerCase().substring(query.length()).indexOf(highlight.toLowerCase());
         }
-        Print.i(TAG, "code1search :indexHighlitghtafter "+indexHighlitght+" "+query.length()+" highlight: "+ highlight+" query: "+query);
+
         if(index != -1 && indexHighlitght != -1) {
             SpannableString title = new SpannableString(titleString);
             title.setSpan(new StyleSpan(Typeface.BOLD), index, index + query.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
