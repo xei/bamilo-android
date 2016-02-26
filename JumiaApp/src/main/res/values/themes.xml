@@ -41,6 +41,13 @@
         <!-- #### Button View -->
         <item name="android:buttonStyle">@style/Widget.Custom.Button</item>
         <item name="buttonStyle">@style/Widget.Custom.Button</item>
+        <!-- Used for Search View -->
+        <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
+    </style>
+
+    <style name="DropDownListViewStyle" parent="@style/Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/black_300</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 
     <!-- Theme for ActionBar from support library compatibility -->

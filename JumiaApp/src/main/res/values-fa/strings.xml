@@ -475,8 +475,8 @@
     <string name="size">اندازه ‎%s‎</string>
     <string name="added_success">با موفقیت افزوده شد.</string>
     <string name="removed_success">با موفقیت حذف گردید.</string>
-    <string name="sign_up_newsletter">عضو خبرنامه شوید</string>
-    <string name="sign_up_newsletter_description">برای اطلاع از فروش های ویژه، تازه ها و پیشنهادهای بینظیر</string>
+    <string name="sign_up_to_our_newsletter">عضو خبرنامه شوید</string>
+    <string name="sign_up_to_our_newsletter_body">برای اطلاع از فروش های ویژه، تازه ها و پیشنهادهای بینظیر</string>
     <string name="search_shop_in_shop_label">بازدید از فروشگاه ‎%s‎ ما</string>
     <string name="search_categories_label">‎%1$s‎ در ‎%2$s‎</string>
     <string name="active_label">فعال</string>

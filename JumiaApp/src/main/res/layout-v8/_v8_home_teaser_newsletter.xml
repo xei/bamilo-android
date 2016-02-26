@@ -14,7 +14,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_newsletter_title"
             style="@style/TextHeader"
-            android:text="@string/sign_up_newsletter"
+            android:text="@string/sign_up_to_our_newsletter"
             android:textColor="@color/white"/>
 
         <com.mobile.components.customfontviews.TextView
@@ -24,7 +24,7 @@
             android:layout_marginTop="@dimen/dimen_8dp"
             android:lines="2"
             android:singleLine="false"
-            android:text="@string/sign_up_newsletter_description"
+            android:text="@string/sign_up_to_our_newsletter_body"
             android:textColor="@color/white"/>
 
         <RelativeLayout
