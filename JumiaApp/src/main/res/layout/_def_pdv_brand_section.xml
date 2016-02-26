@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/layout_item_height">
 
@@ -16,9 +17,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/dimen_5dp"
         android:layout_marginLeft="@dimen/dimen_16dp"
         android:layout_marginStart="@dimen/dimen_16dp"
-        android:scaleType="centerInside" />
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:scaleType="centerInside"
+        tools:src="@drawable/no_image_small" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_brand_text"

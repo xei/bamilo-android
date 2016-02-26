@@ -15,7 +15,9 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginBottom="@dimen/dimen_5dp"
         android:layout_marginRight="@dimen/dimen_16dp"
+        android:layout_marginTop="@dimen/dimen_5dp"
         android:scaleType="centerInside" />
 
     <com.mobile.components.customfontviews.TextView
