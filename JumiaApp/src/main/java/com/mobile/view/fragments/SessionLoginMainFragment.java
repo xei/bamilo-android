@@ -166,7 +166,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Tracking
-        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, getLoadTime(), false);
+        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGN_UP, getLoadTime(), false);
         // Validate if there was an error related to facebook
         validateFacebookNetworkError();
         // Case auto login

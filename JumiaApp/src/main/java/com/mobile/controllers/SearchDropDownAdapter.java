@@ -18,7 +18,6 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.List;

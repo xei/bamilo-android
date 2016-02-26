@@ -407,7 +407,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         } else {
             mItemRemovedCartValue = cartValue;
         }
-        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
+        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU()), this);
     }
 
     /**
@@ -782,7 +782,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    prodItem.cartItem.setIsChecked(true);
                     showQuantityDialog(position);
                 }
             });

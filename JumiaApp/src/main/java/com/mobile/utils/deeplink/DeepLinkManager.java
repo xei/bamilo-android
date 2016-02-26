@@ -659,7 +659,6 @@ public class DeepLinkManager {
                 Print.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
                 // Load deep link
                 bundle = loadDeepLink(data);
-                TrackerDelegator.trackPushNotification();
                 Print.i(TAG, "DEEP LINK: RECEIVED FROM GCM");
             }
         }

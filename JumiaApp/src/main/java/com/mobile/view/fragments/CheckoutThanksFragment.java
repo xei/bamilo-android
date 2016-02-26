@@ -254,17 +254,13 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 params.putString(TrackerDelegator.TAX_KEY, mOrderTax);
                 params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, mPaymentMethod);
             }
-            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems(), JumiaApplication.INSTANCE.getCart().getAttributeSetIdList());
+            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());
         }
     }
 
     private void goToProduct(final View view){
         @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
-        // Get title
-        String hash = (String) view.getTag(R.id.target_rr_hash);
-
-        mRelatedRichRelevanceHash = hash;
-
+        mRelatedRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
         new TargetLink(getWeakBaseActivity(), target)
                 .addAppendListener(this)
                 .retainBackStackEntries()

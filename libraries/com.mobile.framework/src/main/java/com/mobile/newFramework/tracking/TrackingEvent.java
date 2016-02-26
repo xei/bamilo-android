@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.newFramework.tracking;
 
 import com.mobile.framework.R;
@@ -168,8 +165,6 @@ public enum TrackingEvent {
 
     /**
      * Contstrutor
-     * @param category
-     * @param action
      * @author sergiopereira
      */
     TrackingEvent(int category, int action) {
