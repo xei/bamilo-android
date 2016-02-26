@@ -145,7 +145,6 @@ public class ProductRegular extends ProductBase {
         return "";
     }
 
-
     public String getTarget() {
         return mTarget;
     }
@@ -154,12 +153,9 @@ public class ProductRegular extends ProductBase {
         return mRichRelevanceClickHash;
     }
 
-
     public Brand getBrand(){ return mBrand;}
 
     public String getBrandName(){ return mBrand.getName();}
-
-
 
     /*
 	 * ############ PARCELABLE ############

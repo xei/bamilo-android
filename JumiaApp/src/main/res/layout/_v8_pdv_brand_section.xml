@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/layout_item_height" >
+    android:layout_height="@dimen/layout_item_height">
 
     <!-- SEPARATOR -->
 
-    <View style="@style/divider_horizontal"
-        android:id="@+id/divider"/>
+    <View
+        android:id="@+id/divider"
+        style="@style/divider_horizontal" />
 
     <ImageView
         android:id="@+id/pdv_brand_image"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/pdv_brand_height"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dimen_16dp"
         android:layout_centerVertical="true"
-        android:scaleType="centerCrop" />
+        android:layout_marginRight="@dimen/dimen_16dp"
+        android:scaleType="centerInside" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_brand_text"
         style="@style/TextList_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/pdv_brand_image"
+        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/dimen_8dp"
-        android:layout_centerVertical="true" />
+        android:layout_toLeftOf="@id/pdv_brand_image" />
 
 
 </RelativeLayout>

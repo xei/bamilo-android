@@ -755,7 +755,7 @@ public class TrackerDelegator {
         Bundle bundle = new Bundle();
         bundle.putString(TrackerDelegator.SOURCE_KEY, source);
         bundle.putString(TrackerDelegator.PATH_KEY, path);
-        bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrand() + " " + mCompleteProduct.getName());
+        bundle.putString(TrackerDelegator.NAME_KEY, mCompleteProduct.getBrandName() + " " + mCompleteProduct.getName());
         bundle.putString(TrackerDelegator.SKU_KEY, mCompleteProduct.getSku());
         bundle.putDouble(TrackerDelegator.PRICE_KEY, mCompleteProduct.getPriceForTracking());
         bundle.putString(TrackerDelegator.BRAND_KEY, mCompleteProduct.getBrandName());

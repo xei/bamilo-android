@@ -3,7 +3,6 @@ package com.mobile.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.mobile.app.JumiaApplication;
@@ -361,11 +359,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_seller_name) {
             goToSellerCatalog();
         }
-        // case brand link
+        // Case brand button
         else if (id == R.id.pdv_brand_text){
             processTargetLink(view);
         }
-
+        // Case specs button
+        else if(id == R.id.pdv_specs_button) {
+            onClickShowDescription(R.string.product_specifications);
+        }
     }
 
     /**
@@ -556,42 +557,23 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-/**
- * Show brand/SIS section in case of grand has image and a target link
- * */
-    private void setBrandInfo(){
-        if(!mProduct.getBrand().hasTargetAndImage()){
+    /**
+     * Show brand/SIS section in case of grand has image and a target link
+     */
+    private void setBrandInfo() {
+        if (!mProduct.getBrand().hasTarget()) {
             mBrandView.setVisibility(View.GONE);
-        }else{
+        } else {
+            TextView button = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
             Brand brand = mProduct.getBrand();
-
-            final TextView txBrandInfo = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
-            txBrandInfo.setText(brand.getName());
-            txBrandInfo.setTag(R.id.target_link,brand.getTarget());
-            txBrandInfo.setTag(R.id.target_title,brand.getName());
-
-            txBrandInfo.setOnClickListener(this);
-
+            button.setText(brand.getName());
+            button.setTag(R.id.target_link, brand.getTarget());
+            button.setTag(R.id.target_title, brand.getName());
+            button.setOnClickListener(this);
             ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
-            RocketImageLoader.instance.loadImage(brand.getImageUrl(),brandImage,false, new RocketImageLoader.RocketImageLoaderListener(){
-
-                @Override
-                public void onLoadedSuccess(String imageUrl, Bitmap bitmap) {}
-
-                @Override
-                public void onLoadedError() {
-                    //image invisible and text margins ajusted
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) txBrandInfo.getLayoutParams();
-                    params.setMargins(0, 0, 0, 0);
-                }
-
-                @Override
-                public void onLoadedCancel() {}
-            });
-
+            RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, true);
         }
     }
-
 
     /**
      * Go to brands target link
@@ -599,7 +581,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void processTargetLink(View view){
         @TargetLink.Type String link = (String)view.getTag(R.id.target_link);
         String title = (String) view.getTag(R.id.target_title);
-
         new TargetLink(getWeakBaseActivity(), link)
                 .addTitle(title)
                 .retainBackStackEntries()
@@ -743,13 +724,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Button
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
-        // TODO: Move to onClick
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickShowDescription(R.string.product_specifications);
-            }
-        });
+        button.setOnClickListener(this);
     }
 
     /**

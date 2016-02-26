@@ -71,8 +71,8 @@ public class Brand implements Parcelable, IJSONSerializable {
         return mUrlKey;
     }
 
-    public boolean hasTargetAndImage(){
-        return (TextUtils.isNotEmpty(mTarget) && TextUtils.isNotEmpty(mImageUrl));
+    public boolean hasTarget(){
+        return TextUtils.isNotEmpty(mTarget);
     }
 
     @Override
