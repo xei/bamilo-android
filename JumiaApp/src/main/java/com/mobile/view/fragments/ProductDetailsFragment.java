@@ -361,7 +361,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
         // Case brand button
         else if (id == R.id.pdv_brand_text){
-            processTargetLink(view);
+            onClickBrandButton(view);
         }
         // Case specs button
         else if(id == R.id.pdv_specs_button) {
@@ -574,21 +574,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, true);
         }
     }
-
-    /**
-     * Go to brands target link
-     * */
-    private void processTargetLink(View view){
-        @TargetLink.Type String link = (String)view.getTag(R.id.target_link);
-        String title = (String) view.getTag(R.id.target_title);
-        new TargetLink(getWeakBaseActivity(), link)
-                .addTitle(title)
-                .retainBackStackEntries()
-                .addAppendListener(this)
-                .enableWarningErrorMessage()
-                .run();
-    }
-
 
     /**
      * Show the seller info
@@ -850,11 +835,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         try {
             boolean value = mProduct.isWishList();
             mWishListButton.setSelected(value);
-
             setOutOfStockButton();
         } catch (NullPointerException e) {
             Log.i(TAG, "NPE ON UPDATE WISH LIST VALUE");
         }
+    }
+
+    /**
+     * Go to brands target link
+     * */
+    private void onClickBrandButton(View view){
+        @TargetLink.Type String link = (String)view.getTag(R.id.target_link);
+        String title = (String) view.getTag(R.id.target_title);
+        new TargetLink(getWeakBaseActivity(), link).addTitle(title).retainBackStackEntries().run();
     }
 
     private void goToSellerCatalog() {
@@ -905,20 +898,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         //update bundleListObject in productComplete
         mProduct.setProductBundle(bundleList);
     }
-
-//    /**
-//     * Process the click on rating
-//     */
-//    private void onClickRating() {
-//        Log.i(TAG, "ON CLICK RATING");
-//        JumiaApplication.cleanRatingReviewValues();
-//        JumiaApplication.INSTANCE.setFormReviewValues(null);
-//        Bundle bundle = new Bundle();
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-//        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
-//        bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
-//        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
-//    }
 
     /**
      * Process the click on rating
