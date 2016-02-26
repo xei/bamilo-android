@@ -14,6 +14,7 @@ import android.widget.ListView;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.controllers.SearchSuggestionsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -46,7 +47,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
 
     private Context mContext;
 
-    private SearchSuggestionsAdapter mRecentSearchesAdapter;
+    private SearchDropDownAdapter mRecentSearchesAdapter;
     
     private ArrayList<Suggestion> mRecentSearches;
     
@@ -161,22 +162,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     /**
      * ########### TRIGGERS ########### 
      */
-    
-    /**
-     * Execute search
-     * @param searchText
-     */
-    protected void executeSearchRequest(String searchText) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.DATA, null);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
-        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
-        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
 
     /**
      * ########### RESPONSES ########### 
@@ -204,7 +189,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
             if (response != null) {
                 mRecentSearches = response;
                 if (!mRecentSearches.isEmpty()) {
-                    mRecentSearchesAdapter = new SearchSuggestionsAdapter(mContext, mRecentSearches);
+                    mRecentSearchesAdapter = new SearchDropDownAdapter(mContext, mRecentSearches);
                     mRecentSearchesList.setAdapter(mRecentSearchesAdapter);
                     mRecentSearchesList.setOnItemClickListener(new OnItemClickListener() {
                         @Override
@@ -213,7 +198,23 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                             Suggestion selectedSuggestion = (Suggestion) mRecentSearchesList.getItemAtPosition(position);
                             String text = selectedSuggestion.getResult();
                             GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
-                            executeSearchRequest(text);
+                            switch (selectedSuggestion.getType()){
+                                case Suggestion.SUGGESTION_PRODUCT:
+                                    getBaseActivity().showSearchProduct(selectedSuggestion);
+                                    break;
+                                case Suggestion.SUGGESTION_SHOP_IN_SHOP:
+                                    getBaseActivity().showSearchShopsInShop(selectedSuggestion);
+                                    break;
+                                case Suggestion.SUGGESTION_CATEGORY:
+                                    // Show query
+                                    getBaseActivity().showSearchCategory(selectedSuggestion);
+                                    break;
+                                case Suggestion.SUGGESTION_OTHER:
+                                    // Show query
+                                    getBaseActivity().showSearchOther(selectedSuggestion);
+                                    break;
+                            }
+//                            executeSearchRequest(text);
                             JumiaApplication.INSTANCE.setSearchedTerm(text);
                         }
                     });
