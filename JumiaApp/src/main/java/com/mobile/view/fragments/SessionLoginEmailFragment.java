@@ -157,7 +157,7 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // validate if there was an error related to facebook
-        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGNUP, getLoadTime(), false);
+        TrackerDelegator.trackPage(TrackingPage.LOGIN_SIGN_UP, getLoadTime(), false);
     }
 
     /*

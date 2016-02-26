@@ -1052,7 +1052,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     args.putParcelable(AddToWishListHelper.ADD_TO_WISHLIST, mProduct);
                 }
             }
-
             // Goto login
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }

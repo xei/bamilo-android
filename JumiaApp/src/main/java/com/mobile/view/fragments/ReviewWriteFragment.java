@@ -586,7 +586,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 //only needed for tracking purpose
                 params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(mDynamicForm));
 
-                TrackerDelegator.trackItemReview(params, isShowingRatingForm);
+                TrackerDelegator.trackItemReview(params);
                 showWarningSuccessMessage(getString(R.string.submit_text));
 
                 hideActivityProgress();

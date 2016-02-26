@@ -18,7 +18,6 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 import java.util.List;
@@ -117,7 +116,15 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
      */
     private void setColorOnSpecialQuery(TextView textView, String titleString, String highlight, String query) {
         int index = titleString.toLowerCase().indexOf(query.toLowerCase());
+
+
+
         int indexHighlitght = titleString.toLowerCase().indexOf(highlight.toLowerCase());
+        if(indexHighlitght == 0){
+            // To avoid cases where query matches category name
+            indexHighlitght = query.length() + titleString.toLowerCase().substring(query.length()).indexOf(highlight.toLowerCase());
+        }
+
         if(index != -1 && indexHighlitght != -1) {
             SpannableString title = new SpannableString(titleString);
             title.setSpan(new StyleSpan(Typeface.BOLD), index, index + query.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

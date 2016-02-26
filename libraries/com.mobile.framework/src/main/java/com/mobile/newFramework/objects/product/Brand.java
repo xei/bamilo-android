@@ -12,7 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by alexandrapires on 2/22/16.
+ * Class used to represent a Brand
+ * @author alexandrapires
  */
 public class Brand implements Parcelable, IJSONSerializable {
 
@@ -22,11 +23,11 @@ public class Brand implements Parcelable, IJSONSerializable {
     private String mTarget;
     private String mImageUrl;
 
-    public Brand(String name, int id){
+    public Brand(String name, int id, String key){
         super();
         mName = name;
         mId = id;
-
+        mUrlKey = key;
     }
 
     public Brand(){
@@ -47,17 +48,9 @@ public class Brand implements Parcelable, IJSONSerializable {
         return mName;
     }
 
- /*   public void setName(String mName) {
-        this.mName = mName;
-    }*/
-
     public int getId() {
         return mId;
     }
-
- /*   public void setId(int mId) {
-        this.mId = mId;
-    }*/
 
     public String getTarget() {
         return mTarget;

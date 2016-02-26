@@ -9,8 +9,8 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,8 +84,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     private boolean isAddingProductToCart;
 
     private long mStartTimeInMilliseconds;
-
-    private boolean isScrolling;
 
     @BannerVisibility
     private int bannerState;
@@ -165,20 +163,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         Print.i(TAG, "ON VIEW CREATED");
         // Get grid view
         mGridView = (HeaderFooterGridView) view.findViewById(R.id.campaign_grid);
-        // Set onScrollListener to signal adapter's Handler when user is scrolling
-        mGridView.addOnScrollListener(new OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                isScrolling = newState == RecyclerView.SCROLL_STATE_DRAGGING;
-
-
-            }
-        });
-
         mGridView.setGridLayoutManager(getBaseActivity().getResources().getInteger(R.integer.campaign_num_columns));
-
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST));
         mGridView.setHasFixedSize(true);
@@ -205,7 +190,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public void onResume() {
         super.onResume();
         Print.i(TAG, "ON RESUME");
-        isScrolling = false;
         // Track page
         TrackerDelegator.trackPage(TrackingPage.CAMPAIGNS, getLoadTime(), false);
     }
@@ -219,7 +203,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public void onPause() {
         super.onPause();
         Print.i(TAG, "ON PAUSE");
-        isScrolling = true;
     }
 
     /*
@@ -319,7 +302,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Get the banner view to add the header view
-     * @return View
      * @author sergiopereira
      */
     private void getBannerView(){
@@ -410,7 +392,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      * @author sergiopereira
      */
     private void onClickBuyButton(View view, CampaignItem campaignItem) {
-
         if(!campaignItem.hasUniqueSize()){
             showVariantsDialog(campaignItem);
         } else {
@@ -619,8 +600,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
         private static final int HEADER_POSITION = 0;
 
-        private final LayoutInflater mInflater;
-
         private final IOnProductClick mOnClickListener;
 
         private final ArrayList<CampaignItem> mItems;
@@ -634,7 +613,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
          */
         public CampaignAdapter(Context context, ArrayList<CampaignItem> items, IOnProductClick onClickBuyListener) {
             mItems = items;
-            mInflater = LayoutInflater.from(context);
             mOnClickListener = onClickBuyListener;
         }
 
@@ -675,7 +653,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set timer
             int remainingTime = item.getRemainingTime();
             // Set itemView's remainingTime to be used by handler
-            view.mRemainingTime = remainingTime;
             view.mTimer.setTag(item.getName());
             // update Timer
             updateTimer(view, view.mTimer, view.mTimerContainer, view.mButtonBuy, view.mOfferEnded, view.mName, view.mImage, remainingTime, view.mImageContainer);
@@ -840,7 +817,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
          */
         private void setSaveContainer(CampaignItemHolder view, CampaignItem item){
             if(item.hasDiscount()){
-                String label = getString(R.string.campaign_save);
                 String value = CurrencyFormatter.formatCurrency( "" + item.getSavePrice());
                 view.mSave.setVisibility(View.VISIBLE);
                 view.mSaveValue.setVisibility(View.VISIBLE);
@@ -892,12 +868,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 // Hide the size container
                 view.mSizeContainer.setVisibility(View.INVISIBLE);
                 // Set itself as selected size
-                ProductSimple size = null;
-                try {
-                    size = item.getSimples().get(0);
-                } catch (IndexOutOfBoundsException | NullPointerException e) {
-                    Print.w(TAG, "WARNING: EXCEPTION ON SET SIZE SELECTION: 0");
-                }
                 item.setSelectedSimplePosition(0);
             }
         }
@@ -909,12 +879,12 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             Rect bounds = view.getProgressDrawable().getBounds();
             // Case GREEN:
             if(stock >= GREEN_PERCENTAGE)
-                view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_green_bar));
+                view.setProgressDrawable(ContextCompat.getDrawable(view.getContext(), R.drawable.campaign_green_bar));
                 // Case YELLOW:
             else if(ORANGE_PERCENTAGE < stock && stock < GREEN_PERCENTAGE)
-                view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_yellow_bar));
+                view.setProgressDrawable(ContextCompat.getDrawable(view.getContext(), R.drawable.campaign_yellow_bar));
                 // Case ORANGE:
-            else  view.setProgressDrawable(getResources().getDrawable(R.drawable.campaign_orange_bar));
+            else  view.setProgressDrawable(ContextCompat.getDrawable(view.getContext(), R.drawable.campaign_orange_bar));
             // Set value
             view.getProgressDrawable().setBounds(bounds);
             view.setProgress(stock);
@@ -1048,8 +1018,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
         private void setHeaderImage(final CampaignItemHolder holder){
             if(!TextUtils.isEmpty(mBannerImage)){
-                // set listener
-//                holder.itemView.setOnClickListener(this);
                 // just in order to have a position tag in order to not crash on the onCLick
                 holder.itemView.setTag(R.id.position, -1);
                 holder.mBannerImageView.setVisibility(View.GONE);
@@ -1104,7 +1072,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         private final TextView mOfferEnded;
         private final View mTimerContainer;
         private final TextView mTimer;
-        private int mRemainingTime;
         private final ImageView mBannerImageView;
 
         public CampaignItemHolder(final View itemView) {

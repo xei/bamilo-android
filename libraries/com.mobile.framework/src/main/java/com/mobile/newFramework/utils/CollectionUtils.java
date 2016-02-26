@@ -185,6 +185,10 @@ public class CollectionUtils {
         return !isEmpty(coll);
     }
 
+    public static int size(Collection<?> coll) {
+        return coll != null ? coll.size() : 0;
+    }
+
     public static boolean isEmpty(ContentValues coll) {
         return coll == null || coll.size() == 0;
     }

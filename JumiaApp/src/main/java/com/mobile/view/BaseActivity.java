@@ -32,6 +32,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -915,6 +916,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
         // Get edit text
+
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         //#RTL
         if (ShopSelector.isRtl()) {
@@ -940,17 +942,24 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     private void setSearchWidthToFillOnExpand() {
+        mSearchAutoComplete.setDropDownHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         // Get the width of main content
-        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
-        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
-        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
-        // Calculate the search width
-        int searchComponentWidth = mainContentWidth - genericIconWidth;
-        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
+        final int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
         // Set measures
-        mSearchView.setMaxWidth(searchComponentWidth);
-        mSearchAutoComplete.setDropDownWidth(mainContentWidth);
+        if (mSearchView != null) {
+            mSearchView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                           int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                    // set DropDownView width
+                    mSearchAutoComplete.setDropDownWidth(mainContentWidth);
+                    mSearchAutoComplete.setDropDownBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.search_dropdown_background));
+                    mSearchAutoComplete.setDropDownHorizontalOffset(0);
+
+                }
+            });
+        }
     }
 
     /**
@@ -1118,7 +1127,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Execute search
      * @author sergiopereira
      */
-    protected void showSearchCategory(final Suggestion suggestion) {
+    public void showSearchCategory(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST " + suggestion.getResult());
         // Tracking
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
@@ -1140,7 +1149,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Execute search
      */
-    protected void showSearchOther(final Suggestion suggestion) {
+    public void showSearchOther(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
         // Tracking
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
@@ -1157,7 +1166,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Execute search for product
      */
-    protected void showSearchProduct(Suggestion suggestion) {
+    public void showSearchProduct(Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW " + suggestion.getResult());
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
         // Case mob api
@@ -1176,12 +1185,13 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Execute search for shop in shop
      */
-    protected void showSearchShopsInShop(final Suggestion suggestion) {
+    public void showSearchShopsInShop(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP " + suggestion.getResult());
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        Print.d(TAG, "SEARCH COMPONENT: result " + result);
         // Case algolia
         if (!result) {
             Bundle bundle = new Bundle();
@@ -1221,8 +1231,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
                 // Hide search bar
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
-                // Clean autocomplete
-//                mSearchAutoComplete.setText("");
+
                 // Show hidden items
                 setActionMenuItemsVisibility(true);
                 // Forced the IME option on collapse
