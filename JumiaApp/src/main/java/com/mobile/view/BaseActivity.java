@@ -20,6 +20,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
@@ -32,17 +34,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
@@ -57,6 +58,7 @@ import com.mobile.helpers.search.SearchSuggestionClient;
 import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -111,7 +113,7 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+public abstract class BaseActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -137,7 +139,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected DialogFragment dialog;
     protected SearchView mSearchView;
     protected SearchAutoComplete mSearchAutoComplete;
-    protected View mSearchOverlay;
+    protected RecyclerView mSearchListView;
+    protected RelativeLayout mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
 
     //private final int contentLayoutId;
@@ -917,8 +920,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
         // Get edit text
-        mSearchOverlay = findViewById(R.id.search_overlay);
+        mSearchOverlay = (RelativeLayout) findViewById(R.id.search_overlay);
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
+        mSearchListView = (RecyclerView) mSearchOverlay.findViewById(R.id.search_overlay_listview);
+        mSearchListView.setLayoutManager(new LinearLayoutManager(this));
+        mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable.line_divider));
         //#RTL
         if (ShopSelector.isRtl()) {
             mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
@@ -973,45 +979,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             Print.w(TAG, "SEARCH COMPONENT IS NULL");
             return;
         }
-
-        /*
-         * Set on item click listener
-         */
-        mSearchAutoComplete.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
-                // Get suggestion
-                Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
-                // Get text suggestion
-                String text = selectedSuggestion.getResult();
-                //Save searched text
-                JumiaApplication.INSTANCE.setSearchedTerm(text);
-                mSearchAutoComplete.dismissDropDown();
-                // Collapse search view
-                MenuItemCompat.collapseActionView(mSearchMenuItem);
-                // Save query
-                GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
-
-                switch (selectedSuggestion.getType()){
-                    case Suggestion.SUGGESTION_PRODUCT:
-                        showSearchProduct(selectedSuggestion);
-                        break;
-                    case Suggestion.SUGGESTION_SHOP_IN_SHOP:
-                        showSearchShopsInShop(selectedSuggestion);
-                        break;
-                    case Suggestion.SUGGESTION_CATEGORY:
-                        // Show query
-                        showSearchCategory(selectedSuggestion);
-                        break;
-                    case Suggestion.SUGGESTION_OTHER:
-                        // Show query
-                        showSearchOther(selectedSuggestion);
-                        break;
-                }
-
-            }
-        });
 
         /*
          * Clear and add text listener
@@ -1320,8 +1287,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         else{
             //show dropdown with recent queries
             SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
-            mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
-            mSearchAutoComplete.showDropDown();
+            searchSuggestionsAdapter.setOnViewHolderClickListener(this);
+            mSearchListView.setAdapter(searchSuggestionsAdapter);
         }
     }
 
@@ -1362,8 +1329,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
         TrackerDelegator.trackLoadTiming(params);
         SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
-        mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
-        mSearchAutoComplete.showDropDown();
+        searchSuggestionsAdapter.setOnViewHolderClickListener(this);
+        mSearchListView.setAdapter(searchSuggestionsAdapter);
+
     }
 
     /**
@@ -1830,4 +1798,50 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
 
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
+     */
+    @Override
+    public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
+        // Get suggestion
+        Suggestion selectedSuggestion = ((SearchDropDownAdapter) adapter).getItem(position);
+        // Get text suggestion
+        String text = selectedSuggestion.getResult();
+        //Save searched text
+        JumiaApplication.INSTANCE.setSearchedTerm(text);
+        mSearchAutoComplete.dismissDropDown();
+        // Collapse search view
+        MenuItemCompat.collapseActionView(mSearchMenuItem);
+        // Save query
+        GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
+
+        switch (selectedSuggestion.getType()){
+            case Suggestion.SUGGESTION_PRODUCT:
+                showSearchProduct(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_SHOP_IN_SHOP:
+                showSearchShopsInShop(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_CATEGORY:
+                // Show query
+                showSearchCategory(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_OTHER:
+                // Show query
+                showSearchOther(selectedSuggestion);
+                break;
+        }
+
+    }
+
+    @Override
+    public void onHeaderClick(String target, String title) {
+
+    }
+
+    @Override
+    public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+
+    }
 }
