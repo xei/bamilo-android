@@ -3,7 +3,10 @@ package com.mobile.helpers.account;
 import android.content.ContentValues;
 import android.os.Bundle;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -30,6 +33,12 @@ public class SetUserDataHelper extends SuperBaseHelper {
     @Override
     protected void onRequest(RequestBundle requestBundle) {
         new BaseRequest(requestBundle, this).execute(AigApiInterface.setUserData);
+    }
+
+    @Override
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
+        JumiaApplication.CUSTOMER = (Customer) baseResponse.getContentData();
     }
 
     public static Bundle createBundle(String endpoint, ContentValues values) {

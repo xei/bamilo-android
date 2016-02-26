@@ -20,7 +20,6 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
-import com.mobile.newFramework.tracking.ContainerHolderSingleton;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -38,8 +37,7 @@ public class GTMManager {
 
     volatile static Container mContainer;
     private static String EVENT_TYPE = "event";
-    private static String EVENT_TYPE_TRANSACTION = "transaction";
-    private String CONTAINER_ID = "";
+    private static final String EVENT_TYPE_TRANSACTION = "transaction";
     private static boolean isContainerAvailable = false;
     private static DataLayer dataLayer;
     private static GTMManager gtmTrackingManager;
@@ -56,11 +54,7 @@ public class GTMManager {
     private String mCurrentGAID;
     private Context mContext;
 
-    // private final int REFRESH_INTERVAL = 1000 * 60 * 60; // 60 minutes
-    
-    // private Context mContext;
-
-    private static ArrayList<Map<String, Object>> pendingEvents = new ArrayList<Map<String, Object>>();
+    private static ArrayList<Map<String, Object>> pendingEvents = new ArrayList<>();
 
     public static GTMManager get() {
         if (gtmTrackingManager == null) {
@@ -88,9 +82,9 @@ public class GTMManager {
         dataLayer = TagManager.getInstance(context).getDataLayer();
 
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        CONTAINER_ID = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, "");
-        Print.e(TAG, "init id:" + CONTAINER_ID);
-        PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(CONTAINER_ID,0);
+        String containerId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, "");
+        Print.e(TAG, "init id:" + containerId);
+        PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(containerId,0);
         
         // The onResult method will be called as soon as one of the following happens:
         //     1. a saved container is loaded
@@ -99,13 +93,11 @@ public class GTMManager {
         pending.setResultCallback(new ResultCallback<ContainerHolder>() {
             @Override
             public void onResult(ContainerHolder containerHolder) {
-                ContainerHolderSingleton.setContainerHolder(containerHolder);
                 mContainer = containerHolder.getContainer();
                 if (!containerHolder.getStatus().isSuccess()) {
                     Print.e(TAG, "failure loading container");
                     return;
                 }
-                ContainerHolderSingleton.setContainerHolder(containerHolder);
                 ContainerLoadedCallback.registerCallbacksForContainer(mContainer);
                 containerHolder.setContainerAvailableListener(new ContainerAvailableListener() {
                     
@@ -140,7 +132,7 @@ public class GTMManager {
         if(version == null){
             version = "";
         }
-        Map<String, Object> message = null;
+
         String operator = deviceInfo.getString(Constants.INFO_SIM_OPERATOR);
         if(operator == null){
             operator = "";
@@ -150,9 +142,8 @@ public class GTMManager {
             deviceBrand = "";
         }
 
-        
-        boolean isPreInstall = false;
-        isPreInstall = deviceInfo.getBoolean(Constants.INFO_PRE_INSTALL, false);
+
+        boolean isPreInstall = deviceInfo.getBoolean(Constants.INFO_PRE_INSTALL, false);
         Print.d(TAG, "gtmTrackAppOpen isPreInstall:" + isPreInstall);
         if(isPreInstall) source = GTMValues.PRE_INSTALL;
         else source = GTMValues.ORGANIC;
@@ -162,10 +153,8 @@ public class GTMManager {
         }
             
             Print.d(TAG, "gtmTrackAppOpen" + " campaignId:" + campaignId + " source:" + source + " countryIso:" + countryIso + " version:" + version + " deviceBrand:" + deviceBrand);
-//            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.CAMPAIGN, campaignId, GTMKeys.SOURCE, source, GTMKeys.SHOPCOUNTRY,
-//                  countryIso, GTMKeys.APPVERSION, version,GTMKeys.DEVICEBRAND, deviceBrand);
-            
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP,  GTMKeys.SHOPCOUNTRY, countryIso,GTMKeys.SOURCE, source,
+
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP,  GTMKeys.SHOPCOUNTRY, countryIso,GTMKeys.SOURCE, source,
                     GTMKeys.APPVERSION, version,GTMKeys.DEVICEBRAND, deviceBrand);
             
             if(!TextUtils.isEmpty(campaignId)){
@@ -176,63 +165,6 @@ public class GTMManager {
                 message.put(GTMKeys.OPERATOR, operator);
             
             sendEvent(message);
-            
-//        }
-        
-//
-//        Log.i(TAG, " GTM TRACKING -> gtmTrackAppOpen [" + appOpenContext + ", " + countryIso + ", " + version);
-//        Map<Object, Object> message = null;
-//        if (TextUtils.isEmpty(campaignId) || TextUtils.isEmpty(getCampaignParams(context, IS_GTM_CAMPAIGN_SET))) {
-//            Log.d("BETA", "gtmTrackAppOpen 1");
-//            Log.d(TAG, "GTM Campaign : " + campaignId + ", source : " + source + ", medium : " + medium);
-//            Log.d("BETA", "GTM Campaign : " + campaignId + ", source : " + source + ", medium : " + medium);
-//            if (TextUtils.isEmpty(getUserId())) {
-//                Log.d("BETA", "gtmTrackAppOpen 2");
-//                if (appOpenContext.equalsIgnoreCase(GTMValues.PRE_INSTALL)) {
-//                    Log.d("BETA", "gtmTrackAppOpen PREINSTALL");
-//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, source, GTMKeys.MEDIUM, medium,
-//                            GTMKeys.CAMPAIGN, campaignId, GTMKeys.SHOPCOUNTRY, countryIso, GTMKeys.APPVERSION, version,
-//                            GTMKeys.CUSTOMERID, getUserId());
-//                } else {
-//                    Log.d("BETA", "gtmTrackAppOpen 3");
-//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, appOpenContext, GTMKeys.SHOPCOUNTRY,
-//                            countryIso, GTMKeys.APPVERSION, version);
-//                }
-//
-//            } else {
-//                Log.d("BETA", "gtmTrackAppOpen 4");
-//                if (appOpenContext.equalsIgnoreCase(GTMValues.PRE_INSTALL)) {
-//                    Log.d("BETA", "gtmTrackAppOpen PREINSTALL");
-//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, source, GTMKeys.MEDIUM, medium,
-//                            GTMKeys.CAMPAIGN, campaignId, GTMKeys.SHOPCOUNTRY, countryIso, GTMKeys.APPVERSION, version,
-//                            GTMKeys.CUSTOMERID, getUserId());
-//                } else {
-//                    Log.d("BETA", "gtmTrackAppOpen 5");
-//                    message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, appOpenContext, GTMKeys.SHOPCOUNTRY,
-//                            countryIso, GTMKeys.APPVERSION, version, GTMKeys.CUSTOMERID, getUserId());
-//                }
-//
-//            }
-//        } else {
-//            Log.d("BETA", "gtmTrackAppOpen 6");
-//            Log.d(TAG, "Saving GTM Campaign : " + campaignId + ", source : " + source + ", medium : " + medium);
-//            Log.d("BETA", "Saving GTM Campaign : " + campaignId + ", source : " + source + ", medium : " + medium);
-//            if (TextUtils.isEmpty(getUserId())) {
-//                Log.d(TAG, "getUserId empty");
-//                Log.d("BETA", "gtmTrackAppOpen 7");
-//                message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, source, GTMKeys.MEDIUM, medium,
-//                        GTMKeys.CAMPAIGN, campaignId, GTMKeys.SHOPCOUNTRY, countryIso, GTMKeys.APPVERSION, version);
-//            } else {
-//                Log.d(TAG, "getUserId not empty");
-//                Log.d("BETA", "gtmTrackAppOpen 8");
-//                message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_APP, GTMKeys.SOURCE, source, GTMKeys.MEDIUM, medium,
-//                        GTMKeys.CAMPAIGN, campaignId, GTMKeys.SHOPCOUNTRY, countryIso, GTMKeys.APPVERSION, version,
-//                        GTMKeys.CUSTOMERID, getUserId());
-//            }
-//        }
-//
-//        sendEvent(message);
-
     }
 
     public void gtmTrackViewScreen(String screenName, long loadTime) {
@@ -245,9 +177,8 @@ public class GTMManager {
         milliseconds = milliseconds - loadTime;
         
         Print.i(TAG, " GTM TRACKING -> gtmTrackViewScreen - " + screenName + " " + milliseconds);
-        
-        Map<String, Object> message = null;
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_SCREEN, GTMKeys.SCREENNAME, screenName, GTMKeys.LOADTIME, milliseconds);
+
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_OPEN_SCREEN, GTMKeys.SCREENNAME, screenName, GTMKeys.LOADTIME, milliseconds);
 
         sendEvent(message);
     }
@@ -306,10 +237,10 @@ public class GTMManager {
 
     public void gtmTrackRegister(String customerId, String location) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackRegister");
-        Map<String, Object> message = null;
+
         Print.d(TAG, "gtmTrackRegister" + " GTMValues.EMAILAUTH:" + GTMValues.EMAILAUTH + " location:" + location + " customerId:" + customerId);
 
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REGISTER, GTMKeys.REGISTRATIONMETHOD, GTMValues.EMAILAUTH,
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REGISTER, GTMKeys.REGISTRATIONMETHOD, GTMValues.EMAILAUTH,
                     GTMKeys.REGISTRATIONLOCATION, location, GTMKeys.CUSTOMERID, customerId);
         
         sendEvent(message);
@@ -318,10 +249,10 @@ public class GTMManager {
     
     public void gtmTrackRegisterFailed(String location) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackRegisterFailed");
-        Map<String, Object> message = null;
+
         Print.d(TAG, "gtmTrackRegisterFailed" + " GTMValues.EMAILAUTH:" + GTMValues.EMAILAUTH + " location:" + location);
 
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REGISTER_FAILED, GTMKeys.REGISTRATIONMETHOD, GTMValues.EMAILAUTH, GTMKeys.REGISTRATIONLOCATION, location);
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REGISTER_FAILED, GTMKeys.REGISTRATIONMETHOD, GTMValues.EMAILAUTH, GTMKeys.REGISTRATIONLOCATION, location);
         
         sendEvent(message);
 
@@ -329,9 +260,8 @@ public class GTMManager {
     
     public void gtmTrackSignUp(String subscriberId, String location) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackSignUp ");
-        Map<String, Object> message = null;
         Print.d(TAG, "gtmTrackSignUp" + " GTMValues.EMAILAUTH:" + GTMValues.EMAILAUTH + " location:" + location + " subscriberId:" + subscriberId);
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SIGNUP, GTMKeys.SUBSCRIBERID, subscriberId, GTMKeys.SIGNUPLOCATION, location);
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SIGNUP, GTMKeys.SUBSCRIBERID, subscriberId, GTMKeys.SIGNUPLOCATION, location);
         
         sendEvent(message);
 
@@ -349,19 +279,14 @@ public class GTMManager {
             String paymentMethod, String shippingAmount, String taxAmount) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackTransaction ");
 
-        ArrayList<Map<String, Object>> products = new ArrayList<Map<String,Object>>();
+        ArrayList<Map<String, Object>> products = new ArrayList<>();
         for (PurchaseItem item : items) {
             Map<String, Object> productsData = DataLayer.mapOf(GTMKeys.NAME, item.name, GTMKeys.SKU, item.sku, GTMKeys.CATEGORY, item.category,
                     GTMKeys.PRICE, item.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.QUANTITY, item.quantity);
             products.add(productsData);
         }
         
-        
-        Map<String, Object> message = null;
-//        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_TRANSACTION, GTMKeys.PREVIOUSPURCHASES, DataLayer.OBJECT_NOT_PRESENT, GTMKeys.TRANSACTIONID, transactionId, GTMKeys.TRANSACTIONAFFILIATION, DataLayer.OBJECT_NOT_PRESENT,
-//                GTMKeys.TRANSACTIONTOTAL, transactionValue, GTMKeys.TRANSACTIONCURRENCY,currencyName , GTMKeys.TRANSACTIONPRODUCTS, products);
-        
-        message = DataLayer.mapOf(EVENT_TYPE_TRANSACTION, GTMEvents.GTM_TRANSACTION, GTMKeys.TRANSACTIONID, transactionId,
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE_TRANSACTION, GTMEvents.GTM_TRANSACTION, GTMKeys.TRANSACTIONID, transactionId,
                 GTMKeys.TRANSACTIONTOTAL, transactionValue, GTMKeys.TRANSACTIONCURRENCY,currencyName , GTMKeys.TRANSACTIONPRODUCTS, products);
         
         if(!TextUtils.isEmpty(coupon))
@@ -385,8 +310,8 @@ public class GTMManager {
 
         Print.d(TAG, "gtmTrackShare" + " productSKU:" + productSKU);
 
-        Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SHARE_PRODUCT, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.SHARELOCATION, GTMValues.PRODUCTDETAILPAGE);
+        
+            Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SHARE_PRODUCT, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.SHARELOCATION, GTMValues.PRODUCTDETAILPAGE);
 
             if(!TextUtils.isEmpty(category))
                 message.put( GTMKeys.PRODUCTCATEGORY, category);
@@ -399,8 +324,8 @@ public class GTMManager {
     public void gtmTrackChangeCountry(String country) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackChangeCountry");
         Print.d(TAG, "gtmTrackChangeCountry" + " country:" + country);
-        Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CHANGE_COUNTRY, GTMKeys.SHOPCOUNTRY, country);
+        
+            Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CHANGE_COUNTRY, GTMKeys.SHOPCOUNTRY, country);
 
         sendEvent(message);
         // Clean the Google Analytics Id when the user changes country
@@ -416,8 +341,8 @@ public class GTMManager {
         Print.d(TAG, "gtmTrackViewProduct" + " productSKU:" + productSKU + " productBrand:" + productBrand
                 + " productPrice:" + productPrice + " currencyName:" + currencyName + " discount:" + discount);
 
-        Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_PRODUCT, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTBRAND, productBrand,
+        
+            Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_PRODUCT, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTBRAND, productBrand,
                       GTMKeys.PRODUCTPRICE, productPrice, GTMKeys.CURRENCY, currencyName, GTMKeys.DISCOUNT, discount);
             
             if(productRating != -1d) 
@@ -443,8 +368,8 @@ public class GTMManager {
         
         Print.d(TAG, "gtmTrackAddToCart" + " productSKU:" + productSKU + " productBrand:" + productBrand
                 + " productPrice:" + productPrice + " currencyName:" + currencyName + " discount:" + discount);
-        Map<String, Object> message = null;
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_ADD_TO_CART, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTPRICE, productPrice, GTMKeys.PRODUCTBRAND, productBrand, GTMKeys.CURRENCY, currencyName,
+        
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_ADD_TO_CART, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTPRICE, productPrice, GTMKeys.PRODUCTBRAND, productBrand, GTMKeys.CURRENCY, currencyName,
                 GTMKeys.DISCOUNT, discount, GTMKeys.PRODUCTQUANTITY, 1, GTMKeys.LOCATION, location);
 
         
@@ -464,10 +389,10 @@ public class GTMManager {
     public void gtmTrackRemoveFromCart(String productSku, double averageRatingTotal, double productPrice, long quantity, String cartValue, String currencyName) {
 
         Print.i(TAG, " GTM TRACKING -> gtmTrackRemoveFromCart (categ: " + productSku + "; subcateg: " + productPrice + ")");
-        Map<String, Object> message = null;
+        
 
         Print.d(TAG, "gtmTrackRemoveFromCart" + " productPrice:" + productPrice + " currencyName:" + currencyName + " productSku:" + productSku + " productPrice:" + productPrice + " cartValue:" + cartValue + " quantity:" + quantity);
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REMOVE_FROM_CART, GTMKeys.PRODUCTSKU, productSku, GTMKeys.PRODUCTPRICE, productPrice,
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REMOVE_FROM_CART, GTMKeys.PRODUCTSKU, productSku, GTMKeys.PRODUCTPRICE, productPrice,
                 GTMKeys.QUANTITYCART, quantity, GTMKeys.CARTVALUE, cartValue, GTMKeys.CURRENCY, currencyName);
 
         if(averageRatingTotal != -1d) 
@@ -479,20 +404,10 @@ public class GTMManager {
     
     public void gtmTrackRateProduct(ProductComplete product,String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackRateProduct");
-        Map<String, Object> message;
-        String category = null;
-        String subCategory = null;
         Print.d(TAG, "gtmTrackRateProduct" + " currencyName:" + currencyName + " product.getSku():" + product.getSku() +
                 " PRODUCTPRICE:" + product.getPriceForTracking() + " currencyName:" + currencyName + " PRODUCTRATING:" + product.getAvgRating());
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
-                GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand().getName(), GTMKeys.PRODUCTRATING, product.getAvgRating());
-        
-        if(!TextUtils.isEmpty(category)) 
-            message.put(GTMKeys.PRODUCTCATEGORY, category);
-            
-        if(!TextUtils.isEmpty(subCategory)) 
-            message.put(GTMKeys.PRODUCTSUBCATEGORY, subCategory);
-        
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_RATE_PRODUCT, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
+                GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrandName(), GTMKeys.PRODUCTRATING, product.getAvgRating());
         
         sendEvent(message);
 
@@ -501,44 +416,11 @@ public class GTMManager {
     public void gtmTrackViewRating(ProductComplete product, String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackViewRating");
 
-        Map<String, Object> message;
-        String category = null;
-        String subCategory = null;
-        
         Print.d(TAG, "gtmTrackViewRating" + " productSku:" + product.getSku() + " AVERAGERATINGTOTAL:" + product.getAvgRating() + " productPrice:" + product.getPriceForTracking() + " currencyName:" + currencyName);
 
-//      message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_RATING, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(), GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrand(), GTMKeys.AVERAGERATINGPRICE, notPresent,
-//              GTMKeys.AVERAGERATINGAPPEARANCE, notPresent, GTMKeys.AVERAGERATINGQUALITY, notPresent, GTMKeys.AVERAGERATINGTOTAL, product.getRatingsAverage());
-
-      message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_RATING, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
+      Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_RATING, GTMKeys.PRODUCTSKU, product.getSku(), GTMKeys.PRODUCTPRICE, product.getPriceForTracking(),
               GTMKeys.CURRENCY, currencyName, GTMKeys.PRODUCTBRAND, product.getBrandName(), GTMKeys.AVERAGERATINGTOTAL, product.getAvgRating());
-      
-      if(!TextUtils.isEmpty(category)) 
-          message.put(GTMKeys.PRODUCTCATEGORY, category);
-          
-      if(!TextUtils.isEmpty(subCategory)) 
-          message.put(GTMKeys.PRODUCTSUBCATEGORY, subCategory);
-      
-      
-        sendEvent(message);
 
-    }
-    
-    
-    public void gtmTrackCatalog(String category, String subCategory,int pageNumber) {
-        Print.i(TAG, " GTM TRACKING -> gtmTrackViewCatalog (" + category + "; " + subCategory + "; ) " + pageNumber);
-
-        
-        Map<String, Object> message = null;
-        Print.d(TAG, "gtmTrackCatalog" + " pageNumber:" + pageNumber);
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_CATALOG, GTMKeys.PAGENUMBER, pageNumber);
-
-        if(!TextUtils.isEmpty(category)) 
-            message.put(GTMKeys.CATEGORY, category);
-            
-        if(!TextUtils.isEmpty(subCategory)) 
-            message.put(GTMKeys.SUBCATEGORY, subCategory);
-        
         sendEvent(message);
 
     }
@@ -546,18 +428,18 @@ public class GTMManager {
     public void gtmTrackFilterCatalog(String filterType) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackFilterCatalog");
 
-        Map<String, Object> message = null;
+        
         Print.d(TAG, "gtmTrackFilterCatalog" + " filterType:" + filterType);
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_FILTER_CATALOG, GTMKeys.FILTERTYPE, filterType);
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_FILTER_CATALOG, GTMKeys.FILTERTYPE, filterType);
         sendEvent(message);
     }
 
     public void gtmTrackSortCatalog(String sortType) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackSortCatalog " + sortType);
 
-        Map<String, Object> message = null;
+        
         Print.d(TAG, "gtmTrackSortCatalog" + " sortType:" + sortType);
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SORT_CATALOG, GTMKeys.SORTTYPE, sortType);
+            Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_SORT_CATALOG, GTMKeys.SORTTYPE, sortType);
         sendEvent(message);
     }
 
@@ -566,9 +448,9 @@ public class GTMManager {
         
 
         
-        Map<String, Object> message = null;
         
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_ADD_TO_WL, GTMKeys.PRODUCTSKU, productSku, GTMKeys.PRODUCTPRICE, productPrice, GTMKeys.PRODUCTBRAND, productBrand, GTMKeys.CURRENCY, currency,
+        
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_ADD_TO_WL, GTMKeys.PRODUCTSKU, productSku, GTMKeys.PRODUCTPRICE, productPrice, GTMKeys.PRODUCTBRAND, productBrand, GTMKeys.CURRENCY, currency,
                 GTMKeys.DISCOUNT, productDiscount, GTMKeys.LOCATION, location, GTMKeys.AVERAGERATINGTOTAL, productRating);
 
         if(!TextUtils.isEmpty(category)) 
@@ -585,8 +467,8 @@ public class GTMManager {
     public void gtmTrackRemoveFromWishList(String productSKU, double productPrice, double averageRatingTotal, String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackRemoveFromWishList");
 
-        Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REMOVE_FROM_WL, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTPRICE, productPrice,
+        
+            Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_REMOVE_FROM_WL, GTMKeys.PRODUCTSKU, productSKU, GTMKeys.PRODUCTPRICE, productPrice,
                     GTMKeys.CURRENCY, currencyName, GTMKeys.AVERAGERATINGTOTAL, averageRatingTotal);
 
         sendEvent(message);
@@ -595,26 +477,15 @@ public class GTMManager {
     public void gtmTrackViewCart(int quantityCart, double cartValue, String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackViewCart");
 
-        Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_CART, GTMKeys.CARTVALUE, cartValue, GTMKeys.QUANTITYCART, quantityCart, GTMKeys.CURRENCY, currencyName);
+        
+            Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_CART, GTMKeys.CARTVALUE, cartValue, GTMKeys.QUANTITYCART, quantityCart, GTMKeys.CURRENCY, currencyName);
 
         sendEvent(message);
     }
-    
-    public void gtmTrackStartCheckout(int quantityCart, double cartValue,String currencyName) {
-        Print.i(TAG, " GTM TRACKING -> gtmTrackStartCheckout");
 
-        Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_CART, GTMKeys.CARTVALUE, cartValue, GTMKeys.QUANTITYCART, quantityCart, GTMKeys.CURRENCY, currencyName);
-
-        sendEvent(message);
-    }
-    
     public void gtmTrackEnterAddress(boolean isCorrect) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackEnterAddress");
-
-        Map<String, Object> message = null;
-        
+        Map<String, Object> message;
        if(isCorrect) message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_CART, GTMKeys.ADDRESSCORRECT, GTMValues.YES);
        else message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_VIEW_CART, GTMKeys.ADDRESSCORRECT, GTMValues.NO);
         sendEvent(message);
@@ -623,8 +494,8 @@ public class GTMManager {
     public void gtmTrackChoosePayment(String paymentMethod) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackChoosePayment");
 
-        Map<String, Object> message = null;
-            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CHOOSE_PAYMENT, GTMKeys.PAYMENTMETHOD, paymentMethod);
+        
+            Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CHOOSE_PAYMENT, GTMKeys.PAYMENTMETHOD, paymentMethod);
 
         sendEvent(message);
     }
@@ -632,8 +503,8 @@ public class GTMManager {
     public void gtmTrackFailedPayment(String paymentMethod, double transactionTotal, String currencyName) {
         Print.i(TAG, " GTM TRACKING -> gtmTrackFailedPayment");
 
-        Map<String, Object> message = null;
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_FAILED_PAYMENT, GTMKeys.PAYMENTMETHOD, paymentMethod, GTMKeys.TRANSACTIONTOTAL, transactionTotal, GTMKeys.CURRENCY, currencyName);
+        
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_FAILED_PAYMENT, GTMKeys.PAYMENTMETHOD, paymentMethod, GTMKeys.TRANSACTIONTOTAL, transactionTotal, GTMKeys.CURRENCY, currencyName);
 
         sendEvent(message);
     }
@@ -641,33 +512,10 @@ public class GTMManager {
     public void gtmTrackAppClose() {
         Print.i(TAG, " GTM TRACKING -> gtmTrackAppClose");
 
-        Map<String, Object> message = null;
-        message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CLOSE_APP, GTMKeys.SCREENNAME, GTMValues.HOME);
+        
+        Map<String, Object> message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_CLOSE_APP, GTMKeys.SCREENNAME, GTMValues.HOME);
 
         sendEvent(message);
-    }
-
-    public void gtmTrackFreshInstall(String type, String source, String medium, String campaign) {
-        Print.i(TAG, " GTM TRACKING -> gtmTrackFreshInstall");
-
-//        Map<Object, Object> message = null;
-//        Log.i(TAG, " GTM TRACKING type-> " + type);
-//        if (type.equalsIgnoreCase(GTMValues.ORGANIC)) {
-//
-//            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_INSTALL_APP);            
-//
-//        } else if (type.equalsIgnoreCase(GTMValues.REFERRER)) {
-//
-//            Log.i(TAG, " GTM TRACKING INSTALL source-> " + source + " medium:" + medium + " campaign:" + campaign);
-//
-//            message = DataLayer.mapOf(EVENT_TYPE, GTMEvents.GTM_INSTALL_APP);
-//        }
-//
-//        if (!CONTAINER_ID.equals(DEFAULT_CONTAINER)) {
-//            sendEvent(message);
-//        } else {
-//            pendingEvents.add(message);
-//        }
     }
 
     /**
@@ -732,16 +580,11 @@ public class GTMManager {
         }
     }
 
-    public static String getCampaignParams(Context context, String key) {
-        SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
-        return settings.getString(key, "");
-    }
-
     public static void saveCampaignParams(Context context, String key, String value) {
         SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
 
 
@@ -791,13 +634,12 @@ public class GTMManager {
     
     /**
      * method responsible for sending the adjust install information to GTM
-     * @param context
      */
     public static void trackAdjustInstallSource(Context context){
         if(context == null)
             return;
         
-        HashMap<String, Object> parameters = new HashMap<String, Object>();
+        HashMap<String, Object> parameters = new HashMap<>();
         
         SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
         if(settings.contains(GTMKeys.INSTALLNETWORK) && settings.getString(GTMKeys.INSTALLNETWORK, null) != null)
@@ -830,7 +672,7 @@ public class GTMManager {
         SharedPreferences settings = context.getSharedPreferences(GTMManager.GA_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putString(key, value);
-        editor.commit();
+        editor.apply();
     }
     
 }

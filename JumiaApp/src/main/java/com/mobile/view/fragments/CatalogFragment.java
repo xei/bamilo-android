@@ -207,9 +207,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mSortOrFilterApplied = savedInstanceState.getBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED);
             mCatalogGridPosition = savedInstanceState.getInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, IntConstants.INVALID_POSITION);
         }
-
-        // Track most viewed category
-        TrackerDelegator.trackCategoryView();
     }
 
     /*
@@ -599,7 +596,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Show product
             Bundle bundle = new Bundle();
             bundle.putString(ConstantsIntentExtra.CONTENT_ID, product.getSku());
-            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrand() + " " + product.getName());
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, product.getBrandName() + " " + product.getName());
             bundle.putBoolean(ConstantsIntentExtra.SHOW_RELATED_ITEMS, true);
             bundle.putSerializable(ConstantsIntentExtra.TRACKING_ORIGIN_TYPE, mGroupType);
             // Goto PDV
@@ -632,8 +629,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
                     args.putParcelable(AddToWishListHelper.ADD_TO_WISHLIST, mWishListItemClicked);
                 }
             }
-
-
             // Goto login
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }

@@ -57,14 +57,11 @@ public class RestConstants {
     public static final String PATTERN = "pattern";
     public static final String MATCH = "match";
     public static final String IMAGE = "image";
-    public static final String IMAGE_URL = "image_url";
     public static final String IMAGE_PORTRAIT = "image_portrait";
     public static final String IMAGE_LANDSCAPE = "image_landscape";
-    public static final String SUGGESTIONS = "suggestions";
     public static final String OPTIONS = "options";
     public static final String RATINGS = "ratings";
     public static final String SKU = "sku";
-    public static final String ATTRIBUTE_SET_ID = "attribute_set_id";
     public static final String PRICE = "price";
     public static final String PRICE_CONVERTED = "price_converted";
     public static final String BRAND = "brand";
@@ -228,7 +225,6 @@ public class RestConstants {
     public static final String GTM_ANDROID = "gtm_android";
     public static final String HAS_CART_POPUP = "has_cart_popup";
     public static final String ITEM = "item";
-    public static final String RELEVANCE = "relevance";
     public static final String BUNDLE_PRODUCTS = "bundle_products";
     public static final String LEADER_SIMPLE_POSITION = "leader_simple_position";
     public static final String BUNDLE_ENTITY = "bundle_entity";
@@ -316,7 +312,6 @@ public class RestConstants {
     public static final String SUGGESTER_API_KEY = "suggester_api_key";
     public static final String NAMESPACE_PREFIX = "namespace_prefix";
     public static final String BRAND_ENTITY = "brand_entity";
-    // Algolia related
     public static final String HITS = "hits";
     public static final String LOCALIZABLE_ATTRIBUTES = "localizable_attributes";
     public static final String FACET_CATEGORY = "facet_category";
@@ -330,4 +325,8 @@ public class RestConstants {
     public static final String SUB_STRING = "sub_string";
     public static final String POINTER = "pointer";
     public static final String FRONTEND_NAME = "frontend_name";
+    public static final String BRAND_URL_KEY = "brand_url_key";
+    public static final String CATEGORY_URL_KEY = "category_url_key";
+    public static final String CATEGORY_NAME = "category_name";
+    public static final String ORDERS_COUNT = "orders_count";
 }

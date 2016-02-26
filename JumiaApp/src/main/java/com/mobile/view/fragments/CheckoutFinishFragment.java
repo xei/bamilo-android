@@ -649,7 +649,11 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 break;
             case SET_MULTI_STEP_FINISH:
                 mCheckoutFinish = (CheckoutFinish) baseResponse.getContentData();
+                // Tracking purchase
+                TrackerDelegator.trackPurchase(mCheckoutFinish, JumiaApplication.INSTANCE.getCart());
+                // Next step
                 switchToSubmittedPayment();
+                // Update cart info
                 getBaseActivity().updateCartInfo();
                 break;
             default:

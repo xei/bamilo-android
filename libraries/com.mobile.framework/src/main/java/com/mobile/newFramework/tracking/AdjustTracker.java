@@ -292,9 +292,9 @@ public class AdjustTracker {
             eventPDVScreen.addPartnerParameter(AdjustKeys.CATEGORY_ID, prod.getCategoryId());
 
             // Add brand ID
-            if(prod.getBrand().getId() != 0){
-                eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(prod.getBrand().getId()));
-                eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(prod.getBrand().getId()));
+            if(prod.getBrandId() != 0){
+                eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(prod.getBrandId()));
+                eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(prod.getBrandId()));
             }
 
 
@@ -440,7 +440,7 @@ public class AdjustTracker {
 
 
 
-    public void trackEvent(Context context,TrackingEvent eventTracked, Bundle bundle) {
+    public void trackEvent(TrackingEvent eventTracked, Bundle bundle) {
         if (!isEnabled) {
             return;
         }
@@ -801,9 +801,8 @@ public class AdjustTracker {
 
     /**
      * function that handles deeplinking reattributions
-     * @param data
      */
-    public static void deepLinkReattribution(Uri data){
+    public static void deepLinkReAttribution(Uri data){
         Adjust.appWillOpenUrl(data);
         //http://app.adjust.io/3tjw0j_7k6u7c?deep_link=DARAZ://pk/c/nike&adjust_tracker=f0ob4r&adjust_campaign=CampaignName&adjust_adgroup=AdGroupName&adjust_creative=CreativeName
         //data:DARAZ://pk/c/nike?adjust_reftag=c2z2rOt
