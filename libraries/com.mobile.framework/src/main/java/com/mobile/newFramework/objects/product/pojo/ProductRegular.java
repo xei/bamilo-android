@@ -155,6 +155,8 @@ public class ProductRegular extends ProductBase {
 
     public Brand getBrand(){ return mBrand;}
 
+    public int getBrandId(){ return mBrand.getId();}
+
     public String getBrandName(){ return mBrand.getName();}
 
     public String getCategoryKey() {
