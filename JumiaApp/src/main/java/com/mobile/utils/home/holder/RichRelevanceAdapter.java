@@ -1,6 +1,5 @@
 package com.mobile.utils.home.holder;
 
-import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,15 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
-import com.mobile.newFramework.objects.home.object.TeaserTopSellerObject;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -98,7 +94,7 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
         // Set name
         holder.mName.setText(item.getName());
         // Set brand
-        holder.mBrand.setText(item.getBrand());
+        holder.mBrand.setText(item.getBrandName());
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.mImage, holder.mProgress, R.drawable.no_image_small);
         // Set prices

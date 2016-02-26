@@ -20,7 +20,6 @@
         android:background="@color/black_300">
 
         <include
-            android:id="@+id/ComboSection"
             layout="@layout/_v8_pdv_fragment_combo_item" />
     </LinearLayout>
 
