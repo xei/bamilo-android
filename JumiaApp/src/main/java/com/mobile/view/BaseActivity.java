@@ -137,6 +137,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected DialogFragment dialog;
     protected SearchView mSearchView;
     protected SearchAutoComplete mSearchAutoComplete;
+    protected View mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
 
     //private final int contentLayoutId;
@@ -916,7 +917,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
         // Get edit text
-
+        mSearchOverlay = findViewById(R.id.search_overlay);
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         //#RTL
         if (ShopSelector.isRtl()) {
@@ -942,9 +943,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     private void setSearchWidthToFillOnExpand() {
-        mSearchAutoComplete.setDropDownHeight(ViewGroup.LayoutParams.MATCH_PARENT);
         // Get the width of main content
         final int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
+        final int mainContentHeight = DeviceInfoHelper.getHeight(getApplicationContext());
+        mSearchView.setMaxWidth(mainContentWidth);
+        mSearchAutoComplete.setDropDownAnchor(R.id.app_bar);
         // Set measures
         if (mSearchView != null) {
             mSearchView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
@@ -954,9 +957,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
                     // set DropDownView width
                     mSearchAutoComplete.setDropDownWidth(mainContentWidth);
+                    mSearchAutoComplete.setDropDownHeight(mainContentHeight - mSupportActionBar.getHeight());
                     mSearchAutoComplete.setDropDownBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.search_dropdown_background));
-                    mSearchAutoComplete.setDropDownHorizontalOffset(0);
-
                 }
             });
         }
@@ -1081,6 +1083,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 closeNavigationDrawer();
                 isSearchComponentOpened = true;
                 setActionMenuItemsVisibility(false);
+                setAppBarLayout(action, NavigationAction.UNKNOWN);
+                mSearchOverlay.setVisibility(View.VISIBLE);
                 // Re-set the searched text if it exists
                 mSearchAutoComplete.post(new Runnable() {
                     @Override
@@ -1103,6 +1107,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 Print.d(TAG, "SEARCH ON COLLAPSE");
                 isSearchComponentOpened = false;
                 setActionMenuItemsVisibility(true);
+                setAppBarLayout(NavigationAction.UNKNOWN, action);
+                mSearchOverlay.setVisibility(View.GONE);
                 return true;
             }
         });
