@@ -3,6 +3,7 @@ package com.mobile.newFramework.utils.cache;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 
 import java.util.HashSet;
@@ -63,7 +64,7 @@ public class WishListCache {
     }
 
     public static int size() {
-        return sCacheMap != null ? sCacheMap.size() : 0 ;
+        return CollectionUtils.size(sCacheMap);
     }
 
 }

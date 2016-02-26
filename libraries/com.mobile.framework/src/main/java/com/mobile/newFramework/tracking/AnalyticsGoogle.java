@@ -12,6 +12,7 @@ import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -337,7 +338,7 @@ public class AnalyticsGoogle {
     public void trackPage(TrackingPage page) {
         // Validate
         if (!isEnabled) return;
-        if (-1 != page.getName()) {
+        if (page.getName() != IntConstants.INVALID_POSITION) {
             // Get and send page
             String path = mContext.getString(page.getName());
             trackPage(path);
@@ -379,8 +380,8 @@ public class AnalyticsGoogle {
         // Get and send page
         String category = mContext.getString(cat);
         String action = mContext.getString(TrackingEvent.HOME_BANNER_CLICK.getAction());
-        if(position != -1){
-            category = category+"_"+position;
+        if (position != IntConstants.INVALID_POSITION) {
+            category = category + "_" + position;
         }
         // Tracking
         trackEvent(category, action, label, NO_VALUE);
