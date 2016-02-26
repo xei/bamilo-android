@@ -574,7 +574,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             button.setText(brand.getName());
             // Set image
             ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
-            RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_small);
+            if (TextUtils.isNotEmpty(brand.getImageUrl())) {
+                RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_tiny);
+            } else {
+                brandImage.setVisibility(View.GONE);
+            }
         }
     }
 
