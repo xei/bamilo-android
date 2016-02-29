@@ -145,7 +145,13 @@ public class CheckBoxField extends DynamicFormItem implements IDynamicFormItemFi
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
         //#RTL
-        params.addRule(ShopSelector.isRtl() ? RelativeLayout.RIGHT_OF : RelativeLayout.LEFT_OF, this.mandatoryControl.getId());
+        if(ShopSelector.isRtl()){
+            params.addRule(RelativeLayout.RIGHT_OF,this.mandatoryControl.getId());
+            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        }else{
+            params.addRule(RelativeLayout.LEFT_OF,this.mandatoryControl.getId());
+            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        }
 
         // Default or right
         if(layout == R.layout.gen_form_check_box) {
