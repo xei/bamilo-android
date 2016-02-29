@@ -2,6 +2,7 @@ package com.mobile.newFramework.objects.cart;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
@@ -17,6 +18,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 /**
@@ -212,10 +214,6 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         return mPriceRules;
     }
 
-    public double getCartValueEuroConverted() {
-        return mTotalConverted;
-    }
-
     public double getPriceForTracking() {
         return mTotalConverted;
     }
@@ -244,8 +242,28 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         return mFulfillmentList;
     }
 
+    /**
+     * For tracking
+     */
+    @NonNull
     public PurchaseCartItem getLastItemAdded() {
         return mLastItemAdded;
+    }
+
+    /**
+     * For tracking
+     */
+    @NonNull
+    public PurchaseCartItem getTheMostExpansiveItem() {
+        Iterator<PurchaseCartItem> it = mCartItems.iterator();
+        PurchaseCartItem max = it.next();
+        while (it.hasNext()) {
+            PurchaseCartItem next = it.next();
+            if (next.getPrice() > max.getPrice()) {
+                max = next;
+            }
+        }
+        return max;
     }
 
     /**
@@ -331,6 +349,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mFulfillmentList);
         }
+        dest.writeValue(mLastItemAdded);
     }
 
     /**
@@ -368,6 +387,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         } else {
             mFulfillmentList = null;
         }
+        mLastItemAdded = (PurchaseCartItem) in.readValue(PurchaseCartItem.class.getClassLoader());
     }
 
     /**

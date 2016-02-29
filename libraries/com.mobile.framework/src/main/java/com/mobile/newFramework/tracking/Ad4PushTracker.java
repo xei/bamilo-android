@@ -11,6 +11,7 @@ import com.google.android.gms.ads.identifier.AdvertisingIdClient.Info;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.mobile.framework.R;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutFinish;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -308,8 +309,8 @@ public class Ad4PushTracker {
             bundle.putString(LAST_SKU_VIEWED, product.getSku());
             bundle.putString(LAST_BRAND_VIEWED_KEY, product.getBrandKey());
             bundle.putString(LAST_BRAND_VIEWED_NAME, product.getBrandName());
-            bundle.putString(LAST_VIEWED_CATEGORY_NAME, product.getCategoryKey());
-            bundle.putString(LAST_VIEWED_CATEGORY_KEY, product.getCategoryName());
+            bundle.putString(LAST_VIEWED_CATEGORY_KEY, product.getCategoryKey());
+            bundle.putString(LAST_VIEWED_CATEGORY_NAME, product.getCategoryName());
             Print.i(TAG, "TRACK PRODUCT VIEW: " + bundle.toString());
             mA4S.updateDeviceInfo(bundle);
         }
@@ -322,7 +323,7 @@ public class Ad4PushTracker {
         if (isAvailable()) {
             Bundle bundle = new Bundle();
             bundle.putInt(CART_STATUS, purchase.getCartCount());
-            bundle.putDouble(CART_VALUE, purchase.getPriceForTracking());
+            bundle.putString(CART_VALUE, String.valueOf(purchase.getPriceForTracking()));
             bundle.putString(DATE_LAST_CART_UPDATED, DateTimeUtils.getCurrentDateTime());
             bundle.putString(LAST_CART_PRODUCT_NAME, purchase.getLastItemAdded().getName());
             bundle.putString(LAST_CART_SKU, purchase.getLastItemAdded().getConfigSimpleSKU());
@@ -342,7 +343,7 @@ public class Ad4PushTracker {
         if (isAvailable()) {
             Bundle bundle = new Bundle();
             bundle.putInt(CART_STATUS, purchase.getCartCount());
-            bundle.putDouble(CART_VALUE, purchase.getPriceForTracking());
+            bundle.putString(CART_VALUE, String.valueOf(purchase.getPriceForTracking()));
             bundle.putString(DATE_LAST_CART_UPDATED, DateTimeUtils.getCurrentDateTime());
             Print.i(TAG, "TRACK REMOVE FROM CART: " + bundle.toString());
             mA4S.updateDeviceInfo(bundle);
@@ -413,18 +414,20 @@ public class Ad4PushTracker {
      */
     public void trackPurchase(CheckoutFinish checkout, PurchaseEntity cart) {
         if (isEnabled) {
+            // Get the most expensive
+            PurchaseCartItem item = cart.getTheMostExpansiveItem();
             // Create bundle
             Bundle bundle = new Bundle();
             bundle.putString(LAST_ORDER_DATE, DateTimeUtils.getCurrentDateTime());
             bundle.putString(AGGREGATED_NUMBER_OF_PURCHASE, checkout.getOrdersCount());
             bundle.putString(ORDER_NUMBER, checkout.getOrderNumber());
             bundle.putInt(CART_STATUS, 0);
-            bundle.putString(LAST_BRAND_PURCHASED_KEY, cart.getLastItemAdded().getBrandKey());
-            bundle.putString(LAST_BRAND_PURCHASED_NAME, cart.getLastItemAdded().getBrandName());
-            bundle.putString(LAST_CATEGORY_PURCHASED_KEY, cart.getLastItemAdded().getCategoryKey());
-            bundle.putString(LAST_CATEGORY_PURCHASED_NAME, cart.getLastItemAdded().getCategoryName());
-            bundle.putString(LAST_PRODUCT_NAME_PURCHASED, cart.getLastItemAdded().getName());
-            bundle.putString(LAST_SKU_PURCHASED, cart.getLastItemAdded().getConfigSimpleSKU());
+            bundle.putString(LAST_BRAND_PURCHASED_KEY, item.getBrandKey());
+            bundle.putString(LAST_BRAND_PURCHASED_NAME, item.getBrandName());
+            bundle.putString(LAST_CATEGORY_PURCHASED_KEY, item.getCategoryKey());
+            bundle.putString(LAST_CATEGORY_PURCHASED_NAME, item.getCategoryName());
+            bundle.putString(LAST_PRODUCT_NAME_PURCHASED, item.getName());
+            bundle.putString(LAST_SKU_PURCHASED, item.getConfigSimpleSKU());
             Print.i(TAG, "TRACK PURCHASE: " + bundle.toString());
             mA4S.updateDeviceInfo(bundle);
         }
