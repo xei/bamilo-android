@@ -3,6 +3,7 @@ package com.mobile.controllers;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -15,11 +16,17 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.ui.ProductListViewHolder;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,11 +35,13 @@ import java.util.List;
  * @author sergiopereira
  *
  */
-public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements Filterable {
+public class SearchDropDownAdapter extends RecyclerView.Adapter<SearchDropDownAdapter.SuggestionListViewHolder> implements View.OnClickListener {
+
 
     public static final String TAG = SearchDropDownAdapter.class.getSimpleName();
-
-    private final LayoutInflater mInflater;
+    private final Context mContext;
+    protected List<Suggestion> mDataSet;
+    private OnProductViewHolderClickListener mOnViewHolderClicked;
 
     /**
      * Constructor of adapter for search drop down
@@ -41,55 +50,52 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
      * @author sergiopereira
      */
     public SearchDropDownAdapter(Context context, List<Suggestion> objects) {
-        super(context, 0, 0, objects);
-        mInflater = LayoutInflater.from(context);
+        mContext = context;
+        mDataSet = objects;
     }
     
     /*
      * (non-Javadoc)
      * @see android.widget.ArrayAdapter#getItem(int)
      */
-    @Override
     public Suggestion getItem(int position) {
-        return super.getItem(position);
+        return mDataSet.get(position);
     }
-    
-    
-    /*
-     * (non-Javadoc)
-     * @see android.widget.ArrayAdapter#getView(int, android.view.View, android.view.ViewGroup)
-     */
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
-        // Validate current view
-        if (convertView == null) view = mInflater.inflate(R.layout.search_suggestion_list_item, null);
-        else view = convertView;
-        // Get current suggestion
-        Suggestion sug = getItem(position);
 
-        // Get views
-        TextView sugText = (TextView) view.findViewById(R.id.item_text_suggestion);
+    @Override
+    public SuggestionListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new SuggestionListViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.search_suggestion_list_item, parent, false));
+    }
+
+    @Override
+    public void onBindViewHolder(SuggestionListViewHolder holder, int position) {
+        // Get current suggestion
+        Suggestion sug = mDataSet.get(position);
+
 
         if(sug.getType() == Suggestion.SUGGESTION_CATEGORY){
             // Set suggestion
-            setColorOnSpecialQuery(sugText, String.format(getContext().getString(R.string.search_categories_label), sug.getQuery() ,sug.getResult()), sug.getResult(), sug.getQuery());
+            setColorOnSpecialQuery(holder.suggestionTextView, String.format(mContext.getString(R.string.search_categories_label), sug.getQuery() ,sug.getResult()), sug.getResult(), sug.getQuery());
         } else if(sug.getType() == Suggestion.SUGGESTION_SHOP_IN_SHOP){
             // Set suggestion
-            setColorOnSpecialQuery(sugText,  String.format(getContext().getString(R.string.search_shop_in_shop_label),sug.getResult()), sug.getResult(), sug.getQuery());
+            setColorOnSpecialQuery(holder.suggestionTextView,  String.format(mContext.getString(R.string.search_shop_in_shop_label),sug.getResult()), sug.getResult(), sug.getQuery());
         } else {
             // Set suggestion
-            setColorOnQuery(sugText, sug.getResult(), sug.getQuery());
+            setColorOnQuery(holder.suggestionTextView, sug.getResult(), sug.getQuery());
         }
 
         // Set icon
-        if(sug.isRecentQuery()) ((ImageView) view.findViewById(R.id.item_img)).setImageResource(R.drawable.ico_recent);
-        else view.findViewById(R.id.item_img).setVisibility(View.GONE);
-
-        return view;
+        if(sug.isRecentQuery()) holder.suggestionImageView.setImageResource(R.drawable.ico_recent);
+        else holder.suggestionImageView.setVisibility(View.GONE);
+        holder.itemView.setTag(R.id.position,position);
+        holder.itemView.setOnClickListener(this);
     }
-    
-    
+
+    @Override
+    public int getItemCount() {
+        return mDataSet.size();
+    }
+
     /**
      * Set the link into a string to order status
      * 
@@ -128,10 +134,51 @@ public class SearchDropDownAdapter extends ArrayAdapter<Suggestion> implements F
         if(index != -1 && indexHighlitght != -1) {
             SpannableString title = new SpannableString(titleString);
             title.setSpan(new StyleSpan(Typeface.BOLD), index, index + query.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            title.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.blue1)), indexHighlitght, indexHighlitght+highlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            title.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.blue1)), indexHighlitght, indexHighlitght+highlight.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView.setText(title);
         } else {
             textView.setText(titleString);
+        }
+    }
+
+    public Suggestion getItemAtPosition(int position){
+        return mDataSet.get(position);
+    }
+
+    /**
+     * Set the listener the click on view holder.
+     * @param listener - the listener
+     */
+    public void setOnViewHolderClickListener(OnProductViewHolderClickListener listener) {
+        this.mOnViewHolderClicked = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        // Case other sent to listener
+        if (mOnViewHolderClicked != null) {
+            // Get view id
+            int id = view.getId();
+            // position
+            int position = (Integer) view.getTag(R.id.position);
+            mOnViewHolderClicked.onViewHolderClick(this, position);
+        }
+    }
+
+    public class SuggestionListViewHolder extends RecyclerView.ViewHolder {
+
+        // Data
+        public TextView suggestionTextView;
+        public ImageView suggestionImageView;
+
+        /**
+         * Constructor
+         * @param view -  the view holder
+         */
+        public SuggestionListViewHolder(View view) {
+            super(view);
+            suggestionTextView = (TextView) view.findViewById(R.id.item_text_suggestion);
+            suggestionImageView = (ImageView) view.findViewById(R.id.item_img);
         }
     }
 
