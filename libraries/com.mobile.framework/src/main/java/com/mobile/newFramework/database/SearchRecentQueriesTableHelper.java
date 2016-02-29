@@ -41,7 +41,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
     @Override
     @DarwinDatabaseHelper.UpgradeType
     public int getUpgradeType() {
-        return DarwinDatabaseHelper.PERSIST;
+        return DarwinDatabaseHelper.CACHE;
     }
 
     /*
@@ -79,10 +79,10 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
      * @author sergiopereira
      */
     public static synchronized boolean insertQuery(Suggestion suggestion) throws InterruptedException, NullPointerException {
-    	Print.d(TAG, "INSERT INTO SEARCH RECENT: " + suggestion.getResult());
     	// Validate arguments
     	if(suggestion == null) return false;
-    	// Insert
+        Print.i(TAG, "INSERT INTO SEARCH RECENT: " + suggestion.getResult());
+        // Insert
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         // Delete old entries
         db.delete(TABLE_NAME, _RESULT + " LIKE ?", new String[] {suggestion.getResult()});

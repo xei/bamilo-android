@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.content.Context;
@@ -9,9 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
@@ -53,8 +47,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     
     private RecyclerView mRecentSearchesList;
 
-
-    
     private TextView mClearAllButton;
 
     /**
@@ -121,7 +113,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
 
 
     private void setAppContentLayout(View mainView) {
-
         mRecentSearchesList = (RecyclerView) mainView.findViewById(R.id.recentsearch_list);
         mRecentSearchesList.setLayoutManager(new LinearLayoutManager(getContext()));
         mClearAllButton = (TextView) mainView.findViewById(R.id.recentsearch_clear_all);
@@ -186,7 +177,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
         switch (eventType) {
         case GET_SEARCH_SUGGESTIONS_EVENT:
             Print.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
-
             ArrayList<Suggestion> response = (SuggestionsStruct)baseResponse.getContentData();
             if (response != null) {
                 mRecentSearches = response;

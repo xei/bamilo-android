@@ -11,22 +11,15 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnProductViewHolderClickListener;
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ProductListViewHolder;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -71,23 +64,21 @@ public class SearchDropDownAdapter extends RecyclerView.Adapter<SearchDropDownAd
     public void onBindViewHolder(SuggestionListViewHolder holder, int position) {
         // Get current suggestion
         Suggestion sug = mDataSet.get(position);
-
-
-        if(sug.getType() == Suggestion.SUGGESTION_CATEGORY){
+        if (sug.getType() == Suggestion.SUGGESTION_CATEGORY) {
             // Set suggestion
-            setColorOnSpecialQuery(holder.suggestionTextView, String.format(mContext.getString(R.string.search_categories_label), sug.getQuery() ,sug.getResult()), sug.getResult(), sug.getQuery());
-        } else if(sug.getType() == Suggestion.SUGGESTION_SHOP_IN_SHOP){
+            setColorOnSpecialQuery(holder.suggestionTextView, String.format(mContext.getString(R.string.search_categories_label), sug.getQuery(), sug.getResult()), sug.getResult(), sug.getQuery());
+        } else if (sug.getType() == Suggestion.SUGGESTION_SHOP_IN_SHOP) {
             // Set suggestion
-            setColorOnSpecialQuery(holder.suggestionTextView,  String.format(mContext.getString(R.string.search_shop_in_shop_label),sug.getResult()), sug.getResult(), sug.getQuery());
+            setColorOnSpecialQuery(holder.suggestionTextView, String.format(mContext.getString(R.string.search_shop_in_shop_label), sug.getResult()), sug.getResult(), sug.getQuery());
         } else {
             // Set suggestion
             setColorOnQuery(holder.suggestionTextView, sug.getResult(), sug.getQuery());
         }
 
         // Set icon
-        if(sug.isRecentQuery()) holder.suggestionImageView.setImageResource(R.drawable.ico_recent);
+        if (sug.isRecentQuery()) holder.suggestionImageView.setImageResource(R.drawable.ico_recent);
         else holder.suggestionImageView.setVisibility(View.GONE);
-        holder.itemView.setTag(R.id.position,position);
+        holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
     }
 
@@ -141,10 +132,6 @@ public class SearchDropDownAdapter extends RecyclerView.Adapter<SearchDropDownAd
         }
     }
 
-    public Suggestion getItemAtPosition(int position){
-        return mDataSet.get(position);
-    }
-
     /**
      * Set the listener the click on view holder.
      * @param listener - the listener
@@ -157,8 +144,6 @@ public class SearchDropDownAdapter extends RecyclerView.Adapter<SearchDropDownAd
     public void onClick(View view) {
         // Case other sent to listener
         if (mOnViewHolderClicked != null) {
-            // Get view id
-            int id = view.getId();
             // position
             int position = (Integer) view.getTag(R.id.position);
             mOnViewHolderClicked.onViewHolderClick(this, position);
