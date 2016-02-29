@@ -12,8 +12,6 @@ import com.mobile.newFramework.utils.EventType;
  */
 public class GetFormAddAddressHelper extends SuperBaseHelper {
 
-    public static String TAG = GetFormAddAddressHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
         return EventType.GET_CREATE_ADDRESS_FORM_EVENT;
