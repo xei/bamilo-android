@@ -68,12 +68,12 @@ public class ScreenRadioField extends DynamicFormItem implements IDynamicFormIte
         isChecked = checked;
         if(isChecked) {
             // Set inactive text
-            button.setText(context.getString(R.string.active_label));
+            button.setText(context.getString(R.string.on_label));
             // Show other fields
             showOtherFields();
         } else {
             // Set inactive text
-            button.setText(context.getString(R.string.inactive_label));
+            button.setText(context.getString(R.string.off_label));
             // Hide other fields
             hideOtherFields();
         }
