@@ -479,7 +479,6 @@
     <string name="sign_up_to_our_newsletter_body">For exclusive acess to sales previews, new arrivals, trends and promotions</string>
     <string name="search_shop_in_shop_label">Visit our %s Store</string>
     <string name="search_categories_label">%1$s in %2$s</string>
-    <string name="active_label">Active</string>
-    <string name="inactive_label">Inactive</string>
+    <string name="on_label">ON</string>
     <string name="visit_the_official_brand_store">Visit the official %s store</string>
 </resources>
