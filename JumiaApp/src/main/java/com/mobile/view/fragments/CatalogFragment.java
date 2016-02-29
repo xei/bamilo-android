@@ -462,7 +462,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Create adapter new data
             setCatalogAdapter(mCatalogPage);
             // Set filter button
-            UICatalogHelper.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
+            UICatalogHelper.setFilterButtonActionState(mFilterButton, mCatalogPage.hasFilters(), this);
             // Set sort button
             setSortButton();
         }
