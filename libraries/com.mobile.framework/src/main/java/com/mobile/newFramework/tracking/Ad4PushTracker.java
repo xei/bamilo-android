@@ -415,7 +415,7 @@ public class Ad4PushTracker {
     public void trackPurchase(CheckoutFinish checkout, PurchaseEntity cart) {
         if (isEnabled) {
             // Get the most expensive
-            PurchaseCartItem item = cart.getTheMostExpansiveItem();
+            PurchaseCartItem item = cart.getTheMostExpensiveItem();
             // Create bundle
             Bundle bundle = new Bundle();
             bundle.putString(LAST_ORDER_DATE, DateTimeUtils.getCurrentDateTime());

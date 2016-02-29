@@ -254,7 +254,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
      * For tracking
      */
     @NonNull
-    public PurchaseCartItem getTheMostExpansiveItem() {
+    public PurchaseCartItem getTheMostExpensiveItem() {
         Iterator<PurchaseCartItem> it = mCartItems.iterator();
         PurchaseCartItem max = it.next();
         while (it.hasNext()) {
