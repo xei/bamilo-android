@@ -510,7 +510,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                         orderNumber = result.optString(RestConstants.ORDERNr);
                     }
 
-
                     // Create bundle for last checkout step
                     final Bundle bundle;
                     if(getArguments() == null){

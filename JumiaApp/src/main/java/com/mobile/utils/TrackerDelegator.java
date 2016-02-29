@@ -795,7 +795,7 @@ public class TrackerDelegator {
      */
     public static void trackFailedPayment(String paymentMethod, PurchaseEntity order) {
         if (order != null) {
-            GTMManager.get().gtmTrackFailedPayment(paymentMethod, order.getCartValueEuroConverted(), EUR_CURRENCY);
+            GTMManager.get().gtmTrackFailedPayment(paymentMethod, order.getPriceForTracking(), EUR_CURRENCY);
         }
     }
 
