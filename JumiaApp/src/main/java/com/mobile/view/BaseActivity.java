@@ -1045,6 +1045,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
          */
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
             private final Handler handle = new Handler();
+            public int restoreSoftInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Print.d(TAG, "SEARCH ON EXPAND");
@@ -1053,7 +1054,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 setActionMenuItemsVisibility(false);
                 setAppBarLayout(action, NavigationAction.UNKNOWN);
                 mSearchOverlay.setVisibility(View.VISIBLE);
-
+                restoreSoftInputMode = getWindow().getAttributes().softInputMode;
                 getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 // Re-set the searched text if it exists
                 mSearchAutoComplete.post(new Runnable() {
@@ -1079,6 +1080,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 setActionMenuItemsVisibility(true);
                 setAppBarLayout(NavigationAction.UNKNOWN, action);
                 mSearchOverlay.setVisibility(View.GONE);
+                getWindow().setSoftInputMode(restoreSoftInputMode);
                 return true;
             }
         });
