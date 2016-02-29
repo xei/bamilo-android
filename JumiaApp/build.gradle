@@ -101,20 +101,18 @@ android {
             debuggable true
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-project-pro.txt',
-                    'proguard-project-debug.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-debug.txt'
             android.sourceSets {
                 live.java.srcDirs = ['src/debug/java']
                 live.manifest.srcFile 'src/debug/AndroidManifest.xml'
             }
+            // # Building Apps with Over 65K Methods (multi dex support)
+            multiDexEnabled true
         }
         release {
             minifyEnabled true
             shrinkResources true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
-                    'proguard-project-pro.txt',
-                    'proguard-project-market.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
         }
     }
 
