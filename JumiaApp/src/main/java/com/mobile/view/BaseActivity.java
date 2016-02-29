@@ -34,9 +34,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -140,7 +141,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected SearchView mSearchView;
     protected SearchAutoComplete mSearchAutoComplete;
     protected RecyclerView mSearchListView;
-    protected RelativeLayout mSearchOverlay;
+    protected FrameLayout mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
 
     //private final int contentLayoutId;
@@ -920,10 +921,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
         // Get edit text
-        mSearchOverlay = (RelativeLayout) findViewById(R.id.search_overlay);
+        mSearchOverlay = (FrameLayout) findViewById(R.id.search_overlay);
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         mSearchListView = (RecyclerView) mSearchOverlay.findViewById(R.id.search_overlay_listview);
-        mSearchListView.setLayoutManager(new LinearLayoutManager(this));
+        mSearchListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable.line_divider));
         //#RTL
         if (ShopSelector.isRtl()) {
@@ -1052,6 +1053,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 setActionMenuItemsVisibility(false);
                 setAppBarLayout(action, NavigationAction.UNKNOWN);
                 mSearchOverlay.setVisibility(View.VISIBLE);
+
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 // Re-set the searched text if it exists
                 mSearchAutoComplete.post(new Runnable() {
                     @Override
