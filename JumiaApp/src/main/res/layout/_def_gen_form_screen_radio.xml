@@ -18,7 +18,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:text="@string/active_label" />
+        android:text="@string/ok_label" />
 
     <!-- TITLE -->
 
