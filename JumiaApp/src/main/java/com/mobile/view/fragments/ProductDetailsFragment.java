@@ -571,7 +571,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mBrandView.setOnClickListener(this);
             // Set text
             TextView button = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
-            button.setText(brand.getName());
+            button.setText(getString(R.string.visit_the_official_brand_store, brand.getName()));
             // Set image
             ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
             if (TextUtils.isNotEmpty(brand.getImageUrl())) {
