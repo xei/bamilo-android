@@ -136,39 +136,40 @@ public class AlgoliaHelper {
 
                 facetsFilter.add(ID_CATALOG_CATEGORY+":"+key);
             }
+            String ffacetsFilter = "("+android.text.TextUtils.join(",",facetsFilter)+")";
+            ArrayList<String> attributesToRetrieve = new ArrayList<>();
+            attributesToRetrieve.add(RestConstants.LOCALIZABLE_ATTRIBUTES+"."+ ShopSelector.getCountryCode()+"."+RestConstants.NAME);
+
+            Query q = new Query()
+                    .setAttributesToRetrieve(attributesToRetrieve)
+                    .setFacetFilters(ffacetsFilter);
+            List<IndexQuery> queries = new ArrayList<IndexQuery>();
+
+            IndexQuery iq = new IndexQuery(mNamespacePrefix+_CATEGORIES, q);
+            queries.add(iq);
+            mAlgoliaAPIClient.multipleQueriesASync(queries, new APIClientListener() {
+                @Override
+                public void APIResult(APIClient client, TaskParams.Client context, JSONObject result) {
+                    BaseResponse response = new BaseResponse();
+
+                    final Suggestions suggestions = getCategoriesSuggestions(result, mSuggestionsStruct.getSearchParam());
+                    mSuggestionsStruct.setSuggestions(suggestions);
+                    response.getMetadata().setData(mSuggestionsStruct);
+                    mIResponseCallback.onRequestComplete(response);
+                }
+
+                @Override
+                public void APIError(APIClient client, TaskParams.Client context, AlgoliaException e) {
+                    BaseResponse response = new BaseResponse();
+                    response.getMetadata().setData(null);
+                    mIResponseCallback.onRequestError(response);
+                }
+            });
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String ffacetsFilter = "("+android.text.TextUtils.join(",",facetsFilter)+")";
-        ArrayList<String> attributesToRetrieve = new ArrayList<>();
-        attributesToRetrieve.add(RestConstants.LOCALIZABLE_ATTRIBUTES+"."+ ShopSelector.getCountryCode()+"."+RestConstants.NAME);
 
-        Query q = new Query()
-                .setAttributesToRetrieve(attributesToRetrieve)
-                .setFacetFilters(ffacetsFilter);
-        List<IndexQuery> queries = new ArrayList<IndexQuery>();
-
-        IndexQuery iq = new IndexQuery(mNamespacePrefix+_CATEGORIES, q);
-        queries.add(iq);
-        mAlgoliaAPIClient.multipleQueriesASync(queries, new APIClientListener() {
-            @Override
-            public void APIResult(APIClient client, TaskParams.Client context, JSONObject result) {
-                BaseResponse response = new BaseResponse();
-
-                final Suggestions suggestions = getCategoriesSuggestions(result, mSuggestionsStruct.getSearchParam());
-                mSuggestionsStruct.setSuggestions(suggestions);
-                response.getMetadata().setData(mSuggestionsStruct);
-                mIResponseCallback.onRequestComplete(response);
-            }
-
-            @Override
-            public void APIError(APIClient client, TaskParams.Client context, AlgoliaException e) {
-                BaseResponse response = new BaseResponse();
-                response.getMetadata().setData(null);
-                mIResponseCallback.onRequestError(response);
-            }
-        });
 
     }
 
