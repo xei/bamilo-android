@@ -48,10 +48,10 @@
     <string name="categories_title">اِقسام میں تلاش کریں</string>
     <string name="categories_toplevel_title">تمام اِقسام</string>
     <string name="category_filter_error">اِقسام پر فلٹر لگانا مُمکن نہیں تھا۔</string>
-    <string name="checkout_button_text">تکمیلِ خرید کریں</string>
-    <string name="checkout_header_step_1">1۔ آپ کے بارے میں</string>
-    <string name="checkout_header_step_2">2. پتا</string>
-    <string name="checkout_header_step_3">3۔ ترسیل</string>
+    <string name="checkout_button_text">چیک آوٹ پرتشریف لے جائیں</string>
+    <string name="checkout_header_step_1">لاگ اِن کیجئے</string>
+    <string name="checkout_header_step_2">پته</string>
+    <string name="checkout_header_step_3">شِپنگ</string>
     <string name="checkout_header_step_4">4. ادائیگی</string>
     <string name="checkout_label">تکمیلِ خرید</string>
     <string name="clear_all_uppercase_label">سب صاف کریں</string>

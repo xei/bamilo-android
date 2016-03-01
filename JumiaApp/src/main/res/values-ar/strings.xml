@@ -476,7 +476,7 @@
     <string name="added_success">تمت الأضافه بنجاح.</string>
     <string name="removed_success">تم الحذف بنجاح.</string>
     <string name="sign_up_to_our_newsletter">التسجيل لاستلام رسالة جوميا الإخبارية</string>
-    <string name="sign_up_to_our_newsletter_body">للحصول بشكل حصري على تقارير المبيعات والمنتجات الأحدث وصولًا والاتجاهات السوقية والحملات الإعلانية</string>
+    <string name="sign_up_to_our_newsletter_body">للحصول بشكل حصري على العروض والمنتجات الأحدث وصولًا والاتجاهات السوقية والحملات الإعلانية</string>
     <string name="search_shop_in_shop_label">قم بزيارة %s المخزن الخاص بنا</string>
     <string name="search_categories_label">%1$s في %2$s</string>
     <string name="on_label">فتح</string>
