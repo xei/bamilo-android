@@ -4,7 +4,7 @@
     <string name="account_name">ကြ်ႏု္ပ္၏ အေကာင့္</string>
     <string name="action_label_add_address">လိပ္စာအသစ္ ျဖည္႔ရန္</string>
     <string name="action_label_basket">ျခင္းေတာင္း</string>
-    <string name="action_label_logout">Logout</string>
+    <string name="action_label_logout">ထြက္ရန္</string>
     <string name="action_label_search_hint">ရွာေဖြရန္ %s</string>
     <string name="action_label_share">ေ၀မွ်ရန္</string>
     <string name="add_address">လိပ္စာ ျဖည္႔ရန္</string>
@@ -30,7 +30,7 @@
     <string name="call_to_order">စံုစမ္းရန္</string>
     <string name="campaign_choose_size">ဆိုဒ္ (သို႕) အေရာင္ကို ေရြးပါ</string>
     <string name="campaign_ramaining_stock">ကုန္လက္က်န္:</string>
-    <string name="campaign_save">သင္ သက္သာၿပီး</string>
+    <string name="campaign_save">သက္သာသြားေသာပမာဏ</string>
     <string name="campaign_stock_alert">သင္ေရြးခ်ယ္ထားေသာ ကုန္ပစၥည္းမွာ လက္က်န္မရွိေတာ့ပါ</string>
     <string name="campaigns_label">အထူးေလွ်ာ႕ေစ်းမ်ား</string>
     <string name="campaign_unavailable_title">အစီအစဥ္ၿပီးဆံုးသြားပါၿပီ</string>
@@ -130,11 +130,11 @@
     <string name="invalid_product">မရရွိႏိုင္ေသာ ကုန္ပစၥည္း</string>
     <string name="loading_message">Loading &#8230;</string>
     <string name="loading_more">အျခားပစၥည္းမ်ား ၾကည္႕ရန္ ေခတၱေစာင့္ဆုိင္းပါ။</string>
-    <string name="login_label">Login</string>
+    <string name="login_label">အေကာင့္၀င္ရန္</string>
     <string name="login_remember_user_email">ကြ်ႏု္ပ္၏အီးေမးလ္အား မွတ္သားထားရန္</string>
     <string name="login_sectiontitle">၀ယ္သူတစ္ေယာက္အျဖစ္ စာရင္းေပးသြင္းႏုိင္ပါသည္</string>
     <string name="logout_text_question">ထြက္ရန္ ေသခ်ာပါသလား</string>
-    <string name="logout_title">Logout Confirmation</string>
+    <string name="logout_title">Logout လုပ္ရန္အတည္ျပဳခ်က္</string>
     <string name="menu_label_uppercase">MENU</string>
     <string name="my_account">ကြ်ႏု္ပ္၏အေကာင့္</string>
     <string name="my_order_confirm_button">ေအာ္ဒါအတည္ျပဳရန္</string>
@@ -164,6 +164,7 @@
     <string name="new_arrival_badge">အသစ္မ်ား</string>
     <string name="new_password_hint">Password အသစ္</string>
     <string name="new_password_label">Password အသစ္</string>
+    <string name="newsletter_label">သတင္းလႊာ</string>
     <string name="next_button">ေနာက္ထပ္</string>
     <string name="no_connect_dialog_content">Internet connectionကိုစစ္ေဆးၿပီး ထပ္မံႀကိဳးစားပါ!</string>
     <string name="no_internet_access_warning_title">No Internet Access!</string>
@@ -171,14 +172,14 @@
     <string name="notifications">သတင္းေပးခ်က္မ်ား</string>
     <string name="myaccount_email_notifications">အီးေမးလ္သို႕အေၾကာင္းၾကားစာမ်ား ပို႕ေပးျခင္း</string>
     <string name="notifications_summary">အထူးကမ္းလွမ္းခ်က္မ်ားႏွင့္ ေနာက္ဆံုး Updates မ်ားလက္ခံရန္</string>
-    <string name="off_label">OFF</string>
+    <string name="off_label">ပိတ္ရန္</string>
     <string name="ok_label">OK</string>
     <string name="option2_description">Password ေျပာင္းလဲၿပီး အီးေမးလ္အား စီမံခန္႔ခြဲရန္</string>
     <string name="option3_description">ရယူလိုသည္ (သို႕) မရယူလိုပါ</string>
     <string name="or_text">သုိ႔မဟုတ္</string>
     <string name="order_no_items">သင္၏လွည္းအတြင္းဘာမွမရွိပါ</string>
     <string name="order_status_label">ေအာ္ဒါအေျခအေန</string>
-    <string name="order_success">ဤနံပါတ္ျဖင့္ သင့္ေအာ္ဒါအား စာရင္းသြင္းၿပီးပါၿပီ။</string>
+    <string name="order_success">သင့္ေအာ္ဒါအား စာရင္းသြင္းၿပီးပါၿပီ။ သင္၏ေအာ္ဒါမွတ္တမ္းတြင္ စစ္ေဆးၾကည္႕ရွဳႏိုင္ပါသည္။</string>
     <string name="order_summary_label">ေအာ္ဒါအက်ဥ္းခ်ဳပ္</string>
     <string name="order_summary_shipping_fee_label">သယ္ယူပို႔ေဆာင္ေရးကုန္က်စရိတ္ :</string>
     <string name="order_summary_shipping_method">သယ္ယူပုိ႔ေဆာင္မႈနည္းလမ္း</string>
@@ -463,7 +464,7 @@
     <string name="no_orders_message">သင္မွာယူထားေသာေအာ္ဒါမ်ားမရွိေသးပါ</string>
     <string name="no_orders">ေအာ္ဒါမွာယူထားျခင္းမရွိပါ</string>
     <string name="an_error_occurred">တစ္စံုတရာ မွားယြင္းေနပါသည္။ အကူအညီလိုအပ္ပါက Customer Service - 01-8604371သို႕ ဆက္သြယ္ေပးပါ။</string>
-    <string name="customer_service_info">စံုစမ္းလိုပါက Customer Service သို႕ဆက္သြယ္လုိက္ပါ</string>
+    <string name="customer_service_info">စံုစမ္းေမးျမန္းလိုပါက Customer Service သို႕ဆက္သြယ္လုိက္ပါ</string>
     <string name="phone_contact">ဖုန္း :</string>
     <string name="email_contact">အီးေမးလ္ :</string>
     <string name="logout_success">Log out ထြက္ၿပီးပါၿပီ</string>
@@ -474,4 +475,10 @@
     <string name="size">ဆိုဒ္/အေရာင္ %s</string>
     <string name="added_success">ထည္႕သြင္းၿပီးပါၿပီ</string>
     <string name="removed_success">ဖယ္ရွားၿပီးပါၿပီ</string>
+    <string name="sign_up_to_our_newsletter">သတင္းလႊာရယူရန္စာရင္းသြင္းပါ</string>
+    <string name="sign_up_to_our_newsletter_body">ေလွ်ာ႕ေစ်းရွိပစၥည္းမ်ား၊အသစ္ေရာက္ရွိပစၥည္းမ်ား၊ေခတ္ေပၚပစၥည္းမ်ားႏွင့္ ပရိုမိုးရွင္းမ်ားကို ဦးဦးဖ်ားဖ်ား သိရွိႏိုင္ရန္</string>
+    <string name="search_shop_in_shop_label">ကြ်ႏု္ပ္တုိ႕၏ %s စတုိးသို႕၀င္ေရာက္လည္ပတ္လိုက္ပါ</string>
+    <string name="search_categories_label">%1$s မွ %2$s</string>
+    <string name="on_label">ဖြင့္ရန္</string>
+    <string name="visit_the_official_brand_store">တရား၀င္ %s စတိုးသို႕ ၀င္ေရာက္ၾကည္႕ရွဳရန္</string>
 </resources>
