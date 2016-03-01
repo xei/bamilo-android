@@ -20,13 +20,8 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-
-//import com.mobile.framework.rest.RestClientSingleton;
 
 /**
  * Get Product Information helper
@@ -78,7 +73,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
 
     /**
      * Clears the database of outdated sections
-     * @param apiInformationStruct
      */
     private void clearOutDatedMainSections(List<Section> sections, ApiInformationStruct apiInformationStruct) {
         Print.d(TAG, "ON CLEAR OUT DATED SECTIONS");
@@ -86,12 +80,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         for (Section section : sections) {
             // Case teasers
             switch (section.getName()) {
-                case Section.SECTION_NAME_TEASERS:
-
-                    // TODO: REMOVE FROM NEW FRAMEWORK
-                    //RestClientSingleton.getSingleton(JumiaApplication.INSTANCE).removeEntry(section.getUrl());
-
-                    break;
                 // Case categories
                 case Section.SECTION_NAME_CATEGORIES:
                     CategoriesTableHelper.clearCategories();
@@ -109,30 +97,8 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     }
 
     /**
-     * Parses the json array containing sections.
-     * @param jsonArray The section json array
-     * @return The list of section
-     */
-    private ArrayList<Section> parseSections(JSONArray jsonArray) {
-        Print.d(TAG, "ON PARSE SECTIONS");
-        int arrayLength = jsonArray.length();
-        ArrayList<Section> sections = new ArrayList<>();
-        for (int i = 0; i < arrayLength; ++i) {
-            JSONObject sessionObject = jsonArray.optJSONObject(i);
-            Section section = new Section();
-            section.initialize(sessionObject);
-            sections.add(section);
-        }
-        return sections;
-    }
-    
-    /**
      * Checks the sections and returns a list of sections that need to be
      * updated
-     * 
-     * @param oldSections
-     * @param newSections
-     * @return
      */
     public ArrayList<Section> checkSections(List<Section> oldSections, List<Section> newSections) {
         Print.i(TAG, "ON CHECK SECTIONS");
@@ -159,7 +125,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
                     temp.add(newSection);
                     SectionsTablesHelper.saveSections(temp);
                     outdatedSections.add(newSection);
-
                 }
                 // Case section MD5 is the same
                 else {
@@ -173,10 +138,6 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     
     /**
      * Returns the section of a given name or null if no section is found
-     * 
-     * @param sectionName
-     * @param sections
-     * @return
      */
     private Section getSection(String sectionName, List<Section> sections) {
         for (Section section : sections) {

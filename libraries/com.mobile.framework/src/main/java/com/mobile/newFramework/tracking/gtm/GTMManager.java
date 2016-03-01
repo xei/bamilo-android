@@ -70,6 +70,10 @@ public class GTMManager {
         gtmTrackingManager = new GTMManager(context);
     }
 
+    /**
+     * FIXME : https://rink.hockeyapp.net/manage/apps/33641/app_versions/164/crash_reasons/112840256?type=crashes
+     * @param context
+     */
     @SuppressLint("NewApi")
     private GTMManager(Context context) {
         Print.i(TAG, " STARTING GTM TRACKING");
@@ -85,7 +89,7 @@ public class GTMManager {
         String containerId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, "");
         Print.e(TAG, "init id:" + containerId);
         PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(containerId,0);
-        
+
         // The onResult method will be called as soon as one of the following happens:
         //     1. a saved container is loaded
         //     2. if there is no saved container, a network container is loaded
