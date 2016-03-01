@@ -21,6 +21,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
@@ -35,15 +36,10 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
 
     private final static String TAG = DialogSimpleListFragment.class.getSimpleName();
 
-	private static final long DELAY_DISMISS = 250;
-
 	private String mTitle;
-
 	private ProductMultiple mProduct;
 	private CampaignItem mCampaignItem;
-
 	private Context mContext;
-
 	private OnDialogListListener mListener;
 
 	/**
@@ -225,7 +221,7 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
                     mListener.onDialogListClickView(view);
                 }
             }
-        }, DELAY_DISMISS);
+        }, IntConstants.DIALOG_DELAY_DISMISS);
 
     }
 
@@ -258,7 +254,7 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
                     mListener.onDialogListItemSelect(position);
                 }
             }
-        }, DELAY_DISMISS);
+        }, IntConstants.DIALOG_DELAY_DISMISS);
     }
 
     /*

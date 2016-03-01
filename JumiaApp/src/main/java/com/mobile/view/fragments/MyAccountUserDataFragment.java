@@ -295,6 +295,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     /**
      * This method changes the user's password.
+     * FIXME: https://rink.hockeyapp.net/manage/apps/33641/app_versions/164/crash_reasons/111735919?type=crashes
      */
     public void triggerChangePassword() {
         if (mChangePasswordForm.validate()) {
