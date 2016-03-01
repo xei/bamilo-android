@@ -72,6 +72,7 @@
     <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_v8_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_v8_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_v8_config_confirmation_msg</item>
+    <item name="pdv_brand_section"                      type="layout">@layout/_v8_pdv_brand_section</item>
 
     <!-- MY ORDERS -->
     <item name="order_status_fragment"                  type="layout">@layout/_v8_order_status_fragment</item>
