@@ -71,6 +71,7 @@ public class AlgoliaHelper {
         mSuggestionsStruct = new SuggestionsStruct();
         ArrayList<String> attributesToRetrieve = new ArrayList<>();
         attributesToRetrieve.add(RestConstants.SKU);
+        attributesToRetrieve.add(RestConstants.BRAND);
         attributesToRetrieve.add(RestConstants.LOCALIZABLE_ATTRIBUTES+"."+ ShopSelector.getCountryCode()+"."+RestConstants.NAME);
 
         ArrayList<String> facets = new ArrayList<>();
@@ -207,9 +208,10 @@ public class AlgoliaHelper {
             for (int i = 0; i <  hits.length(); i++){
                 Suggestion suggestion = new Suggestion();
                 JSONObject product = hits.getJSONObject(i);
-                String name = product.getJSONObject(RestConstants.LOCALIZABLE_ATTRIBUTES).getJSONObject(ShopSelector.getCountryCode()).getString(RestConstants.FRONTEND_NAME);
+                String name = product.getJSONObject(RestConstants.LOCALIZABLE_ATTRIBUTES).getJSONObject(ShopSelector.getCountryCode()).getString(RestConstants.NAME);
+                String brand = product.getJSONObject(RestConstants.BRAND).getString(RestConstants.NAME);
                 suggestion.setQuery(query);
-                suggestion.setResult(name);
+                suggestion.setResult(brand+" "+name);
                 suggestion.setTarget(product.getString(RestConstants.SKU));
                 suggestion.setType(Suggestion.SUGGESTION_PRODUCT);
                 suggestions.add(suggestion);

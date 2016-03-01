@@ -34,10 +34,13 @@ public class SearchSuggestionClient {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        } else if(useAlgolia && searchTerm.length() > 2){
-            new AlgoliaHelper(context, responseCallback).getSuggestions(searchTerm);
-        } else {
-            JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(searchTerm), responseCallback);
+        } else if(searchTerm.length() >= 2) {
+            if(useAlgolia){
+                new AlgoliaHelper(context, responseCallback).getSuggestions(searchTerm);
+            } else {
+                JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(searchTerm), responseCallback);
+            }
         }
+
     }
 }
