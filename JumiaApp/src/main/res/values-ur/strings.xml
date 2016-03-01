@@ -286,7 +286,7 @@
     <string name="size_label">ناپ</string>
     <string name="some_products_not_added">بدقسمتی سے کچھ اشیاء ٹوکری میں شامل نہیں کی جاسکیں</string>
     <string name="splash_slogan">پاکستان کا سب سے بڑی آن لائن خریداری کا مرکز</string>
-    <string name="splash_slogan_daraz">آن لائن خریداری کا واحد مرکز جس کی آپ کو ضرورت پڑے گی۔</string>
+    <string name="splash_slogan_daraz">آن لائن خریداری کا واحد مرکز جس کی آپ کو ضرورت پڑے گی!</string>
     <string name="stale_warning">رابطہ منقطع</string>
     <string name="string_appearance">ظاہر</string>
     <string name="string_price">قیمت</string>
@@ -312,11 +312,11 @@
     <string name="track_your_order_tip">اپنے آرڈر نمبر سے تلاش کریں اور اس کی تمام تفصیلات یہاں ظاہر ہو جائیں گی۔</string>
     <string name="try_again">دوبارہ کوشش کریں</string>
     <string name="try_again_retry">دوبارہ کوشش کریں</string>
-    <string name="upgrade_forced_text">ہمیں ‎%s‎ پر آپ کی خریداری کے تجربے کو بہتر بنانے کےلیے کچھ ٹھیک کرنے کی ضرورت ہے۔ آپ کو اپنی ایپلیکیشن استعمال کرنے کے لیے اسے ازسرِ نو تازہ کرنا ہو گا۔</string>
-    <string name="upgrade_forced_title">بہترکرنا ضروری ہے</string>
-    <string name="upgrade_optional_text">ہمیں کچھ غلطیاں ملی ہیں جنہیں ‎%s‎ پر آپ کے خریداری کے تجربے کو مزید بہتربنانے کےلیے ٹھیک کرنا ضروری ہے۔ براہِ کرم ایپ کو تازہ کریں۔</string>
-    <string name="upgrade_optional_title">بہتری میسر ہے</string>
-    <string name="upgrade_proceed">بہتری</string>
+    <string name="upgrade_forced_text">ہمیں ‎%s‎ پر آپ کی خریداری کے تجربے کو بہتر بنانے کےلیے کچھ ٹھیک کرنے کی ضرورت ہے۔ آپ کو اپنی ایپلیکیشن استعمال کرنے کے لیے اسے اَپڈیٹ کرنا ہو گا۔</string>
+    <string name="upgrade_forced_title">اَپڈیٹ کرنا ضروری ہے</string>
+    <string name="upgrade_optional_text">ہمیں کچھ غلطیاں ملی ہیں جنہیں ‎%s‎ پر آپ کے خریداری کے تجربے کو مزید بہتربنانے کےلیے ٹھیک کرنا ضروری ہے۔ براہِ کرم ایپ کو اَپڈیٹ کریں۔</string>
+    <string name="upgrade_optional_title">اَپگریڈ میسر ہے</string>
+    <string name="upgrade_proceed">اَپگریڈ</string>
     <string name="upgrade_remindmelater">بعد میں یاد دلائیں</string>
     <string name="validation_errortext">معلومات جمع کروانے کے دوران کوئی غلطی ہے، براہِ کرم تمام شعبوں میں درج کی ہوئی معلومات دوبارہ جانچیں۔</string>
     <string name="validation_title">داخل کی ہوئی معلومات میں غلطی</string>
@@ -325,7 +325,7 @@
     <string name="voucher_message_hint">اپنا کوپن کوڈ یہاں درج کریں۔</string>
     <string name="voucher_remove">ہٹائیں</string>
     <string name="voucher_use">استعمال</string>
-    <string name="wizard_navigation">آپ کے تمام پسندیدہ زمرہ جات تک تیز رسائی</string>
+    <string name="wizard_navigation">آپ کے تمام پسندیدہ اقسام تک تیز رسائی</string>
     <string name="write_comment">تبصرہ لکھیں</string>
     <string name="write_full_review">ایک مکمل تجزیہ لکھیں</string>
     <string name="writereview_page_title">تبصرہ لکھیں</string>
@@ -359,7 +359,7 @@
     <string name="top_sellers">بہترین فروخت کنندگان</string>
     <string name="product_desc_summary_title">خلاصہ</string>
     <string name="description">تفصیل</string>
-    <string name="key_features">کلیدی خصوصیات</string>
+    <string name="key_features">چیدہ چیدہ خصوصیات</string>
     <string name="kickout_page_title">ہماری مہم ایک بہت بڑی کامیابی ہے</string>
     <string name="kickout_page_text1">اس حد تک کہ ہماری دکان اس وقت گاہکوں سے بھری ہوئی ہے اور ہم نئے گاہکوں کو خوش آمدید نہیں کہہ سکتے۔</string>
     <string name="kickout_page_text2">ہم آپ کو خریداری کا ایک بہترین تجربہ فراہم کرنا چاہتے ہیں، اس لیے ہماری گزارش ہے کہ آپ کچھ دیر بعد دوبارہ کوشش کریں۔</string>
@@ -388,7 +388,7 @@
     <string name="combos_label">کومبوز</string>
     <string name="combos">کومبوز</string>
     <string name="may_like">آپکو یہ بھی پسند آسکتا ہے</string>
-    <string name="buy_the_look">مکمل لک خریدیں</string>
+    <string name="buy_the_look">مکمل لُک خریدیں</string>
     <string name="pdv_size">ناپ</string>
     <string name="buy_now_button">ابھی خریدیں</string>
     <string name="pre_order">پیشکی آرڈر</string>
@@ -413,7 +413,7 @@
     <string name="rat_rev">درجہ بندی اور تجزیے</string>
     <string name="fulfilled_by">%s کی طرف سے پورا</string>
     <string name="policy">پالیسی</string>
-    <string name="shipment">%1$d کھیپ کے %2$d</string>
+    <string name="shipment">%1$d شِپمنٹ کے %2$d</string>
     <string name="delivery_time_placeholder">ڈلیوری وقت: %1$d - %2$d  دن</string>
     <string name="product_specifications">خصوصیات</string>
     <string name="ssl_error_host_mismatch">آپ کا میزبان آپ کی سند سے مختلف ہے‎%s ‎</string>
