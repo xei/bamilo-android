@@ -293,8 +293,8 @@
     <string name="string_rating">جائزہ</string>
     <string name="string_ratings">درجہ بندی</string>
     <string name="string_with_discount_only">صرف رعایت کے ساتھ</string>
-    <string name="sub_total_title">ذیلی میزانیہ</string>
-    <string name="submit_label">بھیجیں</string>
+    <string name="sub_total_title">ذیلی کُل</string>
+    <string name="submit_label">جمع کروائیں</string>
     <string name="submit_text">آپ کی رائے موصول ہو گئی ہے، منظور ہوتے ہی شائع کر دیا جائے گا۔</string>
     <string name="submit_title">جائزہ موصول</string>
     <string name="succes_login">آپ داخل ہیں</string>
