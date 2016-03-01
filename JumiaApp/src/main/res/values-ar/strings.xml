@@ -179,7 +179,7 @@
     <string name="or_text">أو</string>
     <string name="order_no_items">لا يوجد منتجات في عربة التسوق</string>
     <string name="order_status_label">حالة الطلب</string>
-    <string name="order_success">تم تسجيل الطلب بنجاح\nبهذا الرقم:</string>
+    <string name="order_success">تم تسجيل الطلب بنجاح\nيمكنك متابعة حالة الطلب من خلال "تتبع طلبك"</string>
     <string name="order_summary_label">ملخص الطلب</string>
     <string name="order_summary_shipping_fee_label">رسوم الشحن:</string>
     <string name="order_summary_shipping_method">طريقة الشحن</string>
@@ -476,8 +476,9 @@
     <string name="added_success">تمت الأضافه بنجاح.</string>
     <string name="removed_success">تم الحذف بنجاح.</string>
     <string name="sign_up_to_our_newsletter">التسجيل لاستلام رسالة جوميا الإخبارية</string>
-    <string name="sign_up_to_our_newsletter_body">للحصول بشكل حصري على تقارير المبيعات والمنتجات الأحدث وصولًا والاتجاهات السوقية والحملات الإعلانية</string>
+    <string name="sign_up_to_our_newsletter_body">للحصول بشكل حصري على العروض والمنتجات الأحدث وصولًا والاتجاهات السوقية والحملات الإعلانية</string>
     <string name="search_shop_in_shop_label">قم بزيارة %s المخزن الخاص بنا</string>
     <string name="search_categories_label">%1$s في %2$s</string>
+    <string name="on_label">فتح</string>
     <string name="visit_the_official_brand_store">زيارة المخزن %s الرسمي</string>
 </resources>

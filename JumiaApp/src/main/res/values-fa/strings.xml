@@ -327,9 +327,9 @@
     <string name="voucher_remove">حذف</string>
     <string name="voucher_use">استفاده</string>
     <string name="wizard_navigation">دسترسی سریع به مجموعه های مورد علاقه</string>
-    <string name="write_comment">نوشتن نقد و بررسی</string>
-    <string name="write_full_review">نظر کامل خود را بنویسید</string>
-    <string name="writereview_page_title">نوشتن نقد و بررسی</string>
+    <string name="write_comment">نقد و بررسی خود را ثبت کنید</string>
+    <string name="write_full_review">بررسی کامل خود را بنویسید</string>
+    <string name="writereview_page_title">نقد و بررسی خود را ثبت کنید</string>
     <string name="writereview_review_hint">نظر</string>
     <string name="writereview_send">ارسال نقد و بررسی</string>
     <string name="writereview_title_hint">عنوان</string>
