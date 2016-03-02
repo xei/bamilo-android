@@ -164,8 +164,7 @@
     <string name="new_arrival_badge">Nouveau</string>
     <string name="new_password_hint">Nouveau mot de passe</string>
     <string name="new_password_label">Nouveau mot de passe</string>
-    <string name="newsletter_saved_message">Vos préférences Mails ont été enregistrées</string>
-    <string name="newsletters_label">Newsletters</string>
+    <string name="newsletter_label">Newsletter</string>
     <string name="next_button">Suivant</string>
     <string name="no_connect_dialog_content">Vérifiez votre connexion internet et essayez à nouveau!</string>
     <string name="no_internet_access_warning_title">Pas d\'accès internet!</string>
@@ -173,14 +172,14 @@
     <string name="notifications">Notifications</string>
     <string name="myaccount_email_notifications">Notifications Email</string>
     <string name="notifications_summary">Recevez des offres exclusives et mises à jour personnelles</string>
-    <string name="off_label">-</string>
+    <string name="off_label">OFF</string>
     <string name="ok_label">OK</string>
     <string name="option2_description">Changez votre mot de passe, e-mail, etc&#8230;</string>
     <string name="option3_description">S\'inscrire ou se désinscrire</string>
     <string name="or_text">OU</string>
     <string name="order_no_items">Vous n\'avez pas d\'articles dans le panier</string>
     <string name="order_status_label">Statut de la Commande</string>
-    <string name="order_success">Votre commande a été enregistré avec succès,sous le numéro suivant:</string>
+    <string name="order_success">Votre commande a été enregistrée avec succès,vous pouvez consulter son statut dans les détails de la commande</string>
     <string name="order_summary_label">Résumé de la commande</string>
     <string name="order_summary_shipping_fee_label">Frais de livraison:</string>
     <string name="order_summary_shipping_method">Mode de livraison</string>
@@ -476,4 +475,10 @@
     <string name="size">Taille %s</string>
     <string name="added_success">Ajouté avec succès.</string>
     <string name="removed_success">Retiré avec succès.</string>
+    <string name="sign_up_to_our_newsletter">Inscrivez-vous à notre newsletter</string>
+    <string name="sign_up_to_our_newsletter_body">Pour accéder à des offres exclusives, toutes les nouveautés et promotions</string>
+    <string name="search_shop_in_shop_label">Visitez notre boutique %s</string>
+    <string name="search_categories_label">%1$s dans %2$s</string>
+    <string name="on_label">ON</string>
+    <string name="visit_the_official_brand_store">Visitez la boutique officielle %s</string>
 </resources>

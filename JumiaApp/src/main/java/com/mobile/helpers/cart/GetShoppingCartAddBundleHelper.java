@@ -61,7 +61,7 @@ public class GetShoppingCartAddBundleHelper extends SuperBaseHelper {
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
-        TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
+        TrackerDelegator.trackAddToCart(cart);
 
         AddedItemStructure addItemStruct = new AddedItemStructure();
         addItemStruct.setPurchaseEntity(cart);

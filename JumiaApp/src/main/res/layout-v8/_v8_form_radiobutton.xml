@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.components.customfontviews.RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mobile.components.customfontviews.RadioButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/_v8_form_radiobutton_style"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="top"
-    android:layout_marginLeft="@dimen/margin_30px"
-    android:layout_marginRight="0dp"
     android:background="@color/transparent"
-    android:button="@null"
-                                                   android:drawablePadding="8dp"
-    android:drawableRight="@drawable/_gen_selector_radio_button"
-    android:ellipsize="end"
     android:textColor="@color/form_text"
-    android:textSize="@dimen/text_form" />
+    />

@@ -24,6 +24,7 @@
     <item name="checkout_shipping_fee_time"             type="layout">@layout/_def_checkout_shipping_fee_time</item>
     <item name="checkout_header"                        type="layout">@layout/_def_checkout_header</item>
     <item name="checkout_thanks"                        type="layout">@layout/_def_checkout_thanks</item>
+    <item name="checkout_success_fragment_related"      type="layout">@layout/_def_checkout_success_fragment_related_prods</item>
     <item name="checkout_total_layout" 			        type="layout">@layout/_def_checkout_total_layout</item>
     <item name="cart_total"                             type="layout">@layout/_def_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_def_price_rules_element</item>
@@ -152,7 +153,6 @@
 
     <item name="reviews_fragment_rating_bigtype_item"   type="layout">@layout/_def_reviews_fragment_rating_bigtype_item</item>
     <item name="navigation_generic_component"           type="layout">@layout/_def_navigation_generic_component</item>
-    <item name="dialog_filter_header"                   type="layout">@layout/_def_dialog_filter_header</item>
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
     <item name="product_offers_main"                    type="layout">@layout/_def_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_def_campaign_spinner_item</item>
@@ -199,5 +199,9 @@
 
     <!--ROOT SSL ERROR CONTACT INFO-->
     <item name="contacts_info"                          type="layout">@layout/_def_contacts_info</item>
+
+    <item name="gen_form_screen_radio"                  type="layout">@layout/_def_gen_form_screen_radio</item>
+    <item name="dialog_generic_form"                    type="layout">@layout/_def_dialog_generic_form</item>
+    <item name="gen_form_switch_radio"                  type="layout">@layout/_def_gen_form_switch_radio</item>
 
 </resources>

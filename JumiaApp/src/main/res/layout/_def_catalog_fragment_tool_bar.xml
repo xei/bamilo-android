@@ -28,7 +28,6 @@
             android:drawableStart="@drawable/selector_catalog_filter"
             android:text="@string/filter_label" />
 
-
     </LinearLayout>
 
     <!-- DIVIDER -->

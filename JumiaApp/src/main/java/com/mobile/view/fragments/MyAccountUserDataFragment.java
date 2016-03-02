@@ -18,6 +18,7 @@ import com.mobile.helpers.account.SetChangePasswordHelper;
 import com.mobile.helpers.account.SetUserDataHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
@@ -25,6 +26,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -262,7 +264,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      */
     private void fillUserDataForm(Form userForm){
         mUserDataFormContainer.removeAllViews();
-        mUserDataForm = FormFactory.getSingleton().CreateForm(FormConstants.USER_DATA_FORM,getBaseActivity(),userForm);
+        mUserDataForm = FormFactory.getSingleton().create(FormConstants.USER_DATA_FORM,getBaseActivity(),userForm);
         // Load saved state
         mUserDataForm.loadSaveFormState(mFormSavedState);
         mUserDataFormContainer.addView(mUserDataForm.getContainer());
@@ -276,7 +278,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      * function used to fill the layout section with the change password form
      */
     protected void fillChangePasswordForm(Form passwordForm) {
-        mChangePasswordForm = FormFactory.getSingleton().CreateForm(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),passwordForm);
+        mChangePasswordForm = FormFactory.getSingleton().create(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),passwordForm);
         // Load saved state
         mChangePasswordForm.loadSaveFormState(mFormSavedState);
         mChangePasswordFormContainer.addView(mChangePasswordForm.getContainer());
@@ -293,6 +295,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
 
     /**
      * This method changes the user's password.
+     * FIXME: https://rink.hockeyapp.net/manage/apps/33641/app_versions/164/crash_reasons/111735919?type=crashes
      */
     public void triggerChangePassword() {
         if (mChangePasswordForm.validate()) {
@@ -308,42 +311,52 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
         triggerContentEvent(new GetUserDataFormHelper(), null, this);
     }
 
+
+
+    /**
+     * Reset change password form to the initial state (cleaned, eye unchecked and unfocused)
+     * */
+    private void resetChangePasswordForm(){
+        mChangePasswordForm.reset();
+        mChangePasswordFormContainer.removeAllViews();
+        mChangePasswordFormContainer.addView(mChangePasswordForm.getContainer());
+        mChangePasswordFormContainer.requestFocus();
+    }
+
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON SUCCESS EVENT");
-
         // Validate fragment visibility
-        if (isOnStoppingProcess || eventType == null) {
+        if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
+        // Validate event type
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case GET_CHANGE_PASSWORD_FORM_EVENT:
                 Form passwordForm = (Form)baseResponse.getContentData();
                 fillChangePasswordForm(passwordForm);
-                Print.i(TAG, "GET CHANGE PASSWORD FORM");
                 break;
             case EDIT_USER_DATA_FORM_EVENT:
                 Form userForm = (Form)baseResponse.getContentData();
                 fillUserDataForm(userForm);
                 showFragmentContentContainer();
-                Print.i(TAG, "GET USER DATA FORM");
                 break;
             case CHANGE_PASSWORD_EVENT:
-                Print.d(TAG, "changePasswordEvent: Password changed with success");
-                if (null != getActivity()) {
-                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.password_changed));
-                    showFragmentContentContainer();
-                }
+                // Warning user
+                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getBaseActivity().getResources().getString(R.string.password_changed));
+                // Reset form
+                resetChangePasswordForm();
+                mUserDataForm.getContainer().requestFocus();
+                showFragmentContentContainer();
                 break;
             case EDIT_USER_DATA_EVENT:
-                Print.d(TAG, "editUserEvent: user data edit with success fsdfsdffd ");
-                if (null != getActivity()) {
-                    getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE,  getBaseActivity().getResources().getString(R.string.edit_user_success));
-                    showFragmentContentContainer();
-                }
+                // Tracking
+                TrackerDelegator.trackCustomerInfo((Customer) baseResponse.getContentData());
+                // Warning user
+                getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE,  getBaseActivity().getResources().getString(R.string.edit_user_success));
+                showFragmentContentContainer();
                 break;
             default:
                 break;

@@ -15,7 +15,6 @@
     <!-- CONTAINER -->
 
     <include
-        android:id="@+id/ComboSection"
         layout="@layout/pdv_fragment_combo_item"/>
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.mobile.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
@@ -36,8 +37,8 @@ import com.mobile.view.fragments.InnerShopFragment;
 import com.mobile.view.fragments.MyAccountAddressesFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;
-import com.mobile.view.fragments.MyAccountEmailNotificationFragment;
 import com.mobile.view.fragments.MyAccountFragment;
+import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
@@ -196,7 +197,7 @@ public class MainFragmentActivity extends BaseActivity {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.slidingmenu.lib.app.SlidingFragmentActivity#onSaveInstanceState(android
      * .os.Bundle)
@@ -224,7 +225,7 @@ public class MainFragmentActivity extends BaseActivity {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * com.mobile.utils.BaseActivity#onSwitchFragment(com.mobile.view.fragments
      * .FragmentType, android.os.Bundle, java.lang.Boolean)
@@ -261,14 +262,16 @@ public class MainFragmentActivity extends BaseActivity {
                 }
                 // Put the target type
                 bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
-                // Put the type
-                type = FragmentType.CATALOG;
                 // Create instance
                 fragment = CatalogFragment.getInstance(bundle);
+                // Put the type with unique identifier
+                type = FragmentType.getUniqueIdentifier(FragmentType.CATALOG, fragment);
                 break;
             case PRODUCT_DETAILS:
+                // Create instance
                 fragment = ProductDetailsFragment.getInstance(bundle);
-                type.setId(fragment.hashCode());
+                // Put the type with unique identifier
+                type = FragmentType.getUniqueIdentifier(type, fragment);
                 break;
             case PRODUCT_INFO:
                 fragment = ProductDetailsInfoFragment.getInstance(bundle);
@@ -347,7 +350,7 @@ public class MainFragmentActivity extends BaseActivity {
                 fragment = CampaignsFragment.newInstance(bundle);
                 break;
             case EMAIL_NOTIFICATION:
-                fragment = MyAccountEmailNotificationFragment.newInstance();
+                fragment = MyAccountNewslettersFragment.newInstance();
                 break;
             case WISH_LIST:
                 removeEntries = true;
@@ -409,10 +412,12 @@ public class MainFragmentActivity extends BaseActivity {
     }
 
     /**
-     * Fragment communication
+     * Fragment communication.<br>
+     * The FragmentManager has some issues to get fragment with the same tag.<br>
+     * @author spereira
      */
     @Override
-    public boolean communicateBetweenFragments(String tag, Bundle bundle) {
+    public boolean communicateBetweenFragments(@Nullable String tag, @Nullable Bundle bundle) {
         Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
         if (fragment != null) {
             ((BaseFragment) fragment).notifyFragment(bundle);

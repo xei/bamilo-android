@@ -66,7 +66,7 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Set total bar
-        CheckoutStepManager.setTotalBarForMyAccount(view);
+        CheckoutStepManager.setTotalBarWithFullButton(view);
         // Hide order summary
         UIUtils.showOrHideViews(View.GONE, view.findViewById(super.ORDER_SUMMARY_CONTAINER));
     }
@@ -137,8 +137,8 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     }
 
     private void onErrorOccurred() {
-        getBaseActivity().onBackPressed();
         getBaseActivity().showWarningMessage(WarningFactory.ERROR_MESSAGE, getString(R.string.error_please_try_again));
+        getBaseActivity().onBackPressed();
     }
 
 }

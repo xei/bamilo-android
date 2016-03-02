@@ -21,7 +21,6 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -80,12 +79,10 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
         //TODO move to observable
         // Get recent queries
-        ArrayList<Suggestion> suggestions = new ArrayList<>();
+        ArrayList<Suggestion> recentQueries = new ArrayList<>();
         try {
-            if(TextUtils.isEmpty(mQuery)) {
-                suggestions = SearchRecentQueriesTableHelper.getAllRecentQueries();
-            } else {
-                suggestions = SearchRecentQueriesTableHelper.getFilteredRecentQueries(mQuery);
+            if(TextUtils.isEmpty(mQuery) ) {
+                recentQueries = SearchRecentQueriesTableHelper.getAllRecentQueries();
             }
         } catch (SQLiteException e) {
             Print.w(TAG, "ERROR ON GET RECENT QUERIES: " + mQuery);
@@ -94,9 +91,10 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         }
         //
         Suggestions searchSuggestions = (Suggestions) baseResponse.getContentData();
-        CollectionUtils.addAll(suggestions, searchSuggestions);
-
-        SuggestionsStruct suggestionsStruct = new SuggestionsStruct(searchSuggestions);
+        //add the recent searches in database to the suggestions
+        CollectionUtils.addAll(searchSuggestions, recentQueries, 0);
+        SuggestionsStruct suggestionsStruct = new SuggestionsStruct();
+        suggestionsStruct.setRecentSuggestions(searchSuggestions);
         suggestionsStruct.setSearchParam(mQuery);
         baseResponse.getMetadata().setData(suggestionsStruct);
 
@@ -123,7 +121,8 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
         }
         Print.d(TAG, "SUGGESTION: " + suggestions.size());
 
-        SuggestionsStruct suggestionsStruct = new SuggestionsStruct(suggestions);
+        SuggestionsStruct suggestionsStruct = new SuggestionsStruct();
+        suggestionsStruct.setRecentSuggestions(suggestions);
         suggestionsStruct.setSearchParam(mQuery);
         baseResponse.getMetadata().setData(suggestionsStruct);
     }
@@ -160,7 +159,8 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
         BaseResponse baseResponse = new BaseResponse();
         super.postSuccess(baseResponse);
-        SuggestionsStruct suggestionsStruct = new SuggestionsStruct(suggestions);
+        SuggestionsStruct suggestionsStruct = new SuggestionsStruct();
+        suggestionsStruct.setRecentSuggestions(suggestions);
         suggestionsStruct.setSearchParam(mQuery);
         baseResponse.getMetadata().setData(suggestionsStruct);
         requester.onRequestComplete(baseResponse);
@@ -168,43 +168,20 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     /**
      * Save the recent query on the database
-     * @param query
+     * @param suggestion
      * @author sergiopereira
      */
-    public static void saveSearchQuery(final String query){
-        Print.d(TAG, "SAVE SEARCH QUERY: " + query);
+    public static void saveSearchQuery(final Suggestion suggestion){
+        Print.d(TAG, "SAVE SEARCH QUERY: " + suggestion.getResult());
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    SearchRecentQueriesTableHelper.insertQuery(query);
+                    SearchRecentQueriesTableHelper.insertQuery(suggestion);
                 } catch (Exception e){
                     // ...
                 }
             }
         }).start();
-    }
-
-    public class SuggestionsStruct extends Suggestions {
-
-        private String searchParam;
-
-        public SuggestionsStruct(){}
-
-        public SuggestionsStruct(Suggestions suggestions){
-            super(suggestions);
-        }
-
-        public SuggestionsStruct(List<Suggestion> suggestions){
-            super(suggestions);
-        }
-
-        public String getSearchParam() {
-            return searchParam;
-        }
-
-        public void setSearchParam(String searchParam) {
-            this.searchParam = searchParam;
-        }
     }
 }

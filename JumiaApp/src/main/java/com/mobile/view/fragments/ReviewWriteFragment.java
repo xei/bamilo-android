@@ -43,7 +43,6 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.ProductUtils;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -331,7 +330,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
             if (getBaseActivity() == null) return;
 
-            mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), form);
+            mDynamicForm = FormFactory.getSingleton().create(FormConstants.RATING_FORM, getBaseActivity(), form);
             if(ratingContainer.getChildCount() > 0)
                 ratingContainer.removeAllViews();
 
@@ -391,7 +390,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
             ProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
             getView().findViewById(R.id.send_review).setOnClickListener(this);
-            productName.setText(String.format(getString(R.string.first_and_second_placeholders), completeProduct.getBrand(), completeProduct.getName()));
+            productName.setText(String.format(getString(R.string.first_and_second_placeholders), completeProduct.getBrandName(), completeProduct.getName()));
         }
     }
 
@@ -462,9 +461,9 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                     return;
             } else if (ratingForm != null) {
                 if(isShowingRatingForm)
-                    mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), ratingForm);
+                    mDynamicForm = FormFactory.getSingleton().create(FormConstants.RATING_FORM, getBaseActivity(), ratingForm);
                 else if(reviewForm != null)
-                    mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.RATING_FORM, getBaseActivity(), reviewForm);
+                    mDynamicForm = FormFactory.getSingleton().create(FormConstants.RATING_FORM, getBaseActivity(), reviewForm);
 
                 if(!mDynamicForm.validate())
                     return;
@@ -521,7 +520,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
         String formName = form.getItemByKey(RestConstants.RATINGS).getName();
 
         Map<String, String> ratingMap = form.getItemByKey(RestConstants.RATINGS).getEntry().getDateSetRating();
-        View  ratingFormContainer = form.getItemByKey(RestConstants.RATINGS).getEditControl();
+        View  ratingFormContainer = form.getItemByKey(RestConstants.RATINGS).getDataControl();
 
         for (int i = 1; i < ratingMap.size()+1; i++) {
            int rate =  (int)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
@@ -543,7 +542,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
             if(form != null){
                 Map<String, String> ratingMap = form.getItemByKey(RestConstants.RATINGS).getEntry().getDateSetRating();
-                View  ratingFormContainer = form.getItemByKey(RestConstants.RATINGS).getEditControl();
+                View  ratingFormContainer = form.getItemByKey(RestConstants.RATINGS).getDataControl();
 
                 for (int i = 1; i < ratingMap.size()+1; i++) {
                    long rate =  (long)((RatingBar)ratingFormContainer.findViewById(i).findViewById(R.id.option_stars)).getRating();
@@ -587,7 +586,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                 //only needed for tracking purpose
                 params.putSerializable(TrackerDelegator.RATINGS_KEY, getRatingsMapValues(mDynamicForm));
 
-                TrackerDelegator.trackItemReview(params, isShowingRatingForm);
+                TrackerDelegator.trackItemReview(params);
                 showWarningSuccessMessage(getString(R.string.submit_text));
 
                 hideActivityProgress();

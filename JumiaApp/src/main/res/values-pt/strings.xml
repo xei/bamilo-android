@@ -151,8 +151,6 @@
     <string name="navigation_cart_empty">O seu carrinho está vazio</string>
     <string name="new_password_hint">Nova senha</string>
     <string name="new_password_label">Nova Senha</string>
-    <string name="newsletter_saved_message">A configuração das notificações de email foram salvas.</string>
-    <string name="newsletters_label">Newsletters</string>
     <string name="next_button">Próximo</string>
     <string name="no_connect_dialog_content">Por favor, verifique a sua conexão à Internet e tente novamente!</string>
     <string name="no_internet_access_warning_title">Sem Acesso à internet!</string>

@@ -11,6 +11,8 @@
         <item name="colorPrimaryDark">@color/statusBar</item>
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="colorAccent">@color/accent</item>
+        <!-- Color for UI controls like switchs -->
+        <item name="colorControlActivated">@color/blue1</item>
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="android:navigationBarColor">@color/grey_dark</item>
         <!-- Color for app background -->
@@ -39,6 +41,13 @@
         <!-- #### Button View -->
         <item name="android:buttonStyle">@style/Widget.Custom.Button</item>
         <item name="buttonStyle">@style/Widget.Custom.Button</item>
+        <!-- Used for Search View -->
+        <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
+    </style>
+
+    <style name="DropDownListViewStyle" parent="@style/Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/black_300</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 
     <!-- Theme for ActionBar from support library compatibility -->

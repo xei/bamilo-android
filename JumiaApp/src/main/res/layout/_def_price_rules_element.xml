@@ -2,11 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="@dimen/margin_huge"
-    android:layout_marginStart="@dimen/margin_huge"
-    android:layout_marginRight="@dimen/margin_huge"
-    android:layout_marginEnd="@dimen/margin_huge"
-    android:layout_marginTop="10dp" >
+    android:layout_marginTop="10dp"
+    >
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/price_rules_label"

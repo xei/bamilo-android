@@ -10,7 +10,7 @@ import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -29,6 +29,8 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
 
     private TextView textView;
     private Bundle mStaticPageBundle;
+    private String mTitle;
+    private String mContentId;
 
     /**
      * New instance SessionTermsFragment.
@@ -48,7 +50,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.TERMS,
                 R.layout.static_page_fragment,
-                0,
+                IntConstants.ACTION_BAR_NO_TITLE,
                 NO_ADJUST_CONTENT);
     }
     
@@ -73,10 +75,10 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
         // Get static page key from arguments
-        if(savedInstanceState != null && savedInstanceState.containsKey(ConstantsIntentExtra.FRAGMENT_BUNDLE)){
-            mStaticPageBundle = savedInstanceState.getBundle(ConstantsIntentExtra.FRAGMENT_BUNDLE);
-        } else {
-            mStaticPageBundle = getArguments();
+        mStaticPageBundle = savedInstanceState != null ? savedInstanceState : getArguments();
+        if (mStaticPageBundle != null) {
+            mTitle = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
+            mContentId = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_ID);
         }
     }
     
@@ -89,12 +91,11 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get title
-        String title = mStaticPageBundle.getString(RestConstants.TITLE);
-        title = TextUtils.isNotEmpty(title) ? title : getString(R.string.policy);
+        mTitle = TextUtils.isNotEmpty(mTitle) ? mTitle : getString(R.string.policy);
         // Title AB
-        getBaseActivity().setActionBarTitle(title);
+        getBaseActivity().setActionBarTitle(mTitle);
         // Title Layout
-        ((TextView) view.findViewById(R.id.terms_title)).setText(title);
+        ((TextView) view.findViewById(R.id.terms_title)).setText(mTitle);
         // Content
         textView = (TextView) view.findViewById(R.id.terms_text);
         // Get static page
@@ -102,7 +103,7 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     }
 
     private void triggerStaticPage() {
-        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mStaticPageBundle.getString(RestConstants.KEY)), this);
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mContentId), this);
     }
 
     /*

@@ -78,4 +78,10 @@
         <item name="android:paddingRight">@dimen/my_account_gen_dimen</item>
     </style>
 
+    <style name="_v8_form_radiobutton_style" parent="form_style">
+        <item name="android:layout_gravity">top</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_32dp</item>
+        <item name="android:drawablePadding">@dimen/dimen_6dp</item>
+        <item name="android:paddingLeft">@dimen/dimen_20dp</item>
+    </style>
 </resources>

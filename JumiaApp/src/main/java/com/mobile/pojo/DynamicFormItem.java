@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -46,6 +47,7 @@ import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.forms.IFormField;
+import com.mobile.newFramework.forms.NewsletterOption;
 import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.addresses.PhonePrefix;
@@ -57,6 +59,11 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.pojo.fields.CheckBoxField;
+import com.mobile.pojo.fields.ScreenRadioField;
+import com.mobile.pojo.fields.ScreenTitleField;
+import com.mobile.pojo.fields.SectionTitleField;
+import com.mobile.pojo.fields.SwitchRadioField;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
@@ -103,26 +110,48 @@ public class DynamicFormItem {
     public final static String BIRTHDATE_TAG = "birthday_tag";
     public final static String RELATED_GROUP_SEPARATOR = "::";
     private final static String TAG = DynamicFormItem.class.getSimpleName();
-    private static final String ICON_PREFIX = "ic_form_";
-    private final static int ERRORTEXTSIZE = 14;
-    private final static int MANDATORYSIGNALSIZE = 18;
-    private final static int MANDATORYSIGNALMARGIN = 15;
-    private static String DATE_FORMAT = "dd-MM-yyyy";
-    private final Context context;
-    private final DynamicForm parent;
-    private final int errorColor;
-    private final boolean hideAsterisks;
-    private int mPreSelectedPosition = IntConstants.INVALID_POSITION;
-    private IFormField entry = null;
-    private View errorControl;
-    private View dataControl;
-    private ViewGroup control;
-    private TextView errorTextControl;
-    private TextView mandatoryControl;
-    private String errorText;
-    private IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
-    private DatePickerDialog dialogDate;
-    private SharedPreferences mSharedPrefs;
+    public static final String ICON_PREFIX = "ic_form_";
+    protected final static int ERRORTEXTSIZE = 14;
+    protected final static int MANDATORYSIGNALSIZE = 18;
+    protected final static int MANDATORYSIGNALMARGIN = 15;
+    private final static int TWO_OPTIONS = 2;
+    protected static String DATE_FORMAT = "dd-MM-yyyy";
+    protected final Context context;
+    protected final DynamicForm parent;
+    protected final int errorColor;
+    protected final boolean hideAsterisks;
+    protected int mPreSelectedPosition = IntConstants.INVALID_POSITION;
+    protected IFormField entry = null;
+    protected View errorControl;
+    protected View dataControl;
+    protected ViewGroup control;
+    protected TextView errorTextControl;
+    protected TextView mandatoryControl;
+    protected String errorText;
+    protected IcsAdapterView.OnItemSelectedListener spinnerSelectedListener;
+    protected DatePickerDialog dialogDate;
+    protected SharedPreferences mSharedPrefs;
+
+
+    /**
+     * Dynamic form item factory pattern.
+     */
+    public static DynamicFormItem newInstance(DynamicForm parent, Context context, IFormField entry) {
+        switch (entry.getInputType()) {
+            case screenTitle:
+                return new ScreenTitleField(parent, context, entry);
+            case sectionTitle:
+                return new SectionTitleField(parent, context, entry);
+            case switchRadio:
+                return new SwitchRadioField(parent, context, entry);
+            case screenRadio:
+                return new ScreenRadioField(parent, context, entry);
+            case checkBox:
+                return new CheckBoxField(parent, context, entry);
+            default:
+                return new DynamicFormItem(parent, context, entry);
+        }
+    }
 
     /**
      * The constructor for the DynamicFormItem
@@ -144,7 +173,12 @@ public class DynamicFormItem {
         this.errorText = context.getString(R.string.dynamic_errortext);
         this.errorColor = ContextCompat.getColor(context, R.color.red_basic);
         this.hideAsterisks = parent.getForm().isToHideAsterisks();
-        buildControl();
+        // Build TODO: Remove validation when all items are IDynamicFormItemField.
+        if (this instanceof IDynamicFormItemField) {
+            build();
+        } else {
+            buildControl();
+        }
     }
 
     public IFormField getEntry() {
@@ -173,7 +207,7 @@ public class DynamicFormItem {
      *
      * @return The View that represents the control
      */
-    public View getControl() {
+    public ViewGroup getControl() {
         return control;
     }
 
@@ -182,12 +216,11 @@ public class DynamicFormItem {
      *
      * @return The View that represents the control
      */
-    public View getEditControl() {
+    public View getDataControl() {
         return dataControl;
     }
 
-
-    public void setEditControl(View view) {
+    public void setDataControl(@NonNull View view) {
         this.dataControl = view;
     }
 
@@ -214,30 +247,50 @@ public class DynamicFormItem {
     }
 
     /**
-     * Creates the control with all the validation settings and mandatory representations
+     * Creates the control with all the validation settings and mandatory representations.
      */
-    private void buildControl() {
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        int controlWidth = RelativeLayout.LayoutParams.MATCH_PARENT;
+    private void build() {
         if (null != this.entry) {
+            // Build base
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             this.control = new RelativeLayout(this.context);
+            this.control.setLayoutParams(params);
             this.control.setId(parent.getNextId());
+            // TODO: Remove validation when all items are IDynamicFormItemField.
+            if (this instanceof IDynamicFormItemField) {
+                ((IDynamicFormItemField) this).build(params);
+            }
+        }
+    }
+
+    /**
+     * Creates the control with all the validation settings and mandatory representations.
+     * @deprecated Use the form item as IDynamicFormItemField and use {@link #build()}
+     * There is ticket to improve all form fields, NAFAMZ-16058.
+     */
+    @Deprecated
+    private void buildControl() {
+        // Validate entry
+        if (null != this.entry) {
+            // Build base
+            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            this.control = new RelativeLayout(this.context);
+            this.control.setLayoutParams(params);
+            this.control.setId(parent.getNextId());
+            //
             switch (this.entry.getInputType()) {
-                case checkBox:
-                    buildCheckBox(params);
-                    break;
                 case checkBoxLink:
-                    buildCheckBoxForTerms(params, controlWidth);
+                    buildCheckBoxForTerms(params, RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case radioGroup:
-                    buildRadioGroup(params, controlWidth);
+                    buildRadioGroup(params, RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case list:
-                    buildList(params, controlWidth);
+                    buildList(params, RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case metadata:
                 case date:
-                    buildDate(controlWidth);
+                    buildDate(RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case number:
                 case email:
@@ -252,7 +305,7 @@ public class DynamicFormItem {
                     buildHide();
                     break;
                 case rating:
-                    buildRatingOptionsTerms(controlWidth);
+                    buildRatingOptionsTerms(RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case infoMessage:
                 case errorMessage:
@@ -317,9 +370,7 @@ public class DynamicFormItem {
                 }
                 @Override
                 public void onRequestError(BaseResponse baseResponse) {
-                    if(parent.hasResponseCallback()) {
-                        parent.getRequestCallBack().get().onRequestError(baseResponse);
-                    }
+                    parent.onRequestError(baseResponse);
                 }
             });
             // Set touch listener
@@ -366,10 +417,10 @@ public class DynamicFormItem {
             }
         });
         // Set options
-        radioGroup.setItems(new ArrayList<>(entry.getOptions()), 0);
+        radioGroup.setItems(new ArrayList<>(entry.getOptions()), 0, null);
         // Set selection that comes from server
         for (int i = 0; i < entry.getOptions().size(); i++) {
-            if(entry.getOptions().get(i).isDefaultSelection()){
+            if(entry.getOptions().get(i).isChecked()){
                 radioGroup.setSelection(i);
             }
         }
@@ -416,10 +467,6 @@ public class DynamicFormItem {
      */
     public void loadState(Bundle inStat) {
         switch (this.entry.getInputType()) {
-            case checkBox:
-                boolean checked = inStat.getBoolean(getKey());
-                ((CheckBox) this.dataControl).setChecked(checked);
-                break;
             case checkBoxLink:
                 boolean checkedList = inStat.getBoolean(getKey());
                 ((CheckBox) this.dataControl.findViewWithTag("checkbox")).setChecked(checkedList);
@@ -507,18 +554,19 @@ public class DynamicFormItem {
             case radioGroup:
                 if (this.dataControl instanceof RadioGroupLayoutVertical) {
                     ContentValues mValues = ((RadioGroupLayoutVertical) dataControl).getSubFieldParameters();
-                    if (mValues != null) values.putAll(mValues);
-                    values.put(RestConstants.NAME, ((RadioGroupLayoutVertical) dataControl).getSelectedFieldName());
+                    if (mValues != null) {
+                        values.putAll(mValues);
+                        values.put(RestConstants.NAME, ((RadioGroupLayoutVertical) dataControl).getSelectedFieldName());
+                    }
                 }
                 values.put(getName(), getValue());
                 break;
             case list:
-                ViewGroup viewGroup = (ViewGroup) getControl();
-                View view = viewGroup.getChildAt(0);
-                if(view instanceof IcsSpinner) {
+                View view = getControl().getChildAt(0);
+                if (view instanceof IcsSpinner) {
                     IcsSpinner spinner = (IcsSpinner) view;
                     FormListItem selectedItem = (FormListItem) spinner.getSelectedItem();
-                    if(selectedItem != null) {
+                    if (selectedItem != null) {
                         values.put(getName(), selectedItem.getValue());
                     }
                 }
@@ -558,10 +606,19 @@ public class DynamicFormItem {
                 }
                 break;
             default:
-                if (null != getValue()) {
-                    values.put(getName(), getValue());
-                }
+                getDefaultValue(values);
                 break;
+        }
+    }
+
+    /**
+     * The common method to save the value from field.
+     */
+    protected final void getDefaultValue(ContentValues values) {
+        String name = getName();
+        String value = getValue();
+        if (!TextUtils.isEmpty(name) && value != null) {
+            values.put(name, value);
         }
     }
 
@@ -584,11 +641,9 @@ public class DynamicFormItem {
                 if (this.dataControl instanceof IcsSpinner) {
                     value = ((IcsSpinner) this.dataControl).getSelectedItem().toString();
                 } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
-                    int idx = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex();
-                    value = ((RadioGroupLayoutVertical) this.dataControl).getItemByIndex(idx);
+                    value = ((RadioGroupLayoutVertical) this.dataControl).getSelectedFieldValue();
                 } else {
-                    int idx = ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).getSelectedIndex();
-                    value = ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).getItemByIndex(idx);
+                    value = ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).getSelectedFieldValue();
                 }
                 if (this.entry.getDataSet().containsValue(value)) {
                     Iterator<Entry<String, String>> iterator = this.entry.getDataSet().entrySet().iterator();
@@ -704,7 +759,9 @@ public class DynamicFormItem {
                     this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
                 } else {
                     this.mandatoryControl.setVisibility(View.GONE);
-                }
+                } //reset checkbox control state
+                CheckBox checkBox = (CheckBox) this.control.findViewById(R.id.text_field_password_check_box);
+                if(checkBox != null) checkBox.setChecked(false);
                 break;
             case hide:
                 break;
@@ -722,9 +779,6 @@ public class DynamicFormItem {
      */
     public void saveState(Bundle outState) {
         switch (this.entry.getInputType()) {
-            case checkBox:
-                outState.putBoolean(getKey(), ((CheckBox) this.dataControl).isChecked());
-                break;
             case checkBoxLink:
                 outState.putBoolean(getKey(), ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked());
                 break;
@@ -803,11 +857,14 @@ public class DynamicFormItem {
     public boolean validate() {
         boolean result = true;
         if (hasRules() && this.errorControl != null) {
+
+            // Use the new approach IDynamicFormItemField
+            if(this instanceof IDynamicFormItemField) {
+                result = ((IDynamicFormItemField) this).validate(true);
+            }
+
+            // Deprecated: Old approach
             switch (this.entry.getInputType()) {
-                case checkBox:
-                    if (this.entry.getValidation().isRequired())
-                        result = ((CheckBox) this.dataControl).isChecked();
-                    break;
                 case checkBoxLink:
                     if (this.entry.getValidation().isRequired())
                         result = ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked();
@@ -817,7 +874,6 @@ public class DynamicFormItem {
                     if (this.dataControl instanceof IcsSpinner) {
                         valid = ((IcsSpinner) this.dataControl).getSelectedItemPosition() != Spinner.INVALID_POSITION;
                     } else if (this.dataControl instanceof RadioGroupLayoutVertical) {
-                        //Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayoutVertical");
                         valid = ((RadioGroupLayoutVertical) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                         // validate if accepted terms of payment method
                         if (valid) {
@@ -869,7 +925,7 @@ public class DynamicFormItem {
                     }
                     break;
                 case list:
-                    result = (((ViewGroup) getControl()).getChildAt(0) instanceof IcsSpinner);
+                    result = getControl().getChildAt(0) instanceof IcsSpinner;
                     break;
                 default:
                     break;
@@ -969,9 +1025,7 @@ public class DynamicFormItem {
         mLinkTextView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(parent.hasClickListener()) {
-                    parent.getClickListener().get().onClick(v);
-                }
+                parent.onClick(v);
             }
         });
 
@@ -1029,67 +1083,6 @@ public class DynamicFormItem {
         this.control.addView(dataContainer);
     }
 
-    private void buildCheckBox(RelativeLayout.LayoutParams params) {
-        this.control.setLayoutParams(params);
-        RelativeLayout dataContainer = new RelativeLayout(this.context);
-        dataContainer.setId(parent.getNextId());
-        dataContainer.setLayoutParams(params);
-
-        //Mandatory control
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-        //#RTL
-        if (ShopSelector.isRtl()) {
-            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        } else {
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        }
-
-        params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = MANDATORYSIGNALMARGIN;
-        this.mandatoryControl = new TextView(this.context);
-        this.mandatoryControl.setId(parent.getNextId());
-        this.mandatoryControl.setLayoutParams(params);
-        this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
-        this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-
-        this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
-
-        //Data control
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-        int formPadding = context.getResources().getDimensionPixelOffset(R.dimen.form_check_padding);
-        params.leftMargin = formPadding;
-        params.rightMargin = formPadding;
-        // Get check box
-        CheckBox checkBox = (CheckBox) View.inflate(this.context, R.layout.gen_form_check_box, null);
-        this.dataControl = checkBox;
-        this.dataControl.setId(parent.getNextId());
-
-        params.addRule(RelativeLayout.CENTER_VERTICAL);
-        //#RTL
-        params.addRule(ShopSelector.isRtl() ? RelativeLayout.RIGHT_OF : RelativeLayout.LEFT_OF, this.mandatoryControl.getId());
-        this.dataControl.setLayoutParams(params);
-        this.dataControl.setContentDescription(this.entry.getKey());
-        this.dataControl.setFocusable(false);
-        this.dataControl.setFocusableInTouchMode(false);
-        checkBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
-        // Set default value
-        if (Boolean.parseBoolean(this.entry.getValue())) {
-            checkBox.setChecked(true);
-        }
-        // Validate disabled flag
-        if (this.entry.isDisabledField()) {
-            disableView(checkBox);
-        }
-        // Add
-        dataContainer.addView(this.dataControl);
-        dataContainer.addView(this.mandatoryControl);
-        this.control.addView(dataContainer);
-    }
-
     private void buildRadioGroup(RelativeLayout.LayoutParams params, int controlWidth) {
         this.control.setLayoutParams(params);
 
@@ -1104,12 +1097,14 @@ public class DynamicFormItem {
             params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         }
 
-        if (this.entry.getDataSet().size() > 2 || this.parent.getForm().getFields().get(0).getPaymentMethodsField() != null) {
+        if (this.entry.isVerticalOrientation() ||
+                this.entry.getDataSet().size() > TWO_OPTIONS ||
+                this.parent.getForm().getFields().get(IntConstants.DEFAULT_POSITION).getPaymentMethodsField() != null) {
             Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
-            createRadioGroupVertical(MANDATORYSIGNALSIZE, params, dataContainer);
+            createRadioGroupVertical(params, dataContainer);
         } else {
             Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_HORIZONTAL");
-            createRadioGroup(MANDATORYSIGNALSIZE, dataContainer);
+            createRadioGroup(dataContainer);
         }
 
         if (hasRules()) {
@@ -1373,7 +1368,7 @@ public class DynamicFormItem {
     /**
      * Create an horizontal radio group
      */
-    private void createRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout dataContainer) {
+    private void createRadioGroup(RelativeLayout dataContainer) {
         //Preselection
         int defaultSelect = 0;
         boolean foundDefaultSelect = false;
@@ -1388,7 +1383,7 @@ public class DynamicFormItem {
         }
 
         if (!foundDefaultSelect) {
-            defaultSelect = RadioGroupLayoutVertical.NO_DEFAULT_SELECTION;
+            defaultSelect = IntConstants.INVALID_POSITION;
         }
 
         // Force the match the parent
@@ -1397,8 +1392,7 @@ public class DynamicFormItem {
 
         ImageView icon = (ImageView) radioGroupContainer.findViewById(R.id.radio_field_icon);
 
-        if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM
-                || this.parent.getForm().getType() == FormConstants.USER_DATA_FORM) {
+        if(this.parent.getForm().getType() == FormConstants.REGISTRATION_FORM || this.parent.getForm().getType() == FormConstants.USER_DATA_FORM) {
             UIUtils.setDrawableByString(icon, ICON_PREFIX + this.entry.getKey());
             icon.setVisibility(View.VISIBLE);
         }
@@ -1439,16 +1433,38 @@ public class DynamicFormItem {
             }
         });
 
-        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), defaultSelect);
+        ArrayList<String> keySet = null;
+        if (this.parent.getForm().getType() == FormConstants.NEWSLETTER_FORM &&
+                CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
+            keySet = new ArrayList<>();
+            for (NewsletterOption nOption : ((FormField) this.entry).getNewsletterOptions()) {
+                keySet.add(nOption.key);
+            }
+        }
+
+        radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), defaultSelect, keySet);
+
         this.control.addView(dataContainer);
     }
 
     /**
      * Generates a Vertical RadioGroup
      */
-    private void createRadioGroupVertical(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+    private ViewGroup createRadioGroupVertical(RelativeLayout.LayoutParams params, ViewGroup dataContainer) {
 
         RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(this.context, R.layout.form_radiolistlayout, null);
+
+        // Case this forms show dividers
+        if (parent.getForm().getType() == FormConstants.NEWSLETTER_PREFERENCES_FORM ||
+            parent.getForm().getType() == FormConstants.NEWSLETTER_UN_SUBSCRIBE_FORM) {
+            // For RTL
+            params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            // Set dividers
+            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable.divider_horizontal_black_300));
+            radioGroup.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+            radioGroup.enableRightStyle();
+        }
+
         //Preselection
         int defaultSelect = 0;
         boolean foundDefaultSelect = false;
@@ -1466,7 +1482,6 @@ public class DynamicFormItem {
             if (this.parent.getForm().getFields() != null && this.parent.getForm().getFields().size() > 0) {
                 HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getPaymentMethodsField();
                 if (paymentMethodsField != null) {
-                    //Print.i(TAG, "code1subForms : " + key + " --> " + paymentMethodsField);
                     if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubFormsMap().size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));
                     }
@@ -1476,7 +1491,7 @@ public class DynamicFormItem {
 
         //If not found
         if (!foundDefaultSelect) {
-            defaultSelect = RadioGroupLayoutVertical.NO_DEFAULT_SELECTION;
+            defaultSelect = IntConstants.INVALID_POSITION;
         }
 
         this.dataControl = radioGroup;
@@ -1520,12 +1535,21 @@ public class DynamicFormItem {
                 DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
             }
         });
-        // Get payment info from form
-        HashMap<String, PaymentInfo> paymentInfoMap = this.parent.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList();
+
+        HashMap<String, PaymentInfo> paymentInfoMap = null;
+        try {
+            // Get payment info from form
+            paymentInfoMap = this.parent.getForm().getFieldKeyMap().get(RestConstants.PAYMENT_METHOD).getPaymentInfoList();
+        } catch (NullPointerException e) {
+            Print.w("WARNING: NPE ON BUILD PAYMENT RADIO GROUP VERTICAL");
+        }
+
         // Create options
         radioGroup.setItems(new ArrayList<>(this.entry.getDataSet().values()), formsMap, paymentInfoMap, defaultSelect);
         // Add view
         this.control.addView(dataContainer);
+
+        return radioGroup;
     }
 
 
@@ -1714,6 +1738,9 @@ public class DynamicFormItem {
 
     }
 
+    /**
+     * Build editable text field
+     */
     private View buildEditableTextField(ViewGroup group) {
         // Get text field container
         View container = View.inflate(this.context, R.layout.gen_form_text_field, null);
@@ -1870,7 +1897,7 @@ public class DynamicFormItem {
     /**
      * Disable a view.
      */
-    private void disableView(View view) {
+    protected final void disableView(View view) {
         view.setEnabled(false);
         view.setClickable(false);
         view.setFocusable(false);

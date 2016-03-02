@@ -22,6 +22,7 @@ import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
@@ -156,11 +157,11 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         @TargetLink.Type String link = category.getTargetLink();
         Print.i(TAG, "code1link : goToCatalog : "+link);
         // Parse target link
-        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(category.getName()).addAppendListener(this).run();
-        if(!result) {
-            showUnexpectedErrorWarning();
-        }
-
+        new TargetLink(getWeakBaseActivity(), link)
+                .addTitle(category.getName())
+                .addAppendListener(this)
+                .enableWarningErrorMessage()
+                .run();
     }
 
     /**
@@ -278,6 +279,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         data.putString(ConstantsIntentExtra.SEARCH_QUERY, null);
         data.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcategory_prefix);
         data.putString(ConstantsIntentExtra.NAVIGATION_PATH, mCategory.getCategoryPath());
-        data.putString(ConstantsIntentExtra.CATALOG_SOURCE, mCategory.getType());
+        data.putString(RestConstants.MAIN_CATEGORY, mCategory.getMainCategory());
     }
 }

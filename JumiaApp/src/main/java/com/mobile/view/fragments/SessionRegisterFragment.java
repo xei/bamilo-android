@@ -11,7 +11,6 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.session.GetRegisterFormHelper;
@@ -208,11 +207,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
      */
     private void loadForm(Form form) {
         // Create form view
-        mDynamicForm = FormFactory.getSingleton().CreateForm(FormConstants.REGISTRATION_FORM, getActivity(), form);
-        // Set request callback
-        mDynamicForm.setRequestCallBack(this); // Form FormInputType.relatedNumber
-        // Set click listener
-        mDynamicForm.setOnClickListener(this); // From FormInputType.checkBoxLink
+        mDynamicForm = FormFactory.getSingleton()
+                .create(FormConstants.REGISTRATION_FORM, getActivity(), form)
+                .addOnClickListener(this) // From FormInputType.checkBoxLink
+                .addRequestCallBack(this); // Form FormInputType.relatedNumber
         // Load saved state
         mDynamicForm.loadSaveFormState(mFormSavedState);
         // Set initial value
@@ -264,10 +262,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     }
 
     private void onClickTermsAndConditions(View view) {
-        Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.KEY, TargetLink.getIdFromTargetLink(view.getTag().toString()));
-        bundle.putString(RestConstants.TITLE, getString(R.string.terms_and_conditions));
-        getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+        @TargetLink.Type String target = (String) view.getTag();
+        new TargetLink(getWeakBaseActivity(), target).addTitle(R.string.terms_and_conditions).enableWarningErrorMessage().run();
     }
 
 

@@ -34,7 +34,7 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get rich relevance
-        mType = jsonObject.getString(RestConstants.TYPE);
+        mType = jsonObject.optString(RestConstants.TYPE);
         // Title
         mTitle = jsonObject.optString(RestConstants.TITLE);
         // Has Data
@@ -42,7 +42,7 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
 
         if(mHasData){
             // Products
-            JSONArray richRelevanceData = jsonObject.getJSONArray(RestConstants.DATA);
+            JSONArray richRelevanceData = jsonObject.optJSONArray(RestConstants.DATA);
             if(richRelevanceData != null && richRelevanceData.length() > 0){
                 for (int i = 0; i < richRelevanceData.length() ; i++) {
                     ProductRegular richRelevanceProduct = new ProductRegular();
@@ -52,7 +52,7 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
             }
         } else {
             // Has Data
-            mTarget = jsonObject.getString(RestConstants.TARGET);
+            mTarget = jsonObject.optString(RestConstants.TARGET);
         }
 
         return true;
@@ -86,6 +86,11 @@ public class RichRelevance implements IJSONSerializable, Parcelable {
 
     public ArrayList<ProductRegular> getRichRelevanceProducts() {
         return mRichRelevanceProducts;
+    }
+
+    public void setRichRelevanceProducts(final ArrayList<ProductRegular> richRelevanceProducts) {
+        mRichRelevanceProducts = richRelevanceProducts;
+        mHasData = true;
     }
 
     protected RichRelevance(Parcel in) {

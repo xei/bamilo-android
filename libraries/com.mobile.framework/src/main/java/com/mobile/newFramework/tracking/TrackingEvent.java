@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.newFramework.tracking;
 
 import com.mobile.framework.R;
@@ -14,8 +11,7 @@ public enum TrackingEvent {
 	SEARCH_SUGGESTIONS(R.string.gaccount, R.string.gsearchsuggestions),
 	
 	SEARCH(R.string.adjust_token_search, -1),
-	
-	VIEW_WISHLIST(R.string.adjust_token_fb_view_wishlist, -1),
+
 	
 	ADD_TO_WISHLIST(R.string.gfavourites, R.string.gaddtofavorites),
 	
@@ -169,8 +165,6 @@ public enum TrackingEvent {
 
     /**
      * Contstrutor
-     * @param category
-     * @param action
      * @author sergiopereira
      */
     TrackingEvent(int category, int action) {

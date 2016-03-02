@@ -45,8 +45,8 @@
     <!-- SMALL TEASER -->
     <style name="SmallTeaserStyle" parent="CardViewFlatStyle">
         <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
-        <item name="android:layout_height">@dimen/home_small_teaser_item_height</item>
-        <item name="android:layout_marginRight">@dimen/dimen_mat_4px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginRight">@dimen/dimen_3dp</item>
     </style>
 
     <!-- PRODUCT TEASER -->
@@ -78,4 +78,10 @@
         <item name="android:paddingRight">@dimen/my_account_gen_dimen</item>
     </style>
 
+    <style name="_v8_form_radiobutton_style" parent="form_style">
+        <item name="android:layout_gravity">top</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_32dp</item>
+        <item name="android:drawablePadding">@dimen/dimen_6dp</item>
+        <item name="android:paddingLeft">@dimen/dimen_20dp</item>
+    </style>
 </resources>

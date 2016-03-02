@@ -427,10 +427,18 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      */
     protected void onClickDeleteItem(View view) {
         Print.i(TAG, "ON CLICK DELETE ITEM");
-        // Get position
-        mSelectedPositionToDelete = (int) view.getTag(R.id.target_position);
-        String sku = (String) view.getTag(R.id.target_sku);
-        triggerRemoveFromWishList(sku);
+        try {
+            // Get position
+            mSelectedPositionToDelete = (int) view.getTag(R.id.target_position);
+            String sku = (String) view.getTag(R.id.target_sku);
+            // Get item
+            WishListGridAdapter adapter = (WishListGridAdapter) mListView.getAdapter();
+            TrackerDelegator.trackRemoveFromFavorites(adapter.getItem(mSelectedPositionToDelete));
+            // Trigger to remove
+            triggerRemoveFromWishList(sku);
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            Log.i(TAG, "WARNING: EXCEPTION ON REMOVE ITEM FROM WISH LIST");
+        }
     }
 
     /**
@@ -513,6 +521,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Validate event type
         switch (eventType) {
             case REMOVE_PRODUCT_FROM_WISH_LIST:
+                // Remove selected position
                 removeSelectedPosition();
                 break;
             case GET_WISH_LIST:

@@ -28,7 +28,7 @@ sourceSets {
 
 dependencies {
     // https://wiki.jira.rocket-internet.de/pages/viewpage.action?title=Android+app+SDKs+and+libraries&spaceKey=NAFAMZ
-    /** REMOTE MAVEN LIBS  **/
+    /** REMOTE MAVEN LIBS **/
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:recyclerview-v7:23.1.1'
@@ -56,6 +56,8 @@ dependencies {
     compile 'com.adjust.sdk:adjust-android:4.1.2'
     // https://github.com/bitstadium/HockeySDK-Android
     compile 'net.hockeyapp.android:HockeySDK:3.6.0'
+    /** ALGOLIA **/
+    compile 'com.algolia:algoliasearch-android:2.6.0@aar'
     /** LOCAL **/
     compile fileTree(dir: 'libs', exclude: ['json.jar'], include: ['*.jar'])
     compile files('libs/A4SSDK-GooglePlayServices-1.6.jar')

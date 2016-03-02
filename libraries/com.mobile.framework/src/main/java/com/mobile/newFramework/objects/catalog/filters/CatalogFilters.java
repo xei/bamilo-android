@@ -3,6 +3,7 @@ package com.mobile.newFramework.objects.catalog.filters;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,31 +34,34 @@ public class CatalogFilters extends ArrayList<CatalogFilter> implements IJSONSer
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        JSONArray filtersArray = jsonObject.getJSONArray(RestConstants.FILTERS);
-
-        for(int i = 0; i< filtersArray.length();i++){
-            try {
-                CatalogFilter catalogFilter = getCatalogType(filtersArray.getJSONObject(i));
-                if(catalogFilter != null){
-                    add(catalogFilter);
+        // Validate json
+        if (jsonObject.has(RestConstants.FILTERS)) {
+            JSONArray filtersArray = jsonObject.getJSONArray(RestConstants.FILTERS);
+            for (int i = 0; i < filtersArray.length(); i++) {
+                try {
+                    CatalogFilter catalogFilter = getCatalogType(filtersArray.getJSONObject(i));
+                    if (catalogFilter != null) {
+                        add(catalogFilter);
+                    }
+                } catch (JSONException ex) {
+                    Print.w("WARNING: JSE ON PARSE CATALOG FILTER POSITION: " + i);
                 }
-
-            }catch (JSONException ex){
-                ex.printStackTrace();
             }
+        } else {
+            Print.w("WARNING: CATALOG FILTER IS EMPTY");
         }
         return true;
     }
 
     private CatalogFilter getCatalogType(JSONObject jsonObject) throws JSONException {
         String id = jsonObject.getString(RestConstants.ID);
-
-        if(id.equals(CatalogFilter.RATING)){
-            return new CatalogRatingFilter(jsonObject);
-        } else if(id.equals(CatalogFilter.PRICE)){
-            return new CatalogPriceFilter(jsonObject);
-        } else {
-            return new CatalogCheckFilter(jsonObject);
+        switch (id) {
+            case CatalogFilter.RATING:
+                return new CatalogRatingFilter(jsonObject);
+            case CatalogFilter.PRICE:
+                return new CatalogPriceFilter(jsonObject);
+            default:
+                return new CatalogCheckFilter(jsonObject);
         }
     }
 

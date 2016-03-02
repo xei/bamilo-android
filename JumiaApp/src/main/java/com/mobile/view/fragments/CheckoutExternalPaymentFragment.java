@@ -476,7 +476,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 handler.proceed();
             } else {
                 String url = view.getUrl();
-                NewRelicTracker.noticeFailureTransaction(url, "https", beginTransaction, 0, NetworkFailure.SecureConnectionFailed);
+                NewRelicTracker.noticeFailureTransaction(url, "https", beginTransaction, NetworkFailure.SecureConnectionFailed);
                 onReceivedError(view, error.getPrimaryError(), error.toString(), url);
                 handler.cancel();
             }
@@ -509,8 +509,14 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                     } else if (result.has(RestConstants.ORDERNr)) {
                         orderNumber = result.optString(RestConstants.ORDERNr);
                     }
+
                     // Create bundle for last checkout step
-                    final Bundle bundle = new Bundle();
+                    final Bundle bundle;
+                    if(getArguments() == null){
+                        bundle = new Bundle();
+                    } else {
+                        bundle = getArguments();
+                    }
                     bundle.putString(RestConstants.ORDER_NUMBER, orderNumber);
                     // Switch
                     getBaseActivity().runOnUiThread(new Runnable() {

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
@@ -28,7 +25,6 @@ import com.mobile.newFramework.objects.catalog.ITargeting;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -68,8 +64,6 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     public final static int POSITION_COUNTRY = 0;
 
-    public final static int POSITION_LANGUAGE = 1;
-
     public final static int NOTIFICATION_STATUS = 0;
 
     public final static int EMAIL_NOTIFICATION_STATUS = 1;
@@ -88,8 +82,6 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static MyAccountFragment getInstance() {
         return new MyAccountFragment();
@@ -362,7 +354,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     /**
      *  Handles the item click of childs of app sharing list.
      */
-    private void handleOnNotifcationListItemClick(ViewGroup parent, int position) {
+    private void handleOnNotificationListItemClick(ViewGroup parent, int position) {
         switch (position) {
             case NOTIFICATION_STATUS:
                 CheckBox m = (CheckBox) parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG);
@@ -402,7 +394,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         if(parent == this.optionsList){
             handleOnOptionsListItemClick(position);
         } else if(parent == this.notificationList){
-            handleOnNotifcationListItemClick(parent, position);
+            handleOnNotificationListItemClick(parent, position);
         } else if(parent == this.appSocialList){
             handleOnAppSocialListItemClick(position);
         } else if(parent == this.chooseLanguageList){
@@ -427,18 +419,15 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
         Print.d(TAG, "ON SUCCESS EVENT");
-
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return ;
+            return;
         }
-
-        switch (eventType) {
-            case GET_FAQ_TERMS:
-                setTargets((MobileAbout) baseResponse.getMetadata().getData());
-                showMoreInfo();
-                break;
+        // Case GET_FAQ_TERMS
+        if (eventType == EventType.GET_FAQ_TERMS) {
+            setTargets((MobileAbout) baseResponse.getMetadata().getData());
+            showMoreInfo();
         }
     }
 
@@ -451,21 +440,17 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return ;
         }
-
-//        ErrorCode errorCode = baseResponse.getError().getErrorCode();
-
-        switch (eventType) {
-            case GET_FAQ_TERMS:
-                showMoreInfo();
-                showFragmentContentContainer();
-                break;
+        // Case GET_FAQ_TERMS
+        if (eventType == EventType.GET_FAQ_TERMS) {
+            showMoreInfo();
+            showFragmentContentContainer();
         }
     }
 
     private void onClickStaticPageButton(String key, String label) {
         Bundle bundle = new Bundle();
-        bundle.putString(RestConstants.KEY, key);
-        bundle.putString(RestConstants.TITLE, label);
+        bundle.putString(ConstantsIntentExtra.CONTENT_ID, key);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, label);
         getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -483,10 +468,10 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     /**
      * Method that re directs to app market or web page
      */
-    private void goToAppPage(){
+    private void goToAppPage() {
         try {
             ActivitiesWorkFlow.startMarketActivity(getActivity());
-        } catch(android.content.ActivityNotFoundException ex){
+        } catch (android.content.ActivityNotFoundException ex) {
             ActivitiesWorkFlow.startActivityWebLink(getActivity(), R.string.share_app_link);
         }
     }

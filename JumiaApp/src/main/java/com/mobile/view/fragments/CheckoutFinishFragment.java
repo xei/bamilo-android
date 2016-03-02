@@ -25,10 +25,12 @@ import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutFinish;
+import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -389,7 +391,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             ProductUtils.setShopFirst(item, shopFirstImageView);
             ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
             // Brand
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrand());
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrandName());
             // Name
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_name)).setText(item.getName());
             // Quantity
@@ -447,6 +449,10 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         mTotalValue.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getTotal()));
         // Show price rules
         CheckoutStepManager.showPriceRules(getBaseActivity(), mPriceRulesContainer, mOrderFinish.getPriceRules());
+        //show vat if configuration is enabled
+        TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
+        TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
+        ShoppingCartUtils.showVATInfo(mOrderFinish, vatIncludedLabel, vatValue);
     }
 
     /**
@@ -481,6 +487,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
+        shippingAddressView.findViewById(R.id.divider).setVisibility(View.GONE);
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
         container.addView(shippingAddressView);
     }
@@ -643,7 +650,11 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 break;
             case SET_MULTI_STEP_FINISH:
                 mCheckoutFinish = (CheckoutFinish) baseResponse.getContentData();
+                // Tracking purchase
+                TrackerDelegator.trackPurchase(mCheckoutFinish, JumiaApplication.INSTANCE.getCart());
+                // Next step
                 switchToSubmittedPayment();
+                // Update cart info
                 getBaseActivity().updateCartInfo();
                 break;
             default:
@@ -660,6 +671,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         if (mPaymentSubmitted.isExternalPayment()) {
             Bundle bundle = new Bundle();
             bundle.putParcelable(ConstantsIntentExtra.DATA, mCheckoutFinish.getPaymentMethodForm());
+            if(mCheckoutFinish.getRichRelevance() != null) {
+                bundle.putParcelable(RestConstants.RECOMMENDED_PRODUCTS, mCheckoutFinish.getRichRelevance());
+            }
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EXTERNAL_PAYMENT, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
         // Case other
@@ -670,6 +684,17 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             bundle.putString(RestConstants.TRANSACTION_TAX, String.valueOf(mOrderFinish.getVatValue()));
             bundle.putString(RestConstants.PAYMENT_METHOD, mOrderFinish.getPaymentMethod());
             bundle.putDouble(RestConstants.ORDER_GRAND_TOTAL, mOrderFinish.getPriceForTracking());
+
+            if(mCheckoutFinish.getRichRelevance() == null && CollectionUtils.isNotEmpty(mCheckoutFinish.getRelatedProducts())) {
+                final RichRelevance richRelevance = new RichRelevance();
+                richRelevance.setRichRelevanceProducts(mCheckoutFinish.getRelatedProducts());
+                mCheckoutFinish.setRichRelevance(richRelevance);
+            }
+
+            if(mCheckoutFinish.getRichRelevance() != null){
+                bundle.putParcelable(RestConstants.RECOMMENDED_PRODUCTS, mCheckoutFinish.getRichRelevance());
+            }
+
             getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_THANKS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     }

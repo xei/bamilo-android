@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:id="@+id/home_teaser_newsletter_container"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black_800"
+        android:padding="@dimen/dimen_16dp">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_newsletter_title"
+            style="@style/TextHeader"
+            android:text="@string/sign_up_to_our_newsletter"
+            android:textColor="@color/white"/>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/home_teaser_newsletter_description"
+            style="@style/TextCaption"
+            android:layout_below="@id/home_teaser_newsletter_title"
+            android:layout_marginTop="@dimen/dimen_8dp"
+            android:lines="2"
+            android:singleLine="false"
+            android:text="@string/sign_up_to_our_newsletter_body"
+            android:textColor="@color/white"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/home_teaser_newsletter_description"
+            android:layout_marginTop="@dimen/dimen_12dp">
+
+            <com.mobile.components.customfontviews.Button
+                android:id="@+id/send_newsletter"
+                style="@style/AigButton.Black_800_Orange1"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="@dimen/rounded_margin_mid"
+                android:layout_marginLeft="@dimen/rounded_margin_mid"
+                android:layout_marginRight="@dimen/rounded_margin_mid"
+                android:gravity="bottom"
+                android:text="@string/submit_label"/>
+
+            <RelativeLayout
+                android:id="@+id/home_teaser_newsletter_form_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/send_newsletter"
+                android:layout_toStartOf="@id/send_newsletter"
+                />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

@@ -247,7 +247,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
         // Shipping form
         if (shippingFormGenerator == null) {
-            shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+            shippingFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
             mShippingFormContainer.removeAllViews();
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
@@ -255,7 +255,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             // Have to create set a Dynamic form in order to not have the parent dependencies.
             // this happens when user goes from create address to another screen through the overflow menu, and presses back.
             // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
-            shippingFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+            shippingFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
         }
@@ -263,7 +263,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         shippingFormGenerator.loadSaveFormState(mShippingFormSavedState);
         // Define if CITY is a List or Text
         DynamicFormItem item = shippingFormGenerator.getItemByKey(RestConstants.CITY);
-        isCityIdAnEditText = item != null && item.getEditControl() instanceof EditText;
+        isCityIdAnEditText = item != null && item.getDataControl() instanceof EditText;
         // Validate Regions
         if (regions == null) {
             FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.REGION);
@@ -271,7 +271,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else {
             setRegions(shippingFormGenerator, regions);
         }
-
     }
 
     /**
@@ -281,14 +280,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get region item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.REGION);
         // Clean group
-        ViewGroup group = (ViewGroup) v.getControl();
+        ViewGroup group = v.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         //add place holder by default if value = ""; ignore if added already
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && regions.get(0).getValue() != 0) {
-            regions.add(0, new AddressRegion(0, v.getEntry().getPlaceHolder()));
+        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(regions) || regions.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
+            regions.add(IntConstants.DEFAULT_POSITION, new AddressRegion(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
         }
 
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
@@ -302,7 +301,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         spinner.setOnItemSelectedListener(this);
-        v.setEditControl(spinner);
+        v.setDataControl(spinner);
         group.addView(spinner);
         // Show invisible content to trigger spinner listeners
         showGhostFragmentContentContainer();
@@ -366,12 +365,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get city item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.CITY);
         // Clean group
-        ViewGroup group = (ViewGroup) v.getControl();
+        ViewGroup group = v.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && cities.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION) {
+        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(cities) || cities.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
             cities.add(IntConstants.DEFAULT_POSITION, new AddressCity(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
         }
         // Create adapter
@@ -387,7 +386,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
 
         spinner.setOnItemSelectedListener(this);
-        v.setEditControl(spinner);
+        v.setDataControl(spinner);
         group.addView(spinner);
         // Validate if first position is the prompt
         if (cities.get(IntConstants.DEFAULT_POSITION).getValue() == IntConstants.DEFAULT_POSITION) {
@@ -402,14 +401,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Get city item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.POSTCODE);
         // Clean group
-        ViewGroup group = (ViewGroup) v.getControl();
+        ViewGroup group = v.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         //add place holder from API by default if value = ""; ignore if added already
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && postalCodes.get(0).getValue() != 0) {
-            postalCodes.add(0, new AddressPostalCode(0, v.getEntry().getPlaceHolder()));
+        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(postalCodes) || postalCodes.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
+            postalCodes.add(IntConstants.DEFAULT_POSITION, new AddressPostalCode(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
         }
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
@@ -422,7 +421,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             processSpinners(spinner, RestConstants.POSTCODE);
         }
         spinner.setOnItemSelectedListener(this);
-        v.setEditControl(spinner);
+        v.setDataControl(spinner);
         group.addView(spinner);
     }
 

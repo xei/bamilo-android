@@ -27,7 +27,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/voucher_btn"
-            style="@style/AigButton.WhiteWithBlack_800"
+            style="@style/AigButton.Text.Black_800"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"

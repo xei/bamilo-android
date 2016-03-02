@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:divider="@drawable/divider_horizontal_black_300"
+    app:showDividers="middle">
+
+    <!-- SWITCH BUTTON -->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/switch_field"
+            style="@style/SwitchStyle"
+            android:layout_width="wrap_content"
+            android:layout_alignParentLeft="true" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/switch_text"
+            style="@style/SwitchStyle"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/switch_field"
+            android:gravity="right|center"
+            tools:text="Blabla" />
+
+    </RelativeLayout>
+
+
+    <!-- RELATED DATA -->
+
+</android.support.v7.widget.LinearLayoutCompat>

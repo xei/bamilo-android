@@ -7,12 +7,12 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
@@ -20,6 +20,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
@@ -32,16 +34,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
@@ -52,8 +55,11 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.cart.GetShoppingCartItemsHelper;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
+import com.mobile.helpers.search.SearchSuggestionClient;
+import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -72,12 +78,14 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckVersion;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.MyProfileActionProvider;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
@@ -106,7 +114,7 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+public abstract class BaseActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -132,6 +140,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected DialogFragment dialog;
     protected SearchView mSearchView;
     protected SearchAutoComplete mSearchAutoComplete;
+    protected RecyclerView mSearchListView;
+    protected FrameLayout mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
 
     //private final int contentLayoutId;
@@ -212,7 +222,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     case NavigationAction.LOGIN_OUT:
                         // SIGN IN
                         if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-                            FragmentManager fm = getSupportFragmentManager();
                             dialogLogout = DialogGenericFragment.newInstance(true, false,
                                     getString(R.string.logout_title),
                                     getString(R.string.logout_text_question),
@@ -227,7 +236,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                                             dialogLogout.dismiss();
                                         }
                                     });
-                            dialogLogout.show(fm, null);
+                            dialogLogout.show(getSupportFragmentManager(), null);
                         } else {
                             TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
                             onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
@@ -912,7 +921,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
         // Get edit text
+        mSearchOverlay = (FrameLayout) findViewById(R.id.search_overlay);
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
+        mSearchListView = (RecyclerView) mSearchOverlay.findViewById(R.id.search_overlay_listview);
+        mSearchListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable.line_divider));
         //#RTL
         if (ShopSelector.isRtl()) {
             mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
@@ -938,16 +951,24 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     private void setSearchWidthToFillOnExpand() {
         // Get the width of main content
-        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
-        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
-        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
-        // Calculate the search width
-        int searchComponentWidth = mainContentWidth - genericIconWidth;
-        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
+        final int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
+        final int mainContentHeight = DeviceInfoHelper.getHeight(getApplicationContext());
+        mSearchView.setMaxWidth(mainContentWidth);
+        mSearchAutoComplete.setDropDownAnchor(R.id.app_bar);
         // Set measures
-        mSearchView.setMaxWidth(searchComponentWidth);
-        mSearchAutoComplete.setDropDownWidth(searchComponentWidth);
+        if (mSearchView != null) {
+            mSearchView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                           int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                    // set DropDownView width
+                    mSearchAutoComplete.setDropDownWidth(mainContentWidth);
+                    mSearchAutoComplete.setDropDownHeight(mainContentHeight - mSupportActionBar.getHeight());
+                    mSearchAutoComplete.setDropDownBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.search_dropdown_background));
+                }
+            });
+        }
     }
 
     /**
@@ -961,29 +982,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         }
 
         /*
-         * Set on item click listener
-         */
-        mSearchAutoComplete.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
-                // Get suggestion
-                Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
-                // Get text suggestion
-                String text = selectedSuggestion.getResult();
-                //Save searched text
-                JumiaApplication.INSTANCE.setSearchedTerm(text);
-                mSearchAutoComplete.dismissDropDown();
-                // Collapse search view
-                MenuItemCompat.collapseActionView(mSearchMenuItem);
-                // Save query
-                GetSearchSuggestionsHelper.saveSearchQuery(text);
-                // Show query
-                showSearchCategory(text);
-            }
-        });
-
-        /*
          * Clear and add text listener
          */
         // mSearchAutoComplete.clearTextChangedListeners();
@@ -992,6 +990,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
             }
 
             @Override
@@ -1003,6 +1002,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 handle.removeCallbacks(run);
                 if (s.length() >= SEARCH_EDIT_SIZE && isSearchComponentOpened) {
                     handle.postDelayed(run, SEARCH_EDIT_DELAY);
+                } else if(TextUtils.isEmpty(s) && isSearchComponentOpened){
+                    getSuggestions();
                 }
             }
         });
@@ -1017,16 +1018,22 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                     String searchTerm = textView.getText().toString();
                     Print.d(TAG, "SEARCH COMPONENT: ON IME ACTION " + searchTerm);
                     if (TextUtils.isEmpty(searchTerm)) {
+                        getSuggestions();
                         return false;
                     }
                     //Save searched text
                     JumiaApplication.INSTANCE.setSearchedTerm(searchTerm);
                     // Collapse search view
                     MenuItemCompat.collapseActionView(mSearchMenuItem);
+                    Suggestion suggestion = new Suggestion();
+                    suggestion.setQuery(searchTerm);
+                    suggestion.setResult(searchTerm);
+                    suggestion.setTarget(searchTerm);
+                    suggestion.setType(Suggestion.SUGGESTION_OTHER);
                     // Save query
-                    GetSearchSuggestionsHelper.saveSearchQuery(searchTerm);
+                    GetSearchSuggestionsHelper.saveSearchQuery(suggestion);
                     // Show query
-                    showSearchCategory(searchTerm);
+                    showSearchOther(suggestion);
                     return true;
                 }
                 return false;
@@ -1037,12 +1044,18 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
          * Set expand listener
          */
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
+            private final Handler handle = new Handler();
+            public int restoreSoftInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Print.d(TAG, "SEARCH ON EXPAND");
                 closeNavigationDrawer();
                 isSearchComponentOpened = true;
                 setActionMenuItemsVisibility(false);
+                setAppBarLayout(action, NavigationAction.UNKNOWN);
+                mSearchOverlay.setVisibility(View.VISIBLE);
+                restoreSoftInputMode = getWindow().getAttributes().softInputMode;
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 // Re-set the searched text if it exists
                 mSearchAutoComplete.post(new Runnable() {
                     @Override
@@ -1051,6 +1064,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                         if (TextUtils.isNotEmpty(searchedTerm)) {
                             mSearchAutoComplete.setText(searchedTerm);
                             mSearchAutoComplete.setSelection(searchedTerm.length());
+                        } else {
+                            handle.removeCallbacks(run);
+                            handle.postDelayed(run, SEARCH_EDIT_DELAY);
                         }
                     }
                 });
@@ -1062,6 +1078,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 Print.d(TAG, "SEARCH ON COLLAPSE");
                 isSearchComponentOpened = false;
                 setActionMenuItemsVisibility(true);
+                setAppBarLayout(NavigationAction.UNKNOWN, action);
+                mSearchOverlay.setVisibility(View.GONE);
+                getWindow().setSoftInputMode(restoreSoftInputMode);
                 return true;
             }
         });
@@ -1086,17 +1105,78 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Execute search
      * @author sergiopereira
      */
-    protected void showSearchCategory(String searchText) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
+    public void showSearchCategory(final Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST " + suggestion.getResult());
         // Tracking
-        TrackerDelegator.trackSearchSuggestions(searchText);
-        // Data
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        // Case mob api
+        @TargetLink.Type String link = suggestion.getTarget();
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        // Case algolia
+        if (!result) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.DATA, null);
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
+            bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getQuery());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
+            onSwitchFragment(FragmentType.CATALOG_CATEGORY, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
+    /**
+     * Execute search
+     */
+    public void showSearchOther(final Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
+        // Tracking
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DATA, null);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
-        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
+        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
+        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getResult());
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
         onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+    }
+
+    /**
+     * Execute search for product
+     */
+    public void showSearchProduct(Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW " + suggestion.getResult());
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        // Case mob api
+        @TargetLink.Type String link = suggestion.getTarget();
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        // Case algolia
+        if (!result) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
+            bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch_prefix);
+            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
+            onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
+    /**
+     * Execute search for shop in shop
+     */
+    public void showSearchShopsInShop(final Suggestion suggestion) {
+        Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP " + suggestion.getResult());
+        TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
+        // Case mob api
+        @TargetLink.Type String link = suggestion.getTarget();
+        boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        Print.d(TAG, "SEARCH COMPONENT: result " + result);
+        // Case algolia
+        if (!result) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, suggestion.getTarget());
+            onSwitchFragment(FragmentType.INNER_SHOP, bundle, FragmentController.ADD_TO_BACK_STACK);
+        }
     }
 
     /*
@@ -1129,8 +1209,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
                 // Hide search bar
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
-                // Clean autocomplete
-//                mSearchAutoComplete.setText("");
+
                 // Show hidden items
                 setActionMenuItemsVisibility(true);
                 // Forced the IME option on collapse
@@ -1153,20 +1232,20 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     private void getSuggestions() {
         beginInMillis = System.currentTimeMillis();
-        String text = mSearchAutoComplete.getText().toString();
+        final String text = mSearchAutoComplete.getText().toString();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
-        JumiaApplication.INSTANCE.sendRequest(new GetSearchSuggestionsHelper(), GetSearchSuggestionsHelper.createBundle(text),
-                new IResponseCallback() {
-                    @Override
-                    public void onRequestComplete(BaseResponse baseResponse) {
-                        processSuccessSearchEvent(baseResponse);
-                    }
+        SearchSuggestionClient mSearchSuggestionClient = new SearchSuggestionClient();
+        mSearchSuggestionClient.getSuggestions(getApplicationContext(), new IResponseCallback() {
+            @Override
+            public void onRequestComplete(final BaseResponse baseResponse) {
+                processSuccessSearchEvent(baseResponse);
+            }
 
-                    @Override
-                    public void onRequestError(BaseResponse baseResponse) {
-                        processErrorSearchEvent(baseResponse);
-                    }
-                });
+            @Override
+            public void onRequestError(final BaseResponse baseResponse) {
+                processErrorSearchEvent(baseResponse);
+            }
+        }, text, CountryPersistentConfigs.isUseAlgolia(getApplicationContext()));
     }
 
     /**
@@ -1194,7 +1273,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processErrorSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON ERROR");
 
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
+        SuggestionsStruct suggestionsStruct = (SuggestionsStruct)baseResponse.getContentData();
 
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
@@ -1208,7 +1287,14 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             return;
         }
         // Hide dropdown
-        mSearchAutoComplete.dismissDropDown();
+        if(suggestionsStruct.size() == 0)
+            mSearchAutoComplete.dismissDropDown();
+        else{
+            //show dropdown with recent queries
+            SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
+            searchSuggestionsAdapter.setOnViewHolderClickListener(this);
+            mSearchListView.setAdapter(searchSuggestionsAdapter);
+        }
     }
 
     /**
@@ -1219,7 +1305,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void processSuccessSearchEvent(BaseResponse baseResponse) {
         Print.d(TAG, "SEARCH COMPONENT: ON SUCCESS");
         // Get suggestions
-        GetSearchSuggestionsHelper.SuggestionsStruct suggestionsStruct = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
+        SuggestionsStruct suggestionsStruct = (SuggestionsStruct)baseResponse.getContentData();
         // Get query
         String requestQuery = suggestionsStruct.getSearchParam();
         Print.d(TAG, "RECEIVED SEARCH EVENT: " + suggestionsStruct.size() + " " + requestQuery);
@@ -1237,8 +1323,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             return;
         }
         // Validate current search
-        if (mSearchAutoComplete.getText().length() < SEARCH_EDIT_SIZE
-                || !mSearchAutoComplete.getText().toString().equals(requestQuery)) {
+        if (!TextUtils.equals(mSearchAutoComplete.getText().toString(), requestQuery)) {
             Print.w(TAG, "SEARCH: DISCARDED DATA FOR QUERY " + requestQuery);
             return;
         }
@@ -1248,9 +1333,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
         TrackerDelegator.trackLoadTiming(params);
-        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct, requestQuery);
-        mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
-        mSearchAutoComplete.showDropDown();
+        SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
+        searchSuggestionsAdapter.setOnViewHolderClickListener(this);
+        mSearchListView.setAdapter(searchSuggestionsAdapter);
+
     }
 
     /**
@@ -1337,10 +1423,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Show and set title on actionbar
      */
     public void setActionBarTitle(@StringRes int actionBarTitleResId) {
-        //logoTextView.setVisibility(View.VISIBLE);
-        //logoTextView.setText(getString(actionBarTitleResId));
-        //getSupportActionBar().setDisplayShowTitleEnabled(true);
-        //getSupportActionBar().setTitle(getString(actionBarTitleResId));
         mSupportActionBar.setLogo(null);
         mSupportActionBar.setTitle(getString(actionBarTitleResId));
     }
@@ -1350,22 +1432,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSupportActionBar.setTitle(title);
     }
 
-//    private void setAppContentLayout() {
-//        if (contentLayoutId == 0) {
-//            return;
-//        }
-//        ViewStub stub = (ViewStub) findViewById(R.id.stub_app_content);
-//        stub.setLayoutResource(contentLayoutId);
-//        contentContainer = stub.inflate();
-//    }
-
     /**
      * Hide title on actionbar
      */
     public void hideActionBarTitle() {
-        //logoTextView.setVisibility(View.GONE);
-        //getSupportActionBar().setTitle("");
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
         mSupportActionBar.setLogo(R.drawable.logo_nav_bar);
         mSupportActionBar.setTitle("");
     }
@@ -1399,16 +1469,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             e.printStackTrace();
         }
     }
-
-//    public void showKeyboard() {
-//        // Log.d( TAG, "showKeyboard" );
-//        //Print.i(TAG, "code1here showKeyboard");
-//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.RESULT_UNCHANGED_SHOWN, 0);
-//        // use the above as the method below does not always work
-//        // imm.showSoftInput(getSlidingMenu().getCurrentFocus(),
-//        // InputMethodManager.SHOW_IMPLICIT);
-//    }
 
     public void hideKeyboard() {
         Print.i(TAG, "HIDE KEYBOARD");
@@ -1448,7 +1508,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * This method should be implemented by fragment activity to manage the communications between fragments. Each fragment should call this method.
      */
-    public abstract boolean communicateBetweenFragments(String tag, Bundle bundle);
+    public abstract boolean communicateBetweenFragments(@Nullable String tag, @Nullable Bundle bundle);
 
     /**
      * Method used to switch fragment on UI with/without back stack support
@@ -1735,4 +1795,58 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         warningFactory.hideWarning();
     }
 
+    /**
+     * Create a BaseActivity weak reference.
+     */
+    public WeakReference<BaseActivity> getWeakBaseActivity() {
+        return new WeakReference<>(this);
+    }
+
+
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
+     */
+    @Override
+    public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
+        // Get suggestion
+        Suggestion selectedSuggestion = ((SearchDropDownAdapter) adapter).getItem(position);
+        // Get text suggestion
+        String text = selectedSuggestion.getResult();
+        //Save searched text
+        JumiaApplication.INSTANCE.setSearchedTerm(text);
+        mSearchAutoComplete.dismissDropDown();
+        // Collapse search view
+        MenuItemCompat.collapseActionView(mSearchMenuItem);
+        // Save query
+        GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
+
+        switch (selectedSuggestion.getType()){
+            case Suggestion.SUGGESTION_PRODUCT:
+                showSearchProduct(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_SHOP_IN_SHOP:
+                showSearchShopsInShop(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_CATEGORY:
+                // Show query
+                showSearchCategory(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_OTHER:
+                // Show query
+                showSearchOther(selectedSuggestion);
+                break;
+        }
+
+    }
+
+    @Override
+    public void onHeaderClick(String target, String title) {
+
+    }
+
+    @Override
+    public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+
+    }
 }

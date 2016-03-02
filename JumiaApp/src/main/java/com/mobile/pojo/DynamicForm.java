@@ -1,19 +1,31 @@
 package com.mobile.pojo;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 
-import com.mobile.components.absspinner.IcsAdapterView;
+import com.mobile.app.JumiaApplication;
+import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
+import com.mobile.newFramework.forms.IFormField;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -44,23 +56,68 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
     private final ViewGroup base;
     private final HashMap<String, DynamicFormItem> controls;
-    private final IcsAdapterView.OnItemSelectedListener itemSelected_listener;
     private int lastID = 0x7f096000;
     private Form form;
     private WeakReference<View.OnClickListener> mClickListener;
     private WeakReference<IResponseCallback> mRequestCallBack;
+    private WeakReference<BaseActivity> mFragmentActivity;
+    private WeakReference<CompoundButton.OnCheckedChangeListener> mCheckedChangeListener;
+    private WeakReference<BaseFragment> mParentFragment;
 
     /**
-     * The constructor for the DynamicForm
-     * 
-     * @param base
-     *            where the form is to be implemented. This is a ViewGroup
-     *            (Layout) that will hold the form
+     * The constructor for the DynamicForm.<br>
+     * This is a ViewGroup that will hold the form.
      */
-    public DynamicForm(ViewGroup base) {
-        this.base = base;
+    public DynamicForm(@NonNull Context context, @NonNull Form form) {
         this.controls = new LinkedHashMap<>();
-        this.itemSelected_listener = null;
+        this.base = buildBase(context);
+        this.form = form;
+    }
+
+    /**
+     * Create the view group.
+     */
+    @NonNull
+    private ViewGroup buildBase(@NonNull Context context) {
+        LinearLayoutCompat base = new LinearLayoutCompat(context);
+        LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        base.setOrientation(LinearLayoutCompat.VERTICAL);
+        base.setLayoutParams(params);
+        return base;
+    }
+
+    /**
+     * Show vertical dividers.
+     */
+    @NonNull
+    public DynamicForm showDividers(@LinearLayoutCompat.DividerMode int showDividers) {
+        ((LinearLayoutCompat) base).setDividerDrawable(ContextCompat.getDrawable(base.getContext(), R.drawable.divider_horizontal_black_300));
+        ((LinearLayoutCompat) base).setShowDividers(showDividers);
+        return this;
+    }
+
+    /**
+     * Add a margin top.
+     */
+    @NonNull
+    public DynamicForm addMarginTop(@DimenRes int dimension) {
+        int marginTop = base.getContext().getResources().getDimensionPixelSize(dimension);
+        LinearLayoutCompat.LayoutParams params = (LinearLayoutCompat.LayoutParams) base.getLayoutParams();
+        params.setMargins(params.leftMargin, marginTop, params.rightMargin, params.bottomMargin);
+        base.requestLayout();
+        return this;
+    }
+
+    /**
+     * Build the form with each form item.
+     */
+    @NonNull
+    public DynamicForm build() {
+        for (IFormField entry : form.getFields()) {
+            Print.i(TAG, "FORM ITEM KEY:" + entry.getKey() + " TYPE:" + entry.getInputType());
+            this.addControl(DynamicFormItem.newInstance(this, base.getContext(), entry));
+        }
+        return this;
     }
 
     /**
@@ -68,16 +125,12 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * 
      * @param ctrl
      *            An instance of a DynamicFormItem to be added to the form
-     * @param params
-     *            A LayoutParams instance to be used when inserting the control
-     *            into the form
      */
-    public void addControl(DynamicFormItem ctrl, ViewGroup.LayoutParams params) {
+    private void addControl(DynamicFormItem ctrl) {
         View controlView = ctrl.getControl();
         if (null != controlView) {
-            ctrl.setOnItemSelectedListener(itemSelected_listener);
             controls.put(ctrl.getKey(), ctrl);
-            base.addView(ctrl.getControl(), params);
+            base.addView(ctrl.getControl(), base.getLayoutParams());
         }
     }
 
@@ -123,17 +176,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public Form getForm() {
         return form;
-    }
-
-    /**
-     * Sets the local version of the framework form object
-     * 
-     * @param value
-     *            the form object
-     */
-    public DynamicForm setForm(Form value) {
-        form = value;
-        return this;
     }
 
     /**
@@ -255,13 +297,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         }
     }
 
-    /**
-     * Sets a click listener to a specific form type or to all case null.
-     */
-    public void setOnClickListener(View.OnClickListener listener) {
-        mClickListener = new WeakReference<>(listener);
-    }
-
     public void setInitialValue(@NonNull FormInputType formType, @NonNull Object value) {
         for (DynamicFormItem dynamicFormItem : this) {
             if (dynamicFormItem.getType() == formType) {
@@ -270,23 +305,128 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         }
     }
 
-    public boolean hasClickListener() {
-        return  mClickListener != null && mClickListener.get() != null;
+    /*
+     * ########## BASE ACTIVITY ##########
+     */
+
+    public DynamicForm addParentActivity(BaseActivity activity) {
+        mFragmentActivity = new WeakReference<>(activity);
+        return this;
     }
 
-    public boolean hasResponseCallback() {
-        return  mRequestCallBack != null && mRequestCallBack.get() != null;
+    public BaseActivity getParentActivity() {
+        return mFragmentActivity.get();
     }
 
-    public WeakReference<View.OnClickListener> getClickListener() {
-        return mClickListener;
+    public boolean hasParentActivity() {
+        return  mFragmentActivity != null && mFragmentActivity.get() != null;
     }
 
-    public WeakReference<IResponseCallback> getRequestCallBack() {
-        return mRequestCallBack;
+    /*
+     * ########## BASE FRAGMENT ##########
+     */
+
+    public DynamicForm addParentFragment(BaseFragment fragment) {
+        mParentFragment = new WeakReference<>(fragment);
+        return this;
     }
 
-    public void setRequestCallBack(IResponseCallback requestCallBack) {
+    public boolean isFragmentUIActive() {
+        return  mParentFragment != null && mParentFragment.get() != null && mParentFragment.get().isFragmentUIActive();
+    }
+
+    public void triggerContentEvent(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        if(isFragmentUIActive()) {
+            JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+        }
+    }
+
+    public void showActivityProgress() {
+        if(isFragmentUIActive() && mParentFragment.get().getBaseActivity() != null) {
+            mParentFragment.get().getBaseActivity().showProgress();
+        }
+    }
+
+    public void hideActivityProgress() {
+        if(isFragmentUIActive() && mParentFragment.get().getBaseActivity() != null) {
+            mParentFragment.get().getBaseActivity().dismissProgress();
+        }
+    }
+
+    /*
+     * ########## CLICK LISTENER ##########
+     */
+
+    public DynamicForm addOnClickListener(View.OnClickListener listener) {
+        mClickListener = new WeakReference<>(listener);
+        return this;
+    }
+
+    public void onClick(View view) {
+        if (mClickListener != null && mClickListener.get() != null) {
+            mClickListener.get().onClick(view);
+        }
+    }
+
+    /*
+     * ########## CHECKED CHANGE LISTENER ##########
+     */
+
+    public DynamicForm addCheckedChangeListener(@NonNull CompoundButton.OnCheckedChangeListener listener) {
+        mCheckedChangeListener = new WeakReference<>(listener);
+        return this;
+    }
+
+    public void onCheckedChangeListener(CompoundButton buttonView, boolean isChecked) {
+        if (mCheckedChangeListener != null && mCheckedChangeListener.get() != null) {
+            mCheckedChangeListener.get().onCheckedChanged(buttonView, isChecked);
+        }
+    }
+
+    /*
+     * ########## RESPONSE CALLBACK ##########
+     */
+
+    public DynamicForm addRequestCallBack(IResponseCallback requestCallBack) {
         mRequestCallBack = new WeakReference<>(requestCallBack);
+        return this;
     }
+
+    public void onRequestComplete(BaseResponse baseResponse) {
+        if(mRequestCallBack != null && mRequestCallBack.get() != null) {
+            mRequestCallBack.get().onRequestComplete(baseResponse);
+        }
+    }
+
+    public void onRequestError(BaseResponse baseResponse) {
+        if(mRequestCallBack != null && mRequestCallBack.get() != null) {
+            mRequestCallBack.get().onRequestError(baseResponse);
+        }
+    }
+
+    /*
+     * ########## NEWSLETTER FORM ##########
+     */
+
+    /**
+     * Show all views performing the click or not
+     */
+    public void showAll(boolean performClick) {
+        for (DynamicFormItem item : this) {
+            item.getControl().setVisibility(View.VISIBLE);
+            if (item instanceof IDynamicFormItemField && performClick) {
+                ((IDynamicFormItemField) item).select();
+            }
+        }
+    }
+
+    /**
+     * Hide all views
+     */
+    public void hideAll() {
+        for (DynamicFormItem item : this) {
+            item.getControl().setVisibility(View.GONE);
+        }
+    }
+
 }

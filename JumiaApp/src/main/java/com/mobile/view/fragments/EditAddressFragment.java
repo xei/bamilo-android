@@ -206,7 +206,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected void loadEditAddressForm(Form form) {
         Print.i(TAG, "LOAD EDIT ADDRESS FORM");
         // Edit form
-        mEditFormGenerator = FormFactory.getSingleton().CreateForm(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
+        mEditFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
         mEditFormContainer.removeAllViews();
         mEditFormGenerator.loadSaveFormState(mFormSavedState);
         mEditFormContainer.addView(mEditFormGenerator.getContainer());
@@ -221,7 +221,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         }
         // Define if CITY is a List or Text
         DynamicFormItem item = mEditFormGenerator.getItemByKey(RestConstants.CITY);
-        isCityIdAnEditText = item != null && item.getEditControl() instanceof EditText;
+        isCityIdAnEditText = item != null && item.getDataControl() instanceof EditText;
         // Show selected address content
         mEditFormContainer.refreshDrawableState();
     }
@@ -234,7 +234,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Get region item
         DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.REGION);
         // Clean group
-        ViewGroup group = (ViewGroup) formItem.getControl();
+        ViewGroup group = formItem.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
@@ -249,7 +249,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             spinner.setSelection(getDefaultPosition(formItem, regions));
         }
         spinner.setOnItemSelectedListener(this);
-        formItem.setEditControl(spinner);
+        formItem.setDataControl(spinner);
         group.addView(spinner);
         // Show invisible content to trigger spinner listeners
         showGhostFragmentContentContainer();
@@ -262,7 +262,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Get city item
         DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.CITY);
         // Clean group
-        ViewGroup group = (ViewGroup) formItem.getControl();
+        ViewGroup group = formItem.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
@@ -277,7 +277,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             spinner.setSelection(getDefaultPosition(formItem, cities));
         }
         spinner.setOnItemSelectedListener(this);
-        formItem.setEditControl(spinner);
+        formItem.setDataControl(spinner);
         group.addView(spinner);
     }
 
@@ -288,7 +288,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         // Get postal code item
         DynamicFormItem formItem = dynamicForm.getItemByKey(RestConstants.POSTCODE);
         // Clean group
-        ViewGroup group = (ViewGroup) formItem.getControl();
+        ViewGroup group = formItem.getControl();
         group.removeAllViews();
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
@@ -303,7 +303,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
             spinner.setSelection(getDefaultPosition(formItem, postalCodes));
         }
         spinner.setOnItemSelectedListener(this);
-        formItem.setEditControl(spinner);
+        formItem.setDataControl(spinner);
         group.addView(spinner);
     }
 
@@ -519,8 +519,8 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
                 break;
             case EDIT_ADDRESS_EVENT:
                 Print.d(TAG, "RECEIVED EDIT_ADDRESS_EVENT");
-                getBaseActivity().onBackPressed();
                 getBaseActivity().showWarningMessage(WarningFactory.SUCCESS_MESSAGE, getString(R.string.edit_address_success));
+                getBaseActivity().onBackPressed();
                 break;
             default:
                 break;

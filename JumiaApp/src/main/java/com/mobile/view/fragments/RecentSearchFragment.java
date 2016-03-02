@@ -1,24 +1,20 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListView;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
-import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.SearchSuggestionsAdapter;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
+import com.mobile.controllers.SearchDropDownAdapter;
 import com.mobile.helpers.search.GetSearchSuggestionsHelper;
+import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.database.SearchRecentQueriesTableHelper;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -39,18 +35,18 @@ import java.util.EnumSet;
  * @author Andre Lopes
  * @modified sergiopereira
  */
-public class RecentSearchFragment extends BaseFragment implements IResponseCallback {
+public class RecentSearchFragment extends BaseFragment implements IResponseCallback, OnProductViewHolderClickListener {
     
     private final static String TAG = RecentSearchFragment.class.getSimpleName();
 
     private Context mContext;
 
-    private SearchSuggestionsAdapter mRecentSearchesAdapter;
+    private SearchDropDownAdapter mRecentSearchesAdapter;
     
     private ArrayList<Suggestion> mRecentSearches;
     
-    private ListView mRecentSearchesList;
-    
+    private RecyclerView mRecentSearchesList;
+
     private TextView mClearAllButton;
 
     /**
@@ -117,9 +113,8 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
 
 
     private void setAppContentLayout(View mainView) {
-
-        mRecentSearchesList = (ListView) mainView.findViewById(R.id.recentsearch_list);
-
+        mRecentSearchesList = (RecyclerView) mainView.findViewById(R.id.recentsearch_list);
+        mRecentSearchesList.setLayoutManager(new LinearLayoutManager(getContext()));
         mClearAllButton = (TextView) mainView.findViewById(R.id.recentsearch_clear_all);
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(new OnClickListener() {
@@ -160,22 +155,6 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     /**
      * ########### TRIGGERS ########### 
      */
-    
-    /**
-     * Execute search
-     * @param searchText
-     */
-    protected void executeSearchRequest(String searchText) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST");
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.DATA, null);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, searchText);
-        bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, searchText);
-        bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
-        bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
-        bundle.putBoolean(ConstantsIntentExtra.REMOVE_OLD_BACK_STACK_ENTRIES, false);
-        getBaseActivity().onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
 
     /**
      * ########### RESPONSES ########### 
@@ -198,25 +177,14 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
         switch (eventType) {
         case GET_SEARCH_SUGGESTIONS_EVENT:
             Print.d(TAG, "ON RESPONSE COMPLETE: GET_SEARCH_SUGGESTIONS_EVENT");
-
-            ArrayList<Suggestion> response = (GetSearchSuggestionsHelper.SuggestionsStruct)baseResponse.getContentData();
+            ArrayList<Suggestion> response = (SuggestionsStruct)baseResponse.getContentData();
             if (response != null) {
                 mRecentSearches = response;
                 if (!mRecentSearches.isEmpty()) {
-                    mRecentSearchesAdapter = new SearchSuggestionsAdapter(mContext, mRecentSearches);
+                    mRecentSearchesAdapter = new SearchDropDownAdapter(mContext, mRecentSearches);
+                    mRecentSearchesAdapter.setOnViewHolderClickListener(this);
                     mRecentSearchesList.setAdapter(mRecentSearchesAdapter);
-                    mRecentSearchesList.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
-                            Suggestion selectedSuggestion = (Suggestion) mRecentSearchesList.getItemAtPosition(position);
-                            String text = selectedSuggestion.getResult();
-                            GetSearchSuggestionsHelper.saveSearchQuery(text);
-                            executeSearchRequest(text);
-                            JumiaApplication.INSTANCE.setSearchedTerm(text);
-                        }
-                    });
-
+                    mRecentSearchesList.addItemDecoration(new HorizontalSpaceItemDecoration(getContext(), R.drawable.line_divider));
                     mClearAllButton.setVisibility(View.VISIBLE);
                     showFragmentContentContainer();
                 } else {
@@ -258,4 +226,38 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
         }
     }
 
+    @Override
+    public void onHeaderClick(String target, String title) {
+
+    }
+
+    @Override
+    public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
+        Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
+        Suggestion selectedSuggestion = ((SearchDropDownAdapter) adapter).getItem(position);
+        String text = selectedSuggestion.getResult();
+        GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
+        switch (selectedSuggestion.getType()){
+            case Suggestion.SUGGESTION_PRODUCT:
+                getBaseActivity().showSearchProduct(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_SHOP_IN_SHOP:
+                getBaseActivity().showSearchShopsInShop(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_CATEGORY:
+                // Show query
+                getBaseActivity().showSearchCategory(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_OTHER:
+                // Show query
+                getBaseActivity().showSearchOther(selectedSuggestion);
+                break;
+        }
+        JumiaApplication.INSTANCE.setSearchedTerm(text);
+    }
+
+    @Override
+    public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+
+    }
 }
