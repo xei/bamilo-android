@@ -19,7 +19,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_suggestion"
-        style="@style/TextList_1"
+        style="@style/TextInfo"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/item_height_normal"
         android:layout_marginEnd="@dimen/margin_mid"
@@ -30,7 +30,7 @@
         android:paddingLeft="@dimen/margin_mid"
         android:paddingStart="@dimen/margin_mid"
         android:text="Search suggestion"
-        android:textColor="@color/grey_dark"
+        android:textColor="@color/black"
         tools:ignore="HardcodedText" />
 
     <!-- android:textStyle="bold" -->

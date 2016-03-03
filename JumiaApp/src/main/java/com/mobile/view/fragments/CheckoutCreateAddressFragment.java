@@ -73,6 +73,7 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
         }
     }
 
+    @Override
     protected void loadCreateAddressForm(Form formShipping) {
         super.loadCreateAddressForm(formShipping);
         // Show order summary

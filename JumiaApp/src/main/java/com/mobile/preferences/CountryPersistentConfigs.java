@@ -86,26 +86,6 @@ public class CountryPersistentConfigs {
         mEditor.apply();
     }
 
-//    public static CountryConfigs getCountryConfigsFromPreferences(Context context){
-//        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        CountryConfigs countryConfigs = new CountryConfigs();
-//        countryConfigs.setCurrencyIso(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null));
-//        countryConfigs.setCurrencySymbol(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, null));
-//        countryConfigs.setNoDecimals(sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, -1));
-//        countryConfigs.setThousandsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, null));
-//        countryConfigs.setDecimalsSep(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, null));
-//        countryConfigs.setGaId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null));
-//        countryConfigs.setGTMId(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, null));
-//        countryConfigs.setPhoneNumber(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null));
-//        countryConfigs.setCsEmail(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null));
-//        countryConfigs.setIsFacebookAvailable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, false));
-//        countryConfigs.setIsRatingEnable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, false));
-//        countryConfigs.setIsRatingLoginRequired(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, false));
-//        countryConfigs.setIsReviewEnable(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, false));
-//        countryConfigs.setIsReviewLoginRequired(sharedPrefs.getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, false));
-//        return countryConfigs;
-//    }
-
     /**
      * Function used to get the shop country code.
      * @param context The application context
@@ -170,18 +150,6 @@ public class CountryPersistentConfigs {
         editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE);
         editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME);
     }
-
-//    public static CountryObject getCountryFromPreferences(Context context){
-//        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
-//        CountryObject countryObject = new CountryObject();
-//        countryObject.setCountryName(settings.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null));
-//        countryObject.setCountryUrl(settings.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null));
-//        countryObject.setCountryFlag(settings.getString(Darwin.KEY_SELECTED_COUNTRY_FLAG, null));
-//        countryObject.setCountryIso(settings.getString(Darwin.KEY_SELECTED_COUNTRY_ISO, null));
-//        countryObject.setCountryForceHttps(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false));
-//        countryObject.setCountryIsLive(settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_IS_LIVE, false));
-//        return countryObject;
-//    }
 
     public static CountrySettingsAdapter.CountryLanguageInformation getCountryInformation(Context context){
         CountrySettingsAdapter.CountryLanguageInformation countryLanguageInformation = new CountrySettingsAdapter.CountryLanguageInformation();
@@ -267,17 +235,6 @@ public class CountryPersistentConfigs {
     public static boolean hasCartPopup(Context context){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, false);
-
     }
 
-    /**
-     * Checks the country configuration for the Rich Relevance status
-     * @param context
-     * @return
-     */
-    public static boolean isRichRelevanceEnabled(Context context){
-        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        return sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_RICH_RELEVANCE, false);
-
-    }
 }

@@ -20,6 +20,7 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.view.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +44,11 @@ public class AlgoliaHelper {
     private final static String _SHOPINSHOP = "_shopinshop";
     private final static String QUERY = "query";
     private final static String ID_CATALOG_CATEGORY = "id_catalog_category";
+    private final static String OPEN_PARENTISIS = "(";
+    private final static String CLOSE_PARENTISIS = ")";
+    private final static String COMMA = ",";
+    private final static String POINT = ".";
+    private final static String TWO_POINTS = ":";
 
     private final static int HITS_PER_PAGE = 3;
     private final static int MAX_NUMBER_OFF_FACETS = 4;
@@ -66,6 +72,7 @@ public class AlgoliaHelper {
         mSuggestionsStruct = new SuggestionsStruct();
         ArrayList<String> attributesToRetrieve = new ArrayList<>();
         attributesToRetrieve.add(RestConstants.SKU);
+        attributesToRetrieve.add(RestConstants.BRAND);
         attributesToRetrieve.add(RestConstants.LOCALIZABLE_ATTRIBUTES+"."+ ShopSelector.getCountryCode()+"."+RestConstants.NAME);
 
         ArrayList<String> facets = new ArrayList<>();
@@ -134,41 +141,42 @@ public class AlgoliaHelper {
             while (iter.hasNext()) {
                 String key = iter.next();
 
-                facetsFilter.add(ID_CATALOG_CATEGORY+":"+key);
+                facetsFilter.add(ID_CATALOG_CATEGORY+TWO_POINTS+key);
             }
+            String ffacetsFilter = OPEN_PARENTISIS+android.text.TextUtils.join(COMMA,facetsFilter)+CLOSE_PARENTISIS;
+            ArrayList<String> attributesToRetrieve = new ArrayList<>();
+            attributesToRetrieve.add(RestConstants.LOCALIZABLE_ATTRIBUTES+POINT+ ShopSelector.getCountryCode()+POINT+RestConstants.NAME);
+
+            Query q = new Query()
+                    .setAttributesToRetrieve(attributesToRetrieve)
+                    .setFacetFilters(ffacetsFilter);
+            List<IndexQuery> queries = new ArrayList<IndexQuery>();
+
+            IndexQuery iq = new IndexQuery(mNamespacePrefix+_CATEGORIES, q);
+            queries.add(iq);
+            mAlgoliaAPIClient.multipleQueriesASync(queries, new APIClientListener() {
+                @Override
+                public void APIResult(APIClient client, TaskParams.Client context, JSONObject result) {
+                    BaseResponse response = new BaseResponse();
+
+                    final Suggestions suggestions = getCategoriesSuggestions(result, mSuggestionsStruct.getSearchParam());
+                    mSuggestionsStruct.setSuggestions(suggestions);
+                    response.getMetadata().setData(mSuggestionsStruct);
+                    mIResponseCallback.onRequestComplete(response);
+                }
+
+                @Override
+                public void APIError(APIClient client, TaskParams.Client context, AlgoliaException e) {
+                    BaseResponse response = new BaseResponse();
+                    response.getMetadata().setData(null);
+                    mIResponseCallback.onRequestError(response);
+                }
+            });
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        String ffacetsFilter = "("+android.text.TextUtils.join(",",facetsFilter)+")";
-        ArrayList<String> attributesToRetrieve = new ArrayList<>();
-        attributesToRetrieve.add(RestConstants.LOCALIZABLE_ATTRIBUTES+"."+ ShopSelector.getCountryCode()+"."+RestConstants.NAME);
 
-        Query q = new Query()
-                .setAttributesToRetrieve(attributesToRetrieve)
-                .setFacetFilters(ffacetsFilter);
-        List<IndexQuery> queries = new ArrayList<IndexQuery>();
-
-        IndexQuery iq = new IndexQuery(mNamespacePrefix+_CATEGORIES, q);
-        queries.add(iq);
-        mAlgoliaAPIClient.multipleQueriesASync(queries, new APIClientListener() {
-            @Override
-            public void APIResult(APIClient client, TaskParams.Client context, JSONObject result) {
-                BaseResponse response = new BaseResponse();
-
-                final Suggestions suggestions = getCategoriesSuggestions(result, mSuggestionsStruct.getSearchParam());
-                mSuggestionsStruct.setSuggestions(suggestions);
-                response.getMetadata().setData(mSuggestionsStruct);
-                mIResponseCallback.onRequestComplete(response);
-            }
-
-            @Override
-            public void APIError(APIClient client, TaskParams.Client context, AlgoliaException e) {
-                BaseResponse response = new BaseResponse();
-                response.getMetadata().setData(null);
-                mIResponseCallback.onRequestError(response);
-            }
-        });
 
     }
 
@@ -201,9 +209,10 @@ public class AlgoliaHelper {
             for (int i = 0; i <  hits.length(); i++){
                 Suggestion suggestion = new Suggestion();
                 JSONObject product = hits.getJSONObject(i);
-                String name = product.getJSONObject(RestConstants.LOCALIZABLE_ATTRIBUTES).getJSONObject(ShopSelector.getCountryCode()).getString(RestConstants.FRONTEND_NAME);
+                String name = product.getJSONObject(RestConstants.LOCALIZABLE_ATTRIBUTES).getJSONObject(ShopSelector.getCountryCode()).getString(RestConstants.NAME);
+                String brand = product.getJSONObject(RestConstants.BRAND).getString(RestConstants.NAME);
                 suggestion.setQuery(query);
-                suggestion.setResult(name);
+                suggestion.setResult(String.format(mContext.getString(R.string.first_and_second_placeholders),brand,  name));
                 suggestion.setTarget(product.getString(RestConstants.SKU));
                 suggestion.setType(Suggestion.SUGGESTION_PRODUCT);
                 suggestions.add(suggestion);

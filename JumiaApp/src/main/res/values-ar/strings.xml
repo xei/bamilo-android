@@ -164,6 +164,7 @@
     <string name="new_arrival_badge">جديد</string>
     <string name="new_password_hint">كلمة مرور جديدة</string>
     <string name="new_password_label">كلمة مرور جديدة</string>
+    <string name="newsletter_label">رسالة جوميا الإخبارية</string>
     <string name="next_button">التالي</string>
     <string name="no_connect_dialog_content">يُرجى فحص الاتصال بالإنترنت الخاص بك والمحاولة مرة أخرى!</string>
     <string name="no_internet_access_warning_title">لا يمكنك الدخول على الإنترنت!</string>
@@ -178,7 +179,7 @@
     <string name="or_text">أو</string>
     <string name="order_no_items">لا يوجد منتجات في عربة التسوق</string>
     <string name="order_status_label">حالة الطلب</string>
-    <string name="order_success">تم تسجيل الطلب بنجاح\nبهذا الرقم:</string>
+    <string name="order_success">تم تسجيل الطلب بنجاح\nيمكنك متابعة حالة الطلب من خلال "تتبع طلبك"</string>
     <string name="order_summary_label">ملخص الطلب</string>
     <string name="order_summary_shipping_fee_label">رسوم الشحن:</string>
     <string name="order_summary_shipping_method">طريقة الشحن</string>
@@ -223,8 +224,8 @@
     <string name="products_sort_name">الاسم</string>
     <string name="products_sort_newin">الأحدث</string>
     <string name="products_sort_popularity">الأكثر شعبية</string>
-    <string name="products_sort_pricedown">الأقل سعرًا</string>
-    <string name="products_sort_priceup">الأعلى سعرًا</string>
+    <string name="products_sort_pricedown">الأعلى سعرًا</string>
+    <string name="products_sort_priceup">الأقل سعرًا</string>
     <string name="products_tip_swipe_text">تحرك إلى اليمين أو اليسار لتغيير الفئة</string>
     <string name="promotion_tip_tap_text">انقر الصندوق بالأعلى لنسخ الكود إلى حافظة البيانات المؤقتة واحفظه لسهولة الوصول عند إنهاء الطلب</string>
     <string name="rating_option_error_message">يجب ملء جميع خيارات التقييمات</string>
@@ -474,4 +475,10 @@
     <string name="size">مقاس ‎%s‎</string>
     <string name="added_success">تمت الأضافه بنجاح.</string>
     <string name="removed_success">تم الحذف بنجاح.</string>
+    <string name="sign_up_to_our_newsletter">التسجيل لاستلام رسالة جوميا الإخبارية</string>
+    <string name="sign_up_to_our_newsletter_body">للحصول بشكل حصري على العروض والمنتجات الأحدث وصولًا والاتجاهات السوقية والحملات الإعلانية</string>
+    <string name="search_shop_in_shop_label">قم بزيارة %s المخزن الخاص بنا</string>
+    <string name="search_categories_label">%1$s في %2$s</string>
+    <string name="on_label">فتح</string>
+    <string name="visit_the_official_brand_store">زيارة المخزن %s الرسمي</string>
 </resources>

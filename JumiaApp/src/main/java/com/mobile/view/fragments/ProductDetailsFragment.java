@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
@@ -35,6 +36,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
+import com.mobile.newFramework.objects.product.Brand;
 import com.mobile.newFramework.objects.product.BundleList;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.RichRelevance;
@@ -114,6 +116,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private View mOffersContainer;
     private String mRichRelevanceHash;
     private String mRelatedRichRelevanceHash;
+    private ViewGroup mBrandView;
 
     /**
      * Empty constructor
@@ -189,6 +192,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mProductRating = (RatingBar) view.findViewById(R.id.pdv_rating_bar);
         mProductFashionRating = (RatingBar) view.findViewById(R.id.pdv_rating_bar_fashion);
         mProductRatingCount = (TextView) view.findViewById(R.id.pdv_rating_bar_count);
+        //brand section
+        mBrandView = (ViewGroup) view.findViewById(R.id.pdv_brand_section);
         // Specifications
         mSpecificationsView = (ViewGroup) view.findViewById(R.id.pdv_specs_container);
         // Variations
@@ -354,7 +359,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         else if (id == R.id.pdv_seller_name) {
             goToSellerCatalog();
         }
-
+        // Case brand
+        else if (id == R.id.pdv_brand_section){
+            onClickBrandButton(view);
+        }
+        // Case specs button
+        else if(id == R.id.pdv_specs_button) {
+            onClickShowDescription(R.string.product_specifications);
+        }
     }
 
     /**
@@ -459,6 +471,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         setSlideShow();
         setProductPriceInfo();
         setRatingInfo();
+        setBrandInfo();
         setSpecifications();
         setProductSize();
         setProductVariations();
@@ -545,6 +558,31 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     }
 
     /**
+     * Show brand/SIS section in case of grand has image and a target link
+     */
+    private void setBrandInfo() {
+        if (!mProduct.getBrand().hasTarget()) {
+            mBrandView.setVisibility(View.GONE);
+        } else {
+            // Set click item
+            Brand brand = mProduct.getBrand();
+            mBrandView.setTag(R.id.target_link, brand.getTarget());
+            mBrandView.setTag(R.id.target_title, brand.getName());
+            mBrandView.setOnClickListener(this);
+            // Set text
+            TextView button = (TextView) mBrandView.findViewById(R.id.pdv_brand_text);
+            button.setText(getString(R.string.visit_the_official_brand_store, brand.getName()));
+            // Set image
+            ImageView brandImage = (ImageView) mBrandView.findViewById(R.id.pdv_brand_image);
+            if (TextUtils.isNotEmpty(brand.getImageUrl())) {
+                RocketImageLoader.instance.loadImage(brand.getImageUrl(), brandImage, null, R.drawable.no_image_tiny);
+            } else {
+                brandImage.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    /**
      * Show the seller info
      */
     public void setSellerInfo() {
@@ -617,15 +655,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void setTitle() {
         if (mProduct.isFashion()) {
             mTitleContainer.setVisibility(View.GONE);
-            ((TextView) mTitleFashionContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrand());
+            ((TextView) mTitleFashionContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
             ((TextView) mTitleFashionContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
         } else {
             mTitleFashionContainer.setVisibility(View.GONE);
-            ((TextView) mTitleContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrand());
+            ((TextView) mTitleContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
             ((TextView) mTitleContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
         }
         // Set action title
-        getBaseActivity().setActionBarTitle(mProduct.getBrand());
+        getBaseActivity().setActionBarTitle(mProduct.getBrandName());
     }
 
     /**
@@ -678,13 +716,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Button
         TextView button = (TextView) mSpecificationsView.findViewById(R.id.pdv_specs_button);
         button.setText(getString(R.string.more_specifications));
-        // TODO: Move to onClick
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onClickShowDescription(R.string.product_specifications);
-            }
-        });
+        button.setOnClickListener(this);
     }
 
     /**
@@ -810,11 +842,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         try {
             boolean value = mProduct.isWishList();
             mWishListButton.setSelected(value);
-
             setOutOfStockButton();
         } catch (NullPointerException e) {
             Log.i(TAG, "NPE ON UPDATE WISH LIST VALUE");
         }
+    }
+
+    /**
+     * Go to brands target link
+     * */
+    private void onClickBrandButton(View view){
+        @TargetLink.Type String link = (String)view.getTag(R.id.target_link);
+        String title = (String) view.getTag(R.id.target_title);
+        new TargetLink(getWeakBaseActivity(), link).addTitle(title).retainBackStackEntries().run();
     }
 
     private void goToSellerCatalog() {
@@ -866,20 +906,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mProduct.setProductBundle(bundleList);
     }
 
-//    /**
-//     * Process the click on rating
-//     */
-//    private void onClickRating() {
-//        Log.i(TAG, "ON CLICK RATING");
-//        JumiaApplication.cleanRatingReviewValues();
-//        JumiaApplication.INSTANCE.setFormReviewValues(null);
-//        Bundle bundle = new Bundle();
-//        bundle.putString(ConstantsIntentExtra.PRODUCT_SKU, mProduct.getSku());
-//        bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
-//        bundle.putBoolean(ConstantsIntentExtra.REVIEW_TYPE, true);
-//        getBaseActivity().onSwitchFragment(FragmentType.POPULARITY, bundle, FragmentController.ADD_TO_BACK_STACK);
-//    }
-
     /**
      * Process the click on rating
      */
@@ -899,7 +925,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle bundle = new Bundle();
         bundle.putParcelable(ConstantsIntentExtra.PRODUCT, mProduct);
         bundle.putInt(ConstantsIntentExtra.PRODUCT_INFO_POS, position);
-        bundle.putString(ConstantsIntentExtra.FLAG_1, mProduct.getBrand());
+        bundle.putString(ConstantsIntentExtra.FLAG_1, mProduct.getBrandName());
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_INFO, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -921,7 +947,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID, mProduct.getSku());
         bundle.putString(ConstantsIntentExtra.PRODUCT_NAME, mProduct.getName());
-        bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrand());
+        bundle.putString(ConstantsIntentExtra.PRODUCT_BRAND, mProduct.getBrandName());
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_OFFERS, bundle, FragmentController.ADD_TO_BACK_STACK);
     }
 
@@ -1033,7 +1059,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     args.putParcelable(AddToWishListHelper.ADD_TO_WISHLIST, mProduct);
                 }
             }
-
             // Goto login
             getBaseActivity().onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
@@ -1242,7 +1267,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 TrackerDelegator.trackPageForAdjust(TrackingPage.PRODUCT_DETAIL_LOADED, params);
                 // Database
                 LastViewedTableHelper.insertLastViewedProduct(product);
-                BrandsTableHelper.updateBrandCounter(product.getBrand());
+                BrandsTableHelper.updateBrandCounter(product.getBrandName());
                 break;
             case GET_PRODUCT_BUNDLE:
                 BundleList bundleList = (BundleList) baseResponse.getContentData();
@@ -1310,8 +1335,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         //set total price
         TextView txTotalPrice = (TextView) mComboProductsLayout.findViewById(R.id.txTotalComboPrice);
         txTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
-        //
-        ArrayList<ProductBundle> bundleProducts = bundleList.getProducts();
+        //revert elements if RTL
+        ArrayList<ProductBundle> bundleProducts = new ArrayList<>(bundleList.getProducts());
+        if(ShopSelector.isRtl() && CollectionUtils.isNotEmpty(bundleProducts)){
+                Collections.reverse(bundleProducts);
+        }
+
         LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int count = 0;
         mTableBundles.removeAllViews();
@@ -1329,6 +1358,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mTableBundles.addView(inflater.inflate(R.layout.pdv_fragment_bundle, mTableBundles, false));
             }
             count++;
+        }
+
+        if(ShopSelector.isRtl()){
+            final HorizontalScrollView mHorizontalScrollView = (HorizontalScrollView) mComboProductsLayout.findViewById(R.id.comboGlobal).findViewById(R.id.pdv_scroll_bundle);
+            // slide the horizontal scroll view to the end to show the first element
+            mHorizontalScrollView.postDelayed(new Runnable() {
+                public void run() {
+                    mHorizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                }
+            }, 100L);
         }
 
         mComboProductsLayout.setOnClickListener(this);
@@ -1349,7 +1388,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mCheck.setChecked(productBundleItem.isChecked());
         RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
-        mBrand.setText(productBundleItem.getBrand());
+        mBrand.setText(productBundleItem.getBrandName());
         TextView mTitle = (TextView) view.findViewById(R.id.item_title);
         mTitle.setText(productBundleItem.getName());
         TextView mPrice = (TextView) view.findViewById(R.id.item_price);

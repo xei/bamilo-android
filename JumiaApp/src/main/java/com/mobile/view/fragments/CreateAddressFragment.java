@@ -271,7 +271,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else {
             setRegions(shippingFormGenerator, regions);
         }
-
     }
 
     /**

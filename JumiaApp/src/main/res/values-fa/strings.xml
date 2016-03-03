@@ -49,10 +49,10 @@
     <string name="categories_toplevel_title">تمام مجموعه ها</string>
     <string name="category_filter_error">اعمال فیلتر بر روی مجموعه امکان پذیر نمی باشد</string>
     <string name="checkout_button_text">ثبت سفارش</string>
-    <string name="checkout_header_step_1">۱- اطلاعات شما</string>
-    <string name="checkout_header_step_2">۲- آدرس</string>
-    <string name="checkout_header_step_3">۳- ارسال</string>
-    <string name="checkout_header_step_4">۴- پرداخت</string>
+    <string name="checkout_header_step_1">ورود</string>
+    <string name="checkout_header_step_2">آدرس</string>
+    <string name="checkout_header_step_3">ارسال</string>
+    <string name="checkout_header_step_4">پرداخت</string>
     <string name="checkout_label">ثبت نهایی سفارش</string>
     <string name="clear_all_uppercase_label">پاک کردن همه</string>
     <string name="clear_uppercase_label">پاک کردن</string>
@@ -179,7 +179,7 @@
     <string name="or_text">یا</string>
     <string name="order_no_items">شما هیچ کالایی در سبد خرید ندارید.</string>
     <string name="order_status_label">وضعیت سفارش</string>
-    <string name="order_success">سفارش شما با موفقیت ثبت شد.\n شماره سفارش شما:</string>
+    <string name="order_success">سفارش شما با موفقیت ثبت شد.\nمیتوانید وضعیت سفارش خود را در جزئیات سفارش مشاهده کنید.</string>
     <string name="order_summary_label">خلاصه سفارش</string>
     <string name="order_summary_shipping_fee_label">هزینه ارسال:</string>
     <string name="order_summary_shipping_method">روش ارسال:</string>
@@ -327,9 +327,9 @@
     <string name="voucher_remove">حذف</string>
     <string name="voucher_use">استفاده</string>
     <string name="wizard_navigation">دسترسی سریع به مجموعه های مورد علاقه</string>
-    <string name="write_comment">نوشتن نقد و بررسی</string>
-    <string name="write_full_review">نظر کامل خود را بنویسید</string>
-    <string name="writereview_page_title">نوشتن نقد و بررسی</string>
+    <string name="write_comment">نقد و بررسی خود را ثبت کنید</string>
+    <string name="write_full_review">بررسی کامل خود را بنویسید</string>
+    <string name="writereview_page_title">نقد و بررسی خود را ثبت کنید</string>
     <string name="writereview_review_hint">نظر</string>
     <string name="writereview_send">ارسال نقد و بررسی</string>
     <string name="writereview_title_hint">عنوان</string>
@@ -464,7 +464,7 @@
     <string name="no_orders_message">شما هیچ سفارشی نداشته‌اید.</string>
     <string name="no_orders">سفارشی ثبت نشده است.</string>
     <string name="an_error_occurred">خطایی رخ داده است.</string>
-    <string name="customer_service_info">برای اطلاعات بیشتر، لطفاً با واحد پشتیبانی تماس بگیرید.</string>
+    <string name="customer_service_info">برای اطلاعات بیشتر، لطفاً با خدمات مشتریان تماس بگیرید.</string>
     <string name="phone_contact">شماره تلفن:</string>
     <string name="email_contact">آدرس ایمیل</string>
     <string name="logout_success">از حساب کاربری خارج شدید</string>
@@ -475,10 +475,10 @@
     <string name="size">اندازه ‎%s‎</string>
     <string name="added_success">با موفقیت افزوده شد.</string>
     <string name="removed_success">با موفقیت حذف گردید.</string>
-    <string name="sign_up_newsletter">عضو خبرنامه شوید</string>
-    <string name="sign_up_newsletter_description">برای اطلاع از فروش های ویژه، تازه ها و پیشنهادهای بینظیر</string>
+    <string name="sign_up_to_our_newsletter">در خبرنامه عضو شوید</string>
+    <string name="sign_up_to_our_newsletter_body">برای اطلاع از فروش های ویژه، تازه ها و تخفیف ها</string>
     <string name="search_shop_in_shop_label">بازدید از فروشگاه ‎%s‎ ما</string>
     <string name="search_categories_label">‎%1$s‎ در ‎%2$s‎</string>
-    <string name="active_label">فعال</string>
-    <string name="inactive_label">غیرفعال</string>
+    <string name="on_label">فعال</string>
+    <string name="visit_the_official_brand_store">مشاهده محصولات ‎%s‎</string>
 </resources>

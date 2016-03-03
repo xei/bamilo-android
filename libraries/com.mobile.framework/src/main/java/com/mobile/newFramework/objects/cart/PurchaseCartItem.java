@@ -21,54 +21,22 @@ import org.json.JSONObject;
  */
 public class PurchaseCartItem extends ProductRegular {
 
-    /**
-     * Create parcelable
-     */
-    public static final Creator<PurchaseCartItem> CREATOR = new Creator<PurchaseCartItem>() {
-        public PurchaseCartItem createFromParcel(Parcel in) {
-            return new PurchaseCartItem(in);
-        }
-
-        public PurchaseCartItem[] newArray(int size) {
-            return new PurchaseCartItem[size];
-        }
-    };
-
     private String mSimpleSku;
     private long quantity;
     private int maxQuantity;
     private String variation;
-    private String mAttributeSetId;
-
     private String price;
     private String specialPrice;
-    private double savingPercentage;
 
-
-    private boolean isChecked;  //not parsed: to show dialog in shoppingCartFragment
-
+    /**
+     * Empty constructor
+     */
     public PurchaseCartItem() {
-
+        // ...
     }
 
     public PurchaseCartItem(JSONObject jsonObject) {
         initialize(jsonObject);
-    }
-
-    /**
-     * Parcel constructor
-     */
-    private PurchaseCartItem(Parcel in) {
-        super(in);
-        mSimpleSku = in.readString();
-        quantity = in.readLong();
-        maxQuantity = in.readInt();
-        specialPrice = in.readString();
-        savingPercentage = in.readDouble();
-        price = in.readString();
-        variation = in.readString();
-        mSpecialPriceConverted = in.readDouble();
-        mAttributeSetId = in.readString();
     }
 
     /*
@@ -88,7 +56,6 @@ public class PurchaseCartItem extends ProductRegular {
             mSimpleSku = jsonObject.getString(RestConstants.SIMPLE_SKU);
             quantity = jsonObject.getLong(RestConstants.QUANTITY);
             maxQuantity = jsonObject.getInt(RestConstants.MAX_QUANTITY);
-            mAttributeSetId = jsonObject.optString(RestConstants.ATTRIBUTE_SET_ID);
             variation = jsonObject.optString(RestConstants.VARIATION);
             // Fix NAFAMZ-7848
             // Throw JSONException if JSON_PRICE_TAG is not present
@@ -96,7 +63,6 @@ public class PurchaseCartItem extends ProductRegular {
             if (CurrencyFormatter.isNumber(priceJSON)) {
                 mPrice = jsonObject.getDouble(RestConstants.PRICE);
                 price = priceJSON;
-                //price = CurrencyFormatter.formatCurrency(priceJSON);
             } else {
                 // throw new JSONException("Price is not a number!");
                 Print.d("WARNING: Price is not a number!");
@@ -110,16 +76,12 @@ public class PurchaseCartItem extends ProductRegular {
             if (CurrencyFormatter.isNumber(specialPriceJSON)) {
                 mSpecialPrice = jsonObject.getDouble(RestConstants.SPECIAL_PRICE);
                 specialPrice = specialPriceJSON;
-                // specialPrice = CurrencyFormatter.formatCurrency();
             } else {
                 mSpecialPrice = mPrice;
                 specialPrice = price;
             }
 
             mSpecialPriceConverted = jsonObject.optDouble(RestConstants.SPECIAL_PRICE_CONVERTED, 0d);
-
-            savingPercentage = 100 - mSpecialPrice / mPrice * 100;
-
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -185,13 +147,6 @@ public class PurchaseCartItem extends ProductRegular {
         return price;
     }
 
-    /**
-     * @return the savingPercentage
-     */
-    public double getSavingPercentage() {
-        return savingPercentage;
-    }
-
     public String getVariation() {
         return variation;
     }
@@ -205,10 +160,6 @@ public class PurchaseCartItem extends ProductRegular {
         if (modUrl != null)
             return modUrl;
         return url;
-    }
-
-    public void setIsChecked(boolean isChecked){
-        this.isChecked = isChecked;
     }
 
     /**
@@ -230,14 +181,8 @@ public class PurchaseCartItem extends ProductRegular {
         return mSpecialPriceConverted > 0;
     }
 
-    public String getAttributeSetId (){
-        return mAttributeSetId;
-    }
-
-    /**
+    /*
      * ########### Parcelable ###########
-     *
-     * @author sergiopereira
      */
 
 	/*
@@ -262,11 +207,37 @@ public class PurchaseCartItem extends ProductRegular {
         dest.writeLong(quantity);
         dest.writeInt(maxQuantity);
         dest.writeString(specialPrice);
-        dest.writeDouble(savingPercentage);
         dest.writeString(price);
         dest.writeString(variation);
         dest.writeDouble(mSpecialPriceConverted);
-        dest.writeString(mAttributeSetId);
     }
+
+
+    /**
+     * Parcel constructor
+     */
+    private PurchaseCartItem(Parcel in) {
+        super(in);
+        mSimpleSku = in.readString();
+        quantity = in.readLong();
+        maxQuantity = in.readInt();
+        specialPrice = in.readString();
+        price = in.readString();
+        variation = in.readString();
+        mSpecialPriceConverted = in.readDouble();
+    }
+
+    /**
+     * Create parcelable
+     */
+    public static final Creator<PurchaseCartItem> CREATOR = new Creator<PurchaseCartItem>() {
+        public PurchaseCartItem createFromParcel(Parcel in) {
+            return new PurchaseCartItem(in);
+        }
+
+        public PurchaseCartItem[] newArray(int size) {
+            return new PurchaseCartItem[size];
+        }
+    };
 
 }

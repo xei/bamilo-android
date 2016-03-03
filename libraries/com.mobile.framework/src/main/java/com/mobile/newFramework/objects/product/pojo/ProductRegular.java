@@ -3,6 +3,7 @@ package com.mobile.newFramework.objects.product.pojo;
 import android.os.Parcel;
 
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.objects.product.Brand;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.cache.WishListCache;
@@ -19,16 +20,18 @@ import org.json.JSONObject;
 public class ProductRegular extends ProductBase {
 
     protected String mName;
-    protected String mBrand;
     protected String mImageUrl;
     private String mCategories;
     protected boolean isNew;
     protected double mAvgRating;
     protected int mTotalReviews;
     protected int mTotalRatings;
-    private int mBrandId;
     protected String mTarget;
     protected String mRichRelevanceClickHash;
+    protected Brand mBrand;
+    private String mCategoryUrlKey;
+    private String mCategoryName;
+
     /**
      * Empty constructor
      */
@@ -43,30 +46,29 @@ public class ProductRegular extends ProductBase {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Mandatory
         super.initialize(jsonObject);
-
         return initializeProductRegular(jsonObject);
     }
 
     protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mName = jsonObject.optString(RestConstants.NAME);
-        // TODO
-        // This fallback validation was added for the case where the response from the RR request
-        // is the fallback top sellers, where the product name comes in the "title" field.
-        // it should be analysed if should be fixed on next release.
-        if(TextUtils.isEmpty(mName))
-            mName = jsonObject.optString(RestConstants.TITLE);
-
-        mBrand = jsonObject.getString(RestConstants.BRAND);
-        mBrandId = jsonObject.optInt(RestConstants.BRAND_ID);
-        // Optional TODO FIX THIS
-        mImageUrl = jsonObject.optString(RestConstants.IMAGE);
-        if(TextUtils.isEmpty(mImageUrl)) {
-            mImageUrl = jsonObject.optString(RestConstants.IMAGE_URL);
+        // TODO: Remove this line when all app parses brand_entity object. For now happens just in PDV
+        String brand = jsonObject.optString(RestConstants.BRAND);
+        int brandId = jsonObject.optInt(RestConstants.BRAND_ID);
+        String brandKey = jsonObject.optString(RestConstants.BRAND_URL_KEY);
+        mBrand = new Brand(brand, brandId, brandKey);
+        JSONObject brandObject = jsonObject.optJSONObject(RestConstants.BRAND_ENTITY);
+        if(brandObject != null) {
+            mBrand.initialize(brandObject);
         }
+        // Category
+        mCategoryUrlKey = jsonObject.optString(RestConstants.CATEGORY_URL_KEY);
+        mCategoryName = jsonObject.optString(RestConstants.CATEGORY_NAME);
+        // Optional
+        mImageUrl = jsonObject.optString(RestConstants.IMAGE);
         // Is new
         isNew = jsonObject.optBoolean(RestConstants.IS_NEW);
-        // Wish List flag>>>>>>>>>>
+        // Wish List flag
         if (jsonObject.optBoolean(RestConstants.IS_WISH_LIST)) {
             WishListCache.add(mSku);
         }
@@ -102,13 +104,6 @@ public class ProductRegular extends ProductBase {
         return mName;
     }
 
-    public String getBrand() {
-        return mBrand;
-    }
-
-    public int getBrandId() {
-        return mBrandId;
-    }
 
     public String getImageUrl() {
         return mImageUrl;
@@ -146,7 +141,6 @@ public class ProductRegular extends ProductBase {
         return "";
     }
 
-
     public String getTarget() {
         return mTarget;
     }
@@ -155,6 +149,22 @@ public class ProductRegular extends ProductBase {
         return mRichRelevanceClickHash;
     }
 
+    public String getBrandKey() {
+        return mBrand.getUrlKey();
+    }
+
+    public Brand getBrand(){ return mBrand;}
+
+    public int getBrandId(){ return mBrand.getId();}
+
+    public String getBrandName(){ return mBrand.getName();}
+
+    public String getCategoryKey() {
+        return mCategoryUrlKey;
+    }
+
+    public String getCategoryName(){ return mCategoryName;}
+
     /*
 	 * ############ PARCELABLE ############
 	 */
@@ -162,8 +172,6 @@ public class ProductRegular extends ProductBase {
     protected ProductRegular(Parcel in) {
         super(in);
         mName = in.readString();
-        mBrand = in.readString();
-        mBrandId = in.readInt();
         mImageUrl = in.readString();
         mCategories = in.readString();
         isNew = in.readByte() != 0x00;
@@ -172,14 +180,15 @@ public class ProductRegular extends ProductBase {
         mTotalRatings = in.readInt();
         mTarget = in.readString();
         mRichRelevanceClickHash = in.readString();
+        mBrand = in.readParcelable(Brand.class.getClassLoader());
+        mCategoryName = in.readString();
+        mCategoryUrlKey = in.readString();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(mName);
-        dest.writeString(mBrand);
-        dest.writeInt(mBrandId);
         dest.writeString(mImageUrl);
         dest.writeString(mCategories);
         dest.writeByte((byte) (isNew ? 0x01 : 0x00));
@@ -188,6 +197,9 @@ public class ProductRegular extends ProductBase {
         dest.writeInt(mTotalRatings);
         dest.writeString(mTarget);
         dest.writeString(mRichRelevanceClickHash);
+        dest.writeParcelable(mBrand,flags);
+        dest.writeString(mCategoryName);
+        dest.writeString(mCategoryUrlKey);
     }
 
     @Override
@@ -207,6 +219,5 @@ public class ProductRegular extends ProductBase {
             return new ProductRegular[size];
         }
     };
-
 
 }

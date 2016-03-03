@@ -24,8 +24,6 @@ public class CustomerPreferences {
     
     /**
      * Load a value from key.
-     * @param context
-     * @param key 
      * @return String or null if not exist
      * @author sergiopereira
      */
@@ -38,9 +36,6 @@ public class CustomerPreferences {
     
     /**
      * Store a pair key value.
-     * @param context
-     * @param key
-     * @param value
      * @author sergiopereira
      */
     private static void store(Context context, String key, String value) {
@@ -56,7 +51,7 @@ public class CustomerPreferences {
      */
     
     /**
-     * Function used to persist user email or empty that value after successfull login
+     * Function used to persist user email or empty that value after successfully login
      * 
      * @author sergiopereira
      */
@@ -75,8 +70,6 @@ public class CustomerPreferences {
     
     /**
      * Get
-     * @param context
-     * @return
      */
     public static String getCatalogLayout(Context context) {
         String level = load(context, ConstantsSharedPrefs.KEY_CATALOG_VIEW);
@@ -85,8 +78,6 @@ public class CustomerPreferences {
     
     /**
      * Set 
-     * @param context
-     * @param level
      */
     public static void saveCatalogLayout(Context context, String level) {
         store(context, ConstantsSharedPrefs.KEY_CATALOG_VIEW, level);

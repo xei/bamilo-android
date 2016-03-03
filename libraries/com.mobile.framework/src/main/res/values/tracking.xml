@@ -8,7 +8,7 @@
     <bool name="ga_enable">false</bool>
     <bool name="ga_advertisingIDCollection">true</bool>
 
-    <string name="ga_trackingId"></string>
+    <string name="ga_trackingId"/>
 
     <!-- PageView Names -->
     <string name="gnavigation">LeftMenu</string>
@@ -40,7 +40,6 @@
     <string name="gtrackpayment">Payment</string>
     <string name="gtrackaddaddress">NewAddress</string>
     <string name="gtrackaddress">Addresses</string>
-    <string name="gtracksearch">SearchResults</string>
     <string name="gtrackmyorders">MyOrders</string>
     
     <!-- prefixes for page string encoding -->

@@ -34,7 +34,6 @@ import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.DarwinRegex;
@@ -407,7 +406,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         } else {
             mItemRemovedCartValue = cartValue;
         }
-        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU(), true), this);
+        triggerContentEventProgress(new ShoppingCartRemoveItemHelper(), ShoppingCartRemoveItemHelper.createBundle(item.getConfigSimpleSKU()), this);
     }
 
     /**
@@ -782,7 +781,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    prodItem.cartItem.setIsChecked(true);
                     showQuantityDialog(position);
                 }
             });
@@ -878,8 +876,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             }
         };
 
-        dialogList = DialogListFragment.newInstance(this, listener, RestConstants.ID_CHANGE_QUANTITY,
-                getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity-1);
+        dialogList = DialogListFragment.newInstance(this, listener, getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity-1);
         dialogList.show(getActivity().getSupportFragmentManager(), null);
     }
 

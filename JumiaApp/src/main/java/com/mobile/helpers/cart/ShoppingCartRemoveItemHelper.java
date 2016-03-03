@@ -31,13 +31,7 @@ public class ShoppingCartRemoveItemHelper extends SuperBaseHelper {
 
     private static final String TAG = ShoppingCartRemoveItemHelper.class.getSimpleName();
 
-    // private static final EventType EVENT_TYPE = EventType.REMOVE_ITEM_FROM_SHOPPING_CART_EVENT;
-
     public static final String ITEM = "item";
-
-//    public static final String UPDATE_CART = "update_cart";
-
-    private static boolean isToUpdateCart = true;
 
     @Override
     public EventType getEventType() {
@@ -57,24 +51,17 @@ public class ShoppingCartRemoveItemHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-
-        //TODO move to observable
-        // TODO: VALIDATE THIS ???
-        // Don't continue if isToUpdateCart was set as false on generateRequestBundle()
-        if (!isToUpdateCart) return;
-
         JumiaApplication.INSTANCE.setCart(null);
         PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
         JumiaApplication.INSTANCE.setCart(cart);
         Print.d(TAG, "ADD CART: " + cart.getTotal());
         // Track the new cart value
-        TrackerDelegator.trackCart(cart.getPriceForTracking(), cart.getCartCount(), cart.getAttributeSetIdList());
+        TrackerDelegator.trackRemoveFromCart(cart);
     }
 
-    public static Bundle createBundle(String sku, final boolean istoUpdateCart) {
+    public static Bundle createBundle(String sku) {
         ContentValues values = new ContentValues();
         values.put(RestConstants.SKU, sku);
-        isToUpdateCart = istoUpdateCart;
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         return bundle;

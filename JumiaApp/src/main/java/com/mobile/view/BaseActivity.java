@@ -19,6 +19,9 @@ import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.SearchAutoComplete;
 import android.support.v7.widget.Toolbar;
@@ -31,10 +34,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
@@ -42,6 +45,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.app.drawer.DebugDrawerActivity;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
@@ -56,6 +60,7 @@ import com.mobile.helpers.search.SearchSuggestionClient;
 import com.mobile.helpers.search.SuggestionsStruct;
 import com.mobile.helpers.session.LoginHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -110,7 +115,7 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends DebugDrawerActivity implements TabLayout.OnTabSelectedListener {
+public abstract class BaseActivity extends DebugDrawerActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -136,6 +141,8 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
     protected DialogFragment dialog;
     protected SearchView mSearchView;
     protected SearchAutoComplete mSearchAutoComplete;
+    protected RecyclerView mSearchListView;
+    protected FrameLayout mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
 
     //private final int contentLayoutId;
@@ -917,7 +924,11 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
         mSearchView = (SearchView) MenuItemCompat.getActionView(mSearchMenuItem);
         mSearchView.setQueryHint(getString(R.string.action_label_search_hint, getString(R.string.app_name_placeholder)));
         // Get edit text
+        mSearchOverlay = (FrameLayout) findViewById(R.id.search_overlay);
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
+        mSearchListView = (RecyclerView) mSearchOverlay.findViewById(R.id.search_overlay_listview);
+        mSearchListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable.line_divider));
         //#RTL
         if (ShopSelector.isRtl()) {
             mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
@@ -943,16 +954,24 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
 
     private void setSearchWidthToFillOnExpand() {
         // Get the width of main content
-        // logoView.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-        // int logoViewWidth = logoView.getMeasuredWidth() + logoView.getPaddingRight();
-        int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
-        int genericIconWidth = getResources().getDimensionPixelSize(R.dimen.item_height_normal);
-        // Calculate the search width
-        int searchComponentWidth = mainContentWidth - genericIconWidth;
-        Print.d(TAG, "SEARCH WIDTH SIZE: " + searchComponentWidth);
+        final int mainContentWidth = DeviceInfoHelper.getWidth(getApplicationContext());
+        final int mainContentHeight = DeviceInfoHelper.getHeight(getApplicationContext());
+        mSearchView.setMaxWidth(mainContentWidth);
+        mSearchAutoComplete.setDropDownAnchor(R.id.app_bar);
         // Set measures
-        mSearchView.setMaxWidth(searchComponentWidth);
-        mSearchAutoComplete.setDropDownWidth(mainContentWidth);
+        if (mSearchView != null) {
+            mSearchView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                           int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                    // set DropDownView width
+                    mSearchAutoComplete.setDropDownWidth(mainContentWidth);
+                    mSearchAutoComplete.setDropDownHeight(mainContentHeight - mSupportActionBar.getHeight());
+                    mSearchAutoComplete.setDropDownBackgroundDrawable(ContextCompat.getDrawable(getApplicationContext(), R.drawable.search_dropdown_background));
+                }
+            });
+        }
     }
 
     /**
@@ -964,45 +983,6 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
             Print.w(TAG, "SEARCH COMPONENT IS NULL");
             return;
         }
-
-        /*
-         * Set on item click listener
-         */
-        mSearchAutoComplete.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-                Print.d(TAG, "SEARCH: CLICKED ITEM " + position);
-                // Get suggestion
-                Suggestion selectedSuggestion = (Suggestion) adapter.getItemAtPosition(position);
-                // Get text suggestion
-                String text = selectedSuggestion.getResult();
-                //Save searched text
-                JumiaApplication.INSTANCE.setSearchedTerm(text);
-                mSearchAutoComplete.dismissDropDown();
-                // Collapse search view
-                MenuItemCompat.collapseActionView(mSearchMenuItem);
-                // Save query
-                GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
-
-                switch (selectedSuggestion.getType()){
-                    case Suggestion.SUGGESTION_PRODUCT:
-                        showSearchProduct(selectedSuggestion);
-                        break;
-                    case Suggestion.SUGGESTION_SHOP_IN_SHOP:
-                        showSearchShopsInShop(selectedSuggestion);
-                        break;
-                    case Suggestion.SUGGESTION_CATEGORY:
-                        // Show query
-                        showSearchCategory(selectedSuggestion);
-                        break;
-                    case Suggestion.SUGGESTION_OTHER:
-                        // Show query
-                        showSearchOther(selectedSuggestion);
-                        break;
-                }
-
-            }
-        });
 
         /*
          * Clear and add text listener
@@ -1068,12 +1048,17 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
          */
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, new OnActionExpandListener() {
             private final Handler handle = new Handler();
+            public int restoreSoftInputMode = WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE;
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Print.d(TAG, "SEARCH ON EXPAND");
                 closeNavigationDrawer();
                 isSearchComponentOpened = true;
                 setActionMenuItemsVisibility(false);
+                setAppBarLayout(action, NavigationAction.UNKNOWN);
+                mSearchOverlay.setVisibility(View.VISIBLE);
+                restoreSoftInputMode = getWindow().getAttributes().softInputMode;
+                getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
                 // Re-set the searched text if it exists
                 mSearchAutoComplete.post(new Runnable() {
                     @Override
@@ -1096,6 +1081,9 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
                 Print.d(TAG, "SEARCH ON COLLAPSE");
                 isSearchComponentOpened = false;
                 setActionMenuItemsVisibility(true);
+                setAppBarLayout(NavigationAction.UNKNOWN, action);
+                mSearchOverlay.setVisibility(View.GONE);
+                getWindow().setSoftInputMode(restoreSoftInputMode);
                 return true;
             }
         });
@@ -1120,7 +1108,7 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
      * Execute search
      * @author sergiopereira
      */
-    protected void showSearchCategory(final Suggestion suggestion) {
+    public void showSearchCategory(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST " + suggestion.getResult());
         // Tracking
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
@@ -1142,7 +1130,7 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
     /**
      * Execute search
      */
-    protected void showSearchOther(final Suggestion suggestion) {
+    public void showSearchOther(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
         // Tracking
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
@@ -1159,7 +1147,7 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
     /**
      * Execute search for product
      */
-    protected void showSearchProduct(Suggestion suggestion) {
+    public void showSearchProduct(Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO PROD VIEW " + suggestion.getResult());
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
         // Case mob api
@@ -1178,12 +1166,13 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
     /**
      * Execute search for shop in shop
      */
-    protected void showSearchShopsInShop(final Suggestion suggestion) {
+    public void showSearchShopsInShop(final Suggestion suggestion) {
         Print.d(TAG, "SEARCH COMPONENT: GOTO SHOP IN SHOP " + suggestion.getResult());
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
         // Case mob api
         @TargetLink.Type String link = suggestion.getTarget();
         boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(suggestion.getResult()).run();
+        Print.d(TAG, "SEARCH COMPONENT: result " + result);
         // Case algolia
         if (!result) {
             Bundle bundle = new Bundle();
@@ -1223,8 +1212,7 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
             if (menuItems.contains(MyMenuItem.SEARCH_VIEW)) {
                 // Hide search bar
                 MenuItemCompat.collapseActionView(mSearchMenuItem);
-                // Clean autocomplete
-//                mSearchAutoComplete.setText("");
+
                 // Show hidden items
                 setActionMenuItemsVisibility(true);
                 // Forced the IME option on collapse
@@ -1307,8 +1295,8 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
         else{
             //show dropdown with recent queries
             SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
-            mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
-            mSearchAutoComplete.showDropDown();
+            searchSuggestionsAdapter.setOnViewHolderClickListener(this);
+            mSearchListView.setAdapter(searchSuggestionsAdapter);
         }
     }
 
@@ -1349,8 +1337,9 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
         TrackerDelegator.trackLoadTiming(params);
         SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
-        mSearchAutoComplete.setAdapter(searchSuggestionsAdapter);
-        mSearchAutoComplete.showDropDown();
+        searchSuggestionsAdapter.setOnViewHolderClickListener(this);
+        mSearchListView.setAdapter(searchSuggestionsAdapter);
+
     }
 
     /**
@@ -1817,4 +1806,50 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
     }
 
 
+    /*
+     * (non-Javadoc)
+     * @see com.mobile.interfaces.OnViewHolderClickListener#onViewHolderClick(android.support.v7.widget.RecyclerView.Adapter, android.view.View, int)
+     */
+    @Override
+    public void onViewHolderClick(RecyclerView.Adapter<?> adapter, int position) {
+        // Get suggestion
+        Suggestion selectedSuggestion = ((SearchDropDownAdapter) adapter).getItem(position);
+        // Get text suggestion
+        String text = selectedSuggestion.getResult();
+        //Save searched text
+        JumiaApplication.INSTANCE.setSearchedTerm(text);
+        mSearchAutoComplete.dismissDropDown();
+        // Collapse search view
+        MenuItemCompat.collapseActionView(mSearchMenuItem);
+        // Save query
+        GetSearchSuggestionsHelper.saveSearchQuery(selectedSuggestion);
+
+        switch (selectedSuggestion.getType()){
+            case Suggestion.SUGGESTION_PRODUCT:
+                showSearchProduct(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_SHOP_IN_SHOP:
+                showSearchShopsInShop(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_CATEGORY:
+                // Show query
+                showSearchCategory(selectedSuggestion);
+                break;
+            case Suggestion.SUGGESTION_OTHER:
+                // Show query
+                showSearchOther(selectedSuggestion);
+                break;
+        }
+
+    }
+
+    @Override
+    public void onHeaderClick(String target, String title) {
+
+    }
+
+    @Override
+    public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
+
+    }
 }

@@ -20,7 +20,6 @@ public class NewRelicTracker {
 
 	/**
 	 * New Relic initialization method
-	 * @param context
 	 * @author sergiopereira
 	 */
 	public static void init(Context context){
@@ -35,13 +34,9 @@ public class NewRelicTracker {
 
 	/**
 	 * Notice a success transaction
-	 * @param url
-	 * @param requestStatus
-	 * @param startTimeMillis
-	 * @param endTimeMillis
-	 * @param bytesReceived
 	 * @author sergiopereira
 	 */
+	@SuppressWarnings("unused")
 	public static void noticeSuccessTransaction(String url, String httpMethod, int requestStatus, long startTimeMillis, long endTimeMillis, long bytesReceived){
 		Print.i(TAG, "ON SUCCESS TRANSACTION: " + url);
 		NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url : "n.a.", httpMethod, requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
@@ -49,24 +44,10 @@ public class NewRelicTracker {
 
 	/**
 	 * Notice a failure transaction
-	 * @param url
-	 * @param startTimeMillis
-	 * @param endTimeMillis
-	 * @author sergiopereira
-	 */
-	public static void noticeFailureTransaction(String url, String httpMethod, long startTimeMillis, long endTimeMillis){
-		noticeFailureTransaction(url, httpMethod, startTimeMillis, endTimeMillis, NetworkFailure.BadServerResponse);
-	}
-
-	/**
-	 * Notice a failure transaction
-	 * @param url
-	 * @param startTimeMillis
-	 * @param endTimeMillis
-	 * @param networkFailure
 	 * @author ricardosoares
 	 */
-	public static void noticeFailureTransaction(String url, String httpMethod, long startTimeMillis, long endTimeMillis, NetworkFailure networkFailure){
+	@SuppressWarnings("unused")
+	public static void noticeFailureTransaction(String url, String httpMethod, long startTimeMillis, NetworkFailure networkFailure){
 		Print.i(TAG, "ON FAILURE TRANSACTION: " + url);
 		NewRelic.noticeNetworkFailure(!TextUtils.isEmpty(url) ? url : "n.a.", httpMethod, startTimeMillis, System.currentTimeMillis(), networkFailure);
 	}

@@ -391,7 +391,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             ProductUtils.setShopFirst(item, shopFirstImageView);
             ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
             // Brand
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrand());
+            ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrandName());
             // Name
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_name)).setText(item.getName());
             // Quantity
@@ -487,6 +487,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
+        shippingAddressView.findViewById(R.id.divider).setVisibility(View.GONE);
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
         container.addView(shippingAddressView);
     }
@@ -649,7 +650,11 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 break;
             case SET_MULTI_STEP_FINISH:
                 mCheckoutFinish = (CheckoutFinish) baseResponse.getContentData();
+                // Tracking purchase
+                TrackerDelegator.trackPurchase(mCheckoutFinish, JumiaApplication.INSTANCE.getCart());
+                // Next step
                 switchToSubmittedPayment();
+                // Update cart info
                 getBaseActivity().updateCartInfo();
                 break;
             default:

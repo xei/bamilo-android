@@ -2,12 +2,14 @@ package com.mobile.newFramework.objects.cart;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.checkout.Fulfillment;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONArray;
@@ -16,6 +18,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 /**
@@ -47,6 +50,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private Address mShippingAddress;
     private boolean mIsVatEnabled;
     private ArrayList<Fulfillment> mFulfillmentList;
+    private PurchaseCartItem mLastItemAdded;
 
     /**
      * Constructor
@@ -96,6 +100,12 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             PurchaseCartItem item = new PurchaseCartItem();
             item.initialize(cartObject);
             mCartItems.add(item);
+        }
+        // Last item added
+        if(CollectionUtils.isNotEmpty(mCartItems)) {
+            mLastItemAdded = mCartItems.get(mCartItems.size() - 1);
+        } else {
+            mLastItemAdded = new PurchaseCartItem();
         }
         // Price rules
         JSONArray priceRules = jsonObject.optJSONArray(RestConstants.PRICE_RULES);
@@ -204,10 +214,6 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         return mPriceRules;
     }
 
-    public double getCartValueEuroConverted() {
-        return mTotalConverted;
-    }
-
     public double getPriceForTracking() {
         return mTotalConverted;
     }
@@ -234,6 +240,30 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
     public ArrayList<Fulfillment> getFulfillmentList() {
         return mFulfillmentList;
+    }
+
+    /**
+     * For tracking
+     */
+    @NonNull
+    public PurchaseCartItem getLastItemAdded() {
+        return mLastItemAdded;
+    }
+
+    /**
+     * For tracking
+     */
+    @NonNull
+    public PurchaseCartItem getTheMostExpensiveItem() {
+        Iterator<PurchaseCartItem> it = mCartItems.iterator();
+        PurchaseCartItem max = it.next();
+        while (it.hasNext()) {
+            PurchaseCartItem next = it.next();
+            if (next.getPrice() > max.getPrice()) {
+                max = next;
+            }
+        }
+        return max;
     }
 
     /**
@@ -266,24 +296,6 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
     public boolean hasShippingMethod() {
         return TextUtils.isNotEmpty(mShippingMethod);
-    }
-
-
-    /**
-     * @return A string with all attribute set Ids separated by ;
-     */
-    public String getAttributeSetIdList() {
-        String attributeList = "";
-        if(mCartItems != null && mCartItems.size() > 0){
-            for (int i = 0; i < mCartItems.size() ; i++) {
-                if (TextUtils.isEmpty(attributeList)) {
-                    attributeList = mCartItems.get(i).getAttributeSetId();
-                } else {
-                    attributeList = attributeList +";"+ mCartItems.get(i).getAttributeSetId();
-                }
-            }
-        }
-        return attributeList;
     }
 
 	/*
@@ -337,6 +349,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mFulfillmentList);
         }
+        dest.writeValue(mLastItemAdded);
     }
 
     /**
@@ -374,6 +387,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         } else {
             mFulfillmentList = null;
         }
+        mLastItemAdded = (PurchaseCartItem) in.readValue(PurchaseCartItem.class.getClassLoader());
     }
 
     /**

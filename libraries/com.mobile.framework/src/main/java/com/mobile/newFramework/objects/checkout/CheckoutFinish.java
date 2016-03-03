@@ -23,14 +23,11 @@ import java.util.ArrayList;
 public class CheckoutFinish implements IJSONSerializable, Parcelable {
 
     private PaymentMethodForm mPaymentMethodForm;
-
     private String mPaymentUrl;
-
     private String mOrderNumber;
-
     private RichRelevance mRichRelevance;
-
     private ArrayList<ProductRegular> mRelatedProducts;
+    private String mOrdersCount;
 
     /**
      * Empty constructor
@@ -51,9 +48,13 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get order number
         mOrderNumber = jsonObject.getString(RestConstants.ORDER_NR);
-        // Get payment url
-        mPaymentUrl = null;
+        // Get order count
+        mOrdersCount = jsonObject.optString(RestConstants.ORDERS_COUNT);
 
+        /**
+         * TODO : Improve the parser for Related products and Recommended products.
+         * It's always used the RichRelevance structure.
+         */
         // Related products
         JSONArray relatedProductsJsonArray = jsonObject.optJSONArray(RestConstants.RELATED_PRODUCTS);
         if (relatedProductsJsonArray != null && CollectionUtils.isNotEmpty(relatedProductsJsonArray)) {
@@ -65,7 +66,6 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
                 }
             }
         }
-
         // Recommended products -> Rich Relevance
         JSONObject recommendedProductObject = jsonObject.optJSONObject(RestConstants.RECOMMENDED_PRODUCTS);
         if (recommendedProductObject != null) {
@@ -98,6 +98,10 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
 
     public String getOrderNumber() {
         return mOrderNumber;
+    }
+
+    public String getOrdersCount() {
+        return mOrdersCount;
     }
 
     public PaymentMethodForm getPaymentMethodForm() {
@@ -143,6 +147,8 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mOrderNumber);
+        dest.writeString(mOrdersCount);
         dest.writeValue(mPaymentMethodForm);
         dest.writeString(mPaymentUrl);
         dest.writeList(mRelatedProducts);
@@ -150,6 +156,8 @@ public class CheckoutFinish implements IJSONSerializable, Parcelable {
     }
 
     private CheckoutFinish(Parcel in) {
+        mOrderNumber = in.readString();
+        mOrdersCount = in.readString();
         mPaymentMethodForm = (PaymentMethodForm) in.readValue(PaymentMethodForm.class.getClassLoader());
         mPaymentUrl = in.readString();
         mRelatedProducts = new ArrayList<>();

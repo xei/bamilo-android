@@ -288,6 +288,7 @@
     <string name="some_products_not_added">Unfortunately, some products were not added to cart.</string>
     <string name="splash_slogan">The biggest online shopping mall in Africa</string>
     <string name="splash_slogan_daraz">The only online shopping destination you will need!</string>
+    <string name="splash_slogan_shop">Biggest online shopping mall in Myanmar</string>
     <string name="stale_warning">Lost connection</string>
     <string name="string_appearance">Appearance</string>
     <string name="string_price">Price</string>
@@ -475,10 +476,10 @@
     <string name="size">Size %s</string>
     <string name="added_success">Added successfully.</string>
     <string name="removed_success">Removed successfully.</string>
-    <string name="sign_up_newsletter">Sign Up to our Newsletter</string>
-    <string name="sign_up_newsletter_description">For exclusive acess to sales previews, new arrivals, trends and promotions</string>
+    <string name="sign_up_to_our_newsletter">Sign Up to our Newsletter</string>
+    <string name="sign_up_to_our_newsletter_body">For exclusive acess to sales previews, new arrivals, trends and promotions</string>
     <string name="search_shop_in_shop_label">Visit our %s Store</string>
     <string name="search_categories_label">%1$s in %2$s</string>
-    <string name="active_label">Active</string>
-    <string name="inactive_label">Inactive</string>
+    <string name="on_label">ON</string>
+    <string name="visit_the_official_brand_store">Visit the official %s store</string>
 </resources>

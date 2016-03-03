@@ -150,7 +150,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
      */
     private void setTextContent(WishListProductViewHolder prodItem, ProductMultiple product) {
         // Set brand
-        prodItem.brand.setText(product.getBrand());
+        prodItem.brand.setText(product.getBrandName());
         // Set name
         prodItem.name.setText(product.getName());
 

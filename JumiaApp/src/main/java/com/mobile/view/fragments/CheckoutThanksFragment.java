@@ -2,7 +2,6 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -25,6 +24,7 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
@@ -185,30 +185,34 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     }
 
     /**
+     * Hide related items.
+     */
+    private void hideRelatedItems() {
+        UIUtils.setVisibility(mRelatedProductsView, false);
+    }
+
+    /**
      * Create Rich Relevance or Related Products View
      */
     private void setRelatedItems() {
         // Verify if there's Rich Relevance request to make
         if(mRichRelevance != null && !mRichRelevance.isHasData()){
             triggerRichRelevance(mRichRelevance.getTarget());
-            mRelatedProductsView.setVisibility(View.GONE);
+            hideRelatedItems();
             return;
         }
 
         if (mRichRelevance != null && CollectionUtils.isNotEmpty(mRichRelevance.getRichRelevanceProducts())) {
-
-            if(mRichRelevance != null && com.mobile.newFramework.utils.TextUtils.isNotEmpty(mRichRelevance.getTitle())){
+            if(mRichRelevance != null && TextUtils.isNotEmpty(mRichRelevance.getTitle())){
                 ((TextView) mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mRichRelevance.getTitle());
-
             }
-
             HorizontalListView relatedGridView = (HorizontalListView) mRelatedProductsView.findViewById(R.id.rich_relevance_listview);
             relatedGridView.enableRtlSupport(ShopSelector.isRtl());
             relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(10));
             relatedGridView.setAdapter(new RichRelevanceAdapter(mRichRelevance.getRichRelevanceProducts(), this, R.layout._def_checkout_rr_item, false));
             mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {
-            mRelatedProductsView.setVisibility(View.GONE);
+            hideRelatedItems();
         }
     }
 
@@ -254,17 +258,13 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
                 params.putString(TrackerDelegator.TAX_KEY, mOrderTax);
                 params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, mPaymentMethod);
             }
-            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems(), JumiaApplication.INSTANCE.getCart().getAttributeSetIdList());
+            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());
         }
     }
 
     private void goToProduct(final View view){
         @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
-        // Get title
-        String hash = (String) view.getTag(R.id.target_rr_hash);
-
-        mRelatedRichRelevanceHash = hash;
-
+        mRelatedRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
         new TargetLink(getWeakBaseActivity(), target)
                 .addAppendListener(this)
                 .retainBackStackEntries()
@@ -365,18 +365,16 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         EventType eventType = baseResponse.getEventType();
-
         // Validate fragment visibility
         if (isOnStoppingProcess || eventType == null || getBaseActivity() == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
         // Hide dialog progress
         hideActivityProgress();
         // Validate event
         super.handleSuccessEvent(baseResponse);
-
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType){
             case GET_RICH_RELEVANCE_EVENT:
                 mRichRelevance = (RichRelevance) baseResponse.getContentData();
@@ -386,7 +384,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             default:
                 break;
         }
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
+
     }
 
     /**
@@ -394,17 +392,22 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        // Validate fragment visibility
+        if (isOnStoppingProcess || getBaseActivity() == null) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
         EventType eventType = baseResponse.getEventType();
-        int errorCode = baseResponse.getError().getCode();
+        Print.i(TAG, "ON ERROR EVENT: " + eventType);
         switch (eventType) {
             case GET_RICH_RELEVANCE_EVENT:
-                setRelatedItems();
+                hideRelatedItems();
                 showFragmentContentContainer();
                 break;
             default:
                 break;
         }
-        Print.i(TAG, "ON ERROR EVENT: " + eventType + " " + errorCode);
+
     }
 
 }
