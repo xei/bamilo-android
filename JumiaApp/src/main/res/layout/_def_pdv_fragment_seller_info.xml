@@ -16,7 +16,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_name"
-        style="@style/TextBody_1.ShopFirstDrawRight"
+        style="@style/TextBody.ShopFirstDrawRight"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginLeft="@dimen/layout_padding"

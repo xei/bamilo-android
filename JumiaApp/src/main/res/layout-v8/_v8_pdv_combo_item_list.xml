@@ -41,7 +41,7 @@
         <!-- TITLE -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_title"
-            style="@style/TextList_1"
+            style="@style/TextDisplay_3"
             android:textColor="@color/black"
             android:lines="1"
             android:text="Title"
@@ -59,7 +59,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/choosen_variation"
             style="@style/FormButtonSpinner"
-            android:layout_width="@dimen/dimen_340px"
+            android:layout_width="@dimen/dimen_113_33dp"
             android:lines="1"
             android:visibility="visible"
             />

@@ -30,9 +30,9 @@
             layout="@layout/shopping_basket_product_element"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/dimen_60px"
-            android:layout_marginBottom="@dimen/dimen_48px"
-            android:layout_marginTop="@dimen/dimen_48px"
+            android:layout_margin="@dimen/dimen_20dp"
+            android:layout_marginBottom="@dimen/dimen_16dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
             android:layout_toEndOf="@id/item_image_container"
             android:layout_toRightOf="@id/item_image_container" />
     </RelativeLayout>

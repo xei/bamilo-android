@@ -13,7 +13,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_stock_timer"
-        style="@style/TextInfo"
+        style="@style/TextBody"
         android:layout_width="wrap_content"
         android:textColor="@color/red_basic"
         />
@@ -21,7 +21,7 @@
     <!-- TIMER TITLE -->
 
     <com.mobile.components.customfontviews.TextView
-        style="@style/TextInfo"
+        style="@style/TextBody"
         android:layout_width="wrap_content"
         android:textAllCaps="true"
         android:text="@string/campaign_timer_end"

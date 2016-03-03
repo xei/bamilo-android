@@ -34,7 +34,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_name"
-        style="@style/TextBody_1"
+        style="@style/TextBody"
         android:ellipsize="end"
         android:lines="1"
         android:layout_below="@id/campaign_item_brand"

@@ -7,10 +7,10 @@
         android:id="@+id/checkout_address_item_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_48px"
-        android:layout_marginRight="@dimen/dimen_48px"
-        android:layout_marginTop="@dimen/dimen_48px"
-        android:paddingBottom="@dimen/dimen_48px">
+        android:layout_marginLeft="@dimen/dimen_16dp"
+        android:layout_marginRight="@dimen/dimen_16dp"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:paddingBottom="@dimen/dimen_16dp">
         <!-- SELECTION RADIOBUTTON -->
 
         <com.mobile.components.customfontviews.RadioButton
@@ -39,7 +39,7 @@
             android:id="@+id/checkout_address_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/dimen_20px"
+            android:layout_marginRight="@dimen/dimen_6_67dp"
             android:layout_toLeftOf="@+id/checkout_address_item_radio_btn"
             android:layout_toRightOf="@+id/checkout_address_item_btn_edit"
             android:orientation="vertical">

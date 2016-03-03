@@ -25,7 +25,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_rating_bar_count"
-        style="@style/TextInfo"
+        style="@style/TextBody"
         android:layout_marginLeft="@dimen/margin_mid"
         android:layout_marginStart="@dimen/margin_mid" />
 

@@ -28,7 +28,7 @@
         android:layout_alignStart="@+id/item_image_container"
         android:layout_alignTop="@+id/item_image_container"
         android:layout_gravity="top|left|start"
-        android:layout_marginTop="@dimen/dimen_30px"
+        android:layout_marginTop="@dimen/dimen_10dp"
         android:text="@string/new_arrival_badge" />
 
     <!-- INFO CONTAINER -->

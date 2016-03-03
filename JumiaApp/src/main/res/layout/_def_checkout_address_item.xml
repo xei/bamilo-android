@@ -7,7 +7,7 @@
         android:id="@+id/checkout_address_item_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/dimen_48px">
+        android:layout_margin="@dimen/dimen_16dp">
         
         <!-- SELECTION RADIOBUTTON -->
 
@@ -40,8 +40,8 @@
             android:id="@+id/checkout_address_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dimen_20px"
-            android:layout_marginStart="@dimen/dimen_20px"
+            android:layout_marginLeft="@dimen/dimen_6_67dp"
+            android:layout_marginStart="@dimen/dimen_6_67dp"
             android:layout_toEndOf="@+id/checkout_address_item_radio_btn"
             android:layout_toLeftOf="@+id/checkout_address_item_btn_edit"
             android:layout_toRightOf="@+id/checkout_address_item_radio_btn"

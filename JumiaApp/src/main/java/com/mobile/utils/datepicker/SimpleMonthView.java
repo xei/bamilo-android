@@ -191,7 +191,7 @@ public class SimpleMonthView extends View {
         mMonthTitleTypeface = FONT;
 
         mDayTextColor = res.getColor(R.color.date_picker_text_normal);
-        mTodayNumberColor = res.getColor(R.color.orange_f68b1e);
+        mTodayNumberColor = res.getColor(R.color.orange1);
         mMonthTitleColor = res.getColor(R.color.white);
         mMonthTitleBGColor = res.getColor(R.color.circle_background);
 

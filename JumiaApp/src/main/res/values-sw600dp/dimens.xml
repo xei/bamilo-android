@@ -65,7 +65,7 @@
     <dimen name="catalog_grid_item_image_width">146dp</dimen>
     <dimen name="catalog_grid_item_image_height">270dp</dimen>
     <dimen name="catalog_single_item_image_height">350dp</dimen>
-    <dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen>
+    <dimen name="catalog_tool_bar_height">@dimen/dimen_50dp</dimen>
     <integer name="activate_go_top_buttom_line">5</integer>
     <integer name="activate_go_top_buttom_line_grid">3</integer>
 
@@ -88,9 +88,6 @@
 
     <dimen name="double_home_items_margin">50dp</dimen>
 
-    <!-- dimen name="fragment_root_text_size">27sp</dimen -->
-
-    <!--<dimen name="form_item_height">48dp</dimen>-->
 
     <dimen name="login_margin_small">15dp</dimen>
     <dimen name="login_margin_medium">30dp</dimen>
@@ -136,9 +133,9 @@
     
 	<!-- Toast -->
     <dimen name="toast_hover">75dp</dimen>
-
-    <dimen name="shipping_time_fee_min_height">@dimen/dimen_120px</dimen>
-
+    
+    <dimen name="shipping_time_fee_min_height">@dimen/dimen_40dp</dimen>
+   
     <!-- PDV -->
 
     <!-- NO CONNECTION -->

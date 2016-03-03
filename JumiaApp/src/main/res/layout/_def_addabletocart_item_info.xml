@@ -32,7 +32,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextList_1"
+        style="@style/TextDisplay_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_brand"
@@ -87,7 +87,7 @@
         android:id="@+id/button_shop"
         style="@style/AigButton.Active"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/dimen_144px"
+        android:layout_height="@dimen/dimen_48dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/price_section"

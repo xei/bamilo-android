@@ -3,7 +3,7 @@
     android:id="@+id/tab"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    style="@style/TextBody_3"
+    style="@style/TextBody"
     android:textColor="@color/white"
     android:clickable="true"
     android:gravity="center"

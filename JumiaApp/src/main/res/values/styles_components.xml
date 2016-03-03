@@ -17,7 +17,7 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="TextField" parent="TextList_2">
+    <style name="TextField" parent="TextDisplay_3">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:background">@drawable/_gen_selector_text_field</item>
@@ -42,7 +42,7 @@
     </style>
 
     <!-- TextField error message -->
-    <style name="TextErrorField" parent="TextInfo">
+    <style name="TextErrorField" parent="TextBody">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/red_basic</item>
@@ -55,7 +55,7 @@
     </style>
 
     <!-- Single line item -->
-    <style name="SingleLineStyle" parent="@style/TextList_2">
+    <style name="SingleLineStyle" parent="@style/TextDisplay_3">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:paddingLeft">20dp</item>
@@ -209,7 +209,7 @@
 
     <!-- NEW ARRIVAL BADGE -->
     <style name="NewArrivalBadge">
-        <item name="android:padding">@dimen/dimen_12px</item>
+        <item name="android:padding">@dimen/dimen_4dp</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@color/black_700</item>
         <item name="android:textColor">@color/white</item>
