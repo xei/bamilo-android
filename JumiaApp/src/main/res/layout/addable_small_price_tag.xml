@@ -6,7 +6,7 @@
     >
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
-        style="@style/TextBody_3"
+        style="@style/TextBody"
         android:textColor="@color/black"
         android:text="Rs.399"
         android:layout_alignParentLeft="true"
@@ -16,7 +16,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextBody_3"
+        style="@style/TextBody"
         android:textColor="@color/black_800"
         android:text="Rs.399"
         android:layout_marginLeft="5dp"

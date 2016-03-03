@@ -17,7 +17,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/out_of_stock_text"
-            style="@style/TextList_1"
+            style="@style/TextDisplay_3"
             android:background="@color/white"
             android:padding="15dp"
             android:gravity="center"

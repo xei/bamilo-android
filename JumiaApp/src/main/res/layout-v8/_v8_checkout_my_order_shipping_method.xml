@@ -22,8 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="@dimen/dimen_60px"
-            android:layout_marginTop="@dimen/dimen_60px"
+            android:layout_marginLeft="@dimen/dimen_20dp"
+            android:layout_marginTop="@dimen/dimen_20dp"
             android:src="@drawable/selector_btn_edit"
             android:paddingRight="10dp"/>
         <!-- SHIPPING METHOD -->
@@ -32,7 +32,7 @@
             android:id="@+id/checkout_my_order_shipping_method_name"
             style="@style/SubListItemStyle"
             android:layout_width="wrap_content"
-            android:paddingRight="@dimen/dimen_60px"
+            android:paddingRight="@dimen/dimen_20dp"
             android:layout_alignParentRight="true"
             android:gravity="right|center_vertical" />
     </RelativeLayout>

@@ -11,7 +11,7 @@
 
     <ImageButton
         android:id="@+id/catalog_bar_button_columns"
-        android:layout_width="@dimen/dimen_340px"
+        android:layout_width="@dimen/dimen_113_33dp"
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:src="@drawable/selector_catalog_list"
@@ -41,13 +41,13 @@
         android:layout_toStartOf="@id/catalog_bar_divider"
         android:addStatesFromChildren="true"
         android:background="@drawable/selector_card_default_white"
-        android:paddingRight="@dimen/dimen_100px"
-        android:paddingEnd="@dimen/dimen_100px"
+        android:paddingRight="@dimen/dimen_33_33dp"
+        android:paddingEnd="@dimen/dimen_33_33dp"
         android:gravity="right|end|center">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_filter"
-            style="@style/TextList_2"
+            style="@style/TextDisplay_3"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textColor="@color/black"
@@ -70,8 +70,8 @@
         android:layout_toEndOf="@id/catalog_bar_divider"
         android:layout_toLeftOf="@id/catalog_bar_button_columns"
         android:layout_toStartOf="@id/catalog_bar_button_columns"
-        android:paddingLeft="@dimen/dimen_100px"
-        android:paddingStart="@dimen/dimen_100px"
+        android:paddingLeft="@dimen/dimen_33_33dp"
+        android:paddingStart="@dimen/dimen_33_33dp"
         android:addStatesFromChildren="true"
         android:background="@drawable/selector_card_default_white"
         android:gravity="left|start|center">
@@ -79,7 +79,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_sort"
             android:drawablePadding="@dimen/margin_10px"
-            style="@style/TextList_2"
+            style="@style/TextDisplay_3"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textColor="@color/black"

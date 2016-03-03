@@ -24,7 +24,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_stores_text_title"
-            style="@style/TextBody_1"
+            style="@style/TextBody"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@id/home_teaser_stores_image" />
 

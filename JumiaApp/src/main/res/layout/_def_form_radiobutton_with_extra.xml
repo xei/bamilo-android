@@ -55,7 +55,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_fee_info"
-            style="@style/TextInfo_2"
+            style="@style/TextCaption"
             android:text="@string/shipping_fee_info"
             android:visibility="gone" />
 
@@ -69,7 +69,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_stations_title"
-            style="@style/TextList_2"
+            style="@style/TextDisplay_3"
             android:text="@string/select_city"
             android:visibility="gone" />
 

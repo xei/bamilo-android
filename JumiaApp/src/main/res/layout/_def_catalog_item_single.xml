@@ -24,9 +24,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/dimen_30px"
-        android:layout_marginLeft="@dimen/dimen_30px"
-        android:layout_marginStart="@dimen/dimen_30px"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginLeft="@dimen/dimen_10dp"
+        android:layout_marginStart="@dimen/dimen_10dp"
         android:gravity="center"
         android:text="@string/new_arrival_badge" />
 
@@ -71,7 +71,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBody_1"
+        style="@style/TextBody"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_brand"
@@ -85,7 +85,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
-        style="@style/TextBody_3"
+        style="@style/TextBody"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignLeft="@+id/item_brand"
@@ -100,7 +100,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextBody_3"
+        style="@style/TextBody"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_name"

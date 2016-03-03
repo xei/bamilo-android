@@ -41,7 +41,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/header_text"
-            style="@style/TextBody_1"
+            style="@style/TextBody"
             android:textColor="@color/black" />
 
         <!-- PRICE -->

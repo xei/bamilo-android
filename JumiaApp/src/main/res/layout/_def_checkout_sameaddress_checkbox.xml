@@ -2,12 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/dimen_48px"
-    android:layout_marginLeft="@dimen/dimen_48px"
-    android:layout_marginRight="@dimen/dimen_48px"
-    android:layout_marginStart="@dimen/dimen_48px"
-    android:paddingBottom="@dimen/dimen_48px"
-    android:paddingTop="@dimen/dimen_48px">
+    android:layout_marginEnd="@dimen/dimen_16dp"
+    android:layout_marginLeft="@dimen/dimen_16dp"
+    android:layout_marginRight="@dimen/dimen_16dp"
+    android:layout_marginStart="@dimen/dimen_16dp"
+    android:paddingBottom="@dimen/dimen_16dp"
+    android:paddingTop="@dimen/dimen_16dp">
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/checkout_address_billing_checkbox"

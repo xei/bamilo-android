@@ -178,7 +178,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
         // Validate the current size
        if (size > 1) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) mViewPagerIndicator.getLayoutParams();
-            p.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.dimen_78px));
+            p.setMargins(0, 0, 0, (int) getResources().getDimension(R.dimen.dimen_26dp));
             mViewPagerIndicator.requestLayout();
 
             mViewPagerIndicator.setVisibility(View.VISIBLE);

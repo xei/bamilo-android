@@ -23,7 +23,7 @@
         android:layout_height="@dimen/wizard_product_height"
         android:layout_above="@id/wizard_product_size_text"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dimen_180px"
+        android:layout_marginBottom="@dimen/dimen_60dp"
         android:src="@drawable/img_instructions_pinch" />
 
     <com.mobile.components.customfontviews.Button

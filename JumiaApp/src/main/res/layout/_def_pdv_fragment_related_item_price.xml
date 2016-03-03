@@ -7,12 +7,12 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
-        style="@style/TextBody_3"
+        style="@style/TextBody"
         android:textColor="@color/black"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_price"
-        style="@style/TextBody_3"
+        style="@style/TextBody"
         android:layout_marginLeft="2dp"
         android:layout_marginStart="2dp"
         android:textColor="@color/black_800" />
