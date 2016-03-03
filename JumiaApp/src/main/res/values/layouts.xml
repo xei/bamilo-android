@@ -21,9 +21,7 @@
     <item name="checkout_summary_shipping_address"      type="layout">@layout/_def_checkout_summary_shipping_address</item>
     <item name="checkout_summary_shipping_method"       type="layout">@layout/_def_checkout_summary_shipping_method</item>
     <item name="checkout_payment_methods"               type="layout">@layout/_def_checkout_payment_methods</item>
-    <item name="checkout_sameaddress_checkbox"          type="layout">@layout/_def_checkout_sameaddress_checkbox</item>
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_def_checkout_shipping_pickup_station</item>
-    <item name="checkout_shipping_fee_time"             type="layout">@layout/_def_checkout_shipping_fee_time</item>
     <item name="checkout_header"                        type="layout">@layout/_def_checkout_header</item>
     <item name="checkout_thanks"                        type="layout">@layout/_def_checkout_thanks</item>
     <item name="checkout_success_fragment_related"      type="layout">@layout/_def_checkout_success_fragment_related_prods</item>
@@ -34,7 +32,6 @@
     <item name="checkout_shipping_main" 		        type="layout">@layout/_def_checkout_shipping_main</item>
     <item name="checkout_payment_main" 			        type="layout">@layout/_def_checkout_payment_main</item>
     <item name="checkout_total_layout" 			        type="layout">@layout/_def_checkout_total_layout</item>
-    <item name="cart_total"                             type="layout">@layout/_def_price</item>
     <item name="price_rules_element"                    type="layout">@layout/_def_price_rules_element</item>
     <item name="fulfillment_main"                       type="layout">@layout/_def_fulfillment_main</item>
     <item name="fulfillment_product"                    type="layout">@layout/_def_fulfillment_product</item>
@@ -50,7 +47,6 @@
     <!-- ACTION BAR -->
     <item name="action_bar_myprofile_layout"            type="layout">@layout/_def_action_bar_myprofile_layout</item>
     <item name="action_bar_menu_item_layout"            type="layout">@layout/_def_action_bar_menu_item_layout</item>
-    <item name="recent_search_suggestion_list_item"     type="layout">@layout/_def_recent_search_suggestion_list_item</item>
     <item name="search_suggestion_list_item"            type="layout">@layout/_def_search_suggestion_list_item</item>
 
     <!-- FRAGMENT ROOT -->
@@ -60,7 +56,6 @@
     <!-- CATALOG -->
     <item name="catalog_fragment_main"                  type="layout">@layout/_def_catalog_fragment_main</item>
     <item name="catalog_fragment_tool_bar"              type="layout">@layout/_def_catalog_fragment_tool_bar</item>
-    <item name="catalog_fragment_wizard"                type="layout">@layout/_def_catalog_fragment_wizard</item>
     <item name="catalog_fragment_no_result"             type="layout">@layout/_def_catalog_fragment_no_result</item>
     <item name="filters_main"                           type="layout">@layout/_def_filters_main</item>
     <item name="filter_bottom_buttons"                  type="layout">@layout/_def_filter_bottom_buttons</item>
@@ -142,8 +137,6 @@
     <item name="navigation_fragment_main"               type="layout">@layout/_def_navigation_fragment_main</item>
 
     <!-- CATEGORY -->
-    <item name="category_inner_childcat"                type="layout">@layout/_def_category_inner_childcat</item>
-    <item name="category_inner_currentcat"              type="layout">@layout/_def_category_inner_currentcat</item>
     <item name="navigation_fragment_categories"         type="layout">@layout/_def_navigation_fragment_categories</item>
     <item name="category_header"                        type="layout">@layout/_def_category_header</item>
     <item name="category_single_line_list"              type="layout">@layout/_def_category_single_line_list</item>
@@ -178,47 +171,34 @@
 
 
     <item name="reviews_fragment_rating_bigtype_item"   type="layout">@layout/_def_reviews_fragment_rating_bigtype_item</item>
-    <item name="navigation_generic_component"           type="layout">@layout/_def_navigation_generic_component</item>
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
-    <item name="product_offers_main"                    type="layout">@layout/_def_product_offers_main</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_def_campaign_spinner_item</item>
     <item name="gen_form_check_box"                     type="layout">@layout/_def_form_checkbox</item>
     <item name="form_button"                            type="layout">@layout/_def_form_button</item>
     <item name="form_radiolayout"                       type="layout">@layout/_def_form_radiolayout</item>
-    <item name="login_remember_checkbox"                type="layout">@layout/_def_login_remember_checkbox</item>
     <item name="form_spinner_dropdown_item"             type="layout">@layout/_def_form_spinner_dropdown_item</item>
-    <item name="order_history_item"                     type="layout">@layout/_def_order_history_item</item>
     <item name="rating_bar_component"                   type="layout">@layout/_def_rating_bar_component</item>
     <item name="product_item_bundle"                    type="layout">@layout/_def_product_item_bundle</item>
     <item name="shopping_basket_product_element"        type="layout">@layout/_def_shopping_basket_product_element</item>
     <item name="checkout_summary_product_element"       type="layout">@layout/_def_checkout_summary_product_element</item>
-    <item name="tip_share_layout"                       type="layout">@layout/_def_tip_share_layout</item>
     <item name="dialog_list_content"                    type="layout">@layout/_def_dialog_list_content</item>
-    <item name="reviews_fragment_item"                  type="layout">@layout/_def_reviews_fragment_item</item>
     <item name="shopping_basket_item_image"             type="layout">@layout/_def_shopping_basket_item_image</item>
     <item name="review_write_fragment"                  type="layout">@layout/_def_review_write_fragment</item>
-    <item name="order_history_product_item"             type="layout">@layout/_def_order_history_product_item</item>
     <item name="dialog_generic_3buttons"                type="layout">@layout/_def_dialog_generic_3buttons</item>
     <item name="review_write_fragment_nested"           type="layout">@layout/_def_review_write_fragment_nested</item>
     <item name="forgotpassword"                         type="layout">@layout/_def_forgotpassword</item>
     <item name="preference_list_item"                   type="layout">@layout/_def_preference_list_item</item>
     <item name="dialog_generic"                         type="layout">@layout/_def_dialog_generic</item>
-    <item name="my_account_bottom_buttons"              type="layout">@layout/_def_my_account_bottom_buttons</item>
-    <item name="track_order_item"                       type="layout">@layout/_def_track_order_item</item>
     <item name="loading_bar"                            type="layout">@layout/_def_loading_bar</item>
-    <item name="tip_favourite_layout"                   type="layout">@layout/_def_tip_favourite_layout</item>
     <item name="shopping_basket"                        type="layout">@layout/_def_shopping_basket</item>
 
     <item name="shopping_cart_product_container"        type="layout">@layout/_def_shopping_basket_product_element_container</item>
     <item name="campaign_spinner_dropdown_item"         type="layout">@layout/_def_campaign_spinner_dropdown_item</item>
     <item name="offers_item"                            type="layout">@layout/_def_offers_item</item>
-    <item name="dialog_list_header_item"                type="layout">@layout/_def_dialog_list_header_item</item>
-    <item name="loading_bar_no_box"                     type="layout">@layout/_def_loading_bar_no_box</item>
     <item name="product_gallery_fragment"               type="layout">@layout/_def_product_gallery_fragment</item>
 
     <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
     <item name="form_spinner_item"                      type="layout">@layout/_def_form_spinner_item</item>
-    <item name="simple_email_notification_option"       type="layout">@layout/_def_simple_email_notification_option</item>
 
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>

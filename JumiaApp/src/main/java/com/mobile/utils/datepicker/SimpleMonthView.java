@@ -299,8 +299,6 @@ public class SimpleMonthView extends View {
      *
      * @param params
      *            A map of the new parameters, see {@link #VIEW_PARAMS_HEIGHT}
-     * @param tz
-     *            The time zone this view should reference times in
      */
     public void setMonthParams(HashMap<String, Integer> params) {
         if (!params.containsKey(VIEW_PARAMS_MONTH) && !params.containsKey(VIEW_PARAMS_YEAR)) {

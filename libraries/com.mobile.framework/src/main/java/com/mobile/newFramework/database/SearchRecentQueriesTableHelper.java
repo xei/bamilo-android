@@ -41,7 +41,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
     @Override
     @DarwinDatabaseHelper.UpgradeType
     public int getUpgradeType() {
-        return DarwinDatabaseHelper.CACHE;
+        return DarwinDatabaseHelper.PERSIST;
     }
 
     /*

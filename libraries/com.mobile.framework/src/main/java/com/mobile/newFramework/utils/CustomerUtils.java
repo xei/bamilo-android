@@ -150,7 +150,7 @@ public class CustomerUtils {
 
 		@Override
 		protected char[] getSpecialCode() {
-			return Long.toHexString(0x9ad8aa75257645bl).toCharArray();
+			return Long.toHexString(0x9ad8aa75257645bL).toCharArray();
 		}
 
 	}

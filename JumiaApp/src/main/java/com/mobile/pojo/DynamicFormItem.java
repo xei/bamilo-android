@@ -465,7 +465,7 @@ public class DynamicFormItem {
      *
      * @param inStat the Bundle that contains the stored information of the control
      */
-    public void loadState(Bundle inStat) {
+    public void loadState(@NonNull Bundle inStat) {
         switch (this.entry.getInputType()) {
             case checkBoxLink:
                 boolean checkedList = inStat.getBoolean(getKey());
@@ -777,7 +777,7 @@ public class DynamicFormItem {
      *
      * @param outState The Bundle object that will hold the state of the object
      */
-    public void saveState(Bundle outState) {
+    public void saveState(@NonNull Bundle outState) {
         switch (this.entry.getInputType()) {
             case checkBoxLink:
                 outState.putBoolean(getKey(), ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked());
