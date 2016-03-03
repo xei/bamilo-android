@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <com.mobile.components.customfontviews.TextView
-        style="@style/TextInfo_2"
+        style="@style/TextCaption"
         android:text="@string/payment"
         android:textColor="@color/black_800" />
 

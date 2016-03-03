@@ -34,7 +34,7 @@
             />
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextBody_1"
+            style="@style/TextBody"
             android:layout_marginLeft="@dimen/margin_60px"
             android:layout_marginRight="@dimen/margin_60px"
             android:layout_marginTop="@dimen/dimen_16dp"

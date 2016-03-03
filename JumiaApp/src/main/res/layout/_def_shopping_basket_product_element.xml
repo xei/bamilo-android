@@ -7,7 +7,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBody_1"
+        style="@style/TextBody"
         android:layout_marginEnd="@dimen/login_margin_medium"
         android:layout_marginRight="@dimen/login_margin_medium"
         android:layout_marginTop="@dimen/item_margin_top"
@@ -37,8 +37,8 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_60px"
-            android:layout_marginStart="@dimen/dimen_60px"
+            android:layout_marginLeft="@dimen/dimen_20dp"
+            android:layout_marginStart="@dimen/dimen_20dp"
             android:text="Price"
             android:textColor="@color/black_800"
             android:textSize="@dimen/text_s" />
@@ -82,14 +82,14 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_delete"
-        style="@style/TextBody_1"
+        style="@style/TextBody"
         android:layout_below="@id/delete_divider"
         android:layout_gravity="center_vertical"
         android:clickable="true"
         android:contentDescription="@string/voucher_remove"
         android:gravity="center_vertical"
-        android:paddingBottom="@dimen/dimen_48px"
-        android:paddingTop="@dimen/dimen_48px"
+        android:paddingBottom="@dimen/dimen_16dp"
+        android:paddingTop="@dimen/dimen_16dp"
         android:text="@string/voucher_remove"
         android:textColor="@color/black_800" />
 

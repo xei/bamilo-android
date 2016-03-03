@@ -130,7 +130,7 @@ public class WarningFactory {
     private void showWarningSuccess(int warning){
         if(actualWarning != warning || !TextUtils.equals(actualWarningMessage, mWarningMessage)){
             new Builder().setText(mWarningMessage)
-                    .setBackground(R.color.green_warning)
+                    .setBackground(R.color.green1)
                     .setImageVisibility(false)
                     .setAnimationDuration(_3_SECONDS)
                     .startAnimation();

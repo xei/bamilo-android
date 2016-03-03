@@ -24,8 +24,8 @@
             android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:fontFamily="roboto_regular"
-            android:paddingEnd="@dimen/dimen_180px"
-            android:paddingRight="@dimen/dimen_180px"
+            android:paddingEnd="@dimen/dimen_60dp"
+            android:paddingRight="@dimen/dimen_60dp"
             android:singleLine="false"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s"/>

@@ -19,7 +19,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/title"
-        style="@style/TextList_1"
+        style="@style/TextDisplay_3"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/button"
         tools:text="Title" />
@@ -28,7 +28,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/sub_title"
-        style="@style/TextBody_1"
+        style="@style/TextBody"
         android:layout_alignParentRight="true"
         android:layout_below="@id/title"
         android:layout_toRightOf="@id/button"

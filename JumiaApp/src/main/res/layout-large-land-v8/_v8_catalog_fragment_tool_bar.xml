@@ -10,7 +10,7 @@
 
     <ImageButton
         android:id="@+id/catalog_bar_button_columns"
-        android:layout_width="@dimen/dimen_340px"
+        android:layout_width="@dimen/dimen_113_33dp"
         android:layout_height="match_parent"
         android:background="@android:color/white"
         android:src="@drawable/selector_catalog_list"
@@ -45,13 +45,13 @@
         android:layout_alignParentRight="true"
         android:addStatesFromChildren="true"
         android:background="@drawable/selector_card_default_white"
-        android:paddingLeft="@dimen/dimen_100px"
+        android:paddingLeft="@dimen/dimen_33_33dp"
         android:gravity="left|center_vertical">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_filter"
             android:drawablePadding="@dimen/margin_10px"
-            style="@style/TextList_2"
+            style="@style/TextDisplay_3"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textColor="@color/black"
@@ -71,14 +71,14 @@
         android:id="@+id/sort_container"
         android:layout_toLeftOf="@id/catalog_bar_divider"
         android:layout_toRightOf="@id/catalog_bar_button_columns"
-        android:paddingRight="@dimen/dimen_100px"
+        android:paddingRight="@dimen/dimen_33_33dp"
         android:background="@android:color/white"
         android:gravity="right|center_vertical">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_sort"
             android:drawablePadding="@dimen/margin_10px"
-            style="@style/TextList_2"
+            style="@style/TextDisplay_3"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:textColor="@color/black"

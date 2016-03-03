@@ -22,7 +22,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_title_date"
-                style="@style/TextInfo_2"
+                style="@style/TextCaption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"

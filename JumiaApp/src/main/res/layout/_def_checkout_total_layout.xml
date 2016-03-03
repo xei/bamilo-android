@@ -8,7 +8,7 @@
 
     <com.mobile.components.customfontviews.AutoResizeTextView
         android:id="@+id/checkout_total_label"
-        style="@style/TextList_1"
+        style="@style/TextDisplay_3"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3"

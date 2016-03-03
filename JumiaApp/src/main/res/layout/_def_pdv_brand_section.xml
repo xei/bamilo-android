@@ -31,7 +31,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_brand_text"
-        style="@style/TextList_1"
+        style="@style/TextDisplay_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

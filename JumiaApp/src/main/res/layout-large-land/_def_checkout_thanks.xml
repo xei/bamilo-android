@@ -46,7 +46,7 @@
             />
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextBody_1"
+            style="@style/TextBody"
             android:textColor="@color/black_800"
             android:gravity="center_horizontal"
             android:layout_marginTop="@dimen/dimen_16dp"
