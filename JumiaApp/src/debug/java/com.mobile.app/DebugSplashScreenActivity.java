@@ -1,10 +1,15 @@
 package com.mobile.app;
 
-import com.mobile.app.drawer.DebugDrawerActivity;
+import com.mobile.view.R;
+import com.mobile.view.SplashScreenActivity;
 
 /**
- * Created by spereira on 3/2/16.
+ *
  */
-public class DebugSplashScreenActivity extends DebugDrawerActivity {
+public class DebugSplashScreenActivity extends SplashScreenActivity {
 
+    @Override
+    protected Class<?> getActivityClassForDevice() {
+        return !getResources().getBoolean(R.bool.isTablet) ? DebugActivity.class : DebugTabletActivity.class;
+    }
 }

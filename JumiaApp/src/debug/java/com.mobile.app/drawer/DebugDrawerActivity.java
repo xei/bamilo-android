@@ -1,9 +1,9 @@
 package com.mobile.app.drawer;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 import com.mobile.utils.Toast;
+import com.mobile.view.MainFragmentActivity;
 
 import java.util.Arrays;
 
@@ -19,13 +19,14 @@ import io.palaima.debugdrawer.commons.SettingsModule;
 import io.palaima.debugdrawer.scalpel.ScalpelModule;
 
 
-public class DebugDrawerActivity extends AppCompatActivity {
+public class DebugDrawerActivity extends MainFragmentActivity {
 
     private DebugDrawer debugDrawer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        onCreatedActivity();
     }
 
     protected void onCreatedActivity() {
@@ -73,13 +74,13 @@ public class DebugDrawerActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         debugDrawer.onResume();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         debugDrawer.onPause();
     }

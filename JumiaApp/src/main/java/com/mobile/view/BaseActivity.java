@@ -42,7 +42,6 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.app.drawer.DebugDrawerActivity;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalSpaceItemDecoration;
@@ -115,7 +114,7 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends DebugDrawerActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
+public abstract class BaseActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -359,8 +358,6 @@ public abstract class BaseActivity extends DebugDrawerActivity implements TabLay
         setTitle(titleResId);
         // For tracking
         mLaunchTime = System.currentTimeMillis();
-        //
-        onCreatedActivity();
     }
 
     /**

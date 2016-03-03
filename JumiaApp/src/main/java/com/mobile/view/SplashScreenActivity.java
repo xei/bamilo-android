@@ -207,7 +207,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @return Class
      * @author sergiopereira
      */
-    private Class<?> getActivityClassForDevice() {
+    protected Class<?> getActivityClassForDevice() {
         return !getResources().getBoolean(R.bool.isTablet) ? MainFragmentActivity.class : MainFragmentTabletActivity.class;
     }
 
