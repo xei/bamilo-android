@@ -136,9 +136,9 @@
     
 	<!-- Toast -->
     <dimen name="toast_hover">75dp</dimen>
-    
+
     <dimen name="shipping_time_fee_min_height">@dimen/dimen_120px</dimen>
-   
+
     <!-- PDV -->
 
     <!-- NO CONNECTION -->

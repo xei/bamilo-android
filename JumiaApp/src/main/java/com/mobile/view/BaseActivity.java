@@ -1849,4 +1849,5 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void onViewHolderItemClick(View view, RecyclerView.Adapter<?> adapter, int position) {
 
     }
+
 }

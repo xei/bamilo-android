@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.mobile.components.customfontviews.AutoResizeTextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/checkout_total_label"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:ellipsize="none"
-    android:gravity="start|center_vertical"
-    android:text="@string/order_summary_total_label"
-    android:textSize="@dimen/text_button" />

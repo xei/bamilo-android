@@ -3,7 +3,7 @@
 
     <!-- HOME -->
     <dimen name="teaser_swipe_banner_height">260dp</dimen> <!-- 1440x600 -->
-    
+
     <dimen name="teaser_banners_group_height">166dp</dimen> <!-- 359x189 -->
 
     <dimen name="teaser_banners_brands_list_height">100dp</dimen>
@@ -50,7 +50,7 @@
     <integer name="activate_go_top_buttom_line">5</integer>
     <integer name="activate_go_top_buttom_line_grid">3</integer>
 
-    <!-- PDV IMAGE LANDSCAPE --> 
+    <!-- PDV IMAGE LANDSCAPE -->
     <dimen name="pdv_image_with_var_simple">370dp</dimen>
     <dimen name="pdv_image_with_var">430dp</dimen>
     <dimen name="pdv_image_alone">480dp</dimen>

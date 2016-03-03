@@ -4,7 +4,7 @@
     <dimen name="login_margin_small">0dp</dimen>
     <dimen name="product_tip_variations_top_margin">100dp</dimen>
     <dimen name="product_tip_top_margin">100dp</dimen>
-    
+
     <dimen name="retry_layout_height">@dimen/dimen_810px</dimen>
 
     <!-- KICKOUT -->
