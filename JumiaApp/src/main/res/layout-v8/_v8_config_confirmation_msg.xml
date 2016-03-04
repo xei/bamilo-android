@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/green1"
+    android:background="@color/green_1"
     >
 
     <RelativeLayout
@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="@color/transparent"
-            style="@style/TextBody"
+            style="@style/TextBase.Body"
             android:textColor="@color/white"
             android:layout_alignParentLeft="true"
             android:text="@string/cta_button_view_cart"
@@ -49,7 +49,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/im_check"
                 android:layout_marginRight="@dimen/confirm_msg_padding"
-                style="@style/TextHeader"
+                style="@style/TextBase.Header"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:text="@string/informational_text"
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignRight="@id/tx_informational_text"
                 android:layout_below="@id/tx_informational_text"
-                style="@style/TextCaption"
+                style="@style/TextBase.Caption"
                 android:textColor="@color/white"
                 android:text="@string/informational_text"
 
@@ -82,7 +82,7 @@
         android:layout_height="@dimen/margin_120px"
         android:layout_gravity="center_horizontal"
         android:background="@color/transparent"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:textColor="@color/white"
         android:text="@string/cta_link_continue_shopping"
         />

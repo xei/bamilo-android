@@ -7,7 +7,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:layout_marginEnd="@dimen/login_margin_medium"
         android:layout_marginRight="@dimen/login_margin_medium"
         android:layout_marginTop="@dimen/item_margin_top"
@@ -32,7 +32,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_regprice"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
@@ -45,7 +45,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/changequantity_label"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -82,7 +82,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_delete"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:layout_below="@id/delete_divider"
         android:layout_gravity="center_vertical"
         android:clickable="true"

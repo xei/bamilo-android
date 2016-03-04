@@ -19,7 +19,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/category_single_text"
-        style="@style/TextDisplay_3"
+        style="@style/TextBase.Display_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignWithParentIfMissing="true"

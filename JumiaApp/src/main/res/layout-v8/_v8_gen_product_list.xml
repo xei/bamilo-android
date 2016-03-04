@@ -37,7 +37,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black_800"
         android:layout_width="wrap_content"
         android:layout_alignRight="@+id/center_view"
@@ -47,7 +47,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_alignRight="@+id/center_view"
@@ -60,7 +60,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -71,7 +71,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/item_discount"
@@ -99,7 +99,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_marginRight="4dp"
             android:gravity="center_vertical|right"
@@ -123,7 +123,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="@dimen/rounded_margin_mid"
+        android:padding="@dimen/margin_padding_l"
         android:paddingTop="@dimen/catalog_item_vertical_padding"
         android:src="@drawable/selector_favorite"
         android:layout_below="@id/item_shop_first"/>
@@ -135,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignBottom="@id/rating_container"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginLeft="@dimen/margin_padding_l"
         android:gravity="center" />
 
 </RelativeLayout>

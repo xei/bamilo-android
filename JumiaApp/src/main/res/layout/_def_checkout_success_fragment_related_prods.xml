@@ -6,7 +6,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="@dimen/dimen_16dp"
-        app:divider="@drawable/divider_horizontal_black_300"
+        app:divider="@drawable/_gen_divider_horizontal_black_300"
         app:showDividers="beginning"
     >
     <!-- HEADER -->

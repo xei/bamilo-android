@@ -14,7 +14,7 @@
     <!--SELLER NAME -->
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/offer_owner_name"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -34,7 +34,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             color="@color/black_800"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/offer_item_delivery"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/dimen_10dp"

@@ -33,7 +33,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="false"
-        android:padding="@dimen/rounded_margin_mid"
+        android:padding="@dimen/margin_padding_l"
         android:paddingTop="@dimen/catalog_item_vertical_padding"
         android:src="@drawable/selector_favorite" />
 
@@ -45,17 +45,17 @@
         android:layout_alignBottom="@+id/item_discount"
         android:layout_toLeftOf="@+id/item_regprice"
         android:layout_marginTop="4dp"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginLeft="@dimen/margin_padding_l"
         android:gravity="center" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_width="wrap_content"
         android:layout_below="@id/image_loadable"
         android:layout_marginLeft="@dimen/margin_60px"
         android:layout_marginRight="@dimen/margin_60px"
-        android:layout_marginTop="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/margin_padding_l"
         android:gravity="right"
         android:layout_alignRight="@+id/image_loadable"
         android:text="BRAND"
@@ -63,7 +63,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_brand"
@@ -76,7 +76,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/item_brand"
@@ -88,7 +88,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextBody"
+        style="@style/TextBase.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_name"
@@ -125,7 +125,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_marginRight="4dp"
             android:layout_toLeftOf="@id/item_rating"

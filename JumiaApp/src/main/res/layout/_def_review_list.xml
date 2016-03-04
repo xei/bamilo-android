@@ -47,7 +47,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/date_review"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black_800"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/title_review"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/posted_by"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black_800"
         android:gravity="left|start"
         android:paddingBottom="@dimen/margin_mid"
@@ -82,7 +82,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/user_review"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black_800"
         android:layout_below="@id/title_review"
         android:layout_toEndOf="@id/posted_by"
@@ -93,7 +93,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/textreview"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black_800"
         android:layout_below="@id/posted_by"
         android:layout_marginTop="16dp"

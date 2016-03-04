@@ -13,11 +13,11 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_shop_title"
-            style="@style/TextBody" />
+            style="@style/TextBase.Body" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_shop_sub_title"
-            style="@style/TextCaption" />
+            style="@style/TextBase.Caption" />
 
         <FrameLayout
             android:layout_width="match_parent"

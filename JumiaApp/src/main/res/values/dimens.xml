@@ -114,6 +114,7 @@
     <dimen name="text_8sp">8sp</dimen>
     <dimen name="text_16sp">16sp</dimen>
 
+    <!-- MARGIN AND PADDING -->
     <dimen name="margin_padding_xxl">20dp</dimen>
     <dimen name="margin_padding_xl">16dp</dimen>
     <dimen name="margin_padding_l">10dp</dimen>
@@ -505,5 +506,11 @@
 
     <!-- BOTTOM SHEET -->
     <integer name="dialog_max_items">5</integer>
+
+    <!-- BORDER -->
+    <dimen name="border_xxs">1dp</dimen>
+
+    <!-- DIVIDER -->
+    <dimen name="divider_xxs">1dp</dimen>
 
 </resources>

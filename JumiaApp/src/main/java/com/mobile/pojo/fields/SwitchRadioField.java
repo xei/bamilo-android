@@ -80,7 +80,7 @@ public class SwitchRadioField extends DynamicFormItem implements IDynamicFormIte
         RadioGroupLayoutVertical radioGroup = (RadioGroupLayoutVertical) View.inflate(container.getContext(), R.layout.form_radiolistlayout, null);
         radioGroup.setLayoutParams(params);
         // Set divider
-        radioGroup.setDividerDrawable(ContextCompat.getDrawable(context, R.drawable.divider_horizontal_black_300));
+        radioGroup.setDividerDrawable(ContextCompat.getDrawable(context, R.drawable._gen_divider_horizontal_black_300));
         radioGroup.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
         // Right position style
         radioGroup.enableRightStyle();

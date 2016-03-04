@@ -8,7 +8,7 @@
     <RelativeLayout
     android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/rounded_margin_mid" >
+        android:padding="@dimen/margin_padding_l" >
 
         <com.mobile.utils.photoview.PhotoView
             android:id="@+id/product_size_guide_image"

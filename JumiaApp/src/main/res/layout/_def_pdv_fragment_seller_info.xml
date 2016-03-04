@@ -16,7 +16,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_name"
-        style="@style/TextBody.ShopFirstDrawRight"
+        style="@style/TextBase.Body.ShopFirstDrawRight"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="@dimen/dimen_10dp"
         android:layout_marginLeft="@dimen/layout_padding"
@@ -28,7 +28,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_delivery_info"
-        style="@style/TextHeader"
+        style="@style/TextBase.Header"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/layout_padding"
         android:layout_marginStart="@dimen/layout_padding"
@@ -40,7 +40,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_warranty"
-        style="@style/TextHeader"
+        style="@style/TextBase.Header"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/layout_padding"
         android:layout_marginStart="@dimen/layout_padding"
@@ -70,7 +70,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_seller_overseas_delivery_title"
-            style="@style/TextHeader"
+            style="@style/TextBase.Header"
             android:drawableLeft="@drawable/ic_overseas"
             android:drawablePadding="16dp"
             android:drawableStart="@drawable/ic_overseas"
@@ -80,7 +80,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_seller_overseas_delivery_text_black"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_below="@id/pdv_seller_overseas_delivery_title"
             android:layout_marginLeft="40dp"
             android:layout_marginStart="40dp"
@@ -92,7 +92,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_seller_overseas_delivery_text_orange"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_below="@id/pdv_seller_overseas_delivery_text_black"
             android:layout_marginLeft="40dp"
             android:layout_marginStart="40dp"
@@ -104,7 +104,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_seller_overseas_delivery_link"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_below="@id/pdv_seller_overseas_delivery_text_orange"
             android:layout_marginLeft="40dp"
             android:layout_marginStart="40dp"

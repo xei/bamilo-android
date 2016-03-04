@@ -21,20 +21,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/user_data_title"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginLeft="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_l"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/rounded_margin_mid">
+            android:paddingBottom="@dimen/margin_padding_l">
 
         </LinearLayout>
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/user_data_save_button"
-            style="@style/AigButton.Active"
+            style="@style/Button_1.Shop"
             android:layout_below="@id/user_data_container"
-            android:layout_marginBottom="@dimen/rounded_margin_mid"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginBottom="@dimen/margin_padding_l"
+            android:layout_marginLeft="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_l"
             android:text="@string/save_label" />
 
 
@@ -51,24 +51,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/change_password_title"
-            android:layout_marginBottom="@dimen/rounded_margin_mid"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginBottom="@dimen/margin_padding_l"
+            android:layout_marginLeft="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_l"
             android:orientation="horizontal" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/change_password_save_button"
-            style="@style/AigButton.Active"
+            style="@style/Button_1.Shop"
             android:layout_below="@+id/change_password_layout"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginLeft="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_l"
             android:contentDescription="@string/myaccount_save_description"
             android:text="@string/change_password" />
 
         <Space
             android:layout_width="match_parent"
             android:layout_below="@id/change_password_save_button"
-            android:layout_height="@dimen/rounded_margin_mid" />
+            android:layout_height="@dimen/margin_padding_l" />
     </RelativeLayout>
 
 </ScrollView>

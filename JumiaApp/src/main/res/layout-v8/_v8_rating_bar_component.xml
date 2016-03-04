@@ -8,7 +8,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/option_label"
-        style="@style/TextDisplay_3"
+        style="@style/TextBase.Display_3"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"

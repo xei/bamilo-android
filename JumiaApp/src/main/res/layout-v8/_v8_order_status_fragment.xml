@@ -22,7 +22,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_title_date"
-                style="@style/TextCaption"
+                style="@style/TextBase.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -40,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:divider="@drawable/divider_vertical_black_700"
+            app:divider="@drawable/_gen_divider_vertical_black_700"
             app:showDividers="middle">
 
             <!-- PAYMENT -->
@@ -75,7 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:divider="@drawable/divider_vertical_black_700"
+            app:divider="@drawable/_gen_divider_vertical_black_700"
             app:showDividers="middle">
 
             <!-- BILLING ADDRESS -->
@@ -113,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:divider="@drawable/divider_horizontal_black_700"
+            app:divider="@drawable/_gen_divider_horizontal_black_700"
             app:showDividers="middle" />
 
     </LinearLayout>

@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/layout_padding"
     android:clickable="true"
-    android:background="@drawable/border"
+    android:background="@drawable/_gen_background_white_border_black_300"
     >
 
     <!-- IMAGE -->
@@ -30,7 +30,7 @@
         <!-- BRAND -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:textColor="@color/black_800"
             android:lines="1"
             android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
         <!-- TITLE -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_title"
-            style="@style/TextDisplay_3"
+            style="@style/TextBase.Display_3"
             android:textColor="@color/black"
             android:lines="1"
             android:text="Title"

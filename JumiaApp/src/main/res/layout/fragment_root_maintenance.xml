@@ -147,10 +147,10 @@
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/fragment_root_retry_maintenance"
-            style="@style/AigButton.Active"
+            style="@style/Button_1.Shop"
             android:contentDescription="@string/try_again"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginLeft="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_l"
             android:text="@string/try_again" />
 
         <com.mobile.components.customfontviews.Button
@@ -160,8 +160,8 @@
             android:layout_marginTop="0dp"
             android:layout_width="match_parent"
             android:contentDescription="@string/try_again"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginLeft="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_l"
             android:text="@string/nav_country"
             android:visibility="gone" />
     </LinearLayout>

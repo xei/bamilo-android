@@ -31,7 +31,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/averageRating"
-                style="@style/TextCaption"
+                style="@style/TextBase.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/average_rating"
@@ -41,7 +41,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/averageValue"
-                style="@style/TextDisplay_1"
+                style="@style/TextBase.Display_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dimen_10dp"
@@ -54,7 +54,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/badgeValue"
-                style="@style/TextBadge"
+                style="@style/TextBase.Badge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dimen_10dp"
@@ -94,7 +94,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/fiveValue"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -104,7 +104,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/five"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -134,7 +134,7 @@
                 android:layout_below="@id/progressBoard5">
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/fourValue"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -144,7 +144,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/four"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -171,7 +171,7 @@
                 android:layout_below="@id/progressBoard4">
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/threeValue"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -181,7 +181,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/three"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -208,7 +208,7 @@
                 android:layout_below="@id/progressBoard3">
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/twoValue"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -218,7 +218,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/two"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -247,7 +247,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/oneValue"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -257,7 +257,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/one"
-                    style="@style/TextBadge"
+                    style="@style/TextBase.Badge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -310,7 +310,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/info"
-                style="@style/TextCaption"
+                style="@style/TextBase.Caption"
                 color="@color/black_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -321,7 +321,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/info2"
-                style="@style/TextCaption"
+                style="@style/TextBase.Caption"
                 color="@color/black_800"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -346,7 +346,7 @@
             <!-- buttom write -->
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/btWriteReview"
-                style="@style/TextDisplay_3"
+                style="@style/TextBase.Display_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

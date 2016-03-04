@@ -34,14 +34,14 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:textColor="@color/black_800" />
 
         <!-- NAME -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/header_text"
-            style="@style/TextBody"
+            style="@style/TextBase.Body"
             android:textColor="@color/black" />
 
         <!-- PRICE -->

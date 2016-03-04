@@ -32,26 +32,21 @@
             android:id="@+id/shopping_basket_buttons_container"
             style="@style/button_container"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_padding_l"
+            android:layout_marginLeft="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_l"
             android:orientation="vertical">
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_button"
-                style="@style/AigButton.Active"
-                android:layout_marginBottom="@dimen/rounded_margin_mid"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
+                style="@style/Button_1.Shop"
+                android:layout_marginBottom="@dimen/margin_padding_l"
                 android:text="@string/checkout_button_text" />
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/checkout_call_to_order"
-                style="@style/SingleLineStyle"
-                android:layout_gravity="center"
-                android:layout_marginBottom="@dimen/rounded_margin_mid"
-                android:layout_marginLeft="@dimen/rounded_margin_mid"
-                android:layout_marginRight="@dimen/rounded_margin_mid"
-                android:gravity="center"
-                android:text="@string/call_to_order"
-                android:visibility="visible" />
+                style="@style/Button_1.Neutral"
+                android:text="@string/call_to_order" />
         </LinearLayout>
     </LinearLayout>
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
     <!-- ################# BASE STYLES ################# -->
 
-    <style name="text_base">
+    <style name="TextBase">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">roboto_regular</item>
@@ -14,89 +14,107 @@
         <item name="android:background">@null</item>
     </style>
 
-    <style name="TextDisplay_1" parent="text_base">
+    <style name="TextBase.Display_1">
         <item name="android:textSize">30sp</item>
     </style>
 
-    <style name="TextDisplay_2" parent="text_base">
+    <style name="TextBase.Display_2">
         <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="TextDisplay_3" parent="text_base">
+    <style name="TextBase.Display_3">
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="TextHeadLine" parent="text_base">
+    <style name="TextBase.HeadLine">
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="TextTitle_2" parent="text_base">
+    <style name="TextBase.Title_2">
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">roboto_medium</item>
     </style>
 
-    <style name="TextTitle_1" parent="text_base">
+    <style name="TextBase.Title_1">
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name="TextTitle" parent="text_base">
+    <style name="TextBase.Title">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">roboto_medium</item>
     </style>
 
-    <style name="TextList" parent="text_base">
+    <style name="TextBase.Title.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextBase.List">
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="TextHeadeline" parent="text_base">
+    <style name="TextBase.Headeline">
         <item name="android:textSize">12sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">roboto_bold</item>
     </style>
 
-    <style name="TextSubHead" parent="text_base">
+    <style name="TextBase.SubHead">
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="TextBody" parent="text_base">
+    <style name="TextBase.SubHead.Orange">
+        <item name="android:textColor">@color/orange_1</item>
+    </style>
+
+    <style name="TextBase.Body">
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="TextCaption" parent="text_base">
+    <style name="TextBase.Body.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextBase.Body.Black_800">
+        <item name="android:textColor">@color/black_800</item>
+    </style>
+
+    <style name="TextBase.Caption">
         <item name="android:textSize">10sp</item>
     </style>
 
-    <style name="TextMenu" parent="text_base">
+    <style name="TextBase.Menu">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">roboto_medium</item>
     </style>
 
-    <style name="TextButton" parent="text_base">
+    <style name="TextBase.Button_1">
         <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
     </style>
 
-    <style name="TextHeader" parent="text_base">
+    <style name="TextBase.Button_2" parent="TextBase.Button_1">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextBase.Header">
         <item name="android:fontFamily">roboto_bold</item>
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="TextBadge" parent="text_base">
+    <style name="TextBase.Badge">
         <item name="android:textSize">10sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">roboto_medium</item>
     </style>
 
-    <style name="TextTimer" parent="TextCaption">
-        <item name="android:textColor">@color/red1</item>
+    <style name="TextBase.Timer" parent="TextBase.Caption">
+        <item name="android:textColor">@color/red_1</item>
     </style>
 
-    <style name="TextSubHeadOrange" parent="TextSubHead">
-        <item name="android:textColor">@color/orange1</item>
-    </style>
-
-    <style name="TextPriceSubHead" parent="TextSubHead">
+    <style name="TextBase.Price" parent="TextBase.SubHead">
         <item name="android:textColor">@color/red_basic</item>
     </style>
 

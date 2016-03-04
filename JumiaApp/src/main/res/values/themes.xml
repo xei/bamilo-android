@@ -12,7 +12,7 @@
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="colorAccent">@color/accent</item>
         <!-- Color for UI controls like switchs -->
-        <item name="colorControlActivated">@color/blue1</item>
+        <item name="colorControlActivated">@color/blue_1</item>
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="android:navigationBarColor">@color/grey_dark</item>
         <!-- Color for app background -->

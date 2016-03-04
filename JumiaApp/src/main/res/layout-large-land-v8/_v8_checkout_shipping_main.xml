@@ -22,7 +22,7 @@
         android:layout_weight="@dimen/checkout_main_container"
         android:background="@drawable/drop_shadow_right"
         android:orientation="vertical"
-        app:divider="@drawable/divider_horizontal_black_700"
+        app:divider="@drawable/_gen_divider_horizontal_black_700"
         app:showDividers="middle">
 
         <!-- SCROLLABLE CONTAINER -->
@@ -37,7 +37,7 @@
                 android:id="@+id/checkout_shipping_methods_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/rounded_margin_mid"
+                android:layout_marginBottom="@dimen/margin_padding_l"
                 android:orientation="vertical">
 
                 <!-- TITLE -->

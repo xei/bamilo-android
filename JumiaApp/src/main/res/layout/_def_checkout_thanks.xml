@@ -22,7 +22,7 @@
 
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextDisplay_1"
+            style="@style/TextBase.Display_1"
             android:layout_marginLeft="@dimen/margin_60px"
             android:layout_marginRight="@dimen/margin_60px"
             android:layout_marginTop="@dimen/dimen_16dp"
@@ -30,11 +30,11 @@
             android:gravity="center_horizontal"
             android:singleLine="false"
             android:text="@string/thank_you_order_title"
-            android:textColor="@color/green1"
+            android:textColor="@color/green_1"
             />
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextBody"
+            style="@style/TextBase.Body"
             android:layout_marginLeft="@dimen/margin_60px"
             android:layout_marginRight="@dimen/margin_60px"
             android:layout_marginTop="@dimen/dimen_16dp"
@@ -48,7 +48,7 @@
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/order_status_text"
-            style="@style/AigButton.Text.Black_800.Border"
+            style="@style/Button_1.Neutral.Border_800"
             android:layout_width="@dimen/dimen_328dp"
             android:layout_marginLeft="@dimen/margin_60px"
             android:layout_marginRight="@dimen/margin_60px"
@@ -61,7 +61,7 @@
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/btn_checkout_continue"
-            style="@style/AigButton.Active"
+            style="@style/Button_1.Shop"
             android:layout_width="@dimen/dimen_328dp"
             android:layout_marginLeft="@dimen/margin_60px"
             android:layout_marginRight="@dimen/margin_60px"

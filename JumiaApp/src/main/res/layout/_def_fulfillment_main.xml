@@ -20,7 +20,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:orientation="vertical"
-        app:divider="@drawable/divider_horizontal_black_300"
+        app:divider="@drawable/_gen_divider_horizontal_black_300"
         app:showDividers="middle" />
 
     <!-- DIVIDER -->
@@ -38,14 +38,14 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/fulfillment_seller_name"
-        style="@style/TextHeader"
+        style="@style/TextBase.Header"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/fulfillment_shipping_time"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textColor="@color/black"
@@ -53,7 +53,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/fulfillment_shipping_info"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textColor="@color/black"
@@ -61,7 +61,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/fulfillment_deliver_info"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textColor="@color/black"

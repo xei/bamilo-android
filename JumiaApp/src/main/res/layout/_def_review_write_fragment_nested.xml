@@ -10,12 +10,12 @@
         android:layout_below="@id/shadow"
         android:layout_marginBottom="0dp"
         android:layout_marginTop="@dimen/rounded_margin_small"
-        android:padding="@dimen/rounded_margin_mid"
+        android:padding="@dimen/margin_padding_l"
         android:visibility="visible">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/write_title"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_100px"
@@ -42,12 +42,12 @@
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/send_review"
-        style="@style/AigButton.Active"
+        style="@style/Button_1.Shop"
         android:layout_below="@id/product_rating_container"
-        android:layout_marginEnd="@dimen/rounded_margin_mid"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:layout_marginStart="@dimen/rounded_margin_mid"
+        android:layout_marginEnd="@dimen/margin_padding_l"
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_marginRight="@dimen/margin_padding_l"
+        android:layout_marginStart="@dimen/margin_padding_l"
         android:text="@string/writereview_send" />
 
 </RelativeLayout>
