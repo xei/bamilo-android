@@ -44,6 +44,10 @@
         <item name="android:fontFamily">roboto_medium</item>
     </style>
 
+    <style name="TextBase.Title.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TextBase.List">
         <item name="android:textSize">14sp</item>
     </style>
@@ -64,6 +68,14 @@
 
     <style name="TextBase.Body">
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="TextBase.Body.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="TextBase.Body.Black_800">
+        <item name="android:textColor">@color/black_800</item>
     </style>
 
     <style name="TextBase.Caption">
