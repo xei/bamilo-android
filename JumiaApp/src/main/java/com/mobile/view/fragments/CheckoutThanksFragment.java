@@ -209,7 +209,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             HorizontalListView relatedGridView = (HorizontalListView) mRelatedProductsView.findViewById(R.id.rich_relevance_listview);
             relatedGridView.enableRtlSupport(ShopSelector.isRtl());
             relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(10));
-            relatedGridView.setAdapter(new RichRelevanceAdapter(mRichRelevance.getRichRelevanceProducts(), this, R.layout._def_checkout_rr_item, false));
+            relatedGridView.setAdapter(new RichRelevanceAdapter(mRichRelevance.getRichRelevanceProducts(), this, false));
             mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {
             hideRelatedItems();

@@ -50,8 +50,10 @@
     <dimen name="dimen_70dp">70dp</dimen>
     <dimen name="dimen_90dp">90dp</dimen>
     <dimen name="dimen_92dp">92dp</dimen>
+    <dimen name="dimen_98dp">98dp</dimen>
     <dimen name="dimen_100dp">100dp</dimen>
     <dimen name="dimen_113_33dp">113.33dp</dimen>
+    <dimen name="dimen_123dp">123dp</dimen>
     <dimen name="dimen_134dp">134dp</dimen>
     <dimen name="dimen_200dp">200dp</dimen>
     <dimen name="dimen_210dp">210dp</dimen>

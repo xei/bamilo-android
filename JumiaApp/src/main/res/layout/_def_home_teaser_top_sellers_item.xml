@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?><!-- A CardView that contains a TextView -->
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/ProductTeaserStyle">
+    style="@style/ProductTeaserStyle"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:orientation="vertical"
+        >
 
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_width="@dimen/dimen_98dp"
+            android:layout_height="@dimen/dimen_123dp"
+            android:layout_gravity="center_horizontal"
+            >
 
             <include layout="@layout/home_teaser_image_loadable" />
 
         </FrameLayout>
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/home_teaser_top_sellers_brand"
-            style="@style/TextBase.SubHead" />
+            android:id="@+id/brand"
+            android:textColor="@color/black_800"
+            style="@style/TextBase.Body" />
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/home_teaser_top_sellers_name"
-            style="@style/TextBase.SubHead" />
+            android:id="@+id/name"
+            android:textColor="@color/black"
+            style="@style/TextBase.Title" />
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/home_teaser_top_sellers_price"
-            style="@style/TextBase.Price" />
+            android:id="@+id/price"
+            android:textColor="@color/black"
+            style="@style/TextBase.Body" />
 
     </LinearLayout>
 

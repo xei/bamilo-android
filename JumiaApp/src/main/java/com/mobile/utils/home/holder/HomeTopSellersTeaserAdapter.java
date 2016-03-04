@@ -24,9 +24,9 @@ import java.util.ArrayList;
  */
 public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSellersTeaserAdapter.ViewHolder> {
 
-    private View.OnClickListener mOnClickListener;
+    private final View.OnClickListener mOnClickListener;
 
-    private ArrayList<BaseTeaserObject> mDataSet;
+    private final ArrayList<BaseTeaserObject> mDataSet;
 
     /**
      * Provide a reference to the views for each data item.<br>
@@ -36,11 +36,11 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
      */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // Views
-        private ImageView mImage;
-        private View mProgress;
-        private TextView mBrand;
-        private TextView mName;
-        private TextView mPrice;
+        private final ImageView mImage;
+        private final View mProgress;
+        private final TextView mBrand;
+        private final TextView mName;
+        private final TextView mPrice;
 
         /**
          * Constructor
@@ -49,9 +49,9 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
             super(view);
             mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
             mProgress = view.findViewById(R.id.home_teaser_item_progress);
-            mBrand = (TextView) view.findViewById(R.id.home_teaser_top_sellers_brand);
-            mName = (TextView) view.findViewById(R.id.home_teaser_top_sellers_name);
-            mPrice = (TextView) view.findViewById(R.id.home_teaser_top_sellers_price);
+            mBrand = (TextView) view.findViewById(R.id.brand);
+            mName = (TextView) view.findViewById(R.id.name);
+            mPrice = (TextView) view.findViewById(R.id.price);
         }
     }
 
