@@ -32,7 +32,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    private static final int ITEMS_PADDING = 10;
+    private static final int ITEMS_MARGIN = 10;
 
     public HorizontalListView horizontalListView;
     private final TextView sectionTitle;
@@ -45,7 +45,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
         sectionTitle = (TextView) view.findViewById(R.id.home_teaser_top_seller_section_title);
         // Get horizontal container
         horizontalListView = (HorizontalListView) view.findViewById(R.id.home_teaser_top_sellers_horizontal_list);
-        horizontalListView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_PADDING));
+        horizontalListView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_MARGIN));
         // Validate orientation
         horizontalListView.enableRtlSupport(isRtl);
     }
