@@ -6,6 +6,7 @@ import android.view.View;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
+import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
@@ -15,6 +16,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.view.R;
@@ -41,6 +43,8 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
         sectionTitle = (TextView) view.findViewById(R.id.home_teaser_top_seller_section_title);
         // Get horizontal container
         horizontalListView = (HorizontalListView) view.findViewById(R.id.home_teaser_top_sellers_horizontal_list);
+        horizontalListView.enableRtlSupport(ShopSelector.isRtl());
+        horizontalListView.addItemDecoration(new VerticalSpaceItemDecoration(10));
         // Validate orientation
         horizontalListView.enableRtlSupport(isRtl);
     }
