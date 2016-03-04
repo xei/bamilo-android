@@ -35,7 +35,7 @@
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/send_newsletter"
-                style="@style/Button_Text.Shop"
+                style="@style/Button_Link.Shop"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="@dimen/margin_padding_l"
