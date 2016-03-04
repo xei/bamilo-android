@@ -43,7 +43,6 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
         sectionTitle = (TextView) view.findViewById(R.id.home_teaser_top_seller_section_title);
         // Get horizontal container
         horizontalListView = (HorizontalListView) view.findViewById(R.id.home_teaser_top_sellers_horizontal_list);
-        horizontalListView.enableRtlSupport(ShopSelector.isRtl());
         horizontalListView.addItemDecoration(new VerticalSpaceItemDecoration(10));
         // Validate orientation
         horizontalListView.enableRtlSupport(isRtl);
