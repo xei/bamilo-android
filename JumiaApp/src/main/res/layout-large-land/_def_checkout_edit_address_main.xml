@@ -45,14 +45,14 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_edit_address_required_text"
                 style="@style/text_header"
-                android:layout_margin="@dimen/rounded_margin_mid"
+                android:layout_margin="@dimen/margin_padding_l"
                 android:text="@string/register_required_text"
                 android:textColor="@color/red_basic"
                 android:visibility="gone" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_edit_button_enter"
-                style="@style/AigButton.Active"
+                style="@style/Button_1.Shop"
                 android:text="@string/save_changes_label" />
 
         </LinearLayout>

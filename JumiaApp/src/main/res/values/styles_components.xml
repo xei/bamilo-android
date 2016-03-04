@@ -4,7 +4,7 @@
     <!-- ################# GENERIC COMPONENTS STYLES ################# -->
 
     <!-- Header -->
-    <style name="HeaderStyle" parent="@style/TextHeader">
+    <style name="HeaderStyle" parent="@style/TextBase.Header">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:minHeight">48dp</item>
@@ -17,7 +17,7 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="TextField" parent="TextDisplay_3">
+    <style name="TextField" parent="TextBase.Display_3">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:background">@drawable/_gen_selector_text_field</item>
@@ -33,7 +33,7 @@
         <item name="android:fontFamily">roboto_regular</item>
     </style>
 
-    <style name="HeaderStyleCenter" parent="@style/TextHeader">
+    <style name="HeaderStyleCenter" parent="@style/TextBase.Header">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
         <item name="android:gravity">center</item>
@@ -42,7 +42,7 @@
     </style>
 
     <!-- TextField error message -->
-    <style name="TextErrorField" parent="TextBody">
+    <style name="TextErrorField" parent="TextBase.Body">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/red_basic</item>
@@ -55,7 +55,7 @@
     </style>
 
     <!-- Single line item -->
-    <style name="SingleLineStyle" parent="@style/TextDisplay_3">
+    <style name="SingleLineStyle" parent="@style/TextBase.Display_3">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:paddingLeft">20dp</item>
@@ -64,7 +64,7 @@
     </style>
 
     <!-- Sub list item -->
-    <style name="SubListItemStyle" parent="@style/TextCaption">
+    <style name="SubListItemStyle" parent="@style/TextBase.Caption">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:minHeight">48dp</item>
@@ -72,7 +72,7 @@
     </style>
 
     <!-- Multi line -->
-    <style name="MultiLineStyle" parent="@style/TextCaption">
+    <style name="MultiLineStyle" parent="@style/TextBase.Caption">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">16dp</item>
@@ -102,7 +102,7 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="PdvBadgeStyle" parent="@style/TextBadge">
+    <style name="PdvBadgeStyle" parent="@style/TextBase.Badge">
         <item name="android:background">@drawable/selector_badge_price</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/color_accent</item>
@@ -113,7 +113,7 @@
         <item name="android:layout_height">342dp</item>
     </style>
 
-    <!-- FORM TODO : UPDATE v2.8 -->
+    <!-- FORM -->
 
     <style name="form_style">
         <item name="android:layout_width">match_parent</item>
@@ -137,76 +137,6 @@
         <item name="android:spinnerMode">dropdown</item>
     </style>
 
-    <!-- BUTTONS -->
-
-    <style name="AigButton" parent="TextButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="AigButton.Active">
-        <item name="android:background">@drawable/_gen_selector_button_active</item>
-    </style>
-
-    <style name="AigButton.GooglePlus">
-        <item name="android:background">@color/red_dd4b39</item>
-    </style>
-
-    <style name="AigButton.Facebook">
-        <!--http://stackoverflow.com/questions/29740325/set-login-logout-text-for-button-in-facebook-android-sdk-4-0?answertab=active#tab-top-->
-        <item name="android:background">@drawable/_gen_selector_button_facebook</item>
-        <item name="android:drawableLeft">@drawable/com_facebook_inverse_icon</item>
-        <item name="android:drawableStart">@drawable/com_facebook_inverse_icon</item>
-        <item name="android:paddingTop">15dp</item>
-        <item name="android:paddingBottom">15dp</item>
-        <item name="android:singleLine">false</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:text">@string/com_facebook_loginview_log_in_button_long</item>
-    </style>
-
-    <style name="AigButton.AddToSaved">
-        <item name="android:background">@color/white</item>
-        <item name="android:layout_margin">2dp</item>
-    </style>
-
-    <style name="AigButton.Black_800_Orange1">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:textColor">@drawable/selector_black_orange</item>
-        <item name="android:layout_margin">2dp</item>
-    </style>
-
-    <style name="AigButton.Text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@null</item>
-    </style>
-
-    <style name="AigButton.Text.Black_800.Border">
-        <item name="android:textColor">@color/black_800</item>
-        <item name="android:background">@drawable/border</item>
-    </style>
-
-    <style name="AigButton.Text.Black_800">
-        <item name="android:textColor">@color/black_800</item>
-        <item name="android:layout_margin">2dp</item>
-    </style>
-
-    <style name="AigButton.Text.Orange">
-        <item name="android:textColor">@color/accent</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-    </style>
-
-    <style name="AigButton.Text.Blue">
-        <item name="android:textColor">@color/blue1</item>
-    </style>
-
     <!-- NEW ARRIVAL BADGE -->
     <style name="NewArrivalBadge">
         <item name="android:padding">@dimen/dimen_4dp</item>
@@ -228,7 +158,7 @@
     </style>
 
     <!-- SWITCH BUTTON -->
-    <style name="SwitchStyle" parent="@style/TextTitle_1">
+    <style name="SwitchStyle" parent="@style/TextBase.Title_1">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:gravity">left|start|center</item>

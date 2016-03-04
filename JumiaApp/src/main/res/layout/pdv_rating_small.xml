@@ -30,7 +30,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_product_rating_count"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         color="@color/black_800"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

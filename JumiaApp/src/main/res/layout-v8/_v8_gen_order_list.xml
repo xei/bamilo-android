@@ -20,7 +20,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_item_button_reorder"
-            style="@style/AigButton.Text.Orange"
+            style="@style/Button_Text.Shop"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="@string/reorder_label" />
@@ -29,7 +29,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_item_text_delivered"
-            style="@style/TextHeader"
+            style="@style/TextBase.Header"
             android:layout_width="100dp"
             android:layout_alignParentBottom="true"
             android:singleLine="false"
@@ -55,14 +55,14 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_alignRight="@id/center_view"
             android:textColor="@color/black_800" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_name"
-            style="@style/TextBody"
+            style="@style/TextBase.Body"
             android:layout_alignRight="@id/center_view"
             android:layout_below="@id/item_brand"
             android:maxLines="2"
@@ -71,7 +71,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_quantity"
-            style="@style/TextBody"
+            style="@style/TextBase.Body"
             android:layout_alignRight="@id/center_view"
             android:layout_below="@id/item_name"
             android:maxLines="2"
@@ -80,7 +80,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_discount"
-            style="@style/TextBody"
+            style="@style/TextBase.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@id/center_view"
@@ -90,7 +90,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_regprice"
-            style="@style/TextBody"
+            style="@style/TextBase.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/item_discount"
@@ -99,7 +99,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_delivery"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_alignRight="@id/center_view"
             android:layout_below="@id/item_discount"
             android:layout_marginTop="6dp"

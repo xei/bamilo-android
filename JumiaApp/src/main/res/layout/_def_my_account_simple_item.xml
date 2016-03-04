@@ -9,7 +9,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/option_name"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/my_account_gen_dimen"
         android:layout_marginRight="@dimen/my_account_gen_dimen"

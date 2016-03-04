@@ -19,8 +19,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginEnd="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
+            android:layout_marginEnd="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_l"
             android:src="@drawable/selector_btn_edit"
             android:visibility="gone"
             android:paddingLeft="10dp"
@@ -30,7 +30,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/rounded_margin_mid"
+        android:layout_margin="@dimen/margin_padding_l"
         android:orientation="vertical" >
 
 

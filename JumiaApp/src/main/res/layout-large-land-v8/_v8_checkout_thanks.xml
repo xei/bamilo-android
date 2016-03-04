@@ -35,8 +35,8 @@
 
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/TextDisplay_1"
-                android:textColor="@color/green1"
+                style="@style/TextBase.Display_1"
+                android:textColor="@color/green_1"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_16dp"
                 android:layout_marginLeft="@dimen/margin_60px"
@@ -46,7 +46,7 @@
                 />
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/TextCaption"
+                style="@style/TextBase.Caption"
                 android:textColor="@color/black_700"
                 android:gravity="center_horizontal"
                 android:layout_marginTop="@dimen/dimen_16dp"
@@ -59,7 +59,7 @@
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/order_status_text"
-                style="@style/AigButton.Text.Black_800.Border"
+                style="@style/Button_1.Neutral.Border_800"
                 android:layout_width="@dimen/dimen_328dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginLeft="@dimen/margin_60px"
@@ -71,7 +71,7 @@
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/btn_checkout_continue"
-                style="@style/AigButton.Active"
+                style="@style/Button_1.Shop"
                 android:layout_width="@dimen/dimen_328dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginLeft="@dimen/margin_60px"

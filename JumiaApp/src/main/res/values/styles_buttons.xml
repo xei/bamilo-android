@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+
+    <!-- ################# BUTTONS BASE STYLES ################# -->
+
+    <style name="ButtonBase" parent="TextBase.Button_1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_l</item>
+        <item name="android:paddingRight">@dimen/margin_padding_l</item>
+    </style>
+
+    <style name="Button_1" parent="ButtonBase" />
+
+    <style name="Button_2" parent="ButtonBase">
+        <item name="android:layout_height">36dp</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="Button_Text" parent="ButtonBase">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/margin_padding_xxs</item>
+    </style>
+
+    <!-- ################# BUTTONS STYLES ################# -->
+
+    <style name="Button_1.Shop">
+        <item name="android:background">@drawable/_gen_selector_button_action</item>
+    </style>
+
+    <style name="Button_1.Shop.Wrap">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Button_2.Action">
+        <item name="android:background">@drawable/_gen_selector_button_action</item>
+    </style>
+
+    <style name="Button_1.Neutral">
+        <item name="android:textColor">@color/black_800</item>
+    </style>
+
+    <style name="Button_2.Neutral">
+        <item name="android:textColor">@color/black_800</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="Button_1.Neutral.Border_800">
+        <item name="android:background">@drawable/_gen_background_white_border_black_800</item>
+    </style>
+
+    <style name="Button_1.Neutral.Text_Orange">
+        <item name="android:textColor">@color/accent</item>
+    </style>
+
+    <!-- TODO : BUTTON TEXT IS A TEMPORARY SOLUTION -->
+
+    <style name="Button_Text.Shop">
+        <item name="android:textColor">@drawable/_gen_selector_text_action</item>
+    </style>
+
+    <style name="Button_Text.Neutral">
+        <item name="android:textColor">@color/black_800</item>
+    </style>
+
+    <style name="Button_Text.Info">
+        <item name="android:textColor">@color/blue_1</item>
+    </style>
+
+    <style name="Button_1.Facebook">
+        <!--http://stackoverflow.com/questions/29740325/set-login-logout-text-for-button-in-facebook-android-sdk-4-0?answertab=active#tab-top-->
+        <item name="android:background">@drawable/_gen_selector_button_facebook</item>
+        <item name="android:drawableLeft">@drawable/com_facebook_inverse_icon</item>
+        <item name="android:drawableStart">@drawable/com_facebook_inverse_icon</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:text">@string/com_facebook_loginview_log_in_button_long</item>
+    </style>
+
+    <!-- TODO : ADD HERE MORE STYLES -->
+
+</resources>

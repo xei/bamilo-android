@@ -23,8 +23,6 @@ import com.mobile.view.R;
  */
  public class FilterOptionArrayAdapter extends ArrayAdapter<MultiFilterOptionInterface> implements AdapterView.OnItemClickListener{
 
-    protected static int layout = R.layout.list_sub_item_2;
-
     protected CatalogCheckFilter catalogFilter;
 
     private SparseArray<MultiFilterOptionInterface> mCurrentSelectedOptions;
@@ -33,7 +31,7 @@ import com.mobile.view.R;
      * Constructor
      */
     public FilterOptionArrayAdapter(Context context, CatalogCheckFilter catalogCheckFilter) {
-        super(context, layout, catalogCheckFilter.getFilterOptions());
+        super(context, R.layout.list_sub_item_2, catalogCheckFilter.getFilterOptions());
         this.catalogFilter = catalogCheckFilter;
         this.mCurrentSelectedOptions = catalogCheckFilter.getSelectedFilterOptions();
     }
@@ -47,7 +45,7 @@ import com.mobile.view.R;
         // Get Filter
         MultiFilterOptionInterface option = getItem(position);
         // Validate current view
-        if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
+        if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_2, null);
         // Set title
         ((TextView) convertView.findViewById(R.id.dialog_item_title)).setText(option.getLabel());
         setProductsCount((TextView) convertView.findViewById(R.id.dialog_products_count), option);
@@ -73,12 +71,10 @@ import com.mobile.view.R;
         // Validate if checked or not
         MultiFilterOptionInterface option = mCurrentSelectedOptions.get(position);
         if( option == null) {
-//            Print.d(TAG, "FILTER MULTI SELECTION: CHECK " + position);
             // Add item
             addSelectedItem((MultiFilterOptionInterface) parent.getItemAtPosition(position), position);
         } else {
             // Uncheck
-//            Print.d(TAG, "FILTER MULTI SELECTION: UNCHECK " + position);
             cleanSelectedItem(option, position);
         }
     }
@@ -90,11 +86,9 @@ import com.mobile.view.R;
     protected void processSingleSelection(AdapterView<?> parent, int position){
         // Option is the last
         if(mCurrentSelectedOptions.get(position) != null) {
-//            Print.d(TAG, "FILTER SINGLE SELECTION: DISABLE " + position);
             // Clean old selection
             cleanOldSelections();
         } else {
-//            Print.d(TAG, "FILTER SINGLE SELECTION: CLEAN AND ADD " + position);
             // Clean old selection
             cleanOldSelections();
             // Add item

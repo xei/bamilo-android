@@ -19,7 +19,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tab_home_text"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_width="wrap_content"
         android:layout_below="@id/tab_home_image"
         android:layout_centerHorizontal="true"

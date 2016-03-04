@@ -8,12 +8,12 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_product_title"
-        style="@style/TextDisplay_3"
+        style="@style/TextBase.Display_3"
         android:layout_marginTop="@dimen/item_margin_top" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_product_subtitle"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_marginTop="4dp"
         android:textColor="@color/black_800" />
 

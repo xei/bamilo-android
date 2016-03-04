@@ -42,7 +42,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/txTotalComboPrice"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"

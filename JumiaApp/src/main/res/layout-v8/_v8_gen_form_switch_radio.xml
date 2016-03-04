@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:divider="@drawable/divider_horizontal_black_300"
+    app:divider="@drawable/_gen_divider_horizontal_black_300"
     app:showDividers="middle">
 
     <!-- SWITCH BUTTON -->

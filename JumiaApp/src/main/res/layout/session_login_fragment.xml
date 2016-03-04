@@ -18,7 +18,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_text_info"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:drawablePadding="8dp"
             android:drawableTop="@drawable/ic_login_user"
             android:gravity="center"
@@ -33,7 +33,7 @@
 
         <com.mobile.components.customfontviews.FacebookTextView
             android:id="@+id/login_button_facebook"
-            style="@style/AigButton.Facebook"
+            style="@style/Button_1.Facebook"
             android:layout_width="@dimen/login_email_container_width" />
 
         <Space
@@ -89,7 +89,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_button_guest"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_marginBottom="16dp"
             android:gravity="center"
             android:text="@string/continue_without_log_in"
@@ -99,7 +99,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_button_continue"
-            style="@style/AigButton.Active"
+            style="@style/Button_1.Shop"
             android:layout_width="@dimen/login_main_container_width"
             android:text="@string/continue_label" />
 

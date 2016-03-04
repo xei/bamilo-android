@@ -6,34 +6,34 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_title"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:text="@string/shipping"
         android:textColor="@color/black_700" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_name"
-        style="@style/TextHeader"
+        style="@style/TextBase.Header"
         android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_street"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_region"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_postcode"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black"
         android:visibility="gone"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_phone"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:textColor="@color/black" />
 
 </LinearLayout>

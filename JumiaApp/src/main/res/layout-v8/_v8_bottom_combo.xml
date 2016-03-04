@@ -21,7 +21,7 @@
         >
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextDisplay_3"
+            style="@style/TextBase.Display_3"
             android:textColor="@color/black"
             android:layout_marginRight="20dp"
             android:layout_width="wrap_content"
@@ -32,8 +32,8 @@
             />
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextDisplay_3"
-            android:textColor="@color/orange1"
+            style="@style/TextBase.Display_3"
+            android:textColor="@color/orange_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
@@ -51,7 +51,7 @@
         android:layout_height="match_parent"
         android:text="@string/buy_combo"
         android:id="@+id/btBuyCombo"
-        android:background="@color/orange1"
+        android:background="@color/orange_1"
         android:textColor="@color/white"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"

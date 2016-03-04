@@ -18,15 +18,15 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_top_sellers_brand"
-            style="@style/TextSubHead" />
+            style="@style/TextBase.SubHead" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_top_sellers_name"
-            style="@style/TextSubHead" />
+            style="@style/TextBase.SubHead" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_top_sellers_price"
-            style="@style/TextPriceSubHead" />
+            style="@style/TextBase.Price" />
 
     </LinearLayout>
 

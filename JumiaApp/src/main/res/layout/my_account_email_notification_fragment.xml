@@ -16,7 +16,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/email_notifications_save"
-        style="@style/AigButton.Active"
+        style="@style/Button_1.Shop"
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/dimen_20dp"
         android:contentDescription="@string/myaccount_save_description"

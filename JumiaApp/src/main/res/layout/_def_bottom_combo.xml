@@ -18,7 +18,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/txLabelTotal"
-            style="@style/TextDisplay_3"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -30,7 +30,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/txTotalComboPrice"
-            style="@style/TextDisplay_3"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
@@ -38,7 +38,7 @@
             android:layout_toEndOf="@+id/txLabelTotal"
             android:layout_marginStart="@dimen/layout_padding"
             android:text="RS 524"
-            android:textColor="@color/orange2" />
+            android:textColor="@color/orange_2" />
 
     </RelativeLayout>
 
@@ -46,7 +46,7 @@
         android:id="@+id/btBuyCombo"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/orange2"
+        android:background="@color/orange_2"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="@string/buy_combo"

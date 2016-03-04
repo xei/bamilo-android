@@ -1052,7 +1052,7 @@ public class DynamicFormItem {
             this.mandatoryControl = new TextView(this.context);
             this.mandatoryControl.setLayoutParams(params);
             this.mandatoryControl.setText("*");
-            this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange1));
+            this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
             this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
             this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 
@@ -1299,7 +1299,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange1));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
@@ -1420,7 +1420,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange1));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
@@ -1460,7 +1460,7 @@ public class DynamicFormItem {
             // For RTL
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             // Set dividers
-            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable.divider_horizontal_black_300));
+            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable._gen_divider_horizontal_black_300));
             radioGroup.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
             radioGroup.enableRightStyle();
         }
@@ -1506,7 +1506,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange1));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 

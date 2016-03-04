@@ -46,7 +46,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:textColor="@color/black_800"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_title"
-            style="@style/TextHeader"
+            style="@style/TextBase.Header"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_price"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

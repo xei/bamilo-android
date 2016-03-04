@@ -48,7 +48,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/offer_price"
-                style="@style/TextBody"
+                style="@style/TextBase.Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingEnd="5dp"
@@ -58,7 +58,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/offer_price_normal"
-                style="@style/TextBody"
+                style="@style/TextBase.Body"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black" />

@@ -10,7 +10,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/error_contacts_info_label_phone"
-        style="@style/TextDisplay_3"
+        style="@style/TextBase.Display_3"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/buy_bar_height"
         android:layout_alignParentRight="true"
@@ -21,7 +21,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/phone_text"
-        style="@style/TextDisplay_3"
+        style="@style/TextBase.Display_3"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/buy_bar_height"
         android:layout_alignParentLeft="true"
@@ -36,7 +36,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/email_label"
-        style="@style/TextDisplay_3"
+        style="@style/TextBase.Display_3"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/buy_bar_height"
         android:layout_alignParentRight="true"
@@ -47,7 +47,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/email_text"
-        style="@style/TextDisplay_3"
+        style="@style/TextBase.Display_3"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/buy_bar_height"
         android:layout_alignParentLeft="true"

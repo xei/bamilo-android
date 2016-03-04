@@ -16,7 +16,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_product_name"
-            style="@style/TextDisplay_3"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_huge"
@@ -32,7 +32,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_product_brand"
             android:layout_below="@id/offer_product_name"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_large"

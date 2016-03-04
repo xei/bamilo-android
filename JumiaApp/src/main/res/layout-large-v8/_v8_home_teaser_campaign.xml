@@ -47,19 +47,19 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/home_teaser_campaign_title"
-                    style="@style/TextSubHead"
+                    style="@style/TextBase.SubHead"
                     android:layout_marginBottom="@dimen/dimen_mat_8px"
                     android:gravity="center" />
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/home_teaser_campaign_timer"
-                    style="@style/TextTimer"
+                    style="@style/TextBase.Timer"
                     android:layout_marginBottom="@dimen/dimen_mat_8px"
                     android:gravity="center" />
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/home_teaser_campaign_subtitle"
-                    style="@style/TextCaption"
+                    style="@style/TextBase.Caption"
                     android:gravity="center" />
 
             </LinearLayout>

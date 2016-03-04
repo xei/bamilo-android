@@ -34,32 +34,32 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_city"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_address"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_opening_hours"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_shipping_fee"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black"
             android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_shipping_fee_info"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black"
             android:visibility="gone" />

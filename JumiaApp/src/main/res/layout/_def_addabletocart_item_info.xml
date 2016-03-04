@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- DELETE BUTTON -->
 
@@ -18,27 +19,27 @@
     <!-- BRAND -->
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical|left|start"
         android:lines="1"
-        android:paddingTop="@dimen/rounded_margin_mid"
-        android:text="BRAND"
+        android:paddingTop="@dimen/margin_padding_l"
+        tools:text="BRAND"
         android:textColor="@color/black_800" />
 
     <!-- NAME -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextDisplay_3"
+        style="@style/TextBase.Display_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_brand"
         android:gravity="center_vertical|left|start"
         android:lines="1"
-        android:text="Name"
+        tools:text="Name"
         android:textColor="@color/black" />
 
     <!-- PRICE -->
@@ -85,7 +86,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_shop"
-        style="@style/AigButton.Active"
+        style="@style/Button_1.Shop"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_48dp"
         android:layout_alignParentEnd="true"

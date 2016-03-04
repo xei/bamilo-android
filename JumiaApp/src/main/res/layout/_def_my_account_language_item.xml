@@ -16,13 +16,13 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_name"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:text="Title"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_info"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:text="Info"
             android:textColor="@color/black_800" />
     </LinearLayout>

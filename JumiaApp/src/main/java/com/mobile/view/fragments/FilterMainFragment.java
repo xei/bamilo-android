@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -257,13 +258,11 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
 
     private class FiltersArrayAdapter extends ArrayAdapter<CatalogFilter> {
 
-        private static final int layout = R.layout.list_sub_item_1;
-
         /**
          * Constructor
          */
         public FiltersArrayAdapter(Context context, List<CatalogFilter> objects) {
-            super(context, layout, objects);
+            super(context, R.layout.list_sub_item_1, objects);
         }
 
         /*
@@ -275,7 +274,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             // Get Filter
             CatalogFilter filter = getItem(position);
             // Validate current view
-            if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(layout, null);
+            if (convertView == null) convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_sub_item_1, null);
 
             TextView filterTitleTextView = ((TextView) convertView.findViewById(R.id.dialog_item_title));
             TextView filtersNumberTextView = ((TextView) convertView.findViewById(R.id.dialog_item_count));
@@ -296,7 +295,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             if(position == FilterMainFragment.this.currentFilterPosition) {
                 convertView.setBackgroundColor(Color.WHITE);
             } else {
-                convertView.setBackgroundColor(convertView.getResources().getColor(R.color.black_300));
+                convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black_300));
             }
 
             return convertView;

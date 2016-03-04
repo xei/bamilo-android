@@ -21,8 +21,8 @@
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginStart="@dimen/rounded_margin_mid" />
+            android:layout_marginLeft="@dimen/margin_padding_l"
+            android:layout_marginStart="@dimen/margin_padding_l" />
 
         <!-- INFO CONTAINER -->
 

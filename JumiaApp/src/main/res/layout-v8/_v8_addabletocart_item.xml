@@ -16,7 +16,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/rounded_margin_mid"/>
+        android:layout_marginRight="@dimen/margin_padding_l"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/new_arrival_badge"
@@ -37,9 +37,9 @@
         layout="@layout/addabletocart_item_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/rounded_margin_mid"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
+        android:layout_marginBottom="@dimen/margin_padding_l"
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_marginRight="@dimen/margin_padding_l"
         android:layout_toLeftOf="@id/item_image_container" />
 
     <View
