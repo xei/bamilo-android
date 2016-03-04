@@ -14,7 +14,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button"
-        style="@style/Button_Text.Info"
+        style="@style/Button_Link.Blue_1"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"

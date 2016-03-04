@@ -49,7 +49,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/voucher_btn"
-            style="@style/Button_Text.Neutral"
+            style="@style/Button_Link.Neutral"
             android:layout_margin="@dimen/margin_padding_xxs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

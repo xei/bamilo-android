@@ -18,7 +18,7 @@
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="Button_Text" parent="ButtonBase">
+    <style name="Button_Link" parent="ButtonBase">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/margin_padding_xxs</item>
@@ -35,17 +35,12 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="Button_2.Action">
+    <style name="Button_2.Shop">
         <item name="android:background">@drawable/_gen_selector_button_action</item>
     </style>
 
     <style name="Button_1.Neutral">
         <item name="android:textColor">@color/black_800</item>
-    </style>
-
-    <style name="Button_2.Neutral">
-        <item name="android:textColor">@color/black_800</item>
-        <item name="android:background">@null</item>
     </style>
 
     <style name="Button_1.Neutral.Border_800">
@@ -56,18 +51,21 @@
         <item name="android:textColor">@color/accent</item>
     </style>
 
-    <!-- TODO : BUTTON TEXT IS A TEMPORARY SOLUTION -->
+    <style name="Button_2.Neutral">
+        <item name="android:textColor">@color/black_800</item>
+        <item name="android:background">@null</item>
+    </style>
 
-    <style name="Button_Text.Shop">
+    <style name="Button_Link.Blue_1">
+        <item name="android:textColor">@color/blue_1</item>
+    </style>
+
+    <style name="Button_Link.Shop">
         <item name="android:textColor">@drawable/_gen_selector_text_action</item>
     </style>
 
-    <style name="Button_Text.Neutral">
+    <style name="Button_Link.Neutral">
         <item name="android:textColor">@color/black_800</item>
-    </style>
-
-    <style name="Button_Text.Info">
-        <item name="android:textColor">@color/blue_1</item>
     </style>
 
     <style name="Button_1.Facebook">

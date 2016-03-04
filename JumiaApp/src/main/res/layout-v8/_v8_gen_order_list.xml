@@ -20,7 +20,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_item_button_reorder"
-            style="@style/Button_Text.Shop"
+            style="@style/Button_Link.Shop"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="@string/reorder_label" />
