@@ -24,18 +24,12 @@
 
     <ImageButton
         android:id="@+id/pdv_button_call"
-        android:layout_width="@dimen/dimen_64dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="@color/black_900"
+        style="@style/Button_BuyBar_Black"
         android:src="@drawable/ic_call" />
 
     <ImageButton
         android:id="@+id/pdv_button_share"
-        android:layout_width="@dimen/dimen_64dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:background="@color/black_900"
+        style="@style/Button_BuyBar_Black"
         android:src="@drawable/ic_share" />
 
 </LinearLayout>
