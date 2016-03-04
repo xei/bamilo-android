@@ -82,7 +82,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
 
                 ArrayList<ProductRegular> richRelevanceTeaserObjects = richRelevanceObject.getRichRelevanceProducts();
                     if(!CollectionUtils.isEmpty(richRelevanceTeaserObjects) && mParentClickListener != null && horizontalListView != null){
-                        horizontalListView.setAdapter(new RichRelevanceAdapter(richRelevanceTeaserObjects, mParentClickListener, R.layout.home_teaser_top_sellers_item, true));
+                        horizontalListView.setAdapter(new RichRelevanceAdapter(richRelevanceTeaserObjects, mParentClickListener, true));
                         sectionTitle.setText(richRelevanceObject.getTitle());
                     } else {
                         onRequestError(baseResponse);

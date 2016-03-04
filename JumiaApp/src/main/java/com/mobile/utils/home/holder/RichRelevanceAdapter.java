@@ -28,8 +28,6 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
 
     private final ArrayList<ProductRegular>  mDataSet;
 
-    private final int mLayoutId;
-
     private boolean mIsTeaserRR = true;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -46,19 +44,11 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
          */
         public ViewHolder(View view, boolean isTeaser) {
             super(view);
-            if(isTeaser){
-                mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
-                mProgress = view.findViewById(R.id.home_teaser_item_progress);
-                mBrand = (TextView) view.findViewById(R.id.home_teaser_top_sellers_brand);
-                mName = (TextView) view.findViewById(R.id.home_teaser_top_sellers_name);
-                mPrice = (TextView) view.findViewById(R.id.home_teaser_top_sellers_price);
-            } else {
-                mName = (TextView) view.findViewById(R.id.header_text);
-                mImage = (ImageView) view.findViewById(R.id.image_view);
-                mProgress = view.findViewById(R.id.image_loading_progress);
-                mBrand = (TextView) view.findViewById(R.id.item_brand);
-                mPrice = (TextView) view.findViewById(R.id.item_price);
-            }
+            mImage = (ImageView) view.findViewById(R.id.home_teaser_item_image);
+            mProgress = view.findViewById(R.id.home_teaser_item_progress);
+            mBrand = (TextView) view.findViewById(R.id.brand);
+            mName = (TextView) view.findViewById(R.id.name);
+            mPrice = (TextView) view.findViewById(R.id.price);
 
         }
     }
@@ -66,10 +56,9 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
     /**
      * Provide a suitable constructor (depends on the kind of data)
      */
-    public RichRelevanceAdapter( final ArrayList<ProductRegular>  rrProducts, final View.OnClickListener listener, final int layoutId, final boolean isTeaserRR) {
+    public RichRelevanceAdapter( final ArrayList<ProductRegular>  rrProducts, final View.OnClickListener listener, final boolean isTeaserRR) {
         mDataSet = rrProducts;
         mOnClickListener = listener;
-        mLayoutId = layoutId;
         mIsTeaserRR =  isTeaserRR;
     }
 
@@ -80,7 +69,7 @@ public class RichRelevanceAdapter extends RecyclerView.Adapter<RichRelevanceAdap
     @Override
     public RichRelevanceAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // Create a new view
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(mLayoutId, parent, false), mIsTeaserRR);
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.home_teaser_top_sellers_item, parent, false), mIsTeaserRR);
     }
 
     /*
