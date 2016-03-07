@@ -60,6 +60,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private ViewGroup mRelatedProductsView;
 
     private String mRelatedRichRelevanceHash;
+
+    private static final int ITEMS_MARGIN = 6;
     /**
      * Get instance
      */
@@ -208,7 +210,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             }
             HorizontalListView relatedGridView = (HorizontalListView) mRelatedProductsView.findViewById(R.id.rich_relevance_listview);
             relatedGridView.enableRtlSupport(ShopSelector.isRtl());
-            relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(10));
+            relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_MARGIN));
             relatedGridView.setAdapter(new RichRelevanceAdapter(mRichRelevance.getRichRelevanceProducts(), this, false));
             mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {
