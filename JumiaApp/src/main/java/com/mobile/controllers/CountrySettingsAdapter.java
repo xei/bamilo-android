@@ -50,7 +50,6 @@ public class CountrySettingsAdapter extends BaseAdapter{
 
     @Override
     public Object getItem(int position) {
-//        return position == 0 ? "Country":"Language";
         return null;
     }
 

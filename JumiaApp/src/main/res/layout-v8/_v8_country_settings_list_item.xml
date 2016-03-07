@@ -7,14 +7,12 @@
         android:id="@+id/flag"
         android:layout_width="@dimen/item_height_normal"
         android:layout_height="@dimen/item_height_normal"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/my_account_gen_dimen"
         android:padding="@dimen/margin_mid"
-        android:src="@mipmap/ic_launcher"
-        android:layout_alignParentLeft="true"
-        />
+        android:src="@mipmap/ic_launcher" />
 
-    <include
-        layout="@layout/_def_my_account_language_item"/>
+    <include layout="@layout/_def_my_account_language_item" />
 
 </RelativeLayout>

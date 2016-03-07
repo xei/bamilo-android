@@ -4,8 +4,8 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -39,7 +39,7 @@ public class RemoveFromWishListHelper extends SuperBaseHelper {
     @Override
     protected Map<String, String> getRequestData(Bundle args) {
         Map<String, String> data = super.getRequestData(args);
-        mSku = data.get(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG);
+        mSku = data.get(RestConstants.SKU);
         return data;
     }
 
@@ -60,7 +60,7 @@ public class RemoveFromWishListHelper extends SuperBaseHelper {
      */
     public static Bundle createBundle(String sku) {
         ContentValues values = new ContentValues();
-        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
+        values.put(RestConstants.SKU, sku);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         return bundle;

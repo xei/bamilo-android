@@ -59,7 +59,7 @@
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/order_status_text"
-                style="@style/Button_1.Secondary.Text_800.Border_400"
+                style="@style/Button_1.Secondary.Text_Black_800.Border_400"
                 android:layout_width="@dimen/dimen_328dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_marginLeft="@dimen/margin_60px"

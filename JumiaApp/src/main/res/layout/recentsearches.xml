@@ -17,7 +17,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@id/recentsearch_clear_all"
-        style="@style/Button_1.Secondary.Text_800.Border_400"
+        style="@style/Button_1.Secondary.Text_Black_800.Border_400"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:contentDescription="@string/recentsearch_clear_searches"

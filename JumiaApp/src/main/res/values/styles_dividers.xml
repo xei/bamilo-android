@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ################# CHECKOUT ################# -->
+
+    <style name="HorizontalListDivider">
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="HorizontalListDivider_black400" parent="HorizontalListDivider">
+        <item name="android:background">@color/black_400</item>
+    </style>
+
+    <style name="VerticalListDivider">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">1dp</item>
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="VerticalListDivider_black_400" parent="VerticalListDivider">
+        <item name="android:background">@color/black_400</item>
+    </style>
+
+
+    <!-- This style is applied to all the dialogs in the application -->
+
+    <style name="line_dialog">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/grey_dark_line</item>
+    </style>
+
+    <style name="line_dialog_vertical">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/grey_dark_line</item>
+    </style>
+
+    <!-- This style is applied to all the blue lines in the application -->
+
+    <style name="line_grey_style" parent="divider_horizontal" />
+
+    <style name="divider_horizontal_orange">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@color/orange_1</item>
+    </style>
+
+    <!-- This style is applied to all the grids in the application -->
+
+    <style name="divider_horizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="divider_horizontal.Black300">
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="divider_horizontal.Black700">
+        <item name="android:background">@color/black_700</item>
+    </style>
+
+    <style name="divider_vertical">
+        <item name="android:layout_width">@dimen/divider_height</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="divider_horizontal_campaign">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1.33dp</item>
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="shadow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@drawable/shadow_white_2_grey_horizontal</item>
+    </style>
+
+    <!-- ######## VIEW GROUP COMPAT ######## -->
+
+    <style name="ViewGroupCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="divider">@drawable/_gen_divider_horizontal_black_300</item>
+        <item name="showDividers">middle</item>
+    </style>
+
+    <!-- GROUP: DIVIDER VERTICAL -->
+
+    <style name="ViewGroupCompat.Vertical"/>
+
+    <style name="ViewGroupCompat.Vertical.MiddleDivider" />
+
+    <style name="ViewGroupCompat.Vertical.HeaderDivider">
+        <item name="showDividers">beginning</item>
+    </style>
+
+    <!-- GROUP: DIVIDER HORIZONTAL -->
+
+    <style name="ViewGroupCompat.Horizontal">
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <!-- MY ACCOUNT SECTION -->
+
+    <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider" />
+
+    <!-- TODO : ADD HERE MORE STYLES -->
+
+</resources>

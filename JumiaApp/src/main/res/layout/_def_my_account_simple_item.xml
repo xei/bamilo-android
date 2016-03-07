@@ -1,23 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/option_name"
+    style="@style/TextBase.Menu"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-                android:gravity="center_vertical|left|start"
-                android:orientation="vertical">
-
-
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/option_name"
-        style="@style/TextBase.Caption"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="@dimen/my_account_gen_dimen"
-        android:layout_marginRight="@dimen/my_account_gen_dimen"
-        android:layout_marginTop="16dp"
-        android:text="Title"
-        android:textColor="@color/black"/>
-
-    <View
-        style="@style/divider_horizontal"
-        android:layout_alignParentBottom="true"/>
-</RelativeLayout>
+    android:layout_marginLeft="@dimen/my_account_gen_dimen"
+    android:layout_marginRight="@dimen/my_account_gen_dimen"
+    android:gravity="center_vertical|left|start"
+    android:textColor="@color/black"
+    tools:text="Title" />

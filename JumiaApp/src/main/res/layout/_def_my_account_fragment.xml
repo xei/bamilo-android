@@ -3,83 +3,69 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <!-- ACCOUNT SETTINGS -->
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/middle_myaccount_list"
-            android:layout_width="@dimen/inner_container_width"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/HeaderStyle"
                 android:text="@string/section_title_account" />
-        </LinearLayout>
+
+        </android.support.v7.widget.LinearLayoutCompat>
 
         <!-- NOTIFICATION SETTINGS -->
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/notification_list"
-            android:layout_width="@dimen/inner_container_width"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/HeaderStyle"
                 android:text="@string/section_title_notification" />
 
-        </LinearLayout>
+        </android.support.v7.widget.LinearLayoutCompat>
 
         <!-- LANGUAGE SETTINGS -->
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/language_list"
-            android:layout_width="@dimen/inner_container_width"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/HeaderStyle"
                 android:text="@string/shop_settings" />
-        </LinearLayout>
+        </android.support.v7.widget.LinearLayoutCompat>
 
         <!-- MORE SETTINGS -->
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/more_info_container"
-            android:layout_width="@dimen/inner_container_width"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/HeaderStyle"
                 android:text="@string/more" />
-        </LinearLayout>
+        </android.support.v7.widget.LinearLayoutCompat>
 
 
         <!-- SHARE SETTINGS -->
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/middle_app_sharing_list"
-            android:layout_width="@dimen/inner_container_width"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
+            style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
                 style="@style/HeaderStyle"
                 android:text="@string/app_social" />
 
-        </LinearLayout>
+        </android.support.v7.widget.LinearLayoutCompat>
 
-    </LinearLayout>
+    </android.support.v7.widget.LinearLayoutCompat>
 </ScrollView>

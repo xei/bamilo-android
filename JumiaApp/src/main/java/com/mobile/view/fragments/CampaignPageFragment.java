@@ -1,7 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -38,7 +37,6 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
@@ -416,10 +414,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Validate click
         else if(!isAddingProductToCart) {
             // Create values to add to cart
-            ContentValues values = new ContentValues();
-            values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, sku);
-            values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
-            triggerAddToCart(values);
+            triggerAddToCart(sku);
             // Tracking
             trackAddToCart(sku, name, brand, price, discount);
         }
@@ -503,11 +498,9 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      * Trigger to add item to cart
      * @author sergiopereira
      */
-    private void triggerAddToCart(ContentValues values){
+    private void triggerAddToCart(String sku){
         Print.i(TAG, "TRIGGER ADD TO CART");
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
     }
 
     /**

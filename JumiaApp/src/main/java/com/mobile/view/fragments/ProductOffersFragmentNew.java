@@ -239,14 +239,13 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     /**
      * Trigger to add an item to cart
      * @param sku The sku
-     * @param simpleSKU The simple sku
      * @param price The price
      */
-    private void triggerAddItemToCart(String sku, String simpleSKU, double price) {
+    private void triggerAddItemToCart(String sku, double price) {
         // GA OFFER TRACKING
-        Print.d(TAG, "SIMLPE SKU:" + simpleSKU + " PRICE:" + price);
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSKU), this);
-        TrackerDelegator.trackAddOfferToCart(simpleSKU, price);
+        Print.d(TAG, "SIMLPE SKU:" + sku + " PRICE:" + price);
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
+        TrackerDelegator.trackAddOfferToCart(sku, price);
     }
     
     /*
@@ -336,9 +335,8 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
         if(!offer.hasSelectedSimpleVariation()){
             offerAddToCart = offer;
             onClickVariation(offer);
-
         } else {
-            triggerAddItemToCart(offer.getSku(), offer.getSelectedSimple().getSku(), offer.getFinalPrice());
+            triggerAddItemToCart(offer.getSelectedSimple().getSku(), offer.getFinalPrice());
         }
     }
 

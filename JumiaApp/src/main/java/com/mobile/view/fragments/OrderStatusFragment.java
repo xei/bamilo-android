@@ -283,7 +283,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         String simpleSku = (String) view.getTag(R.id.target_simple_sku);
         // Validate sku
         if(TextUtils.isNotEmpty(simpleSku)) {
-            triggerAddItemToCart(simpleSku.split("-")[0],  simpleSku);
+            triggerAddItemToCart(simpleSku);
         }
     }
 
@@ -297,8 +297,8 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
      * ###### TRIGGERS ######
      */
 
-    private void triggerAddItemToCart(String sku, String simpleSKU) {
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSKU), this);
+    private void triggerAddItemToCart(String simpleSKU) {
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(simpleSKU), this);
     }
 
     private void triggerOrder(String orderNr) {

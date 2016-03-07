@@ -964,7 +964,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         ProductSimple simple = mProduct.getSelectedSimple();
         // Case add item to cart
         if (simple != null) {
-            triggerAddItemToCart(mProduct.getSku(), simple.getSku());
+            triggerAddItemToCart(simple.getSku());
             // Tracking
             TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
         }
@@ -1189,8 +1189,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku, richRelevanceHash), this);
     }
 
-    private void triggerAddItemToCart(String sku, String simpleSKU) {
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSKU), this);
+    private void triggerAddItemToCart(String sku) {
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
     }
 
     private void triggerAddToWishList(String sku) {

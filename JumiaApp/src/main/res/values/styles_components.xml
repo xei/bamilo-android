@@ -162,7 +162,7 @@
 
     <!-- CHECK BOX -->
 
-    <style name="FormCheckBox" parent="SingleLineStyle"/>
+    <style name="FormCheckBox" parent="SingleLineStyle" />
 
     <style name="FormCheckBox.Right">
         <item name="android:paddingLeft">20dp</item>
