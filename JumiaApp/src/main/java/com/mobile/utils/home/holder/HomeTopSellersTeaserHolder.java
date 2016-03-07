@@ -32,7 +32,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
-    private static final int ITEMS_MARGIN = 10;
+    private static final int ITEMS_MARGIN = 6;
 
     public HorizontalListView horizontalListView;
     private final TextView sectionTitle;
@@ -65,6 +65,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
                 if(CollectionUtils.isNotEmpty(group.getData()))
                     getRichRelevanceData(TargetLink.getIdFromTargetLink(group.getData().get(0).getTargetLink()));
             }
+            applyMargin();
         } else {
             Log.i(TAG, "BRAND_TEASERS: ADAPTER IS NOT NULL");
         }
