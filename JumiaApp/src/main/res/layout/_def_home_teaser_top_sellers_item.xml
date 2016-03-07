@@ -5,8 +5,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/dimen_10dp"
-        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_marginBottom="@dimen/margin_padding_l"
+        android:layout_marginTop="@dimen/margin_padding_l"
         android:orientation="vertical">
 
         <FrameLayout

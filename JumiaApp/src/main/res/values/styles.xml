@@ -430,7 +430,7 @@
     <style name="CardViewFlatStyle" parent="ClickableStyle">
         <item name="cardCornerRadius">0dp</item>
         <item name="cardElevation">0dp</item>
-        <item name="contentPadding">@dimen/dimen_mat_4px</item>
+        <item name="contentPadding">@dimen/margin_padding_xs</item>
         <item name="cardUseCompatPadding">true</item>
         <item name="cardPreventCornerOverlap">true</item>
         <item name="cardBackgroundColor">@android:color/white</item>
