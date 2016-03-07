@@ -47,11 +47,11 @@
     </style>
 
     <style name="Button_1.Secondary.Text_800.Border_400">
-        <item name="android:background">@drawable/_gen_background_white_border_black_400</item>
+        <item name="android:background">@drawable/_gen_background_border_black_400</item>
     </style>
 
     <style name="Button_1.Secondary.Text_Orange.Border_300">
-        <item name="android:background">@drawable/_gen_background_white_border_black_300</item>
+        <item name="android:background">@drawable/_gen_background_border_black_300</item>
     </style>
 
     <!-- ################# BUTTON 2 STYLES ################# -->

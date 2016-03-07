@@ -7,8 +7,7 @@
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/black_700">
+        android:layout_weight="1">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_button_buy"

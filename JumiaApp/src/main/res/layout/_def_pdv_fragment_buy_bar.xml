@@ -17,8 +17,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black_700">
+        android:layout_height="match_parent">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_button_buy"
