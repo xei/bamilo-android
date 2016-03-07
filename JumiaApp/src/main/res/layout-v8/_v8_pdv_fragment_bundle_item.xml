@@ -52,7 +52,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_title"
-            style="@style/TextBase.Header"
+            style="@style/TextBase.HeadLine"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

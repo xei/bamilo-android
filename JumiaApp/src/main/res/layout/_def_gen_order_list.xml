@@ -123,7 +123,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_item_text_delivered"
-            style="@style/TextBase.Header"
+            style="@style/TextBase.HeadLine"
             android:layout_width="wrap_content"
             android:layout_alignParentBottom="true"
             android:singleLine="false"

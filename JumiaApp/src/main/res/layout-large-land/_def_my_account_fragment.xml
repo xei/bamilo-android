@@ -27,7 +27,7 @@
                 android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
+                    style="@style/HeaderStyle"
                     android:textStyle="bold"
                     android:text="@string/section_title_account" />
             </LinearLayout>
@@ -42,7 +42,7 @@
                 android:orientation="vertical" >
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
+                    style="@style/HeaderStyle"
                     android:textStyle="bold"
                     android:text="@string/section_title_notification" />
 
@@ -58,7 +58,7 @@
                 android:orientation="vertical" >
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
+                    style="@style/HeaderStyle"
                     android:textStyle="bold"
                     android:text="@string/shop_settings" />
             </LinearLayout>
@@ -85,7 +85,7 @@
                 android:orientation="vertical" >
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
+                    style="@style/HeaderStyle"
                     android:textStyle="bold"
                     android:text="@string/more" />
             </LinearLayout>
@@ -101,7 +101,7 @@
                 android:orientation="vertical" >
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
+                    style="@style/HeaderStyle"
                     android:textStyle="bold"
                     android:text="@string/app_social" />
             </LinearLayout>

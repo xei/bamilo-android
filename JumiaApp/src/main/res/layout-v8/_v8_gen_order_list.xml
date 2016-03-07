@@ -29,7 +29,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_item_text_delivered"
-            style="@style/TextBase.Header"
+            style="@style/TextBase.HeadLine"
             android:layout_width="100dp"
             android:layout_alignParentBottom="true"
             android:singleLine="false"
