@@ -23,15 +23,12 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_title_date"
                 style="@style/TextBase.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
-                android:textColor="@color/black_800"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:paddingBottom="12dp" />
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:textColor="@color/black_800" />
 
         </RelativeLayout>
 
@@ -115,7 +112,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:divider="@drawable/_gen_divider_horizontal_black_700"
-            app:showDividers="middle"/>
+            app:showDividers="middle" />
 
     </LinearLayout>
 
