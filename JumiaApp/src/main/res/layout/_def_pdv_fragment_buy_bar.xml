@@ -27,7 +27,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_button_add_to_save"
-            style="@style/Button_1.Neutral.Text_Orange"
+            style="@style/Button_1.Secondary.Text_Orange.Border_300"
             android:visibility="gone"
             tools:text="@string/save_for_later" />
 

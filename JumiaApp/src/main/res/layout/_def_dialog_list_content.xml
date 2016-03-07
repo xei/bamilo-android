@@ -43,7 +43,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_list_size_guide_button"
-        style="@style/dialog_text"
+        style="@style/Button_Link.Blue_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/selector_listitem_highlight_dialog"
@@ -52,7 +52,6 @@
         android:paddingLeft="@dimen/dialog_list_margin_horizontal"
         android:paddingRight="@dimen/dialog_list_margin_horizontal"
         android:paddingTop="@dimen/margin_large"
-        android:text="@string/size_guide_label"
-        android:textColor="@color/color_accent" />
+        android:text="@string/size_guide_label" />
 
 </LinearLayout>

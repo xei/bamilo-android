@@ -31,14 +31,14 @@
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/button_accept"
-            style="@style/Button_Link.Shop"
+            style="@style/Button_Link.Blue_1"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:text="@string/submit_label" />
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/button_cancel"
-            style="@style/Button_Link.Neutral"
+            style="@style/Button_Link.Secondary"
             android:layout_margin="@dimen/margin_padding_xxs"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"

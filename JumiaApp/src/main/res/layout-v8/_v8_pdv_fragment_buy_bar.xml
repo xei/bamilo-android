@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <RelativeLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:background="@color/black_700">
@@ -17,7 +17,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_button_add_to_save"
-            style="@style/Button_1.Neutral.Text_Orange"
+            style="@style/Button_1.Secondary.Text_Orange.Border_300"
             android:visibility="gone" />
 
     </RelativeLayout>

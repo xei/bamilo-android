@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layoutDirection="locale"
-        android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layoutDirection="locale"
+    android:orientation="vertical">
 
     <com.mobile.components.ScrollViewReachable
+        android:id="@+id/reviews_scrollview_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/reviews_scrollview_container"
-        android:background="#fafafa"
-        >
+        android:background="#fafafa">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,20 +19,16 @@
 
             <!-- RATINGS SECTION -->
 
-            <!--
-            <include layout="@layout/header"  android:id="@+id/ratingsHeader" />
-            -->
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/ratingsHeader"
                 style="@style/HeaderStyle" />
 
-            <include layout="@layout/ratings_board"  android:id="@+id/ratingsBoard" />
+            <include
+                android:id="@+id/ratingsBoard"
+                layout="@layout/ratings_board" />
 
             <!-- USERS SECTION -->
 
-            <!--
-                <include layout="@layout/header"  android:id="@+id/usersHeader" />
-                -->
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/usersHeader"
                 style="@style/HeaderStyle" />
@@ -44,36 +38,14 @@
                 android:id="@+id/linear_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="visible"
                 android:background="@color/transparent"
-                />
+                android:orientation="vertical"
+                android:visibility="visible" />
 
 
         </LinearLayout>
 
 
-
     </com.mobile.components.ScrollViewReachable>
-
-    <!--
-        <com.mobile.components.ScrollViewReachable
-        android:id="@+id/reviews_scrollview_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="false" android:background="@color/white_f9f9f9"
-            >
-
-                <LinearLayout
-                    android:id="@+id/linear_reviews"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="visible"
-                    />
-
-        </com.mobile.components.ScrollViewReachable>
-        -->
-
 
 </LinearLayout>
