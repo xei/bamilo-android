@@ -1,25 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="_button">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@drawable/btn_orange</item>
-        <item name="android:gravity">center_horizontal|center_vertical</item>
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:textSize">@dimen/text_button_item</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:layout_marginTop">@dimen/margin_huge</item>
-        <item name="android:layout_marginBottom">@dimen/margin_huge</item>
-        <item name="android:textAllCaps">false</item>
-    </style>
-
-    <style name="button_orange_style" parent="_button">
-        <item name="android:background">@drawable/btn_orange</item>
-        <item name="android:layout_marginTop">@dimen/margin_mid</item>
-        <item name="android:layout_marginBottom">@dimen/margin_large</item>
-    </style>
-
     <!-- TEXT STYLES -->
 
     <!-- new title styles for redesign 2013/03 -->
@@ -100,7 +81,6 @@
 
     <style name="shadow">
         <item name="android:layout_width">match_parent</item>
-        <!-- ORIGINAL SHADOW HEIGHT item name="android:layout_height">5dp</item -->
         <item name="android:layout_height">@dimen/divider_height</item>
         <item name="android:background">@drawable/shadow_white_2_grey_horizontal</item>
     </style>
@@ -427,12 +407,9 @@
         <item name="android:foreground">@drawable/selector_card_view</item>
     </style>
 
-    <!-- HEADERS TEASER  -->
-    <style name="HeaderTeaser" parent="TextBase.Title_2">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dimen_mat_48px</item>
-        <item name="android:paddingLeft">@dimen/dimen_mat_8px</item>
-        <item name="android:paddingRight">@dimen/dimen_mat_8px</item>
+    <!-- HEADERS TEASER -->
+    <style name="HeaderTeaserStyle" parent="HeaderStyle">
+        <item name="android:background">@null</item>
     </style>
 
     <!-- SMALL TEASER -->
@@ -491,13 +468,6 @@
     <style name="TextBase.Body.ShopFirstDrawRight">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:drawablePadding">@dimen/dimen_10dp</item>
-    </style>
-
-    <!-- MY ACCOUNT -->
-
-    <style name="HeaderMyAccountStyle" parent="HeaderStyle">
-        <item name="android:paddingLeft">@dimen/my_account_gen_dimen</item>
-        <item name="android:paddingStart">@dimen/my_account_gen_dimen</item>
     </style>
 
     <!-- MATERIAL BOTTOM SHEET -->

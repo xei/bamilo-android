@@ -3,19 +3,6 @@
 
     <!-- ################# GENERIC COMPONENTS STYLES ################# -->
 
-    <!-- Header -->
-    <style name="HeaderStyle" parent="@style/TextBase.Header">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:minHeight">48dp</item>
-        <item name="android:gravity">right|bottom</item>
-        <item name="android:paddingBottom">12dp</item>
-        <item name="android:paddingRight">20dp</item>
-        <item name="android:background">@color/black_300</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
     <!-- Single line item -->
     <style name="SingleLineStyle" parent="@style/TextBase.Display_3">
         <item name="android:layout_width">match_parent</item>

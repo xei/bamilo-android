@@ -18,24 +18,22 @@
             android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/HeaderMyAccountStyle"
-                android:text="@string/section_title_account"
-                android:textStyle="bold"/>
+                style="@style/HeaderStyle"
+                android:text="@string/section_title_account" />
         </LinearLayout>
 
         <!-- NOTIFICATION SETTINGS -->
 
-    <LinearLayout
-        android:id="@+id/notification_list"
-        android:layout_width="@dimen/inner_container_width"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:orientation="vertical" >
+        <LinearLayout
+            android:id="@+id/notification_list"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-        <com.mobile.components.customfontviews.TextView
-            style="@style/HeaderMyAccountStyle"
-            android:text="@string/section_title_notification"
-            android:textStyle="bold"/>
+            <com.mobile.components.customfontviews.TextView
+                style="@style/HeaderStyle"
+                android:text="@string/section_title_notification" />
 
         </LinearLayout>
 
@@ -46,45 +44,42 @@
             android:layout_width="@dimen/inner_container_width"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/HeaderMyAccountStyle"
-                android:text="@string/shop_settings"
-                android:textStyle="bold"/>
+                style="@style/HeaderStyle"
+                android:text="@string/shop_settings" />
         </LinearLayout>
 
         <!-- MORE SETTINGS -->
 
-            <LinearLayout
-                android:id="@+id/more_info_container"
-                android:layout_width="@dimen/inner_container_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical" >
+        <LinearLayout
+            android:id="@+id/more_info_container"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-                <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
-                    android:text="@string/more"
-                    android:textStyle="bold"/>
-            </LinearLayout>
+            <com.mobile.components.customfontviews.TextView
+                style="@style/HeaderStyle"
+                android:text="@string/more" />
+        </LinearLayout>
 
 
         <!-- SHARE SETTINGS -->
 
-            <LinearLayout
-                android:id="@+id/middle_app_sharing_list"
-                android:layout_width="@dimen/inner_container_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="vertical" >
+        <LinearLayout
+            android:id="@+id/middle_app_sharing_list"
+            android:layout_width="@dimen/inner_container_width"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-                <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
-                    android:text="@string/app_social"
-                    android:textStyle="bold"/>
+            <com.mobile.components.customfontviews.TextView
+                style="@style/HeaderStyle"
+                android:text="@string/app_social" />
 
-            </LinearLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>

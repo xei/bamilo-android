@@ -7,7 +7,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/shop_featured_box_title"
-        style="@style/HeaderTeaser"
+        style="@style/HeaderTeaserStyle"
         android:text="@string/top_sellers" />
 
     <com.mobile.components.recycler.HorizontalListView

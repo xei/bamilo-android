@@ -49,7 +49,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/im_check"
                 android:layout_marginRight="@dimen/confirm_msg_padding"
-                style="@style/TextBase.Header"
+                style="@style/TextBase.HeadLine"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:text="@string/informational_text"
