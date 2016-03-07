@@ -13,7 +13,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_newsletter_title"
-            style="@style/TextBase.Header"
+            style="@style/TextBase.HeadLine"
             android:text="@string/sign_up_to_our_newsletter"
             android:textColor="@color/white"/>
 

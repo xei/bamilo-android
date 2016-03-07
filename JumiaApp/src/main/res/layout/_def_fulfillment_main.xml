@@ -38,7 +38,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/fulfillment_seller_name"
-        style="@style/TextBase.Header"
+        style="@style/TextBase.HeadLine"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:textColor="@color/black" />

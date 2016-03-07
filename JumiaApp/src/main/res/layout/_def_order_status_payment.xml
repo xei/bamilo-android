@@ -16,7 +16,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_payment_type"
-        style="@style/TextBase.Header"
+        style="@style/TextBase.HeadLine"
         android:textStyle="bold"
         android:textColor="@color/black" />
 </LinearLayout>

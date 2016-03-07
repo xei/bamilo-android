@@ -12,7 +12,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_name"
-        style="@style/TextBase.Header"
+        style="@style/TextBase.HeadLine"
         android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView

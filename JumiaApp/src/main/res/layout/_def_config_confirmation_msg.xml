@@ -57,7 +57,7 @@
                     android:layout_toEndOf="@+id/im_check"
                     android:layout_marginLeft="@dimen/confirm_msg_padding"
                     android:layout_marginStart="@dimen/confirm_msg_padding"
-                    style="@style/TextBase.Header"
+                    style="@style/TextBase.HeadLine"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:text="@string/informational_text"
