@@ -1,39 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
-    <LinearLayout
-        android:layout_above="@+id/buttons"
-        android:orientation="horizontal"
-        android:layoutDirection="ltr"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.4"
-        android:orientation="vertical"
-        >
+        android:layout_above="@+id/buttons"
+        android:layoutDirection="ltr"
+        android:orientation="horizontal">
 
-        <!-- TITLE -->
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/filter_title"
-            style="@style/HeaderStyle"
-            android:text="TITLE"
-
-            />
-
-        <View style="@style/HorizontalListDivider_black400" />
-
-        <FrameLayout
-            android:id="@+id/dialog_filter_container"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-           />
+            android:layout_weight="0.4"
+            android:orientation="vertical">
+
+            <!-- TITLE -->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/filter_title"
+                style="@style/HeaderStyle"
+                tools:text="TITLE" />
+
+            <View style="@style/HorizontalListDivider_black400" />
+
+            <FrameLayout
+                android:id="@+id/dialog_filter_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
         </LinearLayout>
 
@@ -44,17 +41,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:divider="@color/black_400"
             android:background="@color/black_300"
-            android:footerDividersEnabled="true"
-            android:dividerHeight="1dp"/>
+            android:divider="@color/black_400"
+            android:dividerHeight="1dp"
+            android:footerDividersEnabled="true" />
     </LinearLayout>
 
     <!-- BUTTONS -->
 
-    <include android:id="@+id/buttons"
+    <include
+        android:id="@+id/buttons"
+        layout="@layout/filter_bottom_buttons"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:layout_alignParentBottom="true"
-        layout="@layout/filter_bottom_buttons"/>
+        android:layout_alignParentBottom="true" />
 </RelativeLayout>

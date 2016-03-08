@@ -100,12 +100,20 @@
 
     <!-- ################# DIALOG BUTTON STYLES ################# -->
 
-    <style name="Button_Dialog_Submit" parent="@style/Button_1.Shop.Wrap">
+    <style name="Button_Dialog_Form_Submit" parent="@style/Button_1.Shop.Wrap">
         <item name="android:text">@string/submit_label</item>
     </style>
 
-    <style name="Button_Dialog_Cancel" parent="@style/Button_1.Secondary.Text_Black_800.Border_400.Wrap">
+    <style name="Button_Dialog_Form_Cancel" parent="@style/Button_1.Secondary.Text_Black_800.Border_400.Wrap">
         <item name="android:text">@string/cancel_label</item>
+    </style>
+
+    <style name="Button_Dialog_Filter_Submit" parent="@style/Button_1.Shop">
+        <item name="android:text">@string/apply_label</item>
+    </style>
+
+    <style name="Button_Dialog_Filter_Cancel" parent="@style/Button_1.Secondary.Text_Black_800.Border_400">
+        <item name="android:text">@string/clear_all_lowercase_label</item>
     </style>
 
     <!-- ################# OTHER BUTTON STYLES ################# -->

@@ -1,63 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="56dp"
-    android:layout_gravity="center"
-    android:background="@color/grey_dividerlight"
-    android:gravity="center"
-    android:layoutDirection="locale"
-    android:orientation="horizontal"
-    android:paddingTop="0.75dp" >
+    style="@style/Dialog_Filter_Buttons_Container"
+    android:orientation="horizontal">
 
-    <LinearLayout
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_filter_button_cancel"
+        style="@style/Button_Dialog_Filter_Cancel"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/black_900"
-        android:gravity="center">
+        android:layout_weight="1" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_filter_clear"/>
-
-        <com.mobile.components.customfontviews.TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="roboto_regular"
-            android:gravity="center"
-            android:text="@string/clear_all_lowercase_label"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-
-    <View android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:background="@color/black_400"/>
-
-    <LinearLayout
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_filter_button_done"
+        style="@style/Button_Dialog_Filter_Submit"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="@color/black_900"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_filter_apply"/>
-
-        <com.mobile.components.customfontviews.TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="roboto_regular"
-            android:gravity="center"
-            android:text="@string/apply_label"
-            android:textColor="@color/white"
-            android:textSize="16sp"/>
-        </LinearLayout>
+        android:layout_weight="1" />
 
 </LinearLayout>

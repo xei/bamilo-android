@@ -23,22 +23,17 @@
 
     <RelativeLayout
         android:id="@+id/form_button_container"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/item_height_normal"
-        android:layout_marginBottom="@dimen/margin_padding_xxl"
-        android:layout_marginTop="@dimen/margin_padding_xxl"
-        android:paddingLeft="@dimen/margin_padding_xl"
-        android:paddingRight="@dimen/margin_padding_xl">
+        style="@style/Dialog_Form_Buttons_Container">
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/button_cancel"
-            style="@style/Button_Dialog_Cancel"
+            style="@style/Button_Dialog_Form_Cancel"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/button_accept"
-            style="@style/Button_Dialog_Submit"
+            style="@style/Button_Dialog_Form_Submit"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true" />
 
