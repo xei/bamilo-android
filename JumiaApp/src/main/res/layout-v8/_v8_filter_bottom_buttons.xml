@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/Dialog_Filter_Buttons_Container"
+    style="@style/DialogFilterButtonsContainer"
     android:layoutDirection="ltr"
     android:orientation="horizontal"
     tools:ignore="UnusedAttribute">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_filter_button_done"
-        style="@style/Button_Dialog_Filter_Submit"
+        style="@style/DialogFilterButtonSubmit"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_filter_button_cancel"
-        style="@style/Button_Dialog_Filter_Cancel"
+        style="@style/DialogFilterButtonCancel"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1" />

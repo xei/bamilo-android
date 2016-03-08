@@ -2,26 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/title_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/modal_dialog_header"
-        android:paddingBottom="@dimen/margin_large"
-        android:paddingEnd="@dimen/margin_veryhuge"
-        android:paddingLeft="@dimen/margin_veryhuge"
-        android:paddingRight="@dimen/margin_veryhuge"
-        android:paddingStart="@dimen/margin_veryhuge"
-        android:paddingTop="@dimen/margin_large" >
+    <!-- TITLE -->
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/dialog_title"
-            style="@style/dialog_header"
-            android:gravity="center_horizontal"
-            android:text="Title" />
-    </LinearLayout>
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/dialog_title"
+        style="@style/DialogHeaderStyle"
+        tools:text="Title" />
+
+    <!-- CONTENT -->
 
     <RelativeLayout style="@style/dialog_container_content" >
 
