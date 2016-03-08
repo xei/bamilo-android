@@ -5,7 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by msilva on 2/22/16.
+ * Class used to set the vertical divider.
+ * @author msilva
  */
 public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
 
@@ -16,8 +17,7 @@ public class VerticalSpaceItemDecoration extends RecyclerView.ItemDecoration {
     }
 
     @Override
-    public void getItemOffsets(Rect outRect, View view, RecyclerView parent,
-                               RecyclerView.State state) {
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         outRect.right = mVerticalSpaceWidth;
     }
 }
