@@ -41,6 +41,7 @@
     <dimen name="dimen_30dp">30dp</dimen>
     <dimen name="dimen_32dp">32dp</dimen>
     <dimen name="dimen_33_33dp">33.33dp</dimen>
+    <dimen name="dimen_36dp">36dp</dimen>
     <dimen name="dimen_40dp">40dp</dimen>
     <dimen name="dimen_48dp">48dp</dimen>
     <dimen name="dimen_50dp">50dp</dimen>
@@ -49,6 +50,7 @@
     <dimen name="dimen_60dp">60dp</dimen>
     <dimen name="dimen_64dp">64dp</dimen>
     <dimen name="dimen_70dp">70dp</dimen>
+    <dimen name="dimen_88dp">88dp</dimen>
     <dimen name="dimen_90dp">90dp</dimen>
     <dimen name="dimen_92dp">92dp</dimen>
     <dimen name="dimen_98dp">98dp</dimen>
@@ -422,19 +424,13 @@
     <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
 
     <!-- MATERIAL DIMENSION 1:1 -->
-    <dimen name="dimen_mat_1px">1dp</dimen>
-    <dimen name="dimen_mat_1_25px">1.25dp</dimen>
-    <dimen name="dimen_mat_2px">2dp</dimen>
-    <dimen name="dimen_mat_3px">3dp</dimen>
     <dimen name="dimen_mat_4px">4dp</dimen>
     <dimen name="dimen_mat_8px">8dp</dimen>
     <dimen name="dimen_mat_16px">16dp</dimen>
-    <dimen name="dimen_mat_36px">36dp</dimen>
     <dimen name="dimen_mat_45px">45dp</dimen>
     <dimen name="dimen_mat_48px">48dp</dimen>
     <dimen name="dimen_mat_60px">60dp</dimen>
     <dimen name="dimen_mat_80px">80dp</dimen>
-    <dimen name="dimen_mat_88px">88dp</dimen>
     <dimen name="dimen_mat_110px">110dp</dimen>
     <dimen name="dimen_mat_118px">118dp</dimen>
     <dimen name="dimen_mat_123px">123dp</dimen>

@@ -25,25 +25,22 @@
         android:id="@+id/form_button_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_height_normal"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="6dp"
-        android:paddingStart="6dp"
-        android:paddingRight="16dp"
-        android:paddingEnd="16dp">
+        android:layout_marginBottom="@dimen/margin_padding_xxl"
+        android:layout_marginTop="@dimen/margin_padding_xxl"
+        android:paddingLeft="@dimen/margin_padding_xl"
+        android:paddingRight="@dimen/margin_padding_xl">
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/button_cancel"
-            style="@style/Button_Link.Secondary"
+            style="@style/Button_Dialog_Cancel"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:text="@string/cancel_label" />
+            android:layout_alignParentStart="true" />
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/button_accept"
-            style="@style/Button_Link.Blue_1"
+            style="@style/Button_Dialog_Submit"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:text="@string/submit_label" />
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
 

@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/dimen_5dp"
     android:layout_marginBottom="@dimen/dimen_5dp"
-    android:paddingLeft="@dimen/dimen_mat_4px"
-    android:paddingRight="@dimen/dimen_mat_4px">
+    android:paddingLeft="@dimen/margin_padding_xs"
+    android:paddingRight="@dimen/margin_padding_xs">
 
     <android.support.v7.widget.CardView
         android:id="@+id/home_teaser_campaign_container"

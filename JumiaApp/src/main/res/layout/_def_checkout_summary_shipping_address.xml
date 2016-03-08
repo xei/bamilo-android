@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,9 +21,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginEnd="@dimen/margin_padding_l"
             android:layout_marginRight="@dimen/margin_padding_l"
-            android:src="@drawable/selector_btn_edit"
             android:paddingLeft="10dp"
-            android:paddingStart="10dp"/>
+            android:paddingStart="10dp"
+            android:src="@drawable/selector_btn_edit" />
     </RelativeLayout>
 
     <!-- ADDRESS -->
@@ -33,6 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_padding_l"
-        android:layout_marginTop="@dimen/margin_padding_l" />
+        android:layout_marginTop="@dimen/margin_padding_l"
+        android:orientation="vertical"/>
 
 </LinearLayout>
