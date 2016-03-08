@@ -33,58 +33,6 @@
         <item name="android:layout_marginRight">6dp</item>
     </style>
 
-    <!-- This style is applied to all the blue lines in the application -->
-
-    <style name="line_grey_style" parent="divider_horizontal" />
-
-    <!-- This style is applied to all the dialogs in the application -->
-
-    <style name="line_dialog">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/grey_dark_line</item>
-    </style>
-
-    <style name="line_dialog_vertical">
-        <item name="android:layout_width">1dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/grey_dark_line</item>
-    </style>
-
-    <!-- This style is applied to all the grids in the application -->
-
-    <style name="divider_horizontal">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/black_300</item>
-    </style>
-
-    <style name="divider_horizontal.Black300">
-        <item name="android:background">@color/black_300</item>
-    </style>
-
-    <style name="divider_horizontal.Black700">
-        <item name="android:background">@color/black_700</item>
-    </style>
-
-    <style name="divider_vertical">
-        <item name="android:layout_width">@dimen/divider_height</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/black_300</item>
-    </style>
-
-    <style name="divider_horizontal_campaign">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1.33dp</item>
-        <item name="android:background">@color/black_300</item>
-    </style>
-
-    <style name="shadow">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@drawable/shadow_white_2_grey_horizontal</item>
-    </style>
-
     <!-- Products List -->
 
     <style name="list_row_style">
@@ -243,12 +191,6 @@
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="divider_horizontal_orange">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/orange_1</item>
-    </style>
-
     <!-- BUTTON FOR BOTTOM CONTAINER -->
     <style name="_parent_button_bottom_container">
         <item name="android:layout_width">match_parent</item>
@@ -359,28 +301,6 @@
     <style name="checkbox_base" parent="Widget">
         <item name="android:layout_gravity">left|start|top</item>
         <item name="android:layoutDirection">locale</item>
-    </style>
-
-    <!-- ################# CHECKOUT ################# -->
-
-    <style name="HorizontalListDivider">
-        <item name="android:layout_height">1dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@color/black_300</item>
-    </style>
-
-    <style name="HorizontalListDivider_black400" parent="HorizontalListDivider">
-        <item name="android:background">@color/black_400</item>
-    </style>
-
-    <style name="VerticalListDivider">
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">1dp</item>
-        <item name="android:background">@color/black_300</item>
-    </style>
-
-    <style name="VerticalListDivider_black_400" parent="VerticalListDivider">
-        <item name="android:background">@color/black_400</item>
     </style>
 
     <!-- BASE BUTTONS STYLES -->

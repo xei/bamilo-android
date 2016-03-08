@@ -23,14 +23,10 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_title_date"
                 style="@style/TextBase.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
-                android:paddingBottom="12dp"
                 android:textColor="@color/black_800" />
-
 
         </RelativeLayout>
 

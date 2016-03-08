@@ -3,7 +3,7 @@
     android:id="@+id/item_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/_gen_background_white_border_black_300"
+    android:background="@drawable/_gen_background_border_black_300"
     android:clickable="true"
     android:padding="@dimen/layout_padding">
 

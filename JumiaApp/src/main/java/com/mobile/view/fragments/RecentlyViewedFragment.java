@@ -1,6 +1,5 @@
 package com.mobile.view.fragments;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -25,10 +24,10 @@ import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -386,16 +385,10 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             showUnexpectedErrorWarning();
             return;
         }
-        // Item data
-        ContentValues values = new ContentValues();
-        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, product.getSku());
-        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simple.getSku());
-        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         // Request data
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        Bundle bundle = ShoppingCartAddItemHelper.createBundle(simple.getSku());
         bundle.putInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, position);
-        bundle.putString(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, product.getSku());
+        bundle.putString(RestConstants.SKU, product.getSku());
         bundle.putBoolean(ShoppingCartAddItemHelper.REMOVE_RECENTLY_VIEWED_TAG, true);
         // Trigger
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);

@@ -101,8 +101,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
 
     private Resources resources;
 
-    private ProgressBar progressBarFive, progressBarFour, progressBarThree, progressBarTwo, progressBarOne;
-
     private static final String FIVE_STAR_PROGRESS = "5";
     private static final String FOUR_STAR_PROGRESS = "4";
     private static final String THREE_STAR_PROGRESS = "3";
@@ -665,11 +663,11 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
      */
     private void setProgressRating(int maxTotal) {
         //get progress bars and value numbers
-        progressBarFive = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFive);
-        progressBarFour = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFour);
-        progressBarThree = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarThree);
-        progressBarTwo = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarTwo);
-        progressBarOne = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarOne);
+        ProgressBar progressBarFive = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFive);
+        ProgressBar progressBarFour = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarFour);
+        ProgressBar progressBarThree = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarThree);
+        ProgressBar progressBarTwo = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarTwo);
+        ProgressBar progressBarOne = (ProgressBar) mProgressBoard.findViewById(R.id.progressBarOne);
 
 
         progressBarFive.setMax(maxTotal);
@@ -794,7 +792,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback {
         if (id == R.id.lWriteReview) {
             writeReview();
         }
-
     }
 
 

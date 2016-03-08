@@ -61,7 +61,7 @@
 
                 <com.mobile.components.customfontviews.Button
                     android:id="@+id/checkout_call_to_order"
-                    style="@style/Button_1.Neutral"
+                    style="@style/Button_1.Secondary.Text_Black_800.Border_400"
                     android:text="@string/call_to_order" />
             </LinearLayout>
         </LinearLayout>

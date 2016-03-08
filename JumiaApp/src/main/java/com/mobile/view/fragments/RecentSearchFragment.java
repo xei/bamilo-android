@@ -115,6 +115,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     private void setAppContentLayout(View mainView) {
         mRecentSearchesList = (RecyclerView) mainView.findViewById(R.id.recentsearch_list);
         mRecentSearchesList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecentSearchesList.setNestedScrollingEnabled(false);
         mClearAllButton = (TextView) mainView.findViewById(R.id.recentsearch_clear_all);
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(new OnClickListener() {

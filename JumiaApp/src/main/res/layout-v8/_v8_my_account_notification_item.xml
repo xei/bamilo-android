@@ -2,10 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-
+    android:gravity="center_vertical"
+    android:orientation="vertical">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/option_name"
@@ -16,7 +14,7 @@
         android:layout_marginRight="@dimen/my_account_gen_dimen"
         android:layout_marginTop="16dp"
         android:text="Title"
-        android:textColor="@color/black"/>
+        android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/notification_checkbox"
@@ -28,10 +26,6 @@
         android:layout_gravity="center"
         android:button="@null"
         android:drawableLeft="@drawable/_gen_selector_check_box"
-        android:gravity="center"/>
-
-    <View
-        style="@style/divider_horizontal"
-        android:layout_alignParentBottom="true"/>
+        android:gravity="center" />
 
 </RelativeLayout>
