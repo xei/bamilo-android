@@ -101,13 +101,10 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 		JSONObject reviewsObject = dataObject.optJSONObject(RestConstants.REVIEWS);
 		if(reviewsObject != null){
 			commentsCount = reviewsObject.optInt(RestConstants.TOTAL, 0);
-
 			// comments.
 			JSONArray comments = reviewsObject.optJSONArray(RestConstants.COMMENTS);
-
 			// just used for seller reviews
 			average = reviewsObject.optInt(RestConstants.AVERAGE, -1);
-
 			if(comments != null){
 				int size = comments.length();
 				ProductReviewComment reviewComment;
@@ -117,15 +114,12 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 					reviewComments.add(reviewComment);
 				}
 			}
-
 			JSONObject paginationObject = reviewsObject.optJSONObject(RestConstants.PAGINATION);
 			if(paginationObject != null){
 				currentPage = paginationObject.getInt(RestConstants.CURRENT_PAGE);
 				totalPages = paginationObject.getInt(RestConstants.TOTAL_PAGES);
 			}
-
 		}
-
 		return true;
 	}
 
@@ -167,7 +161,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	/**
 	 * field user for seller only
-	 * @return
 	 */
 	public int getAverage() {
 		return average;
@@ -190,8 +183,6 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	/**
 	 * Get number of ratings / star throught star name
-	 *
-	 * @return
 	 */
 	public String getByStarValue(String name) {
 		String value = "0";
