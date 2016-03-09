@@ -3,22 +3,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center">
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/rate_item_label"
-        style="@style/RatingBarTextStyle"
-        android:gravity="right|end"
-        tools:text="5" />
-
-    <ProgressBar
-        android:id="@+id/rate_item_bar"
-        style="@style/RatingBarStyle" />
+    android:gravity="center"
+    android:layoutDirection="ltr"
+    tools:ignore="UnusedAttribute">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/rate_item_value"
         style="@style/RatingBarTextStyle"
         tools:text="(9)" />
+
+    <ProgressBar
+        android:id="@+id/rate_item_bar"
+        style="@style/RatingBarStyle"
+        android:progressDrawable="@drawable/ratings_progress_inverted" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/rate_item_label"
+        style="@style/RatingBarTextStyle"
+        android:gravity="left"
+        tools:text="5" />
 
 </LinearLayout>
 

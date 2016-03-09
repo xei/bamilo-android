@@ -245,7 +245,7 @@
     <string name="language">Language</string>
     <string name="country">Country</string>
     <string name="birthday_error">Please choose a valid Birthday.</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">Clear All</string>
     <string name="apply_label">Apply</string>
     <string name="see_other_variations">See other variations</string>
@@ -268,7 +268,7 @@
     <string name="other_sellers_starting">Other Sellers starting from: %s</string>
     <string name="buy_combo">BUY COMBO</string>
     <string name="total_price_bottom">Total:</string>
-    <string name="average_rating_label">Average Rating</string>
+    <string name="average_label">Average</string>
     <string name="average_rating_used_prod">Have you used this product?\nRate it now</string>
     <string name="average_rate_now">Rate it now</string>
     <string name="rating_placeholder">RATINGS (%s)</string>

@@ -195,11 +195,23 @@
 
     <!-- RATING BAR -->
 
+    <style name="RatingBoardStyle" parent="ViewGroupCompat.Horizontal.MiddleDivider">
+        <item name="android:minHeight">26dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginRight">@dimen/margin_padding_s</item>
+        <item name="android:progressDrawable">@drawable/ratings_progress</item>
+    </style>
+
     <style name="RatingBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal">
-        <item name="android:layout_height">@dimen/dimen_3dp</item>
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">3dp</item>
         <item name="android:layout_marginLeft">@dimen/margin_padding_s</item>
         <item name="android:layout_marginRight">@dimen/margin_padding_s</item>
         <item name="android:progressDrawable">@drawable/ratings_progress</item>
+    </style>
+
+    <style name="RatingBarTextStyle" parent="TextBase.Caption.Black_800">
+        <item name="android:minWidth">@dimen/dimen_25dp</item>
     </style>
 
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ -->

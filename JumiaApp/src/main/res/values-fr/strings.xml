@@ -244,7 +244,7 @@
     <string name="language">Langue</string>
     <string name="country">Pays</string>
     <string name="birthday_error">Choisissez votre date de naissance</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">Tout effacer</string>
     <string name="apply_label">Utiliser</string>
     <string name="see_other_variations">Voir les autres modèles</string>
@@ -269,7 +269,7 @@
     <string name="total_price_bottom">Total:</string>
     <string name="from_avg_rat">de</string>
     <string name="from_avg_cus">clients</string>
-    <string name="average_rating_label">moyenne</string>
+    <string name="average_label">moyenne</string>
     <string name="average_rating_used_prod">Avez vous utilisez ce produit?</string>
     <string name="average_rate_now">Notez le maintenant</string>
     <string name="rating_placeholder">Notes (%d)</string>

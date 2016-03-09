@@ -262,10 +262,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             }
         }
         isExecutingSendReview = false;
-        if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
-            getView().findViewById(R.id.product_info_container).setVisibility(View.GONE);
-            getView().findViewById(R.id.shadow).setVisibility(View.GONE);
-        }
         if (getArguments() != null && getArguments().containsKey(RATING_SHOW)) {
             isShowingRatingForm = getArguments().getBoolean(RATING_SHOW);
             ratingForm = JumiaApplication.INSTANCE.ratingForm;

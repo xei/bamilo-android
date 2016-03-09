@@ -56,12 +56,12 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	}
 
 	/*
-         * (non-Javadoc)
-         *
-         * @see
-         * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
-         * )
-         */
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject
+	 * )
+	 */
 	@Override
 	public boolean initialize(JSONObject dataObject) throws JSONException {
 
@@ -77,36 +77,27 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 			productSku = productObject.optString(RestConstants.SKU);
 		}
 		JSONObject starSizeObject = dataObject.optJSONObject(RestConstants.STARS_SIZE);
-
 		if(starSizeObject != null){
 			minStarSize = starSizeObject.optInt(RestConstants.NAME, 1);
 			maxStarSize =  starSizeObject.optInt(RestConstants.NAME, 5);
 		}
-
-
+		// Ratings
 		JSONObject ratingsObject = dataObject.optJSONObject(RestConstants.RATINGS);
-
 		if (ratingsObject != null) {
 			mBasedOn = ratingsObject.optInt(RestConstants.BASED_ON);
-
 			JSONArray ratingTypes = ratingsObject.optJSONArray(RestConstants.BY_TYPE);
 			if (ratingTypes != null && ratingTypes.length() > 0) {
 				for (int i = 0; i < ratingTypes.length(); i++) {
-
 					JSONObject ratingType = ratingTypes.getJSONObject(i);
-
 					RatingStar type = new RatingStar();
 					type.initialize(ratingType);
-
 					this.ratingTypes.add(type);
 				}
 			}
-
 			//added by_stars for ratings page
-			byStarsObject = ratingsObject.optJSONObject("by_stars");
-
-
+			byStarsObject = ratingsObject.optJSONObject(RestConstants.BY_STARS);
 		}
+		// Reviews
 		JSONObject reviewsObject = dataObject.optJSONObject(RestConstants.REVIEWS);
 		if(reviewsObject != null){
 			commentsCount = reviewsObject.optInt(RestConstants.TOTAL, 0);

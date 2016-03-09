@@ -244,7 +244,7 @@
     <string name="language">اللغة</string>
     <string name="country">الدولة</string>
     <string name="birthday_error">يُرجى اختيار تاريخ ميلاد صحيح</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">مسح الكل</string>
     <string name="apply_label">تطبيق</string>
     <string name="see_other_variations">عرض المقاسات الأخري</string>
@@ -269,7 +269,7 @@
     <string name="total_price_bottom">المبلغ الكلي:</string>
     <string name="from_avg_rat">من</string>
     <string name="from_avg_cus">العملاء</string>
-    <string name="average_rating_label">المتوسط</string>
+    <string name="average_label">المتوسط</string>
     <string name="average_rating_used_prod">هل استخدمت هذا المنتج؟</string>
     <string name="average_rate_now">قم بتقييم المنتج الآن؟</string>
     <string name="rating_placeholder">(%d) التقييمات</string>

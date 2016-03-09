@@ -244,7 +244,7 @@
     <string name="language">زبان</string>
     <string name="country">کشور</string>
     <string name="birthday_error">لطفاً تاریخ صحیح تولد خود را انتخاب کنید</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">پاک کردن همه</string>
     <string name="apply_label">اعمال</string>
     <string name="see_other_variations">دیگر موارد را مشاهده کنید</string>
@@ -269,7 +269,7 @@
     <string name="total_price_bottom">مجموع:</string>
     <string name="from_avg_rat">از</string>
     <string name="from_avg_cus">خریداران</string>
-    <string name="average_rating_label">میانگین</string>
+    <string name="average_label">میانگین</string>
     <string name="average_rating_used_prod">آیا از این کالا استفاده کرده اید؟</string>
     <string name="average_rate_now">به آن امتیاز دهید.</string>
     <string name="rating_placeholder">(%d) نظرات</string>

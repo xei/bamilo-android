@@ -244,7 +244,7 @@
     <string name="language">زباں</string>
     <string name="country">ملک</string>
     <string name="birthday_error">اپنی صحیح تاریخ پیدائش کا انتخاب کریں</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">سب صاف کریں</string>
     <string name="apply_label">لاگو کریں</string>
     <string name="see_other_variations">مختلف اقسام دیکھیے</string>
@@ -269,7 +269,7 @@
     <string name="total_price_bottom">کُل:</string>
     <string name="from_avg_rat">سے</string>
     <string name="from_avg_cus">خریدار</string>
-    <string name="average_rating_label">اوسط</string>
+    <string name="average_label">اوسط</string>
     <string name="average_rating_used_prod">کیا اپنے یہ پراڈکٹ استعمال کی ہے؟</string>
     <string name="average_rate_now">ابھی اس کی درجہ بندی کریں</string>
     <string name="rating_placeholder">(%d) درجہ بندی</string>

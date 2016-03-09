@@ -245,7 +245,7 @@
     <string name="language">Language</string>
     <string name="country">ႏိုင္ငံ</string>
     <string name="birthday_error">မွန္ကန္ေသာေမြးေန႕ေမြးရက္ကိုသာ ေရြးခ်ယ္ပါ</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">ဖ်က္ၿပီးျပန္ေရြးရန္</string>
     <string name="apply_label">ရွာရန္</string>
     <string name="see_other_variations">အျခားအမ်ိဳးကြဲမ်ားကိုၾကည္႕ရန္</string>
@@ -270,7 +270,7 @@
     <string name="total_price_bottom">စုစုေပါင္း:</string>
     <string name="from_avg_rat">မွ</string>
     <string name="from_avg_cus">ေစ်း၀ယ္သူမ်ား</string>
-    <string name="average_rating_label">ပ်မ္းမွ်</string>
+    <string name="average_label">ပ်မ္းမွ်</string>
     <string name="average_rating_used_prod">ဤပစၥည္းအား၀ယ္ယူသံုးစြဲဖူးပါသလား?</string>
     <string name="average_rate_now">အမွတ္ေပးရန္</string>
     <string name="rating_placeholder">အမွတ္မ်ား (%d)</string>

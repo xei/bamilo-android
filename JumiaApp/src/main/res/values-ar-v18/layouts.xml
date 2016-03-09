@@ -100,10 +100,10 @@
     <item name="product_summary_fragment"               type="layout">@layout/_def_product_summary_fragment</item>
     <item name="product_specs_container"                type="layout">@layout/_def_product_specs_container</item>
     <item name="product_specs_container_item"           type="layout">@layout/_def_product_specs_container_item</item>
-    <item name="reviews_fragment"                       type="layout">@layout/_def_reviews_fragment</item>
     <item name="review_fragment"                        type="layout">@layout/_def_review_fragment</item>
     <item name="review_list"                            type="layout">@layout/_def_review_list</item>
     <item name="ratings_board"                          type="layout">@layout/_def_ratings_board</item>
+    <item name="ratings_board_rate_bar"                 type="layout">@layout/_def_ratings_board_rate_bar</item>
 
     <!-- MY ORDERS -->
     <item name="my_orders_fragment_main"                type="layout">@layout/_def_my_orders_fragment_main</item>
