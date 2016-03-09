@@ -6,8 +6,8 @@
     android:clickable="false"
     android:orientation="vertical"
     android:layout_marginTop="@dimen/dimen_5dp"
-    android:paddingLeft="@dimen/dimen_mat_4px"
-    android:paddingRight="@dimen/dimen_mat_4px">
+    android:paddingLeft="@dimen/margin_padding_xs"
+    android:paddingRight="@dimen/margin_padding_xs">
 
     <android.support.v7.widget.CardView
         android:id="@+id/home_teaser_campaign_container"
@@ -67,7 +67,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/home_teaser_campaign_more"
         style="@style/ButtonFlat"
-        android:layout_marginTop="@dimen/dimen_mat_4px"
+        android:layout_marginTop="@dimen/margin_padding_xs"
         android:text="@string/see_more_offers" />
 
 </LinearLayout>

@@ -2,12 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dimen_5dp"
     android:clickable="false"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/dimen_mat_4px"
-    android:paddingRight="@dimen/dimen_mat_4px"
-    android:layout_marginTop="@dimen/dimen_5dp"
-    >
+    android:paddingLeft="@dimen/margin_padding_xs"
+    android:paddingRight="@dimen/margin_padding_xs">
 
     <android.support.v7.widget.CardView
         android:id="@+id/home_teaser_campaign_container"
@@ -26,8 +25,8 @@
                 android:id="@+id/home_teaser_campaign_image_container"
                 android:layout_width="@dimen/dimen_mat_123px"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
                 android:layout_gravity="center_vertical">
 
                 <include layout="@layout/home_teaser_image_loadable" />

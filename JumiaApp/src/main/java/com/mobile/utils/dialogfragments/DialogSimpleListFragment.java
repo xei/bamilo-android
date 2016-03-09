@@ -147,18 +147,15 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
     private void setSizeGuide(View view, String url) {
         Print.i(TAG, "SIZE GUIDE: " + url);
         // Get views 
-        View divider = view.findViewById(R.id.dialog_list_size_guide_divider);
         View button = view.findViewById(R.id.dialog_list_size_guide_button);
         // Set size guide button
         if (TextUtils.isEmpty(url)) {
-            divider.setVisibility(View.GONE);
             button.setVisibility(View.GONE);
             button.setOnClickListener(null);
         } else {
             button.setTag(url);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(this);
-            divider.setVisibility(View.VISIBLE);
         }
     }
 	

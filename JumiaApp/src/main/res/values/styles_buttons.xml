@@ -33,7 +33,6 @@
 
     <style name="Button_1.Shop.Wrap">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="Button_1.Secondary" />
@@ -48,6 +47,10 @@
 
     <style name="Button_1.Secondary.Text_Black_800.Border_400">
         <item name="android:background">@drawable/_gen_background_border_black_400</item>
+    </style>
+
+    <style name="Button_1.Secondary.Text_Black_800.Border_400.Wrap">
+        <item name="android:layout_width">wrap_content</item>
     </style>
 
     <style name="Button_1.Secondary.Text_Orange.Border_300">
@@ -81,7 +84,7 @@
         <item name="android:textColor">@color/black_800</item>
     </style>
 
-    <!-- ################# OTHER BUTTON STYLES ################# -->
+    <!-- ################# FACEBOOK BUTTON STYLE ################# -->
 
     <style name="Button_1.Facebook">
         <!--http://stackoverflow.com/questions/29740325/set-login-logout-text-for-button-in-facebook-android-sdk-4-0?answertab=active#tab-top-->
@@ -95,11 +98,18 @@
         <item name="android:text">@string/com_facebook_loginview_log_in_button_long</item>
     </style>
 
+    <!-- ################# OTHER BUTTON STYLES ################# -->
+
     <style name="Button_BuyBar_Black">
         <item name="android:layout_width">@dimen/dimen_64dp</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:background">@color/black_900</item>
+    </style>
+
+    <style name="Button_New_Address" parent="@style/Button_Link.Blue_1">
+        <item name="android:layout_height">@dimen/dimen_36dp</item>
+        <item name="android:text">@string/address_add_new_label</item>
     </style>
 
     <!-- TODO : ADD HERE MORE STYLES -->
