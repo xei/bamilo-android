@@ -390,7 +390,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
             ProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
             getView().findViewById(R.id.send_review).setOnClickListener(this);
-            productName.setText(String.format(getString(R.string.first_and_second_placeholders), completeProduct.getBrandName(), completeProduct.getName()));
+            productName.setText(String.format(getString(R.string.first_space_second_placeholders), completeProduct.getBrandName(), completeProduct.getName()));
         }
     }
 

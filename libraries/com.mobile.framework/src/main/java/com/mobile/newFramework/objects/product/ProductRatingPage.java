@@ -199,12 +199,12 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 
 	/**
 	 * Get number of ratings / star throught star name
+	 *
 	 * @return
 	 */
-	public String getByStarValue(String name)
-	{
+	public String getByStarValue(String name) {
 		String value = "0";
-		if(byStarsObject != null)
+		if (byStarsObject != null)
 			value = byStarsObject.optString(name);
 
 		return value;

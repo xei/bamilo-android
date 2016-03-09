@@ -269,10 +269,10 @@
     <string name="total_price_bottom">مجموع:</string>
     <string name="from_avg_rat">از</string>
     <string name="from_avg_cus">خریداران</string>
-    <string name="average_rating">میانگین</string>
+    <string name="average_rating_label">میانگین</string>
     <string name="average_rating_used_prod">آیا از این کالا استفاده کرده اید؟</string>
     <string name="average_rate_now">به آن امتیاز دهید.</string>
-    <string name="average_raings_header">نظرات</string>
+    <string name="rating_placeholder">(%d) نظرات</string>
     <string name="average_reviews_header">نظرات و پیشنهادهای کاربر</string>
     <string name="rat_rev">نظرات و پیشنهادها</string>
     <string name="fulfilled_by">تامین کننده: ‎%s‎</string>
@@ -319,7 +319,7 @@
     <string name="delivered_label">تحویل داده شد</string>
     <string name="order_number">شمار سفارش ‎%s‎</string>
     <string name="billing">صورت حساب</string>
-    <string name="first_and_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
+    <string name="first_space_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
     <string name="qty_placeholder">تعداد: %s</string>
     <string name="reorder_label">سفارش مجدد</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>

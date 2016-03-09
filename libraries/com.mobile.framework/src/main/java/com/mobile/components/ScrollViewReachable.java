@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.components;
 
 import android.content.Context;

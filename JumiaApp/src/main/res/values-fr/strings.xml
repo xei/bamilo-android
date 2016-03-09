@@ -269,10 +269,10 @@
     <string name="total_price_bottom">Total:</string>
     <string name="from_avg_rat">de</string>
     <string name="from_avg_cus">clients</string>
-    <string name="average_rating">moyenne</string>
+    <string name="average_rating_label">moyenne</string>
     <string name="average_rating_used_prod">Avez vous utilisez ce produit?</string>
     <string name="average_rate_now">Notez le maintenant</string>
-    <string name="average_raings_header">Notes</string>
+    <string name="rating_placeholder">Notes (%d)</string>
     <string name="average_reviews_header">Avis des utilisateurs</string>
     <string name="rat_rev">Notes</string>
     <string name="fulfilled_by">Expédié par %s</string>
@@ -319,7 +319,7 @@
     <string name="delivered_label">Livré</string>
     <string name="order_number">Numéro de commande %s</string>
     <string name="billing">Facturation</string>
-    <string name="first_and_second_placeholders">%1$s %2$s</string>
+    <string name="first_space_second_placeholders">%1$s %2$s</string>
     <string name="qty_placeholder">Qté: %s</string>
     <string name="reorder_label">Recommander</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>

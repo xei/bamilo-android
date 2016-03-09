@@ -105,8 +105,11 @@
     <!-- GROUP: DIVIDER HORIZONTAL -->
 
     <style name="ViewGroupCompat.Horizontal">
+        <item name="divider">@drawable/_gen_divider_vertical_black_300</item>
         <item name="android:orientation">horizontal</item>
     </style>
+
+    <style name="ViewGroupCompat.Horizontal.MiddleDivider"/>
 
     <!-- MY ACCOUNT SECTION -->
 

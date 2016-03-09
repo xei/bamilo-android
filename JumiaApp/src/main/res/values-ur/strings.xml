@@ -269,10 +269,10 @@
     <string name="total_price_bottom">کُل:</string>
     <string name="from_avg_rat">سے</string>
     <string name="from_avg_cus">خریدار</string>
-    <string name="average_rating">اوسط</string>
+    <string name="average_rating_label">اوسط</string>
     <string name="average_rating_used_prod">کیا اپنے یہ پراڈکٹ استعمال کی ہے؟</string>
     <string name="average_rate_now">ابھی اس کی درجہ بندی کریں</string>
-    <string name="average_raings_header">درجہ بندی</string>
+    <string name="rating_placeholder">(%d) درجہ بندی</string>
     <string name="average_reviews_header">صارفین کی آراء</string>
     <string name="rat_rev">درجہ بندی اور تجزیے</string>
     <string name="fulfilled_by">%s کی طرف سے پورا</string>
@@ -319,7 +319,7 @@
     <string name="delivered_label">ڈیلورڈ</string>
     <string name="order_number">آرڈر نمبر ‎%s‎</string>
     <string name="billing">بِلنگ</string>
-    <string name="first_and_second_placeholders">%1$s %2$s</string>
+    <string name="first_space_second_placeholders">%1$s %2$s</string>
     <string name="qty_placeholder">مقدار:  %s</string>
     <string name="reorder_label">ترتیب</string>
     <string name="order_status_date">‎&lt;b>‎‎%1$s‎‎&lt;/b>\n‎‎%2$s‎</string>

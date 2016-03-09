@@ -269,10 +269,10 @@
     <string name="total_price_bottom">المبلغ الكلي:</string>
     <string name="from_avg_rat">من</string>
     <string name="from_avg_cus">العملاء</string>
-    <string name="average_rating">المتوسط</string>
+    <string name="average_rating_label">المتوسط</string>
     <string name="average_rating_used_prod">هل استخدمت هذا المنتج؟</string>
     <string name="average_rate_now">قم بتقييم المنتج الآن؟</string>
-    <string name="average_raings_header">التقييمات</string>
+    <string name="rating_placeholder">(%d) التقييمات</string>
     <string name="average_reviews_header">تقييمات المستخدم</string>
     <string name="rat_rev">تعليقات التقييمات</string>
     <string name="fulfilled_by">تم التوصيل بواسطة %s</string>
@@ -319,7 +319,7 @@
     <string name="delivered_label">تم توصيل</string>
     <string name="order_number">رقم الطلب‎%s‎</string>
     <string name="billing">الفواتير</string>
-    <string name="first_and_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
+    <string name="first_space_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
     <string name="qty_placeholder">الكمية: %s</string>
     <string name="reorder_label">إعادة الطلب</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
