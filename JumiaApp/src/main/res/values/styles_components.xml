@@ -14,6 +14,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="HeaderStyle.Center">
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="TextField" parent="TextBase.Display_3">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>

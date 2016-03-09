@@ -9,9 +9,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingBottom="@dimen/margin_padding_xl"
+        android:paddingLeft="@dimen/margin_padding_xl"
+        android:paddingRight="@dimen/margin_padding_xl"
         android:paddingTop="46dp">
 
         <!--INFO-->
@@ -83,17 +83,20 @@
 
         <Space
             android:layout_width="wrap_content"
-            android:layout_height="16dp" />
+            android:layout_height="@dimen/margin_padding_xl" />
 
         <!-- GUEST -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_button_guest"
-            style="@style/TextBase.Caption"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
+            style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+            android:layout_width="@dimen/login_main_container_width"
             android:text="@string/continue_without_log_in"
             android:visibility="gone" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_padding_xl" />
 
         <!-- BUTTON -->
 

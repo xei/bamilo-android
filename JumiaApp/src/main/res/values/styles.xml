@@ -305,16 +305,14 @@
 
     <!-- BASE BUTTONS STYLES -->
 
-    <style name="ButtonFlat" parent="TextBase.Button_1">
+    <style name="ButtonFlat" parent="Button_Link.Blue_1">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/dimen_mat_36px</item>
-        <item name="android:minWidth">@dimen/dimen_mat_88px</item>
-        <item name="android:layout_marginLeft">@dimen/dimen_mat_2px</item>
-        <item name="android:layout_marginRight">@dimen/dimen_mat_2px</item>
-        <item name="android:paddingLeft">@dimen/dimen_mat_4px</item>
-        <item name="android:paddingRight">@dimen/dimen_mat_4px</item>
-        <item name="android:textColor">@color/orange_1</item>
-        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:layout_height">@dimen/dimen_36dp</item>
+        <item name="android:minWidth">@dimen/dimen_88dp</item>
+        <item name="android:layout_marginLeft">@dimen/margin_padding_xxs</item>
+        <item name="android:layout_marginRight">@dimen/margin_padding_xxs</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xs</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xs</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:clickable">true</item>
