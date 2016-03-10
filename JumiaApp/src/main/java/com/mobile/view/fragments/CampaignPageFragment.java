@@ -657,6 +657,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             private final CampaignItemHolder mView;
             private final int mRemainingTime;
             private final String mName;
+
             CampaignRunnable(final CampaignItemHolder view, final int remainingTime) {
                 this.mView = view;
                 this.mName = this.mView.mName.getText().toString();
@@ -784,15 +785,12 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             timerContainer.setVisibility(View.VISIBLE);
             buttonBuy.setEnabled(false);
             offerEnded.setVisibility(View.VISIBLE);
-
             timer.setText(TIMER_ENDED);
-
             // Disable onClickListeners
             name.setOnClickListener(null);
             image.setOnClickListener(null);
             buttonBuy.setOnClickListener(null);
             imageContainer.setOnClickListener(null);
-
             // Set product image as defocused
             image.setAlpha(0.5F);
         }
