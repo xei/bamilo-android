@@ -65,13 +65,10 @@
     </style>
 
     <!-- Multi line -->
-    <style name="MultiLineStyle" parent="@style/TextBase.Caption">
+    <style name="MultiLineStyle" parent="@style/TextBase.Body.Black_800">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
+        <item name="android:padding">@dimen/margin_padding_xl</item>
         <item name="android:singleLine">false</item>
     </style>
 
@@ -141,15 +138,6 @@
         <item name="android:textAllCaps">true</item>
     </style>
 
-    <!-- Progress bar -->
-    <style name="ProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal">
-        <item name="android:layout_marginLeft">3dp</item>
-        <item name="android:layout_marginRight">3dp</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:progress">15</item>
-        <item name="android:progressDrawable">@drawable/ratings_progress</item>
-    </style>
-
     <!-- SWITCH BUTTON -->
     <style name="SwitchStyle" parent="@style/TextBase.Title_1">
         <item name="android:layout_width">match_parent</item>
@@ -200,6 +188,27 @@
         <item name="android:drawableEnd">@drawable/_gen_selector_radio_button</item>
         <item name="android:maxLines">2</item>
         <item name="android:singleLine">false</item>
+    </style>
+
+    <!-- RATING BAR -->
+
+    <style name="RatingBoardStyle" parent="ViewGroupCompat.Horizontal.MiddleDivider">
+        <item name="android:minHeight">26dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginRight">@dimen/margin_padding_s</item>
+        <item name="android:progressDrawable">@drawable/ratings_progress</item>
+    </style>
+
+    <style name="RatingBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">3dp</item>
+        <item name="android:layout_marginLeft">@dimen/margin_padding_s</item>
+        <item name="android:layout_marginRight">@dimen/margin_padding_s</item>
+        <item name="android:progressDrawable">@drawable/ratings_progress</item>
+    </style>
+
+    <style name="RatingBarTextStyle" parent="TextBase.Caption.Black_800">
+        <item name="android:minWidth">@dimen/dimen_25dp</item>
     </style>
 
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ -->

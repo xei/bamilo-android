@@ -137,6 +137,7 @@
     <string name="pinch_to_zoom_label">Pinch to zoom </string>
     <string name="please_fill_all_data">Please fill all the data</string>
     <string name="posted_by">posted by</string>
+    <string name="by_placeholder">by %s</string>
     <string name="product_could_not_retrieved">The product information could not be retrieved!</string>
     <string name="product_delivery_days">days</string>
     <string name="product_delivery_time">Delivery Within:</string>
@@ -245,7 +246,7 @@
     <string name="language">Language</string>
     <string name="country">Country</string>
     <string name="birthday_error">Please choose a valid Birthday.</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">Clear All</string>
     <string name="apply_label">Apply</string>
     <string name="see_other_variations">See other variations</string>
@@ -268,13 +269,12 @@
     <string name="other_sellers_starting">Other Sellers starting from: %s</string>
     <string name="buy_combo">BUY COMBO</string>
     <string name="total_price_bottom">Total:</string>
-    <string name="from_avg_rat">from</string>
-    <string name="from_avg_cus">customers</string>
-    <string name="average_rating">Average</string>
-    <string name="average_rating_used_prod">Have you used this product?</string>
+    <string name="average_label">Average</string>
+    <string name="average_rating_used_prod">Have you used this product?\nRate it now</string>
     <string name="average_rate_now">Rate it now</string>
-    <string name="average_raings_header">RATINGS</string>
-    <string name="average_reviews_header">USER REVIEWS</string>
+    <string name="rating_placeholder">RATINGS (%s)</string>
+    <string name="reviews_placeholder">USER REVIEWS (%s)</string>
+    <string name="rating_average_placeholder">from %s customers</string>
     <string name="rat_rev">Ratings Reviews</string>
     <string name="fulfilled_by">Fulfilled by %s</string>
     <string name="policy">Policy</string>
@@ -320,7 +320,8 @@
     <string name="delivered_label">Delivered</string>
     <string name="order_number">Order N.º %s</string>
     <string name="billing">Billing</string>
-    <string name="first_and_second_placeholders">%1$s %2$s</string>
+    <string name="first_space_second_placeholder">%1$s %2$s</string>
+    <string name="first_slash_second_placeholder">%1$s / %2$s</string>
     <string name="qty_placeholder">Qty: %s</string>
     <string name="reorder_label">Reorder</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b>\n%2$s</string>
@@ -332,7 +333,7 @@
     <string name="phone_contact">Phone:</string>
     <string name="email_contact">Email:</string>
     <string name="logout_success">Logged out with success</string>
-    <string name="percentage">%s%%</string>
+    <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">This bundle could not be added to the shopping cart. Please try again later.</string>
     <string name="buy">buy</string>
     <string name="size">Size %s</string>

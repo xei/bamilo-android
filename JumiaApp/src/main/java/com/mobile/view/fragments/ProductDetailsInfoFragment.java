@@ -39,7 +39,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private RtlViewPager mProductInfoPager;
 
-    public static int mPositionToStart = 0;
+    private int mPositionToStart = IntConstants.DEFAULT_POSITION;
 
     private int mTabsCount = 3;
 
@@ -106,17 +106,13 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-
         // Get view pager
         mProductInfoPager = (RtlViewPager) view.findViewById(R.id.product_info_pager);
         // Get tab pager
         SlidingTabLayout mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
-
-    //    int layout = R.layout.tab_simple_half_item;
         int layout = R.layout.tab_simple_half_item_new;
         if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
             layout = R.layout.tab_simple_item_new;
-        //    layout = R.layout.tab_simple_item;
         }
 
         mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
@@ -279,8 +275,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     /**
      * gets the fragment position based on the id of the title
-     * @param fragmentTitle
-     * @return
      */
     public int getFragmentPosition(int fragmentTitle){
         List<Integer> titles = getFragmentTitleValues();

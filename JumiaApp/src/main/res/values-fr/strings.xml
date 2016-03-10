@@ -244,7 +244,7 @@
     <string name="language">Langue</string>
     <string name="country">Pays</string>
     <string name="birthday_error">Choisissez votre date de naissance</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">Tout effacer</string>
     <string name="apply_label">Utiliser</string>
     <string name="see_other_variations">Voir les autres modèles</string>
@@ -269,10 +269,10 @@
     <string name="total_price_bottom">Total:</string>
     <string name="from_avg_rat">de</string>
     <string name="from_avg_cus">clients</string>
-    <string name="average_rating">moyenne</string>
+    <string name="average_label">moyenne</string>
     <string name="average_rating_used_prod">Avez vous utilisez ce produit?</string>
     <string name="average_rate_now">Notez le maintenant</string>
-    <string name="average_raings_header">Notes</string>
+    <string name="rating_placeholder">Notes (%d)</string>
     <string name="average_reviews_header">Avis des utilisateurs</string>
     <string name="rat_rev">Notes</string>
     <string name="fulfilled_by">Expédié par %s</string>
@@ -319,7 +319,7 @@
     <string name="delivered_label">Livré</string>
     <string name="order_number">Numéro de commande %s</string>
     <string name="billing">Facturation</string>
-    <string name="first_and_second_placeholders">%1$s %2$s</string>
+    <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="qty_placeholder">Qté: %s</string>
     <string name="reorder_label">Recommander</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
@@ -331,7 +331,7 @@
     <string name="phone_contact">Téléphone :</string>
     <string name="email_contact">Email :</string>
     <string name="logout_success">Vous êtes déconnecté avec succès</string>
-    <string name="percentage">%s%%</string>
+    <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">Une erreur inconnue s\'est produite. Réessayez plus tard.</string>
     <string name="buy">Achète</string>
     <string name="size">Taille %s</string>

@@ -244,7 +244,7 @@
     <string name="language">زبان</string>
     <string name="country">کشور</string>
     <string name="birthday_error">لطفاً تاریخ صحیح تولد خود را انتخاب کنید</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">پاک کردن همه</string>
     <string name="apply_label">اعمال</string>
     <string name="see_other_variations">دیگر موارد را مشاهده کنید</string>
@@ -269,10 +269,10 @@
     <string name="total_price_bottom">مجموع:</string>
     <string name="from_avg_rat">از</string>
     <string name="from_avg_cus">خریداران</string>
-    <string name="average_rating">میانگین</string>
+    <string name="average_label">میانگین</string>
     <string name="average_rating_used_prod">آیا از این کالا استفاده کرده اید؟</string>
     <string name="average_rate_now">به آن امتیاز دهید.</string>
-    <string name="average_raings_header">نظرات</string>
+    <string name="rating_placeholder">(%d) نظرات</string>
     <string name="average_reviews_header">نظرات و پیشنهادهای کاربر</string>
     <string name="rat_rev">نظرات و پیشنهادها</string>
     <string name="fulfilled_by">تامین کننده: ‎%s‎</string>
@@ -319,7 +319,7 @@
     <string name="delivered_label">تحویل داده شد</string>
     <string name="order_number">شمار سفارش ‎%s‎</string>
     <string name="billing">صورت حساب</string>
-    <string name="first_and_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
+    <string name="first_space_second_placeholder">‎%1$s‎ ‎%2$s‎</string>
     <string name="qty_placeholder">تعداد: %s</string>
     <string name="reorder_label">سفارش مجدد</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
@@ -331,7 +331,7 @@
     <string name="phone_contact">شماره تلفن:</string>
     <string name="email_contact">آدرس ایمیل</string>
     <string name="logout_success">از حساب کاربری خارج شدید</string>
-    <string name="percentage">%s%%</string>
+    <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">امکان افزوده شدن این مجموعه کالا موجود نیست. لطفا دوباره تلاش کنید.</string>
     <string name="buy">خرید کنید</string>
     <string name="size">اندازه ‎%s‎</string>

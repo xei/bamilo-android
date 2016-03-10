@@ -245,7 +245,7 @@
     <string name="language">Language</string>
     <string name="country">ႏိုင္ငံ</string>
     <string name="birthday_error">မွန္ကန္ေသာေမြးေန႕ေမြးရက္ကိုသာ ေရြးခ်ယ္ပါ</string>
-    <string name="parenthesis_placeholder">(%d)</string>
+    <string name="parenthesis_placeholder">(%s)</string>
     <string name="clear_all_lowercase_label">ဖ်က္ၿပီးျပန္ေရြးရန္</string>
     <string name="apply_label">ရွာရန္</string>
     <string name="see_other_variations">အျခားအမ်ိဳးကြဲမ်ားကိုၾကည္႕ရန္</string>
@@ -270,10 +270,10 @@
     <string name="total_price_bottom">စုစုေပါင္း:</string>
     <string name="from_avg_rat">မွ</string>
     <string name="from_avg_cus">ေစ်း၀ယ္သူမ်ား</string>
-    <string name="average_rating">ပ်မ္းမွ်</string>
+    <string name="average_label">ပ်မ္းမွ်</string>
     <string name="average_rating_used_prod">ဤပစၥည္းအား၀ယ္ယူသံုးစြဲဖူးပါသလား?</string>
     <string name="average_rate_now">အမွတ္ေပးရန္</string>
-    <string name="average_raings_header">အမွတ္မ်ား</string>
+    <string name="rating_placeholder">အမွတ္မ်ား (%d)</string>
     <string name="average_reviews_header">သံုးသပ္ခ်က္မ်ား</string>
     <string name="rat_rev">သံုးသပ္ခ်က္မ်ား  </string>
     <string name="fulfilled_by">Fulfilled by%s</string>
@@ -320,7 +320,7 @@
     <string name="delivered_label">ပို႕ေဆာင္ၿပီးပါၿပီ</string>
     <string name="order_number">ေအာ္ဒါအမွတ္ %s</string>
     <string name="billing">ေငြေခ်မည္႕လိပ္စာ</string>
-    <string name="first_and_second_placeholders">%1$s %2$s</string>
+    <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="qty_placeholder">အေရအတြက္: %s</string>
     <string name="reorder_label">ေအာ္ဒါထပ္မွာရန္</string>
     <string name="order_status_date">%1$s %2$s</string>
@@ -332,7 +332,7 @@
     <string name="phone_contact">ဖုန္း :</string>
     <string name="email_contact">အီးေမးလ္ :</string>
     <string name="logout_success">Log out ထြက္ၿပီးပါၿပီ</string>
-    <string name="percentage">%s%%</string>
+    <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">တြဲဖက္ကုန္ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းအတြင္း ထည္႕သြင္း၍မရပါ။ ျပန္လည္ႀကိဳးစားၾကည္႕ပါ။</string>
     <string name="buy">၀ယ္ရန္</string>
     <string name="size">ဆိုဒ္/အေရာင္ %s</string>

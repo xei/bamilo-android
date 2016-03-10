@@ -262,10 +262,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             }
         }
         isExecutingSendReview = false;
-        if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
-            getView().findViewById(R.id.product_info_container).setVisibility(View.GONE);
-            getView().findViewById(R.id.shadow).setVisibility(View.GONE);
-        }
         if (getArguments() != null && getArguments().containsKey(RATING_SHOW)) {
             isShowingRatingForm = getArguments().getBoolean(RATING_SHOW);
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
@@ -390,7 +386,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
             ProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
             getView().findViewById(R.id.send_review).setOnClickListener(this);
-            productName.setText(String.format(getString(R.string.first_and_second_placeholders), completeProduct.getBrandName(), completeProduct.getName()));
+            productName.setText(String.format(getString(R.string.first_space_second_placeholder), completeProduct.getBrandName(), completeProduct.getName()));
         }
     }
 

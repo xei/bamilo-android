@@ -36,8 +36,6 @@ public class ReviewFragment extends BaseFragment {
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static ReviewFragment getInstance(Bundle bundle) {
         ReviewFragment fragment = new ReviewFragment();
@@ -164,7 +162,7 @@ public class ReviewFragment extends BaseFragment {
         TextView date = (TextView) view.findViewById(R.id.review_date);
         date.setText(b.getString(ConstantsIntentExtra.REVIEW_DATE));
         
-        TextView title = (TextView) view.findViewById(R.id.title_review);
+        TextView title = (TextView) view.findViewById(R.id.review_item_title);
         title.setText(b.getString(ConstantsIntentExtra.REVIEW_TITLE));
         
         LinearLayout ratingsContainer = (LinearLayout) view.findViewById(R.id.review_ratings_container);
@@ -185,8 +183,6 @@ public class ReviewFragment extends BaseFragment {
     
     /**
      * insert rate types on the review
-     * @param ratingOptionArray
-     * @param parent
      */
     private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar,int ratingValue){
         
