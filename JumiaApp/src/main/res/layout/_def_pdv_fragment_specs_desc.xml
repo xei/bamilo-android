@@ -28,6 +28,6 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_specs_button"
-        style="@style/SingleLineStyle" />
+        style="@style/SingleLineList" />
 
 </LinearLayout>

@@ -258,10 +258,8 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         // Case has sub categories
         if (category.hasChildren()) {
             if (parent.isGroupExpanded(groupPosition)) {
-                adapter.updateIndicator(view, false);
                 ((AnimatedExpandableListView) parent).collapseGroupWithAnimation(groupPosition);
             } else {
-                adapter.updateIndicator(view, true);
                 ((AnimatedExpandableListView) parent).expandGroupWithAnimation(groupPosition);
             }
         }

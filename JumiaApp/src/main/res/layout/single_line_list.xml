@@ -4,15 +4,10 @@
     android:layout_height="@dimen/layout_item_height"
     android:gravity="center_vertical"
     android:orientation="vertical">
-
-    <!-- SEPARATOR -->
-
-    <View style="@style/divider_horizontal" />
-
     <!-- ITEM -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tx_single_line_text"
-        style="@style/SingleLineStyle" />
+        style="@style/SingleLineList" />
 
 </LinearLayout>

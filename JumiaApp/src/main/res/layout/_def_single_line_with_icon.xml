@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/component_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_49dp"
+    android:background="@drawable/selector_list_item_highlight"
+    >
+
+    <ImageView
+        android:id="@+id/icon_start"
+        style="@style/SingleLineListIconStart"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tx_single_line_text"
+        style="@style/SingleLineList.WithIcon"
+        android:layout_toRightOf="@+id/icon_start"
+        android:layout_toEndOf="@+id/icon_start"
+        />
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_below="@id/tx_single_line_text"
+        android:background="@drawable/_gen_divider_horizontal_black_300"/>
+</RelativeLayout>

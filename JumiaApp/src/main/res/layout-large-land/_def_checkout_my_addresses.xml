@@ -46,7 +46,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_addresses_button_add_top"
-                    style="@style/SingleLineStyle"
+                    style="@style/SingleLineList"
                     android:text="@string/address_add_new_label"
                     android:textAllCaps="true" />
 
@@ -60,7 +60,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_addresses_button_add_bottom"
-                    style="@style/SingleLineStyle"
+                    style="@style/SingleLineList"
                     android:text="@string/address_add_new_label"
                     android:textAllCaps="true" />
 
