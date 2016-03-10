@@ -41,9 +41,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <!-- REMEMBER MY EMAIL -->
-        <!--<include layout="@layout/login_remember_checkbox" />-->
-
         <Space
             android:layout_width="wrap_content"
             android:layout_height="8dp" />
@@ -52,11 +49,9 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_email_button_password"
-            style="@style/TextBase.Caption"
+            style="@style/Button_Link.Blue_1.Right"
             android:layout_width="@dimen/login_email_container_width"
-            android:gravity="right|end"
-            android:text="@string/fgt_pass"
-            android:textColor="@color/blue_2" />
+            android:text="@string/fgt_pass" />
 
         <Space
             android:layout_width="wrap_content"

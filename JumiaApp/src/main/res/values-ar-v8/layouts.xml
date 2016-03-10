@@ -153,6 +153,7 @@
     <item name="product_specs_container_item"           type="layout">@layout/_v8_product_specs_container_item</item>
     <item name="review_list"                            type="layout">@layout/_v8_review_list</item>
     <item name="ratings_board"                          type="layout">@layout/_v8_ratings_board</item>
+    <item name="ratings_board_rate_bar"                 type="layout">@layout/_v8_ratings_board_rate_bar</item>
 
     <!-- other offers -->
     <item name="product_offers_main_new"                type="layout">@layout/_v8_product_offers_main_new</item>

@@ -20,7 +20,7 @@
     <string name="campaign_ramaining_stock">ကုန္လက္က်န္:</string>
     <string name="campaign_save">သက္သာသြားေသာပမာဏ</string>
     <string name="campaign_stock_alert">သင္ေရြးခ်ယ္ထားေသာ ကုန္ပစၥည္းမွာ လက္က်န္မရွိေတာ့ပါ</string>
-    <string name="campaigns_label">အထူးေလွ်ာ႕ေစ်းမ်ား</string>
+    <string name="campaigns_label">အထူးအစီအစဥ္</string>
     <string name="campaign_unavailable_title">အစီအစဥ္ၿပီးဆံုးသြားပါၿပီ</string>
     <string name="campaign_unavailable_description">သို႕ေသာ္သင့္အတြက္အျခားေလွ်ာ႕ေစ်းအစီအစဥ္မ်ားရွိပါေသးသည္</string>
     <string name="campaign_offer_ended">အစီအစဥ္ ျပီးဆံုးပါျပီ!</string>
@@ -29,7 +29,7 @@
     <string name="cart_label">ေစ်း၀ယ္တြန္းလွည္း</string>
     <string name="catalog_edit_filters">စစ္ထုတ္ျခင္းမ်ားကို ျပင္ဆင္ရန္</string>
     <string name="catalog_no_results">သင္ရွာလုိေသာအခ်က္အလက္မ်ားရွာမေတြ႕ပါ</string>
-    <string name="catalog_no_results_details">စစ္ထုတ္ခ်က္မ်ာကိုအနည္းငယ္ေလွ်ာ႕ၿပီးျပန္လည္ႀကိဳးစားၾကည္႕ပါ</string>
+    <string name="catalog_no_results_details">ရွာေဖြစစ္ထုတ္ျခင္းကိုေလွ်ာ႕ၿပီးျပန္လည္ႀကိဳးစားၾကည္႕ပါ</string>
     <string name="checkout_button_text">ေငြေပးေခ်ရန္ဆက္လက္လုပ္ေဆာင္မည္</string>
     <string name="checkout_header_step_1">သင့္အေၾကာင္း</string>
     <string name="checkout_header_step_2">လိပ္စာ</string>
@@ -73,7 +73,7 @@
     <string name="fallback_mobile">မိုဘိုင္းလ္ဖုန္းမ်ား</string>
     <string name="fallback_welcome">မွႀကိဳဆိုပါသည္။</string>
     <string name="fgt_pass">Password ေမ့သြားပါသလား?</string>
-    <string name="filter_label">စစ္ထုတ္ရန္</string>
+    <string name="filter_label">ရွာေဖြရန္</string>
     <string name="forgotpass_header">Password ျပန္လည္ရယူရန္</string>
     <string name="forgotten_password">ေက်းဇူးျပဳ ၍သင္၏ အီးေမးလ္ကို ျဖည္႔သြင္းပါ</string>
     <string name="forgotten_password_examplemail">john.doe@example.com</string>
@@ -193,7 +193,7 @@
     <string name="string_with_discount_only">ေလွ်ာ့ေစ်းျဖင့္သာ</string>
     <string name="sub_total_title">Subtotal</string>
     <string name="submit_label">စာရင္းသြင္းရန္</string>
-    <string name="submit_text">သင္၏ထင္ျမင္ခ်က္အား စာရင္းသြင္းၿပီးပါျပီ။ ယခုအတည္ျပဳရန္ျပဳလုပ္ေနပါသည္။</string>
+    <string name="submit_text">သင္၏ထင္ျမင္ခ်က္အား စာရင္းသြင္းၿပီးပါျပီ။ အတည္ျပဳမွဳရရွိၿပီးလွ်င္ ေဖာ္ျပေပးပါမည္။</string>
     <string name="succes_login">Log In ၀င္ၿပီးပါၿပီ</string>
     <string name="terms_and_conditions">စည္းမ်ဥ္းစည္းကမ္းမ်ား</string>
     <string name="thank_you_order_title">ေက်းဇူးတင္ပါသည္!</string>
@@ -232,7 +232,7 @@
     <string name="featured_stores">အေရာင္းဆိုင္မ်ား</string>
     <string name="top_sellers">အေရာင္းရဆံုး ပစၥည္းမ်ား</string>
     <string name="description">ကုန္ပစၥည္းအေၾကာင္း</string>
-    <string name="kickout_page_title">ကြ်ဳန္တို႕၏ အထူးအစီအစဥ္ ေအာင္ျမင္စြာ ျပီးဆံုးပါျပီ!</string>
+    <string name="kickout_page_title">အထူးအစီအစဥ္ ၿပီးဆံုးသြားပါၿပီ</string>
     <string name="kickout_page_text1">၀ဘ္ဆိုဒ္တြင္ လတ္တေလာ လူျပည္႕ေနပါသျဖင့္ လူသစ္မ်ားထပ္မံလက္ခံ၍ မရေတာ့ပါ</string>
     <string name="kickout_page_text2">၀ဘ္ဆိုဒ္ကို ပိုမိုေကာင္းမြန္ေအာင္ ျပင္ဆင္ေနသျဖင့္ ေနာက္တစ္ၾကိမ္ ထပ္ၾကိဳးစားၾကည္႕ပါ</string>
     <string name="facebook_permission">ဆက္လက္လုပ္ေဆာင္ရန္ Email ေပးပို႕ျခင္းကို ခြင့္ျပဳေပးပါ</string>
@@ -245,9 +245,9 @@
     <string name="language">Language</string>
     <string name="country">ႏိုင္ငံ</string>
     <string name="birthday_error">မွန္ကန္ေသာေမြးေန႕ေမြးရက္ကိုသာ ေရြးခ်ယ္ပါ</string>
-    <string name="parenthesis_placeholder">(%d)</string>
-    <string name="clear_all_lowercase_label">အားလံုးပယ္ဖ်က္ရန္</string>
-    <string name="apply_label">အတည္ျပဳရန္</string>
+    <string name="parenthesis_placeholder">(%s)</string>
+    <string name="clear_all_lowercase_label">ဖ်က္ၿပီးျပန္ေရြးရန္</string>
+    <string name="apply_label">ရွာရန္</string>
     <string name="see_other_variations">အျခားအမ်ိဳးကြဲမ်ားကိုၾကည္႕ရန္</string>
     <string name="variations">အေရာင္/ဆိုဒ္</string>
     <string name="be_first_rate">ဤပစၥည္းအေၾကာင္းသံုးသပ္ခ်က္ေရးေပးပါ</string>
@@ -270,10 +270,10 @@
     <string name="total_price_bottom">စုစုေပါင္း:</string>
     <string name="from_avg_rat">မွ</string>
     <string name="from_avg_cus">ေစ်း၀ယ္သူမ်ား</string>
-    <string name="average_rating">ပ်မ္းမွ်</string>
+    <string name="average_label">ပ်မ္းမွ်</string>
     <string name="average_rating_used_prod">ဤပစၥည္းအား၀ယ္ယူသံုးစြဲဖူးပါသလား?</string>
     <string name="average_rate_now">အမွတ္ေပးရန္</string>
-    <string name="average_raings_header">အမွတ္မ်ား</string>
+    <string name="rating_placeholder">အမွတ္မ်ား (%d)</string>
     <string name="average_reviews_header">သံုးသပ္ခ်က္မ်ား</string>
     <string name="rat_rev">သံုးသပ္ခ်က္မ်ား  </string>
     <string name="fulfilled_by">Fulfilled by%s</string>
@@ -320,7 +320,7 @@
     <string name="delivered_label">ပို႕ေဆာင္ၿပီးပါၿပီ</string>
     <string name="order_number">ေအာ္ဒါအမွတ္ %s</string>
     <string name="billing">ေငြေခ်မည္႕လိပ္စာ</string>
-    <string name="first_and_second_placeholders">%1$s %2$s</string>
+    <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="qty_placeholder">အေရအတြက္: %s</string>
     <string name="reorder_label">ေအာ္ဒါထပ္မွာရန္</string>
     <string name="order_status_date">%1$s %2$s</string>
@@ -332,7 +332,7 @@
     <string name="phone_contact">ဖုန္း :</string>
     <string name="email_contact">အီးေမးလ္ :</string>
     <string name="logout_success">Log out ထြက္ၿပီးပါၿပီ</string>
-    <string name="percentage">%s%%</string>
+    <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">တြဲဖက္ကုန္ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းအတြင္း ထည္႕သြင္း၍မရပါ။ ျပန္လည္ႀကိဳးစားၾကည္႕ပါ။</string>
     <string name="buy">၀ယ္ရန္</string>
     <string name="size">ဆိုဒ္/အေရာင္ %s</string>

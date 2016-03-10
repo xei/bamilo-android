@@ -454,7 +454,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         ProductSimple simple = product.getSelectedSimple();
         // Case add item to cart
         if (simple != null) {
-            triggerAddProductToCart(product.getSku(), simple.getSku());
+            triggerAddProductToCart(simple.getSku());
             TrackerDelegator.trackFavouriteAddedToCart(product, simple.getSku(), mGroupType);
         }
         // Case select a simple variation
@@ -494,8 +494,8 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         triggerContentEventProgress(new RemoveFromWishListHelper(), RemoveFromWishListHelper.createBundle(sku), this);
     }
 
-    protected synchronized void triggerAddProductToCart(String sku, String simpleSku) {
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSku), this);
+    protected synchronized void triggerAddProductToCart(String sku) {
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
     }
 
     /*

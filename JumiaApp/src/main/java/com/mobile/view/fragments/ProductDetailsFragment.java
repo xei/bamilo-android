@@ -78,8 +78,7 @@ import de.akquinet.android.androlog.Log;
 /**
  * This class displays the product detail screen.
  *
- * @author Michael Kroez
- * @modified spereira
+ * @author spereira
  */
 public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnDialogListListener, TargetLink.OnAppendDataListener {
 
@@ -154,14 +153,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (arguments != null) {
             // Get sku
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
-            // TODO: Remove, the campaign should send the correct id
-            if(TextUtils.contains(mCompleteProductSku, "-")) {   //if is a simple sku - coming from campaigns
-                mCompleteProductSku = mCompleteProductSku.split("-")[0];
-            }
             // Categories
             categoryTree = arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME) ? arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV" : "";
-
-            restoreParams(arguments);
+            // Get source and path
+            mNavSource = getString(arguments.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
+            mNavPath = arguments.getString(ConstantsIntentExtra.NAVIGATION_PATH);
+            mProduct = arguments.getParcelable(ConstantsIntentExtra.DATA);
         }
     }
 
@@ -390,7 +387,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ConstantsIntentExtra.CONTENT_ID, mCompleteProductSku);
-        outState.putParcelable(ProductComplete.class.getSimpleName(), mProduct);
+        outState.putParcelable(ConstantsIntentExtra.DATA, mProduct);
     }
 
     /**
@@ -425,13 +422,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /*
      * ######## LAYOUT ########
      */
-
-    private void restoreParams(Bundle bundle) {
-        // Get source and path
-        mNavSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
-        mNavPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-        mProduct = bundle.getParcelable(ProductComplete.class.getSimpleName());
-    }
 
     /**
      * Validate and loads the received arguments comes from deep link process.
@@ -964,7 +954,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         ProductSimple simple = mProduct.getSelectedSimple();
         // Case add item to cart
         if (simple != null) {
-            triggerAddItemToCart(mProduct.getSku(), simple.getSku());
+            triggerAddItemToCart(simple.getSku());
             // Tracking
             TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
         }
@@ -1189,8 +1179,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku, richRelevanceHash), this);
     }
 
-    private void triggerAddItemToCart(String sku, String simpleSKU) {
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSKU), this);
+    private void triggerAddItemToCart(String sku) {
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
     }
 
     private void triggerAddToWishList(String sku) {

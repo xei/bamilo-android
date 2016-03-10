@@ -60,7 +60,7 @@
         android:layout_centerVertical="true"
         android:paddingLeft="5dp"
         android:text="*"
-        android:textColor="@color/accent"
+        android:textColor="@color/color_accent"
         android:textSize="18sp" />
 
     <!-- SUFFIX TEXT -->

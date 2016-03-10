@@ -22,57 +22,69 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_margin">@dimen/margin_padding_xxs</item>
+        <item name="android:textColor">@drawable/_gen_selector_text_link</item>
     </style>
 
-    <!-- ################# BUTTONS STYLES ################# -->
+    <!-- ################# BUTTON 1 STYLES ################# -->
 
     <style name="Button_1.Shop">
         <item name="android:background">@drawable/_gen_selector_button_action</item>
     </style>
 
-    <style name="Button_1.Shop.Reverse">
-        <item name="android:background">@drawable/_gen_background_white_color_border_black_300</item>
-        <item name="android:textColor">@color/accent</item>
-    </style>
-
     <style name="Button_1.Shop.Wrap">
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
     </style>
+
+    <style name="Button_1.Secondary" />
+
+    <style name="Button_1.Secondary.Text_Orange">
+        <item name="android:textColor">@color/color_accent</item>
+    </style>
+
+    <style name="Button_1.Secondary.Text_Black_800">
+        <item name="android:textColor">@color/black_800</item>
+    </style>
+
+    <style name="Button_1.Secondary.Text_Black_800.Border_400">
+        <item name="android:background">@drawable/_gen_background_border_black_400</item>
+    </style>
+
+    <style name="Button_1.Secondary.Text_Black_800.Border_400.Wrap">
+        <item name="android:layout_width">wrap_content</item>
+    </style>
+
+    <style name="Button_1.Secondary.Text_Orange.Border_300">
+        <item name="android:background">@drawable/_gen_background_border_black_300</item>
+    </style>
+
+    <!-- ################# BUTTON 2 STYLES ################# -->
 
     <style name="Button_2.Shop">
         <item name="android:background">@drawable/_gen_selector_button_action</item>
     </style>
 
-    <style name="Button_1.Neutral">
-        <item name="android:textColor">@color/black_800</item>
-    </style>
-
-    <style name="Button_1.Neutral.Border_800">
-        <item name="android:background">@drawable/_gen_background_white_border_black_800</item>
-    </style>
-
-    <style name="Button_1.Neutral.Text_Orange">
-        <item name="android:textColor">@color/accent</item>
-    </style>
-
-    <style name="Button_2.Neutral">
+    <style name="Button_2.Secondary">
         <item name="android:textColor">@color/black_800</item>
         <item name="android:background">@null</item>
     </style>
 
-    <style name="Button_Link.Blue_1">
-        <item name="android:textColor">@color/blue_1</item>
+    <!-- ################# BUTTON LINK STYLES ################# -->
+
+    <style name="Button_Link.Blue_1" />
+
+    <style name="Button_Link.Blue_1.Right">
+        <item name="android:gravity">right|end</item>
     </style>
 
     <style name="Button_Link.Shop">
         <item name="android:textColor">@drawable/_gen_selector_text_action</item>
     </style>
 
-    <style name="Button_Link.Neutral">
+    <style name="Button_Link.Secondary">
         <item name="android:textColor">@color/black_800</item>
     </style>
 
+    <!-- ################# FACEBOOK BUTTON STYLE ################# -->
 
     <style name="Button_1.Facebook">
         <!--http://stackoverflow.com/questions/29740325/set-login-logout-text-for-button-in-facebook-android-sdk-4-0?answertab=active#tab-top-->
@@ -86,13 +98,20 @@
         <item name="android:text">@string/com_facebook_loginview_log_in_button_long</item>
     </style>
 
+    <!-- ################# OTHER BUTTON STYLES ################# -->
 
     <style name="Button_BuyBar_Black">
         <item name="android:layout_width">@dimen/dimen_64dp</item>
         <item name="android:layout_height">match_parent</item>
-         <item name="android:layout_gravity">center</item>
+        <item name="android:layout_gravity">center</item>
         <item name="android:background">@color/black_900</item>
     </style>
+
+    <style name="Button_New_Address" parent="@style/Button_Link.Blue_1">
+        <item name="android:layout_height">@dimen/dimen_36dp</item>
+        <item name="android:text">@string/address_add_new_label</item>
+    </style>
+
     <!-- TODO : ADD HERE MORE STYLES -->
 
 </resources>

@@ -35,9 +35,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_addresses_button_add_top"
-                style="@style/SingleLineList"
-                android:text="@string/address_add_new_label"
-                android:textAllCaps="true" />
+                style="@style/Button_New_Address" />
 
             <!-- OTHER ADDRESSES -->
 
@@ -49,10 +47,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/checkout_addresses_button_add_bottom"
-                style="@style/SingleLineList"
-                android:text="@string/address_add_new_label"
-                android:textAllCaps="true" />
-
+                style="@style/Button_New_Address" />
         </LinearLayout>
     </ScrollView>
 

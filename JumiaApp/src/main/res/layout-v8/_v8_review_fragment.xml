@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,7 +31,7 @@
                 </LinearLayout>
 
                 <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/title_review"
+                    android:id="@+id/review_item_title"
                     style="@style/text_title"
                     android:layout_width="match_parent"
                     android:layout_marginLeft="32dp"
@@ -46,14 +47,14 @@
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/review_date"
                         style="@style/text_normal"
-                        android:text="Date"
+                        tools:text="Date"
                         android:textSize="@dimen/text_s" />
 
                     <com.mobile.components.customfontviews.TextView
                         android:id="@+id/review_username"
                         style="@style/text_normal"
                         android:layout_marginRight="@dimen/rounded_margin_small"
-                        android:text="User"
+                        tools:text="User"
                         android:textSize="@dimen/text_s" />
 
                     <com.mobile.components.customfontviews.TextView
@@ -83,7 +84,7 @@
                     style="@style/text_normal"
                     android:ellipsize="none"
                     android:singleLine="false"
-                    android:text="This is a really interesting comment." />
+                    tools:text="This is a really interesting comment." />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.mobile.components;
 
 import android.content.Context;
@@ -15,7 +12,7 @@ import android.widget.ScrollView;
 public class ScrollViewReachable extends ScrollView {
 
     public interface OnScrollBottomReachedListener {
-        void OnScrollBottomReached();
+        void onScrollBottomReached();
     }
 
     private OnScrollBottomReachedListener onScrollBottomReached = null;
@@ -49,7 +46,7 @@ public class ScrollViewReachable extends ScrollView {
         View view = getChildAt(getChildCount() - 1);
         int diff = (view.getBottom() - (getHeight() + getScrollY()));// Calculate the scrolldiff
         if (diff == 0 && null != onScrollBottomReached) {  // if diff is zero, then the bottom has been reached
-            onScrollBottomReached.OnScrollBottomReached();
+            onScrollBottomReached.onScrollBottomReached();
         }
     }
 

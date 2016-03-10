@@ -8,23 +8,16 @@
         android:id="@+id/recentsearch_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom_divider"
+        android:layout_above="@+id/recentsearch_clear_all"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="0dp"
         android:divider="@color/black_300"
         android:dividerHeight="1dp"
         android:listSelector="@color/transparent" />
 
-    <View
-        android:id="@id/bottom_divider"
-        style="@style/HorizontalListDivider"
-        android:layout_above="@+id/recentsearch_clear_all" />
-
     <com.mobile.components.customfontviews.TextView
         android:id="@id/recentsearch_clear_all"
-        style="@style/TextBase.Button_1"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
+        style="@style/Button_1.Secondary.Text_Black_800.Border_400"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:contentDescription="@string/recentsearch_clear_searches"
