@@ -320,7 +320,7 @@
     <string name="delivered_label">ပို႕ေဆာင္ၿပီးပါၿပီ</string>
     <string name="order_number">ေအာ္ဒါအမွတ္ %s</string>
     <string name="billing">ေငြေခ်မည္႕လိပ္စာ</string>
-    <string name="first_space_second_placeholders">%1$s %2$s</string>
+    <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="qty_placeholder">အေရအတြက္: %s</string>
     <string name="reorder_label">ေအာ္ဒါထပ္မွာရန္</string>
     <string name="order_status_date">%1$s %2$s</string>

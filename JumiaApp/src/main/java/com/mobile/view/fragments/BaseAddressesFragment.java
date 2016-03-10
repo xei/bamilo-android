@@ -188,12 +188,12 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
      */
     private void setAddressView(View parent, Address address, int tag) {
         // Text
-        ((TextView) parent.findViewById(R.id.checkout_address_item_name)).setText(String.format(getString(R.string.first_space_second_placeholders), address.getFirstName(), address.getLastName()));
+        ((TextView) parent.findViewById(R.id.checkout_address_item_name)).setText(String.format(getString(R.string.first_space_second_placeholder), address.getFirstName(), address.getLastName()));
         ((TextView) parent.findViewById(R.id.checkout_address_item_street)).setText(address.getAddress());
         // Only use region if is available
         String regionString = address.getCity();
         if (TextUtils.isNotEmpty(address.getRegion())) {
-            regionString = String.format(getString(R.string.first_space_second_placeholders), address.getRegion(), address.getCity());
+            regionString = String.format(getString(R.string.first_space_second_placeholder), address.getRegion(), address.getCity());
         }
         ((TextView) parent.findViewById(R.id.checkout_address_item_region)).setText(regionString);
         ((TextView) parent.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());

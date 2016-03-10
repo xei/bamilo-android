@@ -320,8 +320,8 @@
     <string name="delivered_label">Delivered</string>
     <string name="order_number">Order N.º %s</string>
     <string name="billing">Billing</string>
-    <string name="first_space_second_placeholders">%1$s %2$s</string>
-    <string name="first_slash_second_placeholders">%1$s / %2$s</string>
+    <string name="first_space_second_placeholder">%1$s %2$s</string>
+    <string name="first_slash_second_placeholder">%1$s / %2$s</string>
     <string name="qty_placeholder">Qty: %s</string>
     <string name="reorder_label">Reorder</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b>\n%2$s</string>

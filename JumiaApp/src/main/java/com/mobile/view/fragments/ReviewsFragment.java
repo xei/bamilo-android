@@ -500,7 +500,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
         double avg = CollectionUtils.isEmpty(types) ? mProduct.getAvgRating(): types.get(IntConstants.DEFAULT_POSITION).getRating();
         int max = productRatingPage.getMaxStarSize();
         // Set average
-        average.setText(getString(R.string.first_slash_second_placeholders, avg, max));
+        average.setText(getString(R.string.first_slash_second_placeholder, avg, max));
         // Set total
         total.setText(getString(R.string.rating_average_placeholder, productRatingPage.getBasedOn()));
     }

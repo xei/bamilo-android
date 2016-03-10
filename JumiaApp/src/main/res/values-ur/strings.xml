@@ -319,7 +319,7 @@
     <string name="delivered_label">ڈیلورڈ</string>
     <string name="order_number">آرڈر نمبر ‎%s‎</string>
     <string name="billing">بِلنگ</string>
-    <string name="first_space_second_placeholders">%1$s %2$s</string>
+    <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="qty_placeholder">مقدار:  %s</string>
     <string name="reorder_label">ترتیب</string>
     <string name="order_status_date">‎&lt;b>‎‎%1$s‎‎&lt;/b>\n‎‎%2$s‎</string>

@@ -319,7 +319,7 @@
     <string name="delivered_label">تم توصيل</string>
     <string name="order_number">رقم الطلب‎%s‎</string>
     <string name="billing">الفواتير</string>
-    <string name="first_space_second_placeholders">‎%1$s‎ ‎%2$s‎</string>
+    <string name="first_space_second_placeholder">‎%1$s‎ ‎%2$s‎</string>
     <string name="qty_placeholder">الكمية: %s</string>
     <string name="reorder_label">إعادة الطلب</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>

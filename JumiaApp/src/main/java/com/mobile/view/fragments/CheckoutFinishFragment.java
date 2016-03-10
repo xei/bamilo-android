@@ -481,7 +481,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void addAddressView(ViewGroup container, Address address) {
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, container, false);
-        String name = getString(R.string.first_space_second_placeholders, address.getFirstName(), address.getLastName());
+        String name = getString(R.string.first_space_second_placeholder, address.getFirstName(), address.getLastName());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(name);
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(address.getAddress());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
