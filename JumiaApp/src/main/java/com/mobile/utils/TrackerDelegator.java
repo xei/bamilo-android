@@ -1141,4 +1141,26 @@ public class TrackerDelegator {
         Ad4PushTracker.get().trackCustomerInfo(customer);
     }
 
+    /**
+     * Tracking cart in checkout thanks
+     */
+    public static void trackPurchaseInCheckoutThanks(PurchaseEntity cart, String order, double total, String shipping, String tax, String payment) {
+        if (cart != null && CollectionUtils.isEmpty(cart.getCartItems())) {
+            Bundle params = new Bundle();
+            params.putString(TrackerDelegator.ORDER_NUMBER_KEY, order);
+            params.putDouble(TrackerDelegator.VALUE_KEY, cart.getPriceForTracking());
+            params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
+            params.putString(TrackerDelegator.COUPON_KEY, String.valueOf(cart.getCouponDiscount()));
+            params.putInt(TrackerDelegator.CART_COUNT, cart.getCartCount());
+            params.putDouble(TrackerDelegator.GRAND_TOTAL, total);
+            if(!TextUtils.isEmpty(shipping) && !TextUtils.isEmpty(tax) && !TextUtils.isEmpty(payment)){
+                params.putString(TrackerDelegator.SHIPPING_KEY, shipping);
+                params.putString(TrackerDelegator.TAX_KEY, tax);
+                params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, payment);
+            }
+            TrackerDelegator.trackPurchaseNativeCheckout(params, cart.getCartItems());
+        }
+    }
+
 }

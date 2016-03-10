@@ -1,84 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-   xmlns:android="http://schemas.android.com/apk/res/android"
-   android:layout_width="match_parent"
-   android:layout_height="match_parent"
-   >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <!-- RELATED ITEMS -->
     <include
         android:id="@+id/related_container"
+        layout="@layout/checkout_success_fragment_related"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        layout="@layout/checkout_success_fragment_related"
-        android:layout_alignParentBottom="true"
-        />
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_above="@id/related_container">
+        android:layout_alignParentBottom="true" />
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        >
+        android:layout_above="@id/related_container">
 
-        <ImageView
-            android:id="@+id/success_image"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_success_checkout"
-            android:layout_marginTop="@dimen/dimen_20dp"
-            />
-
-
-        <com.mobile.components.customfontviews.TextView
-            style="@style/TextBase.Display_1"
-            android:textColor="@color/green_1"
+            android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dimen_16dp"
-            android:layout_marginLeft="@dimen/margin_60px"
-            android:layout_marginRight="@dimen/margin_60px"
-            android:singleLine="false"
-            android:text="@string/thank_you_order_title"
-            />
+            android:orientation="vertical">
 
-        <com.mobile.components.customfontviews.TextView
-            style="@style/TextBase.Body"
-            android:textColor="@color/black_800"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="@dimen/dimen_16dp"
-            android:paddingBottom="@dimen/dimen_16dp"
-            android:layout_marginLeft="@dimen/margin_60px"
-            android:layout_marginRight="@dimen/margin_60px"
-            android:singleLine="false"
-            android:text="@string/order_success"
-            />
+            <ImageView
+                android:id="@+id/success_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_20dp"
+                android:src="@drawable/ic_success_checkout" />
 
 
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/order_status_text"
-            style="@style/Button_1.Secondary.Text_Black_800.Border_400"
-            android:layout_width="@dimen/dimen_328dp"
-            android:layout_marginTop="@dimen/dimen_16dp"
-            android:layout_marginLeft="@dimen/margin_60px"
-            android:layout_marginRight="@dimen/margin_60px"
-            android:text="@string/my_order_details_label"
-            />
+            <com.mobile.components.customfontviews.TextView
+                style="@style/TextBase.Display_1"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:gravity="center_horizontal"
+                android:singleLine="false"
+                android:text="@string/thank_you_order_title"
+                android:textColor="@color/green_1" />
 
-        <!-- BUTTON -->
+            <com.mobile.components.customfontviews.TextView
+                style="@style/TextBase.Body"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/dimen_16dp"
+                android:singleLine="false"
+                android:text="@string/order_success"
+                android:textColor="@color/black_800" />
 
-        <com.mobile.components.customfontviews.Button
-            android:id="@+id/btn_checkout_continue"
-            style="@style/Button_1.Shop"
-            android:layout_width="@dimen/dimen_328dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginLeft="@dimen/margin_60px"
-            android:layout_marginRight="@dimen/margin_60px"
-            android:contentDescription="@string/checkout_continue_button_description"
-            android:text="@string/continue_shopping" />
-    </LinearLayout>
-</ScrollView>
+
+            <com.mobile.components.customfontviews.Button
+                android:id="@+id/order_status_text"
+                style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+                android:layout_width="@dimen/dimen_328dp"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginTop="@dimen/dimen_16dp"
+                android:text="@string/my_order_details_label" />
+
+            <!-- BUTTON -->
+
+            <com.mobile.components.customfontviews.Button
+                android:id="@+id/btn_checkout_continue"
+                style="@style/Button_1.Shop"
+                android:layout_width="@dimen/dimen_328dp"
+                android:layout_marginLeft="@dimen/margin_60px"
+                android:layout_marginRight="@dimen/margin_60px"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:contentDescription="@string/checkout_continue_button_description"
+                android:text="@string/continue_shopping" />
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
