@@ -65,13 +65,10 @@
     </style>
 
     <!-- Multi line -->
-    <style name="MultiLineStyle" parent="@style/TextBase.Caption">
+    <style name="MultiLineStyle" parent="@style/TextBase.Body.Black_800">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
+        <item name="android:padding">@dimen/margin_padding_xl</item>
         <item name="android:singleLine">false</item>
     </style>
 
@@ -203,7 +200,7 @@
     </style>
 
     <style name="RatingBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal">
-        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_width">110dp</item>
         <item name="android:layout_height">3dp</item>
         <item name="android:layout_marginLeft">@dimen/margin_padding_s</item>
         <item name="android:layout_marginRight">@dimen/margin_padding_s</item>

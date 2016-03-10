@@ -160,7 +160,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
         // Get bar group
         mRatingBarGroup = (ViewGroup) view.findViewById(R.id.rate_bar_group);
         // Get reviews group
-        mReviewsGroup = (LinearLayout) view.findViewById(R.id.reviews_group);
+        mReviewsGroup = (ViewGroup) view.findViewById(R.id.reviews_group);
         // Write Button
         view.findViewById(R.id.rate_write_button).setOnClickListener(this);
     }
@@ -374,25 +374,23 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
                     if (i < mReviews.size()) {
                         final ProductReviewComment review = mReviews.get(i);
                         final View theInflatedView = inflater.inflate(R.layout.review_list, mReviewsGroup, false);
-                        final TextView userName = (TextView) theInflatedView.findViewById(R.id.user_review);
-                        final TextView userDate = (TextView) theInflatedView.findViewById(R.id.date_review);
-                        final TextView textReview = (TextView) theInflatedView.findViewById(R.id.textreview);
-                        final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.title_review);
-                        LinearLayout ratingsContainer = (LinearLayout) theInflatedView.findViewById(R.id.ratings_container);
+                        final TextView userName = (TextView) theInflatedView.findViewById(R.id.review_item_user);
+                        final TextView userDate = (TextView) theInflatedView.findViewById(R.id.review_item_date);
+                        final TextView textReview = (TextView) theInflatedView.findViewById(R.id.review_item_text);
+                        final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.review_item_title);
+                        LinearLayout ratingsContainer = (LinearLayout) theInflatedView.findViewById(R.id.review_item_ratings_container);
                         ArrayList<RatingStar> ratingOptionArray = review.getRatingStars();
                         insertRatingTypes(ratingOptionArray, ratingsContainer, false, review.getAverage());
-                        final String[] stringCor = review.getDate().split(" ");
-                        userName.setText(review.getName() + ",");
-                        userDate.setText(stringCor[0]);
-                        textReview.setText(review.getComment());
+                        userDate.setText(review.getDate());
                         titleReview.setText(review.getTitle());
+                        userName.setText(getString(R.string.by_placeholder, review.getName()));
+                        textReview.setText(review.getComment());
                         theInflatedView.setOnClickListener(this);
                         theInflatedView.setOnClickListener(new OnClickListener() {
-
                             @Override
                             public void onClick(View v) {
                                 Print.d(TAG, "review clicked: username = " + userName.getText());
-                                goToReview(review, stringCor[0]);
+                                goToReview(review);
                             }
                         });
                         gridElement.addView(theInflatedView);
@@ -560,13 +558,13 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     /**
      * method to go to specific review
      */
-    private void goToReview(ProductReviewComment review, String date) {
+    private void goToReview(ProductReviewComment review) {
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.REVIEW_TITLE, review.getTitle());
         bundle.putString(ConstantsIntentExtra.REVIEW_NAME, review.getName());
         bundle.putString(ConstantsIntentExtra.REVIEW_COMMENT, review.getComment());
         bundle.putParcelableArrayList(ConstantsIntentExtra.REVIEW_RATING, review.getRatingStars());
-        bundle.putString(ConstantsIntentExtra.REVIEW_DATE, date);
+        bundle.putString(ConstantsIntentExtra.REVIEW_DATE, review.getDate());
         getBaseActivity().onSwitchFragment(FragmentType.REVIEW, bundle, true);
     }
 

@@ -137,6 +137,7 @@
     <string name="pinch_to_zoom_label">Pinch to zoom </string>
     <string name="please_fill_all_data">Please fill all the data</string>
     <string name="posted_by">posted by</string>
+    <string name="by_placeholder">by %s</string>
     <string name="product_could_not_retrieved">The product information could not be retrieved!</string>
     <string name="product_delivery_days">days</string>
     <string name="product_delivery_time">Delivery Within:</string>

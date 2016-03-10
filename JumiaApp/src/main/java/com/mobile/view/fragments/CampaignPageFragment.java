@@ -1,7 +1,6 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -44,6 +43,7 @@ import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.HeaderFooterGridView;
 import com.mobile.utils.catalog.HeaderFooterInterface;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
@@ -63,14 +63,13 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public static final String TAG = CampaignPageFragment.class.getSimpleName();
 
     private final static String COUNTER_START_TIME = "start_time";
-
     private final static String BANNER_STATE = "banner_state";
-    private static final String PERCENTAGE = "%";
+    private final static String TIMER_ENDED = "00:00:00";
+
     public int NAME = R.id.name;
     public int BRAND = R.id.brand;
     public int PRICE = R.id.price;
     public int PROD = R.id.product;
-    public int SKU = R.id.sku;
     public int SIZE = R.id.size;
     public int STOCK = R.id.stock;
     public int DISCOUNT = R.id.discount;
@@ -89,7 +88,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public static final int DEFAULT = 0;
     public static final int VISIBLE = 1;
     public static final int HIDDEN = 2;
-
     @IntDef({DEFAULT, VISIBLE, HIDDEN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface BannerVisibility{}
@@ -318,7 +316,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         // Validate the current data
         if (mGridView.getAdapter() == null) {
             // Set adapter
-            CampaignAdapter mArrayAdapter = new CampaignAdapter(getBaseActivity(), mCampaign.getItems(), mIOnProductClick);
+            CampaignAdapter mArrayAdapter = new CampaignAdapter(mCampaign.getItems(), mIOnProductClick);
             mGridView.setAdapter(mArrayAdapter);
             // Add banner to header
             if (bannerState != HIDDEN) {
@@ -342,7 +340,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     final IOnProductClick mIOnProductClick =  new IOnProductClick() {
         @Override
         public void onClickAddProduct(View view, CampaignItem campaignItem) {
-            onClickBuyButton(view,campaignItem);
+            onClickBuyButton(campaignItem);
         }
 
         @Override
@@ -386,10 +384,9 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
     /**
      * Process the click on the buy button
-     * @param view The buy button with some tags
      * @author sergiopereira
      */
-    private void onClickBuyButton(View view, CampaignItem campaignItem) {
+    private void onClickBuyButton(CampaignItem campaignItem) {
         if(!campaignItem.hasUniqueSize()){
             showVariantsDialog(campaignItem);
         } else {
@@ -399,7 +396,12 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     }
 
     private void addItemToCart(CampaignItem campaignItem){
-
+        // Validate the current selection
+        if (campaignItem.getSelectedSimple() == null) {
+            Print.i("WARNING: SIMPLE IS EMPTY");
+            return;
+        }
+        //
         String sku = campaignItem.getSelectedSimple().getSku();
         String size = campaignItem.getSelectedSimple().getVariationValue();
         Boolean hasStock = campaignItem.hasStock();
@@ -467,7 +469,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      */
     private void onClickProduct(View view){
         String size = (String) view.getTag(SIZE);
-        String sku = (String) view.getTag(SKU);
+        String sku = (String) view.getTag(PROD);
         Print.d(TAG, "ON CLICK PRODUCT " + sku + " " + size);
         // Create bundle
         Bundle bundle = new Bundle();
@@ -604,7 +606,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
         /**
          * Constructor
          */
-        public CampaignAdapter(Context context, ArrayList<CampaignItem> items, IOnProductClick onClickBuyListener) {
+        public CampaignAdapter(ArrayList<CampaignItem> items, IOnProductClick onClickBuyListener) {
             mItems = items;
             mOnClickListener = onClickBuyListener;
         }
@@ -631,7 +633,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set image
             RocketImageLoader.instance.loadImage(item.getImageUrl(), view.mImage, view.progress, R.drawable.no_image_large);
             // Set size
-            setSizeContainer(view, item, position);
+            setSizeContainer(view, item);
             // Set price and special price
             setPriceContainer(view, item);
             // Set save value
@@ -773,6 +775,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             return String.valueOf(number);
         }
 
+
+
         /**
          * Show Timer with text "00:00:00" and disable buttons and redirects to PDV
          */
@@ -781,7 +785,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             buttonBuy.setEnabled(false);
             offerEnded.setVisibility(View.VISIBLE);
 
-            timer.setText("00:00:00");
+            timer.setText(TIMER_ENDED);
 
             // Disable onClickListeners
             name.setOnClickListener(null);
@@ -842,7 +846,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
             }else{
                 view.mStockOff.setVisibility(View.VISIBLE);
-                view.mStockOff.setText(item.getMaxSavingPercentage() + PERCENTAGE);
+                view.mStockOff.setText(getString(R.string.percentage, item.getMaxSavingPercentage()));
             }
         }
 
@@ -850,7 +854,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
          * Hide or show the size container
          * @author sergiopereira
          */
-        private void setSizeContainer(final CampaignItemHolder view, final CampaignItem item, int position){
+        private void setSizeContainer(final CampaignItemHolder view, final CampaignItem item){
             // Campaign has sizes except itself (>1)
             if(!item.hasUniqueSize() && CollectionUtils.isNotEmpty(item.getSimples())) {
                 // Show container
@@ -914,9 +918,10 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             int id = view.getId();
             // Get selected size
             ProductSimple selectedSize = item.getSelectedSimple();
+            // Sku
+            String sku = TargetLink.getIdFromTargetLink(item.getTarget());
             // Add new tags
-            view.setTag(PROD, item.getSku());
-            view.setTag(SKU, (selectedSize != null) ? selectedSize.getSku() : item.getSku());
+            view.setTag(PROD, sku);
             view.setTag(SIZE, (selectedSize != null) ? selectedSize.getVariationValue() : "");
             view.setTag(STOCK, item.hasStock());
             view.setTag(NAME, item.getName());
