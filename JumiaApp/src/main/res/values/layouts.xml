@@ -8,6 +8,7 @@
     <!-- CHOOSE COUNTRY -->
     <item name="single_line_with_icon"                  type="layout">@layout/_def_single_line_with_icon</item>
     <item name="single_line_with_two_icons"             type="layout">@layout/_def_single_line_with_two_icons</item>
+    <item name="single_line_with_check"                 type="layout">@layout/_def_single_line_with_check</item>
     <!-- CHECKOUT -->
     <item name="checkout_my_order_billing_address"      type="layout">@layout/_def_checkout_my_order_billing_address</item>
     <item name="checkout_my_order_payment_options"      type="layout">@layout/_def_checkout_my_order_payment_options</item>
@@ -146,7 +147,6 @@
     <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
     <item name="my_account_app_version"                 type="layout">@layout/_def_my_account_app_version</item>
     <item name="my_account_fragment"                    type="layout">@layout/_def_my_account_fragment</item>
-    <item name="my_account_notification_item"           type="layout">@layout/_def_my_account_notification_item</item>
 
 
     <!-- DYNAMIC -->

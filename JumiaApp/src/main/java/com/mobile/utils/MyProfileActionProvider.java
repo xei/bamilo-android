@@ -199,9 +199,9 @@ public class MyProfileActionProvider extends ActionProvider {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.single_line_with_icon_component, parent, false);
             }
             // Get view
-            ImageView icon = ((SingleLineWithIcon) view).getStartImageView();
-            ((SingleLineWithIcon) view).showImageStartViewVisible();
-            TextView title = ((SingleLineWithIcon) view).getTextView();
+            ImageView icon = ((SingleLineComponent) view).getStartImageView();
+            ((SingleLineComponent) view).showImageStartViewVisible();
+            TextView title = ((SingleLineComponent) view).getTextView();
             // Get action
             int navAction = getItem(position);
             view.setTag(R.id.nav_action, navAction);

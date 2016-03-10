@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mobile.utils.SingleLineWithIcon;
+import com.mobile.utils.SingleLineComponent;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -51,9 +51,9 @@ public class CountryAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        SingleLineWithIcon rowView = (SingleLineWithIcon) convertView;
+        SingleLineComponent rowView = (SingleLineComponent) convertView;
         if (rowView == null) {
-            rowView = (SingleLineWithIcon) mInflater.inflate(R.layout.single_line_with_icon_component, parent, false);
+            rowView = (SingleLineComponent) mInflater.inflate(R.layout.single_line_with_icon_component, parent, false);
         }
         TextView textView = rowView.getTextView();
         ImageView imageView = rowView.getStartImageView();

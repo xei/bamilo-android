@@ -29,6 +29,19 @@
         <item name="android:layout_marginLeft">@dimen/margin_padding_xl</item>
     </style>
 
+    <style name="SingleLineListCheckBoxRTL">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">@dimen/margin_padding_xl</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/_gen_selector_check_box</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <!-- TODO : ADD HERE MORE STYLES -->
 
 </resources>

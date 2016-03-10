@@ -12,23 +12,23 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 /**
  * Created by msilva on 3/8/16.
  */
-public class SingleLineWithIcon extends RelativeLayout {
+public class SingleLineComponent extends RelativeLayout {
 
-    private static final java.lang.String TAG = SingleLineWithIcon.class.getName();
+    private static final java.lang.String TAG = SingleLineComponent.class.getName();
 
     // Types
     private static final int ONE_ICON = 0;
     private static final int TWO_ICONS = 1;
     private static final int CHECKBOX = 2;
 
-    private final int[] layouts_supported = {R.layout.single_line_with_icon, R.layout.single_line_with_two_icons};
+    private final int[] layouts_supported = {R.layout.single_line_with_icon, R.layout.single_line_with_two_icons, R.layout.single_line_with_check};
 
     /**
      * Views
@@ -36,25 +36,26 @@ public class SingleLineWithIcon extends RelativeLayout {
     protected TextView mTextView;
     protected ImageView mImageStartView;
     protected ImageView mImageEndView;
+    protected CheckBox mCheckBox;
 
 
 
-    public SingleLineWithIcon(Context context) {
+    public SingleLineComponent(Context context) {
         super(context);
     }
 
-    public SingleLineWithIcon(Context context, AttributeSet attrs) {
+    public SingleLineComponent(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context,attrs);
     }
 
-    public SingleLineWithIcon(Context context, AttributeSet attrs, int defStyleAttr) {
+    public SingleLineComponent(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context,attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public SingleLineWithIcon(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public SingleLineComponent(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context,attrs);
     }
@@ -89,6 +90,7 @@ public class SingleLineWithIcon extends RelativeLayout {
         mImageStartView = (ImageView) findViewById(R.id.icon_start);
         mImageEndView = (ImageView) findViewById(R.id.icon_end);
         mTextView = (TextView) findViewById(R.id.tx_single_line_text);
+        mCheckBox = (CheckBox) findViewById(R.id.checkBox);
 
         View divider = findViewById(R.id.divider);
         if(showDivider && divider != null){
@@ -105,6 +107,10 @@ public class SingleLineWithIcon extends RelativeLayout {
      */
     public ImageView getStartImageView() {
         return mImageStartView;
+    }
+
+    public CheckBox getCheckBox() {
+        return mCheckBox;
     }
 
     public void showImageStartViewVisible(){

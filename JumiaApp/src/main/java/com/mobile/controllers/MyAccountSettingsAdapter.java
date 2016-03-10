@@ -32,7 +32,7 @@ public class MyAccountSettingsAdapter extends BaseAdapter {
 
     String[] mOptions;
     Context mContext;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     /**
      * The constructor for this adapter

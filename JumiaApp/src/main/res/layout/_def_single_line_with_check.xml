@@ -12,12 +12,10 @@
         />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/option_name"
-        style="@style/SingleLineList"
-        android:layout_toLeftOf="@+id/notification_checkbox"
-        android:layout_toStartOf="@+id/notification_checkbox"
+        android:id="@+id/tx_single_line_text"
+        style="@style/SingleLineList.WithIcon"
+        android:layout_toLeftOf="@+id/checkbox"
+        android:layout_toStartOf="@+id/checkbox"
         />
-
-
 
 </RelativeLayout>

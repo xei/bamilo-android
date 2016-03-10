@@ -1,8 +1,6 @@
 package com.mobile.controllers;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +10,7 @@ import com.mobile.components.AnimatedExpandableListView.AnimatedExpandableListAd
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.utils.SingleLineWithIcon;
+import com.mobile.utils.SingleLineComponent;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -100,9 +98,9 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
         } else {
             convertView = mInflater.inflate(R.layout.single_line_with_two_icons_component, parent, false);
             item = new ItemCategory();
-            item.name = (TextView)((SingleLineWithIcon) convertView).getTextView();
-            item.icon = ((SingleLineWithIcon) convertView).getStartImageView();
-            item.indicator = ((SingleLineWithIcon) convertView).getEndImageView();
+            item.name = (TextView)((SingleLineComponent) convertView).getTextView();
+            item.icon = ((SingleLineComponent) convertView).getStartImageView();
+            item.indicator = ((SingleLineComponent) convertView).getEndImageView();
 
             convertView.setTag(item);
         }
