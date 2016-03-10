@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.IntDef;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -15,6 +16,9 @@ import android.widget.TextView;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.view.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by msilva on 3/8/16.
@@ -27,6 +31,9 @@ public class SingleLineComponent extends RelativeLayout {
     private static final int ONE_ICON = 0;
     private static final int TWO_ICONS = 1;
     private static final int CHECKBOX = 2;
+    @IntDef({ONE_ICON, TWO_ICONS, CHECKBOX})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface SingleLineType {}
 
     private final int[] layouts_supported = {R.layout.single_line_with_icon, R.layout.single_line_with_two_icons, R.layout.single_line_with_check};
 

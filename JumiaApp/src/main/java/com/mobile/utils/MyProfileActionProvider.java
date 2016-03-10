@@ -217,7 +217,7 @@ public class MyProfileActionProvider extends ActionProvider {
                 case NavigationAction.LOGIN_OUT:
                     boolean hasCredentials = JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials();
                     int resTitle = hasCredentials ? R.string.sign_out : R.string.sign_in;
-                    title.setText(getContext().getText(resTitle));
+                    title.setText(resTitle);
                     icon.setImageResource(R.drawable.ico_dropdown_signin);
                     break;
                 case NavigationAction.SAVED:
