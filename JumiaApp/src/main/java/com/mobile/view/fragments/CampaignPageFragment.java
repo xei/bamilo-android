@@ -398,7 +398,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     private void addItemToCart(CampaignItem campaignItem){
         // Validate the current selection
         if (campaignItem.getSelectedSimple() == null) {
-            Print.i("WARNING: SIMPLE IS EMPTY");
+            Print.w("WARNING: SIMPLE IS EMPTY");
             return;
         }
         //
