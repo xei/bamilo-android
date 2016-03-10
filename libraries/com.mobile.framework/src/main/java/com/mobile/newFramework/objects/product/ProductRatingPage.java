@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONArray;
@@ -185,12 +186,7 @@ public class ProductRatingPage implements IJSONSerializable, Parcelable {
 	 * Get number of ratings / star throught star name
 	 */
 	public String getByStarValue(String name) {
-		String value = "0";
-		if (byStarsObject != null)
-			value = byStarsObject.optString(name);
-
-		return value;
-
+		return byStarsObject != null ? byStarsObject.optString(name) : String.valueOf(IntConstants.DEFAULT_POSITION);
 	}
 
 

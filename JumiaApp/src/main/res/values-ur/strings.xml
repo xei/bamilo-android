@@ -331,7 +331,7 @@
     <string name="phone_contact">فون رابطے</string>
     <string name="email_contact">ای میل</string>
     <string name="logout_success">کامیابی کے ساتھ لاگ آوٹ</string>
-    <string name="percentage">%s%%</string>
+    <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">خریداری کی ٹوکری مین اس بنڈل کا اضافہ نہیں ہو سکا ۔ براۓ کرم دوبارہ کوشش کریں۔</string>
     <string name="buy">خریدیں</string>
     <string name="size">ناپ ‎%s‎</string>

@@ -512,4 +512,9 @@
     <!-- DIVIDER -->
     <dimen name="divider_xxs">1dp</dimen>
 
+    <!-- RATING REVIEWS -->
+    <item name="reviews_rating_group_left_percentage" format="float" type="dimen">.45</item>
+    <item name="reviews_rating_group_right_percentage" format="float" type="dimen">.55</item>
+
+
 </resources>

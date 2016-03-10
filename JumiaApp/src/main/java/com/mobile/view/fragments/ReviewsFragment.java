@@ -338,10 +338,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
                 mReviews = new ArrayList<>();
             }
         }
-//        if (mReviewsGroup == null) {
-//            mReviewsGroup = (LinearLayout) getView().findViewById(R.id.reviews_group);
-//            pageNumber = 1;
-//        }
         if (mReviewsGroup.getChildCount() > 0) {
             mReviewsGroup.removeAllViews();
         }

@@ -22,7 +22,7 @@
             android:id="@+id/rate_info_group"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".45"
+            android:layout_weight="@dimen/reviews_rating_group_left_percentage"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -53,7 +53,7 @@
             android:id="@+id/rate_bar_group"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".55"
+            android:layout_weight="@dimen/reviews_rating_group_right_percentage"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -96,7 +96,7 @@
             style="@style/TextBase.Caption.Black_800"
             android:layout_width="0dp"
             android:layout_height="@dimen/dimen_36dp"
-            android:layout_weight=".45"
+            android:layout_weight="@dimen/reviews_rating_group_left_percentage"
             android:gravity="center"
             android:lineSpacingExtra="@dimen/margin_padding_xs"
             android:singleLine="false"
@@ -107,7 +107,7 @@
             style="@style/Button_Link.Blue_1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight=".55"
+            android:layout_weight="@dimen/reviews_rating_group_right_percentage"
             android:text="@string/write_comment" />
 
     </LinearLayout>

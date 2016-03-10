@@ -331,7 +331,7 @@
     <string name="phone_contact">Téléphone :</string>
     <string name="email_contact">Email :</string>
     <string name="logout_success">Vous êtes déconnecté avec succès</string>
-    <string name="percentage">%s%%</string>
+    <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">Une erreur inconnue s\'est produite. Réessayez plus tard.</string>
     <string name="buy">Achète</string>
     <string name="size">Taille %s</string>

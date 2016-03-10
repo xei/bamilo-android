@@ -69,7 +69,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public int NAME = R.id.name;
     public int BRAND = R.id.brand;
     public int PRICE = R.id.price;
-    public int PROD = R.id.product;
+    public int SKU = R.id.product;
     public int SIZE = R.id.size;
     public int STOCK = R.id.stock;
     public int DISCOUNT = R.id.discount;
@@ -469,7 +469,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
      */
     private void onClickProduct(View view){
         String size = (String) view.getTag(SIZE);
-        String sku = (String) view.getTag(PROD);
+        String sku = (String) view.getTag(SKU);
         Print.d(TAG, "ON CLICK PRODUCT " + sku + " " + size);
         // Create bundle
         Bundle bundle = new Bundle();
@@ -641,7 +641,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set stock bar
             setStockBar(view.mStockBar, item.getStockPercentage());
             // Set stock percentage
-            view.mStockPercentage.setText(String.format(getString(R.string.percentage), item.getStockPercentage()));
+            view.mStockPercentage.setText(String.format(getString(R.string.percentage_placeholder), item.getStockPercentage()));
             view.mStockPercentage.setSelected(true);
             // Set buy button
             setClickableView(view.mButtonBuy, position);
@@ -776,8 +776,6 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             return String.valueOf(number);
         }
 
-
-
         /**
          * Show Timer with text "00:00:00" and disable buttons and redirects to PDV
          */
@@ -844,7 +842,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
 
             }else{
                 view.mStockOff.setVisibility(View.VISIBLE);
-                view.mStockOff.setText(getString(R.string.percentage, item.getMaxSavingPercentage()));
+                view.mStockOff.setText(getString(R.string.percentage_placeholder, item.getMaxSavingPercentage()));
             }
         }
 
@@ -919,7 +917,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Sku
             String sku = TargetLink.getIdFromTargetLink(item.getTarget());
             // Add new tags
-            view.setTag(PROD, sku);
+            view.setTag(SKU, sku);
             view.setTag(SIZE, (selectedSize != null) ? selectedSize.getVariationValue() : "");
             view.setTag(STOCK, item.hasStock());
             view.setTag(NAME, item.getName());

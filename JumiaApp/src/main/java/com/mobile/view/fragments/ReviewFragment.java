@@ -36,8 +36,6 @@ public class ReviewFragment extends BaseFragment {
 
     /**
      * Get instance
-     * 
-     * @return
      */
     public static ReviewFragment getInstance(Bundle bundle) {
         ReviewFragment fragment = new ReviewFragment();
@@ -185,8 +183,6 @@ public class ReviewFragment extends BaseFragment {
     
     /**
      * insert rate types on the review
-     * @param ratingOptionArray
-     * @param parent
      */
     private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar,int ratingValue){
         
