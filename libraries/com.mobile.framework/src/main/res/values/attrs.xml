@@ -79,5 +79,18 @@
     <declare-styleable name="ExpandedGridViewStyleable">
         <attr name="expand" format="boolean" />
     </declare-styleable>
-    
+
+    <!-- SingleLineWithIcon Attributs -->
+    <declare-styleable name="SingleLineWithIconStyleable">
+        <attr name="layoutType" format="enum">
+            <enum name="oneIcon" value="0" />
+            <enum name="twoIcons" value="1" />
+            <enum name="checkBox" value="2" />
+        </attr>
+        <attr name="backgroundSelector" format="reference" />
+        <attr name="useSelector" format="boolean" />
+        <attr name="showDivider" format="boolean" />
+        <attr name="imageStart" format="reference" />
+        <attr name="imageEnd" format="reference" />
+    </declare-styleable>
 </resources>

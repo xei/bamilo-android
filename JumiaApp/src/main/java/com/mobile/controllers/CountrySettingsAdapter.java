@@ -33,8 +33,8 @@ public class CountrySettingsAdapter extends BaseAdapter{
         public Languages languages;
     }
 
-    private CountryLanguageInformation countryObject;
-    private LayoutInflater mInflater;
+    private final CountryLanguageInformation countryObject;
+    private final LayoutInflater mInflater;
     private boolean mSingleShop = false;
 
     public CountrySettingsAdapter(Context context, CountryLanguageInformation countryObject){

@@ -6,9 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.mobile.components.customfontviews.TextView;
-import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.SingleLineComponent;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -35,10 +35,10 @@ public class CountryAdapter extends ArrayAdapter<String> {
 
     private String[] values;
     private final String[] flagsList;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public CountryAdapter(Context context, String[] values, String[] flagsList) {
-        super(context, R.layout.change_country_row, values);
+        super(context, R.layout.single_line_with_icon_component, values);
         this.values = values;
         this.flagsList = flagsList;
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -51,13 +51,13 @@ public class CountryAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Print.i("Country List", "Position: " + position);
-        View rowView = convertView;
+        SingleLineComponent rowView = (SingleLineComponent) convertView;
         if (rowView == null) {
-            rowView = mInflater.inflate(R.layout.change_country_row, parent, false);
+            rowView = (SingleLineComponent) mInflater.inflate(R.layout.single_line_with_icon_component, parent, false);
         }
-        TextView textView = (TextView) rowView.findViewById(R.id.country_name);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.flag);
+        TextView textView = rowView.getTextView();
+        ImageView imageView = rowView.getStartImageView();
+        rowView.showImageStartViewVisible();
         textView.setText(values[position]);
         if (flagsList != null && flagsList.length > 0) RocketImageLoader.instance.loadImage(flagsList[position], imageView, null, R.drawable.no_image_small);
         return rowView;
