@@ -7,6 +7,8 @@
 
     <!-- CHOOSE COUNTRY -->
     <item name="single_line_with_icon"                  type="layout">@layout/_def_single_line_with_icon</item>
+    <item name="single_line_with_two_icons"             type="layout">@layout/_def_single_line_with_two_icons</item>
+    <item name="single_line_with_check"                 type="layout">@layout/_def_single_line_with_check</item>
 
     <!-- CHECKOUT -->
     <item name="checkout_my_order_billing_address"      type="layout">@layout/_def_checkout_my_order_billing_address</item>
@@ -24,7 +26,6 @@
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_def_checkout_shipping_pickup_station</item>
     <item name="checkout_header"                        type="layout">@layout/_def_checkout_header</item>
     <item name="checkout_thanks"                        type="layout">@layout/_def_checkout_thanks</item>
-    <item name="checkout_success_fragment_related"      type="layout">@layout/_def_checkout_success_fragment_related_prods</item>
     <item name="checkout_create_address_main" 	        type="layout">@layout/_def_checkout_create_address_main</item>
     <item name="checkout_edit_address_main" 	        type="layout">@layout/_def_checkout_edit_address_main</item>
     <item name="checkout_addresses" 			        type="layout">@layout/_def_checkout_my_addresses</item>
@@ -100,10 +101,10 @@
     <item name="product_summary_fragment"               type="layout">@layout/_def_product_summary_fragment</item>
     <item name="product_specs_container"                type="layout">@layout/_def_product_specs_container</item>
     <item name="product_specs_container_item"           type="layout">@layout/_def_product_specs_container_item</item>
-    <item name="reviews_fragment"                       type="layout">@layout/_def_reviews_fragment</item>
     <item name="review_fragment"                        type="layout">@layout/_def_review_fragment</item>
     <item name="review_list"                            type="layout">@layout/_def_review_list</item>
     <item name="ratings_board"                          type="layout">@layout/_def_ratings_board</item>
+    <item name="ratings_board_rate_bar"                 type="layout">@layout/_def_ratings_board_rate_bar</item>
 
     <!-- MY ORDERS -->
     <item name="my_orders_fragment_main"                type="layout">@layout/_def_my_orders_fragment_main</item>
@@ -139,7 +140,6 @@
     <!-- CATEGORY -->
     <item name="navigation_fragment_categories"         type="layout">@layout/_def_navigation_fragment_categories</item>
     <item name="category_header"                        type="layout">@layout/_def_category_header</item>
-    <item name="category_single_line_list"              type="layout">@layout/_def_category_single_line_list</item>
     <item name="category_sublist"                       type="layout">@layout/_def_category_sublist</item>
 
     <!-- MY ACCOUNT -->
@@ -147,7 +147,6 @@
     <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
     <item name="my_account_app_version"                 type="layout">@layout/_def_my_account_app_version</item>
     <item name="my_account_fragment"                    type="layout">@layout/_def_my_account_fragment</item>
-    <item name="my_account_notification_item"           type="layout">@layout/_def_my_account_notification_item</item>
 
 
     <!-- DYNAMIC -->
