@@ -2,29 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
     android:minHeight="@dimen/catalog_list_item_height"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    >
 
     <include
         android:id="@+id/image_loadable"
-        android:layout_width="@dimen/catalog_list_item_image_width"
-        android:layout_height="@dimen/catalog_list_item_image_height"
+        android:layout_width="@dimen/dimen_82dp"
+        android:layout_height="@dimen/dimen_103dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_60px"
-        android:layout_marginRight="@dimen/margin_60px"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
         layout="@layout/image_loadable"
         android:background="@color/color_accent" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/new_arrival_badge"
-        style="@style/NewArrivalBadge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_marginRight="@dimen/dimen_10dp"
-        android:text="@string/new_arrival_badge" />
 
     <!-- INFORMATION -->
 
@@ -37,22 +27,20 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
-        style="@style/TextBase.Caption"
-        android:textColor="@color/black_800"
+        style="@style/TextBase.Body.Black_800"
         android:layout_width="wrap_content"
         android:layout_alignRight="@+id/center_view"
-        android:layout_marginLeft="@dimen/product_item_text_right_margin"
-        android:layout_marginTop="@dimen/margin_30px"
+        android:layout_marginLeft="@dimen/dimen_50dp"
+        android:layout_marginTop="@dimen/margin_padding_l"
         android:text="BRAND" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBase.Body"
-        android:textColor="@color/black"
+        style="@style/TextBase.Title.Black"
         android:layout_width="match_parent"
         android:layout_alignRight="@+id/center_view"
         android:layout_below="@+id/item_brand"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="@dimen/dimen_50dp"
         android:gravity="right|center_vertical"
         android:singleLine="false"
         android:maxLines="2"
@@ -60,13 +48,13 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
-        style="@style/TextBase.Body"
+        style="@style/TextBase.Body.Black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:layout_alignRight="@id/center_view"
         android:layout_below="@id/item_name"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="@dimen/dimen_4dp"
+        android:maxLines="2"
         android:text="Discount" />
 
     <com.mobile.components.customfontviews.TextView
@@ -138,4 +126,14 @@
         android:layout_marginLeft="@dimen/margin_padding_l"
         android:gravity="center" />
 
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="@dimen/margin_padding_xs"
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_below="@id/discount_percentage"
+        android:text="@string/new_arrival_badge" />
 </RelativeLayout>

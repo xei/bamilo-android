@@ -53,11 +53,13 @@
     <dimen name="dimen_60dp">60dp</dimen>
     <dimen name="dimen_64dp">64dp</dimen>
     <dimen name="dimen_70dp">70dp</dimen>
+    <dimen name="dimen_82dp">82dp</dimen>
     <dimen name="dimen_88dp">88dp</dimen>
     <dimen name="dimen_90dp">90dp</dimen>
     <dimen name="dimen_92dp">92dp</dimen>
     <dimen name="dimen_98dp">98dp</dimen>
     <dimen name="dimen_100dp">100dp</dimen>
+    <dimen name="dimen_103dp">103dp</dimen>
     <dimen name="dimen_113_33dp">113.33dp</dimen>
     <dimen name="dimen_123dp">123dp</dimen>
     <dimen name="dimen_134dp">134dp</dimen>
