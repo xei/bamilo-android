@@ -44,6 +44,7 @@
     <style name="grid_row_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">@dimen/margin_padding_l</item>
         <item name="android:background">@drawable/selector_grid_item_highlight</item>
     </style>
 

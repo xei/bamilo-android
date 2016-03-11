@@ -68,12 +68,12 @@
     <dimen name="dimen_220dp">220dp</dimen>
     <dimen name="dimen_230dp">230dp</dimen>
     <dimen name="dimen_240dp">240dp</dimen>
+    <dimen name="dimen_249dp">249dp</dimen>
     <dimen name="dimen_260dp">260dp</dimen>
     <dimen name="dimen_270dp">270dp</dimen>
+    <dimen name="dimen_312dp">312dp</dimen>
     <dimen name="dimen_320dp">320dp</dimen>
     <dimen name="dimen_328dp">328dp</dimen>
-
-
 
 
     <!-- BASE DIMENSIONS: PT TO SP (PT/3)-->

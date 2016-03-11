@@ -46,8 +46,8 @@
         android:layout_alignLeft="@id/center_view"
         android:layout_alignStart="@id/center_view"
         android:layout_below="@id/item_brand"
-        android:layout_marginEnd="@dimen/dimen_50dp"
-        android:layout_marginRight="@dimen/dimen_50dp"
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
         android:maxLines="2"
         android:singleLine="false"
         android:text="Name"
@@ -130,7 +130,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:padding="@dimen/margin_padding_l"
+        android:padding="@dimen/margin_padding_xl"
         android:src="@drawable/selector_favorite" />
 
     <com.mobile.components.customfontviews.TextView
@@ -138,9 +138,10 @@
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/rating_container"
+        android:layout_below="@id/item_name"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/margin_padding_l"
         android:layout_marginEnd="@dimen/margin_padding_xl"
         android:layout_marginRight="@dimen/margin_padding_xl"
         android:gravity="center" />
@@ -150,7 +151,7 @@
         style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/discount_percentage"
+        android:layout_alignBottom="@id/image_loadable"
         android:layout_marginTop="@dimen/margin_padding_s"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
