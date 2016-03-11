@@ -145,8 +145,8 @@
         android:layout_alignBottom="@id/item_discount"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginEnd="@dimen/margin_padding_l"
-        android:layout_marginRight="@dimen/margin_padding_l"
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
         android:gravity="center" />
 
 </RelativeLayout>
