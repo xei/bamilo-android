@@ -18,7 +18,7 @@
 
     <RatingBar
         android:id="@+id/pdv_rating_bar"
-        style="@style/starRatingBarBig"
+        style="@style/StarBar.Big"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:isIndicator="true" />

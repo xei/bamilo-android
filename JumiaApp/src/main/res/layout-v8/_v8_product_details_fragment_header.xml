@@ -53,7 +53,7 @@
 
         <RatingBar
             android:id="@+id/seller_reviews_item_rating"
-            style="@style/starRatingBarSmall"
+            style="@style/StarBar.Small.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
