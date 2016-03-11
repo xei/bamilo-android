@@ -6,7 +6,7 @@
     <item name="fragment_loading_more"                  type="layout">@layout/_def_loading_more</item>
 
     <!-- CHOOSE COUNTRY -->
-    <item name="change_country_row"                     type="layout">@layout/_def_change_country_row</item>
+    <item name="single_line_with_icon"                  type="layout">@layout/_def_single_line_with_icon</item>
 
     <!-- CHECKOUT -->
     <item name="checkout_my_order_billing_address"      type="layout">@layout/_def_checkout_my_order_billing_address</item>
@@ -139,7 +139,6 @@
     <!-- CATEGORY -->
     <item name="navigation_fragment_categories"         type="layout">@layout/_def_navigation_fragment_categories</item>
     <item name="category_header"                        type="layout">@layout/_def_category_header</item>
-    <item name="category_single_line_list"              type="layout">@layout/_def_category_single_line_list</item>
     <item name="category_sublist"                       type="layout">@layout/_def_category_sublist</item>
 
     <!-- MY ACCOUNT -->

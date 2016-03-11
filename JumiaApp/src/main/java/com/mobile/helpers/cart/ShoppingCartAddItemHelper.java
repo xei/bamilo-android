@@ -28,7 +28,7 @@ import com.mobile.utils.TrackerDelegator;
  */
 public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     
-    private static String TAG = ShoppingCartAddItemHelper.class.getSimpleName();
+    private static final String TAG = ShoppingCartAddItemHelper.class.getSimpleName();
 
     public static final String PRODUCT_POS_TAG = "item_pos";
 
