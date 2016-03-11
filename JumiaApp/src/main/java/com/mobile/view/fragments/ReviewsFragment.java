@@ -523,7 +523,6 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
         }
     }
 
-
     /**
      * Set progressbar progress and it's value number with the info coming from byStar
      */
@@ -532,12 +531,20 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
         ((TextView) rateBar.findViewById(R.id.rate_item_label)).setText(rate);
         // Get bar
         ProgressBar bar = (ProgressBar) rateBar.findViewById(R.id.rate_item_bar);
-        bar.setMax(ratingPage.getBasedOn());
-        // Set bar
+        // Case RTL|V8 show base over accent
         if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
-            bar.setProgress(ratingPage.getBasedOn() - Integer.parseInt(ratingPage.getByStarValue(rate)));
-        } else {
-            bar.setProgress(Integer.parseInt(ratingPage.getByStarValue(rate)));
+            // To show the reverse progress is used max - value
+            // Case max empty fill the bar to show the reverse style
+            int max = ratingPage.getBasedOn();
+            int value = ratingPage.getByStarValue(rate);
+            int progress = max == IntConstants.EMPTY ? max = IntConstants.FULL : max - value;
+            bar.setMax(max);
+            bar.setProgress(progress);
+        }
+        // Case LTR show accent over base
+        else {
+            bar.setMax(ratingPage.getBasedOn());
+            bar.setProgress(ratingPage.getByStarValue(rate));
         }
         // Get value
         ((TextView) rateBar.findViewById(R.id.rate_item_value)).setText(getString(R.string.parenthesis_placeholder, ratingPage.getByStarValue(rate)));
