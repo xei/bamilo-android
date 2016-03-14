@@ -122,7 +122,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignBottom="@id/rating_container"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        android:layout_below="@id/item_name"
         android:layout_marginLeft="@dimen/margin_padding_l"
         android:gravity="center" />
 
@@ -134,6 +135,6 @@
         android:layout_alignParentLeft="true"
         android:layout_marginTop="@dimen/margin_padding_xs"
         android:layout_marginLeft="@dimen/margin_padding_l"
-        android:layout_below="@id/discount_percentage"
+        android:layout_alignBottom="@id/image_loadable"
         android:text="@string/new_arrival_badge" />
 </RelativeLayout>

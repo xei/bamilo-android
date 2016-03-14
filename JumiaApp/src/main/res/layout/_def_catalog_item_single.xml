@@ -1,34 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
-    android:minHeight="@dimen/catalog_single_item_height"
     android:layout_height="wrap_content">
 
     <include
         android:id="@+id/image_loadable"
         layout="@layout/image_loadable"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/catalog_single_item_image_height"
+        android:layout_width="@dimen/dimen_312dp"
+        android:layout_height="@dimen/dimen_249dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="@dimen/margin_60px"
-        android:layout_marginLeft="@dimen/margin_60px"
-        android:layout_marginRight="@dimen/margin_60px"
-        android:layout_marginStart="@dimen/margin_60px"
-        android:layout_marginTop="@dimen/margin_30px" />
+        android:layout_marginEnd="@dimen/dimen_30dp"
+        android:layout_marginLeft="@dimen/dimen_30dp"
+        android:layout_marginRight="@dimen/dimen_30dp"
+        android:layout_marginStart="@dimen/dimen_30dp"
+        android:layout_marginTop="@dimen/margin_padding_xl" />
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/new_arrival_badge"
-        style="@style/NewArrivalBadge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/dimen_10dp"
-        android:layout_marginLeft="@dimen/dimen_10dp"
-        android:layout_marginStart="@dimen/dimen_10dp"
-        android:gravity="center"
-        android:text="@string/new_arrival_badge" />
 
     <ImageView
         android:id="@+id/image_is_favourite"
@@ -38,79 +24,63 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:layout_centerInParent="false"
-        android:padding="@dimen/margin_padding_l"
-        android:paddingTop="@dimen/catalog_item_vertical_padding"
+        android:padding="@dimen/margin_padding_xl"
         android:src="@drawable/selector_favorite" />
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/discount_percentage"
-        style="@style/PdvBadgeStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/item_discount"
-        android:layout_toRightOf="@+id/item_regprice"
-        android:layout_toEndOf="@+id/item_regprice"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="@dimen/margin_padding_l"
-        android:layout_marginRight="@dimen/margin_padding_l"
-        android:gravity="center" />
-
-    <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
-        style="@style/TextBase.Caption"
+        style="@style/TextBase.Body.Black_800"
         android:layout_width="wrap_content"
         android:layout_below="@id/image_loadable"
-        android:layout_marginEnd="@dimen/margin_60px"
-        android:layout_marginLeft="@dimen/margin_60px"
-        android:layout_marginRight="@dimen/margin_60px"
-        android:layout_marginStart="@dimen/margin_60px"
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:layout_marginStart="@dimen/margin_padding_xl"
         android:layout_marginTop="@dimen/margin_padding_l"
         android:gravity="left|start"
         android:text="BRAND"
-        android:textColor="@color/black_800" />
+        />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBase.Body"
+        style="@style/TextBase.Title.Black"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_brand"
-        android:layout_marginEnd="@dimen/margin_60px"
-        android:layout_marginLeft="@dimen/margin_60px"
-        android:layout_marginRight="@dimen/margin_60px"
-        android:layout_marginStart="@dimen/margin_60px"
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:layout_marginStart="@dimen/margin_padding_xl"
         android:gravity="left|start"
         android:text="Name"
-        android:textColor="@color/black" />
+        />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
-        style="@style/TextBase.Body"
+        style="@style/TextBase.Body.Black"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_alignLeft="@+id/item_brand"
         android:layout_alignStart="@+id/item_brand"
         android:layout_below="@id/item_name"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginEnd="@dimen/margin_padding_xs"
+        android:layout_marginRight="@dimen/margin_padding_xs"
         android:text="Discount"
-        android:textColor="@color/black" />
+        />
 
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextBase.Body"
+        style="@style/TextBase.Body.Black_800"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_name"
-        android:layout_marginEnd="@dimen/margin_20px"
-        android:layout_marginRight="@dimen/margin_20px"
+        android:layout_marginEnd="@dimen/margin_padding_xxl"
+        android:layout_marginRight="@dimen/margin_padding_xxl"
         android:layout_toEndOf="@id/item_discount"
         android:layout_toRightOf="@id/item_discount"
-        android:layout_marginTop="4dp"
         android:text="Price"
-        android:textColor="@color/black_800" />
+        />
 
     <ImageView
         style="@style/ShopFirstStyle"
@@ -120,6 +90,7 @@
         android:layout_alignStart="@id/item_brand" />
 
     <RelativeLayout
+        android:id="@+id/rating_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_name"
@@ -152,5 +123,30 @@
             android:text="(12)"
             android:textColor="@color/black_800" />
     </RelativeLayout>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_alignBottom="@id/rating_container"
+        android:gravity="center"
+        android:text="@string/new_arrival_badge" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/discount_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/item_discount"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:gravity="center" />
 
 </RelativeLayout>
