@@ -82,7 +82,7 @@
     </RelativeLayout>
 
     <View
-       style="@style/HorizontalListDivider" />
+       style="@style/DividerHorizontal.Black_300" />
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/cta_link_continue_shopping"

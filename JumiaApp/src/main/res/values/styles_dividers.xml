@@ -1,82 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- ################# CHECKOUT ################# -->
-
-    <style name="HorizontalListDivider">
-        <item name="android:layout_height">1dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@color/black_300</item>
-    </style>
-
-    <style name="HorizontalListDivider_black400" parent="HorizontalListDivider">
-        <item name="android:background">@color/black_400</item>
-    </style>
-
-    <style name="VerticalListDivider">
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_width">1dp</item>
-        <item name="android:background">@color/black_300</item>
-    </style>
-
-    <style name="VerticalListDivider_black_400" parent="VerticalListDivider">
-        <item name="android:background">@color/black_400</item>
-    </style>
-
-
-    <!-- This style is applied to all the dialogs in the application -->
-
-    <style name="line_dialog">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:background">@color/grey_dark_line</item>
-    </style>
-
-    <style name="line_dialog_vertical">
-        <item name="android:layout_width">1dp</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/grey_dark_line</item>
-    </style>
-
-    <!-- This style is applied to all the blue lines in the application -->
-
-    <style name="line_grey_style" parent="divider_horizontal" />
-
-    <style name="divider_horizontal_orange">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/divider_height</item>
-        <item name="android:background">@color/orange_1</item>
-    </style>
-
-    <!-- This style is applied to all the grids in the application -->
-
-    <style name="divider_horizontal">
+    <style name="DividerHorizontal">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
         <item name="android:background">@color/black_300</item>
     </style>
 
-    <style name="divider_horizontal.Black300">
-        <item name="android:background">@color/black_300</item>
+    <style name="DividerHorizontal.Black_300"/>
+
+    <style name="DividerHorizontal.Black_400">
+        <item name="android:background">@color/black_400</item>
     </style>
 
-    <style name="divider_horizontal.Black700">
+    <style name="DividerHorizontal.Black_700">
         <item name="android:background">@color/black_700</item>
     </style>
 
-    <style name="divider_vertical">
+    <style name="DividerHorizontal.Accent">
+        <item name="android:background">@color/color_accent</item>
+    </style>
+
+    <style name="DividerVertical">
         <item name="android:layout_width">@dimen/divider_height</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:background">@color/black_300</item>
     </style>
 
-    <style name="divider_horizontal_campaign">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1.33dp</item>
-        <item name="android:background">@color/black_300</item>
+    <style name="DividerVertical.Black_300"/>
+
+    <style name="DividerVertical.Black_400">
+        <item name="android:background">@color/black_400</item>
     </style>
 
-    <style name="shadow">
+    <style name="ShadowHorizontal">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
         <item name="android:background">@drawable/shadow_white_2_grey_horizontal</item>

@@ -9,7 +9,7 @@
 
     <View
         android:id="@+id/radio_divider"
-        style="@style/divider_horizontal.Black700" />
+        style="@style/DividerHorizontal.Black_700" />
 
     <!-- RADIO BUTTON -->
 

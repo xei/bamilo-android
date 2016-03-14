@@ -46,7 +46,7 @@
 
     <View
         android:id="@+id/separator"
-        style="@style/divider_horizontal"
+        style="@style/DividerHorizontal.Black_300"
         android:layout_below="@id/offers_header" />
 
     <com.mobile.utils.catalog.HeaderFooterGridView

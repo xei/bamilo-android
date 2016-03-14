@@ -67,7 +67,7 @@
             </LinearLayout>
 
             <View
-                style="@style/divider_horizontal"
+                style="@style/DividerHorizontal.Black_300"
                 android:layout_marginTop="@dimen/margin_huge" />
 
             <LinearLayout

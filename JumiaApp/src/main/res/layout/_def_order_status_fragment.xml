@@ -65,7 +65,7 @@
 
         <!-- DIVIDER -->
 
-        <View style="@style/divider_horizontal.Black700" />
+        <View style="@style/DividerHorizontal.Black_700" />
 
         <!-- ADDRESSES -->
 

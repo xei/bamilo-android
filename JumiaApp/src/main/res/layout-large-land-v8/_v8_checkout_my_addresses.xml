@@ -74,7 +74,7 @@
         <!-- DIVIDER -->
         <View
             android:id="@+id/divider_horizontal"
-            style="@style/divider_horizontal.Black700" />
+            style="@style/DividerHorizontal.Black_700" />
 
         <!-- NEXT BUTTON -->
 
