@@ -86,6 +86,7 @@
         android:layout_alignStart="@id/item_brand" />
 
     <RelativeLayout
+        android:id="@+id/rating_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/item_name"
