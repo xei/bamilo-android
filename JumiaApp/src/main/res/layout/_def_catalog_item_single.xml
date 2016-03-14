@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/grid_row_style"
     android:minHeight="@dimen/catalog_single_item_height"
     android:layout_height="wrap_content">
@@ -66,7 +67,7 @@
         android:layout_marginStart="@dimen/margin_60px"
         android:layout_marginTop="@dimen/margin_padding_l"
         android:gravity="left|start"
-        android:text="BRAND"
+        tools:text="BRAND"
         android:textColor="@color/black_800" />
 
     <com.mobile.components.customfontviews.TextView
@@ -80,7 +81,7 @@
         android:layout_marginRight="@dimen/margin_60px"
         android:layout_marginStart="@dimen/margin_60px"
         android:gravity="left|start"
-        android:text="Name"
+        tools:text="Name"
         android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
@@ -94,7 +95,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginEnd="4dp"
         android:layout_marginRight="4dp"
-        android:text="Discount"
+        tools:text="Discount"
         android:textColor="@color/black" />
 
 
@@ -109,7 +110,7 @@
         android:layout_toEndOf="@id/item_discount"
         android:layout_toRightOf="@id/item_discount"
         android:layout_marginTop="4dp"
-        android:text="Price"
+        tools:text="Price"
         android:textColor="@color/black_800" />
 
     <ImageView
@@ -134,11 +135,9 @@
             style="@style/StarBar.Small.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
-            android:isIndicator="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:rating="3.5" />
+            tools:rating="3.5" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
@@ -149,7 +148,7 @@
             android:layout_toRightOf="@id/item_rating"
             android:layout_toEndOf="@id/item_rating"
             android:includeFontPadding="false"
-            android:text="(12)"
+            tools:text="(12)"
             android:textColor="@color/black_800" />
     </RelativeLayout>
 

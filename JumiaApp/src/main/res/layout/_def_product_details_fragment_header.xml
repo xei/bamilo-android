@@ -2,13 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white"
     android:paddingBottom="@dimen/login_margin_small"
     android:paddingEnd="@dimen/rounded_margin_double_mid"
     android:paddingLeft="@dimen/rounded_margin_double_mid"
     android:paddingRight="@dimen/rounded_margin_double_mid"
     android:paddingStart="@dimen/rounded_margin_double_mid"
-    android:paddingTop="@dimen/login_margin_small" >
+    android:paddingTop="@dimen/login_margin_small">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_name"
@@ -21,7 +22,7 @@
         android:textStyle="bold"
         android:textColor="@color/black"
         android:singleLine="false"
-        android:text="Product" />
+        tools:text="Product" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_price_special"
@@ -30,7 +31,7 @@
         android:layout_marginEnd="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
         android:fontFamily="roboto_bold"
-        android:text="Discount Price"
+        tools:text="Discount Price"
         android:textColor="@color/black" />
 
     <com.mobile.components.customfontviews.TextView
@@ -40,7 +41,7 @@
         android:layout_below="@id/product_detail_name"
         android:layout_toEndOf="@+id/product_price_special"
         android:layout_toRightOf="@+id/product_price_special"
-        android:text="Normal Price"
+        tools:text="Normal Price"
         android:textColor="@color/black_800" />
 
     <!-- RATING -->
@@ -65,8 +66,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:numStars="5"
-            android:rating="1" />
+            tools:rating="1" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/seller_reviews_item_reviews"
@@ -79,7 +79,7 @@
             android:layout_toRightOf="@+id/seller_reviews_item_rating"
             android:gravity="start|left|center_vertical"
             android:includeFontPadding="false"
-            android:text="Reviews"
+            tools:text="Reviews"
             android:textColor="@color/grey_light" />
     </RelativeLayout>
 

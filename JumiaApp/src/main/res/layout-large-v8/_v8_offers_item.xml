@@ -52,8 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:numStars="5"
-                android:rating="3.5" />
+                tools:rating="3.5" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
