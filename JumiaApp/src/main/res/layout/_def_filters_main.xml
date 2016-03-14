@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -32,7 +33,7 @@
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/filter_title"
                 style="@style/HeaderStyle"
-                android:text="TITLE" />
+                tools:text="TITLE" />
 
             <View style="@style/HorizontalListDivider_black400" />
 

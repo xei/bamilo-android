@@ -18,7 +18,7 @@
 
     <style name="DialogFilterButtonsContainer">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/dimen_56dp</item>
+        <item name="android:layout_height">48dp</item>
     </style>
 
     <!-- ################# DIALOG BUTTONS ################# -->
