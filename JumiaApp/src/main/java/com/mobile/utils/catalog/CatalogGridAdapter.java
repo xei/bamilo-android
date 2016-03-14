@@ -68,7 +68,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
      * @param data - the array lisl
      */
     public CatalogGridAdapter(Context context, ArrayList<ProductRegular> data) {
-        super(data);
+        super(context, data);
         mContext = context;
         level = Integer.parseInt(CustomerPreferences.getCatalogLayout(mContext));
         isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(mContext);
