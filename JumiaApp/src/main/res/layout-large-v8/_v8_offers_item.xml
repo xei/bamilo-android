@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/list_row_rounded_style"
     android:layout_height="@dimen/catalog_list_item_height"
     android:layout_marginLeft="@dimen/margin_mid"
     android:layout_marginRight="@dimen/margin_mid"
-    android:layout_marginTop="@dimen/margin_small" >
+    android:layout_marginTop="@dimen/margin_small">
 
     <RelativeLayout
         android:id="@+id/offer_item_container"
@@ -22,7 +23,7 @@
             android:layout_alignParentTop="true"
             android:gravity="right"
             android:layout_alignParentRight="true"
-            android:text="RM 9000" />
+            tools:text="RM 9000" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_owner_name"
@@ -32,7 +33,7 @@
             android:layout_below="@+id/offer_price"
             android:layout_marginTop="@dimen/margin_mid"
             android:gravity="right"
-            android:text="BRAND" />
+            tools:text="BRAND" />
 
         <RelativeLayout
             android:id="@+id/offer_rating_container"
@@ -46,13 +47,12 @@
 
             <RatingBar
                 android:id="@+id/item_rating"
-                style="@style/starRatingBarSmall"
+                style="@style/StarBar.Small.Indicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:numStars="5"
-                android:rating="3.5" />
+                tools:rating="3.5" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_reviews"
@@ -62,7 +62,7 @@
                 android:layout_toLeftOf="@+id/item_rating"
                 android:gravity="right|center_vertical"
                 android:includeFontPadding="false"
-                android:text="Reviews"
+                tools:text="Reviews"
                 android:textColor="@color/grey_light" />
         </RelativeLayout>
 
@@ -75,7 +75,7 @@
             android:ellipsize="end"
             android:layout_alignParentRight="true"
             android:gravity="right|center_vertical"
-            android:text="Delivery Within:14 -18 days" />
+            tools:text="Delivery Within:14 -18 days" />
     </RelativeLayout>
 
     <RelativeLayout

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/grid_row_style"
     android:layout_height="wrap_content">
 
@@ -34,8 +35,7 @@
         android:layout_marginTop="@dimen/margin_padding_l"
         android:gravity="right"
         android:layout_alignParentRight="true"
-        android:text="BRAND"
-        />
+        tools:text="BRAND" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
@@ -47,8 +47,7 @@
         android:layout_marginRight="@dimen/margin_padding_xl"
         android:gravity="right"
         android:layout_alignParentRight="true"
-        android:text="Name"
-        />
+        tools:text="Name" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
@@ -59,8 +58,7 @@
         android:layout_below="@id/item_name"
         android:layout_marginTop="4dp"
         android:layout_marginLeft="4dp"
-        android:text="Discount"
-        />
+        tools:text="Discount" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
@@ -71,8 +69,7 @@
         android:layout_marginLeft="@dimen/margin_padding_xxl"
         android:layout_toLeftOf="@id/item_discount"
         android:layout_marginTop="4dp"
-        android:text="Price"
-        />
+        tools:text="Price" />
 
     <ImageView
         style="@style/ShopFirstStyle"
@@ -92,13 +89,11 @@
 
         <RatingBar
             android:id="@+id/item_rating"
-            style="@style/starRatingBarSmall"
+            style="@style/StarBar.Small.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
-            android:isIndicator="true"
             android:layout_alignParentRight="true"
-            android:rating="3.5" />
+            tools:rating="3.5" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
@@ -107,7 +102,7 @@
             android:layout_marginRight="4dp"
             android:layout_toLeftOf="@id/item_rating"
             android:includeFontPadding="false"
-            android:text="(12)"
+            tools:text="(12)"
             android:textColor="@color/black_800" />
     </RelativeLayout>
 

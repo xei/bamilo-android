@@ -1,32 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/layout_item_height"
     android:gravity="left|start|center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/layout_padding"
-    android:paddingRight="@dimen/layout_padding">
+    android:paddingLeft="@dimen/margin_padding_xl"
+    android:paddingRight="@dimen/margin_padding_xl">
 
-    <!-- changeFashion: choose the right rating bar considering vertical type -->
     <RatingBar
         android:id="@+id/pdv_rating_bar"
-        style="@style/starRatingBarBig"
+        style="@style/StarBar.Indicator"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:isIndicator="true" />
-
-    <RatingBar
-        android:id="@+id/pdv_rating_bar_fashion"
-        style="@style/starRatingBarFashionBig"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:isIndicator="true"
-        android:visibility="gone" />
+        android:layout_height="wrap_content" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_rating_bar_count"
-        style="@style/TextBase.Body"
+        style="@style/TextBase.Body.Black_800"
         android:layout_marginLeft="@dimen/margin_mid"
-        android:layout_marginStart="@dimen/margin_mid" />
+        android:layout_marginStart="@dimen/margin_mid"
+        tools:text="9 ratings" />
 
 </LinearLayout>
