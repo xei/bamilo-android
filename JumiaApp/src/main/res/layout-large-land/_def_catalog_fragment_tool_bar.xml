@@ -28,7 +28,7 @@
         android:layout_centerInParent="true">
 
         <View
-            style="@style/divider_vertical"
+            style="@style/DividerVertical.Black_300"
             android:layout_margin="@dimen/margin_10px" />
     </LinearLayout>
 
@@ -88,7 +88,7 @@
             android:text="@string/products_sort_popularity" />
     </LinearLayout>
     <View
-        style="@style/divider_vertical"
+        style="@style/DividerVertical.Black_300"
         android:layout_marginTop="@dimen/margin_10px"
         android:layout_marginBottom="@dimen/margin_10px"
         android:layout_toRightOf="@+id/sort_container"

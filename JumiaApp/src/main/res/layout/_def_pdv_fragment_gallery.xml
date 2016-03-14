@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/item_margin_top"
-    android:paddingTop="@dimen/item_margin_top"
+    android:layoutDirection="ltr"
+    android:paddingBottom="@dimen/margin_padding_xl"
+    android:paddingTop="@dimen/margin_padding_xl"
     android:scrollbars="none"
-    android:layoutDirection="ltr">
+    tools:ignore="UnusedAttribute">
 
     <LinearLayout
         android:id="@+id/pdv_thumbnail_indicator_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
-        android:orientation="horizontal" />
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/margin_padding_m"
+        android:paddingRight="@dimen/margin_padding_m" />
 
 </HorizontalScrollView>
