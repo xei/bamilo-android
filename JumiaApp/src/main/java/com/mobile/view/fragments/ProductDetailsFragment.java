@@ -108,7 +108,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private ViewGroup mSizeLayout;
     private ViewGroup mRelatedProductsView;
     private ViewGroup mComboProductsLayout;
-    private RatingBar mProductFashionRating;
     private ViewGroup mTitleContainer;
     private ViewGroup mTitleFashionContainer;
     private View mGlobalButton;
@@ -187,7 +186,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Rating
         view.findViewById(R.id.pdv_rating_container).setOnClickListener(this);
         mProductRating = (RatingBar) view.findViewById(R.id.pdv_rating_bar);
-        mProductFashionRating = (RatingBar) view.findViewById(R.id.pdv_rating_bar_fashion);
         mProductRatingCount = (TextView) view.findViewById(R.id.pdv_rating_bar_count);
         //brand section
         mBrandView = (ViewGroup) view.findViewById(R.id.pdv_brand_section);
@@ -527,21 +525,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void setRatingInfo() {
         Integer ratingCount = mProduct.getTotalRatings();
         Integer reviewsCount = mProduct.getTotalReviews();
-
+        // Validation
         if (ratingCount == 0 && reviewsCount == 0) {
             mProductRatingCount.setText(getResources().getString(R.string.be_first_rate));    //be the first to rate if hasn't
         } else {
-            //changeFashion: rating style is changed if vertical is fashion
-            if (mProduct.isFashion()) {
-                UIUtils.setProgressForRTLPreJellyMr2(mProductFashionRating);
-                mProductFashionRating.setRating((float) mProduct.getAvgRating());
-                mProductRating.setVisibility(View.GONE);
-                mProductFashionRating.setVisibility(View.VISIBLE);
-            } else {
-                UIUtils.setProgressForRTLPreJellyMr2(mProductRating);
-                mProductRating.setRating((float) mProduct.getAvgRating());
-                mProductRating.setVisibility(View.VISIBLE);
-            }
+            UIUtils.setProgressForRTLPreJellyMr2(mProductRating);
+            mProductRating.setRating((float) mProduct.getAvgRating());
+            mProductRating.setVisibility(View.VISIBLE);
             String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
             mProductRatingCount.setText(rating);
         }

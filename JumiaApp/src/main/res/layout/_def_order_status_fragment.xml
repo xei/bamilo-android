@@ -22,13 +22,13 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_title_date"
-                style="@style/TextBase.Caption"
+                style="@style/TextBase.Caption.Black_800"
+                android:layout_width="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="20dp"
-                android:layout_marginRight="20dp"
-                android:textColor="@color/black_800" />
+                android:layout_marginEnd="@dimen/margin_padding_xxl"
+                android:layout_marginRight="@dimen/margin_padding_xxl" />
 
         </RelativeLayout>
 

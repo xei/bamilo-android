@@ -9,7 +9,7 @@
 
     <RatingBar
         android:id="@+id/dialog_item_rating"
-        style="@style/starRatingBarBig"
+        style="@style/StarBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
