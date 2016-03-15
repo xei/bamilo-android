@@ -75,7 +75,6 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	    DialogSortListFragment dialogListFragment = new DialogSortListFragment();
 	    dialogListFragment.mActivity = fragment.getActivity();
 	    dialogListFragment.mSelectListener = listener;
-	    //dialogListFragment.mId = id;
 	    dialogListFragment.mTitle = title;
 	    dialogListFragment.mItems = items;
 	    dialogListFragment.mInitialPosition = initialPosition;
