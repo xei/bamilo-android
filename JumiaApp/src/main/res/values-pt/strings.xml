@@ -194,8 +194,8 @@
     <string name="vat_string">IVA</string>
     <string name="voucher_error_message">Por favor insira um número de cupom válido</string>
     <string name="voucher_message_hint">Insira o código do seu cupom aqui</string>
-    <string name="voucher_remove">Remover</string>
-    <string name="voucher_use">Utilizar</string>
+    <string name="remove_label">Remover</string>
+    <string name="use_label">Utilizar</string>
     <string name="write_comment">Avaliar</string>
     <string name="write_full_review">Escrever um comentário</string>
     <string name="writereview_send">Enviar Avaliação</string>

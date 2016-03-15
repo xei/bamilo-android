@@ -209,8 +209,8 @@
     <string name="vat_string">TVA</string>
     <string name="voucher_error_message">Veuillez Entrer un Code Valide</string>
     <string name="voucher_message_hint">Entrez votre Code Promotionnel ici</string>
-    <string name="voucher_remove">Supprimer</string>
-    <string name="voucher_use">Utiliser</string>
+    <string name="remove_label">Supprimer</string>
+    <string name="use_label">Utiliser</string>
     <string name="write_comment">Donnez Votre Avis</string>
     <string name="write_full_review">Donnez votre avis complet</string>
     <string name="writereview_send">Envoyer Votre Avis</string>

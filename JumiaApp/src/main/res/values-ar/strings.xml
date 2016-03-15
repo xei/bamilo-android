@@ -209,8 +209,8 @@
     <string name="vat_string">ضريبة القيمة المضافة</string>
     <string name="voucher_error_message">يُرجى إدخال رقم كوبون صحيح</string>
     <string name="voucher_message_hint">أدخل رقم الكوبون هنا</string>
-    <string name="voucher_remove">مسح</string>
-    <string name="voucher_use">استخدم</string>
+    <string name="remove_label">مسح</string>
+    <string name="use_label">استخدم</string>
     <string name="write_comment">كتابة تعليق</string>
     <string name="write_full_review">كتابة تعليق كامل</string>
     <string name="writereview_send">ارسل التعليق</string>

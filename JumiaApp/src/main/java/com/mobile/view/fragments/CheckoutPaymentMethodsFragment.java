@@ -242,7 +242,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         int id = view.getId();
         // Submit
         if (id == R.id.checkout_button_enter) {
-            if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(couponButton.getText(), getString(R.string.voucher_remove))) {
+            if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(couponButton.getText(), getString(R.string.remove_label))) {
                 validateCoupon();
             } else {
                 onClickSubmitPaymentButton();
@@ -328,7 +328,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         UIUtils.scrollToViewByClick(mScrollView, mVoucherView);
         couponButton = (TextView) mVoucherContainer.findViewById(R.id.voucher_btn);
         if (removeVoucher) {
-            couponButton.setText(getString(R.string.voucher_remove));
+            couponButton.setText(getString(R.string.remove_label));
         }
         couponButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -342,7 +342,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         mVoucherCode = mVoucherView.getText().toString();
         getBaseActivity().hideKeyboard();
         if (!TextUtils.isEmpty(mVoucherCode)) {
-            if (TextUtils.equals(getString(R.string.voucher_use), couponButton.getText())) {
+            if (TextUtils.equals(getString(R.string.use_label), couponButton.getText())) {
                 triggerSubmitVoucher(mVoucherCode);
             } else {
                 triggerRemoveVoucher();
@@ -430,7 +430,7 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
         case REMOVE_VOUCHER:
             mVoucherCode = null;
         case ADD_VOUCHER:
-            couponButton.setText(getString(eventType == EventType.ADD_VOUCHER ? R.string.voucher_remove : R.string.voucher_use));
+            couponButton.setText(getString(eventType == EventType.ADD_VOUCHER ? R.string.remove_label : R.string.use_label));
             removeVoucher = eventType == EventType.ADD_VOUCHER;
             hideActivityProgress();
             setOrderInfo((PurchaseEntity) baseResponse.getContentData());

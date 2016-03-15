@@ -209,8 +209,8 @@
     <string name="vat_string">VAT</string>
     <string name="voucher_error_message">براہِ کرم درست کوپن کوڈ داخل کریں۔</string>
     <string name="voucher_message_hint">اپنا کوپن کوڈ یہاں درج کریں۔</string>
-    <string name="voucher_remove">ہٹائیں</string>
-    <string name="voucher_use">استعمال</string>
+    <string name="remove_label">ہٹائیں</string>
+    <string name="use_label">استعمال</string>
     <string name="write_comment">تبصرہ لکھیں</string>
     <string name="write_full_review">ایک مکمل تجزیہ لکھیں</string>
     <string name="writereview_send">تبصرہ بھیجیں</string>

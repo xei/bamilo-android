@@ -18,6 +18,10 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="SingleLineList.Text_Blue_1">
+        <item name="android:textColor">@color/blue_1</item>
+    </style>
+
     <!-- Single line with icon item -->
     <style name="SingleLineList.WithIcon">
         <item name="android:paddingLeft">@dimen/margin_padding_l</item>

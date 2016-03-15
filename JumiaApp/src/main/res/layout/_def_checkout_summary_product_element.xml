@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- NAME -->
 
@@ -14,8 +14,8 @@
         android:layout_marginTop="@dimen/item_margin_top"
         android:maxLines="2"
         android:singleLine="false"
-        android:text="Name"
-        android:textColor="@color/black"/>
+        tools:text="Name"
+        android:textColor="@color/black" />
 
     <!-- SHOP FIRST IMAGE -->
     <ImageView
@@ -33,9 +33,9 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/dimen_6_67dp"
         android:layout_marginStart="@dimen/dimen_6_67dp"
-        android:text="Price"
+        tools:text="Price"
         android:textColor="@color/black_800"
-        android:textSize="@dimen/text_xs"/>
+        android:textSize="@dimen/text_xs" />
 
     <!-- Divider -->
     <View
@@ -43,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/item_regprice"
-        android:background="@color/black_700"/>
+        android:background="@color/black_700" />
 
     <!-- DELETE BUTTON -->
 
@@ -53,11 +53,11 @@
         android:layout_below="@id/delete_divider"
         android:layout_gravity="center_vertical"
         android:clickable="true"
-        android:contentDescription="@string/voucher_remove"
+        android:contentDescription="@string/remove_label"
         android:gravity="center_vertical"
         android:paddingBottom="@dimen/dimen_9dp"
         android:paddingTop="@dimen/dimen_9dp"
-        android:text="@string/voucher_remove"
-        android:textColor="@color/black_800"/>
+        android:text="@string/remove_label"
+        android:textColor="@color/black_800" />
 
 </RelativeLayout>
