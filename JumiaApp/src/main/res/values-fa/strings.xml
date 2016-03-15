@@ -209,8 +209,8 @@
     <string name="vat_string">مالیات ارزش افزوده</string>
     <string name="voucher_error_message">لطفا یک کد تخفیف معتبر وارد کنید.</string>
     <string name="voucher_message_hint">کد تخفیف خود را در این بخش وارد کنید.</string>
-    <string name="voucher_remove">حذف</string>
-    <string name="voucher_use">استفاده</string>
+    <string name="remove_label">حذف</string>
+    <string name="use_label">استفاده</string>
     <string name="write_comment">نقد و بررسی خود را ثبت کنید</string>
     <string name="write_full_review">بررسی کامل خود را بنویسید</string>
     <string name="writereview_send">ارسال نقد و بررسی</string>

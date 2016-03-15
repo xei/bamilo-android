@@ -58,7 +58,7 @@
             android:ellipsize="marquee"
             android:gravity="left|start|center_vertical"
             android:singleLine="false"
-            android:text="@string/voucher_use" />
+            android:text="@string/use_label" />
 
     </LinearLayout>
 

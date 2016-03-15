@@ -211,8 +211,8 @@
     <string name="vat_string">VAT</string>
     <string name="voucher_error_message">Please input a valid Coupon Code</string>
     <string name="voucher_message_hint">Enter your coupon code here</string>
-    <string name="voucher_remove">Remove</string>
-    <string name="voucher_use">Use</string>
+    <string name="remove_label">Remove</string>
+    <string name="use_label">Use</string>
     <string name="write_comment">Write a Review</string>
     <string name="write_full_review">Write a full review</string>
     <string name="writereview_send">Send Review</string>

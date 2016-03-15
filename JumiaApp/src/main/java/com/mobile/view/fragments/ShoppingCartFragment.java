@@ -242,7 +242,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mVoucherView.setText(TextUtils.isNotEmpty(mVoucherCode) ? mVoucherCode : "");
         mVoucherView.setFocusable(true);
         mVoucherView.setFocusableInTouchMode(true);
-        mCouponButton.setText(getString(R.string.voucher_use));
+        mCouponButton.setText(getString(R.string.use_label));
 
     }
 
@@ -254,7 +254,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mVoucherView.setText(mVoucherCode);
         mVoucherView.setFocusable(false);
         mVoucherView.setFocusableInTouchMode(false);
-        mCouponButton.setText(getString(R.string.voucher_remove));
+        mCouponButton.setText(getString(R.string.remove_label));
     }
 
     /**
@@ -331,7 +331,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      */
     private void onClickCheckoutButton() {
         // Case has voucher to submit
-        if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(mCouponButton.getText(), getString(R.string.voucher_remove))) {
+        if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(mCouponButton.getText(), getString(R.string.remove_label))) {
             onClickVoucherButton();
         }
         // Case checkout
@@ -357,7 +357,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         mVoucherCode = mVoucherView.getText().toString();
         getBaseActivity().hideKeyboard();
         if (!TextUtils.isEmpty(mVoucherCode)) {
-            if (TextUtils.equals(getString(R.string.voucher_use), mCouponButton.getText().toString())) {
+            if (TextUtils.equals(getString(R.string.use_label), mCouponButton.getText().toString())) {
                 triggerSubmitVoucher(mVoucherCode);
             } else {
                 triggerRemoveVoucher();
@@ -691,7 +691,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             // TODO Validate this method
             for (int i = 0; i < items.size(); i++) {
                 PurchaseCartItem item = items.get(i);
-                lView.addView(getView(i, lView, LayoutInflater.from(getBaseActivity()), item));
+                lView.addView(createCartItemView(i, lView, LayoutInflater.from(getBaseActivity()), item));
 
                 if(!TextUtils.equals(item.getPriceString(), item.getSpecialPriceString())){
                     cartHasReducedItem = true;
@@ -722,10 +722,10 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
 
-/**
- * Fill view item with PurchaseCartItem data
- * */
-    public View getView(final int position, ViewGroup parent, LayoutInflater mInflater, PurchaseCartItem item) {
+    /**
+     * Fill view item with PurchaseCartItem data
+     */
+    public View createCartItemView(final int position, ViewGroup parent, LayoutInflater mInflater, PurchaseCartItem item) {
 
         View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
 

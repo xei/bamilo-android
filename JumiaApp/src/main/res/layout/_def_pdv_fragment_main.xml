@@ -43,12 +43,12 @@
             <!-- SIZE FROM SIMPLES -->
             <include
                 android:id="@+id/pdv_simples_container"
-                layout="@layout/single_line_list" />
+                layout="@layout/single_line_list_blue_1" />
 
             <!-- VARIATIONS -->
             <include
                 android:id="@+id/pdv_variations_container"
-                layout="@layout/single_line_list" />
+                layout="@layout/single_line_list_blue_1" />
 
             <!-- SELLER -->
             <include

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -13,15 +14,15 @@
         android:layout_marginTop="@dimen/item_margin_top"
         android:maxLines="2"
         android:singleLine="false"
-        android:text="Name"
-        android:textColor="@color/black" />
+        android:textColor="@color/black"
+        tools:text="Name" />
 
     <!-- SHOP FIRST IMAGE -->
     <ImageView
         android:id="@+id/item_shop_first"
         style="@style/ShopFirstStyle"
         android:layout_below="@id/item_name" />
-    
+
 
     <!-- PRICE -->
     <RelativeLayout
@@ -39,9 +40,9 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dimen_20dp"
             android:layout_marginStart="@dimen/dimen_20dp"
-            android:text="Price"
             android:textColor="@color/black_800"
-            android:textSize="@dimen/text_s" />
+            android:textSize="@dimen/text_s"
+            tools:text="Price" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/changequantity_label"
@@ -82,15 +83,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_delete"
-        style="@style/TextBase.Body"
-        android:layout_below="@id/delete_divider"
-        android:layout_gravity="center_vertical"
-        android:clickable="true"
-        android:contentDescription="@string/voucher_remove"
-        android:gravity="center_vertical"
-        android:paddingBottom="@dimen/dimen_16dp"
-        android:paddingTop="@dimen/dimen_16dp"
-        android:text="@string/voucher_remove"
-        android:textColor="@color/black_800" />
+        style="@style/ButtonRemoveItem"
+        android:layout_below="@id/delete_divider" />
 
 </RelativeLayout>

@@ -210,8 +210,8 @@
     <string name="vat_string">အခြန္ေဆာင္ၿပီး</string>
     <string name="voucher_error_message">ေက်းဇူးျပဳ ၍ မွန္ကန္ေသာကူပြန္နံပါတ္ျဖည္႔ပါ</string>
     <string name="voucher_message_hint">ဤေနရာတြင္သင္၏ကူပြန္နံပါတ္ျဖည္႔ပါ</string>
-    <string name="voucher_remove">ဖယ္ရွားရန္</string>
-    <string name="voucher_use">အသံုးျပဳရန္  </string>
+    <string name="remove_label">ဖယ္ရွားရန္</string>
+    <string name="use_label">အသံုးျပဳရန္  </string>
     <string name="write_comment">သံုးသပ္ခ်က္ေရးရန္</string>
     <string name="write_full_review">သံုးသပ္ခ်က္အျပည္႔အစံု ေရးသားရန္</string>
     <string name="writereview_send">သံုးသပ္ခ်က္ ပုိ႔ရန္</string>

@@ -55,11 +55,11 @@
         android:layout_below="@id/delete_divider"
         android:layout_gravity="center_vertical"
         android:clickable="true"
-        android:contentDescription="@string/voucher_remove"
+        android:contentDescription="@string/remove_label"
         android:gravity="center_vertical"
         android:paddingBottom="@dimen/dimen_9dp"
         android:paddingTop="@dimen/dimen_9dp"
-        android:text="@string/voucher_remove"
+        android:text="@string/remove_label"
         android:textColor="@color/black_800"/>
 
 </RelativeLayout>
