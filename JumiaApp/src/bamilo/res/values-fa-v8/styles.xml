@@ -51,20 +51,19 @@
 
     <!-- PRODUCT TEASER -->
     <style name="ProductTeaserStyle" parent="CardViewFlatStyle">
-        <item name="android:layout_width">@dimen/home_top_sellers_teaser_item_width</item>
-        <item name="android:layout_height">@dimen/home_top_sellers_teaser_item_height</item>
-        <item name="android:layout_marginRight">@dimen/margin_padding_xs</item>
+        <item name="android:layout_width">@dimen/dimen_134dp</item>
+        <item name="android:layout_height">@dimen/dimen_210dp</item>
     </style>
 
     <!-- PDV -->
 
-    <style name="PDVWishListButtonStyle" parent="WishListButtonStyle">
+    <style name="PdvWishListButtonStyle" parent="WishListButtonStyle">
         <item name="android:layout_alignParentLeft">true</item>
         <item name="android:layout_alignParentTop">true</item>
         <item name="android:layout_marginLeft">10dp</item>
     </style>
 
-    <style name="PDVGlobalSellerButtonStyle" >
+    <style name="PdvGlobalSellerButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentRight">true</item>

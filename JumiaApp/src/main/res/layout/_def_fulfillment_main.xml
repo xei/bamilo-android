@@ -26,7 +26,7 @@
     <!-- DIVIDER -->
 
     <View
-        style="@style/divider_horizontal.Black300"
+        style="@style/DividerHorizontal.Black_300"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
 

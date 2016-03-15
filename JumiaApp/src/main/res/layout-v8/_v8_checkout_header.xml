@@ -156,7 +156,7 @@
     </RelativeLayout>
 
     <View
-        style="@style/divider_horizontal"
+        style="@style/DividerHorizontal.Black_300"
         android:layout_height="@dimen/checkout_header_divider_height"
         android:background="@color/color_accent" />
 

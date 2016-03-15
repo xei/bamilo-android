@@ -48,7 +48,7 @@
             android:layout_height="wrap_content">
 
             <View
-                style="@style/divider_horizontal"
+                style="@style/DividerHorizontal.Black_300"
                 android:layout_centerInParent="true" />
 
             <com.mobile.components.customfontviews.TextView

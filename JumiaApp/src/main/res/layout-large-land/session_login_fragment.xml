@@ -54,7 +54,7 @@
                 android:layout_margin="20dp">
 
                 <View
-                    style="@style/divider_vertical"
+                    style="@style/DividerVertical.Black_300"
                     android:layout_centerInParent="true" />
 
                 <com.mobile.components.customfontviews.TextView

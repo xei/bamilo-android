@@ -109,7 +109,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private ViewGroup mRelatedProductsView;
     private ViewGroup mComboProductsLayout;
     private ViewGroup mTitleContainer;
-    private ViewGroup mTitleFashionContainer;
     private View mGlobalButton;
     private View mOffersContainer;
     private String mRichRelevanceHash;
@@ -173,7 +172,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         super.onViewCreated(view, savedInstanceState);
         // Title
         mTitleContainer = (ViewGroup) view.findViewById(R.id.pdv_title_container);
-        mTitleFashionContainer = (ViewGroup) view.findViewById(R.id.pdv_title_fashion_container);
         // Slide show
         // created a new ProductImageGalleryFragment
         // Wish list
@@ -627,22 +625,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-
-
     /**
      * Change and put the title in the correct position within the layout if it's fashion or not
      */
     private void setTitle() {
-        if (mProduct.isFashion()) {
-            mTitleContainer.setVisibility(View.GONE);
-            ((TextView) mTitleFashionContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
-            ((TextView) mTitleFashionContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
-        } else {
-            mTitleFashionContainer.setVisibility(View.GONE);
-            ((TextView) mTitleContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
-            ((TextView) mTitleContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
-        }
-        // Set action title
+        // Set title
+        ((TextView) mTitleContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
+        ((TextView) mTitleContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
+        // Set AB title
         getBaseActivity().setActionBarTitle(mProduct.getBrandName());
     }
 
@@ -780,7 +770,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
             args.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, verifyOutOfStock());
             // Create fragment
-            fragment = ProductImageGalleryFragment.getInstanceAsNested(args);
+            fragment = ProductImageGalleryFragment.getInstance(args);
             FragmentController.addChildFragment(this, R.id.pdv_slide_show_container, fragment, ProductImageGalleryFragment.TAG);
         }
         // CASE UPDATE
@@ -1331,6 +1321,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             fillProductBundleInfo(comboProductItem, item);
             if (!item.getSku().equals(mProduct.getSku())) {
                 comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem, txTotalPrice, bundleList, i));
+            } else {
+                CheckBox checkBox = (CheckBox) comboProductItem.findViewById(R.id.item_check);
+                checkBox.setEnabled(false);
             }
             mTableBundles.addView(comboProductItem);
             // Add plus separator

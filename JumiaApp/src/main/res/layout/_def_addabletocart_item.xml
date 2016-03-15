@@ -47,12 +47,12 @@
         android:layout_toRightOf="@id/item_image_container" />
 
     <View
-        style="@style/divider_horizontal"
+        style="@style/DividerHorizontal.Black_300"
         android:layout_alignParentBottom="true" />
 
     <View
         android:id="@+id/vdivider"
-        style="@style/VerticalListDivider"
+        style="@style/DividerVertical.Black_300"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:visibility="gone" />
