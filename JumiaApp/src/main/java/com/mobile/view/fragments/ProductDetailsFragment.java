@@ -1321,6 +1321,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             fillProductBundleInfo(comboProductItem, item);
             if (!item.getSku().equals(mProduct.getSku())) {
                 comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem, txTotalPrice, bundleList, i));
+            } else {
+                CheckBox checkBox = (CheckBox) comboProductItem.findViewById(R.id.item_check);
+                checkBox.setEnabled(false);
             }
             mTableBundles.addView(comboProductItem);
             // Add plus separator

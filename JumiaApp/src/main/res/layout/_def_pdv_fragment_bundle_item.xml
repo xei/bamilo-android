@@ -22,18 +22,17 @@
 
         <com.mobile.components.customfontviews.CheckBox
             android:id="@+id/item_check"
-            style="@style/form_checkbox_style"
+            style="@style/FormCheckBox.Central"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="6dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginStart="6dp"
+            android:layout_marginLeft="@dimen/margin_padding_xl"
+            android:layout_marginStart="@dimen/margin_padding_xl"
             android:checked="true"
             android:clickable="false"
-
             />
 
     </RelativeLayout>

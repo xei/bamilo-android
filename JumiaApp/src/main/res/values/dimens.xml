@@ -262,7 +262,7 @@
     <integer name="activate_go_top_buttom_line">6</integer>
     <integer name="activate_go_top_buttom_line_grid">3</integer>
     <integer name="activate_go_top_buttom_line_single">2</integer>
-    <dimen name="catalog_list_item_height">120dp</dimen>
+    <dimen name="catalog_list_item_height">130dp</dimen>
     <dimen name="catalog_grid_item_height">220dp</dimen>
     <dimen name="catalog_single_item_height">435dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>

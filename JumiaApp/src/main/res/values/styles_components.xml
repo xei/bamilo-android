@@ -204,6 +204,26 @@
         <item name="android:drawableEnd">@drawable/_gen_selector_check_box</item>
     </style>
 
+    <style name="FormCheckBox.Central">
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@null</item>
+        <item name="android:drawableStart">@null</item>
+        <item name="android:drawableRight">@drawable/_gen_selector_check_box</item>
+        <item name="android:drawableEnd">@drawable/_gen_selector_check_box</item>
+    </style>
+
+    <style name="FormCheckBox.Left">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/_gen_selector_check_box</item>
+        <item name="android:drawableStart">@drawable/_gen_selector_check_box</item>
+        <item name="android:drawableRight">@null</item>
+        <item name="android:drawableEnd">@null</item>
+    </style>
+
     <!-- RADIO BUTTON -->
 
     <style name="FormRadioButton" parent="SingleLineStyle">

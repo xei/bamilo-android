@@ -66,6 +66,13 @@
         <item name="android:drawableEnd">@null</item>
     </style>
 
+    <style name="FormCheckBox.Central">
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/_gen_selector_check_box</item>
+        <item name="android:drawableRight">@null</item>
+        <item name="android:drawableEnd">@null</item>
+    </style>
+
     <!-- RADIO BUTTON -->
 
     <style name="FormRadioButton" parent="SingleLineStyle">
