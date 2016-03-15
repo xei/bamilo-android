@@ -104,15 +104,13 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_seller_overseas_delivery_link"
-            style="@style/TextBase.Caption"
+            style="@style/TextBase.Body.Blue_1"
             android:layout_below="@id/pdv_seller_overseas_delivery_text_orange"
             android:layout_marginLeft="40dp"
             android:layout_marginStart="40dp"
             android:clickable="true"
             android:paddingTop="16dp"
-            android:singleLine="false"
-            android:textColor="@color/color_accent"
-            android:visibility="visible" />
+            android:singleLine="false" />
 
     </RelativeLayout>
 
