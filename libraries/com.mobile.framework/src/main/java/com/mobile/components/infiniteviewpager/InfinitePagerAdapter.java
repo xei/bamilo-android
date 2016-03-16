@@ -70,7 +70,6 @@ public class InfinitePagerAdapter extends PagerAdapter {
         int virtualPosition = getVirtualPosition(position);
         debug("instantiateItem: real position: " + position);
         debug("instantiateItem: virtual position: " + virtualPosition);
-
         // only expose virtual position to the inner adapter
         return adapter.instantiateItem(container, virtualPosition);
     }
@@ -80,7 +79,6 @@ public class InfinitePagerAdapter extends PagerAdapter {
         int virtualPosition = getVirtualPosition(position);
         debug("destroyItem: real position: " + position);
         debug("destroyItem: virtual position: " + virtualPosition);
-
         // only expose virtual position to the inner adapter
         adapter.destroyItem(container, virtualPosition, object);
     }

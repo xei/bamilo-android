@@ -1,7 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <!-- GALLERY -->
+
+    <RelativeLayout
+        style="@style/PdvSlideShowStyle"
+        tools:layout_height="0dp"
+        tools:layout_weight="1"
+        tools:layout_width="match_parent">
+
+        <!-- VIEW PAGER -->
+
+        <com.mobile.components.viewpager.JumiaViewPagerWithZoom
+            android:id="@+id/pdv_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- OOS -->
+
+        <include
+            android:id="@+id/pdv_image_oos_overlay"
+            layout="@layout/_def_pdv_fragment_image_oos"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+    </RelativeLayout>
 
     <!--THUMBNAIL INDICATOR-->
 
@@ -9,45 +38,6 @@
         android:id="@+id/pdv_thumbnail_indicator_scroll"
         layout="@layout/_def_pdv_fragment_gallery"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_height="wrap_content" />
 
-    <!-- VIEW PAGER -->
-
-    <com.mobile.components.viewpager.JumiaViewPagerWithZoom
-        android:id="@+id/pdv_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/pdv_thumbnail_indicator_scroll"
-        android:layout_alignWithParentIfMissing="true"
-        android:layout_gravity="center_vertical"
-        android:background="@drawable/selector_list_item_highlight" />
-
-    <!-- OOS -->
-
-    <include
-        android:id="@+id/pdv_image_oos_overlay"
-        layout="@layout/_def_pdv_fragment_image_oos"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignBottom="@id/pdv_view_pager"
-        android:layout_alignLeft="@id/pdv_view_pager"
-        android:layout_alignRight="@id/pdv_view_pager"
-        android:layout_alignTop="@id/pdv_view_pager"
-        android:visibility="gone" />
-
-    <!-- CLOSE BUTTON -->
-
-    <ImageView
-        android:id="@+id/gallery_button_close"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/margin_padding_xxl"
-        android:background="@drawable/selector_btn_close"
-        android:visibility="gone" />
-
-</RelativeLayout>
+</LinearLayout>

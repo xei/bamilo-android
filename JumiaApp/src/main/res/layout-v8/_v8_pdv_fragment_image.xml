@@ -8,6 +8,8 @@
     <ImageButton
         android:id="@+id/pdv_button_global_seller"
         style="@style/PdvGlobalSellerButtonStyle"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:contentDescription="@string/gpdv"
         android:visibility="gone" />
 
@@ -18,7 +20,9 @@
         layout="@layout/_def_pdv_fragment_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/pdv_button_global_seller" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/pdv_button_global_seller" />
 
     <!-- IMAGE -->
 

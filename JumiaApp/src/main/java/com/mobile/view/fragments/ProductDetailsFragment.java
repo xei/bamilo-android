@@ -1376,7 +1376,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * functions that verifies if product simple is out of stock
      */
-    private boolean verifyOutOfStock(){
+    private boolean verifyOutOfStock() {
         return (mProduct.getSelectedSimple() != null && mProduct.getSelectedSimple().isOutOfStock());
     }
 

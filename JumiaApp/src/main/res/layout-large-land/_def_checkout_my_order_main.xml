@@ -13,6 +13,11 @@
 
     <!-- LEFT CONTAINER -->
 
+    <View
+        style="@style/DividerVertical.Black_300"
+        android:layout_alignEnd="@id/center_point"
+        android:layout_alignRight="@id/center_point" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -89,7 +89,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         try {
             if (this.isZoomAvailable) {
                 Print.i(TAG, " full_screen_gallery: " + position);
-                view = mInflater.inflate(R.layout.full_screen_gallery, container, false);
+                view = mInflater.inflate(R.layout._def_pdv_gallery_item, container, false);
             } else {
                 view = mInflater.inflate(R.layout.image_loadable, container, false);
             }

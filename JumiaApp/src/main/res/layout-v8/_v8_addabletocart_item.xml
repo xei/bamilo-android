@@ -42,15 +42,4 @@
         android:layout_marginRight="@dimen/margin_padding_l"
         android:layout_toLeftOf="@id/item_image_container" />
 
-    <View
-        style="@style/DividerHorizontal.Black_300"
-        android:layout_alignParentBottom="true" />
-
-    <View
-        android:id="@+id/vdivider"
-        style="@style/DividerVertical.Black_300"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:visibility="gone" />
-
 </RelativeLayout>
