@@ -508,12 +508,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         ProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
         ProductUtils.setDiscountRules(mProduct, mDiscountPercentageText);
         if (mProduct.hasDiscount()) {
-            if (!mProduct.isFashion()) {
-                mDiscountPercentageText.setEnabled(true);
-            } else {
-                mDiscountPercentageText.setEnabled(false);
-                mDiscountPercentageText.setTextColor(ContextCompat.getColor(getContext(), R.color.black_800));
-            }
+            mDiscountPercentageText.setEnabled(true);
         }
     }
 

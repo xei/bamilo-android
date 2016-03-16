@@ -39,7 +39,8 @@
         android:layout_marginStart="@dimen/margin_padding_xl"
         android:layout_marginTop="@dimen/margin_padding_l"
         android:gravity="left|start"
-        tools:text="BRAND" />
+        tools:text="BRAND"
+        android:layout_height="wrap_content"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
@@ -115,7 +116,8 @@
             android:layout_toEndOf="@id/item_rating"
             android:includeFontPadding="false"
             tools:text="(12)"
-            android:textColor="@color/black_800" />
+            android:textColor="@color/black_800"
+            android:layout_height="wrap_content"/>
     </RelativeLayout>
 
     <com.mobile.components.customfontviews.TextView
