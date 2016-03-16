@@ -9,15 +9,15 @@
 
     <RelativeLayout
         android:id="@+id/im"
-        android:layout_width="@dimen/combo_bundle_item_with"
+        android:layout_width="wrap_content"
         android:layout_height="102dp"
         android:orientation="vertical">
 
         <include
             android:id="@+id/item_image_loadable"
             layout="@layout/image_loadable"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/combo_bundle_item_with"
+            android:layout_height="102dp"
             android:layout_centerHorizontal="true" />
 
         <com.mobile.components.customfontviews.CheckBox
@@ -26,12 +26,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
+            android:layout_toRightOf="@id/item_image_loadable"
             android:layout_marginBottom="6dp"
             android:layout_marginLeft="@dimen/margin_padding_xl"
             android:layout_marginStart="@dimen/margin_padding_xl"
-            android:checked="true"
             android:clickable="false"
             />
 
