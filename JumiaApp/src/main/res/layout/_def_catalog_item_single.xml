@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/grid_row_style"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/dimen_436dp">
 
     <include
         android:id="@+id/image_loadable"
         layout="@layout/image_loadable"
-        android:layout_width="@dimen/dimen_312dp"
-        android:layout_height="@dimen/dimen_249dp"
+        android:layout_width="@dimen/dimen_249dp"
+        android:layout_height="@dimen/dimen_312dp"
         android:layout_centerHorizontal="true"
         android:layout_marginEnd="@dimen/dimen_30dp"
         android:layout_marginLeft="@dimen/dimen_30dp"
@@ -47,9 +47,9 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_brand"
-        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_marginEnd="@dimen/dimen_50dp"
+        android:layout_marginRight="@dimen/dimen_50dp"
         android:layout_marginLeft="@dimen/margin_padding_xl"
-        android:layout_marginRight="@dimen/margin_padding_xl"
         android:layout_marginStart="@dimen/margin_padding_xl"
         android:gravity="left|start"
         tools:text="Name" />
@@ -109,8 +109,8 @@
             android:id="@+id/item_reviews"
             style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginLeft="@dimen/margin_padding_xs"
+            android:layout_marginStart="@dimen/margin_padding_xs"
             android:layout_toRightOf="@id/item_rating"
             android:layout_toEndOf="@id/item_rating"
             android:includeFontPadding="false"
@@ -119,28 +119,28 @@
     </RelativeLayout>
 
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/new_arrival_badge"
-        style="@style/NewArrivalBadge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="@dimen/margin_padding_xl"
-        android:layout_marginEnd="@dimen/margin_padding_xl"
-        android:layout_alignBottom="@id/rating_container"
-        android:gravity="center"
-        android:text="@string/new_arrival_badge" />
-
-    <com.mobile.components.customfontviews.TextView
         android:id="@+id/discount_percentage"
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/item_discount"
+        android:layout_alignBottom="@id/item_name"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginEnd="@dimen/margin_padding_xl"
         android:layout_marginRight="@dimen/margin_padding_xl"
         android:gravity="center" />
 
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_below="@id/discount_percentage"
+        android:gravity="center"
+        android:text="@string/new_arrival_badge" />
 </RelativeLayout>

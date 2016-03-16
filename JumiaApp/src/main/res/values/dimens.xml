@@ -74,6 +74,7 @@
     <dimen name="dimen_312dp">312dp</dimen>
     <dimen name="dimen_320dp">320dp</dimen>
     <dimen name="dimen_328dp">328dp</dimen>
+    <dimen name="dimen_436dp">436dp</dimen>
 
 
     <!-- BASE DIMENSIONS: PT TO SP (PT/3)-->

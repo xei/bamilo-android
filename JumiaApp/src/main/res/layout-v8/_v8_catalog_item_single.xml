@@ -2,13 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/grid_row_style"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/dimen_436dp">
 
     <include
         android:id="@+id/image_loadable"
         layout="@layout/image_loadable"
-        android:layout_width="@dimen/dimen_312dp"
-        android:layout_height="@dimen/dimen_249dp"
+        android:layout_width="@dimen/dimen_249dp"
+        android:layout_height="@dimen/dimen_312dp"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="@dimen/dimen_30dp"
         android:layout_marginRight="@dimen/dimen_30dp"
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_brand"
-        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginLeft="@dimen/dimen_50dp"
         android:layout_marginRight="@dimen/margin_padding_xl"
         android:gravity="right"
         android:layout_alignParentRight="true"
@@ -56,8 +56,7 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/item_brand"
         android:layout_below="@id/item_name"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="@dimen/margin_padding_xs"
         tools:text="Discount" />
 
     <com.mobile.components.customfontviews.TextView
@@ -107,25 +106,28 @@
     </RelativeLayout>
 
     <com.mobile.components.customfontviews.TextView
+        android:id="@+id/discount_percentage"
+        style="@style/PdvBadgeStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/item_name"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:gravity="center" />
+
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/new_arrival_badge"
         style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/margin_padding_xl"
-        android:layout_alignBottom="@id/rating_container"
+        android:layout_below="@id/discount_percentage"
+        android:layout_marginTop="@dimen/margin_padding_l"
         android:gravity="center"
         android:text="@string/new_arrival_badge" />
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/discount_percentage"
-        style="@style/PdvBadgeStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/item_discount"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/margin_padding_xl"
-        android:gravity="center" />
+
 
 
 </RelativeLayout>
