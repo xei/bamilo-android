@@ -25,8 +25,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:gravity">right|center_vertical</item>
-        <item name="android:paddingLeft">@dimen/margin_padding_xxl</item>
-        <item name="android:paddingRight">@dimen/margin_padding_xxl</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xl</item>
         <item name="android:orientation">horizontal</item>
     </style>
 

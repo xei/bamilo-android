@@ -4,7 +4,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_text_special_price"
-        style="@style/TextBase.Display_3"
+        style="@style/TextBase.Display_3.Black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -16,8 +16,8 @@
         style="@style/TextBase.Display_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/layout_marginLeft"
-        android:layout_marginStart="@dimen/layout_marginLeft"
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_marginStart="@dimen/margin_padding_l"
         android:layout_toRightOf="@id/pdv_text_special_price"
         android:layout_toEndOf="@id/pdv_text_special_price"
         android:layout_centerVertical="true" />
@@ -27,8 +27,8 @@
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/layout_marginLeft"
-        android:layout_marginStart="@dimen/layout_marginLeft"
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_marginStart="@dimen/margin_padding_l"
         android:layout_toRightOf="@id/pdv_text_price"
         android:layout_toEndOf="@id/pdv_text_price"
         android:layout_centerVertical="true" />

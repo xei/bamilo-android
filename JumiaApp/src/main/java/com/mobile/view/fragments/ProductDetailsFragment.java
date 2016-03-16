@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -508,12 +507,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         ProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
         ProductUtils.setDiscountRules(mProduct, mDiscountPercentageText);
         if (mProduct.hasDiscount()) {
-            if (!mProduct.isFashion()) {
-                mDiscountPercentageText.setEnabled(true);
-            } else {
-                mDiscountPercentageText.setEnabled(false);
-                mDiscountPercentageText.setTextColor(ContextCompat.getColor(getContext(), R.color.black_800));
-            }
+            mDiscountPercentageText.setEnabled(true);
         }
     }
 
@@ -865,9 +859,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Update combo price
         bundleList.updateTotalPriceWhenChecking(position);
         //get the bundle to update checkbox state
-        ProductBundle productBundle = bundleList.getProducts().get(position);
+        final ProductBundle productBundle = bundleList.getProducts().get(position);
+
         // Update check
-        ((CheckBox) bundleItemView.findViewById(R.id.item_check)).setChecked(productBundle.isChecked());
+        final CheckBox checkBox = (CheckBox)  bundleItemView.findViewById(R.id.item_check);
+        checkBox.post(new Runnable() {
+            @Override
+            public void run() {
+                checkBox.setChecked(productBundle.isChecked());
+            }
+        });
+
+
         //get updated total price
         txTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
         //update bundleListObject in productComplete
@@ -1320,8 +1323,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if (!item.getSku().equals(mProduct.getSku())) {
                 comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem, txTotalPrice, bundleList, i));
             } else {
-                CheckBox checkBox = (CheckBox) comboProductItem.findViewById(R.id.item_check);
-                checkBox.setEnabled(false);
+                final CheckBox checkBox = (CheckBox) comboProductItem.findViewById(R.id.item_check);
+                checkBox.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkBox.setEnabled(false);
+                    }
+                });
             }
             mTableBundles.addView(comboProductItem);
             // Add plus separator
@@ -1352,11 +1360,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param view - combo item view
      * @param productBundleItem    - product bundle
      */
-    private void fillProductBundleInfo(View view, ProductBundle productBundleItem) {
+    private void fillProductBundleInfo(View view, final ProductBundle productBundleItem) {
         ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
         ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
-        CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
-        mCheck.setChecked(productBundleItem.isChecked());
+        final CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
+        mCheck.post(new Runnable() {
+            @Override
+            public void run() {
+                mCheck.setChecked(productBundleItem.isChecked());
+                mCheck.setEnabled(true);
+            }
+        });
+
+        Print.i(TAG,"code1check :fillProductBundleInfo: "+productBundleItem.isChecked()+" state isChecked: "+mCheck.isChecked()+" isEnabled: " +mCheck.isEnabled());
         RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
@@ -1387,10 +1403,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mBuyButton.setVisibility(View.GONE);
             if(mProduct.isWishList()){
                 mSaveForLater.setText(getString(R.string.remove_from_saved));
-                mSaveForLater.setSelected(true);
+                mSaveForLater.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSaveForLater.setEnabled(true);
+                    }
+                });
             } else {
                 mSaveForLater.setText(getString(R.string.save_for_later));
-                mSaveForLater.setSelected(false);
+                mSaveForLater.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSaveForLater.setEnabled(false);
+                    }
+                });
             }
         } else {
             mBuyButton.setVisibility(View.VISIBLE);

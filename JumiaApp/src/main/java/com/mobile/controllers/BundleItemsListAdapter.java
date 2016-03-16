@@ -31,9 +31,9 @@ import java.util.ArrayList;
  */
 public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsListAdapter.ViewHolder> implements OnItemSelectedListener {
     
-    private ArrayList<ProductBundle> mDataset;
-    private OnItemSelected itemSelected;
-    private OnItemChecked itemChecked;
+    private final ArrayList<ProductBundle> mDataset;
+    private final OnItemSelected itemSelected;
+    private final OnItemChecked itemChecked;
     /**
      * Provide a reference to the views for each data item.<br>
      * Complex data items may need more than one view per item, and you provide access to all the views for a data item in a view holder<br> 
@@ -44,13 +44,13 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         // Data
         public TextView mBrand;
         public TextView mTitle;
-        private ImageView mImage;
-        private ProgressBar mProgress;
-        private TextView mPrice;
-        private CheckBox mCheck;
-        private View mContainer;
-        private IcsSpinner mSizeSpinner;
-        private RelativeLayout mSizeSpinnerContainer;
+        private final ImageView mImage;
+        private final ProgressBar mProgress;
+        private final TextView mPrice;
+        private final CheckBox mCheck;
+        private final View mContainer;
+        private final IcsSpinner mSizeSpinner;
+        private final RelativeLayout mSizeSpinnerContainer;
         
         /**
          * Constructor
@@ -130,9 +130,19 @@ public class BundleItemsListAdapter extends RecyclerView.Adapter<BundleItemsList
         if(item.isChecked()){
             holder.mCheck.setChecked(true);
             if(position == 0){
-                holder.mCheck.setEnabled(false);
+                holder.mCheck.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.mCheck.setEnabled(false);
+                    }
+                });
             } else {
-                holder.mCheck.setEnabled(true);
+                holder.mCheck.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.mCheck.setEnabled(true);
+                    }
+                });
             }
         } else {
             holder.mCheck.setChecked(false);
