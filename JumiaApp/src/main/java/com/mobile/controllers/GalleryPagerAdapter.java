@@ -91,7 +91,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
                 Print.i(TAG, " full_screen_gallery: " + position);
                 view = mInflater.inflate(R.layout._def_pdv_gallery_item, container, false);
             } else {
-                view = mInflater.inflate(R.layout.image_loadable, container, false);
+                view = mInflater.inflate(R.layout._def_gen_image_loadable, container, false);
             }
 
             ImageUrls imageUrls =  mImageUrls.get(position);

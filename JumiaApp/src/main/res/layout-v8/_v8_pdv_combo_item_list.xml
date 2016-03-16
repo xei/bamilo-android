@@ -12,7 +12,7 @@
         android:id="@+id/item_image_loadable"
         android:layout_width="wrap_content"
         android:layout_height="120dp"
-        layout="@layout/image_loadable"
+        layout="@layout/_def_gen_image_loadable"
         android:layout_alignParentRight="true"
         />
 

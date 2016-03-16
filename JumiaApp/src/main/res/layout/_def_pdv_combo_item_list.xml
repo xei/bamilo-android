@@ -10,7 +10,7 @@
     <!-- IMAGE -->
     <include
         android:id="@+id/item_image_loadable"
-        layout="@layout/image_loadable"
+        layout="@layout/_def_gen_image_loadable"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_113_33dp"
         android:layout_alignParentLeft="true"
