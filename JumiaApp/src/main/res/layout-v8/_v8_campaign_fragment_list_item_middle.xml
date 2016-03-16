@@ -55,7 +55,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_price"
-            style="@style/TextList_2"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_alignBottom="@id/campaign_item_discount"
             android:layout_alignTop="@id/campaign_item_discount"
@@ -69,7 +69,7 @@
         <!-- DISCOUNT -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_discount"
-            style="@style/TextList_1"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_marginLeft="@dimen/margin_small"
             android:ellipsize="marquee"
@@ -96,7 +96,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_save_value"
-            style="@style/TextInfo"
+            style="@style/TextBase.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
@@ -111,7 +111,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_save_label"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
@@ -140,7 +140,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_size_label"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_centerInParent="true"
             android:maxLines="1"

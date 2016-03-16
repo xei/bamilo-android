@@ -162,8 +162,6 @@ public class DayPickerView extends ListView implements OnScrollListener, OnDateC
      * the list will not be scrolled unless forceScroll is true. This time may
      * optionally be highlighted as selected as well.
      *
-     * @param time
-     *            The time to move to
      * @param animate
      *            Whether to scroll to the given time or just redraw at the
      *            new location

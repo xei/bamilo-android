@@ -8,7 +8,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 /**
- * Created by msilva on 2/22/16.
+ * HorizontalSpaceItemDecoration
+ * @author msilva
  */
 public class HorizontalSpaceItemDecoration extends RecyclerView.ItemDecoration {
     private final Drawable mDivider;

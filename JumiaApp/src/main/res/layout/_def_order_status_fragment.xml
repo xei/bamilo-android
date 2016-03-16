@@ -22,16 +22,13 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_title_date"
-                style="@style/TextInfo_2"
+                style="@style/TextBase.Caption.Black_800"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="20dp"
-                android:layout_marginEnd="20dp"
-                android:textColor="@color/black_800"
-                android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:paddingBottom="12dp" />
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/margin_padding_xxl"
+                android:layout_marginRight="@dimen/margin_padding_xxl" />
 
         </RelativeLayout>
 
@@ -41,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:divider="@drawable/divider_vertical_black_700"
+            app:divider="@drawable/_gen_divider_vertical_black_700"
             app:showDividers="middle">
 
             <!-- INFO -->
@@ -68,7 +65,7 @@
 
         <!-- DIVIDER -->
 
-        <View style="@style/divider_horizontal.Black700" />
+        <View style="@style/DividerHorizontal.Black_700" />
 
         <!-- ADDRESSES -->
 
@@ -76,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:divider="@drawable/divider_vertical_black_700"
+            app:divider="@drawable/_gen_divider_vertical_black_700"
             app:showDividers="middle">
 
             <!-- SHIPPING ADDRESS -->
@@ -114,8 +111,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:divider="@drawable/divider_horizontal_black_700"
-            app:showDividers="middle"/>
+            app:divider="@drawable/_gen_divider_horizontal_black_700"
+            app:showDividers="middle" />
 
     </LinearLayout>
 

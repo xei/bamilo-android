@@ -81,7 +81,6 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
                         @Override
                         public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
                             if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_GO) {
-
                                 InputMethodManager imm = (InputMethodManager) textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                                 imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
                                 return true;
@@ -89,12 +88,13 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
                             return false;
                         }
                     });
-
                     mSubmit.setEnabled(TextUtils.isNotEmpty(((EditText) control.getDataControl()).getText()));
-                } else if(control.getDataControl() instanceof RelativeLayout &&
-                        control.getDataControl().findViewById(R.id.radio_group_container) != null){ // Get Gender choice to save on rotation.
+                }
+                //
+                else if (control.getDataControl() instanceof RelativeLayout &&
+                        control.getDataControl().findViewById(R.id.radio_group_container) != null) { // Get Gender choice to save on rotation.
                     mRadioGroupLayout = (RadioGroupLayout) control.getDataControl().findViewById(R.id.radio_group_container);
-                    if(sInitialGender > 0 ){
+                    if (sInitialGender > 0) {
                         mRadioGroupLayout.setSelection(sInitialGender);
                     }
                 }
@@ -142,10 +142,11 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
         }
     };
 
-    public String getEditedText(){
+    public String getEditedText() {
         return sInitialValue = mEditText.getText().toString();
     }
-    public int getSelectedGender(){
+
+    public int getSelectedGender() {
         return sInitialGender = mRadioGroupLayout.getSelectedIndex();
     }
 }

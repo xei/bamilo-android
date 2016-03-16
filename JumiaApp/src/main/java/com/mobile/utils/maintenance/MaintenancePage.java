@@ -27,9 +27,6 @@ public class MaintenancePage {
 
     /**
      * Set map image for maintenance page.
-     * 
-     * @param activity
-     * @param mapImageView
      */
     @SuppressWarnings("unused")
     @Deprecated
@@ -53,8 +50,6 @@ public class MaintenancePage {
     /**
      * Set maintenance page content in SplashScreen.
      * 
-     * @param activity
-     * @param listener
      * @author manuel
      * @modified sergiopereira
      */
@@ -131,9 +126,6 @@ public class MaintenancePage {
 
     /**
      * Set maintenance page content in BaseActivity.
-     * 
-     * @param activity
-     * @param listener
      * @author manuel
      * @modified sergiopereira
      */
@@ -198,8 +190,6 @@ public class MaintenancePage {
 
     /**
      * Set the maintenance page for Bamilo.
-     * @param view
-     * @param listener
      * @author sergiopereira
      */
     public static void setMaintenancePageBamilo(View view, OnClickListener listener) {

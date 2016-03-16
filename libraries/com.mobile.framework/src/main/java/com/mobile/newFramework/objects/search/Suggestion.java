@@ -7,9 +7,7 @@ import android.support.annotation.IntDef;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
-import com.mobile.newFramework.utils.TextUtils;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +32,7 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 
 	public final static String TAG = Suggestion.class.getSimpleName();
 
+	@SuggestionType
 	private int mType;
 
 	private String mQuery;
@@ -109,7 +108,7 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 		return mType;
 	}
 
-	public void setType(int type) {
+	public void setType(@SuggestionType int type) {
 		mType = type;
 	}
 

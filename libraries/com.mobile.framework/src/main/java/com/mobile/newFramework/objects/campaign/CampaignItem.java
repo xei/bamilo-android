@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -43,17 +44,12 @@ public class CampaignItem extends ProductMultiple implements IJSONSerializable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-
         super.initialize(jsonObject);
-
         mSavePrice = jsonObject.optDouble(RestConstants.SAVE_PRICE, 0d);
-        mStockPercentage = jsonObject.optInt(RestConstants.STOCK_PERCENTAGE, 0);
-
+        mStockPercentage = jsonObject.optInt(RestConstants.STOCK_PERCENTAGE);
         hasUniqueSize = jsonObject.optBoolean(RestConstants.HAS_UNIQUE_SIZE);
         mRemainingTime = jsonObject.optInt(RestConstants.REMAINING_TIME, -1);
-
-        setSelectedSimplePosition(0);
-
+        mSelectedSimplePosition = IntConstants.DEFAULT_POSITION;
         return true;
     }
 

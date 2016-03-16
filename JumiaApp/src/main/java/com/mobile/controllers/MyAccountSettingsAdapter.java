@@ -32,7 +32,7 @@ public class MyAccountSettingsAdapter extends BaseAdapter {
 
     String[] mOptions;
     Context mContext;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     /**
      * The constructor for this adapter
@@ -66,41 +66,18 @@ public class MyAccountSettingsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Recycle the convert view
-        View view = null;
+        View view;
         if (convertView != null) {
             view = convertView;
         } else {
-            view = mInflater.inflate(R.layout._def_my_account_simple_item, parent, false);
+            view = mInflater.inflate(R.layout.single_line_list, parent, false);
         }
-
         // Get the Category Name
-        TextView optionsName = (TextView) view.findViewById(R.id.option_name);
-        
-        optionsName.setText(this.mOptions[position]);
-//        TextView optionsDescription = (TextView) view.findViewById(R.id.option_info);
-//        optionsDescription.setVisibility(View.INVISIBLE);
-
+        ((TextView) view.findViewById(R.id.tx_single_line_text)).setText(this.mOptions[position]);
         // Return the Category Item View
         return view;
     }
 
-//    protected void setViewByPosition(View view, int position){
-//        TextView optionsDescription = (TextView) view.findViewById(R.id.option_info);
-//        // Validate the current position
-//        switch (position) {
-//            case MyAccountFragment.POSITION_USER_DATA:
-//                optionsDescription.setText(mContext.getResources().getString(R.string.option2_description));
-//                break;
-//            case MyAccountFragment.POSITION_MY_ADDRESSES:
-//                optionsDescription.setText(mContext.getResources().getString(R.string.create_edit_address));
-//                break;
-//            case MyAccountFragment.POSITION_EMAIL:
-//                optionsDescription.setText(mContext.getResources().getString(R.string.option3_description));
-//                break;
-//        }
-//
-//    }
-    
     /**
      * #FIX: java.lang.IllegalArgumentException: The observer is null.
      * @solution from : https://code.google.com/p/android/issues/detail?id=22946 

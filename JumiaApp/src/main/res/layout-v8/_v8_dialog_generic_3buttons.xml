@@ -2,24 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/title_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/modal_dialog_header"
-        android:paddingBottom="@dimen/margin_large"
-        android:paddingLeft="@dimen/margin_veryhuge"
-        android:paddingRight="@dimen/margin_veryhuge"
-        android:paddingTop="@dimen/margin_large" >
+    <!-- TITLE -->
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/dialog_title"
-            style="@style/dialog_header"
-            android:gravity="center_horizontal"
-            android:text="Title" />
-    </LinearLayout>
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/dialog_title"
+        style="@style/DialogHeaderStyle"
+        tools:text="Title" />
+
+    <!-- CONTENT -->
 
     <RelativeLayout style="@style/dialog_container_content" >
 
@@ -29,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_centerVertical="true"
             android:gravity="center"
-            android:text="This is a very very very long dialog text spanning multiple lines that obviously needs to be made longer as the original one did now show the condensed look of a really long text" />
+            tools:text="This is a very very very long dialog text spanning multiple lines that obviously needs to be made longer as the original one did now show the condensed look of a really long text" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/items_count"
@@ -45,7 +38,7 @@
 
         <View
             android:id="@+id/grey_line"
-            style="@style/line_dialog"
+            style="@style/DividerHorizontal.Black_300"
             android:layout_alignParentTop="true" />
 
         <LinearLayout
@@ -63,7 +56,7 @@
 
             <View
                 android:id="@+id/grey_line_vertical"
-                style="@style/line_dialog_vertical" />
+                style="@style/DividerVertical.Black_300" />
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/button2"
@@ -72,7 +65,7 @@
 
             <View
                 android:id="@+id/grey_line_vertical2"
-                style="@style/line_dialog_vertical" />
+                style="@style/DividerVertical.Black_300" />
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/button1"

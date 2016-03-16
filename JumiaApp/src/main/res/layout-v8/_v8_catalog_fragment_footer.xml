@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/catalog_loading_more"
-    style="@style/list_row_rounded_style"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/catalog_footer_height"
     android:layout_centerHorizontal="true"
+    android:layout_marginBottom="@dimen/margin_10px"
+    android:background="@color/white"
     android:gravity="center_vertical|center_horizontal"
-    android:orientation="horizontal"
-    android:layout_marginBottom="@dimen/margin_10px">
+    android:orientation="horizontal">
 
     <com.mobile.components.customfontviews.TextView
         style="@style/text_header_light"

@@ -35,7 +35,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_stock_label"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_below="@id/campaign_item_stock_bar"
             android:layout_marginRight="@dimen/margin_small"
@@ -53,7 +53,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_stock_value"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_below="@id/campaign_item_stock_bar"
             android:layout_toRightOf="@id/campaign_item_stock_label"
             android:layout_toEndOf="@id/campaign_item_stock_label"
@@ -69,7 +69,7 @@
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/campaign_item_button_buy"
-        style="@style/AigButton.Active"
+        style="@style/Button_1.Shop"
         android:layout_width="0dp"
         android:layout_height="@dimen/dimen_48dp"
         android:layout_weight="1"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sellers_info"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_vertical|left|start"
@@ -9,20 +9,18 @@
     android:paddingEnd="@dimen/dimen_16dp"
     android:paddingLeft="@dimen/dimen_16dp"
     android:paddingRight="@dimen/dimen_16dp"
-    android:paddingStart="@dimen/dimen_16dp"
-    >
+    android:paddingStart="@dimen/dimen_16dp">
 
     <!-- SELLER INFO -->
 
     <!--SELLER NAME -->
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/offer_owner_name"
-        style="@style/TextBody_1"
+        style="@style/TextBase.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <!-- SMALL RATING -->
 
@@ -37,32 +35,27 @@
         <!-- changeFashion: choose the right rating bar considering vertical type -->
         <RatingBar
             android:id="@+id/item_rating"
-            style="@style/starRatingBarSmall"
+            style="@style/StarBar.Small.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:isIndicator="true"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
 
         <RatingBar
             android:id="@+id/item_rating_fashion"
-            style="@style/starRatingBarFashionSmall"
+            style="@style/StarBar.Small.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:isIndicator="true"
-            android:visibility="gone"
-            />
+            android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             color="@color/black_800"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margin_mid"
-            android:layout_marginStart="@dimen/margin_mid"
-           />
+            android:layout_marginStart="@dimen/margin_mid" />
 
     </LinearLayout>
 
@@ -70,10 +63,7 @@
     <!-- SHOP FIRST IMAGE -->
     <ImageView
         android:id="@+id/item_shop_first"
-        style="@style/ShopFirstStyle"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/ratingContainer" />
+        style="@style/ShopFirstStyle" />
 
 
     <com.mobile.components.customfontviews.TextView
@@ -93,14 +83,13 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/offer_item_delivery"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dimen_10dp"
         android:paddingBottom="@dimen/dimen_16dp"
-        android:text="3 - 8 days"
-        android:textColor="@color/black"
-        />
+        android:paddingTop="@dimen/dimen_10dp"
+        tools:text="3 - 8 days"
+        android:textColor="@color/black" />
 
 
 </LinearLayout>

@@ -19,10 +19,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/dimen_60px"
-        android:layout_marginLeft="@dimen/dimen_60px"
-        android:layout_marginRight="@dimen/dimen_60px"
-        android:layout_marginStart="@dimen/dimen_60px"
+        android:layout_marginEnd="@dimen/dimen_20dp"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
         android:orientation="horizontal"
         android:weightSum="1">
 
@@ -49,7 +49,8 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/voucher_btn"
-            style="@style/AigButton.Text.Black_800"
+            style="@style/Button_Link.Blue_1"
+            android:layout_margin="@dimen/margin_padding_xxs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="left|start|center_vertical"
@@ -57,7 +58,7 @@
             android:ellipsize="marquee"
             android:gravity="left|start|center_vertical"
             android:singleLine="false"
-            android:text="@string/voucher_use" />
+            android:text="@string/use_label" />
 
     </LinearLayout>
 

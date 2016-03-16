@@ -20,9 +20,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignStart="@id/center_point" />
+        android:layout_alignParentRight="true" />
+
+    <View
+        style="@style/DividerVertical.Black_300"
+        android:layout_alignLeft="@id/center_point" />
 
     <!-- LEFT -->
 
@@ -33,10 +35,8 @@
         layout="@layout/_def_pdv_fragment_buy_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/center_point"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignRight="@id/center_point" />
 
     <!-- LEFT CONTAINER -->
@@ -46,28 +46,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/pdp_buy_bar"
-        android:layout_alignEnd="@id/center_point"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignRight="@id/center_point">
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
+            style="@style/ViewGroupCompat.Vertical.MiddleDivider"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"
             android:orientation="vertical">
 
-
             <!-- PRICE -->
-
             <include layout="@layout/pdv_price_tag" />
 
-            <!-- SEPARATOR -->
-
-            <View style="@style/divider_horizontal" />
-
             <!-- RATING -->
-
             <include
                 android:id="@+id/pdv_rating_container"
                 layout="@layout/pdv_fragment_rating" />
@@ -83,48 +75,41 @@
                 layout="@layout/_def_pdv_fragment_specs_desc" />
 
             <!-- SIZE FROM SIMPLES -->
-
             <include
                 android:id="@+id/pdv_simples_container"
-                layout="@layout/single_line_list" />
+                layout="@layout/single_line_list_blue_1" />
 
             <!-- VARIATIONS -->
-
             <include
                 android:id="@+id/pdv_variations_container"
-                layout="@layout/single_line_list" />
+                layout="@layout/single_line_list_blue_1" />
 
             <!-- SELLER -->
-
             <include
                 android:id="@+id/pdv_seller_container"
                 layout="@layout/pdv_fragment_seller_info" />
 
             <!-- OTHER SELLERS -->
-
             <include
                 android:id="@+id/pdv_other_sellers_button"
                 layout="@layout/sublist" />
 
             <!-- DESCRIPTION -->
-
             <include
                 android:id="@+id/pdv_desc_container"
                 layout="@layout/_def_pdv_fragment_specs_desc" />
 
             <!-- COMBOS -->
-
             <include
                 android:id="@+id/pdv_combos_container"
-                layout="@layout/pdv_fragment_combos"/>
+                layout="@layout/pdv_fragment_combos" />
 
             <!-- RELATED ITEMS -->
-
             <include
                 android:id="@+id/pdv_related_container"
                 layout="@layout/_def_pdv_fragment_related_prods" />
 
-        </LinearLayout>
+        </android.support.v7.widget.LinearLayoutCompat>
 
     </com.mobile.utils.AigScrollViewWithHorizontal>
 

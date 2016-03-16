@@ -4,13 +4,13 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/rounded_margin_mid" >
+    android:paddingBottom="@dimen/margin_padding_l" >
 
     <View
-        style="@style/line_grey_style"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
-        android:layout_marginRight="@dimen/rounded_margin_mid"
-        android:paddingTop="@dimen/rounded_margin_mid" />
+        style="@style/DividerHorizontal.Black_300"
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_marginRight="@dimen/margin_padding_l"
+        android:paddingTop="@dimen/margin_padding_l" />
 
     <LinearLayout
         android:layout_width="match_parent"

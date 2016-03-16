@@ -6,12 +6,14 @@ import android.view.View;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
+import com.mobile.components.recycler.VerticalSpaceItemDecoration;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -24,14 +26,17 @@ import java.util.ArrayList;
 import de.akquinet.android.androlog.Log;
 
 /**
- *
+ * Class used to represent a top seller teaser.
  */
-public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
+public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder implements IResponseCallback {
 
     private static final String TAG = TeaserViewFactory.class.getSimpleName();
 
+    private static final int ITEMS_MARGIN = 6;
+
     public HorizontalListView horizontalListView;
     private final TextView sectionTitle;
+
     /**
      * Constructor
      */
@@ -41,6 +46,7 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
         sectionTitle = (TextView) view.findViewById(R.id.home_teaser_top_seller_section_title);
         // Get horizontal container
         horizontalListView = (HorizontalListView) view.findViewById(R.id.home_teaser_top_sellers_horizontal_list);
+        horizontalListView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_MARGIN));
         // Validate orientation
         horizontalListView.enableRtlSupport(isRtl);
     }
@@ -51,14 +57,14 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
             Log.i(TAG, "BRAND_TEASERS: ADAPTER IS NULL");
             // Use this setting to improve performance if you know that changes in content do not change the layout size of the RecyclerView
             horizontalListView.setHasFixedSize(true);
-            // Set adapter
-            if(group.hasData()){
-                if(TextUtils.isNotEmpty(group.getTitle()))
-                    sectionTitle.setText(group.getTitle());
+            // Case top sellers
+            if (group.hasData()) {
+                if (TextUtils.isNotEmpty(group.getTitle())) sectionTitle.setText(group.getTitle());
                 horizontalListView.setAdapter(new HomeTopSellersTeaserAdapter(group.getData(), mParentClickListener));
-            } else {
-                if(CollectionUtils.isNotEmpty(group.getData()))
-                    getRichRelevanceData(TargetLink.getIdFromTargetLink(group.getData().get(0).getTargetLink()));
+            }
+            // Case rich relevance
+            else if (CollectionUtils.isNotEmpty(group.getData())) {
+                triggerGetRichRelevanceData(TargetLink.getIdFromTargetLink(group.getData().get(IntConstants.DEFAULT_POSITION).getTargetLink()));
             }
         } else {
             Log.i(TAG, "BRAND_TEASERS: ADAPTER IS NOT NULL");
@@ -67,33 +73,35 @@ public class HomeTopSellersTeaserHolder extends BaseTeaserViewHolder {
 
     /**
      * This method requests the rich relevant information of a specific key
-     * @param key
      */
-    private void getRichRelevanceData(String key){
+    private void triggerGetRichRelevanceData(String key) {
+        if (TextUtils.isNotEmpty(key)) {
+            JumiaApplication.INSTANCE.sendRequest(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(key), this);
+        }
+    }
 
-        if(TextUtils.isEmpty(key))
-            return;
+    /*
+     * ################# RESPONSE #################
+     */
 
-        JumiaApplication.INSTANCE.sendRequest(new GetRichRelevanceHelper(), GetRichRelevanceHelper.createBundle(key), new IResponseCallback() {
-            @Override
-            public void onRequestComplete(BaseResponse baseResponse) {
-                Print.i(TAG, "SUCCESS RICH RELEVANCE");
-                RichRelevance richRelevanceObject = (RichRelevance) baseResponse.getContentData();
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        Print.i(TAG, "SUCCESS RICH RELEVANCE");
+        RichRelevance richRelevanceObject = (RichRelevance) baseResponse.getContentData();
+        ArrayList<ProductRegular> richRelevanceTeaserObjects = richRelevanceObject.getRichRelevanceProducts();
+        if (!CollectionUtils.isEmpty(richRelevanceTeaserObjects) && mParentClickListener != null && horizontalListView != null) {
+            horizontalListView.setAdapter(new RichRelevanceAdapter(richRelevanceTeaserObjects, mParentClickListener, true));
+            sectionTitle.setText(richRelevanceObject.getTitle());
+        } else {
+            onRequestError(baseResponse);
+        }
+    }
 
-                ArrayList<ProductRegular> richRelevanceTeaserObjects = richRelevanceObject.getRichRelevanceProducts();
-                    if(!CollectionUtils.isEmpty(richRelevanceTeaserObjects) && mParentClickListener != null && horizontalListView != null){
-                        horizontalListView.setAdapter(new RichRelevanceAdapter(richRelevanceTeaserObjects, mParentClickListener, R.layout.home_teaser_top_sellers_item, true));
-                        sectionTitle.setText(richRelevanceObject.getTitle());
-                    } else {
-                        onRequestError(baseResponse);
-                    }
-            }
-            @Override
-            public void onRequestError(BaseResponse baseResponse) {
-                Print.i(TAG, "ERROR RICH RELEVANCE");
-                if(horizontalListView != null)
-                    ((View)horizontalListView.getParent()).setVisibility(View.GONE);
-            }
-        });
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+        Print.i(TAG, "ERROR RICH RELEVANCE");
+        if (horizontalListView != null) {
+            ((View) horizontalListView.getParent()).setVisibility(View.GONE);
+        }
     }
 }

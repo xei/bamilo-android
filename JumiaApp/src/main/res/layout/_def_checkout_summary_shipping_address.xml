@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,11 +19,11 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginEnd="@dimen/rounded_margin_mid"
-            android:layout_marginRight="@dimen/rounded_margin_mid"
-            android:src="@drawable/selector_btn_edit"
+            android:layout_marginEnd="@dimen/margin_padding_l"
+            android:layout_marginRight="@dimen/margin_padding_l"
             android:paddingLeft="10dp"
-            android:paddingStart="10dp"/>
+            android:paddingStart="10dp"
+            android:src="@drawable/selector_btn_edit" />
     </RelativeLayout>
 
     <!-- ADDRESS -->
@@ -32,7 +32,8 @@
         android:id="@+id/checkout_summary_shipping_address_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/rounded_margin_mid"
-        android:layout_marginTop="@dimen/rounded_margin_mid" />
+        android:layout_marginBottom="@dimen/margin_padding_l"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        android:orientation="vertical"/>
 
 </LinearLayout>

@@ -11,7 +11,7 @@
     <!-- TIMER TITLE -->
 
     <com.mobile.components.customfontviews.TextView
-        style="@style/TextInfo"
+        style="@style/TextBase.Body"
         android:id="@+id/campaign_item_stock_timer_label"
         android:layout_width="wrap_content"
         android:textAllCaps="true"
@@ -26,7 +26,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_stock_timer"
-        style="@style/TextInfo"
+        style="@style/TextBase.Body"
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/campaign_item_stock_timer_label"

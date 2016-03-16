@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,8 +77,7 @@ import de.akquinet.android.androlog.Log;
 /**
  * This class displays the product detail screen.
  *
- * @author Michael Kroez
- * @modified spereira
+ * @author spereira
  */
 public class ProductDetailsFragment extends BaseFragment implements IResponseCallback, AdapterView.OnItemClickListener, OnDialogListListener, TargetLink.OnAppendDataListener {
 
@@ -109,9 +107,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private ViewGroup mSizeLayout;
     private ViewGroup mRelatedProductsView;
     private ViewGroup mComboProductsLayout;
-    private RatingBar mProductFashionRating;
     private ViewGroup mTitleContainer;
-    private ViewGroup mTitleFashionContainer;
     private View mGlobalButton;
     private View mOffersContainer;
     private String mRichRelevanceHash;
@@ -154,14 +150,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         if (arguments != null) {
             // Get sku
             mCompleteProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
-            // TODO: Remove, the campaign should send the correct id
-            if(TextUtils.contains(mCompleteProductSku, "-")) {   //if is a simple sku - coming from campaigns
-                mCompleteProductSku = mCompleteProductSku.split("-")[0];
-            }
             // Categories
             categoryTree = arguments.containsKey(ConstantsIntentExtra.CATEGORY_TREE_NAME) ? arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME) + ",PDV" : "";
-
-            restoreParams(arguments);
+            // Get source and path
+            mNavSource = getString(arguments.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
+            mNavPath = arguments.getString(ConstantsIntentExtra.NAVIGATION_PATH);
+            mProduct = arguments.getParcelable(ConstantsIntentExtra.DATA);
         }
     }
 
@@ -177,7 +171,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         super.onViewCreated(view, savedInstanceState);
         // Title
         mTitleContainer = (ViewGroup) view.findViewById(R.id.pdv_title_container);
-        mTitleFashionContainer = (ViewGroup) view.findViewById(R.id.pdv_title_fashion_container);
         // Slide show
         // created a new ProductImageGalleryFragment
         // Wish list
@@ -190,7 +183,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Rating
         view.findViewById(R.id.pdv_rating_container).setOnClickListener(this);
         mProductRating = (RatingBar) view.findViewById(R.id.pdv_rating_bar);
-        mProductFashionRating = (RatingBar) view.findViewById(R.id.pdv_rating_bar_fashion);
         mProductRatingCount = (TextView) view.findViewById(R.id.pdv_rating_bar_count);
         //brand section
         mBrandView = (ViewGroup) view.findViewById(R.id.pdv_brand_section);
@@ -390,7 +382,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(ConstantsIntentExtra.CONTENT_ID, mCompleteProductSku);
-        outState.putParcelable(ProductComplete.class.getSimpleName(), mProduct);
+        outState.putParcelable(ConstantsIntentExtra.DATA, mProduct);
     }
 
     /**
@@ -426,13 +418,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * ######## LAYOUT ########
      */
 
-    private void restoreParams(Bundle bundle) {
-        // Get source and path
-        mNavSource = getString(bundle.getInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gcatalog));
-        mNavPath = bundle.getString(ConstantsIntentExtra.NAVIGATION_PATH);
-        mProduct = bundle.getParcelable(ProductComplete.class.getSimpleName());
-    }
-
     /**
      * Validate and loads the received arguments comes from deep link process.
      */
@@ -466,9 +451,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mCompleteProductSku = product.getSku();
         // Set layout
         setTitle();
+        setSlideShow();
         setBuyButton();
         setWishListButton();
-        setSlideShow();
         setProductPriceInfo();
         setRatingInfo();
         setBrandInfo();
@@ -522,12 +507,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         ProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
         ProductUtils.setDiscountRules(mProduct, mDiscountPercentageText);
         if (mProduct.hasDiscount()) {
-            if (!mProduct.isFashion()) {
-                mDiscountPercentageText.setEnabled(true);
-            } else {
-                mDiscountPercentageText.setEnabled(false);
-                mDiscountPercentageText.setTextColor(ContextCompat.getColor(getContext(), R.color.black_800));
-            }
+            mDiscountPercentageText.setEnabled(true);
         }
     }
 
@@ -537,21 +517,13 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void setRatingInfo() {
         Integer ratingCount = mProduct.getTotalRatings();
         Integer reviewsCount = mProduct.getTotalReviews();
-
+        // Validation
         if (ratingCount == 0 && reviewsCount == 0) {
             mProductRatingCount.setText(getResources().getString(R.string.be_first_rate));    //be the first to rate if hasn't
         } else {
-            //changeFashion: rating style is changed if vertical is fashion
-            if (mProduct.isFashion()) {
-                UIUtils.setProgressForRTLPreJellyMr2(mProductFashionRating);
-                mProductFashionRating.setRating((float) mProduct.getAvgRating());
-                mProductRating.setVisibility(View.GONE);
-                mProductFashionRating.setVisibility(View.VISIBLE);
-            } else {
-                UIUtils.setProgressForRTLPreJellyMr2(mProductRating);
-                mProductRating.setRating((float) mProduct.getAvgRating());
-                mProductRating.setVisibility(View.VISIBLE);
-            }
+            UIUtils.setProgressForRTLPreJellyMr2(mProductRating);
+            mProductRating.setRating((float) mProduct.getAvgRating());
+            mProductRating.setVisibility(View.VISIBLE);
             String rating = getResources().getQuantityString(R.plurals.numberOfRatings, ratingCount, ratingCount);
             mProductRatingCount.setText(rating);
         }
@@ -647,22 +619,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-
-
     /**
      * Change and put the title in the correct position within the layout if it's fashion or not
      */
     private void setTitle() {
-        if (mProduct.isFashion()) {
-            mTitleContainer.setVisibility(View.GONE);
-            ((TextView) mTitleFashionContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
-            ((TextView) mTitleFashionContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
-        } else {
-            mTitleFashionContainer.setVisibility(View.GONE);
-            ((TextView) mTitleContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
-            ((TextView) mTitleContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
-        }
-        // Set action title
+        // Set title
+        ((TextView) mTitleContainer.findViewById(R.id.pdv_product_title)).setText(mProduct.getBrandName());
+        ((TextView) mTitleContainer.findViewById(R.id.pdv_product_subtitle)).setText(mProduct.getName());
+        // Set AB title
         getBaseActivity().setActionBarTitle(mProduct.getBrandName());
     }
 
@@ -800,7 +764,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
             args.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, verifyOutOfStock());
             // Create fragment
-            fragment = ProductImageGalleryFragment.getInstanceAsNested(args);
+            fragment = ProductImageGalleryFragment.getInstance(args);
             FragmentController.addChildFragment(this, R.id.pdv_slide_show_container, fragment, ProductImageGalleryFragment.TAG);
         }
         // CASE UPDATE
@@ -819,12 +783,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * Method used to create the view
      */
     private void setRelatedItems() {
-        //FIXME
         if (CollectionUtils.isNotEmpty(mProduct.getRelatedProducts())) {
-
-            if(mProduct.getRichRelevance() != null && TextUtils.isNotEmpty(mProduct.getRichRelevance().getTitle()))
-                ((TextView)mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mProduct.getRichRelevance().getTitle());
-
+            if (mProduct.getRichRelevance() != null && TextUtils.isNotEmpty(mProduct.getRichRelevance().getTitle())) {
+                ((TextView) mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mProduct.getRichRelevance().getTitle());
+            }
             ExpandedGridViewComponent relatedGridView = (ExpandedGridViewComponent) mRelatedProductsView.findViewById(R.id.pdv_related_grid_view);
             relatedGridView.setExpanded(true);
             relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, mProduct.getRelatedProducts()));
@@ -897,9 +859,18 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Update combo price
         bundleList.updateTotalPriceWhenChecking(position);
         //get the bundle to update checkbox state
-        ProductBundle productBundle = bundleList.getProducts().get(position);
+        final ProductBundle productBundle = bundleList.getProducts().get(position);
+
         // Update check
-        ((CheckBox) bundleItemView.findViewById(R.id.item_check)).setChecked(productBundle.isChecked());
+        final CheckBox checkBox = (CheckBox)  bundleItemView.findViewById(R.id.item_check);
+        checkBox.post(new Runnable() {
+            @Override
+            public void run() {
+                checkBox.setChecked(productBundle.isChecked());
+            }
+        });
+
+
         //get updated total price
         txTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
         //update bundleListObject in productComplete
@@ -964,7 +935,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         ProductSimple simple = mProduct.getSelectedSimple();
         // Case add item to cart
         if (simple != null) {
-            triggerAddItemToCart(mProduct.getSku(), simple.getSku());
+            triggerAddItemToCart(simple.getSku());
             // Tracking
             TrackerDelegator.trackProductAddedToCart(mProduct, mGroupType);
         }
@@ -1189,8 +1160,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         triggerContentEvent(new GetProductHelper(), GetProductHelper.createBundle(sku, richRelevanceHash), this);
     }
 
-    private void triggerAddItemToCart(String sku, String simpleSKU) {
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSKU), this);
+    private void triggerAddItemToCart(String sku) {
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku), this);
     }
 
     private void triggerAddToWishList(String sku) {
@@ -1274,7 +1245,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 //keep the bundle
                 mProduct.setProductBundle(bundleList);
                 // build combo section from here
-                buildComboSection(bundleList);
+                setCombos();
                 break;
             case GET_RICH_RELEVANCE_EVENT:
                 RichRelevance productRichRelevance = (RichRelevance) baseResponse.getContentData();
@@ -1351,6 +1322,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             fillProductBundleInfo(comboProductItem, item);
             if (!item.getSku().equals(mProduct.getSku())) {
                 comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem, txTotalPrice, bundleList, i));
+            } else {
+                final CheckBox checkBox = (CheckBox) comboProductItem.findViewById(R.id.item_check);
+                checkBox.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        checkBox.setEnabled(false);
+                    }
+                });
             }
             mTableBundles.addView(comboProductItem);
             // Add plus separator
@@ -1381,11 +1360,19 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * @param view - combo item view
      * @param productBundleItem    - product bundle
      */
-    private void fillProductBundleInfo(View view, ProductBundle productBundleItem) {
+    private void fillProductBundleInfo(View view, final ProductBundle productBundleItem) {
         ImageView mImage = (ImageView) view.findViewById(R.id.image_view);
         ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
-        CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
-        mCheck.setChecked(productBundleItem.isChecked());
+        final CheckBox mCheck = (CheckBox) view.findViewById(R.id.item_check);
+        mCheck.post(new Runnable() {
+            @Override
+            public void run() {
+                mCheck.setChecked(productBundleItem.isChecked());
+                mCheck.setEnabled(true);
+            }
+        });
+
+        Print.i(TAG,"code1check :fillProductBundleInfo: "+productBundleItem.isChecked()+" state isChecked: "+mCheck.isChecked()+" isEnabled: " +mCheck.isEnabled());
         RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
@@ -1403,7 +1390,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * functions that verifies if product simple is out of stock
      */
-    private boolean verifyOutOfStock(){
+    private boolean verifyOutOfStock() {
         return (mProduct.getSelectedSimple() != null && mProduct.getSelectedSimple().isOutOfStock());
     }
 
@@ -1416,10 +1403,20 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mBuyButton.setVisibility(View.GONE);
             if(mProduct.isWishList()){
                 mSaveForLater.setText(getString(R.string.remove_from_saved));
-                mSaveForLater.setSelected(true);
+                mSaveForLater.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSaveForLater.setEnabled(true);
+                    }
+                });
             } else {
                 mSaveForLater.setText(getString(R.string.save_for_later));
-                mSaveForLater.setSelected(false);
+                mSaveForLater.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSaveForLater.setEnabled(false);
+                    }
+                });
             }
         } else {
             mBuyButton.setVisibility(View.VISIBLE);

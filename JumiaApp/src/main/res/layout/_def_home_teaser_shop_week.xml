@@ -21,7 +21,7 @@
     </FrameLayout>
 
     <View
-        style="@style/divider_vertical"
+        style="@style/DividerVertical.Black_300"
         android:layout_width="@dimen/dimen_mat_8px"
         android:background="@null" />
 

@@ -4,7 +4,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_text_special_price"
-        style="@style/TextList_1"
+        style="@style/TextBase.Display_3.Black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -12,10 +12,10 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_text_price"
-        style="@style/TextList_2"
+        style="@style/TextBase.Display_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/layout_marginLeft"
+        android:layout_marginRight="@dimen/margin_padding_l"
         android:layout_toLeftOf="@id/pdv_text_special_price"
         android:layout_centerVertical="true" />
 
@@ -24,7 +24,7 @@
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/layout_marginLeft"
+        android:layout_marginRight="@dimen/margin_padding_l"
         android:layout_toLeftOf="@id/pdv_text_price"
         android:layout_centerVertical="true" />
 

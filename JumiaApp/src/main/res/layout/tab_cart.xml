@@ -10,34 +10,9 @@
         android:id="@+id/tab_cart_image"
         layout="@layout/action_bar_cart_button" />
 
-    <!--<ImageView-->
-    <!--android:id="@+id/tab_cart_image"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--android:layout_gravity="center"-->
-    <!--android:layout_marginTop="5dp"-->
-    <!--android:src="@drawable/btn_cart" />-->
-
-    <!--&lt;!&ndash;selector_navigation_cart&ndash;&gt;-->
-    <!--<com.mobile.components.customfontviews.TextView-->
-    <!--android:id="@+id/tab_cart_number_products"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignRight="@id/tab_cart_image"-->
-    <!--android:layout_alignTop="@id/tab_cart_image"-->
-    <!--android:ellipsize="end"-->
-    <!--android:gravity="right"-->
-    <!--android:paddingRight="3.5dp"-->
-    <!--android:singleLine="true"-->
-    <!--android:text="0"-->
-    <!--android:textColor="@color/white"-->
-    <!--android:textSize="9sp"-->
-    <!--android:visibility="visible" />-->
-
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tab_cart_text"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"

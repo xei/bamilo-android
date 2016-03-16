@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <!-- MIDDLE POINT TO DIVIDE THE SCREEN -->
 
@@ -13,18 +13,23 @@
 
     <!-- LEFT CONTAINER -->
 
+    <View
+        style="@style/DividerVertical.Black_300"
+        android:layout_alignEnd="@id/center_point"
+        android:layout_alignRight="@id/center_point" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/checkout_my_order_button_enter"
         android:layout_alignLeft="@id/center_point"
         android:layout_alignParentRight="true"
-        android:scrollbars="none" >
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <!-- PRODUCTS -->
 
@@ -50,13 +55,12 @@
         android:layout_above="@+id/checkout_my_order_button_enter"
         android:layout_alignParentLeft="true"
         android:layout_alignRight="@id/center_point"
-        android:scrollbars="none" >
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <!-- SHIPPING ADDRESS -->
 
@@ -81,7 +85,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_my_order_button_enter"
-        style="@style/AigButton.Active"
+        style="@style/Button_1.Shop"
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/login_button_description"
         android:text="@string/my_order_confirm_button" />

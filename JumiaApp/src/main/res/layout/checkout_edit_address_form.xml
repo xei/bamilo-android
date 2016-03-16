@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/rounded_margin_mid" >
+    android:paddingBottom="@dimen/margin_padding_l" >
 
     <!-- TITLE -->
 
@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/margin_20px"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingLeft="@dimen/rounded_margin_mid"
-        android:paddingRight="@dimen/rounded_margin_mid" />
+        android:paddingLeft="@dimen/margin_padding_l"
+        android:paddingRight="@dimen/margin_padding_l" />
 
 </LinearLayout>

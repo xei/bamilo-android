@@ -5,10 +5,7 @@
     android:orientation="vertical">
 
     <com.mobile.components.customfontviews.TextView
-        style="@style/HeaderTeaser"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dimen_5dp"
-        android:layout_marginTop="@dimen/dimen_8dp"
+        style="@style/HeaderTeaserStyle"
         android:text="@string/shops_of_the_week" />
 
     <com.mobile.components.recycler.HorizontalListView

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ViewGroupCompat.Horizontal.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    android:orientation="horizontal">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
-        android:background="@drawable/drop_shadow_right">
+        android:layout_weight="0.5">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -26,9 +26,8 @@
                 android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
-                    android:text="@string/more"
-                    android:textStyle="bold" />
+                    style="@style/HeaderStyle"
+                    android:text="@string/more" />
             </LinearLayout>
 
 
@@ -42,9 +41,8 @@
                 android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
-                    android:text="@string/app_social"
-                    android:textStyle="bold" />
+                    style="@style/HeaderStyle"
+                    android:text="@string/app_social" />
             </LinearLayout>
 
         </LinearLayout>
@@ -70,9 +68,8 @@
                 android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
-                    android:text="@string/section_title_account"
-                    android:textStyle="bold" />
+                    style="@style/HeaderStyle"
+                    android:text="@string/section_title_account" />
             </LinearLayout>
 
             <!-- NOTIFICATION SETTINGS -->
@@ -85,9 +82,8 @@
                 android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
-                    android:text="@string/section_title_notification"
-                    android:textStyle="bold" />
+                    style="@style/HeaderStyle"
+                    android:text="@string/section_title_notification" />
 
             </LinearLayout>
 
@@ -101,10 +97,9 @@
                 android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.TextView
-                    style="@style/HeaderMyAccountStyle"
-                    android:text="@string/shop_settings"
-                    android:textStyle="bold" />
+                    style="@style/HeaderStyle"
+                    android:text="@string/shop_settings" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>

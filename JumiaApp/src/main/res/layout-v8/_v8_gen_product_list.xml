@@ -1,30 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/grid_row_style"
     android:minHeight="@dimen/catalog_list_item_height"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
 
     <include
         android:id="@+id/image_loadable"
-        android:layout_width="@dimen/catalog_list_item_image_width"
-        android:layout_height="@dimen/catalog_list_item_image_height"
+        android:layout_width="@dimen/dimen_82dp"
+        android:layout_height="@dimen/dimen_103dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/margin_60px"
-        android:layout_marginRight="@dimen/margin_60px"
-        layout="@layout/image_loadable"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        layout="@layout/_def_gen_image_loadable"
         android:background="@color/color_accent" />
-
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/new_arrival_badge"
-        style="@style/NewArrivalBadge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="@dimen/dimen_30px"
-        android:layout_marginRight="@dimen/dimen_30px"
-        android:text="@string/new_arrival_badge" />
 
     <!-- INFORMATION -->
 
@@ -37,46 +27,44 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"
-        style="@style/TextCaption"
-        android:textColor="@color/black_800"
+        style="@style/TextBase.Body.Black_800"
         android:layout_width="wrap_content"
         android:layout_alignRight="@+id/center_view"
-        android:layout_marginLeft="@dimen/product_item_text_right_margin"
-        android:layout_marginTop="@dimen/margin_30px"
-        android:text="BRAND" />
+        android:layout_marginLeft="@dimen/dimen_50dp"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        tools:text="BRAND" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBody_1"
-        android:textColor="@color/black"
+        style="@style/TextBase.Title.Black"
         android:layout_width="match_parent"
         android:layout_alignRight="@+id/center_view"
         android:layout_below="@+id/item_brand"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="@dimen/dimen_50dp"
         android:gravity="right|center_vertical"
         android:singleLine="false"
         android:maxLines="2"
-        android:text="Name" />
+        tools:text="Name" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_discount"
-        style="@style/TextBody_3"
+        style="@style/TextBase.Body.Black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
         android:layout_alignRight="@id/center_view"
         android:layout_below="@id/item_name"
-        android:layout_marginLeft="4dp"
-        android:text="Discount" />
+        android:layout_marginLeft="@dimen/dimen_4dp"
+        android:maxLines="2"
+        tools:text="Discount" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextBody_3"
+        style="@style/TextBase.Body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/item_discount"
         android:layout_toLeftOf="@id/item_discount"
-        android:text="Price"
+        tools:text="Price"
         android:textColor="@color/black_800" />
 
     <ImageView
@@ -95,26 +83,25 @@
         android:gravity="center_vertical|right"
         android:orientation="horizontal"
         android:layout_below="@id/item_shop_first"
+        android:layout_marginLeft="@dimen/dimen_50dp"
         android:layout_marginTop="@dimen/dimen_6dp">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_reviews"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_marginRight="4dp"
             android:gravity="center_vertical|right"
             android:includeFontPadding="false"
-            android:text="(12)"
+            tools:text="(12)"
             android:textColor="@color/black_800" />
 
         <RatingBar
             android:id="@+id/item_rating"
-            style="@style/starRatingBarSmall"
+            style="@style/StarBar.Small.Indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:numStars="5"
-            android:isIndicator="true"
-            android:rating="3.5" />
+            tools:rating="3.5" />
     </LinearLayout>
 
     <ImageView
@@ -123,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="@dimen/rounded_margin_mid"
+        android:padding="@dimen/margin_padding_l"
         android:paddingTop="@dimen/catalog_item_vertical_padding"
         android:src="@drawable/selector_favorite"
         android:layout_below="@id/item_shop_first"/>
@@ -134,8 +121,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignBottom="@id/rating_container"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        android:layout_below="@id/item_name"
+        android:layout_marginLeft="@dimen/margin_padding_l"
         android:gravity="center" />
 
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/new_arrival_badge"
+        style="@style/NewArrivalBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_below="@id/discount_percentage"
+        android:text="@string/new_arrival_badge" />
 </RelativeLayout>

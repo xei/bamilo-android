@@ -21,14 +21,12 @@ import com.mobile.components.infiniteviewpager.InfinitePagerAdapter;
 import com.mobile.components.viewpager.JumiaViewPagerWithZoom;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.GalleryPagerAdapter;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
-import com.mobile.view.BaseActivity;
 import com.mobile.view.ProductImageGalleryActivity;
 import com.mobile.view.R;
 
@@ -60,42 +58,17 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     /**
      * Constructor using a nested flag
      */
-    private static ProductImageGalleryFragment getInstance(Bundle bundle, boolean isNested) {
-        // Validate if is nested or not
-        //ProductImageGalleryFragment fragment = isNested ? new ProductImageGalleryFragment(true) : new ProductImageGalleryFragment();
+    public static ProductImageGalleryFragment getInstance(Bundle bundle) {
         ProductImageGalleryFragment fragment = new ProductImageGalleryFragment();
-        // Save arguments
         fragment.setArguments(bundle);
-        // Return instance
         return fragment;
     }
-
-    /**
-     * Constructor with arguments, called from {@link BaseActivity#onSwitchFragment(FragmentType, Bundle, Boolean)}.
-     */
-    public static ProductImageGalleryFragment getInstance(Bundle bundle) {
-        return getInstance(bundle, IS_NOT_NESTED_FRAGMENT);
-    }
-    
-    /**
-     * Constructor as nested fragment, called from {@link ProductDetailsFragment#}.
-     */
-    public static ProductImageGalleryFragment getInstanceAsNested(Bundle bundle) {
-        return getInstance(bundle, IS_NESTED_FRAGMENT);
-    }
-    
-//    /**
-//     * Default constructor
-//     */
-//    public ProductImageGalleryFragment() {
-//        super(EnumSet.of(MyMenuItem.HIDE_AB), NavigationAction.Product, R.layout.product_gallery_fragment, 0, NO_ADJUST_CONTENT);
-//    }
 
     /**
      * Constructor as nested
      */
     @SuppressLint("ValidFragment")
-    public ProductImageGalleryFragment() { //Boolean isNested) {
+    public ProductImageGalleryFragment() {
         super(IS_NESTED_FRAGMENT, R.layout.product_gallery_fragment);
     }
 
@@ -124,7 +97,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         if(arguments != null) {
             enabledInfiniteSlide = arguments.getBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, true);
             mImageList = arguments.getParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST);
-            isNestedFragment = arguments.getBoolean(ConstantsIntentExtra.IS_NESTED_FRAGMENT);
             mIsOutOfStock = arguments.getBoolean(ConstantsIntentExtra.OUT_OF_STOCK);
         }
     }
@@ -138,14 +110,13 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get pager
-        mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.viewpager);
+        mViewPager = (JumiaViewPagerWithZoom) view.findViewById(R.id.pdv_view_pager);
         // Get Overlay
         mOutOfStockOverlay = (RelativeLayout) view.findViewById(R.id.pdv_image_oos_overlay);
         // HorizontalScrollView
         mHorizontalScrollView = (HorizontalScrollView) view.findViewById(R.id.pdv_thumbnail_indicator_scroll);
         // Get thumbnail indicator
         mThumbnailContainer = (ViewGroup) view.findViewById(R.id.pdv_thumbnail_indicator_container);
-        Print.i(TAG,"mHorizontalScrollView:"+mHorizontalScrollView);
         // Set view pager
         createGallery();
     }
@@ -185,7 +156,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE");
         outState.putParcelableArrayList(ConstantsIntentExtra.IMAGE_LIST, mImageList);
-        outState.putBoolean(ConstantsIntentExtra.IS_NESTED_FRAGMENT, isNestedFragment);
         outState.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, enabledInfiniteSlide);
         outState.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, mIsOutOfStock);
     }
@@ -237,13 +207,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
      * Set product image gallery
      */
     private void createGallery() {
-
-        if(mIsOutOfStock){
-            mOutOfStockOverlay.setVisibility(View.VISIBLE);
-        } else {
-            mOutOfStockOverlay.setVisibility(View.GONE);
-        }
-
+        // Validate stock
+        mOutOfStockOverlay.setVisibility(mIsOutOfStock ? View.VISIBLE : View.GONE);
         // Setted in order to show the no image placeholder on PDV view
         if (CollectionUtils.isEmpty(mImageList)) {
             mImageList = new ArrayList<>();
@@ -258,15 +223,12 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         infinitePagerAdapter.enableInfinitePages(size > 1 && enabledInfiniteSlide);
         // Add infinite adapter to pager 
         mViewPager.setAdapter(infinitePagerAdapter);
-        // Add pager to indicator
-        //setIndicatorForViewPager(size); // PageIndicator
         // Add pager to ThumbnailIndicator
         setThumbnailIndicatorForViewPager(size);
         // Set listener
         setOnPageItemClicked();
-
+        // Slide the horizontal scroll view to the end to show the first element
         if(ShopSelector.isRtl()){
-            // slide the horizontal scroll view to the end to show the first element
             mHorizontalScrollView.postDelayed(new Runnable() {
                 public void run() {
                     mHorizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
@@ -296,22 +258,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
             }
         });
     }
-
-//    /**
-//     * Set the pager indicator validating the size.<br>
-//     * @param size
-//     * @author ricardo
-//     * @modified sergiopereira
-//     */
-//    private void setIndicatorForViewPager(int size) {
-//        // Validate the current size
-//        if(size > 1) {
-//            mViewPagerIndicator.setVisibility(View.VISIBLE);
-//        } else {
-//            mViewPagerIndicator.setVisibility(View.INVISIBLE);
-//        }
-//        mViewPagerIndicator.setViewPager(mViewPager);
-//    }
 
     /**
      * GestureListener to respond to tap on viewPager<br>
@@ -370,10 +316,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     public void onClick(View view) {
         // Get id
         int id = view.getId();
-        // Case close button
-        if (id == R.id.gallery_button_close) onClickCloseButton();
         // Case thumbnail indicator
-        else if (id == R.id.image_container) onClickThumbnailIndicator(view);
+        if (id == R.id.image_container) onClickThumbnailIndicator(view);
         // Unknown
         else Print.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
     }
@@ -388,16 +332,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         Print.i(TAG, "ON CLICK INDICATOR POS: " + position);
         int n = ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(position);
         mViewPager.setCurrentItem(n, true);
-    }
-    
-    /**
-     * Process the click on close button
-     * @author sergiopereira
-     */
-    private void onClickCloseButton() {
-        Print.i(TAG, "ON CLICK CLOSE BUTTON");
-        //sSharedSelectedPosition = getViewPagerPosition();
-        getBaseActivity().onBackPressed();
     }
 
     /**
@@ -440,7 +374,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
             }
             mViewPager.addOnPageChangeListener(this);
         } else {
-            UIUtils.setVisibility(mThumbnailContainer, false);
+            UIUtils.setVisibility(mHorizontalScrollView, false);
         }
     }
 

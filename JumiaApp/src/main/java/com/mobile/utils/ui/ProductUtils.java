@@ -1,8 +1,14 @@
 package com.mobile.utils.ui;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StrikethroughSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -41,6 +47,22 @@ public class ProductUtils {
         specialPrice.setVisibility(View.VISIBLE);
     }
 
+    public static void setPriceRulesWithAutoAdjust(Context context, @NonNull ProductBase productBase, @NonNull TextView discount, @NonNull TextView price){
+        String priceRange = productBase.getPriceRange();
+        //If ProductMultiple already has simple
+        if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
+            //noinspection ConstantConditions
+            setPriceWithAutoAdjust(context, ((ProductMultiple) productBase).getSelectedSimple(), discount);
+            //If hasn't simple but has range
+        } else if(TextUtils.isNotEmpty(priceRange)){
+            discount.setText(priceRange);
+        } else {
+            setPriceWithAutoAdjust(context, productBase, discount);
+        }
+        price.setVisibility(View.GONE);
+        discount.setVisibility(View.VISIBLE);
+    }
+
     private static void setPrice(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice){
         // Case discount
         if (productBase.hasDiscount()) {
@@ -52,6 +74,24 @@ public class ProductUtils {
         else {
             specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
             price.setText("");
+        }
+    }
+
+    private static void setPriceWithAutoAdjust(Context context, @NonNull ProductBase productBase, @NonNull TextView priceView){
+        // Case discount
+        if (productBase.hasDiscount()) {
+            final String specialPrice = CurrencyFormatter.formatCurrency(productBase.getSpecialPrice());
+            final String regularPrice = CurrencyFormatter.formatCurrency(productBase.getPrice());
+            final String price = String.format(context.getString(R.string.first_space_second_placeholder), specialPrice, regularPrice);
+            int index = price.indexOf(regularPrice);
+            SpannableString spannableString = new SpannableString(price);
+            spannableString.setSpan(new StrikethroughSpan(), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context,R.color.black_800)), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            priceView.setText(spannableString);
+        }
+        // Case normal
+        else {
+            priceView.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
         }
     }
 

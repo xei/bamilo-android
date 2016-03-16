@@ -11,9 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.widget.DismissibleSpinner;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -183,27 +183,31 @@ public class MyProfileActionProvider extends ActionProvider {
          */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            Print.i(TAG, "code1 first getView");
             View view = convertView;
             if (view == null) {
-                view = LayoutInflater.from(getContext()).inflate(R.layout.action_bar_menu_item_layout, parent, false);
+                view = LayoutInflater.from(getContext()).inflate(R.layout.single_line_with_icon_component, parent, false);
             }
             return view;
         }
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            Print.i(TAG, "code1 second getView");
             View view = convertView;
             if (view == null) {
-                view = LayoutInflater.from(getContext()).inflate(R.layout.action_bar_menu_item_layout, parent, false);
+                view = LayoutInflater.from(getContext()).inflate(R.layout.single_line_with_icon_component, parent, false);
             }
             // Get view
-            ImageView icon = (ImageView) view.findViewById(R.id.menu_item_icon);
-            TextView title = (TextView) view.findViewById(R.id.menu_item_title);
+            ImageView icon = ((SingleLineComponent) view).getStartImageView();
+            ((SingleLineComponent) view).showImageStartViewVisible();
+            TextView title = ((SingleLineComponent) view).getTextView();
             // Get action
             int navAction = getItem(position);
             view.setTag(R.id.nav_action, navAction);
             // Set listener
             view.setOnClickListener(mOnClickListener);
+
             // Set action
             switch (navAction) {
                 case NavigationAction.HOME:

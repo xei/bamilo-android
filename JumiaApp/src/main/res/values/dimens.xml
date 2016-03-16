@@ -6,7 +6,6 @@
     <dimen name="margin_20px">6.67dp</dimen>
     <dimen name="margin_24px">8dp</dimen>
     <dimen name="margin_30px">10dp</dimen>
-    <dimen name="margin_32px">10.67dp</dimen>
     <dimen name="margin_40px">13.33dp</dimen>
     <dimen name="margin_50px">16.67dp</dimen>
     <dimen name="margin_60px">20dp</dimen>
@@ -15,7 +14,6 @@
     <dimen name="margin_90px">30dp</dimen>
     <dimen name="margin_100px">33.33dp</dimen>
     <dimen name="margin_110px">36.67dp</dimen>
-    <dimen name="margin_116px">38.67dp</dimen>
     <dimen name="margin_120px">40dp</dimen>
     <dimen name="margin_140px">46dp</dimen>
     <dimen name="margin_150px">50dp</dimen>
@@ -23,66 +21,7 @@
     <dimen name="margin_28dp">28dp</dimen>
     <dimen name="margin_48dp">48dp</dimen>
 
-    <!-- BASE DIMENSIONS: PX TO DP -->
-    <dimen name="dimen_3px">1dp</dimen>
-    <dimen name="dimen_6px">2dp</dimen>
-    <dimen name="dimen_8px">2.67dp</dimen>
-    <dimen name="dimen_9px">3dp</dimen>
-    <dimen name="dimen_10px">3.33dp</dimen>
-    <dimen name="dimen_12px">4dp</dimen>
-    <dimen name="dimen_15px">5dp</dimen>
-    <dimen name="dimen_27px">9dp</dimen>
-    <dimen name="dimen_20px">6.67dp</dimen>
-    <dimen name="dimen_30px">10dp</dimen>
-    <dimen name="dimen_40px">13.33dp</dimen>
-    <dimen name="dimen_42px">14dp</dimen>
-    <dimen name="dimen_48px">16dp</dimen>
-    <dimen name="dimen_50px">16.67dp</dimen>
-    <dimen name="dimen_60px">20dp</dimen>
-    <dimen name="dimen_66px">22dp</dimen>
-    <dimen name="dimen_70px">23.33dp</dimen>
-    <dimen name="dimen_71px">23.66dp</dimen>
-    <dimen name="dimen_78px">26dp</dimen>
-    <dimen name="dimen_80px">26.67dp</dimen>
-    <dimen name="dimen_90px">30dp</dimen>
-    <dimen name="dimen_100px">33.33dp</dimen>
-    <dimen name="dimen_110px">36.67dp</dimen>
-    <dimen name="dimen_120px">40dp</dimen>
-    <dimen name="dimen_130px">43.33dp</dimen>
-    <dimen name="dimen_140px">46.67dp</dimen>
-    <dimen name="dimen_144px">48dp</dimen>
-    <dimen name="dimen_150px">50dp</dimen>
-    <dimen name="dimen_160px">53.33dp</dimen>
-    <dimen name="dimen_170px">56.67dp</dimen>
-    <dimen name="dimen_179px">59.67dp</dimen>
-    <dimen name="dimen_180px">60dp</dimen>
-    <dimen name="dimen_200px">66.66dp</dimen>
-    <dimen name="dimen_205px">68.33dp</dimen>
-    <dimen name="dimen_230px">76.66dp</dimen>
-    <dimen name="dimen_240px">80dp</dimen>
-    <dimen name="dimen_290px">96.67dp</dimen>
-    <dimen name="dimen_300px">100dp</dimen>
-    <dimen name="dimen_310px">103.3dp</dimen>
-    <dimen name="dimen_317px">105.66dp</dimen>
-    <dimen name="dimen_340px">113.33dp</dimen>
-    <dimen name="dimen_421px">140.33dp</dimen>
-    <dimen name="dimen_430px">143.33dp</dimen>
-    <dimen name="dimen_440px">146.67dp</dimen>
-    <dimen name="dimen_460px">153.33dp</dimen>
-    <dimen name="dimen_480px">160dp</dimen>
-    <dimen name="dimen_490px">163.33dp</dimen>
-    <dimen name="dimen_500px">166.67dp</dimen>
-    <dimen name="dimen_540px">180dp</dimen>
-    <dimen name="dimen_600px">200dp</dimen>
-    <dimen name="dimen_640px">213.33dp</dimen>
-    <dimen name="dimen_650px">216.67dp</dimen>
-    <dimen name="dimen_670px">223.33dp</dimen>
-    <dimen name="dimen_700px">233.33dp</dimen>
-    <dimen name="dimen_720px">240dp</dimen>
-    <dimen name="dimen_780px">260dp</dimen>
-    <dimen name="dimen_810px">270dp</dimen>
-
-
+    <!-- BASE DIMENSIONS: DP -->
     <dimen name="dimen_0dp">0dp</dimen>
     <dimen name="dimen_1dp">1dp</dimen>
     <dimen name="dimen_1_5dp">1.5dp</dimen>
@@ -90,41 +29,54 @@
     <dimen name="dimen_4dp">4dp</dimen>
     <dimen name="dimen_5dp">5dp</dimen>
     <dimen name="dimen_6dp">6dp</dimen>
+    <dimen name="dimen_6_67dp">6.67dp</dimen>
     <dimen name="dimen_8dp">8dp</dimen>
+    <dimen name="dimen_9dp">9dp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
     <dimen name="dimen_12dp">12dp</dimen>
     <dimen name="dimen_16dp">16dp</dimen>
     <dimen name="dimen_20dp">20dp</dimen>
+    <dimen name="dimen_22dp">22dp</dimen>
     <dimen name="dimen_25dp">25dp</dimen>
     <dimen name="dimen_26dp">26dp</dimen>
+    <dimen name="dimen_30dp">30dp</dimen>
     <dimen name="dimen_32dp">32dp</dimen>
+    <dimen name="dimen_33_33dp">33.33dp</dimen>
+    <dimen name="dimen_36dp">36dp</dimen>
     <dimen name="dimen_40dp">40dp</dimen>
     <dimen name="dimen_48dp">48dp</dimen>
+    <dimen name="dimen_49dp">49dp</dimen>
+    <dimen name="dimen_50dp">50dp</dimen>
+    <dimen name="dimen_53_33dp">53.33dp</dimen>
+    <dimen name="dimen_56dp">56dp</dimen>
+    <dimen name="dimen_56_67dp">56.67dp</dimen>
+    <dimen name="dimen_60dp">60dp</dimen>
+    <dimen name="dimen_64dp">64dp</dimen>
     <dimen name="dimen_70dp">70dp</dimen>
+    <dimen name="dimen_82dp">82dp</dimen>
+    <dimen name="dimen_88dp">88dp</dimen>
     <dimen name="dimen_90dp">90dp</dimen>
     <dimen name="dimen_92dp">92dp</dimen>
+    <dimen name="dimen_98dp">98dp</dimen>
     <dimen name="dimen_100dp">100dp</dimen>
+    <dimen name="dimen_103dp">103dp</dimen>
+    <dimen name="dimen_113_33dp">113.33dp</dimen>
+    <dimen name="dimen_123dp">123dp</dimen>
     <dimen name="dimen_134dp">134dp</dimen>
     <dimen name="dimen_200dp">200dp</dimen>
     <dimen name="dimen_210dp">210dp</dimen>
+    <dimen name="dimen_220dp">220dp</dimen>
     <dimen name="dimen_230dp">230dp</dimen>
+    <dimen name="dimen_240dp">240dp</dimen>
+    <dimen name="dimen_249dp">249dp</dimen>
+    <dimen name="dimen_255dp">255dp</dimen>
+    <dimen name="dimen_260dp">260dp</dimen>
+    <dimen name="dimen_270dp">270dp</dimen>
+    <dimen name="dimen_312dp">312dp</dimen>
     <dimen name="dimen_320dp">320dp</dimen>
     <dimen name="dimen_328dp">328dp</dimen>
+    <dimen name="dimen_436dp">436dp</dimen>
 
-
-
-
-    <!-- MATERIAL: Typographic scale & basic styles -->
-    <dimen name="dimen_display_4">112sp</dimen>
-    <dimen name="dimen_display_3">56sp</dimen>
-    <dimen name="dimen_display_2">45sp</dimen>
-    <dimen name="dimen_display_1">34sp</dimen>
-    <dimen name="dimen_headline">24sp</dimen>
-    <dimen name="dimen_title">20sp</dimen>
-    <dimen name="dimen_subhead">16sp</dimen>
-    <dimen name="dimen_body">14sp</dimen>
-    <dimen name="dimen_button">14sp</dimen>
-    <dimen name="dimen_caption">12sp</dimen>
 
     <!-- BASE DIMENSIONS: PT TO SP (PT/3)-->
     <dimen name="dimen_68pt">22sp</dimen>
@@ -155,8 +107,6 @@
     <dimen name="margin_veryhuge">32dp</dimen>
     <dimen name="divider_height">1dp</dimen>
     <dimen name="distance_item_small">24dp</dimen>
-    <dimen name="navigation_item_divider_height">1dp</dimen>
-    <dimen name="navigation_cart_vertical_distance">17dp</dimen>
 
     <!-- <dimen name="navigation_menu_offset">35dp</dimen> -->
     <item name="navigation_menu_offset" type="dimen">100%</item>
@@ -174,8 +124,16 @@
     <dimen name="text_xl">20sp</dimen>
     <dimen name="text_8sp">8sp</dimen>
     <dimen name="text_16sp">16sp</dimen>
-    <!-- dimen name="text_xxl">22sp</dimen -->
 
+    <!-- MARGIN AND PADDING -->
+    <dimen name="margin_padding_xxl">20dp</dimen>
+    <dimen name="margin_padding_xl">16dp</dimen>
+    <dimen name="margin_padding_l">10dp</dimen>
+    <dimen name="margin_padding_m">8dp</dimen>
+    <dimen name="margin_padding_s">6dp</dimen>
+    <dimen name="margin_padding_xs">4dp</dimen>
+    <dimen name="margin_padding_xxs">2dp</dimen>
+    <dimen name="margin_padding_t">1dp</dimen>
 
     <item name="dialog_min_width_major" type="dimen">65%</item>
     <item name="dialog_min_width_minor" type="dimen">95%</item>
@@ -306,7 +264,7 @@
     <integer name="activate_go_top_buttom_line">6</integer>
     <integer name="activate_go_top_buttom_line_grid">3</integer>
     <integer name="activate_go_top_buttom_line_single">2</integer>
-    <dimen name="catalog_list_item_height">120dp</dimen>
+    <dimen name="catalog_list_item_height">130dp</dimen>
     <dimen name="catalog_grid_item_height">220dp</dimen>
     <dimen name="catalog_single_item_height">435dp</dimen>
     <dimen name="catalog_list_item_image_width">74.67dp</dimen>
@@ -316,7 +274,7 @@
     <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
     <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
     <dimen name="catalog_single_item_image_height">310dp</dimen>
-    <dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen>
+    <dimen name="catalog_tool_bar_height">@dimen/dimen_50dp</dimen>
 
     <!--<dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen> + 1-->
     <dimen name="catalog_tool_bar_margin">51dp</dimen>
@@ -416,7 +374,7 @@
     <dimen name="teaser_campaigns_margin_bottom">@dimen/teaser_margin_bottom</dimen>
 
     <!-- PRODUCT SIZE GUIDE -->
-    <dimen name="product_size_guide_main_container_height">@dimen/dimen_720px</dimen>
+    <dimen name="product_size_guide_main_container_height">@dimen/dimen_240dp</dimen>
 
     <!-- WIZARDS -->
     <dimen name="wizard_text_size">@dimen/dimen_68pt</dimen>
@@ -426,9 +384,9 @@
     <dimen name="buttontoast_hover">24dp</dimen>
     <dimen name="buttontoast_x_padding">12dp</dimen>
 
-    <dimen name="retry_layout_height">@dimen/dimen_780px</dimen>
+    <dimen name="retry_layout_height">@dimen/dimen_260dp</dimen>
 
-    <dimen name="shipping_time_fee_min_height">@dimen/dimen_100px</dimen>
+    <dimen name="shipping_time_fee_min_height">@dimen/dimen_33_33dp</dimen>
 
     <!-- CHECKBOX RATING -->
 
@@ -475,19 +433,13 @@
     <!-- ############## NEW MATERIAL DIMENSIONS ############## -->
 
     <!-- MATERIAL DIMENSION 1:1 -->
-    <dimen name="dimen_mat_1px">1dp</dimen>
-    <dimen name="dimen_mat_1_25px">1.25dp</dimen>
-    <dimen name="dimen_mat_2px">2dp</dimen>
-    <dimen name="dimen_mat_3px">3dp</dimen>
     <dimen name="dimen_mat_4px">4dp</dimen>
     <dimen name="dimen_mat_8px">8dp</dimen>
     <dimen name="dimen_mat_16px">16dp</dimen>
-    <dimen name="dimen_mat_36px">36dp</dimen>
     <dimen name="dimen_mat_45px">45dp</dimen>
     <dimen name="dimen_mat_48px">48dp</dimen>
     <dimen name="dimen_mat_60px">60dp</dimen>
     <dimen name="dimen_mat_80px">80dp</dimen>
-    <dimen name="dimen_mat_88px">88dp</dimen>
     <dimen name="dimen_mat_110px">110dp</dimen>
     <dimen name="dimen_mat_118px">118dp</dimen>
     <dimen name="dimen_mat_123px">123dp</dimen>
@@ -560,5 +512,16 @@
 
     <!-- BOTTOM SHEET -->
     <integer name="dialog_max_items">5</integer>
+
+    <!-- BORDER -->
+    <dimen name="border_xxs">1dp</dimen>
+
+    <!-- DIVIDER -->
+    <dimen name="divider_xxs">1dp</dimen>
+
+    <!-- RATING REVIEWS -->
+    <item name="reviews_rating_group_left_percentage" format="float" type="dimen">.45</item>
+    <item name="reviews_rating_group_right_percentage" format="float" type="dimen">.55</item>
+
 
 </resources>

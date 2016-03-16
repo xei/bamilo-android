@@ -191,7 +191,7 @@ public class SimpleMonthView extends View {
         mMonthTitleTypeface = FONT;
 
         mDayTextColor = res.getColor(R.color.date_picker_text_normal);
-        mTodayNumberColor = res.getColor(R.color.orange_f68b1e);
+        mTodayNumberColor = res.getColor(R.color.orange_1);
         mMonthTitleColor = res.getColor(R.color.white);
         mMonthTitleBGColor = res.getColor(R.color.circle_background);
 
@@ -299,8 +299,6 @@ public class SimpleMonthView extends View {
      *
      * @param params
      *            A map of the new parameters, see {@link #VIEW_PARAMS_HEIGHT}
-     * @param tz
-     *            The time zone this view should reference times in
      */
     public void setMonthParams(HashMap<String, Integer> params) {
         if (!params.containsKey(VIEW_PARAMS_MONTH) && !params.containsKey(VIEW_PARAMS_YEAR)) {

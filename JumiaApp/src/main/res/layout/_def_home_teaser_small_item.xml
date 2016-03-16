@@ -9,11 +9,11 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_small_title"
-            style="@style/TextSubHead" />
+            style="@style/TextBase.SubHead" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_small_sub_title"
-            style="@style/TextCaption" />
+            style="@style/TextBase.Caption" />
 
         <FrameLayout
             android:layout_width="match_parent"

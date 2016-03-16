@@ -182,7 +182,7 @@ public class JumiaApplication extends Application {
             ISessionCookie cookieStore = null;
             SharedPreferences sharedPrefs = getApplicationContext().getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             if (sharedPrefs.contains(Darwin.KEY_SELECTED_COUNTRY_ID)) {
-                cookieStore = AigHttpClient.getInstance().getCurrentCookie();
+                cookieStore = AigHttpClient.getInstance(getApplicationContext()).getCurrentCookie();
             }
             mCustomerUtils = new PersistentSessionStore(getApplicationContext(), SHOP_ID, cookieStore);
         }

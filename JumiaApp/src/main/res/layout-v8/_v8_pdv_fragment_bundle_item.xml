@@ -9,30 +9,32 @@
 
     <RelativeLayout
         android:id="@+id/im"
-        android:layout_width="@dimen/combo_bundle_item_with"
+        android:layout_width="wrap_content"
         android:layout_height="102dp"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/item_image_loadable"
-            layout="@layout/image_loadable"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true" />
-
         <com.mobile.components.customfontviews.CheckBox
             android:id="@+id/item_check"
-            style="@style/form_checkbox_style"
+            style="@style/FormCheckBox.Central"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="6dp"
-            android:layout_marginRight="6dp"
+            android:paddingLeft="0dp"
             android:checked="true"
             android:clickable="false"
-
             />
+
+        <include
+            android:id="@+id/item_image_loadable"
+            layout="@layout/_def_gen_image_loadable"
+            android:layout_width="@dimen/combo_bundle_item_with"
+            android:layout_height="102dp"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@id/item_check"/>
+
+
 
     </RelativeLayout>
 
@@ -44,7 +46,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:textColor="@color/black_800"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +54,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_title"
-            style="@style/TextHeader"
+            style="@style/TextBase.HeadLine"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -61,7 +63,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_price"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

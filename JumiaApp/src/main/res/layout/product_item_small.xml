@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_banners_brands_list_height"
         android:layout_centerHorizontal="true"
-        layout="@layout/image_loadable" />
+        layout="@layout/_def_gen_image_loadable" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_brand"

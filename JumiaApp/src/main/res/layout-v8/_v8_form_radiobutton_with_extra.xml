@@ -9,7 +9,7 @@
 
     <View
         android:id="@+id/radio_divider"
-        style="@style/divider_horizontal.Black700" />
+        style="@style/DividerHorizontal.Black_700" />
 
     <!-- RADIO BUTTON -->
 
@@ -44,17 +44,17 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_time_label_and_value"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_fee_label_and_value"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_fee_info"
-            style="@style/TextInfo_2"
+            style="@style/TextBase.Caption"
             android:text="@string/shipping_fee_info"
             android:visibility="gone" />
 
@@ -68,7 +68,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_stations_title"
-            style="@style/TextList_2"
+            style="@style/TextBase.Display_3"
             android:text="@string/select_city"
             android:visibility="gone" />
 
