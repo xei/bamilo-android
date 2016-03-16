@@ -15,7 +15,7 @@
 
         <include
             android:id="@+id/item_image_loadable"
-            layout="@layout/image_loadable"
+            layout="@layout/_def_gen_image_loadable"
             android:layout_width="@dimen/combo_bundle_item_with"
             android:layout_height="102dp"
             android:layout_centerHorizontal="true" />

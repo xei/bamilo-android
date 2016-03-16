@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/image_loadable"
-        layout="@layout/image_loadable"
+        layout="@layout/_def_gen_image_loadable"
         android:layout_width="@dimen/dimen_98dp"
         android:layout_height="@dimen/dimen_123dp"
         android:layout_centerHorizontal="true"

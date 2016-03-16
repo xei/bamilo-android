@@ -12,7 +12,7 @@
 
     <include
         android:id="@+id/image_loadable"
-        layout="@layout/image_loadable"
+        layout="@layout/_def_gen_image_loadable"
         android:layout_width="@dimen/catalog_list_item_image_width"
         android:layout_height="@dimen/catalog_list_item_image_height"
         android:layout_marginEnd="@dimen/margin_60px"

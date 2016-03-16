@@ -16,11 +16,6 @@
         <item name="android:paddingRight">@dimen/margin_padding_xl</item>
     </style>
 
-    <style name="DialogFilterButtonsContainer">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-    </style>
-
     <!-- ################# DIALOG BUTTONS ################# -->
 
     <style name="DialogFormButtonSubmit" parent="@style/Button_1.Shop.Wrap">
@@ -33,9 +28,13 @@
 
     <style name="DialogFilterButtonSubmit" parent="@style/Button_1.Shop">
         <item name="android:text">@string/apply_label</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
     </style>
 
     <style name="DialogFilterButtonCancel" parent="@style/Button_1.Secondary.Text_Black_800.Border_400">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:text">@string/clear_all_lowercase_label</item>
     </style>
 

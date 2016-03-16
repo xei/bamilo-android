@@ -451,9 +451,9 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         mCompleteProductSku = product.getSku();
         // Set layout
         setTitle();
+        setSlideShow();
         setBuyButton();
         setWishListButton();
-        setSlideShow();
         setProductPriceInfo();
         setRatingInfo();
         setBrandInfo();
@@ -783,12 +783,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      * Method used to create the view
      */
     private void setRelatedItems() {
-        //FIXME
         if (CollectionUtils.isNotEmpty(mProduct.getRelatedProducts())) {
-
-            if(mProduct.getRichRelevance() != null && TextUtils.isNotEmpty(mProduct.getRichRelevance().getTitle()))
-                ((TextView)mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mProduct.getRichRelevance().getTitle());
-
+            if (mProduct.getRichRelevance() != null && TextUtils.isNotEmpty(mProduct.getRichRelevance().getTitle())) {
+                ((TextView) mRelatedProductsView.findViewById(R.id.pdv_related_title)).setText(mProduct.getRichRelevance().getTitle());
+            }
             ExpandedGridViewComponent relatedGridView = (ExpandedGridViewComponent) mRelatedProductsView.findViewById(R.id.pdv_related_grid_view);
             relatedGridView.setExpanded(true);
             relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, mProduct.getRelatedProducts()));
@@ -1247,7 +1245,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 //keep the bundle
                 mProduct.setProductBundle(bundleList);
                 // build combo section from here
-                buildComboSection(bundleList);
+                setCombos();
                 break;
             case GET_RICH_RELEVANCE_EVENT:
                 RichRelevance productRichRelevance = (RichRelevance) baseResponse.getContentData();
@@ -1392,7 +1390,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     /**
      * functions that verifies if product simple is out of stock
      */
-    private boolean verifyOutOfStock(){
+    private boolean verifyOutOfStock() {
         return (mProduct.getSelectedSimple() != null && mProduct.getSelectedSimple().isOutOfStock());
     }
 

@@ -138,6 +138,7 @@
     <item name="campaign_spinner_dropdown_item"         type="layout">@layout/_v8_campaign_spinner_dropdown_item</item>
     <item name="offers_item"                            type="layout">@layout/_v8_offers_item</item>
     <item name="product_gallery_fragment"               type="layout">@layout/_v8_product_gallery_fragment</item>
+    <item name="product_gallery_full_activity"          type="layout">@layout/_v8_product_gallery_full_activity</item>
     <item name="voucher_insert_layout"                  type="layout">@layout/_v8_voucher_insert_layout</item>
     <item name="form_spinner_item"                      type="layout">@layout/_v8_form_spinner_item</item>
     <item name="review_fragment"                        type="layout">@layout/_v8_review_fragment</item>
