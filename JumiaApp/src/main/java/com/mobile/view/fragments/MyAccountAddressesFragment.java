@@ -66,10 +66,7 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Hide some checkout views
-        UIUtils.showOrHideViews(View.GONE,
-                view.findViewById(R.id.checkout_total_bar),
-                view.findViewById(R.id.divider_horizontal),
-                view.findViewById(ORDER_SUMMARY_CONTAINER));
+        UIUtils.showOrHideViews(View.GONE, view.findViewById(R.id.checkout_total_bar), view.findViewById(ORDER_SUMMARY_CONTAINER));
     }
 
     @Override
