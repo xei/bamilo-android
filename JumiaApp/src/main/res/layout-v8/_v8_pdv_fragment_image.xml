@@ -28,7 +28,8 @@
 
     <FrameLayout
         android:id="@+id/pdv_slide_show_container"
-        style="@style/PdvSlideShowStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/pdv_title_container" />
 
     <!-- FAVOURITE -->
