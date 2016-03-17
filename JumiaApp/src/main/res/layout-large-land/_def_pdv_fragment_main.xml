@@ -108,8 +108,8 @@
 
             <!-- COMBOS -->
             <include
-                android:id="@+id/pdv_combos_container"
-                layout="@layout/_def_pdv_fragment_combos" />
+                android:id="@+id/pdv_combo_parent"
+                layout="@layout/_def_pdv_fragment_combo_main" />
 
             <!-- RELATED ITEMS -->
             <include

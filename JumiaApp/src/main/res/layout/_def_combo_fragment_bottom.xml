@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/line_separator" />
+    <View style="@style/DividerHorizontal.Black_300" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -29,27 +26,22 @@
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/txTotalComboPrice"
+            android:id="@+id/pdv_combo_price"
             style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/txLabelTotal"
-            android:layout_toEndOf="@+id/txLabelTotal"
             android:layout_marginStart="@dimen/layout_padding"
-            android:text="RS 524"
-            android:textColor="@color/orange_2" />
+            android:layout_toEndOf="@+id/txLabelTotal"
+            android:layout_toRightOf="@+id/txLabelTotal"
+            android:textColor="@color/orange_2"
+            tools:text="RS 524" />
 
     </RelativeLayout>
 
     <com.mobile.components.customfontviews.Button
-        android:id="@+id/btBuyCombo"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/orange_2"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:text="@string/buy_combo"
-        android:textColor="@color/white" />
+        android:id="@+id/combo_button_buy"
+        style="@style/Button_1.Shop"
+        android:text="@string/buy_combo" />
 
 </LinearLayout>

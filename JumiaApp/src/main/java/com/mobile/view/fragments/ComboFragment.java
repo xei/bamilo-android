@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
@@ -38,10 +39,9 @@ import java.util.EnumSet;
 public class ComboFragment extends BaseFragment implements IResponseCallback, OnProductViewHolderClickListener, DialogSimpleListFragment.OnDialogListListener {
 
     private BundleList mBundleList;
-    private String productSku;
+    private String mProductSku;
     private TextView mTotalPrice;
     private ComboGridView mGridView;
-    private ComboGridAdapter adapter;
     private ProductBundle mBundleWithMultiple;
     private boolean mIsToAddBundleToCart = false;
 
@@ -51,7 +51,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
     public ComboFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.COMBOS,
-                R.layout.pdv_combos_page,
+                R.layout._def_pdv_combo_fragment,
                 R.string.combos_label,
                 NO_ADJUST_CONTENT);
     }
@@ -84,7 +84,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments);
             mBundleList = arguments.getParcelable(RestConstants.BUNDLE_PRODUCTS);
-            productSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
+            mProductSku = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
         }
     }
 
@@ -97,16 +97,18 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         //update total price
-        mTotalPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.txTotalComboPrice);
+        mTotalPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.pdv_combo_price);
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(mBundleList.getPrice()));
         mGridView = (ComboGridView) view.findViewById(R.id.combo_grid_view);
-        adapter = new ComboGridAdapter(getBaseActivity(), mBundleList.getProducts(), productSku);
-        adapter.setOnViewHolderClickListener(this);
-        mGridView.setAdapter(adapter);
-        mGridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns));
+        mGridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns)); // TODO Validate
         mGridView.setHasFixedSize(true);
         mGridView.setItemAnimator(new DefaultItemAnimator());
-        view.findViewById(R.id.btBuyCombo).setOnClickListener(this);
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
+        ComboGridAdapter adapter = new ComboGridAdapter(getBaseActivity(), mBundleList.getProducts(), mProductSku);
+        adapter.setOnViewHolderClickListener(this);
+        mGridView.setAdapter(adapter);
+        view.findViewById(R.id.combo_button_buy).setOnClickListener(this);
     }
 
     /**
@@ -119,7 +121,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         // Get id
         int id = view.getId();
         // Case sort button
-        if (id == R.id.btBuyCombo) {
+        if (id == R.id.combo_button_buy) {
             Print.i(TAG, "ADD CART CLICKED");
             addComboToCart();
         }
@@ -217,9 +219,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.CONTENT_ID,selectedSku);
         getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-
     }
-
 
     /**
      * updates the combo total price in checking/unchecking bundle
@@ -231,7 +231,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             //get Selected Item
             ProductBundle selectedBundle = ((ComboGridAdapter) adapter).getItem(position);
 
-            if (!selectedBundle.getSku().equals(productSku)) {
+            if (!selectedBundle.getSku().equals(mProductSku)) {
                 //update checkbox status
                 CheckBox cb = (CheckBox) view;
                 cb.setChecked(!cb.isChecked());
@@ -243,7 +243,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
             adapter.notifyDataSetChanged();
         }
         // User pressed the size button
-        else if (view.getId() == R.id.choosen_variation){
+        else if (view.getId() == R.id.item_variation){
             mIsToAddBundleToCart = false;
             try {
                 int positions = (int) view.getTag(R.id.position);
@@ -258,9 +258,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                 Print.w(TAG, "WARNING: NPE ON SHOW VARIATIONS DIALOG");
             }
         }
-
     }
-
 
     /**
      * Update the combo list container
