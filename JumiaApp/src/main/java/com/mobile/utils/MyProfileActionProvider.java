@@ -186,7 +186,7 @@ public class MyProfileActionProvider extends ActionProvider {
             Print.i(TAG, "code1 first getView");
             View view = convertView;
             if (view == null) {
-                view = LayoutInflater.from(getContext()).inflate(R.layout.single_line_with_icon_component, parent, false);
+                view = LayoutInflater.from(getContext()).inflate(R.layout._def_gen_single_line_with_icon_component, parent, false);
             }
             return view;
         }
@@ -196,7 +196,7 @@ public class MyProfileActionProvider extends ActionProvider {
             Print.i(TAG, "code1 second getView");
             View view = convertView;
             if (view == null) {
-                view = LayoutInflater.from(getContext()).inflate(R.layout.single_line_with_icon_component, parent, false);
+                view = LayoutInflater.from(getContext()).inflate(R.layout._def_gen_single_line_with_icon_component, parent, false);
             }
             // Get view
             ImageView icon = ((SingleLineComponent) view).getStartImageView();
