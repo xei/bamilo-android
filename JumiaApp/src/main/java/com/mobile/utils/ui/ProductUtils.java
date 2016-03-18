@@ -82,14 +82,11 @@ public class ProductUtils {
         if (productBase.hasDiscount()) {
             final String specialPrice = CurrencyFormatter.formatCurrency(productBase.getSpecialPrice());
             final String regularPrice = CurrencyFormatter.formatCurrency(productBase.getPrice());
-            String price = String.format(context.getString(R.string.first_space_second_placeholder), specialPrice, regularPrice);
-            if(ShopSelector.isRtl()){
-                price = String.format(context.getString(R.string.first_space_second_placeholder),regularPrice , specialPrice);
-            }
+            final String price = String.format(context.getString(R.string.first_space_second_placeholder), specialPrice, regularPrice);
             int index = price.indexOf(regularPrice);
             SpannableString spannableString = new SpannableString(price);
-            spannableString.setSpan(new StrikethroughSpan(), index, regularPrice.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context,R.color.black_800)), index, regularPrice.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StrikethroughSpan(), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context,R.color.black_800)), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             priceView.setText(spannableString);
         }
         // Case normal

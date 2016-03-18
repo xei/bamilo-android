@@ -166,14 +166,20 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
         position = getRealPosition(position);
         // Get item
         super.onBindViewHolder(holder, position);
-        if(getItemViewType(position) == ITEM_VIEW_TYPE_GRID){
-            ProductRegular item = mDataSet.get(position);
-            ProductUtils.setPriceRules(item, holder.discount, holder.price);
-        }
+
 
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
+    }
+
+    @Override
+    protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
+        if(holder.itemView.getTag() == ITEM_VIEW_TYPE_GRID){
+            ProductUtils.setPriceRules(item, holder.discount, holder.price);
+        } else {
+            super.setProductPrice(holder, item);
+        }
     }
 
     /**
