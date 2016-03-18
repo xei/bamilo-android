@@ -82,7 +82,10 @@ public class ProductUtils {
         if (productBase.hasDiscount()) {
             final String specialPrice = CurrencyFormatter.formatCurrency(productBase.getSpecialPrice());
             final String regularPrice = CurrencyFormatter.formatCurrency(productBase.getPrice());
-            final String price = String.format(context.getString(R.string.first_space_second_placeholder), specialPrice, regularPrice);
+            String price = String.format(context.getString(R.string.first_space_second_placeholder), specialPrice, regularPrice);
+            if(ShopSelector.isRtl()){
+                price = String.format(context.getString(R.string.first_space_second_placeholder),regularPrice , specialPrice);
+            }
             int index = price.indexOf(regularPrice);
             SpannableString spannableString = new SpannableString(price);
             spannableString.setSpan(new StrikethroughSpan(), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
