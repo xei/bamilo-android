@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/component_container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_48dp"
     android:gravity="right|center_vertical"
-    android:layoutDirection="ltr"
-    >
+    android:layoutDirection="ltr">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tx_single_line_text"
-        style="@style/SingleLineList.WithIcon"
-        />
+        style="@style/SingleLineList.WithIcon" />
+
     <ImageView
         android:id="@+id/icon_start"
         style="@style/SingleLineListIconStartRTL"
-        android:visibility="invisible"
-        />
+        android:visibility="invisible" />
 
 
 </android.support.v7.widget.LinearLayoutCompat>
