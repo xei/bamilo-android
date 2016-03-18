@@ -38,7 +38,7 @@ public class CountryAdapter extends ArrayAdapter<String> {
     private final LayoutInflater mInflater;
 
     public CountryAdapter(Context context, String[] values, String[] flagsList) {
-        super(context, R.layout._def_gen_single_line_with_icon_component, values);
+        super(context, R.layout.gen_single_line_with_icon, values);
         this.values = values;
         this.flagsList = flagsList;
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -53,7 +53,7 @@ public class CountryAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         SingleLineComponent rowView = (SingleLineComponent) convertView;
         if (rowView == null) {
-            rowView = (SingleLineComponent) mInflater.inflate(R.layout._def_gen_single_line_with_icon_component, parent, false);
+            rowView = (SingleLineComponent) mInflater.inflate(R.layout.gen_single_line_with_icon, parent, false);
         }
         TextView textView = rowView.getTextView();
         ImageView imageView = rowView.getStartImageView();

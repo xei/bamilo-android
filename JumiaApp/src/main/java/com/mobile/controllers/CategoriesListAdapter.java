@@ -96,7 +96,7 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
         if (convertView != null && convertView.getTag() != null) {
             item = (ItemCategory) convertView.getTag();
         } else {
-            convertView = mInflater.inflate(R.layout._def_gen_single_line_with_two_icons_component, parent, false);
+            convertView = mInflater.inflate(R.layout.gen_single_line_with_two_icons, parent, false);
             item = new ItemCategory();
             item.name = (TextView)((SingleLineComponent) convertView).getTextView();
             item.icon = ((SingleLineComponent) convertView).getStartImageView();
@@ -143,7 +143,7 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
         Category childCategory = (Category) getChild(groupPosition, childPosition);
         // Inflate view
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout._def_gen_single_line_with_two_icons_component, null);
+            convertView = mInflater.inflate(R.layout.gen_single_line_with_two_icons, null);
         }
         ((TextView) convertView.findViewById(R.id.tx_single_line_text)).setText(childCategory.getName());
         return convertView;
