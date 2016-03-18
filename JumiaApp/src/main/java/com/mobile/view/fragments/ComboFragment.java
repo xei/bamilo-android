@@ -100,7 +100,7 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         mTotalPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.pdv_combo_price);
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(mBundleList.getPrice()));
         mGridView = (ComboGridView) view.findViewById(R.id.combo_grid_view);
-        mGridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns)); // TODO Validate
+        mGridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns));
         mGridView.setHasFixedSize(true);
         mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
