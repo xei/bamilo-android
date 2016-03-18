@@ -19,6 +19,7 @@ import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
+import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -165,9 +166,20 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
         position = getRealPosition(position);
         // Get item
         super.onBindViewHolder(holder, position);
+
+
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
+    }
+
+    @Override
+    protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
+        if(holder.itemView.getTag() == ITEM_VIEW_TYPE_GRID){
+            ProductUtils.setPriceRules(item, holder.discount, holder.price);
+        } else {
+            super.setProductPrice(holder, item);
+        }
     }
 
     /**

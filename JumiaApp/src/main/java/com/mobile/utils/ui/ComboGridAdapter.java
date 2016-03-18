@@ -17,6 +17,7 @@ import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -30,13 +31,13 @@ import java.util.ArrayList;
  */
 public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.ProductViewHolder> implements OnClickListener {
 
-    private ArrayList<ProductBundle> mDataSet;
+    private final ArrayList<ProductBundle> mDataSet;
 
-    private Context mContext;
+    private final Context mContext;
 
     private int mLastPosition = -1;
 
-    private String mProductSku;
+    private final String mProductSku;
 
     private OnProductViewHolderClickListener mOnViewHolderClicked;
 
@@ -155,6 +156,9 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      * Set the check box
      */
     private void setCheckBox(CheckBox view, ProductBundle item) {
+        if(DeviceInfoHelper.isPosLollipop()){
+            UIUtils.checkBoxDrawableStateCompat(view);
+        }
         view.setChecked(item.isChecked());
         view.setEnabled(!TextUtils.equals(item.getSku(), mProductSku));
     }

@@ -73,7 +73,7 @@ public class ProductUtils {
         // Case normal
         else {
             specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
-            price.setText("");
+            price.setVisibility(View.GONE);
         }
     }
 

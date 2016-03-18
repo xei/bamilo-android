@@ -8,7 +8,7 @@ import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 
 
 
-public class EditText extends android.widget.EditText implements FontStyleProvider {
+public class EditText extends MaterialEditText implements FontStyleProvider {
     private String mFontFamily;
 
     private int mFontStyle;
