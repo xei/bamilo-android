@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_weight="2"
     android:gravity="center"
-    android:minHeight="30dp"
+    android:minHeight="@dimen/dimen_30dp"
     android:orientation="horizontal">
 
     <!--SPEC-->
