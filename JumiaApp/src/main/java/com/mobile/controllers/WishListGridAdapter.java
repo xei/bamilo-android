@@ -80,7 +80,6 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         setClickableViews(position, holder.container, holder.deleteButton, holder.addToCartButton, holder.varianceButton);
     }
 
-
     /**
      * Set this as clickable
      *

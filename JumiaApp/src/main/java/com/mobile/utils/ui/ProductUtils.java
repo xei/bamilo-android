@@ -108,15 +108,15 @@ public class ProductUtils {
     /**
      * Set the variation container
      */
-    public static void setVariationContent(@NonNull View view, @NonNull ProductMultiple product){
+    public static void setVariationContent(@NonNull View view, @NonNull ProductMultiple product) {
         // Set simple button
-        if(product.hasMultiSimpleVariations()) {
+        if (product.hasMultiSimpleVariations()) {
             // Set simple value
             String simpleVariationValue = "...";
-            if(product.hasSelectedSimpleVariation()) {
+            if (product.hasSelectedSimpleVariation()) {
                 simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
             }
-            if(view instanceof TextView) {
+            if (view instanceof TextView) {
                 ((TextView) view).setText(simpleVariationValue);
             }
             view.setVisibility(View.VISIBLE);

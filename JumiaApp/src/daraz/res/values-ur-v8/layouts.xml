@@ -68,10 +68,15 @@
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_v8_pdv_fragment_buy_bar</item>
     <item name="pdv_fragment_rating" 	                type="layout">@layout/_v8_pdv_fragment_rating</item>
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_v8_pdv_fragment_seller_info</item>
-    <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_v8_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_v8_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_v8_config_confirmation_msg</item>
     <item name="pdv_brand_section"                      type="layout">@layout/_v8_pdv_brand_section</item>
+    <item name="pdv_fragment_combo_group"               type="layout">@layout/_v8_pdv_fragment_combo_group</item>
+    <item name="pdv_fragment_combo_group_item"          type="layout">@layout/_v8_pdv_fragment_combo_group_item</item>
+    <item name="combo_fragment_item"                    type="layout">@layout/_v8_combo_fragment_item</item>
+    <item name="combo_fragment_bottom"                  type="layout">@layout/_v8_combo_fragment_bottom</item>
+    <item name="gen_product_two_prices"                 type="layout">@layout/_v8_gen_product_two_prices</item>
+    <item name="gen_product_rating_small"               type="layout">@layout/_v8_gen_product_rating_small</item>
 
     <!-- MY ORDERS -->
     <item name="order_status_fragment"                  type="layout">@layout/_v8_order_status_fragment</item>
@@ -142,13 +147,6 @@
     <item name="voucher_insert_layout"                  type="layout">@layout/_v8_voucher_insert_layout</item>
     <item name="form_spinner_item"                      type="layout">@layout/_v8_form_spinner_item</item>
     <item name="review_fragment"                        type="layout">@layout/_v8_review_fragment</item>
-
-    <!-- COMBOS -->
-    <item name="bottom_combo"                           type="layout">@layout/_v8_bottom_combo</item>
-    <item name="pdv_combo_item_list"                    type="layout">@layout/_v8_pdv_combo_item_list</item>
-    <item name="pdv_fragment_bundle_item"               type="layout">@layout/_v8_pdv_fragment_bundle_item</item>
-    <item name="pdv_fragment_combo_item"                type="layout">@layout/_v8_pdv_fragment_combo_item</item>
-    <item name="pdv_fragment_combos"                    type="layout">@layout/_v8_pdv_fragment_combos</item>
 
     <!-- REVIEWS DESCRIPTION SPECIFICATIONS -->
     <item name="product_summary_fragment"               type="layout">@layout/_v8_product_summary_fragment</item>
