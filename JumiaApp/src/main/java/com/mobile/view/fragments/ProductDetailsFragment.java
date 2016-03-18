@@ -109,7 +109,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private ViewGroup mComboProductsLayout;
     private ViewGroup mTitleContainer;
     private View mGlobalButton;
-    private View mOffersContainer;
+    private View mOtherSellersContainer;
     private String mRichRelevanceHash;
     private String mRelatedRichRelevanceHash;
     private ViewGroup mBrandView;
@@ -202,7 +202,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
         // Offers
-        mOffersContainer = view.findViewById(R.id.pdv_other_sellers_button);
+        mOtherSellersContainer = view.findViewById(R.id.pdv_other_sellers_button);
         // Bottom Buy Bar
         view.findViewById(R.id.pdv_button_share).setOnClickListener(this);
         view.findViewById(R.id.pdv_button_call).setOnClickListener(this);
@@ -460,7 +460,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         setProductSize();
         setProductVariations();
         setSellerInfo();
-        setOffers();
+        setOtherSellersOffers();
         setDescription();
         setCombos();
         setRelatedItems();
@@ -484,17 +484,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-    private void setOffers() {
+    private void setOtherSellersOffers() {
         //show button offers with separator if has offers
-        View separator = mOffersContainer.findViewById(R.id.separator);
         if (mProduct.hasOffers()) {
-            TextView txOffers = (TextView) mOffersContainer.findViewById(R.id.pdv_sublist_button);
+            TextView txOffers = (TextView) mOtherSellersContainer.findViewById(R.id.tx_single_line_text);
             txOffers.setText(String.format(getString(R.string.other_sellers_starting), CurrencyFormatter.formatCurrency(mProduct.getMinPriceOffer())));
-            mOffersContainer.setOnClickListener(this);
-            separator.setVisibility(View.VISIBLE);
+            mOtherSellersContainer.setOnClickListener(this);
         } else {
-            mOffersContainer.setVisibility(View.GONE);
-            separator.setVisibility(View.GONE);
+            mOtherSellersContainer.setVisibility(View.GONE);
         }
     }
 

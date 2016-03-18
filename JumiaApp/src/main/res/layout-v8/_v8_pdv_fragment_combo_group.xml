@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
-        android:padding="@dimen/margin_padding_xl">
+        android:padding="@dimen/margin_padding_xl"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/pdv_combo_container"
