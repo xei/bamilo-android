@@ -1374,7 +1374,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
         });
 
-        Print.i(TAG,"code1check :fillProductBundleInfo: "+productBundleItem.isChecked()+" state isChecked: "+mCheck.isChecked()+" isEnabled: " +mCheck.isEnabled());
         RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
@@ -1405,20 +1404,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mBuyButton.setVisibility(View.GONE);
             if(mProduct.isWishList()){
                 mSaveForLater.setText(getString(R.string.remove_from_saved));
-                mSaveForLater.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSaveForLater.setEnabled(true);
-                    }
-                });
+                mSaveForLater.setSelected(true);
             } else {
                 mSaveForLater.setText(getString(R.string.save_for_later));
-                mSaveForLater.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSaveForLater.setEnabled(false);
-                    }
-                });
+                mSaveForLater.setSelected(false);
             }
         } else {
             mBuyButton.setVisibility(View.VISIBLE);

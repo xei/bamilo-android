@@ -62,8 +62,8 @@
         android:layout_alignLeft="@+id/item_brand"
         android:layout_alignStart="@+id/item_brand"
         android:layout_below="@id/item_name"
-        android:layout_marginEnd="@dimen/margin_padding_xs"
-        android:layout_marginRight="@dimen/margin_padding_xs"
+        android:layout_marginEnd="@dimen/dimen_50dp"
+        android:layout_marginRight="@dimen/dimen_50dp"
         tools:text="Discount" />
 
     <com.mobile.components.customfontviews.TextView
@@ -71,17 +71,17 @@
         style="@style/TextBase.Body.Black_800"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@id/item_name"
-        android:layout_marginEnd="@dimen/margin_padding_xxl"
-        android:layout_marginRight="@dimen/margin_padding_xxl"
-        android:layout_toEndOf="@id/item_discount"
-        android:layout_toRightOf="@id/item_discount"
+        android:layout_below="@id/item_discount"
+        android:layout_marginEnd="@dimen/dimen_50dp"
+        android:layout_marginRight="@dimen/dimen_50dp"
+        android:layout_alignLeft="@id/item_brand"
+        android:layout_alignStart="@id/item_brand"
         tools:text="Price" />
 
     <ImageView
         style="@style/ShopFirstStyle"
         android:id="@+id/item_shop_first"
-        android:layout_below="@id/item_discount"
+        android:layout_below="@id/item_regprice"
         android:layout_alignLeft="@id/item_brand"
         android:layout_alignStart="@id/item_brand" />
 

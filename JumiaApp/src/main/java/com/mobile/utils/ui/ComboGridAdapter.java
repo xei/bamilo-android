@@ -17,6 +17,7 @@ import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -30,13 +31,13 @@ import java.util.ArrayList;
  */
 public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.ProductViewHolder> implements OnClickListener {
 
-    private ArrayList<ProductBundle> mDataSet;
+    private final ArrayList<ProductBundle> mDataSet;
 
-    private Context mContext;
+    private final Context mContext;
 
     private int mLastPosition = -1;
 
-    private String mProductSku;
+    private final String mProductSku;
 
     private OnProductViewHolderClickListener mOnViewHolderClicked;
 
@@ -169,6 +170,9 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         ProductUtils.setVariationContent(holder.variation, item);
         holder.variation.setTag(R.id.position, position);
         holder.variation.setOnClickListener(this);
+        if(DeviceInfoHelper.isPosLollipop()){ // Fixes the checkbox state for Marshmallow
+            UIUtils.checkBoxDrawableStateCompat(holder.cbItem);
+        }
         //set selection
         holder.cbItem.setChecked(item.isChecked());
         holder.cbItem.setTag(R.id.position, position);
@@ -178,6 +182,8 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         if(!item.getSku().equals(mProductSku)) {
             holder.cbItem.setOnClickListener(this);
             holder.itemView.setOnClickListener(this);
+        } else {
+            holder.cbItem.setEnabled(false);
         }
     }
 
