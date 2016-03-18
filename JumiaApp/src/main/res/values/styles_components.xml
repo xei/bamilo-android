@@ -58,7 +58,6 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-
     <!-- Multi line -->
     <style name="MultiLineStyle" parent="@style/TextBase.Body.Black_800">
         <item name="android:layout_width">match_parent</item>

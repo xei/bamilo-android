@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_brand"
-        android:layout_marginLeft="@dimen/dimen_50dp"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
         android:layout_marginRight="@dimen/margin_padding_xl"
         android:gravity="right"
         android:layout_alignParentRight="true"
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_name"
-        android:layout_marginLeft="@dimen/margin_padding_xxl"
+        android:layout_marginLeft="@dimen/dimen_50dp"
         android:layout_toLeftOf="@id/item_discount"
         android:layout_marginTop="4dp"
         tools:text="Price" />
@@ -110,7 +110,7 @@
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/item_name"
+        android:layout_below="@id/item_name"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="@dimen/margin_padding_xl"
         android:gravity="center" />
