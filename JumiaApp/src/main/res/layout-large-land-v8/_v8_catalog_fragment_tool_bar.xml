@@ -3,8 +3,8 @@
     android:layout_height="@dimen/catalog_tool_bar_height"
     android:background="@color/black_300"
     android:gravity="center"
-    android:paddingBottom="1dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingBottom="1dp">
 
     <!-- GRID LAYOUT -->
 
@@ -12,24 +12,24 @@
         android:id="@+id/catalog_bar_button_columns"
         android:layout_width="@dimen/dimen_113_33dp"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
         android:background="@android:color/white"
-        android:src="@drawable/selector_catalog_list"
-        android:layout_alignParentLeft="true" />
+        android:src="@drawable/selector_catalog_list" />
 
     <View
         style="@style/DividerVertical.Black_300"
-        android:layout_marginTop="@dimen/margin_10px"
         android:layout_marginBottom="@dimen/margin_10px"
-        android:layout_toLeftOf="@+id/sort_container"/>
+        android:layout_marginTop="@dimen/margin_10px"
+        android:layout_toLeftOf="@+id/sort_container" />
     <!-- DIVIDER -->
 
     <LinearLayout
         android:id="@+id/catalog_bar_divider"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_centerInParent="true"
         android:addStatesFromChildren="true"
-        android:background="@drawable/selector_card_default_white"
-        android:layout_centerInParent="true">
+        android:background="@drawable/selector_card_default_white">
 
         <View
             style="@style/DividerVertical.Black_300"
@@ -41,23 +41,22 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/catalog_bar_divider"
         android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/catalog_bar_divider"
         android:addStatesFromChildren="true"
         android:background="@drawable/selector_card_default_white"
-        android:paddingLeft="@dimen/dimen_33_33dp"
-        android:gravity="left|center_vertical">
+        android:gravity="left|center_vertical"
+        android:paddingLeft="@dimen/dimen_33_33dp">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_filter"
-            android:drawablePadding="@dimen/margin_10px"
             style="@style/TextBase.Display_3"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/margin_10px"
             android:drawableRight="@drawable/selector_catalog_filter"
-            android:text="@string/filter_label" />
-
+            android:text="@string/filter_label"
+            android:textColor="@color/black" />
 
 
     </LinearLayout>
@@ -66,24 +65,24 @@
     <!-- SORT -->
 
     <LinearLayout
+        android:id="@+id/sort_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/sort_container"
         android:layout_toLeftOf="@id/catalog_bar_divider"
         android:layout_toRightOf="@id/catalog_bar_button_columns"
-        android:paddingRight="@dimen/dimen_33_33dp"
         android:background="@android:color/white"
-        android:gravity="right|center_vertical">
+        android:gravity="right|center_vertical"
+        android:paddingRight="@dimen/dimen_33_33dp">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_sort"
-            android:drawablePadding="@dimen/margin_10px"
             style="@style/TextBase.Display_3"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/margin_10px"
             android:drawableRight="@drawable/selector_catalog_sort"
-            android:text="@string/products_sort_popularity" />
+            android:text="@string/products_sort_popularity"
+            android:textColor="@color/black" />
     </LinearLayout>
 
 </RelativeLayout>

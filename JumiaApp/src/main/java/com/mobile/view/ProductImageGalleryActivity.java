@@ -20,9 +20,6 @@ import java.util.ArrayList;
 
 /**
  * Activity to show the the product images gallery.
- *
- *  TODO: THIS MUST USE THE GALLERY FRAGMENT
- *
  * Created by Paulo Carvalho on 4/13/15.
  */
 public class ProductImageGalleryActivity extends FragmentActivity implements View.OnClickListener {
@@ -39,7 +36,7 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        setContentView(R.layout.product_gallery_fragment);
+        setContentView(R.layout.product_gallery_full_activity);
 
         // control whether to allow the activity to rotate or not
         if(DeviceInfoHelper.isTabletDevice(getApplicationContext())){
@@ -64,9 +61,8 @@ public class ProductImageGalleryActivity extends FragmentActivity implements Vie
      */
     private void setContent(){
         mViewPager = (JumiaViewPagerWithZoom) findViewById(R.id.pdv_view_pager);
+        // Close button
         View closeView = findViewById(R.id.gallery_button_close);
-        // Get thumbnail indicator
-        findViewById(R.id.pdv_thumbnail_indicator_scroll).setVisibility(View.GONE);
         // Set view pager
         createGallery();
         // Set close button

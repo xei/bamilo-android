@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rating_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <RatingBar
+        android:id="@+id/item_rating_bar"
+        style="@style/StarBar.Small.Indicator"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        tools:rating="3.5" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_rating_text"
+        style="@style/TextBase.Body.Black_800"
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_marginStart="@dimen/margin_padding_l"
+        tools:text="(12)" />
+
+</LinearLayout>

@@ -63,14 +63,6 @@
         <item name="android:layout_marginLeft">10dp</item>
     </style>
 
-    <style name="PdvGlobalSellerButtonStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_alignParentRight">true</item>
-        <item name="android:background">@null</item>
-        <item name="android:src">@drawable/ic_overseas_corner</item>
-    </style>
-
     <!-- MY ACCOUNT -->
 
     <style name="_v8_form_radiobutton_style" parent="form_style">

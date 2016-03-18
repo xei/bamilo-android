@@ -20,9 +20,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignLeft="@id/center_point"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignStart="@id/center_point" />
+        android:layout_alignParentRight="true" />
+
+    <View
+        style="@style/DividerVertical.Black_300"
+        android:layout_alignLeft="@id/center_point" />
 
     <!-- LEFT -->
 
@@ -33,10 +35,8 @@
         layout="@layout/_def_pdv_fragment_buy_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@id/center_point"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignRight="@id/center_point" />
 
     <!-- LEFT CONTAINER -->
@@ -46,9 +46,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/pdp_buy_bar"
-        android:layout_alignEnd="@id/center_point"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:layout_alignRight="@id/center_point">
 
         <android.support.v7.widget.LinearLayoutCompat
@@ -103,8 +101,8 @@
 
             <!-- COMBOS -->
             <include
-                android:id="@+id/pdv_combos_container"
-                layout="@layout/pdv_fragment_combos" />
+                android:id="@+id/pdv_combo_parent"
+                layout="@layout/_def_pdv_fragment_combo_main" />
 
             <!-- RELATED ITEMS -->
             <include

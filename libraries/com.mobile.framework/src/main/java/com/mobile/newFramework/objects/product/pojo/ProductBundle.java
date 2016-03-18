@@ -6,7 +6,6 @@ import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
-import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,8 +22,6 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
 
     public static final String TAG = ProductBundle.class.getSimpleName();
 
-    private int bundleProductLeaderPos;
-
     private boolean isChecked = true;
 
     /**
@@ -32,13 +29,6 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
      */
     public ProductBundle() {
         super();
-        bundleProductLeaderPos = 0;
-        isChecked = true;
-    }
-
-    public ProductBundle(JSONObject jsonObject) {
-        this();
-        initialize(jsonObject);
     }
 
     /*
@@ -49,16 +39,8 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
      * )
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) {
-        try {
-            // Base
-            super.initialize(jsonObject);
-            // Leader
-            bundleProductLeaderPos = jsonObject.getInt(RestConstants.LEADER_SIMPLE_POSITION);
-        } catch (JSONException e) {
-            return false;
-        }
-        return true;
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        return super.initialize(jsonObject);
     }
 
     /*
@@ -76,10 +58,6 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
         return RequiredJson.NONE;
     }
 
-//    public int getBundleProductLeaderPos() {
-//        return bundleProductLeaderPos;
-//    }
-
     public boolean isChecked() {
         return isChecked;
     }
@@ -94,7 +72,6 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
 
     protected ProductBundle(Parcel in) {
         super(in);
-        bundleProductLeaderPos = in.readInt();
         isChecked = in.readByte() == 1;
 
     }
@@ -107,7 +84,6 @@ public class ProductBundle extends ProductMultiple implements IJSONSerializable,
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
-        dest.writeInt(bundleProductLeaderPos);
         dest.writeByte((byte) (isChecked ? 1 : 0));
     }
 

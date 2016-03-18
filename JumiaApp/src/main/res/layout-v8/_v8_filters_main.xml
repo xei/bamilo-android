@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,12 +10,13 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/buttons"
         android:layoutDirection="ltr"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UnusedAttribute">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.4"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <!-- TITLE -->
@@ -38,9 +38,9 @@
 
         <ListView
             android:id="@+id/filters_key"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="0.4"
             android:background="@color/black_300"
             android:divider="@color/black_400"
             android:dividerHeight="1dp"
@@ -48,11 +48,11 @@
     </LinearLayout>
 
     <!-- BUTTONS -->
-
     <include
         android:id="@+id/buttons"
         layout="@layout/filter_bottom_buttons"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
+
 </RelativeLayout>

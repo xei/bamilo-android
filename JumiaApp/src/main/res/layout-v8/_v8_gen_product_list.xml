@@ -13,7 +13,7 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_padding_xl"
         android:layout_marginRight="@dimen/margin_padding_xl"
-        layout="@layout/image_loadable"
+        layout="@layout/_def_gen_image_loadable"
         android:background="@color/color_accent" />
 
     <!-- INFORMATION -->
@@ -59,13 +59,12 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextBase.Body"
+        style="@style/TextBase.Body.Black_800"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/item_discount"
         android:layout_toLeftOf="@id/item_discount"
-        tools:text="Price"
-        android:textColor="@color/black_800" />
+        tools:text="Price" />
 
     <ImageView
         style="@style/ShopFirstStyle"

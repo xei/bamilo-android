@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ViewGroupCompat.Horizontal.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
@@ -48,9 +49,9 @@
                 android:id="@+id/shopping_basket_buttons_container"
                 style="@style/button_container"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_padding_l"
                 android:layout_marginLeft="@dimen/margin_padding_l"
                 android:layout_marginRight="@dimen/margin_padding_l"
-                android:layout_marginBottom="@dimen/margin_padding_l"
                 android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.Button
@@ -67,4 +68,4 @@
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>

@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <!-- SCROLL CONTAINER -->
 
     <com.mobile.utils.AigScrollViewWithHorizontal
         android:id="@+id/product_detail_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buy_bar"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <android.support.v7.widget.LinearLayoutCompat
@@ -67,8 +68,8 @@
 
             <!-- COMBOS -->
             <include
-                android:id="@+id/pdv_combos_container"
-                layout="@layout/_def_pdv_fragment_combos" />
+                android:id="@+id/pdv_combo_parent"
+                layout="@layout/_def_pdv_fragment_combo_main" />
 
             <!-- RELATED ITEMS -->
             <include
@@ -81,11 +82,6 @@
 
     <!-- BUTTON BAR -->
 
-    <include
-        android:id="@id/buy_bar"
-        layout="@layout/pdv_fragment_buy_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/buy_bar_height"
-        android:layout_alignParentBottom="true" />
+    <include layout="@layout/pdv_fragment_buy_bar" />
 
-</RelativeLayout>
+</LinearLayout>

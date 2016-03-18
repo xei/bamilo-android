@@ -24,6 +24,11 @@
         android:layout_alignParentStart="true"
         android:layout_alignRight="@id/center_point" />
 
+    <View
+        style="@style/DividerVertical.Black_300"
+        android:layout_alignEnd="@id/center_point"
+        android:layout_alignRight="@id/center_point" />
+
     <!-- RIGHT -->
 
     <!-- BOTTOM BAR -->
@@ -103,8 +108,8 @@
 
             <!-- COMBOS -->
             <include
-                android:id="@+id/pdv_combos_container"
-                layout="@layout/_def_pdv_fragment_combos" />
+                android:id="@+id/pdv_combo_parent"
+                layout="@layout/_def_pdv_fragment_combo_main" />
 
             <!-- RELATED ITEMS -->
             <include

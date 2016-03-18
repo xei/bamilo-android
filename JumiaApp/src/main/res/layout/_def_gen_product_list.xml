@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/image_loadable"
-        layout="@layout/image_loadable"
+        layout="@layout/_def_gen_image_loadable"
         android:layout_width="@dimen/dimen_82dp"
         android:layout_height="@dimen/dimen_103dp"
         android:layout_centerVertical="true"

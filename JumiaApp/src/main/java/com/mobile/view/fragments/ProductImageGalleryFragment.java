@@ -316,10 +316,8 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     public void onClick(View view) {
         // Get id
         int id = view.getId();
-        // Case close button
-        if (id == R.id.gallery_button_close) onClickCloseButton();
         // Case thumbnail indicator
-        else if (id == R.id.image_container) onClickThumbnailIndicator(view);
+        if (id == R.id.image_container) onClickThumbnailIndicator(view);
         // Unknown
         else Print.w(TAG, "WARNING: UNEXPECTED CLICK EVENT");
     }
@@ -334,16 +332,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
         Print.i(TAG, "ON CLICK INDICATOR POS: " + position);
         int n = ((InfinitePagerAdapter) mViewPager.getAdapter()).getVirtualPosition(position);
         mViewPager.setCurrentItem(n, true);
-    }
-    
-    /**
-     * Process the click on close button
-     * @author sergiopereira
-     */
-    private void onClickCloseButton() {
-        Print.i(TAG, "ON CLICK CLOSE BUTTON");
-        //sSharedSelectedPosition = getViewPagerPosition();
-        getBaseActivity().onBackPressed();
     }
 
     /**
@@ -386,7 +374,7 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
             }
             mViewPager.addOnPageChangeListener(this);
         } else {
-            UIUtils.setVisibility(mThumbnailContainer, false);
+            UIUtils.setVisibility(mHorizontalScrollView, false);
         }
     }
 

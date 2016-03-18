@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.WishListGridAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -42,7 +44,7 @@ import de.akquinet.android.androlog.Log;
  *
  * @author sergiopereira
  */
-public class WishListFragment extends BaseFragment implements IResponseCallback, DialogSimpleListFragment.OnDialogListListener {
+public class WishListFragment extends BaseFragment implements IResponseCallback, DialogSimpleListFragment.OnDialogListListener, OnWishListViewHolderClickListener {
 
     private static final String TAG = WishListFragment.class.getSimpleName();
 
@@ -118,7 +120,10 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Columns
         mNumberOfColumns = getResources().getInteger(R.integer.favourite_num_columns);
         mListView.setHasFixedSize(true);
+        mListView.setItemAnimator(new DefaultItemAnimator());
         mListView.setGridLayoutManager(mNumberOfColumns);
+        mListView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
+        mListView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
     }
 
     /*
@@ -246,27 +251,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
      * Show the wish list container as first time.
      */
     protected void showWishListContainer(WishList wishList) {
-        WishListGridAdapter listAdapter = new WishListGridAdapter(getBaseActivity(), wishList.getProducts(), new OnWishListViewHolderClickListener() {
-            @Override
-            public void onItemClick(View view) {
-                WishListFragment.this.onItemClick(view);
-            }
-
-            @Override
-            public void onClickDeleteItem(View view) {
-                WishListFragment.this.onClickDeleteItem(view);
-            }
-
-            @Override
-            public void onClickAddToCart(View view) {
-                WishListFragment.this.onClickAddToCart(view);
-            }
-
-            @Override
-            public void onClickVariation(View view) {
-                WishListFragment.this.onClickVariation(view);
-            }
-        });
+        WishListGridAdapter listAdapter = new WishListGridAdapter(wishList.getProducts(), this);
         mListView.setAdapter(listAdapter);
         showFragmentContentContainer();
     }
@@ -368,7 +353,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     /**
      * Process the click on variation button.
      */
-    protected void onClickVariation(View view) {
+    public void onClickVariation(View view) {
         Print.i(TAG, "ON CLICK TO SHOW VARIATION LIST");
         try {
             int position = (int) view.getTag(R.id.target_position);
@@ -414,7 +399,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     /**
      * Process the click on item
      */
-    protected void onItemClick(View view) {
+    public void onItemClick(View view) {
         Print.i(TAG, "ON ITEM CLICK");
         String sku = (String) view.getTag(R.id.target_sku);
         Bundle bundle = new Bundle();
@@ -425,7 +410,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     /**
      * Process the click on delete button
      */
-    protected void onClickDeleteItem(View view) {
+    public void onClickDeleteItem(View view) {
         Print.i(TAG, "ON CLICK DELETE ITEM");
         try {
             // Get position
@@ -444,7 +429,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     /**
      * Process the click on add button
      */
-    protected void onClickAddToCart(View view) {
+    public void onClickAddToCart(View view) {
         Print.i(TAG, "ON CLICK ADD ITEM TO CART");
         // Get position
         int position = (int) view.getTag(R.id.target_position);
