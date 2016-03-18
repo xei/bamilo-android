@@ -88,8 +88,8 @@ public class ProductUtils {
             }
             int index = price.indexOf(regularPrice);
             SpannableString spannableString = new SpannableString(price);
-            spannableString.setSpan(new StrikethroughSpan(), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context,R.color.black_800)), index, price.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new StrikethroughSpan(), index, regularPrice.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(context,R.color.black_800)), index, regularPrice.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             priceView.setText(spannableString);
         }
         // Case normal
