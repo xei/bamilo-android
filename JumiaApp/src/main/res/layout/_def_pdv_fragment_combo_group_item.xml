@@ -17,6 +17,7 @@
     <!--CHECK BOX-->
 
     <com.mobile.components.customfontviews.CheckBox
+        style="@style/FormCheckBox.Central"
         android:id="@+id/item_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

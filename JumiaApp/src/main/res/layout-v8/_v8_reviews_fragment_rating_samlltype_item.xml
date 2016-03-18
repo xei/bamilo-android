@@ -10,7 +10,8 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/title_type"
         style="@style/text_title"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        android:layout_marginBottom="@dimen/margin_padding_xs"
         tools:text="Title" />
 
     <RatingBar
@@ -18,7 +19,6 @@
         style="@style/StarBar.Small.Indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginBottom="@dimen/margin_padding_xs" />
 
 </LinearLayout>
