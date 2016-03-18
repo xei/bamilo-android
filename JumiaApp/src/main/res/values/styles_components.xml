@@ -18,7 +18,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="TextField" parent="TextBase.List.TextBlack">
+    <style name="TextField" parent="TextBase.List.Black">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/_gen_selector_text_field</item>
@@ -155,7 +155,7 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="FormButtonSpinner" parent="TextBase.List.TextBlack">
+    <style name="FormButtonSpinner" parent="TextBase.List.Black">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/spinner_background</item>

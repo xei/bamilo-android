@@ -56,11 +56,11 @@
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="TextBase.List.TextBlack">
+    <style name="TextBase.List.Black">
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="TextBase.List.TextBlack_800">
+    <style name="TextBase.List.Black_800">
         <item name="android:textColor">@color/black_800</item>
     </style>
 

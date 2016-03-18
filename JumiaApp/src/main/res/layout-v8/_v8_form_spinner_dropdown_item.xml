@@ -1,6 +1,6 @@
 <com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@android:id/text2"
-    style="@style/TextBase.List.TextBlack"
+    style="@style/TextBase.List.Black"
     android:layout_width="match_parent"
     android:layout_height="@dimen/form_item_height"
     android:background="@android:color/white"
