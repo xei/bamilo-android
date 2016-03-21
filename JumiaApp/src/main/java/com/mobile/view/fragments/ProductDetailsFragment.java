@@ -1331,7 +1331,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             count++;
         }
         // Slide the horizontal scroll view to the end to show the first element
-        if(ShopSelector.isRtl()){
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
             final HorizontalScrollView scroll = (HorizontalScrollView) mComboProductsLayout.findViewById(R.id.pdv_combo_scroll);
             scroll.postDelayed(new Runnable() {
                 public void run() {
