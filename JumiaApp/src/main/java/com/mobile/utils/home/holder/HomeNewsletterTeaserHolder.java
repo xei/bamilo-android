@@ -162,6 +162,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
 
             result &= control.validate();
         }
+
         return result;
     }
 
