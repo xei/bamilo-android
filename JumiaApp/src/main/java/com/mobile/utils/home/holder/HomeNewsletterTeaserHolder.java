@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.FormConstants;
@@ -20,6 +21,7 @@ import com.mobile.factories.FormFactory;
 import com.mobile.helpers.SubmitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -40,6 +42,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
     private final Button mSubmit;
     private EditText mEditText;
     private RadioGroupLayout mRadioGroupLayout;
+    private IcsSpinner mGenderSpinner;
     protected DynamicForm mNewsLetterForm;
     public static String sInitialValue;
     public static int sInitialGender = IntConstants.INVALID_POSITION;
@@ -97,6 +100,11 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
                     if(sInitialGender > 0 ){
                         mRadioGroupLayout.setSelection(sInitialGender);
                     }
+                } else if(control.getEntry().getInputType() == FormInputType.list){
+                    mGenderSpinner = (IcsSpinner) control.getDataControl();
+                    if(sInitialGender > 0 ) {
+                        mGenderSpinner.setSelection(sInitialGender);
+                    }
                 }
             }
 
@@ -121,7 +129,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
     private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(final View v) {
-            if(v != null && mParentClickListener != null && mNewsLetterForm != null && mNewsLetterForm.validate()){
+            if(v != null && mParentClickListener != null && mNewsLetterForm != null && validate()){
                 mParentClickListener.onClick(v);
                 JumiaApplication.INSTANCE.sendRequest(new SubmitFormHelper(), SubmitFormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), new IResponseCallback() {
                     @Override
@@ -142,10 +150,30 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
         }
     };
 
+    protected boolean validate(){
+        boolean result = true;
+        for (DynamicFormItem control : mNewsLetterForm) {
+            if(control.getEntry().getInputType() == FormInputType.list){
+                if(TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())){
+                    control.showErrorMessage(mContext.getString(R.string.please_fill_all_data));
+                   return false;
+                }
+            }
+
+            result &= control.validate();
+        }
+        return result;
+    }
+
     public String getEditedText(){
         return sInitialValue = mEditText.getText().toString();
     }
     public int getSelectedGender(){
-        return sInitialGender = mRadioGroupLayout.getSelectedIndex();
+        if(mRadioGroupLayout != null){
+            return sInitialGender = mRadioGroupLayout.getSelectedIndex();
+        } else if(mGenderSpinner != null){
+            return sInitialGender = mGenderSpinner.getSelectedItemPosition();
+        }
+        return 0;
     }
 }

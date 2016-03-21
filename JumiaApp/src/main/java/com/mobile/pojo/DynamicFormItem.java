@@ -286,7 +286,7 @@ public class DynamicFormItem {
                     buildRadioGroup(params, RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case list:
-                    buildList(params, RelativeLayout.LayoutParams.MATCH_PARENT);
+                    buildList(params, RelativeLayout.LayoutParams.MATCH_PARENT, this.entry.getFormType() == FormConstants.NEWSLETTER_FORM);
                     break;
                 case metadata:
                 case date:
@@ -684,6 +684,9 @@ public class DynamicFormItem {
                 result = ((EditText) this.dataControl).getText().toString();
                 break;
             case rating:
+                break;
+            case list:
+                result = (String) ((IcsSpinner) this.dataControl).getSelectedItem();
                 break;
             default:
                 result = "";
@@ -1119,14 +1122,14 @@ public class DynamicFormItem {
     }
 
 
-    private void buildList(RelativeLayout.LayoutParams params, int controlWidth) {
+    private void buildList(RelativeLayout.LayoutParams params, int controlWidth, boolean isAlternativeLayout) {
         this.control.setLayoutParams(params);
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
+        createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer, isAlternativeLayout);
     }
 
 
@@ -1255,13 +1258,17 @@ public class DynamicFormItem {
         this.control.setVisibility(View.GONE);
     }
 
-    private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+    private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer, boolean isAlternativeLayout) {
         this.dataControl = View.inflate(this.context, R.layout.form_icsspinner, null);
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
         if (this.entry.getDataSet().size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<>(this.entry.getDataSet().values()));
+            int layout = R.layout.form_spinner_item;
+            if(isAlternativeLayout){
+                layout = R.layout.form_alternative_spinner_item;
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, layout, new ArrayList<>(this.entry.getDataSet().values()));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
         } else {
