@@ -164,6 +164,7 @@
 
     <item name="voucher_insert_layout"                  type="layout">@layout/_v8_voucher_insert_layout</item>
     <item name="form_spinner_item"                      type="layout">@layout/_v8_form_spinner_item</item>
+    <item name="form_alternative_spinner_item"          type="layout">@layout/_v8_form_alternative_spinner_item</item>
     <item name="review_fragment"                        type="layout">@layout/_v8_review_fragment</item>
     <item name="simple_email_notification_option"       type="layout">@layout/_v8_simple_email_notification_option</item>
 
