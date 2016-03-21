@@ -90,16 +90,16 @@ public class LocationHelper implements LocationListener {
         sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
     }
     
-    /**
+    /*
      * ################## REQUESTS ################## 
      */
 
     /**
      * Get the country code from Network configurations
      */
-    private boolean getCountryFromNetwork(TelephonyManager deviceManager){
+    private boolean getCountryFromNetwork(TelephonyManager deviceManager) {
         String networkCountry = deviceManager.getNetworkCountryIso();
-        if(isCountryAvailable(networkCountry)){
+        if (isCountryAvailable(networkCountry)) {
             Print.i(TAG, "MATCH COUNTRY FROM NETWORK: " + networkCountry);
             sendInitializeMessage();
             return true;
@@ -107,13 +107,13 @@ public class LocationHelper implements LocationListener {
         Print.i(TAG, "NO MATCH COUNTRY FROM NETWORK: " + networkCountry);
         return false;
     }
-    
+
     /**
      * Get the country code from SIM card
      */
     private boolean getCountryFromSim(TelephonyManager deviceManager) {
         String simCountry = deviceManager.getSimCountryIso();
-        if(isCountryAvailable(simCountry)) {
+        if (isCountryAvailable(simCountry)) {
             Print.i(TAG, "MATCH COUNTRY FROM SIM: " + simCountry);
             sendInitializeMessage();
             return true;
@@ -121,8 +121,7 @@ public class LocationHelper implements LocationListener {
         Print.i(TAG, "NO MATCH COUNTRY FROM SIM: " + simCountry);
         return false;
     }
-    
-    
+
     /**
      * Get the country code from the last known location using the GeoCoder api.
      */
@@ -176,8 +175,7 @@ public class LocationHelper implements LocationListener {
         }
         
     }
-    
-    
+
     /**
      * Get the best location provider GPS or Network 
      */
@@ -243,14 +241,14 @@ public class LocationHelper implements LocationListener {
         // Filter country code 
         if(countryCode == null || countryCode.length() != 2) return NO_SELECTED;
 
-        // Valdiate countries available
+        // Validate countries available
         if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 )
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
         
         // Get the supported countries
         if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0 ){
             for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
-                CountryObject countryObject =JumiaApplication.INSTANCE.countriesAvailable.get(i);
+                CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(i);
                 String supportedCountry = countryObject.getCountryIso();
                 //Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
                 if (TextUtils.equalsIgnoreCase(supportedCountry, countryCode)){
@@ -287,7 +285,6 @@ public class LocationHelper implements LocationListener {
         double lat = location.getLatitude();
         double lng = location.getLongitude();
         String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
-//        String geoCountry = "CM";
         if(isCountryAvailable(geoCountry)) {
         	Print.i(TAG, "MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
         	sendInitializeMessage();
