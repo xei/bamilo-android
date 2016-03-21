@@ -175,7 +175,6 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
         } else if(mGenderSpinner != null){
             return sInitialGender = mGenderSpinner.getSelectedItemPosition();
         }
-
         return 0;
     }
 }
