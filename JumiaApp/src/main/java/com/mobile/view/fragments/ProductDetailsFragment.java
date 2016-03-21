@@ -1300,10 +1300,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get container
         ViewGroup comboGroup = (ViewGroup) mComboProductsLayout.findViewById(R.id.pdv_combo_container);
         comboGroup.removeAllViews();
-        // Revert elements if RTL
-        ArrayList<ProductBundle> bundleProducts = bundleList.getProducts();
+        // Revert elements if RTL (the original is used for ComboFragment)
+        ArrayList<ProductBundle> bundleProducts = new ArrayList<>(bundleList.getProducts());
         if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
-            Collections.reverse(bundleList.getProducts());
+            Collections.reverse(bundleProducts);
         }
 
         LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
