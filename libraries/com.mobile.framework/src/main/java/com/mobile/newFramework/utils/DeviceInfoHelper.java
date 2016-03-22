@@ -26,7 +26,6 @@ import java.util.Locale;
 /**
  * Class used to get the device info.
  * @author spereira
- *
  */
 public class DeviceInfoHelper {
 	
@@ -403,7 +402,6 @@ public class DeviceInfoHelper {
      * Versions <= Jelly Bean MR1 version (API 17)
      */
     public static boolean isPreJellyBeanMR1() {
-        int version = Build.VERSION.SDK_INT;
         return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1;
     }
 }

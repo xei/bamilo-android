@@ -1,4 +1,4 @@
-package com.mobile.components;
+package com.mobile.components._unused_.scrollable;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -15,12 +15,13 @@ import android.widget.ListView;
  *  ListView with height of children's size
  *  
  * */
-public class FullSizeListView extends ListView implements OnTouchListener, OnScrollListener {
+@SuppressWarnings("unused")
+public class ExpandedListView extends ListView implements OnTouchListener, OnScrollListener {
 
     private int listViewTouchAction;
     private static final int MAXIMUM_LIST_ITEMS_VIEWABLE = 99;
 
-    public FullSizeListView(Context context, AttributeSet attrs) {
+    public ExpandedListView(Context context, AttributeSet attrs) {
         super(context, attrs);
         listViewTouchAction = -1;
         setOnScrollListener(this);
@@ -52,7 +53,7 @@ public class FullSizeListView extends ListView implements OnTouchListener, OnScr
         if (heightMode != MeasureSpec.EXACTLY) {
             ListAdapter listAdapter = getAdapter();
             if (listAdapter != null && !listAdapter.isEmpty()) {
-                int listPosition = 0;
+                int listPosition;
                 for (listPosition = 0; listPosition < listAdapter.getCount()
                         && listPosition < MAXIMUM_LIST_ITEMS_VIEWABLE; listPosition++) {
                     View listItem = listAdapter.getView(listPosition, null, this);

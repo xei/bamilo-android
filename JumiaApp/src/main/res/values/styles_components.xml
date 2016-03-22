@@ -94,6 +94,12 @@
         <item name="android:textColor">@color/orange_1</item>
     </style>
 
+    <style name="PdvSlideShowPreview">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">312dp</item>
+    </style>
+
     <style name="PdvSlideShowStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">312dp</item>
