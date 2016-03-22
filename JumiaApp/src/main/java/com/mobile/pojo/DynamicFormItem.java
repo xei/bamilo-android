@@ -578,7 +578,6 @@ public class DynamicFormItem {
                     }
 
                 }
-                Print.i(TAG, "code1news : name: "+getName()+" | "+ ((IcsSpinner) this.dataControl).getSelectedItem() +" | "+this.entry.getValue());
                 break;
             case relatedNumber:
                 // Get number
