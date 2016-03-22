@@ -56,7 +56,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Set rating and reviews
         setSpecificViewForListLayout(holder, item);
         // Set prices
-        setProductPrice(holder, item);
+        setProductPrice(holder, item, position);
     }
 
 
@@ -86,7 +86,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
      * @param holder - the view holder
      * @param item - the product
      */
-    protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
+    protected void setProductPrice(ProductListViewHolder holder, ProductRegular item, int position) {
         ProductUtils.setPriceRulesWithAutoAdjust(mContext, item, holder.discount, holder.price);
         // Case discount
         ProductUtils.setDiscountRules(item, holder.percentage);

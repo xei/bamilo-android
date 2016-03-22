@@ -376,7 +376,7 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
                         final TextView titleReview = (TextView) theInflatedView.findViewById(R.id.review_item_title);
                         LinearLayout ratingsContainer = (LinearLayout) theInflatedView.findViewById(R.id.review_item_ratings_container);
                         ArrayList<RatingStar> ratingOptionArray = review.getRatingStars();
-                        insertRatingTypes(ratingOptionArray, ratingsContainer, false, review.getAverage());
+                        insertRatingTypes(ratingOptionArray, ratingsContainer, review.getAverage());
                         userDate.setText(review.getDate());
                         titleReview.setText(review.getTitle());
                         userName.setText(getString(R.string.by_placeholder, review.getName()));
@@ -422,12 +422,9 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     /**
      * insert rate types on the review
      */
-    private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, boolean isBigStar, int average) {
+    private void insertRatingTypes(ArrayList<RatingStar> ratingOptionArray, LinearLayout parent, int average) {
         int currentapiVersion = android.os.Build.VERSION.SDK_INT;
         int starsLayout = R.layout.reviews_fragment_rating_samlltype_item;
-        if (isBigStar) {
-            starsLayout = R.layout.reviews_fragment_rating_bigtype_item;
-        }
         if (ratingOptionArray != null && ratingOptionArray.size() > 0) {
             // calculate how many lines of rate types the review will have, supossing 3 types for line;
             int rateCount = ratingOptionArray.size();

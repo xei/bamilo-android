@@ -49,6 +49,7 @@ import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -99,7 +100,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private TextView mDiscountPercentageText;
     private TextView mSaveForLater;
     private TextView mBuyButton;
-    private ViewGroup mTableBundles;
     private ViewGroup mSellerContainer;
     private ViewGroup mDescriptionView;
     private ViewGroup mSpecificationsView;
@@ -109,7 +109,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private ViewGroup mComboProductsLayout;
     private ViewGroup mTitleContainer;
     private View mGlobalButton;
-    private View mOffersContainer;
+    private View mOtherSellersContainer;
     private String mRichRelevanceHash;
     private String mRelatedRichRelevanceHash;
     private ViewGroup mBrandView;
@@ -197,13 +197,12 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Product Description
         mDescriptionView = (ViewGroup) view.findViewById(R.id.pdv_desc_container);
         // Product Combos
-        mTableBundles = (ViewGroup) view.findViewById(R.id.pdv_bundles_container);
-        mComboProductsLayout = (ViewGroup) view.findViewById(R.id.pdv_combos_container);
+        mComboProductsLayout = (ViewGroup) view.findViewById(R.id.pdv_combo_parent);
         mComboProductsLayout.setVisibility(View.GONE);
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.pdv_related_container);
         // Offers
-        mOffersContainer = view.findViewById(R.id.pdv_other_sellers_button);
+        mOtherSellersContainer = view.findViewById(R.id.pdv_other_sellers_button);
         // Bottom Buy Bar
         view.findViewById(R.id.pdv_button_share).setOnClickListener(this);
         view.findViewById(R.id.pdv_button_call).setOnClickListener(this);
@@ -332,7 +331,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             onClickSaveForLateButton(view);
         }
         // Case combos section
-        else if (id == R.id.pdv_combos_container) {
+        else if (id == R.id.pdv_combo_parent) {
             onClickCombosProduct();
         }
         // Case other offers
@@ -461,7 +460,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         setProductSize();
         setProductVariations();
         setSellerInfo();
-        setOffers();
+        setOtherSellersOffers();
         setDescription();
         setCombos();
         setRelatedItems();
@@ -485,17 +484,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-    private void setOffers() {
+    private void setOtherSellersOffers() {
         //show button offers with separator if has offers
-        View separator = mOffersContainer.findViewById(R.id.separator);
         if (mProduct.hasOffers()) {
-            TextView txOffers = (TextView) mOffersContainer.findViewById(R.id.pdv_sublist_button);
+            TextView txOffers = (TextView) mOtherSellersContainer.findViewById(R.id.tx_single_line_text);
             txOffers.setText(String.format(getString(R.string.other_sellers_starting), CurrencyFormatter.formatCurrency(mProduct.getMinPriceOffer())));
-            mOffersContainer.setOnClickListener(this);
-            separator.setVisibility(View.VISIBLE);
+            mOtherSellersContainer.setOnClickListener(this);
         } else {
-            mOffersContainer.setVisibility(View.GONE);
-            separator.setVisibility(View.GONE);
+            mOtherSellersContainer.setVisibility(View.GONE);
         }
     }
 
@@ -691,7 +687,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             if (mProduct.getProductBundle() == null || CollectionUtils.isEmpty(mProduct.getProductBundle().getProducts())) {
                 triggerGetProductBundle(mProduct.getSku());
             } else {
-                mComboProductsLayout.setVisibility(View.VISIBLE);
                 buildComboSection(mProduct.getProductBundle());
             }
         } else {
@@ -1288,40 +1283,37 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
 
     /**
      * Build combo section if has bundles
-     * TODO: Improve
+     * TODO: Improve this component using RecyclerView
      **/
     private void buildComboSection(final BundleList bundleList) {
         // Validate content
-        if (bundleList == null) {
-            if (mComboProductsLayout != null) {
-                mComboProductsLayout.setVisibility(View.GONE);
-            }
+        if (bundleList == null || CollectionUtils.isEmpty(bundleList.getProducts())) {
+            UIUtils.setVisibility(mComboProductsLayout, false);
             return;
         }
-        //load header
-        TextView comboHeaderTitle = (TextView) mComboProductsLayout.findViewById(R.id.pdv_bundles_title);
-        //changeFashion: change title if is fashion
-        String titleCombo = mProduct.isFashion() ? getResources().getString(R.string.buy_the_look) : getResources().getString(R.string.combos);
-        comboHeaderTitle.setText(titleCombo);
-        //set total price
-        TextView txTotalPrice = (TextView) mComboProductsLayout.findViewById(R.id.txTotalComboPrice);
-        txTotalPrice.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
-        //revert elements if RTL
+        // Get header
+        TextView title = (TextView) mComboProductsLayout.findViewById(R.id.pdv_combo_title);
+        title.setText(mProduct.isFashion() ? R.string.buy_the_look : R.string.combos);
+        // Get price
+        TextView price = (TextView) mComboProductsLayout.findViewById(R.id.pdv_combo_price);
+        price.setText(CurrencyFormatter.formatCurrency(bundleList.getPrice()));
+        // Get container
+        ViewGroup comboGroup = (ViewGroup) mComboProductsLayout.findViewById(R.id.pdv_combo_container);
+        comboGroup.removeAllViews();
+        // Revert elements if RTL (the original is used for ComboFragment)
         ArrayList<ProductBundle> bundleProducts = new ArrayList<>(bundleList.getProducts());
-        if(ShopSelector.isRtl() && CollectionUtils.isNotEmpty(bundleProducts)){
-                Collections.reverse(bundleProducts);
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
+            Collections.reverse(bundleProducts);
         }
 
         LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         int count = 0;
-        mTableBundles.removeAllViews();
-
         for (int i = 0; i < bundleProducts.size(); i++) {
             ProductBundle item = bundleProducts.get(i);
-            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_bundle_item, mTableBundles, false);
+            ViewGroup comboProductItem = (ViewGroup) inflater.inflate(R.layout.pdv_fragment_combo_group_item, comboGroup, false);
             fillProductBundleInfo(comboProductItem, item);
             if (!item.getSku().equals(mProduct.getSku())) {
-                comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem, txTotalPrice, bundleList, i));
+                comboProductItem.setOnClickListener(new ComboItemClickListener(comboProductItem, price, bundleList, i));
             } else {
                 final CheckBox checkBox = (CheckBox) comboProductItem.findViewById(R.id.item_check);
                 checkBox.post(new Runnable() {
@@ -1331,24 +1323,22 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                     }
                 });
             }
-            mTableBundles.addView(comboProductItem);
+            comboGroup.addView(comboProductItem);
             // Add plus separator
             if (count < bundleProducts.size() - 1) {
-                mTableBundles.addView(inflater.inflate(R.layout.pdv_fragment_bundle, mTableBundles, false));
+                comboGroup.addView(inflater.inflate(R.layout.pdv_fragment_combo_divider, comboGroup, false));
             }
             count++;
         }
-
-        if(ShopSelector.isRtl()){
-            final HorizontalScrollView mHorizontalScrollView = (HorizontalScrollView) mComboProductsLayout.findViewById(R.id.comboGlobal).findViewById(R.id.pdv_scroll_bundle);
-            // slide the horizontal scroll view to the end to show the first element
-            mHorizontalScrollView.postDelayed(new Runnable() {
+        // Slide the horizontal scroll view to the end to show the first element
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
+            final HorizontalScrollView scroll = (HorizontalScrollView) mComboProductsLayout.findViewById(R.id.pdv_combo_scroll);
+            scroll.postDelayed(new Runnable() {
                 public void run() {
-                    mHorizontalScrollView.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+                    scroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
                 }
             }, 100L);
         }
-
         mComboProductsLayout.setOnClickListener(this);
         mComboProductsLayout.setVisibility(View.VISIBLE);
     }
@@ -1372,7 +1362,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
         });
 
-        Print.i(TAG,"code1check :fillProductBundleInfo: "+productBundleItem.isChecked()+" state isChecked: "+mCheck.isChecked()+" isEnabled: " +mCheck.isEnabled());
         RocketImageLoader.instance.loadImage(productBundleItem.getImageUrl(), mImage, mProgress, R.drawable.no_image_large);
         TextView mBrand = (TextView) view.findViewById(R.id.item_brand);
         mBrand.setText(productBundleItem.getBrandName());
@@ -1384,7 +1373,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         } else {
             mPrice.setText(CurrencyFormatter.formatCurrency(productBundleItem.getPrice()));
         }
-
     }
 
     /**
@@ -1403,20 +1391,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             mBuyButton.setVisibility(View.GONE);
             if(mProduct.isWishList()){
                 mSaveForLater.setText(getString(R.string.remove_from_saved));
-                mSaveForLater.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSaveForLater.setEnabled(true);
-                    }
-                });
+                mSaveForLater.setSelected(true);
             } else {
                 mSaveForLater.setText(getString(R.string.save_for_later));
-                mSaveForLater.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSaveForLater.setEnabled(false);
-                    }
-                });
+                mSaveForLater.setSelected(false);
             }
         } else {
             mBuyButton.setVisibility(View.VISIBLE);

@@ -1766,6 +1766,7 @@ public class DynamicFormItem {
         // Set hint
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
             text.setHint(this.entry.getLabel());
+            text.setFloatingLabelText(this.entry.getLabel());
         }
         // Set filters
         if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {

@@ -80,6 +80,7 @@
         android:id="@+id/item_percentage"
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/price_section"
         android:layout_alignParentLeft="true"
         android:layout_gravity="left"

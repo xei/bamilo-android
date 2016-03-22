@@ -40,4 +40,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/margin_padding_xl" />
+
 </LinearLayout>

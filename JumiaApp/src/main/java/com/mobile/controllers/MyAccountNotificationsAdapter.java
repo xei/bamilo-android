@@ -79,7 +79,7 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
         if (convertView != null) {
             view = convertView;
         } else {
-            view = mInflater.inflate(R.layout.single_line_with_checkbox_component, parent, false);
+            view = mInflater.inflate(R.layout._def_single_line_with_checkbox_component, parent, false);
         }
 
         // Get the Notification item name

@@ -59,13 +59,12 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextBase.Body"
+        style="@style/TextBase.Body.Black_800"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/item_discount"
         android:layout_toLeftOf="@id/item_discount"
-        tools:text="Price"
-        android:textColor="@color/black_800" />
+        tools:text="Price" />
 
     <ImageView
         style="@style/ShopFirstStyle"
@@ -130,7 +129,7 @@
         android:id="@+id/new_arrival_badge"
         style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_15dp"
         android:layout_alignParentLeft="true"
         android:layout_marginTop="@dimen/margin_padding_l"
         android:layout_marginLeft="@dimen/margin_padding_l"
