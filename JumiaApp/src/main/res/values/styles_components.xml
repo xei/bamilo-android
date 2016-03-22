@@ -31,7 +31,7 @@
         <item name="android:textCursorDrawable" targetApi="12">@null</item>
         <item name="android:inputType">textEmailAddress</item>
         <item name="android:fontFamily">roboto_regular</item>
-        <item name="met_floatingLabel">normal</item>
+        <item name="met_floatingLabel">highlight</item>
         <item name="met_underlineColor">@color/black_300</item>
         <item name="met_primaryColor">@color/color_accent</item>
     </style>
@@ -89,6 +89,8 @@
     <style name="PdvBadgeStyle" parent="@style/TextBase.Badge">
         <item name="android:background">@drawable/_gen_background_border_accent</item>
         <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:paddingTop">1dp</item>
         <item name="android:paddingRight">@dimen/margin_padding_xs</item>
         <item name="android:paddingLeft">@dimen/margin_padding_xs</item>
         <item name="android:textColor">@color/orange_1</item>
@@ -166,7 +168,8 @@
 
     <!-- NEW ARRIVAL BADGE -->
     <style name="NewArrivalBadge" parent="@style/TextBase.Badge">
-        <item name="android:padding">@dimen/dimen_4dp</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xs</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xs</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@color/black_700</item>
         <item name="android:textColor">@color/white</item>

@@ -40,7 +40,7 @@ public class ProductUtils {
             //If hasn't simple but has range
         } else if(TextUtils.isNotEmpty(priceRange)){
             specialPrice.setText(priceRange);
-            price.setText("");
+            price.setVisibility(View.GONE);
         } else {
             setPrice(productBase, price, specialPrice);
         }

@@ -22,7 +22,7 @@
         android:id="@+id/new_arrival_badge"
         style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_15dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:gravity="top|right"
