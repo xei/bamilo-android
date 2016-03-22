@@ -8,13 +8,15 @@
     android:layoutDirection="ltr"
     android:minHeight="@dimen/dimen_30dp"
     android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_padding_xs"
+    android:paddingTop="@dimen/margin_padding_xs"
     tools:ignore="UnusedAttribute">
 
     <!--VALUE-->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/specs_item_value"
-        style="@style/MultiLineStyle"
+        style="@style/MultiLineStyle.Space_XS"
         android:layout_width="0dp"
         android:layout_marginLeft="@dimen/margin_padding_xl"
         android:layout_weight="1"

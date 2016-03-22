@@ -66,6 +66,10 @@
         <item name="android:singleLine">false</item>
     </style>
 
+    <style name="MultiLineStyle.Space_XS">
+        <item name="android:lineSpacingExtra">@dimen/margin_padding_xs</item>
+    </style>
+
     <style name="WishListButtonStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
