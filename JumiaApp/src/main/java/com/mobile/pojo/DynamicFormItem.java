@@ -569,6 +569,14 @@ public class DynamicFormItem {
                     if (selectedItem != null) {
                         values.put(getName(), selectedItem.getValue());
                     }
+                } else if(com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())){
+                    for (String key  : this.entry.getDataSet().keySet()) {
+                        if(com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key),(String) ((IcsSpinner) this.dataControl).getSelectedItem())){
+                            values.put(getName(), key);
+                            break;
+                        }
+                    }
+
                 }
                 break;
             case relatedNumber:
