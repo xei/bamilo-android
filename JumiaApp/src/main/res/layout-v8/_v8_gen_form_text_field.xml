@@ -37,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/text_field_spinner_prefix"
         android:layout_toRightOf="@+id/text_field_spinner_suffix"
-        android:paddingLeft="@dimen/dimen_50dp"
         />
 
     <!-- PASSWORD EYE -->
