@@ -15,22 +15,20 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/txLabelTotal"
-            style="@style/TextBase.Display_3"
+            style="@style/TextBase.Display_3.Black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:text="@string/total_price_bottom"
-            android:textColor="@color/black" />
+            android:layout_marginRight="@dimen/margin_padding_xxl"
+            android:text="@string/total_price_bottom" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_combo_price"
-            style="@style/TextBase.Display_3"
+            style="@style/TextBase.Display_3.Black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_toLeftOf="@+id/txLabelTotal"
-            android:textColor="@color/orange_1"
             tools:text="RS 524" />
     </RelativeLayout>
 

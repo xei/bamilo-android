@@ -1300,10 +1300,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Get container
         ViewGroup comboGroup = (ViewGroup) mComboProductsLayout.findViewById(R.id.pdv_combo_container);
         comboGroup.removeAllViews();
-        // Revert elements if RTL
-        ArrayList<ProductBundle> bundleProducts = bundleList.getProducts();
+        // Revert elements if RTL (the original is used for ComboFragment)
+        ArrayList<ProductBundle> bundleProducts = new ArrayList<>(bundleList.getProducts());
         if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
-            Collections.reverse(bundleList.getProducts());
+            Collections.reverse(bundleProducts);
         }
 
         LayoutInflater inflater = (LayoutInflater) getBaseActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -1331,7 +1331,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             count++;
         }
         // Slide the horizontal scroll view to the end to show the first element
-        if(ShopSelector.isRtl()){
+        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR1()) {
             final HorizontalScrollView scroll = (HorizontalScrollView) mComboProductsLayout.findViewById(R.id.pdv_combo_scroll);
             scroll.postDelayed(new Runnable() {
                 public void run() {
