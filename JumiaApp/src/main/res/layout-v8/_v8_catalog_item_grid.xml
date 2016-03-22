@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 style="@style/grid_row_style"
-                android:layout_height="@dimen/dimen_249dp">
+                android:layout_height="@dimen/dimen_265dp">
 
     <include
         android:id="@+id/image_loadable"
@@ -80,7 +80,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignRight="@id/item_name"
-        android:layout_below="@+id/item_shop_first"
+        android:layout_below="@id/item_shop_first"
         android:layout_marginTop="@dimen/dimen_6dp"
         android:gravity="right|center_vertical"
         android:orientation="horizontal" >
@@ -125,8 +125,4 @@
         android:layout_marginTop="@dimen/margin_padding_l"
         android:gravity="center"
         android:text="@string/new_arrival_badge" />
-
-
-
-
 </RelativeLayout>

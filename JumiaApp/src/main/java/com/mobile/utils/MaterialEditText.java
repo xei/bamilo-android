@@ -102,6 +102,11 @@ public class MaterialEditText extends AppCompatEditText {
     private int floatingLabelPadding;
 
     /**
+     * padding floating label.
+     */
+    private int floatingLabelTextSidePadding;
+
+    /**
      * the spacing between the main text and the bottom components (bottom ellipsis, helper/error text, characters counter).
      */
     private int bottomSpacing;
@@ -402,6 +407,7 @@ public class MaterialEditText extends AppCompatEditText {
             floatingLabelText = getHint();
         }
         floatingLabelPadding = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelPadding, bottomSpacing);
+        floatingLabelTextSidePadding = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelSidePadding, 0);
         floatingLabelTextSize = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelTextSize, getResources().getDimensionPixelSize(R.dimen.floating_label_text_size));
         floatingLabelTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_floatingLabelTextColor, -1);
         floatingLabelAnimating = typedArray.getBoolean(R.styleable.MaterialEditText_met_floatingLabelAnimating, true);
@@ -744,8 +750,8 @@ public class MaterialEditText extends AppCompatEditText {
         textPaint.setTextSize(bottomTextSize);
         Paint.FontMetrics textMetrics = textPaint.getFontMetrics();
         extraPaddingBottom = (int) ((textMetrics.descent - textMetrics.ascent) * currentBottomLines) + (hideUnderline ? bottomSpacing : bottomSpacing * 2);
-        extraPaddingLeft = iconLeftBitmaps == null ? 0 : (iconOuterWidth + iconPadding);
-        extraPaddingRight = iconRightBitmaps == null ? 0 : (iconOuterWidth + iconPadding);
+        extraPaddingLeft = iconLeftBitmaps == null ? iconOuterWidth + floatingLabelTextSidePadding : (iconOuterWidth + iconPadding);
+        extraPaddingRight = iconRightBitmaps == null ? iconOuterWidth + floatingLabelTextSidePadding : (iconOuterWidth + iconPadding);
         correctPaddings();
     }
 
