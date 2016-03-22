@@ -165,8 +165,6 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
             return;
         }
 
-        holder.itemView.setTag(R.id.original_position, position);
-
         // Get real position
         position = getRealPosition(position);
 
@@ -180,13 +178,13 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
     }
 
     @Override
-    protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
-        if(getItemViewType((int) holder.itemView.getTag(R.id.original_position)) == ITEM_VIEW_TYPE_GRID){
+    protected void setProductPrice(ProductListViewHolder holder, ProductRegular item, int position) {
+        if(getItemViewType(position) == ITEM_VIEW_TYPE_GRID){
             ProductUtils.setPriceRules(item, holder.discount, holder.price);
             // Case discount
             ProductUtils.setDiscountRules(item, holder.percentage);
         } else {
-            super.setProductPrice(holder, item);
+            super.setProductPrice(holder, item, position);
         }
     }
 

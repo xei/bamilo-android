@@ -16,7 +16,6 @@
     <item type="id" name="size"/>
     <item type="id" name="stock"/>
     <item type="id" name="position"/>
-    <item type="id" name="original_position"/>
     <item type="id" name="name"/>
     <item type="id" name="brand"/>
     <item type="id" name="price"/>
