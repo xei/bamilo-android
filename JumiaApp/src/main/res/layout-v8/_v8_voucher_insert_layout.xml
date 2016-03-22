@@ -52,7 +52,6 @@
                 android:id="@+id/voucher_name"
                 style="@style/TextField"
                 android:hint="@string/voucher_message_hint"
-                android:textDirection="locale"
                 />
 
         </LinearLayout>

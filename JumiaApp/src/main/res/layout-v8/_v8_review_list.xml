@@ -4,7 +4,10 @@
     android:id="@+id/review_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/margin_padding_xl">
+    android:paddingBottom="@dimen/margin_padding_l"
+    android:paddingLeft="@dimen/margin_padding_xl"
+    android:paddingRight="@dimen/margin_padding_xl"
+    android:paddingTop="@dimen/margin_padding_l">
 
     <!--RATING-->
 
@@ -13,7 +16,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/margin_padding_xxs"
         android:orientation="vertical" />
 
     <!--DATE-->

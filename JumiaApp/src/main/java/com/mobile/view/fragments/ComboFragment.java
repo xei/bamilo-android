@@ -100,12 +100,12 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
         mTotalPrice = (com.mobile.components.customfontviews.TextView) view.findViewById(R.id.pdv_combo_price);
         mTotalPrice.setText(CurrencyFormatter.formatCurrency(mBundleList.getPrice()));
         mGridView = (ComboGridView) view.findViewById(R.id.combo_grid_view);
-        mGridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns)); // TODO Validate
+        mGridView.setGridLayoutManager(getResources().getInteger(R.integer.combos_num_columns));
         mGridView.setHasFixedSize(true);
         mGridView.setItemAnimator(new DefaultItemAnimator());
         mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
-        ComboGridAdapter adapter = new ComboGridAdapter(getBaseActivity(), mBundleList.getProducts(), mProductSku);
+        ComboGridAdapter adapter = new ComboGridAdapter(mBundleList.getProducts(), mProductSku);
         adapter.setOnViewHolderClickListener(this);
         mGridView.setAdapter(adapter);
         view.findViewById(R.id.combo_button_buy).setOnClickListener(this);
@@ -132,21 +132,18 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
      */
     private void addComboToCart() {
         mIsToAddBundleToCart = true;
+        // Validate product simples
         ArrayList<ProductBundle> bundleListProducts = mBundleList.getProducts();
-        boolean allSimplesSelected = true;
         for (int i = 0; i < bundleListProducts.size(); i++) {
             if (!bundleListProducts.get(i).hasSelectedSimpleVariation() && bundleListProducts.get(i).isChecked()) {
-                allSimplesSelected = false;
                 addToCartWithSelectedSimple(bundleListProducts.get(i));
                 return;
             }
         }
-
-        if(allSimplesSelected){
-            Print.i(TAG,"ADD BUNDLE TO CART");
-            triggerContentEventProgress(new GetShoppingCartAddBundleHelper(), GetShoppingCartAddBundleHelper.createBundle(mBundleList), this);
-            mIsToAddBundleToCart = false;
-        }
+        // Add bundle to cart
+        Print.i(TAG,"ADD BUNDLE TO CART");
+        triggerContentEventProgress(new GetShoppingCartAddBundleHelper(), GetShoppingCartAddBundleHelper.createBundle(mBundleList), this);
+        mIsToAddBundleToCart = false;
     }
 
 

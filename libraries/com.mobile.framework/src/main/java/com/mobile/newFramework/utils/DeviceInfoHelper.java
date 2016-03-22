@@ -26,7 +26,6 @@ import java.util.Locale;
 /**
  * Class used to get the device info.
  * @author spereira
- *
  */
 public class DeviceInfoHelper {
 	
@@ -388,21 +387,21 @@ public class DeviceInfoHelper {
     /**
      * Versions >= Lollipop (API 21)
      */
-    public static boolean isPosLollipop(){
+    public static boolean isPosLollipop() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
     /**
      * Versions <= Jelly Bean MR2 version (API 18)
      */
-    public static boolean isPreJellyBeanMR2(){
+    public static boolean isPreJellyBeanMR2() {
         return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2;
     }
 
     /**
      * Versions <= Jelly Bean MR1 version (API 17)
      */
-    public static boolean isPreJellyBeanMR1(){
-        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2;
+    public static boolean isPreJellyBeanMR1() {
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1;
     }
 }

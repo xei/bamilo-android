@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 style="@style/grid_row_style"
-                android:layout_height="@dimen/dimen_249dp">
+                android:layout_height="@dimen/dimen_265dp">
 
     <include
         android:id="@+id/image_loadable"
@@ -123,7 +123,7 @@
         style="@style/PdvBadgeStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/item_name"
+        android:layout_below="@id/item_name"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_marginEnd="@dimen/margin_padding_xl"
@@ -134,7 +134,7 @@
         android:id="@+id/new_arrival_badge"
         style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_15dp"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="@dimen/margin_padding_l"

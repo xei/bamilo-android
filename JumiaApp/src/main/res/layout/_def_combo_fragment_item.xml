@@ -45,13 +45,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <!-- RATING -->
-        <include
-            android:id="@+id/item_rating"
-            layout="@layout/gen_product_rating_small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
         <!-- VARIATION -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_variation"
