@@ -155,7 +155,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
         for (DynamicFormItem control : mNewsLetterForm) {
             if(control.getEntry().getInputType() == FormInputType.list){
                 if(TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())){
-                    control.showErrorMessage(mContext.getString(R.string.please_fill_all_data));
+                    control.showErrorMessage(control.getEntry().getValidation().getMessage());
                    return false;
                 }
             }

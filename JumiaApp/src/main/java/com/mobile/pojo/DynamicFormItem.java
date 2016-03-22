@@ -975,7 +975,7 @@ public class DynamicFormItem {
         else {
             String regex = this.entry.getValidation().regex;
             Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-            setErrorText("The " + this.entry.getLabel() + " " + context.getString(R.string.dynamic_errortext) + space);
+            setErrorText(this.entry.getValidation().getErrorMessage() + space);
             Matcher matcher = pattern.matcher(text);
             result = matcher.find();
         }
@@ -1320,6 +1320,18 @@ public class DynamicFormItem {
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
+
+        if (hasRules()) {
+            this.setErrorText(this.entry.getValidation().getMessage());
+            this.errorControl = createErrorControl(dataContainer.getId(), RelativeLayout.LayoutParams.MATCH_PARENT);
+            //#RTL
+            int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            }
+            this.control.addView(this.errorControl);
+        }
+
 
         this.control.addView(dataContainer);
 
