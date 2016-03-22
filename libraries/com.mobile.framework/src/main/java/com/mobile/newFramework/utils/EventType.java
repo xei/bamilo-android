@@ -136,7 +136,7 @@ public enum EventType {
 
     GET_GLOBAL_CONFIGURATIONS,
 
-    GET_COUNTRY_CONFIGURATIONS("http:/main/getconfigurations/"),
+    GET_COUNTRY_CONFIGURATIONS("https:/main/getconfigurations/"),
 
     GET_FAVOURITE_LIST,
 
