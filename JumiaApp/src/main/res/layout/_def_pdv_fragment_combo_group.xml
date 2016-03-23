@@ -20,8 +20,8 @@
             android:id="@+id/pdv_combo_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margin_padding_xl"
-            android:orientation="horizontal" />
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_padding_xl" />
 
     </HorizontalScrollView>
 
@@ -40,7 +40,9 @@
         android:background="@color/white"
         android:drawableEnd="@drawable/ic_arrow_combo"
         android:drawableRight="@drawable/ic_arrow_combo"
+        android:paddingEnd="0dp"
         android:paddingLeft="@dimen/margin_padding_xl"
+        android:paddingRight="0dp"
         android:paddingStart="@dimen/margin_padding_xl"
         tools:text="EGP 524" />
 
