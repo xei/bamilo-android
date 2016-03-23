@@ -67,8 +67,6 @@ import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
-import com.mobile.newFramework.tracking.AdjustTracker;
-import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
@@ -118,18 +116,11 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
-    // private ShareActionProvider mShareActionProvider;
-
     private static final int SEARCH_EDIT_DELAY = 500;
-
     private static final int SEARCH_EDIT_SIZE = 2;
-
     private static final int TOAST_LENGTH_SHORT = 2000; // 2 seconds
 
-    @KeyboardState
-    public static int currentAdjustState;
-
-    //protected View contentContainer;
+    @KeyboardState public static int sCurrentAdjustState;
     private final int activityLayoutId;
     private final int titleResId;
     public View mDrawerNavigation;
@@ -143,9 +134,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected RecyclerView mSearchListView;
     protected FrameLayout mSearchOverlay;
     protected boolean isSearchComponentOpened = false;
-
-    //private final int contentLayoutId;
-    // REMOVED FINAL ATTRIBUTE
     @NavigationAction.Type private int action;
     private Set<MyMenuItem> menuItems;
     private DialogProgressFragment baseActivityProgressDialog;
@@ -158,152 +146,16 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private Intent mOnActivityResultIntent = null;
     private TextView mActionCartCount;
     private MyProfileActionProvider myProfileActionProvider;
-    private FragmentController fragmentController;
-    /**
-     * Handles changes on Checkout tabs.
-     */
-    final TabLayout.OnTabSelectedListener mCheckoutOnTabSelectedListener = new android.support.design.widget.TabLayout.OnTabSelectedListener() {
-        @Override
-        public void onTabSelected(android.support.design.widget.TabLayout.Tab tab) {
-            onCheckoutHeaderSelectedListener(tab.getPosition());
-        }
-
-        @Override
-        public void onTabUnselected(android.support.design.widget.TabLayout.Tab tab) {
-
-        }
-
-        @Override
-        public void onTabReselected(android.support.design.widget.TabLayout.Tab tab) {
-
-        }
-    };
+    private FragmentController mFragmentController;
     private boolean initialCountry = false;
     private Menu mCurrentMenu;
     private long beginInMillis;
-    /**
-     * Runnable to get suggestions
-     *
-     * @author sergiopereira
-     */
-    private final Runnable run = new Runnable() {
-        @Override
-        public void run() {
-            Print.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchAutoComplete.getText());
-            getSuggestions();
-        }
-    };
     private ActionBar mSupportActionBar;
     private boolean isBackButtonEnabled = false;
     private long mLaunchTime;
     private TabLayout mTabLayout;
-    OnClickListener myProfileClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            boolean hideMyProfile = true;
-            @NavigationAction.Type
-            int navAction = (int) v.getTag(R.id.nav_action);
-            if (getAction() != navAction) {
-                switch (navAction) {
-                    case NavigationAction.MY_PROFILE:
-                        // MY PROFILE
-                        hideMyProfile = false;
-                        // Close Drawer
-                        closeNavigationDrawer();
-                        // Validate provider
-                        if (myProfileActionProvider != null) {
-                            myProfileActionProvider.showSpinner();
-                        }
-                        break;
-                    case NavigationAction.HOME:
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_HOME);
-                        onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        break;
-                    case NavigationAction.LOGIN_OUT:
-                        // SIGN IN
-                        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
-                            dialogLogout = DialogGenericFragment.newInstance(true, false,
-                                    getString(R.string.logout_title),
-                                    getString(R.string.logout_text_question),
-                                    getString(R.string.no_label), getString(R.string.yes_label),
-                                    new OnClickListener() {
-
-                                        @Override
-                                        public void onClick(View v) {
-                                            if (v.getId() == R.id.button2) {
-                                                LogOut.perform(new WeakReference<>(BaseActivity.this));
-                                            }
-                                            dialogLogout.dismiss();
-                                        }
-                                    });
-                            dialogLogout.show(getSupportFragmentManager(), null);
-                        } else {
-                            TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
-                            onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        }
-                        break;
-                    case NavigationAction.SAVED:
-                        // FAVOURITES
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
-                        // Validate customer is logged in
-                        if (!JumiaApplication.isCustomerLoggedIn()) {
-                            // Goto Login and next WishList
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
-                            onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-                        } else {
-                            onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        }
-                        break;
-                    case NavigationAction.RECENT_SEARCHES:
-                        // RECENT SEARCHES
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
-                        onSwitchFragment(FragmentType.RECENT_SEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        break;
-                    case NavigationAction.RECENTLY_VIEWED:
-                        // RECENTLY VIEWED
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
-                        onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        break;
-                    case NavigationAction.MY_ACCOUNT:
-                        // MY ACCOUNT
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
-                        onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        break;
-                    case NavigationAction.MY_ORDERS:
-                        // TRACK ORDER
-                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
-                        onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        break;
-                    case NavigationAction.COUNTRY:
-                        onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-                        break;
-                    default:
-                        Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
-                        break;
-                }
-            } else {
-                Print.d(TAG, "selected navAction is already being shown");
-            }
-            // only hide dropdown for Spinner if hideMyProfile flag is activated
-            if (hideMyProfile && myProfileActionProvider != null) {
-                myProfileActionProvider.dismissSpinner();
-            }
-        }
-    };
     private TabLayout mCheckoutTabLayout;
-    /**
-     * Handles clicks on Checkout Header
-     * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
-     */
-    final android.view.View.OnClickListener mCheckoutOnClickListener = new android.view.View.OnClickListener() {
-        @Override
-        public void onClick(android.view.View v) {
-            onCheckoutHeaderClickListener((int) v.getTag());
-        }
-    };
     private AppBarLayout mAppBarLayout;
-
     public ConfirmationCartMessageView mConfirmationCartMessageView;
 
     /**
@@ -326,12 +178,23 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /*
      * (non-Javadoc)
      *
+     * @see android.support.v4.triggerContentEventProgressapp.FragmentActivity#onStart()
+     */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Print.i(TAG, "ON START");
+    }
+
+    /*
+     * (non-Javadoc)
+     *
      * @see android.support.v4.app.FragmentActivity#onCreate(android.os.Bundle)
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Print.d(TAG, "ON CREATE");
+        Print.i(TAG, "ON CREATE");
         /*
          * In case of rotation the activity is restarted and the locale too.<br>
          * These method forces the right locale used before the rotation.
@@ -341,7 +204,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // In case app is killed in background needs to restore font type
         HoloFontLoader.initFont(getResources().getBoolean(R.bool.is_shop_specific));
         // Get fragment controller
-        fragmentController = FragmentController.getInstance();
+        mFragmentController = FragmentController.getInstance();
         // Set content
         setContentView(activityLayoutId);
         // Set action bar
@@ -352,8 +215,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         setupContentViews();
         // Update the content view if initial country selection
         updateContentViewsIfInitialCountrySelection();
-        // Set main layout
-        //setAppContentLayout();
         // Set title in AB or TitleBar
         setTitle(titleResId);
         // For tracking
@@ -377,6 +238,45 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     /*
+ * (non-Javadoc)
+ *
+ * @see android.support.v4.app.FragmentActivity#onResume()
+ */
+    @Override
+    public void onResume() {
+        super.onResume();
+        Print.i(TAG, "ON RESUME");
+        // Check version, disabled for Samsung (check_version_enabled)
+        CheckVersion.run(getApplicationContext());
+
+        /**
+         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
+         * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
+         *           -can-not-perform -this-action-after-onsaveinstancestate-h
+         */
+        if (mOnActivityResultIntent != null && getIntent().getExtras() != null) {
+            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
+            mOnActivityResultIntent = null;
+        }
+
+        mTabLayout.getId();
+
+        // Get the cart and perform auto login
+        recoverUserDataFromBackground();
+        // Tracking
+        TrackerDelegator.onResumeActivity(mLaunchTime);
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        // Show the upgrade dialog
+        if (CheckVersion.needsToShowDialog()) {
+            CheckVersion.showDialog(this);
+        }
+    }
+
+    /*
      * (non-Javadoc)
      *
      * @see android.support.v7.app.ActionBarActivity#onConfigurationChanged(android.content.res.Configuration)
@@ -387,6 +287,20 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         Print.i(TAG, "ON CONFIGURATION CHANGED");
         // Pass any configuration change to the drawer toggles
         mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see android.support.v4.app.FragmentActivity#onPause()
+     */
+    @Override
+    public void onPause() {
+        super.onPause();
+        Print.i(TAG, "ON PAUSE");
+        // Hide search component
+        hideSearchComponent();
+        // Tracking
+        TrackerDelegator.onPauseActivity();
     }
 
     /*
@@ -410,7 +324,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
         // Tracking
-        TrackerDelegator.trackCloseApp();
+        TrackerDelegator.onDestroyActivity();
     }
 
     /**
@@ -426,75 +340,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     }
 
     /*
-     * (non-Javadoc)
-     * @see android.support.v4.app.FragmentActivity#onPause()
-     */
-    @Override
-    public void onPause() {
-        super.onPause();
-        Print.i(TAG, "ON PAUSE");
-        // Hide search component
-        hideSearchComponent();
-        // Dispatch saved hits
-        AnalyticsGoogle.get().dispatchHits();
-
-        AdjustTracker.onPause();
-    }
-
-    /*
      * ############## ACTION BAR ##############
      */
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.FragmentActivity#onResume()
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        Print.i(TAG, "ON RESUME");
-        // Check version, disabled for Samsung (check_version_enabled)
-        CheckVersion.run(getApplicationContext());
-
-        /**
-         * @FIX: IllegalStateException: Can not perform this action after onSaveInstanceState
-         * @Solution : http://stackoverflow.com/questions/7575921/illegalstateexception
-         *           -can-not-perform -this-action-after-onsaveinstancestate-h
-         */
-        if (mOnActivityResultIntent != null && getIntent().getExtras() != null) {
-            initialCountry = getIntent().getExtras().getBoolean(ConstantsIntentExtra.FRAGMENT_INITIAL_COUNTRY, false);
-            mOnActivityResultIntent = null;
-        }
-
-        // Get the cart and perform auto login
-        recoverUserDataFromBackground();
-        AdjustTracker.onResume();
-
-        TrackerDelegator.trackAppOpenAdjust(getApplicationContext(), mLaunchTime);
-    }
-
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-        /**
-         * Validate current version to show the upgrade dialog, disabled for Samsung (check_version_enabled).
-         */
-        if (CheckVersion.needsToShowDialog()) {
-            CheckVersion.showDialog(this);
-        }
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.triggerContentEventProgressapp.FragmentActivity#onStart()
-     */
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Print.i(TAG, "ON START");
-    }
 
     /**
      * Method used to update the sliding menu and items on action bar. Called from BaseFragment
@@ -547,12 +394,44 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         // Get tab layout
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mCheckoutTabLayout = (TabLayout) findViewById(R.id.checkout_tabs);
-        mCheckoutTabLayout.setVisibility(android.view.View.INVISIBLE);
+        mCheckoutTabLayout.setVisibility(View.INVISIBLE);
         TabLayoutUtils.fillTabLayout(mTabLayout, this);
         TabLayoutUtils.updateTabCartInfo(mTabLayout);
         // Checkout Tab
         TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
     }
+
+    /**
+     * Handles changes on Checkout tabs.
+     */
+    final TabLayout.OnTabSelectedListener mCheckoutOnTabSelectedListener = new android.support.design.widget.TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(android.support.design.widget.TabLayout.Tab tab) {
+            onCheckoutHeaderSelectedListener(tab.getPosition());
+        }
+
+        @Override
+        public void onTabUnselected(android.support.design.widget.TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(android.support.design.widget.TabLayout.Tab tab) {
+
+        }
+    };
+
+    /**
+     * Handles clicks on Checkout Header
+     * Verifies if click is available for this header position, if so, will select position and then mCheckoutOnTabSelectedListener will handle next steps.
+     */
+    final android.view.View.OnClickListener mCheckoutOnClickListener = new android.view.View.OnClickListener() {
+        @Override
+        public void onClick(android.view.View v) {
+            onCheckoutHeaderClickListener((int) v.getTag());
+        }
+    };
+
     
     /*
      * ############## CONTENT VIEWS ##############
@@ -607,15 +486,12 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerNavigation = findViewById(R.id.fragment_navigation);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close){
-
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 hideKeyboard();
             }
-
         };
-
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
@@ -639,7 +515,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      */
     private void setupContentViews() {
         Print.d(TAG, "DRAWER: SETUP CONTENT VIEWS");
-        // Get the application horizontalListView
         // Warning layout
         try {
             warningFactory = new WarningFactory(findViewById(R.id.warning));
@@ -685,18 +560,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             mSupportActionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-
-//    /**
-//     * Change actionBar visibility if necessary and executes runnable
-//     */
-//    public void setActionBarVisibility(int showActionBar, Runnable onChangeRunnable, int onChangePostDelay) {
-//        boolean actionBarVisible = getSupportActionBar().isShowing();
-//        setActionBarVisibility(showActionBar);
-//
-//        if (getSupportActionBar().isShowing() != actionBarVisible) {
-//            new Handler().postDelayed(onChangeRunnable, onChangePostDelay);
-//        }
-//    }
 
     /**
      * Method used to validate if is to show the initial country selection or is in maintenance.<br> Used in {@link com.mobile.view.fragments.HomePageFragment#onCreate(Bundle)}.
@@ -759,12 +622,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * handle this events
      *
      * @param item The menu item that was pressed
-     */
-    /*
-     * (non-Javadoc)
-     *
-     * @see com.actionbarsherlock.app.SherlockFragmentActivity#onOptionsItemSelected
-     * (android.view.MenuItem )
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -908,6 +765,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         TabLayoutUtils.tabSelected(this, tab, action);
     }
 
+    /*
+     * ############### SEARCH COMPONENT #################
+     */
+
     /**
      * Method used to set the search bar in the Action bar.
      * @author Andre Lopes
@@ -961,7 +822,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 @Override
                 public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                            int oldLeft, int oldTop, int oldRight, int oldBottom) {
-
                     // set DropDownView width
                     mSearchAutoComplete.setDropDownWidth(mainContentWidth);
                     mSearchAutoComplete.setDropDownHeight(mainContentHeight - mSupportActionBar.getHeight());
@@ -1100,6 +960,19 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         });
 
     }
+
+    /**
+     * Runnable to get suggestions
+     *
+     * @author sergiopereira
+     */
+    private final Runnable run = new Runnable() {
+        @Override
+        public void run() {
+            Print.i(TAG, "SEARCH: RUN GET SUGGESTIONS: " + mSearchAutoComplete.getText());
+            getSuggestions();
+        }
+    };
 
     /**
      * Execute search
@@ -1419,6 +1292,103 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         this.action = action;
     }
 
+
+    OnClickListener myProfileClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            boolean hideMyProfile = true;
+            @NavigationAction.Type
+            int navAction = (int) v.getTag(R.id.nav_action);
+            if (getAction() != navAction) {
+                switch (navAction) {
+                    case NavigationAction.MY_PROFILE:
+                        // MY PROFILE
+                        hideMyProfile = false;
+                        // Close Drawer
+                        closeNavigationDrawer();
+                        // Validate provider
+                        if (myProfileActionProvider != null) {
+                            myProfileActionProvider.showSpinner();
+                        }
+                        break;
+                    case NavigationAction.HOME:
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_HOME);
+                        onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.LOGIN_OUT:
+                        // SIGN IN
+                        if (JumiaApplication.INSTANCE.getCustomerUtils().hasCredentials()) {
+                            dialogLogout = DialogGenericFragment.newInstance(true, false,
+                                    getString(R.string.logout_title),
+                                    getString(R.string.logout_text_question),
+                                    getString(R.string.no_label), getString(R.string.yes_label),
+                                    new OnClickListener() {
+
+                                        @Override
+                                        public void onClick(View v) {
+                                            if (v.getId() == R.id.button2) {
+                                                LogOut.perform(new WeakReference<>(BaseActivity.this));
+                                            }
+                                            dialogLogout.dismiss();
+                                        }
+                                    });
+                            dialogLogout.show(getSupportFragmentManager(), null);
+                        } else {
+                            TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_SIGN_IN);
+                            onSwitchFragment(FragmentType.LOGIN, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        }
+                        break;
+                    case NavigationAction.SAVED:
+                        // FAVOURITES
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAVORITE);
+                        // Validate customer is logged in
+                        if (!JumiaApplication.isCustomerLoggedIn()) {
+                            // Goto Login and next WishList
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.WISH_LIST);
+                            onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
+                        } else {
+                            onSwitchFragment(FragmentType.WISH_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        }
+                        break;
+                    case NavigationAction.RECENT_SEARCHES:
+                        // RECENT SEARCHES
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENT_SEARCHES);
+                        onSwitchFragment(FragmentType.RECENT_SEARCHES_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.RECENTLY_VIEWED:
+                        // RECENTLY VIEWED
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_RECENTLY_VIEW);
+                        onSwitchFragment(FragmentType.RECENTLY_VIEWED_LIST, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.MY_ACCOUNT:
+                        // MY ACCOUNT
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
+                        onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.MY_ORDERS:
+                        // TRACK ORDER
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
+                        onSwitchFragment(FragmentType.MY_ORDERS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.COUNTRY:
+                        onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    default:
+                        Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
+                        break;
+                }
+            } else {
+                Print.d(TAG, "selected navAction is already being shown");
+            }
+            // only hide dropdown for Spinner if hideMyProfile flag is activated
+            if (hideMyProfile && myProfileActionProvider != null) {
+                myProfileActionProvider.dismissSpinner();
+            }
+        }
+    };
+
+
     /**
      * Show and set title on actionbar
      */
@@ -1514,7 +1484,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Method used to switch fragment on UI with/without back stack support
      */
     public void fragmentManagerTransition(int container, Fragment fragment, FragmentType fragmentType, Boolean addToBackStack) {
-        fragmentController.startTransition(this, container, fragment, fragmentType, addToBackStack);
+        mFragmentController.startTransition(this, container, fragment, fragmentType, addToBackStack);
     }
 
     /**
@@ -1523,7 +1493,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * @author sergiopereira
      */
     public void fragmentManagerBackPressed() {
-        fragmentController.fragmentBackPressed(this);
+        mFragmentController.fragmentBackPressed(this);
     }
 
     /**
@@ -1533,8 +1503,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * @author sergiopereira
      */
     public boolean popBackStackUntilTag(String tag) {
-        if (fragmentController.hasEntry(tag)) {
-            fragmentController.popAllEntriesUntil(this, tag);
+        if (mFragmentController.hasEntry(tag)) {
+            mFragmentController.popAllEntriesUntil(this, tag);
             return true;
         }
         return false;
@@ -1547,8 +1517,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * @author sergiopereira
      */
     public void popBackStackEntriesUntilTag(String tag) {
-        if (fragmentController.hasEntry(tag)) {
-            fragmentController.removeEntriesUntilTag(tag);
+        if (mFragmentController.hasEntry(tag)) {
+            mFragmentController.removeEntriesUntilTag(tag);
         }
     }
 
@@ -1563,7 +1533,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         Print.d(TAG, "DOUBLE BACK PRESSED TO EXIT: " + backPressedOnce);
         // If was pressed once
         if (backPressedOnce) {
-            fragmentController.popLastEntry();
+            mFragmentController.popLastEntry();
             finish();
             return;
         }
