@@ -116,6 +116,13 @@ public class GTMManager {
             }
         }, 2, TimeUnit.SECONDS);
     }
+
+    /**
+     * Return the current id
+     */
+    public String getId() {
+        return mTagManager.getDataLayer().toString();
+    }
  
 
     /**

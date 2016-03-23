@@ -178,6 +178,13 @@ public class AnalyticsGoogle {
     }
 
     /**
+     * Return the current id
+     */
+    public String getId() {
+        return mCurrentKey;
+    }
+
+    /**
      * ################## BASE GA TRACKING (v4) ################## 
      */
 

@@ -31,7 +31,7 @@ public class DebugCountryModel implements DebugModule, CompoundButton.OnCheckedC
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         // Get view
-        View view = inflater.inflate(R.layout.dd_debug_drawer_item_country_configs, parent, false);
+        View view = inflater.inflate(R.layout.dd_debug_drawer_item_country, parent, false);
         // Get switch
         SwitchCompat switchView = (SwitchCompat) view.findViewById(R.id.dd_debug_item_country_switch);
         switchView.setOnCheckedChangeListener(this);

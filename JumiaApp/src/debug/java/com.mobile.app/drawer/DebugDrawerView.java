@@ -24,14 +24,15 @@ public class DebugDrawerView {
                 .Builder(activity)
                 .modules(
                         new DebugCountryModel(activity),
-//                        new ActionsModule(createSwitchAction(activity)),
-//                        new ActionsModule(createButtonAction(activity)),
-//                        new ActionsModule(createSpinnerAction(activity)),
+                        new DebugTrackingModel(activity),
                         new DeviceModule(activity),
                         new BuildModule(activity),
                         new NetworkModule(activity),
                         new ScalpelModule(activity),
                         new SettingsModule(activity)
+//                        new ActionsModule(createSwitchAction(activity)),
+//                        new ActionsModule(createButtonAction(activity)),
+//                        new ActionsModule(createSpinnerAction(activity)),
                 ).build();
     }
 

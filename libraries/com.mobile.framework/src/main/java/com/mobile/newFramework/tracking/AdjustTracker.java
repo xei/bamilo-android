@@ -204,6 +204,12 @@ public class AdjustTracker {
         Adjust.onCreate(config);
     }
 
+    /**
+     * Return the current id
+     */
+    public String getId() {
+        return Adjust.getDefaultInstance().toString();
+    }
 
     public static void onResume() {
         if(Adjust.isEnabled()){
