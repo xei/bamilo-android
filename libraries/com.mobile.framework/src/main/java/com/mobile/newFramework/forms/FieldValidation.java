@@ -91,6 +91,9 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
         return message;
     }
 
+    /**
+     * @return the global error message.
+     */
     public String getErrorMessage() {
         return errorMessage;
     }

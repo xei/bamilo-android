@@ -248,7 +248,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         mRelatedRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
         new TargetLink(getWeakBaseActivity(), target)
                 .addAppendListener(this)
-                .retainBackStackEntries()
                 .run();
     }
 
