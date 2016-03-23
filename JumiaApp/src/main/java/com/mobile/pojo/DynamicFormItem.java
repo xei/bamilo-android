@@ -995,6 +995,16 @@ public class DynamicFormItem {
     }
 
     /**
+     * Hide the controls error message to the user
+     *
+     */
+    public void hideErrorMessage() {
+        if (null != errorControl) {
+            this.errorControl.setVisibility(View.GONE);
+        }
+    }
+
+    /**
      * Sets the listener for the seleted item changes of the edit part of the component
      *
      * @param listener The listener to be fired when the focus changes
@@ -1288,15 +1298,18 @@ public class DynamicFormItem {
         }
 
         // sets the spinner value
-        int position = 0;
-        if (null != this.entry.getValue() && !this.entry.getValue().trim().equals("")) {
-            for (String item : new ArrayList<>(this.entry.getDataSet().values())) {
-                if (item.equals(this.entry.getValue())) {
-                    ((IcsSpinner) this.dataControl).setSelection(position);
-                    break;
+
+        ((IcsSpinner) this.dataControl).setSelection(0);
+        if(isAlternativeLayout){
+            int position = 0;
+            if (CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
+                for (NewsletterOption item : ((FormField) this.entry).getNewsletterOptions()) {
+                    position++;
+                    if(item.isDefaut){
+                        ((IcsSpinner) this.dataControl).setSelection(position);
+                    }
                 }
             }
-            //position++;
         }
 
         this.dataControl.setVisibility(View.VISIBLE);

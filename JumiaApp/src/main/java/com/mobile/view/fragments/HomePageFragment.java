@@ -555,7 +555,10 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 break;
             case SUBMIT_FORM:// Newsletter Form Response
                 getBaseActivity().dismissProgress();
-                showWarningErrorMessage(baseResponse.getErrorMessage());
+                if(CollectionUtils.isEmpty(baseResponse.getValidateMessages())){
+                    showWarningErrorMessage(baseResponse.getErrorMessage());
+                }
+
                 break;
             default:
                 break;

@@ -26,6 +26,7 @@ import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -142,6 +143,10 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
                     }
                     @Override
                     public void onRequestError(BaseResponse baseResponse) {
+
+                        if(CollectionUtils.isNotEmpty(baseResponse.getValidateMessages())){
+                            mNewsLetterForm.showValidateMessages(baseResponse.getValidateMessages());
+                        }
                         ((IResponseCallback) mParentClickListener).onRequestError(baseResponse);
                     }
                 });
@@ -157,10 +162,14 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
                 if(TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())){
                     control.showErrorMessage(control.getEntry().getValidation().getMessage());
                    return false;
+                } else {
+                    control.hideErrorMessage();
                 }
+            } else {
+                result &= control.validate();
             }
 
-            result &= control.validate();
+
         }
 
         return result;
