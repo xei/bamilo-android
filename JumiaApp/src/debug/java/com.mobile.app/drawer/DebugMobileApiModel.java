@@ -23,7 +23,7 @@ import io.palaima.debugdrawer.base.DebugModule;
 /**
  * Created by spereira on 2/23/16.
  */
-public class MobApiModel implements DebugModule {
+public class DebugMobileApiModel implements DebugModule {
 
     private static final boolean HAS_OK_HTTP;
 
@@ -42,7 +42,7 @@ public class MobApiModel implements DebugModule {
     private ViewGroup rootView;
     private ResponseCodeInterceptor mMaintenancePageInterceptor;
 
-    public MobApiModel(@NonNull Activity activity) {
+    public DebugMobileApiModel(@NonNull Activity activity) {
         if (!HAS_OK_HTTP) {
             throw new RuntimeException("Scalpel dependency is not found");
         }

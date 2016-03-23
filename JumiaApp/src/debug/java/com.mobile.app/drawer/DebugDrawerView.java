@@ -7,7 +7,6 @@ import com.mobile.utils.Toast;
 import java.util.Arrays;
 
 import io.palaima.debugdrawer.DebugDrawer;
-import io.palaima.debugdrawer.actions.ActionsModule;
 import io.palaima.debugdrawer.actions.ButtonAction;
 import io.palaima.debugdrawer.actions.SpinnerAction;
 import io.palaima.debugdrawer.actions.SwitchAction;
@@ -24,10 +23,10 @@ public class DebugDrawerView {
         return new io.palaima.debugdrawer.DebugDrawer
                 .Builder(activity)
                 .modules(
-                        new MobApiModel(activity),
-                        new ActionsModule(createSwitchAction(activity)),
-                        new ActionsModule(createButtonAction(activity)),
-                        new ActionsModule(createSpinnerAction(activity)),
+                        new DebugCountryModel(activity),
+//                        new ActionsModule(createSwitchAction(activity)),
+//                        new ActionsModule(createButtonAction(activity)),
+//                        new ActionsModule(createSpinnerAction(activity)),
                         new DeviceModule(activity),
                         new BuildModule(activity),
                         new NetworkModule(activity),

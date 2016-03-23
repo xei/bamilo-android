@@ -30,6 +30,40 @@ public class CountryPersistentConfigs {
 
     private static final String TAG = CountryPersistentConfigs.class.getSimpleName();
 
+    public static String toString(Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        // "<font color='blue'>#### CURRENCY ####</font>"
+        return
+        "#### CURRENCY ####"    +
+        "\nISO: "               + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null) +
+        "\nSymbol: "            + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, null) +
+        "\nDecimals: "          + sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, 0) +
+        "\nThousands: "         + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, null) +
+        "\nDecimals: "          + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, null) +
+        "\n\n#### TACKING ####" +
+        "\nGTM Id: "            + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, null) +
+        "\nGA Id: "             + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null) +
+        "\n\n#### ALGOLIA ####" +
+        "\nEnabled: "           + sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_USE, false) +
+        "\nApp Id: "            + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_APP_ID, null) +
+        "\nApi Key: "           + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_API_KEY, null) +
+        "\nPrefix: "            + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_PREFIX, null) +
+        "\n\n#### LANGUAGE ####"+
+        "\nCode: "              + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null) +
+        "\nName: "              + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, null) +
+        "\n\n#### GENERAL ####" +
+        "\nPhone: "             + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null) +
+        "\nEmail: "             + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null) +
+        "\nFacebook: "          + sharedPrefs.getBoolean(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE, false) +
+        "\nRating: "            + sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, false) +
+        "\nRating Login: "      + sharedPrefs.getBoolean(Darwin.KEY_SELECTED_RATING_REQUIRED_LOGIN, false) +
+        "\nReview: "            + sharedPrefs.getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, false) +
+        "\nReview Login: "      + sharedPrefs.getBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, false) +
+        "\nCart Popup: "        + sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, false) +
+        "\nRich Relevance: "    + sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_RICH_RELEVANCE, false)
+        ;
+    }
+
     /**
      * Write object variables to preferences
      *
@@ -119,7 +153,6 @@ public class CountryPersistentConfigs {
     }
 
     public static void writePreferences(SharedPreferences.Editor editor, CountryObject countryObject){
-
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, countryObject.getCountryIso().toLowerCase());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, countryObject.getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, countryObject.getCountryUrl());
