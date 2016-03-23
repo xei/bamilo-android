@@ -259,8 +259,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
             mOnActivityResultIntent = null;
         }
 
-        mTabLayout.getId();
-
         // Get the cart and perform auto login
         recoverUserDataFromBackground();
         // Tracking
