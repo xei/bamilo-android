@@ -14,7 +14,7 @@
             layout="@layout/product_details_fragment_header" />
 
         <View
-            style="@style/DividerHorizontal.Black_300"
+            style="@style/DividerHorizontal.Black_400"
             android:layout_below="@id/product_info_container" />
 
         <!-- SHADOW -->

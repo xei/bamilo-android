@@ -1,60 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    style="@style/ViewGroupCompat.Vertical.HeaderDivider"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-
-    >
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/line_separator"
-
-        />
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/buy_bar_height"
-        android:orientation="horizontal"
         android:gravity="center_vertical|right"
-        >
+        android:orientation="horizontal">
 
         <com.mobile.components.customfontviews.TextView
+            android:id="@+id/txLabelTotal"
             style="@style/TextBase.Display_3"
-            android:textColor="@color/black"
-            android:layout_marginRight="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/total_price_bottom"
             android:layout_alignParentRight="true"
-            android:id="@+id/txLabelTotal"
-            />
+            android:layout_marginRight="20dp"
+            android:text="@string/total_price_bottom"
+            android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
+            android:id="@+id/txTotalComboPrice"
             style="@style/TextBase.Display_3"
-            android:textColor="@color/orange_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
-            android:text="RS 524"
             android:layout_toLeftOf="@+id/txLabelTotal"
-            android:id="@+id/txTotalComboPrice"
-            />
-
+            android:text="RS 524"
+            android:textColor="@color/orange_1" />
 
     </RelativeLayout>
 
-
     <com.mobile.components.customfontviews.Button
+        android:id="@+id/btBuyCombo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/buy_combo"
-        android:id="@+id/btBuyCombo"
         android:background="@color/orange_1"
-        android:textColor="@color/white"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:text="@string/buy_combo"
+        android:textColor="@color/white" />
 
-        />
 </LinearLayout>

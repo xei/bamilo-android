@@ -1460,7 +1460,7 @@ public class DynamicFormItem {
             // For RTL
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             // Set dividers
-            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable._gen_divider_horizontal_black_300));
+            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable._gen_divider_horizontal_black_400));
             radioGroup.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
             radioGroup.enableRightStyle();
         }

@@ -30,5 +30,5 @@
         android:layout_height="wrap_content"
         android:visibility="gone"
         android:layout_below="@id/tx_single_line_text"
-        android:background="@drawable/_gen_divider_horizontal_black_300"/>
+        android:background="@drawable/_gen_divider_horizontal_black_400"/>
 </RelativeLayout>

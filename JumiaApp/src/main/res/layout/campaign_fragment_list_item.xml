@@ -32,7 +32,7 @@
 
     <!-- DIVIDER BOTTOM -->
 
-    <View style="@style/DividerHorizontal.Black_300"
+    <View style="@style/DividerHorizontal.Black_400"
           android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

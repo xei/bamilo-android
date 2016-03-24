@@ -91,7 +91,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     @NonNull
     public DynamicForm showDividers(@LinearLayoutCompat.DividerMode int showDividers) {
-        ((LinearLayoutCompat) base).setDividerDrawable(ContextCompat.getDrawable(base.getContext(), R.drawable._gen_divider_horizontal_black_300));
+        ((LinearLayoutCompat) base).setDividerDrawable(ContextCompat.getDrawable(base.getContext(), R.drawable._gen_divider_horizontal_black_400));
         ((LinearLayoutCompat) base).setShowDividers(showDividers);
         return this;
     }

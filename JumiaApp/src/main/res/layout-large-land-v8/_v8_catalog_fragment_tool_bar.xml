@@ -17,7 +17,7 @@
         android:src="@drawable/selector_catalog_list" />
 
     <View
-        style="@style/DividerVertical.Black_300"
+        style="@style/DividerVertical.Black_400"
         android:layout_marginBottom="@dimen/margin_10px"
         android:layout_marginTop="@dimen/margin_10px"
         android:layout_toLeftOf="@+id/sort_container" />
@@ -32,7 +32,7 @@
         android:background="@drawable/selector_card_default_white">
 
         <View
-            style="@style/DividerVertical.Black_300"
+            style="@style/DividerVertical.Black_400"
             android:layout_margin="@dimen/margin_10px" />
     </LinearLayout>
 

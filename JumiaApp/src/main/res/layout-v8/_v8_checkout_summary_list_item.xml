@@ -33,6 +33,6 @@
 
     <View
         android:layout_alignParentBottom="true"
-        style="@style/DividerHorizontal.Black_300"/>
+        style="@style/DividerHorizontal.Black_400"/>
 
 </RelativeLayout>

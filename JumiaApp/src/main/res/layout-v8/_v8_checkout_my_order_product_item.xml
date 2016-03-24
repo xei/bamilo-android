@@ -5,7 +5,7 @@
 
     <View
         android:id="@+id/my_order_item_divider"
-        style="@style/DividerHorizontal.Black_300" />
+        style="@style/DividerHorizontal.Black_400" />
 
     <ImageView
         android:id="@+id/image_view"

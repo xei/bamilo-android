@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ViewGroupCompat.Vertical.HeaderDivider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
     android:orientation="vertical">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/line_separator" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -34,9 +29,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@+id/txLabelTotal"
-            android:layout_toEndOf="@+id/txLabelTotal"
             android:layout_marginStart="@dimen/layout_padding"
+            android:layout_toEndOf="@+id/txLabelTotal"
+            android:layout_toRightOf="@+id/txLabelTotal"
             android:text="RS 524"
             android:textColor="@color/orange_2" />
 
@@ -52,4 +47,4 @@
         android:text="@string/buy_combo"
         android:textColor="@color/white" />
 
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>
