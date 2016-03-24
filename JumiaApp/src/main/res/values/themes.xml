@@ -57,12 +57,19 @@
         <!-- Apply the search view style -->
         <item name="android:searchViewStyle">@style/Widget.Custom.SearchView</item>
         <item name="searchViewStyle">@style/Widget.Custom.SearchView</item>
-
         <!-- remove shadow below action bar -->
         <item name="android:elevation">0dp</item>
         <item name="elevation">0dp</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
 
+    <!-- Action Bar Tab Layout -->
+    <style name="Widget.Custom.ActionBarTab" parent="Base.Widget.Design.TabLayout" >
+        <item name="android:background">@color/tabBar</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabIndicatorColor">@color/color_accent</item>
     </style>
 
     <!-- Style for DrawerArrow from support library compatibility -->
