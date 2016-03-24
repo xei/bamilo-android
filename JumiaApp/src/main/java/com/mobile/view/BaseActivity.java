@@ -784,7 +784,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mSearchAutoComplete = (SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         mSearchListView = (RecyclerView) mSearchOverlay.findViewById(R.id.search_overlay_listview);
         mSearchListView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable._gen_divider_vertical_black_400));
+        mSearchListView.addItemDecoration(new HorizontalSpaceItemDecoration(getApplicationContext(), R.drawable._gen_divider_horizontal_black_400));
         //#RTL
         if (ShopSelector.isRtl()) {
             mSearchAutoComplete.setGravity(Gravity.RIGHT | Gravity.BOTTOM);
