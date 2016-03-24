@@ -4,14 +4,14 @@
     <style name="DividerHorizontal">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@color/black_400</item>
+    </style>
+
+    <style name="DividerHorizontal.Black_300">
         <item name="android:background">@color/black_300</item>
     </style>
 
-    <style name="DividerHorizontal.Black_300"/>
-
-    <style name="DividerHorizontal.Black_400">
-        <item name="android:background">@color/black_400</item>
-    </style>
+    <style name="DividerHorizontal.Black_400"/>
 
     <style name="DividerHorizontal.Black_700">
         <item name="android:background">@color/black_700</item>
@@ -24,14 +24,14 @@
     <style name="DividerVertical">
         <item name="android:layout_width">@dimen/divider_height</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/black_400</item>
+    </style>
+
+    <style name="DividerVertical.Black_300">
         <item name="android:background">@color/black_300</item>
     </style>
 
-    <style name="DividerVertical.Black_300"/>
-
-    <style name="DividerVertical.Black_400">
-        <item name="android:background">@color/black_400</item>
-    </style>
+    <style name="DividerVertical.Black_400"/>
 
     <style name="ShadowHorizontal">
         <item name="android:layout_width">match_parent</item>
@@ -45,7 +45,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
-        <item name="divider">@drawable/_gen_divider_horizontal_black_300</item>
+        <item name="divider">@drawable/_gen_divider_horizontal_black_400</item>
         <item name="showDividers">middle</item>
     </style>
 
@@ -62,7 +62,7 @@
     <!-- GROUP: DIVIDER HORIZONTAL -->
 
     <style name="ViewGroupCompat.Horizontal">
-        <item name="divider">@drawable/_gen_divider_vertical_black_300</item>
+        <item name="divider">@drawable/_gen_divider_vertical_black_400</item>
         <item name="android:orientation">horizontal</item>
     </style>
 

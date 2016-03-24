@@ -295,7 +295,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             if(position == FilterMainFragment.this.currentFilterPosition) {
                 convertView.setBackgroundColor(Color.WHITE);
             } else {
-                convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black_300));
+                convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black_400));
             }
 
             return convertView;

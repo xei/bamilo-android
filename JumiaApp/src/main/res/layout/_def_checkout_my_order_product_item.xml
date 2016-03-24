@@ -5,7 +5,7 @@
 
     <View
         android:id="@+id/my_order_item_divider"
-        style="@style/DividerHorizontal.Black_300" />
+        style="@style/DividerHorizontal.Black_400" />
 
     <ImageView
         android:id="@+id/image_view"
@@ -78,12 +78,11 @@
         style="@style/ShopFirstStyle"
         android:layout_alignLeft="@id/my_order_item_name"
         android:layout_alignStart="@id/my_order_item_name"
-        android:layout_below="@id/my_order_item_variation"
-        />
+        android:layout_below="@id/my_order_item_variation" />
 
     <Space
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_10dp"
-        android:layout_below="@id/shop_first_item"/>
+        android:layout_below="@id/shop_first_item" />
 
 </RelativeLayout>

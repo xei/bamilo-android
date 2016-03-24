@@ -21,7 +21,7 @@
     <!-- SEPARATOR -->
 
     <View
-        style="@style/DividerHorizontal.Black_300"
+        style="@style/DividerHorizontal.Black_400"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp" />
 

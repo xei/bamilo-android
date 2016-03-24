@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <View style="@style/DividerHorizontal.Black_300" />
+    <View style="@style/DividerHorizontal.Black_400" />
 
     <RelativeLayout
         android:layout_width="match_parent"

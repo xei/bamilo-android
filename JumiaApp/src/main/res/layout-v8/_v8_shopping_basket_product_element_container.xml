@@ -33,6 +33,6 @@
             android:layout_toLeftOf="@id/item_image_container" />
     </RelativeLayout>
 
-    <View style="@style/DividerHorizontal.Black_300" />
+    <View style="@style/DividerHorizontal.Black_400" />
 
 </RelativeLayout>

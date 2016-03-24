@@ -22,7 +22,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/_gen_selector_text_field</item>
-        <item name="android:textColorHint">@color/black_800</item>
+        <item name="android:textColorHint">@color/black_700</item>
         <item name="android:cursorVisible">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
@@ -32,7 +32,7 @@
         <item name="android:inputType">textEmailAddress</item>
         <item name="android:fontFamily">roboto_regular</item>
         <item name="met_floatingLabel">highlight</item>
-        <item name="met_underlineColor">@color/black_300</item>
+        <item name="met_underlineColor">@color/black_700</item>
         <item name="met_primaryColor">@color/color_accent</item>
         <item name="met_floatingLabelSidePadding">@dimen/form_padding</item>
     </style>
