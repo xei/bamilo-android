@@ -88,7 +88,6 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
      */
     protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
         ProductUtils.setPriceRulesWithAutoAdjust(mContext, item, holder.discount, holder.price);
-        // Case discount
         ProductUtils.setDiscountRules(item, holder.percentage);
     }
 

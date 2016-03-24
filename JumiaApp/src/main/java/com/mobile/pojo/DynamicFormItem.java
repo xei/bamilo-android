@@ -571,14 +571,13 @@ public class DynamicFormItem {
                     }
                 }
                 // Case HomeNewsletter
-                else if(com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())){
-                    for (String key  : this.entry.getDataSet().keySet()) {
-                        if(com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key),(String) ((IcsSpinner) this.dataControl).getSelectedItem())){
+                else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
+                    for (String key : this.entry.getDataSet().keySet()) {
+                        if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
                             values.put(getName(), key);
                             break;
                         }
                     }
-
                 }
                 break;
             case relatedNumber:
@@ -998,7 +997,6 @@ public class DynamicFormItem {
 
     /**
      * Hide the controls error message to the user
-     *
      */
     public void hideErrorMessage() {
         if (null != errorControl) {
@@ -1285,31 +1283,34 @@ public class DynamicFormItem {
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
-        if (this.entry.getDataSet().size() > 0) {
+        // Case Full
+        if (CollectionUtils.isNotEmpty(this.entry.getDataSet())) {
             int layout = R.layout.form_spinner_item;
-            if(isAlternativeLayout){
+            // Case HomeNewsletter
+            if (isAlternativeLayout) {
                 layout = R.layout.form_alternative_spinner_item;
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, layout, new ArrayList<>(this.entry.getDataSet().values()));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
-        } else {
+        }
+        // Case Empty
+        else {
             ArrayList<String> default_string = new ArrayList<>();
             default_string.add(this.entry.getPlaceHolder());
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
         }
-
-        // sets the spinner value
-
+        // Sets the spinner value
         ((IcsSpinner) this.dataControl).setSelection(0);
-        if(isAlternativeLayout){
+        // Case HomeNewsletter
+        if (isAlternativeLayout) {
             int position = 0;
             if (CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
                 for (NewsletterOption item : ((FormField) this.entry).getNewsletterOptions()) {
                     position++;
-                    if(item.isDefaut){
+                    if (item.isDefaut) {
                         ((IcsSpinner) this.dataControl).setSelection(position);
                     }
                 }

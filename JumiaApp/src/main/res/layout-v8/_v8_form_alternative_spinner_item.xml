@@ -1,8 +1,8 @@
 <com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                                                android:id="@android:id/text1"
-                                                style="@style/form_style"
-                                                android:layout_height="wrap_content"
-                                                android:background="@color/black_800"
-                                                android:gravity="right|center_vertical"
-                                                android:paddingRight="@dimen/dimen_3dp"
-                                                android:textColor="@color/white"/>
+    android:id="@android:id/text1"
+    style="@style/form_style"
+    android:layout_height="wrap_content"
+    android:background="@color/black_800"
+    android:gravity="right|center_vertical"
+    android:paddingRight="@dimen/dimen_3dp"
+    android:textColor="@color/white" />
