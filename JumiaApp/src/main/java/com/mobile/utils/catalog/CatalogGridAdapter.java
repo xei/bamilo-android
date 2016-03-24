@@ -16,7 +16,6 @@ import com.mobile.newFramework.objects.catalog.Banner;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ProductListViewHolder;
