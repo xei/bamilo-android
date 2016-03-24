@@ -185,7 +185,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                     mRecentSearchesAdapter = new SearchDropDownAdapter(mContext, mRecentSearches);
                     mRecentSearchesAdapter.setOnViewHolderClickListener(this);
                     mRecentSearchesList.setAdapter(mRecentSearchesAdapter);
-                    mRecentSearchesList.addItemDecoration(new HorizontalSpaceItemDecoration(getContext(), R.drawable.line_divider));
+                    mRecentSearchesList.addItemDecoration(new HorizontalSpaceItemDecoration(getContext(), R.drawable._gen_divider_horizontal_black_400));
                     mClearAllButton.setVisibility(View.VISIBLE);
                     showFragmentContentContainer();
                 } else {

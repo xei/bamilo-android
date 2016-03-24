@@ -26,7 +26,7 @@
         android:background="@android:color/white">
 
         <View
-            style="@style/DividerVertical.Black_300"
+            style="@style/DividerVertical.Black_400"
             android:layout_margin="@dimen/margin_10px" />
     </LinearLayout>
 
@@ -87,7 +87,7 @@
     </LinearLayout>
 
     <View
-        style="@style/DividerVertical.Black_300"
+        style="@style/DividerVertical.Black_400"
         android:layout_marginBottom="@dimen/margin_10px"
         android:layout_marginTop="@dimen/margin_10px"
         android:layout_toEndOf="@+id/sort_container"

@@ -8,7 +8,7 @@
         android:id="@+id/change_country_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@color/black_300"
+        android:divider="@color/black_400"
         android:dividerHeight="1dp"
         android:listSelector="@drawable/selector_listitem_rounded_margin_highlight" />
 
