@@ -23,7 +23,6 @@
     <item name="checkout_payment_methods"               type="layout">@layout/_v8_checkout_payment_methods</item>
     <item name="checkout_address_item"                  type="layout">@layout/_v8_checkout_address_item</item>
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_v8_checkout_shipping_pickup_station</item>
-    <item name="checkout_header"                        type="layout">@layout/_v8_checkout_header</item>
     <item name="checkout_total_layout" 			        type="layout">@layout/_v8_checkout_total_layout</item>
     <item name="price_rules_element"                    type="layout">@layout/_v8_price_rules_element</item>
     <item name="fulfillment_product"                    type="layout">@layout/_v8_fulfillment_product</item>

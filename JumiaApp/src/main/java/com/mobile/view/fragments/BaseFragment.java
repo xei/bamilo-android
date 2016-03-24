@@ -75,8 +75,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
 
     public static final Boolean IS_NESTED_FRAGMENT = true;
 
-    public static final Boolean IS_NOT_NESTED_FRAGMENT = false;
-
     public static final int NO_INFLATE_LAYOUT = 0;
 
     @NavigationAction.Type
@@ -486,9 +484,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private void updateAdjustState(@KeyboardState int newAdjustState, boolean force) {
         if (getBaseActivity() != null) {
             // Let that the definition of the softInputMode can be forced if the flag force is true
-            if (force || BaseActivity.currentAdjustState != newAdjustState) {
+            if (force || BaseActivity.sCurrentAdjustState != newAdjustState) {
                 String stateString = "UNDEFINED";
-                BaseActivity.currentAdjustState = newAdjustState;
+                BaseActivity.sCurrentAdjustState = newAdjustState;
                 switch (newAdjustState) {
                     case NO_ADJUST_CONTENT:
                         stateString = "NO_ADJUST_CONTENT";

@@ -40,7 +40,6 @@ import com.mobile.components.METLengthChecker;
 import com.mobile.components.METValidator;
 import com.mobile.framework.R;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
