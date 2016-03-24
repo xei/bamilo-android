@@ -48,7 +48,7 @@ public class LocationHelper implements LocationListener {
 
     private WeakReference<Handler> callback;
 
-    private Handler timeoutHandle = new Handler();
+    private final Handler timeoutHandle = new Handler();
     
     private boolean locationReceived = false;
     

@@ -69,6 +69,7 @@ public class ProductUtils {
             specialPrice.setText(CurrencyFormatter.formatCurrency(productBase.getSpecialPrice()));
             price.setText(CurrencyFormatter.formatCurrency(productBase.getPrice()));
             price.setPaintFlags(price.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            price.setVisibility(View.VISIBLE);
         }
         // Case normal
         else {

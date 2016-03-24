@@ -247,9 +247,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // Case shipping options from array
             if(dataOptionsArray != null){
                 mNewsletterOptions = new ArrayList<>();
-                // Spinner fields (Used in HomeNewsletter and Addresses)
-                if (TextUtils.isNotEmpty(mPlaceHolder)) {
-                    mDataSet.put(RestConstants.PLACE_HOLDER, mPlaceHolder);
+                if(TextUtils.isNotEmpty(mPlaceHolder)){
+                    mDataSet.put(RestConstants.PLACE_HOLDER,mPlaceHolder);
                 }
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
                     // Case the newsletter
@@ -550,6 +549,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     public int getFormType() {
         return this.mFormType;
     }
+
+
 
     /*
      * ########### PARCELABLE ###########

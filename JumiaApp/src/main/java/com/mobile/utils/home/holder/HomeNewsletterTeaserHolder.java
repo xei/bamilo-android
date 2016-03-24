@@ -85,17 +85,16 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
                     mEditText.setOnEditorActionListener(this);
                     mSubmit.setEnabled(TextUtils.isNotEmpty(mEditText.getText()));
                 }
-                // Case RadioGroup: Get Gender choice to save on rotation.
-                else if (view instanceof RelativeLayout) {
-                    mRadioGroupLayout = (RadioGroupLayout) view.findViewById(R.id.radio_group_container);
-                    if (mRadioGroupLayout != null && sInitialGender > 0) {
+                // Get Gender choice to save on rotation.
+                else if(control.getDataControl() instanceof RelativeLayout &&
+                        control.getDataControl().findViewById(R.id.radio_group_container) != null){ // Get Gender choice to save on rotation.
+                    mRadioGroupLayout = (RadioGroupLayout) control.getDataControl().findViewById(R.id.radio_group_container);
+                    if(sInitialGender > 0 ){
                         mRadioGroupLayout.setSelection(sInitialGender);
                     }
-                }
-                // Case Spinner: Get the selection
-                else if (control.getEntry().getInputType() == FormInputType.list) {
+                } else if(control.getEntry().getInputType() == FormInputType.list){
                     mGenderSpinner = (IcsSpinner) control.getDataControl();
-                    if (sInitialGender > 0) {
+                    if(sInitialGender > 0 ) {
                         mGenderSpinner.setSelection(sInitialGender);
                     }
                 }
@@ -104,30 +103,12 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
     }
 
     /*
-     * ########### SAVE STATE ###########
-     */
-
-    @Nullable
-    public String getEditedText() {
-        return sInitialValue = mEditText != null ? mEditText.getText().toString() : null;
-    }
-
-    public int getSelectedGender() {
-        if (mRadioGroupLayout != null) {
-            return sInitialGender = mRadioGroupLayout.getSelectedIndex();
-        } else if (mGenderSpinner != null) {
-            return sInitialGender = mGenderSpinner.getSelectedItemPosition();
-        }
-        return IntConstants.INVALID_POSITION;
-    }
-
-    /*
      * ########### LISTENERS ###########
      */
 
     @Override
     public void onClick(final View v) {
-        if (v != null && mParentClickListener != null && mNewsLetterForm != null && mNewsLetterForm.validate()) {
+        if (v != null && mParentClickListener != null && mNewsLetterForm != null && validate()) {
             mParentClickListener.onClick(v);
             JumiaApplication.INSTANCE.sendRequest(new SubmitFormHelper(), SubmitFormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), this);
         }
@@ -176,11 +157,11 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
         ((IResponseCallback) mParentClickListener).onRequestError(baseResponse);
     }
 
-    protected boolean validate() {
+    protected boolean validate(){
         boolean result = true;
         for (DynamicFormItem control : mNewsLetterForm) {
-            if (control.getEntry().getInputType() == FormInputType.list) {
-                if (TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())) {
+            if(control.getEntry().getInputType() == FormInputType.list){
+                if(TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())){
                     control.showErrorMessage(control.getEntry().getValidation().getMessage());
                     return false;
                 } else {
@@ -189,8 +170,24 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
             } else {
                 result &= control.validate();
             }
+
+
         }
+
         return result;
     }
 
+    public String getEditedText(){
+        return sInitialValue = mEditText != null ? mEditText.getText().toString() : null;
+    }
+
+    public int getSelectedGender(){
+        if(mRadioGroupLayout != null){
+            return sInitialGender = mRadioGroupLayout.getSelectedIndex();
+        } else if(mGenderSpinner != null){
+            return sInitialGender = mGenderSpinner.getSelectedItemPosition();
+        }
+
+        return 0;
+    }
 }

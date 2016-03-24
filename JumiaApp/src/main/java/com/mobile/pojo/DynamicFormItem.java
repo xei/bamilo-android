@@ -571,13 +571,14 @@ public class DynamicFormItem {
                     }
                 }
                 // Case HomeNewsletter
-                else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
-                    for (String key : this.entry.getDataSet().keySet()) {
-                        if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
+                else if(com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())){
+                    for (String key  : this.entry.getDataSet().keySet()) {
+                        if(com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key),(String) ((IcsSpinner) this.dataControl).getSelectedItem())){
                             values.put(getName(), key);
                             break;
                         }
                     }
+
                 }
                 break;
             case relatedNumber:
@@ -997,6 +998,7 @@ public class DynamicFormItem {
 
     /**
      * Hide the controls error message to the user
+     *
      */
     public void hideErrorMessage() {
         if (null != errorControl) {
@@ -1139,7 +1141,6 @@ public class DynamicFormItem {
         }
     }
 
-
     /**
      * Build list field.<br>
      * - The isAlternativeLayout flag is used to load the HomeNewsletter layout
@@ -1150,7 +1151,6 @@ public class DynamicFormItem {
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
-        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer, isAlternativeLayout);
     }
 
@@ -1287,8 +1287,7 @@ public class DynamicFormItem {
 
         if (this.entry.getDataSet().size() > 0) {
             int layout = R.layout.form_spinner_item;
-            // Case HomeNewsletter
-            if (isAlternativeLayout) {
+            if(isAlternativeLayout){
                 layout = R.layout.form_alternative_spinner_item;
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, layout, new ArrayList<>(this.entry.getDataSet().values()));
@@ -1302,9 +1301,9 @@ public class DynamicFormItem {
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
         }
 
-        // Sets the spinner value
+        // sets the spinner value
+
         ((IcsSpinner) this.dataControl).setSelection(0);
-        // Case HomeNewsletter
         if(isAlternativeLayout){
             int position = 0;
             if (CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
@@ -1349,6 +1348,7 @@ public class DynamicFormItem {
             }
             this.control.addView(this.errorControl);
         }
+
 
         this.control.addView(dataContainer);
 
