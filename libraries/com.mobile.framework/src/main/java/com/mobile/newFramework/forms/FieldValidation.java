@@ -92,7 +92,7 @@ public class FieldValidation implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @return the global error message.
+     * @return the Regex error message.
      */
     public String getRegexErrorMessage() {
         return regexErrorMessage;

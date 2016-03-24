@@ -550,12 +550,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
                 showFragmentFallBack();
                 break;
-            case SUBMIT_FORM:
-                // Newsletter Form Response
+            case SUBMIT_FORM:// Newsletter Form Response
                 getBaseActivity().dismissProgress();
                 if(CollectionUtils.isEmpty(baseResponse.getValidateMessages())){
                     showWarningErrorMessage(baseResponse.getErrorMessage());
                 }
+
                 break;
             default:
                 break;
