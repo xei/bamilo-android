@@ -11,10 +11,10 @@
         <item name="colorPrimaryDark">@color/statusBar</item>
         <!-- Color for UI controls like checkboxes and text fields -->
         <item name="colorAccent">@color/color_accent</item>
-        <!-- Color for UI controls like switchs -->
-        <item name="colorControlActivated">@color/blue_1</item>
+        <!-- Color for UI controls (switch|checkbox|radio) -->
+        <item name="colorControlActivated">@color/color_accent</item>
         <!-- Color for UI controls like checkboxes and text fields -->
-        <item name="android:navigationBarColor">@color/grey_dark</item>
+        <item name="android:navigationBarColor">@color/black</item>
         <!-- Color for app background -->
         <item name="android:windowBackground">@color/window_background_color</item>
         <!-- #### Text -->
@@ -113,7 +113,13 @@
     </style>
 
     <!-- Button View -->
-    <style name="Widget.Custom.Button" parent="Widget.AppCompat.Button">
+    <style name="Widget.Custom.Button" parent="Widget.AppCompat.Button"/>
+
+    <!-- Switch View -->
+    <style name="Widget.Custom.Switch" parent="Widget.AppCompat.CompoundButton.Switch" >
+        <item name="colorControlActivated">@color/blue_1</item>
+        <item name="colorSwitchThumbNormal">@color/black_200</item>
+        <item name="switchTextAppearance">@style/TextBase.Title_1.Black</item>
     </style>
 
     <!-- Base Dialog -->

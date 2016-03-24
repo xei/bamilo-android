@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
-    <style name="button_orange_landscape" parent="button_orange_bottom">
-        <item name="android:layout_width">@dimen/button_landscape_width</item>
-    </style>
-
-    <style name="button_grey_landscape" parent="button_grey_bottom">
-        <item name="android:layout_width">@dimen/button_landscape_width</item>
-    </style>
-
+    
 </resources>
