@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/offers_page"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:id="@+id/offers_page"
-    >
+    android:background="@color/white">
 
     <!-- OTHER SELLERS/OFFERS PAGE -->
 
@@ -12,51 +12,49 @@
         android:id="@+id/offers_header"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_70dp"
-        android:background="@android:color/white" >
+        android:background="@android:color/white">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_product_name"
             style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_huge"
+            android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/margin_large"
             android:layout_marginRight="@dimen/margin_huge"
-            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/margin_huge"
             android:maxLines="2"
             android:singleLine="false"
-            android:text="aaaa"
-            />
+            tools:text="aaaa" />
 
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_product_brand"
-            android:layout_below="@id/offer_product_name"
             style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/offer_product_name"
             android:layout_marginLeft="@dimen/margin_large"
             android:layout_marginRight="@dimen/margin_huge"
-            android:layout_alignParentRight="true"
             android:maxLines="2"
             android:singleLine="false"
-            android:text="aaaa"
-            android:textColor="@color/black_800"
-            />
-
-
+            tools:text="aaaa"
+            android:textColor="@color/black_800" />
 
     </RelativeLayout>
 
-    <View style="@style/DividerHorizontal.Black_300"   android:id="@+id/separator"
+    <View
+        android:id="@+id/separator"
+        style="@style/DividerHorizontal.Black_400"
         android:layout_below="@id/offers_header" />
 
     <com.mobile.utils.catalog.HeaderFooterGridView
         android:id="@+id/offers_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:listSelector="@color/transparent"
         android:layout_below="@id/separator"
+        android:listSelector="@color/transparent"
         android:numColumns="@integer/favourite_num_columns" />
 
 </RelativeLayout>

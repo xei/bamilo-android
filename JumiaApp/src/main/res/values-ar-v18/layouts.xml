@@ -24,7 +24,6 @@
     <item name="checkout_summary_shipping_method"       type="layout">@layout/_def_checkout_summary_shipping_method</item>
     <item name="checkout_payment_methods"               type="layout">@layout/_def_checkout_payment_methods</item>
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_def_checkout_shipping_pickup_station</item>
-    <item name="checkout_header"                        type="layout">@layout/_def_checkout_header</item>
     <item name="checkout_thanks"                        type="layout">@layout/_def_checkout_thanks</item>
     <item name="checkout_success_fragment_related"      type="layout">@layout/_def_checkout_success_fragment_related_prods</item>
     <item name="checkout_create_address_main" 	        type="layout">@layout/_def_checkout_create_address_main</item>
@@ -188,6 +187,7 @@
     <item name="product_gallery_full_activity"          type="layout">@layout/_def_product_gallery_full_activity</item>
     <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
     <item name="form_spinner_item"                      type="layout">@layout/_def_form_spinner_item</item>
+    <item name="form_alternative_spinner_item"          type="layout">@layout/_def_form_alternative_spinner_item</item>
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
     <item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>

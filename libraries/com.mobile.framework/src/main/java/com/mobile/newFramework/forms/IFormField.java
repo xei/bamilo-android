@@ -58,4 +58,8 @@ public interface IFormField {
     boolean isDisabledField();
 
     boolean isVerticalOrientation();
+
+    void setFormType(int mType);
+
+    int getFormType();
 }

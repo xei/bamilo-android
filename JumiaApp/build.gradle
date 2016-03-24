@@ -124,7 +124,7 @@ android {
         jumia {
             applicationId "com.jumia.android"
             versionName "3.1"
-            versionCode getAppVersionCode(61)
+            versionCode getAppVersionCode(62)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             //buildTypes.debug.manifestPlaceholders = [APP_ID: "123456"]
@@ -133,7 +133,7 @@ android {
         jumiaPreInstall {
             applicationId "com.jumia.android"
             versionName "3.1"
-            versionCode 61
+            versionCode 62
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -144,7 +144,7 @@ android {
         jumiaNokiaX {
             applicationId "com.jumia.android"
             versionName "3.1"
-            versionCode 61
+            versionCode 62
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -155,7 +155,7 @@ android {
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
             versionName "3.1"
-            versionCode 61
+            versionCode 62
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -169,7 +169,7 @@ android {
         shop {
             applicationId "com.shop.android"
             versionName "1.9"
-            versionCode getAppVersionCode(14)
+            versionCode getAppVersionCode(15)
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
         }
@@ -177,7 +177,7 @@ android {
         shopPreInstall {
             applicationId "com.shop.android"
             versionName "1.9"
-            versionCode 14
+            versionCode 15
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
             android.sourceSets {
@@ -188,7 +188,7 @@ android {
         shopNokiaX {
             applicationId "com.shop.android"
             versionName "1.9"
-            versionCode 14
+            versionCode 15
             signingConfig signingConfigs.shopSigning
             resConfigs "en", "my"
             android.sourceSets {
@@ -203,7 +203,7 @@ android {
         daraz {
             applicationId "com.daraz.android"
             versionName "1.9"
-            versionCode getAppVersionCode(14)
+            versionCode getAppVersionCode(15)
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
         }
@@ -211,7 +211,7 @@ android {
         darazPreInstall {
             applicationId "com.daraz.android"
             versionName "1.9"
-            versionCode 14
+            versionCode 15
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
             android.sourceSets {
@@ -222,7 +222,7 @@ android {
         darazNokiaX {
             applicationId "com.daraz.android"
             versionName "1.9"
-            versionCode 14
+            versionCode 15
             signingConfig signingConfigs.darazSigning
             resConfigs "en", "ur"
             android.sourceSets {
@@ -236,7 +236,7 @@ android {
         bamilo {
             applicationId "com.bamilo.android"
             versionName "2.1"
-            versionCode getAppVersionCode(17)
+            versionCode getAppVersionCode(18)
             signingConfig signingConfigs.bamiloSigning
             resConfigs "fa"
         }

@@ -57,7 +57,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     private final ViewGroup base;
     private final HashMap<String, DynamicFormItem> controls;
     private int lastID = 0x7f096000;
-    private Form form;
+    private final Form form;
     private WeakReference<View.OnClickListener> mClickListener;
     private WeakReference<IResponseCallback> mRequestCallBack;
     private WeakReference<BaseActivity> mFragmentActivity;
@@ -91,7 +91,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     @NonNull
     public DynamicForm showDividers(@LinearLayoutCompat.DividerMode int showDividers) {
-        ((LinearLayoutCompat) base).setDividerDrawable(ContextCompat.getDrawable(base.getContext(), R.drawable._gen_divider_horizontal_black_300));
+        ((LinearLayoutCompat) base).setDividerDrawable(ContextCompat.getDrawable(base.getContext(), R.drawable._gen_divider_horizontal_black_400));
         ((LinearLayoutCompat) base).setShowDividers(showDividers);
         return this;
     }
@@ -114,6 +114,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     @NonNull
     public DynamicForm build() {
         for (IFormField entry : form.getFields()) {
+            entry.setFormType(form.getType());
             Print.i(TAG, "FORM ITEM KEY:" + entry.getKey() + " TYPE:" + entry.getInputType());
             this.addControl(DynamicFormItem.newInstance(this, base.getContext(), entry));
         }

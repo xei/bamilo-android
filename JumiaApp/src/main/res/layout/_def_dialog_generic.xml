@@ -38,7 +38,7 @@
 
         <View
             android:id="@+id/grey_line"
-            style="@style/DividerHorizontal.Black_300"
+            style="@style/DividerHorizontal.Black_400"
             android:layout_alignParentTop="true" />
 
         <LinearLayout
@@ -58,7 +58,7 @@
 
             <View
                 android:id="@+id/grey_line_vertical"
-                style="@style/DividerVertical.Black_300" />
+                style="@style/DividerVertical.Black_400" />
 
             <com.mobile.components.customfontviews.Button
                 android:id="@+id/button2"

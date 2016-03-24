@@ -48,7 +48,7 @@ public class LocationHelper implements LocationListener {
 
     private WeakReference<Handler> callback;
 
-    private Handler timeoutHandle = new Handler();
+    private final Handler timeoutHandle = new Handler();
     
     private boolean locationReceived = false;
     
@@ -92,16 +92,16 @@ public class LocationHelper implements LocationListener {
         }
     }
     
-    /**
+    /*
      * ################## REQUESTS ################## 
      */
 
     /**
      * Get the country code from Network configurations
      */
-    private boolean getCountryFromNetwork(TelephonyManager deviceManager){
+    private boolean getCountryFromNetwork(TelephonyManager deviceManager) {
         String networkCountry = deviceManager.getNetworkCountryIso();
-        if(isCountryAvailable(networkCountry)){
+        if (isCountryAvailable(networkCountry)) {
             Print.i(TAG, "MATCH COUNTRY FROM NETWORK: " + networkCountry);
             sendInitializeMessage();
             return true;
@@ -109,13 +109,13 @@ public class LocationHelper implements LocationListener {
         Print.i(TAG, "NO MATCH COUNTRY FROM NETWORK: " + networkCountry);
         return false;
     }
-    
+
     /**
      * Get the country code from SIM card
      */
     private boolean getCountryFromSim(TelephonyManager deviceManager) {
         String simCountry = deviceManager.getSimCountryIso();
-        if(isCountryAvailable(simCountry)) {
+        if (isCountryAvailable(simCountry)) {
             Print.i(TAG, "MATCH COUNTRY FROM SIM: " + simCountry);
             sendInitializeMessage();
             return true;
@@ -123,8 +123,7 @@ public class LocationHelper implements LocationListener {
         Print.i(TAG, "NO MATCH COUNTRY FROM SIM: " + simCountry);
         return false;
     }
-    
-    
+
     /**
      * Get the country code from the last known location using the GeoCoder api.
      */
@@ -178,8 +177,7 @@ public class LocationHelper implements LocationListener {
         }
         
     }
-    
-    
+
     /**
      * Get the best location provider GPS or Network 
      */

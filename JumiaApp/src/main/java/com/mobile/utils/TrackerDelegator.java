@@ -90,6 +90,30 @@ public class TrackerDelegator {
 
     private static final Context sContext = JumiaApplication.INSTANCE.getApplicationContext();
 
+    /**
+     * Called only on resume activity
+     */
+    public static void onResumeActivity(long time) {
+        AdjustTracker.onResume();
+        TrackerDelegator.trackAppOpenAdjust(sContext, time);
+    }
+
+    /**
+     * Called only on pause activity
+     */
+    public static void onPauseActivity() {
+        AdjustTracker.onPause();
+        AnalyticsGoogle.get().dispatchHits();
+    }
+
+
+    /**
+     * Called only on destroy activity
+     */
+    public static void onDestroyActivity() {
+        GTMManager.get().gtmTrackAppClose();
+    }
+
 
     public static void trackLoginSuccessful(Customer customer, boolean autoLogin, boolean fromFacebook) {
         Bundle params = new Bundle();
@@ -402,7 +426,7 @@ public class TrackerDelegator {
         if (result == null) {
             return;
         }
-        Print.d(TAG, "TRACK SALE: JSON " + result.toString());
+        Print.d(TAG, "TRACK SALE: JSON " + result);
 
         // Validate customer
         Customer customer = params.getParcelable(CUSTOMER_KEY);
@@ -797,15 +821,6 @@ public class TrackerDelegator {
         if (order != null) {
             GTMManager.get().gtmTrackFailedPayment(paymentMethod, order.getPriceForTracking(), EUR_CURRENCY);
         }
-    }
-
-    /**
-     * Tracking closing app for GTM
-     *
-     */
-    public static void trackCloseApp() {
-        // GTM
-        GTMManager.get().gtmTrackAppClose();
     }
 
 

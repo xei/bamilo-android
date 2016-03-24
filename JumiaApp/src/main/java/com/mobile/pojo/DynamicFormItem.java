@@ -286,7 +286,7 @@ public class DynamicFormItem {
                     buildRadioGroup(params, RelativeLayout.LayoutParams.MATCH_PARENT);
                     break;
                 case list:
-                    buildList(params, RelativeLayout.LayoutParams.MATCH_PARENT);
+                    buildList(params, RelativeLayout.LayoutParams.MATCH_PARENT, this.entry.getFormType() == FormConstants.NEWSLETTER_FORM);
                     break;
                 case metadata:
                 case date:
@@ -570,6 +570,15 @@ public class DynamicFormItem {
                         values.put(getName(), selectedItem.getValue());
                     }
                 }
+                // Case HomeNewsletter
+                else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
+                    for (String key : this.entry.getDataSet().keySet()) {
+                        if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
+                            values.put(getName(), key);
+                            break;
+                        }
+                    }
+                }
                 break;
             case relatedNumber:
                 // Get number
@@ -684,6 +693,9 @@ public class DynamicFormItem {
                 result = ((EditText) this.dataControl).getText().toString();
                 break;
             case rating:
+                break;
+            case list:
+                result = (String) ((IcsSpinner) this.dataControl).getSelectedItem();
                 break;
             default:
                 result = "";
@@ -964,7 +976,7 @@ public class DynamicFormItem {
         else {
             String regex = this.entry.getValidation().regex;
             Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-            setErrorText("The " + this.entry.getLabel() + " " + context.getString(R.string.dynamic_errortext) + space);
+            setErrorText(this.entry.getValidation().getRegexErrorMessage() + space);
             Matcher matcher = pattern.matcher(text);
             result = matcher.find();
         }
@@ -980,6 +992,15 @@ public class DynamicFormItem {
         if (null != errorControl) {
             setErrorText(message);
             this.errorControl.setVisibility(message.equals("") ? View.GONE : View.VISIBLE);
+        }
+    }
+
+    /**
+     * Hide the controls error message to the user
+     */
+    public void hideErrorMessage() {
+        if (null != errorControl) {
+            this.errorControl.setVisibility(View.GONE);
         }
     }
 
@@ -1118,15 +1139,17 @@ public class DynamicFormItem {
         }
     }
 
-
-    private void buildList(RelativeLayout.LayoutParams params, int controlWidth) {
+    /**
+     * Build list field.<br>
+     * - The isAlternativeLayout flag is used to load the HomeNewsletter layout
+     */
+    private void buildList(RelativeLayout.LayoutParams params, int controlWidth, boolean isAlternativeLayout) {
         this.control.setLayoutParams(params);
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
-        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer);
+        createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer, isAlternativeLayout);
     }
 
 
@@ -1255,33 +1278,43 @@ public class DynamicFormItem {
         this.control.setVisibility(View.GONE);
     }
 
-    private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer) {
+    private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer, boolean isAlternativeLayout) {
         this.dataControl = View.inflate(this.context, R.layout.form_icsspinner, null);
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
-        if (this.entry.getDataSet().size() > 0) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<>(this.entry.getDataSet().values()));
+        // Case Filled
+        if (CollectionUtils.isNotEmpty(this.entry.getDataSet())) {
+            int layout = R.layout.form_spinner_item;
+            // Case HomeNewsletter
+            if (isAlternativeLayout) {
+                layout = R.layout.form_alternative_spinner_item;
+            }
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, layout, new ArrayList<>(this.entry.getDataSet().values()));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
-        } else {
+        }
+        // Case Empty
+        else {
             ArrayList<String> default_string = new ArrayList<>();
             default_string.add(this.entry.getPlaceHolder());
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
         }
-
-        // sets the spinner value
-        int position = 0;
-        if (null != this.entry.getValue() && !this.entry.getValue().trim().equals("")) {
-            for (String item : new ArrayList<>(this.entry.getDataSet().values())) {
-                if (item.equals(this.entry.getValue())) {
-                    ((IcsSpinner) this.dataControl).setSelection(position);
-                    break;
+        // Sets the spinner value
+        ((IcsSpinner) this.dataControl).setSelection(0);
+        // Case HomeNewsletter
+        if (isAlternativeLayout) {
+            int position = 0;
+            if (CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
+                for (NewsletterOption item : ((FormField) this.entry).getNewsletterOptions()) {
+                    position++;
+                    if (item.isDefaut) {
+                        ((IcsSpinner) this.dataControl).setSelection(position);
+                    }
                 }
             }
-            //position++;
         }
 
         this.dataControl.setVisibility(View.VISIBLE);
@@ -1305,6 +1338,18 @@ public class DynamicFormItem {
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
+
+        if (hasRules()) {
+            this.setErrorText(this.entry.getValidation().getMessage());
+            this.errorControl = createErrorControl(dataContainer.getId(), RelativeLayout.LayoutParams.MATCH_PARENT);
+            //#RTL
+            int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+            if (currentApiVersion >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                this.errorControl.setLayoutDirection(LayoutDirection.RTL);
+            }
+            this.control.addView(this.errorControl);
+        }
+
 
         this.control.addView(dataContainer);
 
@@ -1460,7 +1505,7 @@ public class DynamicFormItem {
             // For RTL
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             // Set dividers
-            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable._gen_divider_horizontal_black_300));
+            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable._gen_divider_horizontal_black_400));
             radioGroup.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
             radioGroup.enableRightStyle();
         }

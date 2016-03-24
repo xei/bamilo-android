@@ -34,6 +34,8 @@
         <item name="android:checkboxStyle">@style/Widget.Custom.CheckBox</item>
         <!-- #### List View -->
         <item name="android:listViewStyle">@style/Widget.Custom.ListView</item>
+        <!-- #### List View Drop Down -->
+        <item name="android:dropDownListViewStyle">@style/Widget.Custom.DropDown.ListView</item>
         <!-- #### Custom Spinner View -->
         <item name="actionCustomSpinnerDropDownStyle">@style/Widget.Custom.Spinner.Style</item>
         <!-- #### View Page Indicator -->
@@ -41,13 +43,6 @@
         <!-- #### Button View -->
         <item name="android:buttonStyle">@style/Widget.Custom.Button</item>
         <item name="buttonStyle">@style/Widget.Custom.Button</item>
-        <!-- Used for Search View -->
-        <item name="android:dropDownListViewStyle">@style/DropDownListViewStyle</item>
-    </style>
-
-    <style name="DropDownListViewStyle" parent="@style/Widget.AppCompat.ListView.DropDown">
-        <item name="android:divider">@color/black_300</item>
-        <item name="android:dividerHeight">1dp</item>
     </style>
 
     <!-- Theme for ActionBar from support library compatibility -->
@@ -62,12 +57,19 @@
         <!-- Apply the search view style -->
         <item name="android:searchViewStyle">@style/Widget.Custom.SearchView</item>
         <item name="searchViewStyle">@style/Widget.Custom.SearchView</item>
-
         <!-- remove shadow below action bar -->
         <item name="android:elevation">0dp</item>
         <item name="elevation">0dp</item>
         <item name="android:windowContentOverlay">@null</item>
+    </style>
 
+    <!-- Action Bar Tab Layout -->
+    <style name="Widget.Custom.ActionBarTab" parent="Base.Widget.Design.TabLayout" >
+        <item name="android:background">@color/tabBar</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabIndicatorColor">@color/color_accent</item>
     </style>
 
     <!-- Style for DrawerArrow from support library compatibility -->
@@ -93,17 +95,13 @@
         <item name="collapseIcon">?attr/homeAsUpIndicator</item>
     </style>
 
-    <!--<item name="queryHint">@string/action_label_search_hint</item>-->
-
     <!-- Radio Button -->
-
     <style name="Widget.Custom.RadioButton" parent="android:Widget.CompoundButton.RadioButton">
         <!--<item name="android:listChoiceIndicatorSingle">@drawable/_gen_selector_radio_button</item>-->
         <item name="android:button">@drawable/_gen_selector_radio_button</item>
     </style>
 
     <!-- Check Box -->
-
     <style name="Widget.Custom.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <!--<item name="android:listChoiceIndicatorMultiple">@drawable/_gen_selector_check_box</item>-->
         <item name="android:button">@drawable/_gen_selector_check_box</item>
@@ -112,7 +110,13 @@
     <!-- List View -->
     <style name="Widget.Custom.ListView" parent="android:Widget.ListView.White">
         <item name="android:cacheColorHint">@android:color/transparent</item>
-        <item name="android:divider">@color/grey_light</item>
+        <item name="android:divider">@color/black_400</item>
+    </style>
+
+    <!-- List View Drop Down -->
+    <style name="Widget.Custom.DropDown.ListView" parent="@style/Widget.AppCompat.ListView.DropDown">
+        <item name="android:divider">@color/black_400</item>
+        <item name="android:dividerHeight">1dp</item>
     </style>
 
     <!-- Button View -->

@@ -38,7 +38,7 @@
         android:background="@android:color/white">
 
         <View
-            style="@style/DividerVertical.Black_300"
+            style="@style/DividerVertical.Black_400"
             android:layout_margin="@dimen/margin_10px" />
     </LinearLayout>
 
@@ -77,7 +77,7 @@
         android:background="@android:color/white">
 
         <View
-            style="@style/DividerVertical.Black_300"
+            style="@style/DividerVertical.Black_400"
             android:layout_margin="@dimen/margin_10px" />
     </LinearLayout>
 

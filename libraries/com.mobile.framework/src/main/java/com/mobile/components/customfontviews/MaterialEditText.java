@@ -40,7 +40,6 @@ import com.mobile.components.METLengthChecker;
 import com.mobile.components.METValidator;
 import com.mobile.framework.R;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -101,6 +100,11 @@ public class MaterialEditText extends AppCompatEditText {
      * the spacing between the main text and the floating label.
      */
     private int floatingLabelPadding;
+
+    /**
+     * padding floating label.
+     */
+    private int floatingLabelTextSidePadding;
 
     /**
      * the spacing between the main text and the bottom components (bottom ellipsis, helper/error text, characters counter).
@@ -403,6 +407,7 @@ public class MaterialEditText extends AppCompatEditText {
             floatingLabelText = getHint();
         }
         floatingLabelPadding = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelPadding, bottomSpacing);
+        floatingLabelTextSidePadding = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelSidePadding, 0);
         floatingLabelTextSize = typedArray.getDimensionPixelSize(R.styleable.MaterialEditText_met_floatingLabelTextSize, getResources().getDimensionPixelSize(R.dimen.floating_label_text_size));
         floatingLabelTextColor = typedArray.getColor(R.styleable.MaterialEditText_met_floatingLabelTextColor, -1);
         floatingLabelAnimating = typedArray.getBoolean(R.styleable.MaterialEditText_met_floatingLabelAnimating, true);
@@ -1371,9 +1376,9 @@ public class MaterialEditText extends AppCompatEditText {
             float floatingLabelWidth = textPaint.measureText(floatingLabelText.toString());
             int floatingLabelStartX;
             if ((getGravity() & Gravity.RIGHT) == Gravity.RIGHT || isRTL()) {
-                floatingLabelStartX = (int) (endX - floatingLabelWidth);
+                floatingLabelStartX = (int) (endX - floatingLabelWidth) - floatingLabelTextSidePadding;
             } else if ((getGravity() & Gravity.LEFT) == Gravity.LEFT) {
-                floatingLabelStartX = startX;
+                floatingLabelStartX = startX + floatingLabelTextSidePadding;
             } else {
                 floatingLabelStartX = startX + (int) (getInnerPaddingLeft() + (getWidth() - getInnerPaddingLeft() - getInnerPaddingRight() - floatingLabelWidth) / 2);
             }
@@ -1387,7 +1392,7 @@ public class MaterialEditText extends AppCompatEditText {
             textPaint.setAlpha(alpha);
 
             // draw the floating label
-            canvas.drawText(floatingLabelText.toString(), floatingLabelStartX, floatingLabelStartY, textPaint);
+            canvas.drawText(floatingLabelText.toString(), floatingLabelStartX , floatingLabelStartY, textPaint);
         }
 
         // draw the bottom ellipsis

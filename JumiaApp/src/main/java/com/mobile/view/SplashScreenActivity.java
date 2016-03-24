@@ -312,7 +312,6 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
-        Print.i(TAG, "ON SUCCESS RESPONSE");
         if (!shouldHandleEvent) {
             Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
             return;
@@ -323,9 +322,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
 
         EventType eventType = baseResponse.getEventType();
         int errorCode = baseResponse.getError() != null ? baseResponse.getError().getCode() : ErrorCode.NO_ERROR;
+        Print.i(TAG, "ON SUCCESS RESPONSE: " + eventType);
 
-        //Print.i(TAG, "code1configs : handleSuccessResponse : " + eventType + " errorcode : " + errorCode);
-
+        // Dismiss dialog
         if (dialog != null && dialog.isVisible()) {
             try {
                 dialog.dismissAllowingStateLoss();

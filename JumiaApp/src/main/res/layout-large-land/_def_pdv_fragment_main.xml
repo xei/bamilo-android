@@ -25,7 +25,7 @@
         android:layout_alignRight="@id/center_point" />
 
     <View
-        style="@style/DividerVertical.Black_300"
+        style="@style/DividerVertical.Black_400"
         android:layout_alignEnd="@id/center_point"
         android:layout_alignRight="@id/center_point" />
 

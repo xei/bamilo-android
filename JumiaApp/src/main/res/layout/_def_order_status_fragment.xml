@@ -48,7 +48,12 @@
                 layout="@layout/_def_order_status_info"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginTop="@dimen/margin_padding_xl"
+                android:layout_marginBottom="@dimen/margin_padding_l"
+                android:layout_marginLeft="@dimen/margin_padding_xl"
+                android:layout_marginStart="@dimen/margin_padding_xl"
+                android:layout_marginRight="@dimen/margin_padding_xl"
+                android:layout_marginEnd="@dimen/margin_padding_xl"
                 android:layout_weight="1" />
 
             <!-- PAYMENT -->
@@ -58,14 +63,19 @@
                 layout="@layout/_def_order_status_payment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginTop="@dimen/margin_padding_xl"
+                android:layout_marginBottom="@dimen/margin_padding_l"
+                android:layout_marginLeft="@dimen/margin_padding_xl"
+                android:layout_marginStart="@dimen/margin_padding_xl"
+                android:layout_marginRight="@dimen/margin_padding_xl"
+                android:layout_marginEnd="@dimen/margin_padding_xl"
                 android:layout_weight="1" />
 
         </android.support.v7.widget.LinearLayoutCompat>
 
         <!-- DIVIDER -->
 
-        <View style="@style/DividerHorizontal.Black_700" />
+        <View style="@style/DividerHorizontal.Black_400" />
 
         <!-- ADDRESSES -->
 
@@ -83,7 +93,12 @@
                 layout="@layout/_def_order_status_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginTop="@dimen/margin_padding_l"
+                android:layout_marginBottom="@dimen/margin_padding_xl"
+                android:layout_marginLeft="@dimen/margin_padding_xl"
+                android:layout_marginStart="@dimen/margin_padding_xl"
+                android:layout_marginRight="@dimen/margin_padding_xl"
+                android:layout_marginEnd="@dimen/margin_padding_xl"
                 android:layout_weight="1" />
 
             <!-- BILLING ADDRESS -->
@@ -93,7 +108,12 @@
                 layout="@layout/_def_order_status_address"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
+                android:layout_marginTop="@dimen/margin_padding_l"
+                android:layout_marginBottom="@dimen/margin_padding_xl"
+                android:layout_marginLeft="@dimen/margin_padding_xl"
+                android:layout_marginStart="@dimen/margin_padding_xl"
+                android:layout_marginRight="@dimen/margin_padding_xl"
+                android:layout_marginEnd="@dimen/margin_padding_xl"
                 android:layout_weight="1" />
 
         </android.support.v7.widget.LinearLayoutCompat>

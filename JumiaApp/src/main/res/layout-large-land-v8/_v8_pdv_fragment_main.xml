@@ -23,7 +23,7 @@
         android:layout_alignParentRight="true" />
 
     <View
-        style="@style/DividerVertical.Black_300"
+        style="@style/DividerVertical.Black_400"
         android:layout_alignLeft="@id/center_point" />
 
     <!-- LEFT -->

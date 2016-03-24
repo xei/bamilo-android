@@ -7,7 +7,7 @@
     android:paddingBottom="@dimen/margin_padding_l" >
 
     <View
-        style="@style/DividerHorizontal.Black_300"
+        style="@style/DividerHorizontal.Black_400"
         android:layout_marginLeft="@dimen/margin_padding_l"
         android:layout_marginRight="@dimen/margin_padding_l"
         android:paddingTop="@dimen/margin_padding_l" />
