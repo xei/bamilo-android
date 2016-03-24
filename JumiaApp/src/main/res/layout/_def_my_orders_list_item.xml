@@ -4,23 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/_gen_selector_group_selected"
-    android:padding="20dp">
+    android:padding="@dimen/margin_padding_xl">
 
     <!-- price -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_item_price"
-        style="@style/TextBase.Body"
+        style="@style/TextBase.Body.Black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:maxLines="2"
         android:singleLine="false"
-        android:textColor="@color/black" />
+        />
 
     <!-- number and date -->
 
@@ -34,18 +32,17 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_item_number"
-            style="@style/TextBase.Body"
+            style="@style/TextBase.List.Black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black" />
+            />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_item_date"
-            style="@style/TextBase.Caption"
+            style="@style/TextBase.Body.Black_800"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            android:textColor="@color/black_700" />
+            />
 
     </LinearLayout>
 

@@ -569,7 +569,9 @@ public class DynamicFormItem {
                     if (selectedItem != null) {
                         values.put(getName(), selectedItem.getValue());
                     }
-                } else if(com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())){
+                }
+                // Case HomeNewsletter
+                else if(com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())){
                     for (String key  : this.entry.getDataSet().keySet()) {
                         if(com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key),(String) ((IcsSpinner) this.dataControl).getSelectedItem())){
                             values.put(getName(), key);
@@ -975,7 +977,7 @@ public class DynamicFormItem {
         else {
             String regex = this.entry.getValidation().regex;
             Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-            setErrorText(this.entry.getValidation().getErrorMessage() + space);
+            setErrorText(this.entry.getValidation().getRegexErrorMessage() + space);
             Matcher matcher = pattern.matcher(text);
             result = matcher.find();
         }
@@ -1139,7 +1141,10 @@ public class DynamicFormItem {
         }
     }
 
-
+    /**
+     * Build list field.<br>
+     * - The isAlternativeLayout flag is used to load the HomeNewsletter layout
+     */
     private void buildList(RelativeLayout.LayoutParams params, int controlWidth, boolean isAlternativeLayout) {
         this.control.setLayoutParams(params);
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);

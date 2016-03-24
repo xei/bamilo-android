@@ -426,7 +426,7 @@ public class TrackerDelegator {
         if (result == null) {
             return;
         }
-        Print.d(TAG, "TRACK SALE: JSON " + result.toString());
+        Print.d(TAG, "TRACK SALE: JSON " + result);
 
         // Validate customer
         Customer customer = params.getParcelable(CUSTOMER_KEY);

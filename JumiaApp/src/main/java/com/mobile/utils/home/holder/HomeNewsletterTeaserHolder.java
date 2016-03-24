@@ -178,7 +178,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
     }
 
     public String getEditedText(){
-        return sInitialValue = mEditText.getText().toString();
+        return sInitialValue = mEditText != null ? mEditText.getText().toString() : null;
     }
 
     public int getSelectedGender(){
