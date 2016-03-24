@@ -1,13 +1,9 @@
-/**
- * 
- */
 package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -23,8 +19,6 @@ import com.mobile.view.R;
 public class NavigationFragment extends BaseFragment implements OnClickListener{
 
     private static final String TAG = NavigationFragment.class.getSimpleName();
-
-    private LayoutInflater mInflater;
 
     private FragmentType mSavedStateType;
 
@@ -64,11 +58,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-        // Get inflater
-        mInflater = LayoutInflater.from(getBaseActivity());
-
         mSavedStateType = savedInstanceState != null ? (FragmentType) savedInstanceState.getSerializable(TAG) : null;
-
     }
     
     /*
@@ -172,8 +162,6 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
 
     /**
      * Method used to switch between the filter fragments
-     * @param filterType
-     * @param bundle 
      * @author sergiopereira
      */
     public void onSwitchChildFragment(FragmentType filterType, Bundle bundle) {

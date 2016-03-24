@@ -28,9 +28,6 @@ import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -210,20 +207,19 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     }
     
     private void getViews(){
-        mProductSpecsContainer = (LinearLayout) mainView.findViewById(R.id.specs_main_container);
+        mProductSpecsContainer = (LinearLayout) mainView.findViewById(R.id.pdp_specs_main_container);
     }
 
     /**
      * Display the product specifications
      */
     private void displaySpecification() {
-
-        if(CollectionUtils.isEmpty(mProductSpecifications)){
+        if (CollectionUtils.isEmpty(mProductSpecifications)) {
             mProductSpecifications = mCompleteProduct.getProductSpecifications();
         }
 
-        if(!CollectionUtils.isEmpty(mProductSpecifications)){
-            if(mProductSpecsContainer != null){
+        if (!CollectionUtils.isEmpty(mProductSpecifications)) {
+            if (mProductSpecsContainer != null) {
                 mProductSpecsContainer.removeAllViews();
             }
             for (ProductSpecification productSpecification : mProductSpecifications) {
@@ -236,74 +232,32 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
      * Add specification table to the specification list
      */
     private void addSpecTable(ProductSpecification productSpecification){
-
-        View theInflatedView = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
-        TextView specHeader = (TextView) theInflatedView.findViewById(R.id.HeaderSpecs);
-        LinearLayout specsList = (LinearLayout) theInflatedView.findViewById(R.id.specs_container_list);
-
-        HashMap<String,String> specsMap = productSpecification.getSpecifications();
-
-        if(specsMap != null && specsMap.size() > 0){
+        // Validate specs
+        if(CollectionUtils.isNotEmpty(productSpecification.getSpecifications())) {
+            View view = inflater.inflate(R.layout.product_specs_container, mProductSpecsContainer, false);
+            // Title
+            TextView specHeader = (TextView) view.findViewById(R.id.pdp_specs_title);
             specHeader.setText(productSpecification.getTitle().toUpperCase());
-            try {
-                Iterator it = specsMap.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry pair = (Map.Entry)it.next();
-                    addSpecTableRow(pair, specsList);
-                }
-
-                mProductSpecsContainer.addView(theInflatedView);
-            } catch (ConcurrentModificationException exception){
-                theInflatedView.setVisibility(View.GONE);
+            // Specs
+            ViewGroup specsList = (ViewGroup) view.findViewById(R.id.pdp_specs_container);
+            for (Map.Entry<String, String> entry : productSpecification.getSpecifications().entrySet()) {
+                View singleView = inflater.inflate(R.layout.gen_single_line_weight_two, specsList, false);
+                ((TextView) singleView.findViewById(R.id.specs_item_key)).setText(entry.getKey());
+                ((TextView) singleView.findViewById(R.id.specs_item_value)).setText(entry.getValue());
+                specsList.addView(singleView);
             }
+            mProductSpecsContainer.addView(view);
         }
     }
-
-    /**
-     * Add a key/value row to the specification table
-     * @param pair, key/value of the table
-     * @param parent
-     */
-    private void addSpecTableRow(Map.Entry pair, final LinearLayout parent){
-        View theInflatedView = inflater.inflate(R.layout.product_specs_container_item, parent, false);
-        TextView specKey = (TextView) theInflatedView.findViewById(R.id.specs_item_key);
-        TextView specValue = (TextView) theInflatedView.findViewById(R.id.specs_item_value);
-
-        specKey.setText(pair.getKey().toString());
-        specValue.setText(pair.getValue().toString());
-            View separator = createSeparator();
-            parent.addView(theInflatedView);
-            parent.addView(separator);
-    }
-
-
-    /**
-     * Create a separator line
-     */
-    private View createSeparator()
-    {
-        View view = new View(getBaseActivity().getApplicationContext());
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,2);
-        view.setLayoutParams(params);
-        view.setBackgroundColor(getResources().getColor(R.color.black_400));
-        return view;
-
-    }
-
-
-
 
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         Print.i(TAG, "ON SUCCESS EVENT");
         // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || getBaseActivity() == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
-
-        if (getBaseActivity() == null)
-            return;
 
         super.handleSuccessEvent(baseResponse);
         EventType eventType = baseResponse.getEventType();
@@ -339,9 +293,8 @@ public class ProductDetailsSpecificationsFragment extends BaseFragment implement
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
-
         // Validate fragment visibility
-        if (isOnStoppingProcess) {
+        if (isOnStoppingProcess || getBaseActivity() == null) {
             Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }

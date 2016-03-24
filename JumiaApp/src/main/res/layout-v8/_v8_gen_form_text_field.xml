@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:layoutDirection="ltr">
+    >
 
     <!-- ICON -->
 
@@ -20,7 +20,7 @@
 
     <com.mobile.components.absspinner.IcsSpinner
         android:id="@+id/text_field_spinner_prefix"
-        style="@style/form_style"
+        style="@style/TextBase.List.Black"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_marginLeft="16dp"
@@ -31,13 +31,13 @@
         android:visibility="gone" />
 
     <!-- EDIT TEXT -->
-
     <com.mobile.components.customfontviews.EditText
         android:id="@+id/text_field"
         style="@style/TextField"
+        android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/text_field_spinner_prefix"
         android:layout_toRightOf="@+id/text_field_spinner_suffix"
-        android:paddingLeft="50dp" />
+        />
 
     <!-- PASSWORD EYE -->
 

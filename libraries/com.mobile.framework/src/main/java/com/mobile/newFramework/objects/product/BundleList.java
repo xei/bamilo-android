@@ -48,19 +48,20 @@ public class BundleList implements IJSONSerializable, Parcelable {
      * )
      */
     @Override
-    public boolean initialize(JSONObject jsonObject) throws JSONException{
-        JSONObject bundleEntityjson = jsonObject.getJSONObject(RestConstants.BUNDLE_ENTITY);
-
-        mId = bundleEntityjson.getString(RestConstants.ID);
-        mPrice = bundleEntityjson.getDouble(RestConstants.PRICE);
-        mPriceConverted =  bundleEntityjson.getDouble(RestConstants.PRICE_CONVERTED);
-        JSONArray bundleProductsArray = bundleEntityjson.optJSONArray(RestConstants.PRODUCTS);
+    public boolean initialize(JSONObject jsonObject) throws JSONException {
+        JSONObject bundleEntityJson = jsonObject.getJSONObject(RestConstants.BUNDLE_ENTITY);
+        mId = bundleEntityJson.getString(RestConstants.ID);
+        mPrice = bundleEntityJson.getDouble(RestConstants.PRICE);
+        mPriceConverted = bundleEntityJson.getDouble(RestConstants.PRICE_CONVERTED);
+        JSONArray bundleProductsArray = bundleEntityJson.optJSONArray(RestConstants.PRODUCTS);
         if (bundleProductsArray != null && bundleProductsArray.length() > 0) {
             mProducts = new ArrayList<>();
             for (int i = 0; i < bundleProductsArray.length(); i++) {
                 JSONObject productJson = bundleProductsArray.getJSONObject(i);
-                ProductBundle bundleProduct = new ProductBundle(productJson);
-                mProducts.add(bundleProduct);
+                ProductBundle bundleProduct = new ProductBundle();
+                if (bundleProduct.initialize(productJson)) {
+                    mProducts.add(bundleProduct);
+                }
             }
         }
         return true;

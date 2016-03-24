@@ -24,8 +24,8 @@
     <item name="checkout_summary_shipping_method"       type="layout">@layout/_def_checkout_summary_shipping_method</item>
     <item name="checkout_payment_methods"               type="layout">@layout/_def_checkout_payment_methods</item>
     <item name="checkout_shipping_pickup_station"       type="layout">@layout/_def_checkout_shipping_pickup_station</item>
-    <item name="checkout_header"                        type="layout">@layout/_def_checkout_header</item>
     <item name="checkout_thanks"                        type="layout">@layout/_def_checkout_thanks</item>
+    <item name="checkout_success_fragment_related"      type="layout">@layout/_def_checkout_success_fragment_related_prods</item>
     <item name="checkout_create_address_main" 	        type="layout">@layout/_def_checkout_create_address_main</item>
     <item name="checkout_edit_address_main" 	        type="layout">@layout/_def_checkout_edit_address_main</item>
     <item name="checkout_addresses" 			        type="layout">@layout/_def_checkout_my_addresses</item>
@@ -65,7 +65,6 @@
     <item name="list_sub_item_rating"                   type="layout">@layout/_def_list_sub_item_rating</item>
     <item name="filter_fragment_price"                  type="layout">@layout/_def_filter_fragment_price</item>
     <item name="catalog_item_grid"                      type="layout">@layout/_def_catalog_item_grid</item>
-    <item name="gen_product_list"                       type="layout">@layout/_def_gen_product_list</item>
     <item name="catalog_item_single"       		        type="layout">@layout/_def_catalog_item_single</item>
     <item name="catalog_fragment_footer"                type="layout">@layout/_def_catalog_fragment_footer</item>
 
@@ -77,30 +76,25 @@
     <item name="product_details_fragment_header"        type="layout">@layout/_def_product_details_fragment_header</item>
     <item name="pdv_price_tag"                          type="layout">@layout/_def_pdv_price_tag</item>
     <item name="pdv_brand_section"                      type="layout">@layout/_def_pdv_brand_section</item>
-    <!-- COMBOS -->
-    <item name="pdv_combo_item_list"                    type="layout">@layout/_def_pdv_combo_item_list</item>
     <item name="pdv_fragment_main" 	                    type="layout">@layout/_def_pdv_fragment_main</item>
     <item name="pdv_fragment_image" 	                type="layout">@layout/_def_pdv_fragment_image</item>
     <item name="pdv_fragment_buy_bar" 	                type="layout">@layout/_def_pdv_fragment_buy_bar</item>
     <item name="pdv_fragment_rating" 	                type="layout">@layout/_def_pdv_fragment_rating</item>
     <item name="pdv_fragment_related_item" 	            type="layout">@layout/_def_pdv_fragment_related_item</item>
-    <item name="pdv_fragment_bundle" 	                type="layout">@layout/_def_pdv_fragment_bundle</item>
-    <item name="pdv_fragment_bundle_item" 	            type="layout">@layout/_def_pdv_fragment_bundle_item</item>
     <item name="pdv_fragment_gallery_item" 	            type="layout">@layout/_def_pdv_fragment_gallery_item</item>
-    <item name="sublist" 	                            type="layout">@layout/_def_sublist</item>
     <item name="pdv_fragment_seller_info" 	            type="layout">@layout/_def_pdv_fragment_seller_info</item>
-    <item name="bottom_combo" 	                        type="layout">@layout/_def_bottom_combo</item>
-    <item name="pdv_fragment_combo_item_price" 	        type="layout">@layout/_def_pdv_fragment_combo_item_price</item>
     <item name="pdv_fragment_related_item_price" 	    type="layout">@layout/_def_pdv_fragment_related_item_price</item>
     <item name="config_confirmation_msg" 	            type="layout">@layout/_def_config_confirmation_msg</item>
-    <item name="pdv_fragment_combo_item"                type="layout">@layout/_def_pdv_fragment_combo_item</item>
-    <item name="pdv_fragment_combos"                    type="layout">@layout/_def_pdv_fragment_combos</item>
+    <item name="pdv_fragment_combo_group"               type="layout">@layout/_def_pdv_fragment_combo_group</item>
+    <item name="pdv_fragment_combo_group_item" 	        type="layout">@layout/_def_pdv_fragment_combo_group_item</item>
+    <item name="pdv_fragment_combo_divider" 	        type="layout">@layout/_def_pdv_fragment_combo_divider</item>
+    <item name="combo_fragment_bottom" 	                type="layout">@layout/_def_combo_fragment_bottom</item>
+    <item name="combo_fragment_item"                    type="layout">@layout/_def_combo_fragment_item</item>
 
     <!-- REVIEWS DESCRIPTION SPECIFICATIONS -->
     <item name="details_info_fragment_main"             type="layout">@layout/_def_details_info_fragment_main</item>
     <item name="product_summary_fragment"               type="layout">@layout/_def_product_summary_fragment</item>
     <item name="product_specs_container"                type="layout">@layout/_def_product_specs_container</item>
-    <item name="product_specs_container_item"           type="layout">@layout/_def_product_specs_container_item</item>
     <item name="review_fragment"                        type="layout">@layout/_def_review_fragment</item>
     <item name="review_list"                            type="layout">@layout/_def_review_list</item>
     <item name="ratings_board"                          type="layout">@layout/_def_ratings_board</item>
@@ -110,7 +104,6 @@
     <item name="my_orders_fragment_main"                type="layout">@layout/_def_my_orders_fragment_main</item>
     <item name="my_orders_list_item"                    type="layout">@layout/_def_my_orders_list_item</item>
     <item name="order_status_fragment"                  type="layout">@layout/_def_order_status_fragment</item>
-    <item name="gen_order_list"                         type="layout">@layout/_def_gen_order_list</item>
 
     <!-- HOME -->
     <item name="home_fragment_main"                     type="layout">@layout/_def_home_fragment_main</item>
@@ -148,10 +141,8 @@
     <item name="my_account_app_version"                 type="layout">@layout/_def_my_account_app_version</item>
     <item name="my_account_fragment"                    type="layout">@layout/_def_my_account_fragment</item>
 
-
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>
-    <item name="gen_form_text_field"                    type="layout">@layout/_def_gen_form_text_field</item>
 
     <!-- DIALOG -->
     <item name="dialog_list_item"                       type="layout">@layout/_def_dialog_list_item</item>
@@ -172,7 +163,6 @@
     <item name="reviews_fragment_rating_bigtype_item"   type="layout">@layout/_def_reviews_fragment_rating_bigtype_item</item>
     <item name="reviews_fragment_rating_samlltype_item" type="layout">@layout/_def_reviews_fragment_rating_samlltype_item</item>
     <item name="campaign_spinner_item"                  type="layout">@layout/_def_campaign_spinner_item</item>
-    <item name="gen_form_check_box"                     type="layout">@layout/_def_form_checkbox</item>
     <item name="form_button"                            type="layout">@layout/_def_form_button</item>
     <item name="form_radiolayout"                       type="layout">@layout/_def_form_radiolayout</item>
     <item name="form_spinner_dropdown_item"             type="layout">@layout/_def_form_spinner_dropdown_item</item>
@@ -190,16 +180,13 @@
     <item name="dialog_generic"                         type="layout">@layout/_def_dialog_generic</item>
     <item name="loading_bar"                            type="layout">@layout/_def_loading_bar</item>
     <item name="shopping_basket"                        type="layout">@layout/_def_shopping_basket</item>
-
     <item name="shopping_cart_product_container"        type="layout">@layout/_def_shopping_basket_product_element_container</item>
     <item name="campaign_spinner_dropdown_item"         type="layout">@layout/_def_campaign_spinner_dropdown_item</item>
     <item name="offers_item"                            type="layout">@layout/_def_offers_item</item>
     <item name="product_gallery_fragment"               type="layout">@layout/_def_product_gallery_fragment</item>
     <item name="product_gallery_full_activity"          type="layout">@layout/_def_product_gallery_full_activity</item>
-
     <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
     <item name="form_spinner_item"                      type="layout">@layout/_def_form_spinner_item</item>
-
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
     <item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>
@@ -207,9 +194,22 @@
     <!--ROOT SSL ERROR CONTACT INFO-->
     <item name="contacts_info"                          type="layout">@layout/_def_contacts_info</item>
 
-    <item name="gen_form_screen_radio"                  type="layout">@layout/_def_gen_form_screen_radio</item>
     <item name="dialog_generic_form"                    type="layout">@layout/_def_dialog_generic_form</item>
+
+    <!--GENERIC LAYOUTS-->
+    <item name="gen_form_text_field"                    type="layout">@layout/_def_gen_form_text_field</item>
+    <item name="gen_form_check_box"                     type="layout">@layout/_def_form_checkbox</item>
+    <item name="gen_form_screen_radio"                  type="layout">@layout/_def_gen_form_screen_radio</item>
     <item name="gen_form_switch_radio"                  type="layout">@layout/_def_gen_form_switch_radio</item>
+    <item name="gen_single_line_list"                   type="layout">@layout/_def_gen_single_line_list</item>
+    <item name="gen_single_line_list_blue_1"            type="layout">@layout/_def_gen_single_line_list_blue_1</item>
+    <item name="gen_single_line_with_icon"              type="layout">@layout/_def_gen_single_line_with_icon</item>
+    <item name="gen_single_line_with_two_icons"         type="layout">@layout/_def_gen_single_line_with_two_icons</item>
+    <item name="gen_single_line_weight_two"             type="layout">@layout/_def_gen_single_line_weight_two</item>
+    <item name="gen_order_list"                         type="layout">@layout/_def_gen_order_list</item>
+    <item name="gen_product_list"                       type="layout">@layout/_def_gen_product_list</item>
+    <item name="gen_product_two_prices"                 type="layout">@layout/_def_gen_product_two_prices</item>
+    <item name="gen_product_rating_small"               type="layout">@layout/_def_gen_product_rating_small</item>
 
 </resources>
 

@@ -78,7 +78,8 @@
                     android:id="@+id/login_text_email"
                     style="@style/TextField"
                     android:hint="@string/email_address"
-                    android:imeOptions="actionDone" />
+                    android:imeOptions="actionDone"
+                    />
 
                 <!-- ERROR MESSAGE -->
 

@@ -16,6 +16,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.view.R;
@@ -251,6 +253,21 @@ public class UIUtils {
         Context context = view.getContext();
         int drawable = context.getResources().getIdentifier(name, "drawable", context.getPackageName());
         setDrawableLeft(view, drawable);
+    }
+
+    /**
+     * Fixes the checkbox state for Marshmallow
+     * @param checkBox
+     */
+    public static void checkBoxDrawableStateCompat(final CheckBox checkBox){
+        checkBox.setButtonDrawable(R.drawable._gen_selector_check_box);
+        if(ShopSelector.isRtl()){
+            checkBox.setPadding(IntConstants.DEFAULT_POSITION, IntConstants.DEFAULT_POSITION, IntConstants.PADDING_10, IntConstants.DEFAULT_POSITION);
+        } else {
+            checkBox.setPadding(IntConstants.PADDING_10, IntConstants.DEFAULT_POSITION, IntConstants.DEFAULT_POSITION, IntConstants.DEFAULT_POSITION);
+        }
+
+        checkBox.setCompoundDrawables(null, null, null, null);
     }
 
 }

@@ -26,7 +26,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     private final static int MIN_NUM_OF_IMAGES = 3;
 
     private ArrayList<ImageUrls> mImageUrls;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private boolean isZoomAvailable = false;
     private View primaryView;
 

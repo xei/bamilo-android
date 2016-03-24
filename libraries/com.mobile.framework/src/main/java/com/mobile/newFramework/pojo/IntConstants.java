@@ -15,4 +15,5 @@ public class IntConstants {
     public static final int DIALOG_DELAY_DISMISS = 250;
     public static final int EMPTY = FALSE;
     public static final int FULL = TRUE;
+    public static final int PADDING_10 = 10;
 }

@@ -36,7 +36,6 @@ public class TabLayoutUtils {
         TabLayout.Tab tab3 = tabLayout.newTab();
         tabLayout.addTab(tab3);
         tab3.setCustomView(R.layout.tab_cart);
-
         // Set listener
         tabLayout.setOnTabSelectedListener(listener);
     }

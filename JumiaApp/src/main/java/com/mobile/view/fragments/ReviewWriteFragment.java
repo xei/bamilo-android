@@ -35,6 +35,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
@@ -43,6 +44,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.KeyboardUtils;
 import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -337,8 +339,14 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
             //Validate if both reviews and ratings are enabled on country configuration
             if (getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
-                ((CheckBox) mDynamicForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(!isShowingRatingForm);
-                ((CheckBox) mDynamicForm.getContainer().findViewById(R.id.checkbox_form)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                final CheckBox checkBox = (CheckBox) mDynamicForm.getContainer().findViewById(R.id.checkbox_form);
+
+                if(DeviceInfoHelper.isPosLollipop()){ // Fixes the checkbox state for Marshmallow
+                    UIUtils.checkBoxDrawableStateCompat(checkBox);
+                }
+
+                checkBox.setChecked(!isShowingRatingForm);
+                checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         mDynamicForm.saveFormState(mSavedState);
@@ -348,6 +356,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                                 setRatingLayout(reviewForm);
                             }
                         } else if (ratingForm != null) {
+                            UIUtils.setDrawableLeft(checkBox, R.drawable.btn_checkbox_empty);
                             // Hide keyboard
                             KeyboardUtils.hide(getView());
                             setRatingLayout(ratingForm);

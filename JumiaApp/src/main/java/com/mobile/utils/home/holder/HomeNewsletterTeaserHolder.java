@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.components.customfontviews.Button;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.constants.FormConstants;
@@ -21,10 +22,12 @@ import com.mobile.factories.FormFactory;
 import com.mobile.helpers.SubmitFormHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.objects.home.object.TeaserFormObject;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -41,6 +44,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
     private final Button mSubmit;
     private EditText mEditText;
     private RadioGroupLayout mRadioGroupLayout;
+    private IcsSpinner mGenderSpinner;
     protected DynamicForm mNewsLetterForm;
     public static String sInitialValue;
     public static int sInitialGender = IntConstants.INVALID_POSITION;
@@ -81,11 +85,18 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
                     mEditText.setOnEditorActionListener(this);
                     mSubmit.setEnabled(TextUtils.isNotEmpty(mEditText.getText()));
                 }
-                // Get Gender choice to save on rotation.
+                // Case RadioGroup: Get Gender choice to save on rotation.
                 else if (view instanceof RelativeLayout) {
                     mRadioGroupLayout = (RadioGroupLayout) view.findViewById(R.id.radio_group_container);
                     if (mRadioGroupLayout != null && sInitialGender > 0) {
                         mRadioGroupLayout.setSelection(sInitialGender);
+                    }
+                }
+                // Case Spinner: Get the selection
+                else if (control.getEntry().getInputType() == FormInputType.list) {
+                    mGenderSpinner = (IcsSpinner) control.getDataControl();
+                    if (sInitialGender > 0) {
+                        mGenderSpinner.setSelection(sInitialGender);
                     }
                 }
             }
@@ -102,7 +113,12 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
     }
 
     public int getSelectedGender() {
-        return sInitialGender = mRadioGroupLayout != null ? mRadioGroupLayout.getSelectedIndex() : IntConstants.INVALID_POSITION;
+        if (mRadioGroupLayout != null) {
+            return sInitialGender = mRadioGroupLayout.getSelectedIndex();
+        } else if (mGenderSpinner != null) {
+            return sInitialGender = mGenderSpinner.getSelectedItemPosition();
+        }
+        return IntConstants.INVALID_POSITION;
     }
 
     /*
@@ -154,6 +170,27 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
+        if(CollectionUtils.isNotEmpty(baseResponse.getValidateMessages())){
+            mNewsLetterForm.showValidateMessages(baseResponse.getValidateMessages());
+        }
         ((IResponseCallback) mParentClickListener).onRequestError(baseResponse);
     }
+
+    protected boolean validate() {
+        boolean result = true;
+        for (DynamicFormItem control : mNewsLetterForm) {
+            if (control.getEntry().getInputType() == FormInputType.list) {
+                if (TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())) {
+                    control.showErrorMessage(control.getEntry().getValidation().getMessage());
+                    return false;
+                } else {
+                    control.hideErrorMessage();
+                }
+            } else {
+                result &= control.validate();
+            }
+        }
+        return result;
+    }
+
 }

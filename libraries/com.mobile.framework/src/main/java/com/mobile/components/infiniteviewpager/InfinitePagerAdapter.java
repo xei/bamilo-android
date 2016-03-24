@@ -19,7 +19,7 @@ public class InfinitePagerAdapter extends PagerAdapter {
     private static final float PAGE_WIDTH_DOUBLE_ITEMS = 0.5f;
     private static final float PAGE_WIDTH_SINGLE_ITEM = 1.0f;
 
-    private PagerAdapter adapter;
+    private final PagerAdapter adapter;
     private boolean infinitePagesEnabled = true;
     private float pageWidth = PAGE_WIDTH_DOUBLE_ITEMS;
 

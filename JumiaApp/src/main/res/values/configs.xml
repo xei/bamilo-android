@@ -7,9 +7,6 @@
 	<!-- CHECK VERSION -->
     <item name="check_version_enabled" type="bool">true</item>
 
-	<!-- COUNTRIES -->
-    <string name="countries_url">http://www.jumia.com/mobapi/availablecountries</string>
-    
 	<!-- SERVER CONFS -->
     <string name="global_server_shop_name">@string/global_shopname</string>
     <string name="global_server_host">@string/global_server</string>

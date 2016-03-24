@@ -44,12 +44,12 @@
             <!-- SIZE FROM SIMPLES -->
             <include
                 android:id="@+id/pdv_simples_container"
-                layout="@layout/single_line_list_blue_1" />
+                layout="@layout/gen_single_line_list_blue_1" />
 
             <!-- VARIATIONS -->
             <include
                 android:id="@+id/pdv_variations_container"
-                layout="@layout/single_line_list_blue_1" />
+                layout="@layout/gen_single_line_list_blue_1" />
 
             <!-- SELLER -->
             <include
@@ -59,7 +59,7 @@
             <!-- OTHER SELLERS -->
             <include
                 android:id="@+id/pdv_other_sellers_button"
-                layout="@layout/sublist" />
+                layout="@layout/gen_single_line_list_blue_1" />
 
             <!-- DESCRIPTION -->
             <include
@@ -68,8 +68,8 @@
 
             <!-- COMBOS -->
             <include
-                android:id="@+id/pdv_combos_container"
-                layout="@layout/_def_pdv_fragment_combos" />
+                android:id="@+id/pdv_combo_parent"
+                layout="@layout/_def_pdv_fragment_combo_main" />
 
             <!-- RELATED ITEMS -->
             <include
