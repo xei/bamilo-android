@@ -81,6 +81,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private boolean isDisabled;
     private String mPlaceHolder;
     private boolean isVerticalOrientation;
+    private int mFormType;
 
     @SuppressWarnings("unused")
     public interface OnDataSetReceived {
@@ -246,6 +247,10 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // Case shipping options from array
             if(dataOptionsArray != null){
                 mNewsletterOptions = new ArrayList<>();
+                // Spinner fields (Used in HomeNewsletter and Addresses)
+                if (TextUtils.isNotEmpty(mPlaceHolder)) {
+                    mDataSet.put(RestConstants.PLACE_HOLDER, mPlaceHolder);
+                }
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
                     // Case the newsletter
                     mNewsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), mName));
@@ -536,6 +541,16 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return mPaymentInfoList;
     }
 
+    @Override
+    public void setFormType(int mType) {
+        this.mFormType = mType;
+    }
+
+    @Override
+    public int getFormType() {
+        return this.mFormType;
+    }
+
     /*
      * ########### PARCELABLE ###########
      */
@@ -585,6 +600,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeByte((byte) (isPrefixField ? 0x01 : 0x00));
         dest.writeByte((byte) (isDisabled ? 0x01 : 0x00));
         dest.writeByte((byte) (isVerticalOrientation ? 0x01 : 0x00));
+        dest.writeInt(mFormType);
     }
 
     /**
@@ -630,6 +646,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         isPrefixField = in.readByte() != 0x00;
         isDisabled = in.readByte() != 0x00;
         isVerticalOrientation = in.readByte() != 0x00;
+        mFormType = in.readInt();
     }
 
     /**

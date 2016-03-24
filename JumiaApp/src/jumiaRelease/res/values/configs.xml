@@ -6,7 +6,7 @@
     <string name="app_name">Jumia</string>
 
     <!-- COUNTRIES -->
-	<string name="countries_url">http://www.jumia.com/mobapi/availablecountries</string>
+	<string name="countries_url">https://www.jumia.com/mobapi/availablecountries</string>
     
     <!-- GA -->
     <bool name="ga_debug_mode">false</bool>
