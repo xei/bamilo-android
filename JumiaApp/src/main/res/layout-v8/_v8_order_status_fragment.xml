@@ -22,15 +22,11 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_title_date"
-                style="@style/TextInfo_2"
+                style="@style/TextBase.Caption.Black_800"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
-                android:paddingBottom="12dp"
-                android:textColor="@color/black_800" />
-
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/margin_padding_xxl" />
 
         </RelativeLayout>
 
@@ -40,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:divider="@drawable/divider_vertical_black_700"
+            app:divider="@drawable/_gen_divider_vertical_black_700"
             app:showDividers="middle">
 
             <!-- PAYMENT -->
@@ -67,7 +63,7 @@
 
         <!-- DIVIDER -->
 
-        <View style="@style/divider_horizontal.Black700" />
+        <View style="@style/DividerHorizontal.Black_700" />
 
         <!-- ADDRESSES -->
 
@@ -75,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:divider="@drawable/divider_vertical_black_700"
+            app:divider="@drawable/_gen_divider_vertical_black_700"
             app:showDividers="middle">
 
             <!-- BILLING ADDRESS -->
@@ -113,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:divider="@drawable/divider_horizontal_black_700"
+            app:divider="@drawable/_gen_divider_horizontal_black_700"
             app:showDividers="middle" />
 
     </LinearLayout>

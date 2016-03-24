@@ -19,7 +19,6 @@ public class CustomToastView extends Toast {
     
     /**
      * View constructor
-     * @param context
      * @author sergiopereira
      */
     public CustomToastView(Context context) {
@@ -29,9 +28,6 @@ public class CustomToastView extends Toast {
     /**
      * Create the custom toast view
      * @author sergiopereira
-     * @param activity
-     * @param resId
-     * @param duration
      * @return CustomToastView
      */
     public static Toast makeText(BaseActivity activity, CharSequence message, int duration) {
@@ -46,18 +42,6 @@ public class CustomToastView extends Toast {
         toast.setDuration(duration);
         toast.setView(layout);
         return toast;
-    }
-
-    /**
-     * Create the custom toast view
-     * @author sergiopereira
-     * @param activity
-     * @param resId
-     * @param duration
-     * @return CustomToastView
-     */
-    public static Toast makeText(BaseActivity activity, int resId, int duration) {
-        return CustomToastView.makeText(activity, activity.getResources().getString(resId), duration);
     }
 
 }

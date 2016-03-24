@@ -18,7 +18,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_text_info"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:drawablePadding="8dp"
             android:drawableTop="@drawable/ic_login_user"
             android:gravity="center"
@@ -42,7 +42,7 @@
 
             <com.mobile.components.customfontviews.FacebookTextView
                 android:id="@+id/login_button_facebook"
-                style="@style/AigButton.Facebook"
+                style="@style/Button_1.Facebook"
                 android:layout_width="@dimen/login_main_container_width" />
 
             <!-- DIVIDER -->
@@ -54,7 +54,7 @@
                 android:layout_margin="20dp">
 
                 <View
-                    style="@style/divider_vertical"
+                    style="@style/DividerVertical.Black_300"
                     android:layout_centerInParent="true" />
 
                 <com.mobile.components.customfontviews.TextView
@@ -78,7 +78,8 @@
                     android:id="@+id/login_text_email"
                     style="@style/TextField"
                     android:hint="@string/email_address"
-                    android:imeOptions="actionDone" />
+                    android:imeOptions="actionDone"
+                    />
 
                 <!-- ERROR MESSAGE -->
 
@@ -89,23 +90,26 @@
 
                 <Space
                     android:layout_width="wrap_content"
-                    android:layout_height="16dp" />
+                    android:layout_height="@dimen/margin_padding_xl" />
 
                 <!-- GUEST -->
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/login_button_guest"
-                    style="@style/TextCaption"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="16dp"
+                    style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+                    android:layout_width="@dimen/login_main_container_width"
                     android:text="@string/continue_without_log_in"
                     android:visibility="gone" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/margin_padding_xl" />
 
                 <!-- BUTTON -->
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/login_button_continue"
-                    style="@style/AigButton.Active"
+                    style="@style/Button_1.Shop"
                     android:text="@string/continue_label" />
 
             </LinearLayout>

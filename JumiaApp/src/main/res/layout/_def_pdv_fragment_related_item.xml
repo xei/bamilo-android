@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/image_loadable"
-        layout="@layout/image_loadable"
+        layout="@layout/_def_gen_image_loadable"
         android:layout_width="match_parent"
         android:layout_height="138dp"
         android:layout_centerHorizontal="true"
@@ -34,14 +34,14 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/item_brand"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:textColor="@color/black_800" />
 
         <!-- NAME -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/header_text"
-            style="@style/TextBody_1"
+            style="@style/TextBase.Body"
             android:textColor="@color/black" />
 
         <!-- PRICE -->

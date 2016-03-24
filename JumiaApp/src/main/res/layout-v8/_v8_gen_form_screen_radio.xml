@@ -9,7 +9,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button"
-        style="@style/AigButton.Text.Blue"
+        style="@style/Button_Link.Blue_1"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:paddingLeft="0dp"
@@ -19,7 +19,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/title"
-        style="@style/TextList_1"
+        style="@style/TextBase.Display_3"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@id/button"
         tools:text="Title" />
@@ -28,7 +28,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/sub_title"
-        style="@style/TextBody_1"
+        style="@style/TextBase.Body"
         android:layout_alignParentRight="true"
         android:layout_below="@id/title"
         android:layout_toRightOf="@id/button"

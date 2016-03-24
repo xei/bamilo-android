@@ -39,12 +39,12 @@
 
     <CheckBox
         android:id="@+id/dialog_item_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/dimen_20dp"
+        android:layout_height="@dimen/dimen_20dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="@null"
-        android:button="@drawable/btn_check_orange"
+        android:button="@drawable/btn_check_size"
         android:clickable="false"
         android:focusable="false" />
 

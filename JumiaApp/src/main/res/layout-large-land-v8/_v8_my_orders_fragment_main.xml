@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ViewGroupCompat.Horizontal.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="2"
+    android:baselineAligned="false"
     android:layoutDirection="ltr"
-    android:baselineAligned="false">
+    android:orientation="horizontal"
+    android:weightSum="2">
 
     <!-- ORDER STATUS -->
 
@@ -21,7 +22,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/drop_shadow_right"
         android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
@@ -39,6 +39,6 @@
 
     </LinearLayout>
 
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>
 
 

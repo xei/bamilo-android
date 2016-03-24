@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,16 +16,15 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_name"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:text="Title"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_info"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:text="Info"
             android:textColor="@color/black_800" />
     </LinearLayout>
-    <View
-        style="@style/divider_horizontal"/>
+
 </LinearLayout>

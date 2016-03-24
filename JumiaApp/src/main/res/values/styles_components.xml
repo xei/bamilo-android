@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
     <!-- ################# GENERIC COMPONENTS STYLES ################# -->
 
     <!-- Header -->
-    <style name="HeaderStyle" parent="@style/TextHeader">
+    <style name="HeaderStyle" parent="@style/TextBase.HeadLine">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:minHeight">48dp</item>
-        <item name="android:gravity">left|start|bottom</item>
-        <item name="android:paddingBottom">12dp</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xl</item>
         <item name="android:background">@color/black_300</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textAllCaps">true</item>
     </style>
 
-    <style name="TextField" parent="TextList_2">
+    <style name="HeaderStyle.Center">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TextField" parent="TextBase.List.Black">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@drawable/_gen_selector_text_field</item>
-        <item name="android:textColorHint">@color/black_700</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/black_800</item>
         <item name="android:cursorVisible">true</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
@@ -31,18 +31,13 @@
         <item name="android:textCursorDrawable" targetApi="12">@null</item>
         <item name="android:inputType">textEmailAddress</item>
         <item name="android:fontFamily">roboto_regular</item>
-    </style>
-
-    <style name="HeaderStyleCenter" parent="@style/TextHeader">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:gravity">center</item>
-        <item name="android:background">@color/black_200</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="met_floatingLabel">highlight</item>
+        <item name="met_underlineColor">@color/black_300</item>
+        <item name="met_primaryColor">@color/color_accent</item>
     </style>
 
     <!-- TextField error message -->
-    <style name="TextErrorField" parent="TextInfo">
+    <style name="TextErrorField" parent="TextBase.Body">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/red_basic</item>
@@ -55,7 +50,7 @@
     </style>
 
     <!-- Single line item -->
-    <style name="SingleLineStyle" parent="@style/TextList_2">
+    <style name="SingleLineStyle" parent="@style/TextBase.Display_3">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:paddingLeft">20dp</item>
@@ -63,23 +58,16 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <!-- Sub list item -->
-    <style name="SubListItemStyle" parent="@style/TextCaption">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:minHeight">48dp</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
     <!-- Multi line -->
-    <style name="MultiLineStyle" parent="@style/TextCaption">
+    <style name="MultiLineStyle" parent="@style/TextBase.Body.Black_800">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
+        <item name="android:padding">@dimen/margin_padding_xl</item>
         <item name="android:singleLine">false</item>
+    </style>
+
+    <style name="MultiLineStyle.Space_XS">
+        <item name="android:lineSpacingExtra">@dimen/margin_padding_xs</item>
     </style>
 
     <style name="WishListButtonStyle">
@@ -97,23 +85,78 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:gravity">left|start|center_vertical</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xl</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <style name="PdvBadgeStyle" parent="@style/TextBadge">
-        <item name="android:background">@drawable/selector_badge_price</item>
+    <style name="PdvBadgeStyle" parent="@style/TextBase.Badge">
+        <item name="android:background">@drawable/_gen_background_border_accent</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/color_accent</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:paddingTop">1dp</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xs</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xs</item>
+        <item name="android:textColor">@color/orange_1</item>
     </style>
 
-    <style name="PDVSlideShowStyle">
+    <style name="PdvSlideShowPreview">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">342dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">312dp</item>
     </style>
 
-    <!-- FORM TODO : UPDATE v2.8 -->
+    <style name="PdvSlideShowStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">312dp</item>
+    </style>
+
+    <style name="PdvSlideShowStyle.Full">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="PdvSlideIndicatorStyle">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginLeft">@dimen/margin_padding_xs</item>
+        <item name="android:layout_marginRight">@dimen/margin_padding_xs</item>
+        <item name="android:background">@drawable/selector_item_rectangle_highlight</item>
+        <item name="android:padding">1dp</item>
+    </style>
+
+    <style name="PdvWishListButtonStyle" parent="WishListButtonStyle">
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginRight">@dimen/margin_padding_l</item>
+        <item name="android:layout_marginEnd">@dimen/margin_padding_l</item>
+    </style>
+
+    <style name="PdvGlobalSellerButtonStyle" >
+        <item name="android:layout_width">65dp</item>
+        <item name="android:layout_height">65dp</item>
+        <item name="android:background">@null</item>
+        <item name="android:src">@drawable/ic_overseas_corner</item>
+    </style>
+
+    <style name="TextBase.Body.ShopFirstDrawRight">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:drawablePadding">@dimen/dimen_10dp</item>
+    </style>
+
+
+    <style name="PdvOutOfStockText" parent="TextBase.Title.Black">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">38dp</item>
+        <item name="android:background">@drawable/_gen_background_white_border_black_400</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xxl</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xxl</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <!-- FORM -->
 
     <style name="form_style">
         <item name="android:layout_width">match_parent</item>
@@ -123,112 +166,27 @@
         <item name="android:ellipsize">end</item>
     </style>
 
-    <style name="FormButtonSpinner">
+    <style name="FormButtonSpinner" parent="TextBase.List.Black">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black</item>
         <item name="android:background">@drawable/spinner_background</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:gravity">left|start|center_vertical</item>
     </style>
 
     <style name="FormButtonSpinner.DropDown">
         <item name="android:spinnerMode">dropdown</item>
     </style>
 
-    <!-- BUTTONS -->
-
-    <style name="AigButton" parent="TextButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:clickable">true</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <style name="AigButton.Active">
-        <item name="android:background">@drawable/_gen_selector_button_active</item>
-    </style>
-
-    <style name="AigButton.GooglePlus">
-        <item name="android:background">@color/red_dd4b39</item>
-    </style>
-
-    <style name="AigButton.Facebook">
-        <!--http://stackoverflow.com/questions/29740325/set-login-logout-text-for-button-in-facebook-android-sdk-4-0?answertab=active#tab-top-->
-        <item name="android:background">@drawable/_gen_selector_button_facebook</item>
-        <item name="android:drawableLeft">@drawable/com_facebook_inverse_icon</item>
-        <item name="android:drawableStart">@drawable/com_facebook_inverse_icon</item>
-        <item name="android:paddingTop">15dp</item>
-        <item name="android:paddingBottom">15dp</item>
-        <item name="android:singleLine">false</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:text">@string/com_facebook_loginview_log_in_button_long</item>
-    </style>
-
-    <style name="AigButton.AddToSaved">
-        <item name="android:background">@color/white</item>
-        <item name="android:layout_margin">2dp</item>
-    </style>
-
-    <style name="AigButton.Black_800_Orange1">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:textColor">@drawable/selector_black_orange</item>
-        <item name="android:layout_margin">2dp</item>
-    </style>
-
-    <style name="AigButton.Text">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@null</item>
-    </style>
-
-    <style name="AigButton.Text.Black_800.Border">
-        <item name="android:textColor">@color/black_800</item>
-        <item name="android:background">@drawable/border</item>
-    </style>
-
-    <style name="AigButton.Text.Black_800">
-        <item name="android:textColor">@color/black_800</item>
-        <item name="android:layout_margin">2dp</item>
-    </style>
-
-    <style name="AigButton.Text.Orange">
-        <item name="android:textColor">@color/accent</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-    </style>
-
-    <style name="AigButton.Text.Blue">
-        <item name="android:textColor">@color/blue1</item>
-    </style>
-
     <!-- NEW ARRIVAL BADGE -->
-    <style name="NewArrivalBadge">
-        <item name="android:padding">@dimen/dimen_12px</item>
+    <style name="NewArrivalBadge" parent="@style/TextBase.Badge">
+        <item name="android:paddingRight">@dimen/margin_padding_xs</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xs</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:background">@color/black_700</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_8sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
-
-    <!-- Progress bar -->
-    <style name="ProgressBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal">
-        <item name="android:layout_marginLeft">3dp</item>
-        <item name="android:layout_marginRight">3dp</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:progress">15</item>
-        <item name="android:progressDrawable">@drawable/ratings_progress</item>
     </style>
 
     <!-- SWITCH BUTTON -->
-    <style name="SwitchStyle" parent="@style/TextTitle_1">
+    <style name="SwitchStyle" parent="@style/TextBase.Title_1">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:gravity">left|start|center</item>
@@ -243,7 +201,7 @@
 
     <!-- CHECK BOX -->
 
-    <style name="FormCheckBox" parent="SingleLineStyle"/>
+    <style name="FormCheckBox" parent="SingleLineStyle" />
 
     <style name="FormCheckBox.Right">
         <item name="android:paddingLeft">20dp</item>
@@ -255,6 +213,26 @@
         <item name="android:drawableStart">@null</item>
         <item name="android:drawableRight">@drawable/_gen_selector_check_box</item>
         <item name="android:drawableEnd">@drawable/_gen_selector_check_box</item>
+    </style>
+
+    <style name="FormCheckBox.Central">
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@null</item>
+        <item name="android:drawableStart">@null</item>
+        <item name="android:drawableRight">@drawable/_gen_selector_check_box</item>
+        <item name="android:drawableEnd">@drawable/_gen_selector_check_box</item>
+    </style>
+
+    <style name="FormCheckBox.Left">
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:drawableLeft">@drawable/_gen_selector_check_box</item>
+        <item name="android:drawableStart">@drawable/_gen_selector_check_box</item>
+        <item name="android:drawableRight">@null</item>
+        <item name="android:drawableEnd">@null</item>
     </style>
 
     <!-- RADIO BUTTON -->
@@ -277,6 +255,27 @@
         <item name="android:drawableEnd">@drawable/_gen_selector_radio_button</item>
         <item name="android:maxLines">2</item>
         <item name="android:singleLine">false</item>
+    </style>
+
+    <!-- RATING BAR -->
+
+    <style name="RatingBoardStyle" parent="ViewGroupCompat.Horizontal.MiddleDivider">
+        <item name="android:minHeight">26dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_marginRight">@dimen/margin_padding_s</item>
+        <item name="android:progressDrawable">@drawable/ratings_progress</item>
+    </style>
+
+    <style name="RatingBarStyle" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:layout_width">110dp</item>
+        <item name="android:layout_height">4dp</item>
+        <item name="android:layout_marginLeft">@dimen/margin_padding_s</item>
+        <item name="android:layout_marginRight">@dimen/margin_padding_s</item>
+        <item name="android:progressDrawable">@drawable/ratings_progress</item>
+    </style>
+
+    <style name="RatingBarTextStyle" parent="TextBase.Caption.Black_800">
+        <item name="android:minWidth">@dimen/dimen_25dp</item>
     </style>
 
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ -->

@@ -13,7 +13,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_product_name"
-            style="@style/TextList_1"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical|start"
@@ -28,7 +28,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/offer_product_brand"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/offer_product_name"
@@ -46,7 +46,7 @@
 
     <View
         android:id="@+id/separator"
-        style="@style/divider_horizontal"
+        style="@style/DividerHorizontal.Black_300"
         android:layout_below="@id/offers_header" />
 
     <com.mobile.utils.catalog.HeaderFooterGridView

@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/dimen_16dp"
-        app:divider="@drawable/divider_horizontal_black_300"
-        app:showDividers="beginning"
-    >
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ViewGroupCompat.Vertical.HeaderDivider"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/margin_padding_xl">
+
     <!-- HEADER -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_related_title"
         style="@style/HeaderStyle"
-        android:background="@color/white"
-        android:paddingRight="@dimen/dimen_20dp"
-        android:paddingEnd="@dimen/dimen_20dp"
         android:text="@string/may_like" />
+
+    <!-- CONTENT -->
 
     <com.mobile.components.recycler.HorizontalListView
         android:id="@+id/rich_relevance_listview"
         style="@style/HorizontalListStyle"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_230dp"
-        android:paddingTop="@dimen/dimen_10dp"
-        android:paddingBottom="@dimen/dimen_10dp"
-        android:paddingLeft="@dimen/dimen_6dp"
-        android:paddingStart="@dimen/dimen_6dp"
-        android:scrollbars="none"
         android:background="@color/black_300"
-        />
+        android:paddingLeft="@dimen/margin_padding_s"
+        android:paddingRight="@dimen/margin_padding_s" />
+
 </android.support.v7.widget.LinearLayoutCompat>

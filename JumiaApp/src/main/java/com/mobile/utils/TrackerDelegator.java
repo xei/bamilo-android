@@ -90,6 +90,30 @@ public class TrackerDelegator {
 
     private static final Context sContext = JumiaApplication.INSTANCE.getApplicationContext();
 
+    /**
+     * Called only on resume activity
+     */
+    public static void onResumeActivity(long time) {
+        AdjustTracker.onResume();
+        TrackerDelegator.trackAppOpenAdjust(sContext, time);
+    }
+
+    /**
+     * Called only on pause activity
+     */
+    public static void onPauseActivity() {
+        AdjustTracker.onPause();
+        AnalyticsGoogle.get().dispatchHits();
+    }
+
+
+    /**
+     * Called only on destroy activity
+     */
+    public static void onDestroyActivity() {
+        GTMManager.get().gtmTrackAppClose();
+    }
+
 
     public static void trackLoginSuccessful(Customer customer, boolean autoLogin, boolean fromFacebook) {
         Bundle params = new Bundle();
@@ -799,15 +823,6 @@ public class TrackerDelegator {
         }
     }
 
-    /**
-     * Tracking closing app for GTM
-     *
-     */
-    public static void trackCloseApp() {
-        // GTM
-        GTMManager.get().gtmTrackAppClose();
-    }
-
 
     private static void trackScreenGTM(TrackingPage page, long loadTime){
         //GMT
@@ -1139,6 +1154,28 @@ public class TrackerDelegator {
     public static void trackCustomerInfo(@NonNull Customer customer) {
         // Accengage
         Ad4PushTracker.get().trackCustomerInfo(customer);
+    }
+
+    /**
+     * Tracking cart in checkout thanks
+     */
+    public static void trackPurchaseInCheckoutThanks(PurchaseEntity cart, String order, double total, String shipping, String tax, String payment) {
+        if (cart != null && CollectionUtils.isEmpty(cart.getCartItems())) {
+            Bundle params = new Bundle();
+            params.putString(TrackerDelegator.ORDER_NUMBER_KEY, order);
+            params.putDouble(TrackerDelegator.VALUE_KEY, cart.getPriceForTracking());
+            params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
+            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
+            params.putString(TrackerDelegator.COUPON_KEY, String.valueOf(cart.getCouponDiscount()));
+            params.putInt(TrackerDelegator.CART_COUNT, cart.getCartCount());
+            params.putDouble(TrackerDelegator.GRAND_TOTAL, total);
+            if(!TextUtils.isEmpty(shipping) && !TextUtils.isEmpty(tax) && !TextUtils.isEmpty(payment)){
+                params.putString(TrackerDelegator.SHIPPING_KEY, shipping);
+                params.putString(TrackerDelegator.TAX_KEY, tax);
+                params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, payment);
+            }
+            TrackerDelegator.trackPurchaseNativeCheckout(params, cart.getCartItems());
+        }
     }
 
 }

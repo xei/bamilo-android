@@ -13,13 +13,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_60px"
-        android:layout_marginRight="@dimen/dimen_60px"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
         android:layout_marginTop="@dimen/margin_large">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/articles_count"
-            style="@style/TextBody_1"
+            style="@style/TextBase.Body"
             android:layout_alignParentRight="true"
             android:layout_toLeftOf="@+id/price_unreduced"
             android:ellipsize="none"
@@ -28,7 +28,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/vat_included_label"
-            style="@style/TextBody_3"
+            style="@style/TextBase.Body"
             android:layout_alignParentRight="true"
             android:layout_below="@id/articles_count"
             android:gravity="center_vertical|right"
@@ -37,7 +37,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/vat_value"
-            style="@style/TextBody_3"
+            style="@style/TextBase.Body"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/articles_count"
@@ -47,16 +47,16 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
-            style="@style/TextBody_3"
+            style="@style/TextBase.Body"
             android:layout_width="wrap_content"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginLeft="@dimen/margin_padding_l"
             android:layout_toRightOf="@+id/price_total"
             android:ellipsize="none"
             android:textColor="@color/black_800" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_total"
-            style="@style/TextBody_3"
+            style="@style/TextBase.Body"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:ellipsize="none"
@@ -69,8 +69,8 @@
         android:id="@+id/price_rules_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_60px"
-        android:layout_marginRight="@dimen/dimen_60px"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
         android:layout_marginTop="@dimen/margin_mid"
         android:orientation="vertical"
         android:visibility="gone" />
@@ -81,13 +81,13 @@
         android:id="@+id/shipping_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_60px"
-        android:layout_marginRight="@dimen/dimen_60px"
-        android:layout_marginTop="@dimen/dimen_60px"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
         android:visibility="gone">
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextBody_1"
+            style="@style/TextBase.Body"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
             android:ellipsize="none"
@@ -96,7 +96,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_value"
-            style="@style/TextBody_3"
+            style="@style/TextBase.Body"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:ellipsize="none"
@@ -110,12 +110,12 @@
         android:id="@+id/extra_costs_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_60px"
-        android:layout_marginRight="@dimen/dimen_60px"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
         android:visibility="gone">
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextList_1"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
             android:ellipsize="none"
@@ -123,7 +123,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/extra_costs_value"
-            style="@style/TextList_1"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:ellipsize="none" />
@@ -134,13 +134,13 @@
         android:id="@+id/voucher_info_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_60px"
-        android:layout_marginStart="@dimen/dimen_60px"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginStart="@dimen/dimen_20dp"
         android:visibility="gone">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/basket_voucher_label"
-            style="@style/SingleLineStyle"
+            style="@style/SingleLineList"
             android:layout_width="match_parent"
             android:layout_alignParentRight="true"
             android:layout_toLeftOf="@+id/text_voucher"
@@ -149,7 +149,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/text_voucher"
-            style="@style/SingleLineStyle"
+            style="@style/SingleLineList"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:ellipsize="none" />
@@ -159,9 +159,9 @@
     <RelativeLayout
         android:id="@+id/total_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_144px"
-        android:layout_marginLeft="@dimen/dimen_60px"
-        android:layout_marginRight="@dimen/dimen_60px"
+        android:layout_height="@dimen/dimen_48dp"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
         android:layout_marginTop="@dimen/margin_mid"
         android:visibility="visible">
 
@@ -172,7 +172,7 @@
             android:background="@color/black_700" />
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextList_1"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -182,7 +182,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/total_value"
-            style="@style/TextList_1"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"

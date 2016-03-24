@@ -24,7 +24,7 @@
             <!--INFO-->
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/TextDisplay_1"
+                style="@style/TextBase.Display_1"
                 android:layout_marginBottom="8dp"
                 android:gravity="center"
                 android:text="@string/welcome_label"
@@ -32,7 +32,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/register_text_info"
-                style="@style/TextCaption"
+                style="@style/TextBase.Caption"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:gravity="center"
@@ -63,7 +63,7 @@
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/register_button_create"
-                style="@style/AigButton.Active"
+                style="@style/Button_1.Shop"
                 android:layout_width="@dimen/register_container_width"
                 android:text="@string/create_label" />
 

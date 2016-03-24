@@ -5,7 +5,6 @@ import android.os.Bundle;
 /**
  * Constructor used to initialize the navigation list component and the autocomplete handler
  * 
- * @param userEvents
  * @author manuelsilva
  * @modified sergiopereira
  * 

@@ -1,7 +1,3 @@
-/**
- * @author Manuel Silva
- * 
- */
 package com.mobile.helpers.cart;
 
 import android.content.ContentValues;
@@ -14,6 +10,7 @@ import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.cart.AddedItemStructure;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -31,13 +28,7 @@ import com.mobile.utils.TrackerDelegator;
  */
 public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     
-    private static String TAG = ShoppingCartAddItemHelper.class.getSimpleName();
-    
-    public static final String PRODUCT_TAG = "p";
-    
-    public static final String PRODUCT_SKU_TAG = "sku";
-    
-    public static final String PRODUCT_QT_TAG = "quantity";
+    private static final String TAG = ShoppingCartAddItemHelper.class.getSimpleName();
 
     public static final String PRODUCT_POS_TAG = "item_pos";
 
@@ -64,7 +55,7 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     protected RequestBundle createRequest(Bundle args) {
         // Get specific data
         mCurrentPos = args.getInt(PRODUCT_POS_TAG, -1);
-        mCurrentSku = args.getString(PRODUCT_SKU_TAG);
+        mCurrentSku = args.getString(RestConstants.SKU);
         isToRemoveFromLastViewed = args.getBoolean(REMOVE_RECENTLY_VIEWED_TAG, false);
         return super.createRequest(args);
     }
@@ -95,12 +86,10 @@ public class ShoppingCartAddItemHelper extends SuperBaseHelper {
     /**
      * Method used to create a request bundle.
      */
-    public static Bundle createBundle(String sku, String simpleSku) {
+    public static Bundle createBundle(String sku) {
         // Item data
         ContentValues values = new ContentValues();
-        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, sku);
-        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simpleSku);
-        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
+        values.put(RestConstants.SKU, sku);
         // Request data
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);

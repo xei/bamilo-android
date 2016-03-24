@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        layout="@layout/image_loadable"
+        layout="@layout/_def_gen_image_loadable"
         android:adjustViewBounds="false"
         android:scaleType="fitCenter" />
 
@@ -16,7 +16,7 @@
         android:id="@+id/new_arrival_badge"
         style="@style/NewArrivalBadge"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_15dp"
         android:layout_gravity="top|left|start"
         android:text="@string/new_arrival_badge"
         android:visibility="gone"/>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DividerHorizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="DividerHorizontal.Black_300"/>
+
+    <style name="DividerHorizontal.Black_400">
+        <item name="android:background">@color/black_400</item>
+    </style>
+
+    <style name="DividerHorizontal.Black_700">
+        <item name="android:background">@color/black_700</item>
+    </style>
+
+    <style name="DividerHorizontal.Accent">
+        <item name="android:background">@color/color_accent</item>
+    </style>
+
+    <style name="DividerVertical">
+        <item name="android:layout_width">@dimen/divider_height</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/black_300</item>
+    </style>
+
+    <style name="DividerVertical.Black_300"/>
+
+    <style name="DividerVertical.Black_400">
+        <item name="android:background">@color/black_400</item>
+    </style>
+
+    <style name="ShadowHorizontal">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_height</item>
+        <item name="android:background">@drawable/shadow_white_2_grey_horizontal</item>
+    </style>
+
+    <!-- ######## VIEW GROUP COMPAT ######## -->
+
+    <style name="ViewGroupCompat">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+        <item name="divider">@drawable/_gen_divider_horizontal_black_300</item>
+        <item name="showDividers">middle</item>
+    </style>
+
+    <!-- GROUP: DIVIDER VERTICAL -->
+
+    <style name="ViewGroupCompat.Vertical"/>
+
+    <style name="ViewGroupCompat.Vertical.MiddleDivider" />
+
+    <style name="ViewGroupCompat.Vertical.HeaderDivider">
+        <item name="showDividers">beginning</item>
+    </style>
+
+    <!-- GROUP: DIVIDER HORIZONTAL -->
+
+    <style name="ViewGroupCompat.Horizontal">
+        <item name="divider">@drawable/_gen_divider_vertical_black_300</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="ViewGroupCompat.Horizontal.MiddleDivider"/>
+
+    <!-- MY ACCOUNT SECTION -->
+
+    <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider" />
+
+    <!-- TODO : ADD HERE MORE STYLES -->
+
+</resources>

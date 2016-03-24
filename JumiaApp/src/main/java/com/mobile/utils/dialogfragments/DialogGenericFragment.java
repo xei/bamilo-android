@@ -192,7 +192,7 @@ public class DialogGenericFragment extends DialogFragment {
         getActivity().getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
 
         if (title == null)
-            view.findViewById(R.id.title_container).setVisibility(View.GONE);
+            view.findViewById(R.id.dialog_title).setVisibility(View.GONE);
         else
             ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
     }

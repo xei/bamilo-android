@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ViewGroupCompat.Horizontal.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:baselineAligned="false"
     android:orientation="horizontal"
-    android:weightSum="2"
-    android:baselineAligned="false">
+    android:weightSum="2">
 
     <!-- ORDERS -->
 
@@ -12,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/drop_shadow_right"
         android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
@@ -38,6 +38,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>
 
 

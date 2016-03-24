@@ -1,5 +1,6 @@
 package com.mobile.controllers;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -22,10 +23,12 @@ import java.util.List;
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHolder>{
 
     protected List<? extends ProductRegular> mDataSet;
+    protected Context mContext;
 
     protected Resources resources;
 
-    public ProductListAdapter(@NonNull List<? extends ProductRegular> mDataSet) {
+    public ProductListAdapter(Context context, @NonNull List<? extends ProductRegular> mDataSet) {
+        this.mContext = context;
         this.mDataSet = mDataSet;
     }
 
@@ -53,7 +56,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Set rating and reviews
         setSpecificViewForListLayout(holder, item);
         // Set prices
-        setProductPrice(holder, item);
+        setProductPrice(holder, item, position);
     }
 
 
@@ -83,8 +86,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
      * @param holder - the view holder
      * @param item - the product
      */
-    protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
-        ProductUtils.setPriceRules(item, holder.price, holder.discount);
+    protected void setProductPrice(ProductListViewHolder holder, ProductRegular item, int position) {
+        ProductUtils.setPriceRulesWithAutoAdjust(mContext, item, holder.discount, holder.price);
         // Case discount
         ProductUtils.setDiscountRules(item, holder.percentage);
     }

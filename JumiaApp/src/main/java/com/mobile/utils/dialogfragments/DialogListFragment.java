@@ -153,12 +153,9 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
 	 */
     private void setSizeGuide(View view) {
         // Get views
-        View divider = view.findViewById(R.id.dialog_list_size_guide_divider);
         View button = view.findViewById(R.id.dialog_list_size_guide_button);
-        divider.setVisibility(View.GONE);
         button.setVisibility(View.GONE);
         button.setOnClickListener(null);
-
     }
 
     /*

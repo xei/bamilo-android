@@ -84,6 +84,7 @@ public class RestConstants {
     public static final String REVIEWS_TOTAL = "reviews_total";
     public static final String PRODUCT = "product";
     public static final String BY_TYPE = "by_type";
+    public static final String BY_STARS = "by_stars";
     public static final String REVIEWS = "reviews";
     public static final String COMMENT = "comment";
     public static final String DATE = "date";
@@ -109,7 +110,6 @@ public class RestConstants {
     public static final String RESULTS = "results";
     public static final String PRODUCT_COUNT = "product_count";
     public static final String IMAGES = "images";
-    public static final String ID_CHANGE_QUANTITY = "id_change_quantity";
     public static final String URL_KEY = "url_key";
     public static final String CHILDREN = "children";
     public static final String CART = "cart";

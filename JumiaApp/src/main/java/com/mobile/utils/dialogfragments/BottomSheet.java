@@ -4,10 +4,10 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.AbsListView;
-import android.widget.LinearLayout;
 
 import com.mobile.view.R;
 
@@ -26,12 +26,10 @@ public class BottomSheet extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
-        //dialog.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
         lp.dimAmount = 0.5f;
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        dialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(LinearLayoutCompat.LayoutParams.MATCH_PARENT, LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setGravity(Gravity.BOTTOM);
         return dialog;
     }
@@ -48,7 +46,7 @@ public class BottomSheet extends DialogFragment {
             // Get item height
             int height = max * (int) getResources().getDimension(R.dimen.action_bar_height);
             // Set the new height
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, height);
+            LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, height);
             view.setLayoutParams(params);
         }
     }

@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- NAME -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBody_1"
+        style="@style/TextBase.Body"
         android:layout_marginEnd="@dimen/login_margin_medium"
         android:layout_marginRight="@dimen/login_margin_medium"
         android:layout_marginTop="@dimen/item_margin_top"
         android:maxLines="2"
         android:singleLine="false"
-        android:text="Name"
-        android:textColor="@color/black"/>
+        tools:text="Name"
+        android:textColor="@color/black" />
 
     <!-- SHOP FIRST IMAGE -->
     <ImageView
@@ -27,15 +27,15 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_shop_first"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dimen_20px"
-        android:layout_marginStart="@dimen/dimen_20px"
-        android:text="Price"
+        android:layout_marginLeft="@dimen/dimen_6_67dp"
+        android:layout_marginStart="@dimen/dimen_6_67dp"
+        tools:text="Price"
         android:textColor="@color/black_800"
-        android:textSize="@dimen/text_xs"/>
+        android:textSize="@dimen/text_xs" />
 
     <!-- Divider -->
     <View
@@ -43,21 +43,21 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/item_regprice"
-        android:background="@color/black_700"/>
+        android:background="@color/black_700" />
 
     <!-- DELETE BUTTON -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_delete"
-        style="@style/TextBody_1"
+        style="@style/TextBase.Body"
         android:layout_below="@id/delete_divider"
         android:layout_gravity="center_vertical"
         android:clickable="true"
-        android:contentDescription="@string/voucher_remove"
+        android:contentDescription="@string/remove_label"
         android:gravity="center_vertical"
-        android:paddingBottom="@dimen/dimen_27px"
-        android:paddingTop="@dimen/dimen_27px"
-        android:text="@string/voucher_remove"
-        android:textColor="@color/black_800"/>
+        android:paddingBottom="@dimen/dimen_9dp"
+        android:paddingTop="@dimen/dimen_9dp"
+        android:text="@string/remove_label"
+        android:textColor="@color/black_800" />
 
 </RelativeLayout>

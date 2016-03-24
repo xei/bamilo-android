@@ -315,7 +315,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers().values()) {
-
             // Create view
             BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
             if (viewHolder != null) {
@@ -327,8 +326,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 mViewHolders.add(viewHolder);
             }
         }
-        // Restore the scroll state
-        //restoreScrollState();
         // Show mContainer
         showFragmentContentContainer();
     }

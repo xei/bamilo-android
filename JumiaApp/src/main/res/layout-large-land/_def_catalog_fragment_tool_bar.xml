@@ -5,18 +5,16 @@
     android:gravity="center"
     android:orientation="horizontal">
 
-
-
     <!-- GRID LAYOUT -->
 
     <ImageButton
         android:id="@+id/catalog_bar_button_columns"
-        android:layout_width="@dimen/dimen_340px"
+        android:layout_width="@dimen/dimen_113_33dp"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:src="@drawable/selector_catalog_list"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:background="@android:color/white"
+        android:src="@drawable/selector_catalog_list" />
 
     <!-- DIVIDER -->
 
@@ -24,11 +22,11 @@
         android:id="@+id/catalog_bar_divider"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:layout_centerInParent="true">
+        android:layout_centerInParent="true"
+        android:background="@android:color/white">
 
         <View
-            style="@style/divider_vertical"
+            style="@style/DividerVertical.Black_300"
             android:layout_margin="@dimen/margin_10px" />
     </LinearLayout>
 
@@ -41,21 +39,21 @@
         android:layout_toStartOf="@id/catalog_bar_divider"
         android:addStatesFromChildren="true"
         android:background="@drawable/selector_card_default_white"
-        android:paddingRight="@dimen/dimen_100px"
-        android:paddingEnd="@dimen/dimen_100px"
-        android:gravity="right|end|center">
+        android:gravity="right|end|center"
+        android:paddingEnd="@dimen/dimen_33_33dp"
+        android:paddingRight="@dimen/dimen_33_33dp">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_filter"
-            style="@style/TextList_2"
-            android:layout_height="wrap_content"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
-            android:textColor="@color/black"
+            android:layout_height="wrap_content"
             android:layout_gravity="right|end|center"
-            android:drawablePadding="@dimen/margin_10px"
             android:drawableLeft="@drawable/selector_catalog_filter"
+            android:drawablePadding="@dimen/margin_10px"
             android:drawableStart="@drawable/selector_catalog_filter"
-            android:text="@string/filter_label" />
+            android:text="@string/filter_label"
+            android:textColor="@color/black" />
 
     </LinearLayout>
 
@@ -66,32 +64,33 @@
         android:id="@+id/sort_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/catalog_bar_divider"
         android:layout_toEndOf="@id/catalog_bar_divider"
         android:layout_toLeftOf="@id/catalog_bar_button_columns"
+        android:layout_toRightOf="@id/catalog_bar_divider"
         android:layout_toStartOf="@id/catalog_bar_button_columns"
-        android:paddingLeft="@dimen/dimen_100px"
-        android:paddingStart="@dimen/dimen_100px"
         android:addStatesFromChildren="true"
         android:background="@drawable/selector_card_default_white"
-        android:gravity="left|start|center">
+        android:gravity="left|start|center"
+        android:paddingLeft="@dimen/dimen_33_33dp"
+        android:paddingStart="@dimen/dimen_33_33dp">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_sort"
-            android:drawablePadding="@dimen/margin_10px"
-            style="@style/TextList_2"
-            android:layout_height="wrap_content"
+            style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
-            android:textColor="@color/black"
+            android:layout_height="wrap_content"
             android:drawableLeft="@drawable/selector_catalog_sort"
+            android:drawablePadding="@dimen/margin_10px"
             android:drawableStart="@drawable/selector_catalog_sort"
-            android:text="@string/products_sort_popularity" />
+            android:text="@string/products_sort_popularity"
+            android:textColor="@color/black" />
     </LinearLayout>
+
     <View
-        style="@style/divider_vertical"
-        android:layout_marginTop="@dimen/margin_10px"
+        style="@style/DividerVertical.Black_300"
         android:layout_marginBottom="@dimen/margin_10px"
-        android:layout_toRightOf="@+id/sort_container"
-        android:layout_toEndOf="@+id/sort_container"/>
+        android:layout_marginTop="@dimen/margin_10px"
+        android:layout_toEndOf="@+id/sort_container"
+        android:layout_toRightOf="@+id/sort_container" />
 
 </RelativeLayout>

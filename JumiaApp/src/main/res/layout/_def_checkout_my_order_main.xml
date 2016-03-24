@@ -70,7 +70,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/checkout_my_order_button_enter"
-        style="@style/AigButton.Active"
+        style="@style/Button_1.Shop"
         android:layout_alignParentBottom="true"
         android:contentDescription="@string/login_button_description"
         android:text="@string/my_order_confirm_button" />

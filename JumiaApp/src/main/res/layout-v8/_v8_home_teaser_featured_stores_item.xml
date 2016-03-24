@@ -24,13 +24,13 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_stores_text_title"
-            style="@style/TextBody_1"
+            style="@style/TextBase.Body"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@id/home_teaser_stores_image" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/home_teaser_stores_text_sub"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:layout_alignParentRight="true"
             android:layout_below="@id/home_teaser_stores_text_title"
             android:layout_toRightOf="@id/home_teaser_stores_image" />

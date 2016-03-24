@@ -1,6 +1,7 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -35,9 +36,9 @@ import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 /**
- *
+ * View Holder used to represent the Newsletter Teaser.
  */
-public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
+public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements View.OnClickListener, IResponseCallback, TextWatcher, TextView.OnEditorActionListener {
 
     private final ViewGroup mContainerView;
     private final Button mSubmit;
@@ -56,104 +57,123 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
         // Get container
         mContainerView = (ViewGroup) view.findViewById(R.id.home_teaser_newsletter_form_container);
         mSubmit = (Button) view.findViewById(R.id.send_newsletter);
-        mSubmit.setOnClickListener(mOnClickListener);
+        mSubmit.setOnClickListener(this);
         mSubmit.setEnabled(false);
-
     }
 
     @Override
     public void onBind(BaseTeaserGroupType group) {
         Form form = null;
-        try{
-            form = ((TeaserFormObject) group.getData().get(0)).getForm();
-        } catch (Exception e){
+        try {
+            form = ((TeaserFormObject) group.getData().get(IntConstants.DEFAULT_POSITION)).getForm();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        if(form != null){
+        if (form != null) {
             form.setType(FormConstants.NEWSLETTER_FORM);
-            mNewsLetterForm = FormFactory.getSingleton().create(FormConstants.NEWSLETTER_FORM, mContext,form);
+            mNewsLetterForm = FormFactory.getSingleton().create(FormConstants.NEWSLETTER_FORM, mContext, form);
             mContainerView.addView(mNewsLetterForm.getContainer());
             for (DynamicFormItem control : mNewsLetterForm) {
-                if(control.getDataControl() instanceof EditText ){
-                    mEditText = (EditText) control.getDataControl();
-                    ((EditText) control.getDataControl()).addTextChangedListener(mTextWatcher);
-                    ((EditText) control.getDataControl()).setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                    if(TextUtils.isNotEmpty(sInitialValue)) {
+                View view = control.getDataControl();
+                if (view instanceof EditText) {
+                    mEditText = (EditText) view;
+                    mEditText.addTextChangedListener(this);
+                    mEditText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                    if (TextUtils.isNotEmpty(sInitialValue)) {
                         mEditText.setText(sInitialValue);
                     }
-                    mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                        @Override
-                        public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
-                            if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_GO) {
-
-                                InputMethodManager imm = (InputMethodManager) textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                                imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
-                                return true;
-                            }
-                            return false;
-                        }
-                    });
-
-                    mSubmit.setEnabled(TextUtils.isNotEmpty(((EditText) control.getDataControl()).getText()));
-                } else if(control.getDataControl() instanceof RelativeLayout &&
-                        control.getDataControl().findViewById(R.id.radio_group_container) != null){ // Get Gender choice to save on rotation.
-                    mRadioGroupLayout = (RadioGroupLayout) control.getDataControl().findViewById(R.id.radio_group_container);
-                    if(sInitialGender > 0 ){
+                    mEditText.setOnEditorActionListener(this);
+                    mSubmit.setEnabled(TextUtils.isNotEmpty(mEditText.getText()));
+                }
+                // Get Gender choice to save on rotation.
+                else if (view instanceof RelativeLayout) {
+                    mRadioGroupLayout = (RadioGroupLayout) view.findViewById(R.id.radio_group_container);
+                    if (mRadioGroupLayout != null && sInitialGender > 0) {
                         mRadioGroupLayout.setSelection(sInitialGender);
                     }
+                //
                 } else if(control.getEntry().getInputType() == FormInputType.list){
                     mGenderSpinner = (IcsSpinner) control.getDataControl();
                     if(sInitialGender > 0 ) {
                         mGenderSpinner.setSelection(sInitialGender);
                     }
                 }
-            }
-
         }
     }
 
-    private final TextWatcher mTextWatcher = new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    /*
+     * ########### SAVE STATE ###########
+     */
+
+    @Nullable
+    public String getEditedText() {
+        return sInitialValue = mEditText != null ? mEditText.getText().toString() : null;
+    }
+
+    public int getSelectedGender() {
+        return sInitialGender = mRadioGroupLayout != null ? mRadioGroupLayout.getSelectedIndex() : IntConstants.INVALID_POSITION;
+    }
+
+    /*
+     * ########### LISTENERS ###########
+     */
+
+    @Override
+    public void onClick(final View v) {
+        if (v != null && mParentClickListener != null && mNewsLetterForm != null && mNewsLetterForm.validate()) {
+            mParentClickListener.onClick(v);
+            JumiaApplication.INSTANCE.sendRequest(new SubmitFormHelper(), SubmitFormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), this);
         }
+    }
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            mSubmit.setEnabled(TextUtils.isNotEmpty(s));
+    @Override
+    public boolean onEditorAction(android.widget.TextView textView, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_GO) {
+            InputMethodManager imm = (InputMethodManager) textView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(textView.getWindowToken(), 0);
+            return true;
         }
+        return false;
+    }
 
-        @Override
-        public void afterTextChanged(Editable s) {
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mSubmit.setEnabled(TextUtils.isNotEmpty(s));
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+    }
+
+    /*
+     * ########### RESPONSE ###########
+     */
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        if (mParentClickListener instanceof IResponseCallback) {
+            ((IResponseCallback) mParentClickListener).onRequestComplete(baseResponse);
+            UIUtils.hideViewFadeOut(itemView);
         }
-    };
+    }
 
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(final View v) {
-            if(v != null && mParentClickListener != null && mNewsLetterForm != null && validate()){
-                mParentClickListener.onClick(v);
-                JumiaApplication.INSTANCE.sendRequest(new SubmitFormHelper(), SubmitFormHelper.createBundle(mNewsLetterForm.getForm().getAction(), mNewsLetterForm.save()), new IResponseCallback() {
-                    @Override
-                    public void onRequestComplete(BaseResponse baseResponse) {
-                        if(mParentClickListener instanceof IResponseCallback){
-                            ((IResponseCallback) mParentClickListener).onRequestComplete(baseResponse);
-                            UIUtils.hideViewFadeOut(itemView);
-                        }
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
 
-                    }
-                    @Override
-                    public void onRequestError(BaseResponse baseResponse) {
-
-                        if(CollectionUtils.isNotEmpty(baseResponse.getValidateMessages())){
-                            mNewsLetterForm.showValidateMessages(baseResponse.getValidateMessages());
-                        }
-                        ((IResponseCallback) mParentClickListener).onRequestError(baseResponse);
-                    }
-                });
-
-            }
+        if(CollectionUtils.isNotEmpty(baseResponse.getValidateMessages())){
+            mNewsLetterForm.showValidateMessages(baseResponse.getValidateMessages());
         }
-    };
+        ((IResponseCallback) mParentClickListener).onRequestError(baseResponse);
+    }
+
+    public int getSelectedGender(){
+        return sInitialGender = mRadioGroupLayout.getSelectedIndex();
+    }
+
 
     protected boolean validate(){
         boolean result = true;
@@ -161,7 +181,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
             if(control.getEntry().getInputType() == FormInputType.list){
                 if(TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())){
                     control.showErrorMessage(control.getEntry().getValidation().getMessage());
-                   return false;
+                    return false;
                 } else {
                     control.hideErrorMessage();
                 }
@@ -187,4 +207,5 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder {
 
         return 0;
     }
+
 }

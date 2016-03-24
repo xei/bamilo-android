@@ -7,27 +7,7 @@
         android:defaultValue="@bool/default_notification"
         android:key="@string/pref_notification"
         android:layout="@layout/preference_list_item"
-        android:title="@string/notifications"
         android:textColor="@color/black"
-        />
-
-    <!--
-        CheckBoxPreference
-        android:defaultValue="true"
-        android:dependency="@string/pref_notification"
-        android:key="@string/pref_vibrate"
-        android:layout="@layout/preference_list_item"
-        android:summary="@string/vibrate_summary"
-        android:title="@string/vibrate" /
-    -->
-    <!--
-        CheckBoxPreference
-        android:defaultValue="@bool/default_sound"
-        android:dependency="@string/pref_notification"
-        android:key="@string/pref_sound"
-        android:layout="@layout/preference_list_item"
-        android:summary="@string/sound_summary"
-        android:title="@string/sound" /
-    -->
+        android:title="@string/notifications" />
 
 </PreferenceScreen>

@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/layout_item_height">
-
-    <!-- SEPARATOR -->
-
-    <View
-        android:id="@+id/divider"
-        style="@style/divider_horizontal" />
+    android:layout_height="@dimen/layout_item_height"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <Space
         android:id="@+id/anchor"
@@ -21,23 +16,25 @@
         android:layout_width="54dp"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_marginBottom="@dimen/dimen_3dp"
-        android:layout_marginLeft="@dimen/dimen_8dp"
-        android:layout_marginStart="@dimen/dimen_8dp"
-        android:layout_marginTop="@dimen/dimen_3dp"
+        android:layout_marginBottom="@dimen/margin_padding_xs"
+        android:layout_marginLeft="@dimen/margin_padding_m"
+        android:layout_marginStart="@dimen/margin_padding_m"
+        android:layout_marginTop="@dimen/margin_padding_xs"
         android:layout_toEndOf="@id/anchor"
         android:layout_toRightOf="@id/anchor"
-        android:scaleType="fitCenter" />
+        android:scaleType="fitCenter"
+        tools:src="@drawable/ic_stat_notifications"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_brand_text"
-        style="@style/TextList_1"
+        style="@style/TextBase.Body.Blue_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dimen_8dp"
-        android:layout_marginStart="@dimen/dimen_8dp"
+        android:layout_marginLeft="@dimen/margin_padding_m"
+        android:layout_marginStart="@dimen/margin_padding_m"
         android:layout_toEndOf="@id/pdv_brand_image"
-        android:layout_toRightOf="@id/pdv_brand_image" />
+        android:layout_toRightOf="@id/pdv_brand_image"
+        tools:text="Visit"/>
 
 </RelativeLayout>

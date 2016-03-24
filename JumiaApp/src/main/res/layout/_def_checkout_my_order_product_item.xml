@@ -5,7 +5,7 @@
 
     <View
         android:id="@+id/my_order_item_divider"
-        style="@style/divider_horizontal" />
+        style="@style/DividerHorizontal.Black_300" />
 
     <ImageView
         android:id="@+id/image_view"
@@ -14,9 +14,9 @@
         android:layout_below="@id/my_order_item_divider"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/catalog_list_item_image_padding"
-        android:layout_marginLeft="@dimen/rounded_margin_mid"
+        android:layout_marginLeft="@dimen/margin_padding_l"
         android:layout_marginRight="@dimen/catalog_list_item_image_padding"
-        android:layout_marginStart="@dimen/rounded_margin_mid"
+        android:layout_marginStart="@dimen/margin_padding_l"
         android:adjustViewBounds="false"
         android:background="@android:color/white"
         android:scaleType="fitCenter"
@@ -25,7 +25,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_brand"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_width="wrap_content"
         android:layout_marginEnd="@dimen/product_item_text_right_margin"
         android:layout_marginRight="@dimen/product_item_text_right_margin"
@@ -37,7 +37,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_name"
-        style="@style/TextBody_1"
+        style="@style/TextBase.Body"
         android:layout_below="@id/my_order_item_brand"
         android:layout_marginEnd="50dp"
         android:layout_marginRight="50dp"
@@ -50,7 +50,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_quantity"
-        style="@style/TextBody_3"
+        style="@style/TextBase.Body"
         android:layout_alignLeft="@id/my_order_item_name"
         android:layout_alignStart="@id/my_order_item_name"
         android:layout_below="@id/my_order_item_name"
@@ -58,7 +58,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_price"
-        style="@style/TextBody_3"
+        style="@style/TextBase.Body"
         android:layout_alignLeft="@id/my_order_item_name"
         android:layout_alignStart="@id/my_order_item_name"
         android:layout_below="@id/my_order_item_quantity"
@@ -66,7 +66,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/my_order_item_variation"
-        style="@style/TextBody_3"
+        style="@style/TextBase.Body"
         android:layout_alignLeft="@id/my_order_item_name"
         android:layout_alignStart="@id/my_order_item_name"
         android:layout_below="@id/my_order_item_price"

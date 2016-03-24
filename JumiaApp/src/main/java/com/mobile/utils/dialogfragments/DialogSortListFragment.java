@@ -75,7 +75,6 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	    DialogSortListFragment dialogListFragment = new DialogSortListFragment();
 	    dialogListFragment.mActivity = fragment.getActivity();
 	    dialogListFragment.mSelectListener = listener;
-	    //dialogListFragment.mId = id;
 	    dialogListFragment.mTitle = title;
 	    dialogListFragment.mItems = items;
 	    dialogListFragment.mInitialPosition = initialPosition;
@@ -89,8 +88,6 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
-//	    setStyle(DialogFragment.STYLE_NORMAL, R.style.Theme_Jumia_Dialog_NoTitle);
-        // R.style.Theme_Jumia_Dialog_NoTitle
 	}
 	
 	/*
@@ -116,10 +113,8 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
             return;
         }
         // Hide Size guide on sort list
-        View divider = view.findViewById(R.id.dialog_list_size_guide_divider);
         View button = view.findViewById(R.id.dialog_list_size_guide_button);
         button.setVisibility(View.GONE);
-        divider.setVisibility(View.GONE);
         // Set title
         TextView titleView = (TextView) view.findViewById(R.id.dialog_list_title);
         titleView.setText(mTitle);

@@ -30,7 +30,7 @@
             android:textSize="@dimen/text_l"
             android:visibility="visible" />
 
-        <View style="@style/line_grey_style" />
+        <View style="@style/DividerHorizontal.Black_300" />
 
         <RelativeLayout
             android:id="@+id/no_results_search_tips_layout"
@@ -66,7 +66,7 @@
                 android:visibility="gone" />
         </RelativeLayout>
 
-        <View style="@style/line_grey_style" />
+        <View style="@style/DividerHorizontal.Black_300" />
 
         <RelativeLayout
             android:id="@+id/featured_products"
@@ -98,7 +98,7 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <View style="@style/line_grey_style" />
+        <View style="@style/DividerHorizontal.Black_300" />
 
         <RelativeLayout
             android:id="@+id/featured_brands"
@@ -130,7 +130,7 @@
             </RelativeLayout>
         </RelativeLayout>
 
-        <View style="@style/line_grey_style" />
+        <View style="@style/DividerHorizontal.Black_300" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_notice_message"

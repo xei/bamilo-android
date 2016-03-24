@@ -1,7 +1,6 @@
 
 package com.mobile.components.customfontviews;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -37,17 +36,6 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
         a = context.obtainStyledAttributes(attrs, R.styleable.TextAppearance, defStyle, 0);
         TextView.setTextAppearance(textView, a);
         a.recycle();
-    }
-
-    /**
-     * Looks ugly? Yea, i know.
-     */
-    @SuppressLint("InlinedApi")
-    private static Object[] parseFontStyle(Context context, AttributeSet attrs, int defStyleAttr) {
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextAppearance, defStyleAttr, 0);
-        final Object[] result = parseFontStyle(a);
-        a.recycle();
-        return result;
     }
 
     private static Object[] parseFontStyle(TypedArray a) {
@@ -123,7 +111,7 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
 //        if (appearance.getBoolean(R.styleable.TextAppearance_android_textAllCaps, false)) {
 //            textView.setTransformationMethod(new AllCapsTransformationMethod(textView.getContext()));
 //        }
-        
+
         // android:fontFamily 
         Object[] font = parseFontStyle(appearance);
         textView.setFontStyle((String) font[2], (Integer) font[1] | ((Boolean) font[0] ? 0 : textView.getFontStyle()));
@@ -155,19 +143,5 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
     public void setTextAppearance(Context context, int resid) {
         TextView.setTextAppearance(this, context, resid);
     }
-    
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        if (true) {
-//            int width = getMeasuredWidth();
-//            int height = getMeasuredHeight();
-//            Log.d("TAG", "########## TEXT: " + width + " " + height);
-//            //width = MeasureSpec.getSize(widthMeasureSpec);
-//            //height = MeasureSpec.getSize(heightMeasureSpec);
-//            //Log.d("TAG", "########## TEXT: " + width + " " + height);
-//            this.setMeasuredDimension(width, height + 15);
-//        }
-//    }
 
 }

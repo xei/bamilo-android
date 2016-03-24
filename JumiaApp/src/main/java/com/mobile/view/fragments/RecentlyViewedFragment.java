@@ -1,6 +1,5 @@
 package com.mobile.view.fragments;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -25,10 +24,10 @@ import com.mobile.newFramework.objects.product.ValidProductList;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
@@ -71,7 +70,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
     public RecentlyViewedFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.RECENTLY_VIEWED,
-                R.layout.recentlyviewed,
+                R.layout._def_recently_viewed_fragment,
                 R.string.recently_viewed,
                 NO_ADJUST_CONTENT);
     }
@@ -107,7 +106,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get grid view
-        mGridView = (HeaderFooterGridView) view.findViewById(R.id.recentlyviewed_grid);
+        mGridView = (HeaderFooterGridView) view.findViewById(R.id.recently_viewed_grid);
         mGridView.setHasFixedSize(true);
         mGridView.setGridLayoutManager(getResources().getInteger(R.integer.favourite_num_columns));
         mGridView.setNestedScrollingEnabled(false);
@@ -115,7 +114,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
         // Get clear all button
-        mClearAllButton = (TextView) view.findViewById(R.id.recentlyviewed_button_grey);
+        mClearAllButton = (TextView) view.findViewById(R.id.recently_viewed_button);
         mClearAllButton.setOnClickListener(this);
 
         if (savedInstanceState != null && savedInstanceState.containsKey(RECENT_LIST)) {
@@ -240,7 +239,7 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
         // Case size guide
         else if (id == R.id.dialog_list_size_guide_button) onClickSizeGuide(view);
         // Case clear all
-        else if (id == R.id.recentlyviewed_button_grey) onClickClearAll();
+        else if (id == R.id.recently_viewed_button) onClickClearAll();
         // Case unknown
         else Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");
     }
@@ -386,16 +385,10 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
             showUnexpectedErrorWarning();
             return;
         }
-        // Item data
-        ContentValues values = new ContentValues();
-        values.put(ShoppingCartAddItemHelper.PRODUCT_TAG, product.getSku());
-        values.put(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, simple.getSku());
-        values.put(ShoppingCartAddItemHelper.PRODUCT_QT_TAG, "1");
         // Request data
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
+        Bundle bundle = ShoppingCartAddItemHelper.createBundle(simple.getSku());
         bundle.putInt(ShoppingCartAddItemHelper.PRODUCT_POS_TAG, position);
-        bundle.putString(ShoppingCartAddItemHelper.PRODUCT_SKU_TAG, product.getSku());
+        bundle.putString(RestConstants.SKU, product.getSku());
         bundle.putBoolean(ShoppingCartAddItemHelper.REMOVE_RECENTLY_VIEWED_TAG, true);
         // Trigger
         triggerContentEventProgress(new ShoppingCartAddItemHelper(), bundle, this);

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item type="drawable" name="img_instructions_right_tap">@drawable/img_instructions_right_tap_rtl</item>
-    <item type="drawable" name="img_instructions_tap">@drawable/img_instructions_tap_rtl</item>
     <item type="drawable" name="ico_empty_cart">@drawable/ico_empty_cart_rtl</item>
     <item type="drawable" name="img_stepinactive">@drawable/img_stepinactive_rtl</item>
     <item type="drawable" name="img_stepactive">@drawable/img_stepactive_rtl</item>
@@ -9,7 +7,6 @@
     <item type="drawable" name="black_arrow_right">@drawable/black_arrow_right_rtl</item>
     <item type="drawable" name="ic_menu_cart_pressed">@drawable/ic_menu_cart_pressed_rtl</item>
     <item type="drawable" name="ic_menu_cart">@drawable/ic_menu_cart_rtl</item>
-    <item type="drawable" name="img_newarrival">@drawable/img_newarrival_ar</item>
     <item type="drawable" name="ic_overseas_corner">@drawable/ic_overseas_corner_rtl</item>
     <item type="drawable" name="ic_arrow_combo">@drawable/ic_arrow_combo_rtl</item>
     <item type="drawable" name="ic_check_success_message">@drawable/ic_check_success_message_rtl</item>

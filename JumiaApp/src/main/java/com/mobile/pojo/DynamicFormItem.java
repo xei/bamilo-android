@@ -465,7 +465,7 @@ public class DynamicFormItem {
      *
      * @param inStat the Bundle that contains the stored information of the control
      */
-    public void loadState(Bundle inStat) {
+    public void loadState(@NonNull Bundle inStat) {
         switch (this.entry.getInputType()) {
             case checkBoxLink:
                 boolean checkedList = inStat.getBoolean(getKey());
@@ -788,7 +788,7 @@ public class DynamicFormItem {
      *
      * @param outState The Bundle object that will hold the state of the object
      */
-    public void saveState(Bundle outState) {
+    public void saveState(@NonNull Bundle outState) {
         switch (this.entry.getInputType()) {
             case checkBoxLink:
                 outState.putBoolean(getKey(), ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked());
@@ -1073,7 +1073,7 @@ public class DynamicFormItem {
             this.mandatoryControl = new TextView(this.context);
             this.mandatoryControl.setLayoutParams(params);
             this.mandatoryControl.setText("*");
-            this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
+            this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
             this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
             this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 
@@ -1327,7 +1327,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
@@ -1460,7 +1460,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
@@ -1500,7 +1500,7 @@ public class DynamicFormItem {
             // For RTL
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             // Set dividers
-            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable.divider_horizontal_black_300));
+            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable._gen_divider_horizontal_black_300));
             radioGroup.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
             radioGroup.enableRightStyle();
         }
@@ -1546,7 +1546,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 
@@ -1806,6 +1806,7 @@ public class DynamicFormItem {
         // Set hint
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
             text.setHint(this.entry.getLabel());
+            text.setFloatingLabelText(this.entry.getLabel());
         }
         // Set filters
         if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {

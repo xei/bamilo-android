@@ -212,7 +212,7 @@ public class AlgoliaHelper {
                 String name = product.getJSONObject(RestConstants.LOCALIZABLE_ATTRIBUTES).getJSONObject(ShopSelector.getCountryCode()).getString(RestConstants.NAME);
                 String brand = product.getJSONObject(RestConstants.BRAND).getString(RestConstants.NAME);
                 suggestion.setQuery(query);
-                suggestion.setResult(String.format(mContext.getString(R.string.first_and_second_placeholders),brand,  name));
+                suggestion.setResult(String.format(mContext.getString(R.string.first_space_second_placeholder),brand,  name));
                 suggestion.setTarget(product.getString(RestConstants.SKU));
                 suggestion.setType(Suggestion.SUGGESTION_PRODUCT);
                 suggestions.add(suggestion);

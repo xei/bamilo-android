@@ -19,7 +19,7 @@ public class InfinitePagerAdapter extends PagerAdapter {
     private static final float PAGE_WIDTH_DOUBLE_ITEMS = 0.5f;
     private static final float PAGE_WIDTH_SINGLE_ITEM = 1.0f;
 
-    private PagerAdapter adapter;
+    private final PagerAdapter adapter;
     private boolean infinitePagesEnabled = true;
     private float pageWidth = PAGE_WIDTH_DOUBLE_ITEMS;
 
@@ -70,7 +70,6 @@ public class InfinitePagerAdapter extends PagerAdapter {
         int virtualPosition = getVirtualPosition(position);
         debug("instantiateItem: real position: " + position);
         debug("instantiateItem: virtual position: " + virtualPosition);
-
         // only expose virtual position to the inner adapter
         return adapter.instantiateItem(container, virtualPosition);
     }
@@ -80,7 +79,6 @@ public class InfinitePagerAdapter extends PagerAdapter {
         int virtualPosition = getVirtualPosition(position);
         debug("destroyItem: real position: " + position);
         debug("destroyItem: virtual position: " + virtualPosition);
-
         // only expose virtual position to the inner adapter
         adapter.destroyItem(container, virtualPosition, object);
     }
