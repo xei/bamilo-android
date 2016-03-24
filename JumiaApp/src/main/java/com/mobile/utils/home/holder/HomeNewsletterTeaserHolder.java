@@ -85,19 +85,21 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
                     mEditText.setOnEditorActionListener(this);
                     mSubmit.setEnabled(TextUtils.isNotEmpty(mEditText.getText()));
                 }
-                // Get Gender choice to save on rotation.
+                // Case RadioGroup: Get Gender choice to save on rotation.
                 else if (view instanceof RelativeLayout) {
                     mRadioGroupLayout = (RadioGroupLayout) view.findViewById(R.id.radio_group_container);
                     if (mRadioGroupLayout != null && sInitialGender > 0) {
                         mRadioGroupLayout.setSelection(sInitialGender);
                     }
-                //
-                } else if(control.getEntry().getInputType() == FormInputType.list){
+                }
+                // Case Spinner: Get the selection
+                else if (control.getEntry().getInputType() == FormInputType.list) {
                     mGenderSpinner = (IcsSpinner) control.getDataControl();
-                    if(sInitialGender > 0 ) {
+                    if (sInitialGender > 0) {
                         mGenderSpinner.setSelection(sInitialGender);
                     }
                 }
+            }
         }
     }
 
@@ -111,7 +113,12 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
     }
 
     public int getSelectedGender() {
-        return sInitialGender = mRadioGroupLayout != null ? mRadioGroupLayout.getSelectedIndex() : IntConstants.INVALID_POSITION;
+        if (mRadioGroupLayout != null) {
+            return sInitialGender = mRadioGroupLayout.getSelectedIndex();
+        } else if (mGenderSpinner != null) {
+            return sInitialGender = mGenderSpinner.getSelectedItemPosition();
+        }
+        return IntConstants.INVALID_POSITION;
     }
 
     /*
@@ -163,23 +170,17 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
 
     @Override
     public void onRequestError(BaseResponse baseResponse) {
-
         if(CollectionUtils.isNotEmpty(baseResponse.getValidateMessages())){
             mNewsLetterForm.showValidateMessages(baseResponse.getValidateMessages());
         }
         ((IResponseCallback) mParentClickListener).onRequestError(baseResponse);
     }
 
-    public int getSelectedGender(){
-        return sInitialGender = mRadioGroupLayout.getSelectedIndex();
-    }
-
-
-    protected boolean validate(){
+    protected boolean validate() {
         boolean result = true;
         for (DynamicFormItem control : mNewsLetterForm) {
-            if(control.getEntry().getInputType() == FormInputType.list){
-                if(TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())){
+            if (control.getEntry().getInputType() == FormInputType.list) {
+                if (TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())) {
                     control.showErrorMessage(control.getEntry().getValidation().getMessage());
                     return false;
                 } else {
@@ -188,24 +189,8 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
             } else {
                 result &= control.validate();
             }
-
-
         }
-
         return result;
-    }
-
-    public String getEditedText(){
-        return sInitialValue = mEditText.getText().toString();
-    }
-    public int getSelectedGender(){
-        if(mRadioGroupLayout != null){
-            return sInitialGender = mRadioGroupLayout.getSelectedIndex();
-        } else if(mGenderSpinner != null){
-            return sInitialGender = mGenderSpinner.getSelectedItemPosition();
-        }
-
-        return 0;
     }
 
 }

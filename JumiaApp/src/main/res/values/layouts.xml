@@ -187,11 +187,7 @@
     <item name="product_gallery_full_activity"          type="layout">@layout/_def_product_gallery_full_activity</item>
     <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
     <item name="form_spinner_item"                      type="layout">@layout/_def_form_spinner_item</item>
-
     <item name="form_alternative_spinner_item"          type="layout">@layout/_def_form_alternative_spinner_item</item>
-
-    <item name="simple_email_notification_option"       type="layout">@layout/_def_simple_email_notification_option</item>
-
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
     <item name="other_sellers_info"                     type="layout">@layout/_def_other_sellers_info</item>
