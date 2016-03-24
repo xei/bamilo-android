@@ -1283,7 +1283,7 @@ public class DynamicFormItem {
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
-        // Case Full
+        // Case Filled
         if (CollectionUtils.isNotEmpty(this.entry.getDataSet())) {
             int layout = R.layout.form_spinner_item;
             // Case HomeNewsletter
