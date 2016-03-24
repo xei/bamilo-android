@@ -179,7 +179,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
     @Override
     protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
         if (level == ITEM_VIEW_TYPE_GRID) {
-            ProductUtils.setPriceRules(item, holder.discount, holder.price);
+            ProductUtils.setPriceRules(item, holder.price, holder.discount);
             ProductUtils.setDiscountRules(item, holder.percentage);
         } else {
             super.setProductPrice(holder, item);
