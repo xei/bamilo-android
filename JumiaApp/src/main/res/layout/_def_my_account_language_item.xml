@@ -7,24 +7,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/my_account_gen_dimen"
-        android:layout_marginRight="@dimen/my_account_gen_dimen"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
         android:gravity="left|start"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+        android:paddingBottom="@dimen/margin_padding_xl"
+        android:paddingTop="@dimen/margin_padding_xl">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_name"
-            style="@style/TextBase.Caption"
+            style="@style/TextBase.List.Black"
             android:text="Title"
-            android:textColor="@color/black" />
+            />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/option_info"
-            style="@style/TextBase.Caption"
+            style="@style/TextBase.Body.Black_800"
             android:text="Info"
-            android:textColor="@color/black_800" />
+            />
     </LinearLayout>
 
 </LinearLayout>

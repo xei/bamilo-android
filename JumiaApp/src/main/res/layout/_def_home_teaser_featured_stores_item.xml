@@ -1,45 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/home_teaser_stores_card"
-    style="@style/CardViewFlatStyle"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/home_featured_stores_teaser_item_height">
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
+    <FrameLayout
+        android:id="@+id/home_teaser_stores_image"
+        android:layout_width="@dimen/dimen_mat_45px"
+        android:layout_height="@dimen/dimen_mat_45px"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:gravity="center">
 
-        <FrameLayout
-            android:id="@+id/home_teaser_stores_image"
-            android:layout_width="@dimen/dimen_mat_45px"
-            android:layout_height="@dimen/dimen_mat_45px"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:gravity="center">
+        <include layout="@layout/home_teaser_image_loadable" />
 
-            <include layout="@layout/home_teaser_image_loadable" />
+    </FrameLayout>
 
-        </FrameLayout>
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/home_teaser_stores_text_title"
+        style="@style/TextBase.Title.Black"
+        android:layout_toLeftOf="@id/home_teaser_stores_image"
+        android:layout_toStartOf="@id/home_teaser_stores_image"/>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/home_teaser_stores_text_title"
-            style="@style/TextBase.Body"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@id/home_teaser_stores_image"
-            android:layout_toStartOf="@id/home_teaser_stores_image"/>
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/home_teaser_stores_text_sub"
+        style="@style/TextBase.Body.Black_800"
+        android:layout_below="@id/home_teaser_stores_text_title"
+        android:layout_toLeftOf="@id/home_teaser_stores_image"
+        android:layout_toStartOf="@id/home_teaser_stores_image"/>
 
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/home_teaser_stores_text_sub"
-            style="@style/TextBase.Caption"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@id/home_teaser_stores_text_title"
-            android:layout_toLeftOf="@id/home_teaser_stores_image"
-            android:layout_toStartOf="@id/home_teaser_stores_image"/>
-
-    </RelativeLayout>
-
-</android.support.v7.widget.CardView>
+</RelativeLayout>
