@@ -127,7 +127,6 @@
     <dimen name="text_m">16sp</dimen>
     <dimen name="text_l">18sp</dimen>
     <dimen name="text_xl">20sp</dimen>
-    <dimen name="text_8sp">8sp</dimen>
     <dimen name="text_16sp">16sp</dimen>
 
     <!-- MARGIN AND PADDING -->
@@ -139,9 +138,6 @@
     <dimen name="margin_padding_xs">4dp</dimen>
     <dimen name="margin_padding_xxs">2dp</dimen>
     <dimen name="margin_padding_t">1dp</dimen>
-
-    <item name="dialog_min_width_major" type="dimen">65%</item>
-    <item name="dialog_min_width_minor" type="dimen">95%</item>
 
     <!--
     	This is here as fallback - preferable the versions in
@@ -234,19 +230,8 @@
     <dimen name="abs__dropdownitem_icon_width">0dp</dimen>
 
     <!-- WIZARD -->
-    <dimen name="wizard_nav_img_margin_left">80dp</dimen>
-    <dimen name="wizard_nav_img_margin_top">140dp</dimen>
     <dimen name="wizard_product_height">100dp</dimen>
-    <!-- FAVOURITE WIZARD -->
-    <dimen name="product_tip_top_margin">0dp</dimen>
-    <dimen name="product_tip_variations_top_margin">65dp</dimen>
-    <!-- <dimen name="product_tip_padding">52.8dp</dimen> -->
-    <dimen name="product_tip_padding">@dimen/margin_large</dimen>
-    <dimen name="product_tip_padding_side">15dp</dimen>
 
-    <!-- PRODUCT WIZARD -->
-    <dimen name="product_tip_top_swipe">52.8dp</dimen>
-    <dimen name="product_tip_top_favourite">@dimen/catalog_tool_bar_height</dimen>
     <!-- MY PROFILE -->
     <dimen name="myprofile_item_size">42.67dp</dimen>
     <dimen name="myprofile_item_icon_container_size">27dp</dimen>
