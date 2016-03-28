@@ -72,6 +72,13 @@
 
     <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider" />
 
+
+    <!-- CATALOG FILTER -->
+
+    <style name="FilterTabBarDivider" parent="ViewGroupCompat.Vertical.MiddleDivider">
+        <item name="android:layout_height">32dp</item>
+    </style>
+
     <!-- TODO : ADD HERE MORE STYLES -->
 
 </resources>

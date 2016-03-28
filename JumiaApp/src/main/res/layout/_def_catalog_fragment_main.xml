@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/black_300"
     android:layout_height="match_parent">
 
     <!-- CATALOG TOOL BAR -->
@@ -10,15 +10,14 @@
         layout="@layout/catalog_fragment_tool_bar" />
 
     <!-- GRID VIEW -->
-    <!--android:layout_marginTop="@dimen/catalog_tool_bar_height" +1-->
     <com.mobile.utils.catalog.HeaderFooterGridView
         android:id="@+id/catalog_grid_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/catalog_loading_more"
-        android:layout_marginTop="@dimen/catalog_tool_bar_margin"
+        android:layout_marginTop="?attr/actionBarSize"
         android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:scrollbars="none"
+        tools:layout_marginTop="48dp" />
 
     <!-- FLOAT BUTTON -->
 
@@ -31,6 +30,7 @@
         android:layout_alignParentRight="true"
         android:layout_margin="@dimen/margin_30px"
         android:background="@drawable/selector_btn_toplist"
+        android:contentDescription="@string/gproductlist"
         android:visibility="invisible" />
 
     <!-- NO RESULTS VIEW -->

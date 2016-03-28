@@ -15,7 +15,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductOffer;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -69,7 +69,7 @@ public class OffersListAdapterNew extends RecyclerView.Adapter<OffersListAdapter
     @Override
     public void onBindViewHolder(ProductOfferHolder item, int position) {
         final ProductOffer productOffer = offers.get(position);
-        ProductUtils.setPriceRules(productOffer, item.offerPrice, item.offerSpecialPrice);
+        UIProductUtils.setPriceRules(productOffer, item.offerPrice, item.offerSpecialPrice);
         item.offerProductOwner.setText(productOffer.getSeller().getName());
 
         if( !(productOffer.getMinDeliveryTime() == 0 && productOffer.getMaxDeliveryTime() == 0) ) {
@@ -103,7 +103,7 @@ public class OffersListAdapterNew extends RecyclerView.Adapter<OffersListAdapter
         } else {
             item.variations.setVisibility(View.GONE);
         }
-        ProductUtils.setShopFirst(productOffer,item.shopFirst);
+        UIProductUtils.setShopFirst(productOffer,item.shopFirst);
 
     }
 

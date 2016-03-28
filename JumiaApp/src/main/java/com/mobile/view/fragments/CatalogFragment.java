@@ -45,7 +45,7 @@ import com.mobile.utils.catalog.CatalogGridAdapter;
 import com.mobile.utils.catalog.CatalogSort;
 import com.mobile.utils.catalog.FeaturedBoxHelper;
 import com.mobile.utils.catalog.HeaderFooterGridView;
-import com.mobile.utils.catalog.UICatalogHelper;
+import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSortListFragment;
 import com.mobile.utils.dialogfragments.DialogSortListFragment.OnDialogListListener;
@@ -163,26 +163,22 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mKey = arguments.getString(ConstantsIntentExtra.CONTENT_ID);
             // Get title
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            // Get catalog type (Hash/Seller/Brand)
+            // Get catalog type (Hash|Seller|Brand|Category|DeepLink)
             FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
             if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
             else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
             else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
             else if(type == FragmentType.CATALOG_CATEGORY) mQueryValues.put(RestConstants.CATEGORY, mKey);
-
             else mQueryValues.put(RestConstants.HASH, mKey);
             // Get sort
-            if (arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)) {
-                mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
-            }
-            if(TextUtils.isNotEmpty( mSelectedSort.id)) mQueryValues.put(RestConstants.SORT, mSelectedSort.id);
-            if(TextUtils.isNotEmpty(mSelectedSort.direction)) mQueryValues.put(RestConstants.DIRECTION, mSelectedSort.direction);
+            mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT, CatalogSort.POPULARITY.ordinal())];
+            mQueryValues.put(RestConstants.SORT, mSelectedSort.id);
+            mQueryValues.put(RestConstants.DIRECTION, mSelectedSort.direction);
             // Default catalog values
             mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
-
             // In case of searching by keyword
-            if (arguments.containsKey(ConstantsIntentExtra.SEARCH_QUERY) && arguments.getString(ConstantsIntentExtra.SEARCH_QUERY) != null) {
-                String query = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
+            String query = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
+            if (TextUtils.isNotEmpty(query)) {
                 try {
                     mQueryValues.put(RestConstants.QUERY, URLEncoder.encode(query, "UTF-8"));
                 } catch (UnsupportedEncodingException e) {
@@ -227,9 +223,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get filter button
         mFilterButton = view.findViewById(R.id.catalog_bar_button_filter);
         // Get switch button
-        View mColumnsButton = view.findViewById(R.id.catalog_bar_button_columns);
+        ImageView mColumnsButton = (ImageView) view.findViewById(R.id.catalog_bar_button_columns);
         mColumnsButton.setOnClickListener(this);
-        ((ImageView)mColumnsButton).setImageLevel(mLevel);
+        mColumnsButton.setImageLevel(mLevel);
         mTopButtonActivateLine = setButtonActiveLine(mLevel);
         // Get up button
         mTopButton = view.findViewById(R.id.catalog_button_top);
@@ -241,7 +237,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         mGridView.setHasFixedSize(true);
         mGridView.setGridLayoutManager(mNumberOfColumns);
         mGridView.setItemAnimator(new DefaultItemAnimator());
-        mGridView.addOnScrollListener(onRecyclerScrollListener);
+        mGridView.addOnScrollListener(mOnScrollListener);
         mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL_LIST));
         mGridView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST));
         mGridView.post(new Runnable() {
@@ -274,27 +270,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Print.i(TAG, "ON RESUME");
         // Track current catalog page
         TrackerDelegator.trackPage(TrackingPage.PRODUCT_LIST, getLoadTime(), false);
-
         // Verify if is comming from login after trying to add/remove item from cart.
-        final Bundle args = getArguments();
-        if(args != null) {
-            if(args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)){
-                ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
-                if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
-                    triggerAddToWishList(mClicked.getSku());
-                    TrackerDelegator.trackAddToFavorites(mClicked);
-                }
-                args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
-            } else if(args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)){
-                ProductRegular mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
-                if(JumiaApplication.isCustomerLoggedIn() && mClicked != null){
-                    triggerRemoveFromWishList(mClicked.getSku());
-                    TrackerDelegator.trackRemoveFromFavorites(mClicked);
-                }
-                args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
-            }
-
-        }
+        retryWishListActionLoggedIn();
     }
 
     /*
@@ -305,10 +282,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE STATE");
-        if(mGridView != null){
+        if (mGridView != null) {
             mCatalogGridPosition = ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         }
-
         // Save the current content
         outState.putInt(ConstantsIntentExtra.CATALOG_PAGE_POSITION, mCatalogGridPosition);
         outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
@@ -326,11 +302,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     @Override
     public void onPause() {
         super.onPause();
-        if(mGridView != null){
+        Print.i(TAG, "ON PAUSE");
+        if (mGridView != null) {
             mCatalogGridPosition = ((GridLayoutManager) mGridView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
         }
-
-        Print.i(TAG, "ON PAUSE");
     }
 
     /*
@@ -353,7 +328,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         Print.i(TAG, "ON DESTROY VIEW");
         // Remove scroll listener
         if (mGridView != null) {
-            mGridView.removeOnScrollListener(onRecyclerScrollListener);
+            mGridView.removeOnScrollListener(mOnScrollListener);
         }
     }
 
@@ -399,7 +374,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         else if (mSortOrFilterApplied) {
             triggerGetInitialCatalogPage();
             // Set the filter button selected or not
-            UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
+            UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         }
         // Case catalog was recover
         else {
@@ -416,13 +391,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onRecoverCatalogContainer(CatalogPage catalogPage) {
         Print.i(TAG, "ON RECOVER CATALOG");
         // Set title bar
-        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
+        UICatalogUtils.setCatalogTitle(getBaseActivity(), mTitle);
         // Set sort button
         setSortButton();
         // Set filter button
-        UICatalogHelper.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
+        UICatalogUtils.setFilterButtonActionState(mFilterButton, catalogPage.hasFilters(), this);
         // Set the filter button selected or not
-        UICatalogHelper.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
+        UICatalogUtils.setFilterButtonState(mFilterButton, mCurrentFilterValues.size() > 0);
         // Create adapter new data
         setCatalogAdapter(catalogPage);
         // Validate loading more view 
@@ -462,7 +437,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Create adapter new data
             setCatalogAdapter(mCatalogPage);
             // Set filter button
-            UICatalogHelper.setFilterButtonActionState(mFilterButton, mCatalogPage.hasFilters(), this);
+            UICatalogUtils.setFilterButtonActionState(mFilterButton, mCatalogPage.hasFilters(), this);
             // Set sort button
             setSortButton();
         }
@@ -477,13 +452,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         else {
             setCatalogAdapter(mCatalogPage);
             // Hide the goto top button
-            UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
+            UICatalogUtils.hideGotoTopButton(getBaseActivity(), mTopButton);
         }
 
         // Save title
         mTitle = catalogPage.getName();
         // Set title bar
-        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
+        UICatalogUtils.setCatalogTitle(getBaseActivity(), mTitle);
         // Show header
         if (catalogPage.getPage() == IntConstants.FIRST_PAGE) {
             showHeaderBanner();
@@ -524,7 +499,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void showFilterError(@ErrorLayoutFactory.LayoutErrorType int stringId) {
         Print.i(TAG, "ON SHOW FILTER NO RESULT");
         // Set title
-        UICatalogHelper.setCatalogTitle(getBaseActivity(), mTitle);
+        UICatalogUtils.setCatalogTitle(getBaseActivity(), mTitle);
         // Show layout
         showErrorFragment(stringId, new OnClickListener() {
             @Override
@@ -566,6 +541,34 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Case fail show continue
             Print.e(TAG, "No featureBox!");
             showContinueShopping();
+        }
+    }
+
+    /**
+     * Method used to retry the wish list action after login.
+     */
+    private void retryWishListActionLoggedIn() {
+        // Verify if is comming from login after trying to add/remove item from cart.
+        final Bundle args = getArguments();
+        if (CollectionUtils.isNotEmpty(args) && JumiaApplication.isCustomerLoggedIn()) {
+            // Case add to wish list
+            if (args.containsKey(AddToWishListHelper.ADD_TO_WISHLIST)) {
+                ProductRegular mClicked = args.getParcelable(AddToWishListHelper.ADD_TO_WISHLIST);
+                if (mClicked != null) {
+                    triggerAddToWishList(mClicked.getSku());
+                    TrackerDelegator.trackAddToFavorites(mClicked);
+                }
+                args.remove(AddToWishListHelper.ADD_TO_WISHLIST);
+            }
+            // Case remove from wish list
+            else if (args.containsKey(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST)) {
+                ProductRegular mClicked = args.getParcelable(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+                if (mClicked != null) {
+                    triggerRemoveFromWishList(mClicked.getSku());
+                    TrackerDelegator.trackRemoveFromFavorites(mClicked);
+                }
+                args.remove(RemoveFromWishListHelper.REMOVE_FROM_WISHLIST);
+            }
         }
     }
 
@@ -811,7 +814,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     /**
      * The listener for grid view
      */
-    private final OnScrollListener onRecyclerScrollListener = new OnScrollListener() {
+    private final OnScrollListener mOnScrollListener = new OnScrollListener() {
 
         @Override
         public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -861,9 +864,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         int last = manager.findLastVisibleItemPosition();
         // Show or hide top button after X arrow
         if (last > mNumberOfColumns * mTopButtonActivateLine) {
-            UICatalogHelper.showGotoTopButton(getBaseActivity(), mTopButton);
+            UICatalogUtils.showGotoTopButton(getBaseActivity(), mTopButton);
         } else {
-            UICatalogHelper.hideGotoTopButton(getBaseActivity(), mTopButton);
+            UICatalogUtils.hideGotoTopButton(getBaseActivity(), mTopButton);
         }
     }
 
