@@ -12,11 +12,9 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tab_cart_text"
-        style="@style/TextBase.Caption"
+        style="@style/TextBase.Caption.White"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="@string/cart_label"
-        android:textColor="@color/white"
-        android:visibility="visible" />
+        android:text="@string/cart_label" />
 </LinearLayout>

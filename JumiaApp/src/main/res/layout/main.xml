@@ -35,9 +35,7 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/tabBar"
-                app:tabGravity="fill"
-                app:tabMode="fixed" />
+                style="@style/Widget.Custom.ActionBarTab" />
 
             <!-- CHECKOUT TAB BAR -->
 
@@ -45,10 +43,8 @@
                 android:id="@+id/checkout_tabs"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="@color/tabBar"
-                app:tabGravity="fill"
-                app:tabMode="fixed"
-                android:visibility="gone"/>
+                style="@style/Widget.Custom.ActionBarTab"
+                android:visibility="gone" />
 
         </android.support.design.widget.AppBarLayout>
 
