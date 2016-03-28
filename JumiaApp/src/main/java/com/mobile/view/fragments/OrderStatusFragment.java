@@ -28,8 +28,8 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.OrderedProductViewHolder;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -230,7 +230,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 // Set quantity
                 holder.quantity.setText(getString(R.string.qty_placeholder, item.getQuantity()));
                 // Set price
-                ProductUtils.setPriceRules(item, holder.price, holder.discount);
+                UIProductUtils.setPriceRules(item, holder.price, holder.discount);
                 // Set delivery
                 holder.delivery.setText(item.getDelivery());
                 // Set order status

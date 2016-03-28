@@ -41,7 +41,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
@@ -388,8 +388,8 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
             //shop first image
             ImageView shopFirstImageView = (ImageView) prodInflateView.findViewById(R.id.shop_first_item);
-            ProductUtils.setShopFirst(item, shopFirstImageView);
-            ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
+            UIProductUtils.setShopFirst(item, shopFirstImageView);
+            UIProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
             // Brand
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrandName());
             // Name
@@ -418,7 +418,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 prodInflateView.findViewById(R.id.my_order_item_divider).setVisibility(View.GONE);
             }
 
-            ProductUtils.setShopFirst(item, prodInflateView.findViewById(R.id.shop_first_item));
+            UIProductUtils.setShopFirst(item, prodInflateView.findViewById(R.id.shop_first_item));
             // Add item view
             mProductsContainer.addView(prodInflateView);
         }

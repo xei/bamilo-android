@@ -1,4 +1,4 @@
-package com.mobile.utils.ui;
+package com.mobile.utils.product;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -26,10 +26,11 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
-public class ProductUtils {
+public class UIProductUtils {
 
     public static void setPriceRules(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice){
         String priceRange = productBase.getPriceRange();

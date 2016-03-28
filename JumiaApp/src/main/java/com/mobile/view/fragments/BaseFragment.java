@@ -51,8 +51,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.maintenance.MaintenancePage;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -828,7 +828,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             case ADD_PRODUCT_BUNDLE:
-                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
+                UIProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
             case GET_SHOPPING_CART_ITEMS_EVENT:
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:

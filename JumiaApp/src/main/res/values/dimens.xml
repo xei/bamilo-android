@@ -279,7 +279,6 @@
     <dimen name="catalog_grid_item_image_width">97.33dp</dimen>
     <dimen name="catalog_grid_item_image_height">121.67dp</dimen>
     <dimen name="catalog_single_item_image_height">310dp</dimen>
-    <dimen name="catalog_tool_bar_height">@dimen/dimen_50dp</dimen>
 
     <!--<dimen name="catalog_tool_bar_height">@dimen/dimen_150px</dimen> + 1-->
     <dimen name="catalog_tool_bar_margin">51dp</dimen>
