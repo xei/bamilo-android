@@ -17,6 +17,6 @@
         android:paddingLeft="@dimen/margin_padding_xxs"
         android:paddingRight="@dimen/margin_padding_xxs"
         android:scrollbars="none"
-        android:verticalSpacing="@dimen/dimen_3dp" />
+        />
 
 </LinearLayout>
