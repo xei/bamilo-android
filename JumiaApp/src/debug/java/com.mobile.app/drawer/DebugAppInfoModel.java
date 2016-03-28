@@ -23,12 +23,12 @@ import io.palaima.debugdrawer.base.DebugModule;
  * Model used to show trackers ids and enable/disable the respective log.
  * @author spereira
  */
-public class DebugTrackingModel implements DebugModule, CompoundButton.OnCheckedChangeListener {
+public class DebugAppInfoModel implements DebugModule, CompoundButton.OnCheckedChangeListener {
 
     private final Context mContext;
     private View mContainer;
 
-    public DebugTrackingModel(@NonNull Activity activity) {
+    public DebugAppInfoModel(@NonNull Activity activity) {
         mContext = activity;
     }
 

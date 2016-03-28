@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/dd_debug_item_tracking_switch"
+        style="@style/Widget.DebugDrawer.Base.Header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tracking Information"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/dd_debug_item_tracking_adjust_id"
+        style="@style/Widget.DebugDrawer.Base.RowValue"
+        android:layout_gravity="start|center_vertical" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_alignBottom="@+id/dd_debug_item_tracking_adjust_id"
+        android:layout_alignRight="@+id/dd_debug_item_tracking_switch"
+        android:layout_alignEnd="@+id/dd_debug_item_tracking_switch"
+        android:layout_marginRight="284dp"
+        android:layout_marginEnd="284dp" />
+
+
+</RelativeLayout>

@@ -4,7 +4,7 @@
     <!-- Begin of GA Tracking Parameters -->
     <bool name="ga_autoActivityTracking">false</bool>
     <bool name="ga_reportUncaughtExceptions">false</bool>
-    <bool name="ga_debug_mode">false</bool>
+    <!--<bool name="ga_debug_mode">false</bool>-->
     <bool name="ga_enable">false</bool>
     <bool name="ga_advertisingIDCollection">true</bool>
 

@@ -110,8 +110,6 @@ public class AnalyticsGoogle {
         mAnalytics = GoogleAnalytics.getInstance(mContext);
         // Load live and test key
         loadKeys();
-        // Set debug mode
-        validateDebugMode(context.getResources().getBoolean(R.bool.ga_debug_mode));
         // Set key
         updateTracker();
         // Enable Display Advertising features
@@ -140,13 +138,10 @@ public class AnalyticsGoogle {
      * When dry run is set, hits will not be dispatched, but will still be logged as though they were dispatched.
      * @author sergiopereira
      */
-    private void validateDebugMode(boolean debugMode) {
-        // Case debug mode
-        if(debugMode) {
-            Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
-            mAnalytics.setDryRun(true);
-            mAnalytics.getLogger().setLogLevel(LogLevel.VERBOSE);
-        }
+    public void enableDebugMode() {
+        Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
+        mAnalytics.setDryRun(true);
+        mAnalytics.getLogger().setLogLevel(LogLevel.VERBOSE);
     }
 
     /**

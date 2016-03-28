@@ -16,7 +16,8 @@ import com.mobile.view.R;
 import io.palaima.debugdrawer.base.DebugModule;
 
 /**
- * Created by spereira on 2/23/16.
+ * Model used to show country info from preferences.
+ * @author spereira
  */
 public class DebugCountryModel implements DebugModule, CompoundButton.OnCheckedChangeListener {
 
@@ -43,7 +44,6 @@ public class DebugCountryModel implements DebugModule, CompoundButton.OnCheckedC
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
-            //mTextView.setText(Html.fromHtml(CountryPersistentConfigs.toString(mContext)));
             mTextView.setText(CountryPersistentConfigs.toString(mContext));
             mTextView.setVisibility(View.VISIBLE);
         } else {

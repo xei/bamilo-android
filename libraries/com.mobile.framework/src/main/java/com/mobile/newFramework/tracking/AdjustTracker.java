@@ -164,9 +164,7 @@ public class AdjustTracker {
         // updating to include the Ad-X SDK from new organic
         // downloads. The third parameter sets the logging level for
         // debugging. Set to zero for production version of the App.
-//        boolean isupdate;
         SharedPreferences sharedPrefs = mContext.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-//        boolean firstTimeAdjust = sharedPrefs.getBoolean(ADJUST_FIRST_TIME_KEY, true);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putBoolean(ADJUST_FIRST_TIME_KEY, false);
         editor.apply();
@@ -209,6 +207,10 @@ public class AdjustTracker {
      */
     public String getId() {
         return Adjust.getDefaultInstance().toString();
+    }
+
+    public void enableDebugMode() {
+        Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
     }
 
     public static void onResume() {

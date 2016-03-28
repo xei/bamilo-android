@@ -26,10 +26,19 @@ public class NewRelicTracker {
 		// Validate context
 		if(context != null) {
 			Print.i(TAG, "ON INIT NEW RELIC");
-			NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).withLoggingEnabled(context.getResources().getBoolean(R.bool.ga_debug_mode)).start(context);
+			NewRelic.withApplicationToken(context.getString(R.string.newrelic_token)).start(context);
+			//.withLoggingEnabled(context.getResources().getBoolean(R.bool.ga_debug_mode))
 		} else {
 			Print.w(TAG, "WARNING NPE ON INIT NEW RELIC");
 		}
+	}
+
+	public static String getId() {
+		return "XXXXXXXX";
+	}
+
+	public static void enableDebugMode() {
+		Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
 	}
 
 	/**

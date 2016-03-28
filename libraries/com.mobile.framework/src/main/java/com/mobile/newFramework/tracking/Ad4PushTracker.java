@@ -178,6 +178,15 @@ public class Ad4PushTracker {
         return isEnabled && mA4S != null;
     }
 
+    public String getId() {
+        return mA4S.getAndroidId();
+    }
+
+    public void enableDebugMode() {
+        Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
+    }
+
+
     /*
      * ####### BASE #######
      */

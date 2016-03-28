@@ -32,7 +32,6 @@ public class CountryPersistentConfigs {
 
     public static String toString(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        // "<font color='blue'>#### CURRENCY ####</font>"
         return
         "#### CURRENCY ####"    +
         "\nISO: "               + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null) +

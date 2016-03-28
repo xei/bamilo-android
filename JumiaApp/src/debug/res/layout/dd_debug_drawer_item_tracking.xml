@@ -118,25 +118,6 @@
             android:text="Log"
             app:switchPadding="5dp" />
 
-        <!--HOCKEY APP-->
-
-        <TextView
-            style="@style/Widget.DebugDrawer.Base.RowTitle"
-            android:layout_gravity="start|center_vertical"
-            android:text="HOCKEY APP" />
-
-        <TextView
-            android:id="@+id/dd_debug_item_tracking_hockey_id"
-            style="@style/Widget.DebugDrawer.Base.RowValue"
-            android:layout_gravity="start|center_vertical" />
-
-        <android.support.v7.widget.SwitchCompat
-            android:id="@+id/dd_debug_item_tracking_hockey_enable"
-            style="@style/Widget.DebugDrawer.Base.RowTitle"
-            android:layout_gravity="start|center_vertical"
-            android:text="Log"
-            app:switchPadding="5dp" />
-
     </GridLayout>
 
 </LinearLayout>

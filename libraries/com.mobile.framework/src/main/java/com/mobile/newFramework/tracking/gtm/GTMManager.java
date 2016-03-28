@@ -15,7 +15,6 @@ import com.google.android.gms.tagmanager.ContainerHolder;
 import com.google.android.gms.tagmanager.ContainerHolder.ContainerAvailableListener;
 import com.google.android.gms.tagmanager.DataLayer;
 import com.google.android.gms.tagmanager.TagManager;
-import com.mobile.framework.R;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
@@ -81,8 +80,7 @@ public class GTMManager {
         isContainerAvailable = false;
         mContext = context;
         setCurrentGAID();
-        mTagManager.setVerboseLoggingEnabled(context.getResources().getBoolean(R.bool.gtm_debug));
-        
+
         dataLayer = TagManager.getInstance(context).getDataLayer();
 
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
@@ -123,7 +121,11 @@ public class GTMManager {
     public String getId() {
         return mTagManager.getDataLayer().toString();
     }
- 
+
+    public void enableDebugMode() {
+        Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
+        mTagManager.setVerboseLoggingEnabled(true);
+    }
 
     /**
      * This method tracks if either the application was opened either by push
