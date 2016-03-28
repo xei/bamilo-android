@@ -75,7 +75,7 @@
 
     <!-- CATALOG FILTER -->
 
-    <style name="FilterTabBarDivider" parent="ViewGroupCompat.Vertical.MiddleDivider">
+    <style name="FilterTabBarDivider" parent="DividerVertical.Black_400">
         <item name="android:layout_height">32dp</item>
     </style>
 

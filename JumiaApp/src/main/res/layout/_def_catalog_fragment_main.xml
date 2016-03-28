@@ -5,9 +5,7 @@
 
     <!-- CATALOG TOOL BAR -->
 
-    <include
-        android:id="@+id/catalog_bar_view"
-        layout="@layout/catalog_fragment_tool_bar" />
+    <include layout="@layout/catalog_fragment_tool_bar" />
 
     <!-- GRID VIEW -->
     <com.mobile.utils.catalog.HeaderFooterGridView
