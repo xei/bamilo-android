@@ -17,13 +17,14 @@
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switch_field"
-            style="@style/SwitchStyle"
+            style="@style/FormSwitchButton"
+            android:gravity="left|center"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/switch_text"
-            style="@style/SwitchStyle"
+            style="@style/FormSwitchButton"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@id/switch_field"
@@ -31,8 +32,5 @@
             tools:text="Blabla" />
 
     </RelativeLayout>
-
-
-    <!-- RELATED DATA -->
 
 </android.support.v7.widget.LinearLayoutCompat>
