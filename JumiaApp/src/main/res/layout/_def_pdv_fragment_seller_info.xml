@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -9,31 +10,30 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_specs_title"
         style="@style/HeaderStyle"
-        android:layout_marginBottom="16dp"
-        android:text="@string/seller_info" />
+        android:text="@string/seller_info"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content" />
 
-    <!--CONTENT -->
+    <!--Shop First -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_name"
-        style="@style/TextBase.Body.ShopFirstDrawRight"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginRight="@dimen/dimen_10dp"
-        android:layout_marginStart="@dimen/layout_padding"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Title.Black.ShopFirstDrawRight"
+        android:layout_margin="@dimen/margin_padding_xl"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content" />
 
     <!-- DELIVERY TIME -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_delivery_info"
-        style="@style/TextBase.HeadLine"
+        style="@style/TextBase.Body.Black"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="@dimen/layout_padding"
         android:layout_marginStart="@dimen/layout_padding"
-        android:textColor="@color/black"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content" />
 
 
     <!-- WARRANTY: OPTIONAL -->
@@ -50,7 +50,9 @@
         android:maxLines="2"
         android:singleLine="false"
         android:textColor="@color/black"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content" />
 
     <!-- DELIVERY TIME: OVERSEAS -->
 
@@ -74,7 +76,9 @@
             android:drawableLeft="@drawable/ic_overseas"
             android:drawablePadding="16dp"
             android:drawableStart="@drawable/ic_overseas"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            tools:layout_height="wrap_content"
+            tools:layout_width="wrap_content" />
 
         <!-- TEXT BLACK -->
 
@@ -86,7 +90,9 @@
             android:layout_marginStart="40dp"
             android:singleLine="false"
             android:textColor="@color/black"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:layout_height="wrap_content"
+            tools:layout_width="wrap_content" />
 
         <!-- TEXT ORANGE -->
 
@@ -98,7 +104,9 @@
             android:layout_marginStart="40dp"
             android:singleLine="false"
             android:textColor="@color/color_accent"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:layout_height="wrap_content"
+            tools:layout_width="wrap_content" />
 
         <!-- LINK -->
 
@@ -110,7 +118,9 @@
             android:layout_marginStart="40dp"
             android:clickable="true"
             android:paddingTop="16dp"
-            android:singleLine="false" />
+            android:singleLine="false"
+            tools:layout_height="wrap_content"
+            tools:layout_width="wrap_content" />
 
     </RelativeLayout>
 
