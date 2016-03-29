@@ -50,9 +50,8 @@
 
             <com.mobile.components.customfontviews.EditText
                 android:id="@+id/voucher_name"
-                style="@style/TextField"
-                android:hint="@string/voucher_message_hint"
-                />
+                style="@style/FormTextField"
+                android:hint="@string/voucher_message_hint" />
 
         </LinearLayout>
 

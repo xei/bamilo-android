@@ -244,7 +244,9 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
 
 
     private void goToProduct(final View view){
-        getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
+        // Remove all checkout process entries
+        getBaseActivity().removeAllNativeCheckoutFromBackStack();
+//        getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
         @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
         mRelatedRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
         new TargetLink(getWeakBaseActivity(), target)

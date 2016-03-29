@@ -121,12 +121,8 @@ public class CurrencyFormatter {
      */
     private static NumberFormat getNumberFormatter() {
         if (!initialized) throw new RuntimeException("currency converter not initialized");
-    	
-        // Get the number format the according with Locale value 
-    	//NumberFormat currencyFormat = getNumberFormat();
         // Get the universal number format
         NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance(Locale.US);
-    	
         currencyFormat.setMaximumFractionDigits(currencyFractionCount);
         currencyFormat.setMinimumFractionDigits(currencyFractionCount);
         currencyFormat.setGroupingUsed(true);
@@ -137,7 +133,6 @@ public class CurrencyFormatter {
         	dfs.setMonetaryDecimalSeparator(currencyFractionDelim.charAt(0));
         }
         ((DecimalFormat)currencyFormat).setDecimalFormatSymbols(dfs);
-    	        
         return currencyFormat;
     }
     
