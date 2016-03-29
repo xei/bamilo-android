@@ -42,6 +42,8 @@ public class HomeFeaturedTeaserAdapter extends ArrayAdapter<BaseTeaserObject> {
         ProductViewHolder holder;
         if(convertView == null) {
             if(ShopSelector.isRtl()){
+                // Fixes the issue for horizontal spacing
+                // see:http://stackoverflow.com/questions/27719638/gridview-error-in-horizontal-spacing/36267439#36267439
                 convertView = mInflater.inflate(R.layout._v8_home_teaser_featured_stores_item, parent, false);
             } else {
                 convertView = mInflater.inflate(R.layout._def_home_teaser_featured_stores_item, parent, false);
