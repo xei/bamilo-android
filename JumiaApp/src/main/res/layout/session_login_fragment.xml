@@ -70,7 +70,7 @@
 
         <com.mobile.components.customfontviews.EditText
             android:id="@+id/login_text_email"
-            style="@style/TextField"
+            style="@style/FormTextField"
             android:layout_width="@dimen/login_main_container_width"
             android:hint="@string/email_address"
             android:imeOptions="actionDone"
@@ -80,7 +80,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/login_text_error_message"
-            style="@style/TextErrorField"
+            style="@style/FormTextErrorField"
             android:visibility="gone"/>
 
         <Space

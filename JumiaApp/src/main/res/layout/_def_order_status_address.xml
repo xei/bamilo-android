@@ -7,26 +7,24 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_title"
         style="@style/TextBase.Body.Black"
-        android:text="@string/shipping"
-        />
+        android:text="@string/shipping" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_name"
-        style="@style/TextBase.Body.Black_800"
-        />
+        style="@style/TextBase.Body.Black_800" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_street"
-        style="@style/TextBase.Body.Black_800"/>
+        style="@style/TextBase.Body.Black_800" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_region"
-        style="@style/TextBase.Body.Black_800"/>
+        style="@style/TextBase.Body.Black_800" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_postcode"
         style="@style/TextBase.Body.Black_800"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_phone"
