@@ -167,4 +167,12 @@ public class SingleLineComponent extends RelativeLayout {
         getEndImageView().setImageDrawable(drawable);
     }
 
+    public void removeSelector(){
+        if(DeviceInfoHelper.isPreJellyBeanMR2()){
+            setBackgroundDrawable(null);
+        } else {
+            setBackground(null);
+        }
+    }
+
 }
