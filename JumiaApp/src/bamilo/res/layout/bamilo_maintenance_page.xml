@@ -25,7 +25,7 @@
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/fragment_root_retry_maintenance"
-        style="@style/button_grey_bottom"
+        style="@style/Button_1.Shop"
         android:layout_below="@+id/fallback_country_map"
         android:layout_centerInParent="true"
         android:layout_marginTop="-10dp"

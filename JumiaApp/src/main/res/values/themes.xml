@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Project :: MATERIAL THEME-->
+    <!-- MATERIAL|CUSTOM THEME -->
 
     <style name="Theme.Custom" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- #### Custom Material Color Palette -->
@@ -44,6 +44,10 @@
         <item name="android:buttonStyle">@style/Widget.Custom.Button</item>
         <item name="buttonStyle">@style/Widget.Custom.Button</item>
     </style>
+
+    <!-- MATERIAL|CUSTOM WIDGETS -->
+
+    <style name="Widget.Custom" />
 
     <!-- Theme for ActionBar from support library compatibility -->
     <style name="Widget.Custom.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
@@ -122,11 +126,11 @@
     <!-- Button View -->
     <style name="Widget.Custom.Button" parent="Widget.AppCompat.Button"/>
 
-    <!-- Switch View -->
-    <style name="Widget.Custom.Switch" parent="Widget.AppCompat.CompoundButton.Switch" >
+    <!-- Switch View :: based on Widget.AppCompat.CompoundButton.Switch -->
+    <style name="Widget.Custom.Switch">
         <item name="colorControlActivated">@color/blue_1</item>
         <item name="colorSwitchThumbNormal">@color/black_200</item>
-        <item name="switchTextAppearance">@style/TextBase.Title_1.Black</item>
+        <item name="switchTextAppearance">@style/TextBase.Button.Switch</item>
     </style>
 
     <!-- Base Dialog -->
