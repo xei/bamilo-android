@@ -62,8 +62,8 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.pdv.RelatedProductsAdapter;
-import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.product.RelatedProductsAdapter;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -499,8 +499,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setProductPriceInfo() {
         Print.d(TAG, "SHOW PRICE INFO: " + mProduct.getPrice() + " " + mProduct.getSpecialPrice());
-        ProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
-        ProductUtils.setDiscountRules(mProduct, mDiscountPercentageText);
+        UIProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
+        UIProductUtils.setDiscountRules(mProduct, mDiscountPercentageText);
         if (mProduct.hasDiscount()) {
             mDiscountPercentageText.setEnabled(true);
         }
@@ -563,7 +563,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             sellerName.setText(mProduct.getSeller().getName());
             // Set shop first except B project
             if (mProduct.isShopFirst() && !ShopSelector.isRtlShop()) {
-                ProductUtils.showShopFirstOverlayMessage(this, mProduct, sellerName);
+                UIProductUtils.showShopFirstOverlayMessage(this, mProduct, sellerName);
             }
             // Set listener
             if (TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
@@ -1122,7 +1122,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if(isFromBuyButton) {
                     onClickBuyProduct();
                 }
-                ProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
+                UIProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
             }
         } catch (NullPointerException e) {
             // ...
