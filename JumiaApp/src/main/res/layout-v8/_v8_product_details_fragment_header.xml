@@ -63,7 +63,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/seller_reviews_item_reviews"
-            style="@style/text_subtitle"
+            style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="4dp"

@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.OffersListAdapterNew;
+import com.mobile.controllers.OffersListAdapter;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.products.GetProductOffersHelper;
@@ -34,9 +34,9 @@ import java.util.EnumSet;
  * @author Paulo Carvalho
  * @modified sergiopereira
  */
-public class ProductOffersFragmentNew extends BaseFragment implements OffersListAdapterNew.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback, DialogSimpleListFragment.OnDialogListListener {
+public class ProductOffersFragment extends BaseFragment implements OffersListAdapter.IOffersAdapterService, AdapterView.OnItemClickListener, IResponseCallback, DialogSimpleListFragment.OnDialogListListener {
 
-    private static final String TAG = ProductOffersFragmentNew.class.getSimpleName();
+    private static final String TAG = ProductOffersFragment.class.getSimpleName();
 
     private String mCompleteProductSku;
 
@@ -57,12 +57,12 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     private ProductOffer offerAddToCart;
 
     /**
-     * Get a new instance of {@link #ProductOffersFragmentNew}.
+     * Get a new instance of {@link #ProductOffersFragment}.
      * @param bundle The arguments
      * @return ProductOffersFragment
      */
-    public static ProductOffersFragmentNew newInstance(Bundle bundle) {
-        ProductOffersFragmentNew fragment = new ProductOffersFragmentNew();
+    public static ProductOffersFragment newInstance(Bundle bundle) {
+        ProductOffersFragment fragment = new ProductOffersFragment();
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -70,7 +70,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     /**
      * Empty constructor
      */
-    public ProductOffersFragmentNew() {
+    public ProductOffersFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.OFFERS,
                 R.layout.product_offers_main_new,
@@ -220,7 +220,7 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
     private void setAppContent(){
         mProductName.setText(mCompleteProductName);
         mProductBrand.setText(mCompleteBrand);
-        OffersListAdapterNew offersAdapter = new OffersListAdapterNew(getActivity().getApplicationContext(),productOffers.getOffers(), this);
+        OffersListAdapter offersAdapter = new OffersListAdapter(getActivity().getApplicationContext(),productOffers.getOffers(), this);
         mOffersList.setAdapter(offersAdapter);
         mOffersList.setOnClickListener(this);
     }
@@ -331,11 +331,13 @@ public class ProductOffersFragmentNew extends BaseFragment implements OffersList
 
     @Override
     public void onAddOfferToCart(ProductOffer offer) {
-        // Add one unity to cart
+        // Validate simple
         if(!offer.hasSelectedSimpleVariation()){
             offerAddToCart = offer;
             onClickVariation(offer);
-        } else {
+        }
+        // Add simple
+        else if(offer.getSelectedSimple() != null) {
             triggerAddItemToCart(offer.getSelectedSimple().getSku(), offer.getFinalPrice());
         }
     }
