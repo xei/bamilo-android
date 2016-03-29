@@ -76,16 +76,15 @@
 
                 <com.mobile.components.customfontviews.EditText
                     android:id="@+id/login_text_email"
-                    style="@style/TextField"
+                    style="@style/FormTextField"
                     android:hint="@string/email_address"
-                    android:imeOptions="actionDone"
-                    />
+                    android:imeOptions="actionDone" />
 
                 <!-- ERROR MESSAGE -->
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/login_text_error_message"
-                    style="@style/TextErrorField"
+                    style="@style/FormTextErrorField"
                     android:visibility="gone" />
 
                 <Space

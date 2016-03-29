@@ -3,15 +3,6 @@
 
     <!-- ################# GENERIC COMPONENTS STYLES ################# -->
 
-    <!-- Single line item -->
-    <style name="SingleLineStyle" parent="@style/TextBase.Display_3">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
-        <item name="android:gravity">right|center_vertical</item>
-        <item name="android:paddingRight">20dp</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
     <!-- Sub list item -->
     <style name="SubListItemStyle" parent="@style/TextBase.Caption">
         <item name="android:layout_width">match_parent</item>
@@ -21,13 +12,10 @@
     </style>
 
     <!-- Multi line -->
-    <style name="MultiLineStyle" parent="@style/TextBase.Caption">
+    <style name="MultiLineStyle" parent="@style/TextBase.Body.Black_800">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
+        <item name="android:padding">@dimen/margin_padding_xl</item>
         <item name="android:singleLine">false</item>
         <item name="android:gravity">right</item>
     </style>
@@ -38,59 +26,15 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
         <item name="android:gravity">right|center_vertical</item>
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xl</item>
         <item name="android:orientation">horizontal</item>
     </style>
 
-    <!-- FORM -->
-
-    <style name="FormButtonSpinner">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:background">@drawable/spinner_background</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:gravity">right|center_vertical</item>
-    </style>
-
-    <!-- CHECK BOX -->
-
-    <style name="FormCheckBox.Right">
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
-        <item name="android:button">@null</item>
-        <item name="android:drawableLeft">@drawable/_gen_selector_check_box</item>
-        <item name="android:drawableRight">@null</item>
-        <item name="android:drawableEnd">@null</item>
-    </style>
-
-    <style name="FormCheckBox.Central">
-        <item name="android:button">@null</item>
-        <item name="android:drawableLeft">@drawable/_gen_selector_check_box</item>
-        <item name="android:drawableRight">@null</item>
-        <item name="android:drawableEnd">@null</item>
-    </style>
-
-    <!-- RADIO BUTTON -->
-
-    <style name="FormRadioButton" parent="SingleLineStyle">
-        <item name="android:background">@null</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:drawablePadding">16dp</item>
-        <item name="android:button">@null</item>
-        <item name="android:drawableRight">@drawable/_gen_selector_radio_button</item>
-    </style>
-
-    <style name="FormRadioButton.Right">
-        <item name="android:paddingLeft">20dp</item>
-        <item name="android:paddingRight">20dp</item>
-        <item name="android:button">@null</item>
-        <item name="android:drawableLeft">@drawable/_gen_selector_radio_button</item>
-        <item name="android:drawableRight">@null</item>
-        <item name="android:maxLines">2</item>
-        <item name="android:singleLine">false</item>
+    <style name="PdvWishListButtonStyle" parent="WishListButtonStyle">
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_marginLeft">@dimen/margin_padding_l</item>
     </style>
 
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ -->

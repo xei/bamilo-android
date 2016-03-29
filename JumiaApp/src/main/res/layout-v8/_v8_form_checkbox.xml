@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.mobile.components.customfontviews.CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/checkbox_form"
-    style="@style/form_checkbox_style"
+    style="@style/FormFieldCheckBoxStyle"
     android:button="@null"
     android:gravity="right|center_vertical"
     android:paddingRight="@dimen/form_check_padding"
@@ -9,5 +9,4 @@
     android:drawableRight="@drawable/_gen_selector_check_box"
     android:drawablePadding="@dimen/form_check_padding"
     android:textSize="@dimen/text_form"
-    android:singleLine="true"
-    />
+    android:singleLine="true" />

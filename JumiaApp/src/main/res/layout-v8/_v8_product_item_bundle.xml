@@ -2,15 +2,15 @@
 
 <!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width. -->
 
-<RelativeLayout
-    android:id="@+id/item_container"
+<RelativeLayout android:id="@+id/item_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="wrap_content"
     android:background="@drawable/selector_list_item_highlight"
     android:orientation="vertical"
     android:paddingLeft="@dimen/margin_mid"
-    android:paddingRight="@dimen/margin_mid" >
+    android:paddingRight="@dimen/margin_mid"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <include
         android:id="@+id/item_image_loadable"
@@ -35,7 +35,7 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:lines="1"
-        android:text="Title"
+        tools:text="Title"
         android:textColor="@color/grey_light" />
 
     <com.mobile.components.customfontviews.TextView
@@ -44,11 +44,11 @@
         android:layout_below="@id/item_title"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:text="Price" />
+        tools:text="Price" />
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/item_check"
-        style="@style/form_checkbox_style"
+        style="@style/FormFieldCheckBoxStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -56,12 +56,6 @@
         android:checked="true"
         android:gravity="left" />
 
-<!--             android:layout_gravity="left|start|top"
-        android:layout_marginEnd="@dimen/form_check_padding"
-        android:layout_marginLeft="@dimen/form_check_padding"
-        android:layout_marginRight="@dimen/form_check_padding"
-        android:layout_marginStart="@dimen/form_check_padding" -->
-    
     <RelativeLayout
         android:id="@+id/bundle_size_container"
         android:layout_width="match_parent"

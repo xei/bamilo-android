@@ -18,18 +18,20 @@
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/switch_field"
             style="@style/FormSwitchButton"
-            android:gravity="left|center"
             android:layout_width="wrap_content"
-            android:layout_alignParentLeft="true" />
+            android:layout_alignParentLeft="true"
+            android:gravity="left|center" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/switch_text"
-            style="@style/FormSwitchButton"
+            style="@style/TextBase.Button.Switch"
             android:layout_width="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@id/switch_field"
             android:gravity="right|center"
-            tools:text="Blabla" />
+            android:paddingRight="@dimen/margin_padding_xl"
+            tools:text="Switch text" />
 
     </RelativeLayout>
 

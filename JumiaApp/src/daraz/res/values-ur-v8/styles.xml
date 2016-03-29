@@ -35,9 +35,9 @@
 
     <!-- ################# ACTION BAR ################# -->
 
-    <!-- Style used to set for LTR or RTL -->
-    <style name="text_actionbar_cart_layout_direction" >
-        <item name="android:paddingRight">4dp</item>
+	<!-- Style used to set for LTR or RTL -->
+	<style name="text_actionbar_cart_layout_direction" >
+	    <item name="android:paddingRight">4dp</item>
     </style>
 
     <!-- ################# MATERIAL ################# -->
@@ -55,20 +55,5 @@
         <item name="android:layout_height">@dimen/dimen_210dp</item>
     </style>
 
-    <!-- PDV -->
 
-    <style name="PdvWishListButtonStyle" parent="WishListButtonStyle">
-        <item name="android:layout_alignParentLeft">true</item>
-        <item name="android:layout_alignParentTop">true</item>
-        <item name="android:layout_marginLeft">10dp</item>
-    </style>
-
-    <!-- MY ACCOUNT -->
-
-    <style name="_v8_form_radiobutton_style" parent="form_style">
-        <item name="android:layout_gravity">top</item>
-        <item name="android:layout_marginLeft">@dimen/dimen_32dp</item>
-        <item name="android:drawablePadding">@dimen/dimen_6dp</item>
-        <item name="android:paddingLeft">@dimen/dimen_20dp</item>
-    </style>
 </resources>
