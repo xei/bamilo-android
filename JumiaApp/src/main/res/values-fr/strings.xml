@@ -73,7 +73,7 @@
     <string name="fallback_mobile">Téléphonie</string>
     <string name="fallback_welcome">BIENVENUE</string>
     <string name="fgt_pass">Mot de passe oublié ?</string>
-    <string name="filter_label">Filtre</string>
+    <string name="filters_label">Filtre</string>
     <string name="forgotpass_header">Récupération de mot de passe</string>
     <string name="forgotten_password">Veuillez entrer votre e-mail.</string>
     <string name="forgotten_password_examplemail">nom1234@exemple.com</string>
