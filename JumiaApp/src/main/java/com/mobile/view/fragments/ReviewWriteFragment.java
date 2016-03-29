@@ -42,8 +42,8 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.KeyboardUtils;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
@@ -393,7 +393,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
             TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
             TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
-            ProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
+            UIProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
             getView().findViewById(R.id.send_review).setOnClickListener(this);
             productName.setText(String.format(getString(R.string.first_space_second_placeholder), completeProduct.getBrandName(), completeProduct.getName()));
         }
