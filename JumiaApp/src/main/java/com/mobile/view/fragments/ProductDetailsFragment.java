@@ -3,7 +3,6 @@ package com.mobile.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -580,18 +579,17 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container).setVisibility(View.VISIBLE);
                 ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDeliveryTime());
                 if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
-                    TextView info = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_black));
+                    TextView info = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_cms);
                     info.setText(mProduct.getSeller().getDeliveryCMSInfo());
                     info.setVisibility(View.VISIBLE);
                 }
                 if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryShippingInfo())) {
-                    TextView info2 = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_orange));
+                    TextView info2 = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_info);
                     info2.setText(mProduct.getSeller().getDeliveryShippingInfo());
                     info2.setVisibility(View.VISIBLE);
                 }
                 TextView link = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_link);
                 link.setText(mProduct.getSeller().getDeliveryMoreDetailsText());
-                link.setPaintFlags(link.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 link.setOnClickListener(this);
             }
             // Case normal

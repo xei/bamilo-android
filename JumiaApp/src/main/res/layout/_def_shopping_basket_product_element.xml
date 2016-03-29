@@ -83,7 +83,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_delete"
-        style="@style/ButtonRemoveItem"
+        style="@style/Button_Link.RemoveItem"
         android:layout_below="@id/delete_divider" />
 
 </RelativeLayout>

@@ -248,7 +248,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         processOnClickClean();
     }
 
-    protected void setIntervalText(@IntRange(from=0) int minValue, int maxValue){
-        mRangeValues.setText( CurrencyFormatter.formatCurrencyPattern(minValue + " - " + maxValue));
+    protected void setIntervalText(@IntRange(from = 0) int minValue, int maxValue) {
+        mRangeValues.setText(CurrencyFormatter.formatCurrencyPattern(minValue + " - " + maxValue));
     }
 }

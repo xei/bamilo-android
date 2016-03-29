@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <!-- HEADER TITLE -->
@@ -9,48 +10,45 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_specs_title"
         style="@style/HeaderStyle"
-        android:layout_marginBottom="16dp"
         android:text="@string/seller_info" />
 
-    <!--CONTENT -->
+    <!--Shop First -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_name"
-        style="@style/TextBase.Body.ShopFirstDrawRight"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="@dimen/dimen_10dp"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginRight="@dimen/dimen_10dp"
-        android:layout_marginStart="@dimen/layout_padding"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Title.Black.ShopFirstDrawRight"
+        android:layout_margin="@dimen/margin_padding_xl"
+        tools:text="Seller name ShopFirst" />
 
     <!-- DELIVERY TIME -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_delivery_info"
-        style="@style/TextBase.HeadLine"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
-        android:textColor="@color/black"
-        android:visibility="gone" />
+        style="@style/TextBase.Body.Black"
+        android:layout_marginBottom="@dimen/margin_padding_xl"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:visibility="gone"
+        tools:text="Delivery info"
+        tools:visibility="visible" />
 
 
     <!-- WARRANTY: OPTIONAL -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_seller_warranty"
-        style="@style/TextBase.HeadLine"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
+        style="@style/TextBase.Body.Black"
+        android:layout_marginBottom="@dimen/margin_padding_xl"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
         android:drawableLeft="@drawable/ic_warranty"
-        android:drawablePadding="16dp"
+        android:drawablePadding="@dimen/margin_padding_l"
         android:drawableStart="@drawable/ic_warranty"
         android:maxLines="2"
         android:singleLine="false"
-        android:textColor="@color/black"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:text="WARRANTY: 1 YEAR"
+        tools:visibility="visible" />
 
     <!-- DELIVERY TIME: OVERSEAS -->
 
@@ -58,59 +56,72 @@
         android:id="@+id/pdv_seller_overseas_delivery_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/layout_padding"
-        android:layout_marginLeft="@dimen/layout_padding"
-        android:layout_marginRight="@dimen/layout_padding"
-        android:layout_marginStart="@dimen/layout_padding"
-        android:orientation="horizontal"
-        android:paddingBottom="16dp"
-        android:visibility="gone">
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <!-- IMAGE -->
+        <ImageView
+            android:id="@+id/pdv_seller_overseas_delivery_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_overseas" />
 
         <!-- TITLE -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_seller_overseas_delivery_title"
-            style="@style/TextBase.HeadLine"
-            android:drawableLeft="@drawable/ic_overseas"
-            android:drawablePadding="16dp"
-            android:drawableStart="@drawable/ic_overseas"
-            android:textColor="@color/black" />
+            style="@style/TextBase.Body.Black"
+            android:layout_marginBottom="@dimen/margin_padding_m"
+            android:layout_marginLeft="@dimen/margin_padding_l"
+            android:layout_marginStart="@dimen/margin_padding_l"
+            android:layout_toEndOf="@id/pdv_seller_overseas_delivery_icon"
+            android:layout_toRightOf="@id/pdv_seller_overseas_delivery_icon"
+            tools:text="SHIPPED FROM OVERSEAS" />
 
         <!-- TEXT BLACK -->
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdv_seller_overseas_delivery_text_black"
-            style="@style/TextBase.Caption"
+            android:id="@+id/pdv_seller_overseas_delivery_text_cms"
+            style="@style/TextBase.Body.Black"
+            android:layout_alignLeft="@id/pdv_seller_overseas_delivery_title"
+            android:layout_alignStart="@id/pdv_seller_overseas_delivery_title"
             android:layout_below="@id/pdv_seller_overseas_delivery_title"
-            android:layout_marginLeft="40dp"
-            android:layout_marginStart="40dp"
+            android:layout_marginBottom="@dimen/margin_padding_m"
             android:singleLine="false"
-            android:textColor="@color/black"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:text="CMS INFO"
+            tools:visibility="visible" />
 
-        <!-- TEXT ORANGE -->
+        <!-- TEXT -->
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdv_seller_overseas_delivery_text_orange"
-            style="@style/TextBase.Caption"
-            android:layout_below="@id/pdv_seller_overseas_delivery_text_black"
-            android:layout_marginLeft="40dp"
-            android:layout_marginStart="40dp"
+            android:id="@+id/pdv_seller_overseas_delivery_text_info"
+            style="@style/TextBase.Caption.Black_800"
+            android:layout_alignLeft="@id/pdv_seller_overseas_delivery_text_cms"
+            android:layout_alignStart="@id/pdv_seller_overseas_delivery_text_cms"
+            android:layout_below="@id/pdv_seller_overseas_delivery_text_cms"
             android:singleLine="false"
-            android:textColor="@color/color_accent"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:text="- Cash on delivery\n- International customs"
+            tools:visibility="visible" />
+
+        <!-- DIVIDER -->
+
+        <View
+            android:id="@+id/pdv_seller_overseas_delivery_divider"
+            style="@style/DividerHorizontal.Black_400"
+            android:layout_below="@id/pdv_seller_overseas_delivery_text_info"
+            android:layout_marginTop="@dimen/margin_padding_xl" />
 
         <!-- LINK -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pdv_seller_overseas_delivery_link"
-            style="@style/TextBase.Body.Blue_1"
-            android:layout_below="@id/pdv_seller_overseas_delivery_text_orange"
-            android:layout_marginLeft="40dp"
-            android:layout_marginStart="40dp"
-            android:clickable="true"
-            android:paddingTop="16dp"
-            android:singleLine="false" />
+            style="@style/Button_Link.SectionItem"
+            android:layout_below="@id/pdv_seller_overseas_delivery_divider"
+            tools:text="More details about" />
 
     </RelativeLayout>
 

@@ -52,7 +52,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_addresses_button_add_top"
-                    style="@style/Button_New_Address" />
+                    style="@style/Button_Link.NewAddress" />
 
                 <!-- OTHER ADDRESSES -->
 
@@ -64,7 +64,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_addresses_button_add_bottom"
-                    style="@style/Button_New_Address" />
+                    style="@style/Button_Link.NewAddress" />
 
             </LinearLayout>
         </ScrollView>
