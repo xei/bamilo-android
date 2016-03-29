@@ -123,10 +123,11 @@
     <style name="Widget.Custom.Button" parent="Widget.AppCompat.Button"/>
 
     <!-- Switch View -->
-    <style name="Widget.Custom.Switch" parent="Widget.AppCompat.CompoundButton.Switch" >
+    <style name="Widget.Custom.Switch" parent="Widget.AppCompat.CompoundButton.Switch">
         <item name="colorControlActivated">@color/blue_1</item>
         <item name="colorSwitchThumbNormal">@color/black_200</item>
         <item name="switchTextAppearance">@style/TextBase.Title_1.Black</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <!-- Base Dialog -->
