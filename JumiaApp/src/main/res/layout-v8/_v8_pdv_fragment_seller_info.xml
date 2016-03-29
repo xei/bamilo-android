@@ -112,7 +112,9 @@
             android:id="@+id/pdv_seller_overseas_delivery_divider"
             style="@style/DividerHorizontal.Black_400"
             android:layout_below="@id/pdv_seller_overseas_delivery_text_info"
-            android:layout_marginTop="@dimen/margin_padding_xl" />
+            android:layout_marginTop="@dimen/margin_padding_xl"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <!-- LINK -->
 
@@ -120,7 +122,11 @@
             android:id="@+id/pdv_seller_overseas_delivery_link"
             style="@style/Button_Link.SectionItem"
             android:layout_below="@id/pdv_seller_overseas_delivery_divider"
-            tools:text="More details about" />
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            android:visibility="gone"
+            tools:text="More details about"
+            tools:visibility="visible" />
 
     </RelativeLayout>
 

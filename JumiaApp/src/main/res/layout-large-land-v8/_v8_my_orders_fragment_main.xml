@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/ViewGroupCompat.Horizontal.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
     android:layoutDirection="ltr"
     android:orientation="horizontal"
-    android:weightSum="2">
+    android:weightSum="2"
+    tools:ignore="UnusedAttribute">
 
     <!-- ORDER STATUS -->
 
@@ -30,13 +32,9 @@
 
         <ListView
             android:id="@+id/orders_list"
+            style="@style/ListViewStyle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/black_700"
-            android:dividerHeight="1dp"
-            android:listSelector="@drawable/_gen_selector_group_selected"
-            android:scrollbars="none" />
-        <View style="@style/DividerHorizontal.Black_400" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

@@ -52,7 +52,7 @@
             android:drawableLeft="@drawable/selector_catalog_filter"
             android:drawablePadding="@dimen/margin_10px"
             android:drawableStart="@drawable/selector_catalog_filter"
-            android:text="@string/filter_label"
+            android:text="@string/filters_label"
             android:textColor="@color/black" />
 
     </LinearLayout>

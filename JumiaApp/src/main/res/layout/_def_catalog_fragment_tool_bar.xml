@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:drawableLeft="@drawable/selector_catalog_filter"
             android:drawableStart="@drawable/selector_catalog_filter"
-            android:text="@string/filter_label" />
+            android:text="@string/filters_label" />
 
     </LinearLayout>
 

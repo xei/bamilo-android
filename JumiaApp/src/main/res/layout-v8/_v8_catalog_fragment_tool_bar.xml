@@ -83,7 +83,7 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:drawablePadding="@dimen/margin_10px"
-            android:text="@string/filter_label" />
+            android:text="@string/filters_label" />
 
 
     </LinearLayout>

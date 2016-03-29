@@ -73,7 +73,7 @@
     <string name="fallback_mobile">မိုဘိုင္းလ္ဖုန္းမ်ား</string>
     <string name="fallback_welcome">မွႀကိဳဆိုပါသည္။</string>
     <string name="fgt_pass">Password ေမ့သြားပါသလား?</string>
-    <string name="filter_label">ရွာေဖြရန္</string>
+    <string name="filters_label">ရွာေဖြရန္</string>
     <string name="forgotpass_header">Password ျပန္လည္ရယူရန္</string>
     <string name="forgotten_password">ေက်းဇူးျပဳ ၍သင္၏ အီးေမးလ္ကို ျဖည္႔သြင္းပါ</string>
     <string name="forgotten_password_examplemail">john.doe@example.com</string>

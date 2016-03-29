@@ -84,7 +84,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.FILTERS,
                 R.layout.filters_main,
-                R.string.filter_label,
+                R.string.filters_label,
                 NO_ADJUST_CONTENT);
     }
 

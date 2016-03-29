@@ -18,10 +18,6 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="SingleLineList.Text_Blue_1">
-        <item name="android:textColor">@color/blue_1</item>
-    </style>
-
     <!-- Single line with icon item -->
     <style name="SingleLineList.WithIcon">
         <item name="android:paddingLeft">@dimen/margin_padding_l</item>
@@ -61,6 +57,12 @@
         <item name="android:drawableLeft">@drawable/_gen_selector_check_box</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="ListViewStyle" parent="ListViewDivider.Black_400">
+        <item name="android:listSelector">@drawable/_gen_selector_group_selected</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
     <!-- TODO : ADD HERE MORE STYLES -->
 
 </resources>
