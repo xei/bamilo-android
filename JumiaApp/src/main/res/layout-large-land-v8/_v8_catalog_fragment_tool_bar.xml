@@ -44,7 +44,7 @@
             android:layout_gravity="right|center"
             android:drawableLeft="@drawable/selector_catalog_filter"
             android:drawablePadding="@dimen/margin_padding_xs"
-            android:text="@string/filter_label" />
+            android:text="@string/filters_label" />
 
     </LinearLayout>
 
