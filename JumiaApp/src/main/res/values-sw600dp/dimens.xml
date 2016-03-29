@@ -65,7 +65,6 @@
     <dimen name="catalog_grid_item_image_width">146dp</dimen>
     <dimen name="catalog_grid_item_image_height">270dp</dimen>
     <dimen name="catalog_single_item_image_height">350dp</dimen>
-    <dimen name="catalog_tool_bar_height">@dimen/dimen_50dp</dimen>
     <integer name="activate_go_top_buttom_line">5</integer>
     <integer name="activate_go_top_buttom_line_grid">3</integer>
 

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -95,9 +95,9 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
             // Set name
             prodItem.name.setText(addableToCart.getName());
 
-            ProductUtils.setPriceRules(addableToCart, prodItem.price, prodItem.discount);
+            UIProductUtils.setPriceRules(addableToCart, prodItem.price, prodItem.discount);
             // Validate special price
-            ProductUtils.setDiscountRules(addableToCart, prodItem.percentage);
+            UIProductUtils.setDiscountRules(addableToCart, prodItem.percentage);
 
             if (itemsClass == ProductMultiple.class) {
                 // Set visibility
@@ -120,7 +120,7 @@ public class RecentlyViewedAdapter extends RecyclerView.Adapter<RecentlyViewedAd
         // Set brand, name and price
         setTextContent(holder, addableToCart);
         // Set variation
-        ProductUtils.setVariationContent(holder.varianceButton, addableToCart);
+        UIProductUtils.setVariationContent(holder.varianceButton, addableToCart);
         // Set clickable views
         setClickableViews(position, holder.container, holder.addToCartButton, holder.varianceButton);
     }

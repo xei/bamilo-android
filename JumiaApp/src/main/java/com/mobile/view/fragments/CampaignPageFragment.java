@@ -46,8 +46,8 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.lang.annotation.Retention;
@@ -801,7 +801,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             // Set price
             view.mPrice.setSelected(true);
             // Validate special price
-            ProductUtils.setPriceRules(item, view.mPrice, view.mDiscount);
+            UIProductUtils.setPriceRules(item, view.mPrice, view.mDiscount);
         }
 
         /**
