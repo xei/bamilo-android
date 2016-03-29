@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.home.object.BaseTeaserObject;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.home.TeaserViewFactory;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -27,7 +28,7 @@ public class HomeFeaturedTeaserAdapter extends ArrayAdapter<BaseTeaserObject> {
 
     private final LayoutInflater mInflater;
 
-    private OnClickListener mOnClickListener;
+    private final OnClickListener mOnClickListener;
 
 
     public HomeFeaturedTeaserAdapter(Context context, int textViewResourceId, ArrayList<BaseTeaserObject> objects, OnClickListener listener) {
@@ -40,7 +41,13 @@ public class HomeFeaturedTeaserAdapter extends ArrayAdapter<BaseTeaserObject> {
     public View getView(int position, View convertView, ViewGroup parent) {
         ProductViewHolder holder;
         if(convertView == null) {
-            convertView = mInflater.inflate(R.layout.home_teaser_featured_stores_item, parent, false);
+            if(ShopSelector.isRtl()){
+                convertView = mInflater.inflate(R.layout._v8_home_teaser_featured_stores_item, parent, false);
+            } else {
+                convertView = mInflater.inflate(R.layout._def_home_teaser_featured_stores_item, parent, false);
+            }
+
+
             holder = new ProductViewHolder(convertView);
             convertView.setTag(holder);
         } else {

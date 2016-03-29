@@ -4,6 +4,8 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
     android:gravity="center_vertical"
+    android:padding="@dimen/margin_padding_s"
+    android:background="@drawable/selector_card_default_white"
     >
 
     <FrameLayout
@@ -22,13 +24,18 @@
         android:id="@+id/home_teaser_stores_text_title"
         style="@style/TextBase.Title.Black"
         android:layout_toLeftOf="@id/home_teaser_stores_image"
-        android:layout_toStartOf="@id/home_teaser_stores_image"/>
+        android:layout_toStartOf="@id/home_teaser_stores_image"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/home_teaser_stores_text_sub"
         style="@style/TextBase.Body.Black_800"
         android:layout_below="@id/home_teaser_stores_text_title"
         android:layout_toLeftOf="@id/home_teaser_stores_image"
-        android:layout_toStartOf="@id/home_teaser_stores_image"/>
+        android:layout_toStartOf="@id/home_teaser_stores_image"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>
