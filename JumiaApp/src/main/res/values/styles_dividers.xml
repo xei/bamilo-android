@@ -46,14 +46,20 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">vertical</item>
         <item name="divider">@drawable/_gen_divider_horizontal_black_400</item>
-        <item name="showDividers">middle|end</item>
+        <item name="showDividers">middle</item>
     </style>
+
 
     <!-- GROUP: DIVIDER VERTICAL -->
 
     <style name="ViewGroupCompat.Vertical"/>
 
     <style name="ViewGroupCompat.Vertical.MiddleDivider" />
+
+
+    <style name="ViewGroupCompat.Vertical.MiddleDivider.EndDivider">
+        <item name="showDividers">middle|end</item>
+    </style>
 
     <style name="ViewGroupCompat.Vertical.HeaderDivider">
         <item name="showDividers">beginning</item>
@@ -70,7 +76,7 @@
 
     <!-- MY ACCOUNT SECTION -->
 
-    <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider" />
+    <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider.EndDivider" />
 
 
     <!-- CATALOG FILTER -->
