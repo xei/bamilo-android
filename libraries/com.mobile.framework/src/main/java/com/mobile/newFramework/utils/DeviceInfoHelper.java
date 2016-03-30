@@ -406,13 +406,6 @@ public class DeviceInfoHelper {
     }
 
     /**
-     * Versions >= Jelly Bean MR1 version (API 17)
-     */
-    public static boolean isPosJellyBeanMR1() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1;
-    }
-
-    /**
      * Versions <= Jelly Bean MR2 version (API 18)
      */
     public static boolean isPreJellyBeanMR2() {

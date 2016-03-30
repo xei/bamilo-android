@@ -77,7 +77,7 @@
     </style>
 
     <!-- Sliding Tab Layout -->
-    <style name="Widget.Custom.SlidingTab">
+    <style name="Widget.Custom.SlidingTabBar">
         <item name="android:background">@color/tabBar</item>
         <item name="stsBottomBorderThickness">0dp</item>
         <item name="stsDividerColor">@color/white</item>
