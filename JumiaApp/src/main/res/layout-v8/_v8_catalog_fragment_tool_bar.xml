@@ -67,7 +67,7 @@
             android:drawableLeft="@drawable/selector_catalog_filter"
             android:drawablePadding="@dimen/margin_padding_xs"
             android:gravity="center"
-            android:text="@string/filter_label" />
+            android:text="@string/filters_label" />
 
     </FrameLayout>
 

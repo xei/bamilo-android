@@ -22,14 +22,14 @@
 
     <View
         style="@style/DividerHorizontal.Black_400"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl" />
 
     <!-- MORE BUTTON -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_specs_button"
-        style="@style/SingleLineList.Text_Blue_1"
+        style="@style/Button_Link.SectionItem"
         tools:text="More Specs" />
 
 </LinearLayout>

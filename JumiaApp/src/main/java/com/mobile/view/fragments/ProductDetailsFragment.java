@@ -566,11 +566,11 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 UIProductUtils.showShopFirstOverlayMessage(this, mProduct, sellerName);
             }
             // Set listener
-            if(TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
+            if (TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
                 sellerName.setOnClickListener(this);
             }
             // Case global seller
-            if(mProduct.getSeller().isGlobal()) {
+            if (mProduct.getSeller().isGlobal()) {
                 // Set global button
                 mGlobalButton.setVisibility(View.VISIBLE);
                 mGlobalButton.bringToFront();
@@ -578,22 +578,28 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Delivery Info
                 mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container).setVisibility(View.VISIBLE);
                 ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDeliveryTime());
-                if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
+                if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
                     TextView info = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_cms);
                     info.setText(mProduct.getSeller().getDeliveryCMSInfo());
                     info.setVisibility(View.VISIBLE);
                 }
-                if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryShippingInfo())) {
+                // Shipping Info
+                if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryShippingInfo())) {
                     TextView info2 = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_info);
                     info2.setText(mProduct.getSeller().getDeliveryShippingInfo());
                     info2.setVisibility(View.VISIBLE);
                 }
-                TextView link = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_link);
-                link.setText(mProduct.getSeller().getDeliveryMoreDetailsText());
-                link.setOnClickListener(this);
+                // Button link
+                if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryMoreDetailsText())) {
+                    mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_divider).setVisibility(View.VISIBLE);
+                    TextView link = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_link);
+                    link.setText(mProduct.getSeller().getDeliveryMoreDetailsText());
+                    link.setOnClickListener(this);
+                    link.setVisibility(View.VISIBLE);
+                }
             }
             // Case normal
-            else if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryTime())){
+            else if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryTime())) {
                 // Delivery Info
                 TextView textView = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_delivery_info);
                 textView.setText(mProduct.getSeller().getDeliveryTime());

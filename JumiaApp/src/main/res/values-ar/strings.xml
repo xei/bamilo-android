@@ -73,7 +73,7 @@
     <string name="fallback_mobile">أجهزة الموبايل</string>
     <string name="fallback_welcome">مرحبًا في</string>
     <string name="fgt_pass">هل نسيت كلمة المرور</string>
-    <string name="filter_label">الاختيار</string>
+    <string name="filters_label">الاختيار</string>
     <string name="forgotpass_header">استعادة كلمة المرور</string>
     <string name="forgotten_password">يُرجى كتابة البريد الإلكتروني الخاص بك.</string>
     <string name="forgotten_password_examplemail">john.doe@example.com</string>
