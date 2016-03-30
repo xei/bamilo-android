@@ -27,6 +27,7 @@ import java.util.Locale;
  * Class used to get the device info.
  * @author spereira
  */
+@SuppressWarnings("unused")
 public class DeviceInfoHelper {
 	
     private static final String TAG = DeviceInfoHelper.class.getSimpleName();
@@ -379,9 +380,18 @@ public class DeviceInfoHelper {
 
     /**
      * Execute callbacks based on Jelly Bean version (API 16).
+     * @deprecated Please use {@link #isPosJellyBean()} instead
      */
+    @Deprecated
     public static void executeCodeBasedOnJellyBeanVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
         executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, iDeviceVersionBasedCode);
+    }
+
+    /**
+     * Versions >= Jelly Bean version (API 16).
+     */
+    public static boolean isPosJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
 
     /**

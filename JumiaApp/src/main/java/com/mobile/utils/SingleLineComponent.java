@@ -1,16 +1,19 @@
 package com.mobile.utils;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobile.components.customfontviews.CheckBox;
@@ -21,17 +24,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created by msilva on 3/8/16.
+ * Class used to represent some single layouts.
+ *
+ * @author msilva
  */
-public class SingleLineComponent extends RelativeLayout {
+@SuppressWarnings("unused")
+public class SingleLineComponent extends FrameLayout {
 
     // Types
     private static final int ONE_ICON = 0;
     private static final int TWO_ICONS = 1;
     private static final int CHECKBOX = 2;
+
     @IntDef({ONE_ICON, TWO_ICONS, CHECKBOX})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface SingleLineType {}
+    public @interface SingleLineType {
+    }
 
     private final int[] layouts_supported = {R.layout.single_line_with_icon, R.layout.single_line_with_two_icons, R.layout.single_line_with_check};
 
@@ -80,19 +88,14 @@ public class SingleLineComponent extends RelativeLayout {
         final boolean showDivider = a.getBoolean(R.styleable.SingleLineWithIconStyleable_showDivider, false);
         final boolean useSelector = a.getBoolean(R.styleable.SingleLineWithIconStyleable_useSelector, false);
         final int backgroundSelector = a.getResourceId(R.styleable.SingleLineWithIconStyleable_backgroundSelector, R.drawable.selector_myprofile_highlight);
-        //final int startImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageStart, -1);
-        //final int endImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageEnd, -1);
+        final int startImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageStart, -1);
+        final int endImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageEnd, -1);
         a.recycle();
 
         inflate(context, layouts_supported[layoutType], this);
 
         if (useSelector) {
-            if (DeviceInfoHelper.isPreJellyBeanMR2()) {
-                setBackgroundDrawable(ContextCompat.getDrawable(getContext(), backgroundSelector));
-            } else {
-                setBackground(ContextCompat.getDrawable(getContext(), backgroundSelector));
-            }
-
+            background(ContextCompat.getDrawable(getContext(), backgroundSelector));
         }
 
         mImageStartView = (ImageView) findViewById(R.id.icon_start);
@@ -100,72 +103,75 @@ public class SingleLineComponent extends RelativeLayout {
         mTextView = (TextView) findViewById(R.id.tx_single_line_text);
         mCheckBox = (CheckBox) findViewById(R.id.checkBox);
 
-        View divider = findViewById(R.id.divider);
-        if (showDivider && divider != null) {
-            divider.setVisibility(VISIBLE);
+        if (showDivider) {
+            visibility(findViewById(R.id.divider), VISIBLE);
         }
     }
 
-    /**
-     * Returns the Start imageview regarding layout direction
-     */
+    @Nullable
     public ImageView getStartImageView() {
         return mImageStartView;
     }
 
+    @Nullable
     public CheckBox getCheckBox() {
         return mCheckBox;
     }
 
-    public void showImageStartViewVisible(){
-        getStartImageView().setVisibility(VISIBLE);
+    public void showImageStartViewVisible() {
+        visibility(mImageStartView, VISIBLE);
     }
 
-    public void showImageEndViewVisible(){
-        getEndImageView().setVisibility(VISIBLE);
+    public void hideImageStartViewVisible() {
+        visibility(mImageStartView, INVISIBLE);
     }
 
-    public void hideImageStartViewVisible(){
-        getStartImageView().setVisibility(INVISIBLE);
-    }
-
-    public void hideImageEndViewVisible(){
-        getEndImageView().setVisibility(INVISIBLE);
-    }
-
-    public void removeImageEndViewVisible(){
-        getEndImageView().setVisibility(GONE);
-    }
-
-    public void removeImageStartViewVisible(){
-        getStartImageView().setVisibility(GONE);
+    public void removeImageStartViewVisible() {
+        visibility(mImageStartView, GONE);
     }
 
     /**
      * Returns the End imageview regarding layout direction
      */
+    @Nullable
     public ImageView getEndImageView() {
         return mImageEndView;
     }
 
-    /**
-     * Returns the textviewc
-     */
+    public void showImageEndViewVisible() {
+        visibility(mImageEndView, VISIBLE);
+    }
+
+    public void hideImageEndViewVisible() {
+        visibility(mImageEndView, INVISIBLE);
+    }
+
+    public void removeImageEndViewVisible() {
+        visibility(mImageEndView, GONE);
+    }
+
+    @NonNull
     public TextView getTextView() {
         return mTextView;
     }
 
-
-    public void setEndImageDrawable(Drawable drawable){
-        getEndImageView().setImageDrawable(drawable);
+    @SuppressLint("NewApi")
+    public void removeSelector() {
+        background(null);
     }
 
-    public void removeSelector(){
-        if(DeviceInfoHelper.isPreJellyBeanMR2()){
-            setBackgroundDrawable(null);
-        } else {
-            setBackground(null);
+    private void visibility(View view, int flag) {
+        if (view != null) {
+            view.setVisibility(flag);
         }
     }
 
+    @SuppressWarnings("deprecation")
+    private void background(@Nullable Drawable background) {
+        if (DeviceInfoHelper.isPosJellyBean()) {
+            super.setBackground(background);
+        } else {
+            super.setBackgroundDrawable(background);
+        }
+    }
 }
