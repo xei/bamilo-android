@@ -1,6 +1,5 @@
 package com.mobile.view.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -786,19 +785,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             });
         } else {
             prodItem.quantityBtn.setEnabled(false);
-            DeviceInfoHelper.executeCodeBasedOnJellyBeanVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-                @Override
-                @SuppressLint("NewApi")
-                public void highVersionCallback() {
-                    prodItem.quantityBtn.setBackground(null);
-                }
-                @Override
-                @SuppressWarnings("deprecation")
-                public void lowerVersionCallback() {
-                    prodItem.quantityBtn.setBackgroundDrawable(null);
-                }
-            });
-
+            if (DeviceInfoHelper.isPosJellyBean()) {
+                prodItem.quantityBtn.setBackground(null);
+            } else {
+                //noinspection deprecation
+                prodItem.quantityBtn.setBackgroundDrawable(null);
+            }
         }
 
         // Save the position to process the click on item

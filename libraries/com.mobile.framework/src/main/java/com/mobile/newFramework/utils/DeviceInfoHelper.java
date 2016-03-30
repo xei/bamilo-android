@@ -386,15 +386,6 @@ public class DeviceInfoHelper {
         executeCodeExcludingVersion(Build.VERSION_CODES.JELLY_BEAN_MR2, run);
     }
 
-    /**
-     * Execute callbacks based on Jelly Bean version (API 16).
-     * @deprecated Please use {@link #isPosJellyBean()} instead
-     */
-    @Deprecated
-    public static void executeCodeBasedOnJellyBeanVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
-        executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, iDeviceVersionBasedCode);
-    }
-
     /*
      * ############### VERSION CODE #################
      * TODO: Use the new approach to validate SDK versions
