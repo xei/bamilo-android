@@ -57,11 +57,17 @@
         <item name="showDividers">middle</item>
     </style>
 
+
     <!-- GROUP: DIVIDER VERTICAL -->
 
     <style name="ViewGroupCompat.Vertical"/>
 
     <style name="ViewGroupCompat.Vertical.MiddleDivider" />
+
+
+    <style name="ViewGroupCompat.Vertical.MiddleDivider.EndDivider">
+        <item name="showDividers">middle|end</item>
+    </style>
 
     <style name="ViewGroupCompat.Vertical.HeaderDivider">
         <item name="showDividers">beginning</item>
@@ -78,7 +84,7 @@
 
     <!-- MY ACCOUNT SECTION -->
 
-    <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider" />
+    <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider.EndDivider" />
 
 
     <!-- CATALOG FILTER -->

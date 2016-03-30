@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.utils.SingleLineComponent;
 import com.mobile.view.R;
 
 /**
@@ -80,6 +81,7 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
             view = convertView;
         } else {
             view = mInflater.inflate(R.layout._def_single_line_with_checkbox_component, parent, false);
+            ((SingleLineComponent) view).removeSelector();
         }
 
         // Get the Notification item name
