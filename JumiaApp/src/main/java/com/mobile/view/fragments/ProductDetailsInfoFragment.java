@@ -22,6 +22,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -35,7 +36,11 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private static final String TAG = ProductDetailsInfoFragment.class.getSimpleName();
 
+    private RtlViewPager mProductInfoPager;
+
     private int mPositionToStart = IntConstants.DEFAULT_POSITION;
+
+    private int mTabsCount = 3;
 
     private String mTitle;
 
@@ -101,27 +106,38 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get view pager
-        RtlViewPager mProductInfoPager = (RtlViewPager) view.findViewById(R.id.product_info_pager);
+        mProductInfoPager = (RtlViewPager) view.findViewById(R.id.product_info_pager);
         // Get tab pager
         SlidingTabLayout mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
         mProductInfoTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
         // Validate the current view
         validateVisibleTabs();
-        // Get titles
-        List<String> titles = getFragmentTitleValues();
-        // Validate adapter
         ProductInfoPagerAdapter mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
         if (mProductInfoPagerAdapter != null && mProductInfoPagerAdapter.getCount() > 0) {
-            mProductInfoPager.setCurrentItem(mPositionToStart, true);
+            // Show the pre selection
+            mProductInfoPager.setCurrentItem(getFragmentPosition(mPositionToStart), true);
         } else {
-            mProductInfoPagerAdapter = new ProductInfoPagerAdapter(getChildFragmentManager(), titles);
-            mProductInfoPager.enableRtlSupport(ShopSelector.isRtl());
+            // Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
+            mProductInfoPagerAdapter = new ProductInfoPagerAdapter(getChildFragmentManager());
             mProductInfoPager.setAdapter(mProductInfoPagerAdapter);
-            mProductInfoPager.setCurrentItem(mPositionToStart, true);
+            //#RTL
+            if(ShopSelector.isRtl()){
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    mProductInfoPager.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+                }
+                mProductInfoPager.enableRtl();
+            }
+            setPagerPosition(getFragmentPosition(mPositionToStart));
             mProductInfoTabStrip.setViewPager(mProductInfoPager);
+            // Show the pre selection
+            mProductInfoPager.setCurrentItem(getFragmentPosition(mPositionToStart), true);
         }
     }
 
+    public void setPagerPosition(int pos) {
+        mProductInfoPager.setCurrentItem(pos, true);
+
+    }
 
     /*
      * (non-Javadoc)
@@ -186,17 +202,21 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     /**
      * method that validates and controls which tab will be shown to the user
      */
-    private void validateVisibleTabs() {
+    private void validateVisibleTabs(){
         Bundle arguments = getArguments();
-        if (arguments != null) {
+        mTabsCount = 3;
+        if(arguments != null){
             Parcelable parcelableProduct = arguments.getParcelable(ConstantsIntentExtra.PRODUCT);
-            if (parcelableProduct instanceof ProductComplete) {
+            if(parcelableProduct instanceof ProductComplete){
                 ProductComplete completeProduct = (ProductComplete) parcelableProduct;
-                if (CollectionUtils.isEmpty(completeProduct.getProductSpecifications())) {
+
+                if(CollectionUtils.isEmpty(completeProduct.getProductSpecifications())){
                     mHasSpecs = false;
+                    mTabsCount--;
                 }
-                if (TextUtils.isEmpty(completeProduct.getDescription()) && TextUtils.isEmpty(completeProduct.getShortDescription())) {
+                if(TextUtils.isEmpty(completeProduct.getDescription()) && TextUtils.isEmpty(completeProduct.getShortDescription())){
                     mHasDesc = false;
+                    mTabsCount--;
                 }
             }
         }
@@ -208,47 +228,70 @@ public class ProductDetailsInfoFragment extends BaseFragment {
      *
      * @author Paulo Carvalho
      */
-    private class ProductInfoPagerAdapter extends RtlDynamicFragmentAdapter {
+    private class ProductInfoPagerAdapter extends RtlDynamicFragmentAdapter implements RtlViewPager.RtlService{
 
         /**
          * Constructor
-         *
          * @author Paulo Carvalho
          */
-        public ProductInfoPagerAdapter(FragmentManager fm, List<String> titles) {
-            super(fm, titles);
+        public ProductInfoPagerAdapter(FragmentManager fm) {
+            super(fm, ProductDetailsInfoFragment.this, getFragmentTitleValues());
+        }
+
+        /*
+         * (non-Javadoc)
+         *
+         * @see android.support.v4.view.PagerAdapter#getCount()
+         */
+        @Override
+        public int getCount() {
+            return mTabsCount;
         }
 
         @Override
         protected Fragment createNewFragment(int position) {
-//            if (TextUtils.equals(titleList.get(position), getString(R.string.description)) && mHasDesc) {
-//                return ProductDetailsSummaryFragment.getInstance(getArguments());
-//            } else if (TextUtils.equals(titleList.get(position), getString(R.string.product_specifications)) && mHasSpecs) {
-//                return ProductDetailsSpecificationsFragment.getInstance(getArguments());
-//            } else {
-//                return ReviewsFragment.getInstance(getArguments()); //added: go to ratings page
-//            }
-
-            if (TextUtils.equals(titleList.get(position), "DESC") && mHasDesc) {
+            if(titlesPageInt.get(position).equals(R.string.description) && mHasDesc) {
                 return ProductDetailsSummaryFragment.getInstance(getArguments());
-            } else if (TextUtils.equals(titleList.get(position), "SPEC") && mHasSpecs) {
+            }
+            else if (titlesPageInt.get(position).equals(R.string.product_specifications) && mHasSpecs) {
                 return ProductDetailsSpecificationsFragment.getInstance(getArguments());
-            } else {
+            }
+            else {
                 return ReviewsFragment.getInstance(getArguments()); //added: go to ratings page
             }
         }
 
+        @Override
+        public void invertItems() {
+            enableRtl(!isRtl);
+        }
     }
 
-    private List<String> getFragmentTitleValues() {
-        ArrayList<String> titles = new ArrayList<>();
-        if (mHasDesc) {
-            titles.add("DESC");//getString(R.string.description));
+    /**
+     * gets the fragment position based on the id of the title
+     */
+    public int getFragmentPosition(int fragmentTitle){
+        List<Integer> titles = getFragmentTitleValues();
+        if(ShopSelector.isRtl()){
+            Collections.reverse(titles);
         }
-        if (mHasSpecs) {
-            titles.add("SPEC");//getString(R.string.product_specifications));
+        if(titles.contains(fragmentTitle)){
+            return titles.indexOf(fragmentTitle);
+        } else {
+            return 0;
         }
-        titles.add("RAT");//getString(R.string.rat_rev));
+    }
+
+    private List<Integer> getFragmentTitleValues(){
+
+        ArrayList<Integer> titles = new ArrayList<>();
+        if(mHasDesc){
+            titles.add(R.string.description);
+        }
+        if(mHasSpecs){
+            titles.add(R.string.product_specifications);
+        }
+        titles.add(R.string.rat_rev);
         return titles;
     }
 
