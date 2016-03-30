@@ -27,7 +27,7 @@
     <color name="grey_campaign_bar">#dadada</color>
     <color name="green_campaign_bar">@color/green_1</color>
     <color name="yellow_campaign_bar">@color/yellow_1</color>
-    <color name="orange_campaign_bar">@color/red_1</color>
+    <color name="red_campaign_bar">@color/red_1</color>
     <color name="orange_tab_bar">@color/orange_1</color>
     <color name="text_root">#e0e0e0</color>
     <!-- WIZARDS -->
