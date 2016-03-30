@@ -35,11 +35,9 @@ public class SingleLineComponent extends FrameLayout {
     private static final int ONE_ICON = 0;
     private static final int TWO_ICONS = 1;
     private static final int CHECKBOX = 2;
-
     @IntDef({ONE_ICON, TWO_ICONS, CHECKBOX})
     @Retention(RetentionPolicy.SOURCE)
-    public @interface SingleLineType {
-    }
+    public @interface SingleLineType {}
 
     private final int[] layouts_supported = {R.layout.single_line_with_icon, R.layout.single_line_with_two_icons, R.layout.single_line_with_check};
 
@@ -58,24 +56,18 @@ public class SingleLineComponent extends FrameLayout {
 
     public SingleLineComponent(Context context, AttributeSet attrs) {
         super(context, attrs);
-        if (!isInEditMode()) {
-            init(context, attrs);
-        }
+        init(context, attrs);
     }
 
     public SingleLineComponent(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        if (!isInEditMode()) {
-            init(context, attrs);
-        }
+        init(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public SingleLineComponent(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        if (!isInEditMode()) {
-            init(context, attrs);
-        }
+        init(context, attrs);
     }
 
     /**
