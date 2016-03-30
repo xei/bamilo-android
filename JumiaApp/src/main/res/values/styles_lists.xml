@@ -58,7 +58,9 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="ListViewStyle" parent="ListViewDivider.Black_400">
+    <style name="ListViewStyle" parent="ListView.MiddleDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:listSelector">@drawable/_gen_selector_group_selected</item>
         <item name="android:scrollbars">none</item>
     </style>
