@@ -7,7 +7,7 @@
     <!-- TABS -->
     <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
         android:id="@+id/campaign_pager_tab"
-        style="@style/Widget.Custom.SlidingTab"
+        style="@style/Widget.Custom.SlidingTabBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
