@@ -14,7 +14,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -110,12 +109,13 @@ public class ProductDetailsInfoFragment extends BaseFragment {
         mProductInfoPager = (RtlViewPager) view.findViewById(R.id.product_info_pager);
         // Get tab pager
         SlidingTabLayout mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
-        int layout = R.layout.tab_simple_half_item_new;
-        if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
-            layout = R.layout.tab_simple_item_new;
-        }
 
-        mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
+//        int layout = R.layout.tab_simple_half_item_new;
+//        if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
+//            layout = R.layout.tab_simple_item_new;
+//        }
+
+        mProductInfoTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
         // Validate the current view
         validateVisibleTabs();
         ProductInfoPagerAdapter mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
