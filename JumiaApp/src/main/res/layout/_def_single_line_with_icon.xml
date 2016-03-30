@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/component_container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_48dp"
@@ -8,11 +9,13 @@
     <ImageView
         android:id="@+id/icon_start"
         style="@style/SingleLineListIconStart"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        tools:src="@drawable/no_image_tiny"
+        tools:visibility="visible" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tx_single_line_text"
-        style="@style/SingleLineList.WithIcon" />
-
+        style="@style/SingleLineList.WithIcon"
+        tools:text="Item" />
 
 </android.support.v7.widget.LinearLayoutCompat>

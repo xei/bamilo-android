@@ -25,8 +25,6 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class SingleLineComponent extends RelativeLayout {
 
-    private static final java.lang.String TAG = SingleLineComponent.class.getName();
-
     // Types
     private static final int ONE_ICON = 0;
     private static final int TWO_ICONS = 1;
@@ -46,47 +44,50 @@ public class SingleLineComponent extends RelativeLayout {
     protected CheckBox mCheckBox;
 
 
-
     public SingleLineComponent(Context context) {
         super(context);
     }
 
     public SingleLineComponent(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context,attrs);
+        if (!isInEditMode()) {
+            init(context, attrs);
+        }
     }
 
     public SingleLineComponent(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context,attrs);
+        if (!isInEditMode()) {
+            init(context, attrs);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public SingleLineComponent(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context,attrs);
+        if (!isInEditMode()) {
+            init(context, attrs);
+        }
     }
+
     /**
      * Initialize layout
-     *
-     * @param context
-     * @param attrs
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SingleLineWithIconStyleable);
-        final int layoutType= a.getInt(R.styleable.SingleLineWithIconStyleable_layoutType, ONE_ICON);
-
+        @SingleLineType final int layoutType = a.getInt(R.styleable.SingleLineWithIconStyleable_layoutType, ONE_ICON);
         final boolean showDivider = a.getBoolean(R.styleable.SingleLineWithIconStyleable_showDivider, false);
         final boolean useSelector = a.getBoolean(R.styleable.SingleLineWithIconStyleable_useSelector, false);
         final int backgroundSelector = a.getResourceId(R.styleable.SingleLineWithIconStyleable_backgroundSelector, R.drawable.selector_myprofile_highlight);
-        final int startImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageStart, -1);
-        final int endImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageEnd, -1);
+        //final int startImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageStart, -1);
+        //final int endImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageEnd, -1);
+        a.recycle();
 
         inflate(context, layouts_supported[layoutType], this);
 
-        if(useSelector) {
-            if(DeviceInfoHelper.isPreJellyBeanMR2()){
+        if (useSelector) {
+            if (DeviceInfoHelper.isPreJellyBeanMR2()) {
                 setBackgroundDrawable(ContextCompat.getDrawable(getContext(), backgroundSelector));
             } else {
                 setBackground(ContextCompat.getDrawable(getContext(), backgroundSelector));
@@ -100,17 +101,13 @@ public class SingleLineComponent extends RelativeLayout {
         mCheckBox = (CheckBox) findViewById(R.id.checkBox);
 
         View divider = findViewById(R.id.divider);
-        if(showDivider && divider != null){
+        if (showDivider && divider != null) {
             divider.setVisibility(VISIBLE);
         }
-
-
     }
 
     /**
      * Returns the Start imageview regarding layout direction
-     *
-     * @return
      */
     public ImageView getStartImageView() {
         return mImageStartView;
@@ -146,8 +143,6 @@ public class SingleLineComponent extends RelativeLayout {
 
     /**
      * Returns the End imageview regarding layout direction
-     *
-     * @return
      */
     public ImageView getEndImageView() {
         return mImageEndView;
@@ -155,8 +150,6 @@ public class SingleLineComponent extends RelativeLayout {
 
     /**
      * Returns the textviewc
-     *
-     * @return
      */
     public TextView getTextView() {
         return mTextView;
