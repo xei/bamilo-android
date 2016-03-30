@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="48dp"
+    android:layoutDirection="ltr"
     >
 
     <!-- ICON -->
@@ -33,11 +34,10 @@
     <!-- EDIT TEXT -->
     <com.mobile.components.customfontviews.EditText
         android:id="@+id/text_field"
-        style="@style/TextField"
+        style="@style/FormTextField"
         android:layout_height="wrap_content"
         android:layout_toLeftOf="@id/text_field_spinner_prefix"
-        android:layout_toRightOf="@+id/text_field_spinner_suffix"
-        />
+        android:layout_toRightOf="@+id/text_field_spinner_suffix" />
 
     <!-- PASSWORD EYE -->
 
@@ -67,7 +67,7 @@
 
     <com.mobile.components.absspinner.IcsSpinner
         android:id="@id/text_field_spinner_suffix"
-        style="@style/form_style"
+        style="@style/FormFieldStyle"
         android:layout_width="100dp"
         android:layout_height="48dp"
         android:layout_alignParentLeft="true"

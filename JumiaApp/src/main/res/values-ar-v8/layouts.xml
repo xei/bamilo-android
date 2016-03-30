@@ -132,7 +132,6 @@
     <item name="shopping_basket"                        type="layout">@layout/_v8_shopping_basket</item>
     <item name="shopping_cart_product_container"        type="layout">@layout/_v8_shopping_basket_product_element_container</item>
     <item name="campaign_spinner_dropdown_item"         type="layout">@layout/_v8_campaign_spinner_dropdown_item</item>
-    <item name="offers_item"                            type="layout">@layout/_v8_offers_item</item>
     <item name="product_gallery_fragment"               type="layout">@layout/_v8_product_gallery_fragment</item>
     <item name="product_gallery_full_activity"          type="layout">@layout/_v8_product_gallery_full_activity</item>
     <item name="voucher_insert_layout"                  type="layout">@layout/_v8_voucher_insert_layout</item>

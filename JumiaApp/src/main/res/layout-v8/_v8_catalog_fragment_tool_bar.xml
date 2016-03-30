@@ -1,92 +1,74 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/catalog_tool_bar_height"
-    android:background="@color/black_300"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/_gen_background_bottom_border_black_400"
     android:gravity="center"
-    android:paddingBottom="1dp"
     android:layoutDirection="ltr"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:ignore="UnusedAttribute"
+    tools:layout_height="48dp">
 
-    <!-- GRID LAYOUT -->
+    <!-- COLUMNS -->
 
     <ImageButton
         android:id="@+id/catalog_bar_button_columns"
-        android:layout_width="@dimen/dimen_53_33dp"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
+        android:layout_weight=".2"
+        android:background="@null"
+        android:contentDescription="@string/gproductlist"
+        android:scaleType="centerInside"
         android:src="@drawable/selector_catalog_list" />
 
     <!-- DIVIDER -->
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@android:color/white">
-
-        <View
-            style="@style/DividerVertical.Black_400"
-            android:layout_margin="@dimen/margin_10px" />
-    </LinearLayout>
+    <View style="@style/FilterTabBarDivider" />
 
     <!-- SORT -->
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:addStatesFromChildren="true"
-        android:background="@drawable/selector_card_default_white"
-        android:gravity="center">
+        android:layout_weight=".4"
+        android:addStatesFromChildren="true">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_sort"
-            style="@style/TextBase.Display_3"
-            android:layout_height="wrap_content"
+            style="@style/TextBase.List.Black"
             android:layout_width="wrap_content"
-            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/selector_catalog_sort"
+            android:drawablePadding="@dimen/margin_padding_xs"
             android:gravity="center"
-            android:drawablePadding="@dimen/margin_10px"
-            android:drawableRight="@drawable/selector_catalog_sort"
             android:text="@string/products_sort_popularity" />
 
-    </LinearLayout>
-
+    </FrameLayout>
 
     <!-- DIVIDER -->
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@android:color/white">
-
-        <View
-            style="@style/DividerVertical.Black_400"
-            android:layout_margin="@dimen/margin_10px" />
-    </LinearLayout>
+    <View style="@style/FilterTabBarDivider" />
 
     <!-- FILTER -->
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:addStatesFromChildren="true"
-        android:background="@drawable/selector_card_default_white"
-        android:gravity="center">
+        android:layout_weight=".4"
+        android:addStatesFromChildren="true">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_filter"
-            android:drawableRight="@drawable/selector_catalog_filter"
-            style="@style/TextBase.Display_3"
-            android:layout_height="wrap_content"
+            style="@style/TextBase.List.Black"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/selector_catalog_filter"
+            android:drawablePadding="@dimen/margin_padding_xs"
             android:gravity="center"
-            android:textColor="@color/black"
-            android:drawablePadding="@dimen/margin_10px"
-            android:text="@string/filter_label" />
+            android:text="@string/filters_label" />
 
-
-    </LinearLayout>
-
+    </FrameLayout>
 
 </LinearLayout>

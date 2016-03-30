@@ -3,7 +3,6 @@ package com.mobile.view.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -63,8 +62,8 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment;
 import com.mobile.utils.dialogfragments.DialogSimpleListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.pdv.RelatedProductsAdapter;
-import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.product.RelatedProductsAdapter;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
@@ -500,8 +499,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setProductPriceInfo() {
         Print.d(TAG, "SHOW PRICE INFO: " + mProduct.getPrice() + " " + mProduct.getSpecialPrice());
-        ProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
-        ProductUtils.setDiscountRules(mProduct, mDiscountPercentageText);
+        UIProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
+        UIProductUtils.setDiscountRules(mProduct, mDiscountPercentageText);
         if (mProduct.hasDiscount()) {
             mDiscountPercentageText.setEnabled(true);
         }
@@ -564,14 +563,14 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             sellerName.setText(mProduct.getSeller().getName());
             // Set shop first except B project
             if (mProduct.isShopFirst() && !ShopSelector.isRtlShop()) {
-                ProductUtils.showShopFirstOverlayMessage(this, mProduct, sellerName);
+                UIProductUtils.showShopFirstOverlayMessage(this, mProduct, sellerName);
             }
             // Set listener
-            if(TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
+            if (TextUtils.isNotEmpty(mProduct.getSeller().getTarget())) {
                 sellerName.setOnClickListener(this);
             }
             // Case global seller
-            if(mProduct.getSeller().isGlobal()) {
+            if (mProduct.getSeller().isGlobal()) {
                 // Set global button
                 mGlobalButton.setVisibility(View.VISIBLE);
                 mGlobalButton.bringToFront();
@@ -579,23 +578,28 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 // Delivery Info
                 mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_container).setVisibility(View.VISIBLE);
                 ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_title)).setText(mProduct.getSeller().getDeliveryTime());
-                if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
-                    TextView info = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_black));
+                if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryCMSInfo())) {
+                    TextView info = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_cms);
                     info.setText(mProduct.getSeller().getDeliveryCMSInfo());
                     info.setVisibility(View.VISIBLE);
                 }
-                if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryShippingInfo())) {
-                    TextView info2 = ((TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_orange));
+                // Shipping Info
+                if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryShippingInfo())) {
+                    TextView info2 = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_text_info);
                     info2.setText(mProduct.getSeller().getDeliveryShippingInfo());
                     info2.setVisibility(View.VISIBLE);
                 }
-                TextView link = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_link);
-                link.setText(mProduct.getSeller().getDeliveryMoreDetailsText());
-                link.setPaintFlags(link.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-                link.setOnClickListener(this);
+                // Button link
+                if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryMoreDetailsText())) {
+                    mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_divider).setVisibility(View.VISIBLE);
+                    TextView link = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_overseas_delivery_link);
+                    link.setText(mProduct.getSeller().getDeliveryMoreDetailsText());
+                    link.setOnClickListener(this);
+                    link.setVisibility(View.VISIBLE);
+                }
             }
             // Case normal
-            else if(TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryTime())){
+            else if (TextUtils.isNotEmpty(mProduct.getSeller().getDeliveryTime())) {
                 // Delivery Info
                 TextView textView = (TextView) mSellerContainer.findViewById(R.id.pdv_seller_delivery_info);
                 textView.setText(mProduct.getSeller().getDeliveryTime());
@@ -1118,7 +1122,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if(isFromBuyButton) {
                     onClickBuyProduct();
                 }
-                ProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
+                UIProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
             }
         } catch (NullPointerException e) {
             // ...

@@ -43,6 +43,10 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name="TextBase.Title_1.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TextBase.Title">
         <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">roboto_medium</item>
@@ -60,7 +64,7 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="TextBase.List.Black_800"/>
+    <style name="TextBase.List.Black_800" />
 
     <style name="TextBase.HeadLine">
         <item name="android:textSize">12sp</item>
@@ -84,7 +88,7 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="TextBase.Body.Black_800"/>
+    <style name="TextBase.Body.Black_800" />
 
     <style name="TextBase.Body.Blue_1">
         <item name="android:textColor">@color/blue_1</item>
@@ -94,7 +98,7 @@
         <item name="android:textSize">10sp</item>
     </style>
 
-    <style name="TextBase.Caption.Black_800"/>
+    <style name="TextBase.Caption.Black_800" />
 
     <style name="TextBase.Caption.White">
         <item name="android:textColor">@color/white</item>
@@ -130,6 +134,8 @@
     <style name="TextBase.Price" parent="TextBase.SubHead">
         <item name="android:textColor">@color/red_basic</item>
     </style>
+
+    <style name="TextBase.Button.Switch" parent="TextBase.Title_1.Black"/>
 
     <!-- TODO : ADD HERE BASE STYLES -->
 

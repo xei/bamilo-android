@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layoutDirection="ltr"
+    >
 
     <com.mobile.components.customfontviews.TextView
         style="@style/HeaderTeaserStyle"
@@ -12,11 +14,10 @@
         android:id="@+id/home_teaser_featured_stores_container_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:horizontalSpacing="@dimen/dimen_3dp"
+        android:verticalSpacing="@dimen/margin_padding_s"
+        android:horizontalSpacing="@dimen/margin_padding_s"
         android:numColumns="@integer/home_featured_stores_teaser_num_columns"
-        android:paddingLeft="@dimen/margin_padding_xxs"
-        android:paddingRight="@dimen/margin_padding_xxs"
         android:scrollbars="none"
-        android:verticalSpacing="@dimen/dimen_3dp" />
+        />
 
 </LinearLayout>

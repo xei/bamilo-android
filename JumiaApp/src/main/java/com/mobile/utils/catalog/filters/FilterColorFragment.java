@@ -1,6 +1,5 @@
 package com.mobile.utils.catalog.filters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -74,20 +73,14 @@ public class FilterColorFragment extends FilterCheckFragment {
                 gradient.setShape(GradientDrawable.OVAL);
                 gradient.setColor(Color.parseColor(((CatalogColorFilterOption) option).getHexValue()));
                 gradient.setStroke(1, convertView.getResources().getColor(R.color.black_400));
-
+                // Set color box
                 final View itemColorBox = convertView.findViewById(R.id.dialog_item_color_box);
-                DeviceInfoHelper.executeCodeBasedOnJellyBeanVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-                    @SuppressLint("NewApi")
-                    @Override
-                    public void highVersionCallback() {
-                        itemColorBox.setBackground(gradient);
-                    }
-
-                    @Override
-                    public void lowerVersionCallback() {
-                        itemColorBox.setBackgroundDrawable(gradient);
-                    }
-                });
+                if (DeviceInfoHelper.isPosJellyBean()) {
+                    itemColorBox.setBackground(gradient);
+                } else {
+                    //noinspection deprecation
+                    itemColorBox.setBackgroundDrawable(gradient);
+                }
 
                 convertView.findViewById(R.id.dialog_item_color_box).setVisibility(View.VISIBLE);
                 // Set title

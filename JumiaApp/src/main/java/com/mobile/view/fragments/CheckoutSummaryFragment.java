@@ -32,7 +32,7 @@ import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
@@ -315,8 +315,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
             //shop first image
             ImageView shopFirstImageView = (ImageView) cartItemView.findViewById(R.id.item_shop_first);
-            ProductUtils.setShopFirst(item, shopFirstImageView);
-            ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
+            UIProductUtils.setShopFirst(item, shopFirstImageView);
+            UIProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
 
             String imageUrl = item.getImageUrl();
             ImageView mImageView = (ImageView) cartItemView.findViewById(R.id.image_view);

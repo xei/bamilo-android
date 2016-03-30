@@ -7,6 +7,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
@@ -79,7 +80,7 @@ public class CurrencyFormatter {
 
     public static String formatCurrency(double value) {
         if (!initialized) {
-            throw new RuntimeException("currency converter not initialized");
+            throw new RuntimeException("Currency converter not initialized");
         }
         try {
             return formatCurrencyPattern(formatter.format(value));
@@ -97,7 +98,7 @@ public class CurrencyFormatter {
      */
     public static String formatCurrency(String value) {
         if (!initialized) {
-            throw new RuntimeException("currency converter not initialized");
+            throw new RuntimeException("Currency converter not initialized");
         }
         if (!TextUtils.isEmpty(value)) {
             try {
@@ -120,13 +121,10 @@ public class CurrencyFormatter {
      * @return NumberFormat
      */
     private static NumberFormat getNumberFormatter() {
-        if (!initialized) throw new RuntimeException("currency converter not initialized");
-    	
-        // Get the number format the according with Locale value 
-    	//NumberFormat currencyFormat = getNumberFormat();
+        if (!initialized) throw new RuntimeException("Currency converter not initialized");
         // Get the universal number format
         NumberFormat currencyFormat = DecimalFormat.getCurrencyInstance(Locale.US);
-    	
+        currencyFormat.setRoundingMode(RoundingMode.HALF_UP);
         currencyFormat.setMaximumFractionDigits(currencyFractionCount);
         currencyFormat.setMinimumFractionDigits(currencyFractionCount);
         currencyFormat.setGroupingUsed(true);
@@ -137,7 +135,6 @@ public class CurrencyFormatter {
         	dfs.setMonetaryDecimalSeparator(currencyFractionDelim.charAt(0));
         }
         ((DecimalFormat)currencyFormat).setDecimalFormatSymbols(dfs);
-    	        
         return currencyFormat;
     }
     

@@ -1,6 +1,5 @@
 package com.mobile.view.fragments;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -51,8 +50,8 @@ import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -749,9 +748,9 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         String imageUrl = prodItem.cartItem.getImageUrl();
 
         // Hide shop view image if is_shop is false
-        ProductUtils.setShopFirst( prodItem.cartItem , prodItem.shopFirstImage);
+        UIProductUtils.setShopFirst( prodItem.cartItem , prodItem.shopFirstImage);
         //Show shop first overlay message
-        ProductUtils.showShopFirstOverlayMessage(this,prodItem.cartItem, prodItem.shopFirstImage);
+        UIProductUtils.showShopFirstOverlayMessage(this,prodItem.cartItem, prodItem.shopFirstImage);
 
         RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
                 R.drawable.no_image_small);
@@ -786,19 +785,12 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             });
         } else {
             prodItem.quantityBtn.setEnabled(false);
-            DeviceInfoHelper.executeCodeBasedOnJellyBeanVersion(new DeviceInfoHelper.IDeviceVersionBasedCode() {
-                @Override
-                @SuppressLint("NewApi")
-                public void highVersionCallback() {
-                    prodItem.quantityBtn.setBackground(null);
-                }
-                @Override
-                @SuppressWarnings("deprecation")
-                public void lowerVersionCallback() {
-                    prodItem.quantityBtn.setBackgroundDrawable(null);
-                }
-            });
-
+            if (DeviceInfoHelper.isPosJellyBean()) {
+                prodItem.quantityBtn.setBackground(null);
+            } else {
+                //noinspection deprecation
+                prodItem.quantityBtn.setBackgroundDrawable(null);
+            }
         }
 
         // Save the position to process the click on item
