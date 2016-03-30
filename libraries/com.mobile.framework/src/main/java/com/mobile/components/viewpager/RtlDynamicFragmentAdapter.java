@@ -5,8 +5,6 @@ import android.support.v4.app.FragmentManager;
 
 import com.mobile.newFramework.utils.CollectionUtils;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -25,19 +23,13 @@ import java.util.List;
  */
 public abstract class RtlDynamicFragmentAdapter extends RtlAdapterService {
 
-    protected List<Integer> titlesPageInt;
-
-    protected final Fragment parent;
-
-    public RtlDynamicFragmentAdapter(FragmentManager fm, Fragment parent, List<Integer> titlesPageInt) {
-        super(fm, null, new LinkedList<String>());
-        this.titlesPageInt = titlesPageInt;
-        this.parent = parent;
+    public RtlDynamicFragmentAdapter(FragmentManager fm, List<String> titles) {
+        super(fm, null, titles);
     }
 
     @Override
     public int getCount() {
-        return titlesPageInt.size();
+        return CollectionUtils.size(titleList);
     }
 
     @Override
@@ -49,20 +41,7 @@ public abstract class RtlDynamicFragmentAdapter extends RtlAdapterService {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if(titleList.size() <= position){
-            titleList.add(parent.getString(titlesPageInt.get(position)));
-        }
         return titleList.get(position);
     }
 
-    @Override
-    public void enableRtl(boolean rtl) {
-        if((rtl && !this.isRtl) || (!rtl && this.isRtl)){
-            if(!CollectionUtils.isEmpty(titlesPageInt)){
-                Collections.reverse(titlesPageInt);
-            }
-        }
-
-        super.enableRtl(rtl);
-    }
 }
