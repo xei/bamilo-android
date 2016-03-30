@@ -10,12 +10,11 @@
     </style>
 
     <!-- Single line item -->
-    <style name="SingleLineList" parent="@style/TextBase.List">
+    <style name="SingleLineList" parent="@style/TextBase.List.Black">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_48dp</item>
         <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
         <item name="android:paddingStart">@dimen/margin_padding_xl</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
     <!-- Single line with icon item -->

@@ -6,6 +6,8 @@
     android:background="@drawable/_gen_selector_group_selected"
     android:gravity="center_vertical"
     android:orientation="horizontal"
+    android:paddingLeft="@dimen/margin_padding_xl"
+    android:paddingRight="@dimen/margin_padding_xl"
     tools:layout_height="48dp"
     tools:layout_width="match_parent">
 
