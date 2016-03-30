@@ -11,10 +11,10 @@ import java.util.List;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
- *
+ * <p/>
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential.
- *
+ * <p/>
  * <br><br>FragmentAdapter with RTL support. This adapter only supports static fragments
  * (the fragments must be initialized at creation of this adapter).
  *
@@ -22,7 +22,7 @@ import java.util.List;
  * @version 1.0
  * @date 2015/06/18
  */
-public abstract class RtlAdapterService extends FragmentPagerAdapter{
+public abstract class RtlAdapterService extends FragmentPagerAdapter {
     protected List<Fragment> fragmentList;
     protected List<String> titleList;
     protected boolean isRtl;
@@ -36,33 +36,31 @@ public abstract class RtlAdapterService extends FragmentPagerAdapter{
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if(!CollectionUtils.isEmpty(titleList)){
+        if (CollectionUtils.isNotEmpty(titleList)) {
             return titleList.get(position);
-        } else{
+        } else {
             return super.getPageTitle(position);
         }
     }
 
     @Override
     public int getCount() {
-        return (fragmentList != null) ? fragmentList.size() : 0;
+        return CollectionUtils.size(fragmentList);
     }
 
     public void enableRtl(boolean rtl) {
-        if((rtl && !this.isRtl) || (!rtl && this.isRtl)){
-            if(fragmentList != null){
-                Collections.reverse(fragmentList);
-            }
-            if(!CollectionUtils.isEmpty(titleList)){
+        if ((rtl && !this.isRtl) || (!rtl && this.isRtl)) {
+            // Reverse titles
+            if (CollectionUtils.isNotEmpty(titleList)) {
                 Collections.reverse(titleList);
             }
+            // Reverse fragments
+            if (CollectionUtils.isNotEmpty(fragmentList)) {
+                Collections.reverse(fragmentList);
+            }
         }
-
+        // Update current state
         isRtl = rtl;
     }
 
-//    @Override
-//    public Fragment getItem(int position) {
-//        return fragmentList != null ? fragmentList.get(position) : null;
-//    }
 }
