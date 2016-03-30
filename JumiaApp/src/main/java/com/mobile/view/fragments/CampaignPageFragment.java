@@ -877,7 +877,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             else if(ORANGE_PERCENTAGE < stock && stock < GREEN_PERCENTAGE)
                 view.setProgressDrawable(ContextCompat.getDrawable(view.getContext(), R.drawable.campaign_yellow_bar));
                 // Case ORANGE:
-            else  view.setProgressDrawable(ContextCompat.getDrawable(view.getContext(), R.drawable.campaign_orange_bar));
+            else  view.setProgressDrawable(ContextCompat.getDrawable(view.getContext(), R.drawable.campaign_red_bar));
             // Set value
             view.getProgressDrawable().setBounds(bounds);
             view.setProgress(stock);
