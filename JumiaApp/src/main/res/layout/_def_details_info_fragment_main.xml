@@ -9,25 +9,24 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@color/tabBar"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/tabBar">
 
         <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
             android:id="@+id/product_info_pager_tab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/tabBar"
             android:layout_gravity="left|start"
+            android:background="@color/tabBar"
             android:gravity="left|start"
+            android:layoutDirection="ltr"
             app:stsBottomBorderThickness="0dp"
-            app:stsDividerThickness="0dp"
             app:stsDividerColor="@color/white"
+            app:stsDividerThickness="0dp"
             app:stsIndicatorColor="@color/color_accent"
-            app:stsIndicatorThickness="1dp"
-            android:layoutDirection="ltr"/>
+            app:stsIndicatorThickness="1dp" />
 
     </RelativeLayout>
-
 
     <!-- CONTENT -->
 
@@ -36,7 +35,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/white"
-        />
+        android:background="@color/white" />
 
 </LinearLayout>
