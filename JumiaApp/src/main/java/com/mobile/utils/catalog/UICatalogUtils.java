@@ -15,9 +15,9 @@ import de.akquinet.android.androlog.Log;
  * Class used to help catalog UI.
  * @author spereira
  */
-public class UICatalogHelper {
+public class UICatalogUtils {
 
-    private static final String TAG = UICatalogHelper.class.getSimpleName();
+    private static final String TAG = UICatalogUtils.class.getSimpleName();
 
 
     /**

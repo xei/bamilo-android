@@ -10,12 +10,8 @@
 
     <ListView
         android:id="@+id/orders_list"
+        style="@style/ListViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/black_400"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/_gen_selector_group_selected" />
-
-    <View style="@style/DividerHorizontal.Black_400" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

@@ -40,19 +40,12 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     private static final String TAG = MyOrdersFragment.class.getSimpleName();
 
     private ArrayList<Order> mOrdersList;
-
     private ListView mOrdersListView;
-
     private OrdersAdapter mOrdersAdapter;
-
     private int mPageIndex = IntConstants.FIRST_PAGE;
-
     boolean isLoadingMore;
-
     private View mOrderStatusContainer;
-
     private int mMaxPages;
-
     private boolean isErrorOnLoadingMore;
 
     /**

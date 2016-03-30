@@ -12,6 +12,7 @@ import com.mobile.newFramework.objects.product.Variation;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -89,7 +90,7 @@ public class VariationProductsGridAdapter extends RecyclerView.Adapter<ProductLi
         holder.itemView.setTag(R.id.position, position);
         holder.itemView.setOnClickListener(this);
         UIUtils.showOrHideViews(View.GONE, holder.percentage, holder.ratingContainer, holder.favourite, holder.newArrivalBadge);
-        ProductUtils.setShopFirst(item, holder.shopFirst);
+        UIProductUtils.setShopFirst(item, holder.shopFirst);
 
     }
     

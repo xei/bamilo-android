@@ -18,8 +18,8 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ProductListViewHolder;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -179,8 +179,8 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
     @Override
     protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
         if (level == ITEM_VIEW_TYPE_GRID) {
-            ProductUtils.setPriceRules(item, holder.price, holder.discount);
-            ProductUtils.setDiscountRules(item, holder.percentage);
+            UIProductUtils.setPriceRules(item, holder.price, holder.discount);
+            UIProductUtils.setDiscountRules(item, holder.percentage);
         } else {
             super.setProductPrice(holder, item);
         }

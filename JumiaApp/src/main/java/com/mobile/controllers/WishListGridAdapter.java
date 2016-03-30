@@ -11,7 +11,7 @@ import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         // Set brand, name and price
         setTextContent(holder, item);
         // Set variation
-        ProductUtils.setVariationContent(holder.varianceButton, item);
+        UIProductUtils.setVariationContent(holder.varianceButton, item);
         // Set clickable views
         setClickableViews(position, holder.container, holder.deleteButton, holder.addToCartButton, holder.varianceButton);
     }
@@ -119,9 +119,9 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         // Set name
         prodItem.name.setText(product.getName());
 
-        ProductUtils.setPriceRules(product, prodItem.price, prodItem.discount);
+        UIProductUtils.setPriceRules(product, prodItem.price, prodItem.discount);
 
-        ProductUtils.setDiscountRules(product, prodItem.percentage);
+        UIProductUtils.setDiscountRules(product, prodItem.percentage);
     }
 
     @Override

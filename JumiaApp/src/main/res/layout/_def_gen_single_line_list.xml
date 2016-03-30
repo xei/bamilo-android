@@ -10,6 +10,6 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tx_single_line_text"
         style="@style/SingleLineList"
-        tools:text="Item" />
+        tools:text="Single line" />
 
 </LinearLayout>
