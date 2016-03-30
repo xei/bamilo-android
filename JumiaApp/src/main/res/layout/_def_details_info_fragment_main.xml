@@ -9,7 +9,10 @@
         android:id="@+id/product_info_pager_tab"
         style="@style/Widget.Custom.SlidingTab"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|start"
+        android:gravity="left|start"
+        android:layoutDirection="ltr"/>
 
     <!-- CONTENT -->
     <com.mobile.components.viewpager.RtlViewPager
