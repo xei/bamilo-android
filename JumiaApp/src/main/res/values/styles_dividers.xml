@@ -41,12 +41,11 @@
 
     <!-- ######## LIST VIEWS  ######## -->
 
-    <style name="ListViewDivider">
+    <style name="ListView"/>
+    <style name="ListView.MiddleDivider">
         <item name="android:divider">@color/black_400</item>
         <item name="android:dividerHeight">1dp</item>
     </style>
-
-    <style name="ListViewDivider.Black_400" />
 
     <!-- ######## VIEW GROUP COMPAT ######## -->
 
