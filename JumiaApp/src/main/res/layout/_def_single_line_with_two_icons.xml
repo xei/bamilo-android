@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/component_container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dimen_49dp">
@@ -7,12 +8,16 @@
     <ImageView
         android:id="@+id/icon_start"
         style="@style/SingleLineListIconStart"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        tools:src="@drawable/no_image_tiny"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/icon_end"
         style="@style/SingleLineListIconEnd"
-        android:visibility="invisible" />
+        android:visibility="invisible"
+        tools:src="@drawable/no_image_tiny"
+        tools:visibility="visible" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tx_single_line_text"
@@ -20,7 +25,8 @@
         android:layout_toEndOf="@+id/icon_start"
         android:layout_toLeftOf="@+id/icon_end"
         android:layout_toRightOf="@+id/icon_start"
-        android:layout_toStartOf="@+id/icon_end" />
+        android:layout_toStartOf="@+id/icon_end"
+        tools:text="Item" />
 
     <View
         android:id="@+id/divider"
@@ -28,5 +34,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tx_single_line_text"
         android:background="@drawable/_gen_divider_horizontal_black_400"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 </RelativeLayout>

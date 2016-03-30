@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/SingleLineGroupStyle"
     android:gravity="center_vertical"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:layout_height="48dp"
+    tools:layout_width="match_parent">
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/checkbox"
