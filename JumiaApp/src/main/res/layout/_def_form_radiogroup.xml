@@ -3,5 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginRight="@dimen/form_check_padding"
+    android:layout_marginEnd="@dimen/form_check_padding"
     android:gravity="left|start"
     android:orientation="horizontal" />
