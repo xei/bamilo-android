@@ -249,12 +249,20 @@
     </style>
 
     <!-- SMALL TEASER -->
-    <style name="SmallTeaserStyle" parent="CardViewFlatStyle">
+    <style name="SmallTeaserStyle" parent="ClickableStyle">
         <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginLeft">@dimen/margin_padding_s</item>
-        <item name="android:layout_marginStart">@dimen/margin_padding_s</item>
-        <item name="android:background">@android:color/white</item>
+        <item name="android:layout_marginLeft">@dimen/dimen_3dp</item>
+        <item name="android:layout_marginRight">@dimen/dimen_3dp</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <!-- SHOP TEASER -->
+    <style name="ShopTeaserStyle" parent="ClickableStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <!-- PRODUCT TEASER -->
@@ -270,7 +278,7 @@
         <item name="contentPadding">@dimen/margin_padding_xs</item>
         <item name="cardUseCompatPadding">true</item>
         <item name="cardPreventCornerOverlap">true</item>
-        <item name="cardBackgroundColor">@android:color/white</item>
+        <item name="cardBackgroundColor">@color/white</item>
     </style>
 
     <!-- HORIZONTAL LIST -->
