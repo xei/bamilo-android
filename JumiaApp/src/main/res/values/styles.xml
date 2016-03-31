@@ -257,6 +257,14 @@
         <item name="android:background">@android:color/white</item>
     </style>
 
+    <!-- SHOP TEASER -->
+    <style name="ShopTeaserStyle" parent="ClickableStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@android:color/white</item>
+    </style>
+
     <!-- PRODUCT TEASER -->
     <style name="ProductTeaserStyle" parent="CardViewFlatStyle">
         <item name="android:layout_width">@dimen/dimen_134dp</item>
