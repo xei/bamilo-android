@@ -5,5 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/home_small_teaser_height"
     android:layout_centerInParent="true"
-    android:layout_marginTop="@dimen/dimen_5dp"
+    android:paddingTop="@dimen/margin_padding_m"
+    android:paddingBottom="@dimen/margin_padding_m"
     android:clipToPadding="false" />

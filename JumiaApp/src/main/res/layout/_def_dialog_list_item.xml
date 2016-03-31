@@ -12,29 +12,16 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/TextBase.Display_2.Black_800"
         android:layout_centerInParent="true"
-        android:layout_marginEnd="@dimen/dialog_list_margin_horizontal"
-        android:layout_marginRight="@dimen/dialog_list_margin_horizontal"
-        android:ellipsize="end"
         android:gravity="center"
-        android:singleLine="true"
-        android:textColor="@color/grey_middle"
-        android:textSize="@dimen/text_l" />
+        />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_unavailable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginEnd="@dimen/dialog_list_margin_horizontal"
-        android:layout_marginRight="@dimen/dialog_list_margin_horizontal"
-        android:ellipsize="end"
+        style="@style/TextBase.Display_2.Black_400"
         android:gravity="center"
-        android:singleLine="true"
-        android:textColor="@color/grey_light"
-        android:textSize="@dimen/text_l"
+        android:layout_centerInParent="true"
         android:visibility="gone" />
 
     <CheckBox
