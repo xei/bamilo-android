@@ -33,7 +33,10 @@ public class CountryPersistentConfigs {
     public static String toString(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return
-        "#### CURRENCY ####"    +
+        "#### LANGUAGE ####"+
+        "\nCode: "              + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null) +
+        "\nName: "              + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, null) +
+        "\n\n#### CURRENCY ####"    +
         "\nISO: "               + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null) +
         "\nSymbol: "            + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, null) +
         "\nDecimals: "          + sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, 0) +
@@ -47,9 +50,6 @@ public class CountryPersistentConfigs {
         "\nApp Id: "            + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_APP_ID, null) +
         "\nApi Key: "           + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_API_KEY, null) +
         "\nPrefix: "            + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_PREFIX, null) +
-        "\n\n#### LANGUAGE ####"+
-        "\nCode: "              + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null) +
-        "\nName: "              + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, null) +
         "\n\n#### GENERAL ####" +
         "\nPhone: "             + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null) +
         "\nEmail: "             + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null) +

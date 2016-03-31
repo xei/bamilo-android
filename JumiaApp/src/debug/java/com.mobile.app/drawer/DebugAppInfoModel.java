@@ -1,98 +1,65 @@
 package com.mobile.app.drawer;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import com.mobile.newFramework.tracking.Ad4PushTracker;
-import com.mobile.newFramework.tracking.AdjustTracker;
-import com.mobile.newFramework.tracking.AnalyticsGoogle;
-import com.mobile.newFramework.tracking.NewRelicTracker;
-import com.mobile.newFramework.tracking.gtm.GTMManager;
+import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 
 import io.palaima.debugdrawer.base.DebugModule;
 
 /**
  * Model used to show trackers ids and enable/disable the respective log.
+ *
  * @author spereira
  */
-public class DebugAppInfoModel implements DebugModule, CompoundButton.OnCheckedChangeListener {
+public class DebugAppInfoModel implements DebugModule {
 
-    private final Context mContext;
-    private View mContainer;
+    private final Context context;
 
-    public DebugAppInfoModel(@NonNull Activity activity) {
-        mContext = activity;
+    private TextView nameLabel;
+    private TextView packageLabel;
+    private TextView preInstall;
+    private TextView appName;
+
+    public DebugAppInfoModel(Context context) {
+        this.context = context;
     }
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        // Get view
-        View view = inflater.inflate(R.layout.dd_debug_drawer_item_tracking, parent, false);
-        // Get switch
-        SwitchCompat switchView = (SwitchCompat) view.findViewById(R.id.dd_debug_item_tracking_switch);
-        switchView.setOnCheckedChangeListener(this);
-        // Get text
-        mContainer = view.findViewById(R.id.dd_debug_item_tracking_container);
+        View view = inflater.inflate(R.layout.dd_debug_drawer_item_app_info, parent, false);
+        this.appName = (TextView) view.findViewById(R.id.dd_debug_build_app_name);
+        this.nameLabel = (TextView) view.findViewById(R.id.dd_debug_build_name);
+        this.packageLabel = (TextView) view.findViewById(R.id.dd_debug_build_package);
+        this.preInstall = (TextView) view.findViewById(R.id.dd_debug_build_pre_install);
         return view;
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        int id = buttonView.getId();
-        switch (id) {
-            case R.id.dd_debug_item_tracking_accengage_enable:
-                Ad4PushTracker.get().enableDebugMode();
-                break;
-            case R.id.dd_debug_item_tracking_ga_enable:
-                AnalyticsGoogle.get().enableDebugMode();
-                break;
-            case R.id.dd_debug_item_tracking_gtm_enable:
-                GTMManager.get().enableDebugMode();
-                break;
-            case R.id.dd_debug_item_tracking_adjust_enable:
-                AdjustTracker.get().enableDebugMode();
-                break;
-            case R.id.dd_debug_item_tracking_relic_enable:
-                NewRelicTracker.enableDebugMode();
-                break;
-            case R.id.dd_debug_item_tracking_switch:
-            default:
-                mainSwitch(isChecked);
-                break;
-        }
-    }
-
-    private void mainSwitch(boolean isChecked) {
-        if (isChecked) {
-            // ACCENGAGE
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_accengage_id)).setText(Ad4PushTracker.get().getId());
-            // GA
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_ga_id)).setText(AnalyticsGoogle.get().getId());
-            // GTM
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_gtm_id)).setText(GTMManager.get().getId());
-            // ADJUST
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_adjust_id)).setText(AdjustTracker.get().getId());
-            // NEW RELIC
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_relic_id)).setText(NewRelicTracker.getId());
-            // Show
-            mContainer.setVisibility(View.VISIBLE);
-        } else {
-            mContainer.setVisibility(View.GONE);
+    @SuppressLint("SetTextI18n")
+    private void refresh() {
+        try {
+            PackageInfo info = this.context.getPackageManager().getPackageInfo(this.context.getPackageName(), 0);
+            this.appName.setText(context.getString(context.getApplicationInfo().labelRes));
+            this.nameLabel.setText(info.versionName + " / " + info.versionCode);
+            this.packageLabel.setText(info.packageName);
+            this.preInstall.setVisibility(DeviceInfoHelper.getInfo(context).getBoolean(Constants.INFO_PRE_INSTALL) ? View.VISIBLE : View.GONE);
+        } catch (Exception var2) {
+            // ...
         }
     }
 
     @Override
     public void onOpened() {
-        // ...
+        refresh();
     }
 
     @Override

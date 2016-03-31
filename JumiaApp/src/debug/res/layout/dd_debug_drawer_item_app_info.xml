@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dd_debug_drawer_header_bg"
+    android:gravity="center_vertical"
+    android:padding="10dp">
+
+    <!--APP ICON-->
+    <ImageView
+        android:id="@+id/dd_debug_build_launcher"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="10dp"
+        android:src="@mipmap/ic_launcher" />
+
+    <!--APP NAME-->
+    <TextView
+        android:id="@+id/dd_debug_build_app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/dd_debug_build_launcher"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Jumia Dev" />
+
+    <!--APP PACKAGE-->
+    <TextView
+        android:id="@+id/dd_debug_build_package"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/dd_debug_build_app_name"
+        android:layout_alignStart="@id/dd_debug_build_app_name"
+        android:layout_below="@id/dd_debug_build_app_name"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="com.jumia.android.dev" />
+
+    <!--VERSION NAME-->
+    <TextView
+        android:id="@+id/dd_debug_build_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/dd_debug_build_package"
+        android:layout_alignStart="@id/dd_debug_build_package"
+        android:layout_below="@id/dd_debug_build_package"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="3.1 / 62" />
+
+    <!--PRE INSTALL-->
+    <TextView
+        android:id="@+id/dd_debug_build_pre_install"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/dd_debug_build_name"
+        android:layout_alignStart="@id/dd_debug_build_name"
+        android:layout_below="@id/dd_debug_build_name"
+        android:text="PRE INSTALL"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</RelativeLayout>
