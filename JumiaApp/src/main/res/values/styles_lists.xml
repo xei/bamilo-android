@@ -20,7 +20,7 @@
     <!-- Single line with icon item -->
     <style name="SingleLineList.WithIcon">
         <item name="android:paddingLeft">@dimen/margin_padding_l</item>
-        <item name="android:paddingRight">@dimen/margin_padding_l</item>
+        <item name="android:paddingStart">@dimen/margin_padding_l</item>
         <item name="android:gravity">left|center_vertical</item>
     </style>
 
