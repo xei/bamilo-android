@@ -76,6 +76,16 @@
         <item name="tabIndicatorColor">@color/color_accent</item>
     </style>
 
+    <!-- Sliding Tab Layout -->
+    <style name="Widget.Custom.SlidingTabBar">
+        <item name="android:background">@color/tabBar</item>
+        <item name="stsBottomBorderThickness">0dp</item>
+        <item name="stsDividerColor">@color/white</item>
+        <item name="stsDividerThickness">0dp</item>
+        <item name="stsIndicatorColor">@color/color_accent</item>
+        <item name="stsIndicatorThickness">2dp</item>
+    </style>
+
     <!-- Style for DrawerArrow from support library compatibility -->
     <style name="Widget.Custom.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
