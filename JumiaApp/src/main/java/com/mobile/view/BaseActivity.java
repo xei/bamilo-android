@@ -1319,7 +1319,8 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                             dialogLogout = DialogGenericFragment.newInstance(true, false,
                                     getString(R.string.logout_title),
                                     getString(R.string.logout_text_question),
-                                    getString(R.string.no_label), getString(R.string.yes_label),
+                                    getString(R.string.no_label),
+                                    getString(R.string.yes_label),
                                     new OnClickListener() {
 
                                         @Override

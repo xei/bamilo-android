@@ -21,6 +21,7 @@ public class AbcDebugDrawerView {
                         new SettingsModule(activity),
                         new ScalpelModule(activity)
                         // TODO Send notification
+                        // TODO Edit text to set a new host to test
                         // new NetworkModule(activity),
                         //new OkHttpModule(AigHttpClient.getInstance().getOkHttpClient()),
                         //new BuildModule(activity),
