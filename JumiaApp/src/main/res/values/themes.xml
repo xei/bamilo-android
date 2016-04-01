@@ -116,12 +116,13 @@
 
     <!-- Radio Button -->
     <style name="Widget.Custom.RadioButton" parent="android:Widget.CompoundButton.RadioButton">
-        <!--<item name="android:listChoiceIndicatorSingle">@drawable/_gen_selector_radio_button</item>-->
-        <!--<item name="android:textColorSecondary">@color/black_800</item>-->
-        <!--<item name="android:colorAccent">@color/black_800</item>-->
-        <!--<item name="android:buttonTint">@color/blue_1</item>-->
     </style>
-
+    <style name="RadioButtonTheme">
+        <item name="android:colorControlActivated">@color/blue_1</item>
+        <item name="colorControlActivated">@color/blue_1</item>
+        <item name="android:colorControlNormal">@color/black_800</item>
+        <item name="colorControlNormal">@color/black_800</item>
+    </style>
     <!-- Check Box -->
     <style name="Widget.Custom.CheckBox" parent="android:Widget.CompoundButton.CheckBox">
         <!--<item name="android:listChoiceIndicatorMultiple">@drawable/_gen_selector_check_box</item>-->

@@ -3,6 +3,7 @@ package com.mobile.utils.home.holder;
 import android.content.Context;
 import android.view.View;
 
+import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.newFramework.objects.home.group.BaseTeaserGroupType;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
@@ -23,7 +24,7 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
 
     private boolean secondTime = false;
 
-    private Context context;
+    private final Context context;
 
     /**
      * Constructor
@@ -34,6 +35,7 @@ public class HomeSmallTeaserHolder extends BaseTeaserViewHolder {
         horizontal = (HorizontalListView) view.findViewById(R.id.home_teaser_small_horizontal_list);
         // Disable fading for tablets
         horizontal.setHorizontalFadingEdgeEnabled(mOffset == NO_OFFSET);
+        horizontal.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.HORIZONTAL_LIST));
         // Validate orientation
         horizontal.enableRtlSupport(isRtl);
 
