@@ -210,7 +210,7 @@
 
     <!-- SMALL TEASER -->
     <style name="SmallTeaserStyle" parent="ClickableStyle">
-        <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginLeft">@dimen/dimen_3dp</item>
         <item name="android:layout_marginRight">@dimen/dimen_3dp</item>
