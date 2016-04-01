@@ -4,9 +4,7 @@
     style="@style/ViewGroupCompat.Vertical.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutDirection="ltr"
-    android:orientation="vertical"
-    tools:ignore="UnusedAttribute">
+    android:orientation="vertical">
 
     <!-- TITLE -->
     <com.mobile.components.customfontviews.TextView
