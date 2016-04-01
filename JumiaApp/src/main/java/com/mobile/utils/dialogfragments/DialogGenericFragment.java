@@ -185,7 +185,6 @@ public class DialogGenericFragment extends DialogFragment {
         ((Button) view.findViewById(R.id.button1)).setText(buttonTitle1);
         if (TextUtils.isEmpty(buttonTitle2)) {
             view.findViewById(R.id.button2).setVisibility(View.GONE);
-            view.findViewById(R.id.grey_line_vertical).setVisibility(View.GONE);
         }
         ((Button) view.findViewById(R.id.button2)).setText(buttonTitle2);
         view.findViewById(R.id.button2).setOnClickListener(clickListener);
@@ -214,14 +213,12 @@ public class DialogGenericFragment extends DialogFragment {
         ((Button) view.findViewById(R.id.button1)).setText(buttonTitle1);
         if (TextUtils.isEmpty(buttonTitle2)) {
             view.findViewById(R.id.button2).setVisibility(View.GONE);
-            view.findViewById(R.id.grey_line_vertical).setVisibility(View.GONE);
         }
         ((Button) view.findViewById(R.id.button2)).setText(buttonTitle2);
         view.findViewById(R.id.button2).setOnClickListener(clickListener);
 
         if (TextUtils.isEmpty(buttonTitle2)) {
             view.findViewById(R.id.button2).setVisibility(View.GONE);
-            view.findViewById(R.id.grey_line_vertical2).setVisibility(View.GONE);
         }
         ((Button) view.findViewById(R.id.button3)).setText(buttonTitle3);
         view.findViewById(R.id.button3).setOnClickListener(clickListener);
