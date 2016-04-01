@@ -1,17 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:minHeight="@dimen/dimen_113_33dp"
-    android:orientation="horizontal"
     >
+
+
+
+    <com.mobile.components.customfontviews.RadioButton
+        android:id="@+id/pickup_station_radio_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:theme="@style/RadioButtonTheme"
+        android:background="@color/transparent"
+        />
+
+    <ImageView
+        android:id="@+id/pickup_station_image"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_toLeftOf="@id/pickup_station_radio_button"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/checkout_label"
+        android:scaleType="fitCenter" />
 
     <LinearLayout
         android:id="@+id/pickup_station_details_layout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_toLeftOf="@id/pickup_station_image"
         android:gravity="center|right"
         android:orientation="vertical">
 
@@ -48,20 +68,4 @@
             android:visibility="gone" />
 
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/pickup_station_image"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:adjustViewBounds="true"
-        android:contentDescription="@string/checkout_label"
-        android:scaleType="fitCenter" />
-
-    <com.mobile.components.customfontviews.RadioButton
-        android:id="@+id/pickup_station_radio_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp" />
-
-</LinearLayout>
+</RelativeLayout>

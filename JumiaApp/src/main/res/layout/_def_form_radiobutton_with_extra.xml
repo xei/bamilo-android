@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <!-- DIVIDER -->
 
@@ -15,9 +16,12 @@
 
     <com.mobile.components.customfontviews.RadioButton
         android:id="@+id/radio_shipping"
-        style="@style/FormRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"
+        android:theme="@style/RadioButtonTheme"
+        />
 
     <!-- EXTRA CONTAINER -->
 

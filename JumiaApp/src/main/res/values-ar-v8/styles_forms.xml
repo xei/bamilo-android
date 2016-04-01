@@ -31,9 +31,10 @@
     <style name="FormRadioButton" parent="SingleLineList">
         <item name="android:background">@null</item>
         <item name="android:paddingRight">0dp</item>
-        <item name="android:drawablePadding">16dp</item>
+        <item name="android:drawablePadding">6dp</item>
         <item name="android:button">@null</item>
         <item name="android:drawableRight">@drawable/_gen_selector_radio_button</item>
+        <item name="android:theme">@style/RadioButtonTheme</item>
     </style>
 
     <style name="FormRadioButton.Right">
@@ -44,6 +45,7 @@
         <item name="android:drawableRight">@null</item>
         <item name="android:maxLines">2</item>
         <item name="android:singleLine">false</item>
+        <item name="android:theme">@style/RadioButtonTheme</item>
     </style>
 
     <style name="FormFieldRadioButtonStyleRTL" parent="FormFieldStyle">
@@ -51,6 +53,7 @@
         <item name="android:layout_marginLeft">@dimen/dimen_32dp</item>
         <item name="android:drawablePadding">@dimen/dimen_6dp</item>
         <item name="android:paddingLeft">@dimen/dimen_6dp</item>
+        <item name="android:theme">@style/RadioButtonTheme</item>
     </style>
 
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ -->
