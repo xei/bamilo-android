@@ -64,7 +64,6 @@
 
     <style name="ViewGroupCompat.Vertical.MiddleDivider" />
 
-
     <style name="ViewGroupCompat.Vertical.MiddleDivider.EndDivider">
         <item name="showDividers">middle|end</item>
     </style>

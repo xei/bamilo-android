@@ -1,77 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ViewGroupCompat.Vertical.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    tools:ignore="UnusedAttribute">
 
     <!-- TITLE -->
-
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_title"
         style="@style/DialogHeaderStyle"
         tools:text="Title" />
 
     <!-- CONTENT -->
-
-    <RelativeLayout style="@style/dialog_container_content" >
+    <RelativeLayout style="@style/DialogContentStyle">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/dialog_text"
-            style="@style/dialog_text"
-            android:layout_width="match_parent"
+            style="@style/DialogInfoStyle"
             android:layout_centerVertical="true"
             android:gravity="center"
             tools:text="This is a very very very long dialog text spanning multiple lines that obviously needs to be made longer as the original one did now show the condensed look of a really long text" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/items_count"
-            style="@style/dialog_text"
-            android:layout_width="match_parent"
+            style="@style/DialogInfoStyle"
             android:layout_centerVertical="true"
             android:gravity="center" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <!-- BUTTONS -->
+    <android.support.v7.widget.LinearLayoutCompat
+        android:id="@+id/button_container"
+        style="@style/ViewGroupCompat.Horizontal.MiddleDivider"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/item_height_normal" >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <View
-            android:id="@+id/grey_line"
-            style="@style/DividerHorizontal.Black_400"
-            android:layout_alignParentTop="true" />
+        <com.mobile.components.customfontviews.Button
+            android:id="@+id/button3"
+            style="@style/DialogButtonStyle"
+            tools:text="Upgrade" />
 
-        <LinearLayout
-            android:id="@+id/button_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_below="@id/grey_line"
-            android:orientation="horizontal" >
+        <com.mobile.components.customfontviews.Button
+            android:id="@+id/button2"
+            style="@style/DialogButtonStyle"
+            tools:text="Remind me later" />
 
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/button3"
-                style="@style/dialog_button_style"
-                android:text="@string/ok_label" />
+        <com.mobile.components.customfontviews.Button
+            android:id="@+id/button1"
+            style="@style/DialogButtonStyle"
+            tools:text="No" />
 
-            <View
-                android:id="@+id/grey_line_vertical"
-                style="@style/DividerVertical.Black_400" />
+    </android.support.v7.widget.LinearLayoutCompat>
 
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/button2"
-                style="@style/dialog_button_style"
-                android:text="@string/ok_label" />
-
-            <View
-                android:id="@+id/grey_line_vertical2"
-                style="@style/DividerVertical.Black_400" />
-
-            <com.mobile.components.customfontviews.Button
-                android:id="@+id/button1"
-                style="@style/dialog_button_style"
-                android:text="@string/cancel_label" />
-        </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>

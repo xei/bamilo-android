@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <!-- TABS -->
-    <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
-        android:id="@+id/product_info_pager_tab"
-        style="@style/Widget.Custom.SlidingTabBar"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|start"
-        android:gravity="left|start"
-        android:layoutDirection="ltr"/>
+        android:background="@color/tabBar">
+
+        <com.mobile.components.androidslidingtabstrip.SlidingTabLayout
+            android:id="@+id/product_info_pager_tab"
+            style="@style/Widget.Custom.SlidingTabBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|start"
+            android:gravity="left|start"
+            android:layoutDirection="ltr"
+            tools:ignore="UnusedAttribute" />
+
+    </RelativeLayout>
 
     <!-- CONTENT -->
     <com.mobile.components.viewpager.RtlViewPager
