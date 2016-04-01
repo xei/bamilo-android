@@ -55,6 +55,6 @@
     <string name="apptimize_apikey"/>
 
     <!-- GTM -->
-    <!--<item name="gtm_debug" type="bool">false</item>-->
+    <item name="gtm_debug" type="bool">false</item>
     
 </resources>
