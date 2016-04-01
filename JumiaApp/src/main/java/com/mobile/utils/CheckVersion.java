@@ -209,10 +209,8 @@ public class CheckVersion {
         }
 
         Print.d(TAG, "checkVersionInfo: appVersion = " + crrAppVersion);
-        Print.d(TAG, "provided minimumVersion = " + infoVersion.getMinimumVersion()
-                + " currentVersion = " + infoVersion.getCurrentVersion());
-        Print.d(TAG, "customer preference: "
-                + (unwantedVersion == infoVersion.getCurrentVersion() ? "Ignore" : "Accept"));
+        Print.d(TAG, "provided minimumVersion = " + infoVersion.getMinimumVersion() + " currentVersion = " + infoVersion.getCurrentVersion());
+        Print.d(TAG, "customer preference: " + (unwantedVersion == infoVersion.getCurrentVersion() ? "Ignore" : "Accept"));
         Print.d(TAG, "checkResult = " + checkResult);
         return true;
     }
@@ -284,7 +282,6 @@ public class CheckVersion {
         @Override
         public void onClick(View v) {
             mDialog.dismissAllowingStateLoss();
-
             int id = v.getId();
             if (id == R.id.button1) {
                 storeUpdateAsUnwanted();
@@ -310,7 +307,6 @@ public class CheckVersion {
         @Override
         public void onClick(View v) {
             mDialog.dismissAllowingStateLoss();
-
             int id = v.getId();
             if (id == R.id.button1) {
                 mActivity.finish();
