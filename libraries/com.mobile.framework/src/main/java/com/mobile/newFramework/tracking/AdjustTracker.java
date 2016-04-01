@@ -7,6 +7,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
@@ -41,7 +42,7 @@ import java.util.List;
  * @author nunocastro
  *
  */
-public class AdjustTracker {
+public class AdjustTracker extends AbcBaseTracker {
     
     private final static String TAG = AdjustTracker.class.getSimpleName();
 
@@ -175,17 +176,23 @@ public class AdjustTracker {
      * initialized Adjust tracker
      */
     public static void initializeAdjust(final Context context) {
-        // Get adjust app token
-        String appToken = context.getString(R.string.adjust_app_token);
         // Get adjust environment and log level
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         LogLevel logLevel = LogLevel.INFO;
+        // Case dev
         if(!context.getResources().getBoolean(R.bool.adjust_is_production_env)) {
             environment = AdjustConfig.ENVIRONMENT_SANDBOX;
             //logLevel = LogLevel.VERBOSE;
         }
+        initializeAdjust(context, environment, logLevel);
+    }
+
+    /**
+     * Initialized Adjust tracker
+     */
+    private static void initializeAdjust(final Context context, String environment, LogLevel logLevel) {
         // Create adjust config
-        AdjustConfig config = new AdjustConfig(context, appToken, environment);
+        AdjustConfig config = new AdjustConfig(context, getAppToken(context), environment);
         config.setLogLevel(logLevel);
         // Set pre install default tracker
         if (!TextUtils.isEmpty(context.getString(R.string.adjust_default_tracker))) {
@@ -203,15 +210,35 @@ public class AdjustTracker {
     }
 
     /**
-     * Return the current id
+     * Get adjust app token
      */
-    public String getId() {
-        return Adjust.getDefaultInstance().toString();
+    private static String getAppToken(Context context) {
+        return context.getString(R.string.adjust_app_token);
     }
 
-    public void enableDebugMode() {
-        Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
+    /*
+     * ######### BASE TRACKER #########
+     */
+
+    @Override
+    public String getId(@NonNull Context context) {
+        return getAppToken(context);
     }
+
+    @Override
+    public void debugMode(@NonNull Context context, boolean enable) {
+        if (enable) {
+            Print.w(TAG, "WARNING: DEBUG MODE IS ENABLE");
+            initializeAdjust(context, AdjustConfig.ENVIRONMENT_SANDBOX, LogLevel.VERBOSE);
+        } else {
+            Print.w(TAG, "WARNING: DEBUG MODE IS DISABLE");
+            initializeAdjust(context, AdjustConfig.ENVIRONMENT_SANDBOX, LogLevel.INFO);
+        }
+    }
+
+    /*
+     * ######### TRACKER #########
+     */
 
     public static void onResume() {
         if(Adjust.isEnabled()){

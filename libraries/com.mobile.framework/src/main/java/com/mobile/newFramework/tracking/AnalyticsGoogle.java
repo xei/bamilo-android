@@ -3,6 +3,7 @@ package com.mobile.newFramework.tracking;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -37,7 +38,7 @@ import java.util.regex.PatternSyntaxException;
  * @version 0.1
  *
  */
-public class AnalyticsGoogle {
+public class AnalyticsGoogle extends AbcBaseTracker {
 
     private static final String TAG = AnalyticsGoogle.class.getSimpleName();
 
@@ -135,16 +136,6 @@ public class AnalyticsGoogle {
      */
 
     /**
-     * When dry run is set, hits will not be dispatched, but will still be logged as though they were dispatched.
-     * @author sergiopereira
-     */
-    public void enableDebugMode() {
-        Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
-        mAnalytics.setDryRun(true);
-        mAnalytics.getLogger().setLogLevel(LogLevel.VERBOSE);
-    }
-
-    /**
      * Load keys from saved preferences
      * @author sergiopereira
      */
@@ -154,8 +145,6 @@ public class AnalyticsGoogle {
         mCurrentKey = mSharedPreferences.getString(Darwin.KEY_SELECTED_COUNTRY_GA_ID, null);
         Print.d(TAG, "TRACK LOAD KEYS: mCurrentKey-> " + mCurrentKey);
     }
-
-
 
     /**
      * Update the tracker using the current key
@@ -172,14 +161,29 @@ public class AnalyticsGoogle {
         Print.i(TAG, "UPDATED TRACKER WITH KEY: " + mCurrentKey);
     }
 
-    /**
-     * Return the current id
+    /*
+     * ######### BASE TRACKER #########
      */
+
+    @Override
     public String getId() {
-        return mCurrentKey;
+        return mTracker != null ? mTracker.get("&tid") : "n.a.";
     }
 
-    /**
+    @Override
+    public void debugMode(@NonNull Context context, boolean enable) {
+        if (enable) {
+            Print.w(TAG, "WARNING: DEBUG IS ENABLE");
+            mAnalytics.setDryRun(true);
+            mAnalytics.getLogger().setLogLevel(LogLevel.VERBOSE);
+        } else {
+            Print.w(TAG, "WARNING: DEBUG IS DISABLE");
+            mAnalytics.setDryRun(false);
+            mAnalytics.getLogger().setLogLevel(LogLevel.INFO);
+        }
+    }
+
+    /*
      * ################## BASE GA TRACKING (v4) ################## 
      */
 

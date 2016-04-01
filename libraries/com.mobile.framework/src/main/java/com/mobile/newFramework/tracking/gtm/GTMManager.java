@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.google.android.gms.common.api.PendingResult;
@@ -19,6 +20,7 @@ import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.checkout.PurchaseItem;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.tracking.AbcBaseTracker;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
@@ -30,7 +32,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 
-public class GTMManager {
+public class GTMManager extends AbcBaseTracker {
 
     private final static String TAG = GTMManager.class.getSimpleName();
 
@@ -71,7 +73,6 @@ public class GTMManager {
 
     /**
      * FIXME : https://rink.hockeyapp.net/manage/apps/33641/app_versions/164/crash_reasons/112840256?type=crashes
-     * @param context
      */
     @SuppressLint("NewApi")
     private GTMManager(Context context) {
@@ -83,10 +84,8 @@ public class GTMManager {
 
         dataLayer = TagManager.getInstance(context).getDataLayer();
 
-        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String containerId = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, "");
-        Print.e(TAG, "init id:" + containerId);
-        PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(containerId,0);
+        // Load container id
+        PendingResult<ContainerHolder> pending = mTagManager.loadContainerPreferNonDefault(getId(context), 0);
 
         // The onResult method will be called as soon as one of the following happens:
         //     1. a saved container is loaded
@@ -102,7 +101,6 @@ public class GTMManager {
                 }
                 ContainerLoadedCallback.registerCallbacksForContainer(mContainer);
                 containerHolder.setContainerAvailableListener(new ContainerAvailableListener() {
-                    
                     @Override
                     public void onContainerAvailable(ContainerHolder arg0, String arg1) {
                         Print.e(TAG, "onContainerAvailable");
@@ -115,17 +113,30 @@ public class GTMManager {
         }, 2, TimeUnit.SECONDS);
     }
 
-    /**
-     * Return the current id
+    /*
+     * ######### BASE TRACKER #########
      */
-    public String getId() {
-        return mTagManager.getDataLayer().toString();
+
+    @Override
+    public String getId(@NonNull Context context) {
+        return context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE)
+                .getString(Darwin.KEY_SELECTED_COUNTRY_GTM_ID, "");
     }
 
-    public void enableDebugMode() {
-        Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
-        mTagManager.setVerboseLoggingEnabled(true);
+    @Override
+    public void debugMode(@NonNull Context context, boolean enable) {
+        if (enable) {
+            Print.w(TAG, "WARNING: DEBUG MODE IS ENABLE");
+            mTagManager.setVerboseLoggingEnabled(true);
+        } else {
+            Print.w(TAG, "WARNING: DEBUG MODE IS DISABLE");
+            mTagManager.setVerboseLoggingEnabled(false);
+        }
     }
+
+    /*
+     * ######### TRACKER #########
+     */
 
     /**
      * This method tracks if either the application was opened either by push
@@ -579,7 +590,6 @@ public class GTMManager {
         Print.i(TAG, " GTM TRACKING -> processPendingEvents()");
         try {
             if (pendingEvents != null) {
-
                 for (Map<String, Object> event : pendingEvents) {
                     Print.i(TAG, " GTM TRACKING -> processPendingEvents() -> Event : " + event.get(EVENT_TYPE));
                     if (dataLayer == null)

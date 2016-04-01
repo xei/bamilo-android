@@ -20,8 +20,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:columnCount="3"
+        android:visibility="gone"
         tools:ignore="UselessParent"
-        android:visibility="gone">
+        tools:visibility="visible">
+
+        <!--HEADER-->
+
+        <TextView
+            style="@style/Widget.DebugDrawer.Base.RowTitle"
+            android:layout_gravity="start|center_vertical"
+            android:text="NAME" />
+
+        <TextView
+            style="@style/Widget.DebugDrawer.Base.RowTitle"
+            android:layout_gravity="start|center_vertical"
+            android:text="ID" />
+
+        <TextView
+            style="@style/Widget.DebugDrawer.Base.RowTitle"
+            android:layout_gravity="start|center_vertical"
+            android:text="LOG" />
 
         <!--GA-->
 
@@ -30,16 +48,17 @@
             android:layout_gravity="start|center_vertical"
             android:text="GA" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/dd_debug_item_tracking_ga_id"
             style="@style/Widget.DebugDrawer.Base.RowValue"
-            android:layout_gravity="start|center_vertical" />
+            android:layout_width="190dp"
+            android:layout_gravity="start|center_vertical"
+            android:textIsSelectable="true" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/dd_debug_item_tracking_ga_enable"
             style="@style/Widget.DebugDrawer.Base.RowTitle"
             android:layout_gravity="start|center_vertical"
-            android:text="Log"
             app:switchPadding="5dp" />
 
         <!--GTM-->
@@ -49,16 +68,17 @@
             android:layout_gravity="start|center_vertical"
             android:text="GTM" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/dd_debug_item_tracking_gtm_id"
             style="@style/Widget.DebugDrawer.Base.RowValue"
-            android:layout_gravity="start|center_vertical" />
+            android:layout_width="190dp"
+            android:layout_gravity="start|center_vertical"
+            android:textIsSelectable="true" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/dd_debug_item_tracking_gtm_enable"
             style="@style/Widget.DebugDrawer.Base.RowTitle"
             android:layout_gravity="start|center_vertical"
-            android:text="Log"
             app:switchPadding="5dp" />
 
         <!--ADJUST-->
@@ -66,18 +86,19 @@
         <TextView
             style="@style/Widget.DebugDrawer.Base.RowTitle"
             android:layout_gravity="start|center_vertical"
-            android:text="ADJUST" />
+            android:text="ADJ" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/dd_debug_item_tracking_adjust_id"
             style="@style/Widget.DebugDrawer.Base.RowValue"
-            android:layout_gravity="start|center_vertical" />
+            android:layout_width="190dp"
+            android:layout_gravity="start|center_vertical"
+            android:textIsSelectable="true" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/dd_debug_item_tracking_adjust_enable"
             style="@style/Widget.DebugDrawer.Base.RowTitle"
             android:layout_gravity="start|center_vertical"
-            android:text="Log"
             app:switchPadding="5dp" />
 
         <!--NEW RELIC-->
@@ -85,18 +106,19 @@
         <TextView
             style="@style/Widget.DebugDrawer.Base.RowTitle"
             android:layout_gravity="start|center_vertical"
-            android:text="NEW RELIC" />
+            android:text="NR" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/dd_debug_item_tracking_relic_id"
             style="@style/Widget.DebugDrawer.Base.RowValue"
-            android:layout_gravity="start|center_vertical" />
+            android:layout_width="190dp"
+            android:layout_gravity="start|center_vertical"
+            android:textIsSelectable="true" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/dd_debug_item_tracking_relic_enable"
             style="@style/Widget.DebugDrawer.Base.RowTitle"
             android:layout_gravity="start|center_vertical"
-            android:text="Log"
             app:switchPadding="5dp" />
 
         <!--ACC ENGAGE-->
@@ -104,18 +126,19 @@
         <TextView
             style="@style/Widget.DebugDrawer.Base.RowTitle"
             android:layout_gravity="start|center_vertical"
-            android:text="ACCENGAGE" />
+            android:text="AD4" />
 
-        <TextView
+        <android.support.v7.widget.AppCompatTextView
             android:id="@+id/dd_debug_item_tracking_accengage_id"
             style="@style/Widget.DebugDrawer.Base.RowValue"
-            android:layout_gravity="start|center_vertical" />
+            android:layout_width="190dp"
+            android:layout_gravity="start|center_vertical"
+            android:textIsSelectable="true" />
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/dd_debug_item_tracking_accengage_enable"
             style="@style/Widget.DebugDrawer.Base.RowTitle"
             android:layout_gravity="start|center_vertical"
-            android:text="Log"
             app:switchPadding="5dp" />
 
     </GridLayout>

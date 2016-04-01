@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:columnCount="2"
+    android:padding="12dp"
+    tools:ignore="UselessParent">
+
+    <TextView
+        style="@style/Widget.DebugDrawer.Base.Header"
+        android:layout_width="0dp"
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|fill_horizontal"
+        android:text="Mobile Api" />
+
+    <TextView
+        style="@style/Widget.DebugDrawer.Base.RowTitle"
+        android:layout_gravity="start|center_vertical"
+        android:text="Maintenance Page" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/dd_debug_network_maintenance"
+        style="@style/Widget.DebugDrawer.Base.RowWidget"
+        android:layout_gravity="start|center_vertical" />
+
+    <TextView
+        style="@style/Widget.DebugDrawer.Base.RowTitle"
+        android:layout_gravity="start|center_vertical"
+        android:text="Overload Page" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/dd_debug_network_overload"
+        style="@style/Widget.DebugDrawer.Base.RowWidget"
+        android:layout_gravity="start|center_vertical" />
+
+</GridLayout>

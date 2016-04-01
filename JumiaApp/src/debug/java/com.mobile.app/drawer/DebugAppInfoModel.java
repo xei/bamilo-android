@@ -16,8 +16,7 @@ import com.mobile.view.R;
 import io.palaima.debugdrawer.base.DebugModule;
 
 /**
- * Model used to show trackers ids and enable/disable the respective log.
- *
+ * Model used to show app info.
  * @author spereira
  */
 public class DebugAppInfoModel implements DebugModule {
@@ -36,16 +35,17 @@ public class DebugAppInfoModel implements DebugModule {
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-        View view = inflater.inflate(R.layout.dd_debug_drawer_item_app_info, parent, false);
+        View view = inflater.inflate(R.layout.dd_debug_drawer_module_app_info, parent, false);
         this.appName = (TextView) view.findViewById(R.id.dd_debug_build_app_name);
         this.nameLabel = (TextView) view.findViewById(R.id.dd_debug_build_name);
         this.packageLabel = (TextView) view.findViewById(R.id.dd_debug_build_package);
         this.preInstall = (TextView) view.findViewById(R.id.dd_debug_build_pre_install);
+        showInfo();
         return view;
     }
 
     @SuppressLint("SetTextI18n")
-    private void refresh() {
+    private void showInfo() {
         try {
             PackageInfo info = this.context.getPackageManager().getPackageInfo(this.context.getPackageName(), 0);
             this.appName.setText(context.getString(context.getApplicationInfo().labelRes));
@@ -59,7 +59,7 @@ public class DebugAppInfoModel implements DebugModule {
 
     @Override
     public void onOpened() {
-        refresh();
+        // ...
     }
 
     @Override

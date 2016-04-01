@@ -1,17 +1,16 @@
 package com.mobile.app.drawer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Switch;
 
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.errors.ErrorCode;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Response;
@@ -21,78 +20,30 @@ import java.io.IOException;
 import io.palaima.debugdrawer.base.DebugModule;
 
 /**
- * Created by spereira on 2/23/16.
+ * Model used to simulate some mobile api errors.
+ * @author spereira
  */
-public class DebugMobileApiModel implements DebugModule {
+public class DebugMobileApiModel implements DebugModule, CompoundButton.OnCheckedChangeListener {
 
-    private static final boolean HAS_OK_HTTP;
+    private ResponseCodeInterceptor mInterceptor;
+    private SwitchCompat mMaintenance;
+    private SwitchCompat mOverload;
 
-    static {
-        boolean hasDependency;
-        try {
-            Class.forName("com.squareup.okhttp.OkHttpClient");
-            hasDependency = true;
-        } catch (ClassNotFoundException e) {
-            hasDependency = false;
-        }
-        HAS_OK_HTTP = hasDependency;
-    }
-
-    private final Context context;
-    private ViewGroup rootView;
-    private ResponseCodeInterceptor mMaintenancePageInterceptor;
-
-    public DebugMobileApiModel(@NonNull Activity activity) {
-        if (!HAS_OK_HTTP) {
-            throw new RuntimeException("Scalpel dependency is not found");
-        }
-        context = activity;
-        rootView = (ViewGroup) activity.findViewById(android.R.id.content);
+    public DebugMobileApiModel(Context context) {
+        // Create interceptor
+        mInterceptor = new ResponseCodeInterceptor();
+        // Add interceptor
+        AigHttpClient.getInstance(context).addDebugNetworkInterceptors(mInterceptor);
     }
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
-
-//        ViewGroup contentView = (ViewGroup) rootView.getChildAt(0);
-//        ViewGroup scrimInsets = (ViewGroup) contentView.getChildAt(0);
-//        View contentRelativeView = scrimInsets.getChildAt(0);
-//
-//        scrimInsets.removeView(contentRelativeView);
-//
-//        final ScalpelFrameLayout scalpelFrameLayout = new ScalpelFrameLayout(context);
-//        scalpelFrameLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-//        scrimInsets.addView(scalpelFrameLayout);
-//        scalpelFrameLayout.addView(contentRelativeView);
-
-        View view = inflater.inflate(R.layout.dd_debug_drawer_item_scalpel, parent, false);
-        Switch debugEnableScalpel = (Switch) view.findViewById(R.id.dd_debug_enable_scalpel);
-        debugEnableScalpel.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    ResponseCodeInterceptor mMaintenancePageInterceptor = new ResponseCodeInterceptor(ErrorCode.SERVER_IN_MAINTENANCE);
-                    AigHttpClient.getInstance(context).addDebugNetworkInterceptors(mMaintenancePageInterceptor);
-                } else {
-//                    AigHttpClient.getInstance().removeDebugNetworkInterceptors(mMaintenancePageInterceptor);
-                }
-            }
-        });
-        Switch debugDisableGraphics = (Switch) view.findViewById(R.id.dd_debug_disable_graphics);
-        debugDisableGraphics.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                scalpelFrameLayout.setDrawViews(!isChecked);
-            }
-        });
-        Switch debugShowIds = (Switch) view.findViewById(R.id.dd_debug_show_ids);
-        debugShowIds.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                scalpelFrameLayout.setDrawIds(isChecked);
-            }
-        });
-
+        View view = inflater.inflate(R.layout.dd_debug_drawer_module_mob_api, parent, false);
+        mMaintenance = ((SwitchCompat) view.findViewById(R.id.dd_debug_network_maintenance));
+        mMaintenance.setOnCheckedChangeListener(this);
+        mOverload = ((SwitchCompat) view.findViewById(R.id.dd_debug_network_overload));
+        mOverload.setOnCheckedChangeListener(this);
         return view;
     }
 
@@ -126,20 +77,61 @@ public class DebugMobileApiModel implements DebugModule {
         // ...
     }
 
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        int id = buttonView.getId();
+        switch (id) {
+            case R.id.dd_debug_network_maintenance:
+                setAction(isChecked, ErrorCode.SERVER_IN_MAINTENANCE);
+                disableOthers(mOverload);
+                break;
+            case R.id.dd_debug_network_overload:
+                setAction(isChecked, ErrorCode.SERVER_OVERLOAD);
+                disableOthers(mMaintenance);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void setAction(boolean isChecked, int code) {
+        if(mInterceptor == null) {
+            return;
+        }
+        if (isChecked) {
+            mInterceptor.setHttpCode(code);
+        } else {
+            mInterceptor.removeHttpCode();
+        }
+    }
+
+    private void disableOthers(@Nullable SwitchCompat switchCompat) {
+        if (switchCompat != null && switchCompat.isChecked()) {
+            switchCompat.setOnCheckedChangeListener(null);
+            switchCompat.setChecked(false);
+            switchCompat.setOnCheckedChangeListener(this);
+        }
+    }
+
 
     private static class ResponseCodeInterceptor implements Interceptor {
 
-        private int code;
+        private int code = -1;
 
-        public ResponseCodeInterceptor(@ErrorCode.Code int code) {
+        public void setHttpCode(int code) {
             this.code = code;
+        }
+
+        public void removeHttpCode() {
+            this.code = -1;
         }
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-            Print.w(AigHttpClient.TAG, ">>>>>>>>>>>>>>> OK HTTP: RESPONSE CODE INTERCEPTOR = " + code);
             Response response = chain.proceed(chain.request());
-            response.newBuilder().code(code).build();
+            if (code != -1) {
+                response = response.newBuilder().code(code).build();
+            }
             return response;
         }
     }

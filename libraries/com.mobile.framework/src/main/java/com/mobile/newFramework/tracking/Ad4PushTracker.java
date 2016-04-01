@@ -28,7 +28,7 @@ import java.io.IOException;
  * @author nunocastro
  * @modified 
  */
-public class Ad4PushTracker {
+public class Ad4PushTracker extends AbcBaseTracker {
 
     private final static String TAG = Ad4PushTracker.class.getSimpleName();
 
@@ -178,14 +178,19 @@ public class Ad4PushTracker {
         return isEnabled && mA4S != null;
     }
 
+    /*
+     * ######### BASE TRACKER #########
+     */
+
+    @Override
     public String getId() {
         return mA4S.getAndroidId();
     }
 
-    public void enableDebugMode() {
-        Print.w(TAG, "WARNING: DEBUG IS ENABLE SO HITS WILL NOT BE DISPATCHED");
+    @Override
+    public void debugMode(@NonNull Context context, boolean enable) {
+        // ...
     }
-
 
     /*
      * ####### BASE #######

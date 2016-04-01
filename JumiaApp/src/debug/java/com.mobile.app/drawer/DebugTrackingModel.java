@@ -36,7 +36,7 @@ public class DebugTrackingModel implements DebugModule, CompoundButton.OnChecked
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         // Get view
-        View view = inflater.inflate(R.layout.dd_debug_drawer_item_tracking, parent, false);
+        View view = inflater.inflate(R.layout.dd_debug_drawer_module_tracking, parent, false);
         // Get switch
         SwitchCompat switchView = (SwitchCompat) view.findViewById(R.id.dd_debug_item_tracking_switch);
         switchView.setOnCheckedChangeListener(this);
@@ -50,19 +50,19 @@ public class DebugTrackingModel implements DebugModule, CompoundButton.OnChecked
         int id = buttonView.getId();
         switch (id) {
             case R.id.dd_debug_item_tracking_accengage_enable:
-                Ad4PushTracker.get().enableDebugMode();
+                Ad4PushTracker.get().debugMode(mContext, isChecked);
                 break;
             case R.id.dd_debug_item_tracking_ga_enable:
-                AnalyticsGoogle.get().enableDebugMode();
+                AnalyticsGoogle.get().debugMode(mContext, isChecked);
                 break;
             case R.id.dd_debug_item_tracking_gtm_enable:
-                GTMManager.get().enableDebugMode();
+                GTMManager.get().debugMode(mContext, isChecked);
                 break;
             case R.id.dd_debug_item_tracking_adjust_enable:
-                AdjustTracker.get().enableDebugMode();
+                AdjustTracker.get().debugMode(mContext, isChecked);
                 break;
             case R.id.dd_debug_item_tracking_relic_enable:
-                NewRelicTracker.enableDebugMode();
+                NewRelicTracker.get().debugMode(mContext, isChecked);
                 break;
             case R.id.dd_debug_item_tracking_switch:
             default:
@@ -78,11 +78,11 @@ public class DebugTrackingModel implements DebugModule, CompoundButton.OnChecked
             // GA
             ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_ga_id)).setText(AnalyticsGoogle.get().getId());
             // GTM
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_gtm_id)).setText(GTMManager.get().getId());
+            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_gtm_id)).setText(GTMManager.get().getId(mContext));
             // ADJUST
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_adjust_id)).setText(AdjustTracker.get().getId());
+            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_adjust_id)).setText(AdjustTracker.get().getId(mContext));
             // NEW RELIC
-            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_relic_id)).setText(NewRelicTracker.getId());
+            ((TextView) mContainer.findViewById(R.id.dd_debug_item_tracking_relic_id)).setText(NewRelicTracker.get().getId(mContext));
             // Show
             mContainer.setVisibility(View.VISIBLE);
         } else {

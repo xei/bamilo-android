@@ -4,26 +4,25 @@ import android.app.Activity;
 
 import io.palaima.debugdrawer.DebugDrawer;
 import io.palaima.debugdrawer.commons.DeviceModule;
-import io.palaima.debugdrawer.commons.NetworkModule;
 import io.palaima.debugdrawer.commons.SettingsModule;
 import io.palaima.debugdrawer.scalpel.ScalpelModule;
 
 
-public class DebugDrawerView {
+public class AbcDebugDrawerView {
 
     public static DebugDrawer onCreate(final Activity activity) {
-        return new io.palaima.debugdrawer.DebugDrawer
-                .Builder(activity)
+        return new DebugDrawer.Builder(activity)
                 .modules(
                         new DebugAppInfoModel(activity),
                         new DebugCountryModel(activity),
                         new DebugTrackingModel(activity),
-                        new NetworkModule(activity),
+                        new DebugMobileApiModel(activity),
                         new DeviceModule(activity),
-                        new ScalpelModule(activity),
-                        new SettingsModule(activity)
+                        new SettingsModule(activity),
+                        new ScalpelModule(activity)
                         // TODO Send notification
-                        // TODO Network Error: Maintenance Page | Kickout Page
+                        // new NetworkModule(activity),
+                        //new OkHttpModule(AigHttpClient.getInstance().getOkHttpClient()),
                         //new BuildModule(activity),
                         //new ActionsModule(createSwitchAction(activity)),
                         //new ActionsModule(createButtonAction(activity)),

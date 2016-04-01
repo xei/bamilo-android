@@ -2,7 +2,7 @@ package com.mobile.app;
 
 import android.os.Bundle;
 
-import com.mobile.app.drawer.DebugDrawerView;
+import com.mobile.app.drawer.AbcDebugDrawerView;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -31,34 +31,34 @@ public abstract class DebugActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Create debug drawer
-        mDebugDrawer = DebugDrawerView.onCreate(this);
+        mDebugDrawer = AbcDebugDrawerView.onCreate(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         // Start debug drawer
-        DebugDrawerView.onStart(mDebugDrawer);
+        AbcDebugDrawerView.onStart(mDebugDrawer);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         // Resume debug drawer
-        DebugDrawerView.onResume(mDebugDrawer);
+        AbcDebugDrawerView.onResume(mDebugDrawer);
     }
 
     @Override
     public void onPause() {
         super.onPause();
         // Pause debug drawer
-        DebugDrawerView.onPause(mDebugDrawer);
+        AbcDebugDrawerView.onPause(mDebugDrawer);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         // Stop debug drawer
-        DebugDrawerView.onStop(mDebugDrawer);
+        AbcDebugDrawerView.onStop(mDebugDrawer);
     }
 }
