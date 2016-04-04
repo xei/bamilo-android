@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Paint;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -97,14 +98,15 @@ public class UIProductUtils {
         }
     }
 
-    public static void setDiscountRules(@NonNull ProductBase productBase, @NonNull TextView percentage){
-        if (productBase.hasDiscount()) {
+    public static void setDiscountRules(@NonNull ProductBase product, @NonNull TextView percentage){
+        if (product.hasDiscount()) {
             Resources resources = percentage.getResources();
-            percentage.setText(String.format(resources.getString(R.string.format_discount_percentage), productBase.getMaxSavingPercentage()));
+            percentage.setText(String.format(resources.getString(R.string.format_discount_percentage), product.getMaxSavingPercentage()));
             percentage.setVisibility(View.VISIBLE);
         } else {
             percentage.setVisibility(View.INVISIBLE);
         }
+        percentage.setEnabled(product.hasDiscount());
     }
 
     /**
@@ -183,6 +185,15 @@ public class UIProductUtils {
                     }
                 });
             }
+        }
+    }
+
+    /**
+     * Method used to set the free shipping info
+     */
+    public static void setFreeShippingInfo(@Nullable ProductRegular product, @Nullable View view) {
+        if (product != null && view != null) {
+            view.setVisibility(product.hasFreeShipping() ? View.VISIBLE : View.GONE);
         }
     }
 

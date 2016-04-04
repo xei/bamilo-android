@@ -107,6 +107,7 @@
     </style>
 
     <style name="TextBase.Caption.Italic">
+        <item name="android:fontFamily">roboto_italic</item>
         <item name="android:textStyle">italic</item>
     </style>
 

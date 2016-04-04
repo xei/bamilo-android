@@ -75,17 +75,26 @@
     <!-- SHOP FIRST IMAGE -->
     <ImageView
         android:id="@+id/item_shop_first"
-        style="@style/ShopFirstStyle" />
+        style="@style/ShopFirstStyle"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content" />
+
+    <!--SHIPPING INFO-->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/offer_item_shipping"
+        style="@style/TextFreeShipping"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content" />
 
     <!-- DELIVERY TIME SECTION -->
-
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/offer_item_delivery"
         style="@style/TextBase.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/dimen_16dp"
-        android:paddingTop="@dimen/dimen_10dp"
+        android:layout_marginTop="@dimen/margin_padding_l"
+        android:layout_marginBottom="@dimen/margin_padding_xl"
         android:textColor="@color/black"
         tools:text="3 - 8 days" />
 
