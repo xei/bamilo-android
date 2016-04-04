@@ -3,7 +3,10 @@ package com.mobile.helpers.voucher;
 import android.content.ContentValues;
 import android.os.Bundle;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
@@ -11,6 +14,7 @@ import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
+import com.mobile.newFramework.utils.output.Print;
 
 /**
  * Set Voucher helper
@@ -40,4 +44,10 @@ public class AddVoucherHelper extends SuperBaseHelper {
         return bundle;
     }
 
+    @Override
+    public void postSuccess(BaseResponse baseResponse) {
+        super.postSuccess(baseResponse);
+        PurchaseEntity cart = (PurchaseEntity) baseResponse.getContentData();
+        JumiaApplication.INSTANCE.setCart(cart);
+    }
 }
