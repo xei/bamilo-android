@@ -226,7 +226,6 @@ public class RestConstants {
     public static final String HAS_CART_POPUP = "has_cart_popup";
     public static final String ITEM = "item";
     public static final String BUNDLE_PRODUCTS = "bundle_products";
-    public static final String LEADER_SIMPLE_POSITION = "leader_simple_position";
     public static final String BUNDLE_ENTITY = "bundle_entity";
     public static final String OFFERS = "offers";
     public static final String MIN_PRICE = "min_price";
@@ -328,4 +327,5 @@ public class RestConstants {
     public static final String CATEGORY_URL_KEY = "category_url_key";
     public static final String CATEGORY_NAME = "category_name";
     public static final String ORDERS_COUNT = "orders_count";
+    public static final String FREE_SHIPPING_POSSIBLE = "free_shipping_possible";
 }

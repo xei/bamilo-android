@@ -57,11 +57,11 @@
 
     <style name="PdvPriceTagStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
         <item name="android:gravity">left|start|center_vertical</item>
         <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
         <item name="android:paddingRight">@dimen/margin_padding_xl</item>
-        <item name="android:orientation">horizontal</item>
     </style>
 
     <style name="PdvBadgeStyle" parent="@style/TextBase.Badge">
@@ -119,7 +119,6 @@
         <item name="android:drawablePadding">@dimen/dimen_10dp</item>
     </style>
 
-
     <style name="PdvOutOfStockText" parent="TextBase.Title.Black">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">38dp</item>
@@ -128,6 +127,17 @@
         <item name="android:paddingRight">@dimen/margin_padding_xxl</item>
         <item name="android:gravity">center</item>
         <item name="android:textAllCaps">true</item>
+    </style>
+
+    <!-- PRODUCT FREE SHIPPING -->
+    <style name="TextFreeShipping" parent="@style/TextBase.Caption.Italic">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawableLeft">@drawable/ic_free_shipping</item>
+        <item name="android:drawableStart">@drawable/ic_free_shipping</item>
+        <item name="android:drawablePadding">@dimen/margin_padding_xs</item>
+        <item name="android:text">@string/free_shipping</item>
+        <item name="android:visibility">visible</item>
     </style>
 
     <!-- NEW ARRIVAL BADGE -->

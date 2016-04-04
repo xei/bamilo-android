@@ -31,6 +31,7 @@ public class ProductRegular extends ProductBase {
     protected Brand mBrand;
     private String mCategoryUrlKey;
     private String mCategoryName;
+    private boolean hasFreeShipping;
 
     /**
      * Empty constructor
@@ -64,6 +65,8 @@ public class ProductRegular extends ProductBase {
         // Category
         mCategoryUrlKey = jsonObject.optString(RestConstants.CATEGORY_URL_KEY);
         mCategoryName = jsonObject.optString(RestConstants.CATEGORY_NAME);
+        // Free shipping info
+        hasFreeShipping = jsonObject.optBoolean(RestConstants.FREE_SHIPPING_POSSIBLE);
         // Optional
         mImageUrl = jsonObject.optString(RestConstants.IMAGE);
         // Is new
@@ -163,7 +166,13 @@ public class ProductRegular extends ProductBase {
         return mCategoryUrlKey;
     }
 
-    public String getCategoryName(){ return mCategoryName;}
+    public String getCategoryName() {
+        return mCategoryName;
+    }
+
+    public boolean hasFreeShipping() {
+        return hasFreeShipping;
+    }
 
     /*
 	 * ############ PARCELABLE ############
@@ -183,6 +192,7 @@ public class ProductRegular extends ProductBase {
         mBrand = in.readParcelable(Brand.class.getClassLoader());
         mCategoryName = in.readString();
         mCategoryUrlKey = in.readString();
+        hasFreeShipping = in.readByte() != 0x00;
     }
 
     @Override
@@ -200,6 +210,7 @@ public class ProductRegular extends ProductBase {
         dest.writeParcelable(mBrand,flags);
         dest.writeString(mCategoryName);
         dest.writeString(mCategoryUrlKey);
+        dest.writeByte((byte) (hasFreeShipping ? 0x01 : 0x00));
     }
 
     @Override
