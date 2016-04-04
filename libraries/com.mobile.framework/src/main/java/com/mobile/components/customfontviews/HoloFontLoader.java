@@ -484,25 +484,5 @@ public class HoloFontLoader {
             setFontFamily("roboto");
         }
     }
-    
-//    private static final class RobotoRawLazyFont extends RawLazyFont {
-//        public RobotoRawLazyFont(String rawResourceName) {
-//            super(rawResourceName);
-//            setFontFamily("roboto");
-//        }
-//    }
-//    
-//    private static final class BurmeseRawFont extends RawFont {
-//        public BurmeseRawFont(int rawResourceId) {
-//            super(rawResourceId);
-//            setFontFamily("burmese");
-//        }
-//    }
-//    
-//    private static final class BurmeseRawLazyFont extends RawLazyFont {
-//        public BurmeseRawLazyFont(String rawResourceName) {
-//            super(rawResourceName);
-//            setFontFamily("burmese");
-//        }
-//    }
+
 }
