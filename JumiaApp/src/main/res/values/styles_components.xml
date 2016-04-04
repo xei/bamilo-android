@@ -58,7 +58,7 @@
     <style name="PdvPriceTagStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:minHeight">48dp</item>
+        <item name="android:minHeight">@dimen/dimen_48dp</item>
         <item name="android:gravity">left|start|center_vertical</item>
         <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
         <item name="android:paddingRight">@dimen/margin_padding_xl</item>
