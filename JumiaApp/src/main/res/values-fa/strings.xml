@@ -73,7 +73,7 @@
     <string name="fallback_mobile">تلفن های همراه</string>
     <string name="fallback_welcome">خوش آمدید به</string>
     <string name="fgt_pass">آیا رمز عبور خود را فراموش کرده اید؟</string>
-    <string name="filter_label">فیلتر کردن</string>
+    <string name="filters_label">فیلتر کردن</string>
     <string name="forgotpass_header">بازیابی رمز عبور</string>
     <string name="forgotten_password">لطفا پست الکترونیکی خود را وارد کنید</string>
     <string name="forgotten_password_examplemail">abcd1234@example.com</string>

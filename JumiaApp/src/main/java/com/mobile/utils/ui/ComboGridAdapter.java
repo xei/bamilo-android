@@ -15,6 +15,7 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -114,7 +115,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set prices
-        ProductUtils.setPriceRules(item, holder.price, holder.discount);
+        UIProductUtils.setPriceRules(item, holder.price, holder.discount);
         // Set variation
         setVariations(holder.variation, item, position);
         // Set check box
@@ -138,7 +139,7 @@ public class ComboGridAdapter extends RecyclerView.Adapter<ComboGridAdapter.Prod
      * Set variations
      */
     private void setVariations(View view, ProductBundle item, int position) {
-        ProductUtils.setVariationContent(view, item);
+        UIProductUtils.setVariationContent(view, item);
         view.setTag(R.id.position, position);
         view.setOnClickListener(this);
     }

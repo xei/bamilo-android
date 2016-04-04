@@ -51,6 +51,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private boolean mIsVatEnabled;
     private ArrayList<Fulfillment> mFulfillmentList;
     private PurchaseCartItem mLastItemAdded;
+    private boolean hasFreeShipping;
 
     /**
      * Constructor
@@ -100,6 +101,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             PurchaseCartItem item = new PurchaseCartItem();
             item.initialize(cartObject);
             mCartItems.add(item);
+            hasFreeShipping = item.hasFreeShipping() || hasFreeShipping;
         }
         // Last item added
         if(CollectionUtils.isNotEmpty(mCartItems)) {
@@ -298,6 +300,10 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         return TextUtils.isNotEmpty(mShippingMethod);
     }
 
+    public boolean hasFreeShipping() {
+        return hasFreeShipping;
+    }
+
 	/*
      * ########### PARCELABLE ###########
 	 */
@@ -350,6 +356,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             dest.writeList(mFulfillmentList);
         }
         dest.writeValue(mLastItemAdded);
+        dest.writeByte((byte) (hasFreeShipping ? 0x01 : 0x00));
     }
 
     /**
@@ -388,6 +395,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             mFulfillmentList = null;
         }
         mLastItemAdded = (PurchaseCartItem) in.readValue(PurchaseCartItem.class.getClassLoader());
+        hasFreeShipping = in.readByte() != 0x00;
     }
 
     /**

@@ -39,6 +39,14 @@
         <item name="android:background">@drawable/shadow_white_2_grey_horizontal</item>
     </style>
 
+    <!-- ######## LIST VIEWS  ######## -->
+
+    <style name="ListView"/>
+    <style name="ListView.MiddleDivider">
+        <item name="android:divider">@color/black_400</item>
+        <item name="android:dividerHeight">1dp</item>
+    </style>
+
     <!-- ######## VIEW GROUP COMPAT ######## -->
 
     <style name="ViewGroupCompat">
@@ -49,11 +57,16 @@
         <item name="showDividers">middle</item>
     </style>
 
+
     <!-- GROUP: DIVIDER VERTICAL -->
 
     <style name="ViewGroupCompat.Vertical"/>
 
     <style name="ViewGroupCompat.Vertical.MiddleDivider" />
+
+    <style name="ViewGroupCompat.Vertical.MiddleDivider.EndDivider">
+        <item name="showDividers">middle|end</item>
+    </style>
 
     <style name="ViewGroupCompat.Vertical.HeaderDivider">
         <item name="showDividers">beginning</item>
@@ -70,7 +83,14 @@
 
     <!-- MY ACCOUNT SECTION -->
 
-    <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider" />
+    <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider.EndDivider" />
+
+
+    <!-- CATALOG FILTER -->
+
+    <style name="FilterTabBarDivider" parent="DividerVertical.Black_400">
+        <item name="android:layout_height">32dp</item>
+    </style>
 
     <!-- TODO : ADD HERE MORE STYLES -->
 

@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/selector_list_item_highlight">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/selector_list_item_highlight"
+    android:orientation="vertical">
 
     <!-- IMAGE -->
 
@@ -11,19 +12,18 @@
         android:id="@+id/image_container"
         android:layout_width="match_parent"
         android:layout_height="@dimen/campaign_image_height"
-        android:layout_marginTop="@dimen/dimen_10dp"
-         >
+        android:layout_marginTop="@dimen/dimen_10dp">
 
         <ImageView
             android:id="@+id/image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="@dimen/dimen_92dp"
-            android:layout_marginStart="@dimen/dimen_92dp"
-            android:layout_marginRight="@dimen/dimen_92dp"
             android:layout_marginEnd="@dimen/dimen_92dp"
-            />
+            android:layout_marginLeft="@dimen/dimen_92dp"
+            android:layout_marginRight="@dimen/dimen_92dp"
+            android:layout_marginStart="@dimen/dimen_92dp"
+            tools:src="@drawable/no_image_large"/>
 
         <ProgressBar
             android:id="@+id/campaign_loading_progress"
@@ -57,15 +57,14 @@
             android:id="@+id/campaign_item_discount"
             style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:ellipsize="marquee"
             android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
+            android:ellipsize="marquee"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/red_basic"
-            android:layout_gravity="center_horizontal"
-            />
+            android:textColor="@color/red_basic" />
 
         <!-- PRICE -->
         <!-- DISCOUNT -->
@@ -73,16 +72,15 @@
             android:id="@+id/campaign_item_price"
             style="@style/TextBase.Display_3"
             android:layout_width="wrap_content"
-            android:layout_toRightOf="@id/campaign_item_discount"
-            android:layout_toEndOf="@id/campaign_item_discount"
             android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_toEndOf="@id/campaign_item_discount"
+            android:layout_toRightOf="@id/campaign_item_discount"
             android:ellipsize="marquee"
             android:gravity="center"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/black_800"
-            android:layout_gravity="center_horizontal"
-            />
+            android:textColor="@color/black_800" />
 
     </RelativeLayout>
 
@@ -90,22 +88,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/dimen_10dp">
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:gravity="center_horizontal">
+
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/campaign_item_save_label"
             style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginRight="@dimen/margin_small"
             android:ellipsize="marquee"
             android:maxLines="1"
-            android:layout_marginRight="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:layout_centerVertical="true"
             android:singleLine="true"
             android:text="@string/campaign_save"
-            android:textColor="@color/black"
-            android:layout_gravity="center_horizontal"/>
+            android:textColor="@color/black" />
 
         <!-- SAVE VALUE -->
 
@@ -114,15 +113,15 @@
             style="@style/TextBase.Body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/campaign_item_save_label"
-            android:layout_toEndOf="@+id/campaign_item_save_label"
-            android:ellipsize="marquee"
             android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_toEndOf="@+id/campaign_item_save_label"
+            android:layout_toRightOf="@+id/campaign_item_save_label"
+            android:ellipsize="marquee"
             android:maxLines="1"
             android:singleLine="true"
             android:text="@string/campaign_save"
-            android:textColor="@color/green_basic"
-            android:layout_gravity="center_horizontal"/>
+            android:textColor="@color/green_basic" />
     </RelativeLayout>
 
     <!-- SIZE CONTAINER -->
@@ -131,9 +130,9 @@
         android:id="@+id/campaign_item_size_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:visibility="gone" >
+        android:gravity="center_horizontal"
+        android:visibility="gone">
 
         <!-- SIZE TEXT -->
 
@@ -145,8 +144,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:text="@string/size_label"
-            android:textColor="@color/black"
-             />
+            android:textColor="@color/black" />
     </RelativeLayout>
 
 </LinearLayout>

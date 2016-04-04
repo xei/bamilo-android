@@ -1,16 +1,19 @@
 package com.mobile.utils;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mobile.components.customfontviews.CheckBox;
@@ -21,11 +24,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Created by msilva on 3/8/16.
+ * Class used to represent some single layouts.
+ *
+ * @author msilva
  */
-public class SingleLineComponent extends RelativeLayout {
-
-    private static final java.lang.String TAG = SingleLineComponent.class.getName();
+@SuppressWarnings("unused")
+public class SingleLineComponent extends FrameLayout {
 
     // Types
     private static final int ONE_ICON = 0;
@@ -46,52 +50,44 @@ public class SingleLineComponent extends RelativeLayout {
     protected CheckBox mCheckBox;
 
 
-
     public SingleLineComponent(Context context) {
         super(context);
     }
 
     public SingleLineComponent(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init(context,attrs);
+        init(context, attrs);
     }
 
     public SingleLineComponent(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context,attrs);
+        init(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public SingleLineComponent(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init(context,attrs);
+        init(context, attrs);
     }
+
     /**
      * Initialize layout
-     *
-     * @param context
-     * @param attrs
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SingleLineWithIconStyleable);
-        final int layoutType= a.getInt(R.styleable.SingleLineWithIconStyleable_layoutType, ONE_ICON);
-
+        @SingleLineType final int layoutType = a.getInt(R.styleable.SingleLineWithIconStyleable_layoutType, ONE_ICON);
         final boolean showDivider = a.getBoolean(R.styleable.SingleLineWithIconStyleable_showDivider, false);
         final boolean useSelector = a.getBoolean(R.styleable.SingleLineWithIconStyleable_useSelector, false);
         final int backgroundSelector = a.getResourceId(R.styleable.SingleLineWithIconStyleable_backgroundSelector, R.drawable.selector_myprofile_highlight);
         final int startImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageStart, -1);
         final int endImage = a.getResourceId(R.styleable.SingleLineWithIconStyleable_imageEnd, -1);
+        a.recycle();
 
         inflate(context, layouts_supported[layoutType], this);
 
-        if(useSelector) {
-            if(DeviceInfoHelper.isPreJellyBeanMR2()){
-                setBackgroundDrawable(ContextCompat.getDrawable(getContext(), backgroundSelector));
-            } else {
-                setBackground(ContextCompat.getDrawable(getContext(), backgroundSelector));
-            }
-
+        if (useSelector) {
+            background(ContextCompat.getDrawable(getContext(), backgroundSelector));
         }
 
         mImageStartView = (ImageView) findViewById(R.id.icon_start);
@@ -99,72 +95,75 @@ public class SingleLineComponent extends RelativeLayout {
         mTextView = (TextView) findViewById(R.id.tx_single_line_text);
         mCheckBox = (CheckBox) findViewById(R.id.checkBox);
 
-        View divider = findViewById(R.id.divider);
-        if(showDivider && divider != null){
-            divider.setVisibility(VISIBLE);
+        if (showDivider) {
+            visibility(findViewById(R.id.divider), VISIBLE);
         }
-
-
     }
 
-    /**
-     * Returns the Start imageview regarding layout direction
-     *
-     * @return
-     */
+    @Nullable
     public ImageView getStartImageView() {
         return mImageStartView;
     }
 
+    @Nullable
     public CheckBox getCheckBox() {
         return mCheckBox;
     }
 
-    public void showImageStartViewVisible(){
-        getStartImageView().setVisibility(VISIBLE);
+    public void showImageStartViewVisible() {
+        visibility(mImageStartView, VISIBLE);
     }
 
-    public void showImageEndViewVisible(){
-        getEndImageView().setVisibility(VISIBLE);
+    public void hideImageStartViewVisible() {
+        visibility(mImageStartView, INVISIBLE);
     }
 
-    public void hideImageStartViewVisible(){
-        getStartImageView().setVisibility(INVISIBLE);
-    }
-
-    public void hideImageEndViewVisible(){
-        getEndImageView().setVisibility(INVISIBLE);
-    }
-
-    public void removeImageEndViewVisible(){
-        getEndImageView().setVisibility(GONE);
-    }
-
-    public void removeImageStartViewVisible(){
-        getStartImageView().setVisibility(GONE);
+    public void removeImageStartViewVisible() {
+        visibility(mImageStartView, GONE);
     }
 
     /**
      * Returns the End imageview regarding layout direction
-     *
-     * @return
      */
+    @Nullable
     public ImageView getEndImageView() {
         return mImageEndView;
     }
 
-    /**
-     * Returns the textviewc
-     *
-     * @return
-     */
+    public void showImageEndViewVisible() {
+        visibility(mImageEndView, VISIBLE);
+    }
+
+    public void hideImageEndViewVisible() {
+        visibility(mImageEndView, INVISIBLE);
+    }
+
+    public void removeImageEndViewVisible() {
+        visibility(mImageEndView, GONE);
+    }
+
+    @NonNull
     public TextView getTextView() {
         return mTextView;
     }
 
-
-    public void setEndImageDrawable(Drawable drawable){
-        getEndImageView().setImageDrawable(drawable);
+    @SuppressLint("NewApi")
+    public void removeSelector() {
+        background(null);
     }
 
+    private void visibility(View view, int flag) {
+        if (view != null) {
+            view.setVisibility(flag);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void background(@Nullable Drawable background) {
+        if (DeviceInfoHelper.isPosJellyBean()) {
+            super.setBackground(background);
+        } else {
+            super.setBackgroundDrawable(background);
+        }
+    }
 }

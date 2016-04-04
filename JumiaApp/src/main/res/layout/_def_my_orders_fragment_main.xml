@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,12 +11,8 @@
 
     <ListView
         android:id="@+id/orders_list"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@color/black_400"
-        android:dividerHeight="1dp"
-        android:listSelector="@drawable/_gen_selector_group_selected" />
-
-    <View style="@style/DividerHorizontal.Black_400" />
+        style="@style/ListViewStyle"
+        tools:layout_height="match_parent"
+        tools:layout_width="match_parent" />
 
 </LinearLayout>

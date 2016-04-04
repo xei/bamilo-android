@@ -10,22 +10,17 @@
     </style>
 
     <!-- Single line item -->
-    <style name="SingleLineList" parent="@style/TextBase.List">
+    <style name="SingleLineList" parent="@style/TextBase.List.Black">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/dimen_48dp</item>
         <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
         <item name="android:paddingStart">@dimen/margin_padding_xl</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="SingleLineList.Text_Blue_1">
-        <item name="android:textColor">@color/blue_1</item>
     </style>
 
     <!-- Single line with icon item -->
     <style name="SingleLineList.WithIcon">
         <item name="android:paddingLeft">@dimen/margin_padding_l</item>
-        <item name="android:paddingRight">@dimen/margin_padding_l</item>
+        <item name="android:paddingStart">@dimen/margin_padding_l</item>
         <item name="android:gravity">left|center_vertical</item>
     </style>
 
@@ -61,6 +56,14 @@
         <item name="android:drawableLeft">@drawable/_gen_selector_check_box</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="ListViewStyle" parent="ListView.MiddleDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:listSelector">@drawable/_gen_selector_group_selected</item>
+        <item name="android:scrollbars">none</item>
+    </style>
+
     <!-- TODO : ADD HERE MORE STYLES -->
 
 </resources>

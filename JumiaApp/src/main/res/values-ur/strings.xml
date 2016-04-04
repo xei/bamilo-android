@@ -73,7 +73,7 @@
     <string name="fallback_mobile">موبائل فونز</string>
     <string name="fallback_welcome">خوش آمدید</string>
     <string name="fgt_pass">پاسورڈ بھول گئے؟</string>
-    <string name="filter_label">فلٹر</string>
+    <string name="filters_label">فلٹر</string>
     <string name="forgotpass_header">پاسورڈ کا دوبارہ حصول</string>
     <string name="forgotten_password">براہِ کرم اپنا ای میل درج کریں</string>
     <string name="forgotten_password_examplemail">usman.khan@example.com</string>

@@ -61,7 +61,7 @@
     <string name="fallback_mobile">Telemóveis</string>
     <string name="fallback_welcome">BEM VINDOS A</string>
     <string name="fgt_pass">Esqueceu a Senha?</string>
-    <string name="filter_label">Filtrar</string>
+    <string name="filters_label">Filtrar</string>
     <string name="forgotpass_header">Recuperação de Senha</string>
     <string name="forgotten_password">Por favor insira o seu endereço de email.</string>
     <string name="forgotten_password_examplemail">nome1234@exemplo.com</string>

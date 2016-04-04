@@ -6,7 +6,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tx_single_line_text"
-        style="@style/SingleLineList.Text_Blue_1"
+        style="@style/Button_Link.SectionItem"
         tools:text="Single line item" />
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.mobile.utils.pdv;
+package com.mobile.utils.product;
 
 import android.content.Context;
 import android.graphics.Paint;
