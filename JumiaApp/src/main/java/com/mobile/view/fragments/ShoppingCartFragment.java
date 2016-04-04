@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,6 +93,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private String mItemsToCartDeepLink;
     private int selectedPosition;
     private long crrQuantity;
+    private View mFreeShippingView;
 
     /**
      * Empty constructor
@@ -231,6 +233,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Set voucher button
         mCouponButton = (TextView) view.findViewById(R.id.voucher_btn);
         mCouponButton.setOnClickListener(this);
+        // Get free shipping
+        mFreeShippingView = view.findViewById(R.id.cart_total_text_shipping);
     }
 
     /**
@@ -259,13 +263,15 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     /**
      * Set the total value
      */
-    private void setTotal(PurchaseEntity cart) {
+    private void setTotal(@NonNull PurchaseEntity cart) {
         Print.d(TAG, "SET THE TOTAL VALUE");
         // Get views
         TextView totalValue = (TextView) mTotalContainer.findViewById(R.id.total_value);
-        // Set value
+        // Set views
         totalValue.setText(CurrencyFormatter.formatCurrency(cart.getTotal()));
         mTotalContainer.setVisibility(View.VISIBLE);
+        // Set free shipping
+        mFreeShippingView.setVisibility(cart.hasFreeShipping() ? View.VISIBLE : View.GONE);
     }
 
     /**

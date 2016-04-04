@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -35,7 +36,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@id/articles_count"
             android:textColor="@color/black"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/vat_value"
@@ -45,7 +46,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/articles_count"
             android:textColor="@color/black"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/price_unreduced"
@@ -181,23 +182,33 @@
             android:background="@color/black_700" />
 
         <com.mobile.components.customfontviews.TextView
-            style="@style/TextBase.Display_3"
+            style="@style/TextBase.Display_3.Black"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="@string/my_order_total_label"
-            android:textColor="@color/black" />
+            android:text="@string/my_order_total_label" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/total_value"
-            style="@style/TextBase.Display_3"
+            style="@style/TextBase.Display_3.Black"
             android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:textColor="@color/black" />
+            android:layout_centerVertical="true" />
+
     </RelativeLayout>
 
+    <!--FREE SHIPPING-->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/cart_total_text_shipping"
+        style="@style/TextFreeShipping"
+        android:layout_gravity="right|end"
+        android:layout_marginBottom="@dimen/margin_padding_l"
+        android:layout_marginLeft="@dimen/margin_padding_xxl"
+        android:layout_marginRight="@dimen/margin_padding_xxl"
+        tools:layout_height="wrap_content"
+        tools:layout_width="wrap_content"
+        tools:visible="true" />
 
 </LinearLayout>
