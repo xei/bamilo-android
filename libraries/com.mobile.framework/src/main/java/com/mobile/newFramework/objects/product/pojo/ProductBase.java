@@ -41,10 +41,6 @@ public class ProductBase implements Parcelable, IJSONSerializable {
      */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        return initializeProductBase(jsonObject);
-    }
-
-    protected final boolean initializeProductBase(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mSku = jsonObject.optString(RestConstants.SKU);
         mPrice = jsonObject.getDouble(RestConstants.PRICE);

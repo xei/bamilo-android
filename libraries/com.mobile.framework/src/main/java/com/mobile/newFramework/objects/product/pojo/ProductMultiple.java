@@ -3,6 +3,7 @@ package com.mobile.newFramework.objects.product.pojo;
 import android.os.Parcel;
 import android.support.annotation.Nullable;
 
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  */
 public class ProductMultiple extends ProductRegular {
 
-    public final static int NO_DEFAULT_SIMPLE_POS = -1;
+    public final static int NO_DEFAULT_SIMPLE_POS = IntConstants.INVALID_POSITION;
 
     private String mSizeGuideUrl;
     private String mVariationName;
@@ -36,13 +37,11 @@ public class ProductMultiple extends ProductRegular {
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        // Base product
         super.initialize(jsonObject);
-
         return initializeProductMultiple(jsonObject);
     }
 
-    protected final boolean initializeProductMultiple(JSONObject jsonObject) throws JSONException {
+    private boolean initializeProductMultiple(JSONObject jsonObject) throws JSONException {
         // Size guide
         mSizeGuideUrl = jsonObject.optString(RestConstants.SIZE_GUIDE);
         // Get variation name
@@ -52,19 +51,17 @@ public class ProductMultiple extends ProductRegular {
         mSelectedSimplePosition = jsonObject.optInt(RestConstants.VARIATION_DEFAULT_POSITION, NO_DEFAULT_SIMPLE_POS);
         // Simples
         JSONArray simpleArray = jsonObject.getJSONArray(RestConstants.SIMPLES);
-        int size = simpleArray.length();
-        if (size > 0) {
+        if (CollectionUtils.isNotEmpty(simpleArray)) {
             mSimples = new ArrayList<>();
-            for (int i = 0; i < size; i++) {
-                JSONObject simpleObject = simpleArray.getJSONObject(i);
+            for (int i = 0; i < simpleArray.length(); i++) {
                 ProductSimple simple = new ProductSimple();
-                simple.initialize(simpleObject);
+                simple.initialize(simpleArray.getJSONObject(i));
                 mSimples.add(simple);
             }
         }
-
-        if(hasOwnSimpleVariation()){
-            mSelectedSimplePosition = 0;
+        // Validate simples
+        if (hasOwnSimpleVariation()) {
+            mSelectedSimplePosition = IntConstants.DEFAULT_POSITION;
         }
         return true;
     }

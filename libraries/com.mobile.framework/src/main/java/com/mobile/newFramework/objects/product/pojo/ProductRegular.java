@@ -50,7 +50,7 @@ public class ProductRegular extends ProductBase {
         return initializeProductRegular(jsonObject);
     }
 
-    protected final boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
+    private boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
         // Mandatory
         mName = jsonObject.optString(RestConstants.NAME);
         // TODO: Remove this line when all app parses brand_entity object. For now happens just in PDV
