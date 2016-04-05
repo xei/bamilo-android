@@ -54,7 +54,7 @@ public class OrderStatus implements IJSONSerializable, Parcelable {
         // Get date
         mDate = jsonObject.getString(RestConstants.CREATION_DATE);
         // Get total
-        mTotal = jsonObject.getDouble("grand_total"); // RestConstants.TOTAL
+        mTotal = jsonObject.getDouble(RestConstants.GRAND_TOTAL_2);
         // Get payment method
         JSONObject jsonPay = jsonObject.optJSONObject(RestConstants.PAYMENT);
         if (jsonPay != null) {

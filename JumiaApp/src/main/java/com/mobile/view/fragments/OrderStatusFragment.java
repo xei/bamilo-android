@@ -27,6 +27,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.OrderedProductViewHolder;
@@ -262,21 +263,16 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         else super.onClick(view);
     }
 
-
-
-/**
- * Go to PDV detail of the order item
- * */
-    private void goToProductDetails(View view){
-        String sku = (String) view.getTag(R.id.target_simple_sku);
-        Print.d(TAG, "ON CLICK PRODUCT " + sku);
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-
+    private void goToProductDetails(View view) {
+        String sku = TargetLink.getSkuFromSimple((String) view.getTag(R.id.target_simple_sku));
+        if (TextUtils.isNotEmpty(sku)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            showUnexpectedErrorWarning();
+        }
     }
-
 
     private void onClickReOrder(View view) {
         // Get sku from view

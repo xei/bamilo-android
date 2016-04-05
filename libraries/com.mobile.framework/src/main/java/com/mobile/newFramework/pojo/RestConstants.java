@@ -171,6 +171,7 @@ public class RestConstants {
     public static final String TOTAL_ORDERS = "total_orders";
     public static final String ORDERNr = "orderNr";
     public static final String GRAND_TOTAL = "grandTotal";
+    public static final String GRAND_TOTAL_2 = "grand_total";
     public static final String GRAND_TOTAL_CONVERTED = "grandTotal_converted";
     public static final String ORDER_NR = "order_nr";
     public static final String CREATION_DATE = "creation_date";
