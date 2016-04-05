@@ -503,8 +503,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Set views
         UIProductUtils.setPriceRules(mProduct, price, special);
         UIProductUtils.setDiscountRules(mProduct, percentage);
-        percentage.setEnabled(mProduct.hasDiscount());
-        shipping.setVisibility(mProduct.hasFreeShipping() ? View.VISIBLE : View.GONE);
+        UIProductUtils.setFreeShippingInfo(mProduct, shipping);
     }
 
     /**

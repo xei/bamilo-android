@@ -345,6 +345,6 @@
     <string name="search_categories_label">%1$s in %2$s</string>
     <string name="on_label">ON</string>
     <string name="visit_the_official_brand_store">Visit the official %s store</string>
-    <string name="free_shipping">Free Shipping</string>
+    <string name="free_shipping_possible">Free Shipping Possible</string>
     <!-- NEW 3.1 -->
 </resources>

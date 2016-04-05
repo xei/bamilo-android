@@ -34,7 +34,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:drawableRight">@drawable/ic_free_shipping</item>
         <item name="android:drawablePadding">@dimen/margin_padding_xs</item>
-        <item name="android:text">@string/free_shipping</item>
+        <item name="android:text">@string/free_shipping_possible</item>
         <item name="android:visibility">visible</item>
         <item name="android:layout_gravity">right</item>
     </style>
