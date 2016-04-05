@@ -233,7 +233,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         Print.i(TAG, "ON SHOW CONTENT");
         // Case empty
         if (wishList == null || !wishList.hasProducts()) {
-            showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
+            showWishListError(mWishList);
         }
         // Case first time
         else if(mWishList == null || wishList.getPage() == IntConstants.FIRST_PAGE) {
@@ -263,6 +263,17 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
         // Update content
         WishListGridAdapter adapter = (WishListGridAdapter) mListView.getAdapter();
         adapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Show the wish list error, case first time or not.
+     */
+    protected void showWishListError(WishList currentWishList) {
+        if (currentWishList == null) {
+            showErrorFragment(ErrorLayoutFactory.NO_FAVOURITES_LAYOUT, this);
+        } else {
+            showWarningErrorMessage(getString(R.string.error_problem_fetching_data));
+        }
     }
 
     /**
@@ -513,8 +524,7 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
                 // Hide loading more
                 setLoadingMore(false);
                 // Show content
-                WishList wishList = (WishList) baseResponse.getContentData();
-                showContent(wishList);
+                showContent((WishList) baseResponse.getContentData());
                 break;
             default:
                 break;

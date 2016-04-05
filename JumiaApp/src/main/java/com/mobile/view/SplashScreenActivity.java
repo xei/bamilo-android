@@ -673,10 +673,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     public void onClick(View view) {
         // Get id
         int id = view.getId();
-
+        // Case retry
         if (id == R.id.fragment_root_error_button) {
             checkRetryButtonBehavior(view);
-//            onClickRetryNoNetwork();
         }
         // Case retry button from maintenance
         else if (id == R.id.fragment_root_retry_maintenance) {
