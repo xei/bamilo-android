@@ -94,9 +94,6 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private long mBeginRequestMillis;
     private String mNavPath;
     private String mNavSource;
-    private TextView mSpecialPriceText;
-    private TextView mPriceText;
-    private TextView mDiscountPercentageText;
     private TextView mSaveForLater;
     private TextView mBuyButton;
     private ViewGroup mSellerContainer;
@@ -112,6 +109,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private String mRichRelevanceHash;
     private String mRelatedRichRelevanceHash;
     private ViewGroup mBrandView;
+    private View mPriceContainer;
 
     /**
      * Empty constructor
@@ -175,10 +173,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         // Wish list
         mWishListButton = (ImageView) view.findViewById(R.id.pdv_button_wish_list);
         mWishListButton.setOnClickListener(this);
-        // Prices
-        mSpecialPriceText = (TextView) view.findViewById(R.id.pdv_text_special_price);
-        mPriceText = (TextView) view.findViewById(R.id.pdv_text_price);
-        mDiscountPercentageText = (TextView) view.findViewById(R.id.pdv_text_discount);
+        // Price
+        mPriceContainer = view.findViewById(R.id.pdv_price_container);
         // Rating
         view.findViewById(R.id.pdv_rating_container).setOnClickListener(this);
         mProductRating = (RatingBar) view.findViewById(R.id.pdv_rating_bar);
@@ -499,11 +495,15 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     private void setProductPriceInfo() {
         Print.d(TAG, "SHOW PRICE INFO: " + mProduct.getPrice() + " " + mProduct.getSpecialPrice());
-        UIProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
-        UIProductUtils.setDiscountRules(mProduct, mDiscountPercentageText);
-        if (mProduct.hasDiscount()) {
-            mDiscountPercentageText.setEnabled(true);
-        }
+        // Get views
+        TextView special = (TextView) mPriceContainer.findViewById(R.id.pdv_price_text_special);
+        TextView price = (TextView) mPriceContainer.findViewById(R.id.pdv_price_text_price);
+        TextView percentage = (TextView) mPriceContainer.findViewById(R.id.pdv_price_text_discount);
+        TextView shipping = (TextView) mPriceContainer.findViewById(R.id.pdv_price_text_shipping);
+        // Set views
+        UIProductUtils.setPriceRules(mProduct, price, special);
+        UIProductUtils.setDiscountRules(mProduct, percentage);
+        UIProductUtils.setFreeShippingInfo(mProduct, shipping);
     }
 
     /**
@@ -1122,7 +1122,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 if(isFromBuyButton) {
                     onClickBuyProduct();
                 }
-                UIProductUtils.setPriceRules(mProduct, mPriceText, mSpecialPriceText);
+                setProductPriceInfo();
             }
         } catch (NullPointerException e) {
             // ...

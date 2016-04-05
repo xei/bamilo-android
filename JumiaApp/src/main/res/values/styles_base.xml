@@ -110,6 +110,11 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="TextBase.Caption.Italic">
+        <item name="android:fontFamily">roboto_italic</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
     <style name="TextBase.Caption.Black_800" />
 
     <style name="TextBase.Caption.White">

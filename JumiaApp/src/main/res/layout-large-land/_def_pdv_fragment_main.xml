@@ -64,7 +64,9 @@
             android:orientation="vertical">
 
             <!-- PRICE -->
-            <include layout="@layout/pdv_price_tag" />
+            <include
+                android:id="@+id/pdv_price_container"
+                layout="@layout/pdv_price_tag" />
 
             <!-- RATING -->
             <include
