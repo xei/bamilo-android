@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="500dp"
     android:orientation="vertical">
@@ -35,6 +36,8 @@
         android:gravity="center"
         android:singleLine="false"
         android:text="@string/internet_no_connection_details_label"
-        android:textColor="@color/black_800" />
+        android:textColor="@color/black_800"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </LinearLayout>
