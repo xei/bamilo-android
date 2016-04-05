@@ -16,8 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_20px" />
 
-        <include
-            layout="@layout/error_button_layout" />
+        <include layout="@layout/error_button_layout" />
 
         <!-- CONTACTS INFO IN CASE OF SSL ERROR -->
         <include
