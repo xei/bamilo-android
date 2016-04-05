@@ -328,4 +328,5 @@ public class RestConstants {
     public static final String CATEGORY_URL_KEY = "category_url_key";
     public static final String CATEGORY_NAME = "category_name";
     public static final String ORDERS_COUNT = "orders_count";
+    public static final String AUTH_INFO = "auth_info";
 }

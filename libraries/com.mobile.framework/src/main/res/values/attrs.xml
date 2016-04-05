@@ -93,6 +93,14 @@
         <attr name="imageStart" format="reference" />
         <attr name="imageEnd" format="reference" />
     </declare-styleable>
+    <!-- LoginHeaderComponent Attributs -->
+    <declare-styleable name="LoginHeaderComponentStyleable">
+        <attr name="loginHeaderType" format="enum">
+            <enum name="checkEmail" value="0" />
+            <enum name="login" value="1" />
+            <enum name="createAccount" value="2" />
+        </attr>
+    </declare-styleable>
     <!-- MaterialEditText -->
     <declare-styleable name="MaterialEditText">
         <!-- The base color of the line and the texts. Default is black. -->
