@@ -7,6 +7,7 @@ import android.content.ContentValues;
 import android.os.Bundle;
 
 import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
@@ -23,10 +24,6 @@ public class GetProductOffersHelper extends SuperBaseHelper {
 
     protected static String TAG = GetProductOffersHelper.class.getSimpleName();
 
-    public static final String ALL_OFFERS = "all_offers";
-
-    public static final String OFFER_SKU = "sku";
-
     @Override
     public EventType getEventType() {
         return EventType.GET_PRODUCT_OFFERS;
@@ -42,8 +39,8 @@ public class GetProductOffersHelper extends SuperBaseHelper {
      */
     public static Bundle createBundle(String sku) {
         ContentValues values = new ContentValues();
-        values.put(OFFER_SKU, sku);
-        values.put(ALL_OFFERS, true);
+        values.put(RestConstants.SKU, sku);
+        values.put(RestConstants.ALL_OFFERS, true);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
         return bundle;
