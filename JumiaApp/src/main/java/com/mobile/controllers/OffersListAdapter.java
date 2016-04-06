@@ -35,9 +35,9 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Pr
         void onClickVariation(ProductOffer offer);
     }
 
-    private Context context;
+    private final Context context;
 
-    private IOffersAdapterService offerSelected;
+    private final IOffersAdapterService offerSelected;
 
     ArrayList<ProductOffer> offers = new ArrayList<>();
 
@@ -64,43 +64,44 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Pr
 
     @Override
     public void onBindViewHolder(ProductOfferHolder item, int position) {
-        final ProductOffer productOffer = offers.get(position);
-        UIProductUtils.setPriceRules(productOffer, item.offerPrice, item.offerSpecialPrice);
-        item.offerProductOwner.setText(productOffer.getSeller().getName());
+        final ProductOffer offer = offers.get(position);
+        UIProductUtils.setPriceRules(offer, item.offerPrice, item.offerSpecialPrice);
+        item.offerProductOwner.setText(offer.getSeller().getName());
 
-        if( !(productOffer.getMinDeliveryTime() == 0 && productOffer.getMaxDeliveryTime() == 0) ) {
+        if( !(offer.getMinDeliveryTime() == 0 && offer.getMaxDeliveryTime() == 0) ) {
             item.offerDeliveryTime.setVisibility(View.VISIBLE);
-            item.offerDeliveryTime.setText(context.getResources().getString(R.string.delivery_time_placeholder,productOffer.getMinDeliveryTime(), productOffer.getMaxDeliveryTime()));
+            item.offerDeliveryTime.setText(context.getResources().getString(R.string.delivery_time_placeholder,offer.getMinDeliveryTime(), offer.getMaxDeliveryTime()));
         } else {
             item.offerDeliveryTime.setVisibility(View.GONE);
         }
 
         item.offerAddToCart.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                offerSelected.onAddOfferToCart(productOffer);
+                offerSelected.onAddOfferToCart(offer);
             }
         });
 
-        List<ProductSimple> simples = productOffer.getSimples();
+        List<ProductSimple> simples = offer.getSimples();
         if(CollectionUtils.isNotEmpty(simples) && simples.size() > 1) {
 
-            if(productOffer.hasSelectedSimpleVariation()) {
-                item.variations.setText(productOffer.getSimples().get(productOffer.getSelectedSimplePosition()).getVariationValue());
+            if(offer.hasSelectedSimpleVariation()) {
+                item.variations.setText(offer.getSimples().get(offer.getSelectedSimplePosition()).getVariationValue());
             }
             item.variations.setVisibility(View.VISIBLE);
             item.variations.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    offerSelected.onClickVariation(productOffer);
+                    offerSelected.onClickVariation(offer);
                 }
             });
         } else {
             item.variations.setVisibility(View.GONE);
         }
-        UIProductUtils.setShopFirst(productOffer,item.shopFirst);
-
+        // Set shop first
+        UIProductUtils.setShopFirst(offer, item.shopFirst);
+        // Set free shipping
+        UIProductUtils.setFreeShippingInfo(offer, item.mFreeShipping);
     }
 
     @Override
@@ -115,13 +116,14 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Pr
 
     public class ProductOfferHolder extends RecyclerView.ViewHolder {
 
-        private Button offerAddToCart;
-        private TextView offerPrice;
-        private TextView offerSpecialPrice;
-        private TextView offerProductOwner;
-        private TextView offerDeliveryTime;
-        private TextView variations;
-        private ImageView shopFirst;
+        private final Button offerAddToCart;
+        private final TextView offerPrice;
+        private final TextView offerSpecialPrice;
+        private final TextView offerProductOwner;
+        private final TextView offerDeliveryTime;
+        private final TextView variations;
+        private final ImageView shopFirst;
+        private final View mFreeShipping;
 
         public ProductOfferHolder(View itemView) {
             super(itemView);
@@ -132,6 +134,7 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Pr
             offerDeliveryTime = (TextView) itemView.findViewById(R.id.offer_item_delivery);
             variations = (TextView) itemView.findViewById(R.id.button_variant);
             shopFirst = (ImageView) itemView.findViewById(R.id.item_shop_first);
+            mFreeShipping = itemView.findViewById(R.id.offer_item_shipping);
         }
 
     }

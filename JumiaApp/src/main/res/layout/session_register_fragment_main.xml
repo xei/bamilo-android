@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:gravity="center_horizontal">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,21 +24,12 @@
 
             <!--INFO-->
 
-            <com.mobile.components.customfontviews.TextView
-                style="@style/TextBase.Display_1"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:text="@string/welcome_label"
-                android:textColor="@color/black_900" />
-
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/register_text_info"
-                style="@style/TextBase.Caption"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:gravity="center"
-                android:singleLine="false"
-                android:text="@string/register_info" />
+            <com.mobile.utils.LoginHeaderComponent
+                android:id="@+id/login_component"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:loginHeaderType="createAccount"
+                />
 
             <Space
                 android:layout_width="wrap_content"

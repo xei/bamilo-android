@@ -171,6 +171,7 @@ public class RestConstants {
     public static final String TOTAL_ORDERS = "total_orders";
     public static final String ORDERNr = "orderNr";
     public static final String GRAND_TOTAL = "grandTotal";
+    public static final String GRAND_TOTAL_2 = "grand_total";
     public static final String GRAND_TOTAL_CONVERTED = "grandTotal_converted";
     public static final String ORDER_NR = "order_nr";
     public static final String CREATION_DATE = "creation_date";
@@ -328,4 +329,6 @@ public class RestConstants {
     public static final String CATEGORY_NAME = "category_name";
     public static final String ORDERS_COUNT = "orders_count";
     public static final String FREE_SHIPPING_POSSIBLE = "free_shipping_possible";
+    public static final String ALL_OFFERS = "all_offers";
+    public static final String AUTH_INFO = "auth_info";
 }
