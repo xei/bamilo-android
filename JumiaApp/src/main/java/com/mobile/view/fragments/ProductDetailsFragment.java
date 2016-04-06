@@ -40,6 +40,7 @@ import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
+import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -788,7 +789,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
             ExpandedGridViewComponent relatedGridView = (ExpandedGridViewComponent) mRelatedProductsView.findViewById(R.id.pdv_related_grid_view);
             relatedGridView.setExpanded(true);
-            relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, mProduct.getRelatedProducts()));
+            relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, (ArrayList<ProductRegular>) mProduct.getRelatedProducts().clone()));
             relatedGridView.setOnItemClickListener(this);
             mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {
@@ -1076,8 +1077,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if(position < mProduct.getRelatedProducts().size()
-                && !mProduct.getRelatedProducts().get(position).isPlaceboProduct()){ // To avoid click on Placebo
+        if(position < mProduct.getRelatedProducts().size()){ // To avoid click on Placebo
             @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
             mRelatedRichRelevanceHash = mProduct.getRelatedProducts().get(position).getRichRelevanceClickHash();
             new TargetLink(getWeakBaseActivity(), target)

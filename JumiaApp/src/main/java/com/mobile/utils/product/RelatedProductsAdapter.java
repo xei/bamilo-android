@@ -35,7 +35,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
          * This is the solution to avoid the silver background
          * when the grid has an odd size.
          */
-        if(CollectionUtils.isNotEmpty(data) && data.size() % 2 != 0){
+        if(data.size() % 2 != 0){
             ProductRegular placebo = new ProductRegular();
             placebo.setPlaceboProduct();
             data.add(placebo);
@@ -72,6 +72,8 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         // Return convert view
         return convertView;
     }
+
+
 
     /**
      * Provide a reference to the views for each data item.<br>
