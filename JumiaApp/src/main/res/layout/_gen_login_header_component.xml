@@ -28,7 +28,7 @@
     <LinearLayout
         android:id="@+id/login_header_images_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_18dp"
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:gravity="center_vertical"
