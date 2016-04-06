@@ -32,6 +32,7 @@ public class ProductRegular extends ProductBase {
     private String mCategoryUrlKey;
     private String mCategoryName;
     private boolean hasFreeShipping;
+    private boolean isPlaceboProduct;
 
     /**
      * Empty constructor
@@ -51,6 +52,7 @@ public class ProductRegular extends ProductBase {
     }
 
     private boolean initializeProductRegular(JSONObject jsonObject) throws JSONException {
+        isPlaceboProduct = false;
         // Mandatory
         mName = jsonObject.optString(RestConstants.NAME);
         // TODO: Remove this line when all app parses brand_entity object. For now happens just in PDV
@@ -174,6 +176,14 @@ public class ProductRegular extends ProductBase {
         return hasFreeShipping;
     }
 
+    /**
+     * This two methods are used to avoid the silver background
+     * at the end of a GridView when the list of ProductRegular elements
+     * has an odd size.
+     */
+    public boolean isPlaceboProduct(){ return isPlaceboProduct; }
+    public void setPlaceboProduct(){ isPlaceboProduct = true; }
+
     /*
 	 * ############ PARCELABLE ############
 	 */
@@ -193,6 +203,7 @@ public class ProductRegular extends ProductBase {
         mCategoryName = in.readString();
         mCategoryUrlKey = in.readString();
         hasFreeShipping = in.readByte() != 0x00;
+        isPlaceboProduct = in.readByte() != 0x00;
     }
 
     @Override
@@ -211,6 +222,7 @@ public class ProductRegular extends ProductBase {
         dest.writeString(mCategoryName);
         dest.writeString(mCategoryUrlKey);
         dest.writeByte((byte) (hasFreeShipping ? 0x01 : 0x00));
+        dest.writeByte((byte) (isPlaceboProduct ? 0x01 : 0x00));
     }
 
     @Override

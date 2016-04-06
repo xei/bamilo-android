@@ -1076,12 +1076,16 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
-        mRelatedRichRelevanceHash = mProduct.getRelatedProducts().get(position).getRichRelevanceClickHash();
-        new TargetLink(getWeakBaseActivity(), target)
-                .addAppendListener(this)
-                .retainBackStackEntries()
-                .run();
+        if(position < mProduct.getRelatedProducts().size()
+                && !mProduct.getRelatedProducts().get(position).isPlaceboProduct()){ // To avoid click on Placebo
+            @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
+            mRelatedRichRelevanceHash = mProduct.getRelatedProducts().get(position).getRichRelevanceClickHash();
+            new TargetLink(getWeakBaseActivity(), target)
+                    .addAppendListener(this)
+                    .retainBackStackEntries()
+                    .run();
+        }
+
     }
 
     @Override

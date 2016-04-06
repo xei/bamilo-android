@@ -11,6 +11,8 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -30,6 +32,15 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
      */
     public RelatedProductsAdapter(Context context, int textViewResourceId, ArrayList<ProductRegular> data) {
         super(context, textViewResourceId, data);
+        /**
+         * This is the solution to avoid the silver background
+         * when the grid has an odd size.
+         */
+        if(data.size() % 2 != 0){
+            ProductRegular placebo = new ProductRegular();
+            placebo.setPlaceboProduct();
+            data.add(placebo);
+        }
     }
 
     @Override
@@ -44,16 +55,21 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         }
         // Get item
         ProductRegular item = getItem(position);
-        // Set name
-        holder.name.setText(item.getName());
-        // Set brand
-        holder.brand.setText(item.getBrandName());
-        // Set image
-        RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
-        // Set prices
-        setProductPrice(holder, item);
-        // Set tag
-        holder.itemView.setTag(R.id.target_sku, item.getTarget());
+        if(item.isPlaceboProduct()){ // If placeholder hide all the images. Just show the white Background.
+            hideViewsForPlacebo(holder);
+        } else {
+            // Set name
+            holder.name.setText(item.getName());
+            // Set brand
+            holder.brand.setText(item.getBrandName());
+            // Set image
+            RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
+            // Set prices
+            setProductPrice(holder, item);
+            // Set tag
+            holder.itemView.setTag(R.id.target_sku, item.getTarget());
+        }
+
         // Return convert view
         return convertView;
     }
@@ -69,7 +85,6 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         public ImageView image;
         public TextView price;
         public View progress;
-        public ImageView favourite;
         public TextView discount;
 
         /**
@@ -106,6 +121,15 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
             holder.discount.setText(CurrencyFormatter.formatCurrency(item.getPrice()));
             holder.price.setText("");
         }
+    }
+
+    private void hideViewsForPlacebo(ProductViewHolder holder){
+        holder.name.setVisibility(View.INVISIBLE);
+        holder.image.setVisibility(View.INVISIBLE);
+        holder.progress.setVisibility(View.INVISIBLE);
+        holder.brand.setVisibility(View.INVISIBLE);
+        holder.price.setVisibility(View.INVISIBLE);
+        holder.discount.setVisibility(View.INVISIBLE);
     }
 
 
