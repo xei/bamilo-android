@@ -224,8 +224,8 @@ public class CountryPersistentConfigs {
         return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, MobileAbout.class);
     }
 
-    @Nullable
-    public static AuthInfo getAuthInfo(Context context){
+    @NonNull
+    public static AuthInfo getAuthInfo(@NonNull Context context){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String json = settings.getString(Darwin.KEY_SELECTED_AUTH_INFO, null);
         return TextUtils.isEmpty(json) ? new AuthInfo() : new Gson().fromJson(json, AuthInfo.class);
