@@ -1069,26 +1069,22 @@ public class DynamicFormItem {
                 params.rightMargin = MANDATORYSIGNALMARGIN;
             }
             params.addRule(RelativeLayout.CENTER_VERTICAL);
-
-            this.mandatoryControl = new TextView(this.context);
-            this.mandatoryControl.setLayoutParams(params);
-            this.mandatoryControl.setText("*");
-            this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
-            this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-            this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
-
-            this.control.addView(this.mandatoryControl);
-            mCheckBox.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
-                        mandatoryControl.setVisibility(View.GONE);
-                    } else if (!((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
-                        mandatoryControl.setVisibility(View.VISIBLE);
+            // Mandatory field
+            if (this.entry.getValidation().isRequired() && !hideAsterisks) {
+                this.mandatoryControl = new TextView(this.context);
+                this.mandatoryControl.setLayoutParams(params);
+                this.mandatoryControl.setText("*");
+                this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
+                this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+                this.mandatoryControl.setVisibility(View.VISIBLE);
+                this.control.addView(this.mandatoryControl);
+                mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        mandatoryControl.setVisibility(isChecked ? View.GONE : View.VISIBLE);
                     }
-                }
-            });
-
+                });
+            }
             //error control
             this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
             //#RTL
