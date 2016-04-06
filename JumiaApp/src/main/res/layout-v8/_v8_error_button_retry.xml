@@ -11,7 +11,10 @@
     android:layout_gravity="center"
     android:clickable="true"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:visibility="gone"
+    tools:visibility="visible"
+    >
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/fragment_root_error_button_message"
