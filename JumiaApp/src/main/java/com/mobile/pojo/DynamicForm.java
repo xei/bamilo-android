@@ -54,7 +54,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
 
     public final static String TAG = DynamicForm.class.getSimpleName();
 
-    private final ViewGroup base;
+    private final LinearLayoutCompat base;
     private final HashMap<String, DynamicFormItem> controls;
     private int lastID = 0x7f096000;
     private final Form form;
@@ -78,21 +78,30 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * Create the view group.
      */
     @NonNull
-    private ViewGroup buildBase(@NonNull Context context) {
+    private LinearLayoutCompat buildBase(@NonNull Context context) {
         LinearLayoutCompat base = new LinearLayoutCompat(context);
         LinearLayoutCompat.LayoutParams params = new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         base.setOrientation(LinearLayoutCompat.VERTICAL);
+        base.setDividerDrawable(ContextCompat.getDrawable(context, R.drawable._gen_divider_horizontal_black_400));
         base.setLayoutParams(params);
         return base;
     }
 
     /**
-     * Show vertical dividers.
+     * Show middle divider.
      */
     @NonNull
-    public DynamicForm showDividers(@LinearLayoutCompat.DividerMode int showDividers) {
-        ((LinearLayoutCompat) base).setDividerDrawable(ContextCompat.getDrawable(base.getContext(), R.drawable._gen_divider_horizontal_black_400));
-        ((LinearLayoutCompat) base).setShowDividers(showDividers);
+    public DynamicForm addMiddleDivider() {
+        base.setShowDividers(base.getShowDividers() | LinearLayoutCompat.SHOW_DIVIDER_MIDDLE);
+        return this;
+    }
+
+    /**
+     * Show end divider.
+     */
+    @NonNull
+    public DynamicForm addEndDivider() {
+        base.setShowDividers(base.getShowDividers() | LinearLayoutCompat.SHOW_DIVIDER_END);
         return this;
     }
 
