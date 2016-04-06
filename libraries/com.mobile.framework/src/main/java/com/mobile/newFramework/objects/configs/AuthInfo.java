@@ -26,7 +26,7 @@ public class AuthInfo implements IJSONSerializable, Parcelable {
     private boolean mHasAuthInfo;
     private String mTitle;
     private String mSubtitle;
-    private final ArrayList<String> mImagesList;
+    private ArrayList<String> mImagesList;
 
     /**
      * Empty constructor
@@ -35,7 +35,7 @@ public class AuthInfo implements IJSONSerializable, Parcelable {
         mHasAuthInfo = false;
         mTitle = "";
         mSubtitle = "";
-        mImagesList = new ArrayList<>();
+        mImagesList = null;
     }
 
     public AuthInfo(Parcel in) {
@@ -54,6 +54,7 @@ public class AuthInfo implements IJSONSerializable, Parcelable {
         JSONArray imagesJSONArray = jsonObject.optJSONArray(RestConstants.IMAGE_LIST);
 
         if(CollectionUtils.isNotEmpty(imagesJSONArray)){
+            mImagesList = new ArrayList<>();
             for (int i = 0; i < imagesJSONArray.length(); i++) {
                 String url = null;
                 try {
