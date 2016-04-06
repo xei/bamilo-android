@@ -40,7 +40,6 @@ import com.mobile.newFramework.objects.product.ImageUrls;
 import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.objects.product.pojo.ProductBundle;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
-import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.objects.product.pojo.ProductSimple;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -789,7 +788,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             }
             ExpandedGridViewComponent relatedGridView = (ExpandedGridViewComponent) mRelatedProductsView.findViewById(R.id.pdv_related_grid_view);
             relatedGridView.setExpanded(true);
-            relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, (ArrayList<ProductRegular>) mProduct.getRelatedProducts().clone()));
+            relatedGridView.setAdapter(new RelatedProductsAdapter(getBaseActivity(), R.layout.pdv_fragment_related_item, mProduct.getRelatedProducts()));
             relatedGridView.setOnItemClickListener(this);
             mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {

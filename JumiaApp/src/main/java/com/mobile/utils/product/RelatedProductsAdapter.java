@@ -26,6 +26,7 @@ import java.util.ArrayList;
  */
 public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
 
+    private boolean isOddSize = false;
     /**
      * Constructor
      */
@@ -35,11 +36,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
          * This is the solution to avoid the silver background
          * when the grid has an odd size.
          */
-        if(data.size() % 2 != 0){
-            ProductRegular placebo = new ProductRegular();
-            placebo.setPlaceboProduct();
-            data.add(placebo);
-        }
+        isOddSize = (data.size() % 2 != 0) ?  true : false;
     }
 
     @Override
@@ -52,11 +49,12 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         } else {
             holder = (ProductViewHolder) convertView.getTag();
         }
-        // Get item
-        ProductRegular item = getItem(position);
-        if(item.isPlaceboProduct()){ // If placeholder hide all the images. Just show the white Background.
+
+        if(position == (getCount() - 1) && isOddSize){ // If last position and odd hide all the views. Just show the white Background.
             hideViewsForPlacebo(holder);
         } else {
+            // Get item
+            ProductRegular item = getItem(position);
             // Set name
             holder.name.setText(item.getName());
             // Set brand
@@ -73,7 +71,11 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         return convertView;
     }
 
-
+    @Override
+    public int getCount() {
+        // If odd number of items, return one more item to show placebo.
+        return  (super.getCount() % 2 == 0) ? super.getCount() : super.getCount() + 1;
+    }
 
     /**
      * Provide a reference to the views for each data item.<br>
@@ -132,6 +134,4 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
         holder.price.setVisibility(View.INVISIBLE);
         holder.discount.setVisibility(View.INVISIBLE);
     }
-
-
 }
