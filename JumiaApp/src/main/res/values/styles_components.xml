@@ -136,7 +136,7 @@
         <item name="android:drawableLeft">@drawable/ic_free_shipping</item>
         <item name="android:drawableStart">@drawable/ic_free_shipping</item>
         <item name="android:drawablePadding">@dimen/margin_padding_xs</item>
-        <item name="android:text">@string/free_shipping</item>
+        <item name="android:text">@string/free_shipping_possible</item>
         <item name="android:visibility">visible</item>
     </style>
 

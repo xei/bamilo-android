@@ -4,6 +4,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.StringRes;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,7 +18,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Copyright (C) 2015 Africa Internet Group - All Rights Reserved
- *
+ * <p/>
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential.
  *
@@ -28,29 +29,17 @@ import java.lang.annotation.RetentionPolicy;
 public class ErrorLayoutFactory {
 
     public static final int NO_NETWORK_LAYOUT = 1;
-
     public static final int UNEXPECTED_ERROR_LAYOUT = 2;
-
     public static final int CART_EMPTY_LAYOUT = 3;
-
     public static final int NO_FAVOURITES_LAYOUT = 4;
-
     public static final int NO_RECENT_SEARCHES_LAYOUT = 5;
-
     public static final int NO_RECENTLY_VIEWED_LAYOUT = 6;
-
     public static final int CONTINUE_SHOPPING_LAYOUT = 7;
-
     public static final int CATALOG_NO_RESULTS = 8;
-
     public static final int CATALOG_UNEXPECTED_ERROR = 9;
-
     public static final int NO_ORDERS_LAYOUT = 10;
-
     public static final int SSL_ERROR_LAYOUT = 11;
-
     public static final int UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT = 12;
-
     public static final int CAMPAIGN_UNAVAILABLE_LAYOUT = 13;
 
     @IntDef({
@@ -69,7 +58,8 @@ public class ErrorLayoutFactory {
             CAMPAIGN_UNAVAILABLE_LAYOUT
     })
     @Retention(RetentionPolicy.SOURCE)
-    public @interface LayoutErrorType{}
+    public @interface LayoutErrorType {
+    }
 
     private final View mErrorLayout;
 
@@ -80,238 +70,87 @@ public class ErrorLayoutFactory {
      *
      * @throws java.lang.IllegalStateException If layout is null.
      */
-    public ErrorLayoutFactory(ViewGroup errorLayout){
-        if(errorLayout  == null){
+    public ErrorLayoutFactory(ViewGroup errorLayout) {
+        if (errorLayout == null) {
             throw new IllegalStateException("Error Layout not initialized");
         }
         actualError = -1;
         mErrorLayout = errorLayout;
     }
 
+    /**
+     * Build the error layout.
+     *
+     * @param error - The layout error type
+     */
     public void showErrorLayout(@LayoutErrorType int error) {
-        if(actualError != error) {
-            //build
+        if (actualError != error) {
+            // Save error
+            actualError = error;
+            // Build layout
             switch (error) {
                 case CAMPAIGN_UNAVAILABLE_LAYOUT:
-                    buildCampaignUnavailableErrorLayout(error);
-                    break;
-                case UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT:
-                    buildUnknownCheckoutStepErrorLayout();
+                    new Builder()
+                    .setContent(R.drawable.ic_campaigns2, R.string.campaign_unavailable_title, R.string.campaign_unavailable_description)
+                    .showContinueButton();
                     break;
                 case SSL_ERROR_LAYOUT:
-                    buildSSLErrorLayout();
+                case UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT:
+                    new Builder()
+                    .setContent(R.drawable.ic_warning, R.string.an_error_occurred, R.string.customer_service_info)
+                    .showContactInfo();
                     break;
                 case NO_NETWORK_LAYOUT:
-                    buildNoNetworkLayout();
+                    new Builder()
+                    .setContent(R.drawable.img_connect, R.string.error_no_connection, R.string.internet_no_connection_details_label)
+                    .setButton(R.string.try_again_retry, R.color.black_700)
+                    .showButtonSpinning();
                     break;
                 case UNEXPECTED_ERROR_LAYOUT:
-                    buildUnexpectedErrorLayout();
+                    new Builder()
+                    .setContent(R.drawable.ic_warning, R.string.error_problem_fetching_data, R.string.server_error)
+                    .showContinueButton();
                     break;
                 case CART_EMPTY_LAYOUT:
-                    buildCartEmptyLayout();
+                    new Builder()
+                    .setContent(R.drawable.ico_empty_cart, R.string.order_no_items)
+                    .showContinueButton();
                     break;
                 case CONTINUE_SHOPPING_LAYOUT:
-                    buildContinueShoppingLayout();
+                    new Builder()
+                    .setContent(R.drawable.ic_warning, R.string.error_problem_fetching_data, R.string.server_error)
+                    .showContinueButton();
                     break;
                 case CATALOG_NO_RESULTS:
-                    buildCatalogNoResultsLayout();
+                    new Builder()
+                    .setContent(R.drawable.ic_filter_empty, R.string.catalog_no_results, R.string.catalog_no_results_details)
+                    .setButton(R.string.catalog_edit_filters, R.color.white, R.color.color_accent);
                     break;
                 case CATALOG_UNEXPECTED_ERROR:
-                    buildCatalogUnexpectedErrorLayout();
+                    new Builder()
+                    .setContent(R.drawable.ic_filter_empty, R.string.server_error)
+                    .setButton(R.string.catalog_edit_filters, R.color.color_accent);
                     break;
                 case NO_FAVOURITES_LAYOUT:
-                    buildNoFavouritesLayout(error);
+                    new Builder()
+                    .setContent(R.drawable.ic_saved_empty, R.string.no_saved_items, R.string.no_saved_items_subtitle);
                     break;
                 case NO_RECENT_SEARCHES_LAYOUT:
-                    buildNoRecentSearchesLayout(error);
+                    new Builder()
+                    .setContent(R.drawable.img_norecentsearch, R.string.recentsearch_no_searches, R.string.recent_searches_empty);
                     break;
                 case NO_RECENTLY_VIEWED_LAYOUT:
-                    buildNoRecentlyViewedLayout(error);
+                    new Builder()
+                    .setContent(R.drawable.ic_recentlyviewed_empty, R.string.no_recently_viewed_items, R.string.no_recently_viewed_items_subtitle);
                     break;
                 case NO_ORDERS_LAYOUT:
-                    buildNoOrdersLayout(error);
+                    new Builder()
+                    .setContent(R.drawable.ic_orders_empty, R.string.no_orders, R.string.no_orders_message);
                     break;
             }
         }
         //show
         show();
-    }
-
-    /**
-     * Show error layout in case of invalid campaign
-     *
-     * @param error
-     */
-    public void buildCampaignUnavailableErrorLayout(int error){
-        showGenericError(error, R.drawable.ic_campaigns2, R.string.campaign_unavailable_title,
-                R.string.campaign_unavailable_description, R.string.continue_shopping,
-                R.color.white, R.color.color_accent, false);
-    }
-
-    private void buildNoFavouritesLayout(int error){
-        showGenericError(error, R.drawable.ic_saved_empty, R.string.no_saved_items, R.string.no_saved_items_subtitle);
-    }
-
-    private void buildNoRecentSearchesLayout(int error){
-        showGenericError(error, R.drawable.img_norecentsearch, R.string.recentsearch_no_searches, R.string.recent_searches_empty);
-    }
-
-    private void buildNoRecentlyViewedLayout(int error){
-        showGenericError(error, R.drawable.ic_recentlyviewed_empty, R.string.no_recently_viewed_items, R.string.no_recently_viewed_items_subtitle);
-    }
-
-    private void buildNoOrdersLayout(int error){
-        showGenericError(error, R.drawable.ic_orders_empty,R.string.no_orders,R.string.no_orders_message);
-    }
-
-    /**
-     * Show error layout with contact info in case of ssl errors
-     * */
-    public void buildSSLErrorLayout(){
-        // Build common
-        new Builder()
-                .setImage(R.drawable.ic_warning)
-                .setPrincipalMessage(R.string.an_error_occurred)
-                .setDetailMessage(R.string.customer_service_info)
-                .setButtonVisible(false);
-        // Set contacts
-        String phone =CountryPersistentConfigs.getCountryPhoneNumber(mErrorLayout.getContext());
-        String email = CountryPersistentConfigs.getCountryEmail(mErrorLayout.getContext());
-        mErrorLayout.findViewById(R.id.contacts_info).setVisibility(View.VISIBLE);
-        ((TextView)mErrorLayout.findViewById(R.id.phone_text)).setText(phone);
-        ((TextView)mErrorLayout.findViewById(R.id.email_text)).setText(email);
-        // Error
-        actualError = SSL_ERROR_LAYOUT;
-    }
-
-    /**
-     * Show error layout with contact info in case of unknown checkout next step.
-     * */
-    public void buildUnknownCheckoutStepErrorLayout(){
-        // Build common
-        new Builder()
-                .setImage(R.drawable.ic_warning)
-                .setPrincipalMessage(R.string.an_error_occurred)
-                .setDetailMessage(R.string.customer_service_info)
-                .setButtonVisible(false);
-        // Set contacts
-        String phone =CountryPersistentConfigs.getCountryPhoneNumber(mErrorLayout.getContext());
-        String email = CountryPersistentConfigs.getCountryEmail(mErrorLayout.getContext());
-        mErrorLayout.findViewById(R.id.contacts_info).setVisibility(View.VISIBLE);
-        ((TextView)mErrorLayout.findViewById(R.id.phone_text)).setText(phone);
-        ((TextView)mErrorLayout.findViewById(R.id.email_text)).setText(email);
-        // Error
-        actualError = UNKNOWN_CHECKOUT_STEP_ERROR_LAYOUT;
-    }
-
-    /**
-     * show dynamic error message
-     */
-    private void showGenericError(int error, int image, int principalMessage, int detailMessage) {
-        new Builder()
-                .setImage(image)
-                .setPrincipalMessage(principalMessage)
-                .setDetailMessage(detailMessage)
-                .setButtonVisible(false)
-                .setRotationVisible(false);
-        actualError = error;
-    }
-
-    /**
-     * Show generic error message with button
-     *
-     * @param error
-     * @param image
-     * @param principalMessage
-     * @param detailMessage
-     * @param buttonMessage
-     * @param buttonTextColor
-     * @param buttonBackground
-     * @param rotationVisible
-     */
-    private void showGenericError(int error, int image, int principalMessage, int detailMessage,
-                                  int buttonMessage, int buttonTextColor, int buttonBackground,
-                                  boolean rotationVisible) {
-        new Builder()
-                .setImage(image)
-                .setPrincipalMessage(principalMessage)
-                .setDetailMessage(detailMessage)
-                .setButtonMessage(buttonMessage)
-                .setButtonTextColor(buttonTextColor)
-                .setRotationVisible(rotationVisible)
-                .setButtonBackground(buttonBackground);
-        actualError = error;
-    }
-
-    private void buildNoNetworkLayout() {
-        new Builder()
-                .setImage(R.drawable.img_connect)
-                .setPrincipalMessage(R.string.error_no_connection)
-                .setDetailMessage(R.string.internet_no_connection_details_label)
-                .setRotationVisible(true)
-                .setButtonMessage(R.string.try_again_retry)
-                .setButtonBackground(R.color.black_700);
-        actualError = NO_NETWORK_LAYOUT;
-    }
-
-    private void buildUnexpectedErrorLayout() {
-        new Builder()
-                .setImage(R.drawable.ic_warning)
-                .setPrincipalMessage(R.string.error_problem_fetching_data)
-                .setDetailMessage(R.string.server_error)
-                .setRotationVisible(false)
-                .setButtonMessage(R.string.continue_shopping)
-                .setButtonTextColor(R.color.white)
-                .setButtonBackground(R.color.color_accent);
-        actualError = UNEXPECTED_ERROR_LAYOUT;
-    }
-
-    private void buildCartEmptyLayout(){
-        new Builder()
-                .setImage(R.drawable.ico_empty_cart)
-                .setPrincipalMessage(R.string.order_no_items)
-                .setDetailMessageVisible(false)
-                .setButtonMessage(R.string.continue_shopping)
-                .setButtonTextColor(R.color.white)
-                .setRotationVisible(false)
-                .setButtonBackground(R.color.color_accent);
-        actualError = CART_EMPTY_LAYOUT;
-    }
-
-    private void buildContinueShoppingLayout() {
-        new Builder()
-                .setImage(R.drawable.ic_warning)
-                .setPrincipalMessage(R.string.error_problem_fetching_data)
-                .setDetailMessage(R.string.server_error)
-                .setButtonMessage(R.string.continue_shopping)
-                .setButtonTextColor(R.color.white)
-                .setRotationVisible(false)
-                .setButtonBackground(R.color.color_accent);
-        actualError = CONTINUE_SHOPPING_LAYOUT;
-    }
-
-    private void buildCatalogNoResultsLayout(){
-        new Builder()
-                .setImage(R.drawable.ic_filter_empty)
-                .setPrincipalMessage(R.string.catalog_no_results)
-                .setDetailMessageVisible(true)
-                .setDetailMessage(R.string.catalog_no_results_details)
-                .setButtonTextColor(R.color.white)
-                .setButtonMessage(R.string.catalog_edit_filters)
-                .setRotationVisible(false)
-                .setButtonBackground(R.color.color_accent);
-        actualError = CATALOG_NO_RESULTS;
-    }
-
-    private void buildCatalogUnexpectedErrorLayout(){
-        new Builder()
-                .setImage(R.drawable.ic_filter_empty)
-                .setPrincipalMessage(R.string.server_error)
-                .setDetailMessageVisible(false)
-                .setButtonMessage(R.string.catalog_edit_filters)
-                .setRotationVisible(false)
-                .setButtonBackground(R.color.color_accent);
-        actualError = CATALOG_UNEXPECTED_ERROR;
     }
 
     private void show() {
@@ -326,77 +165,96 @@ public class ErrorLayoutFactory {
      * Class used for building the layout.
      */
     @SuppressWarnings("unused")
-    private class Builder{
+    private class Builder {
 
         Builder() {
             // ...
         }
 
-        Builder setRotationVisible(boolean isToShow){
+        Builder showContactInfo() {
+            // Get contact info
+            String phone = CountryPersistentConfigs.getCountryPhoneNumber(mErrorLayout.getContext());
+            String email = CountryPersistentConfigs.getCountryEmail(mErrorLayout.getContext());
+            // Set contact info
+            mErrorLayout.findViewById(R.id.contacts_info).setVisibility(View.VISIBLE);
+            ((TextView) mErrorLayout.findViewById(R.id.phone_text)).setText(phone);
+            ((TextView) mErrorLayout.findViewById(R.id.email_text)).setText(email);
+            return this;
+        }
+
+        Builder setContent(@DrawableRes int image, @StringRes int title) {
+            setImage(image);
+            setPrincipalMessage(title);
+            return this;
+        }
+
+        Builder setContent(@DrawableRes int image, @StringRes int title, @StringRes int message) {
+            setImage(image);
+            setPrincipalMessage(title);
+            setDetailMessage(message);
+            return this;
+        }
+
+        Builder showContinueButton() {
+            setButtonMessage(R.string.continue_shopping);
+            setButtonTextColor(R.color.white);
+            setButtonBackground(R.color.color_accent);
+            return this;
+        }
+
+        Builder setButton(@StringRes int message, @DrawableRes int background) {
+            setButtonMessage(message);
+            setButtonBackground(background);
+            return this;
+        }
+
+        Builder setButton(@StringRes int message, @ColorRes int color, @DrawableRes int background) {
+            setButtonMessage(message);
+            setButtonTextColor(color);
+            setButtonBackground(background);
+            return this;
+        }
+
+        Builder showButtonSpinning() {
             View retrySpinning = mErrorLayout.findViewById(R.id.fragment_root_error_spinning);
-            if(isToShow){
-                retrySpinning.setVisibility(View.VISIBLE);
-            } else {
-                retrySpinning.clearAnimation();
-                retrySpinning.setVisibility(View.GONE);
-            }
+            retrySpinning.setVisibility(View.VISIBLE);
             return this;
         }
 
-        Builder setButtonMessage(@StringRes int message){
-            ((TextView)mErrorLayout.findViewById(R.id.fragment_root_error_button_message)).setText(message);
+        private Builder setButtonMessage(@StringRes int message) {
+            ((TextView) mErrorLayout.findViewById(R.id.fragment_root_error_button_message)).setText(message);
             return this;
         }
 
-        Builder setButtonBackground(@DrawableRes int background){
+        private Builder setButtonBackground(@DrawableRes int background) {
             mErrorLayout.findViewById(R.id.fragment_root_error_button).setBackgroundResource(background);
             return this;
         }
 
-        Builder setButtonVisible(boolean isToShow){
-            mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(isToShow ? View.VISIBLE : View.GONE);
+        private Builder setButtonTextColor(@ColorRes int color) {
+            ((TextView) mErrorLayout.findViewById(R.id.fragment_root_error_button_message))
+            .setTextColor(ContextCompat.getColor(mErrorLayout.getContext(), color));
             return this;
         }
 
-        Builder setButtonTextColor(@ColorRes int color){
-            ((TextView)mErrorLayout.findViewById(R.id.fragment_root_error_button_message)).setTextColor(mErrorLayout.getContext().getResources().getColor(color));
-            return this;
-        }
-
-
-        Builder setImage(@DrawableRes int image){
-            View imageView = mErrorLayout.findViewById(R.id.fragment_root_error_image);
+        private Builder setImage(@DrawableRes int image) {
+            ImageView imageView = (ImageView) mErrorLayout.findViewById(R.id.fragment_root_error_image);
             imageView.setVisibility(View.VISIBLE);
-            ((ImageView)imageView).setImageResource(image);
+            imageView.setImageResource(image);
             return this;
         }
 
-        Builder setImageVisibility(boolean isToShow){
-            mErrorLayout.findViewById(R.id.fragment_root_error_image).setVisibility(isToShow ? View.VISIBLE : View.GONE);
-            return this;
-        }
-
-        Builder setPrincipalMessage(@StringRes int message){
-            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_label);
+        private Builder setPrincipalMessage(@StringRes int message) {
+            TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_label);
             messageView.setVisibility(View.VISIBLE);
-            ((TextView)messageView).setText(message);
+            messageView.setText(message);
             return this;
         }
 
-        Builder setPrincipalMessageVisible(boolean isToShow){
-            mErrorLayout.findViewById(R.id.fragment_root_error_label).setVisibility(isToShow ? View.VISIBLE : View.GONE);
-            return this;
-        }
-
-        Builder setDetailMessage(@StringRes int message){
-            View messageView = mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
+        private Builder setDetailMessage(@StringRes int message) {
+            TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
             messageView.setVisibility(View.VISIBLE);
-            ((TextView)messageView).setText(message);
-            return this;
-        }
-
-        Builder setDetailMessageVisible(boolean isToShow){
-            mErrorLayout.findViewById(R.id.fragment_root_error_details_label).setVisibility(isToShow ? View.VISIBLE : View.GONE);
+            messageView.setText(message);
             return this;
         }
     }
