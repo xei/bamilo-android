@@ -2,7 +2,6 @@ package com.mobile.factories;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutCompat;
 
 import com.mobile.constants.FormConstants;
 import com.mobile.newFramework.forms.Form;
@@ -87,7 +86,7 @@ public class FormFactory {
             case FormConstants.NEWSLETTER_UN_SUBSCRIBE_FORM:
             case FormConstants.NEWSLETTER_PREFERENCES_FORM:
                 form.setType(formType);  // Used for dividers
-                parent = new DynamicForm(context, form).showDividers(LinearLayoutCompat.SHOW_DIVIDER_MIDDLE | LinearLayoutCompat.SHOW_DIVIDER_END).build();
+                parent = new DynamicForm(context, form).addMiddleDivider().addEndDivider().build();
                 break;
             case FormConstants.PAYMENT_DETAILS_FORM:
                 parent = new DynamicForm(context, form).build();

@@ -263,7 +263,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
 
     private void onClickTermsAndConditions(View view) {
         @TargetLink.Type String target = (String) view.getTag();
-        new TargetLink(getWeakBaseActivity(), target).addTitle(R.string.terms_and_conditions).enableWarningErrorMessage().run();
+        new TargetLink(getWeakBaseActivity(), target)
+                .addTitle(R.string.terms_and_conditions)
+                .enableWarningErrorMessage()
+                .run();
     }
 
 
