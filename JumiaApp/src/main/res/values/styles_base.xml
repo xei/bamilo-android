@@ -26,6 +26,10 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="TextBase.Display_2.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TextBase.Display_2.Black_400">
         <item name="android:textColor">@color/black_400</item>
     </style>

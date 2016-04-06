@@ -35,9 +35,9 @@ public class OffersListAdapter extends RecyclerView.Adapter<OffersListAdapter.Pr
         void onClickVariation(ProductOffer offer);
     }
 
-    private Context context;
+    private final Context context;
 
-    private IOffersAdapterService offerSelected;
+    private final IOffersAdapterService offerSelected;
 
     ArrayList<ProductOffer> offers = new ArrayList<>();
 

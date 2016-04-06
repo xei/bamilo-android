@@ -330,4 +330,5 @@ public class RestConstants {
     public static final String ORDERS_COUNT = "orders_count";
     public static final String FREE_SHIPPING_POSSIBLE = "free_shipping_possible";
     public static final String ALL_OFFERS = "all_offers";
+    public static final String AUTH_INFO = "auth_info";
 }

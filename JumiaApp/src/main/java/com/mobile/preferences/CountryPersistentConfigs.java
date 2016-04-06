@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import com.google.gson.Gson;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.objects.configs.AuthInfo;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Language;
@@ -79,6 +80,7 @@ public class CountryPersistentConfigs {
 
         saveAlgoliaInfo(mEditor, countryConfigs.getApplicationId(), countryConfigs.getSuggesterApiKey(), countryConfigs.getNamespacePrefix(), countryConfigs.isAlgoliaSearchEngine());
 
+        saveAuthInfo(mEditor, countryConfigs.getAuthInfo());
         //has_cart_popup
         mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, countryConfigs.hasCartPopup());
         // Rich Relevance
@@ -200,6 +202,11 @@ public class CountryPersistentConfigs {
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_PREFIX, namespacePrefix);
     }
 
+    public static void saveAuthInfo(SharedPreferences.Editor mEditor, @Nullable AuthInfo authInfo){
+        String json = new Gson().toJson(authInfo);
+        mEditor.putString(Darwin.KEY_SELECTED_AUTH_INFO, json);
+    }
+
     public static boolean isUseAlgolia(Context context){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_USE, false);
@@ -215,6 +222,13 @@ public class CountryPersistentConfigs {
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String json = settings.getString(Darwin.KEY_SELECTED_MORE_INFO, null);
         return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, MobileAbout.class);
+    }
+
+    @NonNull
+    public static AuthInfo getAuthInfo(@NonNull Context context){
+        SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String json = settings.getString(Darwin.KEY_SELECTED_AUTH_INFO, null);
+        return TextUtils.isEmpty(json) ? new AuthInfo() : new Gson().fromJson(json, AuthInfo.class);
     }
 
     @Nullable
