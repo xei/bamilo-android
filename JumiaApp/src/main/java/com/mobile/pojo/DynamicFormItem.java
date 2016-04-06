@@ -1070,22 +1070,18 @@ public class DynamicFormItem {
             }
             params.addRule(RelativeLayout.CENTER_VERTICAL);
             // Mandatory field
-            if (!hideAsterisks) {
+            if (this.entry.getValidation().isRequired() && !hideAsterisks) {
                 this.mandatoryControl = new TextView(this.context);
                 this.mandatoryControl.setLayoutParams(params);
                 this.mandatoryControl.setText("*");
                 this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
                 this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-                this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() ? View.VISIBLE : View.GONE);
+                this.mandatoryControl.setVisibility(View.VISIBLE);
                 this.control.addView(this.mandatoryControl);
-                mCheckBox.setOnClickListener(new OnClickListener() {
+                mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
-                    public void onClick(View v) {
-                        if (((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
-                            mandatoryControl.setVisibility(View.GONE);
-                        } else if (!((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
-                            mandatoryControl.setVisibility(View.VISIBLE);
-                        }
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        mandatoryControl.setVisibility(isChecked ? View.GONE : View.VISIBLE);
                     }
                 });
             }
