@@ -125,12 +125,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         loginHeaderComponent.setSubTitle(text);
 
         AuthInfo authInfo = CountryPersistentConfigs.getAuthInfo(getContext());
-        if(authInfo.hasAuthInfo()){
-            loginHeaderComponent.setTitle(authInfo.getTitle(""));
-            loginHeaderComponent.setSubTitle(authInfo.getSubtitle(text));
-            loginHeaderComponent.setSubTitleExtra(getString(R.string.register_more_info), text);
-            loginHeaderComponent.setImages(authInfo.getImagesList());
-        }
+        loginHeaderComponent.showAuthInfo(LoginHeaderComponent.CREATE_ACCOUNT, authInfo, null);
 
         // Get form container
         mFormContainer = (ViewGroup) view.findViewById(R.id.register_form_container);

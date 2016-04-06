@@ -132,12 +132,8 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
 
         final LoginHeaderComponent loginHeaderComponent = (LoginHeaderComponent) view.findViewById(R.id.login_component);
         AuthInfo authInfo = CountryPersistentConfigs.getAuthInfo(getContext());
-        if(authInfo.hasAuthInfo()){
-            loginHeaderComponent.setTitle(authInfo.getTitle(null));
-            loginHeaderComponent.setSubTitle(authInfo.getSubtitle(getString(R.string.login_email_info)));
-            loginHeaderComponent.setSubTitleExtra(getString(R.string.login_email_info), getString(R.string.login_email_info));
-            loginHeaderComponent.setImages(authInfo.getImagesList());
-        }
+        loginHeaderComponent.showAuthInfo(LoginHeaderComponent.LOGIN, authInfo, null);
+
 
         // Get form container
         mFormContainer = (ViewGroup) view.findViewById(R.id.login_email_form_container);

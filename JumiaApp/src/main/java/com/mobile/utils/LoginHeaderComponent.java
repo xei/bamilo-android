@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.newFramework.objects.configs.AuthInfo;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.utils.imageloader.RocketImageLoader;
@@ -38,9 +39,9 @@ import java.util.ArrayList;
 public class LoginHeaderComponent extends FrameLayout {
 
     // Login Types
-    private static final int CHECK_EMAIL = 0;
-    private static final int LOGIN = 1;
-    private static final int CREATE_ACCOUNT = 2;
+    public static final int CHECK_EMAIL = 0;
+    public static final int LOGIN = 1;
+    public static final int CREATE_ACCOUNT = 2;
 
     @IntDef({CHECK_EMAIL, LOGIN, CREATE_ACCOUNT})
     @Retention(RetentionPolicy.SOURCE)
@@ -152,6 +153,33 @@ public class LoginHeaderComponent extends FrameLayout {
                     view.setVisibility(GONE);
                 }
             });
+        }
+    }
+
+    public void showAuthInfo(@LoginHeaderType int loginType, @NonNull AuthInfo authInfo, @Nullable String text){
+        if(authInfo.hasAuthInfo()){
+            switch (loginType){
+                case CHECK_EMAIL:
+                    setTitle(authInfo.getTitle(text));
+                    setSubTitle(authInfo.getSubtitle(text));
+                    setImages(authInfo.getImagesList());
+                    break;
+                case LOGIN:
+                    setTitle(authInfo.getTitle(null));
+                    setSubTitle(authInfo.getSubtitle(getContext().getString(R.string.login_email_info)));
+                    setSubTitleExtra(getContext().getString(R.string.login_email_info), getContext().getString(R.string.login_email_info));
+                    setImages(authInfo.getImagesList());
+                    break;
+                case CREATE_ACCOUNT:
+                    setTitle(authInfo.getTitle(null));
+                    setSubTitle(authInfo.getSubtitle(text));
+                    setSubTitleExtra(getContext().getString(R.string.register_more_info), text);
+                    setImages(authInfo.getImagesList());
+                    break;
+            }
+
+
+
         }
     }
 

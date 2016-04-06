@@ -136,12 +136,7 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         loginHeaderComponent.setSubTitle(text);
 
         AuthInfo authInfo = CountryPersistentConfigs.getAuthInfo(getContext());
-        if(authInfo.hasAuthInfo()){
-            loginHeaderComponent.setTitle(authInfo.getTitle(text));
-            loginHeaderComponent.setSubTitle(authInfo.getSubtitle(text));
-            loginHeaderComponent.setImages(authInfo.getImagesList());
-        }
-
+        loginHeaderComponent.showAuthInfo(LoginHeaderComponent.CHECK_EMAIL, authInfo, text);
         // Get and set FB button
         FacebookTextView mFacebookButton = (FacebookTextView) view.findViewById(R.id.login_button_facebook);
         View divider = view.findViewById(R.id.login_divider);
