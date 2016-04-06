@@ -22,6 +22,7 @@ import java.util.ArrayList;
  */
 public class AuthInfo implements IJSONSerializable, Parcelable {
 
+    private static final String TAG = AuthInfo.class.getName();
     private boolean mHasAuthInfo;
     private String mTitle;
     private String mSubtitle;
@@ -58,7 +59,7 @@ public class AuthInfo implements IJSONSerializable, Parcelable {
                 try {
                     url = imagesJSONArray.getJSONObject(i).getString(RestConstants.URL);
                 } catch (JSONException e) {
-                    e.printStackTrace();
+                    Print.e(TAG, "Error initializing the complete product", e);
                 }
                 if(TextUtils.isNotEmpty(url)){
                     mImagesList.add(url);
