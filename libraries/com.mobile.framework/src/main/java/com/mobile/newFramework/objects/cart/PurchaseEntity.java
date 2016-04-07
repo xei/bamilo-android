@@ -53,7 +53,8 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private ArrayList<Fulfillment> mFulfillmentList;
     private PurchaseCartItem mLastItemAdded;
     private boolean hasFreeShipping;
-    private BigDecimal mSubTotalUnDiscounted;
+    private BigDecimal mSubTotalUnDiscountedTemp;
+    private double mSubTotalUnDiscounted;
 
     /**
      * Constructor
@@ -71,6 +72,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         mTotalConverted = jsonObject.getDouble(RestConstants.TOTAL_CONVERTED);
         // Get cart sub total
         mSubTotal = jsonObject.optDouble(RestConstants.SUB_TOTAL);
+        mSubTotalUnDiscounted = jsonObject.optDouble(RestConstants.SUB_TOTAL_UN_DISCOUNTED);
         mSubTotalConverted = jsonObject.optDouble(RestConstants.SUB_TOTAL_CONVERTED);
         // Vat
         JSONObject vatObject = jsonObject.optJSONObject(RestConstants.VAT);
@@ -98,7 +100,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         mCartCount = jsonObject.getInt(RestConstants.TOTAL_PRODUCTS);
         JSONArray cartArray = jsonObject.getJSONArray(RestConstants.PRODUCTS);
         mCartItems = new ArrayList<>();
-        mSubTotalUnDiscounted = new BigDecimal(0);
+        mSubTotalUnDiscountedTemp = new BigDecimal(0);
         for (int i = 0; i < cartArray.length(); i++) {
             JSONObject cartObject = cartArray.getJSONObject(i);
             PurchaseCartItem item = new PurchaseCartItem();
@@ -106,7 +108,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             mCartItems.add(item);
             hasFreeShipping = item.hasFreeShipping() || hasFreeShipping;
             // TODO :: NAFAMZ-16896
-            mSubTotalUnDiscounted = mSubTotalUnDiscounted.add(new BigDecimal(item.getPrice() * item.getQuantity()));
+            mSubTotalUnDiscountedTemp = mSubTotalUnDiscountedTemp.add(new BigDecimal(item.getPrice() * item.getQuantity()));
         }
         // Last item added
         if(CollectionUtils.isNotEmpty(mCartItems)) {
@@ -230,11 +232,11 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     }
 
     public double getSubTotalUnDiscounted() {
-        return mSubTotalUnDiscounted.doubleValue();
+        return Double.isNaN(mSubTotalUnDiscounted) ? mSubTotalUnDiscountedTemp.doubleValue() : mSubTotalUnDiscounted;
     }
 
     public boolean hasSubTotalUnDiscounted() {
-        return mSubTotal < mSubTotalUnDiscounted.doubleValue();
+        return mSubTotal < getSubTotalUnDiscounted();
     }
 
     public String getShippingMethod() {
@@ -370,6 +372,8 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         }
         dest.writeValue(mLastItemAdded);
         dest.writeByte((byte) (hasFreeShipping ? 0x01 : 0x00));
+        dest.writeValue(mSubTotalUnDiscountedTemp);
+        dest.writeDouble(mSubTotalUnDiscounted);
     }
 
     /**
@@ -409,6 +413,8 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         }
         mLastItemAdded = (PurchaseCartItem) in.readValue(PurchaseCartItem.class.getClassLoader());
         hasFreeShipping = in.readByte() != 0x00;
+        mSubTotalUnDiscountedTemp = (BigDecimal) in.readValue(BigDecimal.class.getClassLoader());
+        mSubTotalUnDiscounted = in.readDouble();
     }
 
     /**
