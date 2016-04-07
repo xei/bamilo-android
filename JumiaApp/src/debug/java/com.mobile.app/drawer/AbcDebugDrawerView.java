@@ -1,6 +1,8 @@
 package com.mobile.app.drawer;
 
-import android.app.Activity;
+import android.support.annotation.NonNull;
+
+import com.mobile.app.DebugActivity;
 
 import io.palaima.debugdrawer.DebugDrawer;
 import io.palaima.debugdrawer.commons.DeviceModule;
@@ -10,7 +12,7 @@ import io.palaima.debugdrawer.scalpel.ScalpelModule;
 
 public class AbcDebugDrawerView {
 
-    public static DebugDrawer onCreate(final Activity activity) {
+    public static DebugDrawer onCreate(@NonNull final DebugActivity activity) {
         return new DebugDrawer.Builder(activity)
                 .modules(
                         new DebugAppInfoModel(activity),
@@ -21,13 +23,9 @@ public class AbcDebugDrawerView {
                         new SettingsModule(activity),
                         new ScalpelModule(activity)
                         // TODO Send notification
-                        // TODO Edit text to set a new host to test
-                        // new NetworkModule(activity),
+                        //new NetworkModule(activity),
                         //new OkHttpModule(AigHttpClient.getInstance().getOkHttpClient()),
                         //new BuildModule(activity),
-                        //new ActionsModule(createSwitchAction(activity)),
-                        //new ActionsModule(createButtonAction(activity)),
-                        //new ActionsModule(createSpinnerAction(activity)),
                 ).build();
     }
 
@@ -46,40 +44,5 @@ public class AbcDebugDrawerView {
     public static void onStop(DebugDrawer debugDrawer) {
         if (debugDrawer != null) debugDrawer.onStop();
     }
-
-//    /*
-//     * ########### MODELS ###########
-//     */
-//
-//
-//    public static SwitchAction createSwitchAction(final Activity activity) {
-//        return new SwitchAction("Test switch", new SwitchAction.Listener() {
-//            @Override
-//            public void onCheckedChanged(boolean value) {
-//                Toast.makeText(activity.getApplicationContext(), "Switch checked", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
-//
-//    public static ButtonAction createButtonAction(final Activity activity) {
-//        return new ButtonAction("Test button", new ButtonAction.Listener() {
-//            @Override
-//            public void onClick() {
-//                Toast.makeText(activity.getApplicationContext(), "Button clicked", Toast.LENGTH_LONG).show();
-//            }
-//        });
-//    }
-//
-//    public static SpinnerAction createSpinnerAction(final Activity activity) {
-//        return new SpinnerAction<>(
-//                Arrays.asList("First", "Second", "Third"),
-//                new SpinnerAction.OnItemSelectedListener<String>() {
-//                    @Override
-//                    public void onItemSelected(String value) {
-//                        Toast.makeText(activity.getApplicationContext(), "Spinner item selected - " + value, Toast.LENGTH_LONG).show();
-//                    }
-//                }
-//        );
-//    }
 
 }

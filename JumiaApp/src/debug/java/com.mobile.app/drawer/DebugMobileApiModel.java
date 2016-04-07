@@ -1,80 +1,101 @@
 package com.mobile.app.drawer;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.SwitchCompat;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
+import com.mobile.app.DebugActivity;
 import com.mobile.newFramework.rest.AigHttpClient;
+import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.errors.ErrorCode;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
 import com.squareup.okhttp.Interceptor;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
-
-import io.palaima.debugdrawer.base.DebugModule;
+import java.lang.ref.WeakReference;
 
 /**
  * Model used to simulate some mobile api errors.
  * @author spereira
  */
-public class DebugMobileApiModel implements DebugModule, CompoundButton.OnCheckedChangeListener {
+public class DebugMobileApiModel extends BaseDebugModel implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
-    private ResponseCodeInterceptor mInterceptor;
+    private final WeakReference<DebugActivity> mWeakDebugActivity;
+    private final ResponseCodeInterceptor mInterceptor;
     private SwitchCompat mMaintenance;
     private SwitchCompat mOverload;
+    private AppCompatEditText mEditHost;
+    private AppCompatButton mEditButton;
+    private View mWarningView;
 
-    public DebugMobileApiModel(Context context) {
+    public DebugMobileApiModel(@NonNull DebugActivity activity) {
+        // Save debug activity
+        mWeakDebugActivity = activity.getWeakReference();
         // Create interceptor
         mInterceptor = new ResponseCodeInterceptor();
         // Add interceptor
-        AigHttpClient.getInstance(context).addDebugNetworkInterceptors(mInterceptor);
+        AigHttpClient.getInstance(activity.getApplicationContext()).addDebugNetworkInterceptors(mInterceptor);
     }
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View view = inflater.inflate(R.layout.dd_debug_drawer_module_mob_api, parent, false);
-        mMaintenance = ((SwitchCompat) view.findViewById(R.id.dd_debug_network_maintenance));
-        mMaintenance.setOnCheckedChangeListener(this);
-        mOverload = ((SwitchCompat) view.findViewById(R.id.dd_debug_network_overload));
-        mOverload.setOnCheckedChangeListener(this);
+        mEditHost = (AppCompatEditText) view.findViewById(R.id.dd_debug_network_host);
+        mEditButton = (AppCompatButton) view.findViewById(R.id.dd_debug_network_button_host);
+        mWarningView = view.findViewById(R.id.dd_debug_network_text_warning);
+        mMaintenance = (SwitchCompat) view.findViewById(R.id.dd_debug_network_maintenance);
+        mOverload = (SwitchCompat) view.findViewById(R.id.dd_debug_network_overload);
+        showInfo();
         return view;
     }
 
-    @Override
-    public void onOpened() {
-        // ...
+    @SuppressLint("SetTextI18n")
+    private void showInfo() {
+        try {
+            disableEditHost();
+            mEditButton.setOnClickListener(this);
+            mMaintenance.setOnCheckedChangeListener(this);
+            mOverload.setOnCheckedChangeListener(this);
+        } catch (Exception e) {
+            // ...
+        }
+    }
+
+    private void disableEditHost() {
+        mEditHost.setText(AigRestContract.REQUEST_HOST);
+        mEditHost.setEnabled(false);
+        mEditHost.setInputType(InputType.TYPE_NULL);
+        mEditButton.setText("Edit");
+        mWarningView.setVisibility(View.GONE);
+    }
+
+    private void enableEditHost() {
+        mEditHost.setEnabled(true);
+        mEditHost.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
+        mEditButton.setText("Ok");
+        mWarningView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void onClosed() {
-        // ...
-    }
-
-    @Override
-    public void onResume() {
-        // ...
-    }
-
-    @Override
-    public void onPause() {
-        // ...
-    }
-
-    @Override
-    public void onStart() {
-        // ...
-    }
-
-    @Override
-    public void onStop() {
-        // ...
+    public void onClick(View view) {
+        if (mEditHost.isEnabled()) {
+            // Restart the app
+            CountryPersistentConfigs.saveDebugHost(view.getContext(), mEditHost.getText().toString());
+            mWeakDebugActivity.get().restartAppFlow();
+        } else {
+            enableEditHost();
+        }
     }
 
     @Override
@@ -95,13 +116,12 @@ public class DebugMobileApiModel implements DebugModule, CompoundButton.OnChecke
     }
 
     private void setAction(boolean isChecked, int code) {
-        if(mInterceptor == null) {
-            return;
-        }
-        if (isChecked) {
-            mInterceptor.setHttpCode(code);
-        } else {
-            mInterceptor.removeHttpCode();
+        if (mInterceptor != null) {
+            if (isChecked) {
+                mInterceptor.setHttpCode(code);
+            } else {
+                mInterceptor.removeHttpCode();
+            }
         }
     }
 
@@ -112,7 +132,6 @@ public class DebugMobileApiModel implements DebugModule, CompoundButton.OnChecke
             switchCompat.setOnCheckedChangeListener(this);
         }
     }
-
 
     private static class ResponseCodeInterceptor implements Interceptor {
 
@@ -129,9 +148,7 @@ public class DebugMobileApiModel implements DebugModule, CompoundButton.OnChecke
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response response = chain.proceed(chain.request());
-            if (code != -1) {
-                response = response.newBuilder().code(code).build();
-            }
+            if (code != -1) response = response.newBuilder().code(code).build();
             return response;
         }
     }

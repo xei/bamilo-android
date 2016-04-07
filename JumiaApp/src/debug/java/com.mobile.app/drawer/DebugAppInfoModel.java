@@ -13,13 +13,11 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.view.R;
 
-import io.palaima.debugdrawer.base.DebugModule;
-
 /**
  * Model used to show app info.
  * @author spereira
  */
-public class DebugAppInfoModel implements DebugModule {
+public class DebugAppInfoModel extends BaseDebugModel {
 
     private final Context context;
 
@@ -55,36 +53,6 @@ public class DebugAppInfoModel implements DebugModule {
         } catch (Exception var2) {
             // ...
         }
-    }
-
-    @Override
-    public void onOpened() {
-        // ...
-    }
-
-    @Override
-    public void onClosed() {
-        // ...
-    }
-
-    @Override
-    public void onResume() {
-        // ...
-    }
-
-    @Override
-    public void onPause() {
-        // ...
-    }
-
-    @Override
-    public void onStart() {
-        // ...
-    }
-
-    @Override
-    public void onStop() {
-        // ...
     }
 
 }

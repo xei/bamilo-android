@@ -14,20 +14,69 @@
         android:layout_gravity="start|fill_horizontal"
         android:text="Mobile Api" />
 
+    <!--HOST-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/Widget.DebugDrawer.Base.RowTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:text="Host" />
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/dd_debug_network_host"
+            style="@style/Widget.DebugDrawer.Base.RowTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_weight="1"
+            android:hint="www.jumia.com.ng" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/dd_debug_network_button_host"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_gravity="start|center_vertical"
+            android:background="@android:color/darker_gray"
+            android:text="Edit" />
+
+    </LinearLayout>
+
+    <!--RESTART WARNING-->
+    <TextView
+        android:id="@+id/dd_debug_network_text_warning"
+        style="@style/Widget.DebugDrawer.Base.RowTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_columnSpan="2"
+        android:layout_gravity="right|center_vertical"
+        android:text="(PRESS OK TO RESTART)"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <!--MAINTENANCE-->
     <TextView
         style="@style/Widget.DebugDrawer.Base.RowTitle"
         android:layout_gravity="start|center_vertical"
-        android:text="Maintenance Page" />
+        android:text="Maintenance" />
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/dd_debug_network_maintenance"
         style="@style/Widget.DebugDrawer.Base.RowWidget"
         android:layout_gravity="start|center_vertical" />
 
+    <!--OVERLOAD-->
     <TextView
         style="@style/Widget.DebugDrawer.Base.RowTitle"
         android:layout_gravity="start|center_vertical"
-        android:text="Overload Page" />
+        android:text="Overload" />
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/dd_debug_network_overload"

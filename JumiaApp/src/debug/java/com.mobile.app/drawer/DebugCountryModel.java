@@ -13,14 +13,12 @@ import android.widget.TextView;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
 
-import io.palaima.debugdrawer.base.DebugModule;
-
 /**
  * Model used to show country info from preferences.
  *
  * @author spereira
  */
-public class DebugCountryModel implements DebugModule, CompoundButton.OnCheckedChangeListener {
+public class DebugCountryModel extends BaseDebugModel implements CompoundButton.OnCheckedChangeListener {
 
     private final Context mContext;
     private TextView mTextView;
@@ -47,36 +45,6 @@ public class DebugCountryModel implements DebugModule, CompoundButton.OnCheckedC
         } else {
             mTextView.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onOpened() {
-        // ...
-    }
-
-    @Override
-    public void onClosed() {
-        // ...
-    }
-
-    @Override
-    public void onResume() {
-        // ...
-    }
-
-    @Override
-    public void onPause() {
-        // ...
-    }
-
-    @Override
-    public void onStart() {
-        // ...
-    }
-
-    @Override
-    public void onStop() {
-        // ...
     }
 
 }

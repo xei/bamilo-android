@@ -8,6 +8,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.BaseActivity;
 
+import java.lang.ref.WeakReference;
 import java.util.Set;
 
 import io.palaima.debugdrawer.DebugDrawer;
@@ -60,5 +61,14 @@ public abstract class DebugActivity extends BaseActivity {
         super.onStop();
         // Stop debug drawer
         AbcDebugDrawerView.onStop(mDebugDrawer);
+    }
+
+    public WeakReference<DebugActivity> getWeakReference() {
+        return new WeakReference<>(this);
+    }
+
+    @Override
+    public void restartAppFlow() {
+        super.restartAppFlow();
     }
 }

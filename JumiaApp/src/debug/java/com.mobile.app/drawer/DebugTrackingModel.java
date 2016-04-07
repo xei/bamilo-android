@@ -17,13 +17,11 @@ import com.mobile.newFramework.tracking.NewRelicTracker;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.view.R;
 
-import io.palaima.debugdrawer.base.DebugModule;
-
 /**
  * Model used to show trackers ids and enable/disable the respective log.
  * @author spereira
  */
-public class DebugTrackingModel implements DebugModule, CompoundButton.OnCheckedChangeListener {
+public class DebugTrackingModel extends BaseDebugModel implements CompoundButton.OnCheckedChangeListener {
 
     private final Context mContext;
     private View mContainer;
@@ -88,36 +86,6 @@ public class DebugTrackingModel implements DebugModule, CompoundButton.OnChecked
         } else {
             mContainer.setVisibility(View.GONE);
         }
-    }
-
-    @Override
-    public void onOpened() {
-        // ...
-    }
-
-    @Override
-    public void onClosed() {
-        // ...
-    }
-
-    @Override
-    public void onResume() {
-        // ...
-    }
-
-    @Override
-    public void onPause() {
-        // ...
-    }
-
-    @Override
-    public void onStart() {
-        // ...
-    }
-
-    @Override
-    public void onStop() {
-        // ...
     }
 
 }

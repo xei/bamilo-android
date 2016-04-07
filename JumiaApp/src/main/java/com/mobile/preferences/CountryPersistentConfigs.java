@@ -85,8 +85,7 @@ public class CountryPersistentConfigs {
         mEditor.putInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, countryConfigs.getNoDecimals());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_THOUSANDS_STEP, countryConfigs.getThousandsSep());
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_DECIMALS_STEP, countryConfigs.getDecimalsSep());
-
-        //Save languages only if there isn't any yet saved
+        // Save languages only if there isn't any yet saved
         if(!hasLanguages(sharedPrefs)){
             saveLanguages(mEditor,countryConfigs.getLanguages());
         }
@@ -108,13 +107,13 @@ public class CountryPersistentConfigs {
         mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, countryConfigs.isReviewLoginRequired());
         // Flag
         mEditor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
-
+        // More info
         saveMoreInfo(mEditor, countryConfigs.getMobileAbout());
-
+        // Algolia
         saveAlgoliaInfo(mEditor, countryConfigs.getApplicationId(), countryConfigs.getSuggesterApiKey(), countryConfigs.getNamespacePrefix(), countryConfigs.isAlgoliaSearchEngine());
-
+        // Session info
         saveAuthInfo(mEditor, countryConfigs.getAuthInfo());
-        //has_cart_popup
+        // Cart popup
         mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, countryConfigs.hasCartPopup());
         // Rich Relevance
         mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_RICH_RELEVANCE, countryConfigs.isRichRelevanceEnabled());
@@ -281,6 +280,18 @@ public class CountryPersistentConfigs {
     public static boolean hasCartPopup(Context context){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, false);
+    }
+
+    /**
+     * Method used to set a custom host, only for debug
+     */
+    public static void saveDebugHost(Context context, String host){
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, host);
+        editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, host);
+        editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, "NGAMZ EGAMZ CMAMZ MAAMZ");
+        editor.apply();
     }
 
 }

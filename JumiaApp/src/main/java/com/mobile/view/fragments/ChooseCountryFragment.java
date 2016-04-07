@@ -279,14 +279,14 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             }
         };
 
-        //If the dialog didn't load means that has no more than one country
-        if(!ChooseLanguageController.chooseLanguageDialog(this, languages, runnable)){
-                if (selected == SHOP_NOT_SELECTED) {
-                    setCountry(countryObject, position);
-                } else if (position != selected) {
-                    isChangeCountry = true;
-                    setCountry(countryObject,position);
-                }
+        // If the dialog didn't load means that has no more than one country
+        if (!ChooseLanguageController.chooseLanguageDialog(this, languages, runnable)) {
+            if (selected == SHOP_NOT_SELECTED) {
+                setCountry(countryObject, position);
+            } else if (position != selected) {
+                isChangeCountry = true;
+                setCountry(countryObject, position);
+            }
         }
     }
 
