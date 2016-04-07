@@ -103,7 +103,7 @@ public class ErrorLayoutFactory {
                 case NO_NETWORK_LAYOUT:
                     new Builder()
                     .setContent(R.drawable.img_connect, R.string.error_no_connection, R.string.internet_no_connection_details_label)
-                    .setButton(R.string.try_again_retry, R.color.black_700)
+                    .showRetryButton()
                     .showButtonSpinning();
                     break;
                 case UNEXPECTED_ERROR_LAYOUT:
@@ -199,12 +199,24 @@ public class ErrorLayoutFactory {
             setButtonMessage(R.string.continue_shopping);
             setButtonTextColor(R.color.white);
             setButtonBackground(R.color.color_accent);
+            showButton();
             return this;
+        }
+
+
+        private Builder showButton(){
+            mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(View.VISIBLE);
+            return this;
+        }
+
+        Builder showRetryButton(){
+            return showButton();
         }
 
         Builder setButton(@StringRes int message, @DrawableRes int background) {
             setButtonMessage(message);
             setButtonBackground(background);
+            showButton();
             return this;
         }
 
@@ -212,6 +224,7 @@ public class ErrorLayoutFactory {
             setButtonMessage(message);
             setButtonTextColor(color);
             setButtonBackground(background);
+            showButton();
             return this;
         }
 
@@ -257,6 +270,7 @@ public class ErrorLayoutFactory {
             messageView.setText(message);
             return this;
         }
+
     }
 
 }
