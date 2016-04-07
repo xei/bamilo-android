@@ -121,6 +121,7 @@ public class RestConstants {
     public static final String SUM_COSTS_VALUE = "sum_costs_value";
     public static final String PRICE_RULES = "price_rules";
     public static final String SUB_TOTAL = "sub_total";
+    public static final String SUB_TOTAL_UN_DISCOUNTED = "sub_total_undiscounted";
     public static final String SUB_TOTAL_CONVERTED = "sub_total_converted";
     public static final String TOTAL = "total";
     public static final String TOTAL_CONVERTED = "total_converted";
