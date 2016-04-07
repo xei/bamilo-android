@@ -185,6 +185,10 @@ public class CollectionUtils {
         return !isEmpty(coll);
     }
 
+    public static boolean isOddSize(Collection<?> coll) {
+        return !isEmpty(coll) && coll.size() % 2 != 0;
+    }
+
     public static int size(Collection<?> coll) {
         return coll != null ? coll.size() : 0;
     }

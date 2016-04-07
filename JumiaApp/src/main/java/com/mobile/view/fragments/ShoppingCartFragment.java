@@ -3,7 +3,6 @@ package com.mobile.view.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,6 +35,7 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DarwinRegex;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
@@ -47,22 +47,20 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.cart.UICartUtils;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment;
 import com.mobile.utils.dialogfragments.DialogListFragment.OnDialogListListener;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -92,7 +90,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private String mItemRemovedCartValue;
     private String mItemsToCartDeepLink;
     private int selectedPosition;
-    private long crrQuantity;
+    private int crrQuantity;
     private View mFreeShippingView;
 
     /**
@@ -625,180 +623,139 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     }
 
 
-
-
     /**
      * Display shopping cart info
-     * */
+     */
     private void displayShoppingCart(PurchaseEntity cart) {
         Print.d(TAG, "displayShoppingCart");
-        if(cart == null){
+        // Case invalid cart
+        if (cart == null || CollectionUtils.isEmpty(cart.getCartItems())) {
             showNoItems();
             return;
         }
-
-        items = cart.getCartItems();
-        if (items.size() == 0) {
-            showNoItems();
-        } else if(getView() == null) {
+        // Case invalid view
+        if (getView() == null) {
             showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, this);
-        } else {
-            showFragmentContentContainer();
-            TextView priceTotal = (TextView) getView().findViewById(R.id.price_total);
-            TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
-            TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
-            TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
-            TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
-            View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
-            View shippingContainer = getView().findViewById(R.id.shipping_container);
-            TextView shippingValue = (TextView)getView().findViewById(R.id.shipping_value);
-            TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
-            final View voucherContainer = getView().findViewById(R.id.voucher_info_container);
-
-            // Get and set the cart value
-            setTotal(cart);
-
-            // GTM TRACKER
-            TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
-
-            // Set voucher
-            if (cart.hasCouponDiscount() && cart.getCouponDiscount() >= 0) {
-                // Set voucher value
-                String discount = String.format(getString(R.string.placeholder_discount), CurrencyFormatter.formatCurrency(cart.getCouponDiscount()));
-                voucherValue.setText(discount);
-                voucherContainer.setVisibility(View.VISIBLE);
-                // Set voucher code
-                mVoucherCode = cart.getCouponCode();
-                showRemoveVoucher();
-            } else {
-                // Set voucher
-                voucherContainer.setVisibility(View.GONE);
-                showUseVoucher();
-            }
-
-            // Price
-            priceTotal.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
-            //VAT
-            ShoppingCartUtils.showVATInfo(cart,vatIncludedLabel,vatValue);
-
-
-            ShoppingCartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
-
-            articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfItems, cart.getCartCount(), cart.getCartCount()));
-
-            lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
-            lView.removeAllViewsInLayout();
-            // Fix NAFAMZ-7848
-            BigDecimal unreduced_cart_price = new BigDecimal(0);
-            // reduced_cart_price = 0;
-            boolean cartHasReducedItem = false;
-
-            // TODO Validate this method
-            for (int i = 0; i < items.size(); i++) {
-                PurchaseCartItem item = items.get(i);
-                lView.addView(createCartItemView(i, lView, LayoutInflater.from(getBaseActivity()), item));
-
-                if(!TextUtils.equals(item.getPriceString(), item.getSpecialPriceString())){
-                    cartHasReducedItem = true;
-                }
-
-                // Fix NAFAMZ-7848
-                unreduced_cart_price = unreduced_cart_price.add(new BigDecimal(item.getPrice() * item.getQuantity()));
-                Print.e(TAG, "unreduced_cart_price= " + unreduced_cart_price);
-            }
-
-            TextView priceUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
-            if (cartHasReducedItem && unreduced_cart_price.intValue() > 0) {
-                priceUnreduced.setText(CurrencyFormatter.formatCurrency(unreduced_cart_price.toString()));
-                priceUnreduced.setPaintFlags(priceUnreduced.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                priceUnreduced.setVisibility(View.VISIBLE);
-            } else {
-                priceUnreduced.setVisibility(View.INVISIBLE);
-            }
-
-            HashMap<String, String> priceRules = cart.getPriceRules();
-            LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
-            CheckoutStepManager.showPriceRules(getActivity(),priceRulesContainer,priceRules);
-
-            //hideNoItems();
-            TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);
-
+            return;
         }
+        // Case valid state
+        items = cart.getCartItems();
+        // Get views
+        TextView subTotal = (TextView) getView().findViewById(R.id.price_total);
+        TextView subTotalUnreduced = (TextView) getView().findViewById(R.id.price_unreduced);
+        TextView articlesCount = (TextView) getView().findViewById(R.id.articles_count);
+        TextView extraCostsValue = (TextView) getView().findViewById(R.id.extra_costs_value);
+        TextView vatIncludedLabel = (TextView) getView().findViewById(R.id.vat_included_label);
+        TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
+        View extraCostsMain = getView().findViewById(R.id.extra_costs_container);
+        View shippingContainer = getView().findViewById(R.id.shipping_container);
+        TextView shippingValue = (TextView) getView().findViewById(R.id.shipping_value);
+        TextView voucherValue = (TextView) getView().findViewById(R.id.text_voucher);
+        final View voucherContainer = getView().findViewById(R.id.voucher_info_container);
+        // Get and set the cart value
+        setTotal(cart);
+        // Set voucher
+        if (cart.hasCouponDiscount() && cart.getCouponDiscount() >= 0) {
+            // Set voucher value
+            String discount = String.format(getString(R.string.placeholder_discount), CurrencyFormatter.formatCurrency(cart.getCouponDiscount()));
+            voucherValue.setText(discount);
+            voucherContainer.setVisibility(View.VISIBLE);
+            // Set voucher code
+            mVoucherCode = cart.getCouponCode();
+            showRemoveVoucher();
+        } else {
+            // Set voucher
+            voucherContainer.setVisibility(View.GONE);
+            showUseVoucher();
+        }
+        // Set VAT
+        UICartUtils.showVatInfo(cart, vatIncludedLabel, vatValue);
+        // Set shipping free possible
+        UICartUtils.setShippingRule(cart, shippingContainer, shippingValue, extraCostsMain, extraCostsValue);
+        // Set number of items
+        articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfItems, cart.getCartCount(), cart.getCartCount()));
+        // Add all items
+        lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
+        lView.removeAllViewsInLayout();
+        for (int i = 0; i < items.size(); i++) {
+            PurchaseCartItem item = items.get(i);
+            lView.addView(createCartItemView(i, lView, LayoutInflater.from(getBaseActivity()), item));
+        }
+        // Set sub total and sub total unreduced
+        UICartUtils.setSubTotal(cart, subTotal, subTotalUnreduced);
+        // Cart price rules
+        LinearLayout priceRulesContainer = (LinearLayout) getView().findViewById(R.id.price_rules_container);
+        CheckoutStepManager.showPriceRules(getActivity(), priceRulesContainer, cart.getPriceRules());
+        // Tracking
+        TrackerDelegator.trackViewCart(cart.getCartCount(), cart.getPriceForTracking());
+        TrackerDelegator.trackPage(TrackingPage.FILLED_CART, getLoadTime(), false);
+        // Show content
+        showFragmentContentContainer();
     }
 
 
     /**
      * Fill view item with PurchaseCartItem data
      */
-    public View createCartItemView(final int position, ViewGroup parent, LayoutInflater mInflater, PurchaseCartItem item) {
-
+    public View createCartItemView(final int position, ViewGroup parent, LayoutInflater mInflater, final PurchaseCartItem item) {
         View view = mInflater.inflate(R.layout.shopping_cart_product_container, parent, false);
-
-        final Item prodItem = new Item();
-        prodItem.cartItem = item;
         Log.d( TAG, "getView: productName = " + item.getName());
-
-        prodItem.itemName = (TextView) view.findViewById(R.id.item_name);
-        prodItem.priceView = (TextView) view.findViewById(R.id.item_regprice);
-        prodItem.quantityBtn = (TextView) view.findViewById(R.id.changequantity_button);
-        prodItem.productView = (ImageView) view.findViewById(R.id.image_view);
-        prodItem.shopFirstImage = (ImageView) view.findViewById(R.id.item_shop_first);
-
-        prodItem.pBar = view.findViewById(R.id.image_loading_progress);
-        prodItem.deleteBtn = (TextView) view.findViewById(R.id.button_delete);
-        view.setTag(prodItem);
-
-        prodItem.itemName.setText(prodItem.cartItem.getName());
-        prodItem.itemName.setSelected(true);
-
-        String imageUrl = prodItem.cartItem.getImageUrl();
-
-        // Hide shop view image if is_shop is false
-        UIProductUtils.setShopFirst( prodItem.cartItem , prodItem.shopFirstImage);
-        //Show shop first overlay message
-        UIProductUtils.showShopFirstOverlayMessage(this,prodItem.cartItem, prodItem.shopFirstImage);
-
-        RocketImageLoader.instance.loadImage(imageUrl, prodItem.productView, prodItem.pBar,
-                R.drawable.no_image_small);
-
-        String price = CurrencyFormatter.formatCurrency(prodItem.cartItem.getPrice());
-        String price_disc =  CurrencyFormatter.formatCurrency(prodItem.cartItem.getSpecialPrice());
-
-        if (!price.equals(price_disc)) {
-            prodItem.priceView.setText(price_disc);
-            prodItem.priceView.setVisibility(View.VISIBLE);
+        // Get item
+        ImageView productView = (ImageView) view.findViewById(R.id.image_view);
+        View pBar = view.findViewById(R.id.image_loading_progress);
+        TextView itemName = (TextView) view.findViewById(R.id.cart_item_text_name);
+        TextView priceView = (TextView) view.findViewById(R.id.cart_item_text_price);
+        TextView quantityBtn = (TextView) view.findViewById(R.id.cart_item_button_quantity);
+        ImageView shopFirstImage = (ImageView) view.findViewById(R.id.cart_item_image_shop_first);
+        TextView deleteBtn = (TextView) view.findViewById(R.id.cart_item_button_delete);
+        TextView size = (TextView) view.findViewById(R.id.cart_item_text_size);
+        // Set item
+        itemName.setText(item.getName());
+        itemName.setSelected(true);
+        String imageUrl = item.getImageUrl();
+        // Variation // TODO :: NAFAMZ-16896
+        if (TextUtils.isEmpty(item.getVariationValue())) {
+            size.setVisibility(View.GONE);
+        } else if (TextUtils.isEmpty(item.getVariationName())) {
+            size.setText(getString(R.string.size_placeholder, item.getVariationValue()));
         } else {
-            prodItem.priceView.setText(price);
-            prodItem.priceView.setVisibility(android.view.View.VISIBLE);
+            size.setText(getString(R.string.first_space_second_placeholder, item.getVariationName(), item.getVariationValue()));
         }
-
-        prodItem.deleteBtn.setTag(R.id.position, position);
-        prodItem.deleteBtn.setOnClickListener(new OnClickListener() {
+        // Hide shop view image if is_shop is false
+        UIProductUtils.setShopFirst(item, shopFirstImage);
+        // Show shop first overlay message
+        UIProductUtils.showShopFirstOverlayMessage(this, item, shopFirstImage);
+        // Image
+        RocketImageLoader.instance.loadImage(imageUrl, productView, pBar, R.drawable.no_image_small);
+        // Price
+        UIProductUtils.setPriceRules(item, priceView);
+        // Delete
+        deleteBtn.setTag(R.id.position, position);
+        deleteBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 deleteSelectedElements(view);
             }
         });
-
-        prodItem.quantityBtn.setText("  " + String.valueOf(prodItem.cartItem.getQuantity()) + "  ");
-        if(prodItem.cartItem.getMaxQuantity() > 1) {
-            prodItem.quantityBtn.setEnabled(true);
-            prodItem.quantityBtn.setOnClickListener(new OnClickListener() {
+        // Quantity
+        quantityBtn.setText(String.valueOf(item.getQuantity()));
+        if(item.getMaxQuantity() > 1) {
+            quantityBtn.setEnabled(true);
+            quantityBtn.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     showQuantityDialog(position);
                 }
             });
         } else {
-            prodItem.quantityBtn.setEnabled(false);
+            quantityBtn.setEnabled(false);
             if (DeviceInfoHelper.isPosJellyBean()) {
-                prodItem.quantityBtn.setBackground(null);
+                quantityBtn.setBackground(null);
             } else {
                 //noinspection deprecation
-                prodItem.quantityBtn.setBackgroundDrawable(null);
+                quantityBtn.setBackgroundDrawable(null);
             }
         }
-
         // Save the position to process the click on item
         view.setTag(R.id.target_sku, item.getSku());
         view.setOnClickListener(new OnClickListener() {
@@ -814,10 +771,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
 
         return view;
     }
-
-
-
-
 
     /**
      * Function to redirect to the selected product details.
@@ -862,56 +815,17 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 if(quantity != crrQuantity -1){
                     triggerChangeItemQuantityInShoppingCart(position, quantity+1);
                 }
-
                 if(dialogList != null) {
                     dialogList.dismissAllowingStateLoss();
                     dialogList = null;
                 }
             }
-
             @Override
             public void onDismiss() {
             }
         };
-
-        dialogList = DialogListFragment.newInstance(this, listener, getString(R.string.shoppingcart_choose_quantity), quantities, (int) crrQuantity-1);
+        dialogList = DialogListFragment.newInstance(this, listener, getString(R.string.shoppingcart_choose_quantity), quantities, crrQuantity - 1);
         dialogList.show(getActivity().getSupportFragmentManager(), null);
-    }
-
-
-
-
-    /**
-     * A representation of each item on the list
-     */
-    private static class Item {
-
-        public TextView itemName;
-        public TextView priceView;
-        public TextView quantityBtn;
-        public ImageView productView;
-        public View pBar;
-        public TextView deleteBtn;
-        public PurchaseCartItem cartItem;
-        public ImageView shopFirstImage;
-
-        /*
-         * (non-Javadoc)
-         *
-         * @see java.lang.Object#finalize()
-         */
-        @Override
-        protected void finalize() throws Throwable {
-            cartItem = null;
-            itemName = null;
-            priceView = null;
-            quantityBtn = null;
-            productView = null;
-            pBar = null;
-            deleteBtn = null;
-            shopFirstImage = null;
-            super.finalize();
-        }
     }
 
 }

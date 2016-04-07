@@ -30,10 +30,10 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.CheckoutStepManager;
+import com.mobile.utils.cart.UICartUtils;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
-import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.view.R;
 
 import java.math.BigDecimal;
@@ -278,7 +278,7 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
                     showShippingMethod(mOrderSummary.getShippingMethod());
                 }
                 // Shipping fees
-                ShoppingCartUtils.setShippingRule(mOrderSummary, mShippingFeeView, mShippingFeeValue, mExtraCostsContainer, mExtraCosts);
+                UICartUtils.setShippingRule(mOrderSummary, mShippingFeeView, mShippingFeeValue, mExtraCostsContainer, mExtraCosts);
                 // continue
             case ConstantsCheckout.CHECKOUT_SHIPPING:
                 // Validate shipping address
@@ -323,13 +323,10 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
             View pBar = cartItemView.findViewById(R.id.image_loading_progress);
             RocketImageLoader.instance.loadImage(imageUrl, mImageView, pBar, R.drawable.no_image_small);
             // Price
-            String price = item.getPriceString();
-            if(!TextUtils.equals(price, item.getSpecialPriceString())){
-                price = item.getSpecialPriceString();
-            }
+            double price = item.hasDiscount() ? item.getSpecialPrice() : item.getPrice();
             ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
             // Variation
-            String variation = item.getVariation();
+            String variation = item.getVariationValue();
             if (variation != null &&
                     variation.length() > 0 &&
                     !variation.equalsIgnoreCase(",") &&

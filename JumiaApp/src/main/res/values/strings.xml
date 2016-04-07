@@ -336,7 +336,7 @@
     <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">This bundle could not be added to the shopping cart. Please try again later.</string>
     <string name="buy">buy</string>
-    <string name="size">Size %s</string>
+    <string name="size_placeholder">Size %s</string>
     <string name="added_success">Added successfully.</string>
     <string name="removed_success">Removed successfully.</string>
     <string name="sign_up_to_our_newsletter">Sign Up to our Newsletter</string>

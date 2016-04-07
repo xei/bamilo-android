@@ -16,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,6 +53,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private ArrayList<Fulfillment> mFulfillmentList;
     private PurchaseCartItem mLastItemAdded;
     private boolean hasFreeShipping;
+    private BigDecimal mSubTotalUnreduced;
 
     /**
      * Constructor
@@ -96,12 +98,15 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         mCartCount = jsonObject.getInt(RestConstants.TOTAL_PRODUCTS);
         JSONArray cartArray = jsonObject.getJSONArray(RestConstants.PRODUCTS);
         mCartItems = new ArrayList<>();
+        mSubTotalUnreduced = new BigDecimal(0);
         for (int i = 0; i < cartArray.length(); i++) {
             JSONObject cartObject = cartArray.getJSONObject(i);
             PurchaseCartItem item = new PurchaseCartItem();
             item.initialize(cartObject);
             mCartItems.add(item);
             hasFreeShipping = item.hasFreeShipping() || hasFreeShipping;
+            // TODO :: NAFAMZ-16896
+            mSubTotalUnreduced = mSubTotalUnreduced.add(new BigDecimal(item.getPrice() * item.getQuantity()));
         }
         // Last item added
         if(CollectionUtils.isNotEmpty(mCartItems)) {
@@ -222,6 +227,14 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
 
     public double getSubTotal() {
         return mSubTotal;
+    }
+
+    public double getSubTotalUnreduced() {
+        return mSubTotalUnreduced.doubleValue();
+    }
+
+    public boolean hasSubTotalUnreduced() {
+        return mSubTotal < mSubTotalUnreduced.doubleValue();
     }
 
     public String getShippingMethod() {

@@ -1,5 +1,6 @@
-package com.mobile.utils.ui;
+package com.mobile.utils.cart;
 
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.view.View;
 
@@ -19,7 +20,7 @@ import java.math.BigDecimal;
  * @version 1.0
  * @date 2015/03/16
  */
-public class ShoppingCartUtils {
+public class UICartUtils {
 
     /**
      * Set shipping and extra costs by rule on shopping cart object
@@ -60,10 +61,9 @@ public class ShoppingCartUtils {
 
     /**
      * Shows purchased entity's VAT info if it comes enabled from API
-     *
-     * */
-    public static void showVATInfo(@NonNull PurchaseEntity purchaseEntity, @NonNull TextView vatLabelTextView, @NonNull TextView vatValueTextView){
-        if(purchaseEntity.isVatLabelEnable()) {
+     */
+    public static void showVatInfo(@NonNull PurchaseEntity purchaseEntity, @NonNull TextView vatLabelTextView, @NonNull TextView vatValueTextView) {
+        if (purchaseEntity.isVatLabelEnable()) {
             vatLabelTextView.setVisibility(View.VISIBLE);
             vatValueTextView.setVisibility(View.VISIBLE);
             vatValueTextView.setText(CurrencyFormatter.formatCurrency(purchaseEntity.getVatValue()));
@@ -73,4 +73,18 @@ public class ShoppingCartUtils {
             vatLabelTextView.setVisibility(View.GONE);
         }
     }
+
+    /**
+     * Method used to set only the price view validating discount.
+     */
+    public static void setSubTotal(@NonNull PurchaseEntity cart, @NonNull android.widget.TextView view, @NonNull android.widget.TextView strike){
+        // Set sub total
+        view.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
+        // Set sub total unreduced
+        if (cart.hasSubTotalUnreduced()) {
+            strike.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnreduced()));
+            strike.setPaintFlags(strike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+    }
+
 }
