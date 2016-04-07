@@ -12,9 +12,9 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -84,11 +84,7 @@ public class MainFragmentActivity extends DebugActivity {
      * Constructor
      */
     public MainFragmentActivity() {
-        super(NavigationAction.UNKNOWN,
-                EnumSet.noneOf(MyMenuItem.class),
-                EnumSet.noneOf(EventType.class),
-                0,
-                R.layout.main_fragment_activity_layout);
+        super(NavigationAction.UNKNOWN, EnumSet.noneOf(MyMenuItem.class), IntConstants.ACTION_BAR_NO_TITLE);
     }
 
     /*

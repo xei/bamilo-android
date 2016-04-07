@@ -183,12 +183,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         public void handleMessage(android.os.Message msg) {
             BaseResponse baseResponse = (BaseResponse) msg.obj;
             EventType eventType = baseResponse.getEventType();
-
             //Print.i(TAG, "code1configs received response : " + errorCode + " event type : " + eventType);
             if (eventType == EventType.INITIALIZE) {
                 showDevInfo();
             }
-
             onRequestComplete(baseResponse);
         }
     };
