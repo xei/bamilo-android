@@ -5,9 +5,8 @@
     android:layout_height="wrap_content">
 
     <!-- NAME -->
-
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/item_name"
+        android:id="@+id/cart_item_text_name"
         style="@style/TextBase.Body"
         android:layout_marginLeft="@dimen/login_margin_medium"
         android:layout_marginTop="@dimen/item_margin_top"
@@ -18,69 +17,70 @@
 
     <!-- SHOP FIRST IMAGE -->
     <ImageView
-        android:id="@+id/item_shop_first"
+        android:id="@+id/cart_item_image_shop_first"
         style="@style/ShopFirstStyle"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/item_name" />
+        android:layout_below="@id/cart_item_text_name" />
 
     <!-- PRICE -->
     <RelativeLayout
-        android:id="@+id/price_quantity_wrapper"
+        android:id="@+id/cart_item_container_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_shop_first">
+        android:layout_below="@id/cart_item_image_shop_first">
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/item_regprice"
+            android:id="@+id/cart_item_text_price"
             style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/dimen_20dp"
-            android:text="Price"
             android:textColor="@color/black_800"
-            android:textSize="@dimen/text_s" />
+            android:textSize="@dimen/text_s"
+            tools:text="Price" />
 
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/changequantity_label"
+            android:id="@+id/cart_item_text_quantity"
             style="@style/TextBase.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:text="@string/shoppingcart_quantity"
-            android:textColor="@color/black_700"
             android:textSize="@dimen/text_s"
             android:visibility="visible" />
 
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/changequantity_button"
+            android:id="@+id/cart_item_button_quantity"
             style="@style/FormButtonSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/changequantity_label"
+            android:layout_toLeftOf="@id/cart_item_text_quantity"
             android:text="@string/shoppingcart_quantity"
             android:textColor="@color/black"
             android:textSize="@dimen/text_s"
             android:visibility="visible" />
 
     </RelativeLayout>
-    <!-- Divider -->
-    <View
-        android:id="@+id/delete_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/price_quantity_wrapper"
-        android:background="@color/black_700" />
+
+    <!-- SIZE -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/cart_item_text_size"
+        style="@style/TextBase.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/cart_item_container_price"
+        tools:text="Size 22" />
 
     <!-- DELETE BUTTON -->
-
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/button_delete"
+        android:id="@+id/cart_item_button_delete"
         style="@style/Button_Link.RemoveItem"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/delete_divider" />
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/cart_item_container_price" />
 
 </RelativeLayout>
