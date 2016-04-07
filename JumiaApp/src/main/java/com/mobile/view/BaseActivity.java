@@ -72,7 +72,6 @@ import com.mobile.newFramework.tracking.gtm.GTMValues;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -161,14 +160,14 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     /**
      * Constructor used to initialize the navigation list component and the autocomplete handler
      */
-    public BaseActivity(@NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
+    public BaseActivity(@NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, int titleResId) {
         this(R.layout.main, action, enabledMenuItems, titleResId);
     }
 
     /**
      * Constructor
      */
-    public BaseActivity(int activityLayoutId, @NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, int titleResId) {
+    private BaseActivity(int activityLayoutId, @NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, int titleResId) {
         this.activityLayoutId = activityLayoutId;
         this.action = action;
         this.menuItems = enabledMenuItems;
