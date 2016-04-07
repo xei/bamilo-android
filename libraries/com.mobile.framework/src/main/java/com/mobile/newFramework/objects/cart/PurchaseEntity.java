@@ -53,7 +53,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
     private ArrayList<Fulfillment> mFulfillmentList;
     private PurchaseCartItem mLastItemAdded;
     private boolean hasFreeShipping;
-    private BigDecimal mSubTotalUnreduced;
+    private BigDecimal mSubTotalUnDiscounted;
 
     /**
      * Constructor
@@ -98,7 +98,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         mCartCount = jsonObject.getInt(RestConstants.TOTAL_PRODUCTS);
         JSONArray cartArray = jsonObject.getJSONArray(RestConstants.PRODUCTS);
         mCartItems = new ArrayList<>();
-        mSubTotalUnreduced = new BigDecimal(0);
+        mSubTotalUnDiscounted = new BigDecimal(0);
         for (int i = 0; i < cartArray.length(); i++) {
             JSONObject cartObject = cartArray.getJSONObject(i);
             PurchaseCartItem item = new PurchaseCartItem();
@@ -106,7 +106,7 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
             mCartItems.add(item);
             hasFreeShipping = item.hasFreeShipping() || hasFreeShipping;
             // TODO :: NAFAMZ-16896
-            mSubTotalUnreduced = mSubTotalUnreduced.add(new BigDecimal(item.getPrice() * item.getQuantity()));
+            mSubTotalUnDiscounted = mSubTotalUnDiscounted.add(new BigDecimal(item.getPrice() * item.getQuantity()));
         }
         // Last item added
         if(CollectionUtils.isNotEmpty(mCartItems)) {
@@ -229,12 +229,12 @@ public class PurchaseEntity implements IJSONSerializable, Parcelable {
         return mSubTotal;
     }
 
-    public double getSubTotalUnreduced() {
-        return mSubTotalUnreduced.doubleValue();
+    public double getSubTotalUnDiscounted() {
+        return mSubTotalUnDiscounted.doubleValue();
     }
 
-    public boolean hasSubTotalUnreduced() {
-        return mSubTotal < mSubTotalUnreduced.doubleValue();
+    public boolean hasSubTotalUnDiscounted() {
+        return mSubTotal < mSubTotalUnDiscounted.doubleValue();
     }
 
     public String getShippingMethod() {

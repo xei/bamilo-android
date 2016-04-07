@@ -81,8 +81,8 @@ public class UICartUtils {
         // Set sub total
         view.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
         // Set sub total unreduced
-        if (cart.hasSubTotalUnreduced()) {
-            strike.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnreduced()));
+        if (cart.hasSubTotalUnDiscounted()) {
+            strike.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()));
             strike.setPaintFlags(strike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
     }
