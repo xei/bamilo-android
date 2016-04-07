@@ -4,7 +4,7 @@
      android:layout_height="wrap_content"
      android:gravity="center"
      android:layout_gravity="center"
-     android:paddingRight="@dimen/margin_padding_l"
+     android:paddingRight="@dimen/padding_login_header_images"
     >
 
     <ImageView

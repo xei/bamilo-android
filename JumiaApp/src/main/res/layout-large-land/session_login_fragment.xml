@@ -3,6 +3,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            xmlns:tools="http://schemas.android.com/tools"
             android:fillViewport="false">
 
     <LinearLayout
@@ -62,19 +63,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/margin_padding_xl" />
 
-                <!-- GUEST -->
-
-                <com.mobile.components.customfontviews.TextView
-                    android:id="@+id/login_button_guest"
-                    style="@style/Button_1.Secondary.Text_Black_800.Border_400"
-                    android:layout_width="@dimen/login_main_container_width"
-                    android:text="@string/continue_without_log_in"
-                    android:visibility="gone" />
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/margin_padding_xl" />
-
                 <!-- BUTTON -->
 
                 <com.mobile.components.customfontviews.TextView
@@ -104,15 +92,32 @@
                     android:textColor="@color/grey_divider_light_text" />
             </RelativeLayout>
 
-            <!-- FACEBOOK -->
+            <LinearLayout
+                android:layout_width="@dimen/login_main_container_width"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-            <com.mobile.components.customfontviews.FacebookTextView
-                android:id="@+id/login_button_facebook"
-                style="@style/Button_Link.Facebook"
-                />
+                <!-- FACEBOOK -->
 
+                <com.mobile.components.customfontviews.FacebookTextView
+                    android:id="@+id/login_button_facebook"
+                    style="@style/Button_Link.Facebook"
+                    />
 
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/margin_padding_xl" />
+                <!-- GUEST -->
 
+                <com.mobile.components.customfontviews.TextView
+                    android:id="@+id/login_button_guest"
+                    style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+                    android:layout_width="@dimen/login_main_container_width"
+                    android:text="@string/continue_without_log_in"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
