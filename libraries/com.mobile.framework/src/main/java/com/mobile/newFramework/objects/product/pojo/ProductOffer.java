@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 /**
  * Class that represents the offer
- *
  * @author Paulo Carvalho
  *
  * // TODO USE THE PRODUCT BASE
@@ -57,28 +56,17 @@ public class ProductOffer extends ProductMultiple implements IJSONSerializable{
     @Override
     public boolean initialize(JSONObject jsonObject) {
         try {
-
             JSONObject sellerObject = jsonObject.getJSONObject(RestConstants.SELLER_ENTITY);
-
-            if(sellerObject != null)
+            if (sellerObject != null) {
                 seller = new Seller(sellerObject);
-
+            }
             JSONObject productObject = jsonObject.getJSONObject(RestConstants.PRODUCT);
-
-            if(productObject != null){
-
-                initializeProductBase(productObject);
-
-                initializeProductMultiple(productObject);
-
+            if (productObject != null) {
+                super.initialize(productObject);
                 minDeliveryTime = productObject.optInt(RestConstants.MIN_DELIVERY_TIME);
                 maxDeliveryTime = productObject.optInt(RestConstants.MAX_DELIVERY_TIME);
-
             }
-
         } catch (JSONException e) {
-
-//            Log.e(TAG, "Error initializing the complete product", e);
             return false;
         }
         return true;
@@ -101,10 +89,6 @@ public class ProductOffer extends ProductMultiple implements IJSONSerializable{
 
     public double getFinalPrice() {
         return mSpecialPrice == 0.0 ? mPrice : mSpecialPrice;
-    }
-
-    public String getFinalPriceString() {
-        return mSpecialPrice == 0.0 ? mPrice+"" : mSpecialPrice+"";
     }
 
     public int getMaxDeliveryTime() {

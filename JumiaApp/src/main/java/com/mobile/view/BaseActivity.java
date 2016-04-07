@@ -1322,11 +1322,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                                     getString(R.string.no_label),
                                     getString(R.string.yes_label),
                                     new OnClickListener() {
-
                                         @Override
                                         public void onClick(View v) {
                                             if (v.getId() == R.id.button2) {
-                                                LogOut.perform(new WeakReference<>(BaseActivity.this));
+                                                LogOut.perform(getWeakBaseActivity());
                                             }
                                             dialogLogout.dismiss();
                                         }

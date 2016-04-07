@@ -18,6 +18,7 @@ import com.mobile.helpers.session.RegisterHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
+import com.mobile.newFramework.objects.configs.AuthInfo;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -27,6 +28,8 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
+import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.LoginHeaderComponent;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -118,7 +121,12 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
         Print.i(TAG, "ON CREATE VIEW");
         // Get info
         String text = String.format(getString(R.string.register_info), getString(R.string.app_name));
-        ((TextView) view.findViewById(R.id.register_text_info)).setText(text);
+        final LoginHeaderComponent loginHeaderComponent = (LoginHeaderComponent) view.findViewById(R.id.login_component);
+        loginHeaderComponent.setSubTitle(text);
+
+        AuthInfo authInfo = CountryPersistentConfigs.getAuthInfo(getContext());
+        loginHeaderComponent.showAuthInfo(LoginHeaderComponent.CREATE_ACCOUNT, authInfo, null);
+
         // Get form container
         mFormContainer = (ViewGroup) view.findViewById(R.id.register_form_container);
         // Get create button
@@ -263,7 +271,10 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
 
     private void onClickTermsAndConditions(View view) {
         @TargetLink.Type String target = (String) view.getTag();
-        new TargetLink(getWeakBaseActivity(), target).addTitle(R.string.terms_and_conditions).enableWarningErrorMessage().run();
+        new TargetLink(getWeakBaseActivity(), target)
+                .addTitle(R.string.terms_and_conditions)
+                .enableWarningErrorMessage()
+                .run();
     }
 
 

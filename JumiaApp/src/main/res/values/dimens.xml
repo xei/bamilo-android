@@ -36,6 +36,7 @@
     <dimen name="dimen_12dp">12dp</dimen>
     <dimen name="dimen_15dp">15dp</dimen>
     <dimen name="dimen_16dp">16dp</dimen>
+    <dimen name="dimen_18dp">18dp</dimen>
     <dimen name="dimen_20dp">20dp</dimen>
     <dimen name="dimen_22dp">22dp</dimen>
     <dimen name="dimen_25dp">25dp</dimen>
@@ -47,6 +48,7 @@
     <dimen name="dimen_36dp">36dp</dimen>
     <dimen name="dimen_40dp">40dp</dimen>
     <dimen name="dimen_43dp">43dp</dimen>
+    <dimen name="dimen_46dp">46dp</dimen>
     <dimen name="dimen_48dp">48dp</dimen>
     <dimen name="dimen_49dp">49dp</dimen>
     <dimen name="dimen_50dp">50dp</dimen>
@@ -511,6 +513,5 @@
     <!-- RATING REVIEWS -->
     <item name="reviews_rating_group_left_percentage" format="float" type="dimen">.45</item>
     <item name="reviews_rating_group_right_percentage" format="float" type="dimen">.55</item>
-
 
 </resources>

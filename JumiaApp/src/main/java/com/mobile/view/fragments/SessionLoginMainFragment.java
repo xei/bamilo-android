@@ -24,6 +24,7 @@ import com.mobile.helpers.session.LoginFacebookHelper;
 import com.mobile.helpers.session.LoginGuestHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
+import com.mobile.newFramework.objects.configs.AuthInfo;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerEmailCheck;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -34,7 +35,9 @@ import com.mobile.newFramework.utils.CustomerUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.CheckoutStepManager;
+import com.mobile.utils.LoginHeaderComponent;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -129,7 +132,11 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         Print.i(TAG, "ON VIEW CREATED");
         // Get info
         String text = String.format(getString(R.string.login_main_info), getString(R.string.app_name));
-        ((TextView) view.findViewById(R.id.login_text_info)).setText(text);
+        final LoginHeaderComponent loginHeaderComponent = (LoginHeaderComponent) view.findViewById(R.id.login_component);
+        loginHeaderComponent.setSubTitle(text);
+
+        AuthInfo authInfo = CountryPersistentConfigs.getAuthInfo(getContext());
+        loginHeaderComponent.showAuthInfo(LoginHeaderComponent.CHECK_EMAIL, authInfo, text);
         // Get and set FB button
         FacebookTextView mFacebookButton = (FacebookTextView) view.findViewById(R.id.login_button_facebook);
         View divider = view.findViewById(R.id.login_divider);

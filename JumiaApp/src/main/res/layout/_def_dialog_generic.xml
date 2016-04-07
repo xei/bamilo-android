@@ -4,9 +4,7 @@
     style="@style/ViewGroupCompat.Vertical.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layoutDirection="ltr"
-    android:orientation="vertical"
-    tools:ignore="UnusedAttribute">
+    android:orientation="vertical">
 
     <!-- TITLE -->
     <com.mobile.components.customfontviews.TextView
@@ -34,7 +32,6 @@
     <!--BUTTONS-->
     <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/button_container"
-        style="@style/ViewGroupCompat.Horizontal.MiddleDivider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -44,6 +41,8 @@
             style="@style/DialogButtonStyle"
             android:contentDescription="@string/cancel_label"
             android:text="@string/cancel_label" />
+
+        <View style="@style/DividerVertical.Black_400" />
 
         <com.mobile.components.customfontviews.Button
             android:id="@+id/button2"

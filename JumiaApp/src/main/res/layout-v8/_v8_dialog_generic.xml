@@ -4,7 +4,9 @@
     style="@style/ViewGroupCompat.Vertical.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layoutDirection="ltr"
+    android:orientation="vertical"
+    tools:ignore="UnusedAttribute">
 
     <!-- TITLE -->
 

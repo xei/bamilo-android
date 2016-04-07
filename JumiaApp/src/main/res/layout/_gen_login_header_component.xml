@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/component_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    >
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/login_header_title"
+        style="@style/TextBase.Display_2.Black"
+        android:layout_marginTop="@dimen/dimen_30dp"
+        android:gravity="center"
+        tools:text="Title" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/login_header_subtitle"
+        style="@style/TextBase.Body.Black_800"
+        android:layout_marginTop="@dimen/margin_padding_xxl"
+        android:singleLine="false"
+        android:layout_gravity="center"
+        android:gravity="center"
+        tools:text="Sub Title" />
+
+    <LinearLayout
+        android:id="@+id/login_header_images_container"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/height_login_header_images"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/margin_padding_xxl"
+        />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/login_header_subtitle_extra"
+        style="@style/TextBase.Body.Black_800"
+        android:layout_marginTop="@dimen/dimen_30dp"
+        android:singleLine="false"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:text="Sub Title"
+        tools:visibility="visible" />
+
+</android.support.v7.widget.LinearLayoutCompat>

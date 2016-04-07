@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_root_error_button"
     style="@style/button_fallback_retry"
     android:layout_width="@dimen/inner_container_width"
@@ -10,7 +11,10 @@
     android:layout_gravity="center"
     android:clickable="true"
     android:gravity="center"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:visibility="gone"
+    tools:visibility="visible"
+    >
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/fragment_root_error_button_message"
@@ -22,7 +26,9 @@
         android:singleLine="true"
         android:text="@string/try_again_retry"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/text_m" />
+        android:textSize="@dimen/text_m"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/fragment_root_error_spinning"

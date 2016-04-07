@@ -13,20 +13,18 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_detail_name"
-        style="@style/TextBase.Display_3"
-        android:layout_width="wrap_content"
+        style="@style/TextBase.Display_3.Black"
         android:layout_marginEnd="@dimen/margin_huge"
         android:layout_marginRight="@dimen/margin_huge"
-        android:gravity="left|center_vertical|start"
         android:maxLines="2"
         android:textStyle="bold"
-        android:textColor="@color/black"
         android:singleLine="false"
         tools:text="Product" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/product_price_special"
         style="@style/TextBase.Body"
+        android:layout_width="wrap_content"
         android:layout_below="@id/product_detail_name"
         android:layout_marginEnd="@dimen/margin_mid"
         android:layout_marginRight="@dimen/margin_mid"
@@ -37,6 +35,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_text_price"
         style="@style/TextBase.Body"
+        android:layout_width="wrap_content"
         android:layout_alignBaseline="@+id/product_price_special"
         android:layout_below="@id/product_detail_name"
         android:layout_toEndOf="@+id/product_price_special"
