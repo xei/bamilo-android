@@ -15,7 +15,7 @@ import com.mobile.view.R;
 
 /**
  * Model used to show app info.
- * @author spereira
+ * @author sergiopereira
  */
 public class DebugAppInfoModel extends BaseDebugModel {
 

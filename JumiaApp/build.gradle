@@ -290,7 +290,6 @@ List debugToolsDependencies = [
         'io.palaima.debugdrawer:debugdrawer:0.7.0',
         'io.palaima.debugdrawer:debugdrawer-base:0.7.0',
         'io.palaima.debugdrawer:debugdrawer-commons:0.7.0',
-//        'io.palaima.debugdrawer:debugdrawer-actions:0.7.0',
         'io.palaima.debugdrawer:debugdrawer-scalpel:0.7.0',
 ]
 

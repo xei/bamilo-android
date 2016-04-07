@@ -16,7 +16,7 @@ import com.mobile.view.R;
 /**
  * Model used to show country info from preferences.
  *
- * @author spereira
+ * @author sergiopereira
  */
 public class DebugCountryModel extends BaseDebugModel implements CompoundButton.OnCheckedChangeListener {
 

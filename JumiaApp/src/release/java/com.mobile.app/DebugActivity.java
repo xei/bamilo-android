@@ -9,6 +9,7 @@ import java.util.Set;
 
 /**
  * Fake debug activity for release
+ * @author sergiopereira
  */
 public abstract class DebugActivity extends BaseActivity {
 

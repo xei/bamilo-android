@@ -15,6 +15,7 @@ import io.palaima.debugdrawer.DebugDrawer;
 
 /**
  * DebugActivity
+ * @author sergiopereira
  */
 public abstract class DebugActivity extends BaseActivity {
 

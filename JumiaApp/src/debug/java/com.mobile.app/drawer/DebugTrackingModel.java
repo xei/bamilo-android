@@ -19,7 +19,7 @@ import com.mobile.view.R;
 
 /**
  * Model used to show trackers ids and enable/disable the respective log.
- * @author spereira
+ * @author sergiopereira
  */
 public class DebugTrackingModel extends BaseDebugModel implements CompoundButton.OnCheckedChangeListener {
 

@@ -26,7 +26,7 @@ import java.lang.ref.WeakReference;
 
 /**
  * Model used to simulate some mobile api errors.
- * @author spereira
+ * @author sergiopereira
  */
 public class DebugMobileApiModel extends BaseDebugModel implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 

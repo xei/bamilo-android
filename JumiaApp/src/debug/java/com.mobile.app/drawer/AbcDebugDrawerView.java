@@ -9,7 +9,10 @@ import io.palaima.debugdrawer.commons.DeviceModule;
 import io.palaima.debugdrawer.commons.SettingsModule;
 import io.palaima.debugdrawer.scalpel.ScalpelModule;
 
-
+/**
+ * DebugDrawerView
+ * @author sergiopereira
+ */
 public class AbcDebugDrawerView {
 
     public static DebugDrawer onCreate(@NonNull final DebugActivity activity) {

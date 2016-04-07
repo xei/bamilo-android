@@ -3,8 +3,8 @@ package com.mobile.app.drawer;
 import io.palaima.debugdrawer.base.DebugModule;
 
 /**
- * Base Model.
- * @author spereira
+ * Base Model
+ * @author sergiopereira
  */
 public abstract class BaseDebugModel implements DebugModule {
 
