@@ -39,10 +39,10 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.cart.UICartUtils;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
-import com.mobile.utils.ui.ShoppingCartUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
@@ -397,13 +397,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Quantity
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, item.getQuantity()));
             // Price
-            String price = item.getPriceString();
-            if(!TextUtils.equals(price, item.getSpecialPriceString())){
-                price = item.getSpecialPriceString();
-            }
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));
+            UIProductUtils.setPriceRules(item, (TextView) prodInflateView.findViewById(R.id.my_order_item_price));
             // Variation
-            String variation = item.getVariation();
+            String variation = item.getVariationValue();
             if (variation != null && variation.length() > 0 &&
                     !variation.equalsIgnoreCase(",") &&
                     !variation.equalsIgnoreCase("...") &&
@@ -437,7 +433,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         // Set cart value
         mSubTotal.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotal()));
         // Set costs
-        ShoppingCartUtils.setShippingRule(mOrderFinish, mShipFeeView, mShipFeeValue, mExtraCostsContainer, mExtraCosts);
+        UICartUtils.setShippingRule(mOrderFinish, mShipFeeView, mShipFeeValue, mExtraCostsContainer, mExtraCosts);
         // Voucher
         if (mOrderFinish.hasCouponDiscount()) {
             mVoucherValue.setText(getString(R.string.placeholder_discount, CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount())));
@@ -452,7 +448,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         //show vat if configuration is enabled
         TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
         TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
-        ShoppingCartUtils.showVATInfo(mOrderFinish, vatIncludedLabel, vatValue);
+        UICartUtils.showVatInfo(mOrderFinish, vatIncludedLabel, vatValue);
     }
 
     /**

@@ -855,7 +855,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
             if(!item.hasUniqueSize() && CollectionUtils.isNotEmpty(item.getSimples())) {
                 // Show container
                 view.mSizeContainer.setVisibility(View.VISIBLE);
-                view.mSizesValue.setText(String.format(getString(R.string.size),item.getVariationsAvailable()));
+                view.mSizesValue.setText(String.format(getString(R.string.size_placeholder),item.getVariationsAvailable()));
 
             } else {
                 // Hide the size container

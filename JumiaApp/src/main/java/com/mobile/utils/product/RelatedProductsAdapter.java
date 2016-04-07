@@ -36,7 +36,7 @@ public class RelatedProductsAdapter extends ArrayAdapter<ProductRegular> {
          * This is the solution to avoid the silver background
          * when the grid has an odd size.
          */
-        isOddSize = (data.size() % 2 != 0) ?  true : false;
+        isOddSize = CollectionUtils.isOddSize(data);
     }
 
     @Override
