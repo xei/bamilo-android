@@ -37,6 +37,8 @@
     <!-- NO CONNECTION -->
     <dimen name="no_connection_label_small_size">14sp</dimen>
     <dimen name="no_connection_label_details_small_size">11sp</dimen>
-
+    <!-- Header Component Dimensions  -->
+    <dimen name="height_login_header_images">18dp</dimen>
+    <dimen name="padding_login_header_images">10dp</dimen>
 
 </resources>

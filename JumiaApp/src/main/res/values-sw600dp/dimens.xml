@@ -163,4 +163,7 @@
     <!-- BOTTOM SHEET -->
     <integer name="dialog_max_items">7</integer>
 
+    <!-- Header Component Dimensions  -->
+    <dimen name="height_login_header_images">18dp</dimen>
+    <dimen name="padding_login_header_images">10dp</dimen>
 </resources>
