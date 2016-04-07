@@ -33,14 +33,25 @@ import com.mobile.view.fragments.BaseFragment;
 
 public class UIProductUtils {
 
-    public static void setPriceRules(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice){
+    /**
+     * Method used to set only the price view validating discount.
+     */
+    public static void setPriceRules(@NonNull ProductBase productBase, @NonNull TextView view) {
+        double price = productBase.hasDiscount() ? productBase.getSpecialPrice() : productBase.getPrice();
+        view.setText(CurrencyFormatter.formatCurrency(price));
+    }
+
+    /**
+     * Method used to set special price and price views
+     */
+    public static void setPriceRules(@NonNull ProductBase productBase, @NonNull TextView price, @NonNull TextView specialPrice) {
         String priceRange = productBase.getPriceRange();
         //If ProductMultiple already has simple
-        if(productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
+        if (productBase instanceof ProductMultiple && ((ProductMultiple) productBase).getSelectedSimple() != null) {
             //noinspection ConstantConditions
             setPrice(((ProductMultiple) productBase).getSelectedSimple(), price, specialPrice);
             //If hasn't simple but has range
-        } else if(TextUtils.isNotEmpty(priceRange)){
+        } else if (TextUtils.isNotEmpty(priceRange)) {
             specialPrice.setText(priceRange);
             price.setVisibility(View.GONE);
         } else {
