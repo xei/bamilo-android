@@ -14,8 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/shoppingcart_list"
+            style="@style/ViewGroupCompat.Vertical.MiddleDivider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

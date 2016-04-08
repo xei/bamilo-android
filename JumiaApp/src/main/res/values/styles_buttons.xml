@@ -116,8 +116,8 @@
 
     <style name="Button_Link.RemoveItem" parent="@style/Button_Link.Blue_1">
         <item name="android:layout_margin">0dp</item>
-        <item name="android:paddingBottom">@dimen/margin_padding_xl</item>
-        <item name="android:paddingTop">@dimen/margin_padding_xl</item>
+        <item name="android:paddingBottom">@dimen/margin_padding_l</item>
+        <item name="android:paddingTop">@dimen/margin_padding_l</item>
         <item name="android:paddingLeft">0dp</item>
         <item name="android:paddingRight">0dp</item>
         <item name="android:text">@string/remove_label</item>

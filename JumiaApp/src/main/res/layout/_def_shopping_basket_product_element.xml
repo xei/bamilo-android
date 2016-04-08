@@ -7,13 +7,11 @@
     <!-- NAME -->
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/cart_item_text_name"
-        style="@style/TextBase.Body"
-        android:layout_marginEnd="@dimen/login_margin_medium"
-        android:layout_marginRight="@dimen/login_margin_medium"
-        android:layout_marginTop="@dimen/item_margin_top"
+        style="@style/TextBase.Body.Black"
+        android:layout_marginEnd="@dimen/margin_padding_xxl"
+        android:layout_marginRight="@dimen/margin_padding_xxl"
         android:maxLines="2"
         android:singleLine="false"
-        android:textColor="@color/black"
         tools:text="Name" />
 
     <!-- SHOP FIRST IMAGE -->
@@ -32,28 +30,24 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/cart_item_text_price"
-            style="@style/TextBase.Caption"
+            style="@style/TextBase.List.Black_800"
             android:layout_width="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dimen_20dp"
-            android:layout_marginStart="@dimen/dimen_20dp"
-            android:textColor="@color/black_800"
-            android:textSize="@dimen/text_s"
-            tools:text="Price" />
+            android:layout_marginLeft="@dimen/margin_padding_xxl"
+            android:layout_marginStart="@dimen/margin_padding_xxl"
+            tools:text="EGP 200" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/cart_item_text_quantity"
-            style="@style/TextBase.Caption"
+            style="@style/TextBase.List.Black_700"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="@string/shoppingcart_quantity"
-            android:textSize="@dimen/text_s"
-            android:visibility="visible" />
+            android:text="@string/shoppingcart_quantity" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/cart_item_button_quantity"
@@ -63,28 +57,39 @@
             android:layout_centerVertical="true"
             android:layout_toEndOf="@id/cart_item_text_quantity"
             android:layout_toRightOf="@id/cart_item_text_quantity"
-            android:text="@string/shoppingcart_quantity"
-            android:visibility="visible" />
+            tools:text="10" />
 
     </RelativeLayout>
 
     <!-- SIZE -->
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/cart_item_text_size"
-        style="@style/TextBase.Title"
+        android:id="@+id/cart_item_text_variation"
+        style="@style/TextBase.List.Black_700"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@id/cart_item_container_price"
-        tools:text="Size 22" />
+        android:layout_marginEnd="@dimen/margin_padding_m"
+        android:layout_marginRight="@dimen/margin_padding_m"
+        android:text="@string/size_label" />
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/cart_item_text_variation_value"
+        style="@style/TextBase.List.Black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/cart_item_text_variation"
+        android:layout_toEndOf="@id/cart_item_text_variation"
+        android:layout_toRightOf="@id/cart_item_text_variation"
+        tools:text="22" />
 
     <!-- DELETE BUTTON -->
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/cart_item_button_delete"
         style="@style/Button_Link.RemoveItem"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/cart_item_container_price" />
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/cart_item_text_variation" />
 
 </RelativeLayout>
