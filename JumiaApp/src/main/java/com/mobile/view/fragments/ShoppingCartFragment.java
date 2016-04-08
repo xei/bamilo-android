@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -74,10 +73,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private static final String cartValue = "";
     private long mBeginRequestMillis;
     private List<PurchaseCartItem> items;
-    private LinearLayout lView;
+    private ViewGroup mCartItemsContainer;
     private View mTotalContainer;
-    private Button mCheckoutButton;
-    private Button mCallToOrderButton;
+    private View mCheckoutButton;
+    private View mCallToOrderButton;
+    private View mFreeShippingView;
     private DialogListFragment dialogList;
     private TextView mCouponButton;
     private EditText mVoucherView;
@@ -91,7 +91,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
     private String mItemsToCartDeepLink;
     private int selectedPosition;
     private int crrQuantity;
-    private View mFreeShippingView;
 
     /**
      * Empty constructor
@@ -221,8 +220,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      * Set the ShoppingCart layout using inflate
      */
     public void setAppContentLayout(View view) {
-        mCheckoutButton = (Button) view.findViewById(R.id.checkout_button);
-        mCallToOrderButton = (Button) view.findViewById(R.id.checkout_call_to_order);
+        mCheckoutButton = view.findViewById(R.id.checkout_button);
+        mCallToOrderButton = view.findViewById(R.id.checkout_call_to_order);
         mTotalContainer = view.findViewById(R.id.total_container);
         // Set nested scroll and voucher view
         mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
@@ -449,7 +448,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
      *
      */
     private void releaseVars() {
-        lView = null;
+        mCartItemsContainer = null;
         mCheckoutButton = null;
         dialogList = null;
     }
@@ -675,11 +674,11 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         // Set number of items
         articlesCount.setText(getResources().getQuantityString(R.plurals.numberOfItems, cart.getCartCount(), cart.getCartCount()));
         // Add all items
-        lView = (LinearLayout) getView().findViewById(R.id.shoppingcart_list);
-        lView.removeAllViewsInLayout();
+        mCartItemsContainer = (ViewGroup) getView().findViewById(R.id.shoppingcart_list);
+        mCartItemsContainer.removeAllViewsInLayout();
         for (int i = 0; i < items.size(); i++) {
             PurchaseCartItem item = items.get(i);
-            lView.addView(createCartItemView(i, lView, LayoutInflater.from(getBaseActivity()), item));
+            mCartItemsContainer.addView(createCartItemView(i, mCartItemsContainer, LayoutInflater.from(getBaseActivity()), item));
         }
         // Set sub total and sub total unreduced
         UICartUtils.setSubTotal(cart, subTotal, subTotalUnreduced);
@@ -708,18 +707,20 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         TextView quantityBtn = (TextView) view.findViewById(R.id.cart_item_button_quantity);
         ImageView shopFirstImage = (ImageView) view.findViewById(R.id.cart_item_image_shop_first);
         TextView deleteBtn = (TextView) view.findViewById(R.id.cart_item_button_delete);
-        TextView size = (TextView) view.findViewById(R.id.cart_item_text_size);
+        TextView variationName = (TextView) view.findViewById(R.id.cart_item_text_variation);
+        TextView variationValue = (TextView) view.findViewById(R.id.cart_item_text_variation_value);
         // Set item
         itemName.setText(item.getName());
         itemName.setSelected(true);
         String imageUrl = item.getImageUrl();
-        // Variation // TODO :: NAFAMZ-16896
+        // Variation TODO :: NAFAMZ-16896
         if (TextUtils.isEmpty(item.getVariationValue())) {
-            size.setVisibility(View.GONE);
-        } else if (TextUtils.isEmpty(item.getVariationName())) {
-            size.setText(getString(R.string.size_placeholder, item.getVariationValue()));
+            UIUtils.showOrHideViews(View.GONE, variationName, variationValue);
+        } else if (TextUtils.isNotEmpty(item.getVariationName())) {
+            variationName.setText(item.getVariationName());
+            variationValue.setText(item.getVariationValue());
         } else {
-            size.setText(getString(R.string.first_space_second_placeholder, item.getVariationName(), item.getVariationValue()));
+            variationValue.setText(item.getVariationValue());
         }
         // Hide shop view image if is_shop is false
         UIProductUtils.setShopFirst(item, shopFirstImage);
