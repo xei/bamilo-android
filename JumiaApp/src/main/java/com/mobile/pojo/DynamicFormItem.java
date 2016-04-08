@@ -976,7 +976,11 @@ public class DynamicFormItem {
         else {
             String regex = this.entry.getValidation().regex;
             Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-            setErrorText(this.entry.getValidation().getRegexErrorMessage() + space);
+            String errorMessage = this.entry.getValidation().getRegexErrorMessage();
+            if(com.mobile.newFramework.utils.TextUtils.isEmpty(errorMessage)){
+                errorMessage = context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel();
+            }
+            setErrorText(errorMessage + space);
             Matcher matcher = pattern.matcher(text);
             result = matcher.find();
         }
