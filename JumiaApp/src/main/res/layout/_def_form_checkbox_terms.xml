@@ -10,7 +10,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:drawablePadding="@dimen/form_check_padding"
-        android:paddingLeft="@dimen/form_check_padding"
         android:paddingStart="@dimen/form_check_padding"
         android:textColor="@color/grey_middle"
         android:textSize="@dimen/text_form" />

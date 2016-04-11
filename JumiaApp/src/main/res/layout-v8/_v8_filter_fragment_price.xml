@@ -41,6 +41,7 @@
         android:textSize="@dimen/text_l"
         android:gravity="right|center_vertical"
         android:button="@null"
-        android:drawableRight="@drawable/selector_btn_check_holo_green"
+        android:drawableRight="@drawable/_gen_selector_check_box"
+        android:drawablePadding="@dimen/margin_padding_s"
         android:visibility="gone"/>
 </LinearLayout>
