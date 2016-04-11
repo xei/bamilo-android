@@ -3,11 +3,11 @@
     style="@style/list_row_style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/margin_padding_l"
-    android:layout_marginLeft="@dimen/margin_padding_xl"
-    android:layout_marginRight="@dimen/margin_padding_xl"
-    android:layout_marginTop="@dimen/margin_padding_xl"
-    android:gravity="center">
+    android:gravity="center"
+    android:paddingBottom="@dimen/margin_padding_l"
+    android:paddingLeft="@dimen/margin_padding_xl"
+    android:paddingRight="@dimen/margin_padding_xl"
+    android:paddingTop="@dimen/margin_padding_xl">
 
     <!-- IMAGE CONTAINER -->
     <include
