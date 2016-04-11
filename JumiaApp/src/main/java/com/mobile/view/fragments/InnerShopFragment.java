@@ -121,7 +121,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             // Enable java script
             mWebView.getSettings().setJavaScriptEnabled(true);
         } catch (NullPointerException e) {
-            Print.w("WARNING: NPE ON ENABLE WEB VIEW JAVA SCRIPT");
+            Print.w("WARNING: NPE ON ENABLE JAVA SCRIPT");
         }
         // Validate the data (load/request/continue)
         onValidateDataState();
