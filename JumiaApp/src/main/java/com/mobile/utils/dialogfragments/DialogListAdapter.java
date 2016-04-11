@@ -15,11 +15,10 @@ import java.util.ArrayList;
 
 /**
  * Adapter that shows a list of generic items for a dialg
- *
+ * <p/>
  * Created by rsoares on 8/25/15.
  *
  * @modified Paulo Carvalho
- *
  */
 public class DialogListAdapter extends BaseAdapter {
 
@@ -34,12 +33,12 @@ public class DialogListAdapter extends BaseAdapter {
     /**
      * Constructor
      */
-    public DialogListAdapter(Context mActivity, ArrayList<String> mItems) {
-        this(mActivity,mItems,null);
+    public DialogListAdapter(Context context, ArrayList<String> mItems) {
+        this(context, mItems, null);
     }
 
-    public DialogListAdapter(Context mActivity, ArrayList<String> mItems, ArrayList<String> mItemsAvailable) {
-        mInflater = LayoutInflater.from(mActivity);
+    public DialogListAdapter(Context context, ArrayList<String> mItems, ArrayList<String> mItemsAvailable) {
+        this.mInflater = LayoutInflater.from(context);
         this.mItems = mItems;
         this.mItemsAvailable = mItemsAvailable;
     }
@@ -94,16 +93,16 @@ public class DialogListAdapter extends BaseAdapter {
         }
         TextView textView = (TextView) view.findViewById(R.id.item_text);
         TextView textViewUnAvailable = (TextView) view.findViewById(R.id.item_text_unavailable);
-        if(mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))){
+        if (mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))) {
             view.setEnabled(false);
             textView.setVisibility(View.GONE);
-            if(textViewUnAvailable != null){
+            if (textViewUnAvailable != null) {
                 textViewUnAvailable.setVisibility(View.VISIBLE);
                 textViewUnAvailable.setText(mItems.get(position));
             }
         } else {
             view.setEnabled(true);
-            if(textViewUnAvailable != null)
+            if (textViewUnAvailable != null)
                 textViewUnAvailable.setVisibility(View.GONE);
 
             textView.setVisibility(View.VISIBLE);
@@ -121,16 +120,17 @@ public class DialogListAdapter extends BaseAdapter {
 
     /**
      * #FIX: java.lang.IllegalArgumentException: The observer is null.
+     *
      * @solution from : https://code.google.com/p/android/issues/detail?id=22946
      */
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
-        if(observer != null){
+        if (observer != null) {
             super.unregisterDataSetObserver(observer);
         }
     }
 
-    public ArrayList<String> getItems(){
+    public ArrayList<String> getItems() {
         return mItems;
     }
 

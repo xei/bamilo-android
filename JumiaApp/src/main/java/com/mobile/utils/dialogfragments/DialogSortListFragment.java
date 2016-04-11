@@ -19,6 +19,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -42,7 +43,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 
 	private int mInitialPosition;
 
-	private Activity mActivity;
+	private WeakReference<Activity> mActivity;
 
 	private OnDialogListListener mSelectListener;
 
@@ -73,7 +74,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 	public static DialogSortListFragment newInstance(Fragment fragment, OnDialogListListener listener, String id, String title, ArrayList<String> items, int initialPosition) {
 	    Print.d(TAG, "NEW INSTANCE");
 	    DialogSortListFragment dialogListFragment = new DialogSortListFragment();
-	    dialogListFragment.mActivity = fragment.getActivity();
+	    dialogListFragment.mActivity = new WeakReference<Activity>(fragment.getActivity());
 	    dialogListFragment.mSelectListener = listener;
 	    dialogListFragment.mTitle = title;
 	    dialogListFragment.mItems = items;
@@ -108,7 +109,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
         super.onViewCreated(view, savedInstanceState);
 
         // Validate current activity
-        if (this.mActivity == null) {
+        if (this.mActivity == null || this.mActivity.get() == null) {
             dismiss();
             return;
         }
@@ -126,7 +127,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 
         // Validate adapter
         if(mAdapter == null) {
-            mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable);
+            mAdapter = new DialogListAdapter(mActivity.get(), mItems, mItemsAvailable);
         }
         // Add adapter
         mAdapter.setCheckedPosition(mInitialPosition);
@@ -136,7 +137,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
         if (mInitialPosition > 0 && mInitialPosition < mAdapter.getCount())
             list.setSelection(mInitialPosition);
 
-        this.mActivity.getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
+        this.mActivity.get().getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
 
     }
 	

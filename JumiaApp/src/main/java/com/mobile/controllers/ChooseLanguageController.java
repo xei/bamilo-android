@@ -43,7 +43,7 @@ public class ChooseLanguageController {
             public void onDialogListItemSelect(int position, String value) {
                 if(defaultPosition != position) {
                     languages.setSelected(position);
-                    CountryPersistentConfigs.saveLanguages(fragment.getActivity(), languages);
+                    CountryPersistentConfigs.saveLanguages(JumiaApplication.INSTANCE.getApplicationContext(), languages);
                     JumiaApplication.INSTANCE.cleanAllPreviousLanguageValues();
                     if (runnable != null) {
                         runnable.run();
