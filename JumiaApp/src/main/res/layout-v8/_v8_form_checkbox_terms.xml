@@ -12,7 +12,7 @@
         style="@style/text_form"
         android:layout_width="wrap_content"
         android:gravity="right"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:textColor="@color/blue_basic"/>
 
     <com.mobile.components.customfontviews.CheckBox
@@ -21,11 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right|end"
         android:button="@null"
-        android:background="@null"
-        android:drawableRight="@drawable/selector_btn_check_holo_green"
-        android:drawableEnd="@drawable/selector_btn_check_holo_green"
+        android:drawableRight="@drawable/_gen_selector_check_box"
         android:drawablePadding="@dimen/form_check_padding"
-        android:paddingRight="@dimen/form_check_padding"
         style="@style/FormFieldCheckBoxStyle"
         android:textColor="@color/grey_middle"
         android:textSize="@dimen/text_form"/>
