@@ -13,11 +13,11 @@ import java.util.Set;
  */
 public abstract class DebugActivity extends BaseActivity {
 
-    public DebugActivity(@NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, Set<EventType> userEvents, int titleResId, int contentLayoutId) {
-        super(action, enabledMenuItems, userEvents, titleResId, contentLayoutId);
+    /**
+     * Constructor used to initialize the navigation list component and the autocomplete handler
+     */
+    public DebugActivity(@NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, int titleResId) {
+        super(action, enabledMenuItems, titleResId);
     }
 
-    public DebugActivity(int activityLayoutId, @NavigationAction.Type int action, Set<MyMenuItem> enabledMenuItems, int titleResId) {
-        super(activityLayoutId, action, enabledMenuItems, titleResId);
-    }
 }
