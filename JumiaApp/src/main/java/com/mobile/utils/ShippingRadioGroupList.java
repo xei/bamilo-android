@@ -24,8 +24,6 @@ import java.util.HashMap;
 
 public class ShippingRadioGroupList extends RadioGroup {
 
-    private final static String TAG = ShippingRadioGroupList.class.getSimpleName();
-
     private ArrayList<String> mItems;
     private ShippingMethodForm mForm;
     private HashMap<String, ArrayList<ShippingMethodSubForm>> subForms;
@@ -254,26 +252,22 @@ public class ShippingRadioGroupList extends RadioGroup {
     }
 
     public ContentValues getValues() {
-        //Print.i(TAG, "code1values : adding valeus " + subForms);
         ContentValues mContentValues = new ContentValues();
         int idx = this.getCheckedRadioButtonId();
         if (idx < 0) {
             idx = mDefaultSelectedId;
         }
-
         if (subForms.containsKey(mItems.get(idx)) && subForms.get(mItems.get(idx)).size() > 0) {
             PickUpStationObject selectedPickup = null;
             //Print.i(TAG, "code1values : adding ");
             for (ShippingMethodSubForm element : subForms.get(mItems.get(idx))) {
                 if (element.shippingMethodSubFormHolder.options != null && element.shippingMethodSubFormHolder.options.size() > 0) {
-                    if(element.pickupStationsListView.getAdapter() instanceof PickupStationsAdapter){
-                        selectedPickup = ((PickupStationsAdapter)element.pickupStationsListView.getAdapter()).getSelectedPickupStation();
-                        
+                    if (element.pickupStationsListView != null && element.pickupStationsListView.getAdapter() instanceof PickupStationsAdapter) {
+                        selectedPickup = ((PickupStationsAdapter) element.pickupStationsListView.getAdapter()).getSelectedPickupStation();
                     }
-                    if(selectedPickup != null){
+                    if (selectedPickup != null) {
                         mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getPickupStationId());
                     }
-                    //Print.i(TAG, "code1values : element.name : " + element.shippingMethodSubFormHolder.name);
                 } else {
                     if (selectedPickup != null && selectedPickup.getRegions() != null && selectedPickup.getRegions().size() > 0) {
                         mContentValues.put(element.shippingMethodSubFormHolder.name, selectedPickup.getRegions().get(0).getId());
