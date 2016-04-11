@@ -17,7 +17,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/margin_padding_l"
-        android:layout_marginStart="@dimen/margin_padding_l" />
+        android:layout_marginStart="@dimen/margin_padding_l"
+        android:layout_marginTop="@dimen/margin_padding_l"/>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/new_arrival_badge"
@@ -28,7 +29,6 @@
         android:layout_alignStart="@+id/item_image_container"
         android:layout_alignTop="@+id/item_image_container"
         android:layout_gravity="top|left|start"
-        android:layout_marginTop="@dimen/dimen_10dp"
         android:text="@string/new_arrival_badge" />
 
     <!-- INFO CONTAINER -->
