@@ -113,7 +113,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         mWebView = (WebView) view.findViewById(R.id.shop_web_view);
         // Set the client
         mWebView.setWebViewClient(mInnerShopWebClient);
-        /**
+        /*
          * Crash: In some devices with OS 4.2.2
          * https://rink.hockeyapp.net/manage/apps/33641/app_versions/173/crash_reasons/116945743?type=overview
          */
@@ -121,7 +121,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             // Enable java script
             mWebView.getSettings().setJavaScriptEnabled(true);
         } catch (NullPointerException e) {
-            // ...
+            Print.w("WARNING: NPE ON SET JAVA SCRIPT ENABLED");
         }
         // Validate the data (load/request/continue)
         onValidateDataState();
