@@ -244,12 +244,12 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
+                dismissAllowingStateLoss();
                 if (mListener != null && mCampaignItem != null) {
                     mListener.onDialogSizeListClickView(position, mCampaignItem);
                 } else if(mListener != null){
                     mListener.onDialogListItemSelect(position);
                 }
-                dismissAllowingStateLoss();
             }
         }, IntConstants.DIALOG_DELAY_DISMISS);
     }
