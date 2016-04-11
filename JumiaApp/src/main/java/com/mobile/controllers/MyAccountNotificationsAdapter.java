@@ -11,6 +11,7 @@ import android.widget.CompoundButton;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.tracking.Ad4PushTracker;
+import com.mobile.utils.SingleLineComponent;
 import com.mobile.view.R;
 
 /**
@@ -36,10 +37,10 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
     private static final int SHOW_NOTIFICATION_CHECKBOX = 1;
 //    private static final String TAG = MyAccountNotificationsAdapter.class.getName();
 
-    private String[] mOptions;
-    private int[] mCheckBoxes;
+    private final String[] mOptions;
+    private final int[] mCheckBoxes;
     Context mContext;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     /**
      * The constructor for this adapter
@@ -79,15 +80,16 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
         if (convertView != null) {
             view = convertView;
         } else {
-            view = mInflater.inflate(R.layout.my_account_notification_item, parent, false);
+            view = mInflater.inflate(R.layout._def_single_line_with_checkbox_component, parent, false);
+            ((SingleLineComponent) view).removeSelector();
         }
 
         // Get the Notification item name
-        TextView optionsName = (TextView) view.findViewById(R.id.option_name);
+        TextView optionsName = (TextView) view.findViewById(R.id.tx_single_line_text);
         optionsName.setText(this.mOptions[position]);
 
         // Get the Notification checkbox
-        final CheckBox optionsCheckbox = (CheckBox) view.findViewById(R.id.notification_checkbox);
+        final CheckBox optionsCheckbox = (CheckBox) view.findViewById(R.id.checkbox);
         if(this.mCheckBoxes[position] == SHOW_NOTIFICATION_CHECKBOX) {
             optionsCheckbox.setTag(NOTIFICATION_CHECKBOX_TAG);
             optionsCheckbox.setVisibility(View.VISIBLE);

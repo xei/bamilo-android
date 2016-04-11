@@ -6,12 +6,12 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_number_of_items"
-        style="@style/TextBody_1"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Body.Black"
+        />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_total"
-        style="@style/TextBody_3"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Body.Black_800"
+        />
 
 </LinearLayout>

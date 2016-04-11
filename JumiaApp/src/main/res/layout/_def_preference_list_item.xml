@@ -5,7 +5,7 @@
     android:baselineAligned="false"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/rounded_margin_mid">
+    android:paddingBottom="@dimen/margin_padding_l">
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -15,7 +15,7 @@
         android:layout_marginStart="@dimen/my_account_gen_dimen"
         android:layout_marginTop="@dimen/rounded_margin_small"
         android:layout_weight="1"
-        android:paddingTop="@dimen/rounded_margin_mid">
+        android:paddingTop="@dimen/margin_padding_l">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+android:id/title"

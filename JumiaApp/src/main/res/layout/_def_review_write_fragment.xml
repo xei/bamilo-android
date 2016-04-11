@@ -14,14 +14,14 @@
             layout="@layout/product_details_fragment_header" />
 
         <View
-            style="@style/divider_horizontal"
+            style="@style/DividerHorizontal.Black_400"
             android:layout_below="@id/product_info_container" />
 
         <!-- SHADOW -->
 
         <View
             android:id="@+id/shadow"
-            style="@style/shadow"
+            style="@style/ShadowHorizontal"
             android:layout_below="@id/product_info_container"
             android:visibility="gone" />
 

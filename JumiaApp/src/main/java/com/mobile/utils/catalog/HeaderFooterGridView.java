@@ -8,15 +8,10 @@ import android.util.AttributeSet;
 import com.mobile.newFramework.objects.catalog.Banner;
 
 /**
- * Created by spereira on 2/27/15.
+ * RecyclerView with grid layout manager that supports header and footer.
+ * @author spereira
  */
 public class HeaderFooterGridView extends RecyclerView {
-
-    private static final String TAG = HeaderFooterGridView.class.getSimpleName();
-
-    public static final int NO_HEADER = -1;
-
-    public static final int NO_FOOTER = -2;
 
     private HeaderFooterGridLayoutManager mGridLayoutManager;
 
@@ -43,7 +38,6 @@ public class HeaderFooterGridView extends RecyclerView {
         super.setAdapter(adapter);
     }
 
-    /* */
     public void showHeaderView() {
         Adapter adapter = getAdapter();
         if(adapter instanceof HeaderFooterInterface) {

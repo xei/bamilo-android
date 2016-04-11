@@ -39,10 +39,10 @@ import com.mobile.utils.CheckoutStepManager;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.cart.UICartUtils;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ProductUtils;
-import com.mobile.utils.ui.ShoppingCartUtils;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
@@ -388,8 +388,8 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             RocketImageLoader.instance.loadImage(item.getImageUrl(), imageView, null, R.drawable.no_image_small);
             //shop first image
             ImageView shopFirstImageView = (ImageView) prodInflateView.findViewById(R.id.shop_first_item);
-            ProductUtils.setShopFirst(item, shopFirstImageView);
-            ProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
+            UIProductUtils.setShopFirst(item, shopFirstImageView);
+            UIProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
             // Brand
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_brand)).setText(item.getBrandName());
             // Name
@@ -397,13 +397,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
             // Quantity
             ((TextView) prodInflateView.findViewById(R.id.my_order_item_quantity)).setText(getString(R.string.qty_placeholder, item.getQuantity()));
             // Price
-            String price = item.getPriceString();
-            if(!TextUtils.equals(price, item.getSpecialPriceString())){
-                price = item.getSpecialPriceString();
-            }
-            ((TextView) prodInflateView.findViewById(R.id.my_order_item_price)).setText(CurrencyFormatter.formatCurrency(price));
+            UIProductUtils.setPriceRules(item, (TextView) prodInflateView.findViewById(R.id.my_order_item_price));
             // Variation
-            String variation = item.getVariation();
+            String variation = item.getVariationValue();
             if (variation != null && variation.length() > 0 &&
                     !variation.equalsIgnoreCase(",") &&
                     !variation.equalsIgnoreCase("...") &&
@@ -418,7 +414,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 prodInflateView.findViewById(R.id.my_order_item_divider).setVisibility(View.GONE);
             }
 
-            ProductUtils.setShopFirst(item, prodInflateView.findViewById(R.id.shop_first_item));
+            UIProductUtils.setShopFirst(item, prodInflateView.findViewById(R.id.shop_first_item));
             // Add item view
             mProductsContainer.addView(prodInflateView);
         }
@@ -437,7 +433,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         // Set cart value
         mSubTotal.setText(CurrencyFormatter.formatCurrency(mOrderFinish.getSubTotal()));
         // Set costs
-        ShoppingCartUtils.setShippingRule(mOrderFinish, mShipFeeView, mShipFeeValue, mExtraCostsContainer, mExtraCosts);
+        UICartUtils.setShippingRule(mOrderFinish, mShipFeeView, mShipFeeValue, mExtraCostsContainer, mExtraCosts);
         // Voucher
         if (mOrderFinish.hasCouponDiscount()) {
             mVoucherValue.setText(getString(R.string.placeholder_discount, CurrencyFormatter.formatCurrency(mOrderFinish.getCouponDiscount())));
@@ -452,7 +448,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
         //show vat if configuration is enabled
         TextView vatIncludedLabel = (TextView)getView().findViewById(R.id.vat_included_label);
         TextView vatValue = (TextView) getView().findViewById(R.id.vat_value);
-        ShoppingCartUtils.showVATInfo(mOrderFinish, vatIncludedLabel, vatValue);
+        UICartUtils.showVatInfo(mOrderFinish, vatIncludedLabel, vatValue);
     }
 
     /**
@@ -481,13 +477,12 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      */
     private void addAddressView(ViewGroup container, Address address) {
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, container, false);
-        String name = getString(R.string.first_and_second_placeholders, address.getFirstName(), address.getLastName());
+        String name = getString(R.string.first_space_second_placeholder, address.getFirstName(), address.getLastName());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(name);
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(address.getAddress());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_region)).setText(address.getCity());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
-        shippingAddressView.findViewById(R.id.divider).setVisibility(View.GONE);
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
         container.addView(shippingAddressView);
     }

@@ -2,8 +2,7 @@
 
 <!-- NOTE: The "teaser_product_item_width" is not used, is calculated from Window width. -->
 
-<RelativeLayout
-    android:id="@+id/item_container"
+<RelativeLayout android:id="@+id/item_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/teaser_product_item_width"
     android:layout_height="wrap_content"
@@ -11,13 +10,14 @@
     android:paddingEnd="@dimen/margin_mid"
     android:paddingLeft="@dimen/margin_mid"
     android:paddingRight="@dimen/margin_mid"
-    android:paddingStart="@dimen/margin_mid">
+    android:paddingStart="@dimen/margin_mid"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <!-- android:background="@drawable/selector_listitem_highlight" -->
 
     <include
         android:id="@+id/item_image_loadable"
-        layout="@layout/image_loadable"
+        layout="@layout/_def_gen_image_loadable"
         android:layout_width="match_parent"
         android:layout_height="@dimen/teaser_banners_brands_list_height"
         android:layout_centerHorizontal="true"/>
@@ -37,7 +37,7 @@
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
         android:lines="1"
-        android:text="Title"
+        tools:text="Title"
         android:textColor="@color/grey_light" />
 
     <com.mobile.components.customfontviews.TextView
@@ -46,11 +46,11 @@
         android:layout_below="@id/item_title"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center_horizontal"
-        android:text="Price" />
+        tools:text="Price" />
 
     <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/item_check"
-        style="@style/form_checkbox_style"
+        style="@style/FormFieldCheckBoxStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

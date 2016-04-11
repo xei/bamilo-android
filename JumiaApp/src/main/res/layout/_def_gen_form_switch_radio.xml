@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:divider="@drawable/divider_horizontal_black_300"
+    app:divider="@drawable/_gen_divider_horizontal_black_400"
     app:showDividers="middle">
 
     <!-- SWITCH BUTTON -->
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/switch_field"
-        style="@style/SwitchStyle" />
+        style="@style/FormSwitchButton" />
 
     <!-- RELATED DATA -->
 

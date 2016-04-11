@@ -112,7 +112,7 @@ public class CheckBoxField extends DynamicFormItem implements IDynamicFormItemFi
         this.mandatoryControl.setId(parent.getNextId());
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
@@ -132,9 +132,9 @@ public class CheckBoxField extends DynamicFormItem implements IDynamicFormItemFi
         params.rightMargin = formPadding;
 
         // Default or right
-        CheckBox checkBox;
+        final CheckBox checkBox;
         if(layout == R.layout.gen_form_check_box) {
-             checkBox = (CheckBox) View.inflate(this.context, layout, null);
+            checkBox = (CheckBox) View.inflate(this.context, layout, null);
         } else {
             checkBox = (CheckBox) LayoutInflater.from(this.context).inflate(layout, dataContainer, false);
         }
@@ -166,14 +166,28 @@ public class CheckBoxField extends DynamicFormItem implements IDynamicFormItemFi
         if (Boolean.parseBoolean(this.entry.getValue()) || entry.isChecked()) {
             checkBox.setChecked(true);
         }
+
         // Validate disabled flag
         if (this.entry.isDisabledField()) {
+            checkBox.setEnabled(false);
             disableView(checkBox);
+            // Fix issue with Marshmallow to select correct drawable
+            checkBox.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    checkBox.setChecked(true);
+                    checkBox.setEnabled(false);
+                    checkBox.refreshDrawableState();
+                }
+            },250);
+
         }
+
         // Add
         dataContainer.addView(this.dataControl);
         dataContainer.addView(this.mandatoryControl);
         this.control.addView(dataContainer);
+
     }
 
 

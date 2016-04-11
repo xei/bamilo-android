@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/tab_payment"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_centerInParent="true"
     android:layout_centerVertical="true"
     android:background="@android:color/transparent">
-
 
     <ImageView
         android:id="@+id/tab_home_image"
@@ -19,13 +17,11 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/tab_home_text"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption.White"
         android:layout_width="wrap_content"
         android:layout_below="@id/tab_home_image"
         android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="@string/checkout_header_step_4"
-        android:textColor="@color/white"
-        android:visibility="visible" />
+        android:text="@string/checkout_header_step_4" />
 </RelativeLayout>

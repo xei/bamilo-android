@@ -9,7 +9,7 @@
     <string name="pref_notification">pref_notification</string>
     <string name="pref_led">pref_led</string>
     <string name="pref_sound">pref_sound</string>
-    
+
     <!-- CAMPAIGN -->
     <item type="id" name="product"/>
     <item type="id" name="sku"/>

@@ -18,8 +18,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dimen_60px"
-        android:layout_marginRight="@dimen/dimen_60px"
+        android:layout_marginLeft="@dimen/dimen_20dp"
+        android:layout_marginRight="@dimen/dimen_20dp"
         android:orientation="horizontal"
         android:weightSum="1">
 
@@ -27,7 +27,8 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/voucher_btn"
-            style="@style/AigButton.Text.Black_800"
+            style="@style/Button_Link.Blue_1"
+            android:layout_margin="@dimen/margin_padding_xxs"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right|center_vertical"
@@ -35,7 +36,7 @@
             android:ellipsize="marquee"
             android:gravity="right|center_vertical"
             android:singleLine="true"
-            android:text="@string/voucher_use" />
+            android:text="@string/use_label" />
 
         <!-- EDIT TEXT -->
 
@@ -49,9 +50,8 @@
 
             <com.mobile.components.customfontviews.EditText
                 android:id="@+id/voucher_name"
-                style="@style/TextField"
-                android:hint="@string/voucher_message_hint"
-                android:textDirection="locale" />
+                style="@style/FormTextField"
+                android:hint="@string/voucher_message_hint" />
 
         </LinearLayout>
 

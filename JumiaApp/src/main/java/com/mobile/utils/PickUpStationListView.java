@@ -19,7 +19,7 @@ public class PickUpStationListView extends NestedVerticalListView {
         if(getAdapter() != null && getAdapter().getCount() == 1) {
             ((LinearLayout)this.getParent()).setMinimumHeight(0);
         } else {
-            ((LinearLayout)this.getParent()).setMinimumHeight(this.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_780px));
+            ((LinearLayout)this.getParent()).setMinimumHeight(this.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_260dp));
         }
     }
 

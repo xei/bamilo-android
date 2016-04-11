@@ -66,6 +66,7 @@ public class TargetLink {
     private static final int TARGET_TYPE_POSITION = 0;
     private static final int TARGET_ID_POSITION = 1;
     private static final String TARGET_LINK_DELIMITER = "::";
+    private static final String SIMPLE_SKU_DELIMITER = "-";
 
     private final WeakReference<BaseActivity> mActivity;
     private String mTitle;
@@ -316,6 +317,11 @@ public class TargetLink {
             campaigns.add(new TeaserCampaign(teaser.getTitle(), TargetLink.getIdFromTargetLink(teaser.getTargetLink())));
         }
         return campaigns;
+    }
+
+    @Nullable
+    public static String getSkuFromSimple(@Nullable String simple){
+        return TextUtils.isNotEmpty(simple) ? TextUtils.split(simple, SIMPLE_SKU_DELIMITER)[0] : null;
     }
 
 }

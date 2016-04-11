@@ -18,6 +18,7 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.cart.ClearShoppingCartHelper;
 import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.product.RichRelevance;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -60,6 +61,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private ViewGroup mRelatedProductsView;
 
     private String mRelatedRichRelevanceHash;
+
+    private static final int ITEMS_MARGIN = 6;
     /**
      * Get instance
      */
@@ -158,20 +161,18 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      */
     private void prepareLayout(View view) {
         // Track purchase
-        trackPurchase();
-
+        PurchaseEntity cart = JumiaApplication.INSTANCE.getCart();
+        TrackerDelegator.trackPurchaseInCheckoutThanks(cart, mOrderNumber, mGrandTotalValue, mOrderShipping, mOrderTax, mPaymentMethod);
         // Related Products
         mRelatedProductsView = (ViewGroup) view.findViewById(R.id.related_container);
         ImageView imageSuccess = (ImageView) view.findViewById(R.id.success_image);
-
-
         /**
          * Mirror image to avoid having extra assets for each resolution for RTL.
          */
         if(ShopSelector.isRtl()){
             UIUtils.mirrorView(imageSuccess);
         }
-
+        // Show
         setRelatedItems();
         // Clean cart
         triggerClearCart();
@@ -181,7 +182,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         // Continue button
         view.findViewById(R.id.btn_checkout_continue).setOnClickListener(this);
         // Add a link to order status
-        setOrderStatusLink(mOrderNumber);
+        setOrderStatusLink(view, mOrderNumber);
     }
 
     /**
@@ -208,8 +209,8 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
             }
             HorizontalListView relatedGridView = (HorizontalListView) mRelatedProductsView.findViewById(R.id.rich_relevance_listview);
             relatedGridView.enableRtlSupport(ShopSelector.isRtl());
-            relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(10));
-            relatedGridView.setAdapter(new RichRelevanceAdapter(mRichRelevance.getRichRelevanceProducts(), this, R.layout._def_checkout_rr_item, false));
+            relatedGridView.addItemDecoration(new VerticalSpaceItemDecoration(ITEMS_MARGIN));
+            relatedGridView.setAdapter(new RichRelevanceAdapter(mRichRelevance.getRichRelevanceProducts(), this, false));
             mRelatedProductsView.setVisibility(View.VISIBLE);
         } else {
             hideRelatedItems();
@@ -227,10 +228,9 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
      * @see <href=http://www.chrisumbel.com/article/android_textview_rich_text_spannablestring>
      *      SpannableString</href>
      */
-    private void setOrderStatusLink(String orderNumber) {
-
+    private void setOrderStatusLink(View view, String orderNumber) {
         // Set text for order status
-        Button button = (Button) getView().findViewById(R.id.order_status_text);
+        Button button = (Button) view.findViewById(R.id.order_status_text);
         button.setTag(orderNumber);
         // Make ClickableSpans and URLSpans work
         button.setOnClickListener(this);
@@ -241,33 +241,16 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, this);
     }
 
-    // TODO: move this method for TrackerDelegator and try unify with TrackerDelegator.trackPurchaseNativeCheckout
-    private void trackPurchase() {
-        if (JumiaApplication.INSTANCE.getCart() != null && CollectionUtils.isNotEmpty(JumiaApplication.INSTANCE.getCart().getCartItems())) {
-            Bundle params = new Bundle();
-            params.putString(TrackerDelegator.ORDER_NUMBER_KEY, mOrderNumber);
-            params.putDouble(TrackerDelegator.VALUE_KEY, JumiaApplication.INSTANCE.getCart().getPriceForTracking());
-            params.putString(TrackerDelegator.EMAIL_KEY, JumiaApplication.INSTANCE.getCustomerUtils().getEmail());
-            params.putParcelable(TrackerDelegator.CUSTOMER_KEY, JumiaApplication.CUSTOMER);
-            params.putString(TrackerDelegator.COUPON_KEY, String.valueOf(JumiaApplication.INSTANCE.getCart().getCouponDiscount()));
-            params.putInt(TrackerDelegator.CART_COUNT, JumiaApplication.INSTANCE.getCart().getCartCount());
-            params.putDouble(TrackerDelegator.GRAND_TOTAL, mGrandTotalValue);
 
-            if(!TextUtils.isEmpty(mOrderShipping) && !TextUtils.isEmpty(mOrderTax) && !TextUtils.isEmpty(mPaymentMethod)){
-                params.putString(TrackerDelegator.SHIPPING_KEY, mOrderShipping);
-                params.putString(TrackerDelegator.TAX_KEY, mOrderTax);
-                params.putString(TrackerDelegator.PAYMENT_METHOD_KEY, mPaymentMethod);
-            }
-            TrackerDelegator.trackPurchaseNativeCheckout(params, JumiaApplication.INSTANCE.getCart().getCartItems());
-        }
-    }
 
     private void goToProduct(final View view){
+        // Remove all checkout process entries
+        getBaseActivity().removeAllNativeCheckoutFromBackStack();
+//        getBaseActivity().popBackStackEntriesUntilTag(FragmentType.HOME.toString());
         @TargetLink.Type String target = (String) view.getTag(R.id.target_sku);
         mRelatedRichRelevanceHash = (String) view.getTag(R.id.target_rr_hash);
         new TargetLink(getWeakBaseActivity(), target)
                 .addAppendListener(this)
-                .retainBackStackEntries()
                 .run();
     }
 

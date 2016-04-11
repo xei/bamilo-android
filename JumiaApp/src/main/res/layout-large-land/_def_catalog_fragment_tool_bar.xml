@@ -1,36 +1,31 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/catalog_tool_bar_height"
-    android:background="@color/white"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/_gen_background_bottom_border_black_400"
     android:gravity="center"
-    android:orientation="horizontal">
-
-
+    android:orientation="horizontal"
+    tools:layout_height="48dp">
 
     <!-- GRID LAYOUT -->
 
     <ImageButton
         android:id="@+id/catalog_bar_button_columns"
-        android:layout_width="@dimen/dimen_340px"
+        android:layout_width="@dimen/dimen_113_33dp"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:src="@drawable/selector_catalog_list"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
+        android:background="@null"
+        android:contentDescription="@string/gproductlist"
+        android:scaleType="centerInside"
+        android:src="@drawable/selector_catalog_list" />
 
     <!-- DIVIDER -->
 
-    <LinearLayout
+    <View
         android:id="@+id/catalog_bar_divider"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:layout_centerInParent="true">
-
-        <View
-            style="@style/divider_vertical"
-            android:layout_margin="@dimen/margin_10px" />
-    </LinearLayout>
+        style="@style/FilterTabBarDivider"
+        android:layout_centerInParent="true" />
 
     <!-- FILTER -->
 
@@ -40,25 +35,22 @@
         android:layout_toLeftOf="@id/catalog_bar_divider"
         android:layout_toStartOf="@id/catalog_bar_divider"
         android:addStatesFromChildren="true"
-        android:background="@drawable/selector_card_default_white"
-        android:paddingRight="@dimen/dimen_100px"
-        android:paddingEnd="@dimen/dimen_100px"
-        android:gravity="right|end|center">
+        android:gravity="right|end|center"
+        android:paddingEnd="@dimen/margin_padding_xxl"
+        android:paddingRight="@dimen/margin_padding_xxl">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_filter"
-            style="@style/TextList_2"
-            android:layout_height="wrap_content"
+            style="@style/TextBase.List.Black"
             android:layout_width="wrap_content"
-            android:textColor="@color/black"
+            android:layout_height="wrap_content"
             android:layout_gravity="right|end|center"
-            android:drawablePadding="@dimen/margin_10px"
             android:drawableLeft="@drawable/selector_catalog_filter"
+            android:drawablePadding="@dimen/margin_padding_xs"
             android:drawableStart="@drawable/selector_catalog_filter"
-            android:text="@string/filter_label" />
+            android:text="@string/filters_label" />
 
     </LinearLayout>
-
 
     <!-- SORT -->
 
@@ -66,32 +58,32 @@
         android:id="@+id/sort_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@id/catalog_bar_divider"
         android:layout_toEndOf="@id/catalog_bar_divider"
         android:layout_toLeftOf="@id/catalog_bar_button_columns"
+        android:layout_toRightOf="@id/catalog_bar_divider"
         android:layout_toStartOf="@id/catalog_bar_button_columns"
-        android:paddingLeft="@dimen/dimen_100px"
-        android:paddingStart="@dimen/dimen_100px"
         android:addStatesFromChildren="true"
-        android:background="@drawable/selector_card_default_white"
-        android:gravity="left|start|center">
+        android:gravity="left|start|center"
+        android:paddingLeft="@dimen/margin_padding_xxl"
+        android:paddingStart="@dimen/margin_padding_xxl">
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/catalog_bar_button_sort"
-            android:drawablePadding="@dimen/margin_10px"
-            style="@style/TextList_2"
-            android:layout_height="wrap_content"
+            style="@style/TextBase.List.Black"
             android:layout_width="wrap_content"
-            android:textColor="@color/black"
+            android:layout_height="wrap_content"
             android:drawableLeft="@drawable/selector_catalog_sort"
+            android:drawablePadding="@dimen/margin_padding_xs"
             android:drawableStart="@drawable/selector_catalog_sort"
             android:text="@string/products_sort_popularity" />
     </LinearLayout>
+
+    <!-- DIVIDER -->
+
     <View
-        style="@style/divider_vertical"
-        android:layout_marginTop="@dimen/margin_10px"
-        android:layout_marginBottom="@dimen/margin_10px"
-        android:layout_toRightOf="@+id/sort_container"
-        android:layout_toEndOf="@+id/sort_container"/>
+        style="@style/FilterTabBarDivider"
+        android:layout_centerInParent="true"
+        android:layout_toEndOf="@+id/sort_container"
+        android:layout_toRightOf="@+id/sort_container" />
 
 </RelativeLayout>

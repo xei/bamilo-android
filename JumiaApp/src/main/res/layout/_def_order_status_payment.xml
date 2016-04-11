@@ -5,18 +5,17 @@
     android:orientation="vertical">
 
     <com.mobile.components.customfontviews.TextView
-        style="@style/TextInfo_2"
+        style="@style/TextBase.Body.Black"
         android:text="@string/payment"
-        android:textColor="@color/black_800" />
+        />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_payment_name"
-        style="@style/TextCaption"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Body.Black_800"
+        />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_payment_type"
-        style="@style/TextHeader"
-        android:textStyle="bold"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Body.Black_800"
+        />
 </LinearLayout>

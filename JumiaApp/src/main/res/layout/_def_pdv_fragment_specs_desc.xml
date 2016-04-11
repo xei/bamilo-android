@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -20,14 +21,15 @@
     <!-- SEPARATOR -->
 
     <View
-        style="@style/divider_horizontal"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        style="@style/DividerHorizontal.Black_400"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl" />
 
     <!-- MORE BUTTON -->
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/pdv_specs_button"
-        style="@style/SingleLineStyle" />
+        style="@style/Button_Link.SectionItem"
+        tools:text="More Specs" />
 
 </LinearLayout>

@@ -19,6 +19,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.FormInputType;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
+import com.mobile.newFramework.objects.configs.AuthInfo;
 import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingPage;
@@ -28,6 +29,8 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
+import com.mobile.preferences.CountryPersistentConfigs;
+import com.mobile.utils.LoginHeaderComponent;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -126,6 +129,12 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
+
+        final LoginHeaderComponent loginHeaderComponent = (LoginHeaderComponent) view.findViewById(R.id.login_component);
+        AuthInfo authInfo = CountryPersistentConfigs.getAuthInfo(getContext());
+        loginHeaderComponent.showAuthInfo(LoginHeaderComponent.LOGIN, authInfo, null);
+
+
         // Get form container
         mFormContainer = (ViewGroup) view.findViewById(R.id.login_email_form_container);
         // Get forgot password

@@ -26,7 +26,7 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
     private final static int MIN_NUM_OF_IMAGES = 3;
 
     private ArrayList<ImageUrls> mImageUrls;
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
     private boolean isZoomAvailable = false;
     private View primaryView;
 
@@ -89,9 +89,9 @@ public class GalleryPagerAdapter extends PagerAdapter implements IPagerAdapter {
         try {
             if (this.isZoomAvailable) {
                 Print.i(TAG, " full_screen_gallery: " + position);
-                view = mInflater.inflate(R.layout.full_screen_gallery, container, false);
+                view = mInflater.inflate(R.layout._def_pdv_gallery_item, container, false);
             } else {
-                view = mInflater.inflate(R.layout.image_loadable, container, false);
+                view = mInflater.inflate(R.layout._def_gen_image_loadable, container, false);
             }
 
             ImageUrls imageUrls =  mImageUrls.get(position);

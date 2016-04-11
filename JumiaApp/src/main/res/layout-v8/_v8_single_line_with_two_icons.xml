@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/component_container"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dimen_48dp"
+    android:layoutDirection="ltr">
+
+    <ImageView
+        android:id="@+id/icon_start"
+        style="@style/SingleLineListIconStartRTL"
+        android:visibility="invisible"
+        tools:src="@drawable/no_image_tiny"
+        tools:visibility="visible"/>
+
+    <ImageView
+        android:id="@+id/icon_end"
+        style="@style/SingleLineListIconEndRTL"
+        android:visibility="invisible"
+        tools:src="@drawable/no_image_tiny"
+        tools:visibility="visible"/>
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/tx_single_line_text"
+        style="@style/SingleLineList.WithIcon"
+        android:layout_toLeftOf="@+id/icon_start"
+        android:layout_toRightOf="@+id/icon_end"
+        tools:text="Item"/>
+
+</RelativeLayout>

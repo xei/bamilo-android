@@ -185,14 +185,13 @@ public class DialogGenericFragment extends DialogFragment {
         ((Button) view.findViewById(R.id.button1)).setText(buttonTitle1);
         if (TextUtils.isEmpty(buttonTitle2)) {
             view.findViewById(R.id.button2).setVisibility(View.GONE);
-            view.findViewById(R.id.grey_line_vertical).setVisibility(View.GONE);
         }
         ((Button) view.findViewById(R.id.button2)).setText(buttonTitle2);
         view.findViewById(R.id.button2).setOnClickListener(clickListener);
         getActivity().getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
 
         if (title == null)
-            view.findViewById(R.id.title_container).setVisibility(View.GONE);
+            view.findViewById(R.id.dialog_title).setVisibility(View.GONE);
         else
             ((TextView) view.findViewById(R.id.dialog_title)).setText(title);
     }
@@ -214,14 +213,12 @@ public class DialogGenericFragment extends DialogFragment {
         ((Button) view.findViewById(R.id.button1)).setText(buttonTitle1);
         if (TextUtils.isEmpty(buttonTitle2)) {
             view.findViewById(R.id.button2).setVisibility(View.GONE);
-            view.findViewById(R.id.grey_line_vertical).setVisibility(View.GONE);
         }
         ((Button) view.findViewById(R.id.button2)).setText(buttonTitle2);
         view.findViewById(R.id.button2).setOnClickListener(clickListener);
 
         if (TextUtils.isEmpty(buttonTitle2)) {
             view.findViewById(R.id.button2).setVisibility(View.GONE);
-            view.findViewById(R.id.grey_line_vertical2).setVisibility(View.GONE);
         }
         ((Button) view.findViewById(R.id.button3)).setText(buttonTitle3);
         view.findViewById(R.id.button3).setOnClickListener(clickListener);

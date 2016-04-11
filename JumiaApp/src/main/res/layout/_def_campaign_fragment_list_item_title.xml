@@ -19,7 +19,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_brand"
-        style="@style/TextCaption"
+        style="@style/TextBase.Caption"
         android:layout_width="match_parent"
         android:layout_toLeftOf="@id/campaign_item_stock_off"
         android:layout_toStartOf="@id/campaign_item_stock_off"
@@ -35,7 +35,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/campaign_item_name"
-        style="@style/TextBody_1"
+        style="@style/TextBase.Body"
         android:ellipsize="end"
         android:lines="1"
         android:layout_below="@id/campaign_item_brand"

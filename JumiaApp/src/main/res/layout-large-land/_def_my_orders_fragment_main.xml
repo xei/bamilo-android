@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ViewGroupCompat.Horizontal.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:baselineAligned="false"
     android:orientation="horizontal"
-    android:weightSum="2"
-    android:baselineAligned="false">
+    android:weightSum="2">
 
     <!-- ORDERS -->
 
@@ -12,7 +14,6 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@drawable/drop_shadow_right"
         android:orientation="vertical">
 
         <com.mobile.components.customfontviews.TextView
@@ -21,12 +22,9 @@
 
         <ListView
             android:id="@+id/orders_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/black_700"
-            android:dividerHeight="1dp"
-            android:listSelector="@drawable/_gen_selector_group_selected"
-            android:scrollbars="none" />
+            tools:layout_width="match_parent"
+            tools:layout_height="match_parent"
+            style="@style/ListViewStyle" />
 
     </LinearLayout>
 
@@ -38,6 +36,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>
 
 

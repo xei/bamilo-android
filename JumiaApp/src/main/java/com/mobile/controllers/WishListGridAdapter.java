@@ -1,6 +1,5 @@
 package com.mobile.controllers;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +10,8 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.interfaces.OnWishListViewHolderClickListener;
 import com.mobile.newFramework.objects.product.pojo.ProductMultiple;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.utils.imageloader.RocketImageLoader;
-import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -27,13 +25,9 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
     private final ArrayList<ProductMultiple> products;
     private final OnWishListViewHolderClickListener listener;
 
-    private final boolean isTabletInLandscape;
-
-
-    public WishListGridAdapter(Context context, ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
+    public WishListGridAdapter(ArrayList<ProductMultiple> products, OnWishListViewHolderClickListener listener) {
         this.products = products;
         this.listener = listener;
-        this.isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(context);
     }
 
     /**
@@ -51,7 +45,6 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         public View addToCartButton;
         public View deleteButton;
         public View container;
-        public View vDivider;
 
         public WishListProductViewHolder(View view){
             super(view);
@@ -66,12 +59,6 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
             varianceButton = (TextView) itemView.findViewById(R.id.button_variant);
             addToCartButton = itemView.findViewById(R.id.button_shop);
             deleteButton = itemView.findViewById(R.id.button_delete);
-            vDivider = itemView.findViewById(R.id.vdivider);
-            if(isTabletInLandscape){
-                vDivider.setVisibility(View.VISIBLE);
-            } else {
-                vDivider.setVisibility(View.GONE);
-            }
         }
     }
 
@@ -82,18 +69,16 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
 
     @Override
     public void onBindViewHolder(WishListProductViewHolder holder, int position) {
-
         ProductMultiple item = products.get(position);
-
+        // Set image
         setImage(holder, item);
         // Set brand, name and price
         setTextContent(holder, item);
         // Set variation
-        ProductUtils.setVariationContent(holder.varianceButton, item);
+        UIProductUtils.setVariationContent(holder.varianceButton, item);
         // Set clickable views
         setClickableViews(position, holder.container, holder.deleteButton, holder.addToCartButton, holder.varianceButton);
     }
-
 
     /**
      * Set this as clickable
@@ -110,26 +95,6 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
             }
         }
     }
-
-//    /**
-//     * Set the variation container
-//     *
-//     * @author sergiopereira
-//     */
-//    private void setVariationContent(WishListProductViewHolder prodItem, ProductMultiple product) {
-//        // Set simple button
-//        if(product.hasMultiSimpleVariations()) {
-//            // Set simple value
-//            String simpleVariationValue = "...";
-//            if(product.hasSelectedSimpleVariation()) {
-//                simpleVariationValue = product.getSimples().get(product.getSelectedSimplePosition()).getVariationValue();
-//            }
-//            prodItem.varianceButton.setText(simpleVariationValue);
-//            prodItem.varianceButton.setVisibility(View.VISIBLE);
-//        } else {
-//            prodItem.varianceButton.setVisibility(View.INVISIBLE);
-//        }
-//    }
 
     /**
      * Set the image view
@@ -154,9 +119,9 @@ public class WishListGridAdapter extends RecyclerView.Adapter<WishListGridAdapte
         // Set name
         prodItem.name.setText(product.getName());
 
-        ProductUtils.setPriceRules(product, prodItem.price, prodItem.discount);
+        UIProductUtils.setPriceRules(product, prodItem.price, prodItem.discount);
 
-        ProductUtils.setDiscountRules(product, prodItem.percentage);
+        UIProductUtils.setDiscountRules(product, prodItem.percentage);
     }
 
     @Override

@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/dimen_68dp">
 
     <ImageView
         android:id="@+id/flag"
-        android:layout_width="@dimen/item_height_normal"
-        android:layout_height="@dimen/item_height_normal"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/my_account_gen_dimen"
-        android:padding="@dimen/margin_mid"
-        android:src="@mipmap/ic_launcher"
+        android:layout_width="@dimen/dimen_28dp"
+        android:layout_height="@dimen/dimen_43dp"
         android:layout_alignParentLeft="true"
-        />
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:src="@mipmap/ic_launcher" />
 
-    <include
-        layout="@layout/_def_my_account_language_item"/>
+    <include layout="@layout/_def_my_account_language_item" />
 
 </RelativeLayout>

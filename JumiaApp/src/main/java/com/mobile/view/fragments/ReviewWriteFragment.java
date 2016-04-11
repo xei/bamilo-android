@@ -35,14 +35,16 @@ import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.KeyboardUtils;
-import com.mobile.utils.ui.ProductUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
@@ -262,10 +264,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             }
         }
         isExecutingSendReview = false;
-        if (getArguments() != null && getArguments().containsKey(ReviewsFragment.CAME_FROM_POPULARITY)) {
-            getView().findViewById(R.id.product_info_container).setVisibility(View.GONE);
-            getView().findViewById(R.id.shadow).setVisibility(View.GONE);
-        }
         if (getArguments() != null && getArguments().containsKey(RATING_SHOW)) {
             isShowingRatingForm = getArguments().getBoolean(RATING_SHOW);
             ratingForm = JumiaApplication.INSTANCE.ratingForm;
@@ -341,8 +339,14 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
             //Validate if both reviews and ratings are enabled on country configuration
             if (getSharedPref().getBoolean(Darwin.KEY_SELECTED_RATING_ENABLE, true) && getSharedPref().getBoolean(Darwin.KEY_SELECTED_REVIEW_ENABLE, true)) {
-                ((CheckBox) mDynamicForm.getContainer().findViewById(R.id.checkbox_form)).setChecked(!isShowingRatingForm);
-                ((CheckBox) mDynamicForm.getContainer().findViewById(R.id.checkbox_form)).setOnCheckedChangeListener(new OnCheckedChangeListener() {
+                final CheckBox checkBox = (CheckBox) mDynamicForm.getContainer().findViewById(R.id.checkbox_form);
+
+                if(DeviceInfoHelper.isPosLollipop()){ // Fixes the checkbox state for Marshmallow
+                    UIUtils.checkBoxDrawableStateCompat(checkBox);
+                }
+
+                checkBox.setChecked(!isShowingRatingForm);
+                checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         mDynamicForm.saveFormState(mSavedState);
@@ -352,6 +356,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                                 setRatingLayout(reviewForm);
                             }
                         } else if (ratingForm != null) {
+                            UIUtils.setDrawableLeft(checkBox, R.drawable.btn_checkbox_empty);
                             // Hide keyboard
                             KeyboardUtils.hide(getView());
                             setRatingLayout(ratingForm);
@@ -388,9 +393,9 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
             TextView productName = (TextView) getView().findViewById(R.id.product_detail_name);
             TextView productPriceSpecial = (TextView) getView().findViewById(R.id.product_price_special);
             TextView productPriceNormal = (TextView) getView().findViewById(R.id.pdv_text_price);
-            ProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
+            UIProductUtils.setPriceRules(completeProduct, productPriceNormal, productPriceSpecial);
             getView().findViewById(R.id.send_review).setOnClickListener(this);
-            productName.setText(String.format(getString(R.string.first_and_second_placeholders), completeProduct.getBrandName(), completeProduct.getName()));
+            productName.setText(String.format(getString(R.string.first_space_second_placeholder), completeProduct.getBrandName(), completeProduct.getName()));
         }
     }
 

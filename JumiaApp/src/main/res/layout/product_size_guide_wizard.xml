@@ -23,20 +23,17 @@
         android:layout_height="@dimen/wizard_product_height"
         android:layout_above="@id/wizard_product_size_text"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dimen_180px"
+        android:layout_marginBottom="@dimen/dimen_60dp"
         android:src="@drawable/img_instructions_pinch" />
 
     <com.mobile.components.customfontviews.Button
         android:id="@+id/wizard_product_size_button"
-        style="@style/button_orange_style"
+        style="@style/Button_1.Shop"
         android:layout_width="@dimen/tips_button_width"
         android:layout_height="@dimen/tips_button_height"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_veryhuge"
-        android:fontFamily="roboto_bold"
-        android:text="@string/got_it"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/text_l" />
+        android:text="@string/got_it" />
 
 </RelativeLayout>

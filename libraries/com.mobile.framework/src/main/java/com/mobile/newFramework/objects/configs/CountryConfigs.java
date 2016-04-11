@@ -9,6 +9,7 @@ import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,6 +62,9 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private String mNamespacePrefix;
     private boolean mUseAlgolia;
 
+    private AuthInfo mAuthInfo;
+
+
     /**
      * Empty constructor
      */
@@ -87,6 +91,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         mSuggesterApiKey = null;
         mNamespacePrefix = null;
         mUseAlgolia = false;
+        mAuthInfo = new AuthInfo();
     }
 
     /**
@@ -186,6 +191,12 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
             mSuggesterApiKey = jsonAlgolia.optString(RestConstants.SUGGESTER_API_KEY);
             mNamespacePrefix = jsonAlgolia.optString(RestConstants.NAMESPACE_PREFIX);
         }
+
+        JSONObject jsonAuthInfo = jsonObject.optJSONObject(RestConstants.AUTH_INFO);
+        if(jsonAuthInfo != null ){
+            mAuthInfo.initialize(jsonAuthInfo);
+        }
+
         return true;
     }
 
@@ -357,5 +368,9 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     public List<TargetHelper> getMobileAbout() {
         return mobileAbout;
+    }
+
+    public AuthInfo getAuthInfo(){
+        return mAuthInfo;
     }
 }

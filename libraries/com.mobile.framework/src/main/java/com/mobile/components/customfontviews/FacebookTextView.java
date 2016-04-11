@@ -11,8 +11,8 @@ import android.util.TypedValue;
 import com.facebook.login.widget.LoginButton;
 import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 import com.mobile.framework.R;
-
-
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 
 
 public class FacebookTextView extends LoginButton implements FontStyleProvider {
@@ -29,6 +29,14 @@ public class FacebookTextView extends LoginButton implements FontStyleProvider {
 
     public FacebookTextView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        //Fix for the two facebook drawables appearing in 4.2
+        if(DeviceInfoHelper.isPreJellyBeanMR1()){
+            if(ShopSelector.isRtl()){
+                setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.com_facebook_button_icon,0);
+            } else {
+                setCompoundDrawablesWithIntrinsicBounds(R.drawable.com_facebook_button_icon,0,0,0);
+            }
+        }
         FacebookTextView.construct(this, context, attrs, defStyle);
     }
 
@@ -43,17 +51,6 @@ public class FacebookTextView extends LoginButton implements FontStyleProvider {
         FacebookTextView.setTextAppearance(textView, a);
         a.recycle();
         
-    }
-
-    /**
-     * Looks ugly? Yea, i know.
-     */
-    @SuppressLint("InlinedApi")
-    private static Object[] parseFontStyle(Context context, AttributeSet attrs, int defStyleAttr) {
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextAppearance, defStyleAttr, 0);
-        final Object[] result = parseFontStyle(a);
-        a.recycle();
-        return result;
     }
 
     private static Object[] parseFontStyle(TypedArray a) {

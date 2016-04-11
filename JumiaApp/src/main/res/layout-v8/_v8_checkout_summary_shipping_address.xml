@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="0dp"
-    android:layout_marginLeft="@dimen/rounded_margin_mid"
+    android:layout_marginLeft="@dimen/margin_padding_l"
     android:layout_marginRight="0dp"
     android:layout_marginTop="@dimen/rounded_margin_small"
     android:orientation="vertical" >
@@ -11,7 +11,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/title_box_height"
-        android:layout_margin="@dimen/rounded_margin_mid"
+        android:layout_margin="@dimen/margin_padding_l"
         android:gravity="center"
         android:orientation="horizontal" >
 
@@ -26,12 +26,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
+            android:layout_marginLeft="@dimen/margin_padding_l"
             android:src="@drawable/selector_btn_edit"
             android:paddingRight="10dp"/>
     </RelativeLayout>
 
-    <View style="@style/divider_horizontal_orange" />
+    <View style="@style/DividerHorizontal.Accent" />
 
     <!-- ADDRESS -->
 
@@ -39,8 +39,8 @@
         android:id="@+id/checkout_summary_shipping_address_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/rounded_margin_mid"
-        android:layout_marginTop="@dimen/rounded_margin_mid"
+        android:layout_marginBottom="@dimen/margin_padding_l"
+        android:layout_marginTop="@dimen/margin_padding_l"
         android:orientation="vertical" />
 
 </LinearLayout>

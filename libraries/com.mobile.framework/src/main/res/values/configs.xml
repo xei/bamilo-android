@@ -53,7 +53,7 @@
 	<!-- APPTIMIZE -->
     <item name="apptimize_enabled" type="bool">false</item>
     <string name="apptimize_apikey"/>
-    
+
     <!-- GTM -->
     <item name="gtm_debug" type="bool">false</item>
     

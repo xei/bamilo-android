@@ -1,67 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:minHeight="@dimen/dimen_340px"
-    android:orientation="horizontal"
+    android:minHeight="@dimen/dimen_113_33dp"
     >
 
-    <LinearLayout
-        android:id="@+id/pickup_station_details_layout"
-        android:layout_width="0dp"
+
+
+    <com.mobile.components.customfontviews.RadioButton
+        android:id="@+id/pickup_station_radio_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center|right"
-        android:orientation="vertical">
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pickup_station_city"
-            style="@style/TextCaption"
-            android:singleLine="false"
-            android:textColor="@color/black" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pickup_station_address"
-            style="@style/TextCaption"
-            android:singleLine="false"
-            android:textColor="@color/black" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pickup_station_opening_hours"
-            style="@style/TextCaption"
-            android:singleLine="false"
-            android:textColor="@color/black" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pickup_station_shipping_fee"
-            style="@style/TextCaption"
-            android:singleLine="false"
-            android:textColor="@color/black"
-            android:visibility="gone" />
-
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pickup_station_shipping_fee_info"
-            style="@style/TextCaption"
-            android:singleLine="false"
-            android:textColor="@color/black"
-            android:visibility="gone" />
-
-    </LinearLayout>
+        android:layout_alignParentRight="true"
+        android:theme="@style/RadioButtonTheme"
+        android:background="@color/transparent"
+        />
 
     <ImageView
         android:id="@+id/pickup_station_image"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
+        android:layout_toLeftOf="@id/pickup_station_radio_button"
         android:adjustViewBounds="true"
         android:contentDescription="@string/checkout_label"
         android:scaleType="fitCenter" />
 
-    <com.mobile.components.customfontviews.RadioButton
-        android:id="@+id/pickup_station_radio_button"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/pickup_station_details_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp" />
+        android:layout_toLeftOf="@id/pickup_station_image"
+        android:gravity="center|right"
+        android:orientation="vertical">
 
-</LinearLayout>
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pickup_station_city"
+            style="@style/TextBase.Caption"
+            android:singleLine="false"
+            android:textColor="@color/black" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pickup_station_address"
+            style="@style/TextBase.Caption"
+            android:singleLine="false"
+            android:textColor="@color/black" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pickup_station_opening_hours"
+            style="@style/TextBase.Caption"
+            android:singleLine="false"
+            android:textColor="@color/black" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pickup_station_shipping_fee"
+            style="@style/TextBase.Caption"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:visibility="gone" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/pickup_station_shipping_fee_info"
+            style="@style/TextBase.Caption"
+            android:singleLine="false"
+            android:textColor="@color/black"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</RelativeLayout>

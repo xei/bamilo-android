@@ -315,7 +315,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
         LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         mViewHolders = new ArrayList<>();
         for (BaseTeaserGroupType baseTeaserType : homePage.getTeasers().values()) {
-
             // Create view
             BaseTeaserViewHolder viewHolder = TeaserViewFactory.onCreateViewHolder(inflater, baseTeaserType.getType(), mContainer, this);
             if (viewHolder != null) {
@@ -327,8 +326,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 mViewHolders.add(viewHolder);
             }
         }
-        // Restore the scroll state
-        //restoreScrollState();
         // Show mContainer
         showFragmentContentContainer();
     }
@@ -553,12 +550,12 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                 Print.i(TAG, "ON ERROR RESPONSE: GET_HOME_EVENT");
                 showFragmentFallBack();
                 break;
-            case SUBMIT_FORM:// Newsletter Form Response
+            case SUBMIT_FORM:
                 getBaseActivity().dismissProgress();
+                // Newsletter Form
                 if(CollectionUtils.isEmpty(baseResponse.getValidateMessages())){
                     showWarningErrorMessage(baseResponse.getErrorMessage());
                 }
-
                 break;
             default:
                 break;

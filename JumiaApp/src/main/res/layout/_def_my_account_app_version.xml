@@ -1,43 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp">
+    android:layout_height="@dimen/dimen_48dp">
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/option_name"
-        style="@style/TextCaption"
+        style="@style/TextBase.List.Black"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/my_account_gen_dimen"
-        android:layout_marginRight="@dimen/my_account_gen_dimen"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
         android:text="Title"
-        android:textColor="@color/black" />
+        />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/app_version_label"
-        style="@style/TextCaption"
+        style="@style/TextBase.List.Black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/my_account_gen_dimen"
-        android:layout_marginRight="@dimen/my_account_gen_dimen"
-        android:textColor="@color/black"/>
+        android:layout_marginTop="@dimen/margin_padding_s"
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/update_label"
-        style="@style/TextCaption"
+        style="@style/TextBase.Body.Black_800"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@id/app_version_label"
-        android:layout_marginEnd="@dimen/my_account_gen_dimen"
-        android:layout_marginRight="@dimen/my_account_gen_dimen"
-        android:textColor="@color/black_800"/>
-    <View
-        style="@style/divider_horizontal"
-        android:layout_alignParentBottom="true"/>
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        />
+
 </RelativeLayout>

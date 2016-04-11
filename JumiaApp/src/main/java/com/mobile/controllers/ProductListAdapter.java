@@ -1,5 +1,6 @@
 package com.mobile.controllers;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,8 +10,8 @@ import android.view.ViewGroup;
 
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ProductListViewHolder;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
@@ -22,10 +23,12 @@ import java.util.List;
 public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHolder>{
 
     protected List<? extends ProductRegular> mDataSet;
+    protected Context mContext;
 
     protected Resources resources;
 
-    public ProductListAdapter(@NonNull List<? extends ProductRegular> mDataSet) {
+    public ProductListAdapter(Context context, @NonNull List<? extends ProductRegular> mDataSet) {
+        this.mContext = context;
         this.mDataSet = mDataSet;
     }
 
@@ -45,7 +48,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
         // Show / Hide New Arrival Badge
         holder.newArrivalBadge.setVisibility(item.isNew() ? View.VISIBLE : View.GONE);
         //Show/Hide Shop First
-        ProductUtils.setShopFirst(item,holder.shopFirst);
+        UIProductUtils.setShopFirst(item,holder.shopFirst);
         // Set image
         RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
         // Set is favorite image
@@ -84,9 +87,8 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListViewHold
      * @param item - the product
      */
     protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
-        ProductUtils.setPriceRules(item, holder.price, holder.discount);
-        // Case discount
-        ProductUtils.setDiscountRules(item, holder.percentage);
+        UIProductUtils.setPriceRulesWithAutoAdjust(mContext, item, holder.discount, holder.price);
+        UIProductUtils.setDiscountRules(item, holder.percentage);
     }
 
     /**

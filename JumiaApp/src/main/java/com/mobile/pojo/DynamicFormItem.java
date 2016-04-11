@@ -465,7 +465,7 @@ public class DynamicFormItem {
      *
      * @param inStat the Bundle that contains the stored information of the control
      */
-    public void loadState(Bundle inStat) {
+    public void loadState(@NonNull Bundle inStat) {
         switch (this.entry.getInputType()) {
             case checkBoxLink:
                 boolean checkedList = inStat.getBoolean(getKey());
@@ -569,14 +569,15 @@ public class DynamicFormItem {
                     if (selectedItem != null) {
                         values.put(getName(), selectedItem.getValue());
                     }
-                } else if(com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())){
-                    for (String key  : this.entry.getDataSet().keySet()) {
-                        if(com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key),(String) ((IcsSpinner) this.dataControl).getSelectedItem())){
+                }
+                // Case HomeNewsletter
+                else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
+                    for (String key : this.entry.getDataSet().keySet()) {
+                        if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
                             values.put(getName(), key);
                             break;
                         }
                     }
-
                 }
                 break;
             case relatedNumber:
@@ -788,7 +789,7 @@ public class DynamicFormItem {
      *
      * @param outState The Bundle object that will hold the state of the object
      */
-    public void saveState(Bundle outState) {
+    public void saveState(@NonNull Bundle outState) {
         switch (this.entry.getInputType()) {
             case checkBoxLink:
                 outState.putBoolean(getKey(), ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked());
@@ -975,7 +976,15 @@ public class DynamicFormItem {
         else {
             String regex = this.entry.getValidation().regex;
             Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-            setErrorText(this.entry.getValidation().getErrorMessage() + space);
+            String errorMessage = this.entry.getValidation().getRegexErrorMessage();
+            /**
+             * This is a fallback in case API don't return the error message
+             * for the Regex. Will be fixed in https://jira.africainternetgroup.com/browse/NAFAMZ-16927
+             */
+            if(com.mobile.newFramework.utils.TextUtils.isEmpty(errorMessage)){
+                errorMessage = context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel();
+            }
+            setErrorText(errorMessage + space);
             Matcher matcher = pattern.matcher(text);
             result = matcher.find();
         }
@@ -996,7 +1005,6 @@ public class DynamicFormItem {
 
     /**
      * Hide the controls error message to the user
-     *
      */
     public void hideErrorMessage() {
         if (null != errorControl) {
@@ -1069,26 +1077,22 @@ public class DynamicFormItem {
                 params.rightMargin = MANDATORYSIGNALMARGIN;
             }
             params.addRule(RelativeLayout.CENTER_VERTICAL);
-
-            this.mandatoryControl = new TextView(this.context);
-            this.mandatoryControl.setLayoutParams(params);
-            this.mandatoryControl.setText("*");
-            this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
-            this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
-            this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
-
-            this.control.addView(this.mandatoryControl);
-            mCheckBox.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
-                        mandatoryControl.setVisibility(View.GONE);
-                    } else if (!((CheckBox) v).isChecked() && entry.getValidation().isRequired()) {
-                        mandatoryControl.setVisibility(View.VISIBLE);
+            // Mandatory field
+            if (this.entry.getValidation().isRequired() && !hideAsterisks) {
+                this.mandatoryControl = new TextView(this.context);
+                this.mandatoryControl.setLayoutParams(params);
+                this.mandatoryControl.setText("*");
+                this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
+                this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
+                this.mandatoryControl.setVisibility(View.VISIBLE);
+                this.control.addView(this.mandatoryControl);
+                mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        mandatoryControl.setVisibility(isChecked ? View.GONE : View.VISIBLE);
                     }
-                }
-            });
-
+                });
+            }
             //error control
             this.errorControl = createErrorControl(dataContainer.getId(), controlWidth);
             //#RTL
@@ -1139,14 +1143,16 @@ public class DynamicFormItem {
         }
     }
 
-
+    /**
+     * Build list field.<br>
+     * - The isAlternativeLayout flag is used to load the HomeNewsletter layout
+     */
     private void buildList(RelativeLayout.LayoutParams params, int controlWidth, boolean isAlternativeLayout) {
         this.control.setLayoutParams(params);
         params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         RelativeLayout dataContainer = new RelativeLayout(this.context);
         dataContainer.setId(parent.getNextId());
         dataContainer.setLayoutParams(params);
-        params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
         createSpinnerForRadioGroup(MANDATORYSIGNALSIZE, params, dataContainer, isAlternativeLayout);
     }
 
@@ -1281,31 +1287,34 @@ public class DynamicFormItem {
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
-        if (this.entry.getDataSet().size() > 0) {
+        // Case Filled
+        if (CollectionUtils.isNotEmpty(this.entry.getDataSet())) {
             int layout = R.layout.form_spinner_item;
-            if(isAlternativeLayout){
+            // Case HomeNewsletter
+            if (isAlternativeLayout) {
                 layout = R.layout.form_alternative_spinner_item;
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, layout, new ArrayList<>(this.entry.getDataSet().values()));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
-        } else {
+        }
+        // Case Empty
+        else {
             ArrayList<String> default_string = new ArrayList<>();
             default_string.add(this.entry.getPlaceHolder());
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
         }
-
-        // sets the spinner value
-
+        // Sets the spinner value
         ((IcsSpinner) this.dataControl).setSelection(0);
-        if(isAlternativeLayout){
+        // Case HomeNewsletter
+        if (isAlternativeLayout) {
             int position = 0;
             if (CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
                 for (NewsletterOption item : ((FormField) this.entry).getNewsletterOptions()) {
                     position++;
-                    if(item.isDefaut){
+                    if (item.isDefaut) {
                         ((IcsSpinner) this.dataControl).setSelection(position);
                     }
                 }
@@ -1327,7 +1336,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
 
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
@@ -1460,7 +1469,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
         dataContainer.addView(this.mandatoryControl);
@@ -1500,7 +1509,7 @@ public class DynamicFormItem {
             // For RTL
             params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
             // Set dividers
-            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable.divider_horizontal_black_300));
+            radioGroup.setDividerDrawable(ContextCompat.getDrawable(this.context, R.drawable._gen_divider_horizontal_black_400));
             radioGroup.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
             radioGroup.enableRightStyle();
         }
@@ -1546,7 +1555,7 @@ public class DynamicFormItem {
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
-        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_f68b1e));
+        this.mandatoryControl.setTextColor(ContextCompat.getColor(context, R.color.orange_1));
         this.mandatoryControl.setTextSize(MANDATORYSIGNALSIZE);
         this.mandatoryControl.setVisibility(this.entry.getValidation().isRequired() && !hideAsterisks ? View.VISIBLE : View.GONE);
 
@@ -1806,6 +1815,7 @@ public class DynamicFormItem {
         // Set hint
         if (null != this.entry.getLabel() && this.entry.getLabel().trim().length() > 0) {
             text.setHint(this.entry.getLabel());
+            text.setFloatingLabelText(this.entry.getLabel());
         }
         // Set filters
         if (null != this.entry.getValidation() && this.entry.getValidation().max > 0) {

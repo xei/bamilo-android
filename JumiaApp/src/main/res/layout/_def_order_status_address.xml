@@ -6,34 +6,28 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_title"
-        style="@style/TextInfo_2"
-        android:text="@string/shipping"
-        android:textColor="@color/black_700" />
+        style="@style/TextBase.Body.Black"
+        android:text="@string/shipping" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_name"
-        style="@style/TextHeader"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Body.Black_800" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_street"
-        style="@style/TextCaption"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Body.Black_800" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_region"
-        style="@style/TextCaption"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Body.Black_800" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_postcode"
-        style="@style/TextCaption"
-        android:textColor="@color/black"
-        android:visibility="gone"/>
+        style="@style/TextBase.Body.Black_800"
+        android:visibility="gone" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_status_address_item_phone"
-        style="@style/TextCaption"
-        android:textColor="@color/black" />
+        style="@style/TextBase.Body.Black_800" />
 
 </LinearLayout>

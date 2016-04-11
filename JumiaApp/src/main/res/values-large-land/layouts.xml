@@ -4,10 +4,7 @@
     
     <!-- CHECKOUT -->
     <item name="checkout_thanks"				type="layout">@layout/_def_checkout_thanks</item>
-    <item name="checkout_success_fragment_related"      type="layout">@layout/_def_checkout_success_fragment_related_prods</item>
-    <!-- CATEGORIES -->
-	<item name="categories_page_fragment" 		type="layout">@layout/_def_categories_page_fragment</item>
-	
+
 	<!-- SHOPPING CART -->
 	<item name="shopping_basket" 				type="layout">@layout/_def_shopping_basket</item>
 

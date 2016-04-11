@@ -84,6 +84,7 @@ public class RestConstants {
     public static final String REVIEWS_TOTAL = "reviews_total";
     public static final String PRODUCT = "product";
     public static final String BY_TYPE = "by_type";
+    public static final String BY_STARS = "by_stars";
     public static final String REVIEWS = "reviews";
     public static final String COMMENT = "comment";
     public static final String DATE = "date";
@@ -109,7 +110,6 @@ public class RestConstants {
     public static final String RESULTS = "results";
     public static final String PRODUCT_COUNT = "product_count";
     public static final String IMAGES = "images";
-    public static final String ID_CHANGE_QUANTITY = "id_change_quantity";
     public static final String URL_KEY = "url_key";
     public static final String CHILDREN = "children";
     public static final String CART = "cart";
@@ -121,6 +121,7 @@ public class RestConstants {
     public static final String SUM_COSTS_VALUE = "sum_costs_value";
     public static final String PRICE_RULES = "price_rules";
     public static final String SUB_TOTAL = "sub_total";
+    public static final String SUB_TOTAL_UN_DISCOUNTED = "sub_total_undiscounted";
     public static final String SUB_TOTAL_CONVERTED = "sub_total_converted";
     public static final String TOTAL = "total";
     public static final String TOTAL_CONVERTED = "total_converted";
@@ -171,6 +172,7 @@ public class RestConstants {
     public static final String TOTAL_ORDERS = "total_orders";
     public static final String ORDERNr = "orderNr";
     public static final String GRAND_TOTAL = "grandTotal";
+    public static final String GRAND_TOTAL_2 = "grand_total";
     public static final String GRAND_TOTAL_CONVERTED = "grandTotal_converted";
     public static final String ORDER_NR = "order_nr";
     public static final String CREATION_DATE = "creation_date";
@@ -226,7 +228,6 @@ public class RestConstants {
     public static final String HAS_CART_POPUP = "has_cart_popup";
     public static final String ITEM = "item";
     public static final String BUNDLE_PRODUCTS = "bundle_products";
-    public static final String LEADER_SIMPLE_POSITION = "leader_simple_position";
     public static final String BUNDLE_ENTITY = "bundle_entity";
     public static final String OFFERS = "offers";
     public static final String MIN_PRICE = "min_price";
@@ -328,4 +329,7 @@ public class RestConstants {
     public static final String CATEGORY_URL_KEY = "category_url_key";
     public static final String CATEGORY_NAME = "category_name";
     public static final String ORDERS_COUNT = "orders_count";
+    public static final String FREE_SHIPPING_POSSIBLE = "free_shipping_possible";
+    public static final String ALL_OFFERS = "all_offers";
+    public static final String AUTH_INFO = "auth_info";
 }

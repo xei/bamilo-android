@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:minHeight="@dimen/dimen_340px"
+    android:minHeight="@dimen/dimen_113_33dp"
     android:orientation="horizontal"
     >
 
@@ -11,8 +11,8 @@
         android:id="@+id/pickup_station_radio_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp" />
+        android:theme="@style/RadioButtonTheme"
+        />
 
     <ImageView
         android:id="@+id/pickup_station_image"
@@ -34,32 +34,32 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_city"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_address"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_opening_hours"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_shipping_fee"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black"
             android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_station_shipping_fee_info"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:singleLine="false"
             android:textColor="@color/black"
             android:visibility="gone" />

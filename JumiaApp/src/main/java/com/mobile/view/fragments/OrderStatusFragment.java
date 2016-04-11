@@ -27,9 +27,10 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.OrderedProductViewHolder;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -197,7 +198,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     private void showAddress(@NonNull ViewGroup view, @Nullable String title, @Nullable Address address) {
         if (address != null) {
             ((TextView) view.findViewById(R.id.order_status_address_item_title)).setText(title);
-            String name = getString(R.string.first_and_second_placeholders, address.getFirstName(), address.getLastName());
+            String name = getString(R.string.first_space_second_placeholder, address.getFirstName(), address.getLastName());
             ((TextView) view.findViewById(R.id.order_status_address_item_name)).setText(name);
             ((TextView) view.findViewById(R.id.order_status_address_item_street)).setText(address.getAddress());
             ((TextView) view.findViewById(R.id.order_status_address_item_region)).setText(address.getCity());
@@ -230,7 +231,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 // Set quantity
                 holder.quantity.setText(getString(R.string.qty_placeholder, item.getQuantity()));
                 // Set price
-                ProductUtils.setPriceRules(item, holder.price, holder.discount);
+                UIProductUtils.setPriceRules(item, holder.price, holder.discount);
                 // Set delivery
                 holder.delivery.setText(item.getDelivery());
                 // Set order status
@@ -262,28 +263,23 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         else super.onClick(view);
     }
 
-
-
-/**
- * Go to PDV detail of the order item
- * */
-    private void goToProductDetails(View view){
-        String sku = (String) view.getTag(R.id.target_simple_sku);
-        Print.d(TAG, "ON CLICK PRODUCT " + sku);
-        // Create bundle
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
-        getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
-
+    private void goToProductDetails(View view) {
+        String sku = TargetLink.getSkuFromSimple((String) view.getTag(R.id.target_simple_sku));
+        if (TextUtils.isNotEmpty(sku)) {
+            Bundle bundle = new Bundle();
+            bundle.putString(ConstantsIntentExtra.CONTENT_ID, sku);
+            getBaseActivity().onSwitchFragment(FragmentType.PRODUCT_DETAILS, bundle, FragmentController.ADD_TO_BACK_STACK);
+        } else {
+            showUnexpectedErrorWarning();
+        }
     }
-
 
     private void onClickReOrder(View view) {
         // Get sku from view
         String simpleSku = (String) view.getTag(R.id.target_simple_sku);
         // Validate sku
         if(TextUtils.isNotEmpty(simpleSku)) {
-            triggerAddItemToCart(simpleSku.split("-")[0],  simpleSku);
+            triggerAddItemToCart(simpleSku);
         }
     }
 
@@ -297,8 +293,8 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
      * ###### TRIGGERS ######
      */
 
-    private void triggerAddItemToCart(String sku, String simpleSKU) {
-        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(sku, simpleSKU), this);
+    private void triggerAddItemToCart(String simpleSKU) {
+        triggerContentEventProgress(new ShoppingCartAddItemHelper(), ShoppingCartAddItemHelper.createBundle(simpleSKU), this);
     }
 
     private void triggerOrder(String orderNr) {

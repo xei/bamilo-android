@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ViewGroupCompat.Horizontal.MiddleDivider"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
@@ -13,11 +14,12 @@
         android:layout_height="wrap_content"
         android:layout_weight="1">
 
-        <LinearLayout
+        <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/shoppingcart_list"
+            style="@style/ViewGroupCompat.Vertical.MiddleDivider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
 
     </android.support.v4.widget.NestedScrollView>
 
@@ -48,28 +50,23 @@
                 android:id="@+id/shopping_basket_buttons_container"
                 style="@style/button_container"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_padding_l"
+                android:layout_marginLeft="@dimen/margin_padding_l"
+                android:layout_marginRight="@dimen/margin_padding_l"
                 android:orientation="vertical">
 
                 <com.mobile.components.customfontviews.Button
                     android:id="@+id/checkout_button"
-                    style="@style/AigButton.Active"
-                    android:layout_marginBottom="@dimen/rounded_margin_mid"
-                    android:layout_marginLeft="@dimen/rounded_margin_mid"
-                    android:layout_marginRight="@dimen/rounded_margin_mid"
+                    style="@style/Button_1.Shop"
+                    android:layout_marginBottom="@dimen/margin_padding_l"
                     android:text="@string/checkout_button_text" />
 
                 <com.mobile.components.customfontviews.Button
                     android:id="@+id/checkout_call_to_order"
-                    style="@style/SingleLineStyle"
-                    android:layout_gravity="center"
-                    android:layout_marginBottom="@dimen/rounded_margin_mid"
-                    android:layout_marginLeft="@dimen/rounded_margin_mid"
-                    android:layout_marginRight="@dimen/rounded_margin_mid"
-                    android:gravity="center"
-                    android:text="@string/call_to_order"
-                    android:visibility="visible" />
+                    style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+                    android:text="@string/call_to_order" />
             </LinearLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-</LinearLayout>
+</android.support.v7.widget.LinearLayoutCompat>

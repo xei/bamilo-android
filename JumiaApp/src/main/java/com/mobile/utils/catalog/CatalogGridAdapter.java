@@ -18,6 +18,7 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.preferences.CustomerPreferences;
 import com.mobile.utils.imageloader.RocketImageLoader;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.view.R;
 
@@ -41,6 +42,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
     private static final int ITEM_VIEW_TYPE_FOOTER = 4;
 
     private static final int HEADER_POSITION = 0;
+    private static final java.lang.String TAG = CatalogGridAdapter.class.getName();
 
     private boolean isToShowHeader;
 
@@ -68,7 +70,7 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
      * @param data - the array lisl
      */
     public CatalogGridAdapter(Context context, ArrayList<ProductRegular> data) {
-        super(data);
+        super(context, data);
         mContext = context;
         level = Integer.parseInt(CustomerPreferences.getCatalogLayout(mContext));
         isTabletInLandscape = DeviceInfoHelper.isTabletInLandscape(mContext);
@@ -161,13 +163,27 @@ public class CatalogGridAdapter extends ProductListAdapter implements OnClickLis
         if(isFooter(position)){
             return;
         }
+
         // Get real position
         position = getRealPosition(position);
-        // Get item
-        super.onBindViewHolder(holder, position);
+
         // Set the parent layout
         holder.itemView.setTag(R.id.position, position);
+
         holder.itemView.setOnClickListener(this);
+
+        // Get item
+        super.onBindViewHolder(holder, position);
+    }
+
+    @Override
+    protected void setProductPrice(ProductListViewHolder holder, ProductRegular item) {
+        if (level == ITEM_VIEW_TYPE_GRID) {
+            UIProductUtils.setPriceRules(item, holder.price, holder.discount);
+            UIProductUtils.setDiscountRules(item, holder.percentage);
+        } else {
+            super.setProductPrice(holder, item);
+        }
     }
 
     /**

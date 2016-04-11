@@ -4,10 +4,10 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/specs_main_container"
+        android:id="@+id/pdp_specs_main_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="@dimen/rounded_margin_mid" />
+        android:paddingBottom="@dimen/margin_padding_l" />
 
 </ScrollView>

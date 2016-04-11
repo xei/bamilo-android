@@ -48,7 +48,7 @@ public class LocationHelper implements LocationListener {
 
     private WeakReference<Handler> callback;
 
-    private Handler timeoutHandle = new Handler();
+    private final Handler timeoutHandle = new Handler();
     
     private boolean locationReceived = false;
     
@@ -68,26 +68,28 @@ public class LocationHelper implements LocationListener {
      * <p>- Current location from location manager (GPS or Network)
      * @author sergiopereira
      */
-    public void autoCountrySelection(Context context, Handler callback){
-
-        initializeLocationHelper(context, callback);
-
-    	// From device
-        TelephonyManager deviceManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        // From network
-        if(getCountryFromNetwork(deviceManager)) return;
-        // From sim card
-        if(getCountryFromSim(deviceManager)) return;
-        
-        // From geo location
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        // From last known geo location
-        if(getCountryFromLastKnownLocation(locationManager)) return;
-        // From current geo location
-        if(getCountryFromCurrentLocation(locationManager)) return;
-
-        // From dialog
-        sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
+    public void autoCountrySelection(Context context, Handler callback) {
+        try {
+            // Init
+            initializeLocationHelper(context, callback);
+            // From device
+            TelephonyManager deviceManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            // From network
+            if (getCountryFromNetwork(deviceManager)) return;
+            // From sim card
+            if (getCountryFromSim(deviceManager)) return;
+            // From geo location
+            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            // From last known geo location
+            if (getCountryFromLastKnownLocation(locationManager)) return;
+            // From current geo location
+            if (getCountryFromCurrentLocation(locationManager)) return;
+            // From dialog
+            sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
+        } catch (NullPointerException e) {
+            Print.w("WARNING: NPE ON AUTO COUNTRY SELECTION");
+            sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
+        }
     }
     
     /*
@@ -233,26 +235,26 @@ public class LocationHelper implements LocationListener {
     /**
      * ################## VALIDATE COUNTRY ################## 
      */
-    
+
     /**
      * Method used to select the shop id validating the received country code is supported by application.
      */
     public boolean isCountryAvailable(String countryCode) {
         // Filter country code 
-        if(countryCode == null || countryCode.length() != 2) return NO_SELECTED;
-
+        if (countryCode == null || countryCode.length() != 2) {
+            return NO_SELECTED;
+        }
         // Validate countries available
-        if(JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0 )
+        if (JumiaApplication.INSTANCE.countriesAvailable == null || JumiaApplication.INSTANCE.countriesAvailable.size() == 0) {
             JumiaApplication.INSTANCE.countriesAvailable = CountriesConfigsTableHelper.getCountriesList();
-        
+        }
         // Get the supported countries
-        if(JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0 ){
+        if (JumiaApplication.INSTANCE.countriesAvailable != null && JumiaApplication.INSTANCE.countriesAvailable.size() > 0) {
             for (int i = 0; i < JumiaApplication.INSTANCE.countriesAvailable.size(); i++) {
                 CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(i);
                 String supportedCountry = countryObject.getCountryIso();
-                //Log.d(TAG, "SUPPORTED COUNTRY: " + supportedCountry);
-                if (TextUtils.equalsIgnoreCase(supportedCountry, countryCode)){
-                    Print.d(TAG, "MATCH: SHOP ID " + i);
+                if (TextUtils.equalsIgnoreCase(supportedCountry, countryCode)) {
+                    Print.i(TAG, "MATCH: SHOP ID " + i);
                     ChooseLanguageController.setLanguageBasedOnDevice(countryObject.getLanguages(), countryCode);
                     ShopPreferences.setShopId(context, i);
                     return SELECTED;
@@ -272,19 +274,18 @@ public class LocationHelper implements LocationListener {
      */
     @Override
     public void onLocationChanged(Location location) {
-        Print.d(TAG, "ON LOCATION CHANGED");
-                
+        Print.i(TAG, "ON LOCATION CHANGED");
         // Set the flag
         locationReceived = true;
         if(timeoutHandle != null) timeoutHandle.removeCallbacks(timeoutRunnable);
-        
         // Remove the listener previously added
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationManager.removeUpdates(this);
-        
+        // Get location
         double lat = location.getLatitude();
         double lng = location.getLongitude();
         String geoCountry = getCountryCodeFomGeoCoder(lat, lng);
+        // Validate country
         if(isCountryAvailable(geoCountry)) {
         	Print.i(TAG, "MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
         	sendInitializeMessage();
@@ -292,7 +293,6 @@ public class LocationHelper implements LocationListener {
         	Print.i(TAG, "NO MATCH COUNTRY FROM GEOLOCATION: " + geoCountry + " (" + lat + "/" + lng + ")");
         	sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
         }
-        
     }
 
     /*
@@ -302,10 +302,8 @@ public class LocationHelper implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) { 
         Print.d(TAG, "ON PROVIDER DISABLED: " + provider);
-        
         // Requires user interaction
         sendUserInteractionMessage(null, ErrorCode.REQUIRES_USER_INTERACTION);
-        
         // Remove the listener you previously added
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         locationManager.removeUpdates(this);

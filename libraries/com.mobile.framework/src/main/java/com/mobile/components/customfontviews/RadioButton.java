@@ -2,11 +2,12 @@
 package com.mobile.components.customfontviews;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 
 import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 
-public class RadioButton extends android.widget.RadioButton implements FontStyleProvider {
+public class RadioButton extends AppCompatRadioButton implements FontStyleProvider {
     private String mFontFamily;
 
     private int mFontStyle;

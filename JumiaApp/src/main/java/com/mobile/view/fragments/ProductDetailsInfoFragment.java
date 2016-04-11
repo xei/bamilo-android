@@ -14,7 +14,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -39,7 +38,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     private RtlViewPager mProductInfoPager;
 
-    public static int mPositionToStart = 0;
+    private int mPositionToStart = IntConstants.DEFAULT_POSITION;
 
     private int mTabsCount = 3;
 
@@ -106,20 +105,11 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-
         // Get view pager
         mProductInfoPager = (RtlViewPager) view.findViewById(R.id.product_info_pager);
         // Get tab pager
         SlidingTabLayout mProductInfoTabStrip = (SlidingTabLayout) view.findViewById(R.id.product_info_pager_tab);
-
-    //    int layout = R.layout.tab_simple_half_item;
-        int layout = R.layout.tab_simple_half_item_new;
-        if(DeviceInfoHelper.isTabletDevice(getBaseActivity().getApplicationContext())){
-            layout = R.layout.tab_simple_item_new;
-        //    layout = R.layout.tab_simple_item;
-        }
-
-        mProductInfoTabStrip.setCustomTabView(layout, R.id.tab);
+        mProductInfoTabStrip.setCustomTabView(R.layout.tab_simple_item, R.id.tab);
         // Validate the current view
         validateVisibleTabs();
         ProductInfoPagerAdapter mProductInfoPagerAdapter = (ProductInfoPagerAdapter) mProductInfoPager.getAdapter();
@@ -235,7 +225,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     /**
      * Class used as an simple pager adapter that represents each fragment
-     * 
+     *
      * @author Paulo Carvalho
      */
     private class ProductInfoPagerAdapter extends RtlDynamicFragmentAdapter implements RtlViewPager.RtlService{
@@ -250,7 +240,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see android.support.v4.view.PagerAdapter#getCount()
          */
         @Override
@@ -279,8 +269,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
 
     /**
      * gets the fragment position based on the id of the title
-     * @param fragmentTitle
-     * @return
      */
     public int getFragmentPosition(int fragmentTitle){
         List<Integer> titles = getFragmentTitleValues();

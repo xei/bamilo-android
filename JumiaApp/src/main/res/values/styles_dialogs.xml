@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ################# DIALOG HEADERS ################# -->
+
+    <style name="DialogHeaderStyle" parent="HeaderStyle.Center" />
+
+    <!-- ################# DIALOG BUTTON CONTAINERS ################# -->
+
+    <style name="DialogFormButtonsContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/dimen_48dp</item>
+        <item name="android:layout_marginBottom">@dimen/margin_padding_xxl</item>
+        <item name="android:layout_marginTop">@dimen/margin_padding_xxl</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xl</item>
+    </style>
+
+    <!-- ################# DIALOG BUTTONS ################# -->
+
+    <style name="DialogFormButtonSubmit" parent="@style/Button_1.Shop.Wrap">
+        <item name="android:text">@string/submit_label</item>
+    </style>
+
+    <style name="DialogFormButtonCancel" parent="@style/Button_1.Secondary.Text_Black_800.Border_400.Wrap">
+        <item name="android:text">@string/cancel_label</item>
+    </style>
+
+    <style name="DialogFilterButtonSubmit" parent="@style/Button_1.Shop">
+        <item name="android:text">@string/apply_label</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="DialogFilterButtonCancel" parent="@style/Button_1.Secondary.Text_Black_800.Border_400">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:text">@string/clear_all_lowercase_label</item>
+    </style>
+
+    <style name="DialogButtonSizeGuide" parent="@style/Button_1.Secondary.Text_Black_800">
+        <item name="android:text">@string/size_guide_label</item>
+    </style>
+
+    <!-- ################# DIALOG TEXTS ################# -->
+
+    <style name="DialogDatePickerHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_header</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="DialogInfoStyle" parent="@style/TextBase.Display_3">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:singleLine">false</item>
+    </style>
+
+    <style name="DialogContentStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:padding">@dimen/margin_padding_xl</item>
+    </style>
+
+    <style name="DialogButtonStyle" parent="@style/Button_2.Secondary">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/button_dialog_background_selector</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+</resources>

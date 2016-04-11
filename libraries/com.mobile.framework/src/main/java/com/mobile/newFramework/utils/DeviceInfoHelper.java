@@ -26,8 +26,8 @@ import java.util.Locale;
 /**
  * Class used to get the device info.
  * @author spereira
- *
  */
+@SuppressWarnings("unused")
 public class DeviceInfoHelper {
 	
     private static final String TAG = DeviceInfoHelper.class.getSimpleName();
@@ -344,6 +344,11 @@ public class DeviceInfoHelper {
      * ############### VERSION CODE #################
      */
 
+    /**
+     * TODO NAFAMZ-16822 - To remove this approach
+     * @deprecated Please use new approach
+     */
+    @Deprecated
     public interface IDeviceVersionBasedCode{
         void highVersionCallback();
         void lowerVersionCallback();
@@ -352,6 +357,7 @@ public class DeviceInfoHelper {
     /**
      * Execute callbacks based on version code of device.
      */
+    @Deprecated
     public static void executeCodeBasedOnVersion(int version, IDeviceVersionBasedCode iDeviceVersionBasedCode){
         if(iDeviceVersionBasedCode != null) {
             if (android.os.Build.VERSION.SDK_INT >= version) {
@@ -365,6 +371,7 @@ public class DeviceInfoHelper {
     /**
      * Execute callback excluding version.
      */
+    @Deprecated
     public static void executeCodeExcludingVersion(int version, Runnable runnable){
         if(runnable != null && android.os.Build.VERSION.SDK_INT != version){
             runnable.run();
@@ -374,29 +381,41 @@ public class DeviceInfoHelper {
     /**
      * Execute callbacks based on Jelly Bean MR2 version (API 18).
      */
+    @Deprecated
     public static void executeCodeExcludingJellyBeanMr2Version(Runnable run){
         executeCodeExcludingVersion(Build.VERSION_CODES.JELLY_BEAN_MR2, run);
     }
 
-    /**
-     * Execute callbacks based on Jelly Bean version (API 16).
+    /*
+     * ############### VERSION CODE #################
+     * TODO: Use the new approach to validate SDK versions
      */
-    public static void executeCodeBasedOnJellyBeanVersion(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
-        executeCodeBasedOnVersion(android.os.Build.VERSION_CODES.JELLY_BEAN, iDeviceVersionBasedCode);
+
+    /**
+     * Versions >= Jelly Bean version (API 16).
+     */
+    public static boolean isPosJellyBean() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
     }
 
     /**
-     * Execute callbacks based on Jelly Bean MR1 version (API 17).
+     * Versions >= Lollipop (API 21)
      */
-    public static void executeCodeBasedOnJellyBeanMr1Version(IDeviceVersionBasedCode iDeviceVersionBasedCode) {
-        executeCodeBasedOnVersion(Build.VERSION_CODES.JELLY_BEAN_MR1, iDeviceVersionBasedCode);
-    }
-
-    public static boolean isPosLollipop(){
+    public static boolean isPosLollipop() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
-    public static boolean isPreJellyBeanMR2(){
+    /**
+     * Versions <= Jelly Bean MR2 version (API 18)
+     */
+    public static boolean isPreJellyBeanMR2() {
         return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2;
+    }
+
+    /**
+     * Versions <= Jelly Bean MR1 version (API 17)
+     */
+    public static boolean isPreJellyBeanMR1() {
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1;
     }
 }

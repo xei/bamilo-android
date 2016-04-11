@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:baselineAligned="false"
@@ -13,8 +12,7 @@
         android:layout_height="match_parent"
         android:layout_weight="@dimen/checkout_main_container"
         android:background="@drawable/drop_shadow_right"
-        android:orientation="vertical"
-        app:showDividers="middle">
+        android:orientation="vertical">
 
         <!-- CONTENT -->
 
@@ -46,9 +44,7 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_addresses_button_add_top"
-                    style="@style/SingleLineStyle"
-                    android:text="@string/address_add_new_label"
-                    android:textAllCaps="true" />
+                    style="@style/Button_Link.NewAddress" />
 
                 <!-- OTHER ADDRESSES -->
 
@@ -60,17 +56,10 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/checkout_addresses_button_add_bottom"
-                    style="@style/SingleLineStyle"
-                    android:text="@string/address_add_new_label"
-                    android:textAllCaps="true" />
+                    style="@style/Button_Link.NewAddress" />
 
             </LinearLayout>
         </ScrollView>
-
-        <!-- DIVIDER -->
-        <View
-            android:id="@+id/divider_horizontal"
-            style="@style/divider_horizontal.Black700" />
 
         <!-- NEXT BUTTON -->
 

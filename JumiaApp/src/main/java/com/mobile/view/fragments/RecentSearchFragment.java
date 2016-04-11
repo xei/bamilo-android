@@ -55,7 +55,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     public RecentSearchFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.RECENT_SEARCHES,
-                R.layout.recentsearches,
+                R.layout._def_recent_searches_fragment,
                 R.string.recent_searches,
                 ADJUST_CONTENT);
     }
@@ -115,6 +115,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
     private void setAppContentLayout(View mainView) {
         mRecentSearchesList = (RecyclerView) mainView.findViewById(R.id.recentsearch_list);
         mRecentSearchesList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecentSearchesList.setNestedScrollingEnabled(false);
         mClearAllButton = (TextView) mainView.findViewById(R.id.recentsearch_clear_all);
         mClearAllButton.setVisibility(View.GONE);
         mClearAllButton.setOnClickListener(new OnClickListener() {
@@ -184,7 +185,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                     mRecentSearchesAdapter = new SearchDropDownAdapter(mContext, mRecentSearches);
                     mRecentSearchesAdapter.setOnViewHolderClickListener(this);
                     mRecentSearchesList.setAdapter(mRecentSearchesAdapter);
-                    mRecentSearchesList.addItemDecoration(new HorizontalSpaceItemDecoration(getContext(), R.drawable.line_divider));
+                    mRecentSearchesList.addItemDecoration(new HorizontalSpaceItemDecoration(getContext(), R.drawable._gen_divider_horizontal_black_400));
                     mClearAllButton.setVisibility(View.VISIBLE);
                     showFragmentContentContainer();
                 } else {

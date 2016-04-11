@@ -51,8 +51,8 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.utils.OnActivityFragmentInteraction;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.maintenance.MaintenancePage;
+import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.ProductUtils;
 import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
@@ -74,8 +74,6 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     public static final int RESTART_FRAGMENTS_DELAY = 500;
 
     public static final Boolean IS_NESTED_FRAGMENT = true;
-
-    public static final Boolean IS_NOT_NESTED_FRAGMENT = false;
 
     public static final int NO_INFLATE_LAYOUT = 0;
 
@@ -486,9 +484,9 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     private void updateAdjustState(@KeyboardState int newAdjustState, boolean force) {
         if (getBaseActivity() != null) {
             // Let that the definition of the softInputMode can be forced if the flag force is true
-            if (force || BaseActivity.currentAdjustState != newAdjustState) {
+            if (force || BaseActivity.sCurrentAdjustState != newAdjustState) {
                 String stateString = "UNDEFINED";
-                BaseActivity.currentAdjustState = newAdjustState;
+                BaseActivity.sCurrentAdjustState = newAdjustState;
                 switch (newAdjustState) {
                     case NO_ADJUST_CONTENT:
                         stateString = "NO_ADJUST_CONTENT";
@@ -830,7 +828,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         switch (eventType) {
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
             case ADD_PRODUCT_BUNDLE:
-                ProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
+                UIProductUtils.showAddToCartCompleteMessage(this, baseResponse, eventType);
             case GET_SHOPPING_CART_ITEMS_EVENT:
             case REMOVE_ITEM_FROM_SHOPPING_CART_EVENT:
             case CHANGE_ITEM_QUANTITY_IN_SHOPPING_CART_EVENT:

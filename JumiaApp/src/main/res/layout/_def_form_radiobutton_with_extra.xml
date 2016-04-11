@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+    >
 
     <!-- DIVIDER -->
 
     <View
         android:id="@+id/radio_divider"
-        style="@style/divider_horizontal.Black300" />
+        style="@style/DividerHorizontal.Black_400" />
 
     <!-- RADIO BUTTON -->
 
@@ -17,7 +19,8 @@
         android:id="@+id/radio_shipping"
         style="@style/FormRadioButton"
         android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp" />
+        android:layout_marginRight="20dp"
+        />
 
     <!-- EXTRA CONTAINER -->
 
@@ -28,34 +31,35 @@
         android:orientation="vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:paddingTop="12dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <!-- PAYMENT -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/payment_text"
             style="@style/MultiLineStyle"
-            android:paddingTop="0dp"
+            android:paddingTop="@dimen/margin_padding_l"
             android:paddingLeft="0dp"
             android:paddingStart="0dp"
-            android:visibility="gone" />
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <!-- SHIPPING INFO -->
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_time_label_and_value"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_fee_label_and_value"
-            style="@style/TextCaption"
+            style="@style/TextBase.Caption"
             android:visibility="gone" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/shipping_fee_info"
-            style="@style/TextInfo_2"
+            style="@style/TextBase.Caption"
             android:text="@string/shipping_fee_info"
             android:visibility="gone" />
 
@@ -69,7 +73,7 @@
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/pickup_stations_title"
-            style="@style/TextList_2"
+            style="@style/TextBase.Display_3"
             android:text="@string/select_city"
             android:visibility="gone" />
 

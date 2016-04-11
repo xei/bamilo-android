@@ -3,24 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layoutDirection="ltr"
     >
 
     <com.mobile.components.customfontviews.TextView
-        style="@style/HeaderTeaser"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimen_8dp"
-        android:layout_marginBottom="@dimen/dimen_5dp"
+        style="@style/HeaderTeaserStyle"
         android:text="@string/featured_stores" />
 
     <com.mobile.components.ExpandedGridViewComponent
         android:id="@+id/home_teaser_featured_stores_container_grid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/dimen_mat_2px"
-        android:paddingRight="@dimen/dimen_mat_2px"
-        android:verticalSpacing="@dimen/dimen_3dp"
-        android:horizontalSpacing="@dimen/dimen_3dp"
+        android:verticalSpacing="@dimen/margin_padding_s"
+        android:horizontalSpacing="@dimen/margin_padding_s"
         android:numColumns="@integer/home_featured_stores_teaser_num_columns"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        />
 
 </LinearLayout>

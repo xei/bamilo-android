@@ -1,42 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/list_row_style"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:paddingBottom="@dimen/margin_padding_l"
+    android:paddingLeft="@dimen/margin_padding_xl"
+    android:paddingRight="@dimen/margin_padding_xl"
+    android:paddingTop="@dimen/margin_padding_xl">
 
-    <!-- CONTAINER -->
+    <!-- IMAGE CONTAINER -->
+    <include
+        android:id="@+id/item_image_container"
+        layout="@layout/shopping_basket_item_image"
+        android:layout_width="@dimen/catalog_list_item_image_width"
+        android:layout_height="@dimen/catalog_list_item_image_height"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical" />
 
-    <RelativeLayout
-        style="@style/list_row_style"
-        android:layout_height="match_parent"
-        android:gravity="center" >
-
-        <!-- IMAGE CONTAINER -->
-
-        <include
-            android:id="@+id/item_image_container"
-            layout="@layout/shopping_basket_item_image"
-            android:layout_width="@dimen/catalog_list_item_image_width"
-            android:layout_height="@dimen/catalog_list_item_image_height"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/rounded_margin_mid"
-            android:layout_marginStart="@dimen/rounded_margin_mid" />
-
-        <!-- INFO CONTAINER -->
-
-        <include
-            layout="@layout/shopping_basket_product_element"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="@dimen/dimen_60px"
-            android:layout_marginBottom="@dimen/dimen_48px"
-            android:layout_marginTop="@dimen/dimen_48px"
-            android:layout_toEndOf="@id/item_image_container"
-            android:layout_toRightOf="@id/item_image_container" />
-    </RelativeLayout>
-
-    <View style="@style/line_grey_style" />
-
+    <!-- INFO CONTAINER -->
+    <include
+        layout="@layout/shopping_basket_product_element"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginStart="@dimen/margin_padding_xl"
+        android:layout_toEndOf="@id/item_image_container"
+        android:layout_toRightOf="@id/item_image_container" />
 </RelativeLayout>

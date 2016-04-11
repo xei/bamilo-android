@@ -10,6 +10,7 @@ import com.mobile.components.AnimatedExpandableListView.AnimatedExpandableListAd
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.utils.SingleLineComponent;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
 
@@ -32,8 +33,8 @@ import java.util.ArrayList;
  */
 public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
 
-    private LayoutInflater mInflater;
-    private ArrayList<Category> mCategories;
+    private final LayoutInflater mInflater;
+    private final ArrayList<Category> mCategories;
 
     /**
      * A representation of each item parent list
@@ -95,11 +96,12 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
         if (convertView != null && convertView.getTag() != null) {
             item = (ItemCategory) convertView.getTag();
         } else {
-            convertView = mInflater.inflate(R.layout.category_single_line_list, parent, false);
+            convertView = mInflater.inflate(R.layout.gen_single_line_with_two_icons, parent, false);
             item = new ItemCategory();
-            item.name = (TextView) convertView.findViewById(R.id.category_single_text);
-            item.icon = (ImageView) convertView.findViewById(R.id.category_single_icon);
-            item.indicator = convertView.findViewById(R.id.category_single_indicator);
+            item.name = (TextView)((SingleLineComponent) convertView).getTextView();
+            item.icon = ((SingleLineComponent) convertView).getStartImageView();
+            item.indicator = ((SingleLineComponent) convertView).getEndImageView();
+
             convertView.setTag(item);
         }
         // Set Name
@@ -109,6 +111,7 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
         if (category.hasChildren()) {
             item.indicator.setSelected(isExpanded);
             item.indicator.setVisibility(View.VISIBLE);
+            item.indicator.setBackgroundResource(R.drawable.selector_category_button);
         }
         // Case leaf level
         else {
@@ -128,16 +131,6 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
 
     }
 
-    /**
-     * Method used to update indicator state
-     */
-    public void updateIndicator(View groupView, boolean state) {
-        View indicator = groupView.findViewById(R.id.category_single_indicator);
-        if (indicator != null) {
-            indicator.setSelected(state);
-        }
-    }
-
     @Override
     public int getRealChildrenCount(int groupPosition) {
         Category category = (Category) getGroup(groupPosition);
@@ -150,9 +143,9 @@ public class CategoriesListAdapter extends AnimatedExpandableListAdapter {
         Category childCategory = (Category) getChild(groupPosition, childPosition);
         // Inflate view
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.category_sublist, null);
+            convertView = mInflater.inflate(R.layout.gen_single_line_with_two_icons, null);
         }
-        ((TextView) convertView.findViewById(R.id.sublist_category)).setText(childCategory.getName());
+        ((TextView) convertView.findViewById(R.id.tx_single_line_text)).setText(childCategory.getName());
         return convertView;
     }
 
