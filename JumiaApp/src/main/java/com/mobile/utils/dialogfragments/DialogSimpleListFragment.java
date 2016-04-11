@@ -120,7 +120,7 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         super.onViewCreated(view, savedInstanceState);
         // Validate current activity
         if (this.mContext == null) {
-            dismiss();
+            dismissAllowingStateLoss();
             return;
         }
         // Set title
@@ -214,7 +214,7 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
             public void run() {
                 // Validate listener
                 if(mListener != null) {
-                    dismiss();
+                    dismissAllowingStateLoss();
                     mListener.onDialogListClickView(view);
                 }
             }
@@ -244,12 +244,12 @@ public class DialogSimpleListFragment extends BottomSheet implements OnItemClick
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                dismiss();
                 if (mListener != null && mCampaignItem != null) {
                     mListener.onDialogSizeListClickView(position, mCampaignItem);
                 } else if(mListener != null){
                     mListener.onDialogListItemSelect(position);
                 }
+                dismissAllowingStateLoss();
             }
         }, IntConstants.DIALOG_DELAY_DISMISS);
     }
