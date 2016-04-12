@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="wrap_content">
 
     <!-- NAME -->
-
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_name"
-        style="@style/TextBase.Body"
-        android:layout_marginEnd="@dimen/login_margin_medium"
-        android:layout_marginRight="@dimen/login_margin_medium"
-        android:layout_marginTop="@dimen/item_margin_top"
+        style="@style/TextBase.Body.Black"
+        android:layout_marginEnd="@dimen/margin_padding_xxl"
+        android:layout_marginRight="@dimen/margin_padding_xxl"
         android:maxLines="2"
         android:singleLine="false"
-        tools:text="Name"
-        android:textColor="@color/black" />
+        tools:text="Name" />
 
     <!-- SHOP FIRST IMAGE -->
     <ImageView
@@ -24,40 +21,43 @@
         android:layout_below="@id/item_name" />
 
     <!-- PRICE -->
-
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_regprice"
-        style="@style/TextBase.Caption"
+        style="@style/TextBase.List.Black_800"
         android:layout_width="wrap_content"
         android:layout_below="@id/item_shop_first"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/dimen_6_67dp"
-        android:layout_marginStart="@dimen/dimen_6_67dp"
-        tools:text="Price"
-        android:textColor="@color/black_800"
-        android:textSize="@dimen/text_xs" />
+        tools:text="Price" />
 
-    <!-- Divider -->
-    <View
-        android:id="@+id/delete_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
+    <!-- SIZE -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_text_variation"
+        style="@style/TextBase.List.Black_700"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_below="@id/item_regprice"
-        android:background="@color/black_700" />
-
-    <!-- DELETE BUTTON -->
+        android:layout_marginEnd="@dimen/margin_padding_m"
+        android:layout_marginRight="@dimen/margin_padding_m"
+        android:text="@string/size_label" />
 
     <com.mobile.components.customfontviews.TextView
+        android:id="@+id/item_text_variation_value"
+        style="@style/TextBase.List.Black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/item_text_variation"
+        android:layout_toEndOf="@id/item_text_variation"
+        android:layout_toRightOf="@id/item_text_variation"
+        tools:text="22" />
+
+    <!-- DELETE BUTTON -->
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/button_delete"
-        style="@style/TextBase.Body"
-        android:layout_below="@id/delete_divider"
-        android:layout_gravity="center_vertical"
-        android:clickable="true"
-        android:contentDescription="@string/remove_label"
-        android:gravity="center_vertical"
-        android:paddingBottom="@dimen/dimen_9dp"
-        android:paddingTop="@dimen/dimen_9dp"
-        android:text="@string/remove_label"
-        android:textColor="@color/black_800" />
+        style="@style/Button_Link.RemoveItem"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/item_text_variation" />
 
 </RelativeLayout>

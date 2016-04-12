@@ -40,7 +40,7 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
      * Constructor
      */
     public BaseAddressesFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @StringRes int titleResId, @ConstantsCheckout.CheckoutType int titleCheckout) {
-        super(enabledMenuItems, action, R.layout.checkout_addresses, titleResId, ADJUST_CONTENT, titleCheckout);
+        super(enabledMenuItems, action, R.layout.checkout_addresses_main, titleResId, ADJUST_CONTENT, titleCheckout);
     }
 
     /*

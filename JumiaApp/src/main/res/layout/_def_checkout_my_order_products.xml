@@ -2,18 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <!-- TITLE -->
-
     <com.mobile.components.customfontviews.TextView
         style="@style/HeaderStyle"
         android:text="@string/my_order_label" />
 
     <!-- PRODUCTS -->
-
-    <LinearLayout
+    <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/checkout_my_order_products_list"
+        style="@style/ViewGroupCompat.Vertical.MiddleDivider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
