@@ -30,29 +30,29 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_padding_l"
+        android:layout_marginLeft="@dimen/margin_padding_l"
+        android:layout_marginRight="@dimen/margin_padding_l"
+        android:layout_marginBottom="@dimen/margin_padding_l"
         android:orientation="vertical" >
 
-
-        <LinearLayout
+        <!-- ITEMS -->
+        <android.support.v7.widget.LinearLayoutCompat
             android:id="@+id/checkout_summary_products_list"
+            style="@style/ViewGroupCompat.Vertical.MiddleDivider.EndDivider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <!-- Price Rules -->
-
+        <!-- PRICE RULES -->
         <LinearLayout
             android:id="@+id/checkout_summary_price_rules_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_large"
             android:orientation="vertical"
-            android:visibility="gone" >
-        </LinearLayout>
+            android:visibility="gone" />
 
         <!-- SHIPPING FEE -->
-
         <LinearLayout
             android:id="@+id/checkout_summary_products_shippingfee_container"
             android:layout_width="match_parent"

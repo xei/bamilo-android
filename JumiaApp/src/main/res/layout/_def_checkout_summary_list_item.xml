@@ -1,39 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_padding_l"
+    android:gravity="center">
 
-    <!-- CONTAINER -->
+    <!-- IMAGE CONTAINER -->
+    <include
+        android:id="@+id/item_image_container"
+        layout="@layout/shopping_basket_item_image"
+        android:layout_width="@dimen/checkout_cart_item_image"
+        android:layout_height="@dimen/checkout_cart_item_image"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center_vertical" />
 
-    <RelativeLayout
+    <!-- INFO CONTAINER -->
+    <include
+        layout="@layout/checkout_summary_product_element"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center">
-
-        <!-- IMAGE CONTAINER -->
-
-        <include
-            android:id="@+id/item_image_container"
-            layout="@layout/shopping_basket_item_image"
-            android:layout_width="@dimen/myprofile_item_size"
-            android:layout_height="@dimen/myprofile_item_size"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_vertical" />
-
-        <!-- INFO CONTAINER -->
-
-        <include
-            layout="@layout/checkout_summary_product_element"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_toEndOf="@id/item_image_container"
-            android:layout_toRightOf="@id/item_image_container" />
-    </RelativeLayout>
-
-    <View
-        style="@style/DividerHorizontal.Black_400"
-        android:layout_alignParentBottom="true" />
-
+        android:layout_toEndOf="@id/item_image_container"
+        android:layout_toRightOf="@id/item_image_container" />
 </RelativeLayout>
