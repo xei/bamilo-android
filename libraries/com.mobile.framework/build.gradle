@@ -60,7 +60,10 @@ dependencies {
     compile 'com.algolia:algoliasearch-android:2.6.0@aar'
     /** LOCAL **/
     compile fileTree(dir: 'libs', exclude: ['json.jar'], include: ['*.jar'])
+    // https://bintray.com/accengage/maven/A4SSDK/
     compile files('libs/A4SSDK-GooglePlayServices-1.6.jar')
+    // https://www.parkourmethod.com/docs/
+    compile files('libs/Parkour.jar')
     /** TESTS **/
     testCompile 'junit:junit:4.12'
     testCompile files('libs/json.jar')
