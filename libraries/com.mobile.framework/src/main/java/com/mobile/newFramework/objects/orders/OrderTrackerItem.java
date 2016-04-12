@@ -6,9 +6,13 @@ import android.os.Parcelable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Class that represents an Order Tracked Item
@@ -24,6 +28,11 @@ public class OrderTrackerItem extends ProductRegular {
     private String quantity;
     private String status;
     private String updateDate;
+
+    private boolean isCheckedForAction;
+    private ArrayList<OrderReturn> mOrderReturns;
+    private ArrayList<OrderActions> mOrderActions;
+
 
 
     /**
@@ -49,6 +58,15 @@ public class OrderTrackerItem extends ProductRegular {
         return updateDate;
     }
 
+    public ArrayList<OrderReturn> getOrderReturns() {
+        return mOrderReturns;
+    }
+
+    public ArrayList<OrderActions> getOrderActions() {
+        return mOrderActions;
+    }
+
+
     /*
          * (non-Javadoc)
          *
@@ -62,6 +80,36 @@ public class OrderTrackerItem extends ProductRegular {
         JSONObject statusObject = jsonObject.getJSONObject(RestConstants.STATUS);
         status = statusObject.optString(RestConstants.LABEL);
         updateDate = statusObject.optString(RestConstants.UPDATE_AT);
+
+        JSONArray itemReturns = jsonObject.optJSONArray(RestConstants.RETURNS);
+        if(CollectionUtils.isNotEmpty(itemReturns)){
+            mOrderReturns = new ArrayList();
+            for (int i = 0; i < itemReturns.length(); i++) {
+                OrderReturn orderReturn = new OrderReturn();
+                try {
+                    orderReturn.initialize(itemReturns.getJSONObject(i));
+                    mOrderReturns.add(orderReturn);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
+        JSONArray itemActions = jsonObject.optJSONArray(RestConstants.ACTIONS);
+        if(CollectionUtils.isNotEmpty(itemActions)){
+            mOrderActions = new ArrayList();
+            for (int i = 0; i < itemActions.length(); i++) {
+                OrderActions orderActions = new OrderActions();
+                try {
+                    orderActions.initialize(itemActions.getJSONObject(i));
+                    mOrderActions.add(orderActions);
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
         return true;
     }
 

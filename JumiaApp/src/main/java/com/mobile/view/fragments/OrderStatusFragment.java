@@ -16,6 +16,7 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.checkout.GetOrderStatusHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.objects.orders.OrderReturn;
 import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -234,6 +235,18 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 UIProductUtils.setPriceRules(item, holder.price, holder.discount);
                 // Set delivery
                 holder.delivery.setText(item.getDelivery());
+
+                if(CollectionUtils.isNotEmpty(item.getOrderReturns())){
+                    String orderReturns = "";
+                    for (OrderReturn orderReturn : item.getOrderReturns() ) {
+                        orderReturns+=String.format(getString(R.string.items_returned_on),
+                                orderReturn.getQuantity(), orderReturn.getDate())+"\n";
+                    }
+
+                    holder.itemReturns.setText(orderReturns);
+                    holder.itemReturns.setVisibility(View.VISIBLE);
+                }
+
                 // Set order status
                 String status = String.format(getContext().getString(R.string.order_status_date), item.getStatus(), item.getUpdateDate());
                 holder.status.setText(Html.fromHtml(status));

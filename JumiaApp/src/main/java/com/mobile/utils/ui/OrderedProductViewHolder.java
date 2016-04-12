@@ -16,6 +16,7 @@ public class OrderedProductViewHolder extends ProductListViewHolder {
     public View reorder;
     public TextView status;
     public TextView delivery;
+    public TextView itemReturns;
 
     /**
      * Constructor
@@ -28,5 +29,6 @@ public class OrderedProductViewHolder extends ProductListViewHolder {
         delivery = (TextView) view.findViewById(R.id.item_delivery);
         reorder = view.findViewById(R.id.order_status_item_button_reorder);
         status = (TextView) view.findViewById(R.id.order_status_item_text_delivered);
+        itemReturns = (TextView) view.findViewById(R.id.item_returns);
     }
 }

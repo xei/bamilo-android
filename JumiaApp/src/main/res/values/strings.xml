@@ -347,4 +347,6 @@
     <string name="visit_the_official_brand_store">Visit the official %s store</string>
     <string name="free_shipping_possible">Free Shipping Possible</string>
     <string name="register_more_info">We need just a bit more details to create your account.</string>
+    <!-- Added for version 3.2 -->
+    <string name="items_returned_on">%1$s items returned on %2$s</string>
 </resources>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/grid_row_style"
     android:id="@+id/order_list_item"
-    android:layout_height="158dp"
+    android:layout_height="258dp"
     android:baselineAligned="false"
     android:gravity="center"
     android:orientation="horizontal"
@@ -99,6 +99,19 @@
             android:drawablePadding="6dp"
             android:drawableStart="@drawable/ic_order_delivery"
             android:textColor="@color/black_700" />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/item_returns"
+            style="@style/TextBase.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/center_view"
+            android:layout_alignStart="@id/center_view"
+            android:layout_below="@id/item_delivery"
+            android:layout_marginTop="6dp"
+            android:singleLine="false"
+            android:textColor="@color/black_700"
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
