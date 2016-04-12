@@ -183,12 +183,19 @@ public class ErrorLayoutFactory {
         }
 
         Builder setContent(@DrawableRes int image, @StringRes int title) {
+            // Hide spinning button to avoid that it appears on a new error screen after network issues.
+            hideButtonSpinning();
+            hideButton();
             setImage(image);
             setPrincipalMessage(title);
+            hideDetailMessage();
             return this;
         }
 
         Builder setContent(@DrawableRes int image, @StringRes int title, @StringRes int message) {
+            // Hide spinning button to avoid that it appears on a new error screen after network issues.
+            hideButtonSpinning();
+            hideButton();
             setImage(image);
             setPrincipalMessage(title);
             setDetailMessage(message);
@@ -206,6 +213,11 @@ public class ErrorLayoutFactory {
 
         private Builder showButton(){
             mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(View.VISIBLE);
+            return this;
+        }
+
+        private Builder hideButton(){
+            mErrorLayout.findViewById(R.id.fragment_root_error_button).setVisibility(View.GONE);
             return this;
         }
 
@@ -231,6 +243,12 @@ public class ErrorLayoutFactory {
         Builder showButtonSpinning() {
             View retrySpinning = mErrorLayout.findViewById(R.id.fragment_root_error_spinning);
             retrySpinning.setVisibility(View.VISIBLE);
+            return this;
+        }
+
+        private Builder hideButtonSpinning() {
+            View retrySpinning = mErrorLayout.findViewById(R.id.fragment_root_error_spinning);
+            retrySpinning.setVisibility(View.GONE);
             return this;
         }
 
@@ -268,6 +286,12 @@ public class ErrorLayoutFactory {
             TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
             messageView.setVisibility(View.VISIBLE);
             messageView.setText(message);
+            return this;
+        }
+
+        private Builder hideDetailMessage() {
+            TextView messageView = (TextView) mErrorLayout.findViewById(R.id.fragment_root_error_details_label);
+            messageView.setVisibility(View.INVISIBLE);
             return this;
         }
 
