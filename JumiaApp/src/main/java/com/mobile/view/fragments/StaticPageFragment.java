@@ -132,13 +132,15 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBundle(ConstantsIntentExtra.FRAGMENT_BUNDLE, mStaticPageBundle);
+        outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
+        outState.putString(ConstantsIntentExtra.CONTENT_ID, mContentId);
     }
 
     /*
-         * (non-Javadoc)
-         *
-         * @see com.mobile.view.fragments.MyFragment#onPause()
-         */
+     * (non-Javadoc)
+     *
+     * @see com.mobile.view.fragments.MyFragment#onPause()
+     */
     @Override
     public void onPause() {
         super.onPause();
