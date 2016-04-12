@@ -12,10 +12,10 @@ import com.mobile.view.R;
 /**
  * Created by rsoares on 8/25/15.
  */
-public class DialogLanguagesListAdapter extends DialogListAdapter{
+public class DialogLanguagesListAdapter extends DialogListAdapter {
 
-    public DialogLanguagesListAdapter(Context mActivity, Languages languages) {
-        super(mActivity, languages.getLanguageNames());
+    public DialogLanguagesListAdapter(Context context, Languages languages) {
+        super(context, languages.getLanguageNames());
     }
 
     @Override
@@ -28,7 +28,7 @@ public class DialogLanguagesListAdapter extends DialogListAdapter{
         }
         TextView languageName = (TextView) view.findViewById(R.id.item_text);
 
-        if(mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))){
+        if (mItemsAvailable != null && !mItemsAvailable.contains(mItems.get(position))) {
             view.setEnabled(false);
             languageName.setVisibility(View.GONE);
         } else {

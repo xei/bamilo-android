@@ -619,7 +619,9 @@ public class GTMManager extends AbcBaseTracker {
         public void onContainerAvailable(ContainerHolder containerHolder, String containerVersion) {
             // We load each container when it becomes available.
             Container container = containerHolder.getContainer();
-            registerCallbacksForContainer(container);
+            if (container != null) {
+                registerCallbacksForContainer(container);
+            }
         }
 
         public static void registerCallbacksForContainer(Container container) {

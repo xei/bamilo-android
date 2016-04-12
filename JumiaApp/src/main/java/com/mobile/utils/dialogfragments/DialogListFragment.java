@@ -20,6 +20,7 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -38,8 +39,8 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
 	private ArrayList<String> mItemsAvailable;
 	
 	private int mInitialPosition;
-	
-	private Activity mActivity;
+
+	private WeakReference<Activity> mActivity;
 	
 	private OnDialogListListener mSelectListener;
 	
@@ -67,8 +68,8 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
 	 */
 	public static DialogListFragment newInstance(Fragment fragment, OnDialogListListener listener, String title, ArrayList<String> items, int initialPosition) {
 	    Print.d(TAG, "NEW INSTANCE");
-	    DialogListFragment dialogListFragment = new DialogListFragment();  
-	    dialogListFragment.mActivity = fragment.getActivity();
+	    DialogListFragment dialogListFragment = new DialogListFragment();
+        dialogListFragment.mActivity = new WeakReference<Activity>(fragment.getActivity());
 	    dialogListFragment.mSelectListener = listener;
 	    dialogListFragment.mTitle = title;
 	    dialogListFragment.mItems = items;
@@ -82,7 +83,7 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
     public static DialogListFragment newInstance(Fragment fragment, OnDialogListListener listener, String title, DialogListAdapter dialogListAdapter, int initialPosition) {
         Print.d(TAG, "NEW INSTANCE");
         DialogListFragment dialogListFragment = new DialogListFragment();
-        dialogListFragment.mActivity = fragment.getActivity();
+        dialogListFragment.mActivity = new WeakReference<Activity>(fragment.getActivity());
         dialogListFragment.mSelectListener = listener;
         if (fragment instanceof OnClickListener) dialogListFragment.mClickListener = (OnClickListener) fragment;
         dialogListFragment.mTitle = title;
@@ -118,8 +119,8 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Validate current activity
-        if (this.mActivity == null) {
-            dismiss();
+        if (this.mActivity == null || this.mActivity.get() == null) {
+            dismissAllowingStateLoss();
             return;
         }
         // Set title
@@ -133,7 +134,7 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
         setListSize(list, mItems.size());
         // Validate adapter
         if(mAdapter == null) {
-            mAdapter = new DialogListAdapter(mActivity, mItems, mItemsAvailable);
+            mAdapter = new DialogListAdapter(mActivity.get(), mItems, mItemsAvailable);
         }
         // Add adapter
         mAdapter.setCheckedPosition(mInitialPosition);
@@ -143,7 +144,7 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
         if (mInitialPosition > IntConstants.DEFAULT_POSITION && mInitialPosition < mAdapter.getCount())
             list.setSelection(mInitialPosition);
 
-        this.mActivity.getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
+        this.mActivity.get().getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
 
     }
 
@@ -217,7 +218,7 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
             public void run() {
                 // Validate listener
                 if(mClickListener != null) {
-                    dismiss();
+                    dismissAllowingStateLoss();
                     mClickListener.onClick(view);
                 }
             }
@@ -238,7 +239,7 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
             view.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    dismiss();
+                    dismissAllowingStateLoss();
                     if (mSelectListener != null) {
                         mSelectListener.onDialogListItemSelect(position, mItems.get(position));
                     }

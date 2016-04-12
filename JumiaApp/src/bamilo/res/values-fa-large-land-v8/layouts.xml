@@ -6,6 +6,7 @@
     <item name="checkout_create_address_main" 	type="layout">@layout/_v8_checkout_create_address_main</item>
     <item name="checkout_edit_address_main" 	type="layout">@layout/_v8_checkout_edit_address_main</item>
     <item name="checkout_my_order_main" 		type="layout">@layout/_v8_checkout_my_order_main</item>
+    <item name="checkout_addresses_main" 		type="layout">@layout/_v8_checkout_my_addresses</item>
     <item name="checkout_payment_main" 			type="layout">@layout/_v8_checkout_payment_main</item>
     <item name="checkout_shipping_main" 		type="layout">@layout/_v8_checkout_shipping_main</item>
     <item name="checkout_thanks"				type="layout">@layout/_v8_checkout_thanks</item>
