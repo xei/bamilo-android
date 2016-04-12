@@ -28,7 +28,7 @@
     <item name="checkout_success_fragment_related"      type="layout">@layout/_def_checkout_success_fragment_related_prods</item>
     <item name="checkout_create_address_main" 	        type="layout">@layout/_def_checkout_create_address_main</item>
     <item name="checkout_edit_address_main" 	        type="layout">@layout/_def_checkout_edit_address_main</item>
-    <item name="checkout_addresses" 			        type="layout">@layout/_def_checkout_my_addresses</item>
+    <item name="checkout_addresses_main" 			    type="layout">@layout/_def_checkout_my_addresses</item>
     <item name="checkout_address_item"                  type="layout">@layout/_def_checkout_address_item</item>
     <item name="checkout_shipping_main" 		        type="layout">@layout/_def_checkout_shipping_main</item>
     <item name="checkout_payment_main" 			        type="layout">@layout/_def_checkout_payment_main</item>

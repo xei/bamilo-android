@@ -35,9 +35,9 @@
 
     <!-- ################# ACTION BAR ################# -->
 
-	<!-- Style used to set for LTR or RTL -->
-	<style name="text_actionbar_cart_layout_direction" >
-	    <item name="android:paddingRight">4dp</item>
+    <!-- Style used to set for LTR or RTL -->
+    <style name="text_actionbar_cart_layout_direction" >
+        <item name="android:paddingRight">4dp</item>
     </style>
 
     <!-- ################# MATERIAL ################# -->
@@ -46,7 +46,8 @@
     <style name="SmallTeaserStyle" parent="CardViewFlatStyle">
         <item name="android:layout_width">@dimen/home_small_teaser_item_width</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginRight">@dimen/dimen_3dp</item>
+        <item name="android:layout_marginRight">@dimen/margin_padding_s</item>
+        <item name="android:background">@color/white</item>
     </style>
 
     <!-- PRODUCT TEASER -->

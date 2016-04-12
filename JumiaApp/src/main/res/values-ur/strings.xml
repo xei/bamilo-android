@@ -73,7 +73,7 @@
     <string name="fallback_mobile">موبائل فونز</string>
     <string name="fallback_welcome">خوش آمدید</string>
     <string name="fgt_pass">پاسورڈ بھول گئے؟</string>
-    <string name="filters_label">فلٹر</string>
+    <string name="filters_label">فِلٹرز</string>
     <string name="forgotpass_header">پاسورڈ کا دوبارہ حصول</string>
     <string name="forgotten_password">براہِ کرم اپنا ای میل درج کریں</string>
     <string name="forgotten_password_examplemail">usman.khan@example.com</string>
@@ -120,7 +120,7 @@
     <string name="order_success">آپ کے آرڈر کو کامیابی سے درج کر لیا گیا ہے۔\nاِسے آرڈر نمبر سے چیک کر سکتے ہیں۔</string>
     <string name="order_summary_label">خلاصہِ آرڈر</string>
     <string name="order_summary_shipping_fee_label">شِپنگ فیس:</string>
-    <string name="order_summary_shipping_method">طریقہِ شِپنگ</string>
+    <string name="order_summary_shipping_method">شِپنگ کا طریقہ</string>
     <string name="order_summary_subtotal_label">ذیلی کُل:</string>
     <string name="order_summary_total_label">کُل:</string>
     <string name="order_track_products">آئیٹم:</string>
@@ -133,10 +133,11 @@
     <string name="pickup_station_opening_hours">کھلنے کے اوقات: ‎%s‎</string>
     <string name="shipping_fee">شِپنگ فیس: ‎%s‎</string>
     <string name="shipping_fee_info">"\قابلِ ادائیگی قیمت میں فیس کی شمولیت"\</string>
-    <string name="shipping_time">مدتِ ترسیل: ‎%s‎</string>
+    <string name="shipping_time">شِپنگ کی مدتِ : ‎%s‎</string>
     <string name="pinch_to_zoom_label">چُٹکی رکھ کربڑا کریں۔ </string>
     <string name="please_fill_all_data">براہِ کرم تمام معلومات فراہم کریں</string>
     <string name="posted_by">از</string>
+    <string name="by_placeholder">منجانب %s</string>
     <string name="product_could_not_retrieved">اشیاء کی معلومات حاصل نہیں کی جاسکیں!</string>
     <string name="product_delivery_days">ایام</string>
     <string name="product_delivery_time">ڈیلیوری کی مُددت:</string>
@@ -164,7 +165,7 @@
     <string name="register_required_text">براہِ کرم مطلوبہ شعبے (٭) بھریں</string>
     <string name="register_text_terms_a">میں اتفاق کرتا ہوں</string>
     <string name="register_text_terms_b">شرائط و ضوابط</string>
-    <string name="register_title">کھاتا کھولیں</string>
+    <string name="register_title">اکاؤنٹ کھولیں</string>
     <string name="review">جائزہ</string>
     <string name="save_changes_label">تبدیلیاں محفوظ کریں</string>
     <string name="save_label">محفوظ</string>
@@ -186,8 +187,9 @@
     <string name="size_guide_label">شرحِ ناپ</string>
     <string name="size_label">ناپ</string>
     <string name="some_products_not_added">بدقسمتی سے کچھ اشیاء ٹوکری میں شامل نہیں کی جاسکیں</string>
-    <string name="splash_slogan">پاکستان کا سب سے بڑی آن لائن خریداری کا مرکز</string>
+    <string name="splash_slogan">پاکستان کا سب سے بڑا آن لائن خریداری کا مرکز</string>
     <string name="splash_slogan_daraz">آن لائن خریداری کا واحد مرکز جس کی آپ کو ضرورت پڑے گی!</string>
+    <string name="splash_slogan_shop">پاکستان کا سب سے بڑا آن لائن خریداری کا مرکز</string>
     <string name="stale_warning">رابطہ منقطع</string>
     <string name="string_with_discount_only">صرف رعایت کے ساتھ</string>
     <string name="sub_total_title">ذیلی کُل</string>
@@ -210,7 +212,7 @@
     <string name="voucher_error_message">براہِ کرم درست کوپن کوڈ داخل کریں۔</string>
     <string name="voucher_message_hint">اپنا کوپن کوڈ یہاں درج کریں۔</string>
     <string name="remove_label">ہٹائیں</string>
-    <string name="use_label">استعمال</string>
+    <string name="use_label">استعمال کریں</string>
     <string name="write_comment">تبصرہ لکھیں</string>
     <string name="write_full_review">ایک مکمل تجزیہ لکھیں</string>
     <string name="writereview_send">تبصرہ بھیجیں</string>
@@ -249,7 +251,7 @@
     <string name="apply_label">لاگو کریں</string>
     <string name="see_other_variations">مختلف اقسام دیکھیے</string>
     <string name="variations">مختلف اقسام</string>
-    <string name="be_first_rate">درجہ بندی کیجیے</string>
+    <string name="be_first_rate">درجہ بندی کرنے والے پہلے صارف بنیں</string>
     <string name="seller_info">بیچنے والے کی تفصیلات</string>
     <string name="read_more">مزید پڑھیں</string>
     <string name="more_specifications">مزید تفصیلات</string>
@@ -267,13 +269,12 @@
     <string name="other_sellers_starting">دوسرے بیچنے والوں کی مسابقتی قیمت : ‎ %s</string>
     <string name="buy_combo">کومبو خریدیں</string>
     <string name="total_price_bottom">کُل:</string>
-    <string name="from_avg_rat">سے</string>
-    <string name="from_avg_cus">خریدار</string>
     <string name="average_label">اوسط</string>
-    <string name="average_rating_used_prod">کیا اپنے یہ پراڈکٹ استعمال کی ہے؟</string>
+    <string name="average_rating_used_prod">کیا اپنے یہ پراڈکٹ استعمال کی ہے؟\nاس کی درجہ بندی کریں.</string>
     <string name="average_rate_now">ابھی اس کی درجہ بندی کریں</string>
-    <string name="rating_placeholder">(%d) درجہ بندی</string>
-    <string name="average_reviews_header">صارفین کی آراء</string>
+    <string name="rating_placeholder">درجہ بندی (%s)</string>
+    <string name="reviews_placeholder">صارفین کے جائزے (%s)</string>
+    <string name="rating_average_placeholder">منجانب %s کسٹمرز</string>
     <string name="rat_rev">درجہ بندی اور تجزیے</string>
     <string name="fulfilled_by">%s کی طرف سے پورا</string>
     <string name="policy">پالیسی</string>
@@ -319,7 +320,8 @@
     <string name="delivered_label">ڈیلورڈ</string>
     <string name="order_number">آرڈر نمبر ‎%s‎</string>
     <string name="billing">بِلنگ</string>
-    <string name="first_space_second_placeholder">%1$s %2$s</string>
+    <string name="first_space_second_placeholder">%1$s‎ ‎%2$s‎</string>
+    <string name="first_slash_second_placeholder">%1$s / %2$s</string>
     <string name="qty_placeholder">مقدار:  %s</string>
     <string name="reorder_label">ترتیب</string>
     <string name="order_status_date">‎&lt;b>‎‎%1$s‎‎&lt;/b>\n‎‎%2$s‎</string>
@@ -334,7 +336,7 @@
     <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">خریداری کی ٹوکری مین اس بنڈل کا اضافہ نہیں ہو سکا ۔ براۓ کرم دوبارہ کوشش کریں۔</string>
     <string name="buy">خریدیں</string>
-    <string name="size">ناپ ‎%s‎</string>
+    <string name="size_placeholder">ناپ %s</string>
     <string name="added_success">کامیابی ک ساتھ اضافہ کیا۔</string>
     <string name="removed_success">کامیابی ک ساتھ ہٹا دیا گیا.</string>
     <string name="sign_up_to_our_newsletter">نیوزلیٹر کے لیے اندراج کریں</string>
@@ -343,4 +345,6 @@
     <string name="search_categories_label">%1$s اِن میں %2$s</string>
     <string name="on_label">کھولیں</string>
     <string name="visit_the_official_brand_store">%s کے مکزی سٹور پہ تشریف لیجائیں</string>
+    <string name="free_shipping_possible">مفت شِپنگ ممکن ہے</string>
+    <string name="register_more_info">آپ کا اکاؤنٹ بنانے کے لئے ہمیں مزید تھوڑی سی معلومات کی ضرورت ہے</string>
 </resources>
