@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <View
-        android:id="@+id/my_order_item_divider"
-        style="@style/DividerHorizontal.Black_400" />
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_padding_s"
+    android:layout_marginBottom="@dimen/margin_padding_s">
 
     <ImageView
         android:id="@+id/image_view"
         android:layout_width="@dimen/catalog_list_item_image_width"
         android:layout_height="@dimen/catalog_list_item_image_height"
-        android:layout_below="@id/my_order_item_divider"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/catalog_list_item_image_padding"
         android:layout_marginLeft="@dimen/margin_padding_l"

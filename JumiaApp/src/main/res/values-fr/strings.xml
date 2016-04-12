@@ -42,7 +42,7 @@
     <string name="continue_shopping">Continuer Votre Shopping</string>
     <string name="create_addresses_success">Adresse créée avec succès</string>
     <string name="done_label">Valider</string>
-    <string name="dynamic_errortext">N\'est pas correct</string>
+    <string name="dynamic_errortext"> n\'est pas correct</string>
     <string name="edit_address">Modifier l\'adresse</string>
     <string name="edit_address_success">Adresse modifiée avec succès</string>
     <string name="error_add_to_shopping_cart">Ce produit n\'a pas pu être ajouté au panier. Essayez plus tard s\'il vous plait.</string>
@@ -73,15 +73,15 @@
     <string name="fallback_mobile">Téléphonie</string>
     <string name="fallback_welcome">BIENVENUE</string>
     <string name="fgt_pass">Mot de passe oublié ?</string>
-    <string name="filters_label">Filtre</string>
+    <string name="filters_label">Filtres</string>
     <string name="forgotpass_header">Récupération de mot de passe</string>
     <string name="forgotten_password">Veuillez entrer votre e-mail.</string>
     <string name="forgotten_password_examplemail">nom1234@exemple.com</string>
     <string name="forgotten_password_sub_text">Nous vous enverrons un lien pour modifier le mot de passe.</string>
     <string name="forgotten_password_successtext">Email envoyé</string>
     <string name="form_passwordsnomatch">Le mot de passe ne correspond pas</string>
-    <string name="form_texttolong">Le texte est trop long</string>
-    <string name="form_texttoshort">Le texte est trop court</string>
+    <string name="form_texttolong"> le texte est trop long</string>
+    <string name="form_texttoshort"> le texte est trop court</string>
     <string name="free_label">Gratuit</string>
     <string name="got_it">J\'ai Compris</string>
     <string name="home_label">Accueil</string>
@@ -137,6 +137,7 @@
     <string name="pinch_to_zoom_label">Pincez pour zoomer</string>
     <string name="please_fill_all_data">Veuillez entrer toutes les données</string>
     <string name="posted_by">Posté par</string>
+    <string name="by_placeholder">par %s</string>
     <string name="product_could_not_retrieved">Les informations sur ce produit n\'ont pas pu être trouvées</string>
     <string name="product_delivery_days">Jours</string>
     <string name="product_delivery_time">Livraison sous:</string>
@@ -188,6 +189,7 @@
     <string name="some_products_not_added">Malheureusement certains produits n\'ont pas été ajoutés à votre panier</string>
     <string name="splash_slogan">La boutique en ligne N°1 en Afrique</string>
     <string name="splash_slogan_daraz">La seule destination de shopping en ligne</string>
+    <string name="splash_slogan_shop">Le plus grand mall en ligne au Maroc</string>
     <string name="stale_warning">Connexion perdue</string>
     <string name="string_with_discount_only">Avec réduction seulement</string>
     <string name="sub_total_title">Sous-total</string>
@@ -209,8 +211,8 @@
     <string name="vat_string">TVA</string>
     <string name="voucher_error_message">Veuillez Entrer un Code Valide</string>
     <string name="voucher_message_hint">Entrez votre Code Promotionnel ici</string>
-    <string name="remove_label">Supprimer</string>
-    <string name="use_label">Utiliser</string>
+    <string name="remove_label">Retirer</string>
+    <string name="use_label">Confirmer</string>
     <string name="write_comment">Donnez Votre Avis</string>
     <string name="write_full_review">Donnez votre avis complet</string>
     <string name="writereview_send">Envoyer Votre Avis</string>
@@ -267,13 +269,12 @@
     <string name="other_sellers_starting">Disponible chez d\'autres vendeurs, à partir de: %s</string>
     <string name="buy_combo">Produits fréquemment achetés ensemble</string>
     <string name="total_price_bottom">Total:</string>
-    <string name="from_avg_rat">de</string>
-    <string name="from_avg_cus">clients</string>
-    <string name="average_label">moyenne</string>
-    <string name="average_rating_used_prod">Avez vous utilisez ce produit?</string>
+    <string name="average_label">Moyenne</string>
+    <string name="average_rating_used_prod">Avez vous utilisez ce produit?\nNotez le</string>
     <string name="average_rate_now">Notez le maintenant</string>
-    <string name="rating_placeholder">Notes (%d)</string>
-    <string name="average_reviews_header">Avis des utilisateurs</string>
+    <string name="rating_placeholder">CLASSEMENT (%s)</string>
+    <string name="reviews_placeholder">COMMENTAIRE CLIENT (%s)</string>
+    <string name="rating_average_placeholder">de %s clients</string>
     <string name="rat_rev">Notes</string>
     <string name="fulfilled_by">Expédié par %s</string>
     <string name="policy">Politique</string>
@@ -320,6 +321,7 @@
     <string name="order_number">Numéro de commande %s</string>
     <string name="billing">Facturation</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
+    <string name="first_slash_second_placeholder">%1$s / %2$s</string>
     <string name="qty_placeholder">Qté: %s</string>
     <string name="reorder_label">Recommander</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
@@ -334,7 +336,7 @@
     <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">Une erreur inconnue s\'est produite. Réessayez plus tard.</string>
     <string name="buy">Achète</string>
-    <string name="size">Taille %s</string>
+    <string name="size_placeholder">Taille %s</string>
     <string name="added_success">Ajouté avec succès.</string>
     <string name="removed_success">Retiré avec succès.</string>
     <string name="sign_up_to_our_newsletter">Inscrivez-vous à notre newsletter</string>
@@ -343,4 +345,6 @@
     <string name="search_categories_label">%1$s dans %2$s</string>
     <string name="on_label">ON</string>
     <string name="visit_the_official_brand_store">Visitez la boutique officielle %s</string>
+    <string name="free_shipping_possible">Livraison Gratuite Possible</string>
+    <string name="register_more_info">Nous avons juste besoin d\'un peu plus de détails pour créer votre compte.</string>
 </resources>

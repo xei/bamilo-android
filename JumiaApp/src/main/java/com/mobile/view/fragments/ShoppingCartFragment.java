@@ -713,15 +713,8 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         itemName.setText(item.getName());
         itemName.setSelected(true);
         String imageUrl = item.getImageUrl();
-        // Variation TODO :: NAFAMZ-16896
-        if (TextUtils.isEmpty(item.getVariationValue())) {
-            UIUtils.showOrHideViews(View.GONE, variationName, variationValue);
-        } else if (TextUtils.isNotEmpty(item.getVariationName())) {
-            variationName.setText(item.getVariationName());
-            variationValue.setText(item.getVariationValue());
-        } else {
-            variationValue.setText(item.getVariationValue());
-        }
+        // Variation
+        UICartUtils.setVariation(item, variationName, variationValue);
         // Hide shop view image if is_shop is false
         UIProductUtils.setShopFirst(item, shopFirstImage);
         // Show shop first overlay message

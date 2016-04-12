@@ -44,7 +44,7 @@
         <com.mobile.components.customfontviews.Button
             android:id="@+id/order_status_text"
             style="@style/Button_1.Secondary.Text_Black_800.Border_400"
-            android:layout_width="@dimen/dimen_328dp"
+            android:layout_width="match_parent"
             android:layout_marginLeft="@dimen/margin_60px"
             android:layout_marginRight="@dimen/margin_60px"
             android:layout_marginTop="@dimen/dimen_16dp"
@@ -56,7 +56,7 @@
         <com.mobile.components.customfontviews.Button
             android:id="@+id/btn_checkout_continue"
             style="@style/Button_1.Shop"
-            android:layout_width="@dimen/dimen_328dp"
+            android:layout_width="match_parent"
             android:layout_marginLeft="@dimen/margin_60px"
             android:layout_marginRight="@dimen/margin_60px"
             android:layout_marginTop="@dimen/dimen_10dp"

@@ -110,7 +110,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 
         // Validate current activity
         if (this.mActivity == null || this.mActivity.get() == null) {
-            dismiss();
+            dismissAllowingStateLoss();
             return;
         }
         // Hide Size guide on sort list
@@ -200,7 +200,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
             public void run() {
                 // Validate listener
                 if(mClickListener != null) {
-                    dismiss();
+                    dismissAllowingStateLoss();
                     mClickListener.onClick(view);
                 }
             }
@@ -222,7 +222,7 @@ public class DialogSortListFragment extends BottomSheet implements OnItemClickLi
 
                 @Override
                 public void run() {
-                    dismiss();
+                    dismissAllowingStateLoss();
                     if (mSelectListener != null) {
                         mSelectListener.onDialogListItemSelect(position, mItems.get(position));
                     }

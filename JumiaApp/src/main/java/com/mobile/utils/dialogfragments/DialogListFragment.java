@@ -120,7 +120,7 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
         super.onViewCreated(view, savedInstanceState);
         // Validate current activity
         if (this.mActivity == null || this.mActivity.get() == null) {
-            dismiss();
+            dismissAllowingStateLoss();
             return;
         }
         // Set title
@@ -218,7 +218,7 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
             public void run() {
                 // Validate listener
                 if(mClickListener != null) {
-                    dismiss();
+                    dismissAllowingStateLoss();
                     mClickListener.onClick(view);
                 }
             }
@@ -239,7 +239,7 @@ public class DialogListFragment extends BottomSheet implements OnItemClickListen
             view.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    dismiss();
+                    dismissAllowingStateLoss();
                     if (mSelectListener != null) {
                         mSelectListener.onDialogListItemSelect(position, mItems.get(position));
                     }

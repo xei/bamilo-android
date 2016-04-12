@@ -5,8 +5,12 @@ import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
+import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.ui.UIUtils;
+import com.mobile.view.R;
 
 import java.math.BigDecimal;
 
@@ -77,13 +81,30 @@ public class UICartUtils {
     /**
      * Method used to set only the price view validating discount.
      */
-    public static void setSubTotal(@NonNull PurchaseEntity cart, @NonNull android.widget.TextView view, @NonNull android.widget.TextView strike){
+    public static void setSubTotal(@NonNull PurchaseEntity cart, @NonNull TextView view, @NonNull TextView strike){
         // Set sub total
         view.setText(CurrencyFormatter.formatCurrency(cart.getSubTotal()));
         // Set sub total unreduced
         if (cart.hasSubTotalUnDiscounted()) {
             strike.setText(CurrencyFormatter.formatCurrency(cart.getSubTotalUnDiscounted()));
             strike.setPaintFlags(strike.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+    }
+
+    /**
+     * Method used to set the variation
+     * TODO :: NAFAMZ-16896
+     */
+    public static void setVariation(@NonNull PurchaseCartItem item, @NonNull TextView label, @NonNull TextView value){
+        // Variation
+        if (TextUtils.isEmpty(item.getVariationValue())) {
+            UIUtils.showOrHideViews(View.GONE, label, value);
+        } else if (TextUtils.isNotEmpty(item.getVariationName())) {
+            label.setText(item.getVariationName());
+            value.setText(item.getVariationValue());
+        } else {
+            label.setText(label.getContext().getString(R.string.size_label));
+            value.setText(item.getVariationValue());
         }
     }
 

@@ -73,7 +73,7 @@
     <string name="fallback_mobile">မိုဘိုင္းလ္ဖုန္းမ်ား</string>
     <string name="fallback_welcome">မွႀကိဳဆိုပါသည္။</string>
     <string name="fgt_pass">Password ေမ့သြားပါသလား?</string>
-    <string name="filters_label">ရွာေဖြရန္</string>
+    <string name="filters_label">စစ္ထုတ္ရွာေဖြရန္</string>
     <string name="forgotpass_header">Password ျပန္လည္ရယူရန္</string>
     <string name="forgotten_password">ေက်းဇူးျပဳ ၍သင္၏ အီးေမးလ္ကို ျဖည္႔သြင္းပါ</string>
     <string name="forgotten_password_examplemail">john.doe@example.com</string>
@@ -137,6 +137,7 @@
     <string name="pinch_to_zoom_label">Pinch to zoom</string>
     <string name="please_fill_all_data">ေက်းဇူးျပဳ၍ အခ်က္အလက္မ်ားျဖည့္ပါ  </string>
     <string name="posted_by">မွတင္သည္။</string>
+    <string name="by_placeholder">%s မွ</string>
     <string name="product_could_not_retrieved">ကုန္ပစၥည္းအခ်က္အလက္ျပန္လည္မရယူႏိုင္ပါ!</string>
     <string name="product_delivery_days">ေန႔</string>
     <string name="product_delivery_time">: အတြင္း ပို႔ေဆာင္ေပးမႈ</string>
@@ -211,7 +212,7 @@
     <string name="voucher_error_message">ေက်းဇူးျပဳ ၍ မွန္ကန္ေသာကူပြန္နံပါတ္ျဖည္႔ပါ</string>
     <string name="voucher_message_hint">ဤေနရာတြင္သင္၏ကူပြန္နံပါတ္ျဖည္႔ပါ</string>
     <string name="remove_label">ဖယ္ရွားရန္</string>
-    <string name="use_label">အသံုးျပဳရန္  </string>
+    <string name="use_label">အသံုးျပဳရန္</string>
     <string name="write_comment">သံုးသပ္ခ်က္ေရးရန္</string>
     <string name="write_full_review">သံုးသပ္ခ်က္အျပည္႔အစံု ေရးသားရန္</string>
     <string name="writereview_send">သံုးသပ္ခ်က္ ပုိ႔ရန္</string>
@@ -268,13 +269,12 @@
     <string name="other_sellers_starting">အျခားေရာင္းခ်သူမ်ားထံမွ: %s</string>
     <string name="buy_combo">ပစၥည္းစံုတြဲမ်ားၾကည္႕ရွဳ၀ယ္ယူရန္</string>
     <string name="total_price_bottom">စုစုေပါင္း:</string>
-    <string name="from_avg_rat">မွ</string>
-    <string name="from_avg_cus">ေစ်း၀ယ္သူမ်ား</string>
     <string name="average_label">ပ်မ္းမွ်</string>
     <string name="average_rating_used_prod">ဤပစၥည္းအား၀ယ္ယူသံုးစြဲဖူးပါသလား?</string>
     <string name="average_rate_now">အမွတ္ေပးရန္</string>
-    <string name="rating_placeholder">အမွတ္မ်ား (%d)</string>
-    <string name="average_reviews_header">သံုးသပ္ခ်က္မ်ား</string>
+    <string name="rating_placeholder">အမွတ္ေပးျခင္း (%s)</string>
+    <string name="reviews_placeholder">သံုးသပ္ခ်က္မ်ား  (%s)</string>
+    <string name="rating_average_placeholder">၀ယ္ယူသူ %s ေယာက္ထံမွ</string>
     <string name="rat_rev">သံုးသပ္ခ်က္မ်ား  </string>
     <string name="fulfilled_by">Fulfilled by%s</string>
     <string name="policy">Policy</string>
@@ -321,6 +321,7 @@
     <string name="order_number">ေအာ္ဒါအမွတ္ %s</string>
     <string name="billing">ေငြေခ်မည္႕လိပ္စာ</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
+    <string name="first_slash_second_placeholder">%1$s / %2$s</string>
     <string name="qty_placeholder">အေရအတြက္: %s</string>
     <string name="reorder_label">ေအာ္ဒါထပ္မွာရန္</string>
     <string name="order_status_date">%1$s %2$s</string>
@@ -335,7 +336,7 @@
     <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">တြဲဖက္ကုန္ပစၥည္းမ်ားအား ေစ်း၀ယ္လွည္းအတြင္း ထည္႕သြင္း၍မရပါ။ ျပန္လည္ႀကိဳးစားၾကည္႕ပါ။</string>
     <string name="buy">၀ယ္ရန္</string>
-    <string name="size">ဆိုဒ္/အေရာင္ %s</string>
+    <string name="size_placeholder">အေရာင္/ဆိုဒ္ %s</string>
     <string name="added_success">ထည္႕သြင္းၿပီးပါၿပီ</string>
     <string name="removed_success">ဖယ္ရွားၿပီးပါၿပီ</string>
     <string name="sign_up_to_our_newsletter">သတင္းလႊာရယူရန္စာရင္းသြင္းပါ</string>
@@ -344,4 +345,6 @@
     <string name="search_categories_label">%1$s မွ %2$s</string>
     <string name="on_label">ဖြင့္ရန္</string>
     <string name="visit_the_official_brand_store">တရား၀င္ %s စတိုးသို႕ ၀င္ေရာက္ၾကည္႕ရွဳရန္</string>
+    <string name="free_shipping_possible">ပို႕ေဆာင္ခ အခမဲ့ ရရွိႏုိင္သည္</string>
+    <string name="register_more_info">အေကာင့္ျပဳလုပ္ရန္ အခ်က္အလက္အနည္းငယ္ လိုအပ္ပါသည္</string>
 </resources>
