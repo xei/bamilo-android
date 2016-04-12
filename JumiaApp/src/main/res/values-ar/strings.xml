@@ -73,7 +73,7 @@
     <string name="fallback_mobile">أجهزة الموبايل</string>
     <string name="fallback_welcome">مرحبًا في</string>
     <string name="fgt_pass">هل نسيت كلمة المرور</string>
-    <string name="filters_label">الاختيار</string>
+    <string name="filters_label">تصنيفات</string>
     <string name="forgotpass_header">استعادة كلمة المرور</string>
     <string name="forgotten_password">يُرجى كتابة البريد الإلكتروني الخاص بك.</string>
     <string name="forgotten_password_examplemail">john.doe@example.com</string>
@@ -137,6 +137,7 @@
     <string name="pinch_to_zoom_label">انقر للتكبير </string>
     <string name="please_fill_all_data">يُرجى مليء كل البيانات</string>
     <string name="posted_by">تم نشره بواسطة</string>
+    <string name="by_placeholder">بواسطة‎%s‎</string>
     <string name="product_could_not_retrieved">معلومات عن المنتج قد لا يمكن استرجاعها!</string>
     <string name="product_delivery_days">أيام</string>
     <string name="product_delivery_time">التوصيل خلال:</string>
@@ -188,6 +189,7 @@
     <string name="some_products_not_added">للأسف، بعض المنتجات لم يتم إضافتها إلى العربة.</string>
     <string name="splash_slogan">أكبر موقع للتسوق عبر الإنترنت فى أفريقيا</string>
     <string name="splash_slogan_daraz">موقع التسوق الوحيد الذي تحتاجه!</string>
+    <string name="splash_slogan_shop">أكبر مول للتسوق على الإنترنت في مصر</string>
     <string name="stale_warning">فقدت الاتصال</string>
     <string name="string_with_discount_only">فقط مع وجود خصم</string>
     <string name="sub_total_title">الإجمالى</string>
@@ -210,7 +212,7 @@
     <string name="voucher_error_message">يُرجى إدخال رقم كوبون صحيح</string>
     <string name="voucher_message_hint">أدخل رقم الكوبون هنا</string>
     <string name="remove_label">مسح</string>
-    <string name="use_label">استخدم</string>
+    <string name="use_label">استخدام</string>
     <string name="write_comment">كتابة تعليق</string>
     <string name="write_full_review">كتابة تعليق كامل</string>
     <string name="writereview_send">ارسل التعليق</string>
@@ -219,8 +221,8 @@
     <string name="share_the_app">مشاركة التطبيق</string>
     <string name="app_social">تطبيق مواقع التواصل الإجتماعى</string>
     <string name="sort_by">الترتيب حسب</string>
-    <string name="plurals_rating">تقييم ‪%d‪</string>
-    <string name="plurals_ratings">تقييمات ‪%d‪</string>
+    <string name="plurals_rating">%d تقييم</string>
+    <string name="plurals_ratings">%d تقييمات</string>
     <string name="plurals_item">منتج ‪%d‪</string>
     <string name="plurals_items">منتجات ‪%d‪</string>
     <string name="plurals_article">مقال ‪%d‪</string>
@@ -244,7 +246,7 @@
     <string name="language">اللغة</string>
     <string name="country">الدولة</string>
     <string name="birthday_error">يُرجى اختيار تاريخ ميلاد صحيح</string>
-    <string name="parenthesis_placeholder">(%s)</string>
+    <string name="parenthesis_placeholder">(‎%s‎)</string>
     <string name="clear_all_lowercase_label">مسح الكل</string>
     <string name="apply_label">تطبيق</string>
     <string name="see_other_variations">عرض المقاسات الأخري</string>
@@ -267,13 +269,12 @@
     <string name="other_sellers_starting">العروض الأخري تبدأ من: %s</string>
     <string name="buy_combo">شراء المجموعة معًا</string>
     <string name="total_price_bottom">المبلغ الكلي:</string>
-    <string name="from_avg_rat">من</string>
-    <string name="from_avg_cus">العملاء</string>
-    <string name="average_label">المتوسط</string>
-    <string name="average_rating_used_prod">هل استخدمت هذا المنتج؟</string>
+    <string name="average_label">متوسط</string>
+    <string name="average_rating_used_prod">هل استخدمت هذا المنتج؟\nقم بتقييمه</string>
     <string name="average_rate_now">قم بتقييم المنتج الآن؟</string>
-    <string name="rating_placeholder">(%d) التقييمات</string>
-    <string name="average_reviews_header">تقييمات المستخدم</string>
+    <string name="rating_placeholder">التقييمات  (%s)</string>
+    <string name="reviews_placeholder">تعليقات العملاء (%s)</string>
+    <string name="rating_average_placeholder">من %s عملاء</string>
     <string name="rat_rev">تعليقات التقييمات</string>
     <string name="fulfilled_by">تم التوصيل بواسطة %s</string>
     <string name="policy">السياسة</string>
@@ -319,7 +320,8 @@
     <string name="delivered_label">تم توصيل</string>
     <string name="order_number">رقم الطلب‎%s‎</string>
     <string name="billing">الفواتير</string>
-    <string name="first_space_second_placeholder">‎%1$s‎ ‎%2$s‎</string>
+    <string name="first_space_second_placeholder">%1$s %2$s</string>
+    <string name="first_slash_second_placeholder">%1$s / %2$s</string>
     <string name="qty_placeholder">الكمية: %s</string>
     <string name="reorder_label">إعادة الطلب</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
@@ -331,16 +333,18 @@
     <string name="phone_contact">الهاتف :</string>
     <string name="email_contact">البريد الإلكتروني:</string>
     <string name="logout_success">لقد تم تسجيل الخروج</string>
-    <string name="percentage_placeholder">‎%s‎%%</string>
+    <string name="percentage_placeholder">%s%%</string>
     <string name="error_add_bundle_to_shopping_cart">لا يمكن أن تضيف هذه المنتجات إلى عربة التسوق . يرجى المحاولة في وقت لاحق.</string>
     <string name="buy">شراء</string>
-    <string name="size">مقاس ‎%s‎</string>
+    <string name="size_placeholder">الحجم %s</string>
     <string name="added_success">تمت الأضافه بنجاح.</string>
     <string name="removed_success">تم الحذف بنجاح.</string>
     <string name="sign_up_to_our_newsletter">التسجيل لاستلام رسالة جوميا الإخبارية</string>
-    <string name="sign_up_to_our_newsletter_body">للحصول بشكل حصري على العروض والمنتجات الأحدث وصولًا والاتجاهات السوقية والحملات الإعلانية</string>
+    <string name="sign_up_to_our_newsletter_body">للتعرف بشكل حصري على العروض والمنتجات الأحدث وأهم التخفيضات</string>
     <string name="search_shop_in_shop_label">قم بزيارة %s المخزن الخاص بنا</string>
     <string name="search_categories_label">%1$s في %2$s</string>
     <string name="on_label">فتح</string>
     <string name="visit_the_official_brand_store">زيارة المخزن %s الرسمي</string>
+    <string name="free_shipping_possible">إمكانية الشحن المجاني</string>
+    <string name="register_more_info">نحتاج إلى المزيد من التفاصيل لإنشاء الحساب الخاص بك.</string>
 </resources>
