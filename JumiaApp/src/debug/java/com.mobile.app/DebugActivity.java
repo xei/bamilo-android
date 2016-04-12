@@ -3,11 +3,11 @@ package com.mobile.app;
 import android.os.Bundle;
 
 import com.mobile.app.drawer.AbcDebugDrawerView;
+import com.mobile.app.drawer.DebugMobileApiModel;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.BaseActivity;
 
-import java.lang.ref.WeakReference;
 import java.util.Set;
 
 import io.palaima.debugdrawer.DebugDrawer;
@@ -16,7 +16,7 @@ import io.palaima.debugdrawer.DebugDrawer;
  * DebugActivity
  * @author sergiopereira
  */
-public abstract class DebugActivity extends BaseActivity {
+public abstract class DebugActivity extends BaseActivity implements DebugMobileApiModel.ICustomMobileApi {
 
     private DebugDrawer mDebugDrawer;
 
@@ -60,10 +60,6 @@ public abstract class DebugActivity extends BaseActivity {
         super.onStop();
         // Stop debug drawer
         AbcDebugDrawerView.onStop(mDebugDrawer);
-    }
-
-    public WeakReference<DebugActivity> getWeakReference() {
-        return new WeakReference<>(this);
     }
 
     @Override

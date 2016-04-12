@@ -1,8 +1,7 @@
 package com.mobile.app.drawer;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
-
-import com.mobile.app.DebugActivity;
 
 import io.palaima.debugdrawer.DebugDrawer;
 import io.palaima.debugdrawer.commons.DeviceModule;
@@ -15,7 +14,7 @@ import io.palaima.debugdrawer.scalpel.ScalpelModule;
  */
 public class AbcDebugDrawerView {
 
-    public static DebugDrawer onCreate(@NonNull final DebugActivity activity) {
+    public static DebugDrawer onCreate(@NonNull final Activity activity) {
         return new DebugDrawer.Builder(activity)
                 .modules(
                         new DebugAppInfoModel(activity),

@@ -1,6 +1,7 @@
 package com.mobile.app.drawer;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
@@ -12,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
-import com.mobile.app.DebugActivity;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.errors.ErrorCode;
@@ -30,7 +30,7 @@ import java.lang.ref.WeakReference;
  */
 public class DebugMobileApiModel extends BaseDebugModel implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
-    private final WeakReference<DebugActivity> mWeakDebugActivity;
+    private final WeakReference<Activity> mWeakDebugActivity;
     private final ResponseCodeInterceptor mInterceptor;
     private SwitchCompat mMaintenance;
     private SwitchCompat mOverload;
@@ -38,9 +38,13 @@ public class DebugMobileApiModel extends BaseDebugModel implements CompoundButto
     private AppCompatButton mEditButton;
     private View mWarningView;
 
-    public DebugMobileApiModel(@NonNull DebugActivity activity) {
+    public interface ICustomMobileApi {
+        void restartAppFlow();
+    }
+
+    public DebugMobileApiModel(@NonNull Activity activity) {
         // Save debug activity
-        mWeakDebugActivity = activity.getWeakReference();
+        mWeakDebugActivity = new WeakReference<>(activity);
         // Create interceptor
         mInterceptor = new ResponseCodeInterceptor();
         // Add interceptor
@@ -58,6 +62,13 @@ public class DebugMobileApiModel extends BaseDebugModel implements CompoundButto
         mOverload = (SwitchCompat) view.findViewById(R.id.dd_debug_network_overload);
         showInfo();
         return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Remove maintenance/overload page
+        mInterceptor.removeHttpCode();
     }
 
     @SuppressLint("SetTextI18n")
@@ -92,7 +103,10 @@ public class DebugMobileApiModel extends BaseDebugModel implements CompoundButto
         if (mEditHost.isEnabled()) {
             // Restart the app
             CountryPersistentConfigs.saveDebugHost(view.getContext(), mEditHost.getText().toString());
-            mWeakDebugActivity.get().restartAppFlow();
+            // Debug activity
+            if (mWeakDebugActivity.get() instanceof ICustomMobileApi) {
+                ((ICustomMobileApi) mWeakDebugActivity.get()).restartAppFlow();
+            }
         } else {
             enableEditHost();
         }
@@ -135,21 +149,24 @@ public class DebugMobileApiModel extends BaseDebugModel implements CompoundButto
 
     private static class ResponseCodeInterceptor implements Interceptor {
 
-        private int code = -1;
+        private final static int INVALID_CODE  = -1;
+
+        private int code = INVALID_CODE;
 
         public void setHttpCode(int code) {
             this.code = code;
         }
 
         public void removeHttpCode() {
-            this.code = -1;
+            this.code = INVALID_CODE;
         }
 
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response response = chain.proceed(chain.request());
-            if (code != -1) response = response.newBuilder().code(code).build();
+            if (code != INVALID_CODE) response = response.newBuilder().code(code).build();
             return response;
         }
     }
+
 }
