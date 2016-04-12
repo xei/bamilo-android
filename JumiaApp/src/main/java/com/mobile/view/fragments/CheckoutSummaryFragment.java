@@ -309,34 +309,30 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         // Show all items
         ArrayList<PurchaseCartItem> mShopList = new ArrayList<>(mOrderSummary.getCartItems());
         mProductList.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(getBaseActivity());
         for (PurchaseCartItem item : mShopList) {
-            View cartItemView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_summary_list_item, mProductList, false);
-            // Name
-            ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
-            //shop first image
-            ImageView shopFirstImageView = (ImageView) cartItemView.findViewById(R.id.item_shop_first);
-            UIProductUtils.setShopFirst(item, shopFirstImageView);
-            UIProductUtils.showShopFirstOverlayMessage(this,item,shopFirstImageView);
-
-            String imageUrl = item.getImageUrl();
+            // Add view
+            View cartItemView = inflater.inflate(R.layout.checkout_summary_list_item, mProductList, false);
             ImageView mImageView = (ImageView) cartItemView.findViewById(R.id.image_view);
             View pBar = cartItemView.findViewById(R.id.image_loading_progress);
-            RocketImageLoader.instance.loadImage(imageUrl, mImageView, pBar, R.drawable.no_image_small);
+            ImageView shopFirstImageView = (ImageView) cartItemView.findViewById(R.id.item_shop_first);
+            TextView variationName = (TextView) cartItemView.findViewById(R.id.item_text_variation);
+            TextView variationValue = (TextView) cartItemView.findViewById(R.id.item_text_variation_value);
+            View deleteButton = cartItemView.findViewById(R.id.button_delete);
+            // Name
+            ((TextView) cartItemView.findViewById(R.id.item_name)).setText(item.getName());
+            // Shop First
+            UIProductUtils.setShopFirst(item, shopFirstImageView);
+            UIProductUtils.showShopFirstOverlayMessage(this, item, shopFirstImageView);
+            // Image
+            RocketImageLoader.instance.loadImage(item.getImageUrl(), mImageView, pBar, R.drawable.no_image_small);
             // Price
             double price = item.hasDiscount() ? item.getSpecialPrice() : item.getPrice();
-            ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
+            String text = getString(R.string.first_x_second_placeholder, item.getQuantity(), CurrencyFormatter.formatCurrency(price));
+            ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(text);
             // Variation
-            String variation = item.getVariationValue();
-            if (variation != null &&
-                    variation.length() > 0 &&
-                    !variation.equalsIgnoreCase(",") &&
-                    !variation.equalsIgnoreCase("...") &&
-                    !variation.equalsIgnoreCase(".")) {
-                ((TextView) cartItemView.findViewById(R.id.item_regprice)).setText(variation + " " + item.getQuantity() + " x  " + CurrencyFormatter.formatCurrency(price));
-            }
+            UICartUtils.setVariation(item, variationName, variationValue);
             // Buttons
-            View deleteButton = cartItemView.findViewById(R.id.button_delete);
-            // deleteButton.setVisibility(View.VISIBLE);
             deleteButton.setOnClickListener(this);
             deleteButton.setTag(item.getConfigSimpleSKU());
             // Add view
@@ -363,7 +359,8 @@ public class CheckoutSummaryFragment extends BaseFragment implements IResponseCa
         Print.d(TAG, "SHOW SHIPPING ADDRESS: " + shippingAddress.getAddress());
         mShippingAddressList.removeAllViews();
         View shippingAddressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, mShippingAddressList, false);
-        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(shippingAddress.getFirstName() + " " + shippingAddress.getLastName());
+        String name = getString(R.string.first_space_second_placeholder, shippingAddress.getFirstName(), shippingAddress.getLastName());
+        ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_name)).setText(name);
         ((TextView) shippingAddressView.findViewById(R.id.checkout_address_item_street)).setText(shippingAddress.getAddress());
         shippingAddressView.findViewById(R.id.checkout_address_item_btn_edit).setVisibility(View.GONE);
 

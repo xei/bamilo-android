@@ -379,7 +379,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
      * @author sergiopereira
      */
     private void showProducts() {
-        boolean first = true;
         // Show products
         for (PurchaseCartItem item : mOrderFinish.getCartItems()) {
             View prodInflateView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_my_order_product_item, mProductsContainer, false);
@@ -408,12 +407,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 ((TextView) prodInflateView.findViewById(R.id.my_order_item_variation)).setText(variation);
                 prodInflateView.findViewById(R.id.my_order_item_variation).setVisibility(View.VISIBLE);
             }
-            // // Hide first divider
-            if (first) {
-                first = false;
-                prodInflateView.findViewById(R.id.my_order_item_divider).setVisibility(View.GONE);
-            }
-
             UIProductUtils.setShopFirst(item, prodInflateView.findViewById(R.id.shop_first_item));
             // Add item view
             mProductsContainer.addView(prodInflateView);
