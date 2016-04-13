@@ -19,8 +19,6 @@ import com.mobile.utils.deeplink.TargetLink;
  */
 public class SetChangePasswordHelper extends SuperBaseHelper {
 
-    private static final String TAG = SetChangePasswordHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
         return EventType.CHANGE_PASSWORD_EVENT;
