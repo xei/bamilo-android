@@ -85,8 +85,11 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
         // Insert
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         // Delete old entries
-        db.delete(TABLE_NAME, _RESULT + " LIKE ?", new String[] {suggestion.getResult()});
-        db.delete(TABLE_NAME, _QUERY + " LIKE ?", new String[] {suggestion.getResult()}); // Old database version, < v3.0
+        int rows = db.delete(TABLE_NAME, _RESULT + " LIKE ?", new String[] {suggestion.getResult()});
+        // Old database version, < v3.0
+        if(rows == 0) {
+            db.delete(TABLE_NAME, _QUERY + " LIKE ?", new String[] {suggestion.getResult()});
+        }
 	    // Insert
         ContentValues values = new ContentValues();
         values.put(SearchRecentQueriesTableHelper._QUERY, suggestion.getQuery());
