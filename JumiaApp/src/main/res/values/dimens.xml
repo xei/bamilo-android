@@ -314,6 +314,7 @@
 
     <dimen name="checkout_box_title_height">26.67dp</dimen>
     <dimen name="checkout_voucher_box_height">70dp</dimen>
+    <dimen name="checkout_cart_item_image">70dp</dimen>
 
     <dimen name="delete_button_size">16dp</dimen>
     <!--12.67dp-->
