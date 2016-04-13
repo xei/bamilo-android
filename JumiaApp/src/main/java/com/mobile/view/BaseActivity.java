@@ -998,17 +998,15 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Execute search
      */
     public void showSearchOther(final Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
+        Print.d(TAG, "SEARCH COMPONENT: GOTO CATALOG " + suggestion.getResult());
         // Tracking
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
-
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getResult());
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
         onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-
     }
 
     /**
@@ -1796,11 +1794,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 showSearchShopsInShop(selectedSuggestion);
                 break;
             case Suggestion.SUGGESTION_CATEGORY:
-                // Show query
                 showSearchCategory(selectedSuggestion);
                 break;
             case Suggestion.SUGGESTION_OTHER:
-                // Show query
                 showSearchOther(selectedSuggestion);
                 break;
         }

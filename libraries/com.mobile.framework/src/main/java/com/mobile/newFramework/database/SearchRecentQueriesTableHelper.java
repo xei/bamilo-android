@@ -62,9 +62,9 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
         return "CREATE TABLE %s (" +
                 _ID +           " INTEGER PRIMARY KEY, " + 
                 _QUERY +        " TEXT," +
-                _RESULT +        " TEXT," +
-                _TYPE +        " INTEGER DEFAULT SUGGESTION_CATEGORY," +
-                _TARGET +        " TEXT," +
+                _RESULT +       " TEXT," +
+                _TYPE +         " INTEGER DEFAULT " + Suggestion.SUGGESTION_OTHER + "," +
+                _TARGET +       " TEXT," +
                 _TIME_STAMP +   " TIMESTAMP DEFAULT CURRENT_TIMESTAMP" +
                  ")";
     }
@@ -86,6 +86,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
         SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
         // Delete old entries
         db.delete(TABLE_NAME, _RESULT + " LIKE ?", new String[] {suggestion.getResult()});
+        db.delete(TABLE_NAME, _QUERY + " LIKE ?", new String[] {suggestion.getResult()}); // Old database version, < v3.0
 	    // Insert
         ContentValues values = new ContentValues();
         values.put(SearchRecentQueriesTableHelper._QUERY, suggestion.getQuery());
@@ -170,7 +171,6 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
 		// Get results
 		ArrayList<Suggestion> recentSuggestions = new ArrayList<>();
-		// 
         try {
             Cursor cursor = db.rawQuery(query, queryParams);
             if (cursor != null && cursor.getCount() > 0) {
@@ -181,7 +181,7 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
                 while (!cursor.isAfterLast()) {
                     String recentSuggestion = cursor.getString(1);
                     String recentResult = cursor.getString(2);
-                    int recentType = cursor.getInt(3);
+                    @Suggestion.SuggestionType int recentType = cursor.getInt(3);
                     String recentTarget = cursor.getString(4);
                     Print.d(TAG, "QUERY: " + recentSuggestion);
                     Suggestion searchSuggestion = new Suggestion();

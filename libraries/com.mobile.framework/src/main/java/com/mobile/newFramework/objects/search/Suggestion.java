@@ -7,6 +7,7 @@ import android.support.annotation.IntDef;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -93,7 +94,7 @@ public class Suggestion implements IJSONSerializable, Parcelable {
 	 * @return string
 	 */
 	public String getResult() {
-		return mResult;
+		return TextUtils.isNotEmpty(mResult) ? mResult : mQuery;
 	}
 
 	public String getQuery() {
