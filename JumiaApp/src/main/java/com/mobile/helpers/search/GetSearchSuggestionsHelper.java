@@ -133,8 +133,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     /**
      * Constructor used to get only the recent queries
-     *
-     * @param requester
      */
     public GetSearchSuggestionsHelper(IResponseCallback requester) {
         Print.d(TAG, "ON CONSTRUCTOR");
@@ -144,8 +142,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     /**
      * Get all recent queries and deliver them to the <code>requester</code>
-     *
-     * @param requester
      */
     private void getSearchSuggestionList(IResponseCallback requester) {
         Print.d(TAG, "ON GET_SEARCH_SUGGESTIONS_EVENT");
@@ -168,8 +164,6 @@ public class GetSearchSuggestionsHelper extends SuperBaseHelper {
 
     /**
      * Save the recent query on the database
-     * @param suggestion
-     * @author sergiopereira
      */
     public static void saveSearchQuery(final Suggestion suggestion){
         Print.d(TAG, "SAVE SEARCH QUERY: " + suggestion.getResult());
