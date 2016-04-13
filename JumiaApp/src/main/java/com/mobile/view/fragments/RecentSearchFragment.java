@@ -246,11 +246,9 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                 getBaseActivity().showSearchShopsInShop(selectedSuggestion);
                 break;
             case Suggestion.SUGGESTION_CATEGORY:
-                // Show query
                 getBaseActivity().showSearchCategory(selectedSuggestion);
                 break;
             case Suggestion.SUGGESTION_OTHER:
-                // Show query
                 getBaseActivity().showSearchOther(selectedSuggestion);
                 break;
         }
