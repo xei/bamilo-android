@@ -23,10 +23,10 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class Suggestion implements IJSONSerializable, Parcelable {
 
-    public static final int SUGGESTION_PRODUCT = 0; //
-    public static final int SUGGESTION_SHOP_IN_SHOP = 1; //
-    public static final int SUGGESTION_CATEGORY = 2; //
-    public static final int SUGGESTION_OTHER = 3; //
+    public static final int SUGGESTION_PRODUCT = 0;
+    public static final int SUGGESTION_SHOP_IN_SHOP = 1;
+    public static final int SUGGESTION_CATEGORY = 2;
+    public static final int SUGGESTION_OTHER = 3;
     @IntDef({SUGGESTION_PRODUCT, SUGGESTION_SHOP_IN_SHOP, SUGGESTION_CATEGORY, SUGGESTION_OTHER})
     @Retention(RetentionPolicy.SOURCE)
     public @interface SuggestionType {}

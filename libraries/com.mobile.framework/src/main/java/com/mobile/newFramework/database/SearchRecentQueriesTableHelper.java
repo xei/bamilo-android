@@ -183,7 +183,6 @@ public class SearchRecentQueriesTableHelper extends BaseTable {
                     String recentResult = cursor.getString(2);
                     @Suggestion.SuggestionType int recentType = cursor.getInt(3);
                     String recentTarget = cursor.getString(4);
-                    Print.d(TAG, "QUERY: " + recentSuggestion);
                     Suggestion searchSuggestion = new Suggestion();
                     searchSuggestion.setQuery(recentSuggestion);
                     searchSuggestion.setResult(recentResult);
