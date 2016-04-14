@@ -11,20 +11,20 @@ import com.mobile.utils.TrackerDelegator;
  */
 public abstract class BaseTrackerActivity extends AppCompatActivity {
 
-    private long mLaunchTime;
+    private long mTrackingLaunchTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // For tracking
-        mLaunchTime = System.currentTimeMillis();
+        // Tracking
+        mTrackingLaunchTime = System.currentTimeMillis();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         // Tracking
-        TrackerDelegator.onResumeActivity(mLaunchTime);
+        TrackerDelegator.onResumeActivity(mTrackingLaunchTime);
     }
 
     @Override
