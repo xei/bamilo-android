@@ -73,6 +73,7 @@
     <string name="fallback_mobile">تلفن های همراه</string>
     <string name="fallback_welcome">خوش آمدید به</string>
     <string name="fgt_pass">آیا رمز عبور خود را فراموش کرده اید؟</string>
+    <string name="filters_label">فیلترها</string>
     <string name="forgotpass_header">بازیابی رمز عبور</string>
     <string name="forgotten_password">لطفا پست الکترونیکی خود را وارد کنید</string>
     <string name="forgotten_password_examplemail">abcd1234@example.com</string>
@@ -136,6 +137,7 @@
     <string name="pinch_to_zoom_label">باز و بسته کردن دو انگشت برای تغییر بزرگنمایی</string>
     <string name="please_fill_all_data">لطفا تمامی موارد خواسته شده را پر نمایید.</string>
     <string name="posted_by">پست شده توسط</string>
+    <string name="by_placeholder">با ‎%s‎</string>
     <string name="product_could_not_retrieved">اطلاعات مربوط به کالا قابل بازیابی نیست.</string>
     <string name="product_delivery_days">روز</string>
     <string name="product_delivery_time">تحویل در:</string>
@@ -187,6 +189,7 @@
     <string name="some_products_not_added">متاسفانه برخی از کالاها به سبد خرید اضافه نشدند.</string>
     <string name="splash_slogan">به فروشگاه اینترنتی بامیلو خوش آمدید.</string>
     <string name="splash_slogan_daraz">به فروشگاه اینترنتی بامیلو خوش آمدید.</string>
+    <string name="splash_slogan_shop">بزرگترین بازار آنلاین در ایران</string>
     <string name="stale_warning">اتصال قطع شده است.</string>
     <string name="string_with_discount_only">تنها با تخفیف</string>
     <string name="sub_total_title">مجموع ناخالص:</string>
@@ -208,6 +211,8 @@
     <string name="vat_string">مالیات ارزش افزوده</string>
     <string name="voucher_error_message">لطفا یک کد تخفیف معتبر وارد کنید.</string>
     <string name="voucher_message_hint">کد تخفیف خود را در این بخش وارد کنید.</string>
+    <string name="remove_label">پاک کردن</string>
+    <string name="use_label">استفاده</string>
     <string name="write_comment">نقد و بررسی خود را ثبت کنید</string>
     <string name="write_full_review">بررسی کامل خود را بنویسید</string>
     <string name="writereview_send">ارسال نقد و بررسی</string>
@@ -246,7 +251,7 @@
     <string name="apply_label">اعمال</string>
     <string name="see_other_variations">دیگر موارد را مشاهده کنید</string>
     <string name="variations">تنوع کالا</string>
-    <string name="be_first_rate">اولین نفر باشید که این محصول را نقد و بررسی می‌کند</string>
+    <string name="be_first_rate">اولین نفر باشید که به این محصول امتیاز می دهید</string>
     <string name="seller_info">مشخصات فروشنده</string>
     <string name="read_more">بیشتر بخوانید</string>
     <string name="more_specifications">مشخصات بیشتر</string>
@@ -264,8 +269,12 @@
     <string name="other_sellers_starting">دیگر فروشنده ها از قیمت: %s</string>
     <string name="buy_combo">خرید ترکیب</string>
     <string name="total_price_bottom">مجموع:</string>
-    <string name="average_rating_used_prod">آیا از این کالا استفاده کرده اید؟</string>
+    <string name="average_label">میانگین</string>
+    <string name="average_rating_used_prod">آیا از این کالا استفاده کرده اید؟\nهمین حالا به آن امتیاز دهید</string>
     <string name="average_rate_now">به آن امتیاز دهید.</string>
+    <string name="rating_placeholder">امتیازات (‎%s‎)</string>
+    <string name="reviews_placeholder">نظرات کاربران (‎%s‎)</string>
+    <string name="rating_average_placeholder">از نظر ‎%s‎ کاربران</string>
     <string name="rat_rev">نظرات و پیشنهادها</string>
     <string name="fulfilled_by">تامین کننده: ‎%s‎</string>
     <string name="policy">قوانین و سیاست ها</string>
@@ -311,6 +320,9 @@
     <string name="delivered_label">تحویل داده شد</string>
     <string name="order_number">شمار سفارش ‎%s‎</string>
     <string name="billing">صورت حساب</string>
+    <string name="first_space_second_placeholder">‎%1$s‎‎%2$s‎</string>
+    <string name="first_slash_second_placeholder">‎%1$s‎/‎%2$s‎</string>
+    <string name="first_x_second_placeholder">اندازه ‎%1$s‎تعداد‎%2$s‎</string>
     <string name="qty_placeholder">تعداد: %s</string>
     <string name="reorder_label">سفارش مجدد</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
@@ -322,14 +334,18 @@
     <string name="phone_contact">شماره تلفن:</string>
     <string name="email_contact">آدرس ایمیل</string>
     <string name="logout_success">از حساب کاربری خارج شدید</string>
+    <string name="percentage_placeholder">‎%s‎ درصد</string>
     <string name="error_add_bundle_to_shopping_cart">امکان افزوده شدن این مجموعه کالا موجود نیست. لطفا دوباره تلاش کنید.</string>
     <string name="buy">خرید کنید</string>
+    <string name="size_placeholder">اندازه ‎%s‎</string>
     <string name="added_success">با موفقیت افزوده شد.</string>
     <string name="removed_success">با موفقیت حذف گردید.</string>
     <string name="sign_up_to_our_newsletter">در خبرنامه عضو شوید</string>
-    <string name="sign_up_to_our_newsletter_body">برای اطلاع از فروش های ویژه، تازه ها و تخفیف ها</string>
+    <string name="sign_up_to_our_newsletter_body">برای اطلاع از فروش های ویژه، جدیدترین ها و تخفیف ها</string>
     <string name="search_shop_in_shop_label">بازدید از فروشگاه ‎%s‎ ما</string>
     <string name="search_categories_label">‎%1$s‎ در ‎%2$s‎</string>
     <string name="on_label">فعال</string>
     <string name="visit_the_official_brand_store">مشاهده محصولات ‎%s‎</string>
+    <string name="free_shipping_possible">می توانید از ارسال رایگان بهره مند شوید</string>
+    <string name="register_more_info">برای ایجاد حساب کاربری شما به اطلاعات بیشتری نیاز داریم.</string>
 </resources>
