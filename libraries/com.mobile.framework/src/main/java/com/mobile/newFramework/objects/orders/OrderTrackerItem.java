@@ -66,6 +66,19 @@ public class OrderTrackerItem extends ProductRegular {
         return mOrderActions;
     }
 
+    public boolean isEligibleToReturn(){
+        boolean isEligible = false;
+        if(CollectionUtils.isNotEmpty(mOrderActions)){
+            for (OrderActions action : mOrderActions) {
+                if(action.getReturnableQuantity() > 0){
+                    isEligible = true;
+                }
+            }
+        }
+
+        return isEligible;
+    }
+
 
     /*
          * (non-Javadoc)
@@ -174,4 +187,15 @@ public class OrderTrackerItem extends ProductRegular {
         }
     };
 
+    public boolean isCheckedForAction() {
+        return isCheckedForAction;
+    }
+
+    /**
+     * Sets whether this item is selected to return or not.
+     * @param checkedForAction
+     */
+    public void setCheckedForAction(boolean checkedForAction) {
+        isCheckedForAction = checkedForAction;
+    }
 }

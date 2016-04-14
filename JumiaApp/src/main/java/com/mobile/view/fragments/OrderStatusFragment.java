@@ -7,6 +7,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -220,9 +221,21 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     private void showOrderItems(@NonNull ViewGroup group, @Nullable ArrayList<OrderTrackerItem> items) {
         if (CollectionUtils.isNotEmpty(items)) {
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
-            for (OrderTrackerItem item : items) {
+            for (final OrderTrackerItem item : items) {
                 // Create new layout item
                 OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
+                if(item.isEligibleToReturn()){
+                    holder.returnOrder.setVisibility(View.VISIBLE);
+                    holder.orderCheckbox.setVisibility(View.VISIBLE);
+                    holder.orderCheckbox.setSelected(item.isCheckedForAction());
+                    holder.orderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                            item.setCheckedForAction(isChecked);
+                        }
+                    });
+                }
+
                 // Set image
                 RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
                 // Set name
@@ -244,6 +257,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                     }
 
                     holder.itemReturns.setText(orderReturns);
+                    holder.itemReturnsLabel.setVisibility(View.VISIBLE);
                     holder.itemReturns.setVisibility(View.VISIBLE);
                 }
 
