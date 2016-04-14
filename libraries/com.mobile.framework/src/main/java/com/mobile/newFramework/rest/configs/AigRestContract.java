@@ -64,6 +64,7 @@ public class AigRestContract {
         Print.i(TAG, "Initializing RestContract");
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(context, R.string.global_server_host);
+        setRestScheme(context, sharedPrefs);
         setRestBasePath(context, R.string.global_server_restbase_path);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
@@ -76,6 +77,7 @@ public class AigRestContract {
         Print.i(TAG, "Initializing RestContract");
         SharedPreferences sharedPrefs = context.getSharedPreferences(Darwin.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         setRestHost(requestHost);
+        setRestScheme(context, sharedPrefs);
         setRestBasePath(context, R.string.global_server_api_version);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
