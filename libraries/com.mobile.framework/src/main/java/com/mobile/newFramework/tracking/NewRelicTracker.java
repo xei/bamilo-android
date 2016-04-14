@@ -70,7 +70,7 @@ public class NewRelicTracker extends AbcBaseTracker {
     @SuppressWarnings("unused")
     public static void noticeSuccessTransaction(String url, String httpMethod, int requestStatus, long startTimeMillis, long endTimeMillis, long bytesReceived) {
         Print.i(TAG, "ON SUCCESS TRANSACTION: " + url);
-        NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url : "n.a.", httpMethod, requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
+        NewRelic.noticeHttpTransaction(!TextUtils.isEmpty(url) ? url : NOT_AVAILABLE, httpMethod, requestStatus, startTimeMillis, endTimeMillis, 0, bytesReceived);
     }
 
     /**
@@ -81,7 +81,7 @@ public class NewRelicTracker extends AbcBaseTracker {
     @SuppressWarnings("unused")
     public static void noticeFailureTransaction(String url, String httpMethod, long startTimeMillis, NetworkFailure networkFailure) {
         Print.i(TAG, "ON FAILURE TRANSACTION: " + url);
-        NewRelic.noticeNetworkFailure(!TextUtils.isEmpty(url) ? url : "n.a.", httpMethod, startTimeMillis, System.currentTimeMillis(), networkFailure);
+        NewRelic.noticeNetworkFailure(!TextUtils.isEmpty(url) ? url : NOT_AVAILABLE, httpMethod, startTimeMillis, System.currentTimeMillis(), networkFailure);
     }
 
 }

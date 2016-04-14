@@ -284,13 +284,13 @@ public class CountryPersistentConfigs {
 
     /**
      * Method used to set a custom host, only for debug
+     * Case necessary add UA, Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY with "NGAMZ EGAMZ CMAMZ MAAMZ"
      */
     public static void saveDebugHost(Context context, String host){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, host);
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, host);
-        editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, "NGAMZ EGAMZ CMAMZ MAAMZ");
         editor.apply();
     }
 

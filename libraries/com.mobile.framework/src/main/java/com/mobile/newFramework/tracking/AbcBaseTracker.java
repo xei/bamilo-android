@@ -10,12 +10,14 @@ import android.support.annotation.NonNull;
  */
 public abstract class AbcBaseTracker {
 
+    protected static final String NOT_AVAILABLE = "n.a.";
+
     public String getId() {
-        return "n.a.";
+        return NOT_AVAILABLE;
     }
 
     public String getId(@NonNull Context context) {
-        return "n.a.";
+        return NOT_AVAILABLE;
     }
 
     public void debugMode(@NonNull Context context, boolean enable) {

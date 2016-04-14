@@ -167,7 +167,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
 
     @Override
     public String getId() {
-        return mTracker != null ? mTracker.get("&tid") : "n.a.";
+        return mTracker != null ? mTracker.get("&tid") : NOT_AVAILABLE;
     }
 
     @Override
@@ -452,9 +452,9 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         // Validation
         if (!isEnabled) return;
         // Data
-        if(navigationPrefix == null) navigationPrefix = "n.a.";
+        if(navigationPrefix == null) navigationPrefix = NOT_AVAILABLE;
         String pageView;
-        String n = !TextUtils.isEmpty(name) ? name.replace(" ", "_") : "n.a.";
+        String n = !TextUtils.isEmpty(name) ? name.replace(" ", "_") : NOT_AVAILABLE;
         if(!TextUtils.isEmpty(navigationPath)){
             pageView = navigationPrefix + "_" + navigationPath + "/" + n;
         } else {

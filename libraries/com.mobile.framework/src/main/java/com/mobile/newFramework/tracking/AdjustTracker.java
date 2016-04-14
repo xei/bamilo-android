@@ -115,8 +115,6 @@ public class AdjustTracker extends AbcBaseTracker {
     private static boolean isEnabled = false;
     
     private static AdjustTracker sInstance;
-    
-    public static final String NOT_AVAILABLE = "n.a.";
 
     public final static String ADJUST_FIRST_TIME_KEY = "adjust_first_time";
 

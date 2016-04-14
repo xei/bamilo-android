@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.R;
 
 /**
@@ -50,8 +51,8 @@ public class DebugAppInfoModel extends BaseDebugModel {
             this.nameLabel.setText(info.versionName + " / " + info.versionCode);
             this.packageLabel.setText(info.packageName);
             this.preInstall.setVisibility(DeviceInfoHelper.getInfo(context).getBoolean(Constants.INFO_PRE_INSTALL) ? View.VISIBLE : View.GONE);
-        } catch (Exception var2) {
-            // ...
+        } catch (Exception e) {
+            Print.w("WARNING: NPE ON SHOW DEBUG APP INFO");
         }
     }
 
