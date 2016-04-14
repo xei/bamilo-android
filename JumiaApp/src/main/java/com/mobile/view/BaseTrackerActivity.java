@@ -1,15 +1,15 @@
 package com.mobile.view;
 
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.mobile.utils.TrackerDelegator;
-import com.parkourmethod.parkour.Parkour;
 
 /**
  * Activity used to manage the tracking and life cycle.
  * @author spereira
  */
-public abstract class BaseTrackerActivity extends Parkour {
+public abstract class BaseTrackerActivity extends AppCompatActivity {
 
     private long mLaunchTime;
 
@@ -18,8 +18,6 @@ public abstract class BaseTrackerActivity extends Parkour {
         super.onCreate(savedInstanceState);
         // For tracking
         mLaunchTime = System.currentTimeMillis();
-        // Tracking
-        TrackerDelegator.onCreateActivity(this);
     }
 
     @Override

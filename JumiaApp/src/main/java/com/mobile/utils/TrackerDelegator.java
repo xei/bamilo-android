@@ -25,7 +25,6 @@ import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.AnalyticsGoogle;
 import com.mobile.newFramework.tracking.FacebookTracker;
-import com.mobile.newFramework.tracking.ParkourTracking;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
@@ -38,7 +37,6 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.catalog.CatalogSort;
-import com.mobile.view.BaseTrackerActivity;
 import com.mobile.view.R;
 
 import org.json.JSONException;
@@ -91,15 +89,6 @@ public class TrackerDelegator {
     public static final String GRAND_TOTAL = "grandTotal";
 
     private static final Context sContext = JumiaApplication.INSTANCE.getApplicationContext();
-
-
-    /**
-     * Called only on resume activity
-     */
-    public static void onCreateActivity(BaseTrackerActivity activity) {
-        // Activate ParkourMethod
-        ParkourTracking.onStartup(activity);
-    }
 
     /**
      * Called only on resume activity

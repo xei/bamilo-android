@@ -9,7 +9,6 @@
     <!-- ######################################## -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />     <!-- ParkourMethod -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />     <!-- ParkourMethod | AD4Push | W:SDK6 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /><!-- W:SDK6 -->
@@ -239,16 +238,6 @@
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
-
-        <!-- ########################################## -->
-        <!-- ############# ParkourMethod ############## -->
-        <!-- ########################################## -->
-
-        <service
-            android:name="com.parkourmethod.parkour.PKBackground"
-            android:enabled="true"
-            android:exported="false"
-            android:process=":PK_background" />
 
     </application>
 
