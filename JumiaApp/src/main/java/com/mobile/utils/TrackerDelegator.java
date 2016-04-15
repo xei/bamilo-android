@@ -96,7 +96,7 @@ public class TrackerDelegator {
      */
     public static void onResumeActivity(long time) {
         AdjustTracker.onResume();
-        TrackerDelegator.trackAppOpenAdjust(sContext, time);
+        trackAppOpenAdjust(sContext, time);
     }
 
     /**
@@ -106,7 +106,6 @@ public class TrackerDelegator {
         AdjustTracker.onPause();
         AnalyticsGoogle.get().dispatchHits();
     }
-
 
     /**
      * Called only on destroy activity
