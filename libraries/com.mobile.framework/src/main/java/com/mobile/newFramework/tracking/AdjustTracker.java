@@ -41,10 +41,9 @@ import java.util.List;
 
 /**
  * @author nunocastro
- *
  */
 public class AdjustTracker extends AbcBaseTracker {
-    
+
     private final static String TAG = AdjustTracker.class.getSimpleName();
 
     public static final String BEGIN_TIME = "beginTime";
@@ -94,7 +93,7 @@ public class AdjustTracker extends AbcBaseTracker {
         public static final String PRODUCTS = "products";
         public static final String PRODUCT = "product";
         public static final String KEYWORDS = "keywords";
-        public static final String NEW_CUSTOMER = "new_customer";   
+        public static final String NEW_CUSTOMER = "new_customer";
         public static final String BRAND = "brand";
         public static final String QUERY = "query";
         public static final String SIZE = "size";
@@ -109,18 +108,18 @@ public class AdjustTracker extends AbcBaseTracker {
         public static final String FB_CONTENT_CATEGORY = "content_category";
 
     }
-    
+
     private static final String TABLET = "Tablet";
     private static final String PHONE = "Phone";
 
     private static boolean isEnabled = false;
-    
+
     private static AdjustTracker sInstance;
 
     public final static String ADJUST_FIRST_TIME_KEY = "adjust_first_time";
 
     private static Context mContext;
-    
+
     private static final String EURO_CURRENCY = "EUR";
 
     private static final String PRODUCT_CONTENT_TYPE = "product";
@@ -133,19 +132,19 @@ public class AdjustTracker extends AbcBaseTracker {
         }
         return sInstance;
     }
-    
+
     public static void startup(Context context) {
         Print.d(TAG, "Adjust Startup");
         sInstance = new AdjustTracker(context);
-    }    
-    
+    }
+
     public AdjustTracker() {
         isEnabled = false;
-        if(mContext != null){
+        if (mContext != null) {
             isEnabled = mContext.getResources().getBoolean(R.bool.adjust_enabled);
         }
     }
-    
+
     public AdjustTracker(Context context) {
         super();
         isEnabled = context.getResources().getBoolean(R.bool.adjust_enabled);
@@ -153,7 +152,7 @@ public class AdjustTracker extends AbcBaseTracker {
         if (isEnabled) {
             initAdjustInstance();
         }
-        
+
     }
 
     private void initAdjustInstance() {
@@ -179,7 +178,7 @@ public class AdjustTracker extends AbcBaseTracker {
         String environment = AdjustConfig.ENVIRONMENT_PRODUCTION;
         LogLevel logLevel = LogLevel.INFO;
         // Case dev
-        if(!context.getResources().getBoolean(R.bool.adjust_is_production_env)) {
+        if (!context.getResources().getBoolean(R.bool.adjust_is_production_env)) {
             environment = AdjustConfig.ENVIRONMENT_SANDBOX;
             //logLevel = LogLevel.VERBOSE;
         }
@@ -240,14 +239,14 @@ public class AdjustTracker extends AbcBaseTracker {
      */
 
     public static void onResume() {
-        if(Adjust.isEnabled()){
+        if (Adjust.isEnabled()) {
             Adjust.onResume();
         }
 
     }
 
-    public static void onPause(){
-        if(Adjust.isEnabled()){
+    public static void onPause() {
+        if (Adjust.isEnabled()) {
             Adjust.onPause();
         }
 
@@ -272,107 +271,106 @@ public class AdjustTracker extends AbcBaseTracker {
                 Adjust.trackEvent(eventHomeScreen);
                 break;
 
-        case PRODUCT_DETAIL_LOADED:
-            AdjustEvent eventPDVScreen = new AdjustEvent(mContext.getString(R.string.adjust_token_view_product));
-            eventPDVScreen = getBaseParameters(eventPDVScreen, bundle);
+            case PRODUCT_DETAIL_LOADED:
+                AdjustEvent eventPDVScreen = new AdjustEvent(mContext.getString(R.string.adjust_token_view_product));
+                addBaseParameters(eventPDVScreen, bundle);
+                addCustomerGenderParameters(eventPDVScreen, (Customer) bundle.getParcelable(CUSTOMER));
 
-            addCustomerGenderParameters(eventPDVScreen, (Customer) bundle.getParcelable(CUSTOMER));
-
-            ProductComplete product = bundle.getParcelable(PRODUCT);
-            if (product != null) {
-                eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, product.getSku());
-                eventPDVScreen.addPartnerParameter(AdjustKeys.PRODUCT, product.getSku());
-                eventPDVScreen.addCallbackParameter(AdjustKeys.CATEGORY_ID, product.getCategoryId());
-                eventPDVScreen.addPartnerParameter(AdjustKeys.CATEGORY_ID, product.getCategoryId());
-                if (product.getBrandId() != 0) {
-                    eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(product.getBrandId()));
-                    eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(product.getBrandId()));
-                }
-
-                // FB - View Product
-                AdjustEvent eventPDVScreenFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_product));
-                // format sku as array
-                String fbSkuList = convertParameterToStringArray(product.getSku());
-                //format price with 2 c.d.
-                String formattedPrice = formatPriceForTracking(product.getPriceForTracking(),PRICE_DECIMAL_FORMAT);
-                eventPDVScreenFB = getFBTrackerBaseParameters(eventPDVScreenFB, bundle);
-                eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
-                eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
-                eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
-                eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
-                // Tracking event
-                Adjust.trackEvent(eventPDVScreenFB);
-            }
-            // Tracking event
-            Adjust.trackEvent(eventPDVScreen);
-            break;
-
-        case PRODUCT_LIST_SORTED:  //View Listing
-            Print.d("ADJUST", "PRODUCT_LIST_SORTED");
-            AdjustEvent eventCatalogSorted = new AdjustEvent(mContext.getString(R.string.adjust_token_view_listing));
-            eventCatalogSorted = getBaseParameters(eventCatalogSorted, bundle);
-
-            addCustomerGenderParameters(eventCatalogSorted, (Customer) bundle.getParcelable(CUSTOMER));
-
-
-            if(bundle.containsKey(AdjustKeys.CATEGORY_ID)){
-                // Add category ID
-                eventCatalogSorted.addCallbackParameter(AdjustKeys.CATEGORY_ID, bundle.getString(AdjustKeys.CATEGORY_ID));
-                eventCatalogSorted.addPartnerParameter(AdjustKeys.CATEGORY_ID, bundle.getString(AdjustKeys.CATEGORY_ID));
-            }
-            if(bundle.containsKey(BRAND_ID) ){
-                // Add brand ID
-                eventCatalogSorted.addCallbackParameter(BRAND_ID, bundle.getString(BRAND_ID));
-                eventCatalogSorted.addPartnerParameter(BRAND_ID, bundle.getString(BRAND_ID));
-            }
-
-
-            ArrayList<ProductRegular> skus = bundle.getParcelableArrayList(TRANSACTION_ITEM_SKUS);
-            StringBuilder sbSkus;
-            sbSkus = new StringBuilder();
-            if (skus.size() > 0) {
-                sbSkus.append("[");
-                final int skusLimit = 3;
-                int skusCount = 0;
-
-                for (ProductRegular sku : skus) {
-                    sbSkus.append(sku.getSku()).append(",");
-                    skusCount++;
-                    if (skusLimit <= skusCount) {
-                        break;
+                ProductComplete product = bundle.getParcelable(PRODUCT);
+                if (product != null) {
+                    eventPDVScreen.addCallbackParameter(AdjustKeys.PRODUCT, product.getSku());
+                    eventPDVScreen.addPartnerParameter(AdjustKeys.PRODUCT, product.getSku());
+                    eventPDVScreen.addCallbackParameter(AdjustKeys.CATEGORY_ID, product.getCategoryId());
+                    eventPDVScreen.addPartnerParameter(AdjustKeys.CATEGORY_ID, product.getCategoryId());
+                    if (product.getBrandId() != 0) {
+                        eventPDVScreen.addCallbackParameter(BRAND_ID, String.valueOf(product.getBrandId()));
+                        eventPDVScreen.addPartnerParameter(BRAND_ID, String.valueOf(product.getBrandId()));
                     }
+
+                    // FB - View Product
+                    AdjustEvent eventPDVScreenFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_product));
+                    // format sku as array
+                    String fbSkuList = convertParameterToStringArray(product.getSku());
+                    //format price with 2 c.d.
+                    String formattedPrice = formatPriceForTracking(product.getPriceForTracking(), PRICE_DECIMAL_FORMAT);
+                    eventPDVScreenFB = getFBTrackerBaseParameters(eventPDVScreenFB, bundle);
+                    eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
+                    eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
+                    eventPDVScreenFB.addCallbackParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
+                    eventPDVScreenFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, fbSkuList);
+                    // Tracking event
+                    Adjust.trackEvent(eventPDVScreenFB);
                 }
-                sbSkus.setLength(sbSkus.length() - 1);
-                sbSkus.append("]");
-                eventCatalogSorted.addCallbackParameter(AdjustKeys.PRODUCTS, sbSkus.toString());
-                eventCatalogSorted.addPartnerParameter(AdjustKeys.PRODUCTS, sbSkus.toString());
-                Adjust.trackEvent(eventCatalogSorted);
-            }
-            //FB - View Listing
-            AdjustEvent eventCatalogSortedFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_listing));
+                // Tracking event
+                Adjust.trackEvent(eventPDVScreen);
+                break;
 
-            eventCatalogSortedFB.addCallbackParameter(AdjustKeys.APP_VERSION, getAppVersion());
-            eventCatalogSortedFB.addPartnerParameter(AdjustKeys.APP_VERSION, getAppVersion());
-            eventCatalogSortedFB.addCallbackParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
-            eventCatalogSortedFB.addPartnerParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
-            eventCatalogSortedFB.addCallbackParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(MAIN_CATEGORY));
-            eventCatalogSortedFB.addPartnerParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(MAIN_CATEGORY));
+            case PRODUCT_LIST_SORTED:  //View Listing
+                Print.d("ADJUST", "PRODUCT_LIST_SORTED");
+                AdjustEvent eventCatalogSorted = new AdjustEvent(mContext.getString(R.string.adjust_token_view_listing));
+                addBaseParameters(eventCatalogSorted, bundle);
 
-            Adjust.trackEvent(eventCatalogSortedFB);
-            break;
+                addCustomerGenderParameters(eventCatalogSorted, (Customer) bundle.getParcelable(CUSTOMER));
 
-        case CART_LOADED:
-            AdjustEvent eventCartLoaded = new AdjustEvent(mContext.getString(R.string.adjust_token_view_cart));
-            eventCartLoaded = getBaseParameters(eventCartLoaded, bundle);
 
-            addCustomerGenderParameters(eventCartLoaded, (Customer) bundle.getParcelable(CUSTOMER));
+                if (bundle.containsKey(AdjustKeys.CATEGORY_ID)) {
+                    // Add category ID
+                    eventCatalogSorted.addCallbackParameter(AdjustKeys.CATEGORY_ID, bundle.getString(AdjustKeys.CATEGORY_ID));
+                    eventCatalogSorted.addPartnerParameter(AdjustKeys.CATEGORY_ID, bundle.getString(AdjustKeys.CATEGORY_ID));
+                }
+                if (bundle.containsKey(BRAND_ID)) {
+                    // Add brand ID
+                    eventCatalogSorted.addCallbackParameter(BRAND_ID, bundle.getString(BRAND_ID));
+                    eventCatalogSorted.addPartnerParameter(BRAND_ID, bundle.getString(BRAND_ID));
+                }
 
-            Adjust.trackEvent(eventCartLoaded);
-            break;
 
-        default:
+                ArrayList<ProductRegular> skus = bundle.getParcelableArrayList(TRANSACTION_ITEM_SKUS);
+                StringBuilder sbSkus;
+                sbSkus = new StringBuilder();
+                if (skus.size() > 0) {
+                    sbSkus.append("[");
+                    final int skusLimit = 3;
+                    int skusCount = 0;
 
-            break;
+                    for (ProductRegular sku : skus) {
+                        sbSkus.append(sku.getSku()).append(",");
+                        skusCount++;
+                        if (skusLimit <= skusCount) {
+                            break;
+                        }
+                    }
+                    sbSkus.setLength(sbSkus.length() - 1);
+                    sbSkus.append("]");
+                    eventCatalogSorted.addCallbackParameter(AdjustKeys.PRODUCTS, sbSkus.toString());
+                    eventCatalogSorted.addPartnerParameter(AdjustKeys.PRODUCTS, sbSkus.toString());
+                    Adjust.trackEvent(eventCatalogSorted);
+                }
+                //FB - View Listing
+                AdjustEvent eventCatalogSortedFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_view_listing));
+
+                eventCatalogSortedFB.addCallbackParameter(AdjustKeys.APP_VERSION, getAppVersion());
+                eventCatalogSortedFB.addPartnerParameter(AdjustKeys.APP_VERSION, getAppVersion());
+                eventCatalogSortedFB.addCallbackParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
+                eventCatalogSortedFB.addPartnerParameter(AdjustKeys.SHOP_COUNTRY, bundle.getString(COUNTRY_ISO));
+                eventCatalogSortedFB.addCallbackParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(MAIN_CATEGORY));
+                eventCatalogSortedFB.addPartnerParameter(AdjustKeys.FB_CONTENT_CATEGORY, bundle.getString(MAIN_CATEGORY));
+
+                Adjust.trackEvent(eventCatalogSortedFB);
+                break;
+
+            case CART_LOADED:
+                AdjustEvent eventCartLoaded = new AdjustEvent(mContext.getString(R.string.adjust_token_view_cart));
+                addBaseParameters(eventCartLoaded, bundle);
+
+                addCustomerGenderParameters(eventCartLoaded, (Customer) bundle.getParcelable(CUSTOMER));
+
+                Adjust.trackEvent(eventCartLoaded);
+                break;
+
+            default:
+
+                break;
         }
     }
 
@@ -391,15 +389,15 @@ public class AdjustTracker extends AbcBaseTracker {
 
     /**
      * Return a string representing an array of string parameters  - only for facebook tracking purposes
-     * */
-    private String convertParameterToStringArray(String parameter){
+     */
+    private String convertParameterToStringArray(String parameter) {
         return "[\"" + parameter + "\"]";
     }
 
 
     /**
      * Return a string representing an array of string parameters provided in a List parameter - only for facebook tracking purposes
-     * */
+     */
     private String convertListParameterToStringArray(List<String> parametersList) {
         StringBuilder sb = new StringBuilder();
         if (CollectionUtils.isNotEmpty(parametersList)) {
@@ -416,12 +414,11 @@ public class AdjustTracker extends AbcBaseTracker {
 
     /**
      * Returns a string price formated with format
-     * */
-    public String formatPriceForTracking(double priceForTracking, String format){
+     */
+    public String formatPriceForTracking(double priceForTracking, String format) {
         return new DecimalFormat(format).format(priceForTracking);
 
     }
-
 
 
     public void trackEvent(TrackingEvent eventTracked, Bundle bundle) {
@@ -448,19 +445,19 @@ public class AdjustTracker extends AbcBaseTracker {
 
             case LOGIN_SUCCESS:
                 AdjustEvent eventLogin = new AdjustEvent(mContext.getString(R.string.adjust_token_log_in));
-                eventLogin = getBaseParameters(eventLogin, bundle);
+                addBaseParameters(eventLogin, bundle);
                 Adjust.trackEvent(eventLogin);
                 break;
 
             case LOGOUT_SUCCESS:
                 AdjustEvent eventLogout = new AdjustEvent(mContext.getString(R.string.adjust_token_log_out));
-                eventLogout = getBaseParameters(eventLogout, bundle);
+                addBaseParameters(eventLogout, bundle);
                 Adjust.trackEvent(eventLogout);
                 break;
 
             case SIGNUP_SUCCESS:
                 AdjustEvent eventSignUp = new AdjustEvent(mContext.getString(R.string.adjust_token_sign_up));
-                eventSignUp = getBaseParameters(eventSignUp, bundle);
+                addBaseParameters(eventSignUp, bundle);
                 Adjust.trackEvent(eventSignUp);
                 break;
 
@@ -472,19 +469,19 @@ public class AdjustTracker extends AbcBaseTracker {
 
                     if (bundle.getBoolean(IS_FIRST_CUSTOMER)) {
                         AdjustEvent eventFirstCustomer = new AdjustEvent(mContext.getString(R.string.adjust_token_customer));
-                        eventFirstCustomer = getBaseParameters(eventFirstCustomer, bundle);
+                        addBaseParameters(eventFirstCustomer, bundle);
                         Adjust.trackEvent(eventFirstCustomer);
                     }
 
                     //convert list to an array in a string
                     String skuList = convertListParameterToStringArray(bundle.getStringArrayList(TRANSACTION_ITEM_SKUS));
                     //format price with 2 c.d.
-                    String formattedPrice = formatPriceForTracking(bundle.getDouble(TRANSACTION_VALUE),PRICE_DECIMAL_FORMAT);
+                    String formattedPrice = formatPriceForTracking(bundle.getDouble(TRANSACTION_VALUE), PRICE_DECIMAL_FORMAT);
 
                     // Track Revenue (Sale or Guest Sale)
                     String eventString = bundle.getBoolean(IS_GUEST_CUSTOMER) ? mContext.getString(R.string.adjust_token_guest_sale) : mContext.getString(R.string.adjust_token_sale);
                     AdjustEvent eventRevenue = new AdjustEvent(eventString);
-                    eventRevenue = getBaseParameters(eventRevenue, bundle);
+                    addBaseParameters(eventRevenue, bundle);
                     eventRevenue.addCallbackParameter(AdjustKeys.SKUS, skuList);
                     eventRevenue.addPartnerParameter(AdjustKeys.SKUS, skuList);
 
@@ -495,7 +492,7 @@ public class AdjustTracker extends AbcBaseTracker {
                     Adjust.trackEvent(eventRevenue);
 
                     AdjustEvent eventTransaction = new AdjustEvent(mContext.getString(R.string.adjust_token_transaction_confirmation));
-                    eventTransaction = getBaseParameters(eventTransaction, bundle);
+                    addBaseParameters(eventTransaction, bundle);
                     eventTransaction.addCallbackParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
                     eventTransaction.addPartnerParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
                     eventTransaction.addCallbackParameter(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER)));
@@ -545,23 +542,16 @@ public class AdjustTracker extends AbcBaseTracker {
 
             case ADD_TO_CART:
                 AdjustEvent eventAddToCart = new AdjustEvent(mContext.getString(R.string.adjust_token_add_to_cart));
-                eventAddToCart = getBaseParameters(eventAddToCart, bundle);
-                eventAddToCart.addCallbackParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                eventAddToCart.addPartnerParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-
-                if (bundle.getDouble(VALUE) > 0d) {
-                    eventAddToCart.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    eventAddToCart.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    eventAddToCart.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                    eventAddToCart.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                }
+                addBaseParameters(eventAddToCart, bundle);
+                addProductSkuParameters(eventAddToCart, bundle);
+                addPriceParameters(eventAddToCart, bundle);
                 Adjust.trackEvent(eventAddToCart);
 
                 AdjustEvent eventAddToCartFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_add_to_cart));
                 //convert string to array string
                 String skuArray = convertParameterToStringArray(bundle.getString(PRODUCT_SKU));
                 // format price to 2 c.d.
-                String formattedPrice = formatPriceForTracking(bundle.getDouble(VALUE),PRICE_DECIMAL_FORMAT);
+                String formattedPrice = formatPriceForTracking(bundle.getDouble(VALUE), PRICE_DECIMAL_FORMAT);
 
                 eventAddToCartFB = getFBTrackerBaseParameters(eventAddToCartFB, bundle);
                 eventAddToCartFB.addCallbackParameter(AdjustKeys.FB_VALUE_TO_SUM, formattedPrice);
@@ -574,78 +564,56 @@ public class AdjustTracker extends AbcBaseTracker {
 
             case REMOVE_FROM_CART:
                 AdjustEvent eventRemoveFromCart = new AdjustEvent(mContext.getString(R.string.adjust_token_remove_from_cart));
-                eventRemoveFromCart = getBaseParameters(eventRemoveFromCart, bundle);
-                eventRemoveFromCart.addCallbackParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                eventRemoveFromCart.addPartnerParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-
-                if (bundle.getDouble(VALUE) > 0d) {
-                    eventRemoveFromCart.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    eventRemoveFromCart.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    eventRemoveFromCart.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                    eventRemoveFromCart.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                }
+                addBaseParameters(eventRemoveFromCart, bundle);
+                addProductSkuParameters(eventRemoveFromCart, bundle);
+                addPriceParameters(eventRemoveFromCart, bundle);
                 Adjust.trackEvent(eventRemoveFromCart);
                 break;
 
             case ADD_TO_WISHLIST:
                 AdjustEvent eventAddToWishlist = new AdjustEvent(mContext.getString(R.string.adjust_token_add_to_wishlist));
-                eventAddToWishlist = getBaseParameters(eventAddToWishlist, bundle);
-                eventAddToWishlist.addCallbackParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                eventAddToWishlist.addPartnerParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                if (bundle.getDouble(VALUE) > 0d) {
-                    eventAddToWishlist.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    eventAddToWishlist.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    eventAddToWishlist.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                    eventAddToWishlist.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                }
+                addBaseParameters(eventAddToWishlist, bundle);
+                addProductSkuParameters(eventAddToWishlist, bundle);
+                addPriceParameters(eventAddToWishlist, bundle);
                 Adjust.trackEvent(eventAddToWishlist);
                 break;
 
             case REMOVE_FROM_WISHLIST:
                 AdjustEvent eventRemoveFromWishlist = new AdjustEvent(mContext.getString(R.string.adjust_token_remove_from_wishlist));
-                eventRemoveFromWishlist = getBaseParameters(eventRemoveFromWishlist, bundle);
-                eventRemoveFromWishlist.addCallbackParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                eventRemoveFromWishlist.addPartnerParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-
-                if (bundle.getDouble(VALUE) > 0d) {
-                    eventRemoveFromWishlist.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    eventRemoveFromWishlist.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
-                    eventRemoveFromWishlist.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                    eventRemoveFromWishlist.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
-                }
+                addBaseParameters(eventRemoveFromWishlist, bundle);
+                addProductSkuParameters(eventRemoveFromWishlist, bundle);
+                addPriceParameters(eventRemoveFromWishlist, bundle);
                 Adjust.trackEvent(eventRemoveFromWishlist);
                 break;
 
             case SHARE:
                 AdjustEvent eventShare = new AdjustEvent(mContext.getString(R.string.adjust_token_social_share));
-                eventShare = getBaseParameters(eventShare, bundle);
-                eventShare.addCallbackParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                eventShare.addPartnerParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
+                addBaseParameters(eventShare, bundle);
+                addProductSkuParameters(eventShare, bundle);
                 Adjust.trackEvent(eventShare);
                 break;
 
             case CALL:
                 AdjustEvent eventCall = new AdjustEvent(mContext.getString(R.string.adjust_token_call));
-                eventCall = getBaseParameters(eventCall, bundle);
+                addBaseParameters(eventCall, bundle);
                 Adjust.trackEvent(eventCall);
                 break;
 
             case ADD_REVIEW:
                 AdjustEvent eventReview = new AdjustEvent(mContext.getString(R.string.adjust_token_product_rate));
-                eventReview = getBaseParameters(eventReview, bundle);
-                eventReview.addCallbackParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
-                eventReview.addPartnerParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
+                addBaseParameters(eventReview, bundle);
+                addProductSkuParameters(eventReview, bundle);
                 Adjust.trackEvent(eventReview);
                 break;
 
             case LOGIN_FB_SUCCESS:
                 AdjustEvent eventLoginFB = new AdjustEvent(mContext.getString(R.string.adjust_token_fb_connect));
-                eventLoginFB = getBaseParameters(eventLoginFB, bundle);
+                addBaseParameters(eventLoginFB, bundle);
                 Adjust.trackEvent(eventLoginFB);
                 break;
             case SEARCH:
                 AdjustEvent eventSearch = new AdjustEvent(mContext.getString(R.string.adjust_token_search));
-                eventSearch = getBaseParameters(eventSearch, bundle);
+                addBaseParameters(eventSearch, bundle);
                 eventSearch.addCallbackParameter(AdjustKeys.KEYWORDS, bundle.getString(SEARCH_TERM));
                 eventSearch.addPartnerParameter(AdjustKeys.KEYWORDS, bundle.getString(SEARCH_TERM));
 
@@ -664,14 +632,13 @@ public class AdjustTracker extends AbcBaseTracker {
     }
 
 
-    private AdjustEvent getBaseParameters(AdjustEvent event, Bundle bundle) {
+    private void addBaseParameters(AdjustEvent event, Bundle bundle) {
         addCountryParameters(event, bundle);
         addUserIdParameters(event, (Customer) bundle.getParcelable(CUSTOMER), bundle.getString(USER_ID));
         addAppVersionParameters(event);
         addDisplayParameters(event);
         addDeviceManufacturerParameters(event);
         addDeviceModelParameters(event);
-        return event;
     }
 
     private AdjustEvent addCustomerGenderParameters(@NonNull AdjustEvent event, @Nullable Customer customer) {
@@ -750,6 +717,22 @@ public class AdjustTracker extends AbcBaseTracker {
         }
     }
 
+    private void addProductSkuParameters(@NonNull AdjustEvent event, @Nullable Bundle bundle) {
+        if (bundle != null) {
+            event.addCallbackParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
+            event.addPartnerParameter(AdjustKeys.SKU, bundle.getString(PRODUCT_SKU));
+        }
+    }
+
+    private void addPriceParameters(@NonNull AdjustEvent event, @Nullable Bundle bundle) {
+        if (bundle != null && bundle.getDouble(VALUE) > 0d) {
+            event.addCallbackParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+            event.addPartnerParameter(AdjustKeys.PRICE, String.valueOf(bundle.getDouble(VALUE)));
+            event.addCallbackParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
+            event.addPartnerParameter(AdjustKeys.CURRENCY_CODE, EURO_CURRENCY);
+        }
+    }
+
     /**
      * sets the SHOP_COUNTRY, APP_VERSION, FB_CONTENT_TYPE, FB_CURRENCY fields for the specific event.
      */
@@ -768,8 +751,8 @@ public class AdjustTracker extends AbcBaseTracker {
     private String getDuration(long begin) {
         return String.valueOf(System.currentTimeMillis() - begin);
     }
-    
-    private String getGender(Customer customer){
+
+    private String getGender(Customer customer) {
         return customer != null ? customer.getGender() : "n.a";
     }
 
@@ -797,15 +780,15 @@ public class AdjustTracker extends AbcBaseTracker {
         double screenInches = Math.sqrt(x + y);
         return (float) Math.round(screenInches * 10) / 10;
     }
-    
+
     private String getDeviceType(boolean isTablet) {
-        return isTablet ? TABLET : PHONE; 
+        return isTablet ? TABLET : PHONE;
     }
 
     private void increaseTransactionCount() {
         SharedPreferences settings = mContext.getSharedPreferences(ADJUST_PREFERENCES, Context.MODE_PRIVATE);
         int purchasesNumber = settings.getInt(PURCHASE_NUMBER, 0);
-        purchasesNumber = purchasesNumber +1;
+        purchasesNumber = purchasesNumber + 1;
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt(PURCHASE_NUMBER, purchasesNumber);
         editor.apply();
