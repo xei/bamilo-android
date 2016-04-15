@@ -1,6 +1,5 @@
 package com.mobile.app;
 
-import com.mobile.newFramework.utils.EventType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.BaseActivity;
