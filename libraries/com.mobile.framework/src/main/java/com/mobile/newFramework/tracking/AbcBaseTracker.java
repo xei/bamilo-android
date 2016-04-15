@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
  */
 public abstract class AbcBaseTracker {
 
-    protected static final String NOT_AVAILABLE = "n.a.";
+    public static final String NOT_AVAILABLE = "n.a.";
 
     public String getId() {
         return NOT_AVAILABLE;
