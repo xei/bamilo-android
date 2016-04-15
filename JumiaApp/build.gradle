@@ -25,7 +25,7 @@ def getAppVersionCode(int releaseVersionCode) {
 android {
 
     compileSdkVersion 23
-    buildToolsVersion '23.0.2'
+    buildToolsVersion '23.0.3'
 
     useLibrary 'org.apache.http.legacy'
 
@@ -104,6 +104,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-debug.txt'
             android.sourceSets {
                 live.java.srcDirs = ['src/debug/java']
+                live.res.srcDirs = ['src/debug/res']
                 live.manifest.srcFile 'src/debug/AndroidManifest.xml'
             }
             // # Building Apps with Over 65K Methods (multi dex support)
@@ -272,22 +273,33 @@ configurations {
     darazLiveWearApp
 }
 
+/**
+ * List of debug tools used only for debuggable apps.
+ */
+List debugToolsDependencies = [
+        // #MULTIDEX
+        'com.android.support:multidex:1.0.1',
+        // #STETHO :: http://facebook.github.io/stetho/
+        'com.facebook.stetho:stetho:1.3.1',
+        'com.facebook.stetho:stetho-okhttp:1.3.1',
+        // #LEAK :: https://github.com/square/leakcanary
+        'com.squareup.leakcanary:leakcanary-android:1.4-beta2',
+        // #SCAPEL :: https://github.com/JakeWharton/scalpel
+        'com.jakewharton.scalpel:scalpel:1.1.2',
+        // #DEBUG DRAWER :: https://github.com/palaima/DebugDrawer
+        'io.palaima.debugdrawer:debugdrawer:0.7.0',
+        'io.palaima.debugdrawer:debugdrawer-base:0.7.0',
+        'io.palaima.debugdrawer:debugdrawer-commons:0.7.0',
+        'io.palaima.debugdrawer:debugdrawer-scalpel:0.7.0',
+]
+
 dependencies {
     /** ############### LOCAL LIBS ############### **/
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':libraries:com.mobile.framework')
     /** ############### DEBUG TOOLS ############### **/
-    // #MULTIDEX
-    debugCompile 'com.android.support:multidex:1.0.1'
-    liveCompile 'com.android.support:multidex:1.0.1'
-    // #STETHO :: http://facebook.github.io/stetho/
-    debugCompile 'com.facebook.stetho:stetho:1.3.1'
-    debugCompile 'com.facebook.stetho:stetho-okhttp:1.3.1'
-    liveCompile 'com.facebook.stetho:stetho:1.3.1'
-    liveCompile 'com.facebook.stetho:stetho-okhttp:1.3.1'
-    // #LEAK :: https://github.com/square/leakcanary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-    liveCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    debugCompile debugToolsDependencies
+    liveCompile debugToolsDependencies
     /** ############### WEAR APP ############### **/
     // ### JUMIA WEAR APP
     jumiaLiveWearApp project(path:':JumiaWear', configuration: 'jumiaLive')

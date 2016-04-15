@@ -28,7 +28,7 @@ import java.io.IOException;
  * @author nunocastro
  * @modified 
  */
-public class Ad4PushTracker {
+public class Ad4PushTracker extends AbcBaseTracker {
 
     private final static String TAG = Ad4PushTracker.class.getSimpleName();
 
@@ -176,6 +176,20 @@ public class Ad4PushTracker {
 
     private boolean isAvailable() {
         return isEnabled && mA4S != null;
+    }
+
+    /*
+     * ######### BASE TRACKER #########
+     */
+
+    @Override
+    public String getId() {
+        return mA4S.getAndroidId();
+    }
+
+    @Override
+    public void debugMode(@NonNull Context context, boolean enable) {
+        // ...
     }
 
     /*

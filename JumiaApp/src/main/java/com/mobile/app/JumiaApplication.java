@@ -146,6 +146,14 @@ public class JumiaApplication extends Application {
         initializationHandler.sendMessage(msg);
     }
 
+    /**
+     * Method used to indicate if is a debuggable app<br>
+     * This is override by DebugApplication
+     */
+    public boolean isDebuggable() {
+        return false;
+    }
+
     /*
     ###########################
      */
