@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
@@ -1023,13 +1024,12 @@ public class TrackerDelegator {
         }
          return event.getCategory();
     }
+
     /**
-     * DeepLink Reattribution, Adjust
+     * DeepLink ReAttribution
      */
-    public static void deeplinkReattribution(Intent intent){
-        if(intent != null && intent.getData() != null){
-            AdjustTracker.deepLinkReAttribution(intent.getData());
-        }
+    public static void deepLinkReAttribution(@NonNull Uri uri) {
+        AdjustTracker.deepLinkReAttribution(uri);
     }
 
     /**
