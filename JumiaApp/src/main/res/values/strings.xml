@@ -322,6 +322,7 @@
     <string name="billing">Billing</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
+    <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
     <string name="first_x_second_placeholder">%1$s x  %2$s</string>
     <string name="qty_placeholder">Qty: %s</string>
     <string name="reorder_label">Reorder</string>

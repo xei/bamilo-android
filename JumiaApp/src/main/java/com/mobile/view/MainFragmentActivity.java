@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
+import com.mobile.app.DebugActivity;
 import com.mobile.app.JumiaApplication;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -69,7 +70,7 @@ import java.util.List;
  * @author sergiopereira
  */
 @UseA4S
-public class MainFragmentActivity extends BaseActivity {
+public class MainFragmentActivity extends DebugActivity {
 
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
 
