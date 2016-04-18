@@ -237,6 +237,19 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
                         holder.returnOrder.setText(getString(R.string.call_return_label));
                     } else {
                         holder.returnOrder.setText(getString(R.string.return_label));
+                        holder.orderCheckbox.setVisibility(View.VISIBLE);
+                        holder.orderCheckbox.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                holder.orderCheckbox.setChecked(item.isCheckedForAction());
+                            }
+                        });
+                        holder.orderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                item.setCheckedForAction(isChecked);
+                            }
+                        });
                     }
 
 
@@ -244,19 +257,6 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
                     holder.returnOrder.setTag(R.id.target_simple_sku, item.getSku());
                     holder.returnOrder.setOnClickListener(this);
 
-                    holder.orderCheckbox.setVisibility(View.VISIBLE);
-                    holder.orderCheckbox.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            holder.orderCheckbox.setChecked(item.isCheckedForAction());
-                        }
-                    });
-                    holder.orderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                        @Override
-                        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                            item.setCheckedForAction(isChecked);
-                        }
-                    });
                 }
 
                 // Set image
@@ -395,8 +395,8 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
         if(TextUtils.isNotEmpty(simpleSku)) {
             final OrderTrackerItem item = getOrderItem(simpleSku);
            if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
-                item.setCheckedForAction(true);
                 // Go To Next Call to return step
+
             } else {
                 // Go To Next return step
             }
