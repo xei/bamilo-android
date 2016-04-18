@@ -48,7 +48,6 @@ import java.util.EnumSet;
 public class OrderStatusFragment extends BaseFragment implements IResponseCallback {
 
     public static final String TAG = OrderStatusFragment.class.getSimpleName();
-    public static final String SAVED_ORDER_STATE = "order_state";
 
     private OrderStatus mOrder;
 
@@ -99,7 +98,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         if (savedInstanceState != null) {
             mOrderNumber = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
             mOrderDate = savedInstanceState.getString(ConstantsIntentExtra.ARG_2);
-            mOrder = savedInstanceState.getParcelable(SAVED_ORDER_STATE);
+            mOrder = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
         }
     }
 
@@ -150,7 +149,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         Print.i(TAG, "ON SAVE SATE");
         outState.putString(ConstantsIntentExtra.ARG_1, mOrderNumber);
         outState.putString(ConstantsIntentExtra.ARG_2, mOrderDate);
-        outState.putParcelable(SAVED_ORDER_STATE, mOrder);
+        outState.putParcelable(ConstantsIntentExtra.DATA, mOrder);
     }
 
     @Override
@@ -238,7 +237,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
             for (final OrderTrackerItem item : items) {
                 // Create new layout item
                 final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
-                if(item.isEligibleToReturn()){
+                if(item.isEligibleToReturn() && CollectionUtils.isNotEmpty(item.getOrderActions())){
                     holder.returnOrder.setVisibility(View.VISIBLE);
                     if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
                         holder.returnOrder.setText(getString(R.string.call_return_label));
@@ -283,7 +282,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                     String orderReturns = "";
                     for (OrderReturn orderReturn : item.getOrderReturns() ) {
                         orderReturns+=String.format(getString(R.string.items_returned_on),
-                                orderReturn.getQuantity(), orderReturn.getDate())+"\n";
+                                orderReturn.getQuantity(), orderReturn.getDate());
                     }
 
                     holder.itemReturns.setText(orderReturns);
@@ -356,6 +355,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         return false;
     }
 
+    @Nullable
     private OrderTrackerItem getOrderItem(final String sku){
         for (OrderTrackerItem  item : mOrder.getItems()) {
             if(TextUtils.equals(sku, item.getSku())){
