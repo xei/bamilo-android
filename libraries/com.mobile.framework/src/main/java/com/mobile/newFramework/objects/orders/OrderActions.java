@@ -25,6 +25,10 @@ public class OrderActions implements Parcelable, IJSONSerializable {
 
     private String mReturnType;
     private String mTarget;
+
+    private String mTitle;
+    private String mBody1;
+    private String mBody2;
     private int mReturnableQuantity;
 
     public OrderActions(){}
@@ -32,7 +36,14 @@ public class OrderActions implements Parcelable, IJSONSerializable {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         mReturnType = jsonObject.getString(RestConstants.TYPE);
-        mTarget = jsonObject.getString(RestConstants.TARGET);
+        if(isCallToReturn()){
+            mTitle = jsonObject.getString(RestConstants.TEXT_TITLE);
+            mBody1 = jsonObject.getString(RestConstants.TEXT_BODY1);
+            mBody2 = jsonObject.getString(RestConstants.TEXT_BODY2);
+        } else {
+            mTarget = jsonObject.getString(RestConstants.TARGET);
+        }
+
         mReturnableQuantity = jsonObject.getInt(RestConstants.RETURNABLE_QUANTITY);
 
         return true;
@@ -48,6 +59,18 @@ public class OrderActions implements Parcelable, IJSONSerializable {
 
     public String getTarget() {
         return mTarget;
+    }
+
+    public String getTitle() {
+        return mTitle;
+    }
+
+    public String getBody1() {
+        return mBody1;
+    }
+
+    public String getBody2() {
+        return mBody2;
     }
 
     public boolean isCallToReturn(){
@@ -74,6 +97,9 @@ public class OrderActions implements Parcelable, IJSONSerializable {
         dest.writeString(mReturnType);
         dest.writeString(mTarget);
         dest.writeInt(mReturnableQuantity);
+        dest.writeString(mTitle);
+        dest.writeString(mBody1);
+        dest.writeString(mBody2);
 
     }
 
@@ -81,6 +107,9 @@ public class OrderActions implements Parcelable, IJSONSerializable {
         mReturnType = in.readString();
         mTarget = in.readString();
         mReturnableQuantity = in.readInt();
+        mTitle = in.readString();
+        mBody1 = in.readString();
+        mBody2 = in.readString();
     }
 
 

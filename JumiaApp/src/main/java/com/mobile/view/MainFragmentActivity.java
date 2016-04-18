@@ -50,6 +50,7 @@ import com.mobile.view.fragments.ProductOffersFragment;
 import com.mobile.view.fragments.ProductSizeGuideFragment;
 import com.mobile.view.fragments.RecentSearchFragment;
 import com.mobile.view.fragments.RecentlyViewedFragment;
+import com.mobile.view.fragments.ReturnCallFragment;
 import com.mobile.view.fragments.ReviewFragment;
 import com.mobile.view.fragments.ReviewWriteFragment;
 import com.mobile.view.fragments.ReviewsFragment;
@@ -386,6 +387,9 @@ public class MainFragmentActivity extends DebugActivity {
                 break;
             case VARIATIONS:
                 fragment = VariationsFragment.getInstance(bundle);
+                break;
+            case RETURN_CALL:
+                fragment = ReturnCallFragment.getInstance(bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
