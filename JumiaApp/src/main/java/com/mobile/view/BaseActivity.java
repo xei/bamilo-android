@@ -19,7 +19,6 @@ import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -111,7 +110,7 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
+public abstract class BaseActivity extends BaseTrackerActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -151,7 +150,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private long beginInMillis;
     private ActionBar mSupportActionBar;
     private boolean isBackButtonEnabled = false;
-    private long mLaunchTime;
     private TabLayout mTabLayout;
     private TabLayout mCheckoutTabLayout;
     private AppBarLayout mAppBarLayout;
@@ -216,8 +214,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         updateContentViewsIfInitialCountrySelection();
         // Set title in AB or TitleBar
         setTitle(titleResId);
-        // For tracking
-        mLaunchTime = System.currentTimeMillis();
     }
 
     /**
@@ -260,8 +256,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
         // Get the cart and perform auto login
         recoverUserDataFromBackground();
-        // Tracking
-        TrackerDelegator.onResumeActivity(mLaunchTime);
     }
 
     @Override
@@ -296,8 +290,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         Print.i(TAG, "ON PAUSE");
         // Hide search component
         hideSearchComponent();
-        // Tracking
-        TrackerDelegator.onPauseActivity();
     }
 
     /*
@@ -320,8 +312,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
-        // Tracking
-        TrackerDelegator.onDestroyActivity();
     }
 
     /**
@@ -998,17 +988,15 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
      * Execute search
      */
     public void showSearchOther(final Suggestion suggestion) {
-        Print.d(TAG, "SEARCH COMPONENT: GOTO PROD LIST "+suggestion.getResult());
+        Print.d(TAG, "SEARCH COMPONENT: GOTO CATALOG " + suggestion.getResult());
         // Tracking
         TrackerDelegator.trackSearchSuggestions(suggestion.getResult());
-
         Bundle bundle = new Bundle();
         bundle.putString(ConstantsIntentExtra.DATA, null);
         bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, suggestion.getResult());
         bundle.putString(ConstantsIntentExtra.SEARCH_QUERY, suggestion.getResult());
         bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gsearch);
         onSwitchFragment(FragmentType.CATALOG, bundle, FragmentController.ADD_TO_BACK_STACK);
-
     }
 
     /**
@@ -1796,11 +1784,9 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
                 showSearchShopsInShop(selectedSuggestion);
                 break;
             case Suggestion.SUGGESTION_CATEGORY:
-                // Show query
                 showSearchCategory(selectedSuggestion);
                 break;
             case Suggestion.SUGGESTION_OTHER:
-                // Show query
                 showSearchOther(selectedSuggestion);
                 break;
         }
