@@ -2,6 +2,7 @@ package com.mobile.newFramework.objects.orders;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
@@ -58,10 +59,12 @@ public class OrderTrackerItem extends ProductRegular {
         return updateDate;
     }
 
+    @Nullable
     public ArrayList<OrderReturn> getOrderReturns() {
         return mOrderReturns;
     }
 
+    @Nullable
     public ArrayList<OrderActions> getOrderActions() {
         return mOrderActions;
     }

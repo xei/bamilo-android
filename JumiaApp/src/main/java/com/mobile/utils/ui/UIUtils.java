@@ -29,8 +29,6 @@ import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * A general Class with UI utils such as set the font <p/><br> 
  *
@@ -282,8 +280,7 @@ public class UIUtils {
     /**
      * Process the click on call to buy
      */
-    public static void onClickCallToOrder(Activity activity) {
-        Log.i(TAG, "ON CLICK TO CALL");
+    public static void onClickCallToOrder(@NonNull Activity activity) {
         // Tracking
         TrackerDelegator.trackCall(activity);
         // Get phone number
