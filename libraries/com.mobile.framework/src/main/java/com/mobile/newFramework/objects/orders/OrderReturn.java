@@ -24,7 +24,7 @@ public class OrderReturn implements Parcelable, IJSONSerializable {
         mQuantity = jsonObject.getInt(RestConstants.QUANTITY);
         mDate = jsonObject.getString(RestConstants.DATE);
 
-        return false;
+        return true;
     }
 
     public int getQuantity() {

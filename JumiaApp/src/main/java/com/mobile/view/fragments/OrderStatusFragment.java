@@ -239,11 +239,8 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 // Create new layout item
                 final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
                 if(item.isEligibleToReturn()){
-                    final String action = item.getOrderActions().get(IntConstants.DEFAULT_POSITION).getReturnType();
                     holder.returnOrder.setVisibility(View.VISIBLE);
-                    if(TextUtils.isEmpty(action)){
-                        holder.returnOrder.setVisibility(View.GONE);
-                    } else if(TextUtils.equals(action, OrderActions.ACTION_CALL_RETURN)){
+                    if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
                         holder.returnOrder.setText(getString(R.string.call_return_label));
                     } else {
                         holder.returnOrder.setText(getString(R.string.return_label));
@@ -403,10 +400,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         // Validate sku
         if(TextUtils.isNotEmpty(simpleSku)) {
             final OrderTrackerItem item = getOrderItem(simpleSku);
-            final String action = item.getOrderActions().get(IntConstants.DEFAULT_POSITION).getReturnType();
-            if(TextUtils.isEmpty(action)){
-                showWarningErrorMessage(getString(R.string.error_occured));
-            } else if(TextUtils.equals(action, OrderActions.ACTION_CALL_RETURN)){
+           if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
                 item.setCheckedForAction(true);
                 // Go To Next Call to return step
             } else {

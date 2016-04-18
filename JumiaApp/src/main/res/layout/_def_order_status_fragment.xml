@@ -71,9 +71,7 @@
                     android:layout_marginTop="@dimen/margin_padding_xl"
                     android:layout_marginBottom="@dimen/margin_padding_l"
                     android:layout_marginLeft="@dimen/margin_padding_xl"
-                    android:layout_marginStart="@dimen/margin_padding_xl"
                     android:layout_marginRight="@dimen/margin_padding_xl"
-                    android:layout_marginEnd="@dimen/margin_padding_xl"
                     android:layout_weight="1" />
     
                 <!-- PAYMENT -->
@@ -86,9 +84,7 @@
                     android:layout_marginTop="@dimen/margin_padding_xl"
                     android:layout_marginBottom="@dimen/margin_padding_l"
                     android:layout_marginLeft="@dimen/margin_padding_xl"
-                    android:layout_marginStart="@dimen/margin_padding_xl"
                     android:layout_marginRight="@dimen/margin_padding_xl"
-                    android:layout_marginEnd="@dimen/margin_padding_xl"
                     android:layout_weight="1" />
     
             </android.support.v7.widget.LinearLayoutCompat>
@@ -116,9 +112,7 @@
                     android:layout_marginTop="@dimen/margin_padding_l"
                     android:layout_marginBottom="@dimen/margin_padding_xl"
                     android:layout_marginLeft="@dimen/margin_padding_xl"
-                    android:layout_marginStart="@dimen/margin_padding_xl"
                     android:layout_marginRight="@dimen/margin_padding_xl"
-                    android:layout_marginEnd="@dimen/margin_padding_xl"
                     android:layout_weight="1" />
     
                 <!-- BILLING ADDRESS -->
@@ -131,9 +125,7 @@
                     android:layout_marginTop="@dimen/margin_padding_l"
                     android:layout_marginBottom="@dimen/margin_padding_xl"
                     android:layout_marginLeft="@dimen/margin_padding_xl"
-                    android:layout_marginStart="@dimen/margin_padding_xl"
                     android:layout_marginRight="@dimen/margin_padding_xl"
-                    android:layout_marginEnd="@dimen/margin_padding_xl"
                     android:layout_weight="1" />
     
             </android.support.v7.widget.LinearLayoutCompat>

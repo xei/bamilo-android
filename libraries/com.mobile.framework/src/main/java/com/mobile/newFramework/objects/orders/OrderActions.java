@@ -20,8 +20,8 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class OrderActions implements Parcelable, IJSONSerializable {
 
-    public final static String ACTION_ONLINE_RETURN = "online_return";
-    public final static String ACTION_CALL_RETURN = "call_return";
+    private final static String ACTION_ONLINE_RETURN = "online_return";
+    private final static String ACTION_CALL_RETURN = "call_return";
 
     private String mReturnType;
     private String mTarget;
@@ -35,7 +35,7 @@ public class OrderActions implements Parcelable, IJSONSerializable {
         mTarget = jsonObject.getString(RestConstants.TARGET);
         mReturnableQuantity = jsonObject.getInt(RestConstants.RETURNABLE_QUANTITY);
 
-        return false;
+        return true;
     }
 
     public int getReturnableQuantity() {
@@ -48,6 +48,10 @@ public class OrderActions implements Parcelable, IJSONSerializable {
 
     public String getTarget() {
         return mTarget;
+    }
+
+    public boolean isCallToReturn(){
+        return TextUtils.equals(getReturnType(), OrderActions.ACTION_CALL_RETURN);
     }
 
     @Override
