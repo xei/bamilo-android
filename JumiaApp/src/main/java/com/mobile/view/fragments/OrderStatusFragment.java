@@ -401,9 +401,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         if(TextUtils.isNotEmpty(simpleSku)) {
             final OrderTrackerItem item = getOrderItem(simpleSku);
            if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
-                item.setCheckedForAction(true);
                 // Go To Next Call to return step
-
 
             } else {
                 // Go To Next return step
