@@ -352,6 +352,8 @@
     <string name="items_returned_on">%1$s items returned on %2$s</string>
     <string name="return_selected_items">return selected items</string>
     <string name="return_label">return</string>
+    <string name="call_return_label">call to return</string>
     <string name="shipment_label">shipment</string>
     <string name="returns_label">returns</string>
+    <string name="warning_no_items_selected">No items selected to return.</string>
 </resources>

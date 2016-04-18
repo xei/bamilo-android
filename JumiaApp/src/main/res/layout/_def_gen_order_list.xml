@@ -27,6 +27,7 @@
             android:drawablePadding="@dimen/margin_padding_s"
             android:layout_gravity="left|start|center_vertical"
             android:visibility="invisible"
+            tools:visibility="visible"
             />
 
         <!-- IMAGE -->
@@ -81,8 +82,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_quantity"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
+                android:layout_marginEnd="@dimen/margin_padding_xs"
+                android:layout_marginRight="@dimen/margin_padding_xs"
                 tools:text="discount"
                 />
 
@@ -103,9 +104,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_discount"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="@dimen/margin_padding_s"
                 android:drawableLeft="@drawable/ic_order_delivery"
-                android:drawablePadding="6dp"
+                android:drawablePadding="@dimen/margin_padding_s"
                 android:drawableStart="@drawable/ic_order_delivery"
                 tools:text="item delivery"
                 />
@@ -144,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_returns_label"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="@dimen/margin_padding_s"
                 android:singleLine="false"
                 android:textColor="@color/black_700"
                 android:visibility="gone"

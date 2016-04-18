@@ -20,7 +20,7 @@ public class OrderedProductViewHolder extends ProductListViewHolder {
     public TextView itemReturnsLabel;
     public TextView itemReturns;
     public CheckBox orderCheckbox;
-    public View returnOrder;
+    public TextView returnOrder;
 
     /**
      * Constructor
@@ -36,6 +36,6 @@ public class OrderedProductViewHolder extends ProductListViewHolder {
         itemReturnsLabel = (TextView) view.findViewById(R.id.item_returns_label);
         itemReturns = (TextView) view.findViewById(R.id.item_returns);
         orderCheckbox = (CheckBox) view.findViewById(R.id.order_item_checkbox);
-        returnOrder = view.findViewById(R.id.order_status_item_button_return);
+        returnOrder = (TextView) view.findViewById(R.id.order_status_item_button_return);
     }
 }

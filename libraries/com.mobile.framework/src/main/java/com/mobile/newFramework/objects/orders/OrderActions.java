@@ -2,12 +2,18 @@ package com.mobile.newFramework.objects.orders;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IntDef;
+import android.support.annotation.StringDef;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by msilva on 4/11/16.
@@ -15,6 +21,7 @@ import org.json.JSONObject;
 public class OrderActions implements Parcelable, IJSONSerializable {
 
     public final static String ACTION_ONLINE_RETURN = "online_return";
+    public final static String ACTION_CALL_RETURN = "call_return";
 
     private String mReturnType;
     private String mTarget;

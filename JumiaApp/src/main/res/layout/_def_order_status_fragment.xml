@@ -4,6 +4,7 @@
                 android:layout_height="match_parent"
                 xmlns:tools="http://schemas.android.com/tools"
                 xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <android.support.v7.widget.LinearLayoutCompat
         android:id="@+id/return_button_container"
         android:layout_width="match_parent"
@@ -11,12 +12,13 @@
         android:layout_alignParentBottom="true"
         style="@style/ViewGroupCompat.Vertical.HeaderDivider">
         <com.mobile.components.customfontviews.TextView
-            android:id="@+id/pdv_button_add_to_save"
+            android:id="@+id/return_selected_button"
             style="@style/Button_1.Secondary.Text_Black_800.Border_400"
             android:layout_margin="@dimen/margin_padding_xl"
             android:text="@string/return_selected_items"
             tools:text="@string/return_selected_items" />
     </android.support.v7.widget.LinearLayoutCompat>
+
     <ScrollView 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
