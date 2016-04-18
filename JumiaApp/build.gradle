@@ -4,7 +4,6 @@ apply plugin: 'usea4s'
 apply plugin: 'pmd'
 apply plugin: 'findbugs'
 
-
 /**
  * Check if BUILD_VERSION_NUMBER environment variable is defined and set it as version code.
  * This var is defined when the apk is being created by jenkins.
@@ -197,7 +196,6 @@ android {
             }
         }
 
-
         /**
          * #################### DARAZ ####################
          */
@@ -247,7 +245,7 @@ android {
     lintOptions {
         disable 'RtlSymmetry', 'IconLocation', 'IconDipSize', 'IconXmlAndPng', 'RtlHardcoded'
         abortOnError false
-        disable 'ExtraTranslation','MissingTranslation'
+        disable 'ExtraTranslation', 'MissingTranslation'
     }
 
     applicationVariants.all { variant ->
@@ -464,5 +462,5 @@ def sendEmailToTeam(String subject, String content) {
     def recipients = "sergio.pereira@africainternetgroup.com"
     content = content.replaceAll(/\033\[[0-9;]*m/, "") //remove possible shell color chars
     new File(TEMP_FILE).write(content)
-    executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < ' + TEMP_FILE ])
+    executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < ' + TEMP_FILE])
 }

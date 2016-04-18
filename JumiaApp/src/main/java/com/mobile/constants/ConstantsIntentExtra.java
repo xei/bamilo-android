@@ -19,10 +19,6 @@ public class ConstantsIntentExtra {
     //
     private final static String mPackage = "com.mobile.view.";
 
-    // ########### BASE ###########
-    public static final String IS_NESTED_FRAGMENT = mPackage + "isNestedFragment";
-    public static final String CONTENT_ID = mPackage + "ContentId";
-
     // ########### Search ###########
     public static final String SEARCH_QUERY = mPackage + "SearchStr";
 
@@ -38,9 +34,6 @@ public class ConstantsIntentExtra {
     public static final String PRODUCT = mPackage + "Product";
     public static final String PRODUCT_BRAND = mPackage + "brand";
     public static final String OUT_OF_STOCK = mPackage + "OutOfStock";
-
-    // ########### Checkout ###########
-    public static final String CONTENT_TITLE = mPackage + "ContentTitle";
 
     // ########### REVIEW ##############
     public static final String REVIEW_TITLE = mPackage + "ReviewTitle";
@@ -99,12 +92,14 @@ public class ConstantsIntentExtra {
     // ########### MY ORDER ##############
     public static final String PRODUCT_INFO_POS = "ProductInfoPosition";
 
+    // TODO :: Use BaseFragmentSwitcher and UISwitcher
     public static final String DATA = mPackage + "data";
     public static final String FLAG_1 = mPackage + "flag1";
     public static final String ARG_1 = mPackage + "arg1";
     public static final String ARG_2 = mPackage + "arg2";
     public static final String ARG_3 = mPackage + "arg3";
-
+    @Deprecated public static final String CONTENT_ID = mPackage + "ContentId";
+    @Deprecated public static final String CONTENT_TITLE = mPackage + "ContentTitle";
 
     // ########## RICH RELEVANCE ############
     public static final String RICH_RELEVANCE_HASH = mPackage + "RichRelevanceHash";

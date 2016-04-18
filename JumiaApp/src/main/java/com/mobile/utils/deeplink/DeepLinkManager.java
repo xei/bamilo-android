@@ -484,7 +484,7 @@ public class DeepLinkManager {
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
-            bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEPLINK);
+            bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEP_LINK);
         }
         return bundle;
     }

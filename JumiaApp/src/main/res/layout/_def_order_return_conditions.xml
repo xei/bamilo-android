@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ViewGroupCompat.Vertical.MiddleDivider"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--SCROLLABLE CONTAINER-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--TITLE-->
+            <com.mobile.components.customfontviews.TextView
+                style="@style/HeaderStyle.Multiline"
+                android:text="@string/order_return_conditions_title" />
+            <!--Multiline-->
+
+            <!--CMS-->
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/order_return_conditions_text_cms"
+                style="@style/MultiLineStyle.Black"
+                tools:text="CMS BLOCK" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <!--BUTTON-->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/order_return_conditions_button_ok"
+        style="@style/Button_1.Shop"
+        android:layout_margin="@dimen/margin_padding_xl"
+        android:text="@string/ok_got_it" />
+
+</android.support.v7.widget.LinearLayoutCompat>

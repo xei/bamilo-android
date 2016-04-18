@@ -42,6 +42,7 @@ import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
+import com.mobile.view.fragments.OrderReturnConditionsFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
@@ -247,7 +248,7 @@ public class MainFragmentActivity extends DebugActivity {
                 break;
             case CATALOG_SELLER:
             case CATALOG_BRAND:
-            case CATALOG_DEEPLINK:
+            case CATALOG_DEEP_LINK:
             case CATALOG_CATEGORY:
             case CATALOG:
                 // Default
@@ -303,6 +304,13 @@ public class MainFragmentActivity extends DebugActivity {
                 break;
             case ORDER_STATUS:
                 fragment = OrderStatusFragment.getInstance(bundle);
+                break;
+            case ORDER_RETURN_CONDITIONS:
+                fragment = OrderReturnConditionsFragment.getInstance(bundle);
+                break;
+            case ORDER_RETURN_REASON:
+                // TODO : ORDER RETURN REASON
+                fragment = StaticPageFragment.getInstance(bundle);
                 break;
             case CHOOSE_COUNTRY:
                 fragment = ChooseCountryFragment.getInstance();

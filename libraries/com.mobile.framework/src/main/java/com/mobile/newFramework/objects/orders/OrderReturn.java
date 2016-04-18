@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
+import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.pojo.RestConstants;
 
 import org.json.JSONException;
@@ -23,7 +24,6 @@ public class OrderReturn implements Parcelable, IJSONSerializable {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         mQuantity = jsonObject.getInt(RestConstants.QUANTITY);
         mDate = jsonObject.getString(RestConstants.DATE);
-
         return true;
     }
 
@@ -42,7 +42,7 @@ public class OrderReturn implements Parcelable, IJSONSerializable {
 
     @Override
     public int getRequiredJson() {
-        return 0;
+        return RequiredJson.NONE;
     }
 
     @Override

@@ -17,7 +17,6 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.checkout.GetOrderStatusHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
-import com.mobile.newFramework.objects.orders.OrderActions;
 import com.mobile.newFramework.objects.orders.OrderReturn;
 import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
@@ -35,7 +34,6 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.OrderedProductViewHolder;
-import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -45,7 +43,7 @@ import java.util.EnumSet;
  * Class used to show the order status.
  * @author spereira
  */
-public class OrderStatusFragment extends BaseFragment implements IResponseCallback {
+public class OrderStatusFragment extends BaseFragmentSwitcher implements IResponseCallback {
 
     public static final String TAG = OrderStatusFragment.class.getSimpleName();
 
@@ -57,7 +55,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     private ViewGroup mShippingView;
     private ViewGroup mBillingView;
     private ViewGroup mOrderItems;
-    private View mReturnItemsButton;
     private String mOrderDate;
 
     /**
@@ -119,11 +116,8 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         mBillingView = (ViewGroup) view.findViewById(R.id.order_status_address_billing);
         // Get order items container
         mOrderItems = (ViewGroup) view.findViewById(R.id.order_status_items);
-
         // Get return items container
-        mReturnItemsButton = view.findViewById(R.id.return_selected_button);
-        mReturnItemsButton.setOnClickListener(this);
-
+        view.findViewById(R.id.return_selected_button).setOnClickListener(this);
         // Validate state
         onValidateState();
     }
@@ -333,18 +327,20 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         }
     }
 
-    private void onClickReturnSelected(){
-        if(validateReturnAllSelected()){
-            // Go To next step.
+    private void onClickReturnSelected() {
+        if (!validateReturnAllSelected()) {
+            // TODO : Get target link
+            new UISwitcher(getBaseActivity(), FragmentType.ORDER_RETURN_CONDITIONS)
+                    .addContentId(TargetLink.getIdFromTargetLink("static_page::terms_mobile"))
+                    .noBackStack()
+                    .run();
         } else {
             showWarningErrorMessage(getString(R.string.warning_no_items_selected));
         }
-
     }
 
     /**
      * Validate if there is any item selected.
-     * @return
      */
     private boolean validateReturnAllSelected(){
         for (OrderTrackerItem item  : mOrder.getItems()) {
@@ -368,7 +364,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
     /**
      * Open PDV
-     * @param view
      */
     private void goToProductDetails(final View view) {
         String sku = TargetLink.getSkuFromSimple((String) view.getTag(R.id.target_simple_sku));
@@ -383,7 +378,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
     /**
      * Re-order
-     * @param view
      */
     private void onClickReOrder(final View view) {
         // Get sku from view

@@ -357,4 +357,6 @@
     <string name="shipment_label">shipment</string>
     <string name="returns_label">returns</string>
     <string name="warning_no_items_selected">No items selected to return.</string>
+    <string name="ok_got_it">OK, GOT IT</string>
+    <string name="order_return_conditions_title">WE ARE SORRY THAT YOU ARE NOT FULLY SATISFIED WITH YOUR PRODUCT</string>
 </resources>

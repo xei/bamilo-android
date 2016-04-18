@@ -14,6 +14,11 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="HeaderStyle.Multiline">
+        <item name="android:singleLine">false</item>
+        <item name="android:layout_height">64dp</item>
+    </style>
+
     <style name="HeaderStyle.Center">
         <item name="android:gravity">center</item>
     </style>
@@ -42,6 +47,10 @@
 
     <style name="MultiLineStyle.Space_XS">
         <item name="android:lineSpacingExtra">@dimen/margin_padding_xs</item>
+    </style>
+
+    <style name="MultiLineStyle.Black">
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="WishListButtonStyle">

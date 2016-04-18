@@ -74,12 +74,22 @@ public class OrderTrackerItem extends ProductRegular {
         return isEligibleToReturn;
     }
 
+    public boolean isCheckedForAction() {
+        return isCheckedForAction;
+    }
+
+    /**
+     * Sets whether this item is selected to return or not.
+     */
+    public void setCheckedForAction(boolean checkedForAction) {
+        isCheckedForAction = checkedForAction;
+    }
 
     /*
-         * (non-Javadoc)
-         *
-         * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
-         */
+     * (non-Javadoc)
+     *
+     * @see com.mobile.framework.objects.IJSONSerializable#initialize(org.json.JSONObject)
+     */
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
@@ -91,7 +101,7 @@ public class OrderTrackerItem extends ProductRegular {
 
         JSONArray itemReturns = jsonObject.optJSONArray(RestConstants.RETURNS);
         if(CollectionUtils.isNotEmpty(itemReturns)){
-            mOrderReturns = new ArrayList();
+            mOrderReturns = new ArrayList<>();
             for (int i = 0; i < itemReturns.length(); i++) {
                 OrderReturn orderReturn = new OrderReturn();
                 try {
@@ -106,7 +116,7 @@ public class OrderTrackerItem extends ProductRegular {
 
         JSONArray itemActions = jsonObject.optJSONArray(RestConstants.ACTIONS);
         if(CollectionUtils.isNotEmpty(itemActions)){
-            mOrderActions = new ArrayList();
+            mOrderActions = new ArrayList<>();
             for (int i = 0; i < itemActions.length(); i++) {
                 OrderActions orderActions = new OrderActions();
                 try {
@@ -185,15 +195,4 @@ public class OrderTrackerItem extends ProductRegular {
         }
     };
 
-    public boolean isCheckedForAction() {
-        return isCheckedForAction;
-    }
-
-    /**
-     * Sets whether this item is selected to return or not.
-     * @param checkedForAction
-     */
-    public void setCheckedForAction(boolean checkedForAction) {
-        isCheckedForAction = checkedForAction;
-    }
 }
