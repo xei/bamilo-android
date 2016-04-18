@@ -33,6 +33,7 @@ public class OrderTrackerItem extends ProductRegular {
     private boolean isCheckedForAction;
     private ArrayList<OrderReturn> mOrderReturns;
     private ArrayList<OrderActions> mOrderActions;
+    private boolean isEligibleToReturn = false;
 
 
 
@@ -70,16 +71,7 @@ public class OrderTrackerItem extends ProductRegular {
     }
 
     public boolean isEligibleToReturn(){
-        boolean isEligible = false;
-        if(CollectionUtils.isNotEmpty(mOrderActions)){
-            for (OrderActions action : mOrderActions) {
-                if(action.getReturnableQuantity() > 0){
-                    isEligible = true;
-                }
-            }
-        }
-
-        return isEligible;
+        return isEligibleToReturn;
     }
 
 
@@ -119,6 +111,9 @@ public class OrderTrackerItem extends ProductRegular {
                 OrderActions orderActions = new OrderActions();
                 try {
                     orderActions.initialize(itemActions.getJSONObject(i));
+                    if(orderActions.getReturnableQuantity() > 0){
+                        isEligibleToReturn = true;
+                    }
                     mOrderActions.add(orderActions);
                 } catch (JSONException e){
                     e.printStackTrace();
