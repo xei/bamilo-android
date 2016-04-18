@@ -315,7 +315,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
         // Case call to order
         else if (id == R.id.pdv_button_call) {
-            onClickCallToOrder();
+            UIUtils.onClickCallToOrder(getBaseActivity());
         }
         // Case buy button
         else if (id == R.id.pdv_button_buy) {
@@ -949,23 +949,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
         }
     }
 
-    /**
-     * Process the click on call to buy
-     */
-    private void onClickCallToOrder() {
-        Log.i(TAG, "ON CLICK TO CALL");
-        // Tracking
-        TrackerDelegator.trackCall(getBaseActivity());
-        // Get phone number
-        SharedPreferences sharedPrefs = getActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "");
-        // Make a call
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + mPhone2Call));
-        if (intent.resolveActivity(getBaseActivity().getPackageManager()) != null) {
-            startActivity(intent);
-        }
-    }
+
 
     /**
      * Process the click on wish list button

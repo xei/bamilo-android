@@ -1,7 +1,11 @@
 package com.mobile.utils.ui;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
@@ -17,9 +21,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 /**
@@ -268,6 +275,23 @@ public class UIUtils {
         }
 
         checkBox.setCompoundDrawables(null, null, null, null);
+    }
+
+    /**
+     * Process the click on call to buy
+     */
+    public static void onClickCallToOrder(@NonNull Activity activity) {
+        // Tracking
+        TrackerDelegator.trackCall(activity);
+        // Get phone number
+        SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, "");
+        // Make a call
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + mPhone2Call));
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivity(intent);
+        }
     }
 
 }
