@@ -365,6 +365,9 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         return false;
     }
 
+    /**
+     * Check whether there is more then 2 items with action online return type
+      */
     private boolean displayReturnSelected(){
         boolean result = false;
         int count = 0;
