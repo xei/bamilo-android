@@ -12,6 +12,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.view.Display;
 import android.view.WindowManager;
@@ -237,7 +238,7 @@ public class DeviceInfoHelper {
     /**
      * Application is debuggable.
      */
-    public static boolean isDebuggable(Application application) {
+    public static boolean isDebuggable(@NonNull Application application) {
         return 0 != (application.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE);
     }
     

@@ -7,7 +7,6 @@ import com.facebook.stetho.Stetho;
 import com.facebook.stetho.okhttp.StethoInterceptor;
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.AigRestAdapter;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -33,9 +32,9 @@ public class DebugTools {
     /**
      * Install and initialize debug tools before application creation.
      */
-    public static void onCreateApplication(Application application) {
+    public static void onCreateApplication(DebugApplication application) {
         // Get flag from application
-        isDebuggable = DeviceInfoHelper.isDebuggable(application);
+        isDebuggable = application.isDebuggable();
         // Validate and initialize
         if (isDebuggable) {
             // Logs

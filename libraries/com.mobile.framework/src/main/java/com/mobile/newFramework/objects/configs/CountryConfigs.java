@@ -25,11 +25,7 @@ import java.util.List;
  */
 public class CountryConfigs implements IJSONSerializable, Parcelable {
 
-    //private static final String TAG = CountryConfigs.class.getSimpleName();
-
     public static final String CURRENCY_LEFT_POSITION = "1";
-
-    // private static final String CURRENCY_RIGHT_POSITION = "0";
 
     public static final String STRING_START_PLACEHOLDER = "%s ";
 
@@ -108,26 +104,26 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     @Override
     public String toString() {
         return "####################" +
-                "\ncurrency_iso: " + mCurrencyIso +
-                "\ncurrency_symbol: " + mCurrencySymbol +
-                "\ncurrency_position: " + mCurrencyPosition +
-                "\nno_decimals: " + mNoDecimals +
-                "\nthousands_sep: " + mThousandsSep +
-                "\ndecimals_sep: " + mDecimalsSep +
-                "\ngtm_android: " + mGTMId +
-                "\nga_android_id: " + mGaId +
-                "\nphone_number: " + mPhoneNumber +
-                "\ncs_email: " + mCsEmail +
-                "\nfacebook_is_available: " + isFacebookAvailable +
-                "\nrating: " + isRatingEnable +
-                "\nrating_login: " + isRatingLoginRequired +
-                "\nreview: " + isReviewEnable +
-                "\nhas_cart_popup: " + hasCartPopup +
-                "\nrich_relevance_enabled: " + mIsRichRelevanceEnabled +
-                "\nsuggester_provider: " + mSuggesterProvider +
-                "\napplication_id: " + mApplicationId +
-                "\nsuggester_api_key: " + mSuggesterApiKey +
-                "\nnamespace_prefix: " + mNamespacePrefix
+                "\nCurrency ISO: " + mCurrencyIso +
+                "\nCurrency Symbol: " + mCurrencySymbol +
+                "\nCurrency Position: " + mCurrencyPosition +
+                "\nNo Decimals: " + mNoDecimals +
+                "\nThousands Sep: " + mThousandsSep +
+                "\nDecimals Sep: " + mDecimalsSep +
+                "\nGTM Id: " + mGTMId +
+                "\nGA Id: " + mGaId +
+                "\nPhone: " + mPhoneNumber +
+                "\nEmail: " + mCsEmail +
+                "\nFacebook: " + isFacebookAvailable +
+                "\nRating: " + isRatingEnable +
+                "\nRating Login: " + isRatingLoginRequired +
+                "\nReview: " + isReviewEnable +
+                "\nCart Popup: " + hasCartPopup +
+                "\nRich Relevance: " + mIsRichRelevanceEnabled +
+                "\nSuggester Provider: " + mSuggesterProvider +
+                "\nApplication Id: " + mApplicationId +
+                "\nSuggester Api Key: " + mSuggesterApiKey +
+                "\nNamespace Prefix: " + mNamespacePrefix
                 ;
     }
 
@@ -140,8 +136,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         mCurrencySymbol = jsonObject.getString(RestConstants.CURRENCY_SYMBOL);
         mCurrencyPosition = jsonObject.optString(RestConstants.CURRENCY_POSITION);
         // Fallback for currency
-//        if (TextUtils.isEmpty(mCurrencySymbol)) {
-        if (mCurrencySymbol.equals("")) {
+        if (TextUtils.isEmpty(mCurrencySymbol)) {
             mCurrencySymbol = mCurrencyIso;
         }
         // Get price info
@@ -175,6 +170,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         try {
             mobileAbout = new MobileAbout(jsonObject);
         } catch (JSONException ex) {
+            Print.w("WARNING: JSE ON PARSE MOBILE ABOUT");
         }
 
         hasCartPopup = jsonObject.optBoolean(RestConstants.HAS_CART_POPUP);
@@ -278,8 +274,6 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     public boolean isFacebookAvailable() {
         return isFacebookAvailable;
     }
-
-    public String getSuggesterProvider() { return mSuggesterProvider; }
 
     public String getApplicationId() { return mApplicationId; }
 

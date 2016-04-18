@@ -32,7 +32,6 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -472,7 +471,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 showWarningErrorMessage(getString(R.string.ssl_error_generic));
             }
             // Case in dev continue
-            if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
+            if (JumiaApplication.INSTANCE.isDebuggable()) {
                 handler.proceed();
             } else {
                 String url = view.getUrl();
