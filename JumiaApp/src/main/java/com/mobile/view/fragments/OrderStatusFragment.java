@@ -369,19 +369,16 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
      * Check whether there is more then 2 items with action online return type
       */
     private boolean displayReturnSelected(){
-        boolean result = false;
         int count = 0;
         for (OrderTrackerItem item  : mOrder.getItems()) {
             if (CollectionUtils.isNotEmpty(item.getOrderActions()) && !item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()) {
-                count++;
+                if(count++ > 1) {
+                    return true;
+                }
             }
         }
 
-        if(count > 1){
-            result = true;
-        }
-
-        return result;
+        return false;
     }
 
     @Nullable
@@ -434,7 +431,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                Bundle bundle = new Bundle();
                bundle.putParcelable(ConstantsIntentExtra.DATA, item);
                bundle.putString(ConstantsIntentExtra.ARG_1, mOrder.getId());
-               getBaseActivity().onSwitchFragment(FragmentType.RETURN_CALL, bundle, FragmentController.ADD_TO_BACK_STACK);
+               getBaseActivity().onSwitchFragment(FragmentType.ORDER_RETURN_CALL, bundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 // Go To Next return step
             }
