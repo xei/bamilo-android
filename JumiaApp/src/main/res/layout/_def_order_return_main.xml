@@ -14,15 +14,16 @@
         android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/order_return_main_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <!--TITLE-->
             <com.mobile.components.customfontviews.TextView
+                android:id="@+id/order_return_main_title"
                 style="@style/HeaderStyle.Multiline"
-                android:text="@string/order_return_conditions_title" />
-            <!--Multiline-->
+                tools:text="@string/order_return_conditions_title" />
 
             <!--CMS-->
             <com.mobile.components.customfontviews.TextView
@@ -36,9 +37,9 @@
 
     <!--BUTTON-->
     <com.mobile.components.customfontviews.TextView
-        android:id="@+id/order_return_conditions_button_ok"
+        android:id="@+id/order_return_main_button_ok"
         style="@style/Button_1.Shop"
         android:layout_margin="@dimen/margin_padding_xl"
-        android:text="@string/ok_got_it" />
+        tools:text="@string/ok_got_it" />
 
 </android.support.v7.widget.LinearLayoutCompat>
