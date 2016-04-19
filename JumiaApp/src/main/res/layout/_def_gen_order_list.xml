@@ -13,7 +13,7 @@
         style="@style/grid_row_style"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         >
 
@@ -68,9 +68,20 @@
                 />
 
             <com.mobile.components.customfontviews.TextView
-                android:id="@+id/item_quantity"
+                android:id="@+id/item_size"
                 style="@style/TextBase.Body.Black_800"
                 android:layout_below="@id/item_name"
+                android:maxLines="2"
+                android:singleLine="false"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="size: XL"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_quantity"
+                style="@style/TextBase.Body.Black_800"
+                android:layout_below="@id/item_size"
                 android:maxLines="2"
                 android:singleLine="false"
                 tools:text="quantity"
