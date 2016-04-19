@@ -43,14 +43,14 @@ public abstract class BaseFragmentRequester extends BaseFragmentSwitcher impleme
      * On Success
      */
     @Override
-    public void onRequestComplete(BaseResponse response) {
+    public final void onRequestComplete(BaseResponse response) {
         // Validate the current UI state
         if (isOnStoppingProcess || getBaseActivity() == null) {
             Print.w("RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Super handle
-        if(super.handleSuccessEvent(response)) {
+        if(onHandleSuccess(response)) {
             Print.i("SUPER HANDLE SUCCESS RESPONSE");
             showFragmentContentContainer();
             return;
@@ -63,20 +63,34 @@ public abstract class BaseFragmentRequester extends BaseFragmentSwitcher impleme
      * On Error
      */
     @Override
-    public void onRequestError(BaseResponse response) {
+    public final void onRequestError(BaseResponse response) {
         // Validate the current UI state
         if (isOnStoppingProcess || getBaseActivity() == null) {
             Print.w("RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
             return;
         }
         // Super handle
-        if(super.handleErrorEvent(response)) {
+        if(onHandleError(response)) {
             Print.i("SUPER HANDLE ERROR RESPONSE");
             showFragmentContentContainer();
             return;
         }
         // Delegate
         onErrorResponse(response);
+    }
+
+    /*
+     * ##### HANDLE SUPER FRAGMENT #####
+     */
+
+    private boolean onHandleSuccess(BaseResponse response) {
+        // TODO: Move the super method to here
+        return super.handleSuccessEvent(response);
+    }
+
+    private boolean onHandleError(final BaseResponse response) {
+        // TODO: Move the super method to here
+        return super.handleErrorEvent(response);
     }
 
     /*

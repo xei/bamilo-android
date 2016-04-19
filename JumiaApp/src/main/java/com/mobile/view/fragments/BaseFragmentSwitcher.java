@@ -89,8 +89,8 @@ public abstract class BaseFragmentSwitcher extends BaseFragment {
         private final static String TITLE = "title";
         private final static String CONTENT_ID = "content_id";
 
-        private BaseActivity mActivity;
-        private FragmentType mType;
+        private final BaseActivity mActivity;
+        private final FragmentType mType;
         private Bundle mBundle;
         private boolean addToBackStack = true;
 
