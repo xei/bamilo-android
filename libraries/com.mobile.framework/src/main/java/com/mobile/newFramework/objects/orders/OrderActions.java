@@ -3,6 +3,7 @@ package com.mobile.newFramework.objects.orders;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
@@ -25,14 +26,25 @@ public class OrderActions implements Parcelable, IJSONSerializable {
 
     private String mReturnType;
     private String mTarget;
+
+    private String mTitle;
+    private String mBody1;
+    private String mBody2;
     private int mReturnableQuantity;
 
     public OrderActions(){}
 
     @Override
-    public boolean initialize(JSONObject jsonObject) throws JSONException {
+    public boolean initialize(final JSONObject jsonObject) throws JSONException {
         mReturnType = jsonObject.getString(RestConstants.TYPE);
-        mTarget = jsonObject.getString(RestConstants.TARGET);
+        if(isCallToReturn()){
+            mTitle = jsonObject.getString(RestConstants.TEXT_TITLE);
+            mBody1 = jsonObject.getString(RestConstants.TEXT_BODY1);
+            mBody2 = jsonObject.getString(RestConstants.TEXT_BODY2);
+        } else {
+            mTarget = jsonObject.getString(RestConstants.TARGET);
+        }
+
         mReturnableQuantity = jsonObject.getInt(RestConstants.RETURNABLE_QUANTITY);
 
         return true;
@@ -42,12 +54,29 @@ public class OrderActions implements Parcelable, IJSONSerializable {
         return mReturnableQuantity;
     }
 
+    @Nullable
     public String getReturnType() {
         return mReturnType;
     }
 
+    @Nullable
     public String getTarget() {
         return mTarget;
+    }
+
+    @Nullable
+    public String getTitle() {
+        return mTitle;
+    }
+
+    @Nullable
+    public String getBody1() {
+        return mBody1;
+    }
+
+    @Nullable
+    public String getBody2() {
+        return mBody2;
     }
 
     public boolean isCallToReturn(){
@@ -70,28 +99,34 @@ public class OrderActions implements Parcelable, IJSONSerializable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeString(mReturnType);
         dest.writeString(mTarget);
         dest.writeInt(mReturnableQuantity);
+        dest.writeString(mTitle);
+        dest.writeString(mBody1);
+        dest.writeString(mBody2);
 
     }
 
-    protected OrderActions(Parcel in) {
+    protected OrderActions(final Parcel in) {
         mReturnType = in.readString();
         mTarget = in.readString();
         mReturnableQuantity = in.readInt();
+        mTitle = in.readString();
+        mBody1 = in.readString();
+        mBody2 = in.readString();
     }
 
 
     public static final Creator<OrderActions> CREATOR = new Creator<OrderActions>() {
         @Override
-        public OrderActions createFromParcel(Parcel in) {
+        public OrderActions createFromParcel(final Parcel in) {
             return new OrderActions(in);
         }
 
         @Override
-        public OrderActions[] newArray(int size) {
+        public OrderActions[] newArray(final int size) {
             return new OrderActions[size];
         }
     };
