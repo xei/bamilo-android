@@ -43,6 +43,7 @@ import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
+import com.mobile.view.fragments.OrderReturnCallFragment;
 import com.mobile.view.fragments.OrderReturnConditionsFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
@@ -52,7 +53,6 @@ import com.mobile.view.fragments.ProductOffersFragment;
 import com.mobile.view.fragments.ProductSizeGuideFragment;
 import com.mobile.view.fragments.RecentSearchFragment;
 import com.mobile.view.fragments.RecentlyViewedFragment;
-import com.mobile.view.fragments.OrderReturnCallFragment;
 import com.mobile.view.fragments.ReviewFragment;
 import com.mobile.view.fragments.ReviewWriteFragment;
 import com.mobile.view.fragments.ReviewsFragment;
@@ -398,7 +398,7 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(VariationsFragment.class, bundle);
                 break;
             case ORDER_RETURN_CALL:
-                fragment = OrderReturnCallFragment.getInstance(bundle);
+                fragment = newFragmentInstance(OrderReturnCallFragment.class, bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");

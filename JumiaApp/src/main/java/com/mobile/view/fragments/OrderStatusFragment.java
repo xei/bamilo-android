@@ -34,6 +34,7 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.OrderedProductViewHolder;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
     private ViewGroup mBillingView;
     private ViewGroup mOrderItems;
     private String mOrderDate;
+    private View mReturnItemsContainer;
 
     /**
      * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
@@ -109,10 +111,8 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
         // Get order items container
         mOrderItems = (ViewGroup) view.findViewById(R.id.order_status_items);
         // Get return items container
-        mReturnItemsButton = view.findViewById(R.id.return_selected_button);
+        view.findViewById(R.id.return_selected_button).setOnClickListener(this);
         mReturnItemsContainer = view.findViewById(R.id.return_button_container);
-        mReturnItemsButton.setOnClickListener(this);
-
         // Validate state
         onValidateState();
     }
@@ -223,14 +223,9 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
     private void showOrderItems(@NonNull ViewGroup group, @Nullable ArrayList<OrderTrackerItem> items) {
         if (CollectionUtils.isNotEmpty(items)) {
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
-
+            // Check whether there is more then 2 items with action online return type
+            UIUtils.setVisibility(mReturnItemsContainer, displayReturnSelected());
             //
-            if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
-                UIUtils.setVisibility(mReturnItemsContainer, true);
-            } else {
-                UIUtils.setVisibility(mReturnItemsContainer, false);
-            }
-
             for (final OrderTrackerItem item : items) {
                 // Create new layout item
                 final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));

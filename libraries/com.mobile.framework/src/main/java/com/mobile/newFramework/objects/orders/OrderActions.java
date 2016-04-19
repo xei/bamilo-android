@@ -2,9 +2,7 @@ package com.mobile.newFramework.objects.orders;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;

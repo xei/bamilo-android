@@ -34,19 +34,6 @@ public class OrderReturnCallFragment extends BaseFragment {
     private TextView mBody1View;
     private TextView mBody2View;
 
-
-    /**
-     * Create and return a new instance.
-     *
-     * @param bundle - arguments
-     */
-    public static OrderReturnCallFragment getInstance(Bundle bundle) {
-        OrderReturnCallFragment returnCallFragment = new OrderReturnCallFragment();
-        returnCallFragment.setArguments(bundle);
-        return returnCallFragment;
-    }
-
-
     /**
      * Empty constructor
      */
