@@ -119,8 +119,7 @@ public class OrderReturnCallFragment extends BaseFragment {
         if(view.getId() == R.id.btn_call_now){
             UIUtils.onClickCallToOrder(getBaseActivity());
         } else if(view.getId() == R.id.btn_continue_shopping){
-            // Goto home
-            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+            getBaseActivity().onBackPressed();
         } else {
             super.onClick(view);
         }
