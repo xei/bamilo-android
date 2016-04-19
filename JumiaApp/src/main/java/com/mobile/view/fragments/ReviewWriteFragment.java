@@ -92,15 +92,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     private SharedPreferences mSharedPrefs;
 
     /**
-     * Get instance
-     */
-    public static ReviewWriteFragment getInstance(Bundle bundle) {
-        ReviewWriteFragment fragment = new ReviewWriteFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public ReviewWriteFragment() {

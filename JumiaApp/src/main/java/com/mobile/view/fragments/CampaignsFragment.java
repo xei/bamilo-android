@@ -35,17 +35,6 @@ public class CampaignsFragment extends BaseFragment {
     public static final String CAMPAIGN_POSITION_TAG = "campaign_position";
 
     /**
-     * Constructor via bundle
-     * @return CampaignsFragment
-     * @author sergiopereira
-     */
-    public static CampaignsFragment newInstance(Bundle bundle) {
-        CampaignsFragment fragment = new CampaignsFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public CampaignsFragment() {

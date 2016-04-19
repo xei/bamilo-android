@@ -63,14 +63,6 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
     private String mRelatedRichRelevanceHash;
 
     private static final int ITEMS_MARGIN = 6;
-    /**
-     * Get instance
-     */
-    public static CheckoutThanksFragment getInstance(Bundle bundle) {
-        CheckoutThanksFragment fragment = new CheckoutThanksFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
     /**
      * Empty constructor

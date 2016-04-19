@@ -2,6 +2,7 @@ package com.mobile.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -42,6 +43,8 @@ import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
+import com.mobile.view.fragments.OrderReturnCallFragment;
+import com.mobile.view.fragments.OrderReturnConditionsFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
@@ -50,7 +53,6 @@ import com.mobile.view.fragments.ProductOffersFragment;
 import com.mobile.view.fragments.ProductSizeGuideFragment;
 import com.mobile.view.fragments.RecentSearchFragment;
 import com.mobile.view.fragments.RecentlyViewedFragment;
-import com.mobile.view.fragments.OrderReturnCallFragment;
 import com.mobile.view.fragments.ReviewFragment;
 import com.mobile.view.fragments.ReviewWriteFragment;
 import com.mobile.view.fragments.ReviewsFragment;
@@ -244,11 +246,11 @@ public class MainFragmentActivity extends DebugActivity {
                     popBackStack(FragmentType.HOME.toString());
                     return;
                 }
-                fragment = HomePageFragment.newInstance(bundle);
+                fragment = newFragmentInstance(HomePageFragment.class, bundle);
                 break;
             case CATALOG_SELLER:
             case CATALOG_BRAND:
-            case CATALOG_DEEPLINK:
+            case CATALOG_DEEP_LINK:
             case CATALOG_CATEGORY:
             case CATALOG:
                 // Default
@@ -261,135 +263,142 @@ public class MainFragmentActivity extends DebugActivity {
                 // Put the target type
                 bundle.putSerializable(ConstantsIntentExtra.TARGET_TYPE, type);
                 // Create instance
-                fragment = CatalogFragment.getInstance(bundle);
+                fragment = newFragmentInstance(CatalogFragment.class, bundle);
                 // Put the type with unique identifier
                 type = FragmentType.getUniqueIdentifier(FragmentType.CATALOG, fragment);
                 break;
             case PRODUCT_DETAILS:
                 // Create instance
-                fragment = ProductDetailsFragment.getInstance(bundle);
+                fragment = newFragmentInstance(ProductDetailsFragment.class, bundle);
                 // Put the type with unique identifier
                 type = FragmentType.getUniqueIdentifier(type, fragment);
                 break;
             case PRODUCT_INFO:
-                fragment = ProductDetailsInfoFragment.getInstance(bundle);
+                fragment = newFragmentInstance(ProductDetailsInfoFragment.class, bundle);
                 break;
             case PRODUCT_GALLERY:
-                fragment = ProductImageGalleryFragment.getInstance(bundle);
+                fragment = newFragmentInstance(ProductImageGalleryFragment.class, bundle);
                 break;
             case POPULARITY:
-                fragment = ReviewsFragment.getInstance(bundle);
+                fragment = newFragmentInstance(ReviewsFragment.class, bundle);
                 break;
             case WRITE_REVIEW:
-                fragment = ReviewWriteFragment.getInstance(bundle);
+                fragment = newFragmentInstance(ReviewWriteFragment.class, bundle);
                 break;
             case REVIEW:
-                fragment = ReviewFragment.getInstance(bundle);
+                fragment = newFragmentInstance(ReviewFragment.class, bundle);
                 break;
             case SHOPPING_CART:
-                fragment = ShoppingCartFragment.getInstance(bundle);
+                fragment = newFragmentInstance(ShoppingCartFragment.class, bundle);
                 break;
             case STATIC_PAGE:
-                fragment = StaticPageFragment.getInstance(bundle);
+                fragment = newFragmentInstance(StaticPageFragment.class, bundle);
                 break;
             case MY_ACCOUNT:
                 removeEntries = true;
-                fragment = MyAccountFragment.getInstance();
+                fragment = newFragmentInstance(MyAccountFragment.class, bundle);
                 break;
             case MY_USER_DATA:
-                fragment = MyAccountUserDataFragment.getInstance();
+                fragment = newFragmentInstance(MyAccountUserDataFragment.class, bundle);
                 break;
             case MY_ORDERS:
-                fragment = MyOrdersFragment.getInstance();
+                fragment = newFragmentInstance(MyOrdersFragment.class, bundle);
                 break;
             case ORDER_STATUS:
-                fragment = OrderStatusFragment.getInstance(bundle);
+                fragment = newFragmentInstance(OrderStatusFragment.class, bundle);
+                break;
+            case ORDER_RETURN_CONDITIONS:
+                fragment = newFragmentInstance(OrderReturnConditionsFragment.class, bundle);
+                break;
+            case ORDER_RETURN_REASON:
+                // TODO : ORDER RETURN REASON
+                fragment = newFragmentInstance(StaticPageFragment.class, bundle);
                 break;
             case CHOOSE_COUNTRY:
-                fragment = ChooseCountryFragment.getInstance();
+                fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-                fragment = SessionLoginMainFragment.getInstance(bundle);
+                fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
                 break;
             case LOGIN_EMAIL:
-                fragment = SessionLoginEmailFragment.getInstance(bundle);
+                fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);
                 break;
             case REGISTER:
-                fragment = SessionRegisterFragment.getInstance(bundle);
+                fragment = newFragmentInstance(SessionRegisterFragment.class, bundle);
                 break;
             case FORGOT_PASSWORD:
-                fragment = SessionForgotPasswordFragment.getInstance();
+                fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);
                 break;
             case CHECKOUT_MY_ADDRESSES:
-                fragment = CheckoutAddressesFragment.newInstance();
+                fragment = newFragmentInstance(CheckoutAddressesFragment.class, bundle);
                 break;
             case CHECKOUT_CREATE_ADDRESS:
-                fragment = CheckoutCreateAddressFragment.getInstance();
+                fragment = newFragmentInstance(CheckoutCreateAddressFragment.class, bundle);
                 break;
             case CHECKOUT_EDIT_ADDRESS:
-                fragment = CheckoutEditAddressFragment.getInstance(bundle);
+                fragment = newFragmentInstance(CheckoutEditAddressFragment.class, bundle);
                 break;
             case CHECKOUT_SHIPPING:
-                fragment = CheckoutShippingMethodsFragment.getInstance();
+                fragment = newFragmentInstance(CheckoutShippingMethodsFragment.class, bundle);
                 break;
             case CHECKOUT_PAYMENT:
-                fragment = CheckoutPaymentMethodsFragment.getInstance();
+                fragment = newFragmentInstance(CheckoutPaymentMethodsFragment.class, bundle);
                 break;
             case CHECKOUT_FINISH:
-                fragment = CheckoutFinishFragment.getInstance(bundle);
+                fragment = newFragmentInstance(CheckoutFinishFragment.class, bundle);
                 break;
             case CHECKOUT_THANKS:
-                fragment = CheckoutThanksFragment.getInstance(bundle);
+                fragment = newFragmentInstance(CheckoutThanksFragment.class, bundle);
                 break;
             case CHECKOUT_EXTERNAL_PAYMENT:
-                fragment = CheckoutExternalPaymentFragment.getInstance(bundle);
+                fragment = newFragmentInstance(CheckoutExternalPaymentFragment.class, bundle);
                 break;
             case CAMPAIGNS:
-                fragment = CampaignsFragment.newInstance(bundle);
+                fragment = newFragmentInstance(CampaignsFragment.class, bundle);
                 break;
             case EMAIL_NOTIFICATION:
-                fragment = MyAccountNewslettersFragment.newInstance();
+                fragment = newFragmentInstance(MyAccountNewslettersFragment.class, bundle);
                 break;
             case WISH_LIST:
                 removeEntries = true;
-                fragment = WishListFragment.getInstance();
+                fragment = newFragmentInstance(WishListFragment.class, bundle);
                 break;
             case RECENT_SEARCHES_LIST:
-                fragment = RecentSearchFragment.newInstance();
+                fragment = newFragmentInstance(RecentSearchFragment.class, bundle);
                 break;
             case RECENTLY_VIEWED_LIST:
                 removeEntries = true;
-                fragment = RecentlyViewedFragment.getInstance();
+                fragment = newFragmentInstance(RecentlyViewedFragment.class, bundle);
                 break;
             case PRODUCT_SIZE_GUIDE:
-                fragment = ProductSizeGuideFragment.newInstance(bundle);
+                fragment = newFragmentInstance(ProductSizeGuideFragment.class, bundle);
                 break;
             case PRODUCT_OFFERS:
-                fragment = ProductOffersFragment.newInstance(bundle);
+                fragment = newFragmentInstance(ProductOffersFragment.class, bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
-                fragment = MyAccountAddressesFragment.newInstance();
+                fragment = newFragmentInstance(MyAccountAddressesFragment.class, bundle);
                 break;
             case MY_ACCOUNT_CREATE_ADDRESS:
-                fragment = MyAccountCreateAddressFragment.newInstance(bundle);
+                fragment = newFragmentInstance(MyAccountCreateAddressFragment.class, bundle);
                 break;
             case MY_ACCOUNT_EDIT_ADDRESS:
-                fragment = MyAccountEditAddressFragment.newInstance(bundle);
+                fragment = newFragmentInstance(MyAccountEditAddressFragment.class, bundle);
                 break;
             case INNER_SHOP:
-                fragment = InnerShopFragment.getInstance(bundle);
+                fragment = newFragmentInstance(InnerShopFragment.class, bundle);
                 break;
             case COMBO_PAGE:
-                fragment = ComboFragment.getInstance(bundle);
+                fragment = newFragmentInstance(ComboFragment.class, bundle);
                 break;
             case FILTERS:
-                fragment = FilterMainFragment.getInstance(bundle);
+                fragment = newFragmentInstance(FilterMainFragment.class, bundle);
                 break;
             case VARIATIONS:
-                fragment = VariationsFragment.getInstance(bundle);
+                fragment = newFragmentInstance(VariationsFragment.class, bundle);
                 break;
             case ORDER_RETURN_CALL:
-                fragment = OrderReturnCallFragment.getInstance(bundle);
+                fragment = newFragmentInstance(OrderReturnCallFragment.class, bundle);
                 break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
@@ -410,6 +419,13 @@ public class MainFragmentActivity extends DebugActivity {
 
         // Transition
         fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
+    }
+
+    /**
+     * Create new fragment
+     */
+    private  BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass, @Nullable Bundle arguments) {
+        return BaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
 
     /**

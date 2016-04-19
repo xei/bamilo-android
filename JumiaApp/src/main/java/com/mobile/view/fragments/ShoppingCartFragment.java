@@ -103,17 +103,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 ADJUST_CONTENT);
     }
 
-    /**
-     * Get instance
-     *
-     * @return ShoppingCartFragment
-     */
-    public static ShoppingCartFragment getInstance(Bundle bundle) {
-        ShoppingCartFragment fragment = new ShoppingCartFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

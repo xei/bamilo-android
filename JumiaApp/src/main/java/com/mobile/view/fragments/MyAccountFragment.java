@@ -81,13 +81,6 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     private ArrayList<TargetHelper> targets;
 
     /**
-     * Get instance
-     */
-    public static MyAccountFragment getInstance() {
-        return new MyAccountFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public MyAccountFragment() {

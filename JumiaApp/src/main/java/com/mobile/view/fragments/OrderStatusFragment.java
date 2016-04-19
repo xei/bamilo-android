@@ -17,7 +17,6 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.checkout.GetOrderStatusHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
-import com.mobile.newFramework.objects.orders.OrderActions;
 import com.mobile.newFramework.objects.orders.OrderReturn;
 import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
@@ -45,7 +44,7 @@ import java.util.EnumSet;
  * Class used to show the order status.
  * @author spereira
  */
-public class OrderStatusFragment extends BaseFragment implements IResponseCallback {
+public class OrderStatusFragment extends BaseFragmentSwitcher implements IResponseCallback {
 
     public static final String TAG = OrderStatusFragment.class.getSimpleName();
 
@@ -62,19 +61,11 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     private String mOrderDate;
 
     /**
-     * Get instance
-     */
-    public static OrderStatusFragment getInstance(Bundle bundle) {
-        OrderStatusFragment orderStatusFragment = new OrderStatusFragment();
-        orderStatusFragment.setArguments(bundle);
-        return orderStatusFragment;
-    }
-
-    /**
      * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
      */
     public static OrderStatusFragment getNestedInstance(Bundle bundle) {
-        OrderStatusFragment orderStatusFragment = getInstance(bundle);
+        OrderStatusFragment orderStatusFragment = new OrderStatusFragment();
+        orderStatusFragment.setArguments(bundle);
         orderStatusFragment.isNestedFragment = true;
         return orderStatusFragment;
     }
@@ -358,18 +349,23 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         }
     }
 
-    private void onClickReturnSelected(){
-        if(validateReturnAllSelected()){
-            // Go To next step.
+    private void onClickReturnSelected() {
+        if (!validateReturnAllSelected()) {
+            // TODO : Get target link from Order
+            String test = "static_page::terms_mobile";                              // <---- FIXME: TARGET LINK USED TO TEST
+            String contentId = TargetLink.getIdFromTargetLink(test);
+            // Goto order return conditions
+            new UISwitcher(getBaseActivity(), FragmentType.ORDER_RETURN_CONDITIONS)
+                    .addContentId(contentId)
+                    .noBackStack()
+                    .run();
         } else {
             showWarningErrorMessage(getString(R.string.warning_no_items_selected));
         }
-
     }
 
     /**
      * Validate if there is any item selected.
-     * @return
      */
     private boolean validateReturnAllSelected(){
         for (OrderTrackerItem item  : mOrder.getItems()) {
@@ -392,7 +388,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 }
             }
         }
-
         return false;
     }
 
@@ -409,7 +404,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
     /**
      * Open PDV
-     * @param view
      */
     private void goToProductDetails(final View view) {
         String sku = TargetLink.getSkuFromSimple((String) view.getTag(R.id.target_simple_sku));
@@ -424,7 +418,6 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
     /**
      * Re-order
-     * @param view
      */
     private void onClickReOrder(final View view) {
         // Get sku from view

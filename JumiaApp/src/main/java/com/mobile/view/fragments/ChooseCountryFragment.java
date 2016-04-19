@@ -59,14 +59,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     private ListView mCountryListView;
 
     /**
-     * Get instance
-     * @return ChangeCountryFragment
-     */
-    public static ChooseCountryFragment getInstance() {
-        return new ChooseCountryFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public ChooseCountryFragment() {

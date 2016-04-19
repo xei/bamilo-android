@@ -88,12 +88,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
                 NO_ADJUST_CONTENT);
     }
 
-    public static FilterMainFragment getInstance(Bundle bundle) {
-        FilterMainFragment filterFragment = new FilterMainFragment();
-        filterFragment.setArguments(bundle);
-        return filterFragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

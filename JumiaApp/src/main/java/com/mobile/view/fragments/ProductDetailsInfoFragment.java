@@ -49,15 +49,6 @@ public class ProductDetailsInfoFragment extends BaseFragment {
     private boolean mHasDesc = true;
 
     /**
-     * Get instance
-     */
-    public static ProductDetailsInfoFragment getInstance(Bundle bundle) {
-        ProductDetailsInfoFragment fragment = new ProductDetailsInfoFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public ProductDetailsInfoFragment() {
@@ -257,7 +248,7 @@ public class ProductDetailsInfoFragment extends BaseFragment {
                 return ProductDetailsSpecificationsFragment.getInstance(getArguments());
             }
             else {
-                return ReviewsFragment.getInstance(getArguments()); //added: go to ratings page
+                return BaseFragment.newInstance(getBaseActivity(), ReviewsFragment.class, getArguments()); //added: go to ratings page
             }
         }
 

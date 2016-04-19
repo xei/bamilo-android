@@ -32,15 +32,6 @@ public class ReviewFragment extends BaseFragment {
     private LayoutInflater inflater;
 
     /**
-     * Get instance
-     */
-    public static ReviewFragment getInstance(Bundle bundle) {
-        ReviewFragment fragment = new ReviewFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public ReviewFragment() {

@@ -65,15 +65,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 ADJUST_CONTENT);
     }
 
-    /**
-     * Get new instance
-     */
-    public static SessionLoginEmailFragment getInstance(Bundle bundle) {
-        SessionLoginEmailFragment fragment = new SessionLoginEmailFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     /*
      * (non-Javadoc)
      * 

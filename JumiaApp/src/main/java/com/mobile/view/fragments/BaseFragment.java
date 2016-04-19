@@ -162,7 +162,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.checkoutStep = titleCheckout;
     }
 
+    /*
+     * #### INSTANTIATE ####
+     */
+
     /**
+     * Create and return a new instance.
+     */
+    public static BaseFragment newInstance(@NonNull Context context, @NonNull Class<? extends BaseFragment> fragment, @Nullable Bundle arguments) {
+        return (BaseFragment) Fragment.instantiate(context, fragment.getName(), arguments);
+    }
+
+    /*
      * #### LIFE CYCLE ####
      */
 

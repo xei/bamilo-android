@@ -70,17 +70,6 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     private int[] mScrollSavedPosition;
 
     private String mRichRelevanceHash;
-    /**
-     * Constructor via bundle
-     *
-     * @return CampaignsFragment
-     * @author sergiopereira
-     */
-    public static HomePageFragment newInstance(Bundle bundle) {
-        HomePageFragment homePageFragment = new HomePageFragment();
-        homePageFragment.setArguments(bundle);
-        return homePageFragment;
-    }
 
     /**
      * Empty constructor

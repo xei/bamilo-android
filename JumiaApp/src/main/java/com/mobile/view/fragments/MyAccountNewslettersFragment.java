@@ -43,16 +43,6 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
     private Bundle mSavedState;
 
     /**
-     * Create new instance
-     * 
-     * @return MyAccountEmailNotificationFragment
-     * @author sergiopereira
-     */
-    public static MyAccountNewslettersFragment newInstance() {
-        return new MyAccountNewslettersFragment();
-    }
-
-    /**
      * Empty constructor
      * 
      * @author sergiopereira

@@ -2,8 +2,6 @@ package com.mobile.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +28,6 @@ import com.mobile.helpers.teasers.GetRichRelevanceHelper;
 import com.mobile.helpers.wishlist.AddToWishListHelper;
 import com.mobile.helpers.wishlist.RemoveFromWishListHelper;
 import com.mobile.interfaces.IResponseCallback;
-import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.database.BrandsTableHelper;
 import com.mobile.newFramework.database.LastViewedTableHelper;
 import com.mobile.newFramework.objects.campaign.CampaignItem;
@@ -47,7 +44,6 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
-import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
@@ -120,17 +116,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 R.layout.pdv_fragment_main,
                 IntConstants.ACTION_BAR_NO_TITLE,
                 NO_ADJUST_CONTENT);
-    }
-
-    /**
-     * Get a new instance.
-     */
-    public static ProductDetailsFragment getInstance(Bundle bundle) {
-        ProductDetailsFragment fragment = new ProductDetailsFragment();
-        // Reset the share
+        // Reset the share selected position
         sSharedSelectedPosition = IntConstants.DEFAULT_POSITION;
-        fragment.setArguments(bundle);
-        return fragment;
     }
 
     /*
@@ -744,7 +731,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private void setSlideShow() {
         Print.i(TAG, "ON DISPLAY SLIDE SHOW");
         // Validate the ProductImageGalleryFragment
-        ProductImageGalleryFragment fragment = (ProductImageGalleryFragment) getChildFragmentManager().findFragmentByTag(ProductImageGalleryFragment.TAG);
+        BaseFragment fragment = (BaseFragment) getChildFragmentManager().findFragmentByTag(ProductImageGalleryFragment.TAG);
         // CASE CREATE
         if (fragment == null) {
             Print.i(TAG, "ON DISPLAY SLIDE SHOW: NEW");
@@ -763,7 +750,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             args.putBoolean(ConstantsIntentExtra.INFINITE_SLIDE_SHOW, false);
             args.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, verifyOutOfStock());
             // Create fragment
-            fragment = ProductImageGalleryFragment.getInstance(args);
+            fragment = BaseFragment.newInstance(getBaseActivity(), ProductImageGalleryFragment.class, args);
             FragmentController.addChildFragment(this, R.id.pdv_slide_show_container, fragment, ProductImageGalleryFragment.TAG);
         }
         // CASE UPDATE
