@@ -239,11 +239,8 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
             if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
                 UIUtils.setVisibility(mReturnItemsContainer, true);
-                if(!validateReturnAllSelected()) { // Validate if any item is checked, if so, enable return selected.
-                    mReturnItemsButton.setEnabled(false);
-                } else {
-                    mReturnItemsButton.setEnabled(true);
-                }
+                // Validate if any item is checked, if so, enable return selected.
+                mReturnItemsButton.setEnabled(validateReturnAllSelected());
             } else {
                 UIUtils.setVisibility(mReturnItemsContainer, false);
             }
