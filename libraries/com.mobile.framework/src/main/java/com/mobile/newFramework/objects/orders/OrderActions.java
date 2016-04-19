@@ -3,6 +3,7 @@ package com.mobile.newFramework.objects.orders;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringDef;
 
 import com.mobile.newFramework.objects.IJSONSerializable;
@@ -34,7 +35,7 @@ public class OrderActions implements Parcelable, IJSONSerializable {
     public OrderActions(){}
 
     @Override
-    public boolean initialize(JSONObject jsonObject) throws JSONException {
+    public boolean initialize(final JSONObject jsonObject) throws JSONException {
         mReturnType = jsonObject.getString(RestConstants.TYPE);
         if(isCallToReturn()){
             mTitle = jsonObject.getString(RestConstants.TEXT_TITLE);
@@ -53,22 +54,27 @@ public class OrderActions implements Parcelable, IJSONSerializable {
         return mReturnableQuantity;
     }
 
+    @Nullable
     public String getReturnType() {
         return mReturnType;
     }
 
+    @Nullable
     public String getTarget() {
         return mTarget;
     }
 
+    @Nullable
     public String getTitle() {
         return mTitle;
     }
 
+    @Nullable
     public String getBody1() {
         return mBody1;
     }
 
+    @Nullable
     public String getBody2() {
         return mBody2;
     }
@@ -93,7 +99,7 @@ public class OrderActions implements Parcelable, IJSONSerializable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeString(mReturnType);
         dest.writeString(mTarget);
         dest.writeInt(mReturnableQuantity);
@@ -103,7 +109,7 @@ public class OrderActions implements Parcelable, IJSONSerializable {
 
     }
 
-    protected OrderActions(Parcel in) {
+    protected OrderActions(final Parcel in) {
         mReturnType = in.readString();
         mTarget = in.readString();
         mReturnableQuantity = in.readInt();
@@ -115,12 +121,12 @@ public class OrderActions implements Parcelable, IJSONSerializable {
 
     public static final Creator<OrderActions> CREATOR = new Creator<OrderActions>() {
         @Override
-        public OrderActions createFromParcel(Parcel in) {
+        public OrderActions createFromParcel(final Parcel in) {
             return new OrderActions(in);
         }
 
         @Override
-        public OrderActions[] newArray(int size) {
+        public OrderActions[] newArray(final int size) {
             return new OrderActions[size];
         }
     };

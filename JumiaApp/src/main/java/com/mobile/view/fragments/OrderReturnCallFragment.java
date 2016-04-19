@@ -1,19 +1,14 @@
 package com.mobile.view.fragments;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
-import com.mobile.components.recycler.DividerItemDecoration;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
-import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.orders.OrderActions;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
-import com.mobile.newFramework.objects.product.Variation;
-import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
@@ -21,28 +16,23 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.UIUtils;
-import com.mobile.utils.ui.VariationProductsGridAdapter;
-import com.mobile.utils.ui.VariationProductsGridView;
-import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.R;
 
 import java.util.EnumSet;
 
 /**
  * */
-public class ReturnCallFragment extends BaseFragment {
+public class OrderReturnCallFragment extends BaseFragment {
 
-    protected static final String TAG = ReturnCallFragment.class.getSimpleName();
+    protected static final String TAG = OrderReturnCallFragment.class.getSimpleName();
 
-    private OrderTrackerItem orderItem;
+    private OrderTrackerItem mOrderItem;
     private String orderNumber;
 
     private TextView mTitleView;
     private TextView mOrderNumberView;
     private TextView mBody1View;
     private TextView mBody2View;
-    private View mCallView;
-    private View mSoppingView;
 
 
     /**
@@ -50,8 +40,8 @@ public class ReturnCallFragment extends BaseFragment {
      *
      * @param bundle - arguments
      */
-    public static ReturnCallFragment getInstance(Bundle bundle) {
-        ReturnCallFragment returnCallFragment = new ReturnCallFragment();
+    public static OrderReturnCallFragment getInstance(Bundle bundle) {
+        OrderReturnCallFragment returnCallFragment = new OrderReturnCallFragment();
         returnCallFragment.setArguments(bundle);
         return returnCallFragment;
     }
@@ -60,7 +50,7 @@ public class ReturnCallFragment extends BaseFragment {
     /**
      * Empty constructor
      */
-    public ReturnCallFragment() {
+    public OrderReturnCallFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK),
                 NavigationAction.UNKNOWN,
                 R.layout._def_return_call_layout,
@@ -77,7 +67,7 @@ public class ReturnCallFragment extends BaseFragment {
         Bundle arguments = getArguments();
         if (arguments != null) {
             Print.i(TAG, "ARGUMENTS: " + arguments);
-            orderItem = arguments.getParcelable(ConstantsIntentExtra.DATA);
+            mOrderItem = arguments.getParcelable(ConstantsIntentExtra.DATA);
             orderNumber = arguments.getString(ConstantsIntentExtra.ARG_1);
 
         } else {
@@ -98,18 +88,18 @@ public class ReturnCallFragment extends BaseFragment {
         mOrderNumberView = (TextView) view.findViewById(R.id.return_call_order_number);
         mBody1View = (TextView) view.findViewById(R.id.return_call_body1);
         mBody2View = (TextView) view.findViewById(R.id.return_call_body2);
-        mCallView = view.findViewById(R.id.btn_call_now);
-        mSoppingView = view.findViewById(R.id.btn_continue_shopping);
+        View callView = view.findViewById(R.id.btn_call_now);
+        View soppingView = view.findViewById(R.id.btn_continue_shopping);
 
-        mCallView.setOnClickListener(this);
-        mSoppingView.setOnClickListener(this);
+        callView.setOnClickListener(this);
+        soppingView.setOnClickListener(this);
 
         onValidateState();
     }
 
     private void onValidateState() {
         // Validate the sate
-        if (orderItem != null && CollectionUtils.isNotEmpty(orderItem.getOrderActions()) && TextUtils.isNotEmpty(orderNumber)){
+        if (mOrderItem != null && CollectionUtils.isNotEmpty(mOrderItem.getOrderActions()) && TextUtils.isNotEmpty(orderNumber)){
             fillLayout();
         } else {
             showUnexpectedErrorWarning();
@@ -117,7 +107,7 @@ public class ReturnCallFragment extends BaseFragment {
     }
 
     private void fillLayout(){
-        OrderActions orderActions = orderItem.getOrderActions().get(IntConstants.DEFAULT_POSITION);
+        OrderActions orderActions = mOrderItem.getOrderActions().get(IntConstants.DEFAULT_POSITION);
         mTitleView.setText(orderActions.getTitle());
         mOrderNumberView.setText(orderNumber);
         mBody1View.setText(orderActions.getBody1());

@@ -238,22 +238,22 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
 
             if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
-                mReturnItemsContainer.setVisibility(View.VISIBLE);
+                UIUtils.setVisibility(mReturnItemsContainer, true);
             } else {
-                mReturnItemsContainer.setVisibility(View.GONE);
+                UIUtils.setVisibility(mReturnItemsContainer, false);
             }
 
             for (final OrderTrackerItem item : items) {
                 // Create new layout item
                 final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
                 if(item.isEligibleToReturn() && CollectionUtils.isNotEmpty(item.getOrderActions())){
-                    holder.returnOrder.setVisibility(View.VISIBLE);
+                    UIUtils.setVisibility(holder.returnOrder, true);
                     if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
                         holder.returnOrder.setText(getString(R.string.call_return_label));
                     } else {
                         holder.returnOrder.setText(getString(R.string.return_label));
                         if(displayReturnSelected()){
-                            holder.orderCheckbox.setVisibility(View.VISIBLE);
+                            UIUtils.setVisibility(holder.orderCheckbox, true);
                             holder.orderCheckbox.post(new Runnable() {
                                 @Override
                                 public void run() {

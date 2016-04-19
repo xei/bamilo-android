@@ -73,6 +73,6 @@
         android:layout_marginRight="@dimen/margin_60px"
         android:layout_marginTop="@dimen/dimen_16dp"
         android:text="@string/continue_shopping"
-        android:textAllCaps="true" />
+        />
 
 </LinearLayout>
