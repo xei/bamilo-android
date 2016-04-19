@@ -16,6 +16,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/return_call_title"
         style="@style/TextBase.Display_2.Black"
+        android:layout_width="wrap_content"
         android:text="@string/call_return_label"
         android:singleLine="false"
         android:paddingLeft="@dimen/margin_padding_xl"
@@ -26,6 +27,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/return_call_order_number"
         style="@style/TextBase.Body.Black"
+        android:layout_width="wrap_content"
         tools:text="@string/call_return_label"
         android:layout_marginTop="@dimen/margin_padding_xl"
         android:padding="@dimen/margin_padding_s"
@@ -35,6 +37,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/return_call_body1"
         style="@style/TextBase.Body.Black_800"
+        android:layout_width="wrap_content"
         tools:text="@string/call_return_label"
         android:singleLine="false"
         android:paddingLeft="@dimen/margin_padding_xl"
@@ -45,6 +48,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/return_call_body2"
         style="@style/TextBase.Body.Black"
+        android:layout_width="wrap_content"
         android:singleLine="false"
         android:paddingLeft="@dimen/margin_padding_xl"
         android:paddingRight="@dimen/margin_padding_xl"
