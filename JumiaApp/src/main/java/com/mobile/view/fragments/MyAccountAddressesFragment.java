@@ -29,13 +29,6 @@ public class MyAccountAddressesFragment extends BaseAddressesFragment {
     private static final String TAG = MyAccountAddressesFragment.class.getSimpleName();
 
     /**
-     * Get new instance
-     */
-    public static MyAccountAddressesFragment newInstance() {
-        return new MyAccountAddressesFragment();
-    }
-
-    /**
      * Constructor
      */
     public MyAccountAddressesFragment() {

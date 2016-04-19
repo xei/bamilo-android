@@ -66,13 +66,6 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
                 ADJUST_CONTENT);
     }
 
-    /**
-     * Get instance
-     */
-    public static MyAccountUserDataFragment getInstance() {
-        return new MyAccountUserDataFragment();
-    }
-
     /*
      * (non-Javadoc)
      * 

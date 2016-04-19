@@ -33,17 +33,6 @@ public class StaticPageFragment extends BaseFragment implements IResponseCallbac
     private String mContentId;
 
     /**
-     * New instance SessionTermsFragment.
-     * @param bundle The arguments
-     * @return SessionTermsFragment
-     */
-    public static StaticPageFragment getInstance(Bundle bundle) {
-        StaticPageFragment termsFragment = new StaticPageFragment();
-        termsFragment.setArguments(bundle);
-        return termsFragment;
-    }
-
-    /**
      * Empty constructor
      */
     public StaticPageFragment() {

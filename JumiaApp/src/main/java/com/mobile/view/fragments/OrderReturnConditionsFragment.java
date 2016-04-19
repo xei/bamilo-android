@@ -25,17 +25,6 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
     private TextView mPageView;
 
     /**
-     * New instance SessionTermsFragment.
-     * @param bundle The arguments
-     * @return SessionTermsFragment
-     */
-    public static OrderReturnConditionsFragment getInstance(Bundle bundle) {
-        OrderReturnConditionsFragment termsFragment = new OrderReturnConditionsFragment();
-        termsFragment.setArguments(bundle);
-        return termsFragment;
-    }
-
-    /**
      * Empty constructor
      */
     public OrderReturnConditionsFragment() {
@@ -62,7 +51,6 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
         mPageView = (TextView) view.findViewById(R.id.order_return_conditions_text_cms);
         // Get button
         view.findViewById(R.id.order_return_conditions_button_ok).setOnClickListener(this);
-        // Get static page
         // Validate content
         if(TextUtils.isEmpty(mContentId)) {
             goToOrderReturnReason();

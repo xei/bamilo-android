@@ -78,18 +78,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     private PaymentMethodForm mPaymentSubmitted;
 
     /**
-     * Get instance
-     */
-    public static CheckoutExternalPaymentFragment getInstance(Bundle bundle) {
-        CheckoutExternalPaymentFragment fragment = new CheckoutExternalPaymentFragment();
-        fragment.webview = null;
-        fragment.paymentUrl = null;
-        fragment.failedPageRequest = null;
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public CheckoutExternalPaymentFragment() {
@@ -99,6 +87,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 R.string.checkout_label,
                 NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
+        this.webview = null;
+        this.paymentUrl = null;
+        this.failedPageRequest = null;
     }
 
     /*

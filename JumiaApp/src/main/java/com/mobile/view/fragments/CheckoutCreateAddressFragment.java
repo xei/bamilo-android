@@ -33,13 +33,6 @@ public class CheckoutCreateAddressFragment extends CreateAddressFragment {
     private View mCheckoutTotalBar;
 
     /**
-     * Fragment used to create an address
-     */
-    public static CheckoutCreateAddressFragment getInstance() {
-        return new CheckoutCreateAddressFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public CheckoutCreateAddressFragment() {

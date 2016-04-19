@@ -67,15 +67,6 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
     private TextView mErrorMessage;
 
     /**
-     * Get new instance
-     */
-    public static SessionLoginMainFragment getInstance(Bundle bundle) {
-        SessionLoginMainFragment fragment = new SessionLoginMainFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public SessionLoginMainFragment() {

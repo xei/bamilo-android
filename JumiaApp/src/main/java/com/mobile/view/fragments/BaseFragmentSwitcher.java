@@ -16,7 +16,7 @@ import com.mobile.view.BaseActivity;
 import java.util.Set;
 
 /**
- * Base requester fragment used for fragments that needs perform a network/database request.
+ * Base switcher fragment used to manage the switch between fragments and the respective arguments.
  * @author spereira
  */
 public abstract class BaseFragmentSwitcher extends BaseFragment {
@@ -60,7 +60,7 @@ public abstract class BaseFragmentSwitcher extends BaseFragment {
      *     - title<br>
      *     - content id<br>
      */
-    private void onCreateInstanceState(@NonNull Bundle bundle) {
+    protected void onCreateInstanceState(@NonNull Bundle bundle) {
         mTitle = bundle.getString(UISwitcher.TITLE);
         mContentId = bundle.getString(UISwitcher.CONTENT_ID);
     }

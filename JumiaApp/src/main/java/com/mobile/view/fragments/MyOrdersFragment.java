@@ -59,13 +59,6 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                 NO_ADJUST_CONTENT);
     }
 
-    /**
-     * Get instance
-     */
-    public static MyOrdersFragment getInstance() {
-        return new MyOrdersFragment();
-    }
-
     /*
      * (non-Javadoc)
      *

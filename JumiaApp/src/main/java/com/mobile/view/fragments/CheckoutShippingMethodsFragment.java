@@ -51,14 +51,6 @@ public class CheckoutShippingMethodsFragment extends BaseFragment implements IRe
     private Bundle mSavedState;
 
     /**
-     * Get instance
-     * @return CheckoutShippingMethodsFragment
-     */
-    public static CheckoutShippingMethodsFragment getInstance() {
-        return new CheckoutShippingMethodsFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public CheckoutShippingMethodsFragment() {

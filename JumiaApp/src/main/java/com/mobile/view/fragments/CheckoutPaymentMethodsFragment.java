@@ -91,14 +91,6 @@ public class CheckoutPaymentMethodsFragment extends BaseFragment implements IRes
                 ConstantsCheckout.CHECKOUT_PAYMENT);
     }
 
-    /**
-     * Get new instance of CheckoutPaymentMethodsFragment.
-     * @return CheckoutPaymentMethodsFragment
-     */
-    public static CheckoutPaymentMethodsFragment getInstance() {
-        return new CheckoutPaymentMethodsFragment();
-    }
-
     /*
      * (non-Javadoc)
      * 

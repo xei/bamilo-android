@@ -115,17 +115,6 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                 ConstantsCheckout.CHECKOUT_ORDER);
     }
 
-    /**
-     * Get CheckoutMyOrderFragment instance
-     *
-     * @return CheckoutMyOrderFragment
-     */
-    public static CheckoutFinishFragment getInstance(Bundle bundle) {
-        CheckoutFinishFragment fragment = new CheckoutFinishFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     /*
      * (non-Javadoc)
      * 

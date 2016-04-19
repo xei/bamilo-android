@@ -58,19 +58,11 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
     private String mOrderDate;
 
     /**
-     * Get instance
-     */
-    public static OrderStatusFragment getInstance(Bundle bundle) {
-        OrderStatusFragment orderStatusFragment = new OrderStatusFragment();
-        orderStatusFragment.setArguments(bundle);
-        return orderStatusFragment;
-    }
-
-    /**
      * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
      */
     public static OrderStatusFragment getNestedInstance(Bundle bundle) {
-        OrderStatusFragment orderStatusFragment = getInstance(bundle);
+        OrderStatusFragment orderStatusFragment = new OrderStatusFragment();
+        orderStatusFragment.setArguments(bundle);
         orderStatusFragment.isNestedFragment = true;
         return orderStatusFragment;
     }
