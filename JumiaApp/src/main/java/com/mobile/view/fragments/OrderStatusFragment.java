@@ -56,8 +56,9 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
     private ViewGroup mShippingView;
     private ViewGroup mBillingView;
     private ViewGroup mOrderItems;
-    private String mOrderDate;
+    private View mReturnItemsButton;
     private View mReturnItemsContainer;
+    private String mOrderDate;
 
     /**
      * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
@@ -110,9 +111,12 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
         mBillingView = (ViewGroup) view.findViewById(R.id.order_status_address_billing);
         // Get order items container
         mOrderItems = (ViewGroup) view.findViewById(R.id.order_status_items);
+
         // Get return items container
-        view.findViewById(R.id.return_selected_button).setOnClickListener(this);
+        mReturnItemsButton = view.findViewById(R.id.return_selected_button);
         mReturnItemsContainer = view.findViewById(R.id.return_button_container);
+        mReturnItemsButton.setOnClickListener(this);
+
         // Validate state
         onValidateState();
     }
@@ -347,9 +351,12 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
 
     private void onClickReturnSelected() {
         if (!validateReturnAllSelected()) {
-            // TODO : Get target link
+            // TODO : Get target link from Order
+            String test = "static_page::terms_mobile";                              // <---- FIXME: TARGET LINK USED TO TEST
+            String contentId = TargetLink.getIdFromTargetLink(test);
+            // Goto order return conditions
             new UISwitcher(getBaseActivity(), FragmentType.ORDER_RETURN_CONDITIONS)
-                    .addContentId(TargetLink.getIdFromTargetLink("static_page::terms_mobile"))
+                    .addContentId(contentId)
                     .noBackStack()
                     .run();
         } else {
