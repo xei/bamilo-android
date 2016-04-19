@@ -239,7 +239,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
             if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
                 UIUtils.setVisibility(mReturnItemsContainer, true);
-                if(!validateReturnAllSelected()) {
+                if(!validateReturnAllSelected()) { // Validate if any item is checked, if so, enable return selected.
                     mReturnItemsButton.setEnabled(false);
                 } else {
                     mReturnItemsButton.setEnabled(true);
@@ -269,7 +269,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                                 @Override
                                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                     item.setCheckedForAction(isChecked);
-                                    if(item.isCheckedForAction()) {
+                                    if(item.isCheckedForAction()) { // Validate if any item is checked, if so, enable return selected.
                                         mReturnItemsButton.setEnabled(true);
                                     } else if(!validateReturnAllSelected()) {
                                         mReturnItemsButton.setEnabled(false);
