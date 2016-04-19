@@ -26,6 +26,7 @@ public class OrderTrackerItem extends ProductRegular {
 	public final static String TAG = OrderTrackerItem.class.getSimpleName();
 
     private String delivery;
+    private String size;
     private String quantity;
     private String status;
     private String updateDate;
@@ -44,18 +45,27 @@ public class OrderTrackerItem extends ProductRegular {
         // ...
     }
 
+    @Nullable
     public String getQuantity(){
     	return this.quantity;
     }
 
+    @Nullable
+    public String getSize(){
+    	return this.size;
+    }
+
+    @Nullable
     public String getStatus(){
     	return this.status;
     }
 
+    @Nullable
     public String getDelivery() {
         return delivery;
     }
 
+    @Nullable
     public String getUpdateDate() {
         return updateDate;
     }
@@ -84,6 +94,7 @@ public class OrderTrackerItem extends ProductRegular {
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
         delivery = jsonObject.getString(RestConstants.DELIVERY);
+        size = jsonObject.optString(RestConstants.SIZE);
 		quantity = jsonObject.getString(RestConstants.QUANTITY);
         JSONObject statusObject = jsonObject.getJSONObject(RestConstants.STATUS);
         status = statusObject.optString(RestConstants.LABEL);
@@ -159,6 +170,7 @@ public class OrderTrackerItem extends ProductRegular {
     public void writeToParcel(Parcel dest, int flags) {
         super.writeToParcel(dest, flags);
         dest.writeString(delivery);
+        dest.writeString(size);
         dest.writeString(quantity);
         dest.writeString(status);
         dest.writeString(updateDate);
@@ -167,6 +179,7 @@ public class OrderTrackerItem extends ProductRegular {
     protected OrderTrackerItem(Parcel in) {
         super(in);
         delivery = in.readString();
+        size = in.readString();
         quantity = in.readString();
         status = in.readString();
         updateDate = in.readString();

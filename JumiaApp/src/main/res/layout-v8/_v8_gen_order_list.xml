@@ -71,10 +71,23 @@
                 />
 
             <com.mobile.components.customfontviews.TextView
-                android:id="@+id/item_quantity"
+                android:id="@+id/item_size"
                 style="@style/TextBase.Body.Black_800"
                 android:layout_width="wrap_content"
                 android:layout_below="@id/item_name"
+                android:maxLines="2"
+                android:singleLine="false"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
+                tools:visibility="visible"
+                tools:text="size: XL"
+                />
+
+            <com.mobile.components.customfontviews.TextView
+                android:id="@+id/item_quantity"
+                style="@style/TextBase.Body.Black_800"
+                android:layout_width="wrap_content"
+                android:layout_below="@id/item_size"
                 android:layout_alignParentRight="true"
                 android:maxLines="2"
                 android:singleLine="false"

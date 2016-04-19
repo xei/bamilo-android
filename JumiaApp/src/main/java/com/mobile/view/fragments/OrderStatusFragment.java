@@ -239,6 +239,8 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
 
             if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
                 UIUtils.setVisibility(mReturnItemsContainer, true);
+                // Validate if any item is checked, if so, enable return selected.
+                mReturnItemsButton.setEnabled(validateReturnAllSelected());
             } else {
                 UIUtils.setVisibility(mReturnItemsContainer, false);
             }
@@ -264,6 +266,11 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                                 @Override
                                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                                     item.setCheckedForAction(isChecked);
+                                    if(item.isCheckedForAction()) { // Validate if any item is checked, if so, enable return selected.
+                                        mReturnItemsButton.setEnabled(true);
+                                    } else if(!validateReturnAllSelected()) {
+                                        mReturnItemsButton.setEnabled(false);
+                                    }
                                 }
                             });
                         }
@@ -281,6 +288,14 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 holder.name.setText(item.getName());
                 // Set brand
                 holder.brand.setText(item.getBrandName());
+                // Set size
+                if(TextUtils.isNotEmpty(item.getSize())){
+                    UIUtils.setVisibility(holder.size, true);
+                    holder.size.setText(getString(R.string.size_placeholder, item.getSize()));
+                } else {
+                    UIUtils.setVisibility(holder.size, false);
+                }
+
                 // Set quantity
                 holder.quantity.setText(getString(R.string.qty_placeholder, item.getQuantity()));
                 // Set price
@@ -372,7 +387,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         int count = 0;
         for (OrderTrackerItem item  : mOrder.getItems()) {
             if (CollectionUtils.isNotEmpty(item.getOrderActions()) && !item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()) {
-                if(count++ > 1) {
+                if(++count > 1) {
                     return true;
                 }
             }

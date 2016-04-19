@@ -13,7 +13,7 @@ import com.mobile.view.R;
  */
 public class OrderedProductViewHolder extends ProductListViewHolder {
 
-    public TextView quantity;
+    public TextView size;
     public View reorder;
     public TextView status;
     public TextView delivery;
@@ -29,6 +29,7 @@ public class OrderedProductViewHolder extends ProductListViewHolder {
      */
     public OrderedProductViewHolder(View view) {
         super(view);
+        size = (TextView) view.findViewById(R.id.item_size);
         quantity = (TextView) view.findViewById(R.id.item_quantity);
         delivery = (TextView) view.findViewById(R.id.item_delivery);
         reorder = view.findViewById(R.id.order_status_item_button_reorder);
