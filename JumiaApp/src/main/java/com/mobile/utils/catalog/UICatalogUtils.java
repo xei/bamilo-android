@@ -20,8 +20,6 @@ import com.mobile.view.R;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
-import de.akquinet.android.androlog.Log;
-
 /**
  * Class used to help catalog UI.
  * @author spereira
@@ -90,7 +88,7 @@ public class UICatalogUtils {
      */
     public static void setFilterButtonState(@Nullable final View button, final boolean hasFilterValues) {
         if (button != null) {
-            Log.i("SET FILTER BUTTON STATE: " + button.isSelected());
+            Print.i("SET FILTER BUTTON STATE: " + button.isSelected());
             button.post(new Runnable() {
                 @Override
                 public void run() {
