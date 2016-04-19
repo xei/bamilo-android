@@ -334,5 +334,8 @@ public class RestConstants {
     public static final String AUTH_INFO = "auth_info";
     public static final String RETURNS = "returns";
     public static final String RETURNABLE_QUANTITY = "returnable_quantity";
+    public static final String TEXT_TITLE = "text_title";
+    public static final String TEXT_BODY1 = "text_body1";
+    public static final String TEXT_BODY2 = "text_body2";
     public static final String ACTIONS = "actions";
 }

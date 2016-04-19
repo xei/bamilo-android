@@ -73,7 +73,8 @@ public enum FragmentType {
     CATALOG_DEEP_LINK,
     CATALOG_CATEGORY,
     ORDER_RETURN_CONDITIONS,
-    ORDER_RETURN_REASON;
+    ORDER_RETURN_REASON,
+    ORDER_RETURN_CALL;
 
     private int id;
     private final static String DIVIDER = ":";

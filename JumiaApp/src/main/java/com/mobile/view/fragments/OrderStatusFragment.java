@@ -109,7 +109,10 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
         // Get order items container
         mOrderItems = (ViewGroup) view.findViewById(R.id.order_status_items);
         // Get return items container
-        view.findViewById(R.id.return_selected_button).setOnClickListener(this);
+        mReturnItemsButton = view.findViewById(R.id.return_selected_button);
+        mReturnItemsContainer = view.findViewById(R.id.return_button_container);
+        mReturnItemsButton.setOnClickListener(this);
+
         // Validate state
         onValidateState();
     }
@@ -220,31 +223,40 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
     private void showOrderItems(@NonNull ViewGroup group, @Nullable ArrayList<OrderTrackerItem> items) {
         if (CollectionUtils.isNotEmpty(items)) {
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
+
+            //
+            if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
+                UIUtils.setVisibility(mReturnItemsContainer, true);
+            } else {
+                UIUtils.setVisibility(mReturnItemsContainer, false);
+            }
+
             for (final OrderTrackerItem item : items) {
                 // Create new layout item
                 final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
                 if(item.isEligibleToReturn() && CollectionUtils.isNotEmpty(item.getOrderActions())){
-                    holder.returnOrder.setVisibility(View.VISIBLE);
+                    UIUtils.setVisibility(holder.returnOrder, true);
                     if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
                         holder.returnOrder.setText(getString(R.string.call_return_label));
                     } else {
                         holder.returnOrder.setText(getString(R.string.return_label));
-                        holder.orderCheckbox.setVisibility(View.VISIBLE);
-                        holder.orderCheckbox.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                holder.orderCheckbox.setChecked(item.isCheckedForAction());
-                            }
-                        });
-                        holder.orderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                            @Override
-                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                item.setCheckedForAction(isChecked);
-                            }
-                        });
+                        if(displayReturnSelected()){
+                            UIUtils.setVisibility(holder.orderCheckbox, true);
+                            holder.orderCheckbox.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.orderCheckbox.setChecked(item.isCheckedForAction());
+                                }
+                            });
+                            holder.orderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    item.setCheckedForAction(isChecked);
+                                }
+                            });
+                        }
+
                     }
-
-
 
                     holder.returnOrder.setTag(R.id.target_simple_sku, item.getSku());
                     holder.returnOrder.setOnClickListener(this);
@@ -343,6 +355,21 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
         return false;
     }
 
+    /**
+     * Check whether there is more then 2 items with action online return type
+      */
+    private boolean displayReturnSelected(){
+        int count = 0;
+        for (OrderTrackerItem item  : mOrder.getItems()) {
+            if (CollectionUtils.isNotEmpty(item.getOrderActions()) && !item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()) {
+                if(count++ > 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @Nullable
     private OrderTrackerItem getOrderItem(final String sku){
         for (OrderTrackerItem  item : mOrder.getItems()) {
@@ -388,7 +415,10 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
             final OrderTrackerItem item = getOrderItem(simpleSku);
            if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
                 // Go To Next Call to return step
-
+               Bundle bundle = new Bundle();
+               bundle.putParcelable(ConstantsIntentExtra.DATA, item);
+               bundle.putString(ConstantsIntentExtra.ARG_1, mOrder.getId());
+               getBaseActivity().onSwitchFragment(FragmentType.ORDER_RETURN_CALL, bundle, FragmentController.ADD_TO_BACK_STACK);
             } else {
                 // Go To Next return step
             }
