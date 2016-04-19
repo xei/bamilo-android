@@ -291,6 +291,14 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
                 holder.name.setText(item.getName());
                 // Set brand
                 holder.brand.setText(item.getBrandName());
+                // Set size
+                if(TextUtils.isNotEmpty(item.getSize())){
+                    UIUtils.setVisibility(holder.size, true);
+                    holder.size.setText(getString(R.string.size_placeholder, item.getSize()));
+                } else {
+                    UIUtils.setVisibility(holder.size, false);
+                }
+
                 // Set quantity
                 holder.quantity.setText(getString(R.string.qty_placeholder, item.getQuantity()));
                 // Set price
