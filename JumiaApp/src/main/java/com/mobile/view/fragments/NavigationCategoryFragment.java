@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import com.mobile.components.AnimatedExpandableListView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.controllers.CategoriesListAdapter;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.GetExternalLinksHelper;
@@ -230,21 +231,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
     }
 
     /**
-     * Open an External Link
-     * @param link
-     * @param label
-     */
-    private void openExternalLink(@NonNull String link, @NonNull String label){
-        TrackerDelegator.trackClickOnExternalLink(label);
-        try {
-            Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-            startActivity(myIntent);
-        } catch (ActivityNotFoundException e) {
-            showUnexpectedErrorWarning();
-        }
-    }
-
-    /**
      * ####### RESPONSE EVENTS #######
      */
     /*
@@ -341,7 +327,12 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         Category category = (Category) parent.getExpandableListAdapter().getChild(groupPosition, childPosition);
         if(category.isExternalLinkType()){
             // Open External Link
-            openExternalLink(category.getTargetLink(), category.getName());
+            try {
+                ActivitiesWorkFlow.openExternalLink(getBaseActivity(), category.getTargetLink(), category.getName());
+            } catch (ActivityNotFoundException e) {
+                showUnexpectedErrorWarning();
+            }
+
         } else {
             goToCatalog(category);
         }
@@ -370,7 +361,11 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
             Print.i(TAG, "PARENT GO TO CATALOG:" + category.getTargetLink());
             if(category.isExternalLinkType()){
                 // Open External Link
-                openExternalLink(category.getTargetLink(), category.getName());
+                try {
+                    ActivitiesWorkFlow.openExternalLink(getBaseActivity(), category.getTargetLink(), category.getName());
+                } catch (ActivityNotFoundException e) {
+                    showUnexpectedErrorWarning();
+                }
             } else {
                 goToCatalog(category);
             }

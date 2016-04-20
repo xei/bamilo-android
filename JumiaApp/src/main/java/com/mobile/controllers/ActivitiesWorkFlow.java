@@ -1,12 +1,14 @@
 package com.mobile.controllers;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.OverLoadErrorActivity;
 import com.mobile.view.R;
 import com.mobile.view.SplashScreenActivity;
@@ -82,4 +84,15 @@ public class ActivitiesWorkFlow {
         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
+    /**
+     * Open an External Link
+     * @param link
+     * @param label
+     */
+    public static void openExternalLink(@NonNull Activity activity, @NonNull String link, @NonNull String label) throws ActivityNotFoundException {
+        TrackerDelegator.trackClickOnExternalLink(label);
+        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        activity.startActivity(myIntent);
+
+    }
 }
