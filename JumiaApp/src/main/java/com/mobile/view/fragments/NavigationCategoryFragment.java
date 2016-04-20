@@ -111,7 +111,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
      */
     private void showCategoryList(Categories categories, ExternalLinksSection externalLinksSection) {
         // Case No categories are retrieved but we have some External Links Section to show
-        if ((categories != null && categories.size() > 0) || (externalLinksSection != null && CollectionUtils.isNotEmpty(externalLinksSection.getExternaLinks()))) {
+        if (CollectionUtils.isNotEmpty(categories) || (externalLinksSection != null && CollectionUtils.isNotEmpty(externalLinksSection.getExternaLinks()))) {
             if(externalLinksSection != null && CollectionUtils.isNotEmpty(externalLinksSection.getExternaLinks())){
 
                 if(categories == null){

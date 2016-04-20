@@ -10,8 +10,6 @@ import com.mobile.newFramework.utils.EventType;
  */
 public class GetExternalLinksHelper extends SuperBaseHelper {
     
-    public static String TAG = GetExternalLinksHelper.class.getSimpleName();
-
     @Override
     public void onRequest(RequestBundle requestBundle) {
         // Request
