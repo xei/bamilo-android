@@ -20,5 +20,10 @@ public class GetExternalLinksHelper extends SuperBaseHelper {
     public EventType getEventType() {
         return EventType.GET_EXTERNAL_LINKS;
     }
+
+    @Override
+    public boolean hasPriority() {
+        return HelperPriorityConfiguration.IS_NOT_PRIORITARY;
+    }
     
 }

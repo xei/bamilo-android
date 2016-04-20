@@ -273,9 +273,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
     @Override
     public void onRequestError(BaseResponse baseResponse) {
         Print.i(TAG, "ON ERROR EVENT");
-        EventType eventType = baseResponse.getEventType();
-        if(eventType == EventType.GET_EXTERNAL_LINKS)
-            return;
+
         // Validate fragment state
         if (isOnStoppingProcess) return;
         int errorCode = baseResponse.getError().getCode();
