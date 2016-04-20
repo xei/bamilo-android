@@ -45,6 +45,7 @@ import com.mobile.view.fragments.MyAccountUserDataFragment;
 import com.mobile.view.fragments.MyOrdersFragment;
 import com.mobile.view.fragments.OrderReturnCallFragment;
 import com.mobile.view.fragments.OrderReturnConditionsFragment;
+import com.mobile.view.fragments.OrderReturnStepsFragment;
 import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
@@ -310,9 +311,8 @@ public class MainFragmentActivity extends DebugActivity {
             case ORDER_RETURN_CONDITIONS:
                 fragment = newFragmentInstance(OrderReturnConditionsFragment.class, bundle);
                 break;
-            case ORDER_RETURN_REASON:
-                // TODO : ORDER RETURN REASON
-                fragment = newFragmentInstance(StaticPageFragment.class, bundle);
+            case ORDER_RETURN_STEPS:
+                fragment = newFragmentInstance(OrderReturnStepsFragment.class, bundle);
                 break;
             case CHOOSE_COUNTRY:
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);

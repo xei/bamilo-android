@@ -236,6 +236,8 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
                 UIUtils.setVisibility(mReturnItemsContainer, false);
             }
 
+            UIUtils.setVisibility(mReturnItemsContainer, true); // TODO DLT
+
             for (final OrderTrackerItem item : items) {
                 // Create new layout item
                 final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
@@ -353,10 +355,10 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
         if (!validateReturnAllSelected()) {
             // TODO : Get target link from Order
             String test = "static_page::terms_mobile";                              // <---- FIXME: TARGET LINK USED TO TEST
-            String contentId = TargetLink.getIdFromTargetLink(test);
+            String id = TargetLink.getIdFromTargetLink(test);
             // Goto order return conditions
-            new UISwitcher(getBaseActivity(), FragmentType.ORDER_RETURN_CONDITIONS)
-                    .addContentId(contentId)
+            onSwitchTo(FragmentType.ORDER_RETURN_CONDITIONS)
+                    .addId(id)
                     .noBackStack()
                     .run();
         } else {

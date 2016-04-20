@@ -8,10 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 
 import com.mobile.constants.ConstantsCheckout;
+import com.mobile.controllers.fragments.FragmentSwitcher;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.view.BaseActivity;
 
 import java.util.Set;
 
@@ -22,7 +22,8 @@ import java.util.Set;
 public abstract class BaseFragmentSwitcher extends BaseFragment {
 
     protected String mTitle;
-    protected String mContentId;
+    protected String mId;
+    protected Parcelable mData;
 
     /*
      * ##### CONSTRUCTORS #####
@@ -61,8 +62,9 @@ public abstract class BaseFragmentSwitcher extends BaseFragment {
      *     - content id<br>
      */
     protected void onCreateInstanceState(@NonNull Bundle bundle) {
-        mTitle = bundle.getString(UISwitcher.TITLE);
-        mContentId = bundle.getString(UISwitcher.CONTENT_ID);
+        mTitle = bundle.getString(FragmentSwitcher.TITLE);
+        mId = bundle.getString(FragmentSwitcher.ID);
+        mData = bundle.getParcelable(FragmentSwitcher.DATA);
     }
 
     /**
@@ -73,8 +75,9 @@ public abstract class BaseFragmentSwitcher extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(UISwitcher.TITLE, mTitle);
-        outState.putString(UISwitcher.CONTENT_ID, mContentId);
+        outState.putString(FragmentSwitcher.TITLE, mTitle);
+        outState.putString(FragmentSwitcher.ID, mId);
+        outState.putParcelable(FragmentSwitcher.DATA, mData);
     }
 
     /*
@@ -82,82 +85,10 @@ public abstract class BaseFragmentSwitcher extends BaseFragment {
      */
 
     /**
-     * Class used to build the switch bundle for next fragment
+     * Get the ui switcher
      */
-    protected final static class UISwitcher {
-
-        private final static String TITLE = "title";
-        private final static String CONTENT_ID = "content_id";
-
-        private final BaseActivity mActivity;
-        private final FragmentType mType;
-        private Bundle mBundle;
-        private boolean addToBackStack = true;
-
-        /**
-         * Constructor.
-         */
-        protected UISwitcher(@NonNull BaseActivity activity, @NonNull FragmentType type) {
-            this.mActivity = activity;
-            this.mType = type;
-        }
-
-        private Bundle bundle() {
-            return this.mBundle == null ? this.mBundle = new Bundle() : this.mBundle;
-        }
-
-        /*
-         * ###### BUILDER #####
-         */
-
-        /**
-         * Add the title.<br>
-         */
-        protected UISwitcher addTitle(@NonNull String title) {
-            this.bundle().putString(TITLE, title);
-            return this;
-        }
-
-        /**
-         * Add the content id to be loaded.
-         */
-        protected UISwitcher addContentId(@NonNull String id) {
-            this.bundle().putString(CONTENT_ID, id);
-            return this;
-        }
-
-        /**
-         * Add custom string pair.
-         */
-        protected UISwitcher add(@NonNull String key, @NonNull String param) {
-            this.bundle().putString(key, param);
-            return this;
-        }
-
-        /**
-         * Add custom parcelable pair.
-         */
-        protected UISwitcher add(@NonNull String key, @NonNull Parcelable param) {
-            this.bundle().putParcelable(key, param);
-            return this;
-        }
-
-        /**
-         * Indicates to not add to back stack.
-         */
-        protected UISwitcher noBackStack() {
-            this.addToBackStack = false;
-            return this;
-        }
-
-        /**
-         * Run the switch.
-         */
-        protected UISwitcher run() {
-            mActivity.onSwitchFragment(mType, mBundle, addToBackStack);
-            return this;
-        }
-
+    protected FragmentSwitcher onSwitchTo(@NonNull FragmentType type) {
+        return new FragmentSwitcher(getBaseActivity(), type);
     }
 
 }

@@ -25,11 +25,7 @@
                 style="@style/HeaderStyle.Multiline"
                 tools:text="@string/order_return_conditions_title" />
 
-            <!--CMS-->
-            <com.mobile.components.customfontviews.TextView
-                android:id="@+id/order_return_conditions_text_cms"
-                style="@style/MultiLineStyle.Black"
-                tools:text="CMS BLOCK" />
+            <!--CONTENT-->
 
         </LinearLayout>
 
