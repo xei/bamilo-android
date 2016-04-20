@@ -146,7 +146,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
             }
 
 
-            showRootCategories(categories, externalLinksSection);
+            showRootCategories(categories);
 
             // Show content
             showFragmentContentContainer();
@@ -159,7 +159,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
     /**
      * Show the root categories
      */
-    private void showRootCategories(final ArrayList<Category> categories, final ExternalLinksSection externalLinksSection) {
+    private void showRootCategories(final ArrayList<Category> categories) {
         Print.i(TAG, "ON SHOW ROOT CATEGORIES "+categories.size());
         CategoriesListAdapter mCategoryAdapter = new CategoriesListAdapter(getBaseActivity().getApplicationContext(), categories);
         mCategoryList.setAdapter(mCategoryAdapter);
