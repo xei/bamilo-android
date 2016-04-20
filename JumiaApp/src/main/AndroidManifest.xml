@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.mobile.view"
@@ -19,19 +19,21 @@
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
     <permission
         android:name="${applicationId}.permission.A4S_SEND"
         android:protectionLevel="signature" />
-    <uses-permission android:name="${applicationId}.permission.A4S_SEND" />
 
+    <uses-permission android:name="${applicationId}.permission.A4S_SEND" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <!-- ############# Location: LocationHelper and AD4Push ############# -->
     <uses-permission
         android:name="android.permission.ACCESS_FINE_LOCATION"
         android:required="false" /> <!-- Android 6.0 Dangerous Permission -->
+
 
     <!-- ##################################### -->
     <!-- ############# Features ############## -->
@@ -60,7 +62,6 @@
     <!-- ######################################## -->
     <!-- ############# Application ############## -->
     <!-- ######################################## -->
-
     <application
         android:name="com.mobile.app.JumiaApplication"
         android:allowBackup="true"
@@ -68,11 +69,11 @@
         android:label="@string/app_name"
         android:supportsRtl="@bool/rtl_enabled"
         android:theme="@style/Theme.Custom"
-        tools:ignore="UnusedAttribute" >
+        tools:ignore="UnusedAttribute">
         <activity
             android:name=".SplashScreenActivity"
             android:noHistory="true"
-            android:screenOrientation="unspecified" >
+            android:screenOrientation="unspecified">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -117,6 +118,11 @@
             android:exported="true"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".RedirectInfoActivity"
+            android:exported="true"
+            android:screenOrientation="behind"
+            android:windowSoftInputMode="adjustPan" />
 
         <!-- ################################################# -->
         <!-- ############# GOOGLE PLAY SERVICES ############## -->
@@ -141,11 +147,12 @@
         <!-- ############# AD4Push GCM ############## -->
         <!-- ######################################## -->
 
+
         <!-- ############# AD4Push: A4SService ############# -->
         <service
             android:name="com.ad4screen.sdk.A4SService"
             android:label="A4S Service"
-            android:process=":A4SService" >
+            android:process=":A4SService">
             <meta-data
                 android:name="com.ad4screen.partnerid"
                 android:value="@string/ad4push_partner_id" />
@@ -190,7 +197,7 @@
 
         <receiver
             android:name="com.ad4screen.sdk.GCMHandler"
-            android:permission="com.google.android.c2dm.permission.SEND" >
+            android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -200,7 +207,7 @@
         </receiver>
         <receiver
             android:name="com.mobile.utils.receivers.PushNotificationReceiver"
-            android:permission="${applicationId}.permission.A4S_SEND" >
+            android:permission="${applicationId}.permission.A4S_SEND">
             <intent-filter>
                 <action android:name="com.ad4screen.sdk.intent.action.DISPLAYED" />
                 <action android:name="com.ad4screen.sdk.intent.action.CLICKED" />
@@ -224,7 +231,7 @@
         <!-- android:name="com.mobile.utils.receivers.InstallReceiver" -->
         <receiver
             android:name="com.mobile.utils.receivers.InstallReceiver"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.android.vending.INSTALL_REFERRER" />
             </intent-filter>
@@ -234,12 +241,11 @@
         <!-- ################# WEAR ################## -->
         <!-- ######################################### -->
 
-        <service android:name="com.mobile.utils.JumiaWearableListenerService" >
+        <service android:name="com.mobile.utils.JumiaWearableListenerService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

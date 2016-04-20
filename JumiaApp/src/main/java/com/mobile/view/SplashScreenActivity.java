@@ -29,6 +29,7 @@ import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.errors.ErrorCode;
@@ -337,7 +338,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } else if (eventType == EventType.GET_API_INFO) {
             onProcessApiEvent(baseResponse);
         } else if (eventType == EventType.GET_COUNTRY_CONFIGURATIONS) {
-            onProcessCountryConfigsEvent();
+            onProcessCountryConfigsEvent(baseResponse);
         } else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
             onProcessGlobalConfigsEvent(baseResponse);
         }
@@ -393,9 +394,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     /**
      * Process the country configs event
      */
-    private void onProcessCountryConfigsEvent() {
+    private void onProcessCountryConfigsEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS COUNTRY CONFIGS");
-        JumiaApplication.INSTANCE.init(initializationHandler);
+        // Case redirect link
+        CountryConfigs configs = (CountryConfigs) baseResponse.getContentData();
+        if (configs.hasRedirectInfo()) {
+            ActivitiesWorkFlow.showRedirectInfoActivity(this, configs.getRedirectInfo());
+        }
+        // Case Continue
+        else {
+            JumiaApplication.INSTANCE.init(initializationHandler);
+        }
     }
 
     /**

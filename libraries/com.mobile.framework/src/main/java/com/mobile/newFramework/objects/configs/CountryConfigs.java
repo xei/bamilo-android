@@ -3,6 +3,7 @@ package com.mobile.newFramework.objects.configs;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
 import com.mobile.newFramework.objects.IJSONSerializable;
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.statics.MobileAbout;
@@ -25,16 +26,9 @@ import java.util.List;
  */
 public class CountryConfigs implements IJSONSerializable, Parcelable {
 
-    //private static final String TAG = CountryConfigs.class.getSimpleName();
-
     public static final String CURRENCY_LEFT_POSITION = "1";
-
-    // private static final String CURRENCY_RIGHT_POSITION = "0";
-
     public static final String STRING_START_PLACEHOLDER = "%s ";
-
     public static final String STRING_END_PLACEHOLDER = " %s";
-
     public static final String ALGOLIA = "algolia";
 
     private String mCurrencyIso;
@@ -63,6 +57,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private boolean mUseAlgolia;
 
     private AuthInfo mAuthInfo;
+    private RedirectInfo mRedirectInfo;
 
 
     /**
@@ -132,7 +127,6 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     }
 
 
-
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         // Get currency info
@@ -140,7 +134,6 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         mCurrencySymbol = jsonObject.getString(RestConstants.CURRENCY_SYMBOL);
         mCurrencyPosition = jsonObject.optString(RestConstants.CURRENCY_POSITION);
         // Fallback for currency
-//        if (TextUtils.isEmpty(mCurrencySymbol)) {
         if (mCurrencySymbol.equals("")) {
             mCurrencySymbol = mCurrencyIso;
         }
@@ -175,6 +168,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         try {
             mobileAbout = new MobileAbout(jsonObject);
         } catch (JSONException ex) {
+            Print.w("WARNING: JSE ON PARSE MOBILE ABOUT");
         }
 
         hasCartPopup = jsonObject.optBoolean(RestConstants.HAS_CART_POPUP);
@@ -182,19 +176,30 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         mIsRichRelevanceEnabled = jsonObject.optBoolean(RestConstants.RICH_RELEVANCE_ENABLED);
         //Algolia/Api configurations
         mSuggesterProvider = jsonObject.optString(RestConstants.SUGGESTER_PROVIDER);
-        if(TextUtils.equalsIgnoreCase(mSuggesterProvider, ALGOLIA)){
+        if (TextUtils.equalsIgnoreCase(mSuggesterProvider, ALGOLIA)) {
             mUseAlgolia = true;
         }
         JSONObject jsonAlgolia = jsonObject.optJSONObject(RestConstants.ALGOLIA);
-        if(jsonAlgolia != null){
+        if (jsonAlgolia != null) {
             mApplicationId = jsonAlgolia.optString(RestConstants.APPLICATION_ID);
             mSuggesterApiKey = jsonAlgolia.optString(RestConstants.SUGGESTER_API_KEY);
             mNamespacePrefix = jsonAlgolia.optString(RestConstants.NAMESPACE_PREFIX);
         }
-
+        // Auth header info
         JSONObject jsonAuthInfo = jsonObject.optJSONObject(RestConstants.AUTH_INFO);
-        if(jsonAuthInfo != null ){
+        if (jsonAuthInfo != null) {
             mAuthInfo.initialize(jsonAuthInfo);
+        }
+
+        String json = "{\n" +
+                "    \"html\": \"BLABLBLALBLABLBLALBALBLABLALLLBLALBLABLA\",\n" +
+                "    \"android_link\": \"https://play.google.com/store/apps/details?id=com.kaymu.android\"\n" +
+                "}";
+        mRedirectInfo = new Gson().fromJson(json, RedirectInfo.class);
+        // Redirect info
+        JSONObject jsonRedirect = jsonObject.optJSONObject(RestConstants.REDIRECT_INFO);
+        if (jsonRedirect != null) {
+            mRedirectInfo = new Gson().fromJson(jsonRedirect.toString(), RedirectInfo.class);
         }
 
         return true;
@@ -210,6 +215,14 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         return RequiredJson.METADATA;
     }
 
+
+    public boolean hasRedirectInfo() {
+        return mRedirectInfo != null && TextUtils.isNotEmpty(mRedirectInfo.getLink());
+    }
+
+    public RedirectInfo getRedirectInfo() {
+        return mRedirectInfo;
+    }
 
     public String getCurrencyIso() {
         return mCurrencyIso;
@@ -279,8 +292,6 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         return isFacebookAvailable;
     }
 
-    public String getSuggesterProvider() { return mSuggesterProvider; }
-
     public String getApplicationId() { return mApplicationId; }
 
     public String getSuggesterApiKey() { return mSuggesterApiKey; }
@@ -289,6 +300,25 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
 
     public boolean isAlgoliaSearchEngine() { return mUseAlgolia; }
 
+    public void setLanguages(Languages languages) {
+        this.languages = languages;
+    }
+
+    public Languages getLanguages() {
+        return languages;
+    }
+
+    public List<TargetHelper> getMobileAbout() {
+        return mobileAbout;
+    }
+
+    public AuthInfo getAuthInfo(){
+        return mAuthInfo;
+    }
+
+    /*
+     * #### PARCELABLE ####
+     */
     protected CountryConfigs(Parcel in) {
         mCurrencyIso = in.readString();
         mCurrencySymbol = in.readString();
@@ -357,20 +387,4 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
             return new CountryConfigs[size];
         }
     };
-
-    public void setLanguages(Languages languages) {
-        this.languages = languages;
-    }
-
-    public Languages getLanguages() {
-        return languages;
-    }
-
-    public List<TargetHelper> getMobileAbout() {
-        return mobileAbout;
-    }
-
-    public AuthInfo getAuthInfo(){
-        return mAuthInfo;
-    }
 }

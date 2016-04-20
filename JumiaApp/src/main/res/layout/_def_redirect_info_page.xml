@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--TOOLBAR-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/redirect_info_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/tabBar"
+        android:logo="@drawable/logo_ic"
+        android:theme="@style/Widget.Custom.ActionBar" />
+
+    <!--HTML-->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/redirect_info_text"
+        style="@style/MultiLineStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="top"
+        tools:text="BABABABABABABAB" />
+
+    <!--BUTTON-->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/redirect_info_button"
+        style="@style/Button_1.Shop"
+        android:text="Download" />
+
+</LinearLayout>
