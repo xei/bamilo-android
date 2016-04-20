@@ -153,7 +153,9 @@ public enum TrackingEvent {
 
 	UNKNOWN_BANNER_CLICK(R.string.gunknown, R.string.gunknown),
 
-	HOME_BANNER_CLICK(-1, R.string.gBannerClick);
+	HOME_BANNER_CLICK(-1, R.string.gBannerClick),
+
+    EXTERNAL_LINK_CLICK(R.string.gexternallink, R.string.gcategoriestree);
 	
 	/**
 	 * ############## CLASS ##############

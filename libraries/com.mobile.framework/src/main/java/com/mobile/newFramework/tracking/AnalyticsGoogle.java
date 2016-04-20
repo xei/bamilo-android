@@ -551,6 +551,20 @@ public class AnalyticsGoogle {
     }
 
     /**
+     * Track External Link Clicl
+     */
+    public void trackEventClickOnExternalLink(TrackingEvent event, String action) {
+        // Validation
+        if (!isEnabled) return;
+        // Get label
+        String label = mContext.getString(event.getAction());
+        // Get category
+        String category = mContext.getString(event.getCategory());
+        // Tracking
+        trackEvent(category, action, label, NO_VALUE);
+    }
+
+    /**
      * Google Analytics "General Campaign Measurement"
      *
      * Method used to create a UTM string with all the info and their constrains.
