@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
+import com.mobile.app.JumiaApplication;
+import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.controllers.CountrySettingsAdapter;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.AuthInfo;
@@ -25,11 +27,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by spereira on 5/27/15.
+ * Class used to manage country configs.
+ * @author spereira
  */
 public class CountryPersistentConfigs {
 
-    private static final String TAG = CountryPersistentConfigs.class.getSimpleName();
+    /**
+     * Validate and save new country configurations from request.
+     */
+    public static void newConfigurations(@NonNull CountryConfigs configs) {
+        // Case available/supported country save configs
+        if (!configs.hasRedirectInfo()) {
+            Context context = JumiaApplication.INSTANCE.getApplicationContext();
+            // Validate country languages
+            if(!CountryPersistentConfigs.hasLanguages(context)){
+                ChooseLanguageController.setLanguageBasedOnDevice(configs.getLanguages(), configs.getCurrencyIso());
+            }
+            // Save country configs
+            CountryPersistentConfigs.write(context, configs);
+        }
+    }
 
     /**
      * Write object variables to preferences
@@ -37,7 +54,7 @@ public class CountryPersistentConfigs {
      * @param context The application context
      * @author ricardosoares
      */
-    public static void writePreferences(Context context, CountryConfigs countryConfigs) {
+    private static void write(Context context, CountryConfigs countryConfigs) {
         // Get shared prefs
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sharedPrefs.edit();
@@ -95,7 +112,7 @@ public class CountryPersistentConfigs {
     public static String getCountryPhoneNumber(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null);
-        Print.i(TAG, "SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
+        Print.i("SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
         return mPhone2Call;
     }
 
@@ -106,7 +123,7 @@ public class CountryPersistentConfigs {
     public static String getCountryEmail(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String mEmail = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null);
-        Print.i(TAG, "SHOP COUNTRY EMAIL: " + mEmail);
+        Print.i("SHOP COUNTRY EMAIL: " + mEmail);
         return mEmail;
     }
 
@@ -120,8 +137,7 @@ public class CountryPersistentConfigs {
         return sharedPrefs.contains(Darwin.KEY_SELECTED_FACEBOOK_IS_AVAILABLE);
     }
 
-    public static void writePreferences(SharedPreferences.Editor editor, CountryObject countryObject){
-
+    public static void save(SharedPreferences.Editor editor, CountryObject countryObject) {
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_ID, countryObject.getCountryIso().toLowerCase());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_NAME, countryObject.getCountryName());
         editor.putString(Darwin.KEY_SELECTED_COUNTRY_URL, countryObject.getCountryUrl());
@@ -132,14 +148,14 @@ public class CountryPersistentConfigs {
         editor.putString(Darwin.KEY_COUNTRY_USER_AGENT_AUTH_KEY, countryObject.getUserAgentToAccessDevServers());
     }
 
-    public static void eraseCountryPreferences(Context context){
+    public static void eraseCountryPreferences(@NonNull Context context){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = settings.edit();
         eraseCountryPreferences(mEditor);
         mEditor.apply();
     }
 
-    public static void eraseCountryPreferences(SharedPreferences.Editor editor){
+    public static void eraseCountryPreferences(@NonNull SharedPreferences.Editor editor){
         editor.remove(Darwin.KEY_SELECTED_COUNTRY_ID);
         editor.remove(Darwin.KEY_SELECTED_COUNTRY_NAME);
         editor.remove(Darwin.KEY_SELECTED_COUNTRY_URL);
@@ -153,7 +169,7 @@ public class CountryPersistentConfigs {
         editor.remove(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME);
     }
 
-    public static CountrySettingsAdapter.CountryLanguageInformation getCountryInformation(Context context){
+    public static CountrySettingsAdapter.CountryLanguageInformation getCountryInformation(@NonNull Context context){
         CountrySettingsAdapter.CountryLanguageInformation countryLanguageInformation = new CountrySettingsAdapter.CountryLanguageInformation();
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
         countryLanguageInformation.countryName = settings.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
@@ -162,7 +178,7 @@ public class CountryPersistentConfigs {
         return countryLanguageInformation;
     }
 
-    private static void saveLanguages(SharedPreferences.Editor mEditor, Languages languages){
+    private static void saveLanguages(@NonNull SharedPreferences.Editor mEditor, @Nullable Languages languages){
         // Languages
         if(CollectionUtils.isNotEmpty(languages)) {
             Language language = languages.getSelectedLanguage();
@@ -176,49 +192,49 @@ public class CountryPersistentConfigs {
         }
     }
 
-    public static void saveLanguages(Context context, Languages languages){
+    public static void saveLanguages(@NonNull Context context, Languages languages){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sharedPrefs.edit();
         saveLanguages(mEditor, languages);
         mEditor.apply();
     }
 
-    public static void saveMoreInfo(Context context, @Nullable List<TargetHelper> moreInfo){
+    public static void saveMoreInfo(@NonNull Context context, @Nullable List<TargetHelper> moreInfo){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         SharedPreferences.Editor mEditor = sharedPrefs.edit();
         saveMoreInfo(mEditor, moreInfo);
         mEditor.apply();
     }
 
-    public static void saveMoreInfo(SharedPreferences.Editor mEditor, @Nullable List<TargetHelper> moreInfo){
+    public static void saveMoreInfo(@NonNull SharedPreferences.Editor mEditor, @Nullable List<TargetHelper> moreInfo){
         String json = new Gson().toJson(moreInfo);
         mEditor.putString(Darwin.KEY_SELECTED_MORE_INFO, json);
     }
 
-    public static void saveAlgoliaInfo(SharedPreferences.Editor mEditor, @Nullable final String appId, final String suggesterAPIKey, final String namespacePrefix, final boolean useAlgolia){
+    public static void saveAlgoliaInfo(@NonNull SharedPreferences.Editor mEditor, @Nullable final String appId, final String suggesterAPIKey, final String namespacePrefix, final boolean useAlgolia){
         mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_USE, useAlgolia);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_APP_ID, appId);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_API_KEY, suggesterAPIKey);
         mEditor.putString(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_PREFIX, namespacePrefix);
     }
 
-    public static void saveAuthInfo(SharedPreferences.Editor mEditor, @Nullable AuthInfo authInfo){
+    public static void saveAuthInfo(@NonNull SharedPreferences.Editor mEditor, @Nullable AuthInfo authInfo){
         String json = new Gson().toJson(authInfo);
         mEditor.putString(Darwin.KEY_SELECTED_AUTH_INFO, json);
     }
 
-    public static boolean isUseAlgolia(Context context){
+    public static boolean isUseAlgolia(@NonNull Context context){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return settings.getBoolean(Darwin.KEY_SELECTED_COUNTRY_ALGOLIA_USE, false);
     }
 
-    public static String getAlgoliaInfoByKey(Context context, @NonNull final String key){
+    public static String getAlgoliaInfoByKey(@NonNull Context context, @NonNull final String key){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return settings.getString(key, null);
     }
 
     @Nullable
-    public static ArrayList<TargetHelper> getMoreInfo(Context context){
+    public static ArrayList<TargetHelper> getMoreInfo(@NonNull Context context){
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String json = settings.getString(Darwin.KEY_SELECTED_MORE_INFO, null);
         return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, MobileAbout.class);
@@ -232,21 +248,21 @@ public class CountryPersistentConfigs {
     }
 
     @Nullable
-    public static Languages getLanguages(SharedPreferences settings){
+    public static Languages getLanguages(@NonNull SharedPreferences settings){
         String json = settings.getString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES, null);
         return TextUtils.isEmpty(json) ? null : new Gson().fromJson(json, Languages.class);
     }
 
-    public static boolean hasLanguages(SharedPreferences sharedPrefs){
+    public static boolean hasLanguages(@NonNull SharedPreferences sharedPrefs){
         return TextUtils.isNotEmpty(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANGUAGES, null));
     }
 
-    public static boolean hasLanguages(Context context){
+    private static boolean hasLanguages(@NonNull Context context){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return hasLanguages(sharedPrefs);
     }
 
-    public static boolean hasCartPopup(Context context){
+    public static boolean hasCartPopup(@NonNull Context context){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, false);
     }

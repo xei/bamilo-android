@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--TOOLBAR-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/redirect_info_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/Widget.Custom.ActionBar"
+        app:logo="@drawable/logo_ic"
+        tools:layout_height="48dp" />
+
+    <!--HTML-->
+    <com.mobile.components.webview.SuperWebView
+        android:id="@+id/redirect_info_web"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="@dimen/margin_padding_xl" />
+
+    <!--BUTTON-->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/redirect_info_button"
+        style="@style/Button_1.Shop"
+        android:layout_margin="@dimen/margin_padding_xl"
+        android:text="@string/go_label"
+        tools:layout_height="48dp"
+        tools:layout_width="match_parent" />
+
+</LinearLayout>

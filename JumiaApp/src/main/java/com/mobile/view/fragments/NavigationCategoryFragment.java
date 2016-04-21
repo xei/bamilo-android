@@ -324,7 +324,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         if(category.isExternalLinkType()){
             // Open External Link
             try {
-                ActivitiesWorkFlow.openExternalLink(getBaseActivity(), category.getTargetLink(), category.getName());
+                ActivitiesWorkFlow.startExternalWebActivity(getBaseActivity(), category.getTargetLink(), category.getName());
             } catch (ActivityNotFoundException e) {
                 showUnexpectedErrorWarning();
             }
@@ -358,7 +358,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
             if(category.isExternalLinkType()){
                 // Open External Link
                 try {
-                    ActivitiesWorkFlow.openExternalLink(getBaseActivity(), category.getTargetLink(), category.getName());
+                    ActivitiesWorkFlow.startExternalWebActivity(getBaseActivity(), category.getTargetLink(), category.getName());
                 } catch (ActivityNotFoundException e) {
                     showUnexpectedErrorWarning();
                 }
