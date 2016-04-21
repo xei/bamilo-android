@@ -55,7 +55,6 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private String mSuggesterApiKey;
     private String mNamespacePrefix;
     private boolean mUseAlgolia;
-
     private AuthInfo mAuthInfo;
     private RedirectInfo mRedirectInfo;
 

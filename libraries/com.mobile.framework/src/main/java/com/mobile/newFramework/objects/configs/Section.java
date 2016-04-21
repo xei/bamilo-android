@@ -87,7 +87,6 @@ public class Section implements IJSONSerializable, Parcelable {
             String url = jsonObject.getString(RestConstants.URL);
             if(jsonObject.has(RestConstants.SECTION_MD5)){
                 md5 = jsonObject.getString(RestConstants.SECTION_MD5);
-                //Log.i(TAG, "code1md5 got md5 for : "+url+ " md5 is : "+md5);
             }
             init(name, md5, url);
         } catch (JSONException e) {

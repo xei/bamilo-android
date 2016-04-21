@@ -42,7 +42,7 @@ public class SectionsTablesHelper extends BaseTable {
     @Override
 	@DarwinDatabaseHelper.UpgradeType
     public int getUpgradeType() {
-        return DarwinDatabaseHelper.PERSIST;
+        return DarwinDatabaseHelper.CACHE;
     }
 
     /*
@@ -78,19 +78,15 @@ public class SectionsTablesHelper extends BaseTable {
      */
     public static void saveSections(List<Section> sections) {
     	SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getWritableDatabase();
-
     	try {
     		db.beginTransaction();
-    		
     		for (Section section : sections) {
     			saveSection(db, section);
     		}
 	    	db.setTransactionSuccessful();
-
     	} catch (SQLException e) {
     		Print.e(e.getMessage());
     		e.printStackTrace();
-    		
     	}
     	finally {
     		db.endTransaction();
@@ -108,13 +104,11 @@ public class SectionsTablesHelper extends BaseTable {
     	contentValues.put(Columns.NAME, section.getName());
     	contentValues.put(Columns.MD5, section.getMd5());
     	contentValues.put(Columns.URL, section.getUrl());
-
     	db.insertWithOnConflict(TABLE_NAME, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
 	}
 	
 	public static List<Section> getSections() {
 		SQLiteDatabase db = DarwinDatabaseHelper.getInstance().getReadableDatabase();
-		
 		Cursor cursor = db.query(TABLE_NAME, new String[] {
 				Columns.ID,
 				Columns.NAME,
@@ -122,9 +116,7 @@ public class SectionsTablesHelper extends BaseTable {
 				Columns.URL
 		}, 
 		null, null, null, null, null);
-		
 		List<Section> sections = new ArrayList<>();
-
 		if(cursor != null){
 			while (cursor.moveToNext()) {
 				String name = cursor.getString(Projection.NAME);
@@ -135,7 +127,6 @@ public class SectionsTablesHelper extends BaseTable {
 			}
 			cursor.close();
 		}
-
 		return sections;
 	}
 
