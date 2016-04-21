@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:background="@color/white"
               android:gravity="center_horizontal"
               android:orientation="vertical">
 
@@ -56,20 +55,19 @@
         android:layout_marginTop="@dimen/margin_padding_xs"
         />
 
-
     <!-- BUTTON -->
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/btn_call_now"
         style="@style/Button_1.Shop"
         android:layout_width="match_parent"
         android:layout_marginLeft="@dimen/margin_60px"
         android:layout_marginRight="@dimen/margin_60px"
-        android:layout_marginTop="@dimen/margin_padding_xxl"
-        android:contentDescription="@string/checkout_continue_button_description"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:contentDescription="@string/call_now_label"
         android:text="@string/call_now_label" />
 
-    <com.mobile.components.customfontviews.Button
+    <com.mobile.components.customfontviews.TextView
         android:id="@+id/btn_continue_shopping"
         style="@style/Button_1.Secondary.Text_Black_800.Border_400"
         android:layout_width="match_parent"

@@ -96,7 +96,7 @@ public class OrderReturnCallFragment extends BaseFragment {
     private void fillLayout(){
         OrderActions orderActions = mOrderItem.getOrderActions().get(IntConstants.DEFAULT_POSITION);
         mTitleView.setText(orderActions.getTitle());
-        mOrderNumberView.setText(orderNumber);
+        mOrderNumberView.setText(String.format(getString(R.string.order_number_placeholder),orderNumber));
         mBody1View.setText(orderActions.getBody1());
         mBody2View.setText(orderActions.getBody2());
     }
