@@ -37,15 +37,13 @@ public class CountryPersistentConfigs {
      */
     public static void newConfigurations(@NonNull CountryConfigs configs) {
         // Case available/supported country save configs
-        if (!configs.hasRedirectInfo()) {
-            Context context = JumiaApplication.INSTANCE.getApplicationContext();
-            // Validate country languages
-            if(!CountryPersistentConfigs.hasLanguages(context)){
-                ChooseLanguageController.setLanguageBasedOnDevice(configs.getLanguages(), configs.getCurrencyIso());
-            }
-            // Save country configs
-            CountryPersistentConfigs.write(context, configs);
+        Context context = JumiaApplication.INSTANCE.getApplicationContext();
+        // Validate country languages
+        if (!CountryPersistentConfigs.hasLanguages(context)) {
+            ChooseLanguageController.setLanguageBasedOnDevice(configs.getLanguages(), configs.getCurrencyIso());
         }
+        // Save country configs
+        CountryPersistentConfigs.write(context, configs);
     }
 
     /**

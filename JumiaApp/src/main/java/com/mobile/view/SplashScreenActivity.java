@@ -29,6 +29,7 @@ import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.database.SectionsTablesHelper;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.configs.AigRestContract;
@@ -399,6 +400,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Case redirect link
         CountryConfigs configs = (CountryConfigs) response.getContentData();
         if (configs.hasRedirectInfo()) {
+            // Drop all sections to get always the new country configs
+            SectionsTablesHelper.deleteConfigurations();
+            // Start redirect activity
             ActivitiesWorkFlow.showRedirectInfoActivity(this, configs.getRedirectInfo());
         }
         // Case Continue
@@ -479,7 +483,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessApiEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS API EVENT");
-        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct)baseResponse.getContentData();
+        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct) baseResponse.getContentData();
         // Validate out dated sections
         if (apiInformation.isSectionNameConfigurations()) {
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
