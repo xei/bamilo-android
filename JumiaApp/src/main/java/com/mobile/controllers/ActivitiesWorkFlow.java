@@ -54,7 +54,7 @@ public class ActivitiesWorkFlow {
     /**
      * Start splash activity
      */
-	public static void splashActivityNewTask(Activity activity ) {
+	public static void splashActivityNewTask(@NonNull Activity activity ) {
 	    Intent intent = new Intent(activity.getApplicationContext(), SplashScreenActivity.class)
         .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startWithSlideTransition(activity, intent);
@@ -63,7 +63,7 @@ public class ActivitiesWorkFlow {
 	/**
 	 * Used to share.
 	 */
-	public static void startActivitySendString(Activity activity, String chooserText, String extraText){
+	public static void startActivitySendString(@NonNull Activity activity, String chooserText, String extraText) {
 	    Intent sharingIntent = new Intent(Intent.ACTION_SEND)
         .setType("text/plain")
         .putExtra(Intent.EXTRA_TEXT, extraText);
@@ -106,14 +106,14 @@ public class ActivitiesWorkFlow {
     /**
      * Start external web activity
      */
-    private static void startExternalWebActivity(@NonNull Activity activity, @NonNull Uri uri){
+    private static void startExternalWebActivity(@NonNull Activity activity, @NonNull Uri uri) {
         startWithSlideTransition(activity, new Intent(Intent.ACTION_VIEW, uri));
     }
 
     /**
      * Shows server overload page
      */
-    public static void showOverLoadErrorActivity(@NonNull Activity activity){
+    public static void showOverLoadErrorActivity(@NonNull Activity activity) {
         Intent intent = new Intent(activity.getApplicationContext(), OverLoadErrorActivity.class)
         .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         startWithFadeTransition(activity, intent);
