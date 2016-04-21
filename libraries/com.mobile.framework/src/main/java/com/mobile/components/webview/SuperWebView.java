@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.webkit.WebView;
 
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 
 /**
@@ -60,10 +59,6 @@ public class SuperWebView extends WebView {
      * Load html data.
      */
     public void loadData(@Nullable String html) {
-        if (TextUtils.isNotEmpty(html)) {
-            loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
-        } else {
-            loadUrl(html);
-        }
+        loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
     }
 }
