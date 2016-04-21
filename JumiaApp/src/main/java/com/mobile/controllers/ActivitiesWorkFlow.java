@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.OverLoadErrorActivity;
 import com.mobile.view.R;
 import com.mobile.view.RedirectInfoActivity;
@@ -34,6 +35,25 @@ import com.mobile.view.SplashScreenActivity;
  */
 public class ActivitiesWorkFlow {
 
+    /**
+     * Start activity with slide transition
+     */
+    private static void startWithSlideTransition(@NonNull Activity activity, @NonNull Intent intent) {
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    /**
+     * Start activity with fade transition
+     */
+    private static void startWithFadeTransition(@NonNull Activity activity, @NonNull Intent intent) {
+        activity.startActivity(intent);
+        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+    }
+
+    /**
+     * Start splash activity
+     */
 	public static void splashActivityNewTask(Activity activity ) {
 	    Intent intent = new Intent(activity.getApplicationContext(), SplashScreenActivity.class)
         .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -64,7 +84,7 @@ public class ActivitiesWorkFlow {
         try {
             startMarketActivity(activity, Uri.parse(activity.getString(R.string.market_store_uri, id)));
         } catch (ActivityNotFoundException ex) {
-            startMarketExternalWebActivity(activity, Uri.parse(link));
+            startExternalWebActivity(activity, Uri.parse(link));
         }
     }
 
@@ -76,9 +96,17 @@ public class ActivitiesWorkFlow {
     }
 
     /**
-     * Start external market activity
+     * Open an External Link
      */
-    private static void startMarketExternalWebActivity(@NonNull Activity activity, @NonNull Uri uri){
+    public static void startExternalWebActivity(@NonNull Activity activity, @NonNull String link, @NonNull String label) throws ActivityNotFoundException {
+        TrackerDelegator.trackClickOnExternalLink(label);
+        startExternalWebActivity(activity, Uri.parse(link));
+    }
+
+    /**
+     * Start external web activity
+     */
+    private static void startExternalWebActivity(@NonNull Activity activity, @NonNull Uri uri){
         startWithSlideTransition(activity, new Intent(Intent.ACTION_VIEW, uri));
     }
 
@@ -101,31 +129,4 @@ public class ActivitiesWorkFlow {
         startWithFadeTransition(activity, intent);
     }
 
-    /**
-     * Start activity with slide transition
-     */
-    private static void startWithSlideTransition(@NonNull Activity activity, @NonNull Intent intent) {
-        activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-    }
-
-    /**
-     * Start activity with fade transition
-     */
-    private static void startWithFadeTransition(@NonNull Activity activity, @NonNull Intent intent) {
-        activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-    }
-
-    /**
-     * Open an External Link
-     * @param link
-     * @param label
-     */
-    public static void openExternalLink(@NonNull Activity activity, @NonNull String link, @NonNull String label) throws ActivityNotFoundException {
-        TrackerDelegator.trackClickOnExternalLink(label);
-        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
-        activity.startActivity(myIntent);
-
-    }
 }
