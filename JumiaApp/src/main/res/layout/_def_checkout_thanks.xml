@@ -53,7 +53,7 @@
 
         <!-- BUTTON -->
 
-        <com.mobile.components.customfontviews.Button
+        <com.mobile.components.customfontviews.TextView
             android:id="@+id/btn_checkout_continue"
             style="@style/Button_1.Shop"
             android:layout_width="match_parent"
