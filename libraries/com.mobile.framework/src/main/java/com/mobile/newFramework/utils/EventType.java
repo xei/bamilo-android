@@ -190,7 +190,9 @@ public enum EventType {
 
     CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/"),
 
-    SUBMIT_FORM;
+    SUBMIT_FORM,
+
+    GET_EXTERNAL_LINKS("http:/main/getexternallinks/");
 
 
     public final String action;

@@ -117,4 +117,15 @@ public class ActivitiesWorkFlow {
         activity.overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
+    /**
+     * Open an External Link
+     * @param link
+     * @param label
+     */
+    public static void openExternalLink(@NonNull Activity activity, @NonNull String link, @NonNull String label) throws ActivityNotFoundException {
+        TrackerDelegator.trackClickOnExternalLink(label);
+        Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        activity.startActivity(myIntent);
+
+    }
 }

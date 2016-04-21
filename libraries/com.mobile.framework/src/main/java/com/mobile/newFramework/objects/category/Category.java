@@ -42,6 +42,8 @@ public class Category implements IJSONSerializable, Parcelable {
 
     private boolean isSection;
 
+    private boolean isExternalLinkType;
+
     private String mMainCategory;   //content category
     /**
      * Category empty constructor.
@@ -69,11 +71,23 @@ public class Category implements IJSONSerializable, Parcelable {
         return mType;
     }
 
+    public boolean isExternalLinkType(){
+        return isExternalLinkType;
+    }
+
+    public void  setIsExternalLinkType(boolean isExternal){
+        this.isExternalLinkType = isExternal;
+    }
+
     /**
      * @return the name
      */
     public String getName() {
         return mName;
+    }
+
+    public void setName(String name) {
+        this.mName = name;
     }
 
     public String getCategoryPath() {
@@ -108,6 +122,10 @@ public class Category implements IJSONSerializable, Parcelable {
         return mTargetLink;
     }
 
+    public void setTargetLink(String targetLink){
+        this.mTargetLink= targetLink;
+    }
+
     /**
      *
      * @return isHeader value
@@ -116,12 +134,20 @@ public class Category implements IJSONSerializable, Parcelable {
         return isSection;
     }
 
+    public void setIsSection(boolean isSection){
+        this.isSection = isSection;
+    }
+
     /**
      *
      * @return iamge string
      */
     public String getImage() {
         return mImage;
+    }
+
+    public void setImage(String image) {
+        this.mImage = image;
     }
 
     /**
@@ -151,7 +177,6 @@ public class Category implements IJSONSerializable, Parcelable {
         mUrlKey = jsonObject.optString(RestConstants.URL_KEY);
         mPath = jsonObject.optString(RestConstants.URL);
         mMainCategory = jsonObject.optString(RestConstants.MAIN_CATEGORY);
-//        //Print.i(TAG, "code1categoy : getApiUrl: " + mTargetLink + " category.getName(): " + mName);
         // Get sub categories
         JSONArray childrenArray = jsonObject.optJSONArray(RestConstants.CHILDREN);
         if (childrenArray != null) {
@@ -164,6 +189,7 @@ public class Category implements IJSONSerializable, Parcelable {
                 mSubCategories.add(child);
             }
         }
+        isExternalLinkType = false;
         return true;
     }
 
@@ -223,6 +249,7 @@ public class Category implements IJSONSerializable, Parcelable {
         dest.writeList(mSubCategories);
         dest.writeString(mImage);
         dest.writeString(mMainCategory);
+        dest.writeByte((byte) (isExternalLinkType ? 0x01 : 0x00));
     }
 
     /**
@@ -237,6 +264,7 @@ public class Category implements IJSONSerializable, Parcelable {
         in.readList(mSubCategories, Category.class.getClassLoader());
         mImage = in.readString();
         mMainCategory = in.readString();
+        isExternalLinkType = in.readByte() != 0x00;
     }
 
     /**

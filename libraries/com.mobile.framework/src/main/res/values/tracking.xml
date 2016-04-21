@@ -58,6 +58,7 @@
     <string name="gcheckout">Checkout</string>
     <string name="gcampaign">Campaign</string>
     <string name="grelateditem">RelatedItem</string>
+    <string name="gexternallink">ExternalLink</string>
 
     <!-- HOME TEASERS -->
     <string name="gmainbanner">Main_Teaser</string>
@@ -133,6 +134,7 @@
     <string name="gcustomerid">CustomerId</string>
     <string name="gsimplesku">Simple-SKU</string>
     <string name="gorderid">OrderID</string>
+    <string name="gcategoriestree">CategoriesTree</string>
 
     <!-- For load timing only -->
 
