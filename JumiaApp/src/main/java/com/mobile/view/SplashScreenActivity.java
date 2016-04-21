@@ -404,6 +404,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
             SectionsTablesHelper.deleteConfigurations();
             // Start redirect activity
             ActivitiesWorkFlow.showRedirectInfoActivity(this, configs.getRedirectInfo());
+            // Finish this
+            finish();
         }
         // Case Continue
         else {
