@@ -127,7 +127,7 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
                 int position = mExternalLinksSection.getPosition();
                 if(CollectionUtils.isEmpty(categories.getMainCategoryIndexMapping())){
                     position = 0;
-                } else if(CollectionUtils.isNotEmpty(categories.getMainCategoryIndexMapping()) && categories.getMainCategoryIndexMapping().size() >= mExternalLinksSection.getPosition() ){
+                } else if(CollectionUtils.isNotEmpty(categories.getMainCategoryIndexMapping()) && categories.getMainCategoryIndexMapping().size() >= mExternalLinksSection.getPosition() && mExternalLinksSection.getPosition() > 0){
                     position = categories.getMainCategoryIndexMapping().get(mExternalLinksSection.getPosition()-1);
                 }
 
