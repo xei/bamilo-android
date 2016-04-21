@@ -26,7 +26,6 @@ import java.util.ArrayList;
  */
 public class Category implements IJSONSerializable, Parcelable {
 
-    private static final String TAG = Category.class.getName();
     private String mType;
 
     private String mName;
@@ -96,7 +95,7 @@ public class Category implements IJSONSerializable, Parcelable {
     }
 
     /**
-     * @return the children
+     *
      */
     public void setChildren(ArrayList<Category> categories) {
         mSubCategories = categories;

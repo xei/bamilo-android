@@ -190,18 +190,11 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         if (jsonAuthInfo != null) {
             mAuthInfo.initialize(jsonAuthInfo);
         }
-
-        String json = "{\n" +
-                "    \"html\": \"BLABLBLALBLABLBLALBALBLABLALLLBLALBLABLA\",\n" +
-                "    \"android_link\": \"https://play.google.com/store/apps/details?id=com.kaymu.android\"\n" +
-                "}";
-        mRedirectInfo = new Gson().fromJson(json, RedirectInfo.class);
         // Redirect info
         JSONObject jsonRedirect = jsonObject.optJSONObject(RestConstants.REDIRECT_INFO);
         if (jsonRedirect != null) {
             mRedirectInfo = new Gson().fromJson(jsonRedirect.toString(), RedirectInfo.class);
         }
-
         return true;
     }
 

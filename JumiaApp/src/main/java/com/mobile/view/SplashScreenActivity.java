@@ -310,17 +310,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * )
      */
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
+    public void onRequestComplete(BaseResponse response) {
         if (!shouldHandleEvent) {
             Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
             return;
         }
 
         // Case error use the last success response to request the next step
-        mLastSuccessResponse = baseResponse;
+        mLastSuccessResponse = response;
 
-        EventType eventType = baseResponse.getEventType();
-        int errorCode = baseResponse.getError() != null ? baseResponse.getError().getCode() : ErrorCode.NO_ERROR;
+        EventType eventType = response.getEventType();
+        int errorCode = response.getError() != null ? response.getError().getCode() : ErrorCode.NO_ERROR;
         Print.i(TAG, "ON SUCCESS RESPONSE: " + eventType);
 
         // Dismiss dialog
@@ -336,11 +336,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (eventType == EventType.INITIALIZE) {
             onProcessInitialize();
         } else if (eventType == EventType.GET_API_INFO) {
-            onProcessApiEvent(baseResponse);
+            onProcessApiEvent(response);
         } else if (eventType == EventType.GET_COUNTRY_CONFIGURATIONS) {
-            onProcessCountryConfigsEvent(baseResponse);
+            onProcessCountryConfigsEvent(response);
         } else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
-            onProcessGlobalConfigsEvent(baseResponse);
+            onProcessGlobalConfigsEvent(response);
         }
         // Case error
         else if (errorCode == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
@@ -394,10 +394,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     /**
      * Process the country configs event
      */
-    private void onProcessCountryConfigsEvent(BaseResponse baseResponse) {
+    private void onProcessCountryConfigsEvent(BaseResponse response) {
         Print.i(TAG, "ON PROCESS COUNTRY CONFIGS");
         // Case redirect link
-        CountryConfigs configs = (CountryConfigs) baseResponse.getContentData();
+        CountryConfigs configs = (CountryConfigs) response.getContentData();
         if (configs.hasRedirectInfo()) {
             ActivitiesWorkFlow.showRedirectInfoActivity(this, configs.getRedirectInfo());
         }

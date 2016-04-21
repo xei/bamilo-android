@@ -19,9 +19,9 @@ public class RedirectInfo implements Parcelable {
     /**
      * Empty constructor
      */
-    @SuppressWarnings("unused")
     public RedirectInfo() {
-        // ...
+        mHtml = "";
+        mLink = "";
     }
 
     public String getHtml() {

@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
+import com.mobile.components.webview.SuperWebView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
@@ -34,17 +35,12 @@ import com.mobile.view.R;
 import java.util.EnumSet;
 
 /**
- * Shops in shop Fragment. Created by Sergio Pereira on 3/4/15.
- *
+ * Shop in shop Fragment.
  * @author sergiopereira
  */
 public class InnerShopFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = InnerShopFragment.class.getSimpleName();
-
-    private static final String HTML_TYPE = "text/html";
-
-    private static final String HTML_ENCODING = "utf-8";
 
     private static final int WEB_VIEW_LOAD_DELAY = 400;
 
@@ -54,7 +50,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
 
     private ViewGroup mMainContainer;
 
-    private WebView mWebView;
+    private SuperWebView mWebView;
 
     private ScrollView mScrollView;
 
@@ -110,19 +106,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         // Get main container
         mMainContainer = (ViewGroup) view.findViewById(R.id.shop_main_container);
         // Get web view
-        mWebView = (WebView) view.findViewById(R.id.shop_web_view);
+        mWebView = (SuperWebView) view.findViewById(R.id.shop_web_view);
         // Set the client
         mWebView.setWebViewClient(mInnerShopWebClient);
-        /*
-         * Crash: In some devices with OS 4.2.2
-         * https://rink.hockeyapp.net/manage/apps/33641/app_versions/173/crash_reasons/116945743?type=overview
-         */
-        try {
-            // Enable java script
-            mWebView.getSettings().setJavaScriptEnabled(true);
-        } catch (NullPointerException e) {
-            Print.w("WARNING: NPE ON ENABLE JAVA SCRIPT");
-        }
+        // Enable java script
+        mWebView.enableJavaScript();
         // Validate the data (load/request/continue)
         onValidateDataState();
     }
@@ -232,10 +220,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     private void loadHtml(StaticPage staticPage) {
         // Validate html
         if (staticPage.hasHtml()) {
-            // Strip html response two times
-            String displayableHtml = stripHtml(staticPage.getHtml());
-            // Load data
-            mWebView.loadDataWithBaseURL(null, displayableHtml, HTML_TYPE, HTML_ENCODING, null);
+            // Load the html response, striped two times
+            mWebView.loadData(stripHtml(staticPage.getHtml()));
         } else {
             // Hide web view
             mWebView.setVisibility(View.GONE);
