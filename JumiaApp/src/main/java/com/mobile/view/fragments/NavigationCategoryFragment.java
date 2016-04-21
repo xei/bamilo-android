@@ -95,8 +95,11 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         }
         // Case empty
         else if (!TextUtils.isEmpty(ShopSelector.getShopId())) {
-            if (getBaseActivity() instanceof MainFragmentActivity && !((MainFragmentActivity) getBaseActivity()).isInMaintenance())
+            if (getBaseActivity() instanceof MainFragmentActivity && !((MainFragmentActivity) getBaseActivity()).isInMaintenance()){
+                triggerGetExternalLinksSection();
                 triggerGetCategories();
+            }
+
         }
         // Case recover from background
         else {
@@ -202,7 +205,6 @@ public class NavigationCategoryFragment extends BaseFragment implements IRespons
         // Create bundle
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, contentValues);
-        triggerGetExternalLinksSection();
         // Trigger
         triggerContentEvent(new GetCategoriesHelper(), bundle, this);
     }
