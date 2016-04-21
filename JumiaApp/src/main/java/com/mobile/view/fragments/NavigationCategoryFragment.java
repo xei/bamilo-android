@@ -2,10 +2,7 @@ package com.mobile.view.fragments;
 
 import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -37,7 +34,6 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.MainFragmentActivity;
 import com.mobile.view.R;
