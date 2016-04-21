@@ -23,11 +23,6 @@ public class OrderReturnStep3Refund extends BaseFragmentRequester {
      * Empty constructor
      */
     public OrderReturnStep3Refund() {
-//        super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-//                NavigationAction.MY_ACCOUNT,
-//                R.layout._def_order_return_step_main,
-//                R.string.my_orders_label,
-//                NO_ADJUST_CONTENT);
         super(IS_NESTED_FRAGMENT, R.layout._def_order_return_steps);
     }
 

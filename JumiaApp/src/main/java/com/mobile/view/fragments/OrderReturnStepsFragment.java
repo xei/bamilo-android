@@ -51,25 +51,6 @@ public class OrderReturnStepsFragment extends BaseFragment {
         tabLayout.addTab(tabLayout.newTab().setText("2"));
         tabLayout.addTab(tabLayout.newTab().setText("3"));
         tabLayout.addTab(tabLayout.newTab().setText("4"));
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if (tab.getPosition() < mPager.getCurrentItem()) {
-                    nextStep(tab.getPosition());
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
         // Get pager
         mPager = (SuperViewPager) view.findViewById(R.id.order_return_main_pager);
         mPager.disablePaging();
@@ -106,9 +87,10 @@ public class OrderReturnStepsFragment extends BaseFragment {
 
         @Override
         public void onPageSelected(int position) {
-            if (position < mPager.getCurrentItem()) {
-                super.onPageSelected(position);
-            }
+            super.onPageSelected(position);
+            //if (position < mPager.getCurrentItem()) {
+            //    super.onPageSelected(position);
+            //}
         }
     }
 
