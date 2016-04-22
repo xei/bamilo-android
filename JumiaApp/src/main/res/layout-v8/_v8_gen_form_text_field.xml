@@ -22,9 +22,10 @@
     <com.mobile.components.absspinner.IcsSpinner
         android:id="@+id/text_field_spinner_prefix"
         style="@style/TextBase.List.Black"
-        android:layout_width="100dp"
-        android:layout_height="48dp"
-        android:layout_marginLeft="16dp"
+        android:layout_width="@dimen/dimen_100dp"
+        android:layout_height="@dimen/dimen_48dp"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginTop="@dimen/margin_padding_xs"
         android:layout_toLeftOf="@id/text_field_icon"
         android:background="@drawable/spinner_background"
         android:clickable="true"
