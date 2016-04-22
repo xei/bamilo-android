@@ -30,6 +30,7 @@ import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
+import com.mobile.newFramework.objects.configs.RedirectPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.errors.ErrorCode;
@@ -396,13 +397,8 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessCountryConfigsEvent(BaseResponse response) {
         Print.i(TAG, "ON PROCESS COUNTRY CONFIGS");
-        // Case redirect link
-        CountryConfigs configs = (CountryConfigs) response.getContentData();
-        if (configs.hasRedirectInfo()) {
-            ActivitiesWorkFlow.showRedirectInfoActivity(this, configs.getRedirectInfo());
-        }
-        // Case Continue
-        else {
+        // Goes to saved redirect page otherwise continue
+        if (!hasRedirectPage(((CountryConfigs) response.getContentData()).getRedirectPage())) {
             JumiaApplication.INSTANCE.init(initializationHandler);
         }
     }
@@ -479,7 +475,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessApiEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS API EVENT");
-        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct)baseResponse.getContentData();
+        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct) baseResponse.getContentData();
         // Validate out dated sections
         if (apiInformation.isSectionNameConfigurations()) {
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
@@ -487,7 +483,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } else if(!CountryPersistentConfigs.checkCountryRequirements(getApplicationContext())){
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
-        } else {
+        }
+        // Goes to saved redirect page otherwise continue
+        else if (!hasRedirectPage(CountryPersistentConfigs.getRedirectPage(getApplicationContext()))) {
             Print.i(TAG, "START MAIN ACTIVITY");
             selectActivity();
         }
@@ -523,7 +521,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 case ErrorCode.IO:
                 case ErrorCode.CONNECT_ERROR:
                 case ErrorCode.HTTP_STATUS:
-                    showUnexpectedError();
+                    // Validate if has redirect page otherwise continue
+                    if (!hasRedirectPage(CountryPersistentConfigs.getRedirectPage(getApplicationContext()))) {
+                        showUnexpectedError();
+                    }
                     break;
                 case ErrorCode.TIME_OUT:
                 case ErrorCode.NO_CONNECTIVITY:
@@ -775,4 +776,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Retry
         retryRequest();
     }
+
+    /**
+     * Shows the redirect page.
+     * @return true case valid redirect page
+     */
+    private boolean hasRedirectPage(RedirectPage redirect) {
+        return CountryConfigs.isValidRedirectPage(redirect) && ActivitiesWorkFlow.showRedirectInfoActivity(this, redirect);
+    }
+
 }

@@ -122,11 +122,13 @@ public class ActivitiesWorkFlow {
     /**
      * Shows redirect page
      */
-    public static void showRedirectInfoActivity(@NonNull Activity activity, @NonNull Parcelable redirect) {
+    public static boolean showRedirectInfoActivity(@NonNull Activity activity, @NonNull Parcelable redirect) {
         Intent intent = new Intent(activity.getApplicationContext(), RedirectInfoActivity.class)
-        .addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY)
         .putExtra(ConstantsIntentExtra.DATA, redirect);
         startWithFadeTransition(activity, intent);
+        activity.finish();
+        return true;
     }
 
 }

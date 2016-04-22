@@ -7,13 +7,13 @@ import android.view.View;
 import com.mobile.components.webview.SuperWebView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.ActivitiesWorkFlow;
-import com.mobile.newFramework.objects.configs.RedirectInfo;
+import com.mobile.newFramework.objects.configs.RedirectPage;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.rest.RestUrlUtils;
 
 public class RedirectInfoActivity extends AppCompatActivity {
 
-    private RedirectInfo redirect = new RedirectInfo();
+    private RedirectPage redirect = new RedirectPage();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

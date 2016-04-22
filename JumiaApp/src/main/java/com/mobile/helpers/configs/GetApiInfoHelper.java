@@ -47,11 +47,9 @@ public class GetApiInfoHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-
         // Get api info
         ApiInformationStruct apiInformation = new ApiInformationStruct((ApiInformation) baseResponse.getMetadata().getData());
         baseResponse.getMetadata().setData(apiInformation);
-
         //TODO move to observable
         // Save mob api version
         JumiaApplication.INSTANCE.setMobApiVersionInfo(apiInformation.getVersionInfo());
@@ -63,12 +61,10 @@ public class GetApiInfoHelper extends SuperBaseHelper {
         ArrayList<Section> outDatedSections = checkSections(oldSections, sections);
         // Save all new sections
         SectionsTablesHelper.saveSections(sections);
-
         // Validate out dated sections
         if (CollectionUtils.isNotEmpty(outDatedSections)) {
             clearOutDatedMainSections(outDatedSections, apiInformation);
         }
-
     }
 
     /**
