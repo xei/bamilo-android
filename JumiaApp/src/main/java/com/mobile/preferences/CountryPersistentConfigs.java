@@ -16,6 +16,7 @@ import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Language;
 import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.objects.configs.RedirectPage;
 import com.mobile.newFramework.objects.statics.MobileAbout;
 import com.mobile.newFramework.objects.statics.TargetHelper;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -90,16 +91,19 @@ public class CountryPersistentConfigs {
         mEditor.putBoolean(Darwin.KEY_SELECTED_REVIEW_REQUIRED_LOGIN, countryConfigs.isReviewLoginRequired());
         // Flag
         mEditor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, true);
-
+        // More info
         saveMoreInfo(mEditor, countryConfigs.getMobileAbout());
-
+        // Algolia info for search
         saveAlgoliaInfo(mEditor, countryConfigs.getApplicationId(), countryConfigs.getSuggesterApiKey(), countryConfigs.getNamespacePrefix(), countryConfigs.isAlgoliaSearchEngine());
-
+        // Authentication info
         saveAuthInfo(mEditor, countryConfigs.getAuthInfo());
-        //has_cart_popup
+        // Cart popup
         mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, countryConfigs.hasCartPopup());
         // Rich Relevance
         mEditor.putBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_RICH_RELEVANCE, countryConfigs.isRichRelevanceEnabled());
+        // Save redirect page
+        mEditor.putString(Darwin.KEY_SELECTED_REDIRECT, new Gson().toJson(countryConfigs.getRedirectPage()));
+        // Write
         mEditor.apply();
     }
 
@@ -205,8 +209,7 @@ public class CountryPersistentConfigs {
     }
 
     public static void saveMoreInfo(@NonNull SharedPreferences.Editor mEditor, @Nullable List<TargetHelper> moreInfo){
-        String json = new Gson().toJson(moreInfo);
-        mEditor.putString(Darwin.KEY_SELECTED_MORE_INFO, json);
+        mEditor.putString(Darwin.KEY_SELECTED_MORE_INFO, new Gson().toJson(moreInfo));
     }
 
     public static void saveAlgoliaInfo(@NonNull SharedPreferences.Editor mEditor, @Nullable final String appId, final String suggesterAPIKey, final String namespacePrefix, final boolean useAlgolia){
@@ -217,8 +220,7 @@ public class CountryPersistentConfigs {
     }
 
     public static void saveAuthInfo(@NonNull SharedPreferences.Editor mEditor, @Nullable AuthInfo authInfo){
-        String json = new Gson().toJson(authInfo);
-        mEditor.putString(Darwin.KEY_SELECTED_AUTH_INFO, json);
+        mEditor.putString(Darwin.KEY_SELECTED_AUTH_INFO, new Gson().toJson(authInfo));
     }
 
     public static boolean isUseAlgolia(@NonNull Context context){
@@ -263,6 +265,13 @@ public class CountryPersistentConfigs {
     public static boolean hasCartPopup(@NonNull Context context){
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_HAS_CART_POPUP, false);
+    }
+
+    @Nullable
+    public static RedirectPage getRedirectPage(@NonNull Context context) {
+        SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String json = sharedPrefs.getString(Darwin.KEY_SELECTED_REDIRECT, null);
+        return new Gson().fromJson(json, RedirectPage.class);
     }
 
 }
