@@ -5,8 +5,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.orders.OrderActions;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.IntConstants;
