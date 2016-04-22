@@ -353,12 +353,13 @@
     <string name="items_returned_on">%1$s items returned on %2$s\n</string>
     <string name="return_selected_items">return selected items</string>
     <string name="return_label">return</string>
-    <string name="call_return_label">call to return</string>
+    <string name="call_return_label">Call to Return</string>
     <string name="call_now_label">call now</string>
     <string name="shipment_label">shipment</string>
     <string name="returns_label">returns</string>
     <string name="warning_no_items_selected">No items selected to return.</string>
     <string name="ok_got_it">Ok, got it</string>
+    <string name="order_number_placeholder">Order Nº %s</string>
     <string name="order_return_conditions_title">We are sorry that you are not fully satisfied with your product</string>
     <string name="order_return_reason_title">Why do you want to return this item?</string>
     <string name="order_return_method_title">How do you want to return this item?</string>
