@@ -2,6 +2,7 @@ package com.mobile.newFramework.objects.configs;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
 import com.mobile.newFramework.objects.IJSONSerializable;
@@ -56,7 +57,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     private String mNamespacePrefix;
     private boolean mUseAlgolia;
     private AuthInfo mAuthInfo;
-    private RedirectInfo mRedirectInfo;
+    private RedirectPage mRedirectPage;
 
 
     /**
@@ -192,7 +193,7 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
         // Redirect info
         JSONObject jsonRedirect = jsonObject.optJSONObject(RestConstants.REDIRECT_INFO);
         if (jsonRedirect != null) {
-            mRedirectInfo = new Gson().fromJson(jsonRedirect.toString(), RedirectInfo.class);
+            mRedirectPage = new Gson().fromJson(jsonRedirect.toString(), RedirectPage.class);
         }
         return true;
     }
@@ -208,12 +209,12 @@ public class CountryConfigs implements IJSONSerializable, Parcelable {
     }
 
 
-    public boolean hasRedirectInfo() {
-        return mRedirectInfo != null && TextUtils.isNotEmpty(mRedirectInfo.getLink());
+    public static boolean isValidRedirectPage(@Nullable RedirectPage redirect) {
+        return redirect != null && TextUtils.isNotEmpty(redirect.getLink());
     }
 
-    public RedirectInfo getRedirectInfo() {
-        return mRedirectInfo;
+    public RedirectPage getRedirectPage() {
+        return mRedirectPage;
     }
 
     public String getCurrencyIso() {

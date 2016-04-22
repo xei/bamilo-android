@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * Class used to represent the redirect information.
  * @author spereira
  */
-public class RedirectInfo implements Parcelable {
+public class RedirectPage implements Parcelable {
 
     @SerializedName("html")
     private String mHtml;
@@ -19,7 +19,7 @@ public class RedirectInfo implements Parcelable {
     /**
      * Empty constructor
      */
-    public RedirectInfo() {
+    public RedirectPage() {
         mHtml = "";
         mLink = "";
     }
@@ -36,7 +36,7 @@ public class RedirectInfo implements Parcelable {
      * ###### PARCELABLE ######
      */
 
-    public RedirectInfo(Parcel in) {
+    public RedirectPage(Parcel in) {
         mHtml = in.readString();
         mLink = in.readString();
     }
@@ -52,15 +52,15 @@ public class RedirectInfo implements Parcelable {
         dest.writeString(mLink);
     }
 
-    public static final Creator<RedirectInfo> CREATOR = new Creator<RedirectInfo>() {
+    public static final Creator<RedirectPage> CREATOR = new Creator<RedirectPage>() {
         @Override
-        public RedirectInfo createFromParcel(Parcel in) {
-            return new RedirectInfo(in);
+        public RedirectPage createFromParcel(Parcel in) {
+            return new RedirectPage(in);
         }
 
         @Override
-        public RedirectInfo[] newArray(int size) {
-            return new RedirectInfo[size];
+        public RedirectPage[] newArray(int size) {
+            return new RedirectPage[size];
         }
     };
 }
