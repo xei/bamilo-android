@@ -6,7 +6,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * Created by spereira on 4/20/16.
+ * Class used to represent a super view pager for all project.
+ * @author spereira
  */
 public class SuperViewPager extends ViewPager {
 

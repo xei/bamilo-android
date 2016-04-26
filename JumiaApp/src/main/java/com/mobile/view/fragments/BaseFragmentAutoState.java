@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 /**
- * Base switcher fragment used to manage the switch between fragments and the respective arguments.
+ * Base fragment used to manage the switch between fragments and the respective arguments.
  * @author spereira
  */
 public abstract class BaseFragmentAutoState extends BaseFragment {

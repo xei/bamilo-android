@@ -237,8 +237,6 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 UIUtils.setVisibility(mReturnItemsContainer, false);
             }
 
-            UIUtils.setVisibility(mReturnItemsContainer, true); // TODO DLT
-
             for (final OrderTrackerItem item : items) {
                 // Create new layout item
                 final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
