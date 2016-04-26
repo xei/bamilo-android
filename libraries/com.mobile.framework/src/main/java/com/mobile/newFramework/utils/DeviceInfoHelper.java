@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Point;
@@ -220,6 +221,17 @@ public class DeviceInfoHelper {
     	TelephonyManager tel = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
     	Print.i(TAG, "GET SIM OPERATOR: " + tel.getSimOperatorName());
     	return tel.getSimOperatorName();
+    }
+
+    /**
+     * Check if has Telephony feature.
+     * @param context The application context
+     */
+    public static boolean hasTelephony(Context context) {
+        PackageManager pm = context.getPackageManager();
+        TelephonyManager tm= (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        return (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY) && tm.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE && tm.getSimState() != TelephonyManager.SIM_STATE_ABSENT);
     }
     
     /**
