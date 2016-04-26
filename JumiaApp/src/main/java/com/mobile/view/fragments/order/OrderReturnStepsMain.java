@@ -15,7 +15,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
-import com.mobile.view.fragments.BaseFragmentDynamicState;
+import com.mobile.view.fragments.BaseFragmentAutoState;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -26,7 +26,7 @@ import java.util.EnumSet;
  * Fragment used to show the online returns reason.
  * @author spereira
  */
-public class OrderReturnStepsMain extends BaseFragmentDynamicState {
+public class OrderReturnStepsMain extends BaseFragmentAutoState {
 
     private SuperViewPager mPager;
 

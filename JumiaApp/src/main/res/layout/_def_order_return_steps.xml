@@ -14,7 +14,6 @@
         android:fillViewport="true">
 
         <LinearLayout
-            android:id="@+id/order_return_main_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -26,6 +25,12 @@
                 tools:text="@string/order_return_conditions_title" />
 
             <!--CONTENT-->
+            <FrameLayout
+                android:id="@+id/order_return_main_inflate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:padding="@dimen/margin_padding_xl" />
 
         </LinearLayout>
 

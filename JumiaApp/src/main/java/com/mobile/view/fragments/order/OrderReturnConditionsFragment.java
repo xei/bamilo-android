@@ -54,7 +54,7 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
         // Set title
         ((TextView) view.findViewById(R.id.order_return_main_title)).setText(R.string.order_return_conditions_title);
         // Get container
-        mContainer = (ViewGroup) view.findViewById(R.id.order_return_main_container);
+        mContainer = (ViewGroup) view.findViewById(R.id.order_return_main_inflate);
         // Get button
         TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
         button.setText(R.string.ok_got_it);

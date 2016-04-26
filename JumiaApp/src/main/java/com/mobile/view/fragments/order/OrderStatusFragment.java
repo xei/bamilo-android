@@ -36,7 +36,7 @@ import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.OrderedProductViewHolder;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
-import com.mobile.view.fragments.BaseFragmentDynamicState;
+import com.mobile.view.fragments.BaseFragmentAutoState;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -45,7 +45,7 @@ import java.util.EnumSet;
  * Class used to show the order status.
  * @author spereira
  */
-public class OrderStatusFragment extends BaseFragmentDynamicState implements IResponseCallback {
+public class OrderStatusFragment extends BaseFragmentAutoState implements IResponseCallback {
 
     public static final String TAG = OrderStatusFragment.class.getSimpleName();
 

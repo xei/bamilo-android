@@ -1,16 +1,11 @@
 package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
-import com.mobile.constants.FormConstants;
-import com.mobile.factories.FormFactory;
-import com.mobile.helpers.order.GetReturnReasonFormHelper;
-import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
 
 /**
@@ -19,8 +14,6 @@ import com.mobile.view.R;
  * @author spereira
  */
 public class OrderReturnStep1Reason extends OrderReturnStepBase {
-
-    private DynamicForm mDynamicForm;
 
     /**
      * Empty constructor
@@ -41,51 +34,24 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-        // Validate order items
-        if (CollectionUtils.isNotEmpty(getOrderItems())) {
-            triggerGetReasonForm();
-        } else {
-            showFragmentErrorRetry();
-        }
+        mContainer.setBackgroundColor(ContextCompat.getColor(getBaseActivity(), R.color.blue_1));
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        // Case rotation save state
-        if (mDynamicForm != null) {
-            mDynamicForm.saveFormState(outState);
-        }
     }
 
     /*
      * ##### LAYOUT #####
      */
 
-    /**
-     * Create and show the form
-     */
-    private void loadForm(Form form) {
-        // Create form view
-        mDynamicForm = FormFactory.getSingleton().create(FormConstants.ORDER_RETURN_RESON_FORM, getContext(), form);
-        // Load saved state
-        mDynamicForm.loadSaveFormState(this.mSavedState);
-        // Remove all views
-        if (mContainer.getChildCount() > 0) {
-            mContainer.removeAllViews();
-        }
-        // Add form view
-        mContainer.addView(mDynamicForm.getContainer());
-        // Show
-        showFragmentContentContainer();
-    }
-
     /*
      * ##### TRIGGERS #####
      */
 
     private void triggerGetReasonForm() {
-        triggerContentEvent(new GetReturnReasonFormHelper(), null, this);
+        // ...
     }
 
     /*
@@ -103,13 +69,8 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
 
     @Override
     protected void onSuccessResponse(BaseResponse response) {
-        // Show form
-        Form form = (Form) response.getContentData();
-        if (null != form) {
-            loadForm(form);
-        } else {
-            showFragmentErrorRetry();
-        }
+        // Show container
+        showFragmentContentContainer();
     }
 
     @Override

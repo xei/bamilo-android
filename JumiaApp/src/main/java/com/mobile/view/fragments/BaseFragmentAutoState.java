@@ -20,7 +20,7 @@ import java.util.Set;
  * Base switcher fragment used to manage the switch between fragments and the respective arguments.
  * @author spereira
  */
-public abstract class BaseFragmentDynamicState extends BaseFragment {
+public abstract class BaseFragmentAutoState extends BaseFragment {
 
     protected String mArgTitle;
     protected String mArgId;
@@ -32,15 +32,15 @@ public abstract class BaseFragmentDynamicState extends BaseFragment {
      * ##### CONSTRUCTORS #####
      */
 
-    public BaseFragmentDynamicState(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState) {
+    public BaseFragmentAutoState(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState) {
         super(enabledMenuItems, action, layoutResId, titleResId, adjustState);
     }
 
-    public BaseFragmentDynamicState(Boolean isNestedFragment, @LayoutRes int layoutResId) {
+    public BaseFragmentAutoState(Boolean isNestedFragment, @LayoutRes int layoutResId) {
         super(isNestedFragment, layoutResId);
     }
 
-    public BaseFragmentDynamicState(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState, @ConstantsCheckout.CheckoutType int titleCheckout) {
+    public BaseFragmentAutoState(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState, @ConstantsCheckout.CheckoutType int titleCheckout) {
         super(enabledMenuItems, action, layoutResId, titleResId, adjustState, titleCheckout);
     }
 
@@ -65,6 +65,8 @@ public abstract class BaseFragmentDynamicState extends BaseFragment {
      * Creates:
      *     - title<br>
      *     - content id<br>
+     *     - parcelable object<br>
+     *     - array list of parcelables<br>
      */
     protected void onCreateInstanceState(@NonNull Bundle bundle) {
         mArgTitle = bundle.getString(FragmentSwitcher.TITLE);
@@ -77,6 +79,8 @@ public abstract class BaseFragmentDynamicState extends BaseFragment {
      * Saves:<br>
      *     - title<br>
      *     - content id<br>
+     *     - parcelable object<br>
+     *     - array list of parcelables<br>
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {

@@ -47,7 +47,6 @@ public class LoginGuestHelper extends SuperBaseHelper {
         super.postSuccess(baseResponse);
         // Save credentials
         if (saveCredentials) {
-            Print.i("SAVE CUSTOMER CREDENTIALS");
             mParameters.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
             mParameters.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
             mParameters.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");

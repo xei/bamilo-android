@@ -71,7 +71,6 @@ public class FormFactory {
     public DynamicForm create(@FormConstants.DynamicFormTypes int formType, @NonNull Context context, @NonNull Form form) {
         DynamicForm parent = null;
         switch (formType) {
-            case FormConstants.ORDER_RETURN_RESON_FORM:
             case FormConstants.LOGIN_FORM:
             case FormConstants.REGISTRATION_FORM:
             case FormConstants.FORGET_PASSWORD_FORM:
