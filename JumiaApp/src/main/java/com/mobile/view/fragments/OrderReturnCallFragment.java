@@ -11,8 +11,10 @@ import com.mobile.newFramework.objects.orders.OrderActions;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.UIUtils;
@@ -75,10 +77,15 @@ public class OrderReturnCallFragment extends BaseFragment {
         mOrderNumberView = (TextView) view.findViewById(R.id.return_call_order_number);
         mBody1View = (TextView) view.findViewById(R.id.return_call_body1);
         mBody2View = (TextView) view.findViewById(R.id.return_call_body2);
-        View callView = view.findViewById(R.id.btn_call_now);
+        TextView callView = (TextView) view.findViewById(R.id.btn_call_now);
         View soppingView = view.findViewById(R.id.btn_continue_shopping);
 
-        callView.setOnClickListener(this);
+        if(DeviceInfoHelper.hasTelephony(getBaseActivity())){
+            callView.setOnClickListener(this);
+        } else {
+            callView.setText(String.format(getString(R.string.please_call_placeholder), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity())));
+        }
+
         soppingView.setOnClickListener(this);
 
         onValidateState();

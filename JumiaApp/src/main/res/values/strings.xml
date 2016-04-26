@@ -361,4 +361,5 @@
     <string name="ok_got_it">ok, got it</string>
     <string name="order_return_conditions_title">we are sorry that you are not fully satisfied with your product</string>
     <string name="order_number_placeholder">Order Nº %s</string>
+    <string name="please_call_placeholder">Please Call our CS %s</string>
 </resources>
