@@ -1,5 +1,6 @@
 package com.mobile.view.fragments.order;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.design.widget.TabLayout;
@@ -10,6 +11,7 @@ import android.view.View;
 
 import com.mobile.components.viewpager.SuperViewPager;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
@@ -141,7 +143,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     }
 
     /**
-     * Class used as an simple pager adapter that represents each campaign fragment
+     * Class used as an simple pager adapter that represents each fragment
      * @author sergiopereira
      */
     private class OrderReturnStepsAdapter extends FragmentPagerAdapter {
@@ -157,20 +159,21 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
          * (non-Javadoc)
          * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
          */
+        @SuppressLint("SwitchIntDef")
         @Override
-        public Fragment getItem(int position) {
+        public Fragment getItem(@ReturnStepType int position) {
             Class<? extends BaseFragment> fClass;
             switch (position) {
-                case 0:
+                case REASON:
                     fClass = OrderReturnStep1Reason.class;
                     break;
-                case 1:
+                case METHOD:
                     fClass = OrderReturnStep2Method.class;
                     break;
-                case 2:
+                case REFUND:
                     fClass = OrderReturnStep3Refund.class;
                     break;
-                case 3:
+                case FINISH:
                 default:
                     fClass = OrderReturnStep4Finish.class;
                     break;
@@ -184,7 +187,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
          */
         @Override
         public int getCount() {
-            return 4;
+            return IntConstants.TAB_MAX_STEPS;
         }
 
         /*
