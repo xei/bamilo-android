@@ -366,4 +366,5 @@
     <string name="order_return_refund_title">Which payout method do you want for your refund?</string>
     <string name="order_return_finish_title">Confirm your return request details</string>
     <string name="send_label">Send</string>
+    <string name="please_call_placeholder">Please Call our CS %s</string>
 </resources>

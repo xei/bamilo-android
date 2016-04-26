@@ -229,9 +229,9 @@ public class DeviceInfoHelper {
      */
     public static boolean hasTelephony(Context context) {
         PackageManager pm = context.getPackageManager();
-
-        if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)){
-            return true;
+        TelephonyManager tm= (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+        if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY) && tm.getPhoneType()!=TelephonyManager.PHONE_TYPE_NONE){
+           return true;
         }
         return false;
     }
