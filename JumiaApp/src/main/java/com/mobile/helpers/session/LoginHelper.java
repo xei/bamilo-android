@@ -58,7 +58,6 @@ public class LoginHelper extends SuperBaseHelper {
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Save credentials
         if (saveCredentials) {
-            Print.i("SAVE CUSTOMER CREDENTIALS");
             mParameters.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, false);
             mParameters.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);

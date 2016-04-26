@@ -50,7 +50,7 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
         // Set title
         ((TextView) view.findViewById(R.id.order_return_main_title)).setText(mTitle);
         // Get container
-        mContainer = (ViewGroup) view.findViewById(R.id.order_return_main_container);
+        mContainer = (ViewGroup) view.findViewById(R.id.order_return_main_inflate);
         // Set button
         TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
         button.setText(mButton);

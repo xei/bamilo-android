@@ -58,7 +58,6 @@ public class LoginFacebookHelper extends SuperBaseHelper {
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Save credentials
         if (saveCredentials) {
-            Print.i("SAVE CUSTOMER CREDENTIALS");
             mParameters.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
             mParameters.put(CustomerUtils.INTERNAL_EMAIL_VALUE, JumiaApplication.CUSTOMER.getEmail());
             mParameters.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, true);

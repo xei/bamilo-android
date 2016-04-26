@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/list_row_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/margin_padding_xxl"
+    android:paddingTop="@dimen/margin_padding_xl">
+
+    <!-- IMAGE CONTAINER -->
+    <include
+        layout="@layout/_def_gen_image_loadable"
+        android:layout_width="@dimen/catalog_list_item_image_width"
+        android:layout_height="@dimen/catalog_list_item_image_height"
+        android:layout_margin="@dimen/margin_padding_xl" />
+
+    <!-- INFO CONTAINER -->
+    <include
+        layout="@layout/_def_order_return_step_product_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginStart="@dimen/margin_padding_xl" />
+</LinearLayout>
