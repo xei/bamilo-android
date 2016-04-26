@@ -2,6 +2,7 @@ package com.mobile.newFramework.rest.interfaces;
 
 import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.ReturnReasonForm;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
@@ -271,7 +272,7 @@ public interface AigApiInterface {
     String getMultiStepFinish = "getMultiStepFinish";
 
     @GET("/")
-    void getReturnReasonForm(Callback<BaseResponse<Form>> callback);
+    void getReturnReasonForm(Callback<BaseResponse<ReturnReasonForm>> callback);
     String getReturnReasonForm = "getReturnReasonForm";
 
     /*

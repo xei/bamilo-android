@@ -6,12 +6,15 @@ import android.view.View;
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.order.GetReturnReasonFormHelper;
-import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.ReturnReasonForm;
+import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 /**
  * Fragment used to show the online returns reason.
@@ -43,7 +46,7 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
         Print.i("ON VIEW CREATED");
         // Validate order items
         if (CollectionUtils.isNotEmpty(getOrderItems())) {
-            triggerGetReasonForm();
+            triggerGetReasonForm(getOrderItems().size());
         } else {
             showFragmentErrorRetry();
         }
@@ -65,9 +68,13 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
     /**
      * Create and show the form
      */
-    private void loadForm(Form form) {
+    private void loadForm(ReturnReasonForm form, ArrayList<OrderTrackerItem> items) {
+//        // Create form for each item
+//        for (int i = 1; i < items.size(); i++) {
+//            forms.add()
+//        }
         // Create form view
-        mDynamicForm = FormFactory.getSingleton().create(FormConstants.ORDER_RETURN_RESON_FORM, getContext(), form);
+        mDynamicForm = FormFactory.getSingleton().create(FormConstants.ORDER_RETURN_RESON_FORM, getContext(), form.get(0));
         // Load saved state
         mDynamicForm.loadSaveFormState(this.mSavedState);
         // Remove all views
@@ -84,8 +91,8 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
      * ##### TRIGGERS #####
      */
 
-    private void triggerGetReasonForm() {
-        triggerContentEvent(new GetReturnReasonFormHelper(), null, this);
+    private void triggerGetReasonForm(int number) {
+        triggerContentEvent(new GetReturnReasonFormHelper(), GetReturnReasonFormHelper.createBundle(number), this);
     }
 
     /*
@@ -94,7 +101,12 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
 
     @Override
     protected void onClickRetryButton(View view) {
-        triggerGetReasonForm();
+        // Validate order items
+        if (CollectionUtils.isNotEmpty(getOrderItems())) {
+            triggerGetReasonForm(getOrderItems().size());
+        } else {
+            showFragmentErrorRetry();
+        }
     }
 
     /*
@@ -103,10 +115,13 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
 
     @Override
     protected void onSuccessResponse(BaseResponse response) {
-        // Show form
-        Form form = (Form) response.getContentData();
-        if (null != form) {
-            loadForm(form);
+        // Get form
+        ReturnReasonForm form = (ReturnReasonForm) response.getContentData();
+        // Get items
+        ArrayList<OrderTrackerItem> items = getOrderItems();
+        // Validate data
+        if (null != form && CollectionUtils.isNotEmpty(items)) {
+            loadForm(form, items);
         } else {
             showFragmentErrorRetry();
         }
