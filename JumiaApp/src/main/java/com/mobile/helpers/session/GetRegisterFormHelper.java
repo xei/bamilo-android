@@ -14,8 +14,6 @@ import com.mobile.newFramework.utils.EventType;
  */
 public class GetRegisterFormHelper extends SuperBaseHelper {
     
-    public static String TAG = GetRegisterFormHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
         return EventType.GET_REGISTRATION_FORM_EVENT;

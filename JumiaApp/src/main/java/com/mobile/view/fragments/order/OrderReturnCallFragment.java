@@ -1,12 +1,10 @@
-package com.mobile.view.fragments;
+package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.mobile.constants.ConstantsIntentExtra;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.orders.OrderActions;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -19,6 +17,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
 
 import java.util.EnumSet;
 

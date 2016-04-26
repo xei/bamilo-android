@@ -11,8 +11,6 @@ import com.mobile.newFramework.utils.EventType;
  */
 public class GetForgotPasswordFormHelper extends SuperBaseHelper {
 
-    public static String TAG = GetForgotPasswordFormHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
         return EventType.GET_FORGET_PASSWORD_FORM_EVENT;
