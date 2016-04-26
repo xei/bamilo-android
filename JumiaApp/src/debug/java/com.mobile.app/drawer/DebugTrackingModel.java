@@ -1,6 +1,5 @@
 package com.mobile.app.drawer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
@@ -26,8 +25,8 @@ public class DebugTrackingModel extends BaseDebugModel implements CompoundButton
     private final Context mContext;
     private View mContainer;
 
-    public DebugTrackingModel(@NonNull Activity activity) {
-        mContext = activity;
+    public DebugTrackingModel(@NonNull Context context) {
+        mContext = context;
     }
 
     @NonNull

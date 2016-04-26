@@ -1,7 +1,9 @@
-package com.mobile.view.fragments;
+package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentType;
@@ -13,16 +15,18 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragmentRequester;
 
 import java.util.EnumSet;
 
 /**
  * Fragment used to show the online returns conditions.
+ *
  * @author spereira
  */
 public class OrderReturnConditionsFragment extends BaseFragmentRequester {
 
-    private TextView mPageView;
+    private ViewGroup mContainer;
 
     /**
      * Empty constructor
@@ -30,7 +34,7 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
     public OrderReturnConditionsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MY_ACCOUNT,
-                R.layout._def_order_return_conditions,
+                R.layout._def_order_return_steps,
                 R.string.my_orders_label,
                 NO_ADJUST_CONTENT);
     }
@@ -47,15 +51,19 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-        // Get cms
-        mPageView = (TextView) view.findViewById(R.id.order_return_conditions_text_cms);
+        // Set title
+        ((TextView) view.findViewById(R.id.order_return_main_title)).setText(R.string.order_return_conditions_title);
+        // Get container
+        mContainer = (ViewGroup) view.findViewById(R.id.order_return_main_inflate);
         // Get button
-        view.findViewById(R.id.order_return_conditions_button_ok).setOnClickListener(this);
-        // Validate content
-        if(TextUtils.isEmpty(mContentId)) {
-            goToOrderReturnReason();
+        TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
+        button.setText(R.string.ok_got_it);
+        button.setOnClickListener(this);
+        // Validate content static page
+        if (TextUtils.isEmpty(this.mArgId)) {
+            onClickNextStep();
         } else {
-            triggerStaticPage();
+            triggerGetStaticPage();
         }
     }
 
@@ -63,26 +71,26 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
      * ##### TRIGGERS #####
      */
 
-    private void triggerStaticPage() {
-        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mContentId), this);
-    }
-
-    /*
-     * ##### SWITCH #####
-     */
-    private void goToOrderReturnReason() {
-        new UISwitcher(getBaseActivity(), FragmentType.ORDER_RETURN_REASON).run();
+    private void triggerGetStaticPage() {
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(this.mArgId), this);
     }
 
     /*
      * ##### LISTENERS #####
      */
 
+    /**
+     * Start the order return steps.
+     */
+    protected void onClickNextStep() {
+        super.onSwitchTo(FragmentType.ORDER_RETURN_STEPS).addArray(this.mArgArray).run();
+    }
+
     @Override
     public void onClick(View view) {
         // Case next step
-        if (view.getId() == R.id.order_return_conditions_button_ok) {
-            goToOrderReturnReason();
+        if (view.getId() == R.id.order_return_main_button_ok) {
+            onClickNextStep();
         } else {
             super.onClick(view);
         }
@@ -90,7 +98,7 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
 
     @Override
     protected void onClickRetryButton(View view) {
-        triggerStaticPage();
+        triggerGetStaticPage();
     }
 
     /*
@@ -100,14 +108,18 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
     @Override
     protected void onSuccessResponse(BaseResponse response) {
         // Show static page
-        mPageView.setText(((StaticPage) response.getMetadata().getData()).getHtml());
+        if (this.mContainer != null) {
+            TextView text = (TextView) LayoutInflater.from(getBaseActivity()).inflate(R.layout._def_order_return_step_conditions, this.mContainer, false);
+            text.setText(((StaticPage) response.getMetadata().getData()).getHtml());
+            this.mContainer.addView(text);
+        }
         // Show container
         showFragmentContentContainer();
     }
 
     @Override
     protected void onErrorResponse(BaseResponse response) {
-        goToOrderReturnReason();
+        onClickNextStep();
     }
 
 }

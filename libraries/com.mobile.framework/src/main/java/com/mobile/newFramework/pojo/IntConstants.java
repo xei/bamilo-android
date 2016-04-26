@@ -16,4 +16,5 @@ public class IntConstants {
     public static final int EMPTY = FALSE;
     public static final int FULL = TRUE;
     public static final int PADDING_10 = 10;
+    public static final int TAB_MAX_STEPS = 4;
 }
