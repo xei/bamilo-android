@@ -1,6 +1,5 @@
 package com.mobile.app.drawer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
@@ -23,28 +22,33 @@ public class DebugCountryModel extends BaseDebugModel implements CompoundButton.
     private final Context mContext;
     private TextView mTextView;
 
-    public DebugCountryModel(@NonNull Activity activity) {
-        mContext = activity;
+    public DebugCountryModel(@NonNull Context context) {
+        mContext = context ;
     }
 
     @NonNull
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View view = inflater.inflate(R.layout.dd_debug_drawer_module_country, parent, false);
-        SwitchCompat switchView = (SwitchCompat) view.findViewById(R.id.dd_debug_item_country_switch);
-        switchView.setOnCheckedChangeListener(this);
+        ((SwitchCompat) view.findViewById(R.id.dd_debug_item_country_switch)).setOnCheckedChangeListener(this);
         mTextView = (TextView) view.findViewById(R.id.dd_debug_item_country_text);
-        mTextView.setText(CountryPersistentConfigs.toString(mContext));
         return view;
     }
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
+            String configs = CountryPersistentConfigs.toString(mContext);
+            mTextView.setText(configs);
             mTextView.setVisibility(View.VISIBLE);
         } else {
             mTextView.setVisibility(View.GONE);
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mTextView = null;
+    }
 }

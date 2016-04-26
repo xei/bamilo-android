@@ -17,7 +17,7 @@ import java.util.Set;
  * Base requester fragment used for fragments that needs perform a network/database request.
  * @author spereira
  */
-public abstract class BaseFragmentRequester extends BaseFragmentSwitcher implements IResponseCallback {
+public abstract class BaseFragmentRequester extends BaseFragmentDynamicState implements IResponseCallback {
 
     /*
      * ##### CONSTRUCTORS #####

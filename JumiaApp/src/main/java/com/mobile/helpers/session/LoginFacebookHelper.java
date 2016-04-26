@@ -23,8 +23,6 @@ import com.mobile.newFramework.utils.output.Print;
  */
 public class LoginFacebookHelper extends SuperBaseHelper {
     
-    private static final String TAG = GetLoginFormHelper.class.getSimpleName();
-
     boolean saveCredentials = true;
 
     @Override
@@ -60,13 +58,13 @@ public class LoginFacebookHelper extends SuperBaseHelper {
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
         // Save credentials
         if (saveCredentials) {
-            Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
+            Print.i("SAVE CUSTOMER CREDENTIALS");
             mParameters.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
             mParameters.put(CustomerUtils.INTERNAL_EMAIL_VALUE, JumiaApplication.CUSTOMER.getEmail());
             mParameters.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, true);
             mParameters.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, false);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
-            Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+            Print.i("GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save new wish list
         WishListCache.set(JumiaApplication.CUSTOMER.getWishListCache());

@@ -1,4 +1,4 @@
-package com.mobile.view.fragments;
+package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -36,6 +36,7 @@ import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.OrderedProductViewHolder;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragmentDynamicState;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -44,7 +45,7 @@ import java.util.EnumSet;
  * Class used to show the order status.
  * @author spereira
  */
-public class OrderStatusFragment extends BaseFragmentSwitcher implements IResponseCallback {
+public class OrderStatusFragment extends BaseFragmentDynamicState implements IResponseCallback {
 
     public static final String TAG = OrderStatusFragment.class.getSimpleName();
 
@@ -359,6 +360,7 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
             // Goto order return conditions
             onSwitchTo(FragmentType.ORDER_RETURN_CONDITIONS)
                     .addId(id)
+                    .addArray(mOrder.getItems())
                     .noBackStack()
                     .run();
         } else {
@@ -369,9 +371,9 @@ public class OrderStatusFragment extends BaseFragmentSwitcher implements IRespon
     /**
      * Validate if there is any item selected.
      */
-    private boolean validateReturnAllSelected(){
-        for (OrderTrackerItem item  : mOrder.getItems()) {
-            if(item.isCheckedForAction()){
+    private boolean validateReturnAllSelected() {
+        for (OrderTrackerItem item : mOrder.getItems()) {
+            if (item.isCheckedForAction()) {
                 return true;
             }
         }

@@ -29,15 +29,13 @@ import java.util.List;
  */
 public class CountryPersistentConfigs {
 
-    private static final String TAG = CountryPersistentConfigs.class.getSimpleName();
-
     public static String toString(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         return
         "#### LANGUAGE ####"+
         "\nCode: "              + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, null) +
         "\nName: "              + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_NAME, null) +
-        "\n\n#### CURRENCY ####"    +
+        "\n\n#### CURRENCY ####"+
         "\nISO: "               + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_ISO, null) +
         "\nSymbol: "            + sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CURRENCY_SYMBOL, null) +
         "\nDecimals: "          + sharedPrefs.getInt(Darwin.KEY_SELECTED_COUNTRY_NO_DECIMALS, 0) +
@@ -127,7 +125,7 @@ public class CountryPersistentConfigs {
     public static String getCountryPhoneNumber(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String mPhone2Call = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_PHONE_NUMBER, null);
-        Print.i(TAG, "SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
+        Print.i("SHOP COUNTRY PHONE NUMBER: " + mPhone2Call);
         return mPhone2Call;
     }
 
@@ -138,7 +136,7 @@ public class CountryPersistentConfigs {
     public static String getCountryEmail(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
         String mEmail = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, null);
-        Print.i(TAG, "SHOP COUNTRY EMAIL: " + mEmail);
+        Print.i("SHOP COUNTRY EMAIL: " + mEmail);
         return mEmail;
     }
 

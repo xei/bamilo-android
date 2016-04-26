@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.mobile.view.BaseActivity;
 
+import java.util.ArrayList;
+
 /**
  * Class used to build the switch bundle for next fragment
  * @author spereira
@@ -15,6 +17,7 @@ public class FragmentSwitcher {
     public final static String TITLE = "title";
     public final static String ID = "id";
     public final static String DATA = "data";
+    public final static String ARRAY = "array";
 
     private final BaseActivity mActivity;
     private final FragmentType mType;
@@ -58,6 +61,14 @@ public class FragmentSwitcher {
      */
     public FragmentSwitcher addData(@NonNull Parcelable data) {
         this.bundle().putParcelable(DATA, data);
+        return this;
+    }
+
+    /**
+     * Add the array to be loaded.
+     */
+    public FragmentSwitcher addArray(@NonNull ArrayList<? extends Parcelable> array) {
+        this.bundle().putParcelableArrayList(ARRAY, array);
         return this;
     }
 

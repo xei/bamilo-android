@@ -1,6 +1,7 @@
-package com.mobile.view.fragments;
+package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -8,25 +9,40 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 
 import com.mobile.components.viewpager.SuperViewPager;
+import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
+import com.mobile.view.fragments.BaseFragmentDynamicState;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
 import java.util.EnumSet;
 
 /**
  * Fragment used to show the online returns reason.
  * @author spereira
  */
-public class OrderReturnStepsFragment extends BaseFragment {
+public class OrderReturnStepsMain extends BaseFragmentDynamicState {
 
     private SuperViewPager mPager;
+
+    public static final int CONDITIONS = -1;
+    public static final int REASON = 0;
+    public static final int METHOD = 1;
+    public static final int REFUND = 2;
+    public static final int FINISH = 3;
+    @IntDef({CONDITIONS, REASON, METHOD, REFUND, FINISH,})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface ReturnStepType {}
 
     /**
      * Empty constructor
      */
-    public OrderReturnStepsFragment() {
+    public OrderReturnStepsMain() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MY_ACCOUNT,
                 R.layout._def_order_return_step_main,
@@ -46,6 +62,8 @@ public class OrderReturnStepsFragment extends BaseFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
+        // Validate received items
+
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.order_return_main_tabs);
         tabLayout.addTab(tabLayout.newTab().setText("1"));
         tabLayout.addTab(tabLayout.newTab().setText("2"));
@@ -94,6 +112,9 @@ public class OrderReturnStepsFragment extends BaseFragment {
         }
     }
 
+    public ArrayList<OrderTrackerItem> getOrderItems() {
+        return (ArrayList<OrderTrackerItem>) this.mArgArray;
+    }
 
     /*
      * ##### LISTENERS #####

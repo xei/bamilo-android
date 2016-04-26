@@ -1,4 +1,4 @@
-package com.mobile.view.fragments;
+package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +15,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
 
 import java.util.EnumSet;
 

@@ -42,11 +42,6 @@ import com.mobile.view.fragments.MyAccountEditAddressFragment;
 import com.mobile.view.fragments.MyAccountFragment;
 import com.mobile.view.fragments.MyAccountNewslettersFragment;
 import com.mobile.view.fragments.MyAccountUserDataFragment;
-import com.mobile.view.fragments.MyOrdersFragment;
-import com.mobile.view.fragments.OrderReturnCallFragment;
-import com.mobile.view.fragments.OrderReturnConditionsFragment;
-import com.mobile.view.fragments.OrderReturnStepsFragment;
-import com.mobile.view.fragments.OrderStatusFragment;
 import com.mobile.view.fragments.ProductDetailsFragment;
 import com.mobile.view.fragments.ProductDetailsInfoFragment;
 import com.mobile.view.fragments.ProductImageGalleryFragment;
@@ -65,6 +60,11 @@ import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
 import com.mobile.view.fragments.VariationsFragment;
 import com.mobile.view.fragments.WishListFragment;
+import com.mobile.view.fragments.order.MyOrdersFragment;
+import com.mobile.view.fragments.order.OrderReturnCallFragment;
+import com.mobile.view.fragments.order.OrderReturnConditionsFragment;
+import com.mobile.view.fragments.order.OrderReturnStepsMain;
+import com.mobile.view.fragments.order.OrderStatusFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -312,7 +312,7 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(OrderReturnConditionsFragment.class, bundle);
                 break;
             case ORDER_RETURN_STEPS:
-                fragment = newFragmentInstance(OrderReturnStepsFragment.class, bundle);
+                fragment = newFragmentInstance(OrderReturnStepsMain.class, bundle);
                 break;
             case CHOOSE_COUNTRY:
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);

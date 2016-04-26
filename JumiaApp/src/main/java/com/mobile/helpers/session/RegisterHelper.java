@@ -25,8 +25,6 @@ import com.mobile.utils.deeplink.TargetLink;
  */
 public class RegisterHelper extends SuperBaseHelper {
     
-    private static String TAG = RegisterHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
         return EventType.REGISTER_ACCOUNT_EVENT;
@@ -45,7 +43,7 @@ public class RegisterHelper extends SuperBaseHelper {
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-        Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
+        Print.i("SAVE CUSTOMER CREDENTIALS");
         mParameters.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
         JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
         // Save customer

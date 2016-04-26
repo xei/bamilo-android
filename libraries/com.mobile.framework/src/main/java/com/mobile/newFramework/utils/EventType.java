@@ -190,6 +190,12 @@ public enum EventType {
 
     CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/"),
 
+    // ############# ORDER RETURN #############
+
+    GET_RETURN_REASON_FORM("http:/forms/returndetail/", AigRestContract.MAX_CACHE_TIME),
+
+    GET_RETURN_REASONS,
+
     SUBMIT_FORM;
 
 
