@@ -82,7 +82,7 @@ public class OrderReturnCallFragment extends BaseFragment {
         if(DeviceInfoHelper.hasTelephony(getBaseActivity())){
             callView.setOnClickListener(this);
         } else {
-            callView.setText(String.format(getString(R.string.please_call_placeholder), CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity())));
+            callView.setText(getString(R.string.please_call_placeholder, CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity())));
         }
 
         soppingView.setOnClickListener(this);
