@@ -176,13 +176,13 @@ public class DeepLinkManager {
                     bundle = processCatalogLink(CatalogSort.POPULARITY, segments);
                     break;
                 case CATALOG_SORT_RATING_TAG:
-                    bundle = processCatalogLink(CatalogSort.BESTRATING, segments);
+                    bundle = processCatalogLink(CatalogSort.BEST_RATING, segments);
                     break;
                 case CATALOG_SORT_POPULARITY_TAG:
                     bundle = processCatalogLink(CatalogSort.POPULARITY, segments);
                     break;
                 case CATALOG_SORT_NEW_TAG:
-                    bundle = processCatalogLink(CatalogSort.NEWIN, segments);
+                    bundle = processCatalogLink(CatalogSort.NEW_IN, segments);
                     break;
                 case CATALOG_SORT_PRICE_UP_TAG:
                     bundle = processCatalogLink(CatalogSort.PRICE_UP, segments);
