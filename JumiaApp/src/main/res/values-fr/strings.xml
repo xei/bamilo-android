@@ -181,7 +181,7 @@
     <string name="shoppingcart_alert_message_no_items">Panier vide ! Ajoutez-y des produits</string>
     <string name="shoppingcart_choose_quantity">Choisir la quantité</string>
     <string name="shoppingcart_item_btn_delete">Effacer</string>
-    <string name="shoppingcart_quantity">Quantité</string>
+    <string name="quantity_label">Quantité</string>
     <string name="sign_in">Accéder au compte</string>
     <string name="sign_out">Se déconnecter</string>
     <string name="size_guide_label">Guide de taille</string>

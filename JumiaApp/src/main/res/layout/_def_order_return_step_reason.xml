@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/order_return_conditions_text_cms"
-    style="@style/MultiLineStyle.Black"
-    tools:text="CMS BLOCK" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" />
 

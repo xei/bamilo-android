@@ -181,7 +181,7 @@
     <string name="shoppingcart_alert_message_no_items">سلة التسوق فارغة! يُرجى إضافة المنتجات إلى عربة التسوق.</string>
     <string name="shoppingcart_choose_quantity">اختر الكمية</string>
     <string name="shoppingcart_item_btn_delete">مسح</string>
-    <string name="shoppingcart_quantity">الكمية</string>
+    <string name="quantity_label">الكمية</string>
     <string name="sign_in">تسجيل الدخول</string>
     <string name="sign_out">تسجيل الخروج</string>
     <string name="size_guide_label">دليل المقاسات</string>

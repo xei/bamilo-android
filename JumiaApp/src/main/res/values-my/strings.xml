@@ -181,7 +181,7 @@
     <string name="shoppingcart_alert_message_no_items">ေစ်း၀ယ္လွည္းအလြတ္အတြင္း ပစၥည္းမ်ားထည္႔သြင္းပါ</string>
     <string name="shoppingcart_choose_quantity">အေရအတြက္ေရြးခ်ယ္ပါ</string>
     <string name="shoppingcart_item_btn_delete">ဖ်က္ရန္</string>
-    <string name="shoppingcart_quantity">အေရအတြက္</string>
+    <string name="quantity_label">အေရအတြက္</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">ထြက္ရန္</string>
     <string name="size_guide_label">အရြယ္အစားလမ္းညႊန္</string>

@@ -1,17 +1,21 @@
 package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.mobile.constants.FormConstants;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.order.GetReturnReasonFormHelper;
+import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.ReturnReasonForm;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
+import com.mobile.utils.order.UIOrderUtils;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -23,7 +27,8 @@ import java.util.ArrayList;
  */
 public class OrderReturnStep1Reason extends OrderReturnStepBase {
 
-    private DynamicForm mDynamicForm;
+    private ArrayList<OrderTrackerItem> mItems;
+    private ArrayList<DynamicForm> mDynamicForms;
 
     /**
      * Empty constructor
@@ -36,6 +41,13 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
      * ##### LIFECYCLE #####
      */
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Get order items
+        mItems = getOrderItems();
+    }
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -45,8 +57,8 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
         // Validate order items
-        if (CollectionUtils.isNotEmpty(getOrderItems())) {
-            triggerGetReasonForm(getOrderItems().size());
+        if (CollectionUtils.isNotEmpty(mItems)) {
+            triggerGetReasonForm(mItems.size());
         } else {
             showFragmentErrorRetry();
         }
@@ -56,8 +68,12 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         // Case rotation save state
-        if (mDynamicForm != null) {
-            mDynamicForm.saveFormState(outState);
+        if (CollectionUtils.isNotEmpty(mItems) && CollectionUtils.sizeIsSame(mItems, mDynamicForms)) {
+            for (int i = 0; i < mDynamicForms.size(); i++) {
+                Bundle bundle = new Bundle();
+                mDynamicForms.get(i).saveFormState(bundle);
+                outState.putBundle(mItems.get(i).getSku(), bundle);
+            }
         }
     }
 
@@ -66,23 +82,39 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
      */
 
     /**
-     * Create and show the form
+     * Create and show the form.
      */
-    private void loadForm(ReturnReasonForm form, ArrayList<OrderTrackerItem> items) {
-//        // Create form for each item
-//        for (int i = 1; i < items.size(); i++) {
-//            forms.add()
+    private void loadForm(ReturnReasonForm forms, ArrayList<OrderTrackerItem> items) {
+
+//        // Remove all views
+//        if (mContainer.getChildCount() > 0) {
+//            mContainer.removeAllViews();
 //        }
-        // Create form view
-        mDynamicForm = FormFactory.getSingleton().create(FormConstants.ORDER_RETURN_RESON_FORM, getContext(), form.get(0));
-        // Load saved state
-        mDynamicForm.loadSaveFormState(this.mSavedState);
-        // Remove all views
-        if (mContainer.getChildCount() > 0) {
-            mContainer.removeAllViews();
+
+        //
+        ViewGroup group = (ViewGroup) LayoutInflater.from(getBaseActivity()).inflate(R.layout._def_order_return_step_reason, this.mContainer, false);
+        //
+        mDynamicForms = new ArrayList<>();
+        // Create form for each item
+        for (int i = 0; i < items.size(); i++) {
+            // Get Item
+            OrderTrackerItem item = items.get(i);
+            // Create and add view
+            View viewItem = UIOrderUtils.createOrderItem(getContext(), item, group);
+            // Get form
+            Form form = forms.get(i);
+            // Create form view
+            DynamicForm dynamicForm = FormFactory.getSingleton().create(FormConstants.ORDER_RETURN_REASON_FORM, getContext(), form);
+            // Save dynamic form
+            mDynamicForms.add(dynamicForm);
+            // Load saved state
+            //dynamicForm.loadSaveFormState(mSavedState.getBundle(item.getSku()));
+            // Add item and form view
+            group.addView(viewItem);
+            group.addView(dynamicForm.getContainer());
         }
-        // Add form view
-        mContainer.addView(mDynamicForm.getContainer());
+        // Add group
+        mContainer.addView(group);
         // Show
         showFragmentContentContainer();
     }
@@ -116,12 +148,12 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
     @Override
     protected void onSuccessResponse(BaseResponse response) {
         // Get form
-        ReturnReasonForm form = (ReturnReasonForm) response.getContentData();
+        ReturnReasonForm forms = (ReturnReasonForm) response.getContentData();
         // Get items
         ArrayList<OrderTrackerItem> items = getOrderItems();
         // Validate data
-        if (null != form && CollectionUtils.isNotEmpty(items)) {
-            loadForm(form, items);
+        if (CollectionUtils.isNotEmpty(items) && CollectionUtils.sizeIsSame(items, forms)) {
+            loadForm(forms, items);
         } else {
             showFragmentErrorRetry();
         }

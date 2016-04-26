@@ -46,4 +46,9 @@ public class DebugCountryModel extends BaseDebugModel implements CompoundButton.
         }
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        mTextView = null;
+    }
 }

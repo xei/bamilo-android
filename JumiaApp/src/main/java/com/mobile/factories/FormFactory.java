@@ -91,6 +91,7 @@ public class FormFactory {
             case FormConstants.PAYMENT_DETAILS_FORM:
                 parent = new DynamicForm(context, form).build();
                 break;
+            case FormConstants.ORDER_RETURN_REASON_FORM:
             case FormConstants.NEWSLETTER_FORM:
                 form.setType(formType);
                 form.hideAsterisks();// Used to hide asterisks because everything is mandatory
