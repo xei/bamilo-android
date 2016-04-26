@@ -230,9 +230,11 @@ public class DeviceInfoHelper {
     public static boolean hasTelephony(Context context) {
         PackageManager pm = context.getPackageManager();
         TelephonyManager tm= (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY) && tm.getPhoneType()!=TelephonyManager.PHONE_TYPE_NONE){
+
+        if (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY) && tm.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE && tm.getSimState() != TelephonyManager.SIM_STATE_ABSENT){
            return true;
         }
+
         return false;
     }
     
