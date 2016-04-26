@@ -10,28 +10,26 @@ import com.mobile.view.R;
  */
 public enum CatalogSort {
     
-    BESTRATING("rating", R.string.products_sort_bestrated, null),
+    BEST_RATING("rating", R.string.products_sort_bestrated),
     
-    POPULARITY("popularity", R.string.products_sort_popularity, null),
+    POPULARITY("popularity", R.string.products_sort_popularity),
     
-    NEWIN("newest", R.string.products_sort_newin, null),
+    NEW_IN("newest", R.string.products_sort_newin),
     
-    PRICE_UP("price", R.string.products_sort_priceup, "asc"),
+    PRICE_UP("price/dir/asc", R.string.products_sort_priceup),
     
-    PRICE_DOWN("price", R.string.products_sort_pricedown, "desc"),
+    PRICE_DOWN("price/dir/desc", R.string.products_sort_pricedown),
     
-    NAME("name", R.string.products_sort_name, null),
+    NAME("name", R.string.products_sort_name),
 
-    BRAND("brand", R.string.products_sort_brand, null);
+    BRAND("brand", R.string.products_sort_brand);
 
-    public String id;
+    public String path;
     public int name;
-    public String direction;
 
-    CatalogSort(String id, int name, String direction) {
-        this.id = id;
+    CatalogSort(String path, int name) {
+        this.path = path;
         this.name = name;
-        this.direction = direction;
     }
 
 }
