@@ -351,7 +351,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     }
 
     private void onClickReturnSelected() {
-        if (!validateReturnAllSelected()) {
+        if (validateReturnAllSelected()) {
             // TODO : Get target link from Order
             String test = "static_page::terms_mobile";                              // <---- FIXME: TARGET LINK USED TO TEST
             String id = TargetLink.getIdFromTargetLink(test);

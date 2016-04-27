@@ -34,7 +34,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-        mContainer.setBackgroundColor(ContextCompat.getColor(getBaseActivity(), R.color.red_1));
+        mContainer.inflate(getBaseActivity(), R.layout._def_order_return_step2_method, null);
     }
 
     /*
