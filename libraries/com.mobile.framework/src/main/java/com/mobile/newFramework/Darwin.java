@@ -129,8 +129,8 @@ public class Darwin {
 		SHOP_ID = shopId;
 		return true;
 	}
-	
-	// FOR NO_COUNTRIES_CONFIGS
+
+	// FROM GET AVAILABLE COUNTRIES
 	public static boolean initialize(Context ctx) {
 		Print.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();
