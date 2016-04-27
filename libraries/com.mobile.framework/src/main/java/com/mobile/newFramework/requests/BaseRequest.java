@@ -37,7 +37,7 @@ public class BaseRequest<T> implements Callback<BaseResponse<T>> {
 
     public void execute(){}
 
-    public void execute(String name){
+    public void execute(String name) {
         // Get api service via string
         Method method = AigApiInterface.Service.getMethod(name);
         // Set parameters

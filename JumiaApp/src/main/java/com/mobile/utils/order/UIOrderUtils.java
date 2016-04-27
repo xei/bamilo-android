@@ -2,9 +2,7 @@ package com.mobile.utils.order;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
@@ -18,9 +16,9 @@ import com.mobile.view.R;
 public class UIOrderUtils {
 
     @NonNull
-    public static View createOrderItem(@NonNull Context context, @NonNull OrderTrackerItem item, @NonNull ViewGroup parent) {
+    public static View createOrderItem(@NonNull Context context, @NonNull OrderTrackerItem item) {
         // Get view
-        View view = LayoutInflater.from(context).inflate(R.layout._def_order_return_step_item, parent, false);
+        View view = View.inflate(context, R.layout._def_order_return_step_item, null);
         // Set view
         ImageView image = (ImageView) view.findViewById(R.id.image_view);
         View progress = view.findViewById(R.id.image_loading_progress);

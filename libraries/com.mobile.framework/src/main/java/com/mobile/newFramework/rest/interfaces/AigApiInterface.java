@@ -8,6 +8,7 @@ import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.addresses.PhonePrefixes;
+import com.mobile.newFramework.objects.addresses.ReturnReasons;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.Catalog;
@@ -274,6 +275,10 @@ public interface AigApiInterface {
     @GET("/")
     void getReturnReasonForm(Callback<BaseResponse<ReturnReasonForm>> callback);
     String getReturnReasonForm = "getReturnReasonForm";
+
+    @GET("/")
+    void getReturnReasons(Callback<BaseResponse<ReturnReasons>> callback);
+    String getReturnReasons = "getReturnReasons";
 
     /*
      * ########## HTTP POST ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0

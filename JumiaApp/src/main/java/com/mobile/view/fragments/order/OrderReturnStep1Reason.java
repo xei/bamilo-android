@@ -100,17 +100,20 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
             // Get Item
             OrderTrackerItem item = items.get(i);
             // Create and add view
-            View viewItem = UIOrderUtils.createOrderItem(getContext(), item, group);
+            View viewItem = UIOrderUtils.createOrderItem(getContext(), item);
             // Get form
             Form form = forms.get(i);
             // Create form view
-            DynamicForm dynamicForm = FormFactory.getSingleton().create(FormConstants.ORDER_RETURN_REASON_FORM, getContext(), form);
+            DynamicForm dynamicForm = FormFactory.getSingleton()
+                    .addForm(FormConstants.ORDER_RETURN_REASON_FORM, getContext(), form)
+                    .addHeader(viewItem)
+                    .build();
             // Save dynamic form
             mDynamicForms.add(dynamicForm);
             // Load saved state
             //dynamicForm.loadSaveFormState(mSavedState.getBundle(item.getSku()));
             // Add item and form view
-            group.addView(viewItem);
+//            group.addView(viewItem);
             group.addView(dynamicForm.getContainer());
         }
         // Add group

@@ -69,6 +69,10 @@ public class FormFactory {
      * @return An instance of a DynamicForm with the form representation implemented
      */
     public DynamicForm create(@FormConstants.DynamicFormTypes int formType, @NonNull Context context, @NonNull Form form) {
+        return addForm(formType, context, form).build();
+    }
+
+    public DynamicForm addForm(@FormConstants.DynamicFormTypes int formType, @NonNull Context context, @NonNull Form form) {
         DynamicForm parent = null;
         switch (formType) {
             case FormConstants.LOGIN_FORM:
@@ -76,30 +80,26 @@ public class FormFactory {
             case FormConstants.FORGET_PASSWORD_FORM:
             case FormConstants.CHANGE_PASSWORD_FORM:
             case FormConstants.RATING_FORM:
-                form.hideAsterisks(); // Used to hide asterisks because everything is mandatory
+                parent = new DynamicForm(context, form).addMarginTop(R.dimen.form_top_margin).isMandatory().showIcons(formType);
+                break;
             case FormConstants.USER_DATA_FORM:
             case FormConstants.ADDRESS_EDIT_FORM:
             case FormConstants.ADDRESS_FORM:
-                form.setType(formType);  // Used to show icons (LOGIN|REGISTER|USER_DATA)
-                parent = new DynamicForm(context, form).addMarginTop(R.dimen.form_top_margin).build();
+                parent = new DynamicForm(context, form).addMarginTop(R.dimen.form_top_margin).showIcons(formType);
                 break;
             case FormConstants.NEWSLETTER_UN_SUBSCRIBE_FORM:
             case FormConstants.NEWSLETTER_PREFERENCES_FORM:
-                form.setType(formType);  // Used for dividers
-                parent = new DynamicForm(context, form).addMiddleDivider().addEndDivider().build();
+                parent = new DynamicForm(context, form).addMiddleDivider().addEndDivider().showIcons(formType);
                 break;
             case FormConstants.PAYMENT_DETAILS_FORM:
-                parent = new DynamicForm(context, form).build();
+                parent = new DynamicForm(context, form);
                 break;
             case FormConstants.ORDER_RETURN_REASON_FORM:
             case FormConstants.NEWSLETTER_FORM:
-                form.setType(formType);
-                form.hideAsterisks();// Used to hide asterisks because everything is mandatory
-                parent = new DynamicForm(context, form).build();
+                parent = new DynamicForm(context, form).isMandatory().showIcons(formType);
                 break;
         }
         return parent;
     }
-
 
 }

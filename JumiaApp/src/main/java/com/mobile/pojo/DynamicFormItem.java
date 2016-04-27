@@ -40,6 +40,7 @@ import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
 import com.mobile.helpers.address.PhonePrefixesHelper;
+import com.mobile.helpers.order.GetReturnReasonsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.forms.FieldValidation;
@@ -52,6 +53,8 @@ import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.addresses.PhonePrefix;
 import com.mobile.newFramework.objects.addresses.PhonePrefixes;
+import com.mobile.newFramework.objects.addresses.ReturnReason;
+import com.mobile.newFramework.objects.addresses.ReturnReasons;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -351,7 +354,7 @@ public class DynamicFormItem {
         // Get api call
         String url = entry.getApiCall();
         // Validate url
-        if (!TextUtils.isEmpty(url)) {
+        if (!TextUtils.isEmpty(url)) { // TODO
             // Get prefixes
             JumiaApplication.INSTANCE.sendRequest(new PhonePrefixesHelper(), PhonePrefixesHelper.createBundle(url), new IResponseCallback() {
                 @Override
@@ -1305,6 +1308,44 @@ public class DynamicFormItem {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
+
+            final IcsSpinner spinner = (IcsSpinner) this.dataControl;
+            // Get api call
+            String url = entry.getApiCall();
+            // Validate url
+            if (!TextUtils.isEmpty(url)) { // TODO
+                // Get prefixes
+                JumiaApplication.INSTANCE.sendRequest(new GetReturnReasonsHelper(), GetReturnReasonsHelper.createBundle(url), new IResponseCallback() {
+                    @Override
+                    public void onRequestComplete(BaseResponse baseResponse) {
+                        ReturnReasons items = (ReturnReasons) baseResponse.getContentData();
+                        ArrayAdapter<ReturnReason> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, items);
+                        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+                        spinner.setAdapter(adapter);
+//                        int serverPosition = items.getPositionFromValue(valueFromServer);
+//                        // mPreSelectedPosition holds the position of the value when the user rotates screen
+//                        if(mPreSelectedPosition != IntConstants.INVALID_POSITION){
+//                            spinner.setSelection(mPreSelectedPosition);
+//                        } else {
+//                            spinner.setSelection(serverPosition != IntConstants.INVALID_POSITION ? serverPosition : items.getDefaultPosition());
+//                        }
+                    }
+                    @Override
+                    public void onRequestError(BaseResponse baseResponse) {
+                        parent.onRequestError(baseResponse);
+                    }
+                });
+                // Set touch listener
+                spinner.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent event) {
+                        KeyboardUtils.hide(view);
+                        return false;
+                    }
+                });
+            }
+
+
         }
         // Sets the spinner value
         ((IcsSpinner) this.dataControl).setSelection(0);
