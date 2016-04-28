@@ -270,6 +270,10 @@ public interface AigApiInterface {
     void getMultiStepFinish(Callback<BaseResponse<PurchaseEntity>> callback);
     String getMultiStepFinish = "getMultiStepFinish";
 
+    @GET("/")
+    void getReturnMethodsForm(Callback<BaseResponse<Form>> callback);
+    String getReturnMethodsForm = "getReturnMethodsForm";
+
     /*
      * ########## HTTP POST ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0
      */

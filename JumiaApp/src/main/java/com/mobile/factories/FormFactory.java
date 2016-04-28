@@ -92,6 +92,7 @@ public class FormFactory {
                 parent = new DynamicForm(context, form).build();
                 break;
             case FormConstants.NEWSLETTER_FORM:
+            case FormConstants.RETURN_METHOD_FORM:
                 form.setType(formType);
                 form.hideAsterisks();// Used to hide asterisks because everything is mandatory
                 parent = new DynamicForm(context, form).build();

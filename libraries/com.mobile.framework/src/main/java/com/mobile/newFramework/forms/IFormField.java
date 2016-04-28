@@ -19,11 +19,17 @@ public interface IFormField {
 
     String getLabel();
 
+    String getText();
+
+    String getSubText();
+
     String getSubLabel();
 
     String getLinkText();
 
     String getLinkTarget();
+
+    String getLinkHtml();
 
     String getFormat();
 

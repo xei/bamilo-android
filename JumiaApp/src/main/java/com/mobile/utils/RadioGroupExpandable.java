@@ -1,0 +1,330 @@
+package com.mobile.utils;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextPaint;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.AttributeSet;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
+
+import com.mobile.components.customfontviews.TextView;
+import com.mobile.newFramework.forms.IFormField;
+import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.pojo.DynamicForm;
+import com.mobile.view.R;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+/**
+ * This class is used to manage and generate the RadioGroupExpandable for the Dynamic Forms
+ */
+public class RadioGroupExpandable extends RadioGroup {
+    private ArrayList<IFormField> mItems;
+    private HashMap<Integer, DynamicForm> generatedForms;
+    private int mDefaultSelected;
+    private RadioGroup mGroup;
+    private LayoutInflater mInflater;
+    private WeakReference<View.OnClickListener> mClickListener;
+    Context mContext;
+
+    public RadioGroupExpandable(Context context) {
+        super(context);
+        mContext = context;
+        init();
+    }
+
+    public RadioGroupExpandable(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        mContext = context;
+        init();
+    }
+
+    private void init() {
+        mInflater = LayoutInflater.from(getContext());
+        mGroup = this;
+    }
+
+    public void addClickListener(@NonNull OnClickListener clickListener){
+        mClickListener = new WeakReference<>(clickListener);
+    }
+
+    /**
+     * Method used to set values from the options map with respective default value.<br>
+     * - With right style
+     */
+    public void setItems(@NonNull ArrayList<IFormField> items, String defaultValue) {
+        // Find the default value
+        int defaultSelect = IntConstants.INVALID_POSITION;
+        int count = defaultSelect;
+        for (IFormField entryValue : items) {
+            count++;
+            if (TextUtils.equals(entryValue.getLabel(), defaultValue)) {
+                defaultSelect = count;
+                break;
+            }
+        }
+
+        // set and show items
+        setItems(items, defaultSelect);
+    }
+
+    public void setItems(ArrayList<IFormField> items, int defaultSelected) {
+        mItems = items;
+        mDefaultSelected = defaultSelected;
+        updateRadioGroup();
+    }
+
+    private void updateRadioGroup() {
+        try {
+            mGroup.removeAllViews();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        generatedForms = new HashMap<>();
+        for (int idx = 0; idx < mItems.size(); idx++) {
+            createRadioButton(idx, mItems.get(idx));
+        }
+        // Set the default radio button checked
+        if(mDefaultSelected > IntConstants.INVALID_POSITION){
+            checkDefaultOption(mDefaultSelected);
+        }
+    }
+
+    /**
+     * Method used to check the default option.<br>
+     * The runnable is a hack for Android Marshmallow (API 23)
+     */
+    private void checkDefaultOption(final int defaultSelected) {
+        post(new Runnable() {
+            @Override
+            public void run() {
+                RadioButton button = (RadioButton) mGroup.getChildAt(defaultSelected).findViewById(R.id.radio_shipping);
+                if(button != null){
+                    button.setChecked(true);
+                    mGroup.check(button.getId());
+                }
+            }
+        });
+    }
+
+    /**
+     * Create a Radio button with an extra LinearLayout for content
+     *
+     * @param idx index of label
+     */
+    private void createRadioButton(int idx, IFormField field) {
+        // Get views
+        final LinearLayout container = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, null, false);
+        final LinearLayout extras = (LinearLayout) container.findViewById(R.id.radio_extras_container);
+        final RadioButton button = (RadioButton) container.findViewById(R.id.radio_shipping);
+
+        if (TextUtils.isNotEmpty(field.getLinkText()) || TextUtils.isNotEmpty(field.getText())) {
+            addTextLayout(field, extras);
+        }
+
+        if (TextUtils.isNotEmpty(field.getSubText())) {
+            addSubTextLayout(field.getSubText(), extras);
+        }
+
+        // Hide  divider
+        container.findViewById(R.id.radio_divider).setVisibility(View.GONE);
+
+        RelativeLayout.LayoutParams mParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+
+        container.setId(idx);
+        container.setLayoutParams(mParams);
+
+        button.setText(mItems.get(idx).getLabel());
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    if (button.isChecked()) {
+                        extras.setVisibility(View.VISIBLE);
+                    } else {
+                        extras.setVisibility(View.GONE);
+                    }
+                } catch (StackOverflowError e) {
+                    e.printStackTrace();
+                }
+
+                setSelection(container.getId());
+            }
+        });
+
+        // Set default
+        button.setSelected(idx == mDefaultSelected);
+        // Add radio option
+        mGroup.addView(container);
+    }
+
+    private void addTextLayout(final @Nullable IFormField field, @NonNull ViewGroup view){
+        final RelativeLayout extraSubtext = (RelativeLayout) mInflater.inflate(R.layout._def_radio_expandable_extra_text, null, false);
+        String text = field.getText();
+        String link = TextUtils.isNotEmpty(field.getLinkHtml()) ? field.getLinkHtml() : field.getLinkTarget();
+        String linklabel = field.getLinkText();
+
+        String completeText = null;
+        if(TextUtils.isNotEmpty(link)){
+            completeText = linklabel;
+        }
+
+        if(TextUtils.isNotEmpty(text) && TextUtils.isNotEmpty(link)){
+            completeText = getContext().getString(R.string.first_space_second_placeholder, linklabel,  text);
+        } else if(TextUtils.isNotEmpty(text)){
+            completeText = text;
+        }
+
+        if(TextUtils.isNotEmpty(link)){
+            SpannableString spannableString = new SpannableString(completeText);
+
+            ClickableSpan clickableSpan = new ClickableSpan() {
+                @Override
+                public void onClick(View textView) {
+                    onClickLinkSpannable(field, textView);
+                }
+                @Override
+                public void updateDrawState(TextPaint ds) {
+                    super.updateDrawState(ds);
+                    ds.setUnderlineText(false);
+                }
+            };
+            spannableString.setSpan(clickableSpan, 0, linklabel.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            spannableString.setSpan(new ForegroundColorSpan(ContextCompat.getColor(mContext, R.color.blue_1)), 0, linklabel.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+            ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setText(spannableString);
+            ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setMovementMethod(LinkMovementMethod.getInstance());
+            view.addView(extraSubtext);
+        } else {
+            ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setText(text);
+            view.addView(extraSubtext);
+        }
+
+
+    }
+
+    /**
+     * Handle click on the item link
+     * @param field
+     */
+    private void onClickLinkSpannable(final @Nullable IFormField field, @NonNull View view){
+        if(mClickListener != null && mClickListener.get() != null) {
+            if (TextUtils.isNotEmpty(field.getLinkTarget())) {
+                view.setTag(R.id.target_link, field.getLinkTarget());
+                view.setTag(R.id.target_title, field.getLabel());
+                mClickListener.get().onClick(view);
+
+            } else {
+                view.setTag(R.id.html_link, field.getLinkHtml());
+                view.setTag(R.id.target_title, field.getLabel());
+                mClickListener.get().onClick(view);
+            }
+        }
+    }
+
+    /**
+     * Add the Sub Text section to the element layout
+     * @param subText
+     * @param view
+     */
+    private void addSubTextLayout(@NonNull String subText, ViewGroup view){
+        final RelativeLayout extraSubtext = (RelativeLayout) mInflater.inflate(R.layout._def_radio_expandable_extra_subtext, null, false);
+        ((TextView) extraSubtext.findViewById(R.id.sub_text)).setText(subText);
+        view.addView(extraSubtext);
+    }
+
+    public int getSelectedIndex() {
+        int radioButtonID = mGroup.getCheckedRadioButtonId();
+        View radioButton = mGroup.findViewById(radioButtonID);
+        return mGroup.indexOfChild(radioButton);
+    }
+
+    public String getItemByIndex(int idx) {
+        if (mItems == null)
+            return null;
+        if (idx < 0)
+            return null;
+        return mItems.get(idx).getLabel();
+    }
+
+    public void setSelection(final int idx) {
+        if (idx >= 0) {
+            RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_shipping);
+            if(button != null){
+                button.setChecked(true);
+                mGroup.getChildAt(idx).findViewById(R.id.radio_extras_container).setVisibility(View.VISIBLE);
+            }
+        }
+        cleanOtherSelections(idx);
+    }
+
+    private void cleanOtherSelections(final int idx) {
+        for (int i = 0; i < mGroup.getChildCount(); i++) {
+            if (i != idx) {
+                RadioButton button = (RadioButton) mGroup.getChildAt(i).findViewById(R.id.radio_shipping);
+                if(button != null){
+                    button.setChecked(false);
+                    mGroup.getChildAt(i).findViewById(R.id.radio_extras_container).setVisibility(View.GONE);
+                }
+            }
+        }
+    }
+
+    public String getErrorMessage() {
+        return generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0).getMessage();
+    }
+
+    public ContentValues getSubFieldParameters() {
+        ContentValues result = null;
+        if (generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null) {
+            result = generatedForms.get(mGroup.getCheckedRadioButtonId()).save();
+        }
+        return result;
+    }
+
+    public String getSelectedFieldName() {
+        return mItems.get(mGroup.getCheckedRadioButtonId()).getLabel();
+    }
+
+    public String getSelectedFieldValue() {
+        return getItemByIndex(getSelectedIndex());
+    }
+
+    /**
+     * Saves the sub field state (Payment Checkbox).
+     */
+    public void saveSubFieldState(@NonNull Bundle state) {
+        if (generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null) {
+            generatedForms.get(mGroup.getCheckedRadioButtonId()).saveFormState(state);
+        }
+    }
+
+    /**
+     * Loads the saved state (Payment Checkbox).
+     */
+    public void loadSubFieldState(@Nullable Bundle state) {
+        if (generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null) {
+            generatedForms.get(mGroup.getCheckedRadioButtonId()).loadSaveFormState(state);
+        }
+    }
+
+}

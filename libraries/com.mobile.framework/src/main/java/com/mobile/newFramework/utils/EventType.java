@@ -190,7 +190,9 @@ public enum EventType {
 
     CLEAR_SHOPPING_CART_EVENT("https:/cart/clear/"),
 
-    SUBMIT_FORM;
+    SUBMIT_FORM,
+
+    RETURN_METHODS_FORM_EVENT("http:/forms/returnmethods/");
 
 
     public final String action;

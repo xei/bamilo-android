@@ -60,10 +60,12 @@ import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.fields.CheckBoxField;
+import com.mobile.pojo.fields.RadioExpandableField;
 import com.mobile.pojo.fields.ScreenRadioField;
 import com.mobile.pojo.fields.ScreenTitleField;
 import com.mobile.pojo.fields.SectionTitleField;
 import com.mobile.pojo.fields.SwitchRadioField;
+import com.mobile.utils.RadioGroupExpandable;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
@@ -148,6 +150,8 @@ public class DynamicFormItem {
                 return new ScreenRadioField(parent, context, entry);
             case checkBox:
                 return new CheckBoxField(parent, context, entry);
+            case radioExpandable:
+                return new RadioExpandableField(parent, context, entry);
             default:
                 return new DynamicFormItem(parent, context, entry);
         }
@@ -938,6 +942,10 @@ public class DynamicFormItem {
                     break;
                 case list:
                     result = getControl().getChildAt(0) instanceof IcsSpinner;
+                    break;
+                case radioExpandable:
+                   Print.i(TAG, "code1validate : "+((RadioGroupExpandable) this.dataControl).getSelectedIndex());
+                    result = ((RadioGroupExpandable) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                     break;
                 default:
                     break;

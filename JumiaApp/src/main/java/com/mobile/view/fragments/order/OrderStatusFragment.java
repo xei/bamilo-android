@@ -330,7 +330,9 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     public void onClick(View view) {
         // Case reorder
         if(view.getId() == R.id.order_status_item_button_reorder){
-            onClickReOrder(view);
+//            onClickReOrder(view);
+            onClickReturnSelected();
+
         }
         //case order item
         else if(view.getId() == R.id.order_list_item){
@@ -351,7 +353,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     }
 
     private void onClickReturnSelected() {
-        if (validateReturnAllSelected()) {
+//        if (validateReturnAllSelected()) {
             // TODO : Get target link from Order
             String test = "static_page::terms_mobile";                              // <---- FIXME: TARGET LINK USED TO TEST
             String id = TargetLink.getIdFromTargetLink(test);
@@ -361,9 +363,9 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                     .addArray(mOrder.getItems())
                     .noBackStack()
                     .run();
-        } else {
-            showWarningErrorMessage(getString(R.string.warning_no_items_selected));
-        }
+//        } else {
+//            showWarningErrorMessage(getString(R.string.warning_no_items_selected));
+//        }
     }
 
     /**

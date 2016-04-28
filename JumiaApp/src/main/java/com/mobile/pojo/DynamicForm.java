@@ -378,6 +378,10 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         }
     }
 
+    public WeakReference<View.OnClickListener>  getClickListener(){
+        return mClickListener;
+    }
+
     /*
      * ########## CHECKED CHANGE LISTENER ##########
      */

@@ -98,6 +98,7 @@ public class Form implements IJSONSerializable, Parcelable {
         try {
             mMethod = jsonObject.optString(RestConstants.METHOD);
             mAction = jsonObject.optString(RestConstants.ACTION);
+            Print.i("FORM", "code1form : mMethod: "+mMethod+" mAction: "+ mAction);
             JSONArray fieldsArray = jsonObject.getJSONArray(RestConstants.FIELDS);
             for (int i = 0; i < fieldsArray.length(); ++i) {
                 FormField field = new FormField();

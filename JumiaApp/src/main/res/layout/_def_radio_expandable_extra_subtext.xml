@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    >
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/sub_text"
+        style="@style/TextBase.Body.Black"
+        tools:text="You have 7 days to drop off your item at a Jumia Return Station."
+        android:background="@drawable/_gen_background_border_yellow"
+        android:layout_marginLeft="@dimen/dimen_48dp"
+        android:layout_marginRight="@dimen/dimen_48dp"
+        android:paddingLeft="@dimen/margin_padding_xl"
+        android:paddingRight="@dimen/margin_padding_xl"
+        android:paddingTop="@dimen/margin_padding_m"
+        android:paddingBottom="@dimen/margin_padding_s"
+        />
+
+</RelativeLayout>
