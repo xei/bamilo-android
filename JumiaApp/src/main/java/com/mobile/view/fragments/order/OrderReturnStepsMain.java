@@ -144,12 +144,6 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     /*
      * ##### LISTENERS #####
      */
-    @Override
-    protected void onClickRetryButton(View view) {
-        // TODO
-    }
-
-
 
     private class TabLayoutPageChangeListener extends TabLayout.TabLayoutOnPageChangeListener {
 
