@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobile.constants.FormConstants;
 import com.mobile.helpers.order.GetReturnReasonFormHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.ReturnReasonForm;
@@ -144,7 +145,10 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
         // Create custom view
         ReturnOrderViewHolder custom = new ReturnOrderViewHolder(getContext(), mOrder, item);
         // Create form view
-        DynamicForm dyForm = new DynamicForm(getContext(), form).addRequestCallBack(this).build();
+        DynamicForm dyForm = new DynamicForm(getContext(), form)
+                .addType(FormConstants.ORDER_RETURN_REASON_FORM)
+                .addRequestCallBack(this)
+                .build();
         // Validate form field
         DynamicFormItem dyFormItem = dyForm.getItemByKey(FORM_QUANTITY_FIELD);
         // Case quantity field

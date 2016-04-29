@@ -12,6 +12,6 @@ public interface ICustomFormField {
     /**
      * Add a custom view to represent the form field.
      */
-    void addCustomView(@NonNull ICustomView custom);
+    void addCustomView(@NonNull ICustomFormFieldView custom);
 
 }

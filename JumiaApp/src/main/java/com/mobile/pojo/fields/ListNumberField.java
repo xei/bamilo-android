@@ -10,7 +10,7 @@ import com.mobile.newFramework.forms.IFormField;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.ICustomFormField;
-import com.mobile.pojo.ICustomView;
+import com.mobile.pojo.ICustomFormFieldView;
 import com.mobile.pojo.IDynamicFormItemField;
 
 /**
@@ -19,7 +19,7 @@ import com.mobile.pojo.IDynamicFormItemField;
  */
 public class ListNumberField extends DynamicFormItem implements IDynamicFormItemField, ICustomFormField {
 
-    private ICustomView mCustomView;
+    private ICustomFormFieldView mCustomView;
 
     /**
      * The constructor for the DynamicFormItem
@@ -71,7 +71,7 @@ public class ListNumberField extends DynamicFormItem implements IDynamicFormItem
     }
 
     @Override
-    public void addCustomView(@NonNull ICustomView custom) {
+    public void addCustomView(@NonNull ICustomFormFieldView custom) {
         // Save custom view
         this.mCustomView = custom;
         // Add view

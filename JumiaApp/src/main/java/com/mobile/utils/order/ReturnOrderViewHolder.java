@@ -12,7 +12,7 @@ import com.mobile.newFramework.objects.orders.OrderActions;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.pojo.ICustomView;
+import com.mobile.pojo.ICustomFormFieldView;
 import com.mobile.utils.dialogfragments.DialogQuantityListFragment;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.UIUtils;
@@ -24,11 +24,15 @@ import java.lang.ref.WeakReference;
 /**
  * Class used to represent the base of teasers.
  */
-public class ReturnOrderViewHolder implements ICustomView {
+public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClickListener, DialogQuantityListFragment.OnDialogListListener {
 
     public final static int MIN_RETURN_QUANTITY = 1;
 
     public final View itemView;
+    private final TextView mReturnQuantityText;
+    private final TextView mReturnQuantityButton;
+    private WeakReference<BaseActivity> mWeakActivity;
+    private int mMaxQuantity;
 
     public ReturnOrderViewHolder(@NonNull Context context, @NonNull String mOrder, @NonNull OrderTrackerItem item) {
         // Get view
@@ -47,6 +51,9 @@ public class ReturnOrderViewHolder implements ICustomView {
         ((TextView) view.findViewById(R.id.order_return_item_text_quantity)).setText(context.getString(R.string.quantity_placeholder, item.getQuantity()));
         // Order
         ((TextView) view.findViewById(R.id.order_return_item_text_order)).setText(context.getString(R.string.order_number_placeholder, mOrder));
+        // Return quantity
+        mReturnQuantityText = (TextView) itemView.findViewById(R.id.order_return_item_text_return_quantity);
+        mReturnQuantityButton = (TextView) itemView.findViewById(R.id.order_return_item_button_quantity);
     }
 
     /**
@@ -77,28 +84,23 @@ public class ReturnOrderViewHolder implements ICustomView {
      */
     @SuppressWarnings("deprecation")
     public void showQuantityButton(@NonNull final WeakReference<BaseActivity> weakActivity, final OrderActions action) {
-        // Show quantity views
-        TextView text = (TextView) itemView.findViewById(R.id.order_return_item_text_return_quantity);
-        final TextView button = (TextView) itemView.findViewById(R.id.order_return_item_button_quantity);
-        UIUtils.showOrHideViews(View.VISIBLE, button, text);
-        // Set min
-        button.setText(String.valueOf(MIN_RETURN_QUANTITY));
+        // Save
+        mWeakActivity = weakActivity;
         // Get max items to return
-        final int max = action != null ? action.getReturnableQuantity() : MIN_RETURN_QUANTITY;
+        mMaxQuantity = action != null ? action.getReturnableQuantity() : MIN_RETURN_QUANTITY;
+        // Show quantity views
+        UIUtils.showOrHideViews(View.VISIBLE, mReturnQuantityButton, mReturnQuantityText);
+        // Set min
+        mReturnQuantityButton.setText(String.valueOf(MIN_RETURN_QUANTITY));
         // Validate max
-        button.setEnabled(max > 1);
-        if (button.isEnabled()) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    onClickQuantityButton(weakActivity, button, max);
-                }
-            });
+        mReturnQuantityButton.setEnabled(mMaxQuantity > 1);
+        if (mReturnQuantityButton.isEnabled()) {
+            mReturnQuantityButton.setOnClickListener(this);
         } else {
             if (DeviceInfoHelper.isPosJellyBean()) {
-                button.setBackground(null);
+                mReturnQuantityButton.setBackground(null);
             } else {
-                button.setBackgroundDrawable(null);
+                mReturnQuantityButton.setBackgroundDrawable(null);
             }
         }
     }
@@ -110,22 +112,15 @@ public class ReturnOrderViewHolder implements ICustomView {
         // Get current value from view
         int current = Integer.valueOf(button.getText().toString());
         // Create dialog with max and current value
-        DialogQuantityListFragment.newInstance(weakActivity, R.string.choose_quantity, max, current)
-                .addOnItemClickListener(new DialogQuantityListFragment.OnDialogListListener() {
-                    @Override
-                    public void onDialogListItemSelect(AdapterView<?> adapterView, View view, int position, long id) {
-                        // Save the selected value
-                        String quantity = adapterView.getAdapter().getItem(position).toString();
-                        button.setText(quantity);
-                    }
-
-                    @Override
-                    public void onDismiss() {
-                        // ...
-                    }
-                })
+        DialogQuantityListFragment
+                .newInstance(weakActivity, R.string.choose_quantity, max, current)
+                .addOnItemClickListener(this)
                 .show();
     }
+
+    /*
+     * ######## CUSTOM VIEW ########
+     */
 
     @Override
     public boolean validate() {
@@ -144,7 +139,29 @@ public class ReturnOrderViewHolder implements ICustomView {
     }
 
     @Override
+    @NonNull
     public View getView() {
         return itemView;
+    }
+
+    /*
+     * ######## LISTENERS ########
+     */
+
+    @Override
+    public void onClick(View view) {
+        onClickQuantityButton(mWeakActivity, mReturnQuantityButton, mMaxQuantity);
+    }
+
+    @Override
+    public void onDialogListItemSelect(AdapterView<?> adapterView, View view, int position, long id) {
+        // Save the selected value
+        String quantity = adapterView.getAdapter().getItem(position).toString();
+        mReturnQuantityButton.setText(quantity);
+    }
+
+    @Override
+    public void onDismiss() {
+        // ...
     }
 }

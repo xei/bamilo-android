@@ -8,7 +8,7 @@ import android.view.View;
  * Interface for custom views to be used in dynamic form item.
  * @author spereira
  */
-public interface ICustomView {
+public interface ICustomFormFieldView {
 
     boolean validate();
 

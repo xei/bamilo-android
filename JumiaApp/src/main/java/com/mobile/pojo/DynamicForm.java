@@ -154,6 +154,14 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     }
 
     /**
+     * Save the form type.
+     */
+    public DynamicForm addType(@FormConstants.DynamicFormTypes int formType) {
+        this.form.setType(formType);
+        return this;
+    }
+
+    /**
      * Build the form with each form item.
      */
     @NonNull

@@ -59,8 +59,10 @@ import com.mobile.newFramework.objects.addresses.ReturnReasons;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.fields.CheckBoxField;
@@ -358,7 +360,7 @@ public class DynamicFormItem {
         // Get api call
         String url = entry.getApiCall();
         // Validate url
-        if (!TextUtils.isEmpty(url)) { // TODO
+        if (!TextUtils.isEmpty(url)) {
             // Get prefixes
             JumiaApplication.INSTANCE.sendRequest(new PhonePrefixesHelper(), PhonePrefixesHelper.createBundle(url), new IResponseCallback() {
                 @Override
@@ -948,7 +950,7 @@ public class DynamicFormItem {
                     if (result) {
                         IcsSpinner spinner = (IcsSpinner) this.dataControl;
                         if (spinner.getAdapter() instanceof PromptSpinnerAdapter) {
-                            result = spinner.getSelectedItemPosition() > 0;
+                            result = spinner.getSelectedItemPosition() > IntConstants.DEFAULT_POSITION;
                         }
                     }
                     break;
@@ -1295,6 +1297,51 @@ public class DynamicFormItem {
         this.control.setVisibility(View.GONE);
     }
 
+
+    /**
+     * Spinner requester
+     */
+    private void createSpinnerRequester() {
+        // Get spinner
+        final IcsSpinner spinner = (IcsSpinner) this.dataControl;
+        // Get api call
+        String url = entry.getApiCall();
+        // Validate url
+        if (!TextUtils.isEmpty(url)) {
+            // Get prefixes
+            JumiaApplication.INSTANCE.sendRequest(new GetReturnReasonsHelper(), GetReturnReasonsHelper.createBundle(url), new IResponseCallback() {
+                @Override
+                public void onRequestComplete(BaseResponse baseResponse) {
+                    ReturnReasons items = (ReturnReasons) baseResponse.getContentData();
+                    ArrayAdapter<ReturnReason> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, items);
+                    adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+                    spinner.setAdapter(new PromptSpinnerAdapter(adapter, R.layout._def_form_spinner_prompt, context));
+                    if(mPreSelectedPosition > IntConstants.DEFAULT_POSITION) {
+                        spinner.setSelection(mPreSelectedPosition);
+                    }
+                    // Notify parent
+                    parent.onRequestComplete(baseResponse);
+                }
+                @Override
+                public void onRequestError(BaseResponse baseResponse) {
+                    // Notify parent
+                    parent.onRequestError(baseResponse);
+                }
+            });
+            // Set touch listener
+            spinner.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent event) {
+                    KeyboardUtils.hide(view);
+                    return false;
+                }
+            });
+        } else {
+            // Notify parent
+            parent.onRequestError(new BaseResponse<>(EventType.GET_RETURN_REASONS, ErrorCode.REQUEST_ERROR));
+        }
+    }
+
     private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer, boolean isAlternativeLayout) {
         this.dataControl = View.inflate(this.context, R.layout.form_icsspinner, null);
         this.dataControl.setId(parent.getNextId());
@@ -1318,43 +1365,13 @@ public class DynamicFormItem {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
             ((IcsSpinner) this.dataControl).setAdapter(adapter);
-            // Get spinner
-            final IcsSpinner spinner = (IcsSpinner) this.dataControl;
-            // Get api call
-            String url = entry.getApiCall();
-            // Validate url
-            if (!TextUtils.isEmpty(url)) { // TODO
-                // Get prefixes
-                JumiaApplication.INSTANCE.sendRequest(new GetReturnReasonsHelper(), GetReturnReasonsHelper.createBundle(url), new IResponseCallback() {
-                    @Override
-                    public void onRequestComplete(BaseResponse baseResponse) {
-                        ReturnReasons items = (ReturnReasons) baseResponse.getContentData();
-                        ArrayAdapter<ReturnReason> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, items);
-                        adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-                        spinner.setAdapter(new PromptSpinnerAdapter(adapter, R.layout._def_form_spinner_prompt, context));
-                        if(mPreSelectedPosition > IntConstants.DEFAULT_POSITION) {
-                            spinner.setSelection(mPreSelectedPosition);
-                        }
-                        // Notify parent
-                        parent.onRequestComplete(baseResponse);
-                    }
-                    @Override
-                    public void onRequestError(BaseResponse baseResponse) {
-                        // Notify parent
-                        parent.onRequestError(baseResponse);
-                    }
-                });
-                // Set touch listener
-                spinner.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent event) {
-                        KeyboardUtils.hide(view);
-                        return false;
-                    }
-                });
+            /**
+             * TODO: NAFAMZ-15492 - This should be a generic component for forms.
+             */
+            // Case ORDER_RETURN_REASON_FORM
+            if (this.parent.getForm().getType() == FormConstants.ORDER_RETURN_REASON_FORM) {
+                createSpinnerRequester();
             }
-
-
         }
         // Sets the spinner value
         ((IcsSpinner) this.dataControl).setSelection(0);
