@@ -196,7 +196,9 @@ public enum EventType {
 
     GET_RETURN_REASONS,
 
-    SUBMIT_FORM;
+    SUBMIT_FORM,
+
+    GET_EXTERNAL_LINKS("http:/main/getexternallinks/");
 
 
     public final String action;

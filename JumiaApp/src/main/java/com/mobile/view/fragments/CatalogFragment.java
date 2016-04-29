@@ -154,8 +154,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues = UICatalogUtils.saveCatalogType(arguments, mQueryValues, mKey);
             // Get sort
             mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT, CatalogSort.POPULARITY.ordinal())];
-            mQueryValues.put(RestConstants.SORT, mSelectedSort.id);
-            mQueryValues.put(RestConstants.DIRECTION, mSelectedSort.direction);
+            mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
             // Default catalog values
             mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             // In case of searching by keyword
@@ -890,13 +889,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
         // Get Sort
-        if (TextUtils.isNotEmpty(mSelectedSort.id)) {
-            mQueryValues.put(RestConstants.SORT, mSelectedSort.id);
+        if (TextUtils.isNotEmpty(mSelectedSort.path)) {
+            mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
         }
-        if (TextUtils.isNotEmpty(mSelectedSort.direction)) {
-            mQueryValues.put(RestConstants.DIRECTION, mSelectedSort.direction);
-        }
-
         // Case initial request or load more
         if (page == IntConstants.FIRST_PAGE) {
             triggerContentEvent(new GetCatalogPageHelper(), GetCatalogPageHelper.createBundle(mQueryValues), this);

@@ -124,7 +124,7 @@ android {
         jumia {
             applicationId "com.jumia.android"
             versionName "3.2"
-            versionCode getAppVersionCode(64)
+            versionCode getAppVersionCode(65)
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             //buildTypes.debug.manifestPlaceholders = [APP_ID: "123456"]
@@ -133,7 +133,7 @@ android {
         jumiaPreInstall {
             applicationId "com.jumia.android"
             versionName "3.2"
-            versionCode 64
+            versionCode 65
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -144,7 +144,7 @@ android {
         jumiaNokiaX {
             applicationId "com.jumia.android"
             versionName "3.2"
-            versionCode 64
+            versionCode 65
             signingConfig signingConfigs.jumiaSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
@@ -155,7 +155,7 @@ android {
         jumiaMTNng {
             applicationId "com.jumia.mtnng"
             versionName "3.2"
-            versionCode 64
+            versionCode 65
             signingConfig signingConfigs.jumiaMtnngSigning
             resConfigs "en", "fr", "ar"
             android.sourceSets {
