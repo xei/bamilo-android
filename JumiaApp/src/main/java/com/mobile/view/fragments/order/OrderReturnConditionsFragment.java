@@ -59,9 +59,9 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
     }
 
     /*
-         * (non-Javadoc)
-         * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
-         */
+     * (non-Javadoc)
+     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
