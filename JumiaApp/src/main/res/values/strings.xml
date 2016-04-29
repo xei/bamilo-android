@@ -349,6 +349,7 @@
     <string name="visit_the_official_brand_store">Visit the official %s store</string>
     <string name="free_shipping_possible">Free Shipping Possible</string>
     <string name="register_more_info">We need just a bit more details to create your account.</string>
+    <string name="go_label">Go</string>
     <!--Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
     <string name="items_returned_on">%1$s items returned on %2$s\n</string>
     <string name="return_selected_items">return selected items</string>

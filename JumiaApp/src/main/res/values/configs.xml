@@ -35,6 +35,7 @@
 
     <!-- MARKET -->
     <string name="market_store_uri">market://details?id=%s</string>
+    <string name="market_store_external_uri">https://play.google.com/store/apps/details?id=%s</string>
     <string name="id_market">com.jumia.android</string>
 
 </resources>

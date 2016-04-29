@@ -116,6 +116,9 @@
             android:exported="true"
             android:screenOrientation="behind"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".RedirectInfoActivity"
+            android:screenOrientation="portrait" />
 
         <!-- ################################################# -->
         <!-- ############# GOOGLE PLAY SERVICES ############## -->

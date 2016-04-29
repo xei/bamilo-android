@@ -2,11 +2,9 @@ package com.mobile.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.net.Uri;
 import android.os.Handler;
 import android.support.annotation.IntDef;
 import android.support.v4.app.DialogFragment;
@@ -29,8 +27,6 @@ import java.lang.annotation.RetentionPolicy;
 public class CheckVersion {
 
     private static final String TAG = CheckVersion.class.getSimpleName();
-
-    private static final String PLAY_MARKET_QUERY = "market://details?id=";
 
     private static final String VERSION_UNWANTED_KEY = "version_unwanted";
     private static final String DIALOG_SEEN_AFTER_THIS_LAUNCH_KEY = "update_seen";
@@ -99,6 +95,7 @@ public class CheckVersion {
                 sNeedsToShowDialog = !getRemindMeLater();
                 break;
             case OPTIONAL_AVAILABLE_IGNORED:
+            case NOT_AVAILABLE:
             default:
                 sNeedsToShowDialog = false;
                 break;
@@ -250,24 +247,8 @@ public class CheckVersion {
         editor.apply();
     }
 
-    private static String createUpdateUrl() {
-        String packageName = sContext.getPackageName();
-
-        String url;
-        if (packageName.startsWith("com.mobile.jumia.dev")
-                || packageName.startsWith("com.mobile.jumia.weekly"))
-            packageName = "com.jumia.android";
-
-        url = PLAY_MARKET_QUERY + packageName;
-
-        return url;
-    }
-
     private static void goShop(Activity activity) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(createUpdateUrl()));
-        activity.startActivity(intent);
-        ActivitiesWorkFlow.addStandardTransition(activity);
+        ActivitiesWorkFlow.startMarketActivity(activity, sContext.getPackageName());
     }
 
     private static class OptionalUpdateClickListener implements View.OnClickListener {
@@ -310,7 +291,6 @@ public class CheckVersion {
             int id = v.getId();
             if (id == R.id.button1) {
                 mActivity.finish();
-                ActivitiesWorkFlow.addStandardTransition(mActivity);
             } else if (id == R.id.button2) {
                 storeRemindMeLater();
                 mActivity.finish();

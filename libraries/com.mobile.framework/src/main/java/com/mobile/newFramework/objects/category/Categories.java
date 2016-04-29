@@ -9,13 +9,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class Categories extends ArrayList<Category> implements IJSONSerializable {
+
+    private LinkedHashMap<Integer,Integer> mMainCategoryIndexMapping;
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         JSONArray categoriesArray = jsonObject.getJSONArray(RestConstants.DATA);
         int length = categoriesArray.length();
+        mMainCategoryIndexMapping = new LinkedHashMap<>();
         // For each child
         for (int i = 0; i < length; ++i) {
             // Get category
@@ -36,9 +40,13 @@ public class Categories extends ArrayList<Category> implements IJSONSerializable
                 category.markAsSection();
                 this.add(category);
             }
-
+            mMainCategoryIndexMapping.put(i, this.size());
         }
         return true;
+    }
+
+    public LinkedHashMap<Integer, Integer> getMainCategoryIndexMapping() {
+        return mMainCategoryIndexMapping;
     }
 
     @Override
