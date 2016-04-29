@@ -134,10 +134,6 @@ public class Category implements IJSONSerializable, Parcelable {
         return isSection;
     }
 
-    public void setIsSection(boolean isSection){
-        this.isSection = isSection;
-    }
-
     /**
      *
      * @return iamge string

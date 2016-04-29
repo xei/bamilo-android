@@ -557,7 +557,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     }
 
     /**
-     * Track External Link Clicl
+     * Track External Link Click
      */
     public void trackEventClickOnExternalLink(TrackingEvent event, String action) {
         // Validation

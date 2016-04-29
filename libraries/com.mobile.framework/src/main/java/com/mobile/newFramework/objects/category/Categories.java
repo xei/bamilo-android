@@ -36,13 +36,11 @@ public class Categories extends ArrayList<Category> implements IJSONSerializable
                 this.add(category);
                 // Append all sub categories to the first level
                 this.addAll(childs);
-                mMainCategoryIndexMapping.put(i, this.size());
             } else {
                 category.markAsSection();
                 this.add(category);
-                mMainCategoryIndexMapping.put(i, this.size());
             }
-
+            mMainCategoryIndexMapping.put(i, this.size());
         }
         return true;
     }
