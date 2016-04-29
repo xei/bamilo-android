@@ -344,7 +344,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
                 AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId() + "" : "");
             break;
             case POSITION_RATE_APP:
-                goToAppPage();
+                goToMarketPage();
                 break;
         default:
             break;
@@ -406,7 +406,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
 
     private void handleOnMoreInfoItemClick(int position) {
         if(position == MyAccountMoreInfoAdapter.APP_VERSION_POSITION){
-            goToAppPage();
+            goToMarketPage();
         } else {
             TargetHelper targetHelper = targets.get(position - 1);
             if(targetHelper.getTargetType() == ITargeting.TargetType.SHOP) {
@@ -468,11 +468,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     /**
      * Method that re directs to app market or web page
      */
-    private void goToAppPage() {
-        try {
-            ActivitiesWorkFlow.startMarketActivity(getActivity());
-        } catch (android.content.ActivityNotFoundException ex) {
-            ActivitiesWorkFlow.startActivityWebLink(getActivity(), R.string.share_app_link);
-        }
+    private void goToMarketPage() {
+        ActivitiesWorkFlow.startMarketActivity(getActivity(), getString(R.string.id_market));
     }
 }

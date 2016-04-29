@@ -93,7 +93,7 @@ public class AigRestAdapter {
             // AGENT
             request.addHeader(HeaderConstants.USER_AGENT, agent + " " + AigRestContract.AUTHENTICATION_USER_AGENT);
 
-            if(TextUtils.isNotEmpty(AigRestContract.USER_LANGUAGE)) {
+            if (TextUtils.isNotEmpty(AigRestContract.USER_LANGUAGE)) {
                 request.addHeader(HeaderConstants.USER_LANGUAGE, AigRestContract.USER_LANGUAGE);
             }
             //Print.d("##########################################################");

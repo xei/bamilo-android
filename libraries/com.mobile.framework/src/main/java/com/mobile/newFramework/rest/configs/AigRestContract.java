@@ -55,7 +55,7 @@ public class AigRestContract {
         setRestBasePath(context, R.string.global_server_api_version);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
-        USER_LANGUAGE = ShopSelector.getCountryCode();
+        setUserLanguageCode(sharedPrefs);
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
@@ -68,7 +68,7 @@ public class AigRestContract {
         setRestBasePath(context, R.string.global_server_restbase_path);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
-        USER_LANGUAGE = ShopSelector.getCountryCode();
+        setUserLanguageCode(sharedPrefs);
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
@@ -81,7 +81,7 @@ public class AigRestContract {
         setRestBasePath(context, R.string.global_server_api_version);
         setCookieShopConfigs();
         setShopUserAgentAuthentication(sharedPrefs);
-        USER_LANGUAGE = ShopSelector.getCountryCode();
+        setUserLanguageCode(sharedPrefs);
         Print.i(TAG, "Initializing RestContract with " + REQUEST_HOST + "/" + REST_BASE_PATH);
     }
 
@@ -93,11 +93,11 @@ public class AigRestContract {
         setRestHost(sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null));
     }
 
-    private static void setRestHost(Context context, int stringId){
+    private static void setRestHost(Context context, int stringId) {
         setRestHost(context.getResources().getString(stringId));
     }
 
-    private static void setRestHost(String requestHost){
+    private static void setRestHost(String requestHost) {
         Print.i(TAG, "REQUEST HOST :" + REQUEST_HOST);
         REQUEST_HOST = requestHost;
         if (TextUtils.isEmpty(REQUEST_HOST)) {
@@ -105,7 +105,7 @@ public class AigRestContract {
         }
     }
 
-    private static void setRestScheme(Context context, SharedPreferences sharedPrefs){
+    private static void setRestScheme(Context context, SharedPreferences sharedPrefs) {
         USE_ONLY_HTTPS = sharedPrefs.getBoolean(Darwin.KEY_SELECTED_COUNTRY_FORCE_HTTP, false);
         USE_ONLY_HTTP = context.getResources().getBoolean(R.bool.is_force_http);
     }
@@ -115,6 +115,10 @@ public class AigRestContract {
         if (TextUtils.isEmpty(REST_BASE_PATH)) {
             throw new RuntimeException("The rest base path has to be set and not being empty!");
         }
+    }
+
+    private static void setUserLanguageCode(SharedPreferences sharedPrefs) {
+        USER_LANGUAGE = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_LANG_CODE, ShopSelector.getCountryCode());
     }
 
     /*

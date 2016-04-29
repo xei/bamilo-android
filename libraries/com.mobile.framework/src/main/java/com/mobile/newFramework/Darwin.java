@@ -86,6 +86,7 @@ public class Darwin {
 	public static final String KEY_SELECTED_COUNTRY_ALGOLIA_API_KEY = "selected_country_algolia_suggester_api_key";
 	public static final String KEY_SELECTED_COUNTRY_ALGOLIA_PREFIX = "selected_country_algolia_namespace_prefix";
 	public static final String KEY_SELECTED_AUTH_INFO = "selected_auth_info";
+	public static final String KEY_SELECTED_REDIRECT = "selected_redirect";
 
 	public static final String KEY_SELECTED_RATING_ENABLE = "selected_rating_enable";
 	public static final String KEY_SELECTED_RATING_REQUIRED_LOGIN = "selected_rating_required_login";
@@ -128,8 +129,8 @@ public class Darwin {
 		SHOP_ID = shopId;
 		return true;
 	}
-	
-	// FOR NO_COUNTRIES_CONFIGS
+
+	// FROM GET AVAILABLE COUNTRIES
 	public static boolean initialize(Context ctx) {
 		Print.d(TAG, "Initializing Darwin to get global ");
 		context = ctx.getApplicationContext();

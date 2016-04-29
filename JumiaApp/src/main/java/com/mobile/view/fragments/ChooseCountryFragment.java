@@ -312,7 +312,7 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             // Set new country
             SharedPreferences sharedPrefs = getBaseActivity().getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
-            CountryPersistentConfigs.writePreferences(editor, country);
+            CountryPersistentConfigs.save(editor, country);
             editor.putBoolean(Darwin.KEY_COUNTRY_CHANGED, isChangeCountry);
             /**
              * Save the Selected Country Configs

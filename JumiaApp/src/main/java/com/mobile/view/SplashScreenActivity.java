@@ -29,6 +29,8 @@ import com.mobile.helpers.configs.GetAvailableCountriesHelper;
 import com.mobile.helpers.configs.GetCountryConfigsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
+import com.mobile.newFramework.objects.configs.CountryConfigs;
+import com.mobile.newFramework.objects.configs.RedirectPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.rest.configs.AigRestContract;
 import com.mobile.newFramework.rest.errors.ErrorCode;
@@ -309,17 +311,17 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * )
      */
     @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
+    public void onRequestComplete(BaseResponse response) {
         if (!shouldHandleEvent) {
             Print.e(TAG, "shouldHandleEvent: " + shouldHandleEvent);
             return;
         }
 
         // Case error use the last success response to request the next step
-        mLastSuccessResponse = baseResponse;
+        mLastSuccessResponse = response;
 
-        EventType eventType = baseResponse.getEventType();
-        int errorCode = baseResponse.getError() != null ? baseResponse.getError().getCode() : ErrorCode.NO_ERROR;
+        EventType eventType = response.getEventType();
+        int errorCode = response.getError() != null ? response.getError().getCode() : ErrorCode.NO_ERROR;
         Print.i(TAG, "ON SUCCESS RESPONSE: " + eventType);
 
         // Dismiss dialog
@@ -335,11 +337,11 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         if (eventType == EventType.INITIALIZE) {
             onProcessInitialize();
         } else if (eventType == EventType.GET_API_INFO) {
-            onProcessApiEvent(baseResponse);
+            onProcessApiEvent(response);
         } else if (eventType == EventType.GET_COUNTRY_CONFIGURATIONS) {
-            onProcessCountryConfigsEvent();
+            onProcessCountryConfigsEvent(response);
         } else if (eventType == EventType.GET_GLOBAL_CONFIGURATIONS) {
-            onProcessGlobalConfigsEvent(baseResponse);
+            onProcessGlobalConfigsEvent(response);
         }
         // Case error
         else if (errorCode == ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE) {
@@ -393,9 +395,12 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     /**
      * Process the country configs event
      */
-    private void onProcessCountryConfigsEvent() {
+    private void onProcessCountryConfigsEvent(BaseResponse response) {
         Print.i(TAG, "ON PROCESS COUNTRY CONFIGS");
-        JumiaApplication.INSTANCE.init(initializationHandler);
+        // Goes to saved redirect page otherwise continue
+        if (!hasRedirectPage(((CountryConfigs) response.getContentData()).getRedirectPage())) {
+            JumiaApplication.INSTANCE.init(initializationHandler);
+        }
     }
 
     /**
@@ -470,7 +475,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      */
     private void onProcessApiEvent(BaseResponse baseResponse) {
         Print.i(TAG, "ON PROCESS API EVENT");
-        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct)baseResponse.getContentData();
+        GetApiInfoHelper.ApiInformationStruct apiInformation = (GetApiInfoHelper.ApiInformationStruct) baseResponse.getContentData();
         // Validate out dated sections
         if (apiInformation.isSectionNameConfigurations()) {
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
@@ -478,7 +483,9 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         } else if(!CountryPersistentConfigs.checkCountryRequirements(getApplicationContext())){
             Print.i(TAG, "THE COUNTRY CONFIGS IS OUT DATED");
             triggerGetCountryConfigs();
-        } else {
+        }
+        // Goes to saved redirect page otherwise continue
+        else if (!hasRedirectPage(CountryPersistentConfigs.getRedirectPage(getApplicationContext()))) {
             Print.i(TAG, "START MAIN ACTIVITY");
             selectActivity();
         }
@@ -514,7 +521,10 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
                 case ErrorCode.IO:
                 case ErrorCode.CONNECT_ERROR:
                 case ErrorCode.HTTP_STATUS:
-                    showUnexpectedError();
+                    // Validate if has redirect page otherwise continue
+                    if (!hasRedirectPage(CountryPersistentConfigs.getRedirectPage(getApplicationContext()))) {
+                        showUnexpectedError();
+                    }
                     break;
                 case ErrorCode.TIME_OUT:
                 case ErrorCode.NO_CONNECTIVITY:
@@ -766,4 +776,13 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
         // Retry
         retryRequest();
     }
+
+    /**
+     * Shows the redirect page.
+     * @return true case valid redirect page
+     */
+    private boolean hasRedirectPage(RedirectPage redirect) {
+        return CountryConfigs.isValidRedirectPage(redirect) && ActivitiesWorkFlow.showRedirectInfoActivity(this, redirect);
+    }
+
 }
