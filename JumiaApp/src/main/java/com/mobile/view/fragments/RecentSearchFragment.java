@@ -59,15 +59,7 @@ public class RecentSearchFragment extends BaseFragment implements IResponseCallb
                 R.string.recent_searches,
                 ADJUST_CONTENT);
     }
-    
-    /**
-     * Create new RecentSearchFragment instance
-     * @return RecentSearchFragment
-     */
-    public static RecentSearchFragment newInstance() {
-        return new RecentSearchFragment();
-    }
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);

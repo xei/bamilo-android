@@ -114,35 +114,3 @@ dependencies {
     compile 'com.google.android.gms:play-services-wearable:8.1.0'
     // we must use 7.3.0 version in order to support wearables with Android 5.0.1 version
 }
-
-/** SET CUSTOM APPLICATION IDS DEPENDING ON FLAVOURS AND BUILD TYPE **/
-android.applicationVariants.all { variant ->
-
-//    println 'WEAR Application ID: ${variant.mergedFlavor.applicationId}'
-//    println '****************************'
-//    println 'variant: ${variant.name}'
-//    println 'flavor: ${variant.flavorName}'
-//    println 'buildType: ${variant.buildType.name}'
-//    println 'applicationId: ${variant.applicationId}'
-//    println 'productFlavors[0]: ${variant.productFlavors[0].name}'
-////    println 'productFlavors[1]: ${variant.productFlavors[1].name}'
-//    println '****************************'
-
-
-    /**
-     * Set application id with 'com.' + venture + 'blackberry' or 'android'(when not in debug build type)  + 'dev' when in debug build type
-     */
-//    def String venture = variant.productFlavors[0].name
-//
-//    if (variant.buildType.name == android.buildTypes.debug.name) {
-//        variant.mergedFlavor.applicationId = 'com.' + venture + '.' + 'android' + '.' + 'dev'
-//        println 'Application ID: ${variant.mergedFlavor.applicationId}'
-//    } else if (venture =='mtn'){
-//        //MTN -> com.jumia.mtn
-//        variant.mergedFlavor.applicationId = 'com.' + 'jumia.' + venture
-//        println 'Application ID: ${variant.mergedFlavor.applicationId}'
-//    } else {
-//        variant.mergedFlavor.applicationId = 'com.' + venture + '.android'
-//        println 'Application ID: ${variant.mergedFlavor.applicationId}'
-//    }
-}

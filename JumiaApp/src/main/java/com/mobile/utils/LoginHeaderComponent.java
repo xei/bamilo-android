@@ -1,16 +1,13 @@
 package com.mobile.utils;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -19,9 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.newFramework.objects.configs.AuthInfo;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -42,7 +37,6 @@ public class LoginHeaderComponent extends FrameLayout {
     public static final int CHECK_EMAIL = 0;
     public static final int LOGIN = 1;
     public static final int CREATE_ACCOUNT = 2;
-
     @IntDef({CHECK_EMAIL, LOGIN, CREATE_ACCOUNT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface LoginHeaderType {}
@@ -93,7 +87,7 @@ public class LoginHeaderComponent extends FrameLayout {
         mSubTitleExtraView = (TextView) findViewById(R.id.login_header_subtitle_extra);
         mImagesContainerView = (LinearLayout) findViewById(R.id.login_header_images_container);
 
-        switch (layoutType){
+        switch (layoutType) {
             case CHECK_EMAIL:
                 setTitle(getContext().getString(R.string.welcome_label));
                 setSubTitle(getContext().getString(R.string.login_main_info));
@@ -110,19 +104,20 @@ public class LoginHeaderComponent extends FrameLayout {
 
     }
 
-    public void setTitle(String title){
-        if(TextUtils.isNotEmpty(title)){
+    public void setTitle(String title) {
+        if (TextUtils.isNotEmpty(title)) {
             mTitleView.setText(title);
         }
     }
 
-    public void setSubTitle(String subTitle){
-        if(TextUtils.isNotEmpty(subTitle)){
+    public void setSubTitle(String subTitle) {
+        if (TextUtils.isNotEmpty(subTitle)) {
             mSubTitleView.setText(subTitle);
         }
     }
-    public void setSubTitleExtra(String subTitle, String toCompare){
-        if(TextUtils.isNotEmpty(subTitle) && !TextUtils.equals(mSubTitleView.getText(), toCompare)){
+
+    public void setSubTitleExtra(String subTitle, String toCompare) {
+        if (TextUtils.isNotEmpty(subTitle) && !TextUtils.equals(mSubTitleView.getText(), toCompare)) {
             mSubTitleExtraView.setText(subTitle);
             mSubTitleExtraView.setVisibility(VISIBLE);
         } else {
@@ -130,8 +125,8 @@ public class LoginHeaderComponent extends FrameLayout {
         }
     }
 
-    public void setImages(final ArrayList<String> imagesList){
-        for (String  imageUrl : imagesList) {
+    public void setImages(final ArrayList<String> imagesList) {
+        for (String imageUrl : imagesList) {
             final View view = inflate(getContext(), R.layout._gen_login_header_image_component, null);
             final ImageView imageView = (ImageView) view.findViewById(R.id.image_view);
             final ProgressBar mProgress = (ProgressBar) view.findViewById(R.id.image_loading_progress);
@@ -156,9 +151,9 @@ public class LoginHeaderComponent extends FrameLayout {
         }
     }
 
-    public void showAuthInfo(@LoginHeaderType int loginType, @NonNull AuthInfo authInfo, @Nullable String text){
-        if(authInfo.hasAuthInfo()){
-            switch (loginType){
+    public void showAuthInfo(@LoginHeaderType int loginType, @NonNull AuthInfo authInfo, @Nullable String text) {
+        if (authInfo.hasAuthInfo()) {
+            switch (loginType) {
                 case CHECK_EMAIL:
                     setTitle(authInfo.getTitle(text));
                     setSubTitle(authInfo.getSubtitle(text));
@@ -177,9 +172,6 @@ public class LoginHeaderComponent extends FrameLayout {
                     setImages(authInfo.getImagesList());
                     break;
             }
-
-
-
         }
     }
 

@@ -71,13 +71,6 @@ public class WishListFragment extends BaseFragment implements IResponseCallback,
     private View mClickedBuyButton;
 
     /**
-     * Create and return a new instance.
-     */
-    public static WishListFragment getInstance() {
-        return new WishListFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public WishListFragment() {

@@ -53,8 +53,6 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -120,17 +118,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private String mKey;
 
     /**
-     * Create and return a new instance.
-     *
-     * @param bundle - arguments
-     */
-    public static CatalogFragment getInstance(Bundle bundle) {
-        CatalogFragment catalogFragment = new CatalogFragment();
-        catalogFragment.setArguments(bundle);
-        return catalogFragment;
-    }
-
-    /**
      * Empty constructor
      */
     public CatalogFragment() {
@@ -164,27 +151,14 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Get title
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             // Get catalog type (Hash|Seller|Brand|Category|DeepLink)
-            FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
-            if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
-            else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
-            else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
-            else if(type == FragmentType.CATALOG_CATEGORY) mQueryValues.put(RestConstants.CATEGORY, mKey);
-            else mQueryValues.put(RestConstants.HASH, mKey);
+            mQueryValues = UICatalogUtils.saveCatalogType(arguments, mQueryValues, mKey);
             // Get sort
             mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT, CatalogSort.POPULARITY.ordinal())];
             mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
             // Default catalog values
             mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             // In case of searching by keyword
-            String query = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
-            if (TextUtils.isNotEmpty(query)) {
-                try {
-                    mQueryValues.put(RestConstants.QUERY, URLEncoder.encode(query, "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                    mQueryValues.put(RestConstants.QUERY, query);
-                }
-            }
+            UICatalogUtils.saveSearchQuery(arguments, mQueryValues);
             // Verify if catalog page was open via navigation drawer
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             //Get category content/main category

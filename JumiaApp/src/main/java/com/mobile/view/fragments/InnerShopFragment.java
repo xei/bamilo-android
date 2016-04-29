@@ -57,18 +57,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     private int mWebViewScrollPosition = 0;
 
     /**
-     * Get a instance of InnerShopFragment.
-     *
-     * @param bundle - the arguments
-     * @return InnerShopFragment
-     */
-    public static InnerShopFragment getInstance(Bundle bundle) {
-        InnerShopFragment fragment = new InnerShopFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor.
      */
     public InnerShopFragment() {

@@ -29,15 +29,6 @@ public class CheckoutEditAddressFragment extends EditAddressFragment {
     private static final String TAG = CheckoutEditAddressFragment.class.getSimpleName();
 
     /**
-     * Constructor
-     */
-    public static CheckoutEditAddressFragment getInstance(Bundle bundle) {
-        CheckoutEditAddressFragment fragment = new CheckoutEditAddressFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public CheckoutEditAddressFragment() {

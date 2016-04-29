@@ -56,15 +56,6 @@ public class ProductImageGalleryFragment extends BaseFragment implements ViewPag
     private boolean mIsOutOfStock;
 
     /**
-     * Constructor using a nested flag
-     */
-    public static ProductImageGalleryFragment getInstance(Bundle bundle) {
-        ProductImageGalleryFragment fragment = new ProductImageGalleryFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Constructor as nested
      */
     @SuppressLint("ValidFragment")

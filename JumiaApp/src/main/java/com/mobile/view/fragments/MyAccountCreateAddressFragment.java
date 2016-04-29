@@ -38,15 +38,6 @@ public class MyAccountCreateAddressFragment extends CreateAddressFragment {
     private static final String TAG = MyAccountCreateAddressFragment.class.getSimpleName();
 
     /**
-     * Fragment used to create an address
-     */
-    public static MyAccountCreateAddressFragment newInstance(Bundle bundle) {
-        MyAccountCreateAddressFragment myAccountCreateAddressFragment = new MyAccountCreateAddressFragment();
-        myAccountCreateAddressFragment.setArguments(bundle);
-        return myAccountCreateAddressFragment;
-    }
-
-    /**
      * Empty constructor
      */
     public MyAccountCreateAddressFragment() {

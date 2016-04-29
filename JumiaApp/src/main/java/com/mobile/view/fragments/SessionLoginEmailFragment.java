@@ -65,15 +65,6 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
                 ADJUST_CONTENT);
     }
 
-    /**
-     * Get new instance
-     */
-    public static SessionLoginEmailFragment getInstance(Bundle bundle) {
-        SessionLoginEmailFragment fragment = new SessionLoginEmailFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -129,12 +120,9 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-
-        final LoginHeaderComponent loginHeaderComponent = (LoginHeaderComponent) view.findViewById(R.id.login_component);
+        // Show authentication info
         AuthInfo authInfo = CountryPersistentConfigs.getAuthInfo(getContext());
-        loginHeaderComponent.showAuthInfo(LoginHeaderComponent.LOGIN, authInfo, null);
-
-
+        ((LoginHeaderComponent) view.findViewById(R.id.login_component)).showAuthInfo(LoginHeaderComponent.LOGIN, authInfo, null);
         // Get form container
         mFormContainer = (ViewGroup) view.findViewById(R.id.login_email_form_container);
         // Get forgot password
@@ -257,9 +245,10 @@ public class SessionLoginEmailFragment extends BaseFragment implements IResponse
         mDynamicForm = FormFactory.getSingleton().create(FormConstants.LOGIN_FORM, getContext(), form);
         // Load saved state
         mDynamicForm.loadSaveFormState(mFormSavedState);
-
-        if(mFormContainer.getChildCount() > 0)
+        // Remove all views
+        if (mFormContainer.getChildCount() > 0) {
             mFormContainer.removeAllViews();
+        }
         // Add form view
         mFormContainer.addView(mDynamicForm.getContainer());
         // Show

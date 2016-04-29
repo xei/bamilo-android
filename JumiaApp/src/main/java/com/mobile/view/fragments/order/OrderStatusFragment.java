@@ -1,4 +1,4 @@
-package com.mobile.view.fragments;
+package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +7,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
@@ -16,9 +17,11 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.checkout.GetOrderStatusHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.objects.orders.OrderReturn;
 import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
@@ -31,7 +34,9 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.OrderedProductViewHolder;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragmentAutoState;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -40,9 +45,11 @@ import java.util.EnumSet;
  * Class used to show the order status.
  * @author spereira
  */
-public class OrderStatusFragment extends BaseFragment implements IResponseCallback {
+public class OrderStatusFragment extends BaseFragmentAutoState implements IResponseCallback {
 
     public static final String TAG = OrderStatusFragment.class.getSimpleName();
+
+    private OrderStatus mOrder;
 
     private String mOrderNumber;
     private ViewGroup mInfoView;
@@ -50,22 +57,16 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     private ViewGroup mShippingView;
     private ViewGroup mBillingView;
     private ViewGroup mOrderItems;
+    private View mReturnItemsButton;
+    private View mReturnItemsContainer;
     private String mOrderDate;
-
-    /**
-     * Get instance
-     */
-    public static OrderStatusFragment getInstance(Bundle bundle) {
-        OrderStatusFragment orderStatusFragment = new OrderStatusFragment();
-        orderStatusFragment.setArguments(bundle);
-        return orderStatusFragment;
-    }
 
     /**
      * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
      */
     public static OrderStatusFragment getNestedInstance(Bundle bundle) {
-        OrderStatusFragment orderStatusFragment = getInstance(bundle);
+        OrderStatusFragment orderStatusFragment = new OrderStatusFragment();
+        orderStatusFragment.setArguments(bundle);
         orderStatusFragment.isNestedFragment = true;
         return orderStatusFragment;
     }
@@ -90,6 +91,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         if (savedInstanceState != null) {
             mOrderNumber = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
             mOrderDate = savedInstanceState.getString(ConstantsIntentExtra.ARG_2);
+            mOrder = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
         }
     }
 
@@ -110,6 +112,12 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         mBillingView = (ViewGroup) view.findViewById(R.id.order_status_address_billing);
         // Get order items container
         mOrderItems = (ViewGroup) view.findViewById(R.id.order_status_items);
+
+        // Get return items container
+        mReturnItemsButton = view.findViewById(R.id.return_selected_button);
+        mReturnItemsContainer = view.findViewById(R.id.return_button_container);
+        mReturnItemsButton.setOnClickListener(this);
+
         // Validate state
         onValidateState();
     }
@@ -135,6 +143,7 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         Print.i(TAG, "ON SAVE SATE");
         outState.putString(ConstantsIntentExtra.ARG_1, mOrderNumber);
         outState.putString(ConstantsIntentExtra.ARG_2, mOrderDate);
+        outState.putParcelable(ConstantsIntentExtra.DATA, mOrder);
     }
 
     @Override
@@ -219,21 +228,85 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     private void showOrderItems(@NonNull ViewGroup group, @Nullable ArrayList<OrderTrackerItem> items) {
         if (CollectionUtils.isNotEmpty(items)) {
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
-            for (OrderTrackerItem item : items) {
+
+            if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
+                UIUtils.setVisibility(mReturnItemsContainer, true);
+                // Validate if any item is checked, if so, enable return selected.
+                mReturnItemsButton.setEnabled(validateReturnAllSelected());
+            } else {
+                UIUtils.setVisibility(mReturnItemsContainer, false);
+            }
+
+            for (final OrderTrackerItem item : items) {
                 // Create new layout item
-                OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
+                final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
+                if(item.isEligibleToReturn() && CollectionUtils.isNotEmpty(item.getOrderActions())){
+                    UIUtils.setVisibility(holder.returnOrder, true);
+                    if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
+                        holder.returnOrder.setText(getString(R.string.call_return_label));
+                    } else {
+                        holder.returnOrder.setText(getString(R.string.return_label));
+                        if(displayReturnSelected()){
+                            UIUtils.setVisibility(holder.orderCheckbox, true);
+                            holder.orderCheckbox.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.orderCheckbox.setChecked(item.isCheckedForAction());
+                                }
+                            });
+                            holder.orderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    item.setCheckedForAction(isChecked);
+                                    if(item.isCheckedForAction()) { // Validate if any item is checked, if so, enable return selected.
+                                        mReturnItemsButton.setEnabled(true);
+                                    } else if(!validateReturnAllSelected()) {
+                                        mReturnItemsButton.setEnabled(false);
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+
+                    holder.returnOrder.setTag(R.id.target_simple_sku, item.getSku());
+                    holder.returnOrder.setOnClickListener(this);
+
+                }
+
                 // Set image
                 RocketImageLoader.instance.loadImage(item.getImageUrl(), holder.image, holder.progress, R.drawable.no_image_small);
                 // Set name
                 holder.name.setText(item.getName());
                 // Set brand
                 holder.brand.setText(item.getBrandName());
+                // Set size
+                if(TextUtils.isNotEmpty(item.getSize())){
+                    UIUtils.setVisibility(holder.size, true);
+                    holder.size.setText(getString(R.string.size_placeholder, item.getSize()));
+                } else {
+                    UIUtils.setVisibility(holder.size, false);
+                }
+
                 // Set quantity
                 holder.quantity.setText(getString(R.string.qty_placeholder, item.getQuantity()));
                 // Set price
                 UIProductUtils.setPriceRules(item, holder.price, holder.discount);
                 // Set delivery
                 holder.delivery.setText(item.getDelivery());
+
+                if(CollectionUtils.isNotEmpty(item.getOrderReturns())){
+                    String orderReturns = "";
+                    for (OrderReturn orderReturn : item.getOrderReturns() ) {
+                        orderReturns+=String.format(getString(R.string.items_returned_on),
+                                orderReturn.getQuantity(), orderReturn.getDate());
+                    }
+
+                    holder.itemReturns.setText(orderReturns);
+                    holder.itemReturnsLabel.setVisibility(View.VISIBLE);
+                    holder.itemReturns.setVisibility(View.VISIBLE);
+                }
+
                 // Set order status
                 String status = String.format(getContext().getString(R.string.order_status_date), item.getStatus(), item.getUpdateDate());
                 holder.status.setText(Html.fromHtml(status));
@@ -256,14 +329,85 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     @Override
     public void onClick(View view) {
         // Case reorder
-        if(view.getId() == R.id.order_status_item_button_reorder)  onClickReOrder(view);
+        if(view.getId() == R.id.order_status_item_button_reorder){
+            onClickReOrder(view);
+        }
         //case order item
-        else if(view.getId() == R.id.order_list_item)  goToProductDetails(view);
+        else if(view.getId() == R.id.order_list_item){
+            goToProductDetails(view);
+        }
+        //case return item
+        else if(view.getId() == R.id.order_status_item_button_return){
+            onClickReturn(view);
+        }
+        //case return all selected items
+        else if(view.getId() == R.id.return_selected_button){
+            onClickReturnSelected();
+        }
         // Case default
-        else super.onClick(view);
+        else {
+            super.onClick(view);
+        }
     }
 
-    private void goToProductDetails(View view) {
+    private void onClickReturnSelected() {
+        if (!validateReturnAllSelected()) {
+            // TODO : Get target link from Order
+            String test = "static_page::terms_mobile";                              // <---- FIXME: TARGET LINK USED TO TEST
+            String id = TargetLink.getIdFromTargetLink(test);
+            // Goto order return conditions
+            onSwitchTo(FragmentType.ORDER_RETURN_CONDITIONS)
+                    .addId(id)
+                    .addArray(mOrder.getItems())
+                    .noBackStack()
+                    .run();
+        } else {
+            showWarningErrorMessage(getString(R.string.warning_no_items_selected));
+        }
+    }
+
+    /**
+     * Validate if there is any item selected.
+     */
+    private boolean validateReturnAllSelected() {
+        for (OrderTrackerItem item : mOrder.getItems()) {
+            if (item.isCheckedForAction()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check whether there is more then 2 items with action online return type
+      */
+    private boolean displayReturnSelected(){
+        int count = 0;
+        for (OrderTrackerItem item  : mOrder.getItems()) {
+            if (CollectionUtils.isNotEmpty(item.getOrderActions()) && !item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()) {
+                if(++count > 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Nullable
+    private OrderTrackerItem getOrderItem(final String sku){
+        for (OrderTrackerItem  item : mOrder.getItems()) {
+            if(TextUtils.equals(sku, item.getSku())){
+               return item;
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Open PDV
+     */
+    private void goToProductDetails(final View view) {
         String sku = TargetLink.getSkuFromSimple((String) view.getTag(R.id.target_simple_sku));
         if (TextUtils.isNotEmpty(sku)) {
             Bundle bundle = new Bundle();
@@ -274,7 +418,10 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         }
     }
 
-    private void onClickReOrder(View view) {
+    /**
+     * Re-order
+     */
+    private void onClickReOrder(final View view) {
         // Get sku from view
         String simpleSku = (String) view.getTag(R.id.target_simple_sku);
         // Validate sku
@@ -283,8 +430,27 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
         }
     }
 
+    private void onClickReturn(final View view){
+        // Get sku from view
+        String simpleSku = (String) view.getTag(R.id.target_simple_sku);
+        // Validate sku
+        if(TextUtils.isNotEmpty(simpleSku)) {
+            final OrderTrackerItem item = getOrderItem(simpleSku);
+           if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
+                // Go To Next Call to return step
+               Bundle bundle = new Bundle();
+               bundle.putParcelable(ConstantsIntentExtra.DATA, item);
+               bundle.putString(ConstantsIntentExtra.ARG_1, mOrder.getId());
+               getBaseActivity().onSwitchFragment(FragmentType.ORDER_RETURN_CALL, bundle, FragmentController.ADD_TO_BACK_STACK);
+            } else {
+                // Go To Next return step
+            }
+        }
+
+    }
+
     @Override
-    protected void onClickRetryButton(View view) {
+    protected void onClickRetryButton(final View view) {
         super.onClickRetryButton(view);
         onValidateState();
     }
@@ -300,6 +466,19 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
     private void triggerOrder(String orderNr) {
         EventTask task = isNestedFragment ? EventTask.ACTION_TASK : EventTask.NORMAL_TASK;
         triggerContentEvent(new GetOrderStatusHelper(), GetOrderStatusHelper.createBundle(orderNr, task), this);
+    }
+
+    private void checkState(OrderStatus order){
+        if(mOrder != null && order != null && TextUtils.equals(mOrder.getId(),order.getId())){
+            for (int i = 0; i < mOrder.getItems().size(); i++){
+                final OrderTrackerItem itemSaved = mOrder.getItems().get(i);
+                final OrderTrackerItem itemNew = order.getItems().get(i);
+                if(TextUtils.equals(itemSaved.getSku(), itemNew.getSku())){
+                    itemNew.setCheckedForAction(itemSaved.isCheckedForAction());
+                }
+            }
+        }
+        mOrder = order;
     }
 
     /*
@@ -325,8 +504,9 @@ public class OrderStatusFragment extends BaseFragment implements IResponseCallba
             case TRACK_ORDER_EVENT:
                 // Get order status
                 OrderStatus order = (OrderStatus) baseResponse.getContentData();
-                if (order != null) {
-                    showOrderStatus(order);
+                checkState(order);
+                if (mOrder != null) {
+                    showOrderStatus(mOrder);
                 } else {
                     showFragmentErrorRetry();
                 }

@@ -322,6 +322,7 @@
     <string name="billing">Billing</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
+    <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
     <string name="first_x_second_placeholder">%1$s x  %2$s</string>
     <string name="qty_placeholder">Qty: %s</string>
     <string name="reorder_label">Reorder</string>
@@ -349,4 +350,22 @@
     <string name="free_shipping_possible">Free Shipping Possible</string>
     <string name="register_more_info">We need just a bit more details to create your account.</string>
     <string name="go_label">Go</string>
+    <!--Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
+    <string name="items_returned_on">%1$s items returned on %2$s\n</string>
+    <string name="return_selected_items">return selected items</string>
+    <string name="return_label">return</string>
+    <string name="call_return_label">Call to Return</string>
+    <string name="call_now_label">call now</string>
+    <string name="shipment_label">shipment</string>
+    <string name="returns_label">returns</string>
+    <string name="warning_no_items_selected">No items selected to return.</string>
+    <string name="ok_got_it">Ok, got it</string>
+    <string name="order_number_placeholder">Order Nº %s</string>
+    <string name="order_return_conditions_title">We are sorry that you are not fully satisfied with your product</string>
+    <string name="order_return_reason_title">Why do you want to return this item?</string>
+    <string name="order_return_method_title">How do you want to return this item?</string>
+    <string name="order_return_refund_title">Which payout method do you want for your refund?</string>
+    <string name="order_return_finish_title">Confirm your return request details</string>
+    <string name="send_label">Send</string>
+    <string name="please_call_placeholder">Please Call to %s</string>
 </resources>

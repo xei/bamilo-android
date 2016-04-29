@@ -1,4 +1,4 @@
-package com.mobile.view.fragments;
+package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +26,7 @@ import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -57,13 +58,6 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                 R.layout.my_orders_fragment_main,
                 R.string.my_orders_label,
                 NO_ADJUST_CONTENT);
-    }
-
-    /**
-     * Get instance
-     */
-    public static MyOrdersFragment getInstance() {
-        return new MyOrdersFragment();
     }
 
     /*

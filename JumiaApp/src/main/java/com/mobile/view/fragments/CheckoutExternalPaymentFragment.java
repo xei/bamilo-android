@@ -32,7 +32,6 @@ import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
@@ -79,18 +78,6 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
     private PaymentMethodForm mPaymentSubmitted;
 
     /**
-     * Get instance
-     */
-    public static CheckoutExternalPaymentFragment getInstance(Bundle bundle) {
-        CheckoutExternalPaymentFragment fragment = new CheckoutExternalPaymentFragment();
-        fragment.webview = null;
-        fragment.paymentUrl = null;
-        fragment.failedPageRequest = null;
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public CheckoutExternalPaymentFragment() {
@@ -100,6 +87,9 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 R.string.checkout_label,
                 NO_ADJUST_CONTENT);
         this.setRetainInstance(true);
+        this.webview = null;
+        this.paymentUrl = null;
+        this.failedPageRequest = null;
     }
 
     /*
@@ -472,7 +462,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
                 showWarningErrorMessage(getString(R.string.ssl_error_generic));
             }
             // Case in dev continue
-            if(HockeyStartup.isSplashRequired(CheckoutExternalPaymentFragment.this.getContext())){
+            if (JumiaApplication.INSTANCE.isDebuggable()) {
                 handler.proceed();
             } else {
                 String url = view.getUrl();

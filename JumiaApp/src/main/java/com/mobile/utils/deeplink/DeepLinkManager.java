@@ -484,7 +484,7 @@ public class DeepLinkManager {
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
             bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
-            bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEPLINK);
+            bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEP_LINK);
         }
         return bundle;
     }
@@ -621,10 +621,13 @@ public class DeepLinkManager {
         // Get intent action ACTION_VIEW
         String action = intent.getAction();
         // Get intent data
-        Uri data = intent.getData();
+        Uri uri = intent.getData();
         // ## DEEP LINK FROM EXTERNAL URIs ##
-        if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
-            bundle = loadDeepLink(data);
+        if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && uri != null) {
+            // ReAttribution
+            TrackerDelegator.deepLinkReAttribution(uri);
+            // Load deep link
+            bundle = loadDeepLink(uri);
             Print.i(TAG, "DEEP LINK: RECEIVED FROM URI");
         }
         return bundle;
@@ -653,12 +656,14 @@ public class DeepLinkManager {
             String deepLink = payload.getString(DEEP_LINK_PAGE_INDICATION);
             Print.i(TAG, "DEEP LINK: GCM " + deepLink);
             // Validate deep link
-            if (!TextUtils.isEmpty(deepLink)) {
+            if (TextUtils.isNotEmpty(deepLink)) {
                 // Create uri from the value
-                Uri data = Uri.parse(deepLink);
-                Print.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
+                Uri uri = Uri.parse(deepLink);
+                Print.d(TAG, "DEEP LINK URI: " + uri.toString() + " " + uri.getPathSegments().toString());
+                // ReAttribution
+                TrackerDelegator.deepLinkReAttribution(uri);
                 // Load deep link
-                bundle = loadDeepLink(data);
+                bundle = loadDeepLink(uri);
                 Print.i(TAG, "DEEP LINK: RECEIVED FROM GCM");
             }
         }
@@ -678,8 +683,6 @@ public class DeepLinkManager {
         boolean isDeepLinkLaunch = launchValidDeepLink(activity, mDeepLinkBundle);
         // Track open app event for all tracker but Adjust
         TrackerDelegator.trackAppOpen(activity.getApplicationContext(), isDeepLinkLaunch);
-        // Adjust reattribution
-        TrackerDelegator.deeplinkReattribution(intent);
         // return result
         return isDeepLinkLaunch;
     }

@@ -38,13 +38,6 @@ public class CheckoutAddressesFragment extends BaseAddressesFragment {
     private View mCheckoutTotalBar;
 
     /**
-     * Get new instance
-     */
-    public static CheckoutAddressesFragment newInstance() {
-        return new CheckoutAddressesFragment();
-    }
-
-    /**
      * Constructor
      */
     public CheckoutAddressesFragment() {

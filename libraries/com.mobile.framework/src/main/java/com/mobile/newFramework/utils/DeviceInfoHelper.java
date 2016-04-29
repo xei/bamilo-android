@@ -6,12 +6,14 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 import android.view.Display;
 import android.view.WindowManager;
@@ -220,6 +222,17 @@ public class DeviceInfoHelper {
     	Print.i(TAG, "GET SIM OPERATOR: " + tel.getSimOperatorName());
     	return tel.getSimOperatorName();
     }
+
+    /**
+     * Check if has Telephony feature.
+     * @param context The application context
+     */
+    public static boolean hasTelephony(Context context) {
+        PackageManager pm = context.getPackageManager();
+        TelephonyManager tm= (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+
+        return (pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY) && tm.getPhoneType() != TelephonyManager.PHONE_TYPE_NONE && tm.getSimState() != TelephonyManager.SIM_STATE_ABSENT);
+    }
     
     /**
      * Get the SIM card country code.
@@ -237,7 +250,7 @@ public class DeviceInfoHelper {
     /**
      * Application is debuggable.
      */
-    public static boolean isDebuggable(Application application) {
+    public static boolean isDebuggable(@NonNull Application application) {
         return 0 != (application.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE);
     }
     

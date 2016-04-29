@@ -14,8 +14,6 @@ import com.mobile.newFramework.utils.EventType;
  */
 public class GetLoginFormHelper extends SuperBaseHelper {
     
-    public static String TAG = GetLoginFormHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
         return EventType.GET_LOGIN_FORM_EVENT;

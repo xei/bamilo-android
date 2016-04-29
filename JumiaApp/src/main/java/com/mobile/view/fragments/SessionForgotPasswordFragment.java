@@ -45,13 +45,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     private View mButton;
 
     /**
-     * 
-     */
-    public static SessionForgotPasswordFragment getInstance() {
-        return new SessionForgotPasswordFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public SessionForgotPasswordFragment() {

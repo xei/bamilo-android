@@ -75,15 +75,6 @@ public class RecentlyViewedFragment extends BaseFragment implements IResponseCal
                 NO_ADJUST_CONTENT);
     }
 
-    /**
-     * Get a new instance
-     *
-     * @return RecentlyViewedFragment
-     */
-    public static RecentlyViewedFragment getInstance() {
-        return new RecentlyViewedFragment();
-    }
-
     /*
      * (non-Javadoc)
      * 

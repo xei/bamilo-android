@@ -3,6 +3,8 @@ package com.mobile.app;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 
+import com.mobile.newFramework.utils.DeviceInfoHelper;
+
 /**
  * Application used to add all debug features.
  * @author sergio pereira
@@ -32,4 +34,11 @@ public class DebugApplication extends JumiaApplication {
         DebugTools.onApplicationCreated(this);
     }
 
+    /**
+     * Return if app is debuggable
+     */
+    @Override
+    public boolean isDebuggable() {
+        return DeviceInfoHelper.isDebuggable(this);
+    }
 }

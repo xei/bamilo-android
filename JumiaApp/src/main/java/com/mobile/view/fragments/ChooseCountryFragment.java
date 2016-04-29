@@ -59,14 +59,6 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     private ListView mCountryListView;
 
     /**
-     * Get instance
-     * @return ChangeCountryFragment
-     */
-    public static ChooseCountryFragment getInstance() {
-        return new ChooseCountryFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public ChooseCountryFragment() {
@@ -279,14 +271,14 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
             }
         };
 
-        //If the dialog didn't load means that has no more than one country
-        if(!ChooseLanguageController.chooseLanguageDialog(this, languages, runnable)){
-                if (selected == SHOP_NOT_SELECTED) {
-                    setCountry(countryObject, position);
-                } else if (position != selected) {
-                    isChangeCountry = true;
-                    setCountry(countryObject,position);
-                }
+        // If the dialog didn't load means that has no more than one country
+        if (!ChooseLanguageController.chooseLanguageDialog(this, languages, runnable)) {
+            if (selected == SHOP_NOT_SELECTED) {
+                setCountry(countryObject, position);
+            } else if (position != selected) {
+                isChangeCountry = true;
+                setCountry(countryObject, position);
+            }
         }
     }
 

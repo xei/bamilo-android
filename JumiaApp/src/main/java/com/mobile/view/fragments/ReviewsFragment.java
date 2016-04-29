@@ -85,20 +85,11 @@ public class ReviewsFragment extends BaseFragment implements IResponseCallback, 
     private ScrollViewReachable mScrollableView;
 
     /**
-     * Get instance
-     */
-    public static ReviewsFragment getInstance(Bundle bundle) {
-        ReviewsFragment fragment = new ReviewsFragment();
-        fragment.setArguments(bundle);
-        fragment.mProductRatingPage = null;
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public ReviewsFragment() {
         super(IS_NESTED_FRAGMENT, R.layout._def_reviews_fragment);
+        this.mProductRatingPage = null;
     }
 
     /*
