@@ -7,8 +7,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * label: "I want a different item / لقد أردت منتج آخر مختلف",
- * value: "R 2- Customer - wants different item"
+ * Class used to represent a return reason.
+ * - label: "I want a different item / لقد أردت منتج آخر مختلف",
+ * - value: "R 2- Customer - wants different item"
+ * @author spereira
  */
 public class ReturnReason extends FormListItem {
 

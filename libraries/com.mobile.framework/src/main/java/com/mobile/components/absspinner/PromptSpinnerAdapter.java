@@ -2,11 +2,13 @@ package com.mobile.components.absspinner;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 
 /**
  * Decorator Adapter to allow a Spinner to show a 'Nothing Selected...' initially
@@ -22,6 +24,7 @@ public class PromptSpinnerAdapter implements SpinnerAdapter, ListAdapter {
     protected int nothingSelectedLayout;
     protected int nothingSelectedDropdownLayout;
     protected LayoutInflater layoutInflater;
+    private String mPrompt;
 
     /**
      * Use this constructor to have NO 'Select One...' item, instead use
@@ -73,7 +76,16 @@ public class PromptSpinnerAdapter implements SpinnerAdapter, ListAdapter {
      * @return
      */
     protected View getNothingSelectedView(ViewGroup parent) {
-        return layoutInflater.inflate(nothingSelectedLayout, parent, false);
+        View view = layoutInflater.inflate(nothingSelectedLayout, parent, false);
+        View text = view.findViewById(android.R.id.text1);
+        if(text instanceof TextView && mPrompt != null) {
+            ((TextView) text).setText(mPrompt);
+        }
+        return view;
+    }
+
+    public void setPrompt(@NonNull String prompt) {
+        this.mPrompt = prompt;
     }
 
     @Override

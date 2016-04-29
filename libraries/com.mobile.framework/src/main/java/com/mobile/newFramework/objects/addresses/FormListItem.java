@@ -10,6 +10,9 @@ import com.mobile.newFramework.pojo.RestConstants;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Class used to represent an generic list item, label -> value
+ */
 public class FormListItem implements IJSONSerializable, Parcelable {
 
     private int mValue;

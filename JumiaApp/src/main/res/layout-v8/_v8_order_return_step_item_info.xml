@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/grid_row_style"
-    tools:layout_height="wrap_content">
+    android:layoutDirection="ltr"
+    tools:layout_height="wrap_content"
+    tools:targetApi="jelly_bean_mr1">
 
     <!-- BRAND -->
     <com.mobile.components.customfontviews.TextView
@@ -42,6 +44,7 @@
         style="@style/FormButtonSpinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:layout_below="@id/order_return_item_text_order"
         android:visibility="gone"
         tools:text="1"
@@ -52,10 +55,8 @@
         style="@style/TextBase.Caption.Black"
         android:layout_alignBottom="@id/order_return_item_button_quantity"
         android:layout_alignTop="@id/order_return_item_button_quantity"
-        android:layout_marginLeft="@dimen/margin_padding_l"
-        android:layout_marginStart="@dimen/margin_padding_l"
-        android:layout_toRightOf="@id/order_return_item_button_quantity"
-        android:layout_toEndOf="@id/order_return_item_button_quantity"
+        android:layout_marginRight="@dimen/margin_padding_l"
+        android:layout_toLeftOf="@id/order_return_item_button_quantity"
         android:text="@string/quantity_to_return"
         android:visibility="gone"
         tools:visibility="visible" />

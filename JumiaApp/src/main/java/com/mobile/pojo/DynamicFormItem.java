@@ -1299,7 +1299,7 @@ public class DynamicFormItem {
 
 
     /**
-     * Spinner requester
+     * Spinner
      */
     private void createSpinnerRequester() {
         // Get spinner
@@ -1315,7 +1315,9 @@ public class DynamicFormItem {
                     ReturnReasons items = (ReturnReasons) baseResponse.getContentData();
                     ArrayAdapter<ReturnReason> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, items);
                     adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-                    spinner.setAdapter(new PromptSpinnerAdapter(adapter, R.layout._def_form_spinner_prompt, context));
+                    PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, context);
+                    promptAdapter.setPrompt(context.getString(R.string.choose_reason));
+                    spinner.setAdapter(promptAdapter);
                     if(mPreSelectedPosition > IntConstants.DEFAULT_POSITION) {
                         spinner.setSelection(mPreSelectedPosition);
                     }

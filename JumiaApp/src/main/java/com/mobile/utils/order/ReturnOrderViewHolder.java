@@ -22,7 +22,8 @@ import com.mobile.view.R;
 import java.lang.ref.WeakReference;
 
 /**
- * Class used to represent the base of teasers.
+ * Class used to represent a return return order item.
+ * @author spereira
  */
 public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClickListener, DialogQuantityListFragment.OnDialogListListener {
 

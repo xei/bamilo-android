@@ -1,11 +1,10 @@
 <com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tool="http://schemas.android.com/tools"
     android:id="@android:id/text1"
-    style="@style/FormFieldStyle"
+    style="@style/FormFieldStyle.Black_700"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:gravity="left|start|center_vertical"
     android:paddingLeft="@dimen/form_spinner_left_margin"
     android:paddingStart="@dimen/form_spinner_left_margin"
-    android:text="Select one..."
-    tools:text="Select one..." />
+    tool:text="Please choose..." />

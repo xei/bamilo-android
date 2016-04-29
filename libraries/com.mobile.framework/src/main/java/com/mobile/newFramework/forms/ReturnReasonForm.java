@@ -9,9 +9,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 /**
- * Created by alexandrapires on 10/14/15.
- * <p/>
- * This class is used to keep two separate Form instances when creating addresses
+ * Return reason form
  */
 public class ReturnReasonForm extends ArrayList<Form> implements IJSONSerializable {
 
@@ -65,6 +63,8 @@ public class ReturnReasonForm extends ArrayList<Form> implements IJSONSerializab
             // Decrease
             number--;
         }
+        // Discard json
+        mJson = null;
     }
 
 }

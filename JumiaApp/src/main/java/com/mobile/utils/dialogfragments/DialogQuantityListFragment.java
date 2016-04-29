@@ -27,6 +27,7 @@ import com.mobile.view.R;
 import java.lang.ref.WeakReference;
 
 /**
+ * Class used to show a dialog quantity.
  * @author sergiopereira
  */
 public class DialogQuantityListFragment extends BottomSheet implements OnItemClickListener {

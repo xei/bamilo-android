@@ -369,4 +369,5 @@
     <string name="quantity_to_return">Quantity to return</string>
     <string name="quantity_placeholder">Quantity: %s</string>
     <string name="please_call_placeholder">Please Call to %s</string>
+    <string name="choose_reason">Choose Reason</string>
 </resources>

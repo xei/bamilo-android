@@ -3,7 +3,7 @@ package com.mobile.pojo;
 import android.support.annotation.NonNull;
 
 /**
- * Interface used support custom views for dynamic form items.
+ * Interface used to support custom views for dynamic form items.
  *
  * @author spereira
  */

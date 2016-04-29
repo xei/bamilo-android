@@ -14,7 +14,7 @@ import com.mobile.pojo.ICustomFormFieldView;
 import com.mobile.pojo.IDynamicFormItemField;
 
 /**
- * Class used to represent a screen title field.
+ * Class used to represent a list number field.
  * @author spereira
  */
 public class ListNumberField extends DynamicFormItem implements IDynamicFormItemField, ICustomFormField {
@@ -22,15 +22,12 @@ public class ListNumberField extends DynamicFormItem implements IDynamicFormItem
     private ICustomFormFieldView mCustomView;
 
     /**
-     * The constructor for the DynamicFormItem
+     * The constructor
      */
     public ListNumberField(DynamicForm parent, Context context, IFormField entry) {
         super(parent, context, entry);
     }
 
-    /**
-     * Build the field view
-     */
     @Override
     public void build(@NonNull RelativeLayout.LayoutParams params) {
         // ...
@@ -41,9 +38,6 @@ public class ListNumberField extends DynamicFormItem implements IDynamicFormItem
         // ...
     }
 
-    /**
-     * Validate field
-     */
     @Override
     public boolean validate(boolean fallback) {
         return mCustomView == null || mCustomView.validate();

@@ -10,6 +10,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Class used to save all return reasons.
+ * @author spereira
+ */
 public class ReturnReasons extends ArrayList<ReturnReason> implements IJSONSerializable {
 
     /**
