@@ -2,12 +2,14 @@ package com.mobile.newFramework.rest.interfaces;
 
 import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.ReturnReasonForm;
 import com.mobile.newFramework.objects.ExternalLinksSection;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.addresses.PhonePrefixes;
+import com.mobile.newFramework.objects.addresses.ReturnReasons;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.Catalog;
@@ -274,6 +276,14 @@ public interface AigApiInterface {
     @GET("/")
     void getMultiStepFinish(Callback<BaseResponse<PurchaseEntity>> callback);
     String getMultiStepFinish = "getMultiStepFinish";
+
+    @GET("/")
+    void getReturnReasonForm(Callback<BaseResponse<ReturnReasonForm>> callback);
+    String getReturnReasonForm = "getReturnReasonForm";
+
+    @GET("/")
+    void getReturnReasons(Callback<BaseResponse<ReturnReasons>> callback);
+    String getReturnReasons = "getReturnReasons";
 
     /*
      * ########## HTTP POST ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0

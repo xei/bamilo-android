@@ -11,7 +11,7 @@
         android:layout_alignBottom="@+id/item_brand"
         android:layout_alignParentLeft="true"
         android:background="@drawable/ic_filter_clear"
-        android:contentDescription="@string/shoppingcart_item_btn_delete" />
+        android:contentDescription="@string/delete_label" />
 
     <!-- BRAND -->
 

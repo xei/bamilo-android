@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/list_row_style"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layoutDirection="ltr"
+    android:orientation="horizontal"
+    tools:targetApi="jelly_bean_mr1">
+
+    <!-- INFO CONTAINER -->
+    <include
+        layout="@layout/order_return_step_item_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:layout_weight="1" />
+
+    <!-- IMAGE CONTAINER -->
+    <include
+        style="@style/ProductImageListStyle"
+        layout="@layout/_def_gen_image_loadable"
+        android:layout_margin="@dimen/margin_padding_xl"
+        tools:layout_height="@dimen/catalog_list_item_image_height"
+        tools:layout_width="@dimen/catalog_list_item_image_width" />
+
+</LinearLayout>

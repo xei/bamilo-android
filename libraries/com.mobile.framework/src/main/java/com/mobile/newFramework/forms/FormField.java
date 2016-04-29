@@ -51,6 +51,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private static final String CHECKBOX_LINK = "checkbox_link";
     private static final String INFO_MESSAGE = "info_message";
     private static final String ERROR_MESSAGE = "error_message";
+    private static final String LIST_NUMBER = "list_number";
     private static final String EMPTY = "";
 
     private final LinkedHashMap<String, String> mDataSetRating;
@@ -122,6 +123,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         try {
             String formFieldString = jsonObject.optString(RestConstants.TYPE);
             switch (formFieldString) {
+                case LIST_NUMBER:
+                    mInputType = FormInputType.listNumber;
+                    break;
                 case SCREEN_TITLE:
                     mInputType = FormInputType.screenTitle;
                     break;

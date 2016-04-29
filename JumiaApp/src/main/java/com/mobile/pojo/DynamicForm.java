@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.constants.FormConstants;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
@@ -50,6 +51,7 @@ import java.util.Map;
  *          2012/06/15
  * 
  */
+@SuppressWarnings("unused")
 public class DynamicForm implements Iterable<DynamicFormItem> {
 
     public final static String TAG = DynamicForm.class.getSimpleName();
@@ -63,6 +65,8 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     private WeakReference<BaseActivity> mFragmentActivity;
     private WeakReference<CompoundButton.OnCheckedChangeListener> mCheckedChangeListener;
     private WeakReference<BaseFragment> mParentFragment;
+    private View mHeader;
+    private View mFooter;
 
     /**
      * The constructor for the DynamicForm.<br>
@@ -118,14 +122,63 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     }
 
     /**
+     * Adds header
+     */
+    public DynamicForm addHeader(@Nullable View header) {
+        this.mHeader = header;
+        return this;
+    }
+
+    /**
+     * Adds header
+     */
+    public DynamicForm addFooter(@Nullable View footer) {
+        this.mFooter = footer;
+        return this;
+    }
+
+    /**
+     * Set the form as everything is mandatory, so hide the mandatory view (asterisks) for each form field
+     */
+    public DynamicForm isMandatory() {
+        this.form.hideAsterisks();
+        return this;
+    }
+
+    /**
+     * Show icon for each form field
+     */
+    public DynamicForm showIcons(@FormConstants.DynamicFormTypes int formType) {
+        this.form.setType(formType);
+        return this;
+    }
+
+    /**
+     * Save the form type.
+     */
+    public DynamicForm addType(@FormConstants.DynamicFormTypes int formType) {
+        this.form.setType(formType);
+        return this;
+    }
+
+    /**
      * Build the form with each form item.
      */
     @NonNull
     public DynamicForm build() {
+        // Add header
+        if(mHeader != null) {
+            base.addView(mHeader, base.getLayoutParams());
+        }
+        // Add fields
         for (IFormField entry : form.getFields()) {
             entry.setFormType(form.getType());
             Print.i(TAG, "FORM ITEM KEY:" + entry.getKey() + " TYPE:" + entry.getInputType());
             this.addControl(DynamicFormItem.newInstance(this, base.getContext(), entry));
+        }
+        // Add footer
+        if(mFooter != null) {
+            base.addView(mFooter, base.getLayoutParams());
         }
         return this;
     }
@@ -139,9 +192,26 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     private void addControl(DynamicFormItem ctrl) {
         View controlView = ctrl.getControl();
         if (null != controlView) {
+            // Add form
             controls.put(ctrl.getKey(), ctrl);
             base.addView(ctrl.getControl(), base.getLayoutParams());
         }
+    }
+
+    /**
+     * Get header
+     */
+    @Nullable
+    public View getHeader() {
+        return this.mHeader;
+    }
+
+    /**
+     * Get header
+     */
+    @Nullable
+    public View getFooter() {
+        return this.mFooter;
     }
 
     /**

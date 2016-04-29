@@ -190,6 +190,22 @@
         <item name="android:textColor">@drawable/selector_campaign_tab_text</item>
     </style>
 
+    <!-- IMAGE STYLE: LIST|GRID|PAGE-->
+    <style name="ProductImageListStyle" >
+        <item name="android:layout_width">82dp</item>
+        <item name="android:layout_height">103dp</item>
+    </style>
+
+    <style name="ProductImageGridStyle" >
+        <item name="android:layout_width">98dp</item>
+        <item name="android:layout_height">123dp</item>
+    </style>
+
+    <style name="ProductImagePageStyle">
+        <item name="android:layout_width">228dp</item>
+        <item name="android:layout_height">287dp</item>
+    </style>
+
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ -->
 
 </resources>

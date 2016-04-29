@@ -36,6 +36,7 @@ public class FormConstants {
     public static final int NEWSLETTER_FORM = 10;
     public static final int NEWSLETTER_PREFERENCES_FORM = 11;
     public static final int NEWSLETTER_UN_SUBSCRIBE_FORM = 12;
+    public static final int ORDER_RETURN_REASON_FORM = 13;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({ADDRESS_FORM,
@@ -49,7 +50,8 @@ public class FormConstants {
             USER_DATA_FORM,
             NEWSLETTER_FORM,
             NEWSLETTER_PREFERENCES_FORM,
-            NEWSLETTER_UN_SUBSCRIBE_FORM
+            NEWSLETTER_UN_SUBSCRIBE_FORM,
+            ORDER_RETURN_REASON_FORM
     })
     public @interface DynamicFormTypes{}
 }

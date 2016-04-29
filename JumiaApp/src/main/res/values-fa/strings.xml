@@ -177,11 +177,11 @@
     <string name="share_checkout_this_product">این کالاهایی که یافته ام را نیز مشاهده کنید:</string>
     <string name="share_subject">اشتراک گذاری %s</string>
     <string name="shipping">ارسال کالا</string>
-    <string name="shoppingcart_alert_header">سبد</string>
+    <string name="basket_label">سبد</string>
     <string name="shoppingcart_alert_message_no_items">سبد خرید خالی است! لطفا به آن کالا اضافه کنید.</string>
-    <string name="shoppingcart_choose_quantity">انتخاب تعداد</string>
-    <string name="shoppingcart_item_btn_delete">حذف</string>
-    <string name="shoppingcart_quantity">تعداد</string>
+    <string name="choose_quantity">انتخاب تعداد</string>
+    <string name="delete_label">حذف</string>
+    <string name="quantity_label">تعداد</string>
     <string name="sign_in">ورود</string>
     <string name="sign_out">خروج</string>
     <string name="size_guide_label">راهنمای انتخاب سایز</string>
