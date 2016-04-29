@@ -33,4 +33,9 @@ public class ReturnReason extends FormListItem {
     public String getKey() {
         return mKey;
     }
+
+    @Override
+    public String getValueAsString() {
+        return mKey;
+    }
 }

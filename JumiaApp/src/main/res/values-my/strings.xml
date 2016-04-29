@@ -177,10 +177,10 @@
     <string name="share_checkout_this_product">ဤပစၥည္းကို ၾကည္႔ရႈမည္။</string>
     <string name="share_subject">%s မွ်ေ၀ျခင္း</string>
     <string name="shipping">သယ္ယူပို႕ေဆာင္မွဳ</string>
-    <string name="shoppingcart_alert_header">ျခင္းေတာင္း</string>
+    <string name="basket_label">ျခင္းေတာင္း</string>
     <string name="shoppingcart_alert_message_no_items">ေစ်း၀ယ္လွည္းအလြတ္အတြင္း ပစၥည္းမ်ားထည္႔သြင္းပါ</string>
-    <string name="shoppingcart_choose_quantity">အေရအတြက္ေရြးခ်ယ္ပါ</string>
-    <string name="shoppingcart_item_btn_delete">ဖ်က္ရန္</string>
+    <string name="choose_quantity">အေရအတြက္ေရြးခ်ယ္ပါ</string>
+    <string name="delete_label">ဖ်က္ရန္</string>
     <string name="quantity_label">အေရအတြက္</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">ထြက္ရန္</string>

@@ -41,6 +41,13 @@ public class FormListItem implements IJSONSerializable, Parcelable {
     }
 
     /**
+     * @return the id
+     */
+    public String getValueAsString() {
+        return String.valueOf(mValue);
+    }
+
+    /**
      * @return the name
      */
     public String getLabel() {

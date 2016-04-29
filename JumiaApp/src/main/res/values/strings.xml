@@ -177,10 +177,10 @@
     <string name="share_checkout_this_product">Check out this product I found:</string>
     <string name="share_subject">%s Sharing</string>
     <string name="shipping">Shipping</string>
-    <string name="shoppingcart_alert_header">Basket</string>
+    <string name="basket_label">Basket</string>
     <string name="shoppingcart_alert_message_no_items">Basket empty! Please add products to the cart.</string>
-    <string name="shoppingcart_choose_quantity">Choose Quantity</string>
-    <string name="shoppingcart_item_btn_delete">Delete</string>
+    <string name="choose_quantity">Choose Quantity</string>
+    <string name="delete_label">Delete</string>
     <string name="quantity_label">Quantity</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>

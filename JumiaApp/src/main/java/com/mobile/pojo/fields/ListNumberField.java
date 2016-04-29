@@ -4,21 +4,22 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
+import com.mobile.pojo.ICustomFormField;
+import com.mobile.pojo.ICustomView;
 import com.mobile.pojo.IDynamicFormItemField;
-import com.mobile.view.R;
 
 /**
  * Class used to represent a screen title field.
  * @author spereira
  */
-public class ListNumberField extends DynamicFormItem implements IDynamicFormItemField {
+public class ListNumberField extends DynamicFormItem implements IDynamicFormItemField, ICustomFormField {
+
+    private ICustomView mCustomView;
 
     /**
      * The constructor for the DynamicFormItem
@@ -32,26 +33,6 @@ public class ListNumberField extends DynamicFormItem implements IDynamicFormItem
      */
     @Override
     public void build(@NonNull RelativeLayout.LayoutParams params) {
-        // Get field container
-        View view = View.inflate(context, R.layout._def_gen_form_screen_title, null);
-        // Get title
-        ((TextView) view.findViewById(R.id.title)).setText(entry.getLabel());
-        // Get sub title
-        ((TextView) view.findViewById(R.id.sub_title)).setText(entry.getSubLabel());
-        // Add view
-        this.getControl().addView(view, params);
-    }
-
-    /**
-     * Validate field
-     */
-    @Override
-    public boolean validate(boolean fallback) {
-        return fallback;
-    }
-
-    @Override
-    public void save(@NonNull ContentValues values) {
         // ...
     }
 
@@ -60,14 +41,40 @@ public class ListNumberField extends DynamicFormItem implements IDynamicFormItem
         // ...
     }
 
+    /**
+     * Validate field
+     */
+    @Override
+    public boolean validate(boolean fallback) {
+        return mCustomView == null || mCustomView.validate();
+    }
+
+    @Override
+    public void save(@NonNull ContentValues values) {
+        if (mCustomView != null) {
+            values.put(getName(), mCustomView.save());
+        }
+    }
+
     @Override
     public void loadState(@NonNull Bundle inStat) {
-        // ...
+        if (mCustomView != null) {
+            mCustomView.load(inStat.getString(getName()));
+        }
     }
 
     @Override
     public void saveState(@NonNull Bundle outState) {
-        // ...
+        if (mCustomView != null) {
+            outState.putString(getName(), mCustomView.save());
+        }
     }
 
+    @Override
+    public void addCustomView(@NonNull ICustomView custom) {
+        // Save custom view
+        this.mCustomView = custom;
+        // Add view
+        this.getControl().addView(custom.getView());
+    }
 }

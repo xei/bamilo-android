@@ -1,16 +1,21 @@
 package com.mobile.pojo;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 
 /**
- * Interface used support custom views for dynamic form items.
+ * Interface for custom views to be used in dynamic form item.
  * @author spereira
  */
 public interface ICustomView {
 
-    /**
-     * Add a custom view to represent the form field.
-     */
-    void addCustomView(View custom);
+    boolean validate();
+
+    @Nullable String save();
+
+    void load(@Nullable String value);
+
+    @NonNull View getView();
 
 }

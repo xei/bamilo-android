@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.mobile.newFramework.objects.RequiredJson;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 
@@ -30,13 +31,10 @@ public class OrderTrackerItem extends ProductRegular {
     private String quantity;
     private String status;
     private String updateDate;
-
     private boolean isCheckedForAction;
     private ArrayList<OrderReturn> mOrderReturns;
     private ArrayList<OrderActions> mOrderActions;
     private boolean isEligibleToReturn = false;
-
-
 
     /**
      * OrderTrackerItem empty constructor.
@@ -78,6 +76,11 @@ public class OrderTrackerItem extends ProductRegular {
     @Nullable
     public ArrayList<OrderActions> getOrderActions() {
         return mOrderActions;
+    }
+
+    @Nullable
+    public OrderActions getDefaultOrderAction() {
+        return CollectionUtils.isNotEmpty(mOrderActions) ? mOrderActions.get(IntConstants.DEFAULT_POSITION) : null;
     }
 
     public boolean isEligibleToReturn(){
@@ -184,6 +187,20 @@ public class OrderTrackerItem extends ProductRegular {
         dest.writeString(quantity);
         dest.writeString(status);
         dest.writeString(updateDate);
+        dest.writeByte((byte) (isCheckedForAction ? 0x01 : 0x00));
+        if (mOrderReturns == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mOrderReturns);
+        }
+        if (mOrderActions == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(mOrderActions);
+        }
+        dest.writeByte((byte) (isEligibleToReturn ? 0x01 : 0x00));
     }
 
     protected OrderTrackerItem(Parcel in) {
@@ -193,6 +210,20 @@ public class OrderTrackerItem extends ProductRegular {
         quantity = in.readString();
         status = in.readString();
         updateDate = in.readString();
+        isCheckedForAction = in.readByte() != 0x00;
+        if (in.readByte() == 0x01) {
+            mOrderReturns = new ArrayList<>();
+            in.readList(mOrderReturns, OrderReturn.class.getClassLoader());
+        } else {
+            mOrderReturns = null;
+        }
+        if (in.readByte() == 0x01) {
+            mOrderActions = new ArrayList<>();
+            in.readList(mOrderActions, OrderActions.class.getClassLoader());
+        } else {
+            mOrderActions = null;
+        }
+        isEligibleToReturn = in.readByte() != 0x00;
     }
 
     @SuppressWarnings("unused")

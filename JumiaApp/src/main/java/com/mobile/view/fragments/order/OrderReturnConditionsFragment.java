@@ -1,11 +1,13 @@
 package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.newFramework.objects.statics.StaticPage;
@@ -27,6 +29,7 @@ import java.util.EnumSet;
 public class OrderReturnConditionsFragment extends BaseFragmentRequester {
 
     private ViewGroup mContainer;
+    private String mOrderNumber;
 
     /**
      * Empty constructor
@@ -43,10 +46,22 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
      * ##### LIFECYCLE #####
      */
 
+    @Override
+    protected void onCreateInstanceState(@NonNull Bundle bundle) {
+        super.onCreateInstanceState(bundle);
+        mOrderNumber = bundle.getString(ConstantsIntentExtra.ARG_1);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ConstantsIntentExtra.ARG_1, mOrderNumber);
+    }
+
     /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
-     */
+         * (non-Javadoc)
+         * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+         */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -83,7 +98,10 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
      * Start the order return steps.
      */
     protected void onClickNextStep() {
-        super.onSwitchTo(FragmentType.ORDER_RETURN_STEPS).addArray(this.mArgArray).run();
+        super.onSwitchTo(FragmentType.ORDER_RETURN_STEPS)
+                .addId(mOrderNumber)
+                .addArray(this.mArgArray)
+                .run();
     }
 
     @Override

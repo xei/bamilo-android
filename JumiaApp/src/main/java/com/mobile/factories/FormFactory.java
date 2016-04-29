@@ -72,7 +72,7 @@ public class FormFactory {
         return addForm(formType, context, form).build();
     }
 
-    public DynamicForm addForm(@FormConstants.DynamicFormTypes int formType, @NonNull Context context, @NonNull Form form) {
+    private DynamicForm addForm(@FormConstants.DynamicFormTypes int formType, @NonNull Context context, @NonNull Form form) {
         DynamicForm parent = null;
         switch (formType) {
             case FormConstants.LOGIN_FORM:

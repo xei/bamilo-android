@@ -17,6 +17,7 @@ import com.mobile.helpers.cart.ShoppingCartAddItemHelper;
 import com.mobile.helpers.checkout.GetOrderStatusHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.objects.orders.OrderActions;
 import com.mobile.newFramework.objects.orders.OrderReturn;
 import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
@@ -229,15 +230,13 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         if (CollectionUtils.isNotEmpty(items)) {
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
 
-//            if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
-//                UIUtils.setVisibility(mReturnItemsContainer, true);
-//                // Validate if any item is checked, if so, enable return selected.
-//                mReturnItemsButton.setEnabled(validateReturnAllSelected());
-//            } else {
-//                UIUtils.setVisibility(mReturnItemsContainer, false);
-//            }
-
-            UIUtils.setVisibility(mReturnItemsContainer, true); // TODO DLT
+            if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
+                UIUtils.setVisibility(mReturnItemsContainer, true);
+                // Validate if any item is checked, if so, enable return selected.
+                mReturnItemsButton.setEnabled(validateReturnAllSelected());
+            } else {
+                UIUtils.setVisibility(mReturnItemsContainer, false);
+            }
 
             for (final OrderTrackerItem item : items) {
                 // Create new layout item
@@ -354,18 +353,14 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
 
     private void onClickReturnSelected() {
         if (!validateReturnAllSelected()) {
-            // TODO : Get target link from Order
-            String test = "static_page::terms_mobile";                              // <---- FIXME: TARGET LINK USED TO TEST
-            String id = TargetLink.getIdFromTargetLink(test);
+            // Get target link from order
+            String page = TargetLink.getIdFromTargetLink(mOrder.getItems().get(IntConstants.DEFAULT_POSITION).getDefaultOrderAction().getTarget());
             // Goto order return conditions
-            onSwitchTo(FragmentType.ORDER_RETURN_CONDITIONS)
-                    .addId(id)
-                    .addArray(mOrder.getItems())
-                    .noBackStack()
-                    .run();
+            goToReturnConditionsStep(mOrderNumber, page, mOrder.getItems());
         } else {
             showWarningErrorMessage(getString(R.string.warning_no_items_selected));
         }
+
     }
 
     /**
@@ -432,23 +427,47 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         }
     }
 
-    private void onClickReturn(final View view){
+    private void onClickReturn(final View view) {
         // Get sku from view
         String simpleSku = (String) view.getTag(R.id.target_simple_sku);
         // Validate sku
-        if(TextUtils.isNotEmpty(simpleSku)) {
-            final OrderTrackerItem item = getOrderItem(simpleSku);
-           if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
-                // Go To Next Call to return step
-               Bundle bundle = new Bundle();
-               bundle.putParcelable(ConstantsIntentExtra.DATA, item);
-               bundle.putString(ConstantsIntentExtra.ARG_1, mOrder.getId());
-               getBaseActivity().onSwitchFragment(FragmentType.ORDER_RETURN_CALL, bundle, FragmentController.ADD_TO_BACK_STACK);
+        if (TextUtils.isNotEmpty(simpleSku)) {
+            OrderTrackerItem item = getOrderItem(simpleSku);
+            // Validate order and action
+            if (item != null && item.getDefaultOrderAction() != null) {
+                // Get action
+                OrderActions action = item.getDefaultOrderAction();
+                // Case action: call to return
+                if (action.isCallToReturn()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable(ConstantsIntentExtra.DATA, item);
+                    bundle.putString(ConstantsIntentExtra.ARG_1, mOrder.getId());
+                    getBaseActivity().onSwitchFragment(FragmentType.ORDER_RETURN_CALL, bundle, FragmentController.ADD_TO_BACK_STACK);
+                }
+                // Case action: return
+                else if (TextUtils.isNotEmpty(action.getTarget())) {
+                    // Get target link from Order
+                    String page = TargetLink.getIdFromTargetLink(action.getTarget());
+                    // Goto order return conditions
+                    ArrayList<OrderTrackerItem> items = new ArrayList<>();
+                    items.add(item);
+                    goToReturnConditionsStep(mOrderNumber, page, items);
+                } else {
+                    showUnexpectedErrorWarning();
+                }
             } else {
-                // Go To Next return step
+                showUnexpectedErrorWarning();
             }
         }
+    }
 
+    private void goToReturnConditionsStep(String order, String page, ArrayList<OrderTrackerItem> items) {
+        onSwitchTo(FragmentType.ORDER_RETURN_CONDITIONS)
+                .addId(page)
+                .addArray(items)
+                .add(ConstantsIntentExtra.ARG_1, order)
+                .noBackStack()
+                .run();
     }
 
     @Override

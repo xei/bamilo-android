@@ -194,7 +194,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * Get header
      */
     @Nullable
-    private View getHeader() {
+    public View getHeader() {
         return this.mHeader;
     }
 
@@ -202,7 +202,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      * Get header
      */
     @Nullable
-    private View getFooter() {
+    public View getFooter() {
         return this.mFooter;
     }
 

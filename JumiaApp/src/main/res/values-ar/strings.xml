@@ -177,10 +177,10 @@
     <string name="share_checkout_this_product">عرض هذا المنتج الذي وجدته:</string>
     <string name="share_subject">مشاركة %s</string>
     <string name="shipping">الشحن</string>
-    <string name="shoppingcart_alert_header">سلة التسوق</string>
+    <string name="basket_label">سلة التسوق</string>
     <string name="shoppingcart_alert_message_no_items">سلة التسوق فارغة! يُرجى إضافة المنتجات إلى عربة التسوق.</string>
-    <string name="shoppingcart_choose_quantity">اختر الكمية</string>
-    <string name="shoppingcart_item_btn_delete">مسح</string>
+    <string name="choose_quantity">اختر الكمية</string>
+    <string name="delete_label">مسح</string>
     <string name="quantity_label">الكمية</string>
     <string name="sign_in">تسجيل الدخول</string>
     <string name="sign_out">تسجيل الخروج</string>

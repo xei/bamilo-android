@@ -54,14 +54,12 @@ public class OrderReturn implements Parcelable, IJSONSerializable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mQuantity);
         dest.writeString(mDate);
-
     }
 
     protected OrderReturn(Parcel in) {
         mQuantity = in.readInt();
         mDate = in.readString();
     }
-
 
     public static final Parcelable.Creator<OrderReturn> CREATOR = new Parcelable.Creator<OrderReturn>() {
         @Override

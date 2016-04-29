@@ -112,7 +112,6 @@ public class OrderActions implements Parcelable, IJSONSerializable {
         mBody2 = in.readString();
     }
 
-
     public static final Creator<OrderActions> CREATOR = new Creator<OrderActions>() {
         @Override
         public OrderActions createFromParcel(final Parcel in) {
