@@ -125,9 +125,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
                 super.onClickNextStep();
 
                 Bundle bundle = new Bundle();
-                if(mReturnFormGenerator != null) {
-                    mReturnFormGenerator.saveFormState(bundle);
-                }
+                mReturnFormGenerator.saveFormState(bundle);
                 mFormSavedState = bundle;
             }
 
