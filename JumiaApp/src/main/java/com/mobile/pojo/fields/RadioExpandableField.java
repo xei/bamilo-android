@@ -88,76 +88,11 @@ public class RadioExpandableField extends DynamicFormItem implements IDynamicFor
         // Set options
         radioGroup.setItems(entry.getOptions(), entry.getValue());
         this.dataControl = radioGroup;
-        this.errorControl = createErrorControl(container.getId(), RelativeLayout.LayoutParams.WRAP_CONTENT);
         // Add view
         container.addView(radioGroup, params);
 
         // Return
         return radioGroup;
-    }
-
-    private View createErrorControl(int dataControlId, int controlWidth) {
-        ViewGroup errorControl;
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(controlWidth, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.BELOW, dataControlId);
-
-        errorControl = new RelativeLayout(this.context);
-        errorControl.setId(parent.getNextId());
-        errorControl.setLayoutParams(params);
-        errorControl.setVisibility(View.GONE);
-
-
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        params.addRule(RelativeLayout.CENTER_VERTICAL);
-
-        //#RTL
-        if (ShopSelector.isRtl()) {
-            params.addRule(RelativeLayout.RIGHT_OF, dataControlId);
-            params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            params.setMargins(0, 0, (int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0);
-        } else {
-            params.addRule(RelativeLayout.LEFT_OF, dataControlId);
-            params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            params.setMargins((int) context.getResources().getDimension(R.dimen.form_errormessage_margin), 0, 0, 0);
-        }
-
-        ImageView errImage = new ImageView(this.context);
-        errImage.setId(parent.getNextId());
-        errImage.setLayoutParams(params);
-        errImage.setImageResource(R.drawable.indicator_input_error);
-
-        //ErrorText params
-        params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-
-        //#RTL
-        if (ShopSelector.isRtl()) {
-            params.addRule(RelativeLayout.LEFT_OF, errImage.getId());
-            params.setMargins(0, 0, 5, 0);
-        } else {
-            params.addRule(RelativeLayout.RIGHT_OF, errImage.getId());
-            params.setMargins(5, 0, 0, 0);
-        }
-
-
-        this.errorTextControl = new TextView(this.context);
-        this.errorTextControl.setId(parent.getNextId());
-        this.errorTextControl.setText(this.errorText);
-        this.errorTextControl.setLayoutParams(params);
-        this.errorTextControl.setTextColor(errorColor);
-        this.errorTextControl.setTextSize(ERRORTEXTSIZE);
-
-        //#RTL
-        if (ShopSelector.isRtl()) {
-            this.errorTextControl.setSingleLine(true);
-            this.errorTextControl.setEllipsize(TextUtils.TruncateAt.END);
-        }
-
-        errorControl.addView(this.errorTextControl);
-        errorControl.addView(errImage);
-
-        return errorControl;
-
     }
 
     @Override

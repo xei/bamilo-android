@@ -127,6 +127,8 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
                 Bundle bundle = new Bundle();
                 mReturnFormGenerator.saveFormState(bundle);
                 mFormSavedState = bundle;
+            } else {
+                showWarningErrorMessage(getString(R.string.warning_please_select_one));
             }
 
         } else if(view.getId() == R.id.radio_expandable_text){

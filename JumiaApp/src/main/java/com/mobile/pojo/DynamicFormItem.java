@@ -906,7 +906,7 @@ public class DynamicFormItem {
      */
     public boolean validate() {
         boolean result = true;
-        if (hasRules() && this.errorControl != null) {
+        if (hasRules()) {
 
             // Use the new approach IDynamicFormItemField
             if(this instanceof IDynamicFormItemField) {
@@ -988,7 +988,9 @@ public class DynamicFormItem {
                 default:
                     break;
             }
-            this.errorControl.setVisibility(!result ? View.VISIBLE : View.GONE);
+            if( this.errorControl != null){
+                this.errorControl.setVisibility(!result ? View.VISIBLE : View.GONE);
+            }
         }
 
         return result;

@@ -282,7 +282,4 @@ public class RadioGroupExpandable extends RadioGroup {
         }
     }
 
-    public String getErrorMessage() {
-        return generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0).getMessage();
-    }
 }
