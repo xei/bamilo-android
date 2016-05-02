@@ -41,6 +41,7 @@ import com.mobile.view.fragments.BaseFragmentAutoState;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.HashSet;
 
 /**
  * Class used to show the order status.
@@ -61,6 +62,8 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     private View mReturnItemsButton;
     private View mReturnItemsContainer;
     private String mOrderDate;
+
+    private HashSet<Integer> mSelectedItemsToReturn = new HashSet<>();
 
     /**
      * Constructor as nested fragment, called from {@link MyOrdersFragment#}.
@@ -93,6 +96,10 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
             mOrderNumber = savedInstanceState.getString(ConstantsIntentExtra.ARG_1);
             mOrderDate = savedInstanceState.getString(ConstantsIntentExtra.ARG_2);
             mOrder = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
+            ArrayList<Integer> selectedItems = savedInstanceState.getIntegerArrayList(ConstantsIntentExtra.ARG_3);
+            if (CollectionUtils.isNotEmpty(selectedItems)) {
+                mSelectedItemsToReturn = new HashSet<>(selectedItems);
+            }
         }
     }
 
@@ -145,6 +152,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         outState.putString(ConstantsIntentExtra.ARG_1, mOrderNumber);
         outState.putString(ConstantsIntentExtra.ARG_2, mOrderDate);
         outState.putParcelable(ConstantsIntentExtra.DATA, mOrder);
+        outState.putIntegerArrayList(ConstantsIntentExtra.ARG_3, new ArrayList<>(mSelectedItemsToReturn));
     }
 
     @Override
@@ -233,22 +241,27 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
             if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
                 UIUtils.setVisibility(mReturnItemsContainer, true);
                 // Validate if any item is checked, if so, enable return selected.
-                mReturnItemsButton.setEnabled(validateReturnAllSelected());
+                mReturnItemsButton.setEnabled(CollectionUtils.isNotEmpty(mSelectedItemsToReturn));
             } else {
                 UIUtils.setVisibility(mReturnItemsContainer, false);
             }
 
-            for (final OrderTrackerItem item : items) {
+            for (int i = 0; i < items.size(); i++) {
+                final OrderTrackerItem item = items.get(i);
                 // Create new layout item
                 final OrderedProductViewHolder holder = new OrderedProductViewHolder(inflater.inflate(R.layout.gen_order_list, group, false));
                 if(item.isEligibleToReturn() && CollectionUtils.isNotEmpty(item.getOrderActions())){
                     UIUtils.setVisibility(holder.returnOrder, true);
+                    // Case call to return
                     if(item.getOrderActions().get(IntConstants.DEFAULT_POSITION).isCallToReturn()){
                         holder.returnOrder.setText(getString(R.string.call_return_label));
-                    } else {
+                    }
+                    // Case return
+                    else {
                         holder.returnOrder.setText(getString(R.string.return_label));
                         if(displayReturnSelected()){
                             UIUtils.setVisibility(holder.orderCheckbox, true);
+                            holder.orderCheckbox.setTag(R.id.target_position, i);
                             holder.orderCheckbox.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -257,13 +270,18 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                             });
                             holder.orderCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                 @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                public synchronized void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                    //
                                     item.setCheckedForAction(isChecked);
-                                    if(item.isCheckedForAction()) { // Validate if any item is checked, if so, enable return selected.
-                                        mReturnItemsButton.setEnabled(true);
-                                    } else if(!validateReturnAllSelected()) {
-                                        mReturnItemsButton.setEnabled(false);
+                                    // Validate checked item
+                                    int position = (int) buttonView.getTag(R.id.target_position);
+                                    if (isChecked) {
+                                        mSelectedItemsToReturn.add(position);
+                                    } else {
+                                        mSelectedItemsToReturn.remove(position);
                                     }
+                                    // Set return multi button
+                                    mReturnItemsButton.setEnabled(CollectionUtils.isNotEmpty(mSelectedItemsToReturn));
                                 }
                             });
                         }
@@ -272,7 +290,6 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
 
                     holder.returnOrder.setTag(R.id.target_simple_sku, item.getSku());
                     holder.returnOrder.setOnClickListener(this);
-
                 }
 
                 // Set image
@@ -343,7 +360,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         }
         //case return all selected items
         else if(view.getId() == R.id.return_selected_button){
-            onClickReturnSelected();
+            onClickReturnMultiSelected();
         }
         // Case default
         else {
@@ -351,28 +368,29 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
         }
     }
 
-    private void onClickReturnSelected() {
-        if (!validateReturnAllSelected()) {
+    private void onClickReturnMultiSelected() {
+        // Validate
+        if (CollectionUtils.isNotEmpty(mSelectedItemsToReturn) && CollectionUtils.isNotEmpty(mOrder.getItems())) {
+            ArrayList<OrderTrackerItem> items = new ArrayList<>();
             // Get target link from order
-            String page = TargetLink.getIdFromTargetLink(mOrder.getItems().get(IntConstants.DEFAULT_POSITION).getDefaultOrderAction().getTarget());
+            String page = null;
+            // Save selected items
+            for (Integer position : mSelectedItemsToReturn) {
+                // Save item
+                OrderTrackerItem item = mOrder.getItems().get(position);
+                items.add(item);
+                // Save target
+                OrderActions action = item.getDefaultOrderAction();
+                // Get page conditions
+                if(TextUtils.isEmpty(page) && action != null && TextUtils.isEmpty(action.getTarget())) {
+                    page = TargetLink.getIdFromTargetLink(action.getTarget());
+                }
+            }
             // Goto order return conditions
-            goToReturnConditionsStep(mOrderNumber, page, mOrder.getItems());
+            goToReturnConditionsStep(mOrderNumber, page, items);
         } else {
             showWarningErrorMessage(getString(R.string.warning_no_items_selected));
         }
-
-    }
-
-    /**
-     * Validate if there is any item selected.
-     */
-    private boolean validateReturnAllSelected() {
-        for (OrderTrackerItem item : mOrder.getItems()) {
-            if (item.isCheckedForAction()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

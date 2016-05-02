@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/order_list_item"
-              style="@style/grid_row_style"
-              android:layout_height="wrap_content"
-              android:baselineAligned="false"
-              android:gravity="center"
-              android:orientation="vertical"
-              android:padding="@dimen/margin_padding_xxl"
-                android:descendantFocusability="afterDescendants">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/order_list_item"
+    style="@style/grid_row_style"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:descendantFocusability="afterDescendants"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_padding_xxl">
+
     <LinearLayout
         style="@style/grid_row_style"
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <com.mobile.components.customfontviews.CheckBox
             android:id="@+id/order_item_checkbox"
             style="@style/FormCheckBox.Left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="left|start|center_vertical"
+            android:drawablePadding="@dimen/margin_padding_s"
             android:paddingLeft="0dp"
             android:paddingStart="0dp"
-            android:drawablePadding="@dimen/margin_padding_s"
-            android:layout_gravity="left|start|center_vertical"
             android:visibility="invisible"
-            tools:visibility="visible"
-            />
+            tools:visibility="visible" />
 
         <!-- IMAGE -->
 
@@ -55,8 +54,7 @@
                 android:id="@+id/item_brand"
                 style="@style/TextBase.Body.Black_800"
                 android:layout_width="wrap_content"
-                tools:text="brand"
-                />
+                tools:text="brand" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_name"
@@ -64,8 +62,7 @@
                 android:layout_below="@id/item_brand"
                 android:maxLines="2"
                 android:singleLine="false"
-                tools:text="name"
-                />
+                tools:text="name" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_size"
@@ -74,9 +71,8 @@
                 android:maxLines="2"
                 android:singleLine="false"
                 android:visibility="gone"
-                tools:visibility="visible"
                 tools:text="size: XL"
-                />
+                tools:visibility="visible" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_quantity"
@@ -84,8 +80,7 @@
                 android:layout_below="@id/item_size"
                 android:maxLines="2"
                 android:singleLine="false"
-                tools:text="quantity"
-                />
+                tools:text="quantity" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_discount"
@@ -95,8 +90,7 @@
                 android:layout_below="@id/item_quantity"
                 android:layout_marginEnd="@dimen/margin_padding_xs"
                 android:layout_marginRight="@dimen/margin_padding_xs"
-                tools:text="discount"
-                />
+                tools:text="discount" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_regprice"
@@ -106,8 +100,7 @@
                 android:layout_alignTop="@id/item_discount"
                 android:layout_toEndOf="@id/item_discount"
                 android:layout_toRightOf="@id/item_discount"
-                tools:text="reg price"
-                />
+                tools:text="reg price" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_delivery"
@@ -119,8 +112,7 @@
                 android:drawableLeft="@drawable/ic_order_delivery"
                 android:drawablePadding="@dimen/margin_padding_s"
                 android:drawableStart="@drawable/ic_order_delivery"
-                tools:text="item delivery"
-                />
+                tools:text="item delivery" />
 
             <!-- ORDER DELIVERY -->
             <com.mobile.components.customfontviews.TextView
@@ -131,7 +123,7 @@
                 android:layout_marginTop="@dimen/margin_padding_s"
                 android:singleLine="false"
                 android:text="@string/shipment_label"
-                tools:text="@string/shipment_label"/>
+                tools:text="@string/shipment_label" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/order_status_item_text_delivered"
@@ -139,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_below="@id/order_status_label"
                 android:singleLine="false"
-                tools:text="@string/shipment_label"/>
+                tools:text="@string/shipment_label" />
 
             <!-- Order Returns -->
             <com.mobile.components.customfontviews.TextView
@@ -151,7 +143,7 @@
                 android:singleLine="false"
                 android:text="@string/returns_label"
                 android:visibility="gone"
-                tools:visibility="visible"/>
+                tools:visibility="visible" />
 
             <com.mobile.components.customfontviews.TextView
                 android:id="@+id/item_returns"
@@ -160,8 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/item_returns_label"
                 android:singleLine="false"
-                android:visibility="gone"
-                />
+                android:visibility="gone" />
 
 
         </RelativeLayout>
@@ -170,8 +161,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
         <!-- RETURN -->
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/order_status_item_button_return"
@@ -179,8 +169,8 @@
             android:layout_width="wrap_content"
             android:text="@string/return_label"
             android:visibility="gone"
-            tools:visibility="visible"
-            tools:text="@string/return_label" />
+            tools:text="@string/return_label"
+            tools:visibility="visible" />
 
 
         <!-- REORDER -->
