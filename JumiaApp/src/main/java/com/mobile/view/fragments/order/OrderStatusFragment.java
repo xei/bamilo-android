@@ -62,6 +62,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     private View mReturnItemsButton;
     private View mReturnItemsContainer;
     private String mOrderDate;
+
     private HashSet<Integer> mSelectedItemsToReturn = new HashSet<>();
 
     /**
