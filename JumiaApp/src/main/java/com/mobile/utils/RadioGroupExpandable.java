@@ -258,14 +258,6 @@ public class RadioGroupExpandable extends RadioGroup {
         return mGroup.indexOfChild(radioButton);
     }
 
-    public String getItemByIndex(int idx) {
-        if (mItems == null)
-            return null;
-        if (idx < 0)
-            return null;
-        return mItems.get(idx).getLabel();
-    }
-
     public void setSelection(final int idx) {
         if (idx >= 0) {
             RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_shipping);
@@ -293,39 +285,4 @@ public class RadioGroupExpandable extends RadioGroup {
     public String getErrorMessage() {
         return generatedForms.get(mGroup.getCheckedRadioButtonId()).getItem(0).getMessage();
     }
-
-    public ContentValues getSubFieldParameters() {
-        ContentValues result = null;
-        if (generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null) {
-            result = generatedForms.get(mGroup.getCheckedRadioButtonId()).save();
-        }
-        return result;
-    }
-
-    public String getSelectedFieldName() {
-        return mItems.get(mGroup.getCheckedRadioButtonId()).getLabel();
-    }
-
-    public String getSelectedFieldValue() {
-        return getItemByIndex(getSelectedIndex());
-    }
-
-    /**
-     * Saves the sub field state (Payment Checkbox).
-     */
-    public void saveSubFieldState(@NonNull Bundle state) {
-        if (generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null) {
-            generatedForms.get(mGroup.getCheckedRadioButtonId()).saveFormState(state);
-        }
-    }
-
-    /**
-     * Loads the saved state (Payment Checkbox).
-     */
-    public void loadSubFieldState(@Nullable Bundle state) {
-        if (generatedForms != null && generatedForms.get(mGroup.getCheckedRadioButtonId()) != null) {
-            generatedForms.get(mGroup.getCheckedRadioButtonId()).loadSaveFormState(state);
-        }
-    }
-
 }
