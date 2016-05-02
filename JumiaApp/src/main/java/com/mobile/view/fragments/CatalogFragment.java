@@ -336,7 +336,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (!mQueryValues.containsKey(RestConstants.CATEGORY) && !mQueryValues.containsKey(RestConstants.QUERY) && TextUtils.isEmpty(mKey)) {
+        if (!mQueryValues.containsKey(RestConstants.CATEGORY) && !mQueryValues.containsKey(RestConstants.SELLER) &&
+            !mQueryValues.containsKey(RestConstants.QUERY) && TextUtils.isEmpty(mKey)) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL

@@ -27,6 +27,20 @@ import java.net.URLEncoder;
 public class UICatalogUtils {
 
     /**
+     * Get query param for category.
+     */
+    public static String getCategoryQueryParam() {
+        return "?" + RestConstants.CATEGORY + "=";
+    }
+
+    /**
+     * Get query param for seller.
+     */
+    public static String getSellerQueryParam() {
+        return "?" + RestConstants.SELLER + "=";
+    }
+
+    /**
      * Get the catalog type and save the respective values into query values.<br>
      * - Catalog types: Hash|Seller|Brand|Category|DeepLink
      */
