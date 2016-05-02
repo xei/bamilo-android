@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+    >
+
+    <!-- DIVIDER -->
+
+    <View
+        android:id="@+id/radio_divider"
+        style="@style/DividerHorizontal.Black_400" />
+
+    <!-- RADIO BUTTON -->
+
+    <com.mobile.components.customfontviews.RadioButton
+        android:id="@+id/radio_shipping"
+        style="@style/FormRadioButton"
+        />
+
+    <!-- EXTRA CONTAINER -->
+
+    <LinearLayout
+        android:id="@+id/radio_extras_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+    </LinearLayout>
+
+</LinearLayout>

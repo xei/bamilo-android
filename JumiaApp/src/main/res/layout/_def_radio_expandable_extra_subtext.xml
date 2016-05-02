@@ -11,12 +11,13 @@
         style="@style/TextBase.Body.Black"
         tools:text="You have 7 days to drop off your item at a Jumia Return Station."
         android:background="@drawable/_gen_background_border_yellow"
-        android:layout_marginLeft="@dimen/dimen_48dp"
-        android:layout_marginRight="@dimen/dimen_48dp"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
         android:paddingLeft="@dimen/margin_padding_xl"
         android:paddingRight="@dimen/margin_padding_xl"
         android:paddingTop="@dimen/margin_padding_m"
         android:paddingBottom="@dimen/margin_padding_s"
+        android:singleLine="false"
         />
 
 </RelativeLayout>

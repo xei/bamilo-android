@@ -352,7 +352,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     }
 
     private void onClickReturnSelected() {
-        if (!validateReturnAllSelected()) {
+        if (validateReturnAllSelected()) {
             // Get target link from order
             String page = TargetLink.getIdFromTargetLink(mOrder.getItems().get(IntConstants.DEFAULT_POSITION).getDefaultOrderAction().getTarget());
             // Goto order return conditions

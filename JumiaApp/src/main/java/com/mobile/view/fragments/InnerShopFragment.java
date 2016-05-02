@@ -209,21 +209,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         // Validate html
         if (staticPage.hasHtml()) {
             // Load the html response, striped two times
-            mWebView.loadData(stripHtml(staticPage.getHtml()));
+            mWebView.loadData(TextUtils.stripHtml(staticPage.getHtml()));
         } else {
             // Hide web view
             mWebView.setVisibility(View.GONE);
         }
-    }
-
-    /**
-     * Strip the escaped html two times to return a displayable html.
-     *
-     * @param html The escaped html
-     * @return String
-     */
-    public String stripHtml(String html) {
-        return Html.fromHtml(Html.fromHtml(html).toString()).toString();
     }
 
     /**

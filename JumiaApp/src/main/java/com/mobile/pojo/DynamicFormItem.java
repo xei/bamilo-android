@@ -550,6 +550,14 @@ public class DynamicFormItem {
                 break;
             case hide:
                 break;
+            case radioExpandable:
+
+                mPreSelectedPosition = inStat.getInt(getKey());
+                if(mPreSelectedPosition > RadioGroupLayout.NO_DEFAULT_SELECTION){
+                    ((RadioGroupExpandable) this.dataControl).setSelection(mPreSelectedPosition);
+                }
+
+                break;
             default:
                 break;
         }
@@ -626,6 +634,14 @@ public class DynamicFormItem {
                         values.put(key, (int) bar.getRating());
                     }
                 }
+                break;
+            case radioExpandable:
+
+                mPreSelectedPosition = ((RadioGroupExpandable) this.dataControl).getSelectedIndex();
+                if(mPreSelectedPosition > RadioGroupLayout.NO_DEFAULT_SELECTION){
+                    values.put(getEntry().getKey(), getEntry().getOptions().get(mPreSelectedPosition).getValue());
+                }
+
                 break;
             default:
                 getDefaultValue(values);
@@ -867,6 +883,15 @@ public class DynamicFormItem {
                     }
                 }
                 break;
+
+            case radioExpandable:
+
+                mPreSelectedPosition = ((RadioGroupExpandable) this.dataControl).getSelectedIndex();
+                if(mPreSelectedPosition > RadioGroupLayout.NO_DEFAULT_SELECTION){
+                    outState.putString(getEntry().getKey(), getEntry().getOptions().get(mPreSelectedPosition).getValue());
+                }
+
+                break;
             default:
                 break;
         }
@@ -915,7 +940,6 @@ public class DynamicFormItem {
                             }
                         }
                     } else {
-                        //Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayout");
                         valid = ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                     }
 

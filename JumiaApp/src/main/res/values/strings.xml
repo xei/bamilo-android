@@ -205,7 +205,7 @@
     <string name="upgrade_optional_text">We found something to improve your shopping experience on %s! Please update the App!</string>
     <string name="upgrade_optional_title">Upgrade available</string>
     <string name="upgrade_proceed">Upgrade</string>
-    <string name="upgrade_remindmelater">Remind me later</string>
+    <string name="upgrade_remindmelater">Later</string>
     <string name="validation_errortext">There were errors on the data submited, please check your input fields.</string>
     <string name="validation_title">Input data error</string>
     <string name="vat_string">VAT</string>

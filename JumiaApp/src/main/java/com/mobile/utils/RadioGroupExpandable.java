@@ -133,7 +133,7 @@ public class RadioGroupExpandable extends RadioGroup {
      */
     private void createRadioButton(int idx, IFormField field) {
         // Get views
-        final LinearLayout container = (LinearLayout) mInflater.inflate(R.layout.form_radiobutton_with_extra, null, false);
+        final LinearLayout container = (LinearLayout) mInflater.inflate(R.layout.form_radioexpandable, null, false);
         final LinearLayout extras = (LinearLayout) container.findViewById(R.id.radio_extras_container);
         final RadioButton button = (RadioButton) container.findViewById(R.id.radio_shipping);
 
@@ -272,6 +272,7 @@ public class RadioGroupExpandable extends RadioGroup {
             if(button != null){
                 button.setChecked(true);
                 mGroup.getChildAt(idx).findViewById(R.id.radio_extras_container).setVisibility(View.VISIBLE);
+                mGroup.check(idx);
             }
         }
         cleanOtherSelections(idx);

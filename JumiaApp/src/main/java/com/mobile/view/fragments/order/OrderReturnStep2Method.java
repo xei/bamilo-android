@@ -1,10 +1,10 @@
 package com.mobile.view.fragments.order;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
@@ -13,14 +13,11 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.order.GetReturnMethodsFormHelper;
 import com.mobile.newFramework.forms.Form;
-import com.mobile.newFramework.forms.FormField;
 import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
-import com.mobile.pojo.DynamicFormItem;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
 
@@ -47,10 +44,19 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
      * ##### LIFECYCLE #####
      */
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            mFormResponse = (Form) savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
+        }
+    }
+
     /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
-     */
+         * (non-Javadoc)
+         * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
+         */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -68,7 +74,9 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
 
-        if(isVisibleToUser){
+        if(isVisibleToUser && mFormResponse != null){
+            loadReturnMethodForm(mFormResponse);
+        } else {
             triggerReturnMethodForm();
         }
     }
@@ -98,13 +106,29 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putParcelable(ConstantsIntentExtra.DATA, mFormResponse);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     public void onClick(View view) {
         // Case next step
         if (view.getId() == R.id.order_return_main_button_ok) {
             if(mReturnFormGenerator.validate()){
-                onClickNextStep();
-            } else {
-                showWarningErrorMessage("Ups iii");
+                // Get data from forms
+                ContentValues values = mReturnFormGenerator.save();
+                // Save data
+                super.saveSubmittedValues(values);
+                // Next Step
+                super.onClickNextStep();
+
+                Bundle bundle = new Bundle();
+                if(mReturnFormGenerator != null) {
+                    mReturnFormGenerator.saveFormState(bundle);
+                }
+                mFormSavedState = bundle;
             }
 
         } else if(view.getId() == R.id.radio_expandable_text){
@@ -117,7 +141,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
                 String link = (String) view.getTag(R.id.html_link);
                 String title = (String) view.getTag(R.id.target_title);
                 Bundle bundle = new Bundle();
-                bundle.putString(ConstantsIntentExtra.CONTENT_ID, link);
+                bundle.putString(ConstantsIntentExtra.DATA, link);
                 bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
                 getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
             }
