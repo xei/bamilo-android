@@ -983,7 +983,6 @@ public class DynamicFormItem {
                     }
                     break;
                 case radioExpandable:
-                   Print.i(TAG, "code1validate : "+((RadioGroupExpandable) this.dataControl).getSelectedIndex());
                     result = ((RadioGroupExpandable) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                     break;
                 default:
