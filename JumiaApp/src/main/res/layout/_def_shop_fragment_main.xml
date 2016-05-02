@@ -14,7 +14,7 @@
 
         <!--WEBVIEW-->
 
-        <WebView
+        <com.mobile.components.webview.SuperWebView
             android:id="@+id/shop_web_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

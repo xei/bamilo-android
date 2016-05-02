@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.orders.OrderActions;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -82,6 +84,7 @@ public class OrderReturnCallFragment extends BaseFragment {
         if(DeviceInfoHelper.hasTelephony(getBaseActivity())){
             callView.setOnClickListener(this);
         } else {
+            callView.setEnabled(false);
             callView.setText(getString(R.string.please_call_placeholder, CountryPersistentConfigs.getCountryPhoneNumber(getBaseActivity())));
         }
 
@@ -112,7 +115,8 @@ public class OrderReturnCallFragment extends BaseFragment {
         if(view.getId() == R.id.btn_call_now){
             UIUtils.onClickCallToOrder(getBaseActivity());
         } else if(view.getId() == R.id.btn_continue_shopping){
-            getBaseActivity().onBackPressed();
+            // Goto home
+            getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         } else {
             super.onClick(view);
         }

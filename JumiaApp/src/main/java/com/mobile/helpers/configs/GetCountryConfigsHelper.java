@@ -1,7 +1,5 @@
 package com.mobile.helpers.configs;
 
-import com.mobile.app.JumiaApplication;
-import com.mobile.controllers.ChooseLanguageController;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.configs.CountryConfigs;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -31,18 +29,14 @@ public class GetCountryConfigsHelper extends SuperBaseHelper {
         return EventType.GET_COUNTRY_CONFIGURATIONS;
     }
 
+    /**
+     * TODO move to observable
+     */
     @Override
     public void postSuccess(BaseResponse baseResponse) {
         super.postSuccess(baseResponse);
-
-        //TODO move to observable
-        CountryConfigs countryConfigs = (CountryConfigs) baseResponse.getContentData();
-
-        if(!CountryPersistentConfigs.hasLanguages(JumiaApplication.INSTANCE.getApplicationContext())){
-            ChooseLanguageController.setLanguageBasedOnDevice(countryConfigs.getLanguages(), countryConfigs.getCurrencyIso());
-        }
-
-        CountryPersistentConfigs.writePreferences(JumiaApplication.INSTANCE.getApplicationContext(), countryConfigs);
+        // Validate and save new configurations
+        CountryPersistentConfigs.newConfigurations((CountryConfigs) baseResponse.getContentData());
     }
 
 }

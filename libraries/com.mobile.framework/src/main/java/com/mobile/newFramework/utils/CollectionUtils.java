@@ -185,12 +185,16 @@ public class CollectionUtils {
         return !isEmpty(coll);
     }
 
-    public static boolean isOddSize(Collection<?> coll) {
+    public static boolean sizeIsOdd(Collection<?> coll) {
         return !isEmpty(coll) && coll.size() % 2 != 0;
     }
 
     public static int size(Collection<?> coll) {
         return coll != null ? coll.size() : 0;
+    }
+
+    public static boolean sizeIsSame(Collection<?> coll1, Collection<?> coll2) {
+        return size(coll1) == size(coll2);
     }
 
     public static boolean isEmpty(ContentValues coll) {

@@ -14,7 +14,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:background="@drawable/ic_filter_clear"
-        android:contentDescription="@string/shoppingcart_item_btn_delete" />
+        android:contentDescription="@string/delete_label" />
 
     <!-- BRAND -->
     <com.mobile.components.customfontviews.TextView

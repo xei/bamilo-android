@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="@string/shoppingcart_quantity" />
+            android:text="@string/quantity_label" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/cart_item_button_quantity"
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/cart_item_text_quantity"
-            android:text="@string/shoppingcart_quantity"
+            android:text="@string/quantity_label"
             tools:text="10" />
 
     </RelativeLayout>

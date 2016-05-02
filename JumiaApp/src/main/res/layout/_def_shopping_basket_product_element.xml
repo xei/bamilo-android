@@ -47,7 +47,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="@string/shoppingcart_quantity" />
+            android:text="@string/quantity_label" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/cart_item_button_quantity"

@@ -1,5 +1,6 @@
 package com.mobile.view.fragments.order;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.view.View;
@@ -64,6 +65,13 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
         return ((OrderReturnStepsMain) getParentFragment()).getOrderItems();
     }
 
+    /**
+     * Get order number from parent
+     */
+    protected String getOrderNumber() {
+        return ((OrderReturnStepsMain) getParentFragment()).getOrderNumber();
+    }
+
     /*
      * ##### LISTENERS #####
      */
@@ -82,6 +90,13 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
         OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
         if (parent != null) {
             parent.nextStep(mStep + 1);
+        }
+    }
+
+    protected void saveSubmittedValues(ContentValues values) {
+        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
+        if (parent != null) {
+            parent.saveSubmittedValuesFromStep(mStep, values);
         }
     }
 

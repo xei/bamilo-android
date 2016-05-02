@@ -87,7 +87,7 @@ public class ShopPreferences {
         CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(shopPosition);
         //Print.i(TAG, "code1DarwinComponent : selected : " + countryObject.getCountryName());
         editor.putBoolean(Darwin.KEY_COUNTRY_CONFIGS_AVAILABLE, false);
-        CountryPersistentConfigs.writePreferences(editor, countryObject);
+        CountryPersistentConfigs.save(editor, countryObject);
         editor.apply();
 
         // Clean other

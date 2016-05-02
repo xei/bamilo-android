@@ -69,7 +69,6 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
             e.printStackTrace();
         }
         if (form != null) {
-            form.setType(FormConstants.NEWSLETTER_FORM);
             mNewsLetterForm = FormFactory.getSingleton().create(FormConstants.NEWSLETTER_FORM, mContext, form);
             mContainerView.addView(mNewsLetterForm.getContainer());
             for (DynamicFormItem control : mNewsLetterForm) {

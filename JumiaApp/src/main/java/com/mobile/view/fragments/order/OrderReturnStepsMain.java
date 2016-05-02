@@ -1,8 +1,10 @@
 package com.mobile.view.fragments.order;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,8 +32,6 @@ import java.util.EnumSet;
  */
 public class OrderReturnStepsMain extends BaseFragmentAutoState {
 
-    private SuperViewPager mPager;
-
     public static final int CONDITIONS = -1;
     public static final int REASON = 0;
     public static final int METHOD = 1;
@@ -40,6 +40,13 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     @IntDef({CONDITIONS, REASON, METHOD, REFUND, FINISH,})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ReturnStepType {}
+
+    public static final String SUBMITTED_DATA = "submitted_data";
+
+    private SuperViewPager mPager;
+    private Bundle mSubmittedData;
+
+
 
     /**
      * Empty constructor
@@ -55,6 +62,12 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     /*
      * ##### LIFECYCLE #####
      */
+
+    @Override
+    protected void onCreateInstanceState(@NonNull Bundle bundle) {
+        super.onCreateInstanceState(bundle);
+        mSubmittedData = bundle.getBundle(SUBMITTED_DATA);
+    }
 
     /*
      * (non-Javadoc)
@@ -89,6 +102,49 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBundle(SUBMITTED_DATA, mSubmittedData);
+    }
+
+    public ArrayList<OrderTrackerItem> getOrderItems() {
+        return (ArrayList<OrderTrackerItem>) this.mArgArray;
+    }
+
+    public String getOrderNumber() {
+        return this.mArgId;
+    }
+
+    public void nextStep(int nextStepId) {
+        mPager.setCurrentItem(nextStepId, true);
+    }
+
+    public synchronized void saveSubmittedValuesFromStep(int mStep, ContentValues values) {
+        if (mSubmittedData == null) {
+            mSubmittedData = new Bundle();
+        }
+        mSubmittedData.putParcelable(String.valueOf(mStep), values);
+    }
+
+    /*
+     * ##### BACK #####
+     */
+    @Override
+    public boolean allowBackPressed() {
+        int step = mPager.getCurrentItem();
+        if (step > 0) {
+            nextStep(--step);
+            return true;
+        } else {
+            return super.allowBackPressed();
+        }
+    }
+
+    /*
+     * ##### LISTENERS #####
+     */
+
     private class TabLayoutPageChangeListener extends TabLayout.TabLayoutOnPageChangeListener {
 
         public TabLayoutPageChangeListener(TabLayout tabLayout) {
@@ -114,33 +170,6 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         }
     }
 
-    public ArrayList<OrderTrackerItem> getOrderItems() {
-        return (ArrayList<OrderTrackerItem>) this.mArgArray;
-    }
-
-    /*
-     * ##### LISTENERS #####
-     */
-
-    @Override
-    protected void onClickRetryButton(View view) {
-        // TODO
-    }
-
-    public void nextStep(int nextStepId) {
-        mPager.setCurrentItem(nextStepId, true);
-    }
-
-    @Override
-    public boolean allowBackPressed() {
-        int step = mPager.getCurrentItem();
-        if (step > 0) {
-            nextStep(--step);
-            return true;
-        } else {
-            return super.allowBackPressed();
-        }
-    }
 
     /**
      * Class used as an simple pager adapter that represents each fragment

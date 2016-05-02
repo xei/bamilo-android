@@ -79,7 +79,6 @@ public class DarwinComponent extends ApplicationComponent {
         
         if(!countryConfigsAvailable || !hasLanguages){
             Print.i(TAG, "DarwinComponent NO_COUNTRY_CONFIGS_AVAILABLE");
-            
             if(Darwin.initialize(context, sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_URL, null), null)) {
                 return ErrorCode.NO_COUNTRY_CONFIGS_AVAILABLE;   
             }

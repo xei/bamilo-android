@@ -177,11 +177,11 @@
     <string name="share_checkout_this_product">Check out this product I found:</string>
     <string name="share_subject">%s Sharing</string>
     <string name="shipping">Shipping</string>
-    <string name="shoppingcart_alert_header">Basket</string>
+    <string name="basket_label">Basket</string>
     <string name="shoppingcart_alert_message_no_items">Basket empty! Please add products to the cart.</string>
-    <string name="shoppingcart_choose_quantity">Choose Quantity</string>
-    <string name="shoppingcart_item_btn_delete">Delete</string>
-    <string name="shoppingcart_quantity">Quantity</string>
+    <string name="choose_quantity">Choose Quantity</string>
+    <string name="delete_label">Delete</string>
+    <string name="quantity_label">Quantity</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">Sign Out</string>
     <string name="size_guide_label">Size Guide</string>
@@ -349,6 +349,7 @@
     <string name="visit_the_official_brand_store">Visit the official %s store</string>
     <string name="free_shipping_possible">Free Shipping Possible</string>
     <string name="register_more_info">We need just a bit more details to create your account.</string>
+    <string name="go_label">Go</string>
     <!--Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
     <string name="items_returned_on">%1$s items returned on %2$s\n</string>
     <string name="return_selected_items">return selected items</string>
@@ -366,5 +367,8 @@
     <string name="order_return_refund_title">Which payout method do you want for your refund?</string>
     <string name="order_return_finish_title">Confirm your return request details</string>
     <string name="send_label">Send</string>
+    <string name="quantity_to_return">Quantity to return</string>
+    <string name="quantity_placeholder">Quantity: %s</string>
     <string name="please_call_placeholder">Please Call to %s</string>
+    <string name="choose_reason">Choose Reason</string>
 </resources>

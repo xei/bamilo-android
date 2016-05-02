@@ -26,5 +26,6 @@ public enum FormInputType {
     switchRadio,
     screenTitle,
     screenRadio,
+    listNumber,
     radioExpandable
 }

@@ -177,11 +177,11 @@
     <string name="share_checkout_this_product">یہ چیز دیکھیں، جو مجھے ملی:</string>
     <string name="share_subject">‎%s‎ پھیلائیں</string>
     <string name="shipping">شِپنگ</string>
-    <string name="shoppingcart_alert_header">ٹوکری</string>
+    <string name="basket_label">ٹوکری</string>
     <string name="shoppingcart_alert_message_no_items">خالی ٹوکری! براہِ کرم ٹوکری میں اشیاء شامل کریں</string>
-    <string name="shoppingcart_choose_quantity">تعداد چُنیں</string>
-    <string name="shoppingcart_item_btn_delete">ڈِلیٹ</string>
-    <string name="shoppingcart_quantity">تعداد</string>
+    <string name="choose_quantity">تعداد چُنیں</string>
+    <string name="delete_label">ڈِلیٹ</string>
+    <string name="quantity_label">تعداد</string>
     <string name="sign_in">داخل ہوں</string>
     <string name="sign_out">باہر نکلیں</string>
     <string name="size_guide_label">شرحِ ناپ</string>
@@ -264,7 +264,7 @@
     <string name="pre_order">پہلے سے آرڈر</string>
     <string name="saved">انتخابات محفوظ</string>
     <string name="products_added_saved">آشْیاں محفوظ کر دی گئی ہیں</string>
-    <string name="products_removed_saved">محفوظ آشْیاں ہٹا دی گئی ہیں</string>
+    <string name="products_removed_saved">محفوظ اشیاء ہٹا دی گئی ہیں</string>
     <string name="warranty">وارنٹی: %s</string>
     <string name="other_sellers_starting">دوسرے بیچنے والوں کی مسابقتی قیمت : ‎ %s</string>
     <string name="buy_combo">کومبو خریدیں</string>

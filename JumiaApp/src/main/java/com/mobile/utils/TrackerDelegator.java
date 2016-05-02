@@ -1177,4 +1177,11 @@ public class TrackerDelegator {
         }
     }
 
+    /**
+     * Tracking event for the External Link Click
+     */
+    public static void trackClickOnExternalLink(@NonNull String label){
+        AnalyticsGoogle.get().trackEventClickOnExternalLink(TrackingEvent.EXTERNAL_LINK_CLICK, label);
+    }
+
 }

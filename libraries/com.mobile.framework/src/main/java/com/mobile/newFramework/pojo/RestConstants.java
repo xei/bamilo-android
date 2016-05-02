@@ -332,6 +332,9 @@ public class RestConstants {
     public static final String FREE_SHIPPING_POSSIBLE = "free_shipping_possible";
     public static final String ALL_OFFERS = "all_offers";
     public static final String AUTH_INFO = "auth_info";
+    public static final String REDIRECT_INFO = "redirect_info";
+    public static final String EXTERNAL_LINKS = "external_links";
+    public static final String EXTERNAL_LINK_ANDROID = "external_link_android";
     public static final String RETURNS = "returns";
     public static final String RETURNABLE_QUANTITY = "returnable_quantity";
     public static final String TEXT_TITLE = "text_title";
