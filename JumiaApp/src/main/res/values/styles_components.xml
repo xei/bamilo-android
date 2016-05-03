@@ -29,6 +29,11 @@
         <item name="android:layout_height">48dp</item>
     </style>
 
+    <style name="SingleLineGroupStyle.Border_300">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/_gen_background_border_black_300</item>
+    </style>
+
     <!-- Single line item -->
     <style name="SingleLineStyle" parent="@style/TextBase.Display_3.Black">
         <item name="android:layout_width">match_parent</item>

@@ -73,6 +73,40 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
     }
 
     /*
+     * ##### STEP VALUES #####
+     */
+
+    /**
+     * Save submitted values
+     */
+    protected void saveSubmittedValues(ContentValues values) {
+        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
+        if (parent != null) {
+            parent.saveSubmittedValuesFromStep(mStep, values);
+        }
+    }
+
+    /**
+     * Validate submitted values
+     * @return
+     */
+    protected boolean hasSubmittedValuesToFinish() {
+        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
+        return parent != null && parent.hasSubmittedValuesToFinish();
+    }
+
+    /**
+     * Get reason values
+     */
+    protected ContentValues getSubmittedReasonValues() {
+        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
+        if (parent != null) {
+            return parent.getSubmittedValuesForStep(OrderReturnStepsMain.REASON);
+        }
+        return null;
+    }
+
+    /*
      * ##### LISTENERS #####
      */
 
@@ -90,13 +124,6 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
         OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
         if (parent != null) {
             parent.nextStep(mStep + 1);
-        }
-    }
-
-    protected void saveSubmittedValues(ContentValues values) {
-        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
-        if (parent != null) {
-            parent.saveSubmittedValuesFromStep(mStep, values);
         }
     }
 

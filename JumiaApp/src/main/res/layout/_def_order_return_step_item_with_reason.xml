@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/margin_padding_xl"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <!--RETURN ITEM-->
+    <include layout="@layout/_def_order_return_step_item" />
+
+    <!--RETURN REASON-->
+    <include
+        android:id="@+id/order_return_finish_reason"
+        layout="@layout/_def_gen_single_line_section_editable" />
+
+</LinearLayout>

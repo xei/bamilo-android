@@ -1,13 +1,23 @@
 package com.mobile.view.fragments.order;
 
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.NonNull;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
-import com.mobile.helpers.configs.GetStaticPageHelper;
+import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.order.ReturnItemReasonViewHolder;
+import com.mobile.utils.order.ReturnOrderViewHolder;
+import com.mobile.utils.order.UIOrderUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 /**
  * Fragment used to show the online returns reason.
@@ -16,6 +26,9 @@ import com.mobile.view.R;
  */
 
 public class OrderReturnStep4Finish extends OrderReturnStepBase {
+
+    private String mOrder;
+    private ArrayList<OrderTrackerItem> mItems;
 
     /**
      * Empty constructor
@@ -28,6 +41,15 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
      * ##### LIFECYCLE #####
      */
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Get order number
+        mOrder = getOrderNumber();
+        // Get order items
+        mItems = getOrderItems();
+    }
+
     /*
      * (non-Javadoc)
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
@@ -36,15 +58,75 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-        mContainer.setBackgroundColor(ContextCompat.getColor(getBaseActivity(), R.color.orange_1));
+        // Validate state
+        if (hasSubmittedValuesToFinish()) {
+            loadSubmittedValues(mContainer);
+        } else {
+            showUnexpectedErrorWarning();
+        }
+    }
+
+    /**
+     * Load submitted values
+     */
+    private void loadSubmittedValues(@NonNull ViewGroup container) {
+        // Remove all views from container
+        if (container.getChildCount() > 0) {
+            container.removeAllViews();
+        }
+        // View group to add each form
+        ViewGroup group = (ViewGroup) LayoutInflater.from(getBaseActivity()).inflate(R.layout._def_order_return_step_finish, this.mContainer, false);
+        // Method
+        UIOrderUtils.setReturnSections(group, R.id.order_return_finish_method, R.string.return_method, "Drop it off");
+        // Payment
+        UIOrderUtils.setReturnSections(group, R.id.order_return_finish_payment, R.string.return_payment, "Bank Deposit");
+        // Items
+        ViewGroup itemsView = (ViewGroup) group.findViewById(R.id.order_return_finish_items);
+        // Validate items to set reason section
+        boolean showItemsWithReason = CollectionUtils.size(mItems) > 1;
+        setReasonSection(group, showItemsWithReason);
+        setItems(itemsView, mItems, showItemsWithReason);
+        // Add
+        container.addView(group);
+    }
+
+    /**
+     * Set the reason section
+     */
+    private void setReasonSection(@NonNull View group, boolean showItemWithReason) {
+        if(showItemWithReason) {
+            UIUtils.setVisibility(group.findViewById(R.id.order_return_finish_reason), false);
+        } else {
+            String sku = getOrderItems().get(IntConstants.DEFAULT_POSITION).getSku();
+            String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedReasonValues(), sku);
+            UIOrderUtils.setReturnSections(group, R.id.order_return_finish_reason, R.string.return_reason, reason);
+        }
+    }
+
+    /**
+     * Set return items with/without reason view
+     */
+    private void setItems(@NonNull ViewGroup group, @NonNull ArrayList<OrderTrackerItem> items, boolean showReasonView) {
+        for (OrderTrackerItem item : items) {
+            ReturnOrderViewHolder custom;
+            // Create item
+            if (showReasonView) {
+                String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedReasonValues(), item.getSku());
+                custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item).addReason(reason).onBind();
+            } else {
+                custom = new ReturnOrderViewHolder(getContext(), mOrder, item).onBind();
+            }
+            // Add view
+            group.addView(custom.getView());
+        }
     }
 
     /*
      * ##### TRIGGERS #####
      */
 
-    private void triggerStaticPage() {
-        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mArgId), this);
+    private void triggerFinishReturnProcess() {
+        // Submit values
     }
 
     /*
@@ -53,7 +135,7 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
 
     @Override
     protected void onClickRetryButton(View view) {
-        triggerStaticPage();
+        triggerFinishReturnProcess();
     }
 
     /*
@@ -62,13 +144,12 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
 
     @Override
     protected void onSuccessResponse(BaseResponse response) {
-        // Show container
-        showFragmentContentContainer();
+        // Finish the process
     }
 
     @Override
     protected void onErrorResponse(BaseResponse response) {
-
+        // ...
     }
 
 }

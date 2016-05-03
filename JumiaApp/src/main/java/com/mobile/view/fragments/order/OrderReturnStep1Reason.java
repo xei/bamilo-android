@@ -8,10 +8,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobile.components.absspinner.IcsSpinner;
 import com.mobile.constants.FormConstants;
 import com.mobile.helpers.order.GetReturnReasonFormHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.ReturnReasonForm;
+import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
@@ -143,7 +145,7 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
      */
     private DynamicForm createDynamicForm(@NonNull Form form, @NonNull OrderTrackerItem item) {
         // Create custom view
-        ReturnOrderViewHolder custom = new ReturnOrderViewHolder(getContext(), mOrder, item);
+        ReturnOrderViewHolder custom = new ReturnOrderViewHolder(getContext(), mOrder, item).onBind();
         // Create form view
         DynamicForm dyForm = new DynamicForm(getContext(), form)
                 .addType(FormConstants.ORDER_RETURN_REASON_FORM)
@@ -186,18 +188,46 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
             // Get dynamic form
             DynamicForm form = mDynamicForms.get(i);
             // Get order item
-            OrderTrackerItem order = mItems.get(i);
+            OrderTrackerItem item = mItems.get(i);
             // Get data
             ContentValues data = form.save();
             // Replace placeholders
             for (Map.Entry<String, Object> entry : data.valueSet()) {
+                // Hammered
+                hammeredToGetReasonLabel(result, form, item.getSku());
                 // Replace placeholder
-                String key = entry.getKey().replace(FORM_PLACEHOLDER, order.getSku());
+                String key = entry.getKey().replace(FORM_PLACEHOLDER, item.getSku());
                 // Save
                 result.put(key, entry.getValue().toString());
             }
         }
         return result;
+    }
+
+    /**
+     * This hammered was added because all return steps are being saved in the app side.<br>
+     * And we need save selected labels to show the finish step.
+     * TODO: Added in v3.2, delete this hammered ASAP
+     */
+    @SuppressWarnings("ConstantConditions")
+    private void hammeredToGetReasonLabel(@NonNull ContentValues result, @NonNull DynamicForm form, @NonNull String sku) {
+        try {
+            // Save readable reason
+            View view = form.getItemByKey(RestConstants.REASON).getDataControl();
+            String label = ((FormListItem) ((IcsSpinner) view).getSelectedItem()).getLabel();
+            result.put(RestConstants.REASON + sku, label);
+        } catch (NullPointerException e) {
+            Print.w("WARNING: NPE ON GET LABEL");
+        }
+    }
+
+    /**
+     * This hammered was added to get the label.
+     * TODO: Added in v3.2, delete this hammered ASAP
+     */
+    @Nullable
+    public static String getReasonLabel(@Nullable ContentValues values, @NonNull String sku) {
+        return values != null ? values.getAsString(RestConstants.REASON + sku) : null;
     }
 
     /*

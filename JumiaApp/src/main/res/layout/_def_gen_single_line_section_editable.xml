@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/SingleLineGroupStyle.Border_300"
+    android:padding="@dimen/margin_padding_m">
+
+    <!-- CENTER POINT -->
+    <android.support.v4.widget.Space
+        android:id="@+id/center_point"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerInParent="true" />
+
+    <!-- BUTTON -->
+    <ImageButton
+        android:id="@+id/section_item_button"
+        style="@style/Button_Action.EditItem"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true" />
+
+    <!-- TITLE -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/section_item_title"
+        style="@style/TextBase.Body.Black_800"
+        android:layout_above="@id/center_point"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@id/section_item_button"
+        android:layout_toStartOf="@id/section_item_button"
+        tools:text="Title" />
+
+    <!-- SUB TITLE -->
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/section_item_sub_title"
+        style="@style/TextBase.Body.Black"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/section_item_title"
+        android:layout_toLeftOf="@id/section_item_button"
+        android:layout_toStartOf="@id/section_item_button"
+        android:singleLine="false"
+        tools:text="Sub Title" />
+
+</RelativeLayout>
