@@ -277,7 +277,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     JSONObject option = dataOptionsArray.getJSONObject(i);
                     mDataSet.put(option.optString(RestConstants.VALUE), option.optString(RestConstants.LABEL));
                 }
-            } else if(CollectionUtils.isNotEmpty(dataOptionsArray)){
+            } // Case Radio Expandable
+            else if(CollectionUtils.isNotEmpty(dataOptionsArray)){
                 mOptions = new ArrayList<>();
                 mSubForms = new HashMap<>();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {

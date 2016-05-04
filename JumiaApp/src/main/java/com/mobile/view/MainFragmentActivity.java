@@ -295,6 +295,7 @@ public class MainFragmentActivity extends DebugActivity {
                 break;
             case STATIC_PAGE:
                 fragment = newFragmentInstance(StaticPageFragment.class, bundle);
+                break;
             case STATIC_WEBVIEW_PAGE:
                 fragment = newFragmentInstance(StaticWebViewPageFragment.class, bundle);
                 break;

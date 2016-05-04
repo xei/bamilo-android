@@ -9,6 +9,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
 import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentSwitcher;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.order.GetReturnMethodsFormHelper;
@@ -166,7 +167,10 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.DATA, link);
                 bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
-                getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
+                super.onSwitchTo(FragmentType.STATIC_WEBVIEW_PAGE)
+                        .addData(bundle)
+                        .noBackStack()
+                        .run();;
             }
         } else {
             super.onClick(view);

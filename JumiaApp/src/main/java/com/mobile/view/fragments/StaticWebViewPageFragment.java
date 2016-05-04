@@ -2,6 +2,7 @@ package com.mobile.view.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
@@ -56,22 +57,29 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
         Print.i(TAG, "ON ATTACH");
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Print.i(TAG, "ON CREATE");
+    protected void onCreateInstanceState(@NonNull Bundle bundle) {
+        super.onCreateInstanceState(bundle);
+
         // Get static page key from arguments
-        mStaticPageBundle = savedInstanceState != null ? savedInstanceState : getArguments();
+        mStaticPageBundle = bundle;
         if (mStaticPageBundle != null) {
             mTitle = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mContentId = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_ID);
             mContentHtml = mStaticPageBundle.getString(ConstantsIntentExtra.DATA);
         }
+    }
+
+    /*
+         * (non-Javadoc)
+         *
+         * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+         */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Print.i(TAG, "ON CREATE");
     }
     
     /*
