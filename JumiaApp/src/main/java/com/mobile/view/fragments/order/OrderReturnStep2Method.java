@@ -140,7 +140,6 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
             if(mReturnFormGenerator.validate()){
                 // Get data from forms
                 ContentValues values = mReturnFormGenerator.save();
-                Print.i("code1save : "+values.toString());
                 // Save data
                 super.saveSubmittedValues(values);
                 // Next Step
