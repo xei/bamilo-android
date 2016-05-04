@@ -79,6 +79,20 @@ public class RadioExpandableField extends DynamicFormItem implements IDynamicFor
     }
 
     @Override
+    public void save(ContentValues values) {
+
+        mPreSelectedPosition = ((RadioGroupExpandable) this.dataControl).getSelectedIndex();
+        if(mPreSelectedPosition > RadioGroupLayout.NO_DEFAULT_SELECTION){
+            ((RadioGroupExpandable) this.dataControl).save(getEntry().getName(), values);
+        }
+    }
+
+    @Override
+    public boolean validate() {
+        return ((RadioGroupExpandable) this.dataControl).validate();
+    }
+
+    @Override
     public void select() {
         this.dataControl.performClick();
     }

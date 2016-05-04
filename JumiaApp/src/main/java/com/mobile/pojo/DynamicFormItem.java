@@ -627,14 +627,7 @@ public class DynamicFormItem {
                     }
                 }
                 break;
-            case radioExpandable:
 
-                mPreSelectedPosition = ((RadioGroupExpandable) this.dataControl).getSelectedIndex();
-                if(mPreSelectedPosition > RadioGroupLayout.NO_DEFAULT_SELECTION){
-                    ((RadioGroupExpandable) this.dataControl).save(getEntry().getName(), values);
-                }
-
-                break;
             default:
                 getDefaultValue(values);
                 break;
@@ -890,7 +883,7 @@ public class DynamicFormItem {
      */
     public boolean validate() {
         boolean result = true;
-        if (hasRules()) {
+        if (hasRules() && this.errorControl != null) {
 
             // Use the new approach IDynamicFormItemField
             if(this instanceof IDynamicFormItemField) {
@@ -966,15 +959,11 @@ public class DynamicFormItem {
                         }
                     }
                     break;
-                case radioExpandable:
-                    result = ((RadioGroupExpandable) this.dataControl).validate();
-                    break;
                 default:
                     break;
             }
-            if( this.errorControl != null){
-                this.errorControl.setVisibility(!result ? View.VISIBLE : View.GONE);
-            }
+            this.errorControl.setVisibility(!result ? View.VISIBLE : View.GONE);
+
         }
 
         return result;
