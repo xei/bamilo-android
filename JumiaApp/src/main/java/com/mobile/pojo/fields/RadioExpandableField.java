@@ -25,6 +25,7 @@ import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.IDynamicFormItemField;
 import com.mobile.utils.RadioGroupExpandable;
+import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.view.R;
 
@@ -59,20 +60,22 @@ public class RadioExpandableField extends DynamicFormItem implements IDynamicFor
 
         fallback &= ((RadioGroupExpandable) this.dataControl).validate();
 
-        Print.i("code1subform : validate final result "+fallback);
-
         return fallback;
     }
 
 
     @Override
     public void loadState(@NonNull Bundle inStat) {
-        ((RadioGroupExpandable) this.dataControl).setSelection(inStat.getInt(getKey()));
+        ((RadioGroupExpandable) this.dataControl).loadState(getEntry().getKey(),inStat);
     }
 
     @Override
     public void saveState(@NonNull Bundle outState) {
-        outState.putInt(getKey(), ((RadioGroupExpandable) this.dataControl).getSelectedIndex());
+
+        mPreSelectedPosition = ((RadioGroupExpandable) this.dataControl).getSelectedIndex();
+        if(mPreSelectedPosition > RadioGroupLayout.NO_DEFAULT_SELECTION){
+            ((RadioGroupExpandable) this.dataControl).saveState(getEntry().getKey(), outState);
+        }
     }
 
     @Override

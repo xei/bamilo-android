@@ -2,6 +2,7 @@ package com.mobile.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -29,6 +30,7 @@ import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
 
@@ -169,6 +171,7 @@ public class RadioGroupExpandable extends RadioGroup {
         container.setLayoutParams(mParams);
 
         button.setText(field.getLabel());
+
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -204,8 +207,7 @@ public class RadioGroupExpandable extends RadioGroup {
     /**
      * Add text Layout
      */
-    private void addTextLayout(final @Nullable IFormField field, @NonNull ViewGroup view){
-        final RelativeLayout extraSubtext = (RelativeLayout) mInflater.inflate(R.layout._def_radio_expandable_extra_text, null, false);
+    private void addTextLayout(final @Nullable IFormField field, @NonNull ViewGroup extraSubtext){
         String text = field.getText();
         String link = TextUtils.isNotEmpty(field.getLinkHtml()) ? field.getLinkHtml() : field.getLinkTarget();
         String linklabel = field.getLinkText();
@@ -240,12 +242,10 @@ public class RadioGroupExpandable extends RadioGroup {
 
             ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setText(spannableString);
             ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setMovementMethod(LinkMovementMethod.getInstance());
-            view.addView(extraSubtext);
         } else {
             ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setText(text);
-            view.addView(extraSubtext);
         }
-
+        extraSubtext.findViewById(R.id.radio_expandable_text).setVisibility(VISIBLE);
 
     }
 
@@ -270,10 +270,9 @@ public class RadioGroupExpandable extends RadioGroup {
     /**
      * Add the Sub Text section to the element layout
      */
-    private void addSubTextLayout(@NonNull String subText, ViewGroup view){
-        final RelativeLayout extraSubtext = (RelativeLayout) mInflater.inflate(R.layout._def_radio_expandable_extra_subtext, null, false);
+    private void addSubTextLayout(@NonNull String subText, ViewGroup extraSubtext){
         ((TextView) extraSubtext.findViewById(R.id.sub_text)).setText(subText);
-        view.addView(extraSubtext);
+        extraSubtext.findViewById(R.id.sub_text).setVisibility(VISIBLE);
     }
 
     /**
@@ -315,6 +314,27 @@ public class RadioGroupExpandable extends RadioGroup {
         return contentValues;
     }
 
+    public Bundle saveState(@NonNull String parentKey, @NonNull Bundle outState){
+        if(CollectionUtils.isNotEmpty(mItems)){
+            outState.putInt(parentKey, getSelectedIndex());
+            if(generatedForms.containsKey(getSelectedIndex())) {
+                generatedForms.get(getSelectedIndex()).saveFormState(outState);
+            }
+        }
+
+        return outState;
+    }
+
+    public void loadState(@NonNull String parentKey, @NonNull Bundle inStat){
+        if(inStat.containsKey(parentKey)){
+            mDefaultSelected = inStat.getInt(parentKey);
+            setSelection(mDefaultSelected);
+            if(generatedForms.containsKey(inStat.getInt(parentKey))) {
+                generatedForms.get(getSelectedIndex()).loadSaveFormState(inStat);
+            }
+        }
+
+    }
     /**
      * Show Global message if dynamic Form has form childs
      */
@@ -334,7 +354,11 @@ public class RadioGroupExpandable extends RadioGroup {
         if (idx >= 0) {
             RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_shipping);
             if(button != null){
+                // To avoid stackoverflow from addFocusables
                 button.setChecked(true);
+                button.setFocusable(true);
+                button.setFocusableInTouchMode(true);
+
                 mGroup.getChildAt(idx).findViewById(R.id.radio_extras_container).setVisibility(View.VISIBLE);
                 mGroup.check(idx);
             }
@@ -351,6 +375,10 @@ public class RadioGroupExpandable extends RadioGroup {
             if (i != idx) {
                 RadioButton button = (RadioButton) mGroup.getChildAt(i).findViewById(R.id.radio_shipping);
                 if(button != null){
+                    // To avoid stackoverflow from addFocusables
+                    button.setFocusable(false);
+                    button.setFocusableInTouchMode(false);
+
                     button.setChecked(false);
                     mGroup.getChildAt(i).findViewById(R.id.radio_extras_container).setVisibility(View.GONE);
                 }

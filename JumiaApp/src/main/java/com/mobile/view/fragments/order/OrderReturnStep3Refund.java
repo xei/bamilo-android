@@ -52,6 +52,7 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
 
         if (savedInstanceState != null) {
             mFormResponse = (Form) savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
+            mFormSavedState = savedInstanceState.getParcelable(ConstantsIntentExtra.ARG_1);
         }
     }
 
@@ -88,9 +89,10 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
      * Load the dynamic form
      */
     protected void loadReturnRefundForm(Form form) {
-        Print.i(TAG, "LOAD EDIT ADDRESS FORM: ");
+
         // Return Method form
         mReturnRefundFormGenerator = FormFactory.getSingleton().create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
+        if(mFormSavedState != null)
         mReturnRefundFormGenerator.loadSaveFormState(mFormSavedState);
         mReturnRefundFormContainer.removeAllViews();
         mReturnRefundFormContainer.addView(mReturnRefundFormGenerator.getContainer());
@@ -114,6 +116,10 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
     @Override
     public void onPause() {
         super.onPause();
+        saveState();
+    }
+
+    private void saveState(){
         // Save the state
         Bundle bundle = new Bundle();
         if(mReturnRefundFormGenerator != null) {
@@ -124,7 +130,9 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        saveState();
         outState.putParcelable(ConstantsIntentExtra.DATA, mFormResponse);
+        outState.putParcelable(ConstantsIntentExtra.ARG_1, mFormSavedState);
 
         super.onSaveInstanceState(outState);
     }
@@ -136,15 +144,12 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
             if(mReturnRefundFormGenerator.validate()){
                 // Get data from forms
                 ContentValues values = mReturnRefundFormGenerator.save();
-                Print.i("code1save : "+values.toString());
                 // Save data
                 super.saveSubmittedValues(values);
                 // Next Step
                 super.onClickNextStep();
 
-                Bundle bundle = new Bundle();
-                mReturnRefundFormGenerator.saveFormState(bundle);
-                mFormSavedState = bundle;
+                saveState();
             } // If there is no Child Form, show global message
             else if(mReturnRefundFormGenerator.showGlobalMessage()) {
                 String message = TextUtils.isNotEmpty(mReturnRefundFormGenerator.getErrorMessage()) ?

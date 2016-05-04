@@ -485,7 +485,6 @@ public class DynamicFormItem {
                 ((CheckBox) this.dataControl.findViewWithTag("checkbox")).setChecked(checkedList);
                 break;
             case list:
-                Print.i(TAG,"load List");
                 mPreSelectedPosition = inStat.getInt(getKey());
                 ((IcsSpinner) this.dataControl).setSelection(mPreSelectedPosition);
                 break;
@@ -550,14 +549,7 @@ public class DynamicFormItem {
                 break;
             case hide:
                 break;
-            case radioExpandable:
 
-                mPreSelectedPosition = inStat.getInt(getKey());
-                if(mPreSelectedPosition > RadioGroupLayout.NO_DEFAULT_SELECTION){
-                    ((RadioGroupExpandable) this.dataControl).setSelection(mPreSelectedPosition);
-                }
-
-                break;
             default:
                 break;
         }
@@ -884,14 +876,6 @@ public class DynamicFormItem {
                 }
                 break;
 
-            case radioExpandable:
-
-                mPreSelectedPosition = ((RadioGroupExpandable) this.dataControl).getSelectedIndex();
-                if(mPreSelectedPosition > RadioGroupLayout.NO_DEFAULT_SELECTION){
-                    outState.putString(getEntry().getKey(), getEntry().getOptions().get(mPreSelectedPosition).getValue());
-                }
-
-                break;
             default:
                 break;
         }
@@ -1110,7 +1094,6 @@ public class DynamicFormItem {
         }
 
         TextView mLinkTextView = (TextView) this.dataControl.findViewById(R.id.textview_terms);
-        //Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getLinkTarget());
         mLinkTextView.setOnClickListener(new OnClickListener() {
@@ -1285,7 +1268,6 @@ public class DynamicFormItem {
                     Date d = new Date(cal.getTimeInMillis());
                     String date = DateFormat.format(DATE_FORMAT, d).toString();
                     spinnerButton.setText(date);
-                    //Print.i(TAG, "code1date : date : " + date);
                     if(mandatoryControl != null)
                         DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
 

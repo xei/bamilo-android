@@ -270,7 +270,6 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         for (DynamicFormItem dynamicFormItem : this) {
             result &= dynamicFormItem.validate();
         }
-        Print.i("code1subform : validate final result "+result);
         return result;
     }
 
@@ -354,6 +353,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public void loadSaveFormState(@Nullable Bundle mFormSavedState) {
         if (mFormSavedState != null) {
+
             for (DynamicFormItem item : this) {
                 item.loadState(mFormSavedState);
             }
