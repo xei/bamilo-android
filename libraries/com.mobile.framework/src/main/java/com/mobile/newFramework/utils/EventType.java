@@ -198,7 +198,11 @@ public enum EventType {
 
     SUBMIT_FORM,
 
-    GET_EXTERNAL_LINKS("http:/main/getexternallinks/");
+    GET_EXTERNAL_LINKS("http:/main/getexternallinks/"),
+
+    RETURN_METHODS_FORM_EVENT("http:/forms/returnmethods/"),
+
+    RETURN_REFUND_FORM_EVENT("http:/forms/refundmethod/");
 
 
     public final String action;

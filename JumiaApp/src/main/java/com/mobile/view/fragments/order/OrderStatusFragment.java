@@ -290,6 +290,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
 
                     holder.returnOrder.setTag(R.id.target_simple_sku, item.getSku());
                     holder.returnOrder.setOnClickListener(this);
+
                 }
 
                 // Set image

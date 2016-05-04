@@ -53,6 +53,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private static final String ERROR_MESSAGE = "error_message";
     private static final String LIST_NUMBER = "list_number";
     private static final String EMPTY = "";
+    private static final String RADIO_EXPANDABLE = "radio_expandable";
 
     private final LinkedHashMap<String, String> mDataSetRating;
     private final LinkedHashMap<String, String> mDataSet;
@@ -67,13 +68,14 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String mSubLabel;
     private String mLinkText;
     private String mLinkTarget;
+    private String mLinkHtml;
     private String mFormat;
     private String mScenario;
     private ArrayList<IFormField> mOptions;
     private OnDataSetReceived mDataSetListener;
     private FieldValidation mValidation;
     private String mValue;
-    private HashMap<String, Form>  mPaymentFields;
+    private HashMap<String, Form> mSubForms;
     private ArrayList<NewsletterOption> mNewsletterOptions;
     private IFormField mChildFormField;
     private IFormField mParentFormField;
@@ -83,6 +85,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String mPlaceHolder;
     private boolean isVerticalOrientation;
     private int mFormType;
+
+    private String mText;
+    private String mSubText;
 
     @SuppressWarnings("unused")
     public interface OnDataSetReceived {
@@ -183,8 +188,13 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     break;
                 case EMPTY:
                     mInputType = FormInputType.option;
+                    Print.d("code1subform : NO TYPE MATCH! option");
+                    break;
+                case RADIO_EXPANDABLE:
+                    mInputType = FormInputType.radioExpandable;
                     break;
                 default:
+                    Print.d("FORM FIELD: NO TYPE MATCH!");
                     return false;
             }
 
@@ -193,6 +203,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mKey = jsonObject.optString(RestConstants.KEY); // Used for form images
             mName = jsonObject.optString(RestConstants.NAME);
             mLabel = jsonObject.optString(RestConstants.LABEL);
+            mText = jsonObject.optString(RestConstants.TEXT);
+            mSubText = jsonObject.optString(RestConstants.SUBTEXT);
             mSubLabel = jsonObject.optString(RestConstants.SUB_LABEL);
             mValue = !jsonObject.isNull(RestConstants.VALUE) ? jsonObject.optString(RestConstants.VALUE) : "";
             mScenario = jsonObject.optString(RestConstants.SCENARIO);
@@ -201,6 +213,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             mFormat = jsonObject.optString(RestConstants.FORMAT);
             isPrefixField = TextUtils.equals(jsonObject.optString(RestConstants.POSITION), RestConstants.BEFORE);
             mPlaceHolder = jsonObject.optString(RestConstants.PLACE_HOLDER);
+
+
             Print.d("FORM FIELD: " + mKey + " " + mName + " " + " " + mLabel + " " + mValue + " " + mScenario);
 
             // Orientation
@@ -211,6 +225,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             if(linkObject != null){
                 mLinkText = linkObject.optString(RestConstants.LABEL);
                 mLinkTarget = linkObject.optString(RestConstants.TARGET);
+                mLinkHtml = linkObject.optString(RestConstants.HTML);
             }
 
             // Case RULES
@@ -249,7 +264,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             JSONArray dataOptionsArray = jsonObject.optJSONArray(RestConstants.OPTIONS);
 
             // Case shipping options from array
-            if(dataOptionsArray != null){
+            if(CollectionUtils.isNotEmpty(dataOptionsArray) && mInputType != FormInputType.radioExpandable ){
                 mNewsletterOptions = new ArrayList<>();
                 // Placeholder used in HomeNewsletter and Addresses
                 if (TextUtils.isNotEmpty(mPlaceHolder)) {
@@ -262,6 +277,26 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     JSONObject option = dataOptionsArray.getJSONObject(i);
                     mDataSet.put(option.optString(RestConstants.VALUE), option.optString(RestConstants.LABEL));
                 }
+            } // Case Radio Expandable
+            else if(CollectionUtils.isNotEmpty(dataOptionsArray)){
+                mOptions = new ArrayList<>();
+                mSubForms = new HashMap<>();
+                for (int i = 0; i < dataOptionsArray.length(); ++i) {
+                    JSONObject option = dataOptionsArray.getJSONObject(i);
+                    FormField fieldOption = new FormField();
+                    fieldOption.initialize(option);
+
+                    mOptions.add(fieldOption);
+                }
+            }
+
+            if(jsonObject.has(RestConstants.FORM_ENTITY)){
+                mSubForms = new HashMap<>();
+                Print.i("code1subform : has form entity");
+                // Create sub forms for required fields
+                Form mForm = new Form();
+                mForm.initialize(jsonObject);
+                mSubForms.put(mLabel, mForm);
             }
 
             /**
@@ -293,7 +328,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType == FormInputType.radioGroup){
                 mDataSet.clear();
-                mPaymentFields = new HashMap<>();
+                mSubForms = new HashMap<>();
                 JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.OPTIONS);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject field = jsonArray.getJSONObject(i);
@@ -309,7 +344,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     if(field.has(RestConstants.FIELDS)){
                         Form mForm = new Form();
                         mForm.initAsSubForm(field);
-                        mPaymentFields.put(label, mForm);
+                        mSubForms.put(label, mForm);
                     }
                 }
             }
@@ -372,13 +407,17 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             jsonObject.put(RestConstants.KEY, mKey);
             jsonObject.put(RestConstants.NAME, mName);
             jsonObject.put(RestConstants.LABEL, mLabel);
+            jsonObject.put(RestConstants.TEXT, mText);
+            jsonObject.put(RestConstants.SUBTEXT, mSubText);
             jsonObject.put(RestConstants.VALUE, mValue);
 
             if(TextUtils.isNotEmpty(mLinkText) && TextUtils.isNotEmpty(mLinkTarget)){
                 JSONObject linkObject = new JSONObject();
                 linkObject.put(RestConstants.LABEL, mLinkText);
                 linkObject.put(RestConstants.TARGET, mLinkTarget);
+                linkObject.put(RestConstants.HTML, mLinkHtml);
                 jsonObject.put(RestConstants.LINK, linkObject);
+
             }
 
             // validation
@@ -433,6 +472,16 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     }
 
     @Override
+    public String getText() {
+        return mText;
+    }
+
+    @Override
+    public String getSubText() {
+        return mSubText;
+    }
+
+    @Override
     public String getSubLabel() {
         return mSubLabel;
     }
@@ -445,6 +494,11 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     @Override
     public String getLinkTarget() {
         return this.mLinkTarget;
+    }
+
+    @Override
+    public String getLinkHtml() {
+        return this.mLinkHtml;
     }
 
     @Override
@@ -533,8 +587,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return isVerticalOrientation;
     }
 
-    public HashMap<String, Form> getPaymentMethodsField(){
-        return this.mPaymentFields;
+    public HashMap<String, Form> getSubForms(){
+        return this.mSubForms;
     }
 
     public ArrayList<NewsletterOption> getNewsletterOptions() {
@@ -580,6 +634,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeString(mSubLabel);
         dest.writeString(mLinkText);
         dest.writeString(mLinkTarget);
+        dest.writeString(mLinkHtml);
         dest.writeString(mFormat);
         dest.writeString(mScenario);
         if (mOptions == null) {
@@ -591,7 +646,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mDataSetListener);
         dest.writeValue(mValidation);
         dest.writeString(mValue);
-        dest.writeValue(mPaymentFields);
+        dest.writeValue(mSubForms);
         if (mNewsletterOptions == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -605,6 +660,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeByte((byte) (isDisabled ? 0x01 : 0x00));
         dest.writeByte((byte) (isVerticalOrientation ? 0x01 : 0x00));
         dest.writeInt(mFormType);
+        dest.writeString(mText);
+        dest.writeString(mSubText);
     }
 
     /**
@@ -626,6 +683,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mSubLabel = in.readString();
         mLinkText = in.readString();
         mLinkTarget = in.readString();
+        mLinkHtml = in.readString();
         mFormat = in.readString();
         mScenario = in.readString();
         if (in.readByte() == 0x01) {
@@ -637,7 +695,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mDataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
         mValidation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
         mValue = in.readString();
-        mPaymentFields = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mSubForms = (HashMap) in.readValue(HashMap.class.getClassLoader());
         if (in.readByte() == 0x01) {
             mNewsletterOptions = new ArrayList<>();
             in.readList(mNewsletterOptions, NewsletterOption.class.getClassLoader());
@@ -651,6 +709,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         isDisabled = in.readByte() != 0x00;
         isVerticalOrientation = in.readByte() != 0x00;
         mFormType = in.readInt();
+        mText = in.readString();
+        mSubText = in.readString();
     }
 
     /**

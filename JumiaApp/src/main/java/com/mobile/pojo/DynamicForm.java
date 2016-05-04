@@ -274,6 +274,31 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     }
 
     /**
+     * If Sub Forms have no message to display but parent form is not valid, show global message.
+     */
+    public boolean showGlobalMessage(){
+        boolean result = true;
+        for (DynamicFormItem dynamicFormItem : this) {
+            result &= dynamicFormItem.showGlobalMessage();
+        }
+        return result;
+    }
+
+    /**
+     * Get the error message of the first element.
+     * @return
+     */
+    public String getErrorMessage() {
+        String errorMessage = "";
+        for (DynamicFormItem dynamicFormItem : this) {
+            if(dynamicFormItem.validate()){
+                return dynamicFormItem.getMessage();
+            }
+        }
+        return errorMessage;
+    }
+
+    /**
      * Fills a ContentValues with the values from the form.
      * Only used to submit the form.
      *
@@ -331,6 +356,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public void loadSaveFormState(@Nullable Bundle mFormSavedState) {
         if (mFormSavedState != null) {
+
             for (DynamicFormItem item : this) {
                 item.loadState(mFormSavedState);
             }
@@ -446,6 +472,10 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         if (mClickListener != null && mClickListener.get() != null) {
             mClickListener.get().onClick(view);
         }
+    }
+
+    public WeakReference<View.OnClickListener>  getClickListener(){
+        return mClickListener;
     }
 
     /*
