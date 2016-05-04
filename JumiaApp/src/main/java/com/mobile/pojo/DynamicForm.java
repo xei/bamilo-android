@@ -273,6 +273,9 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         return result;
     }
 
+    /**
+     * If Sub Forms have no message to display but parent form is not valid, show global message.
+     */
     public boolean showGlobalMessage(){
         boolean result = true;
         for (DynamicFormItem dynamicFormItem : this) {
