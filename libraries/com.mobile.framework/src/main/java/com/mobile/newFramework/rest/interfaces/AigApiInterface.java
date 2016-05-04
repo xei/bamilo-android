@@ -289,6 +289,10 @@ public interface AigApiInterface {
     void getReturnMethodsForm(Callback<BaseResponse<Form>> callback);
     String getReturnMethodsForm = "getReturnMethodsForm";
 
+    @GET("/")
+    void getReturnRefundForm(Callback<BaseResponse<Form>> callback);
+    String getReturnRefundForm = "getReturnRefundForm";
+
     /*
      * ########## HTTP POST ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0
      */

@@ -8,6 +8,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Form Container -->
         <LinearLayout
             android:id="@+id/form_container"
             android:layout_width="match_parent"
@@ -17,6 +18,19 @@
 
         </LinearLayout>
 
+        <!-- Divider -->
+        <View style="@style/DividerHorizontal" />
+
+        <!-- Items Container -->
+        <android.support.v7.widget.LinearLayoutCompat
+            android:id="@+id/items_container"
+            style="@style/ViewGroupCompat.Vertical.MiddleDivider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+        </android.support.v7.widget.LinearLayoutCompat>
 
 
     </LinearLayout>

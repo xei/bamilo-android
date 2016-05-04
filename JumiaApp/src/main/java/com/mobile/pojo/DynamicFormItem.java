@@ -639,7 +639,7 @@ public class DynamicFormItem {
 
                 mPreSelectedPosition = ((RadioGroupExpandable) this.dataControl).getSelectedIndex();
                 if(mPreSelectedPosition > RadioGroupLayout.NO_DEFAULT_SELECTION){
-                    values.put(getEntry().getKey(), getEntry().getOptions().get(mPreSelectedPosition).getValue());
+                    ((RadioGroupExpandable) this.dataControl).save(getEntry().getName(), values);
                 }
 
                 break;
@@ -983,13 +983,27 @@ public class DynamicFormItem {
                     }
                     break;
                 case radioExpandable:
-                    result = ((RadioGroupExpandable) this.dataControl).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
+                    result = ((RadioGroupExpandable) this.dataControl).validate();
                     break;
                 default:
                     break;
             }
             if( this.errorControl != null){
                 this.errorControl.setVisibility(!result ? View.VISIBLE : View.GONE);
+            }
+        }
+
+        return result;
+    }
+
+    public boolean showGlobalMessage() {
+        boolean result = false;
+        if (hasRules()) {
+
+            switch (this.entry.getInputType()) {
+                case radioExpandable:
+                    result = ((RadioGroupExpandable) this.dataControl).showGlobalMessage();
+                    break;
             }
         }
 
@@ -1172,7 +1186,7 @@ public class DynamicFormItem {
 
         if (this.entry.isVerticalOrientation() ||
                 this.entry.getDataSet().size() > TWO_OPTIONS ||
-                this.parent.getForm().getFields().get(IntConstants.DEFAULT_POSITION).getPaymentMethodsField() != null) {
+                this.parent.getForm().getFields().get(IntConstants.DEFAULT_POSITION).getSubForms() != null) {
             Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
             createRadioGroupVertical(params, dataContainer);
         } else {
@@ -1631,7 +1645,7 @@ public class DynamicFormItem {
                 }
             }
             if (this.parent.getForm().getFields() != null && this.parent.getForm().getFields().size() > 0) {
-                HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getPaymentMethodsField();
+                HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getSubForms();
                 if (paymentMethodsField != null) {
                     if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubFormsMap().size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));

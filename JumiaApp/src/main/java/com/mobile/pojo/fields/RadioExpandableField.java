@@ -56,6 +56,11 @@ public class RadioExpandableField extends DynamicFormItem implements IDynamicFor
         if (this.entry.getValidation().isRequired()) {
             fallback = this.dataControl.isSelected();
         }
+
+        fallback &= ((RadioGroupExpandable) this.dataControl).validate();
+
+        Print.i("code1subform : validate final result "+fallback);
+
         return fallback;
     }
 

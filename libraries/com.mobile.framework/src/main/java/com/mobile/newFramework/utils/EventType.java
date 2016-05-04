@@ -200,7 +200,9 @@ public enum EventType {
 
     GET_EXTERNAL_LINKS("http:/main/getexternallinks/"),
 
-    RETURN_METHODS_FORM_EVENT("http:/forms/returnmethods/");
+    RETURN_METHODS_FORM_EVENT("http:/forms/returnmethods/"),
+
+    RETURN_REFUND_FORM_EVENT("http:/forms/refundmethod/");
 
 
     public final String action;

@@ -2,7 +2,6 @@ package com.mobile.utils;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -23,8 +22,12 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.FormConstants;
+import com.mobile.factories.FormFactory;
+import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
@@ -62,6 +65,10 @@ public class RadioGroupExpandable extends RadioGroup {
         mGroup = this;
     }
 
+    /**
+     * Add click listener callback
+     * @param clickListener
+     */
     public void addClickListener(@NonNull OnClickListener clickListener){
         mClickListener = new WeakReference<>(clickListener);
     }
@@ -86,12 +93,20 @@ public class RadioGroupExpandable extends RadioGroup {
         setItems(items, defaultSelect);
     }
 
+    /**
+     * Set items list
+     * @param items
+     * @param defaultSelected
+     */
     public void setItems(ArrayList<IFormField> items, int defaultSelected) {
         mItems = items;
         mDefaultSelected = defaultSelected;
         updateRadioGroup();
     }
 
+    /**
+     * Update Radio Group list and layout
+     */
     private void updateRadioGroup() {
         try {
             mGroup.removeAllViews();
@@ -153,7 +168,7 @@ public class RadioGroupExpandable extends RadioGroup {
         container.setId(idx);
         container.setLayoutParams(mParams);
 
-        button.setText(mItems.get(idx).getLabel());
+        button.setText(field.getLabel());
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,10 +188,22 @@ public class RadioGroupExpandable extends RadioGroup {
 
         // Set default
         button.setSelected(idx == mDefaultSelected);
+
+        if(CollectionUtils.isNotEmpty(field.getSubForms()) && field.getSubForms().containsKey(field.getLabel())){
+            Form subForm = field.getSubForms().get(field.getLabel());
+            DynamicForm mReturnFormGenerator = FormFactory.getSingleton().create(FormConstants.RETURN_METHOD_FORM, getContext(), subForm);
+            generatedForms.put(idx,mReturnFormGenerator);
+            extras.addView(mReturnFormGenerator.getContainer());
+        }
+
+
         // Add radio option
         mGroup.addView(container);
     }
 
+    /**
+     * Add text Layout
+     */
     private void addTextLayout(final @Nullable IFormField field, @NonNull ViewGroup view){
         final RelativeLayout extraSubtext = (RelativeLayout) mInflater.inflate(R.layout._def_radio_expandable_extra_text, null, false);
         String text = field.getText();
@@ -224,7 +251,6 @@ public class RadioGroupExpandable extends RadioGroup {
 
     /**
      * Handle click on the item link
-     * @param field
      */
     private void onClickLinkSpannable(final @Nullable IFormField field, @NonNull View view){
         if(mClickListener != null && mClickListener.get() != null) {
@@ -243,8 +269,6 @@ public class RadioGroupExpandable extends RadioGroup {
 
     /**
      * Add the Sub Text section to the element layout
-     * @param subText
-     * @param view
      */
     private void addSubTextLayout(@NonNull String subText, ViewGroup view){
         final RelativeLayout extraSubtext = (RelativeLayout) mInflater.inflate(R.layout._def_radio_expandable_extra_subtext, null, false);
@@ -252,12 +276,60 @@ public class RadioGroupExpandable extends RadioGroup {
         view.addView(extraSubtext);
     }
 
+    /**
+     * Get selected index
+     */
     public int getSelectedIndex() {
         int radioButtonID = mGroup.getCheckedRadioButtonId();
         View radioButton = mGroup.findViewById(radioButtonID);
         return mGroup.indexOfChild(radioButton);
     }
 
+    /**
+     * Validate Form state for Global and child Forms
+     */
+    public boolean validate(){
+        if(getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION && generatedForms.containsKey(getSelectedIndex())){
+            return generatedForms.get(getSelectedIndex()).validate();
+
+        } else if(getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Save values from sub forms
+     * @param contentValues
+     * @return
+     */
+    public ContentValues save(@NonNull String parentKey, @NonNull ContentValues contentValues){
+        if(CollectionUtils.isNotEmpty(mItems)){
+            contentValues.put(parentKey, mItems.get(getSelectedIndex()).getValue());
+            if(generatedForms.containsKey(getSelectedIndex())) {
+                contentValues.putAll(generatedForms.get(getSelectedIndex()).save());
+            }
+        }
+
+        return contentValues;
+    }
+
+    /**
+     * Show Global message if dynamic Form has form childs
+     */
+    public boolean showGlobalMessage(){
+        if(getSelectedIndex() == RadioGroupLayout.NO_DEFAULT_SELECTION){
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Set current selection
+     * @param idx
+     */
     public void setSelection(final int idx) {
         if (idx >= 0) {
             RadioButton button = (RadioButton) mGroup.getChildAt(idx).findViewById(R.id.radio_shipping);
@@ -270,6 +342,10 @@ public class RadioGroupExpandable extends RadioGroup {
         cleanOtherSelections(idx);
     }
 
+    /**
+     * Clear older selections
+     * @param idx
+     */
     private void cleanOtherSelections(final int idx) {
         for (int i = 0; i < mGroup.getChildCount(); i++) {
             if (i != idx) {

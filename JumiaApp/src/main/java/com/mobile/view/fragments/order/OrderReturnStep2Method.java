@@ -13,13 +13,17 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.order.GetReturnMethodsFormHelper;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.deeplink.TargetLink;
+import com.mobile.utils.order.ReturnOrderViewHolder;
 import com.mobile.view.R;
+
+import java.util.ArrayList;
 
 /**
  * Fragment used to show the online returns reason.
@@ -28,6 +32,7 @@ import com.mobile.view.R;
 public class OrderReturnStep2Method extends OrderReturnStepBase {
 
     protected ViewGroup mReturnFormContainer;
+    protected ViewGroup mReturnItemsContainer;
     protected DynamicForm mReturnFormGenerator;
     protected Form mFormResponse;
 
@@ -63,6 +68,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
         Print.i("ON VIEW CREATED");
         mContainer.inflate(getBaseActivity(), R.layout._def_order_return_step2_method, mContainer);
         mReturnFormContainer = (ViewGroup) mContainer.findViewById(R.id.form_container);
+        mReturnItemsContainer = (ViewGroup) mContainer.findViewById(R.id.items_container);
         // Get button
         TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
         button.setOnClickListener(this);
@@ -92,6 +98,20 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
         mReturnFormContainer.removeAllViews();
         mReturnFormContainer.addView(mReturnFormGenerator.getContainer());
         mReturnFormContainer.refreshDrawableState();
+        loadItems();
+    }
+
+    /**
+     * Load Items list
+     */
+    private void loadItems(){
+        mReturnItemsContainer.removeAllViews();
+        ArrayList<OrderTrackerItem> items = getOrderItems();
+        for (OrderTrackerItem  orderItem : items) {
+            ReturnOrderViewHolder custom = new ReturnOrderViewHolder(getContext(), getOrderNumber(), orderItem);
+            mReturnItemsContainer.addView(custom.getView());
+        }
+
     }
 
     @Override
@@ -119,6 +139,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
             if(mReturnFormGenerator.validate()){
                 // Get data from forms
                 ContentValues values = mReturnFormGenerator.save();
+                Print.i("code1save : "+values.toString());
                 // Save data
                 super.saveSubmittedValues(values);
                 // Next Step
@@ -127,8 +148,10 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
                 Bundle bundle = new Bundle();
                 mReturnFormGenerator.saveFormState(bundle);
                 mFormSavedState = bundle;
-            } else {
-                showWarningErrorMessage(getString(R.string.warning_please_select_one));
+            } else if(mReturnFormGenerator.showGlobalMessage()){
+                String message = TextUtils.isNotEmpty(mReturnFormGenerator.getErrorMessage()) ?
+                        mReturnFormGenerator.getErrorMessage() : getString(R.string.warning_please_select_one);
+                showWarningErrorMessage(message);
             }
 
         } else if(view.getId() == R.id.radio_expandable_text){

@@ -97,6 +97,7 @@ public class FormFactory {
             case FormConstants.ORDER_RETURN_REASON_FORM:
             case FormConstants.NEWSLETTER_FORM:
             case FormConstants.RETURN_METHOD_FORM:
+            case FormConstants.RETURN_REFUND_FORM:
                 parent = new DynamicForm(context, form).isMandatory().showIcons(formType);
                 break;
         }

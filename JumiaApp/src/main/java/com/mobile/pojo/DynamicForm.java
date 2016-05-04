@@ -270,7 +270,30 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         for (DynamicFormItem dynamicFormItem : this) {
             result &= dynamicFormItem.validate();
         }
+        Print.i("code1subform : validate final result "+result);
         return result;
+    }
+
+    public boolean showGlobalMessage(){
+        boolean result = true;
+        for (DynamicFormItem dynamicFormItem : this) {
+            result &= dynamicFormItem.showGlobalMessage();
+        }
+        return result;
+    }
+
+    /**
+     * Get the error message of the first invalid element.
+     * @return
+     */
+    public String getErrorMessage() {
+        String errorMessage = "";
+        for (DynamicFormItem dynamicFormItem : this) {
+            if(dynamicFormItem.validate()){
+                return dynamicFormItem.getMessage();
+            }
+        }
+        return errorMessage;
     }
 
     /**

@@ -75,7 +75,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private OnDataSetReceived mDataSetListener;
     private FieldValidation mValidation;
     private String mValue;
-    private HashMap<String, Form>  mPaymentFields;
+    private HashMap<String, Form> mSubForms;
     private ArrayList<NewsletterOption> mNewsletterOptions;
     private IFormField mChildFormField;
     private IFormField mParentFormField;
@@ -188,6 +188,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     break;
                 case EMPTY:
                     mInputType = FormInputType.option;
+                    Print.d("code1subform : NO TYPE MATCH! option");
                     break;
                 case RADIO_EXPANDABLE:
                     mInputType = FormInputType.radioExpandable;
@@ -278,12 +279,23 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                 }
             } else if(CollectionUtils.isNotEmpty(dataOptionsArray)){
                 mOptions = new ArrayList<>();
+                mSubForms = new HashMap<>();
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
                     JSONObject option = dataOptionsArray.getJSONObject(i);
                     FormField fieldOption = new FormField();
                     fieldOption.initialize(option);
+
                     mOptions.add(fieldOption);
                 }
+            }
+
+            if(jsonObject.has(RestConstants.FORM_ENTITY)){
+                mSubForms = new HashMap<>();
+                Print.i("code1subform : has form entity");
+                // Create sub forms for required fields
+                Form mForm = new Form();
+                mForm.initialize(jsonObject);
+                mSubForms.put(mLabel, mForm);
             }
 
             /**
@@ -315,7 +327,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             if(mKey.equals(RestConstants.PAYMENT_METHOD) && mInputType == FormInputType.radioGroup){
                 mDataSet.clear();
-                mPaymentFields = new HashMap<>();
+                mSubForms = new HashMap<>();
                 JSONArray jsonArray = jsonObject.getJSONArray(RestConstants.OPTIONS);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject field = jsonArray.getJSONObject(i);
@@ -331,7 +343,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     if(field.has(RestConstants.FIELDS)){
                         Form mForm = new Form();
                         mForm.initAsSubForm(field);
-                        mPaymentFields.put(label, mForm);
+                        mSubForms.put(label, mForm);
                     }
                 }
             }
@@ -574,8 +586,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return isVerticalOrientation;
     }
 
-    public HashMap<String, Form> getPaymentMethodsField(){
-        return this.mPaymentFields;
+    public HashMap<String, Form> getSubForms(){
+        return this.mSubForms;
     }
 
     public ArrayList<NewsletterOption> getNewsletterOptions() {
@@ -633,7 +645,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mDataSetListener);
         dest.writeValue(mValidation);
         dest.writeString(mValue);
-        dest.writeValue(mPaymentFields);
+        dest.writeValue(mSubForms);
         if (mNewsletterOptions == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -682,7 +694,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mDataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
         mValidation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
         mValue = in.readString();
-        mPaymentFields = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mSubForms = (HashMap) in.readValue(HashMap.class.getClassLoader());
         if (in.readByte() == 0x01) {
             mNewsletterOptions = new ArrayList<>();
             in.readList(mNewsletterOptions, NewsletterOption.class.getClassLoader());
