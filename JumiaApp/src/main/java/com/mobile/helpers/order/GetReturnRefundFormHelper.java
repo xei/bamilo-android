@@ -21,10 +21,4 @@ public class GetReturnRefundFormHelper extends SuperBaseHelper {
     public EventType getEventType() {
         return EventType.RETURN_REFUND_FORM_EVENT;
     }
-
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.ACTION_TASK;
-    }
-
 }
