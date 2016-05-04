@@ -32,8 +32,6 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
 
     private SuperWebView mSuperWebViewView;
     private Bundle mStaticPageBundle;
-    private String mTitle;
-    private String mContentId;
     private String mContentHtml;
 
     /**
@@ -66,8 +64,6 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
         // Get static page key from arguments
         mStaticPageBundle = bundle.getBundle(FragmentSwitcher.DATA);
         if (mStaticPageBundle != null) {
-            mTitle = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
-            mContentId = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_ID);
             mContentHtml = mStaticPageBundle.getString(ConstantsIntentExtra.DATA);
         }
     }
@@ -92,11 +88,11 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         // Get title
-        mTitle = TextUtils.isNotEmpty(mTitle) ? mTitle : getString(R.string.policy);
+        mArgTitle = TextUtils.isNotEmpty(mArgTitle) ? mArgTitle : getString(R.string.policy);
         // Title AB
-        getBaseActivity().setActionBarTitle(mTitle);
+        getBaseActivity().setActionBarTitle(mArgTitle);
         // Title Layout
-        ((TextView) view.findViewById(R.id.terms_title)).setText(mTitle);
+        ((TextView) view.findViewById(R.id.terms_title)).setText(mArgTitle);
         // Content
         mSuperWebViewView = (SuperWebView) view.findViewById(R.id.static_webview);
         if(TextUtils.isNotEmpty(mContentHtml)){
@@ -109,7 +105,7 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
     }
 
     private void triggerStaticPage() {
-        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mContentId), this);
+        triggerContentEvent(new GetStaticPageHelper(), GetStaticPageHelper.createBundle(mArgId), this);
     }
 
     /*
@@ -138,8 +134,8 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBundle(ConstantsIntentExtra.FRAGMENT_BUNDLE, mStaticPageBundle);
-        outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mTitle);
-        outState.putString(ConstantsIntentExtra.CONTENT_ID, mContentId);
+        outState.putString(ConstantsIntentExtra.CONTENT_TITLE, mArgTitle);
+        outState.putString(ConstantsIntentExtra.CONTENT_ID, mArgId);
         outState.putString(ConstantsIntentExtra.DATA, mContentHtml);
     }
 

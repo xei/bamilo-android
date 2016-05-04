@@ -166,8 +166,8 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
                 String title = (String) view.getTag(R.id.target_title);
                 Bundle bundle = new Bundle();
                 bundle.putString(ConstantsIntentExtra.DATA, link);
-                bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, title);
                 super.onSwitchTo(FragmentType.STATIC_WEBVIEW_PAGE)
+                        .addTitle(title)
                         .addData(bundle)
                         .noBackStack()
                         .run();;
