@@ -22,9 +22,4 @@ public class GetReturnMethodsFormHelper extends SuperBaseHelper {
         return EventType.RETURN_METHODS_FORM_EVENT;
     }
 
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.ACTION_TASK;
-    }
-
 }
