@@ -55,6 +55,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
 
         if (savedInstanceState != null) {
             mFormResponse = (Form) savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
+            mFormSavedState = savedInstanceState.getParcelable(ConstantsIntentExtra.ARG_1);
         }
     }
 
@@ -128,7 +129,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putParcelable(ConstantsIntentExtra.DATA, mFormResponse);
-
+        outState.putParcelable(ConstantsIntentExtra.ARG_1, mFormSavedState);
         super.onSaveInstanceState(outState);
     }
 
