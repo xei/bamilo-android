@@ -285,7 +285,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     }
 
     /**
-     * Get the error message of the first invalid element.
+     * Get the error message of the first element.
      * @return
      */
     public String getErrorMessage() {
