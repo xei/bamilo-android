@@ -8,6 +8,7 @@ import android.view.View;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.webview.SuperWebView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentSwitcher;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.statics.StaticPage;
@@ -63,7 +64,7 @@ public class StaticWebViewPageFragment extends BaseFragmentRequester implements 
         super.onCreateInstanceState(bundle);
 
         // Get static page key from arguments
-        mStaticPageBundle = bundle;
+        mStaticPageBundle = bundle.getBundle(FragmentSwitcher.DATA);
         if (mStaticPageBundle != null) {
             mTitle = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_TITLE);
             mContentId = mStaticPageBundle.getString(ConstantsIntentExtra.CONTENT_ID);
