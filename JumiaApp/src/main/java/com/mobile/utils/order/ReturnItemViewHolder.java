@@ -85,20 +85,15 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
      * @return String - 1 or value from text view
      */
     public String getQuantityFromReturnViewHolder() {
-        String quantity = String.valueOf(MIN_RETURN_QUANTITY);
-        if (mItemView != null) {
-            TextView textView = (TextView) mItemView.findViewById(R.id.order_return_item_button_quantity);
-            quantity = textView.getText().toString();
-        }
-        return quantity;
+        return mReturnQuantityButton != null ? mReturnQuantityButton.getText().toString() : String.valueOf(MIN_RETURN_QUANTITY);
     }
 
     /**
      * Load the saved quantity
      */
     public void setQuantityInReturnViewHolder(@Nullable String value) {
-        if (mItemView != null && TextUtils.isNotEmpty(value)) {
-            ((TextView) mItemView.findViewById(R.id.order_return_item_button_quantity)).setText(value);
+        if (mReturnQuantityButton != null && TextUtils.isNotEmpty(value)) {
+            mReturnQuantityButton.setText(value);
         }
     }
 
@@ -131,7 +126,7 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
     /**
      * Process the click on quantity button from an item
      */
-    private void onClickQuantityButton(@NonNull WeakReference<BaseActivity> weakActivity, @NonNull final TextView button, int max) { // TODO
+    private void onClickQuantityButton(@NonNull WeakReference<BaseActivity> weakActivity, @NonNull final TextView button, int max) {
         // Get current value from view
         int current = Integer.valueOf(button.getText().toString());
         // Create dialog with max and current value
