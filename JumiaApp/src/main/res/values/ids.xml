@@ -43,6 +43,7 @@
 
     <!-- TARGET LINK -->
     <item type="id" name="target_link"/>
+    <item type="id" name="html_link"/>
 
     <!-- DATE PICKER -->
     <item name="orange_dialog" type="color" />

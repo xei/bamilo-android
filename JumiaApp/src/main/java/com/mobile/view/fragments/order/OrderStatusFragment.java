@@ -290,6 +290,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
 
                     holder.returnOrder.setTag(R.id.target_simple_sku, item.getSku());
                     holder.returnOrder.setOnClickListener(this);
+
                 }
 
                 // Set image
@@ -382,7 +383,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 // Save target
                 OrderActions action = item.getDefaultOrderAction();
                 // Get page conditions
-                if(TextUtils.isEmpty(page) && action != null && TextUtils.isEmpty(action.getTarget())) {
+                if (TextUtils.isEmpty(page) && action != null && TextUtils.isNotEmpty(action.getTarget())) {
                     page = TargetLink.getIdFromTargetLink(action.getTarget());
                 }
             }
