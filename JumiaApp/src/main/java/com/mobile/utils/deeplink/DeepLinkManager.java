@@ -14,6 +14,7 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.rest.RestUrlUtils;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
@@ -692,6 +693,8 @@ public class DeepLinkManager {
         if (null != payload) {
             // Get UTM
             String mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
+
+            TrackerDelegator.trackOpenPushNotification();
             // ## Google Analytics "General Campaign Measurement" ##
             TrackerDelegator.trackGACampaign(JumiaApplication.INSTANCE.getApplicationContext(), mUtm);
             Print.i(TAG, "UTM FROM GCM: " + mUtm);

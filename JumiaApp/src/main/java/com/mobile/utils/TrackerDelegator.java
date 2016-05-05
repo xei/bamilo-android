@@ -1184,4 +1184,8 @@ public class TrackerDelegator {
         AnalyticsGoogle.get().trackEventClickOnExternalLink(TrackingEvent.EXTERNAL_LINK_CLICK, label);
     }
 
+    public static void trackOpenPushNotification(){
+        Ad4PushTracker.get().trackPNOpened();
+    }
+
 }
