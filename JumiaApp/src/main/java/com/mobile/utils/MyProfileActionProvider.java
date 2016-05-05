@@ -183,7 +183,6 @@ public class MyProfileActionProvider extends ActionProvider {
          */
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            Print.i(TAG, "code1 first getView");
             View view = convertView;
             if (view == null) {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.gen_single_line_with_icon, parent, false);
@@ -193,7 +192,6 @@ public class MyProfileActionProvider extends ActionProvider {
 
         @Override
         public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            Print.i(TAG, "code1 second getView");
             View view = convertView;
             if (view == null) {
                 view = LayoutInflater.from(getContext()).inflate(R.layout.gen_single_line_with_icon, parent, false);

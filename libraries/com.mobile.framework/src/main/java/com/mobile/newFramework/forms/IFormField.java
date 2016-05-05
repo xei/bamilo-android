@@ -3,6 +3,7 @@ package com.mobile.newFramework.forms;
 import com.mobile.newFramework.forms.FormField.OnDataSetReceived;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public interface IFormField {
@@ -19,11 +20,19 @@ public interface IFormField {
 
     String getLabel();
 
+    String getText();
+
+    String getSubText();
+
+    HashMap<String, Form> getSubForms();
+
     String getSubLabel();
 
     String getLinkText();
 
     String getLinkTarget();
+
+    String getLinkHtml();
 
     String getFormat();
 

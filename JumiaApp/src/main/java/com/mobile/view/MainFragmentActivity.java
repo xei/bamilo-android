@@ -58,6 +58,7 @@ import com.mobile.view.fragments.SessionLoginMainFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
+import com.mobile.view.fragments.StaticWebViewPageFragment;
 import com.mobile.view.fragments.VariationsFragment;
 import com.mobile.view.fragments.WishListFragment;
 import com.mobile.view.fragments.order.MyOrdersFragment;
@@ -294,6 +295,9 @@ public class MainFragmentActivity extends DebugActivity {
                 break;
             case STATIC_PAGE:
                 fragment = newFragmentInstance(StaticPageFragment.class, bundle);
+                break;
+            case STATIC_WEBVIEW_PAGE:
+                fragment = newFragmentInstance(StaticWebViewPageFragment.class, bundle);
                 break;
             case MY_ACCOUNT:
                 removeEntries = true;

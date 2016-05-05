@@ -66,11 +66,13 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.fields.CheckBoxField;
+import com.mobile.pojo.fields.RadioExpandableField;
 import com.mobile.pojo.fields.ListNumberField;
 import com.mobile.pojo.fields.ScreenRadioField;
 import com.mobile.pojo.fields.ScreenTitleField;
 import com.mobile.pojo.fields.SectionTitleField;
 import com.mobile.pojo.fields.SwitchRadioField;
+import com.mobile.utils.RadioGroupExpandable;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
@@ -157,6 +159,8 @@ public class DynamicFormItem {
                 return new CheckBoxField(parent, context, entry);
             case listNumber:
                 return new ListNumberField(parent, context, entry);
+            case radioExpandable:
+                return new RadioExpandableField(parent, context, entry);
             default:
                 return new DynamicFormItem(parent, context, entry);
         }
@@ -481,7 +485,6 @@ public class DynamicFormItem {
                 ((CheckBox) this.dataControl.findViewWithTag("checkbox")).setChecked(checkedList);
                 break;
             case list:
-                Print.i(TAG,"load List");
                 mPreSelectedPosition = inStat.getInt(getKey());
                 ((IcsSpinner) this.dataControl).setSelection(mPreSelectedPosition);
                 break;
@@ -546,6 +549,7 @@ public class DynamicFormItem {
                 break;
             case hide:
                 break;
+
             default:
                 break;
         }
@@ -623,6 +627,7 @@ public class DynamicFormItem {
                     }
                 }
                 break;
+
             default:
                 getDefaultValue(values);
                 break;
@@ -863,6 +868,7 @@ public class DynamicFormItem {
                     }
                 }
                 break;
+
             default:
                 break;
         }
@@ -911,7 +917,6 @@ public class DynamicFormItem {
                             }
                         }
                     } else {
-                        //Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayout");
                         valid = ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                     }
 
@@ -958,6 +963,24 @@ public class DynamicFormItem {
                     break;
             }
             this.errorControl.setVisibility(!result ? View.VISIBLE : View.GONE);
+
+        }
+
+        return result;
+    }
+
+    /**
+     * If Sub Forms have no message to display but parent form is not valid, show global message.
+     */
+    public boolean showGlobalMessage() {
+        boolean result = false;
+        if (hasRules()) {
+
+            switch (this.entry.getInputType()) {
+                case radioExpandable:
+                    result = ((RadioGroupExpandable) this.dataControl).showGlobalMessage();
+                    break;
+            }
         }
 
         return result;
@@ -1063,7 +1086,6 @@ public class DynamicFormItem {
         }
 
         TextView mLinkTextView = (TextView) this.dataControl.findViewById(R.id.textview_terms);
-        //Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getLinkTarget());
         mLinkTextView.setOnClickListener(new OnClickListener() {
@@ -1139,7 +1161,7 @@ public class DynamicFormItem {
 
         if (this.entry.isVerticalOrientation() ||
                 this.entry.getDataSet().size() > TWO_OPTIONS ||
-                this.parent.getForm().getFields().get(IntConstants.DEFAULT_POSITION).getPaymentMethodsField() != null) {
+                this.parent.getForm().getFields().get(IntConstants.DEFAULT_POSITION).getSubForms() != null) {
             Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
             createRadioGroupVertical(params, dataContainer);
         } else {
@@ -1238,7 +1260,6 @@ public class DynamicFormItem {
                     Date d = new Date(cal.getTimeInMillis());
                     String date = DateFormat.format(DATE_FORMAT, d).toString();
                     spinnerButton.setText(date);
-                    //Print.i(TAG, "code1date : date : " + date);
                     if(mandatoryControl != null)
                         DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
 
@@ -1601,7 +1622,7 @@ public class DynamicFormItem {
                 }
             }
             if (this.parent.getForm().getFields() != null && this.parent.getForm().getFields().size() > 0) {
-                HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getPaymentMethodsField();
+                HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getSubForms();
                 if (paymentMethodsField != null) {
                     if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubFormsMap().size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));
