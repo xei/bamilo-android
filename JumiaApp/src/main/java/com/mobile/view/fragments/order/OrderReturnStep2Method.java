@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
-import com.mobile.controllers.fragments.FragmentController;
-import com.mobile.controllers.fragments.FragmentSwitcher;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.factories.FormFactory;
 import com.mobile.helpers.order.GetReturnMethodsFormHelper;
@@ -55,7 +53,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
-            mFormResponse = (Form) savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
+            mFormResponse = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
             mFormSavedState = savedInstanceState.getParcelable(ConstantsIntentExtra.ARG_1);
         }
     }
@@ -68,7 +66,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-        mContainer.inflate(getBaseActivity(), R.layout._def_order_return_step2_method, mContainer);
+        View.inflate(getBaseActivity(), R.layout._def_order_return_step2_method, mContainer);
         mReturnFormContainer = (ViewGroup) mContainer.findViewById(R.id.form_container);
         mReturnItemsContainer = (ViewGroup) mContainer.findViewById(R.id.items_container);
         // Get button
@@ -95,7 +93,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     protected void loadReturnMethodForm(Form form) {
         Print.i(TAG, "LOAD EDIT ADDRESS FORM: ");
         // Return Method form
-        mReturnFormGenerator = FormFactory.getSingleton().create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
+        mReturnFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
         mReturnFormGenerator.loadSaveFormState(mFormSavedState);
         mReturnFormContainer.removeAllViews();
         mReturnFormContainer.addView(mReturnFormGenerator.getContainer());
@@ -170,7 +168,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
                         .addTitle(title)
                         .addData(bundle)
                         .noBackStack()
-                        .run();;
+                        .run();
             }
         } else {
             super.onClick(view);
