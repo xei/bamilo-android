@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools"
-    tools:keep="@drawable/ic_stat_notifications,
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="
+
+    @drawable/ic_form_*,
+    @drawable/ic_stat_notifications,
+
     @layout/com_ad4screen_sdk_*,
     @anim/com_ad4screen_sdk_*,
     @animator/com_ad4screen_sdk_*,
     @drawable/com_ad4screen_sdk_*,
     @values/com_ad4screen_sdk_*">
+
     <!-- Because the build system was not detecting the drawable as being used by the app,
  because its only used by the Ad4push SDK, the shrinkResources task was removing this at build time,
  causing the app to crash when it received a notification.
@@ -20,5 +24,17 @@
     <!--@layout/com_ad4screen_sdk_template_banner,-->
     <!--@layout/com_ad4screen_sdk_template_text,-->
     <!--@layout/com_ad4screen_sdk_template_text_fullscreen-->
+
+    <!-- Keep these form icons:
+            R.drawable.ic_form_birthday,
+            R.drawable.ic_form_email,
+            R.drawable.ic_form_first_name,
+            R.drawable.ic_form_gender,
+            R.drawable.ic_form_national_id,
+            R.drawable.ic_form_password,
+            R.drawable.ic_form_phone,
+            R.drawable.ic_form_female,
+            R.drawable.ic_form_male
+     -->
 
 </resources>

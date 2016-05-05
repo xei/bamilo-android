@@ -207,19 +207,20 @@ public class UIUtils {
      * Mirror rating stars case RTL and pre API 17.
      */
     public static void setProgressForRTLPreJellyMr2(View progressBar) {
-        if (ShopSelector.isRtl() && DeviceInfoHelper.isPreJellyBeanMR2()) {
-            mirrorView(progressBar);
+        if (DeviceInfoHelper.isPreJellyBeanMR2()) {
+            mirrorViewForRTL(progressBar);
         }
     }
 
     /**
-     * Mirror View.
+     * Mirror view case RTL.
      */
-    public static void mirrorView(View view) {
-        view.setScaleX(-1.0f);
-        view.setScaleY(1.0f);
+    public static void mirrorViewForRTL(@NonNull View view) {
+        if (ShopSelector.isRtl()) {
+            view.setScaleX(-1.0f);
+            view.setScaleY(1.0f);
+        }
     }
-
 
     /**
      * Method to detect if a drawable existing at left or right in a TextView was clicked

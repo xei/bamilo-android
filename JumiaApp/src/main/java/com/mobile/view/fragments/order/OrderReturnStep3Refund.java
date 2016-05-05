@@ -51,7 +51,7 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null) {
-            mFormResponse = (Form) savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
+            mFormResponse = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
             mFormSavedState = savedInstanceState.getParcelable(ConstantsIntentExtra.ARG_1);
         }
     }
@@ -64,7 +64,7 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-        mContainer.inflate(getBaseActivity(), R.layout._def_order_return_step2_method, mContainer);
+        View.inflate(getBaseActivity(), R.layout._def_order_return_step2_method, mContainer);
         mReturnRefundFormContainer = (ViewGroup) mContainer.findViewById(R.id.form_container);
         mReturnRefundItemsContainer = (ViewGroup) mContainer.findViewById(R.id.items_container);
         // Get button
@@ -91,7 +91,7 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
     protected void loadReturnRefundForm(Form form) {
 
         // Return Method form
-        mReturnRefundFormGenerator = FormFactory.getSingleton().create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
+        mReturnRefundFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
         if(mFormSavedState != null)
         mReturnRefundFormGenerator.loadSaveFormState(mFormSavedState);
         mReturnRefundFormContainer.removeAllViews();
