@@ -66,8 +66,8 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.fields.CheckBoxField;
-import com.mobile.pojo.fields.RadioExpandableField;
 import com.mobile.pojo.fields.ListNumberField;
+import com.mobile.pojo.fields.RadioExpandableField;
 import com.mobile.pojo.fields.ScreenRadioField;
 import com.mobile.pojo.fields.ScreenTitleField;
 import com.mobile.pojo.fields.SectionTitleField;
@@ -269,10 +269,7 @@ public class DynamicFormItem {
             this.control = new RelativeLayout(this.context);
             this.control.setLayoutParams(params);
             this.control.setId(parent.getNextId());
-            // TODO: Remove validation when all items are IDynamicFormItemField.
-            if (this instanceof IDynamicFormItemField) {
-                ((IDynamicFormItemField) this).build(params);
-            }
+            ((IDynamicFormItemField) this).build(params);
         }
     }
 

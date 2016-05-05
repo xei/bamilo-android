@@ -26,7 +26,7 @@
 
     <!--RETURN PAYMENT-->
     <include
-        android:id="@+id/order_return_finish_payment"
+        android:id="@+id/order_return_finish_refund"
         layout="@layout/_def_gen_single_line_section_editable" />
 
     <!--RETURN ITEMS-->

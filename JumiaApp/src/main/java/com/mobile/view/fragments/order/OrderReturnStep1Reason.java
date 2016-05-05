@@ -193,7 +193,7 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
             ContentValues data = form.save();
             // Replace placeholders
             for (Map.Entry<String, Object> entry : data.valueSet()) {
-                // Hammered
+                // Hammered to get reason label
                 hammeredToGetReasonLabel(result, form, item.getSku());
                 // Replace placeholder
                 String key = entry.getKey().replace(FORM_PLACEHOLDER, item.getSku());
@@ -202,32 +202,6 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
             }
         }
         return result;
-    }
-
-    /**
-     * This hammered was added because all return steps are being saved in the app side.<br>
-     * And we need save selected labels to show the finish step.
-     * TODO: Added in v3.2, delete this hammered ASAP
-     */
-    @SuppressWarnings("ConstantConditions")
-    private void hammeredToGetReasonLabel(@NonNull ContentValues result, @NonNull DynamicForm form, @NonNull String sku) {
-        try {
-            // Save readable reason
-            View view = form.getItemByKey(RestConstants.REASON).getDataControl();
-            String label = ((FormListItem) ((IcsSpinner) view).getSelectedItem()).getLabel();
-            result.put(RestConstants.REASON + sku, label);
-        } catch (NullPointerException e) {
-            Print.w("WARNING: NPE ON GET LABEL");
-        }
-    }
-
-    /**
-     * This hammered was added to get the label.
-     * TODO: Added in v3.2, delete this hammered ASAP
-     */
-    @Nullable
-    public static String getReasonLabel(@Nullable ContentValues values, @NonNull String sku) {
-        return values != null ? values.getAsString(RestConstants.REASON + sku) : null;
     }
 
     /*
@@ -305,6 +279,33 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
         // Case GET_RETURN_REASON_FORM
         // Case GET_RETURN_REASONS
         showFragmentErrorRetry();
+    }
+
+
+    /**
+     * This hammered was added because all return steps are being saved in the app side.<br>
+     * And we need save the selected labels to show in the finish step.
+     * TODO: NAFAMZ-16058 - Hammered dded in v3.2
+     */
+    @SuppressWarnings("ConstantConditions")
+    private void hammeredToGetReasonLabel(@NonNull ContentValues result, @NonNull DynamicForm form, @NonNull String sku) {
+        try {
+            // Save readable reason
+            View view = form.getItemByKey(RestConstants.REASON).getDataControl();
+            String label = ((FormListItem) ((IcsSpinner) view).getSelectedItem()).getLabel();
+            result.put(RestConstants.REASON + sku, label);
+        } catch (NullPointerException e) {
+            Print.w("WARNING: NPE ON GET LABEL");
+        }
+    }
+
+    /**
+     * This hammered was added to get the label.
+     * TODO: NAFAMZ-16058 - Hammered dded in v3.2
+     */
+    @Nullable
+    public static String getReasonLabel(@Nullable ContentValues values, @NonNull String sku) {
+        return values != null ? values.getAsString(RestConstants.REASON + sku) : null;
     }
 
 }

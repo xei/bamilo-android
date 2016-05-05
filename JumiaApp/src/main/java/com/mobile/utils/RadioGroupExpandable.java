@@ -30,7 +30,6 @@ import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
 
@@ -285,6 +284,17 @@ public class RadioGroupExpandable extends RadioGroup {
     }
 
     /**
+     * Get selected label
+     */
+    @Nullable
+    public String getSelectedLabel() {
+        if (CollectionUtils.isNotEmpty(mItems)) {
+            return mItems.get(getSelectedIndex()).getLabel();
+        }
+        return null;
+    }
+
+    /**
      * Validate Form state for Global and child Forms
      */
     public boolean validate(){
@@ -339,11 +349,8 @@ public class RadioGroupExpandable extends RadioGroup {
      * Show Global message if dynamic Form has form childs
      */
     public boolean showGlobalMessage(){
-        if(getSelectedIndex() == RadioGroupLayout.NO_DEFAULT_SELECTION){
-            return true;
-        }
+        return getSelectedIndex() == RadioGroupLayout.NO_DEFAULT_SELECTION;
 
-        return false;
     }
 
     /**

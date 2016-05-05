@@ -74,18 +74,18 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
         if (container.getChildCount() > 0) {
             container.removeAllViews();
         }
-        // View group to add each form
-        ViewGroup group = (ViewGroup) LayoutInflater.from(getBaseActivity()).inflate(R.layout._def_order_return_step_finish, this.mContainer, false);
-        // Method
-        UIOrderUtils.setReturnSections(group, R.id.order_return_finish_method, R.string.return_method, "Drop it off");
-        // Payment
-        UIOrderUtils.setReturnSections(group, R.id.order_return_finish_payment, R.string.return_payment, "Bank Deposit");
-        // Items
-        ViewGroup itemsView = (ViewGroup) group.findViewById(R.id.order_return_finish_items);
         // Validate items to set reason section
         boolean showItemsWithReason = CollectionUtils.size(mItems) > 1;
+        // View group to add each form
+        ViewGroup group = (ViewGroup) LayoutInflater.from(getBaseActivity()).inflate(R.layout._def_order_return_step_finish, this.mContainer, false);
+        // Reason
         setReasonSection(group, showItemsWithReason);
-        setItems(itemsView, mItems, showItemsWithReason);
+        // Method
+        setMethodSection(group);
+        // refund
+        setRefundSection(group);
+        // Items
+        setItems((ViewGroup) group.findViewById(R.id.order_return_finish_items), mItems, showItemsWithReason);
         // Add
         container.addView(group);
     }
@@ -98,9 +98,25 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
             UIUtils.setVisibility(group.findViewById(R.id.order_return_finish_reason), false);
         } else {
             String sku = getOrderItems().get(IntConstants.DEFAULT_POSITION).getSku();
-            String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedReasonValues(), sku);
+            String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedStepValues(OrderReturnStepsMain.REASON), sku);
             UIOrderUtils.setReturnSections(group, R.id.order_return_finish_reason, R.string.return_reason, reason);
         }
+    }
+
+    /**
+     * Set the method section
+     */
+    private void setMethodSection(@NonNull View group) {
+        String method = OrderReturnStep2Method.getMethodLabel(getSubmittedStepValues(OrderReturnStepsMain.REASON));
+        UIOrderUtils.setReturnSections(group, R.id.order_return_finish_method, R.string.return_method, method);
+    }
+
+    /**
+     * Set the refund section
+     */
+    private void setRefundSection(@NonNull View group) {
+        String refund = OrderReturnStep3Refund.getRefundLabel(getSubmittedStepValues(OrderReturnStepsMain.REFUND));
+        UIOrderUtils.setReturnSections(group, R.id.order_return_finish_refund, R.string.return_payment, refund);
     }
 
     /**
@@ -111,7 +127,7 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
             ReturnOrderViewHolder custom;
             // Create item
             if (showReasonView) {
-                String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedReasonValues(), item.getSku());
+                String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedStepValues(OrderReturnStepsMain.REASON), item.getSku());
                 custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item).addReason(reason).onBind();
             } else {
                 custom = new ReturnOrderViewHolder(getContext(), mOrder, item).onBind();

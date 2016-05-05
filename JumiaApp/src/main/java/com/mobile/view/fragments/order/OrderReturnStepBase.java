@@ -88,7 +88,6 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
 
     /**
      * Validate submitted values
-     * @return
      */
     protected boolean hasSubmittedValuesToFinish() {
         OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
@@ -96,12 +95,12 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
     }
 
     /**
-     * Get reason values
+     * Get step values
      */
-    protected ContentValues getSubmittedReasonValues() {
+    protected ContentValues getSubmittedStepValues(@OrderReturnStepsMain.ReturnStepType int mStep) {
         OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
         if (parent != null) {
-            return parent.getSubmittedValuesForStep(OrderReturnStepsMain.REASON);
+            return parent.getSubmittedValuesForStep(mStep);
         }
         return null;
     }
