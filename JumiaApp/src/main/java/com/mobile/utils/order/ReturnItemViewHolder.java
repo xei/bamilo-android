@@ -26,7 +26,7 @@ import java.lang.ref.WeakReference;
  * Class used to represent a return return order item.
  * @author spereira
  */
-public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClickListener, DialogQuantityListFragment.OnDialogListListener {
+public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickListener, DialogQuantityListFragment.OnDialogListListener {
 
     public final static int MIN_RETURN_QUANTITY = 1;
 
@@ -42,14 +42,14 @@ public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClick
     /**
      * Constructor
      */
-    public ReturnOrderViewHolder(@NonNull Context context, @NonNull String order, @NonNull OrderTrackerItem item) {
+    public ReturnItemViewHolder(@NonNull Context context, @NonNull String order, @NonNull OrderTrackerItem item) {
         this(context, R.layout._def_order_return_step_item, order, item);
     }
 
     /**
      * Private constructor
      */
-    protected ReturnOrderViewHolder(@NonNull Context context, @LayoutRes int layout, @NonNull String order, @NonNull OrderTrackerItem item) {
+    protected ReturnItemViewHolder(@NonNull Context context, @LayoutRes int layout, @NonNull String order, @NonNull OrderTrackerItem item) {
         this.mItemView = View.inflate(context, layout, null);
         this.mOrder = order;
         this.mContext = context;
@@ -59,7 +59,7 @@ public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClick
     /**
      * Bind view
      */
-    public ReturnOrderViewHolder onBind() {
+    public ReturnItemViewHolder bind() {
         // Image
         ImageView image = (ImageView) mItemView.findViewById(R.id.image_view);
         View progress = mItemView.findViewById(R.id.image_loading_progress);

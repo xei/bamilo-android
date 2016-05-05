@@ -126,11 +126,10 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
      * Validate submitted values
      */
     public boolean hasSubmittedValuesToFinish() {
-        return true;
-//        return mSubmittedData != null &&
-//                mSubmittedData.containsKey(String.valueOf(REASON)) &&
-//                mSubmittedData.containsKey(String.valueOf(METHOD)) &&
-//                mSubmittedData.containsKey(String.valueOf(REFUND));
+        return mSubmittedData != null &&
+                mSubmittedData.containsKey(String.valueOf(REASON)) &&
+                mSubmittedData.containsKey(String.valueOf(METHOD)) &&
+                mSubmittedData.containsKey(String.valueOf(REFUND));
     }
 
     /**

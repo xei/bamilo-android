@@ -12,6 +12,6 @@
     <!--RETURN REASON-->
     <include
         android:id="@+id/order_return_finish_reason"
-        layout="@layout/_def_gen_single_line_section_editable" />
+        layout="@layout/gen_single_line_section_editable" />
 
 </LinearLayout>

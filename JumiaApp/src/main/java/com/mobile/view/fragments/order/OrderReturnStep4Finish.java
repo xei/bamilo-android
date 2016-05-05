@@ -12,7 +12,7 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.order.ReturnItemReasonViewHolder;
-import com.mobile.utils.order.ReturnOrderViewHolder;
+import com.mobile.utils.order.ReturnItemViewHolder;
 import com.mobile.utils.order.UIOrderUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
@@ -126,13 +126,13 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
      */
     private void setReturnItems(@NonNull ViewGroup group, @NonNull ArrayList<OrderTrackerItem> items, boolean showReasonView) {
         for (OrderTrackerItem item : items) {
-            ReturnOrderViewHolder custom;
+            ReturnItemViewHolder custom;
             // Create item
             if (showReasonView) {
                 String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedStepValues(OrderReturnStepsMain.REASON), item.getSku());
-                custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item).addReason(reason).onBind();
+                custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item).addReason(reason).bind();
             } else {
-                custom = new ReturnOrderViewHolder(getContext(), mOrder, item).onBind();
+                custom = new ReturnItemViewHolder(getContext(), mOrder, item).bind();
             }
             // Add view
             group.addView(custom.getView());

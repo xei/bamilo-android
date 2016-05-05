@@ -12,7 +12,7 @@ import com.mobile.view.R;
  *
  * @author spereira
  */
-public class ReturnItemReasonViewHolder extends ReturnOrderViewHolder {
+public class ReturnItemReasonViewHolder extends ReturnItemViewHolder {
 
     private String mReason;
 
@@ -26,8 +26,8 @@ public class ReturnItemReasonViewHolder extends ReturnOrderViewHolder {
     }
 
     @Override
-    public ReturnItemReasonViewHolder onBind() {
-        super.onBind();
+    public ReturnItemReasonViewHolder bind() {
+        super.bind();
         UIOrderUtils.setReturnSections(mItemView, R.id.order_return_finish_reason, R.string.return_reason, mReason);
         return this;
     }

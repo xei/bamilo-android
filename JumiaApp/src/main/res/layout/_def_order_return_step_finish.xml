@@ -7,7 +7,7 @@
     <!--RETURN REASON-->
     <include
         android:id="@+id/order_return_finish_reason"
-        layout="@layout/_def_gen_single_line_section_editable" />
+        layout="@layout/gen_single_line_section_editable" />
 
     <!--SPACE-->
     <android.support.v4.widget.Space
@@ -17,7 +17,7 @@
     <!--RETURN METHOD-->
     <include
         android:id="@+id/order_return_finish_method"
-        layout="@layout/_def_gen_single_line_section_editable" />
+        layout="@layout/gen_single_line_section_editable" />
 
     <!--SPACE-->
     <android.support.v4.widget.Space
@@ -27,7 +27,7 @@
     <!--RETURN PAYMENT-->
     <include
         android:id="@+id/order_return_finish_refund"
-        layout="@layout/_def_gen_single_line_section_editable" />
+        layout="@layout/gen_single_line_section_editable" />
 
     <!--RETURN ITEMS-->
     <android.support.v7.widget.LinearLayoutCompat

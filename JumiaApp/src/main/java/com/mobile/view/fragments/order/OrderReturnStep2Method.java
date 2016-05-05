@@ -23,7 +23,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.utils.RadioGroupExpandable;
 import com.mobile.utils.deeplink.TargetLink;
-import com.mobile.utils.order.ReturnOrderViewHolder;
+import com.mobile.utils.order.ReturnItemViewHolder;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -112,7 +112,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
         mReturnItemsContainer.removeAllViews();
         ArrayList<OrderTrackerItem> items = getOrderItems();
         for (OrderTrackerItem  orderItem : items) {
-            ReturnOrderViewHolder custom = new ReturnOrderViewHolder(getContext(), getOrderNumber(), orderItem);
+            ReturnItemViewHolder custom = new ReturnItemViewHolder(getContext(), getOrderNumber(), orderItem);
             mReturnItemsContainer.addView(custom.getView());
         }
 

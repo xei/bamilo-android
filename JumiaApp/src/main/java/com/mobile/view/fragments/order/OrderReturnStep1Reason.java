@@ -23,7 +23,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.ICustomFormField;
-import com.mobile.utils.order.ReturnOrderViewHolder;
+import com.mobile.utils.order.ReturnItemViewHolder;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -145,7 +145,7 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
      */
     private DynamicForm createDynamicForm(@NonNull Form form, @NonNull OrderTrackerItem item) {
         // Create custom view
-        ReturnOrderViewHolder custom = new ReturnOrderViewHolder(getContext(), mOrder, item).onBind();
+        ReturnItemViewHolder custom = new ReturnItemViewHolder(getContext(), mOrder, item).bind();
         // Create form view
         DynamicForm dyForm = new DynamicForm(getContext(), form)
                 .addMarginTop(R.dimen.margin_padding_xs)
