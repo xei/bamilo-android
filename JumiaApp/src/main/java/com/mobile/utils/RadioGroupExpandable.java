@@ -207,9 +207,9 @@ public class RadioGroupExpandable extends RadioGroup {
      * Add text Layout
      */
     private void addTextLayout(final @Nullable IFormField field, @NonNull ViewGroup extraSubtext){
-        String text = TextUtils.escape(field.getText());
+        String text = field.getText();
         String link = TextUtils.isNotEmpty(field.getLinkHtml()) ? field.getLinkHtml() : field.getLinkTarget();
-        String linklabel = TextUtils.escape(field.getLinkText());
+        String linklabel = field.getLinkText();
 
         String completeText = null;
         if(TextUtils.isNotEmpty(link)){
