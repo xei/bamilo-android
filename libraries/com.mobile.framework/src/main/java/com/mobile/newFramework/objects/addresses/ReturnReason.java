@@ -16,6 +16,10 @@ public class ReturnReason extends FormListItem {
 
     private String mKey;
 
+    /**
+     * Constructor
+     */
+    @SuppressWarnings("unused")
     public ReturnReason(String value, String label) {
         super(IntConstants.INVALID_POSITION, label);
         this.mKey = value;

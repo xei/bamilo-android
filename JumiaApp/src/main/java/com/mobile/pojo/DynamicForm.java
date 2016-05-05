@@ -114,9 +114,21 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     @NonNull
     public DynamicForm addMarginTop(@DimenRes int dimension) {
-        int marginTop = base.getContext().getResources().getDimensionPixelSize(dimension);
+        int margin = base.getContext().getResources().getDimensionPixelSize(dimension);
         LinearLayoutCompat.LayoutParams params = (LinearLayoutCompat.LayoutParams) base.getLayoutParams();
-        params.setMargins(params.leftMargin, marginTop, params.rightMargin, params.bottomMargin);
+        params.setMargins(params.leftMargin, margin, params.rightMargin, params.bottomMargin);
+        base.requestLayout();
+        return this;
+    }
+
+    /**
+     * Add a margin bottom.
+     */
+    @NonNull
+    public DynamicForm addMarginBottom(@DimenRes int dimension) {
+        int margin = base.getContext().getResources().getDimensionPixelSize(dimension);
+        LinearLayoutCompat.LayoutParams params = (LinearLayoutCompat.LayoutParams) base.getLayoutParams();
+        params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, margin);
         base.requestLayout();
         return this;
     }

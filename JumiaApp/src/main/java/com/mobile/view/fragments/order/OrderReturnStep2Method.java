@@ -97,7 +97,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     protected void loadReturnMethodForm(Form form) {
         Print.i(TAG, "LOAD EDIT ADDRESS FORM: ");
         // Return Method form
-        mReturnFormGenerator = FormFactory.getSingleton().create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
+        mReturnFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
         mReturnFormGenerator.loadSaveFormState(mFormSavedState);
         mReturnFormContainer.removeAllViews();
         mReturnFormContainer.addView(mReturnFormGenerator.getContainer());

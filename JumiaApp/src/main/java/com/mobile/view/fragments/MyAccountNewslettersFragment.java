@@ -151,8 +151,7 @@ public class MyAccountNewslettersFragment extends BaseFragment implements IRespo
      */
     private void showDynamicForm(Form form) {
         // Create form
-        mDynamicForm = FormFactory.getSingleton()
-                .create(FormConstants.NEWSLETTER_PREFERENCES_FORM, getContext(), form)
+        mDynamicForm = FormFactory.create(FormConstants.NEWSLETTER_PREFERENCES_FORM, getContext(), form)
                 .addRequestCallBack(this)               // Used to intercept generic messages
                 .addCheckedChangeListener(this)         // Used to intercept the un subscribe value
                 .addParentFragment(this)                // Used to know the current view state

@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 
 import com.mobile.components.viewpager.SuperViewPager;
@@ -51,7 +51,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
      */
     public OrderReturnStepsMain() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MY_ACCOUNT,
+                NavigationAction.MY_ORDERS,
                 R.layout._def_order_return_step_main,
                 R.string.my_orders_label,
                 NO_ADJUST_CONTENT);
@@ -198,7 +198,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
      * Class used as an simple pager adapter that represents each fragment
      * @author sergiopereira
      */
-    private class OrderReturnStepsAdapter extends FragmentPagerAdapter {
+    private class OrderReturnStepsAdapter extends FragmentStatePagerAdapter {
 
         /**
          * Constructor

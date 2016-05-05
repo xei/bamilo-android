@@ -32,7 +32,6 @@ public class PromptSpinnerAdapter implements SpinnerAdapter, ListAdapter {
      * @param spinnerAdapter wrapped Adapter.
      * @param nothingSelectedLayout layout for nothing selected, perhaps
      * you want text grayed out like a prompt...
-     * @param context
      */
     public PromptSpinnerAdapter(SpinnerAdapter spinnerAdapter, int nothingSelectedLayout, Context context) {
         this(spinnerAdapter, nothingSelectedLayout, -1, context);
@@ -48,7 +47,6 @@ public class PromptSpinnerAdapter implements SpinnerAdapter, ListAdapter {
      * text grayed out like a prompt...
      * @param nothingSelectedDropdownLayout layout for your 'Select an Item...' in
      * the dropdown.
-     * @param context
      */
     public PromptSpinnerAdapter(SpinnerAdapter spinnerAdapter, int nothingSelectedLayout, int nothingSelectedDropdownLayout, Context context) {
         this.adapter = spinnerAdapter;
@@ -72,8 +70,6 @@ public class PromptSpinnerAdapter implements SpinnerAdapter, ListAdapter {
     /**
      * View to show in Spinner with Nothing Selected
      * Override this to do something dynamic... e.g. "37 Options Found"
-     * @param parent
-     * @return
      */
     protected View getNothingSelectedView(ViewGroup parent) {
         View view = layoutInflater.inflate(nothingSelectedLayout, parent, false);
@@ -102,8 +98,6 @@ public class PromptSpinnerAdapter implements SpinnerAdapter, ListAdapter {
     /**
      * Override this to do something dynamic... For example, "Pick your favorite
      * of these 37".
-     * @param parent
-     * @return
      */
     protected View getNothingSelectedDropdownView(ViewGroup parent) {
         return layoutInflater.inflate(nothingSelectedDropdownLayout, parent, false);

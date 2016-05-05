@@ -38,7 +38,6 @@
         tools:text="Order Nº: 123456789" />
 
     <!-- QUANTITY TO RETURN -->
-
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_return_item_button_quantity"
         style="@style/FormButtonSpinner"
@@ -53,8 +52,9 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/order_return_item_text_return_quantity"
         style="@style/TextBase.Caption.Black"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_32dp"
         android:layout_alignBottom="@id/order_return_item_button_quantity"
-        android:layout_alignTop="@id/order_return_item_button_quantity"
         android:layout_marginRight="@dimen/margin_padding_l"
         android:layout_toLeftOf="@id/order_return_item_button_quantity"
         android:text="@string/quantity_to_return"

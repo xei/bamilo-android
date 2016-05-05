@@ -206,7 +206,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
     protected void loadEditAddressForm(Form form) {
         Print.i(TAG, "LOAD EDIT ADDRESS FORM");
         // Edit form
-        mEditFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
+        mEditFormGenerator = FormFactory.create(FormConstants.ADDRESS_FORM, getBaseActivity(), form);
         mEditFormContainer.removeAllViews();
         mEditFormGenerator.loadSaveFormState(mFormSavedState);
         mEditFormContainer.addView(mEditFormGenerator.getContainer());
@@ -237,7 +237,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ViewGroup group = formItem.getControl();
         group.removeAllViews();
         // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>( getBaseActivity(), R.layout.form_spinner_item, regions);
@@ -265,7 +265,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ViewGroup group = formItem.getControl();
         group.removeAllViews();
         // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
@@ -291,7 +291,7 @@ public abstract class EditAddressFragment extends BaseFragment implements IRespo
         ViewGroup group = formItem.getControl();
         group.removeAllViews();
         // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);

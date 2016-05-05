@@ -95,7 +95,7 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
     protected void loadReturnRefundForm(Form form) {
 
         // Return Method form
-        mReturnRefundFormGenerator = FormFactory.getSingleton().create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
+        mReturnRefundFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
         if(mFormSavedState != null)
         mReturnRefundFormGenerator.loadSaveFormState(mFormSavedState);
         mReturnRefundFormContainer.removeAllViews();

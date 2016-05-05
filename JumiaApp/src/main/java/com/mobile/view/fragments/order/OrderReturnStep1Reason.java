@@ -148,6 +148,8 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
         ReturnOrderViewHolder custom = new ReturnOrderViewHolder(getContext(), mOrder, item).onBind();
         // Create form view
         DynamicForm dyForm = new DynamicForm(getContext(), form)
+                .addMarginTop(R.dimen.margin_padding_xs)
+                .addMarginBottom(R.dimen.margin_padding_l)
                 .addType(FormConstants.ORDER_RETURN_REASON_FORM)
                 .addRequestCallBack(this)
                 .build();

@@ -193,7 +193,7 @@ public class RadioGroupExpandable extends RadioGroup {
 
         if(CollectionUtils.isNotEmpty(field.getSubForms()) && field.getSubForms().containsKey(field.getLabel())){
             Form subForm = field.getSubForms().get(field.getLabel());
-            DynamicForm mReturnFormGenerator = FormFactory.getSingleton().create(FormConstants.RETURN_METHOD_FORM, getContext(), subForm);
+            DynamicForm mReturnFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getContext(), subForm);
             generatedForms.put(idx,mReturnFormGenerator);
             extras.addView(mReturnFormGenerator.getContainer());
         }
