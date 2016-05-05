@@ -146,5 +146,14 @@ public class TextUtils {
         return Html.fromHtml(Html.fromHtml(html).toString()).toString();
     }
 
+    /**
+     * Strip the escaped html two times to return a displayable html.
+     *
+     * @param html The escaped html
+     * @return String
+     */
+    public static String escape(String html) {
+        return Html.escapeHtml(html);
+    }
 
 }

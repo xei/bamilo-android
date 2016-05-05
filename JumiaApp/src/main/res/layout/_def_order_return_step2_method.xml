@@ -19,7 +19,9 @@
         </LinearLayout>
 
         <!-- Divider -->
-        <View style="@style/DividerHorizontal" />
+        <View
+            android:layout_marginTop="@dimen/margin_padding_l"
+            style="@style/DividerHorizontal" />
 
         <!-- Items Container -->
         <android.support.v7.widget.LinearLayoutCompat

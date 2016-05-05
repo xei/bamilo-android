@@ -145,6 +145,18 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     /**
      * Get submitted values
      */
+    public ContentValues getSubmittedValues() {
+        ContentValues contentValues = new ContentValues();
+        contentValues.putAll(getSubmittedValuesForStep(REASON));
+        contentValues.putAll(getSubmittedValuesForStep(METHOD));
+        contentValues.putAll(getSubmittedValuesForStep(REFUND));
+
+        return contentValues;
+    }
+
+    /**
+     * Get submitted values for step
+     */
     public ContentValues getSubmittedValuesForStep(@ReturnStepType int mStep) {
         return mSubmittedData != null ? (ContentValues) mSubmittedData.getParcelable(String.valueOf(mStep)) : null;
     }

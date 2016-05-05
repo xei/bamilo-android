@@ -412,6 +412,11 @@ public interface AigApiInterface {
     void submitFormAction(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String submitFormAction = "submitFormAction";
 
+    @FormUrlEncoded
+    @POST("/")
+    void setReturnFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<OrderStatus>> callback);
+    String setReturnFinish = "setReturnFinish";
+
     /*
      * ########## HTTP PUT ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0
      */
