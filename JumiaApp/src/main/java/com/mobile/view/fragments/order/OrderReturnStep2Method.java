@@ -137,7 +137,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     @Override
     public void onClick(View view) {
         // Case next step
-        if (view.getId() == R.id.order_return_main_button_ok) {
+        if (view.getId() == R.id.order_return_main_button_ok && mReturnFormGenerator != null) {
             if(mReturnFormGenerator.validate()){
                 // Get data from forms
                 ContentValues values = mReturnFormGenerator.save();
@@ -200,8 +200,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
 
     @Override
     protected void onSuccessResponse(BaseResponse response) {
-        // Show container
-        showFragmentContentContainer();
+
         EventType eventType = response.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
@@ -216,13 +215,16 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
                 Form form = (Form) response.getContentData();
                 mFormResponse = form;
                 loadReturnMethodForm(mFormResponse);
+                // Show container
+                showFragmentContentContainer();
                 break;
         }
     }
 
     @Override
     protected void onErrorResponse(BaseResponse response) {
-
+        // Case RETURN_METHODS_FORM_EVENT
+        showFragmentErrorRetry();
     }
 
 }
