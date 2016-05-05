@@ -72,7 +72,6 @@ public abstract class BaseFragmentRequester extends BaseFragmentAutoState implem
         // Super handle
         if(onHandleError(response)) {
             Print.i("SUPER HANDLE ERROR RESPONSE");
-            showFragmentContentContainer();
             return;
         }
         // Delegate

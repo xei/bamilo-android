@@ -140,7 +140,7 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
     @Override
     public void onClick(View view) {
         // Case next step
-        if (view.getId() == R.id.order_return_main_button_ok) {
+        if (view.getId() == R.id.order_return_main_button_ok && mReturnRefundFormGenerator != null) {
             if(mReturnRefundFormGenerator.validate()){
                 // Get data from forms
                 ContentValues values = mReturnRefundFormGenerator.save();
@@ -185,8 +185,6 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
 
     @Override
     protected void onSuccessResponse(BaseResponse response) {
-        // Show container
-        showFragmentContentContainer();
         EventType eventType = response.getEventType();
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
 
@@ -201,13 +199,16 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
                 Form form = (Form) response.getContentData();
                 mFormResponse = form;
                 loadReturnRefundForm(mFormResponse);
+                // Show container
+                showFragmentContentContainer();
                 break;
         }
     }
 
     @Override
     protected void onErrorResponse(BaseResponse response) {
-
+        // Case RETURN_REFUND_FORM_EVENT
+        showFragmentErrorRetry();
     }
 
 }
