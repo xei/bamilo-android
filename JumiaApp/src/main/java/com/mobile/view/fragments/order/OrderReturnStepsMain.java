@@ -37,7 +37,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     public static final int METHOD = 1;
     public static final int REFUND = 2;
     public static final int FINISH = 3;
-    @IntDef({CONDITIONS, REASON, METHOD, REFUND, FINISH,})
+    @IntDef({CONDITIONS, REASON, METHOD, REFUND, FINISH})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ReturnStepType {}
 
@@ -45,8 +45,6 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
 
     private SuperViewPager mPager;
     private Bundle mSubmittedData;
-
-
 
     /**
      * Empty constructor
@@ -120,11 +118,35 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         mPager.setCurrentItem(nextStepId, true);
     }
 
-    public synchronized void saveSubmittedValuesFromStep(int mStep, ContentValues values) {
+    /*
+     * ##### STEP VALUES #####
+     */
+
+    /**
+     * Validate submitted values
+     */
+    public boolean hasSubmittedValuesToFinish() {
+        return mSubmittedData != null &&
+                mSubmittedData.containsKey(String.valueOf(REASON)) &&
+                mSubmittedData.containsKey(String.valueOf(METHOD)) &&
+                mSubmittedData.containsKey(String.valueOf(REFUND));
+    }
+
+    /**
+     * Save submitted values
+     */
+    public synchronized void saveSubmittedValuesFromStep(@ReturnStepType int mStep, @NonNull ContentValues values) {
         if (mSubmittedData == null) {
             mSubmittedData = new Bundle();
         }
         mSubmittedData.putParcelable(String.valueOf(mStep), values);
+    }
+
+    /**
+     * Get submitted values
+     */
+    public ContentValues getSubmittedValuesForStep(@ReturnStepType int mStep) {
+        return mSubmittedData != null ? (ContentValues) mSubmittedData.getParcelable(String.valueOf(mStep)) : null;
     }
 
     /*
@@ -133,7 +155,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     @Override
     public boolean allowBackPressed() {
         int step = mPager.getCurrentItem();
-        if (step > 0) {
+        if (step > REASON) {
             nextStep(--step);
             return true;
         } else {

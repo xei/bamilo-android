@@ -284,6 +284,17 @@ public class RadioGroupExpandable extends RadioGroup {
     }
 
     /**
+     * Get selected label
+     */
+    @Nullable
+    public String getSelectedLabel() {
+        if (CollectionUtils.isNotEmpty(mItems)) {
+            return mItems.get(getSelectedIndex()).getLabel();
+        }
+        return null;
+    }
+
+    /**
      * Validate Form state for Global and child Forms
      */
     public boolean validate(){

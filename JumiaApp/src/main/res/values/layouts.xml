@@ -217,5 +217,7 @@
     <item name="order_return_step_item"                 type="layout">@layout/_def_order_return_step_item</item>
     <item name="order_return_step_item_info"            type="layout">@layout/_def_order_return_step_item_info</item>
 
+    <item name="gen_single_line_section_editable"       type="layout">@layout/_def_gen_single_line_section_editable</item>
+
 </resources>
 

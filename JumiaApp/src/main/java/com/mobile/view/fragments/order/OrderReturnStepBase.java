@@ -73,6 +73,39 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
     }
 
     /*
+     * ##### STEP VALUES #####
+     */
+
+    /**
+     * Save submitted values
+     */
+    protected void saveSubmittedValues(ContentValues values) {
+        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
+        if (parent != null) {
+            parent.saveSubmittedValuesFromStep(mStep, values);
+        }
+    }
+
+    /**
+     * Validate submitted values
+     */
+    protected boolean hasSubmittedValuesToFinish() {
+        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
+        return parent != null && parent.hasSubmittedValuesToFinish();
+    }
+
+    /**
+     * Get step values
+     */
+    protected ContentValues getSubmittedStepValues(@OrderReturnStepsMain.ReturnStepType int mStep) {
+        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
+        if (parent != null) {
+            return parent.getSubmittedValuesForStep(mStep);
+        }
+        return null;
+    }
+
+    /*
      * ##### LISTENERS #####
      */
 
@@ -80,6 +113,9 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
     public void onClick(View view) {
         // Case next step
         if (view.getId() == R.id.order_return_main_button_ok) {
+            // Hide keyboard
+            getBaseActivity().hideKeyboard();
+            // Next
             onClickNextStep();
         } else {
             super.onClick(view);
@@ -93,10 +129,10 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
         }
     }
 
-    protected void saveSubmittedValues(ContentValues values) {
+    protected void onClickStep(@OrderReturnStepsMain.ReturnStepType int step) {
         OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
         if (parent != null) {
-            parent.saveSubmittedValuesFromStep(mStep, values);
+            parent.nextStep(step);
         }
     }
 

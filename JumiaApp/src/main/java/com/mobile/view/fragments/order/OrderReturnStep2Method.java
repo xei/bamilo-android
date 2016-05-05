@@ -2,6 +2,8 @@ package com.mobile.view.fragments.order;
 
 import android.content.ContentValues;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,12 +16,14 @@ import com.mobile.helpers.order.GetReturnMethodsFormHelper;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
+import com.mobile.utils.RadioGroupExpandable;
 import com.mobile.utils.deeplink.TargetLink;
-import com.mobile.utils.order.ReturnOrderViewHolder;
+import com.mobile.utils.order.ReturnItemViewHolder;
 import com.mobile.view.R;
 
 import java.util.ArrayList;
@@ -108,7 +112,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
         mReturnItemsContainer.removeAllViews();
         ArrayList<OrderTrackerItem> items = getOrderItems();
         for (OrderTrackerItem  orderItem : items) {
-            ReturnOrderViewHolder custom = new ReturnOrderViewHolder(getContext(), getOrderNumber(), orderItem);
+            ReturnItemViewHolder custom = new ReturnItemViewHolder(getContext(), getOrderNumber(), orderItem);
             mReturnItemsContainer.addView(custom.getView());
         }
 
@@ -139,6 +143,8 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
             if(mReturnFormGenerator.validate()){
                 // Get data from forms
                 ContentValues values = mReturnFormGenerator.save();
+                // Hammered to get method label
+                hammeredToGetMethodLabel(values, mReturnFormGenerator);
                 // Save data
                 super.saveSubmittedValues(values);
                 // Next Step
@@ -158,7 +164,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
                 // Case mob api
                 @TargetLink.Type String link = (String) view.getTag(R.id.target_link);
                 String title = (String) view.getTag(R.id.target_title);
-                boolean result = new TargetLink(getWeakBaseActivity(), link).addTitle(title).run();
+                new TargetLink(getWeakBaseActivity(), link).addTitle(title).run();
             } else {
                 String link = (String) view.getTag(R.id.html_link);
                 String title = (String) view.getTag(R.id.target_title);
@@ -210,8 +216,7 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
         switch (eventType) {
             case RETURN_METHODS_FORM_EVENT:
                 // Form
-                Form form = (Form) response.getContentData();
-                mFormResponse = form;
+                mFormResponse = (Form) response.getContentData();
                 loadReturnMethodForm(mFormResponse);
                 // Show container
                 showFragmentContentContainer();
@@ -223,6 +228,33 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     protected void onErrorResponse(BaseResponse response) {
         // Case RETURN_METHODS_FORM_EVENT
         showFragmentErrorRetry();
+    }
+
+
+    /**
+     * This hammered was added because all return steps are being saved in the app side.<br>
+     * And we need save the selected labels to show in the finish step.
+     * TODO: NAFAMZ-16058 - Hammered dded in v3.2
+     */
+    @SuppressWarnings("ConstantConditions")
+    private void hammeredToGetMethodLabel(@NonNull ContentValues result, @NonNull DynamicForm form) {
+        try {
+            // Save readable reason
+            View view = form.getItemByKey(RestConstants.METHOD).getDataControl();
+            String label = ((RadioGroupExpandable) view).getSelectedLabel();
+            result.put(RestConstants.METHOD, label);
+        } catch (NullPointerException e) {
+            Print.w("WARNING: NPE ON GET LABEL");
+        }
+    }
+
+    /**
+     * This hammered was added to get the label.
+     * TODO: NAFAMZ-16058 - Hammered dded in v3.2
+     */
+    @Nullable
+    public static String getMethodLabel(@Nullable ContentValues values) {
+        return values != null ? values.getAsString(RestConstants.METHOD) : null;
     }
 
 }
