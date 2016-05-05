@@ -60,9 +60,11 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
         Print.i("ON VIEW CREATED");
         // Validate state
         if (hasSubmittedValuesToFinish()) {
+            // Load and show
             loadSubmittedValues(mContainer);
         } else {
-            showUnexpectedErrorWarning();
+            // Warning user to restart the process
+            showFragmentErrorRetry();
         }
     }
 
@@ -85,7 +87,7 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
         // refund
         setRefundSection(group);
         // Items
-        setItems((ViewGroup) group.findViewById(R.id.order_return_finish_items), mItems, showItemsWithReason);
+        setReturnItems((ViewGroup) group.findViewById(R.id.order_return_finish_items), mItems, showItemsWithReason);
         // Add
         container.addView(group);
     }
@@ -122,7 +124,7 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     /**
      * Set return items with/without reason view
      */
-    private void setItems(@NonNull ViewGroup group, @NonNull ArrayList<OrderTrackerItem> items, boolean showReasonView) {
+    private void setReturnItems(@NonNull ViewGroup group, @NonNull ArrayList<OrderTrackerItem> items, boolean showReasonView) {
         for (OrderTrackerItem item : items) {
             ReturnOrderViewHolder custom;
             // Create item
@@ -151,7 +153,13 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
 
     @Override
     protected void onClickRetryButton(View view) {
-        triggerFinishReturnProcess();
+        // Validate state
+        if (!hasSubmittedValuesToFinish()) {
+            // Warning user
+            showUnexpectedErrorWarning();
+            // Restart process
+            getBaseActivity().onBackPressed();
+        }
     }
 
     /*
