@@ -30,7 +30,6 @@ import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
 
@@ -194,7 +193,7 @@ public class RadioGroupExpandable extends RadioGroup {
 
         if(CollectionUtils.isNotEmpty(field.getSubForms()) && field.getSubForms().containsKey(field.getLabel())){
             Form subForm = field.getSubForms().get(field.getLabel());
-            DynamicForm mReturnFormGenerator = FormFactory.getSingleton().create(FormConstants.RETURN_METHOD_FORM, getContext(), subForm);
+            DynamicForm mReturnFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getContext(), subForm);
             generatedForms.put(idx,mReturnFormGenerator);
             extras.addView(mReturnFormGenerator.getContainer());
         }
@@ -339,11 +338,8 @@ public class RadioGroupExpandable extends RadioGroup {
      * Show Global message if dynamic Form has form childs
      */
     public boolean showGlobalMessage(){
-        if(getSelectedIndex() == RadioGroupLayout.NO_DEFAULT_SELECTION){
-            return true;
-        }
+        return getSelectedIndex() == RadioGroupLayout.NO_DEFAULT_SELECTION;
 
-        return false;
     }
 
     /**

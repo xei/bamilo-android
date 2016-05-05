@@ -17,8 +17,6 @@ import com.mobile.utils.deeplink.TargetLink;
  */
 public class GetReturnReasonsHelper extends SuperBaseHelper {
     
-    public static String TAG = GetReturnReasonsHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
         return EventType.GET_RETURN_REASONS;

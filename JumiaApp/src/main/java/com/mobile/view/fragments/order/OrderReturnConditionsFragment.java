@@ -36,7 +36,7 @@ public class OrderReturnConditionsFragment extends BaseFragmentRequester {
      */
     public OrderReturnConditionsFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
-                NavigationAction.MY_ACCOUNT,
+                NavigationAction.MY_ORDERS,
                 R.layout._def_order_return_steps,
                 R.string.my_orders_label,
                 NO_ADJUST_CONTENT);

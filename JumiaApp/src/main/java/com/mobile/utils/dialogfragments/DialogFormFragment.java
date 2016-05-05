@@ -77,7 +77,7 @@ public class DialogFormFragment extends DialogGenericFragment implements View.On
      */
     private void showDynamicForm(Form form) {
         // Create dynamic form
-        mDynamicForm = FormFactory.getSingleton().create(FormConstants.NEWSLETTER_UN_SUBSCRIBE_FORM, getContext(), form);
+        mDynamicForm = FormFactory.create(FormConstants.NEWSLETTER_UN_SUBSCRIBE_FORM, getContext(), form);
         // Show dynamic form
         mFormContainer.addView(mDynamicForm.getContainer());
     }
