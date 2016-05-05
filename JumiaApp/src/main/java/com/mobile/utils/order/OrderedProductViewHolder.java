@@ -1,9 +1,10 @@
-package com.mobile.utils.ui;
+package com.mobile.utils.order;
 
 import android.view.View;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.utils.ui.ProductListViewHolder;
 import com.mobile.view.R;
 
 /**

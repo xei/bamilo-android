@@ -1,6 +1,7 @@
 package com.mobile.utils.order;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -25,36 +26,57 @@ import java.lang.ref.WeakReference;
  * Class used to represent a return return order item.
  * @author spereira
  */
-public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClickListener, DialogQuantityListFragment.OnDialogListListener {
+public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickListener, DialogQuantityListFragment.OnDialogListListener {
 
     public final static int MIN_RETURN_QUANTITY = 1;
 
-    public final View itemView;
-    private final TextView mReturnQuantityText;
-    private final TextView mReturnQuantityButton;
+    protected final View mItemView;
+    protected final String mOrder;
+    protected final Context mContext;
+    protected final OrderTrackerItem mItem;
+    private TextView mReturnQuantityText;
+    private TextView mReturnQuantityButton;
     private WeakReference<BaseActivity> mWeakActivity;
     private int mMaxQuantity;
 
-    public ReturnOrderViewHolder(@NonNull Context context, @NonNull String mOrder, @NonNull OrderTrackerItem item) {
-        // Get view
-        View view = View.inflate(context, R.layout._def_order_return_step_item, null);
-        // Save view
-        itemView = view;
+    /**
+     * Constructor
+     */
+    public ReturnItemViewHolder(@NonNull Context context, @NonNull String order, @NonNull OrderTrackerItem item) {
+        this(context, R.layout._def_order_return_step_item, order, item);
+    }
+
+    /**
+     * Private constructor
+     */
+    protected ReturnItemViewHolder(@NonNull Context context, @LayoutRes int layout, @NonNull String order, @NonNull OrderTrackerItem item) {
+        this.mItemView = View.inflate(context, layout, null);
+        this.mOrder = order;
+        this.mContext = context;
+        this.mItem = item;
+    }
+
+    /**
+     * Bind view
+     */
+    public ReturnItemViewHolder bind() {
         // Image
-        ImageView image = (ImageView) view.findViewById(R.id.image_view);
-        View progress = view.findViewById(R.id.image_loading_progress);
-        RocketImageLoader.instance.loadImage(item.getImageUrl(), image, progress, R.drawable.no_image_large);
+        ImageView image = (ImageView) mItemView.findViewById(R.id.image_view);
+        View progress = mItemView.findViewById(R.id.image_loading_progress);
+        RocketImageLoader.instance.loadImage(mItem.getImageUrl(), image, progress, R.drawable.no_image_large);
         // Brand
-        ((TextView) view.findViewById(R.id.order_return_item_text_brand)).setText(item.getBrandName());
+        ((TextView) mItemView.findViewById(R.id.order_return_item_text_brand)).setText(mItem.getBrandName());
         // Name
-        ((TextView) view.findViewById(R.id.order_return_item_text_name)).setText(item.getName());
+        ((TextView) mItemView.findViewById(R.id.order_return_item_text_name)).setText(mItem.getName());
         // Order quantity
-        ((TextView) view.findViewById(R.id.order_return_item_text_quantity)).setText(context.getString(R.string.quantity_placeholder, item.getQuantity()));
+        ((TextView) mItemView.findViewById(R.id.order_return_item_text_quantity)).setText(mContext.getString(R.string.quantity_placeholder, mItem.getQuantity()));
         // Order
-        ((TextView) view.findViewById(R.id.order_return_item_text_order)).setText(context.getString(R.string.order_number_placeholder, mOrder));
+        ((TextView) mItemView.findViewById(R.id.order_return_item_text_order)).setText(mContext.getString(R.string.order_number_placeholder, mOrder));
         // Return quantity
-        mReturnQuantityText = (TextView) itemView.findViewById(R.id.order_return_item_text_return_quantity);
-        mReturnQuantityButton = (TextView) itemView.findViewById(R.id.order_return_item_button_quantity);
+        mReturnQuantityText = (TextView) mItemView.findViewById(R.id.order_return_item_text_return_quantity);
+        mReturnQuantityButton = (TextView) mItemView.findViewById(R.id.order_return_item_button_quantity);
+        // Return
+        return this;
     }
 
     /**
@@ -63,20 +85,15 @@ public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClick
      * @return String - 1 or value from text view
      */
     public String getQuantityFromReturnViewHolder() {
-        String quantity = String.valueOf(MIN_RETURN_QUANTITY);
-        if (itemView != null) {
-            TextView textView = (TextView) itemView.findViewById(R.id.order_return_item_button_quantity);
-            quantity = textView.getText().toString();
-        }
-        return quantity;
+        return mReturnQuantityButton != null ? mReturnQuantityButton.getText().toString() : String.valueOf(MIN_RETURN_QUANTITY);
     }
 
     /**
      * Load the saved quantity
      */
     public void setQuantityInReturnViewHolder(@Nullable String value) {
-        if (itemView != null && TextUtils.isNotEmpty(value)) {
-            ((TextView) itemView.findViewById(R.id.order_return_item_button_quantity)).setText(value);
+        if (mReturnQuantityButton != null && TextUtils.isNotEmpty(value)) {
+            mReturnQuantityButton.setText(value);
         }
     }
 
@@ -109,7 +126,7 @@ public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClick
     /**
      * Process the click on quantity button from an item
      */
-    private void onClickQuantityButton(@NonNull WeakReference<BaseActivity> weakActivity, @NonNull final TextView button, int max) { // TODO
+    private void onClickQuantityButton(@NonNull WeakReference<BaseActivity> weakActivity, @NonNull final TextView button, int max) {
         // Get current value from view
         int current = Integer.valueOf(button.getText().toString());
         // Create dialog with max and current value
@@ -142,7 +159,7 @@ public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClick
     @Override
     @NonNull
     public View getView() {
-        return itemView;
+        return mItemView;
     }
 
     /*

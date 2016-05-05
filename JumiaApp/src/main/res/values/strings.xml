@@ -372,4 +372,8 @@
     <string name="please_call_placeholder">Please Call to %s</string>
     <string name="choose_reason">Choose Reason</string>
     <string name="warning_please_select_one">Please select one option to procced.</string>
+    <string name="everything_looks_good">If everything looks good, tap \"SEND\".</string>
+    <string name="return_reason">Return Reason</string>
+    <string name="return_method">Return Method</string>
+    <string name="return_payment">Return Payment Method</string>
 </resources>

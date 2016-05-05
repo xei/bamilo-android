@@ -25,6 +25,11 @@
         <item name="android:textColor">@drawable/_gen_selector_text_link</item>
     </style>
 
+    <style name="Button_Action" parent="ButtonBase">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+    </style>
+
     <!-- ################# BUTTON 1 STYLES ################# -->
 
     <style name="Button_1.Shop">
@@ -98,6 +103,12 @@
         <item name="android:background">@color/white</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:singleLine">false</item>
+    </style>
+
+    <!-- ################# BUTTON ACTION ################# -->
+
+    <style name="Button_Action.EditItem">
+        <item name="android:src">@drawable/selector_btn_edit</item>
     </style>
 
     <!-- ################# OTHER BUTTON STYLES ################# -->
