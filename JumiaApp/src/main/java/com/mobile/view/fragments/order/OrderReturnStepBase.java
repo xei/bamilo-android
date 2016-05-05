@@ -113,6 +113,9 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
     public void onClick(View view) {
         // Case next step
         if (view.getId() == R.id.order_return_main_button_ok) {
+            // Hide keyboard
+            getBaseActivity().hideKeyboard();
+            // Next
             onClickNextStep();
         } else {
             super.onClick(view);
@@ -123,6 +126,13 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
         OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
         if (parent != null) {
             parent.nextStep(mStep + 1);
+        }
+    }
+
+    protected void onClickStep(@OrderReturnStepsMain.ReturnStepType int step) {
+        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
+        if (parent != null) {
+            parent.nextStep(step);
         }
     }
 

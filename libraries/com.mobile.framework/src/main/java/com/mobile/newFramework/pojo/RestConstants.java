@@ -35,6 +35,7 @@ public class RestConstants {
     public static final String FORM = "form";
     public static final String FORMS = "forms";
     public static final String METHOD = "method";
+    public static final String REFUND = "refund";
     public static final String FIELDS = "fields";
     public static final String TYPE = "type";
     public static final String KEY = "key";

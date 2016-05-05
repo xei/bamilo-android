@@ -50,23 +50,30 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
         mItems = getOrderItems();
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
-     */
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-        // Validate state
-        if (hasSubmittedValuesToFinish()) {
-            // Load and show
-            loadSubmittedValues(mContainer);
-        } else {
-            // Warning user to restart the process
-            showFragmentErrorRetry();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            // Validate state
+            if (hasSubmittedValuesToFinish()) {
+                // Load and show
+                loadSubmittedValues(mContainer);
+            } else {
+                // Warning user to restart the process
+                showFragmentErrorRetry();
+            }
         }
     }
+
+    /*
+     * ##### LAYOUT #####
+     */
 
     /**
      * Load submitted values
@@ -101,7 +108,7 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
         } else {
             String sku = getOrderItems().get(IntConstants.DEFAULT_POSITION).getSku();
             String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedStepValues(OrderReturnStepsMain.REASON), sku);
-            UIOrderUtils.setReturnSections(group, R.id.order_return_finish_reason, R.string.return_reason, reason);
+            UIOrderUtils.setReturnSections(OrderReturnStepsMain.REASON, group, R.id.order_return_finish_reason, reason, this);
         }
     }
 
@@ -109,8 +116,8 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
      * Set the method section
      */
     private void setMethodSection(@NonNull View group) {
-        String method = OrderReturnStep2Method.getMethodLabel(getSubmittedStepValues(OrderReturnStepsMain.REASON));
-        UIOrderUtils.setReturnSections(group, R.id.order_return_finish_method, R.string.return_method, method);
+        String method = OrderReturnStep2Method.getMethodLabel(getSubmittedStepValues(OrderReturnStepsMain.METHOD));
+        UIOrderUtils.setReturnSections(OrderReturnStepsMain.METHOD, group, R.id.order_return_finish_method, method, this);
     }
 
     /**
@@ -118,7 +125,7 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
      */
     private void setRefundSection(@NonNull View group) {
         String refund = OrderReturnStep3Refund.getRefundLabel(getSubmittedStepValues(OrderReturnStepsMain.REFUND));
-        UIOrderUtils.setReturnSections(group, R.id.order_return_finish_refund, R.string.return_payment, refund);
+        UIOrderUtils.setReturnSections(OrderReturnStepsMain.REFUND, group, R.id.order_return_finish_refund, refund, this);
     }
 
     /**
@@ -130,7 +137,7 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
             // Create item
             if (showReasonView) {
                 String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedStepValues(OrderReturnStepsMain.REASON), item.getSku());
-                custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item).addReason(reason).bind();
+                custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item).addReason(reason).addClickListener(this).bind();
             } else {
                 custom = new ReturnItemViewHolder(getContext(), mOrder, item).bind();
             }
@@ -150,6 +157,21 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     /*
      * ##### LISTENERS #####
      */
+
+    @Override
+    public void onClick(View view) {
+        // Get id
+        int id = view.getId();
+        // Case edit
+        if (id == R.id.section_item_button) {
+            // Get step
+            @OrderReturnStepsMain.ReturnStepType
+            int step = (int) view.getTag(R.id.target_type);
+            onClickStep(step);
+        } else {
+            super.onClick(view);
+        }
+    }
 
     @Override
     protected void onClickRetryButton(View view) {

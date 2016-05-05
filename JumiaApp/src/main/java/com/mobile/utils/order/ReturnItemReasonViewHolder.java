@@ -3,9 +3,11 @@ package com.mobile.utils.order;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.view.R;
+import com.mobile.view.fragments.order.OrderReturnStepsMain;
 
 /**
  * Class used to represent a return return order item with a section.
@@ -15,6 +17,7 @@ import com.mobile.view.R;
 public class ReturnItemReasonViewHolder extends ReturnItemViewHolder {
 
     private String mReason;
+    private View.OnClickListener mListener;
 
     public ReturnItemReasonViewHolder(@NonNull Context context, @NonNull String order, @NonNull OrderTrackerItem item) {
         super(context, R.layout._def_order_return_step_item_with_reason, order, item);
@@ -25,10 +28,15 @@ public class ReturnItemReasonViewHolder extends ReturnItemViewHolder {
         return this;
     }
 
+    public ReturnItemReasonViewHolder addClickListener(@Nullable View.OnClickListener listener) {
+        this.mListener = listener;
+        return this;
+    }
+
     @Override
     public ReturnItemReasonViewHolder bind() {
         super.bind();
-        UIOrderUtils.setReturnSections(mItemView, R.id.order_return_finish_reason, R.string.return_reason, mReason);
+        UIOrderUtils.setReturnSections(OrderReturnStepsMain.REASON, mItemView, R.id.order_return_finish_reason, mReason, mListener);
         return this;
     }
 

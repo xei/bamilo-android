@@ -228,7 +228,7 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
             // Save readable reason
             View view = form.getItemByKey(RestConstants.METHOD).getDataControl();
             String label = ((RadioGroupExpandable) view).getSelectedLabel();
-            result.put(RestConstants.METHOD, label);
+            result.put(RestConstants.REFUND, label);
         } catch (NullPointerException e) {
             Print.w("WARNING: NPE ON GET LABEL");
         }
@@ -240,7 +240,7 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
      */
     @Nullable
     public static String getRefundLabel(@Nullable ContentValues values) {
-        return values != null ? values.getAsString(RestConstants.METHOD) : null;
+        return values != null ? values.getAsString(RestConstants.REFUND) : null;
     }
 
 }
