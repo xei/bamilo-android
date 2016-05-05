@@ -257,7 +257,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      */
     private void fillUserDataForm(Form userForm){
         mUserDataFormContainer.removeAllViews();
-        mUserDataForm = FormFactory.getSingleton().create(FormConstants.USER_DATA_FORM,getBaseActivity(),userForm);
+        mUserDataForm = FormFactory.create(FormConstants.USER_DATA_FORM,getBaseActivity(),userForm);
         // Load saved state
         mUserDataForm.loadSaveFormState(mFormSavedState);
         mUserDataFormContainer.addView(mUserDataForm.getContainer());
@@ -271,7 +271,7 @@ public class MyAccountUserDataFragment extends BaseFragment implements IResponse
      * function used to fill the layout section with the change password form
      */
     protected void fillChangePasswordForm(Form passwordForm) {
-        mChangePasswordForm = FormFactory.getSingleton().create(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),passwordForm);
+        mChangePasswordForm = FormFactory.create(FormConstants.CHANGE_PASSWORD_FORM,getBaseActivity(),passwordForm);
         // Load saved state
         mChangePasswordForm.loadSaveFormState(mFormSavedState);
         mChangePasswordFormContainer.addView(mChangePasswordForm.getContainer());

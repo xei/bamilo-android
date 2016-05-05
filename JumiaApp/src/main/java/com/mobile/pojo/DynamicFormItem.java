@@ -1345,7 +1345,7 @@ public class DynamicFormItem {
     }
 
     private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer, boolean isAlternativeLayout) {
-        this.dataControl = View.inflate(this.context, R.layout.form_icsspinner, null);
+        this.dataControl = View.inflate(this.context, R.layout._def_gen_form_spinner, null);
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
@@ -1362,17 +1362,20 @@ public class DynamicFormItem {
         }
         // Case Empty
         else {
-            ArrayList<String> default_string = new ArrayList<>();
-            default_string.add(this.entry.getPlaceHolder());
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
-            adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-            ((IcsSpinner) this.dataControl).setAdapter(adapter);
             /**
              * TODO: NAFAMZ-15492 - This should be a generic component for forms.
              */
             // Case ORDER_RETURN_REASON_FORM
             if (this.parent.getForm().getType() == FormConstants.ORDER_RETURN_REASON_FORM) {
                 createSpinnerRequester();
+            }
+            // Case Others
+            else {
+                ArrayList<String> list = new ArrayList<>();
+                list.add(this.entry.getPlaceHolder());
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, list);
+                adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+                ((IcsSpinner) this.dataControl).setAdapter(adapter);
             }
         }
         // Sets the spinner value

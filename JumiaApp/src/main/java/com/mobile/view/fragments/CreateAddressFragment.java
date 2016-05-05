@@ -247,7 +247,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
         // Shipping form
         if (shippingFormGenerator == null) {
-            shippingFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+            shippingFormGenerator = FormFactory.create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
             mShippingFormContainer.removeAllViews();
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
@@ -255,7 +255,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             // Have to create set a Dynamic form in order to not have the parent dependencies.
             // this happens when user goes from create address to another screen through the overflow menu, and presses back.
             // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
-            shippingFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+            shippingFormGenerator = FormFactory.create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
         }
@@ -283,7 +283,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         ViewGroup group = v.getControl();
         group.removeAllViews();
         // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         //add place holder by default if value = ""; ignore if added already
         if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(regions) || regions.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
@@ -368,7 +368,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         ViewGroup group = v.getControl();
         group.removeAllViews();
         // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(cities) || cities.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
             cities.add(IntConstants.DEFAULT_POSITION, new AddressCity(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
@@ -404,7 +404,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         ViewGroup group = v.getControl();
         group.removeAllViews();
         // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
+        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
         //add place holder from API by default if value = ""; ignore if added already
         if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(postalCodes) || postalCodes.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {

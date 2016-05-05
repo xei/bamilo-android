@@ -158,7 +158,7 @@ public class RadioGroupLayoutVertical extends RadioGroup {
         final RadioButton button = (RadioButton) container.findViewById(R.id.radio_shipping);
 
         if (addInnerForm) {
-            DynamicForm formGenerator = FormFactory.getSingleton().create(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)));
+            DynamicForm formGenerator = FormFactory.create(FormConstants.PAYMENT_DETAILS_FORM, mContext, formsMap.get(mItems.get(idx)));
             generatedForms.put(idx, formGenerator);
             extras.addView(formGenerator.getContainer());
             Print.d(TAG, "updateRadioGroup: inserting idx = " + idx + " name = " + mItems.get(idx));

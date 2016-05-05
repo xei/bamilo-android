@@ -89,8 +89,6 @@ public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClick
         mWeakActivity = weakActivity;
         // Get max items to return
         mMaxQuantity = action != null ? action.getReturnableQuantity() : MIN_RETURN_QUANTITY;
-        // Show quantity views
-        UIUtils.showOrHideViews(View.VISIBLE, mReturnQuantityButton, mReturnQuantityText);
         // Set min
         mReturnQuantityButton.setText(String.valueOf(MIN_RETURN_QUANTITY));
         // Validate max
@@ -104,6 +102,8 @@ public class ReturnOrderViewHolder implements ICustomFormFieldView, View.OnClick
                 mReturnQuantityButton.setBackgroundDrawable(null);
             }
         }
+        // Show quantity views
+        UIUtils.showOrHideViews(View.VISIBLE, mReturnQuantityButton, mReturnQuantityText);
     }
 
     /**

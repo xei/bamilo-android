@@ -161,9 +161,7 @@ public class CheckoutThanksFragment extends BaseFragment implements IResponseCal
         /**
          * Mirror image to avoid having extra assets for each resolution for RTL.
          */
-        if(ShopSelector.isRtl()){
-            UIUtils.mirrorView(imageSuccess);
-        }
+        UIUtils.mirrorViewForRTL(imageSuccess);
         // Show
         setRelatedItems();
         // Clean cart
