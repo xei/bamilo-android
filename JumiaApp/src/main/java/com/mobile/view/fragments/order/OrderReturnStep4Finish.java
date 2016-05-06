@@ -1,5 +1,6 @@
 package com.mobile.view.fragments.order;
 
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -136,8 +137,14 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
             ReturnItemViewHolder custom;
             // Create item
             if (showReasonView) {
-                String reason = OrderReturnStep1Reason.getReasonLabel(getSubmittedStepValues(OrderReturnStepsMain.REASON), item.getSku());
-                custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item).addReason(reason).addClickListener(this).bind();
+                ContentValues values = getSubmittedStepValues(OrderReturnStepsMain.REASON);
+                String reason = OrderReturnStep1Reason.getReasonLabel(values, item.getSku());
+                String quantity = OrderReturnStep1Reason.getQuantityValue(values, item.getSku());
+                custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item)
+                        .addQuantity(quantity)
+                        .addReason(reason)
+                        .addClickListener(this)
+                        .bind();
             } else {
                 custom = new ReturnItemViewHolder(getContext(), mOrder, item).bind();
             }

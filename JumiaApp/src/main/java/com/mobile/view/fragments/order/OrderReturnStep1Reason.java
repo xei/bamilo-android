@@ -23,6 +23,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
 import com.mobile.pojo.ICustomFormField;
+import com.mobile.pojo.fields.ListNumberField;
 import com.mobile.utils.order.ReturnItemViewHolder;
 import com.mobile.view.R;
 
@@ -296,9 +297,21 @@ public class OrderReturnStep1Reason extends OrderReturnStepBase {
             View view = form.getItemByKey(RestConstants.REASON).getDataControl();
             String label = ((FormListItem) ((IcsSpinner) view).getSelectedItem()).getLabel();
             result.put(RestConstants.REASON + sku, label);
+            // Save selected quantity
+            label = ((ListNumberField) form.getItemByKey(RestConstants.QUANTITY)).getValueFromCustomView();
+            result.put(RestConstants.QUANTITY + sku, label);
         } catch (NullPointerException e) {
             Print.w("WARNING: NPE ON GET LABEL");
         }
+    }
+
+    /**
+     * This hammered was added to get the selected quantity.
+     * TODO: NAFAMZ-16058 - Hammered dded in v3.2
+     */
+    @Nullable
+    public static String getQuantityValue(@Nullable ContentValues values, @NonNull String sku) {
+        return values != null ? values.getAsString(RestConstants.QUANTITY + sku) : null;
     }
 
     /**
