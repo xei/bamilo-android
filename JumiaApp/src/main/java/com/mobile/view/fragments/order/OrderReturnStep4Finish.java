@@ -204,10 +204,6 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     @Override
     protected void onSuccessResponse(BaseResponse response) {
         EventType eventType = response.getEventType();
-        if(isOnStoppingProcess || eventType == null){
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
 
         switch (eventType) {
             case RETURN_FINISH_EVENT:
@@ -218,7 +214,9 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
                 bundle.putString(ConstantsIntentExtra.ARG_1, String.valueOf(order.getId()));
                 bundle.putString(ConstantsIntentExtra.ARG_2, order.getDate());
                 // Validate if frame order status
+                getBaseActivity().popBackStackUntilTag(FragmentType.ORDER_STATUS.toString());
                 getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
                 break;
         }
 
@@ -228,10 +226,6 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     protected void onErrorResponse(BaseResponse response) {
 
         EventType eventType = response.getEventType();
-        if(isOnStoppingProcess || eventType == null){
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
 
         switch (eventType) {
             case RETURN_FINISH_EVENT:
@@ -240,7 +234,6 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
 
                 break;
         }
-        showFragmentErrorRetry();
     }
 
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -30,6 +31,7 @@ import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
 
@@ -210,7 +212,6 @@ public class RadioGroupExpandable extends RadioGroup {
         String text = field.getText();
         String link = TextUtils.isNotEmpty(field.getLinkHtml()) ? field.getLinkHtml() : field.getLinkTarget();
         String linklabel = field.getLinkText();
-
         String completeText = null;
         if(TextUtils.isNotEmpty(link)){
             completeText = linklabel;
@@ -242,7 +243,7 @@ public class RadioGroupExpandable extends RadioGroup {
             ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setText(spannableString);
             ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setMovementMethod(LinkMovementMethod.getInstance());
         } else {
-            ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setText(text);
+            ((TextView) extraSubtext.findViewById(R.id.radio_expandable_text)).setText(TextUtils.unEscape(text));
         }
         extraSubtext.findViewById(R.id.radio_expandable_text).setVisibility(VISIBLE);
 
