@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 
 import com.mobile.components.viewpager.SuperViewPager;
+import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.output.Print;
@@ -37,11 +38,11 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     public static final int METHOD = 1;
     public static final int REFUND = 2;
     public static final int FINISH = 3;
+    private int mSavedPosition;
+
     @IntDef({CONDITIONS, REASON, METHOD, REFUND, FINISH})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ReturnStepType {}
-
-    public static final String SUBMITTED_DATA = "submitted_data";
 
     private SuperViewPager mPager;
     private Bundle mSubmittedData;
@@ -64,7 +65,8 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     @Override
     protected void onCreateInstanceState(@NonNull Bundle bundle) {
         super.onCreateInstanceState(bundle);
-        mSubmittedData = bundle.getBundle(SUBMITTED_DATA);
+        mSubmittedData = bundle.getBundle(ConstantsIntentExtra.ARG_1);
+        mSavedPosition = bundle.getInt(ConstantsIntentExtra.ARG_2);
     }
 
     /*
@@ -77,33 +79,42 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         Print.i("ON VIEW CREATED");
         // Validate received items
 
+        // Set tab
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.order_return_main_tabs);
-        tabLayout.addTab(tabLayout.newTab().setText("1"));
-        tabLayout.addTab(tabLayout.newTab().setText("2"));
-        tabLayout.addTab(tabLayout.newTab().setText("3"));
-        tabLayout.addTab(tabLayout.newTab().setText("4"));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_1));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_2));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_3));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_4));
+
         // Get pager
         mPager = (SuperViewPager) view.findViewById(R.id.order_return_main_pager);
         mPager.disablePaging();
         mPager.addOnPageChangeListener(new TabLayoutPageChangeListener(tabLayout));
+
+
+
+        // Now we'll add a tab selected listener to set ViewPager's current item
+        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mPager));
+
+
         // Validate the current view
         OrderReturnStepsAdapter adapter = (OrderReturnStepsAdapter) mPager.getAdapter();
         if(adapter != null && adapter.getCount() > 0) {
-            // Show the pre selection
-            mPager.setCurrentItem(0, true);
+            mPager.setCurrentItem(mSavedPosition, true);
         } else {
-            //Log.d(TAG, "CAMPAIGNS ADAPTER IS NULL");
-            adapter = new OrderReturnStepsAdapter(getChildFragmentManager());
-            mPager.setAdapter(adapter);
-            // Show the pre selection
-            mPager.setCurrentItem(0, true);
+            mPager.setAdapter(new OrderReturnStepsAdapter(getChildFragmentManager()));
         }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putBundle(SUBMITTED_DATA, mSubmittedData);
+        // Save data
+        outState.putBundle(ConstantsIntentExtra.ARG_1, mSubmittedData);
+        // Save page
+        if (mPager != null) {
+            outState.putInt(ConstantsIntentExtra.ARG_2, mPager.getCurrentItem());
+        }
     }
 
     public ArrayList<OrderTrackerItem> getOrderItems() {
@@ -239,15 +250,6 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         @Override
         public int getCount() {
             return IntConstants.TAB_MAX_STEPS;
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
-         */
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return ""; //mCampaigns.get(position).getTitle().toUpperCase();
         }
 
     }
