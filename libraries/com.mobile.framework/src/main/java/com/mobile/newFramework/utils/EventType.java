@@ -202,7 +202,9 @@ public enum EventType {
 
     RETURN_METHODS_FORM_EVENT("http:/forms/returnmethods/"),
 
-    RETURN_REFUND_FORM_EVENT("http:/forms/refundmethod/");
+    RETURN_REFUND_FORM_EVENT("http:/forms/refundmethod/"),
+
+    RETURN_FINISH_EVENT("http:/return/finishreturn/");
 
 
     public final String action;

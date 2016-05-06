@@ -105,6 +105,17 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
         return null;
     }
 
+    /**
+     * Get submitted values
+     */
+    protected  ContentValues getSubmittedValues(){
+        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
+        if (parent != null) {
+            return parent.getSubmittedValues();
+        }
+        return null;
+    }
+
     /*
      * ##### LISTENERS #####
      */

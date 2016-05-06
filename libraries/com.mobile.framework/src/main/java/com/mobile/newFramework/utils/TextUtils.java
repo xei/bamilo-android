@@ -5,6 +5,10 @@ import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 
+import java.io.IOException;
+import java.io.StreamTokenizer;
+import java.io.StringReader;
+
 public class TextUtils {
 
     private static String[] EMPTY_STRING_ARRAY = new String[]{};
@@ -146,5 +150,10 @@ public class TextUtils {
         return Html.fromHtml(Html.fromHtml(html).toString()).toString();
     }
 
-
+    /**
+     * Remove escaped line breaks
+     */
+    public static String unEscape(String literal){
+        return literal.replaceAll("\\\\n", "\n");
+    }
 }
