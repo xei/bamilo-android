@@ -94,14 +94,16 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
      */
     protected void loadReturnRefundForm(Form form) {
 
-        // Return Method form
-        mReturnRefundFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
-        if(mFormSavedState != null)
-        mReturnRefundFormGenerator.loadSaveFormState(mFormSavedState);
-        mReturnRefundFormContainer.removeAllViews();
-        mReturnRefundFormContainer.addView(mReturnRefundFormGenerator.getContainer());
-        mReturnRefundFormContainer.refreshDrawableState();
-        loadItems();
+        if(mReturnRefundFormContainer != null){
+            // Return Method form
+            mReturnRefundFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
+            mReturnRefundFormGenerator.loadSaveFormState(mFormSavedState);
+            mReturnRefundFormContainer.removeAllViews();
+            mReturnRefundFormContainer.addView(mReturnRefundFormGenerator.getContainer());
+            mReturnRefundFormContainer.refreshDrawableState();
+            loadItems();
+        }
+
     }
 
     /**

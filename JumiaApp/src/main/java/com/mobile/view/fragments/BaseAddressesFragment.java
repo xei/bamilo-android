@@ -20,7 +20,7 @@ import com.mobile.utils.NavigationAction;
 import com.mobile.view.R;
 
 import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.Set;
 
 /**
@@ -160,7 +160,7 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
      * @author sergiopereira
      */
     private void addAddresses(ViewGroup container, HashMap<String, Address> addresses) {
-        for (Map.Entry<String, Address> item : addresses.entrySet()) {
+        for (LinkedHashMap.Entry<String, Address> item : addresses.entrySet()) {
             Address otherAddress = item.getValue();
             addAddress(container, otherAddress);
         }

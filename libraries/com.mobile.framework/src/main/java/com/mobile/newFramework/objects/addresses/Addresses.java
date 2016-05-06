@@ -13,7 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Class used to save the customer addresses
@@ -28,7 +28,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
 
     private Address billingAddress;
 
-    private HashMap<String, Address> addresses = new HashMap<>();
+    private LinkedHashMap<String, Address> addresses = new LinkedHashMap<>();
 
 
     /**
@@ -108,14 +108,14 @@ public class Addresses implements IJSONSerializable, Parcelable {
     /**
      * @return the addresses
      */
-    public HashMap<String, Address> getAddresses() {
+    public LinkedHashMap<String, Address> getAddresses() {
         return addresses;
     }
 
     /**
      * @param addresses the addresses to set
      */
-    public void setAddresses(HashMap<String, Address> addresses) {
+    public void setAddresses(LinkedHashMap<String, Address> addresses) {
         this.addresses = addresses;
     }
 
@@ -204,7 +204,7 @@ public class Addresses implements IJSONSerializable, Parcelable {
     protected Addresses(Parcel in) {
         shippingAddress = in.readParcelable(Address.class.getClassLoader());
         billingAddress = in.readParcelable(Address.class.getClassLoader());
-        addresses = new HashMap<>();
+        addresses = new LinkedHashMap<>();
         in.readMap(addresses, Address.class.getClassLoader());
     }
 
