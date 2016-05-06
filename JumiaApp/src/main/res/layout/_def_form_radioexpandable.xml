@@ -39,6 +39,7 @@
             android:layout_marginLeft="@dimen/margin_padding_xl"
             android:layout_marginRight="@dimen/margin_padding_xl"
             android:singleLine="false"
+            android:inputType="textMultiLine"
             android:visibility="gone"
             tools:visibility="visible"
             />

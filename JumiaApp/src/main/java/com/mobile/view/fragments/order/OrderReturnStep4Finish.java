@@ -7,10 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.order.ReturnFinishHelper;
+import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.order.ReturnItemReasonViewHolder;
 import com.mobile.utils.order.ReturnItemViewHolder;
@@ -158,7 +165,9 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
      */
 
     private void triggerFinishReturnProcess() {
+
         // Submit values
+        triggerContentEvent(new ReturnFinishHelper(), ReturnFinishHelper.createBundle(getSubmittedValues()), this);
     }
 
     /*
@@ -175,6 +184,10 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
             @OrderReturnStepsMain.ReturnStepType
             int step = (int) view.getTag(R.id.target_type);
             onClickStep(step);
+        } else if(id == R.id.order_return_main_button_ok){
+            if(hasSubmittedValuesToFinish()){
+                triggerFinishReturnProcess();
+            }
         } else {
             super.onClick(view);
         }
@@ -197,12 +210,37 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
 
     @Override
     protected void onSuccessResponse(BaseResponse response) {
-        // Finish the process
+        EventType eventType = response.getEventType();
+
+        switch (eventType) {
+            case RETURN_FINISH_EVENT:
+                // Finish the process
+                showWarningSuccessMessage(response.getSuccessMessage());
+                OrderStatus order = (OrderStatus) response.getMetadata().getData();
+                Bundle bundle = new Bundle();
+                bundle.putString(ConstantsIntentExtra.ARG_1, String.valueOf(order.getId()));
+                bundle.putString(ConstantsIntentExtra.ARG_2, order.getDate());
+                // Validate if frame order status
+                getBaseActivity().popBackStackUntilTag(FragmentType.ORDER_STATUS.toString());
+                getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
+
+                break;
+        }
+
     }
 
     @Override
     protected void onErrorResponse(BaseResponse response) {
-        // ...
+
+        EventType eventType = response.getEventType();
+
+        switch (eventType) {
+            case RETURN_FINISH_EVENT:
+                // Case error, stay at this screen.
+                showWarningErrorMessage(response.getErrorMessage());
+
+                break;
+        }
     }
 
 }
