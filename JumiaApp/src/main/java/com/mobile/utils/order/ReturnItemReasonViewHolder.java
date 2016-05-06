@@ -21,7 +21,6 @@ public class ReturnItemReasonViewHolder extends ReturnItemViewHolder {
 
     private String mReason;
     private View.OnClickListener mListener;
-    private String mQuantity;
 
     public ReturnItemReasonViewHolder(@NonNull Context context, @NonNull String order, @NonNull OrderTrackerItem item) {
         super(context, R.layout._def_order_return_step_item_with_reason, order, item);
@@ -29,11 +28,6 @@ public class ReturnItemReasonViewHolder extends ReturnItemViewHolder {
 
     public ReturnItemReasonViewHolder addReason(@Nullable String reason) {
         this.mReason = reason;
-        return this;
-    }
-
-    public ReturnItemReasonViewHolder addQuantity(@Nullable String quantity) {
-        this.mQuantity = quantity;
         return this;
     }
 

@@ -113,7 +113,9 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
         mReturnRefundItemsContainer.removeAllViews();
         ArrayList<OrderTrackerItem> items = getOrderItems();
         for (OrderTrackerItem  orderItem : items) {
-            ReturnItemViewHolder custom = new ReturnItemViewHolder(getContext(), getOrderNumber(), orderItem).bind();
+            ContentValues values = getSubmittedStepValues(OrderReturnStepsMain.REASON);
+            String quantity = OrderReturnStep1Reason.getQuantityValue(values, orderItem.getSku());
+            ReturnItemViewHolder custom = new ReturnItemViewHolder(getContext(), getOrderNumber(), orderItem).addQuantity(quantity).bind().showQuantityToReturnText();
             mReturnRefundItemsContainer.addView(custom.getView());
         }
 

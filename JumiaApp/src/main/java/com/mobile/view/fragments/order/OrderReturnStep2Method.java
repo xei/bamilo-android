@@ -115,7 +115,9 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
         mReturnItemsContainer.removeAllViews();
         ArrayList<OrderTrackerItem> items = getOrderItems();
         for (OrderTrackerItem  orderItem : items) {
-            ReturnItemViewHolder custom = new ReturnItemViewHolder(getContext(), getOrderNumber(), orderItem).bind();
+            ContentValues values = getSubmittedStepValues(OrderReturnStepsMain.REASON);
+            String quantity = OrderReturnStep1Reason.getQuantityValue(values, orderItem.getSku());
+            ReturnItemViewHolder custom = new ReturnItemViewHolder(getContext(), getOrderNumber(), orderItem).addQuantity(quantity).bind().showQuantityToReturnText();
             mReturnItemsContainer.addView(custom.getView());
         }
 
