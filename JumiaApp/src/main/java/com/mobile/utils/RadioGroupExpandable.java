@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -31,7 +30,6 @@ import com.mobile.newFramework.forms.IFormField;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
-import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.view.R;
 

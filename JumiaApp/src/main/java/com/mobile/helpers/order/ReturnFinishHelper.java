@@ -3,20 +3,13 @@ package com.mobile.helpers.order;
 import android.content.ContentValues;
 import android.os.Bundle;
 
-import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.SuperBaseHelper;
-import com.mobile.newFramework.objects.cart.PurchaseEntity;
-import com.mobile.newFramework.pojo.BaseResponse;
-import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Helper used to get the form with Return Methods

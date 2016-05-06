@@ -241,7 +241,6 @@ public class FragmentController {
      */
     public void addEntryToBackStack(final String tag) {
         Print.d(TAG, "ADD ENTRY TO BACK STACK");
-
         WorkerThread.executeRunnable(getSingletonThread(), new Runnable() {
             @Override
             public String toString() {
@@ -517,15 +516,28 @@ public class FragmentController {
      * ########### FRAGMENTS WITH CHILD FRAGMENTS ###########
      */
 
+
     /**
      * Add a child fragment to parent fragment using ChildFragmentManager.
      */
     @SuppressWarnings("unused")
     public static void addChildFragment(Fragment parent, int container, Fragment fragment, String tag) {
+        addChildFragment(parent, container, fragment, tag, !ADD_TO_BACK_STACK);
+    }
+
+    /**
+     * Add a child fragment to parent fragment using ChildFragmentManager.
+     */
+    @SuppressWarnings("unused")
+    public static void addChildFragment(Fragment parent, int container, Fragment fragment, String tag, boolean stack) {
         // Child Fragment manger
         FragmentTransaction fragmentTransaction = parent.getChildFragmentManager().beginTransaction();
         // Replace
         fragmentTransaction.replace(container, fragment, tag);
+        // Back stack
+        if (stack) {
+            fragmentTransaction.addToBackStack(tag);
+        }
         // Commit
         fragmentTransaction.commitAllowingStateLoss();
     }

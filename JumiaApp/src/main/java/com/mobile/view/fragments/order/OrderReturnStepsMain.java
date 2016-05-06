@@ -129,10 +129,6 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
 //        mPager.setCurrentItem(nextStepId, true);
 //    }
 
-    public void nextStep(@ReturnStepType int nextStepId) {
-        FragmentController.addChildFragment(this, R.id.order_return_main_container, getItem(nextStepId), String.valueOf(nextStepId));
-    }
-
     public Fragment getItem(@ReturnStepType int position) {
         Class<? extends BaseFragment> fClass;
         switch (position) {
@@ -185,7 +181,6 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         contentValues.putAll(getSubmittedValuesForStep(REASON));
         contentValues.putAll(getSubmittedValuesForStep(METHOD));
         contentValues.putAll(getSubmittedValuesForStep(REFUND));
-
         return contentValues;
     }
 
@@ -212,14 +207,17 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
 
     @Override
     public boolean allowBackPressed() {
-        FragmentManager m = getChildFragmentManager();
-        int size = m.getFragments().size();
-        if (size > REASON) {
-            getChildFragmentManager().popBackStackImmediate();
+        int count = getChildFragmentManager().getBackStackEntryCount();
+        if (count > REASON) {
+            getChildFragmentManager().popBackStack();
             return true;
         } else {
             return super.allowBackPressed();
         }
+    }
+
+    public void nextStep(@ReturnStepType int nextStepId) {
+        FragmentController.addChildFragment(this, R.id.order_return_main_container, getItem(nextStepId), String.valueOf(nextStepId), FragmentController.ADD_TO_BACK_STACK);
     }
 
 
