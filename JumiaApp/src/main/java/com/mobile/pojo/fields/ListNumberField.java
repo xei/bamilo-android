@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.widget.RelativeLayout;
 
 import com.mobile.newFramework.forms.IFormField;
@@ -70,5 +71,10 @@ public class ListNumberField extends DynamicFormItem implements IDynamicFormItem
         this.mCustomView = custom;
         // Add view
         this.getControl().addView(custom.getView());
+    }
+
+    @Nullable
+    public String getValueFromCustomView() {
+        return mCustomView != null ? mCustomView.save() : null;
     }
 }
