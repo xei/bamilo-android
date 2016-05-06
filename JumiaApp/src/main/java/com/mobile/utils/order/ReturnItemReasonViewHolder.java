@@ -7,6 +7,8 @@ import android.view.View;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.R;
 import com.mobile.view.fragments.order.OrderReturnStepsMain;
 
@@ -43,7 +45,12 @@ public class ReturnItemReasonViewHolder extends ReturnItemViewHolder {
     @Override
     public ReturnItemReasonViewHolder bind() {
         super.bind();
-        ((TextView) mItemView.findViewById(R.id.order_return_item_text_quantity)).setText(mContext.getString(R.string.quantity_placeholder, mQuantity));
+        TextView quantity = (TextView) mItemView.findViewById(R.id.order_return_item_text_quantity);
+        if (TextUtils.isNotEmpty(mQuantity)) {
+            quantity.setText(mContext.getString(R.string.quantity_placeholder, mQuantity));
+        } else {
+            UIUtils.setVisibility(quantity, false);
+        }
         UIOrderUtils.setReturnSections(OrderReturnStepsMain.REASON, mItemView, R.id.order_return_finish_reason, mReason, mListener);
         return this;
     }
