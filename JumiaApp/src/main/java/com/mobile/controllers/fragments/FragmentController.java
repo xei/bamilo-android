@@ -521,16 +521,6 @@ public class FragmentController {
      * Add a child fragment to parent fragment using ChildFragmentManager.
      */
     @SuppressWarnings("unused")
-    public static void addChildFragment(Fragment parent, int container, Fragment fragment) {
-        // Child Fragment manger
-        FragmentTransaction fragmentTransaction = parent.getChildFragmentManager().beginTransaction();
-        // Replace
-        fragmentTransaction.replace(container, fragment, fragment.getTag());
-        // Commit
-        fragmentTransaction.commitAllowingStateLoss();
-    }
-
-    @SuppressWarnings("unused")
     public static void addChildFragment(Fragment parent, int container, Fragment fragment, String tag) {
         // Child Fragment manger
         FragmentTransaction fragmentTransaction = parent.getChildFragmentManager().beginTransaction();
@@ -555,7 +545,7 @@ public class FragmentController {
     }
 
     /**
-     * Remove a child fragment from parent fragment using ChildFragmentManager.
+     * Get parent from back stack.
      */
     @Nullable
     @SuppressWarnings("unused")

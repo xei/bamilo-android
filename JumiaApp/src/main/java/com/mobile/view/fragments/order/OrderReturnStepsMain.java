@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.mobile.components.viewpager.SuperViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.output.Print;
@@ -86,24 +87,23 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_3));
         tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_4));
 
-        // Get pager
-        mPager = (SuperViewPager) view.findViewById(R.id.order_return_main_pager);
-        mPager.disablePaging();
-        mPager.addOnPageChangeListener(new TabLayoutPageChangeListener(tabLayout));
+        nextStep(REASON);
 
+//        // Get pager
+//        mPager = (SuperViewPager) view.findViewById(R.id.order_return_main_pager);
+//        mPager.disablePaging();
+//        mPager.addOnPageChangeListener(new TabLayoutPageChangeListener(tabLayout));
+//
+//        // Now we'll add a tab selected listener to set ViewPager's current item
+//        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mPager));
 
-
-        // Now we'll add a tab selected listener to set ViewPager's current item
-        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mPager));
-
-
-        // Validate the current view
-        OrderReturnStepsAdapter adapter = (OrderReturnStepsAdapter) mPager.getAdapter();
-        if(adapter != null && adapter.getCount() > 0) {
-            mPager.setCurrentItem(mSavedPosition, true);
-        } else {
-            mPager.setAdapter(new OrderReturnStepsAdapter(getChildFragmentManager()));
-        }
+//        // Validate the current view
+//        OrderReturnStepsAdapter adapter = (OrderReturnStepsAdapter) mPager.getAdapter();
+//        if(adapter != null && adapter.getCount() > 0) {
+//            mPager.setCurrentItem(mSavedPosition, true);
+//        } else {
+//            mPager.setAdapter(new OrderReturnStepsAdapter(getChildFragmentManager()));
+//        }
     }
 
     @Override
@@ -125,8 +125,32 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         return this.mArgId;
     }
 
-    public void nextStep(int nextStepId) {
-        mPager.setCurrentItem(nextStepId, true);
+//    public void nextStep(int nextStepId) {
+//        mPager.setCurrentItem(nextStepId, true);
+//    }
+
+    public void nextStep(@ReturnStepType int nextStepId) {
+        FragmentController.addChildFragment(this, R.id.order_return_main_container, getItem(nextStepId), String.valueOf(nextStepId));
+    }
+
+    public Fragment getItem(@ReturnStepType int position) {
+        Class<? extends BaseFragment> fClass;
+        switch (position) {
+            case REASON:
+                fClass = OrderReturnStep1Reason.class;
+                break;
+            case METHOD:
+                fClass = OrderReturnStep2Method.class;
+                break;
+            case REFUND:
+                fClass = OrderReturnStep3Refund.class;
+                break;
+            case FINISH:
+            default:
+                fClass = OrderReturnStep4Finish.class;
+                break;
+        }
+        return newInstance(getContext(), fClass, null);
     }
 
     /*
@@ -163,16 +187,29 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     /*
      * ##### BACK #####
      */
+//    @Override
+//    public boolean allowBackPressed() {
+//        int step = mPager.getCurrentItem();
+//        if (step > REASON) {
+//            nextStep(--step);
+//            return true;
+//        } else {
+//            return super.allowBackPressed();
+//        }
+//    }
+
     @Override
     public boolean allowBackPressed() {
-        int step = mPager.getCurrentItem();
-        if (step > REASON) {
-            nextStep(--step);
+        FragmentManager m = getChildFragmentManager();
+        int size = m.getFragments().size();
+        if (size > REASON) {
+            getChildFragmentManager().popBackStackImmediate();
             return true;
         } else {
             return super.allowBackPressed();
         }
     }
+
 
     /*
      * ##### LISTENERS #####
