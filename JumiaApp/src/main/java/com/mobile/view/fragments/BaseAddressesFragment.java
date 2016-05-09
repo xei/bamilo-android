@@ -201,10 +201,11 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
         ((TextView) parent.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
 
         if(!address.isValid()){
+            TextView checkoutInvalid = ((TextView) parent.findViewById(R.id.checkout_address_invalid));
             if(isOther){
-                ((TextView) parent.findViewById(R.id.checkout_address_invalid)).setText(getString(R.string.invalid_address_other));
+                checkoutInvalid.setText(getString(R.string.invalid_address_other));
             }
-            parent.findViewById(R.id.checkout_address_invalid).setVisibility(View.VISIBLE);
+            checkoutInvalid.findViewById(R.id.checkout_address_invalid).setVisibility(View.VISIBLE);
         }
 
 
