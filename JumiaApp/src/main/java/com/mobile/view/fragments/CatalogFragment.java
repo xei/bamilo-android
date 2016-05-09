@@ -945,6 +945,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
             mSortOrFilterApplied = false;
+
+            // IF API is not retrieving the sort, and we already have a sort selected, keep it, otherwise use POPULARITY
             mSelectedSort = TextUtils.isNotEmpty(catalogPage.getSort()) ?
                     CatalogSort.valueOf(catalogPage.getSort()) :
                     (mSelectedSort != null ? mSelectedSort : CatalogSort.POPULARITY);
