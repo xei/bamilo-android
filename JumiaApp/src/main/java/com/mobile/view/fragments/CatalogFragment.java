@@ -945,9 +945,9 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
             mSortOrFilterApplied = false;
-
             mSelectedSort = TextUtils.isNotEmpty(catalogPage.getSort()) ?
-                    CatalogSort.valueOf(catalogPage.getSort()) : CatalogSort.POPULARITY;
+                    CatalogSort.valueOf(catalogPage.getSort()) :
+                    (mSelectedSort != null ? mSelectedSort : CatalogSort.POPULARITY);
 
             Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage()+" "+mSelectedSort);
             onUpdateCatalogContainer(catalogPage);
