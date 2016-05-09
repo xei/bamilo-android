@@ -154,8 +154,10 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mQueryValues = UICatalogUtils.saveCatalogType(arguments, mQueryValues, mKey);
             // Get sort
 //            mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT, CatalogSort.POPULARITY.ordinal())];
-            if(mSelectedSort != null)
+            if(mSelectedSort != null){
                 mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
+            }
+
             // Default catalog values
             mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             // In case of searching by keyword
