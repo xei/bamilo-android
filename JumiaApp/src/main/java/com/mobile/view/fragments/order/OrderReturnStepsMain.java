@@ -17,7 +17,7 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
-import com.mobile.utils.ui.TabLayoutUtils;
+import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragmentAutoState;
@@ -87,18 +87,18 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         // Set tab
         mTabLayout = (TabLayout) view.findViewById(R.id.order_return_main_tabs);
         // Set tabs
-        TabLayoutUtils.fillReturnTabLayout(mTabLayout, this);
+        UITabLayoutUtils.fillReturnTabLayout(mTabLayout, this);
         // Validate state
         if (CollectionUtils.isEmpty(this.mArgArray)) {
             showFragmentErrorRetry();
         }
         // Case step
         else if (!hasChildFragmentAttached(mStep)) {
-            nextStep(mStep);
+            onSwitchStep(mStep);
         }
         // Has child fragment attached
         else {
-            setSelectedTab(mTabLayout, mStep);
+            UITabLayoutUtils.setSelectedTab(mTabLayout, mStep);
         }
     }
 
@@ -182,7 +182,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         int tStep = (int) view.getTag();
         // Validate
         if(tStep < mStep || hasSubmittedValuesToFinish()) {
-            nextStep(tStep);
+            onSwitchStep(tStep);
         }
         // Super
         else {
@@ -206,7 +206,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     public boolean allowBackPressed() {
         // Validate step
         if(mStep > REASON) {
-            nextStep(mStep -1);
+            onSwitchStep(mStep -1);
             return true;
         } else {
             return super.allowBackPressed();
@@ -217,7 +217,14 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
      * ##### SWITCH #####
      */
 
-    public synchronized void nextStep(int next) {
+    /**
+     * Goto next/back step.<br>
+     *  - On replacement, the save fragment state is performed in our side, because is not performed by child fragment manager.<br>
+     *  The save state was based in the FragmentStatePagerAdapter implementation<br>
+     *  - On rotation, the fragment state is performed by child fragment manager.<br>
+     * @author sergio pereira
+     */
+    public synchronized void onSwitchStep(int next) {
         // Save state
         saveFragmentInstantState(mStep, mSavedState);
         // Save next
@@ -231,7 +238,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
                 .allowStateLoss()
                 .commit();
         // Update tab
-        setSelectedTab(mTabLayout, mStep);
+        UITabLayoutUtils.setSelectedTab(mTabLayout, mStep);
     }
 
     /**
@@ -292,16 +299,6 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
      */
     private boolean hasChildFragmentAttached(int step) {
         return getChildFragmentManager().findFragmentByTag(String.valueOf(step)) != null;
-    }
-
-    /**
-     * Set selected tab
-     */
-    private void setSelectedTab(@NonNull final TabLayout tabLayout, final int position) {
-        TabLayout.Tab tab = tabLayout.getTabAt(position);
-        if (tab != null) {
-            tab.select();
-        }
     }
 
 }

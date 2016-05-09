@@ -157,9 +157,9 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
      */
 
     private void triggerFinishReturnProcess() {
-
-        // Submit values
-        triggerContentEvent(new ReturnFinishHelper(), ReturnFinishHelper.createBundle(getSubmittedValues()), this);
+        if (hasSubmittedValuesToFinish()) {
+            triggerContentEvent(new ReturnFinishHelper(), ReturnFinishHelper.createBundle(getSubmittedValues()), this);
+        }
     }
 
     /*
@@ -170,17 +170,16 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     public void onClick(View view) {
         // Get id
         int id = view.getId();
-        // Case edit
+        // Case edit step
         if (id == R.id.section_item_button) {
-            // Get step
-            @OrderReturnStepsMain.ReturnStepType
-            int step = (int) view.getTag(R.id.target_type);
-            onClickStep(step);
-        } else if(id == R.id.order_return_main_button_ok){
-            if(hasSubmittedValuesToFinish()){
-                triggerFinishReturnProcess();
-            }
-        } else {
+            onClickNextStep((int) view.getTag(R.id.target_type));
+        }
+        // Case submit
+        else if (id == R.id.order_return_main_button_ok) {
+            triggerFinishReturnProcess();
+        }
+        // Super
+        else {
             super.onClick(view);
         }
     }

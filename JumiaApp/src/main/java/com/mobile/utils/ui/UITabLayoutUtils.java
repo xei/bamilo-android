@@ -1,6 +1,7 @@
 package com.mobile.utils.ui;
 
 import android.content.Context;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -22,7 +23,7 @@ import com.mobile.view.fragments.order.OrderReturnStepsMain;
  * Class used for TabLayout.
  * @author spereira
  */
-public class TabLayoutUtils {
+public class UITabLayoutUtils {
 
 
     public static void fillTabLayout(@NonNull TabLayout tabLayout, @Nullable TabLayout.OnTabSelectedListener listener) {
@@ -42,67 +43,44 @@ public class TabLayoutUtils {
         tabLayout.setOnTabSelectedListener(listener);
     }
 
+    @SuppressWarnings("all")
+    private static void setTabCustomView(@NonNull TabLayout tabLayout, @LayoutRes int view, @Nullable Object tag, @Nullable View.OnClickListener clickListener) {
+        TabLayout.Tab tab = tabLayout.newTab();
+        tabLayout.addTab(tab);
+        tab.setCustomView(view);
+        View parent = (View) tab.getCustomView().getParent();
+        parent.setTag(tag);
+        parent.setOnClickListener(clickListener);
+    }
+
     /**
      * Fill return tab layout
      */
-    public static void fillReturnTabLayout(@NonNull TabLayout tabLayout, @Nullable View.OnClickListener clickListener) {
+    public static void fillReturnTabLayout(@NonNull TabLayout tab, @Nullable View.OnClickListener listener) {
         // Step 1
-        TabLayout.Tab tab = tabLayout.newTab();
-        tabLayout.addTab(tab);
-        tab.setCustomView(R.layout.tab_step_1);
-        ((View) tab.getCustomView().getParent()).setTag(OrderReturnStepsMain.REASON);
-        ((View) tab.getCustomView().getParent()).setOnClickListener(clickListener);
+        setTabCustomView(tab, R.layout.tab_return_step_1, OrderReturnStepsMain.REASON, listener);
         // Step 2
-        TabLayout.Tab tab2 = tabLayout.newTab();
-        tabLayout.addTab(tab2);
-        tab2.setCustomView(R.layout.tab_step_2);
-        ((View) tab2.getCustomView().getParent()).setTag(OrderReturnStepsMain.METHOD);
-        ((View) tab2.getCustomView().getParent()).setOnClickListener(clickListener);
+        setTabCustomView(tab, R.layout.tab_return_step_2, OrderReturnStepsMain.METHOD, listener);
         // Step 3
-        TabLayout.Tab tab3 = tabLayout.newTab();
-        tabLayout.addTab(tab3);
-        tab3.setCustomView(R.layout.tab_step_3);
-        ((View) tab3.getCustomView().getParent()).setTag(OrderReturnStepsMain.REFUND);
-        ((View) tab3.getCustomView().getParent()).setOnClickListener(clickListener);
-        // Step 5
-        TabLayout.Tab tab4 = tabLayout.newTab();
-        tabLayout.addTab(tab4);
-        tab4.setCustomView(R.layout.tab_step_4);
-        ((View) tab4.getCustomView().getParent()).setTag(OrderReturnStepsMain.FINISH);
-        ((View) tab4.getCustomView().getParent()).setOnClickListener(clickListener);
+        setTabCustomView(tab, R.layout.tab_return_step_3, OrderReturnStepsMain.REFUND, listener);
+        // Step 4
+        setTabCustomView(tab, R.layout.tab_return_step_4, OrderReturnStepsMain.FINISH, listener);
     }
 
-    public static void fillCheckoutTabLayout(@NonNull TabLayout tabLayout, @Nullable TabLayout.OnTabSelectedListener listener, @Nullable View.OnClickListener clickListener) {
+    /**
+     * Fill checkout tab layout
+     */
+    public static void fillCheckoutTabLayout(@NonNull TabLayout tab, @Nullable TabLayout.OnTabSelectedListener listener, @Nullable View.OnClickListener clickListener) {
         // About You
-        TabLayout.Tab tab = tabLayout.newTab();
-        tabLayout.addTab(tab);
-        tab.setCustomView(R.layout.tab_about_you);
-        ((View) tab.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_ABOUT_YOU);
-        ((View) tab.getCustomView().getParent()).setOnClickListener(clickListener);
-
+        setTabCustomView(tab, R.layout.tab_about_you, ConstantsCheckout.CHECKOUT_ABOUT_YOU, clickListener);
         // Address
-        TabLayout.Tab tab2 = tabLayout.newTab();
-        tabLayout.addTab(tab2);
-        tab2.setCustomView(R.layout.tab_address);
-        ((View) tab2.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_BILLING);
-        ((View) tab2.getCustomView().getParent()).setOnClickListener(clickListener);
-
+        setTabCustomView(tab, R.layout.tab_address, ConstantsCheckout.CHECKOUT_BILLING, clickListener);
         // Shipping
-        TabLayout.Tab tab3 = tabLayout.newTab();
-        tabLayout.addTab(tab3);
-        tab3.setCustomView(R.layout.tab_shipping);
-        ((View) tab3.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_SHIPPING);
-        ((View) tab3.getCustomView().getParent()).setOnClickListener(clickListener);
-
+        setTabCustomView(tab, R.layout.tab_shipping, ConstantsCheckout.CHECKOUT_SHIPPING, clickListener);
         // Payment
-        TabLayout.Tab tab4 = tabLayout.newTab();
-        tabLayout.addTab(tab4);
-        tab4.setCustomView(R.layout.tab_payment);
-        ((View) tab4.getCustomView().getParent()).setTag(ConstantsCheckout.CHECKOUT_PAYMENT);
-        ((View) tab4.getCustomView().getParent()).setOnClickListener(clickListener);
-
+        setTabCustomView(tab, R.layout.tab_payment, ConstantsCheckout.CHECKOUT_PAYMENT, clickListener);
         // Set listener
-        tabLayout.setOnTabSelectedListener(listener);
+        tab.setOnTabSelectedListener(listener);
     }
 
     public static boolean isNavigationActionWithTabLayout(@NavigationAction.Type int action) {
@@ -137,6 +115,20 @@ public class TabLayoutUtils {
         // Case Basket
         else if (pos == 2 && action != NavigationAction.BASKET) {
             activity.onSwitchFragment(FragmentType.SHOPPING_CART, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
+    }
+
+    /**
+     * Set selected tab with or without custom view.
+     */
+    public static void setSelectedTab(@NonNull TabLayout tabLayout, int position) {
+        TabLayout.Tab tab = tabLayout.getTabAt(position);
+        if (tab != null) {
+            View view = tab.getCustomView();
+            if (view != null) {
+                view.setSelected(true);
+            }
+            tab.select();
         }
     }
 

@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.pojo.IntConstants;
-import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
@@ -439,7 +438,7 @@ public class FragmentController {
      * @author paulo
      * @modified sergiopereira
      */
-    public void validateCurrentState(BaseActivity activity, ArrayList<String> backstackTypes, List<Fragment> originalFragments, FragmentType currentFragmentType) {
+    public void validateCurrentState(BaseActivity activity, ArrayList<String> backstackTypes, List<Fragment> originalFragments) {
         // Validate the current back stack size
         if(getBackStackSize() > 0) {
             Print.i("FRAGMENT CONTROLLER: HAS BACKSTACK!");
@@ -545,38 +544,30 @@ public class FragmentController {
     /**
      * Add animation
      */
-    private static void addAnimation(@NonNull final FragmentTransaction transaction, final @AnimationType int type) {
-        /**
-         * FIXME: Excluded piece of code due to crash on API = 18.
-         * Temporary fix - https://code.google.com/p/android/issues/detail?id=185457
-         */
-        DeviceInfoHelper.executeCodeExcludingJellyBeanMr2Version(new Runnable() {
-            @Override
-            public void run() {
-                switch (type) {
-                    case SLIDE_IN:
-                        transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
-                        break;
-                    case SLIDE_OUT:
-                        transaction.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
-                        break;
-                    case SLIDE:
-                        transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left, R.anim.slide_from_left, R.anim.slide_to_right);
-                        break;
-                    case FADE:
-                        transaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
-                        break;
-                    case NONE:
-                    default:
-                        break;
-                }
-            }
-        });
+    private static void addAnimation(@NonNull FragmentTransaction transaction, @AnimationType int type) {
+        switch (type) {
+            case SLIDE_IN:
+                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
+                break;
+            case SLIDE_OUT:
+                transaction.setCustomAnimations(R.anim.slide_from_left, R.anim.slide_to_right);
+                break;
+            case SLIDE:
+                transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left, R.anim.slide_from_left, R.anim.slide_to_right);
+                break;
+            case FADE:
+                transaction.setCustomAnimations(R.anim.pop_in, R.anim.pop_out, R.anim.pop_in, R.anim.pop_out);
+                break;
+            case NONE:
+            default:
+                break;
+        }
     }
 
     /**
      * Class used to replace fragments.
      */
+    @SuppressWarnings("unused")
     public static final class Transaction {
 
         private final Fragment parent;
@@ -588,37 +579,58 @@ public class FragmentController {
         private int animation = NONE;
         private String tag;
 
+        /**
+         * Constructor
+         */
         public Transaction(Fragment parent, int container, Fragment fragment) {
             this.parent = parent;
             this.container = container;
             this.fragment = fragment;
         }
 
+        /**
+         * Indicates to use the child fragment manager.
+         */
         public Transaction useChildFragmentManager() {
             this.child = true;
             return this;
         }
 
+        /**
+         * Add the new fragment to back stack.
+         */
         public Transaction addBackStack(boolean b) {
             this.stack = b;
             return this;
         }
 
+        /**
+         * Add a tag for new fragment to be identified in fragment manager.
+         */
         public Transaction addTag(@NonNull String tag) {
             this.tag = tag;
             return this;
         }
 
+        /**
+         * Add an animation when the replacement is performed.
+         */
         public Transaction addAnimation(@AnimationType int type) {
             this.animation = type;
             return this;
         }
 
+        /**
+         * Will be used the method to commitAllowingStateLoss() from manager.
+         */
         public Transaction allowStateLoss() {
             this.noState = true;
             return this;
         }
 
+        /**
+         * Process the transaction
+         */
         public void commit() {
             // Manager
             FragmentManager manager = child ? parent.getChildFragmentManager() : parent.getFragmentManager();

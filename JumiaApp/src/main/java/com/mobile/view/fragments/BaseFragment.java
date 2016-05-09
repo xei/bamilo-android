@@ -53,7 +53,7 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.TabLayoutUtils;
+import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
@@ -258,7 +258,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems + " " + action);
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
             // Method used to set a bottom margin
-            TabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
+            UITabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
     }
 
