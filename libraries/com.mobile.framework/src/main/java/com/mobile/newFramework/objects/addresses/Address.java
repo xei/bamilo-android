@@ -29,12 +29,14 @@ public class Address implements IJSONSerializable, Parcelable {
     private String phone;
     private String additionalPhone;
     private String region;
+    private boolean isValid;
 
     /**
      * Constructor
      */
     public Address() {
         super();
+
     }
 
     /*
@@ -62,6 +64,9 @@ public class Address implements IJSONSerializable, Parcelable {
         region = dataObject.optString(RestConstants.REGION);
         city = dataObject.optString(RestConstants.CITY);
         additionalPhone = dataObject.optString(RestConstants.ADDITIONAL_PHONE);
+
+        isValid = dataObject.optBoolean(RestConstants.IS_VALID,true);
+
         return true;
     }
 
@@ -112,6 +117,13 @@ public class Address implements IJSONSerializable, Parcelable {
     }
 
     /**
+     * Check whether the Address is valid or not.
+     */
+    public boolean isValid() {
+        return isValid;
+    }
+
+    /**
      * ########### PARCEL ###########
      */
 
@@ -140,6 +152,7 @@ public class Address implements IJSONSerializable, Parcelable {
         dest.writeString(phone);
         dest.writeString(additionalPhone);
         dest.writeString(region);
+        dest.writeByte((byte) (isValid ? 0x01 : 0x00));
     }
 
     /**
@@ -156,6 +169,7 @@ public class Address implements IJSONSerializable, Parcelable {
         phone = in.readString();
         additionalPhone = in.readString();
         region = in.readString();
+        isValid = in.readByte() != 0x00;
     }
 
     /**
