@@ -96,7 +96,7 @@ public class RestConstants {
     public static final String ID_RATING_TYPE = "id_rating_type";
     public static final String RATING = "rating";
     public static final String REVIEW = "review";
-    public static final String IS_ENABLE = "is_enable";
+    public static final String  IS_ENABLE = "is_enable";
     public static final String REQUIRED_LOGIN = "required_login";
     public static final String BASED_ON = "based_on";
     public static final String TOTAL_STARS = "total_stars";
@@ -343,4 +343,5 @@ public class RestConstants {
     public static final String TEXT_BODY2 = "text_body2";
     public static final String ACTIONS = "actions";
     public static final String SUBTEXT = "subtext";
+    public static final String IS_VALID = "is_valid";
 }

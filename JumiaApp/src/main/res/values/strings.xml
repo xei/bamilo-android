@@ -377,4 +377,6 @@
     <string name="return_reason">Return Reason</string>
     <string name="return_method">Return Method</string>
     <string name="return_payment">Return Payment Method</string>
+    <string name="invalid_address_shipping_billing">This address is not correct, please change it</string>
+    <string name="invalid_address_other">This address is not correct</string>
 </resources>
