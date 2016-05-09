@@ -53,12 +53,15 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mFormResponse = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
-            mFormSavedState = savedInstanceState.getParcelable(ConstantsIntentExtra.ARG_1);
-        }
     }
+
+    @Override
+    protected void onCreateInstanceState(@NonNull Bundle bundle) {
+        super.onCreateInstanceState(bundle);
+        mFormResponse = bundle.getParcelable(ConstantsIntentExtra.DATA);
+        mFormSavedState = bundle.getParcelable(ConstantsIntentExtra.ARG_1);
+    }
+
 
     /*
          * (non-Javadoc)
@@ -74,6 +77,8 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
         // Get button
         TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
         button.setOnClickListener(this);
+
+        setUserVisibleHint(true);
 
     }
 

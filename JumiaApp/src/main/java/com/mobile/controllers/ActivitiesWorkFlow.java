@@ -40,7 +40,7 @@ public class ActivitiesWorkFlow {
      */
     private static void startWithSlideTransition(@NonNull Activity activity, @NonNull Intent intent) {
         activity.startActivity(intent);
-        activity.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        activity.overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
     }
 
     /**

@@ -61,20 +61,13 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            // Validate state
-            if (hasSubmittedValuesToFinish()) {
-                // Load and show
-                loadSubmittedValues(mContainer);
-            } else {
-                // Warning user to restart the process
-                showFragmentErrorRetry();
-            }
+        // Validate state
+        if (hasSubmittedValuesToFinish()) {
+            // Load and show
+            loadSubmittedValues(mContainer);
+        } else {
+            // Warning user to restart the process
+            showFragmentErrorRetry();
         }
     }
 

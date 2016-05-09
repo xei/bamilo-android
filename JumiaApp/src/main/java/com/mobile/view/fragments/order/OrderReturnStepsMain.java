@@ -7,18 +7,17 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.view.View;
 
-import com.mobile.components.viewpager.SuperViewPager;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.ui.TabLayoutUtils;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.BaseFragmentAutoState;
@@ -39,14 +38,14 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     public static final int METHOD = 1;
     public static final int REFUND = 2;
     public static final int FINISH = 3;
-    private int mSavedPosition;
-
     @IntDef({CONDITIONS, REASON, METHOD, REFUND, FINISH})
     @Retention(RetentionPolicy.SOURCE)
     public @interface ReturnStepType {}
 
-    private SuperViewPager mPager;
+    private int mStep = REASON;
     private Bundle mSubmittedData;
+    private ArrayList<SavedState> mSavedState = new ArrayList<>(IntConstants.TAB_MAX_STEPS);
+    private TabLayout mTabLayout;
 
     /**
      * Empty constructor
@@ -66,8 +65,15 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     @Override
     protected void onCreateInstanceState(@NonNull Bundle bundle) {
         super.onCreateInstanceState(bundle);
+        // Get submitted data
         mSubmittedData = bundle.getBundle(ConstantsIntentExtra.ARG_1);
-        mSavedPosition = bundle.getInt(ConstantsIntentExtra.ARG_2);
+        // Get current step
+        mStep = bundle.getInt(ConstantsIntentExtra.ARG_2, REASON);
+        // Get fragment states
+        ArrayList<SavedState> state = bundle.getParcelableArrayList(ConstantsIntentExtra.ARG_3);
+        if (CollectionUtils.isNotEmpty(state)) {
+            mSavedState = state;
+        }
     }
 
     /*
@@ -78,32 +84,22 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-        // Validate received items
-
         // Set tab
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.order_return_main_tabs);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_1));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_2));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_3));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable._gen_selector_tab_step_4));
-
-        nextStep(REASON);
-
-//        // Get pager
-//        mPager = (SuperViewPager) view.findViewById(R.id.order_return_main_pager);
-//        mPager.disablePaging();
-//        mPager.addOnPageChangeListener(new TabLayoutPageChangeListener(tabLayout));
-//
-//        // Now we'll add a tab selected listener to set ViewPager's current item
-//        tabLayout.setOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mPager));
-
-//        // Validate the current view
-//        OrderReturnStepsAdapter adapter = (OrderReturnStepsAdapter) mPager.getAdapter();
-//        if(adapter != null && adapter.getCount() > 0) {
-//            mPager.setCurrentItem(mSavedPosition, true);
-//        } else {
-//            mPager.setAdapter(new OrderReturnStepsAdapter(getChildFragmentManager()));
-//        }
+        mTabLayout = (TabLayout) view.findViewById(R.id.order_return_main_tabs);
+        // Set tabs
+        TabLayoutUtils.fillReturnTabLayout(mTabLayout, this);
+        // Validate state
+        if (CollectionUtils.isEmpty(this.mArgArray)) {
+            showFragmentErrorRetry();
+        }
+        // Case step
+        else if (!hasChildFragmentAttached(mStep)) {
+            nextStep(mStep);
+        }
+        // Has child fragment attached
+        else {
+            setSelectedTab(mTabLayout, mStep);
+        }
     }
 
     @Override
@@ -111,47 +107,32 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         super.onSaveInstanceState(outState);
         // Save data
         outState.putBundle(ConstantsIntentExtra.ARG_1, mSubmittedData);
-        // Save page
-        if (mPager != null) {
-            outState.putInt(ConstantsIntentExtra.ARG_2, mPager.getCurrentItem());
+        // Save step
+        outState.putInt(ConstantsIntentExtra.ARG_2, mStep);
+        // Save state
+        if (CollectionUtils.isNotEmpty(mSavedState)) {
+            outState.putParcelableArrayList(ConstantsIntentExtra.ARG_3, mSavedState);
         }
-    }
-
-    public ArrayList<OrderTrackerItem> getOrderItems() {
-        return (ArrayList<OrderTrackerItem>) this.mArgArray;
-    }
-
-    public String getOrderNumber() {
-        return this.mArgId;
-    }
-
-//    public void nextStep(int nextStepId) {
-//        mPager.setCurrentItem(nextStepId, true);
-//    }
-
-    public Fragment getItem(@ReturnStepType int position) {
-        Class<? extends BaseFragment> fClass;
-        switch (position) {
-            case REASON:
-                fClass = OrderReturnStep1Reason.class;
-                break;
-            case METHOD:
-                fClass = OrderReturnStep2Method.class;
-                break;
-            case REFUND:
-                fClass = OrderReturnStep3Refund.class;
-                break;
-            case FINISH:
-            default:
-                fClass = OrderReturnStep4Finish.class;
-                break;
-        }
-        return newInstance(getContext(), fClass, null);
     }
 
     /*
      * ##### STEP VALUES #####
      */
+
+    /**
+     * Get return items
+     */
+    @SuppressWarnings("all")
+    public ArrayList<OrderTrackerItem> getReturnItems() {
+        return (ArrayList<OrderTrackerItem>) this.mArgArray;
+    }
+
+    /**
+     * Get order number
+     */
+    public String getOrderNumber() {
+        return this.mArgId;
+    }
 
     /**
      * Validate submitted values
@@ -192,113 +173,135 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
     }
 
     /*
+     * ##### LISTENERS #####
+     */
+
+    @Override
+    public void onClick(View view) {
+        // Get tag from view
+        int tStep = (int) view.getTag();
+        // Validate
+        if(tStep < mStep || hasSubmittedValuesToFinish()) {
+            nextStep(tStep);
+        }
+        // Super
+        else {
+            super.onClick(view);
+        }
+    }
+
+    @Override
+    protected void onClickRetryButton(View view) {
+        super.onClickRetryButton(view);
+        // Restart
+        showUnexpectedErrorWarning();
+        getBaseActivity().onBackPressed();
+    }
+
+    /*
      * ##### BACK #####
      */
-//    @Override
-//    public boolean allowBackPressed() {
-//        int step = mPager.getCurrentItem();
-//        if (step > REASON) {
-//            nextStep(--step);
-//            return true;
-//        } else {
-//            return super.allowBackPressed();
-//        }
-//    }
 
     @Override
     public boolean allowBackPressed() {
-        int count = getChildFragmentManager().getBackStackEntryCount();
-        if (count > REASON) {
-            getChildFragmentManager().popBackStack();
+        // Validate step
+        if(mStep > REASON) {
+            nextStep(mStep -1);
             return true;
         } else {
             return super.allowBackPressed();
         }
     }
 
-    public void nextStep(@ReturnStepType int nextStepId) {
-        FragmentController.addChildFragment(this, R.id.order_return_main_container, getItem(nextStepId), String.valueOf(nextStepId), FragmentController.ADD_TO_BACK_STACK);
-    }
-
-
     /*
-     * ##### LISTENERS #####
+     * ##### SWITCH #####
      */
 
-    private class TabLayoutPageChangeListener extends TabLayout.TabLayoutOnPageChangeListener {
-
-        public TabLayoutPageChangeListener(TabLayout tabLayout) {
-            super(tabLayout);
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-            super.onPageScrollStateChanged(state);
-        }
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-            super.onPageSelected(position);
-            //if (position < mPager.getCurrentItem()) {
-            //    super.onPageSelected(position);
-            //}
-        }
+    public synchronized void nextStep(int next) {
+        // Save state
+        saveFragmentInstantState(mStep, mSavedState);
+        // Save next
+        mStep = next;
+        // Create instance
+        Fragment fragment = createChildFragment(mStep, mSavedState);
+        // Replace
+        new FragmentController.Transaction(this, R.id.order_return_main_container, fragment)
+                .useChildFragmentManager()
+                .addTag(String.valueOf(mStep))
+                .allowStateLoss()
+                .commit();
+        // Update tab
+        setSelectedTab(mTabLayout, mStep);
     }
-
 
     /**
-     * Class used as an simple pager adapter that represents each fragment
-     * @author sergiopereira
+     * Create child fragment for respective step loading the saved state.
      */
-    private class OrderReturnStepsAdapter extends FragmentStatePagerAdapter {
-
-        /**
-         * Constructor
-         */
-        public OrderReturnStepsAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        /*
-         * (non-Javadoc)
-         * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
-         */
-        @SuppressLint("SwitchIntDef")
-        @Override
-        public Fragment getItem(@ReturnStepType int position) {
-            Class<? extends BaseFragment> fClass;
-            switch (position) {
-                case REASON:
-                    fClass = OrderReturnStep1Reason.class;
-                    break;
-                case METHOD:
-                    fClass = OrderReturnStep2Method.class;
-                    break;
-                case REFUND:
-                    fClass = OrderReturnStep3Refund.class;
-                    break;
-                case FINISH:
-                default:
-                    fClass = OrderReturnStep4Finish.class;
-                    break;
+    public Fragment createChildFragment(int position, @NonNull ArrayList<SavedState> states) {
+        Fragment fragment = newStepInstance(position);
+        if (states.size() > position) {
+            Fragment.SavedState state = states.get(position);
+            if (state != null) {
+                fragment.setInitialSavedState(state);
             }
-            return newInstance(getContext(), fClass, null);
         }
+        return fragment;
+    }
 
-        /*
-         * (non-Javadoc)
-         * @see android.support.v4.view.PagerAdapter#getCount()
-         */
-        @Override
-        public int getCount() {
-            return IntConstants.TAB_MAX_STEPS;
+    /**
+     * Save the current state
+     */
+    public void saveFragmentInstantState(int position, @NonNull ArrayList<SavedState> states) {
+        Fragment fragment = getChildFragmentManager().findFragmentByTag(String.valueOf(position));
+        if (fragment != null) {
+            SavedState state = getChildFragmentManager().saveFragmentInstanceState(fragment);
+            if (position == CollectionUtils.size(states)) {
+                states.add(position, state);
+            } else {
+                states.set(position, state);
+            }
         }
+    }
 
+    /**
+     * Create step
+     */
+    @SuppressLint("SwitchIntDef")
+    public Fragment newStepInstance(@ReturnStepType int position) {
+        Class<? extends BaseFragment> fClass;
+        switch (position) {
+            case REASON:
+                fClass = OrderReturnStep1Reason.class;
+                break;
+            case METHOD:
+                fClass = OrderReturnStep2Method.class;
+                break;
+            case REFUND:
+                fClass = OrderReturnStep3Refund.class;
+                break;
+            case FINISH:
+            default:
+                fClass = OrderReturnStep4Finish.class;
+                break;
+        }
+        return newInstance(getContext(), fClass, null);
+    }
+
+    /**
+     * Validate if parent has child fragment attached
+     */
+    private boolean hasChildFragmentAttached(int step) {
+        return getChildFragmentManager().findFragmentByTag(String.valueOf(step)) != null;
+    }
+
+    /**
+     * Set selected tab
+     */
+    private void setSelectedTab(@NonNull final TabLayout tabLayout, final int position) {
+        TabLayout.Tab tab = tabLayout.getTabAt(position);
+        if (tab != null) {
+            tab.select();
+        }
     }
 
 }

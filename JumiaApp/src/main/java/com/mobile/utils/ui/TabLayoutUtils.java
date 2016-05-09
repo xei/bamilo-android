@@ -16,6 +16,8 @@ import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.utils.NavigationAction;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
+import com.mobile.view.fragments.order.OrderReturnStepsMain;
+
 /**
  * Class used for TabLayout.
  * @author spereira
@@ -40,7 +42,37 @@ public class TabLayoutUtils {
         tabLayout.setOnTabSelectedListener(listener);
     }
 
-    public static void fillCheckoutTabLayout(@NonNull TabLayout tabLayout, @Nullable TabLayout.OnTabSelectedListener listener, @Nullable android.view.View.OnClickListener clickListener) {
+    /**
+     * Fill return tab layout
+     */
+    public static void fillReturnTabLayout(@NonNull TabLayout tabLayout, @Nullable View.OnClickListener clickListener) {
+        // Step 1
+        TabLayout.Tab tab = tabLayout.newTab();
+        tabLayout.addTab(tab);
+        tab.setCustomView(R.layout.tab_step_1);
+        ((View) tab.getCustomView().getParent()).setTag(OrderReturnStepsMain.REASON);
+        ((View) tab.getCustomView().getParent()).setOnClickListener(clickListener);
+        // Step 2
+        TabLayout.Tab tab2 = tabLayout.newTab();
+        tabLayout.addTab(tab2);
+        tab2.setCustomView(R.layout.tab_step_2);
+        ((View) tab2.getCustomView().getParent()).setTag(OrderReturnStepsMain.METHOD);
+        ((View) tab2.getCustomView().getParent()).setOnClickListener(clickListener);
+        // Step 3
+        TabLayout.Tab tab3 = tabLayout.newTab();
+        tabLayout.addTab(tab3);
+        tab3.setCustomView(R.layout.tab_step_3);
+        ((View) tab3.getCustomView().getParent()).setTag(OrderReturnStepsMain.REFUND);
+        ((View) tab3.getCustomView().getParent()).setOnClickListener(clickListener);
+        // Step 5
+        TabLayout.Tab tab4 = tabLayout.newTab();
+        tabLayout.addTab(tab4);
+        tab4.setCustomView(R.layout.tab_step_4);
+        ((View) tab4.getCustomView().getParent()).setTag(OrderReturnStepsMain.FINISH);
+        ((View) tab4.getCustomView().getParent()).setOnClickListener(clickListener);
+    }
+
+    public static void fillCheckoutTabLayout(@NonNull TabLayout tabLayout, @Nullable TabLayout.OnTabSelectedListener listener, @Nullable View.OnClickListener clickListener) {
         // About You
         TabLayout.Tab tab = tabLayout.newTab();
         tabLayout.addTab(tab);

@@ -62,7 +62,7 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
      * Get items from parent
      */
     protected ArrayList<OrderTrackerItem> getOrderItems() {
-        return ((OrderReturnStepsMain) getParentFragment()).getOrderItems();
+        return ((OrderReturnStepsMain) getParentFragment()).getReturnItems();
     }
 
     /**

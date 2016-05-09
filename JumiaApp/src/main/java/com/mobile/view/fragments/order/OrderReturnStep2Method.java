@@ -55,17 +55,15 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (savedInstanceState != null) {
-            mFormResponse = savedInstanceState.getParcelable(ConstantsIntentExtra.DATA);
-            mFormSavedState = savedInstanceState.getParcelable(ConstantsIntentExtra.ARG_1);
-        }
     }
 
-    /*
-         * (non-Javadoc)
-         * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View, android.os.Bundle)
-         */
+    @Override
+    protected void onCreateInstanceState(@NonNull Bundle bundle) {
+        super.onCreateInstanceState(bundle);
+        mFormResponse = bundle.getParcelable(ConstantsIntentExtra.DATA);
+        mFormSavedState = bundle.getParcelable(ConstantsIntentExtra.ARG_1);
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -76,6 +74,8 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
         // Get button
         TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
         button.setOnClickListener(this);
+
+        setUserVisibleHint(true);
 
     }
 
