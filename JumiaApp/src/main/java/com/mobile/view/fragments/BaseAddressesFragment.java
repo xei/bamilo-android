@@ -131,14 +131,14 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
         // Set shipping container
         TextView shippingTitle = (TextView) mShippingView.findViewById(R.id.checkout_address_title);
         shippingTitle.setText(getString(isSameAddress ? R.string.address_shipping_billing_label : R.string.address_shipping_label));
-        addAddress(mShippingView, addresses.getShippingAddress());
+        addAddress(mShippingView, addresses.getShippingAddress(), false);
         // Set billing container
         if (isSameAddress) {
             mBillingView.setVisibility(View.GONE);
         } else {
             TextView billingTitle = (TextView) mBillingView.findViewById(R.id.checkout_address_title);
             billingTitle.setText(getString(R.string.address_billing_label));
-            addAddress(mBillingView, addresses.getBillingAddress());
+            addAddress(mBillingView, addresses.getBillingAddress(), false);
         }
         // Show other container
         if (CollectionUtils.isNotEmpty(addresses.getAddresses())) {
@@ -162,7 +162,7 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
     private void addAddresses(ViewGroup container, HashMap<String, Address> addresses) {
         for (LinkedHashMap.Entry<String, Address> item : addresses.entrySet()) {
             Address otherAddress = item.getValue();
-            addAddress(container, otherAddress);
+            addAddress(container, otherAddress, true);
         }
     }
 
@@ -171,10 +171,10 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
      *
      * @author sergiopereira
      */
-    private void addAddress(ViewGroup container, Address address) {
+    private void addAddress(ViewGroup container, Address address, boolean isOther) {
         Print.d(TAG, "ADD ADDRESS: " + address.getId());
         View addressView = LayoutInflater.from(getBaseActivity()).inflate(R.layout.checkout_address_item, container, false);
-        setAddressView(addressView, address, address.getId());
+        setAddressView(addressView, address, address.getId(), isOther);
         container.addView(addressView);
     }
 
@@ -184,9 +184,10 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
      * @param parent  the main view
      * @param address the current address
      * @param tag     the tag to associate
+     * @param isOther the flag that indicates whether is an Other address to change error message
      * @author sergiopereira
      */
-    private void setAddressView(View parent, Address address, int tag) {
+    private void setAddressView(View parent, Address address, int tag, boolean isOther) {
         // Text
         ((TextView) parent.findViewById(R.id.checkout_address_item_name)).setText(String.format(getString(R.string.first_space_second_placeholder), address.getFirstName(), address.getLastName()));
         ((TextView) parent.findViewById(R.id.checkout_address_item_street)).setText(address.getAddress());
@@ -198,6 +199,15 @@ public abstract class BaseAddressesFragment extends BaseFragment implements IRes
         ((TextView) parent.findViewById(R.id.checkout_address_item_region)).setText(regionString);
         ((TextView) parent.findViewById(R.id.checkout_address_item_postcode)).setText(address.getPostcode());
         ((TextView) parent.findViewById(R.id.checkout_address_item_phone)).setText(address.getPhone());
+
+        if(!address.isValid()){
+            if(isOther){
+                ((TextView) parent.findViewById(R.id.checkout_address_invalid)).setText(getString(R.string.invalid_address_other));
+            }
+            parent.findViewById(R.id.checkout_address_invalid).setVisibility(View.VISIBLE);
+        }
+
+
         // Buttons
         View editBtn = parent.findViewById(R.id.checkout_address_item_btn_edit);
         editBtn.setTag(tag);

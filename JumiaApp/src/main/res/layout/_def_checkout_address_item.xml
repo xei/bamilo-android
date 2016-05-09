@@ -77,7 +77,8 @@
             android:drawableStart="@drawable/indicator_input_error"
             android:drawablePadding="@dimen/margin_padding_m"
             android:textColor="@color/red_basic"
-            android:text="@string/invalid_address_shipping_billing"/>
+            android:text="@string/invalid_address_shipping_billing"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
