@@ -891,7 +891,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
         // Get Sort
-        if (TextUtils.isNotEmpty(mSelectedSort.path)) {
+        if (mSelectedSort != null && TextUtils.isNotEmpty(mSelectedSort.path)) {
             mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
         }
         // Case initial request or load more
@@ -944,6 +944,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
             mSortOrFilterApplied = false;
+            Print.i("code1sort : "+catalogPage.getSort());
             mSelectedSort = CatalogSort.valueOf(catalogPage.getSort());
             Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage()+" "+mSelectedSort);
             onUpdateCatalogContainer(catalogPage);
