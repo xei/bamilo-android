@@ -483,9 +483,10 @@ public class DynamicFormItem {
                 break;
             case list:
                 mPreSelectedPosition = inStat.getInt(getKey());
-                if(((IcsSpinner) this.dataControl).getAdapter() != null &&
-                        ((IcsSpinner) this.dataControl).getAdapter().getCount() > mPreSelectedPosition){
-                    ((IcsSpinner) this.dataControl).setSelection(mPreSelectedPosition);
+                IcsSpinner spinner = (IcsSpinner) this.dataControl;
+                if(spinner.getAdapter() != null &&
+                        spinner.getAdapter().getCount() > mPreSelectedPosition){
+                    spinner.setSelection(mPreSelectedPosition);
                 }
 
                 break;
