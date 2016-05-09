@@ -483,7 +483,11 @@ public class DynamicFormItem {
                 break;
             case list:
                 mPreSelectedPosition = inStat.getInt(getKey());
-                ((IcsSpinner) this.dataControl).setSelection(mPreSelectedPosition);
+                if(((IcsSpinner) this.dataControl).getAdapter() != null &&
+                        ((IcsSpinner) this.dataControl).getAdapter().getCount() > mPreSelectedPosition){
+                    ((IcsSpinner) this.dataControl).setSelection(mPreSelectedPosition);
+                }
+
                 break;
             case radioGroup:
                 int position = inStat.getInt(getKey());
