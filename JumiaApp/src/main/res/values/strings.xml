@@ -368,6 +368,7 @@
     <string name="order_return_finish_title">Confirm your return request details</string>
     <string name="send_label">Send</string>
     <string name="quantity_to_return">Quantity to return</string>
+    <string name="quantity_to_return_placeholder">Quantity to return: %s</string>
     <string name="quantity_placeholder">Quantity: %s</string>
     <string name="please_call_placeholder">Please Call to %s</string>
     <string name="choose_reason">Choose Reason</string>
@@ -376,4 +377,6 @@
     <string name="return_reason">Return Reason</string>
     <string name="return_method">Return Method</string>
     <string name="return_payment">Return Payment Method</string>
+    <string name="invalid_address_shipping_billing">This address is not correct, please change it</string>
+    <string name="invalid_address_other">This address is not correct</string>
 </resources>

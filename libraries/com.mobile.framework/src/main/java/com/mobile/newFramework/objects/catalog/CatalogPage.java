@@ -44,6 +44,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
 
     private String mSearchTerm;
 
+    private String mSort;
+
     private ArrayList<CatalogFilter> filters;
 
     /*
@@ -77,6 +79,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         mName = metadataObject.optString(RestConstants.TITLE);
         mSearchTerm = metadataObject.optString(RestConstants.SEARCH_TERM);
         mTotal = metadataObject.optInt(RestConstants.TOTAL_PRODUCTS);
+        mSort = metadataObject.optString(RestConstants.SORT);
         // Set the max pages that application can request
         mMaxPages = calcMaxPages();
         // Get products
@@ -244,6 +247,13 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         return mBrandId;
     }
 
+    /**
+     * Get Applied Sort
+     */
+    public String getSort(){
+        return mSort;
+    }
+
 
     /*
      * ############### Parcelable ###############
@@ -270,6 +280,7 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
         } else {
             filters = null;
         }
+        mSort = in.readString();
     }
 
     @Override
@@ -299,6 +310,8 @@ public class CatalogPage implements IJSONSerializable, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(filters);
         }
+
+        dest.writeString(mSort);
     }
 
     @SuppressWarnings("unused")

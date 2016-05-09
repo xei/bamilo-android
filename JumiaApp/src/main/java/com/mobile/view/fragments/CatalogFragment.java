@@ -91,7 +91,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private ContentValues mCurrentFilterValues = new ContentValues();
 
-    private CatalogSort mSelectedSort = CatalogSort.POPULARITY;
+    private CatalogSort mSelectedSort;
 
     private boolean mErrorLoading = false;
 
@@ -152,9 +152,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             // Get catalog type (Hash|Seller|Brand|Category|DeepLink)
             mQueryValues = UICatalogUtils.saveCatalogType(arguments, mQueryValues, mKey);
-            // Get sort
-            mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT, CatalogSort.POPULARITY.ordinal())];
-            mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
             // Default catalog values
             mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             // In case of searching by keyword
@@ -890,7 +887,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
         // Get Sort
-        if (TextUtils.isNotEmpty(mSelectedSort.path)) {
+        if (mSelectedSort != null && TextUtils.isNotEmpty(mSelectedSort.path)) {
             mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
         }
         // Case initial request or load more
@@ -943,7 +940,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
             mSortOrFilterApplied = false;
-            Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
+
+            // IF API is not retrieving the sort, and we already have a sort selected, keep it, otherwise use POPULARITY
+            mSelectedSort = TextUtils.isNotEmpty(catalogPage.getSort()) ?
+                    CatalogSort.valueOf(catalogPage.getSort()) :
+                    (mSelectedSort != null ? mSelectedSort : CatalogSort.POPULARITY);
+
+            Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage()+" "+mSelectedSort);
             onUpdateCatalogContainer(catalogPage);
             if (catalogPage.getPage() == 1) {
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);

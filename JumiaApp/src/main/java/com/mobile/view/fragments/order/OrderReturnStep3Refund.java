@@ -99,14 +99,16 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
      */
     protected void loadReturnRefundForm(Form form) {
 
-        // Return Method form
-        mReturnRefundFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
-        if(mFormSavedState != null)
-        mReturnRefundFormGenerator.loadSaveFormState(mFormSavedState);
-        mReturnRefundFormContainer.removeAllViews();
-        mReturnRefundFormContainer.addView(mReturnRefundFormGenerator.getContainer());
-        mReturnRefundFormContainer.refreshDrawableState();
-        loadItems();
+        if(mReturnRefundFormContainer != null){
+            // Return Method form
+            mReturnRefundFormGenerator = FormFactory.create(FormConstants.RETURN_METHOD_FORM, getBaseActivity(), form).addOnClickListener(this);
+            mReturnRefundFormGenerator.loadSaveFormState(mFormSavedState);
+            mReturnRefundFormContainer.removeAllViews();
+            mReturnRefundFormContainer.addView(mReturnRefundFormGenerator.getContainer());
+            mReturnRefundFormContainer.refreshDrawableState();
+            loadItems();
+        }
+
     }
 
     /**
@@ -116,7 +118,9 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
         mReturnRefundItemsContainer.removeAllViews();
         ArrayList<OrderTrackerItem> items = getOrderItems();
         for (OrderTrackerItem  orderItem : items) {
-            ReturnItemViewHolder custom = new ReturnItemViewHolder(getContext(), getOrderNumber(), orderItem).bind();
+            ContentValues values = getSubmittedStepValues(OrderReturnStepsMain.REASON);
+            String quantity = OrderReturnStep1Reason.getQuantityValue(values, orderItem.getSku());
+            ReturnItemViewHolder custom = new ReturnItemViewHolder(getContext(), getOrderNumber(), orderItem).addQuantity(quantity).bind().showQuantityToReturnText();
             mReturnRefundItemsContainer.addView(custom.getView());
         }
 

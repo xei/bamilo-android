@@ -29,6 +29,7 @@
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:visibility="gone">
+
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/radio_expandable_text"
             style="@style/TextBase.Body.Black_800"
@@ -43,6 +44,7 @@
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/sub_text"
             style="@style/TextBase.Body.Black"
+            android:layout_width="wrap_content"
             tools:text="You have 7 days to drop off your item at a Jumia Return Station."
             android:background="@drawable/_gen_background_border_yellow"
             android:layout_marginTop="@dimen/margin_padding_m"

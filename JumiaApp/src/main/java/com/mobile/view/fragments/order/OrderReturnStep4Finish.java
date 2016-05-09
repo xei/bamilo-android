@@ -140,12 +140,12 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
                 String reason = OrderReturnStep1Reason.getReasonLabel(values, item.getSku());
                 String quantity = OrderReturnStep1Reason.getQuantityValue(values, item.getSku());
                 custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item)
-                        .addQuantity(quantity)
                         .addReason(reason)
                         .addClickListener(this)
-                        .bind();
+                        .addQuantity(quantity)
+                        .bind().showQuantityToReturnText();
             } else {
-                custom = new ReturnItemViewHolder(getContext(), mOrder, item).bind();
+                custom = new ReturnItemViewHolder(getContext(), mOrder, item).bind().showQuantityToReturnText();
             }
             // Add view
             group.addView(custom.getView());

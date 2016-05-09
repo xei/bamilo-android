@@ -38,6 +38,7 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
     private TextView mReturnQuantityButton;
     private WeakReference<BaseActivity> mWeakActivity;
     private int mMaxQuantity;
+    protected String mQuantity;
 
     /**
      * Constructor
@@ -54,6 +55,12 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
         this.mOrder = order;
         this.mContext = context;
         this.mItem = item;
+    }
+
+
+    public ReturnItemViewHolder addQuantity(@Nullable String quantity) {
+        this.mQuantity = quantity;
+        return this;
     }
 
     /**
@@ -121,6 +128,16 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
         }
         // Show quantity views
         UIUtils.showOrHideViews(View.VISIBLE, mReturnQuantityButton, mReturnQuantityText);
+    }
+
+    public ReturnItemViewHolder showQuantityToReturnText(){
+
+        if (TextUtils.isNotEmpty(mQuantity)) {
+            // Order quantity to return
+            ((TextView) mItemView.findViewById(R.id.order_return_item_text_quantity)).setText(mContext.getString(R.string.quantity_to_return_placeholder, mQuantity));
+        }
+
+        return this;
     }
 
     /**
