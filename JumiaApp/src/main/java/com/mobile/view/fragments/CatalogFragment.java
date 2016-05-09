@@ -153,7 +153,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Get catalog type (Hash|Seller|Brand|Category|DeepLink)
             mQueryValues = UICatalogUtils.saveCatalogType(arguments, mQueryValues, mKey);
             // Get sort
-//            mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT, CatalogSort.POPULARITY.ordinal())];
             if(mSelectedSort != null){
                 mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
             }
