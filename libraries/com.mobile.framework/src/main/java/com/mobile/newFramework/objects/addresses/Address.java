@@ -65,11 +65,7 @@ public class Address implements IJSONSerializable, Parcelable {
         city = dataObject.optString(RestConstants.CITY);
         additionalPhone = dataObject.optString(RestConstants.ADDITIONAL_PHONE);
 
-        if(dataObject.has(RestConstants.IS_VALID)){
-            isValid = dataObject.optBoolean(RestConstants.IS_VALID);
-        } else {
-            isValid = true;
-        }
+        isValid = dataObject.optBoolean(RestConstants.IS_VALID,true);
 
         return true;
     }
