@@ -33,7 +33,6 @@
         android:layout_toLeftOf="@id/section_item_button"
         android:layout_toStartOf="@id/section_item_button"
         android:singleLine="false"
-        tools:text="Sub Title"
-        android:visibility="visible"/>
+        tools:text="Sub Title" />
 
 </RelativeLayout>
