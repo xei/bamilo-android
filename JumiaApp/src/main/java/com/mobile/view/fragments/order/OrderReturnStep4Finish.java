@@ -132,20 +132,25 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
      * Set return items with/without reason view
      */
     private void setReturnItems(@NonNull ViewGroup group, @NonNull ArrayList<OrderTrackerItem> items, boolean showReasonView) {
+        // Get submitted reasons
+        ContentValues values = getSubmittedStepValues(OrderReturnStepsMain.REASON);
+        // Create view
         for (OrderTrackerItem item : items) {
-            ReturnItemViewHolder custom;
+            // Get return quantity
+            String quantity = OrderReturnStep1Reason.getQuantityValue(values, item.getSku());
             // Create item
+            ReturnItemViewHolder custom;
             if (showReasonView) {
-                ContentValues values = getSubmittedStepValues(OrderReturnStepsMain.REASON);
                 String reason = OrderReturnStep1Reason.getReasonLabel(values, item.getSku());
-                String quantity = OrderReturnStep1Reason.getQuantityValue(values, item.getSku());
                 custom = new ReturnItemReasonViewHolder(getContext(), mOrder, item)
                         .addReason(reason)
                         .addClickListener(this)
                         .addQuantity(quantity)
                         .bind().showQuantityToReturnText();
             } else {
-                custom = new ReturnItemViewHolder(getContext(), mOrder, item).bind().showQuantityToReturnText();
+                custom = new ReturnItemViewHolder(getContext(), mOrder, item)
+                        .addQuantity(quantity)
+                        .bind().showQuantityToReturnText();
             }
             // Add view
             group.addView(custom.getView());

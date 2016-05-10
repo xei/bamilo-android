@@ -131,12 +131,10 @@ public class ReturnItemViewHolder implements ICustomFormFieldView, View.OnClickL
     }
 
     public ReturnItemViewHolder showQuantityToReturnText(){
-
         if (TextUtils.isNotEmpty(mQuantity)) {
             // Order quantity to return
             ((TextView) mItemView.findViewById(R.id.order_return_item_text_quantity)).setText(mContext.getString(R.string.quantity_to_return_placeholder, mQuantity));
         }
-
         return this;
     }
 
