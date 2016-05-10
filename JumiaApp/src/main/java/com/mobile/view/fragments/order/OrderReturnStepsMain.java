@@ -15,6 +15,7 @@ import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
 import com.mobile.utils.ui.UITabLayoutUtils;
@@ -225,6 +226,11 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
      * @author sergio pereira
      */
     public synchronized void onSwitchStep(int next) {
+        // Animation, first time and others
+        int aType = next > mStep ? FragmentController.SLIDE_IN : FragmentController.SLIDE_OUT;
+        if (next == mStep && next == REASON) {
+            aType = FragmentController.FADE_IN_SLIDE_TO_LEFT;
+        }
         // Save state
         saveFragmentInstantState(mStep, mSavedState);
         // Save next
@@ -235,6 +241,7 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
         new FragmentController.Transaction(this, R.id.order_return_main_container, fragment)
                 .useChildFragmentManager()
                 .addTag(String.valueOf(mStep))
+                .addAnimation(aType, ShopSelector.isRtl())
                 .allowStateLoss()
                 .commit();
         // Update tab

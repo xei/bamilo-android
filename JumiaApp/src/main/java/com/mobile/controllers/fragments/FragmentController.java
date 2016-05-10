@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.WorkerThread;
 import com.mobile.view.BaseActivity;
@@ -46,7 +47,9 @@ public class FragmentController {
     public static final int SLIDE = 2;
     public static final int SLIDE_IN = 3;
     public static final int SLIDE_OUT = 4;
-    @IntDef({NONE, FADE, SLIDE, SLIDE_IN, SLIDE_OUT})
+    public static final int FADE_IN_SLIDE_TO_LEFT = 5;
+    public static final int FADE_IN_SLIDE_TO_RIGHT = 6;
+    @IntDef({NONE, FADE, SLIDE, SLIDE_IN, SLIDE_OUT, FADE_IN_SLIDE_TO_LEFT, FADE_IN_SLIDE_TO_RIGHT})
     @Retention(RetentionPolicy.SOURCE)
     public @interface AnimationType {}
 
@@ -546,6 +549,12 @@ public class FragmentController {
      */
     private static void addAnimation(@NonNull FragmentTransaction transaction, @AnimationType int type) {
         switch (type) {
+            case FADE_IN_SLIDE_TO_LEFT:
+                transaction.setCustomAnimations(R.anim.pop_in, R.anim.slide_to_left);
+                break;
+            case FADE_IN_SLIDE_TO_RIGHT:
+                transaction.setCustomAnimations(R.anim.pop_in, R.anim.slide_to_right);
+                break;
             case SLIDE_IN:
                 transaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left);
                 break;
@@ -615,7 +624,17 @@ public class FragmentController {
         /**
          * Add an animation when the replacement is performed.
          */
-        public Transaction addAnimation(@AnimationType int type) {
+        public Transaction addAnimation(@AnimationType int type, boolean rtl) {
+            // Reverse slide animation
+            if (rtl && DeviceInfoHelper.isPosJellyBean()) {
+                if (type == SLIDE_IN) {
+                    type = SLIDE_OUT;
+                } else if (type == SLIDE_OUT) {
+                    type = SLIDE_IN;
+                } else if (type == FADE_IN_SLIDE_TO_LEFT) {
+                    type = FADE_IN_SLIDE_TO_RIGHT;
+                }
+            }
             this.animation = type;
             return this;
         }
