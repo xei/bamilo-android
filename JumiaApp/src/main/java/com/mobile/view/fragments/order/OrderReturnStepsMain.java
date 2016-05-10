@@ -226,9 +226,9 @@ public class OrderReturnStepsMain extends BaseFragmentAutoState {
      * @author sergio pereira
      */
     public synchronized void onSwitchStep(int next) {
-        // Set the
+        // Animation, first time and others
         int aType = next > mStep ? FragmentController.SLIDE_IN : FragmentController.SLIDE_OUT;
-        if (next == mStep && next == REASON) { // Case first time
+        if (next == mStep && next == REASON) {
             aType = FragmentController.FADE_IN_SLIDE_TO_LEFT;
         }
         // Save state
