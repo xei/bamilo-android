@@ -245,7 +245,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
             getBaseActivity().onSwitchFragment(FragmentType.ORDER_STATUS, bundle, FragmentController.ADD_TO_BACK_STACK);
         } else {
             adapter.notifySelectedData(position);
-            FragmentController.addChildFragment(this, mOrderStatusContainer.getId(), OrderStatusFragment.getNestedInstance(bundle), OrderStatusFragment.TAG);
+            FragmentController.getInstance().addChildFragment(this, mOrderStatusContainer.getId(), OrderStatusFragment.getNestedInstance(bundle), OrderStatusFragment.TAG);
         }
     }
 

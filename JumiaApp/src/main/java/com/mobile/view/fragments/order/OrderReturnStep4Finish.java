@@ -11,7 +11,6 @@ import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.helpers.order.ReturnFinishHelper;
-import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.objects.orders.OrderStatus;
 import com.mobile.newFramework.objects.orders.OrderTrackerItem;
 import com.mobile.newFramework.pojo.BaseResponse;
@@ -62,20 +61,13 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i("ON VIEW CREATED");
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            // Validate state
-            if (hasSubmittedValuesToFinish()) {
-                // Load and show
-                loadSubmittedValues(mContainer);
-            } else {
-                // Warning user to restart the process
-                showFragmentErrorRetry();
-            }
+        // Validate state
+        if (hasSubmittedValuesToFinish()) {
+            // Load and show
+            loadSubmittedValues(mContainer);
+        } else {
+            // Warning user to restart the process
+            showFragmentErrorRetry();
         }
     }
 
@@ -165,9 +157,9 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
      */
 
     private void triggerFinishReturnProcess() {
-
-        // Submit values
-        triggerContentEvent(new ReturnFinishHelper(), ReturnFinishHelper.createBundle(getSubmittedValues()), this);
+        if (hasSubmittedValuesToFinish()) {
+            triggerContentEvent(new ReturnFinishHelper(), ReturnFinishHelper.createBundle(getSubmittedValues()), this);
+        }
     }
 
     /*
@@ -178,17 +170,16 @@ public class OrderReturnStep4Finish extends OrderReturnStepBase {
     public void onClick(View view) {
         // Get id
         int id = view.getId();
-        // Case edit
+        // Case edit step
         if (id == R.id.section_item_button) {
-            // Get step
-            @OrderReturnStepsMain.ReturnStepType
-            int step = (int) view.getTag(R.id.target_type);
-            onClickStep(step);
-        } else if(id == R.id.order_return_main_button_ok){
-            if(hasSubmittedValuesToFinish()){
-                triggerFinishReturnProcess();
-            }
-        } else {
+            onClickNextStep((int) view.getTag(R.id.target_type));
+        }
+        // Case submit
+        else if (id == R.id.order_return_main_button_ok) {
+            triggerFinishReturnProcess();
+        }
+        // Super
+        else {
             super.onClick(view);
         }
     }

@@ -751,7 +751,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
             args.putBoolean(ConstantsIntentExtra.OUT_OF_STOCK, verifyOutOfStock());
             // Create fragment
             fragment = BaseFragment.newInstance(getBaseActivity(), ProductImageGalleryFragment.class, args);
-            FragmentController.addChildFragment(this, R.id.pdv_slide_show_container, fragment, ProductImageGalleryFragment.TAG);
+            FragmentController.getInstance().addChildFragment(this, R.id.pdv_slide_show_container, fragment, ProductImageGalleryFragment.TAG);
         }
         // CASE UPDATE
         else {

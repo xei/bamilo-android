@@ -86,7 +86,7 @@ import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
-import com.mobile.utils.ui.TabLayoutUtils;
+import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
@@ -382,10 +382,10 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mCheckoutTabLayout = (TabLayout) findViewById(R.id.checkout_tabs);
         mCheckoutTabLayout.setVisibility(View.INVISIBLE);
-        TabLayoutUtils.fillTabLayout(mTabLayout, this);
-        TabLayoutUtils.updateTabCartInfo(mTabLayout);
+        UITabLayoutUtils.fillTabLayout(mTabLayout, this);
+        UITabLayoutUtils.updateTabCartInfo(mTabLayout);
         // Checkout Tab
-        TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
+        UITabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
     }
 
     /**
@@ -427,19 +427,19 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private void setAppBarLayout(@NavigationAction.Type int oldNavAction, @NavigationAction.Type int newNavAction) {
         try {
             // Case action without tab layout
-            if (!TabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
+            if (!UITabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
                 mTabLayout.setVisibility(View.GONE);
                 mAppBarLayout.setExpanded(true, true);
             }
             // Case action with tab layout
             else {
                 // Case from other tab
-                if (!TabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
+                if (!UITabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
                     mTabLayout.setVisibility(View.VISIBLE);
                     mAppBarLayout.setExpanded(true, true);
                 }
                 //noinspection ConstantConditions
-                mTabLayout.getTabAt(TabLayoutUtils.getTabPosition(newNavAction)).select();
+                mTabLayout.getTabAt(UITabLayoutUtils.getTabPosition(newNavAction)).select();
             }
         } catch (NullPointerException e) {
             // ...
@@ -749,7 +749,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        TabLayoutUtils.tabSelected(this, tab, action);
+        UITabLayoutUtils.tabSelected(this, tab, action);
     }
 
     /*
@@ -1203,7 +1203,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     public void updateCartInfo() {
         Print.d(TAG, "ON UPDATE CART INFO");
         updateCartInfoInActionBar();
-        TabLayoutUtils.updateTabCartInfo(mTabLayout);
+        UITabLayoutUtils.updateTabCartInfo(mTabLayout);
     }
 
     /**

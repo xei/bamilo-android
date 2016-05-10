@@ -7,14 +7,12 @@
     android:layout_height="match_parent">
 
     <!-- COORDINATOR -->
-
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ScrollingActivity">
 
         <!-- APP BAR-->
-
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
@@ -22,7 +20,6 @@
             app:elevation="0dp">
 
             <!-- ACTION BAR -->
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -30,7 +27,6 @@
                 app:layout_scrollFlags="scroll|enterAlways" />
 
             <!-- TAB BAR -->
-
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
@@ -38,7 +34,6 @@
                 style="@style/Widget.Custom.ActionBarTab" />
 
             <!-- CHECKOUT TAB BAR -->
-
             <android.support.design.widget.TabLayout
                 android:id="@+id/checkout_tabs"
                 android:layout_width="match_parent"
@@ -49,7 +44,6 @@
         </android.support.design.widget.AppBarLayout>
 
         <!-- SCROLLABLE CONTAINER -->
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -60,14 +54,12 @@
             tools:context=".ScrollingActivity">
 
             <!-- CONTENT LAYOUT -->
-
             <FrameLayout
                 android:id="@+id/app_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
             <!-- SEARCH OVERLAY -->
-
             <FrameLayout
                 android:id="@+id/search_overlay"
                 android:layout_width="match_parent"
@@ -84,7 +76,6 @@
 
 
             <!-- WARNING MESSAGE -->
-
             <include
                 android:id="@+id/warning"
                 layout="@layout/warning"
@@ -93,7 +84,6 @@
                 android:visibility="gone" />
 
             <!--CONFIGURABLE CART VIEW -->
-
             <include
                 android:id="@+id/configurableCartView"
                 layout="@layout/config_confirmation_msg"
@@ -107,7 +97,6 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <!-- NAVIGATION -->
-
     <fragment
         android:id="@+id/fragment_navigation"
         android:name="com.mobile.view.fragments.NavigationFragment"

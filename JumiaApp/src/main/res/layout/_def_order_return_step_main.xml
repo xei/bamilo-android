@@ -12,6 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize" />
 
+    <!--CONTAINER-->
+    <FrameLayout
+        android:id="@+id/order_return_main_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <!--PAGER-->
     <com.mobile.components.viewpager.SuperViewPager
         android:id="@+id/order_return_main_pager"

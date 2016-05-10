@@ -124,7 +124,7 @@ public class MainFragmentActivity extends DebugActivity {
             ArrayList<String> backStackTypes = savedInstanceState.getStringArrayList(ConstantsIntentExtra.BACK_STACK);
             List<Fragment> originalFragments = this.getSupportFragmentManager().getFragments();
             if (!CollectionUtils.isEmpty(backStackTypes)) {
-                FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments, mCurrentFragmentType);
+                FragmentController.getInstance().validateCurrentState(this, backStackTypes, originalFragments);
             } else {
                 Print.d(TAG, "COULDN'T RECOVER BACK STACK");
             }

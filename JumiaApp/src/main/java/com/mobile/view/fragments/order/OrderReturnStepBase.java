@@ -62,7 +62,7 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
      * Get items from parent
      */
     protected ArrayList<OrderTrackerItem> getOrderItems() {
-        return ((OrderReturnStepsMain) getParentFragment()).getOrderItems();
+        return ((OrderReturnStepsMain) getParentFragment()).getReturnItems();
     }
 
     /**
@@ -134,16 +134,13 @@ public abstract class OrderReturnStepBase extends BaseFragmentRequester {
     }
 
     protected void onClickNextStep() {
-        OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
-        if (parent != null) {
-            parent.nextStep(mStep + 1);
-        }
+        onClickNextStep(mStep + 1);
     }
 
-    protected void onClickStep(@OrderReturnStepsMain.ReturnStepType int step) {
+    protected void onClickNextStep(int step) {
         OrderReturnStepsMain parent = (OrderReturnStepsMain) getParentFragment();
         if (parent != null) {
-            parent.nextStep(step);
+            parent.onSwitchStep(step);
         }
     }
 
