@@ -4,13 +4,6 @@
     style="@style/SingleLineGroupStyle.Border_300"
     android:padding="@dimen/margin_padding_m">
 
-    <!-- CENTER POINT -->
-    <android.support.v4.widget.Space
-        android:id="@+id/center_point"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_centerInParent="true" />
-
     <!-- BUTTON -->
     <ImageButton
         android:id="@+id/section_item_button"
@@ -23,7 +16,7 @@
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/section_item_title"
         style="@style/TextBase.Body.Black_800"
-        android:layout_above="@id/center_point"
+        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@id/section_item_button"
