@@ -160,6 +160,12 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             //Get category content/main category
             mMainCategory = arguments.getString(RestConstants.MAIN_CATEGORY);
+
+            // Get sort from Deep Link
+            if(arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)){
+                mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
+            }
+
         }
 
         // Get data from saved instance
