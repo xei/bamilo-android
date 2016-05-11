@@ -74,21 +74,8 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
         // Get button
         TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
         button.setOnClickListener(this);
+        triggerReturnMethodForm();
 
-        setUserVisibleHint(true);
-
-    }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if(isVisibleToUser && mFormResponse != null){
-            loadReturnMethodForm(mFormResponse);
-        } else {
-            triggerReturnMethodForm();
-        }
     }
 
     /**
@@ -127,18 +114,23 @@ public class OrderReturnStep2Method extends OrderReturnStepBase {
     public void onPause() {
         super.onPause();
         // Save the state
+        saveState();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        saveState();
+        outState.putParcelable(ConstantsIntentExtra.DATA, mFormResponse);
+        outState.putParcelable(ConstantsIntentExtra.ARG_1, mFormSavedState);
+        super.onSaveInstanceState(outState);
+    }
+
+    private void saveState(){
         Bundle bundle = new Bundle();
         if(mReturnFormGenerator != null) {
             mReturnFormGenerator.saveFormState(bundle);
         }
         mFormSavedState = bundle;
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putParcelable(ConstantsIntentExtra.DATA, mFormResponse);
-        outState.putParcelable(ConstantsIntentExtra.ARG_1, mFormSavedState);
-        super.onSaveInstanceState(outState);
     }
 
     @Override

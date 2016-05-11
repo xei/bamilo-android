@@ -145,8 +145,8 @@ public class Form implements IJSONSerializable, Parcelable {
         dest.writeInt(mType);
         dest.writeString(mMethod);
         dest.writeString(mAction);
-        dest.writeValue(mSubFormsMap);
-        dest.writeValue(mFormFieldsMap);
+        dest.writeMap(mSubFormsMap);
+        dest.writeMap(mFormFieldsMap);
         dest.writeByte((byte) (hideAsterisks ? 0x01 : 0x00));
     }
 
@@ -158,8 +158,12 @@ public class Form implements IJSONSerializable, Parcelable {
         mType = in.readInt();
         mMethod = in.readString();
         mAction = in.readString();
-        mSubFormsMap = (HashMap) in.readValue(HashMap.class.getClassLoader());
-        mFormFieldsMap = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
+        mSubFormsMap = new HashMap<>();
+        in.readMap(mSubFormsMap, Form.class.getClassLoader());
+
+        mFormFieldsMap = new LinkedHashMap<>();
+        in.readMap(mFormFieldsMap, FormField.class.getClassLoader());
+
         hideAsterisks = in.readByte() != 0x00;
     }
 

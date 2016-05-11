@@ -188,7 +188,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
                     break;
                 case EMPTY:
                     mInputType = FormInputType.option;
-                    Print.d("code1subform : NO TYPE MATCH! option");
                     break;
                 case RADIO_EXPANDABLE:
                     mInputType = FormInputType.radioExpandable;
@@ -292,7 +291,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
             if(jsonObject.has(RestConstants.FORM_ENTITY)){
                 mSubForms = new HashMap<>();
-                Print.i("code1subform : has form entity");
                 // Create sub forms for required fields
                 Form mForm = new Form();
                 mForm.initialize(jsonObject);
@@ -620,8 +618,8 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(mDataSetRating);
-        dest.writeValue(mDataSet);
+        dest.writeMap(mDataSetRating);
+        dest.writeMap(mDataSet);
         dest.writeString(mDataSetSource);
         dest.writeString(mPlaceHolder);
         dest.writeString(mApiCall);
@@ -646,7 +644,7 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         dest.writeValue(mDataSetListener);
         dest.writeValue(mValidation);
         dest.writeString(mValue);
-        dest.writeValue(mSubForms);
+        dest.writeMap(mSubForms);
         if (mNewsletterOptions == null) {
             dest.writeByte((byte) (0x00));
         } else {
@@ -669,8 +667,12 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
      */
     @SuppressWarnings("unchecked")
     private FormField(Parcel in) {
-        mDataSetRating = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
-        mDataSet = (LinkedHashMap) in.readValue(LinkedHashMap.class.getClassLoader());
+        mDataSetRating = new LinkedHashMap<>();
+        in.readMap(mDataSetRating, String.class.getClassLoader());
+
+        mDataSet = new LinkedHashMap<>();
+        in.readMap(mDataSet, String.class.getClassLoader());
+
         mDataSetSource = in.readString();
         mPlaceHolder = in.readString();
         mApiCall = in.readString();
@@ -695,7 +697,9 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         mDataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
         mValidation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
         mValue = in.readString();
-        mSubForms = (HashMap) in.readValue(HashMap.class.getClassLoader());
+        mSubForms =  new HashMap<>();
+        in.readMap(mSubForms, Form.class.getClassLoader());
+
         if (in.readByte() == 0x01) {
             mNewsletterOptions = new ArrayList<>();
             in.readList(mNewsletterOptions, NewsletterOption.class.getClassLoader());
