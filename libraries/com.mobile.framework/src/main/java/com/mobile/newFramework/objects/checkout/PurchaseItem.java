@@ -86,7 +86,7 @@ public class PurchaseItem implements Parcelable {
             mPurchaseItem.sku = item.getConfigSimpleSKU();
             mPurchaseItem.name = item.getName();
             mPurchaseItem.paidPriceConverted = item.getPriceForTracking();
-            mPurchaseItem.quantity = (int) item.getQuantity();
+            mPurchaseItem.quantity = item.getQuantity();
             items.add(mPurchaseItem);
         }
         return items;

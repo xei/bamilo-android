@@ -41,7 +41,7 @@
     <string name="gtrackaddaddress">NewAddress</string>
     <string name="gtrackaddress">Addresses</string>
     <string name="gtrackmyorders">MyOrders</string>
-    
+
     <!-- prefixes for page string encoding -->
     <string name="gbrand_prefix">brand</string>
     <string name="gcategory_prefix">cat</string>
@@ -140,36 +140,5 @@
 
     <string name="gload">PageLoad</string>
     <!-- End of GA Tracking Parameters -->
-    
-    
-    <!-- Begin of Adjust Tracking Parameters -->
-    <string name="adjust_token_launch">hrp47p</string>
-    <string name="adjust_token_log_in">e02cr6</string>
-    <string name="adjust_token_log_out">gxvwpj</string>
-    <string name="adjust_token_sign_up">jvr797</string>
-    <string name="adjust_token_sale">2mzxyy</string>
-    <string name="adjust_token_guest_sale">60p5rq</string>
-    <string name="adjust_token_add_to_cart">9a3y22</string>
-    <string name="adjust_token_remove_from_cart">mbev3i</string>
-    <string name="adjust_token_add_to_wishlist">or10kh</string>
-    <string name="adjust_token_remove_from_wishlist">1umzf5</string>
-    <string name="adjust_token_social_share">izdu5c</string>
-    <string name="adjust_token_call">raztmz</string>
-    <string name="adjust_token_product_rate">kctyuo</string>
-    <string name="adjust_token_fb_connect">xncmnj</string>
-    <string name="adjust_token_customer">lsxsdu</string>
-    <!-- Re-targeting -->
-    <string name="adjust_token_home">o4k36e</string>
-	<string name="adjust_token_view_product">ael3q3</string>
-	<string name="adjust_token_view_listing">90hme6</string>
-    <string name="adjust_token_search">h328i8</string>
-    <string name="adjust_token_view_cart">k220tx</string>
-    <string name="adjust_token_transaction_confirmation">4mrofw</string>
-    <!-- FB audience -->
-    <string name="adjust_token_fb_view_listing">iuvlys</string>
-    <string name="adjust_token_fb_view_product">h375id</string>
-    <string name="adjust_token_fb_add_to_cart">txism9</string>
-    <string name="adjust_token_fb_transaction_confirmation">25981k</string>
-    <!-- End of Adjust Tracking Parameters -->
 
 </resources>

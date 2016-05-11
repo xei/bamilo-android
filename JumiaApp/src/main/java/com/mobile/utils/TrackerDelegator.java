@@ -54,34 +54,34 @@ public class TrackerDelegator {
     public static final boolean IS_AUTO_LOGIN = true;
     public static final boolean ISNT_AUTO_LOGIN = false;
 
-    public static final String CUSTOMER_KEY = "customer";
+    public static final String CUSTOMER_KEY = RestConstants.CUSTOMER;
     public static final String AUTOLOGIN_KEY = "auto_login";
     public static final String FACEBOOKLOGIN_KEY = "facebook_login";
     public static final String SEARCH_CRITERIA_KEY = "search_criteria";
     public static final String SEARCH_RESULTS_KEY = "search_results";
-    public static final String SKU_KEY = "sku";
-    public static final String PRICE_KEY = "price";
+    public static final String SKU_KEY = RestConstants.SKU;
+    public static final String PRICE_KEY = RestConstants.PRICE;
     public static final String LOCATION_KEY = "location";
     public static final String START_TIME_KEY = "start";
-    public static final String CATEGORY_KEY = "category";
-    public static final String COUPON_KEY = "coupon";
-    public static final String PRODUCT_KEY = "product";
-    public static final String RATINGS_KEY = "ratings";
-    public static final String RATING_KEY = "rating";
+    public static final String CATEGORY_KEY = RestConstants.CATEGORY;
+    public static final String COUPON_KEY = RestConstants.COUPON;
+    public static final String PRODUCT_KEY = RestConstants.PRODUCT;
+    public static final String RATINGS_KEY = RestConstants.RATINGS;
+    public static final String RATING_KEY = RestConstants.RATING;
     public static final String PURCHASE_KEY = "purchase";
-    public static final String EMAIL_KEY = "email";
+    public static final String EMAIL_KEY = RestConstants.EMAIL;
     public static final String PAYMENT_METHOD_KEY = "payment_method";
     public static final String ORDER_NUMBER_KEY = "order_number";
-    public static final String VALUE_KEY = "value";
-    public static final String NAME_KEY = "name";
-    public static final String BRAND_KEY = "brand";
+    public static final String VALUE_KEY = RestConstants.VALUE;
+    public static final String NAME_KEY = RestConstants.NAME;
+    public static final String BRAND_KEY = RestConstants.BRAND;
     public static final String DISCOUNT_KEY = "discount";
     public static final String SUBCATEGORY_KEY = "sub_category";
-    public static final String QUANTITY_KEY = "quantity";
+    public static final String QUANTITY_KEY = RestConstants.QUANTITY;
     public static final String CARTVALUE_KEY = "cart_value";
     public static final String CATALOG_FILTER_KEY = "catalog_filter";
     public static final String TAX_KEY = "tax";
-    public static final String SHIPPING_KEY = "shipping";
+    public static final String SHIPPING_KEY = RestConstants.SHIPPING;
 
     private static final String TRACKING_PREFS = "tracking_prefs";
     private static final String SIGNUP_KEY_FOR_LOGIN = "signup_for_login";
@@ -370,7 +370,6 @@ public class TrackerDelegator {
         if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
     }
 
-
     /**
      * For Web Checkout
      */
@@ -383,8 +382,6 @@ public class TrackerDelegator {
 
         }).start();
     }
-
-
 
     /**
      * Track Payment Method
@@ -508,7 +505,7 @@ public class TrackerDelegator {
         bundle.putParcelableArrayList(AdjustTracker.CART, (ArrayList<PurchaseItem>) items);
         bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, cartValue);
         AdjustTracker.get().trackEvent(TrackingEvent.CHECKOUT_FINISHED, bundle);
-        //GTM
+        // GTM
         GTMManager.get().gtmTrackTransaction(items, EUR_CURRENCY, cartValue, orderNr, coupon, paymentMethod, shippingAmount, taxAmount);
     }
 
@@ -1159,7 +1156,7 @@ public class TrackerDelegator {
      * Tracking cart in checkout thanks
      */
     public static void trackPurchaseInCheckoutThanks(PurchaseEntity cart, String order, double total, String shipping, String tax, String payment) {
-        if (cart != null && CollectionUtils.isEmpty(cart.getCartItems())) {
+        if (cart != null && CollectionUtils.isNotEmpty(cart.getCartItems())) {
             Bundle params = new Bundle();
             params.putString(TrackerDelegator.ORDER_NUMBER_KEY, order);
             params.putDouble(TrackerDelegator.VALUE_KEY, cart.getPriceForTracking());

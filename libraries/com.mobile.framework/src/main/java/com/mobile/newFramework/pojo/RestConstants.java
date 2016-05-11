@@ -96,7 +96,7 @@ public class RestConstants {
     public static final String ID_RATING_TYPE = "id_rating_type";
     public static final String RATING = "rating";
     public static final String REVIEW = "review";
-    public static final String  IS_ENABLE = "is_enable";
+    public static final String IS_ENABLE = "is_enable";
     public static final String REQUIRED_LOGIN = "required_login";
     public static final String BASED_ON = "based_on";
     public static final String TOTAL_STARS = "total_stars";
@@ -281,7 +281,6 @@ public class RestConstants {
     public static final String SELLER = "seller";
     public static final String MAX_ITEMS = "maxitems";
     public static final String SORT = "sort";
-    public static final String DIRECTION = "dir";
     public static final String HASH = "hash";
     public static final String RICH_RELEVANCE_ENABLED = "rich_relevance_enabled";
     public static final String REQ = "req";
