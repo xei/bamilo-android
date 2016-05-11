@@ -370,7 +370,6 @@ public class TrackerDelegator {
         if(eventType == EventType.GUEST_LOGIN_EVENT) TrackerDelegator.trackSignupFailed(GTMValues.CHECKOUT);
     }
 
-
     /**
      * For Web Checkout
      */
@@ -383,8 +382,6 @@ public class TrackerDelegator {
 
         }).start();
     }
-
-
 
     /**
      * Track Payment Method
@@ -508,7 +505,7 @@ public class TrackerDelegator {
         bundle.putParcelableArrayList(AdjustTracker.CART, (ArrayList<PurchaseItem>) items);
         bundle.putDouble(AdjustTracker.TRANSACTION_VALUE, cartValue);
         AdjustTracker.get().trackEvent(TrackingEvent.CHECKOUT_FINISHED, bundle);
-        //GTM
+        // GTM
         GTMManager.get().gtmTrackTransaction(items, EUR_CURRENCY, cartValue, orderNr, coupon, paymentMethod, shippingAmount, taxAmount);
     }
 
@@ -1159,7 +1156,7 @@ public class TrackerDelegator {
      * Tracking cart in checkout thanks
      */
     public static void trackPurchaseInCheckoutThanks(PurchaseEntity cart, String order, double total, String shipping, String tax, String payment) {
-        if (cart != null && CollectionUtils.isEmpty(cart.getCartItems())) {
+        if (cart != null && CollectionUtils.isNotEmpty(cart.getCartItems())) {
             Bundle params = new Bundle();
             params.putString(TrackerDelegator.ORDER_NUMBER_KEY, order);
             params.putDouble(TrackerDelegator.VALUE_KEY, cart.getPriceForTracking());

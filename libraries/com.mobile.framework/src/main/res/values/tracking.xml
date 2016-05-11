@@ -170,6 +170,8 @@
     <string name="adjust_token_fb_view_product">h375id</string>
     <string name="adjust_token_fb_add_to_cart">txism9</string>
     <string name="adjust_token_fb_transaction_confirmation">25981k</string>
+    <!-- Cake-Adjust integration -->
+    <string name="adjust_token_cake_integration">18brpv</string>
     <!-- End of Adjust Tracking Parameters -->
 
 </resources>
