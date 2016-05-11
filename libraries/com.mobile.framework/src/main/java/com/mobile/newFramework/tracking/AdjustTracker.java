@@ -25,6 +25,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerGender;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.gtm.GTMKeys;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -70,43 +71,36 @@ public class AdjustTracker extends AbcBaseTracker {
     public final static String ADJUST_PREFERENCES = "AdjustPreferences";
     public final static String PURCHASE_NUMBER = "aggregatedNumberOfPurchases";
 
-    protected static class AdjustKeys {
-        public static final String SHOP_COUNTRY = "shop_country";
-        public static final String APP_VERSION = "app_version";
-        public static final String DISPLAY_SIZE = "display_size";
-
-        public static final String USER_ID = "user_id";
-        public static final String DURATION = "duration";
-        public static final String DEVICE = "device";
-        public static final String DEVICE_MANUFACTURER = "device_manufacturer";
-        public static final String DEVICE_MODEL = "device_model";
-        public static final String TRANSACTION_ID = "transaction_id";
-        public static final String CURRENCY_CODE = "currency_code";
-        public static final String CURRENCY = "currency";
-        public static final String PRICE = "price";
-        public static final String CATEGORY = "category";
-        public static final String CATEGORY_ID = "category_id";
-        public static final String QUANTITY = "quantity";
-        public static final String GENDER = "gender";
-        public static final String SKU = "sku";
-        public static final String SKUS = "skus";
-        public static final String PRODUCTS = "products";
-        public static final String PRODUCT = "product";
-        public static final String KEYWORDS = "keywords";
-        public static final String NEW_CUSTOMER = "new_customer";
-        public static final String BRAND = "brand";
-        public static final String QUERY = "query";
-        public static final String SIZE = "size";
-        public static final String APP_PRE_INSTALL = Constants.INFO_PRE_INSTALL;
-        public static final String DEVICE_SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
-
+    private static class AdjustKeys {
+        private static final String SHOP_COUNTRY = "shop_country";
+        private static final String APP_VERSION = "app_version";
+        private static final String DISPLAY_SIZE = "display_size";
+        private static final String USER_ID = "user_id";
+        private static final String DURATION = "duration";
+        private static final String DEVICE = "device";
+        private static final String DEVICE_MANUFACTURER = "device_manufacturer";
+        private static final String DEVICE_MODEL = "device_model";
+        private static final String TRANSACTION_ID = "transaction_id";
+        private static final String CURRENCY_CODE = "currency_code";
+        private static final String CURRENCY = "currency";
+        private static final String PRICE = RestConstants.PRICE;
+        private static final String CATEGORY_ID = "category_id";
+        private static final String QUANTITY = RestConstants.QUANTITY;
+        private static final String GENDER = RestConstants.GENDER;
+        private static final String SKU = RestConstants.SKU;
+        private static final String SKUS = "skus";
+        private static final String PRODUCTS = RestConstants.PRODUCTS;
+        private static final String PRODUCT = RestConstants.PRODUCT;
+        private static final String KEYWORDS = "keywords";
+        private static final String NEW_CUSTOMER = "new_customer";
+        private static final String APP_PRE_INSTALL = Constants.INFO_PRE_INSTALL;
+        private static final String DEVICE_SIM_OPERATOR = Constants.INFO_SIM_OPERATOR;
         // New Adjust Facebook Audience keys
-        public static final String FB_VALUE_TO_SUM = "_valueToSum";
-        public static final String FB_CONTENT_ID = "fb_content_id";
-        public static final String FB_CONTENT_TYPE = "fb_content_type";
-        public static final String FB_CURRENCY = "fb_currency";
-        public static final String FB_CONTENT_CATEGORY = "content_category";
-
+        private static final String FB_VALUE_TO_SUM = "_valueToSum";
+        private static final String FB_CONTENT_ID = "fb_content_id";
+        private static final String FB_CONTENT_TYPE = "fb_content_type";
+        private static final String FB_CURRENCY = "fb_currency";
+        private static final String FB_CONTENT_CATEGORY = "content_category";
     }
 
     private static final String TABLET = "Tablet";
@@ -464,6 +458,9 @@ public class AdjustTracker extends AbcBaseTracker {
             case CHECKOUT_FINISHED: // Sale
                 try {
 
+                    String order = bundle.getString(TRANSACTION_ID);
+                    String country = bundle.getString(AdjustTracker.COUNTRY_ISO, NOT_AVAILABLE);
+
                     Print.d(TAG, " TRACK REVENEU --> " + bundle.getDouble(TRANSACTION_VALUE));
                     increaseTransactionCount();
 
@@ -485,16 +482,16 @@ public class AdjustTracker extends AbcBaseTracker {
                     eventRevenue.addCallbackParameter(AdjustKeys.SKUS, skuList);
                     eventRevenue.addPartnerParameter(AdjustKeys.SKUS, skuList);
 
-                    eventRevenue.addCallbackParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
-                    eventRevenue.addPartnerParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
+                    eventRevenue.addCallbackParameter(AdjustKeys.TRANSACTION_ID, order);
+                    eventRevenue.addPartnerParameter(AdjustKeys.TRANSACTION_ID, order);
 
                     eventRevenue.setRevenue(bundle.getDouble(TRANSACTION_VALUE), EURO_CURRENCY);
                     Adjust.trackEvent(eventRevenue);
 
                     AdjustEvent eventTransaction = new AdjustEvent(mContext.getString(R.string.adjust_token_transaction_confirmation));
                     addBaseParameters(eventTransaction, bundle);
-                    eventTransaction.addCallbackParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
-                    eventTransaction.addPartnerParameter(AdjustKeys.TRANSACTION_ID, bundle.getString(TRANSACTION_ID));
+                    eventTransaction.addCallbackParameter(AdjustKeys.TRANSACTION_ID, order);
+                    eventTransaction.addPartnerParameter(AdjustKeys.TRANSACTION_ID, order);
                     eventTransaction.addCallbackParameter(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER)));
                     eventTransaction.addPartnerParameter(AdjustKeys.NEW_CUSTOMER, String.valueOf(bundle.getBoolean(IS_GUEST_CUSTOMER)));
 
@@ -533,10 +530,12 @@ public class AdjustTracker extends AbcBaseTracker {
                     eventTransactionFB.addPartnerParameter(AdjustKeys.FB_CONTENT_ID, skuList);
                     Adjust.trackEvent(eventTransactionFB);
 
+                    // Cake-Adjust integration
+                    trackCakePurchaseIntegration(order, country.toUpperCase(), cartItems);
+
                 } catch (Exception e) {
-                    //XXX ADJUST INTERNAL CRASH
-                    //FATAL EXCEPTION: Adjust
-                    //java.util.ConcurrentModificationException
+                    // ADJUST INTERNAL CRASH FATAL EXCEPTION: Adjust java.util.ConcurrentModificationException
+                    Print.w("WARNING: ON TRACKING CHECKOUT FINISHED");
                 }
                 break;
 
@@ -810,6 +809,67 @@ public class AdjustTracker extends AbcBaseTracker {
      */
     public static void deepLinkReAttribution(@NonNull Uri uri) {
         Adjust.appWillOpenUrl(uri);
+    }
+
+    /**
+     * Track the cake purchase, NAFAMZ-17210.<br>
+     * - Not available for all.
+     */
+    private void trackCakePurchaseIntegration(String order, String country, ArrayList<PurchaseItem> items) {
+        // Get token not available for all
+        String token = mContext.getString(R.string.adjust_token_cake_integration);
+        // Tracking
+        if (CollectionUtils.isNotEmpty(items) && TextUtils.isNotEmpty(token)) {
+            // Create event
+            AdjustEvent event = new AdjustEvent(token);
+            // Values
+            String skus = "", qts = "", prcs = "", dcts = "";
+            double sum = 0;
+            boolean first = true;
+            for (PurchaseItem item : items) {
+                String spt = first ? "" : SEPARATOR_CARET;
+                first = false;
+                skus += spt + item.sku.split(SEPARATOR_HYPHEN)[CONFIG_SKU_POS];
+                qts += spt + item.quantity;
+                prcs += spt + item.getPriceForTracking();
+                dcts += spt + 0;
+                sum += item.quantity * item.getPriceForTracking();
+            }
+            // List of SKUs (sku_config)
+            String key = mContext.getString(R.string.adjust_key_ecsk);
+            event.addCallbackParameter(key, skus);
+            event.addPartnerParameter(key, skus);
+            // List of Quantities
+            key = mContext.getString(R.string.adjust_key_ecqu);
+            event.addCallbackParameter(key, qts);
+            event.addPartnerParameter(key, qts);
+            // List of Prices
+            key = mContext.getString(R.string.adjust_key_ecpr);
+            event.addCallbackParameter(key, prcs);
+            event.addPartnerParameter(key, prcs);
+            // List of Discounts
+            key = mContext.getString(R.string.adjust_key_ecld);
+            event.addCallbackParameter(key, dcts);
+            event.addPartnerParameter(key, dcts);
+            // Add Country Code
+            key = mContext.getString(R.string.adjust_key_ecco);
+            event.addCallbackParameter(key, country);
+            event.addPartnerParameter(key, country);
+            // Sub total without tax
+            key = mContext.getString(R.string.adjust_key_ect);
+            event.addCallbackParameter(key, String.valueOf(sum));
+            event.addPartnerParameter(key, String.valueOf(sum));
+            // Sub total 2
+            key = mContext.getString(R.string.adjust_key_ecst);
+            event.addCallbackParameter(key, String.valueOf(sum));
+            event.addPartnerParameter(key, String.valueOf(sum));
+            // Order id
+            key = mContext.getString(R.string.adjust_key_t);
+            event.addCallbackParameter(key, order);
+            event.addPartnerParameter(key, order);
+            // Track
+            Adjust.trackEvent(event);
+        }
     }
 
 }

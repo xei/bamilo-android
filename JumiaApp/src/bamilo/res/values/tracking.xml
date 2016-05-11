@@ -17,7 +17,6 @@
     <string name="adjust_token_social_share">vxubp0</string>
     <string name="adjust_token_call">ese2n9</string>
     <string name="adjust_token_product_rate">ibsnbg</string>
-
     <!-- RE TARGET -->
     <string name="adjust_token_home">2kamv3</string>
     <string name="adjust_token_view_product">tlm16q</string>
@@ -25,7 +24,6 @@
     <string name="adjust_token_search">1u9vnr</string>
     <string name="adjust_token_view_cart">4aa3pj</string>
     <string name="adjust_token_transaction_confirmation">bts6iz</string>
-
     <!-- FB AUDIENCE -->
     <string name="adjust_token_fb_home">w2x1sf</string>
     <string name="adjust_token_fb_view_listing">iv63w9</string>
@@ -33,8 +31,10 @@
     <string name="adjust_token_fb_search">ezkcbl</string>
     <string name="adjust_token_fb_view_wishlist">qthb20</string>
     <string name="adjust_token_fb_view_cart">ekrf6p</string>
-    <string name="adjust_token_fb_add_to_cart"></string>
+    <string name="adjust_token_fb_add_to_cart"/>
     <string name="adjust_token_fb_transaction_confirmation">z05nf9</string>
+    <!-- Cake-Adjust integration -->
+    <string name="adjust_token_cake_integration"/>
 
     <!-- End of Adjust Tracking Parameters -->
 
