@@ -588,9 +588,9 @@ public class DynamicFormItem {
                         }
                     }
                     // Case HomeNewsletter
-                    else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
+                    else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) spinner.getSelectedItem())) {
                         for (String key : this.entry.getDataSet().keySet()) {
-                            if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
+                            if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) spinner.getSelectedItem())) {
                                 values.put(getName(), key);
                                 break;
                             }
