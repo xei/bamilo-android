@@ -72,7 +72,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String mFormat;
     private String mScenario;
     private ArrayList<IFormField> mOptions;
-    private OnDataSetReceived mDataSetListener;
     private FieldValidation mValidation;
     private String mValue;
     private HashMap<String, Form> mSubForms;
@@ -89,11 +88,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
     private String mText;
     private String mSubText;
 
-    @SuppressWarnings("unused")
-    public interface OnDataSetReceived {
-        void DataSetReceived(Map<String, String> dataSet);
-    }
-
     /**
      * FormField param constructor
      */
@@ -106,7 +100,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         this.mValue = "";
         this.mDataSet = new LinkedHashMap<>();
         this.mDataSetSource = "";
-        this.mDataSetListener = null;
         this.mScenario = null;
         this.mLinkText = "";
         this.mLinkTarget = "";
@@ -265,10 +258,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             // Case shipping options from array
             if(CollectionUtils.isNotEmpty(dataOptionsArray) && mInputType != FormInputType.radioExpandable ){
                 mNewsletterOptions = new ArrayList<>();
-                // Placeholder used in HomeNewsletter and Addresses
-                if (TextUtils.isNotEmpty(mPlaceHolder)) {
-                    mDataSet.put(RestConstants.PLACE_HOLDER, mPlaceHolder);
-                }
                 for (int i = 0; i < dataOptionsArray.length(); ++i) {
                     // Case the newsletter
                     mNewsletterOptions.add(new NewsletterOption(dataOptionsArray.getJSONObject(i), mName));
@@ -509,13 +498,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         return mDataSet;
     }
 
-    /**
-     * Listener used when the data set is received.
-     */
-    public void setOnDataSetReceived(OnDataSetReceived listener) {
-        mDataSetListener = listener;
-    }
-
     @Override
     public FieldValidation getValidation() {
         return mValidation;
@@ -641,7 +623,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
             dest.writeByte((byte) (0x01));
             dest.writeList(mOptions);
         }
-        dest.writeValue(mDataSetListener);
         dest.writeValue(mValidation);
         dest.writeString(mValue);
         dest.writeMap(mSubForms);
@@ -694,7 +675,6 @@ public class FormField implements IJSONSerializable, IFormField, Parcelable {
         } else {
             mOptions = null;
         }
-        mDataSetListener = (OnDataSetReceived) in.readValue(OnDataSetReceived.class.getClassLoader());
         mValidation = (FieldValidation) in.readValue(FieldValidation.class.getClassLoader());
         mValue = in.readString();
         mSubForms =  new HashMap<>();

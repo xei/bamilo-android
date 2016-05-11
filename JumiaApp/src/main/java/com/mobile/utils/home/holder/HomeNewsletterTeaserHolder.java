@@ -77,6 +77,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
                     mEditText = (EditText) view;
                     mEditText.addTextChangedListener(this);
                     mEditText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                    mEditText.setHintTextColor(ContextCompat.getColor(mContext, R.color.black_700));
                     if (TextUtils.isNotEmpty(sInitialValue)) {
                         mEditText.setText(sInitialValue);
                     }
@@ -94,7 +95,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
                 // Case Spinner: Get the selection
                 else if (control.getEntry().getInputType() == FormInputType.list) {
                     mGenderSpinner = (IcsSpinner) control.getDataControl();
-                    if (sInitialGender > 0) {
+                    if (sInitialGender > IntConstants.INVALID_POSITION) {
                         mGenderSpinner.setSelection(sInitialGender);
                     }
                 }
@@ -160,16 +161,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
     protected boolean validate() {
         boolean result = true;
         for (DynamicFormItem control : mNewsLetterForm) {
-            if (control.getEntry().getInputType() == FormInputType.list) {
-                if (TextUtils.equals(control.getEntry().getPlaceHolder(), (String) ((IcsSpinner) control.getDataControl()).getSelectedItem())) {
-                    control.showErrorMessage(control.getEntry().getValidation().getMessage());
-                    return false;
-                } else {
-                    control.hideErrorMessage();
-                }
-            } else {
-                result &= control.validate();
-            }
+            result &= control.validate();
         }
         return result;
     }

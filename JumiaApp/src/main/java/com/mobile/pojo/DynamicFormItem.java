@@ -1381,7 +1381,9 @@ public class DynamicFormItem {
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, layout, new ArrayList<>(this.entry.getDataSet().values()));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-            ((IcsSpinner) this.dataControl).setAdapter(adapter);
+            PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, context);
+            promptAdapter.setPrompt(this.entry.getPlaceHolder());
+            ((IcsSpinner) this.dataControl).setAdapter(promptAdapter);
         }
         // Case Empty
         else {
@@ -1394,11 +1396,11 @@ public class DynamicFormItem {
             }
             // Case Others
             else {
-                ArrayList<String> list = new ArrayList<>();
-                list.add(this.entry.getPlaceHolder());
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, list);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<String>());
                 adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-                ((IcsSpinner) this.dataControl).setAdapter(adapter);
+                PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, context);
+                promptAdapter.setPrompt(this.entry.getPlaceHolder());
+                ((IcsSpinner) this.dataControl).setAdapter(promptAdapter);
             }
         }
         // Sets the spinner value
@@ -1409,7 +1411,7 @@ public class DynamicFormItem {
             if (CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
                 for (NewsletterOption item : ((FormField) this.entry).getNewsletterOptions()) {
                     position++;
-                    if (item.isDefaut) {
+                    if (item.isDefault) {
                         ((IcsSpinner) this.dataControl).setSelection(position);
                     }
                 }
@@ -1473,37 +1475,6 @@ public class DynamicFormItem {
 
                 if (null != spinnerSelectedListener) {
                     spinnerSelectedListener.onNothingSelected(parent);
-                }
-            }
-        });
-
-        this.entry.setOnDataSetReceived(new FormField.OnDataSetReceived() {
-
-            @Override
-            public void DataSetReceived(Map<String, String> dataSet) {
-                if (dataSet.size() > 0) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<>(dataSet.values()));
-                    adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-                    ((IcsSpinner) dataControl).setAdapter(adapter);
-
-                } else {
-                    ArrayList<String> default_string = new ArrayList<>();
-                    default_string.add("Empty");
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
-                    adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-                    ((IcsSpinner) dataControl).setAdapter(adapter);
-                }
-
-                // sets the spinner value
-                int position = 0;
-                if (null != entry.getValue() && !entry.getValue().trim().equals("")) {
-                    for (String item : new ArrayList<>(dataSet.values())) {
-                        if (item.equals(entry.getValue())) {
-                            ((IcsSpinner) dataControl).setSelection(position);
-                            break;
-                        }
-                    }
-                    //position++;
                 }
             }
         });
