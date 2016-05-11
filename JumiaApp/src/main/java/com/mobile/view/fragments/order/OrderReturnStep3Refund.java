@@ -77,21 +77,8 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
         // Get button
         TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
         button.setOnClickListener(this);
+        triggerReturnRefundForm();
 
-        setUserVisibleHint(true);
-
-    }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if(isVisibleToUser && mFormResponse != null){
-            loadReturnRefundForm(mFormResponse);
-        } else {
-            triggerReturnRefundForm();
-        }
     }
 
     /**

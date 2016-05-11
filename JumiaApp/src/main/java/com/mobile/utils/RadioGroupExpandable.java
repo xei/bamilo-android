@@ -84,7 +84,7 @@ public class RadioGroupExpandable extends RadioGroup {
         int count = defaultSelect;
         for (IFormField entryValue : items) {
             count++;
-            if (TextUtils.equals(entryValue.getLabel(), defaultValue)) {
+            if (TextUtils.equals(entryValue.getLabel(), defaultValue) || entryValue.isChecked()) {
                 defaultSelect = count;
                 break;
             }
@@ -133,11 +133,7 @@ public class RadioGroupExpandable extends RadioGroup {
         post(new Runnable() {
             @Override
             public void run() {
-                RadioButton button = (RadioButton) mGroup.getChildAt(defaultSelected).findViewById(R.id.radio_shipping);
-                if(button != null){
-                    button.setChecked(true);
-                    mGroup.check(button.getId());
-                }
+                setSelection(defaultSelected);
             }
         });
     }
@@ -337,9 +333,9 @@ public class RadioGroupExpandable extends RadioGroup {
     public void loadState(@NonNull String parentKey, @NonNull Bundle inStat){
         if(inStat.containsKey(parentKey)){
             mDefaultSelected = inStat.getInt(parentKey);
-            setSelection(mDefaultSelected);
+            checkDefaultOption(mDefaultSelected);
             if(generatedForms.containsKey(inStat.getInt(parentKey))) {
-                generatedForms.get(getSelectedIndex()).loadSaveFormState(inStat);
+                generatedForms.get(mDefaultSelected).loadSaveFormState(inStat);
             }
         }
 
