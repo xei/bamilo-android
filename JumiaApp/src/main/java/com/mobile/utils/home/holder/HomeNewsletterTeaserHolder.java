@@ -77,6 +77,7 @@ public class HomeNewsletterTeaserHolder extends BaseTeaserViewHolder implements 
                     mEditText = (EditText) view;
                     mEditText.addTextChangedListener(this);
                     mEditText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+                    mEditText.setHintTextColor(ContextCompat.getColor(mContext, R.color.black_700));
                     if (TextUtils.isNotEmpty(sInitialValue)) {
                         mEditText.setText(sInitialValue);
                     }
