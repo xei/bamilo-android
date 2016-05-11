@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.components.absspinner.PromptSpinnerAdapter;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -38,7 +39,6 @@ import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
-import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.pojo.DynamicForm;
 import com.mobile.pojo.DynamicFormItem;
@@ -285,14 +285,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-        //add place holder by default if value = ""; ignore if added already
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(regions) || regions.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
-            regions.add(IntConstants.DEFAULT_POSITION, new AddressRegion(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
-        }
-
+        // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
+        spinner.setAdapter(promptAdapter);
 
         if (mShippingFormSavedState == null) {
             spinner.setSelection(getDefaultPosition(v, regions));
@@ -370,13 +368,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(cities) || cities.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
-            cities.add(IntConstants.DEFAULT_POSITION, new AddressCity(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
-        }
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
+        spinner.setAdapter(promptAdapter);
+
         setSavedSelectedCityPos(spinner);
 
         if (mShippingFormSavedState == null) {
@@ -406,14 +404,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         // Add a spinner
         IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout._def_gen_form_spinner, null);
         spinner.setLayoutParams(group.getLayoutParams());
-        //add place holder from API by default if value = ""; ignore if added already
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(postalCodes) || postalCodes.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
-            postalCodes.add(IntConstants.DEFAULT_POSITION, new AddressPostalCode(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
-        }
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
+        spinner.setAdapter(promptAdapter);
+
         setSavedSelectedPostalCodePos(spinner);
         if (mShippingFormSavedState == null) {
             spinner.setSelection(getDefaultPosition(v, postalCodes));

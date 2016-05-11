@@ -1,7 +1,5 @@
 package com.mobile.newFramework.forms;
 
-import com.mobile.newFramework.forms.FormField.OnDataSetReceived;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,8 +35,6 @@ public interface IFormField {
     String getFormat();
 
     Map<String, String> getDataSet();
-
-    void setOnDataSetReceived(OnDataSetReceived listener);
 
     FieldValidation getValidation();
 
