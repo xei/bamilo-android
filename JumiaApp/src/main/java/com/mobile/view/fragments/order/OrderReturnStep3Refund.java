@@ -77,21 +77,8 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
         // Get button
         TextView button = (TextView) view.findViewById(R.id.order_return_main_button_ok);
         button.setOnClickListener(this);
+        triggerReturnRefundForm();
 
-        setUserVisibleHint(true);
-
-    }
-
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        if(isVisibleToUser && mFormResponse != null){
-            loadReturnRefundForm(mFormResponse);
-        } else {
-            triggerReturnRefundForm();
-        }
     }
 
     /**
@@ -154,6 +141,8 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
     public void onClick(View view) {
         // Case next step
         if (view.getId() == R.id.order_return_main_button_ok && mReturnRefundFormGenerator != null) {
+            // hide keyboard
+            getBaseActivity().hideKeyboard();
             if(mReturnRefundFormGenerator.validate()){
                 // Get data from forms
                 ContentValues values = mReturnRefundFormGenerator.save();
@@ -165,6 +154,7 @@ public class OrderReturnStep3Refund extends OrderReturnStepBase {
                 super.onClickNextStep();
 
                 saveState();
+
             } // If there is no Child Form, show global message
             else if(mReturnRefundFormGenerator.showGlobalMessage()) {
                 String message = TextUtils.isNotEmpty(mReturnRefundFormGenerator.getErrorMessage()) ?
