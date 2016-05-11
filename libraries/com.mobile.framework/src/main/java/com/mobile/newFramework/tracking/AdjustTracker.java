@@ -25,6 +25,7 @@ import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.objects.customer.CustomerGender;
 import com.mobile.newFramework.objects.product.pojo.ProductComplete;
 import com.mobile.newFramework.objects.product.pojo.ProductRegular;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.gtm.GTMKeys;
 import com.mobile.newFramework.tracking.gtm.GTMManager;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -74,7 +75,6 @@ public class AdjustTracker extends AbcBaseTracker {
         private static final String SHOP_COUNTRY = "shop_country";
         private static final String APP_VERSION = "app_version";
         private static final String DISPLAY_SIZE = "display_size";
-
         private static final String USER_ID = "user_id";
         private static final String DURATION = "duration";
         private static final String DEVICE = "device";
@@ -83,14 +83,14 @@ public class AdjustTracker extends AbcBaseTracker {
         private static final String TRANSACTION_ID = "transaction_id";
         private static final String CURRENCY_CODE = "currency_code";
         private static final String CURRENCY = "currency";
-        private static final String PRICE = "price";
+        private static final String PRICE = RestConstants.PRICE;
         private static final String CATEGORY_ID = "category_id";
-        private static final String QUANTITY = "quantity";
-        private static final String GENDER = "gender";
-        private static final String SKU = "sku";
+        private static final String QUANTITY = RestConstants.QUANTITY;
+        private static final String GENDER = RestConstants.GENDER;
+        private static final String SKU = RestConstants.SKU;
         private static final String SKUS = "skus";
-        private static final String PRODUCTS = "products";
-        private static final String PRODUCT = "product";
+        private static final String PRODUCTS = RestConstants.PRODUCTS;
+        private static final String PRODUCT = RestConstants.PRODUCT;
         private static final String KEYWORDS = "keywords";
         private static final String NEW_CUSTOMER = "new_customer";
         private static final String APP_PRE_INSTALL = Constants.INFO_PRE_INSTALL;
@@ -101,15 +101,6 @@ public class AdjustTracker extends AbcBaseTracker {
         private static final String FB_CONTENT_TYPE = "fb_content_type";
         private static final String FB_CURRENCY = "fb_currency";
         private static final String FB_CONTENT_CATEGORY = "content_category";
-        // Cake Adjust Integration Keys
-        private static final String CAKE_SKUS = "ecsk";
-        private static final String CAKE_QTS = "ecqu";
-        private static final String CAKE_PRICES = "ecpr";
-        private static final String CAKE_DISCOUNTS = "ecld";
-        private static final String CAKE_CC = "ecco";
-        private static final String CAKE_SUM = "ect";
-        private static final String CAKE_SUM_2 = "ecst";
-        private static final String CAKE_ORDER = "t";
     }
 
     private static final String TABLET = "Tablet";
@@ -821,12 +812,17 @@ public class AdjustTracker extends AbcBaseTracker {
     }
 
     /**
-     * Track cake purchase
+     * Track the cake purchase, NAFAMZ-17210.<br>
+     * - Not available for all.
      */
     private void trackCakePurchaseIntegration(String order, String country, ArrayList<PurchaseItem> items) {
-        if (CollectionUtils.isNotEmpty(items)) {
+        // Get token not available for all
+        String token = mContext.getString(R.string.adjust_token_cake_integration);
+        // Tracking
+        if (CollectionUtils.isNotEmpty(items) && TextUtils.isNotEmpty(token)) {
             // Create event
-            AdjustEvent event = new AdjustEvent(mContext.getString(R.string.adjust_token_cake_integration));
+            AdjustEvent event = new AdjustEvent(token);
+            // Values
             String skus = "", qts = "", prcs = "", dcts = "";
             double sum = 0;
             boolean first = true;
@@ -840,29 +836,37 @@ public class AdjustTracker extends AbcBaseTracker {
                 sum += item.quantity * item.getPriceForTracking();
             }
             // List of SKUs (sku_config)
-            event.addCallbackParameter(AdjustKeys.CAKE_SKUS, skus);
-            event.addPartnerParameter(AdjustKeys.CAKE_SKUS, skus);
+            String key = mContext.getString(R.string.adjust_key_ecsk);
+            event.addCallbackParameter(key, skus);
+            event.addPartnerParameter(key, skus);
             // List of Quantities
-            event.addCallbackParameter(AdjustKeys.CAKE_QTS, qts);
-            event.addPartnerParameter(AdjustKeys.CAKE_QTS, qts);
+            key = mContext.getString(R.string.adjust_key_ecqu);
+            event.addCallbackParameter(key, qts);
+            event.addPartnerParameter(key, qts);
             // List of Prices
-            event.addCallbackParameter(AdjustKeys.CAKE_PRICES, prcs);
-            event.addPartnerParameter(AdjustKeys.CAKE_PRICES, prcs);
+            key = mContext.getString(R.string.adjust_key_ecpr);
+            event.addCallbackParameter(key, prcs);
+            event.addPartnerParameter(key, prcs);
             // List of Discounts
-            event.addCallbackParameter(AdjustKeys.CAKE_DISCOUNTS, dcts);
-            event.addPartnerParameter(AdjustKeys.CAKE_DISCOUNTS, dcts);
+            key = mContext.getString(R.string.adjust_key_ecld);
+            event.addCallbackParameter(key, dcts);
+            event.addPartnerParameter(key, dcts);
             // Add Country Code
-            event.addCallbackParameter(AdjustKeys.CAKE_CC, country);
-            event.addPartnerParameter(AdjustKeys.CAKE_CC, country);
+            key = mContext.getString(R.string.adjust_key_ecco);
+            event.addCallbackParameter(key, country);
+            event.addPartnerParameter(key, country);
             // Sub total without tax
-            event.addCallbackParameter(AdjustKeys.CAKE_SUM, String.valueOf(sum));
-            event.addPartnerParameter(AdjustKeys.CAKE_SUM, String.valueOf(sum));
+            key = mContext.getString(R.string.adjust_key_ect);
+            event.addCallbackParameter(key, String.valueOf(sum));
+            event.addPartnerParameter(key, String.valueOf(sum));
             // Sub total 2
-            event.addCallbackParameter(AdjustKeys.CAKE_SUM_2, String.valueOf(sum));
-            event.addPartnerParameter(AdjustKeys.CAKE_SUM_2, String.valueOf(sum));
+            key = mContext.getString(R.string.adjust_key_ecst);
+            event.addCallbackParameter(key, String.valueOf(sum));
+            event.addPartnerParameter(key, String.valueOf(sum));
             // Order id
-            event.addCallbackParameter(AdjustKeys.CAKE_ORDER, order);
-            event.addPartnerParameter(AdjustKeys.CAKE_ORDER, order);
+            key = mContext.getString(R.string.adjust_key_t);
+            event.addCallbackParameter(key, order);
+            event.addPartnerParameter(key, order);
             // Track
             Adjust.trackEvent(event);
         }
