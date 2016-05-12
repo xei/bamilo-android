@@ -323,7 +323,8 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             int regionValue = Integer.valueOf(formItem.getEntry().getValue());
             for (int i = 0; i < regions.size(); i++)
                 if (regionValue == regions.get(i).getValue()) {
-                    return i;
+                    // Zero position is the prompt
+                    return i + 1;
                 }
         } catch (NullPointerException | NumberFormatException e) {
             Print.e(TAG, e.getMessage());
@@ -654,11 +655,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         String requestedRegionAndField = cities.getCustomTag();
         Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
-        FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
-        if (field == null) {
-            showFragmentContentContainer();
-            Print.i(TAG, "DOES NOT HAVE POSTAL CODE");
-        }
+        showFragmentContentContainer();
     }
 
     protected void onGetPostalCodesSuccessEvent(BaseResponse baseResponse) {
