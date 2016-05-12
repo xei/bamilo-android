@@ -484,11 +484,9 @@ public class DynamicFormItem {
             case list:
                 mPreSelectedPosition = inStat.getInt(getKey());
                 IcsSpinner spinner = (IcsSpinner) this.dataControl;
-                if(spinner.getAdapter() != null &&
-                        spinner.getAdapter().getCount() > mPreSelectedPosition){
+                if(spinner.getAdapter() != null && spinner.getAdapter().getCount() > mPreSelectedPosition){
                     spinner.setSelection(mPreSelectedPosition);
                 }
-
                 break;
             case radioGroup:
                 int position = inStat.getInt(getKey());
@@ -811,9 +809,12 @@ public class DynamicFormItem {
                 outState.putBoolean(getKey(), ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked());
                 break;
             case list:
-                int selectedItem = ((IcsSpinner) this.dataControl).getSelectedItemPosition();
-                Print.i(TAG,"SAVE LIST:"+selectedItem);
-                outState.putInt(getKey(), selectedItem);
+                if (this.dataControl instanceof IcsSpinner) {
+                    IcsSpinner spinner = (IcsSpinner) this.dataControl;
+                    if (!(spinner.getAdapter() instanceof PromptSpinnerAdapter) || spinner.getSelectedItemPosition() > IntConstants.DEFAULT_POSITION) {
+                        outState.putInt(getKey(), spinner.getSelectedItemPosition());
+                    }
+                }
                 break;
             case radioGroup:
                 if (this.dataControl instanceof RadioGroupLayoutVertical) {
@@ -1394,17 +1395,24 @@ public class DynamicFormItem {
             if (this.parent.getForm().getType() == FormConstants.ORDER_RETURN_REASON_FORM) {
                 createSpinnerRequester();
             }
-            // Case Others
+            // Case Others (CREATE ADDRESS)
             else {
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<String>());
+                // Add a dummy item to show the prompt
+                ArrayList<String> array = new ArrayList<>();
+                array.add("");
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, array);
                 adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
                 PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, context);
                 promptAdapter.setPrompt(this.entry.getPlaceHolder());
                 ((IcsSpinner) this.dataControl).setAdapter(promptAdapter);
+                // Disabled spinner that has a parent (regions->cities->postal)
+                this.dataControl.setEnabled(false);
             }
         }
         // Sets the spinner value
-        ((IcsSpinner) this.dataControl).setSelection(0);
+        if(TextUtils.isEmpty(this.entry.getPlaceHolder())) {
+            ((IcsSpinner) this.dataControl).setSelection(IntConstants.DEFAULT_POSITION);
+        }
         // Case HomeNewsletter
         if (isAlternativeLayout) {
             int position = 0;
@@ -1429,7 +1437,7 @@ public class DynamicFormItem {
         }
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = MANDATORYSIGNALMARGIN;
+        params.rightMargin = context.getResources().getDimensionPixelSize(R.dimen.margin_padding_xxl);
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
