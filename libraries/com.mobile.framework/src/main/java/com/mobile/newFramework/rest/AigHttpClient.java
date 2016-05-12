@@ -204,7 +204,7 @@ public class AigHttpClient extends OkClient {
      */
     @SuppressWarnings("unused")
     public void addDebugNetworkInterceptors(Interceptor interceptor) {
-        mOkHttpClient.interceptors().add(interceptor);
+        mOkHttpClient.networkInterceptors().add(interceptor);
     }
 
     /**
