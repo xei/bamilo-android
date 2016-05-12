@@ -1038,12 +1038,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (view.getId() == R.id.fragment_root_error_button) {
             int error = (int) view.getTag(R.id.fragment_root_error_button);
 
-            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT) {
+            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT || error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT) {
                 // Case retry button from network
-                onClickRetryNoNetwork(view);
-            } else if (error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT) {
                 // Case retry button from error
-                onClickRetryUnexpectedError(view);
+                onClickRetryError(view);
             } else {
                 // Case continue button
                 onClickContinueButton();
@@ -1052,32 +1050,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Process the click on retry button in no network.
+     * Process the click on retry button in unexpected error and no network.
      * @param view The clicked view
      */
-    protected void onClickRetryNoNetwork(View view) {
+    protected void onClickRetryError(View view) {
         try {
-            Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
             View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
-            retrySpinning.clearAnimation();
-            retrySpinning.setAnimation(animation);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
-        }
-        // Common method for retry buttons
-        onClickRetryButton(view);
-    }
-
-    /**
-     * Process the click on retry button in unexpected error.
-     * @param view The clicked view
-     */
-    protected void onClickRetryUnexpectedError(View view) {
-        try {
-            Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
-            retrySpinning.clearAnimation();
-            retrySpinning.setAnimation(animation);
+            if(retrySpinning.getVisibility() == View.VISIBLE) {
+                Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
+                retrySpinning.clearAnimation();
+                retrySpinning.setAnimation(animation);
+            }
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }
