@@ -299,7 +299,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         else if(TextUtils.isNotEmpty(v.getEntry().getValue())) {
             spinner.setSelection(getDefaultPosition(v, regions));
         }
-        // Show form
+        // Show form (Zero is the prompt)
         if(spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
                 mFormShipping.getFieldKeyMap().get(RestConstants.CITY) != null) {
             showGhostFragmentContentContainer();
