@@ -61,17 +61,6 @@
         android:visibility="gone"
         tools:visibility="visible" />
 
-    <!--MAINTENANCE-->
-    <TextView
-        style="@style/Widget.DebugDrawer.Base.RowTitle"
-        android:layout_gravity="start|center_vertical"
-        android:text="Maintenance" />
-
-    <android.support.v7.widget.SwitchCompat
-        android:id="@+id/dd_debug_network_maintenance"
-        style="@style/Widget.DebugDrawer.Base.RowWidget"
-        android:layout_gravity="start|center_vertical" />
-
     <!--UNKNOWN ERROR-->
     <TextView
         style="@style/Widget.DebugDrawer.Base.RowTitle"
@@ -91,6 +80,17 @@
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/dd_debug_network_noconnection"
+        style="@style/Widget.DebugDrawer.Base.RowWidget"
+        android:layout_gravity="start|center_vertical" />
+
+    <!--MAINTENANCE-->
+    <TextView
+        style="@style/Widget.DebugDrawer.Base.RowTitle"
+        android:layout_gravity="start|center_vertical"
+        android:text="Maintenance" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/dd_debug_network_maintenance"
         style="@style/Widget.DebugDrawer.Base.RowWidget"
         android:layout_gravity="start|center_vertical" />
 
