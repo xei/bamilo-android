@@ -300,7 +300,12 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             spinner.setSelection(getDefaultPosition(v, regions));
         }
         // Show form
-        showFragmentContentContainer();
+        if(spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
+                mFormShipping.getFieldKeyMap().get(RestConstants.CITY) != null) {
+            showGhostFragmentContentContainer();
+        } else {
+            showFragmentContentContainer();
+        }
     }
 
     /**
@@ -375,6 +380,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
         // Add listener
         v.setOnItemSelectedListener(this);
+        // Show form (Zero is the prompt)
+        if(spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
+                mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE) != null) {
+            showGhostFragmentContentContainer();
+        } else {
+            showFragmentContentContainer();
+        }
     }
 
     /**
@@ -655,7 +667,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         String requestedRegionAndField = cities.getCustomTag();
         Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
-        showFragmentContentContainer();
     }
 
     protected void onGetPostalCodesSuccessEvent(BaseResponse baseResponse) {
