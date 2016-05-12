@@ -177,11 +177,7 @@
     <string name="share_checkout_this_product">یہ چیز دیکھیں، جو مجھے ملی:</string>
     <string name="share_subject">‎%s‎ پھیلائیں</string>
     <string name="shipping">شِپنگ</string>
-    <string name="basket_label">ٹوکری</string>
     <string name="shoppingcart_alert_message_no_items">خالی ٹوکری! براہِ کرم ٹوکری میں اشیاء شامل کریں</string>
-    <string name="choose_quantity">تعداد چُنیں</string>
-    <string name="delete_label">ڈِلیٹ</string>
-    <string name="quantity_label">تعداد</string>
     <string name="sign_in">داخل ہوں</string>
     <string name="sign_out">باہر نکلیں</string>
     <string name="size_guide_label">شرحِ ناپ</string>
@@ -322,6 +318,8 @@
     <string name="billing">بِلنگ</string>
     <string name="first_space_second_placeholder">%1$s‎ ‎%2$s‎</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
+    <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
+    <string name="first_x_second_placeholder">%2$s x  %1$s</string>
     <string name="qty_placeholder">مقدار:  %s</string>
     <string name="reorder_label">ترتیب</string>
     <string name="order_status_date">‎&lt;b>‎‎%1$s‎‎&lt;/b>\n‎‎%2$s‎</string>

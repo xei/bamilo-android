@@ -481,10 +481,8 @@ public class AdjustTracker extends AbcBaseTracker {
                     addBaseParameters(eventRevenue, bundle);
                     eventRevenue.addCallbackParameter(AdjustKeys.SKUS, skuList);
                     eventRevenue.addPartnerParameter(AdjustKeys.SKUS, skuList);
-
                     eventRevenue.addCallbackParameter(AdjustKeys.TRANSACTION_ID, order);
                     eventRevenue.addPartnerParameter(AdjustKeys.TRANSACTION_ID, order);
-
                     eventRevenue.setRevenue(bundle.getDouble(TRANSACTION_VALUE), EURO_CURRENCY);
                     Adjust.trackEvent(eventRevenue);
 

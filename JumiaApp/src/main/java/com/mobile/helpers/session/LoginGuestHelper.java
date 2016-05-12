@@ -7,6 +7,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
+import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
@@ -57,8 +58,10 @@ public class LoginGuestHelper extends SuperBaseHelper {
         }
         // Save customer
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getContentData();
+        Customer customer = loginCustomer.getCustomer();
+        customer.setGuest(true);
         // Save customer
-        JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
+        JumiaApplication.CUSTOMER = customer;
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
         baseResponse.getMetadata().setData(nextStepStruct);
         // Save new wish list
