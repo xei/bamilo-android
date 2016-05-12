@@ -177,11 +177,7 @@
     <string name="share_checkout_this_product">این کالاهایی که یافته ام را نیز مشاهده کنید:</string>
     <string name="share_subject">اشتراک گذاری %s</string>
     <string name="shipping">ارسال کالا</string>
-    <string name="basket_label">سبد</string>
     <string name="shoppingcart_alert_message_no_items">سبد خرید خالی است! لطفا به آن کالا اضافه کنید.</string>
-    <string name="choose_quantity">انتخاب تعداد</string>
-    <string name="delete_label">حذف</string>
-    <string name="quantity_label">تعداد</string>
     <string name="sign_in">ورود</string>
     <string name="sign_out">خروج</string>
     <string name="size_guide_label">راهنمای انتخاب سایز</string>
@@ -322,6 +318,7 @@
     <string name="billing">صورت حساب</string>
     <string name="first_space_second_placeholder">‎%1$s‎‎%2$s‎</string>
     <string name="first_slash_second_placeholder">‎%1$s‎/‎%2$s‎</string>
+    <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
     <string name="first_x_second_placeholder">اندازه ‎%1$s‎تعداد‎%2$s‎</string>
     <string name="qty_placeholder">تعداد: %s</string>
     <string name="reorder_label">سفارش مجدد</string>
@@ -348,4 +345,8 @@
     <string name="visit_the_official_brand_store">مشاهده محصولات ‎%s‎</string>
     <string name="free_shipping_possible">می توانید از ارسال رایگان بهره مند شوید</string>
     <string name="register_more_info">برای ایجاد حساب کاربری شما به اطلاعات بیشتری نیاز داریم.</string>
+    <!-- Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
+    <string name="items_returned_on">‎%1$s‎ تعداد کالا در تاریخ ‎%2$s‎ برگشت داده شد\n</string>
+    <string name="return_selected_items">بازگشت کالاهای مشخص شده</string>
+    <string name="return_label">بازگشت</string>
 </resources>

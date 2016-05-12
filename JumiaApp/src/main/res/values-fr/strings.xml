@@ -177,11 +177,7 @@
     <string name="share_checkout_this_product">Découvre vite le produit que j\'ai trouvé !</string>
     <string name="share_subject">Découvrez %s</string>
     <string name="shipping">Livraison</string>
-    <string name="basket_label">Panier</string>
     <string name="shoppingcart_alert_message_no_items">Panier vide ! Ajoutez-y des produits</string>
-    <string name="choose_quantity">Choisir la quantité</string>
-    <string name="delete_label">Effacer</string>
-    <string name="quantity_label">Quantité</string>
     <string name="sign_in">Accéder au compte</string>
     <string name="sign_out">Se déconnecter</string>
     <string name="size_guide_label">Guide de taille</string>
@@ -322,6 +318,8 @@
     <string name="billing">Facturation</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
+    <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
+    <string name="first_x_second_placeholder">%1$s x  %2$s</string>
     <string name="qty_placeholder">Qté: %s</string>
     <string name="reorder_label">Recommander</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>

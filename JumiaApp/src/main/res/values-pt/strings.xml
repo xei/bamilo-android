@@ -160,11 +160,7 @@
     <string name="share_checkout_this_product">Veja este produto que encontrámos!</string>
     <string name="share_subject">Compartilha %s</string>
     <string name="shipping">Entrega</string>
-    <string name="basket_label">Carrinho</string>
     <string name="shoppingcart_alert_message_no_items">Carrinho vazio! Por favor adicione produtos.</string>
-    <string name="choose_quantity">Escolher Quantidade</string>
-    <string name="delete_label">Eliminar</string>
-    <string name="quantity_label">Quantidade</string>
     <string name="sign_in">Entrar</string>
     <string name="sign_out">Sair</string>
     <string name="size_guide_label">Guia de Tamanhos</string>

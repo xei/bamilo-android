@@ -177,11 +177,7 @@
     <string name="share_checkout_this_product">عرض هذا المنتج الذي وجدته:</string>
     <string name="share_subject">مشاركة %s</string>
     <string name="shipping">الشحن</string>
-    <string name="basket_label">سلة التسوق</string>
     <string name="shoppingcart_alert_message_no_items">سلة التسوق فارغة! يُرجى إضافة المنتجات إلى عربة التسوق.</string>
-    <string name="choose_quantity">اختر الكمية</string>
-    <string name="delete_label">مسح</string>
-    <string name="quantity_label">الكمية</string>
     <string name="sign_in">تسجيل الدخول</string>
     <string name="sign_out">تسجيل الخروج</string>
     <string name="size_guide_label">دليل المقاسات</string>
@@ -322,6 +318,8 @@
     <string name="billing">الفواتير</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
+    <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
+    <string name="first_x_second_placeholder">%2$s x  %1$s</string>
     <string name="qty_placeholder">الكمية: %s</string>
     <string name="reorder_label">إعادة الطلب</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
