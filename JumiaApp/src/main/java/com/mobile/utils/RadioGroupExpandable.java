@@ -68,7 +68,6 @@ public class RadioGroupExpandable extends RadioGroup {
 
     /**
      * Add click listener callback
-     * @param clickListener
      */
     public void addClickListener(@NonNull OnClickListener clickListener){
         mClickListener = new WeakReference<>(clickListener);
@@ -79,9 +78,10 @@ public class RadioGroupExpandable extends RadioGroup {
      * - With right style
      */
     public void setItems(@NonNull ArrayList<IFormField> items, String defaultValue) {
-        // Find the default value
-        int defaultSelect = IntConstants.INVALID_POSITION;
+        // Case API does not send a default value, always pre-select the first option
+        int defaultSelect = IntConstants.DEFAULT_POSITION;
         int count = defaultSelect;
+        // Find the default value
         for (IFormField entryValue : items) {
             count++;
             if (TextUtils.equals(entryValue.getLabel(), defaultValue) || entryValue.isChecked()) {
@@ -89,15 +89,12 @@ public class RadioGroupExpandable extends RadioGroup {
                 break;
             }
         }
-
         // set and show items
         setItems(items, defaultSelect);
     }
 
     /**
      * Set items list
-     * @param items
-     * @param defaultSelected
      */
     public void setItems(ArrayList<IFormField> items, int defaultSelected) {
         mItems = items;
@@ -305,8 +302,6 @@ public class RadioGroupExpandable extends RadioGroup {
 
     /**
      * Save values from sub forms
-     * @param contentValues
-     * @return
      */
     public ContentValues save(@NonNull String parentKey, @NonNull ContentValues contentValues){
         if(CollectionUtils.isNotEmpty(mItems)){
@@ -350,7 +345,6 @@ public class RadioGroupExpandable extends RadioGroup {
 
     /**
      * Set current selection
-     * @param idx
      */
     public void setSelection(final int idx) {
         if (idx >= 0) {
@@ -370,7 +364,6 @@ public class RadioGroupExpandable extends RadioGroup {
 
     /**
      * Clear older selections
-     * @param idx
      */
     private void cleanOtherSelections(final int idx) {
         for (int i = 0; i < mGroup.getChildCount(); i++) {
