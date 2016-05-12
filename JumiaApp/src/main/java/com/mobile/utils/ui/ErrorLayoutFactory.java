@@ -103,6 +103,7 @@ public class ErrorLayoutFactory {
                 case NO_NETWORK_LAYOUT:
                     new Builder()
                     .setContent(R.drawable.img_connect, R.string.error_no_connection, R.string.internet_no_connection_details_label)
+                    .setButton(R.string.try_again_retry, R.color.black,R.drawable._gen_selector_button_grey)
                     .showRetryButton()
                     .showButtonSpinning();
                     break;
@@ -242,12 +243,14 @@ public class ErrorLayoutFactory {
 
         Builder showButtonSpinning() {
             View retrySpinning = mErrorLayout.findViewById(R.id.fragment_root_error_spinning);
+            retrySpinning.clearAnimation();
             retrySpinning.setVisibility(View.VISIBLE);
             return this;
         }
 
         private Builder hideButtonSpinning() {
             View retrySpinning = mErrorLayout.findViewById(R.id.fragment_root_error_spinning);
+            retrySpinning.clearAnimation();
             retrySpinning.setVisibility(View.GONE);
             return this;
         }
@@ -294,7 +297,6 @@ public class ErrorLayoutFactory {
             messageView.setVisibility(View.INVISIBLE);
             return this;
         }
-
     }
 
 }

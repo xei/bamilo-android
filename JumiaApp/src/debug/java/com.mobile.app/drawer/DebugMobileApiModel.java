@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 
 import com.mobile.newFramework.rest.AigHttpClient;
 import com.mobile.newFramework.rest.configs.AigRestContract;
+import com.mobile.newFramework.rest.errors.AigErrorHandler;
 import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.preferences.CountryPersistentConfigs;
 import com.mobile.view.R;
@@ -33,6 +34,8 @@ public class DebugMobileApiModel extends BaseDebugModel implements CompoundButto
     private final WeakReference<Activity> mWeakDebugActivity;
     private final ResponseCodeInterceptor mInterceptor;
     private SwitchCompat mMaintenance;
+    private SwitchCompat mConnectError;
+    private SwitchCompat mNoConnectionError;
     private SwitchCompat mOverload;
     private AppCompatEditText mEditHost;
     private AppCompatButton mEditButton;
@@ -59,6 +62,8 @@ public class DebugMobileApiModel extends BaseDebugModel implements CompoundButto
         mEditButton = (AppCompatButton) view.findViewById(R.id.dd_debug_network_button_host);
         mWarningView = view.findViewById(R.id.dd_debug_network_text_warning);
         mMaintenance = (SwitchCompat) view.findViewById(R.id.dd_debug_network_maintenance);
+        mConnectError = (SwitchCompat) view.findViewById(R.id.dd_debug_network_connecterror);
+        mNoConnectionError = (SwitchCompat) view.findViewById(R.id.dd_debug_network_noconnection);
         mOverload = (SwitchCompat) view.findViewById(R.id.dd_debug_network_overload);
         showInfo();
         return view;
@@ -77,6 +82,8 @@ public class DebugMobileApiModel extends BaseDebugModel implements CompoundButto
             disableEditHost();
             mEditButton.setOnClickListener(this);
             mMaintenance.setOnCheckedChangeListener(this);
+            mConnectError.setOnCheckedChangeListener(this);
+            mNoConnectionError.setOnCheckedChangeListener(this);
             mOverload.setOnCheckedChangeListener(this);
         } catch (Exception e) {
             // ...
@@ -118,11 +125,19 @@ public class DebugMobileApiModel extends BaseDebugModel implements CompoundButto
         switch (id) {
             case R.id.dd_debug_network_maintenance:
                 setAction(isChecked, ErrorCode.SERVER_IN_MAINTENANCE);
-                disableOthers(mOverload);
+                disableOthers(mOverload, mConnectError, mNoConnectionError);
+                break;
+            case R.id.dd_debug_network_connecterror:
+                setAction(isChecked, ErrorCode.CONNECT_ERROR + AigErrorHandler.ERROR_CODE_NORMALIZER);
+                disableOthers(mMaintenance, mOverload, mNoConnectionError);
+                break;
+            case R.id.dd_debug_network_noconnection:
+                setAction(isChecked, ErrorCode.NO_CONNECTIVITY + AigErrorHandler.ERROR_CODE_NORMALIZER);
+                disableOthers(mMaintenance, mOverload, mConnectError);
                 break;
             case R.id.dd_debug_network_overload:
                 setAction(isChecked, ErrorCode.SERVER_OVERLOAD);
-                disableOthers(mMaintenance);
+                disableOthers(mMaintenance, mConnectError, mNoConnectionError);
                 break;
             default:
                 break;
@@ -139,11 +154,13 @@ public class DebugMobileApiModel extends BaseDebugModel implements CompoundButto
         }
     }
 
-    private void disableOthers(@Nullable SwitchCompat switchCompat) {
-        if (switchCompat != null && switchCompat.isChecked()) {
-            switchCompat.setOnCheckedChangeListener(null);
-            switchCompat.setChecked(false);
-            switchCompat.setOnCheckedChangeListener(this);
+    private void disableOthers(@Nullable SwitchCompat ...switchCompat) {
+        for (SwitchCompat  switchCompatItem : switchCompat) {
+            if (switchCompatItem != null && switchCompatItem.isChecked()) {
+                switchCompatItem.setOnCheckedChangeListener(null);
+                switchCompatItem.setChecked(false);
+                switchCompatItem.setOnCheckedChangeListener(this);
+            }
         }
     }
 
