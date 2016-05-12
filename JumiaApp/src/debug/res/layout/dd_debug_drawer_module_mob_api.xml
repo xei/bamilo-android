@@ -72,6 +72,28 @@
         style="@style/Widget.DebugDrawer.Base.RowWidget"
         android:layout_gravity="start|center_vertical" />
 
+    <!--UNKNOWN ERROR-->
+    <TextView
+        style="@style/Widget.DebugDrawer.Base.RowTitle"
+        android:layout_gravity="start|center_vertical"
+        android:text="Uknown Issue" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/dd_debug_network_connecterror"
+        style="@style/Widget.DebugDrawer.Base.RowWidget"
+        android:layout_gravity="start|center_vertical" />
+
+    <!--No Connection ERROR-->
+    <TextView
+        style="@style/Widget.DebugDrawer.Base.RowTitle"
+        android:layout_gravity="start|center_vertical"
+        android:text="No Connection" />
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/dd_debug_network_noconnection"
+        style="@style/Widget.DebugDrawer.Base.RowWidget"
+        android:layout_gravity="start|center_vertical" />
+
     <!--OVERLOAD-->
     <TextView
         style="@style/Widget.DebugDrawer.Base.RowTitle"
