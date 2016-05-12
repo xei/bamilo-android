@@ -303,6 +303,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         showFragmentContentContainer();
     }
 
+    /**
+     * Allows to update the spinners (regions/cities/postcodes) correctly with previous values when app goes to background or rotates
+     */
+    private boolean processSpinners(IcsSpinner spinner, String restConstantsKey) {
+        if (mShippingFormSavedState != null && mShippingFormSavedState.getInt(restConstantsKey) < spinner.getCount()) {
+            spinner.setSelection(mShippingFormSavedState.getInt(restConstantsKey));
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Get the position of the regions
@@ -320,18 +330,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         }
         return 0;
     }
-
-    /**
-     * Allows to update the spinners (regions/cities/postcodes) correctly with previous values when app goes to background or rotates
-     */
-    private boolean processSpinners(IcsSpinner spinner, String restConstantsKey) {
-        if (mShippingFormSavedState != null && mShippingFormSavedState.getInt(restConstantsKey) <= spinner.getCount()) {
-            spinner.setSelection(mShippingFormSavedState.getInt(restConstantsKey));
-            return true;
-        }
-        return false;
-    }
-
 
     /**
      * Validate the current region selection and update the cities
@@ -413,7 +411,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             position = mSavedRegionCitiesPositions.getInt(RestConstants.CITY);
         }
 
-        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position < spinner.getCount()) {
             spinner.setSelection(position);
         }
     }
@@ -427,7 +425,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             position = mSavedRegionCitiesPositions.getInt(RestConstants.POSTCODE);
         }
 
-        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position < spinner.getCount()) {
             spinner.setSelection(position);
         }
 
