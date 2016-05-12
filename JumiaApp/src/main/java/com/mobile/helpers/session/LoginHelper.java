@@ -52,7 +52,7 @@ public class LoginHelper extends SuperBaseHelper {
         CheckoutStepLogin loginCustomer = ((CheckoutStepLogin) baseResponse.getMetadata().getData());
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
         baseResponse.getMetadata().setData(nextStepStruct);
-        
+
         //TODO move to observable
         // Save customer
         JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
