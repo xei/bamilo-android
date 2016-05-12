@@ -23,6 +23,7 @@ import com.mobile.newFramework.objects.configs.CountryObject;
 import com.mobile.newFramework.objects.configs.Languages;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.TextUtils;
@@ -257,27 +258,29 @@ public class ChooseCountryFragment extends BaseFragment implements IResponseCall
     }
 
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+        if(CollectionUtils.isNotEmpty(JumiaApplication.INSTANCE.countriesAvailable)
+                && JumiaApplication.INSTANCE.countriesAvailable.size() > position) {
+            ((ListView) parent).setItemChecked(position, true);
 
-        ((ListView) parent).setItemChecked(position, true);
+            final CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
+            final Languages languages = ChooseLanguageController.getCurrentLanguages(this.getActivity(), countryObject);
 
-        final CountryObject countryObject = JumiaApplication.INSTANCE.countriesAvailable.get(position);
-        final Languages languages = ChooseLanguageController.getCurrentLanguages(this.getActivity(), countryObject);
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    isChangeCountry = true;
+                    setCountry(position);
+                }
+            };
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                isChangeCountry = true;
-                setCountry(position);
-            }
-        };
-
-        // If the dialog didn't load means that has no more than one country
-        if (!ChooseLanguageController.chooseLanguageDialog(this, languages, runnable)) {
-            if (selected == SHOP_NOT_SELECTED) {
-                setCountry(countryObject, position);
-            } else if (position != selected) {
-                isChangeCountry = true;
-                setCountry(countryObject, position);
+            // If the dialog didn't load means that has no more than one country
+            if (!ChooseLanguageController.chooseLanguageDialog(this, languages, runnable)) {
+                if (selected == SHOP_NOT_SELECTED) {
+                    setCountry(countryObject, position);
+                } else if (position != selected) {
+                    isChangeCountry = true;
+                    setCountry(countryObject, position);
+                }
             }
         }
     }

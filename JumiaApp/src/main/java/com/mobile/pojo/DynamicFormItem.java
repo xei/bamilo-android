@@ -578,22 +578,26 @@ public class DynamicFormItem {
                 break;
             case list:
                 View view = this.dataControl;
-                if (view instanceof IcsSpinner) {
+                if(view instanceof IcsSpinner){
                     IcsSpinner spinner = (IcsSpinner) view;
-                    FormListItem item = (FormListItem) spinner.getSelectedItem();
-                    if (item != null) {
-                        values.put(getName(), item.getValueAsString());
+                    if (spinner.getSelectedItem() instanceof FormListItem) {
+
+                        FormListItem item = (FormListItem) spinner.getSelectedItem();
+                        if (item != null) {
+                            values.put(getName(), item.getValueAsString());
+                        }
                     }
-                }
-                // Case HomeNewsletter
-                else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
-                    for (String key : this.entry.getDataSet().keySet()) {
-                        if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
-                            values.put(getName(), key);
-                            break;
+                    // Case HomeNewsletter
+                    else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) spinner.getSelectedItem())) {
+                        for (String key : this.entry.getDataSet().keySet()) {
+                            if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) spinner.getSelectedItem())) {
+                                values.put(getName(), key);
+                                break;
+                            }
                         }
                     }
                 }
+
                 break;
             case relatedNumber:
                 // Get number
