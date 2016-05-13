@@ -829,9 +829,9 @@ public class AdjustTracker extends AbcBaseTracker {
                 first = false;
                 skus += spt + item.sku.split(SEPARATOR_HYPHEN)[CONFIG_SKU_POS];
                 qts += spt + item.quantity;
-                prcs += spt + item.getPriceForTracking();
+                prcs += spt + item.price;
                 dcts += spt + 0;
-                sum += item.quantity * item.getPriceForTracking();
+                sum += item.quantity * item.price;
             }
             // List of SKUs (sku_config)
             String key = mContext.getString(R.string.adjust_key_ecsk);
