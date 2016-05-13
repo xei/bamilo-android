@@ -18,8 +18,14 @@ Jumia Android
 #### MobApi documentation
 * [API documentation](http://jenkins2.ri.lan.com/job/Jumia_API_Documentation/HTML_Report/index.html)
 
+#### Dev/QA Tools
+* [Debug Tools](https://confluence.africainternetgroup.com/display/NAFAMZ/Android+Debug+Tools)
+
 #### Third party libraries
 * [SDKs and libraries](https://confluence.africainternetgroup.com/pages/viewpage.action?spaceKey=NAFAMZ&title=Android+app+SDKs+and+libraries)
+
+#### Mobile Wiki Page
+* [Confluence](https://confluence.africainternetgroup.com/display/NAFAMZ/Mobile)
 
 #### Translations
 * [Webtranslateit](https://webtranslateit.com/en/projects/11029-Jumia-Mobile-Apps/files)
