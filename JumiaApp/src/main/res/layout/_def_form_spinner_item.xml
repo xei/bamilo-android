@@ -8,4 +8,6 @@
     android:gravity="left|start|center_vertical"
     android:paddingLeft="@dimen/form_spinner_left_margin"
     android:paddingStart="@dimen/form_spinner_left_margin"
+    android:singleLine="false"
+    android:maxLines="3"
     tools:text="Item" />
