@@ -54,10 +54,6 @@
         <item name="android:background">@drawable/_gen_background_border_black_400</item>
     </style>
 
-    <style name="Button_1.Secondary.Text_Orange.Border_400">
-        <item name="android:background">@drawable/_gen_background_border_black_400</item>
-    </style>
-
     <style name="Button_1.Secondary.Text_Black_800.Border_400.Wrap">
         <item name="android:layout_width">wrap_content</item>
     </style>
