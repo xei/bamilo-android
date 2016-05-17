@@ -47,10 +47,14 @@
     </style>
 
     <style name="Button_1.Secondary.Text_Black_800">
-        <item name="android:textColor">@color/black_800</item>
+        <item name="android:textColor">@drawable/_gen_selector_text_secondary</item>
     </style>
 
     <style name="Button_1.Secondary.Text_Black_800.Border_400">
+        <item name="android:background">@drawable/_gen_background_border_black_400</item>
+    </style>
+
+    <style name="Button_1.Secondary.Text_Orange.Border_400">
         <item name="android:background">@drawable/_gen_background_border_black_400</item>
     </style>
 
@@ -86,7 +90,7 @@
     </style>
 
     <style name="Button_Link.Secondary">
-        <item name="android:textColor">@color/black_800</item>
+        <item name="android:textColor">@drawable/_gen_selector_text_secondary</item>
     </style>
 
     <!-- ################# FACEBOOK BUTTON STYLE ################# -->

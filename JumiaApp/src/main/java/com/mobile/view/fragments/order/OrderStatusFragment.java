@@ -241,6 +241,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
             boolean bool = displayReturnSelected();
             UIUtils.setVisibility(mReturnItemsContainer, bool);
             mReturnItemsButton.setEnabled(bool);
+            mReturnItemsButton.setActivated(CollectionUtils.isNotEmpty(mSelectedItemsToReturn));
             //
             for (int i = 0; i < items.size(); i++) {
                 final OrderTrackerItem item = items.get(i);
@@ -276,6 +277,7 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                                     } else {
                                         mSelectedItemsToReturn.remove(position);
                                     }
+                                    mReturnItemsButton.setActivated(CollectionUtils.isNotEmpty(mSelectedItemsToReturn));
                                 }
                             });
                         }
