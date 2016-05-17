@@ -90,8 +90,13 @@ public interface AigApiInterface {
     @interface BODY_DELETE { String value(); }
 
     /*
-     * ########## HTTP GET ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0
+     * ########## HTTP GET ##########
      */
+
+    // TODO: NAFAMZ-17308 Temporary solution to get available countries for dev
+    @GET("/mobapi/ventures.json")
+    void getDevAvailableCountries(Callback<BaseResponse<AvailableCountries>> callback);
+    String getDevAvailableCountries = "getDevAvailableCountries";
 
     @GET("/")
     void getAvailableCountries(Callback<BaseResponse<AvailableCountries>> callback);

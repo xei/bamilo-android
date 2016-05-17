@@ -1,5 +1,6 @@
 package com.mobile.newFramework.rest.configs;
 
+@SuppressWarnings("unused")
 public class HeaderConstants {
     public static final String GET_METHOD = "GET";
     public static final String HEAD_METHOD = "HEAD";
@@ -42,7 +43,4 @@ public class HeaderConstants {
     public static final String USER_AGENT = "User-Agent";
     public static final String USER_LANGUAGE = "User-Language";
     public static final String LOCATION = "Location";
-
-    public HeaderConstants() {
-    }
 }
