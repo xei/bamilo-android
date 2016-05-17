@@ -162,17 +162,6 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <!-- RETURN -->
-        <com.mobile.components.customfontviews.TextView
-            android:id="@+id/order_status_item_button_return"
-            style="@style/Button_1.Secondary.Text_Black_800.Border_400"
-            android:layout_width="wrap_content"
-            android:text="@string/return_label"
-            android:visibility="gone"
-            tools:text="@string/return_label"
-            tools:visibility="visible" />
-
-
         <!-- REORDER -->
 
         <com.mobile.components.customfontviews.TextView
@@ -182,6 +171,21 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:text="@string/reorder_label" />
+
+        <!-- RETURN -->
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/order_status_item_button_return"
+            style="@style/Button_1.Secondary.Text_Black_800.Border_400"
+            android:layout_width="wrap_content"
+            android:text="@string/return_label"
+            android:layout_toLeftOf="@id/order_status_item_button_reorder"
+            android:layout_toStartOf="@id/order_status_item_button_reorder"
+            android:layout_marginRight="@dimen/margin_padding_m"
+            android:layout_marginEnd="@dimen/margin_padding_m"
+            android:visibility="gone"
+            android:singleLine="false"
+            tools:text="@string/return_label"
+            tools:visibility="visible" />
 
     </RelativeLayout>
 </LinearLayout>
