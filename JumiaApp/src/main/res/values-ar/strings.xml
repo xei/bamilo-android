@@ -351,7 +351,7 @@
     <string name="register_more_info">نحتاج إلى المزيد من التفاصيل لإنشاء الحساب الخاص بك.</string>
     <string name="go_label">نفّذ</string>
     <!-- Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
-    <string name="items_returned_on"></string>
+    <string name="items_returned_on">‎%1$s‎ البنود عاد في ‎%2$s‎ \n</string>
     <string name="return_selected_items">ارجاع المنتجات المختارة</string>
     <string name="return_label">ارجاع</string>
     <string name="call_return_label">اتصل للارجاع</string>
