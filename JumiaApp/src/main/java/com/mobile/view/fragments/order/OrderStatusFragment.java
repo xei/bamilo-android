@@ -240,8 +240,10 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
             // Check whether there is more then 2 items with action online return type
             boolean bool = displayReturnSelected();
             UIUtils.setVisibility(mReturnItemsContainer, bool);
+            // Set button state
+            bool = CollectionUtils.isNotEmpty(mSelectedItemsToReturn);
             mReturnItemsButton.setEnabled(bool);
-            mReturnItemsButton.setActivated(CollectionUtils.isNotEmpty(mSelectedItemsToReturn));
+            mReturnItemsButton.setActivated(bool);
             //
             for (int i = 0; i < items.size(); i++) {
                 final OrderTrackerItem item = items.get(i);
@@ -277,7 +279,10 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                                     } else {
                                         mSelectedItemsToReturn.remove(position);
                                     }
-                                    mReturnItemsButton.setActivated(CollectionUtils.isNotEmpty(mSelectedItemsToReturn));
+                                    // Set button state
+                                    boolean bool = CollectionUtils.isNotEmpty(mSelectedItemsToReturn);
+                                    mReturnItemsButton.setEnabled(bool);
+                                    mReturnItemsButton.setActivated(bool);
                                 }
                             });
                         }
