@@ -237,15 +237,14 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
     private void showOrderItems(@NonNull ViewGroup group, @Nullable ArrayList<OrderTrackerItem> items) {
         if (CollectionUtils.isNotEmpty(items)) {
             LayoutInflater inflater = LayoutInflater.from(group.getContext());
-
-            if(displayReturnSelected()){ // Check whether there is more then 2 items with action online return type
-                UIUtils.setVisibility(mReturnItemsContainer, true);
-                // Validate if any item is checked, if so, enable return selected.
-                mReturnItemsButton.setEnabled(CollectionUtils.isNotEmpty(mSelectedItemsToReturn));
-            } else {
-                UIUtils.setVisibility(mReturnItemsContainer, false);
-            }
-
+            // Check whether there is more then 2 items with action online return type
+            boolean bool = displayReturnSelected();
+            UIUtils.setVisibility(mReturnItemsContainer, bool);
+            // Set button state
+            bool = CollectionUtils.isNotEmpty(mSelectedItemsToReturn);
+            mReturnItemsButton.setEnabled(bool);
+            mReturnItemsButton.setActivated(bool);
+            //
             for (int i = 0; i < items.size(); i++) {
                 final OrderTrackerItem item = items.get(i);
                 // Create new layout item
@@ -280,8 +279,10 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                                     } else {
                                         mSelectedItemsToReturn.remove(position);
                                     }
-                                    // Set return multi button
-                                    mReturnItemsButton.setEnabled(CollectionUtils.isNotEmpty(mSelectedItemsToReturn));
+                                    // Set button state
+                                    boolean bool = CollectionUtils.isNotEmpty(mSelectedItemsToReturn);
+                                    mReturnItemsButton.setEnabled(bool);
+                                    mReturnItemsButton.setActivated(bool);
                                 }
                             });
                         }
