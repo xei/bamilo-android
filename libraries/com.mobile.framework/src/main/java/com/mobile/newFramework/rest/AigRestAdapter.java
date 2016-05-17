@@ -91,7 +91,12 @@ public class AigRestAdapter {
                 request.addHeader(HeaderConstants.CACHE_CONTROL, value);
             }
             // AGENT
-            request.addHeader(HeaderConstants.USER_AGENT, agent + " " + AigRestContract.AUTHENTICATION_USER_AGENT);
+            if (isDebuggable) {
+                // TODO: NAFAMZ-17308 Temporary solution to get available countries for dev
+                request.addHeader(HeaderConstants.USER_AGENT, "qa_automated_tests");
+            } else {
+                request.addHeader(HeaderConstants.USER_AGENT, agent + " " + AigRestContract.AUTHENTICATION_USER_AGENT);
+            }
 
             if (TextUtils.isNotEmpty(AigRestContract.USER_LANGUAGE)) {
                 request.addHeader(HeaderConstants.USER_LANGUAGE, AigRestContract.USER_LANGUAGE);
