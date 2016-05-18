@@ -358,25 +358,40 @@
     <string name="call_now_label">ဖုန္းေခၚရန္</string>
     <string name="shipment_label">သယ္ယူပို႕ေဆာင္ျခင္း</string>
     <string name="returns_label">ျပန္လည္ပို႕ေဆာင္ရန္</string>
+    <!-- Used in Online Returns when user tries to click on return selected without selecting any item -->
     <string name="warning_no_items_selected">ျပန္လည္ပို႕ေဆာင္ရန္ ပစၥည္းေရြးခ်ယ္ထားျခင္းမရွိပါ</string>
     <string name="ok_got_it">သိရွိပါသည္</string>
+    <!-- Used in Return item and Order Return Call Screen to show order number -->
     <string name="order_number_placeholder">ေအာ္ဒါနံပါတ္ %s</string>
+    <!-- Used in Order Return Conditions Screen as title -->
     <string name="order_return_conditions_title">၀ယ္ယူလိုက္ေသာ ကုန္ပစၥည္းအား စိတ္တုိင္းမက်ျဖစ္ရျခင္းအတြက္ ေတာင္းပန္အပ္ပါသည္</string>
+    <!-- Used as title for Online Return Step 1 (Return Reason) -->
     <string name="order_return_reason_title">ပစၥည္းျပန္လည္ေပးပို႕လုိရျခင္းအေၾကာင္းအရင္းကို ေဖာ္ျပပါ</string>
+    <!-- Used as title for Online Return Step 2 (Return Method) -->
     <string name="order_return_method_title">ပစၥည္းျပန္လည္ေပးပို႕လုိေသာနည္းလမ္းကိုေရြးပါ</string>
+    <!-- Used as title for Online Return Step 3 (Return Refund) -->
     <string name="order_return_refund_title">ျပန္အမ္းေငြရယူမည္႕ နည္းလမ္းကိုေရြးခ်ယ္ပါ</string>
     <string name="order_return_finish_title">ျပန္လည္ေပးပို႕လုိေသာေဖာင္ကို အတည္ျပဳပါ</string>
     <string name="send_label">ပို႕ရန္</string>
     <string name="quantity_to_return">ျပန္ပို႕မည္႕အေရအတြက္</string>
+    <!-- Used as to inform the user the number of items that are selected to return -->
     <string name="quantity_to_return_placeholder">ျပန္လည္ေပးပို႕ရန္ အေရအတြက္: %s</string>
     <string name="quantity_placeholder">အေရအတြက္ %s</string>
+    <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number -->
     <string name="please_call_placeholder">%s သို႕ေခၚဆုိပါ</string>
+    <!-- Used as prompt for the Return Reason Spinner -->
     <string name="choose_reason">အေၾကာင္းအရင္းေရြးခ်ယ္ပါ</string>
+    <!-- Used as error message when user doesn't select any option and tries to proceed -->
     <string name="warning_please_select_one">ေဆာင္ရြက္ရန္ အေၾကာင္းအရာကို ေရြးခ်ယ္ပါ</string>
     <string name="everything_looks_good">ေသခ်ာစြာအတည္ျပဳၿပီးလွ်င္ "ပို႕ရန္"ကိုႏွိပ္ပါ</string>
+    <!-- Used as label for Return Reason in Online Return Details Screen -->
     <string name="return_reason">ျပန္ပို႕လိုေသာအေၾကာင္းအရင္း</string>
+    <!-- Used as label for Return Method in Online Return Details Screen -->
     <string name="return_method">ျပန္ပို႕လုိေသာနည္းလမ္း</string>
+    <!-- Used as label for Refund Method Online Return Details Screen -->
     <string name="return_payment">ပစၥည္းျပန္ပို႕ျခင္းေငြေခ်ရန္နည္းလမ္း</string>
+    <!-- Used as error message warning when a Shipping or Billing address is not valid anymore -->
     <string name="invalid_address_shipping_billing">လိပ္စာမွားယြင္းေနပါသည္။ ေက်းဇူးျပဳ၍ေျပာင္းလဲပါ။</string>
+    <!-- Used as error message warning when a Address is not valid anymore -->
     <string name="invalid_address_other">လိပ္စာမွားယြင္းေနပါသည္။</string>
 </resources>
