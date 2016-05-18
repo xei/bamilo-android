@@ -180,8 +180,8 @@
     <string name="basket_label">Panier</string>
     <string name="shoppingcart_alert_message_no_items">Panier vide ! Ajoutez-y des produits</string>
     <string name="choose_quantity">Choisir la quantité</string>
-    <string name="delete_label">Effacer</string>
-    <string name="quantity_label">Qté</string>
+    <string name="delete_label">Supprimer</string>
+    <string name="quantity_label">Quantité</string>
     <string name="sign_in">Accéder au compte</string>
     <string name="sign_out">Se déconnecter</string>
     <string name="size_guide_label">Guide de taille</string>
@@ -351,32 +351,47 @@
     <string name="register_more_info">Nous avons juste besoin d\'un peu plus de détails pour créer votre compte.</string>
     <string name="go_label">Découvrir</string>
     <!-- Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
-    <string name="items_returned_on">%1$s articles retournés en %2$s\n</string>
-    <string name="return_selected_items">Les articles à retourner</string>
-    <string name="return_label">Retour</string>
-    <string name="call_return_label">Appeler pour retourner</string>
-    <string name="call_now_label">Appelez-nous</string>
-    <string name="shipment_label">Envoi</string>
-    <string name="returns_label">Retours</string>
-    <string name="warning_no_items_selected">Aucun article sélectionné pour le retour.</string>
-    <string name="ok_got_it">OK, j\'ai compris</string>
-    <string name="order_number_placeholder">Commande n° %s</string>
-    <string name="order_return_conditions_title">Nous nous excusons parce que le produit ne vous a pas satisfait entièrement</string>
-    <string name="order_return_reason_title">Pourquoi voulez-vous retourner cet article?</string>
-    <string name="order_return_method_title">Comment voulez-vous retourner cet article?</string>
-    <string name="order_return_refund_title">Quelle méthode de remboursement souhaitez-vous ?</string>
-    <string name="order_return_finish_title">Confirmez les détails de votre demande retour</string>
-    <string name="send_label">Envoyé</string>
+    <string name="items_returned_on">%1$s article(s) retourné(s) le %2$s\n</string>
+    <string name="return_selected_items">RETOURNER LES ARTICLES SÉLECTIONNÉS</string>
+    <string name="return_label">RETOURNER</string>
+    <string name="call_return_label">RETOUR PAR TÉLÉPHONE</string>
+    <string name="call_now_label">J\'APPELLE</string>
+    <string name="shipment_label">STATUT :</string>
+    <string name="returns_label">RETOUR :</string>
+    <!-- Used in Online Returns when user tries to click on return selected without selecting any item -->
+    <string name="warning_no_items_selected">Merci de sélectionner les articles que vous souhaitez retourner.</string>
+    <string name="ok_got_it">J\'AI COMPRIS</string>
+    <!-- Used in Return item and Order Return Call Screen to show order number -->
+    <string name="order_number_placeholder">Commande n° : %s</string>
+    <!-- Used in Order Return Conditions Screen as title -->
+    <string name="order_return_conditions_title">VOUS N\'ÊTES PAS SATISFAIT PAR VOTRE ACHAT ?</string>
+    <!-- Used as title for Online Return Step 1 (Return Reason) -->
+    <string name="order_return_reason_title">POURQUOI SOUHAITEZ-VOUS RETOURNER VOTRE COMMANDE ?</string>
+    <!-- Used as title for Online Return Step 2 (Return Method) -->
+    <string name="order_return_method_title">COMMENT SOUHAITEZ-VOUS EFFECTUER CE RETOUR ?</string>
+    <!-- Used as title for Online Return Step 3 (Return Refund) -->
+    <string name="order_return_refund_title">COMMENT SOUHAITEZ-VOUS ÊTRE REMBOURSÉ ?</string>
+    <string name="order_return_finish_title">RÉCAPITULATIF DE VOTRE RETOUR</string>
+    <string name="send_label">ENVOYER</string>
     <string name="quantity_to_return">Quantité à retourner</string>
-    <string name="quantity_to_return_placeholder">Quantité à retourner: %s</string>
+    <!-- Used as to inform the user the number of items that are selected to return -->
+    <string name="quantity_to_return_placeholder">Quantité : %s</string>
     <string name="quantity_placeholder">Quantité: %s</string>
-    <string name="please_call_placeholder">Veuillez nous contacter sur %s</string>
-    <string name="choose_reason">Choisissez une raison</string>
+    <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number -->
+    <string name="please_call_placeholder">APPELEZ-NOUS AU %s</string>
+    <!-- Used as prompt for the Return Reason Spinner -->
+    <string name="choose_reason">Choisir la raison</string>
+    <!-- Used as error message when user doesn't select any option and tries to proceed -->
     <string name="warning_please_select_one">Veuillez choisir une option afin de continuer.</string>
-    <string name="everything_looks_good">Si tout semble bon, appuyez sur \"ENVOYER\".</string>
-    <string name="return_reason">Raison du retour</string>
-    <string name="return_method">Mode de remboursement</string>
-    <string name="return_payment">Mode de remboursement du retour</string>
-    <string name="invalid_address_shipping_billing">L\'adresse n\'est pas correct, veuillez choisir une nouvelle</string>
-    <string name="invalid_address_other">L\'adresse n\'est pas correct</string>
+    <string name="everything_looks_good">Si les informations ci-dessus vous semblent correctes, cliquez sur \"ENVOYER\".</string>
+    <!-- Used as label for Return Reason in Online Return Details Screen -->
+    <string name="return_reason">RAISON DU RETOUR</string>
+    <!-- Used as label for Return Method in Online Return Details Screen -->
+    <string name="return_method">MODE DE RETOUR</string>
+    <!-- Used as label for Refund Method Online Return Details Screen -->
+    <string name="return_payment">MODE DE REMBOURSEMENT</string>
+    <!-- Used as error message warning when a Shipping or Billing address is not valid anymore -->
+    <string name="invalid_address_shipping_billing">Cette adresse semble incorrecte. Merci de la modifier.</string>
+    <!-- Used as error message warning when a Address is not valid anymore -->
+    <string name="invalid_address_other">Cette adresse semble incorrecte.</string>
 </resources>

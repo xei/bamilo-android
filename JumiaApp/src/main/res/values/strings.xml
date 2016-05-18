@@ -351,32 +351,47 @@
     <string name="register_more_info">We need just a bit more details to create your account.</string>
     <string name="go_label">Go</string>
     <!--Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
-    <string name="items_returned_on">%1$s items returned on %2$s\n</string>
+    <string name="items_returned_on">%1$s item(s) returned on %2$s\n</string>
     <string name="return_selected_items">return selected items</string>
     <string name="return_label">return</string>
     <string name="call_return_label">Call to Return</string>
     <string name="call_now_label">call now</string>
-    <string name="shipment_label">shipment</string>
-    <string name="returns_label">returns</string>
-    <string name="warning_no_items_selected">No items selected to return.</string>
+    <string name="shipment_label">status:</string>
+    <string name="returns_label">return:</string>
+    <!-- Used in Online Returns when user tries to click on return selected without selecting any item-->
+    <string name="warning_no_items_selected">Please select the items you would like to return.</string>
     <string name="ok_got_it">Ok, got it</string>
-    <string name="order_number_placeholder">Order Nº %s</string>
-    <string name="order_return_conditions_title">We are sorry that you are not fully satisfied with your product</string>
-    <string name="order_return_reason_title">Why do you want to return this item?</string>
-    <string name="order_return_method_title">How do you want to return this item?</string>
-    <string name="order_return_refund_title">Which payout method do you want for your refund?</string>
+    <!-- Used in Return item and Order Return Call Screen to show order number -->
+    <string name="order_number_placeholder">Order nº: %s</string>
+    <!-- Used in Order Return Conditions Screen as title -->
+    <string name="order_return_conditions_title">we are sorry that you are not fully satisfied with your purchase</string>
+    <!-- Used as title for Online Return Step 1 (Return Reason) -->
+    <string name="order_return_reason_title">why do you want to return your purchase?</string>
+    <!-- Used as title for Online Return Step 2 (Return Method) -->
+    <string name="order_return_method_title">how do you want to return your purchase?</string>
+    <!-- Used as title for Online Return Step 3 (Return Refund) -->
+    <string name="order_return_refund_title">how would you like to be refunded?</string>
     <string name="order_return_finish_title">Confirm your return request details</string>
     <string name="send_label">Send</string>
     <string name="quantity_to_return">Quantity to return</string>
-    <string name="quantity_to_return_placeholder">Quantity to return: %s</string>
+    <!-- Used as to inform the user the number of items that are selected to return-->
+    <string name="quantity_to_return_placeholder">Quantity: %s</string>
     <string name="quantity_placeholder">Quantity: %s</string>
-    <string name="please_call_placeholder">Please Call to %s</string>
-    <string name="choose_reason">Choose Reason</string>
-    <string name="warning_please_select_one">Please select one option to procced.</string>
+    <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number-->
+    <string name="please_call_placeholder">call us at %s</string>
+    <!-- Used as prompt for the Return Reason Spinner -->
+    <string name="choose_reason">Please choose your return reason</string>
+    <!-- Used as error message when user doesn't select any option and tries to proceed -->
+    <string name="warning_please_select_one">Please select an option to move forward.</string>
     <string name="everything_looks_good">If everything looks good, tap \"SEND\".</string>
-    <string name="return_reason">Return Reason</string>
-    <string name="return_method">Return Method</string>
-    <string name="return_payment">Return Payment Method</string>
-    <string name="invalid_address_shipping_billing">This address is not correct, please change it</string>
-    <string name="invalid_address_other">This address is not correct</string>
+    <!-- Used as label for Return Reason in Online Return Details Screen -->
+    <string name="return_reason">RETURN REASON</string>
+    <!-- Used as label for Return Method in Online Return Details Screen -->
+    <string name="return_method">RETURN METHOD</string>
+    <!-- Used as label for Refund Method Online Return Details Screen -->
+    <string name="return_payment">REFUND METHOD</string>
+    <!-- Used as error message warning when a Shipping or Billing address is not valid anymore -->
+    <string name="invalid_address_shipping_billing">This address is not correct, please change it.</string>
+    <!-- Used as error message warning when a Address is not valid anymore -->
+    <string name="invalid_address_other">This address is not correct.</string>
 </resources>
