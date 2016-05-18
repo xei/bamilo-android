@@ -44,6 +44,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_padding_xxl"
         android:gravity="center"
+        android:maxLines="2"
+        android:singleLine="false"
         android:text="@string/everything_looks_good" />
 
 </android.support.v7.widget.LinearLayoutCompat>
