@@ -318,7 +318,7 @@
     <string name="recent_searches_empty">Vous n\'avez pas de recherche récente.</string>
     <string name="items_in_your_order">Articles dans votre commande</string>
     <string name="delivered_label">Livré</string>
-    <string name="order_number">Numéro de commande %s</string>
+    <string name="order_number">COMMANDE N° %s</string>
     <string name="billing">Facturation</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
@@ -376,7 +376,7 @@
     <string name="quantity_to_return">Quantité à retourner</string>
     <!-- Used as to inform the user the number of items that are selected to return -->
     <string name="quantity_to_return_placeholder">Quantité : %s</string>
-    <string name="quantity_placeholder">Quantité: %s</string>
+    <string name="quantity_placeholder">Quantité : %s</string>
     <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number -->
     <string name="please_call_placeholder">APPELEZ-NOUS AU %s</string>
     <!-- Used as prompt for the Return Reason Spinner -->
