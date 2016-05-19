@@ -62,6 +62,8 @@ public class TeaserTopSellerObject extends BaseTeaserObject {
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
         super.initialize(jsonObject);
+        // Get name
+        mTitle = jsonObject.optString(RestConstants.NAME);
         // Get brand
         mBrand = jsonObject.getString(RestConstants.BRAND);
         // Get image
