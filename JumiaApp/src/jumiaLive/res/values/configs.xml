@@ -6,10 +6,7 @@
     <string name="app_name">Jumia Live</string>
 
     <!-- COUNTRIES -->
-    <!-- TODO: NAFAMZ-17308 Temporary solution to get available countries for dev-->
-    <!--http://integration.jumia.com/mobapi/ventures.json-->
-    <string name="countries_url">http://integration.jumia.com</string>
-    <!--<string name="countries_url">http://shareptcmobile.eu.pn/jtmobapi/</string>-->
+    <string name="countries_url">http://shareptcmobile.eu.pn/jtmobapi/</string>
     
     <!-- GA -->
     <bool name="ga_debug_mode">false</bool>
