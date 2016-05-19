@@ -41,11 +41,7 @@ public class GetAvailableCountriesHelper extends SuperBaseHelper {
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        // TODO: NAFAMZ-17308 Temporary solution because dev link is not supporting a last "/" in the link
-        String api = JumiaApplication.INSTANCE.isDebuggable()
-                ? AigApiInterface.getDevAvailableCountries
-                : AigApiInterface.getAvailableCountries;
-        new BaseRequest<Exception>(requestBundle, this).execute(api);
+        new BaseRequest<Exception>(requestBundle, this).execute(AigApiInterface.getAvailableCountries);
     }
 
     @Override

@@ -93,11 +93,6 @@ public interface AigApiInterface {
      * ########## HTTP GET ##########
      */
 
-    // TODO: NAFAMZ-17308 Temporary solution to get available countries for dev
-    @GET("/mobapi/ventures.json")
-    void getDevAvailableCountries(Callback<BaseResponse<AvailableCountries>> callback);
-    String getDevAvailableCountries = "getDevAvailableCountries";
-
     @GET("/")
     void getAvailableCountries(Callback<BaseResponse<AvailableCountries>> callback);
     String getAvailableCountries = "getAvailableCountries";
