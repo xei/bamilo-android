@@ -1005,7 +1005,12 @@ public class DynamicFormItem {
         // Case empty
         if (TextUtils.isEmpty(text)) {
             result = !this.entry.getValidation().isRequired();
-            setErrorText(context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel() + space);
+            String errorMessage = this.entry.getValidation().getMessage();
+            if(TextUtils.isEmpty(errorMessage)){
+                errorMessage = context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel();
+            }
+
+            setErrorText(errorMessage + space);
         }
         // Case too short
         else if (this.entry.getValidation().min > 0 && text.length() < this.entry.getValidation().min) {
