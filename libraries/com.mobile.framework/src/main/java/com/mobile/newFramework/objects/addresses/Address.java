@@ -54,13 +54,13 @@ public class Address implements IJSONSerializable, Parcelable {
         if (id == 0) {
             id = dataObject.getInt(RestConstants.ID_SALES_ORDER_ADDRESS);
         }
-        firstName = dataObject.getString(RestConstants.FIRST_NAME);
-        lastName = dataObject.getString(RestConstants.LAST_NAME);
-        address1 = dataObject.getString(RestConstants.ADDRESS_1);
+        firstName = dataObject.optString(RestConstants.FIRST_NAME);
+        lastName = dataObject.optString(RestConstants.LAST_NAME);
+        address1 = dataObject.optString(RestConstants.ADDRESS_1);
         // Optional
         address2 = dataObject.optString(RestConstants.ADDRESS_2);
         postcode = dataObject.optString(RestConstants.POSTCODE);
-        phone = dataObject.getString(RestConstants.PHONE);
+        phone = dataObject.optString(RestConstants.PHONE);
         region = dataObject.optString(RestConstants.REGION);
         city = dataObject.optString(RestConstants.CITY);
         additionalPhone = dataObject.optString(RestConstants.ADDITIONAL_PHONE);
