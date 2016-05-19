@@ -1349,7 +1349,7 @@ public class DynamicFormItem {
                     ArrayAdapter<ReturnReason> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, items);
                     adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
                     PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, context);
-                    promptAdapter.setPrompt(context.getString(R.string.choose_reason));
+                    promptAdapter.setPrompt(entry.getLabel());
                     spinner.setAdapter(promptAdapter);
                     if(mPreSelectedPosition > IntConstants.DEFAULT_POSITION) {
                         spinner.setSelection(mPreSelectedPosition);

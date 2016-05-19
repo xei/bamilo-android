@@ -379,8 +379,6 @@
     <string name="quantity_placeholder">Quantity: %s</string>
     <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number-->
     <string name="please_call_placeholder">call us at %s</string>
-    <!-- Used as prompt for the Return Reason Spinner -->
-    <string name="choose_reason">Please choose your return reason</string>
     <!-- Used as error message when user doesn't select any option and tries to proceed -->
     <string name="warning_please_select_one">Please select an option to move forward.</string>
     <string name="everything_looks_good">If everything looks good, tap \"SEND\".</string>

@@ -379,8 +379,6 @@
     <string name="quantity_placeholder">အေရအတြက္ %s</string>
     <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number -->
     <string name="please_call_placeholder">%s သို႕ေခၚဆုိပါ</string>
-    <!-- Used as prompt for the Return Reason Spinner -->
-    <string name="choose_reason">အေၾကာင္းအရင္းေရြးခ်ယ္ပါ</string>
     <!-- Used as error message when user doesn't select any option and tries to proceed -->
     <string name="warning_please_select_one">ေဆာင္ရြက္ရန္ အေၾကာင္းအရာကို ေရြးခ်ယ္ပါ</string>
     <string name="everything_looks_good">ေသခ်ာစြာအတည္ျပဳၿပီးလွ်င္ "ပို႕ရန္"ကိုႏွိပ္ပါ</string>
