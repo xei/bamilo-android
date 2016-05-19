@@ -39,6 +39,7 @@
         android:layout_width="wrap_content"
         tools:text="@string/call_return_label"
         android:singleLine="false"
+        android:gravity="center_horizontal"
         android:paddingLeft="@dimen/margin_padding_xl"
         android:paddingRight="@dimen/margin_padding_xl"
         android:layout_marginTop="@dimen/margin_padding_xl"
