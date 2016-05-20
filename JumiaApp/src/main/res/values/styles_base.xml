@@ -114,6 +114,10 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="TextBase.Caption.Black">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="TextBase.Caption.Italic">
         <item name="android:fontFamily">roboto_italic</item>
         <item name="android:textStyle">italic</item>
@@ -146,6 +150,10 @@
         <item name="android:textSize">10sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">roboto_medium</item>
+    </style>
+
+    <style name="TextBase.Badge.Black">
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="TextBase.Timer" parent="TextBase.Caption">

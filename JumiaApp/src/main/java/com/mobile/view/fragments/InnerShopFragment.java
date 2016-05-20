@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,18 +54,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
     private ScrollView mScrollView;
 
     private int mWebViewScrollPosition = 0;
-
-    /**
-     * Get a instance of InnerShopFragment.
-     *
-     * @param bundle - the arguments
-     * @return InnerShopFragment
-     */
-    public static InnerShopFragment getInstance(Bundle bundle) {
-        InnerShopFragment fragment = new InnerShopFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
     /**
      * Empty constructor.
@@ -221,21 +208,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         // Validate html
         if (staticPage.hasHtml()) {
             // Load the html response, striped two times
-            mWebView.loadData(stripHtml(staticPage.getHtml()));
+            mWebView.loadData(TextUtils.stripHtml(staticPage.getHtml()));
         } else {
             // Hide web view
             mWebView.setVisibility(View.GONE);
         }
-    }
-
-    /**
-     * Strip the escaped html two times to return a displayable html.
-     *
-     * @param html The escaped html
-     * @return String
-     */
-    public String stripHtml(String html) {
-        return Html.fromHtml(Html.fromHtml(html).toString()).toString();
     }
 
     /**

@@ -19,7 +19,6 @@ import android.support.v4.view.MenuItemCompat.OnActionExpandListener;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -87,7 +86,7 @@ import com.mobile.utils.dialogfragments.CustomToastView;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.dialogfragments.DialogProgressFragment;
 import com.mobile.utils.ui.ConfirmationCartMessageView;
-import com.mobile.utils.ui.TabLayoutUtils;
+import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.fragments.BaseFragment.KeyboardState;
 
@@ -111,7 +110,7 @@ import java.util.Set;
  * @modified Sergio Pereira
  * @modified Manuel Silva
  */
-public abstract class BaseActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
+public abstract class BaseActivity extends BaseTrackerActivity implements TabLayout.OnTabSelectedListener, OnProductViewHolderClickListener {
 
     private static final String TAG = BaseActivity.class.getSimpleName();
 
@@ -151,7 +150,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private long beginInMillis;
     private ActionBar mSupportActionBar;
     private boolean isBackButtonEnabled = false;
-    private long mLaunchTime;
     private TabLayout mTabLayout;
     private TabLayout mCheckoutTabLayout;
     private AppBarLayout mAppBarLayout;
@@ -216,8 +214,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         updateContentViewsIfInitialCountrySelection();
         // Set title in AB or TitleBar
         setTitle(titleResId);
-        // For tracking
-        mLaunchTime = System.currentTimeMillis();
     }
 
     /**
@@ -260,8 +256,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
         // Get the cart and perform auto login
         recoverUserDataFromBackground();
-        // Tracking
-        TrackerDelegator.onResumeActivity(mLaunchTime);
     }
 
     @Override
@@ -296,8 +290,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         Print.i(TAG, "ON PAUSE");
         // Hide search component
         hideSearchComponent();
-        // Tracking
-        TrackerDelegator.onPauseActivity();
     }
 
     /*
@@ -320,8 +312,6 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     protected void onDestroy() {
         super.onDestroy();
         Print.i(TAG, "ON DESTROY");
-        // Tracking
-        TrackerDelegator.onDestroyActivity();
     }
 
     /**
@@ -392,10 +382,10 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
         mCheckoutTabLayout = (TabLayout) findViewById(R.id.checkout_tabs);
         mCheckoutTabLayout.setVisibility(View.INVISIBLE);
-        TabLayoutUtils.fillTabLayout(mTabLayout, this);
-        TabLayoutUtils.updateTabCartInfo(mTabLayout);
+        UITabLayoutUtils.fillTabLayout(mTabLayout, this);
+        UITabLayoutUtils.updateTabCartInfo(mTabLayout);
         // Checkout Tab
-        TabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
+        UITabLayoutUtils.fillCheckoutTabLayout(mCheckoutTabLayout, mCheckoutOnTabSelectedListener, mCheckoutOnClickListener);
     }
 
     /**
@@ -437,19 +427,19 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     private void setAppBarLayout(@NavigationAction.Type int oldNavAction, @NavigationAction.Type int newNavAction) {
         try {
             // Case action without tab layout
-            if (!TabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
+            if (!UITabLayoutUtils.isNavigationActionWithTabLayout(newNavAction)) {
                 mTabLayout.setVisibility(View.GONE);
                 mAppBarLayout.setExpanded(true, true);
             }
             // Case action with tab layout
             else {
                 // Case from other tab
-                if (!TabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
+                if (!UITabLayoutUtils.isNavigationActionWithTabLayout(oldNavAction)) {
                     mTabLayout.setVisibility(View.VISIBLE);
                     mAppBarLayout.setExpanded(true, true);
                 }
                 //noinspection ConstantConditions
-                mTabLayout.getTabAt(TabLayoutUtils.getTabPosition(newNavAction)).select();
+                mTabLayout.getTabAt(UITabLayoutUtils.getTabPosition(newNavAction)).select();
             }
         } catch (NullPointerException e) {
             // ...
@@ -759,7 +749,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        TabLayoutUtils.tabSelected(this, tab, action);
+        UITabLayoutUtils.tabSelected(this, tab, action);
     }
 
     /*
@@ -1213,7 +1203,7 @@ public abstract class BaseActivity extends AppCompatActivity implements TabLayou
     public void updateCartInfo() {
         Print.d(TAG, "ON UPDATE CART INFO");
         updateCartInfoInActionBar();
-        TabLayoutUtils.updateTabCartInfo(mTabLayout);
+        UITabLayoutUtils.updateTabCartInfo(mTabLayout);
     }
 
     /**

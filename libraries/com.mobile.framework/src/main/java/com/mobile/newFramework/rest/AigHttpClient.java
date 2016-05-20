@@ -61,11 +61,9 @@ public class AigHttpClient extends OkClient {
         this.mOkHttpClient = okHttpClient;
     }
 
-
     /*
      * ###### NORMAL CONSTRUCTOR ######
      */
-
 
     /**
      * Initialize rest client
@@ -219,7 +217,7 @@ public class AigHttpClient extends OkClient {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Response response = chain.proceed(chain.request());
-            if(response.networkResponse().code() == HttpURLConnection.HTTP_MOVED_PERM){
+            if (response.networkResponse().code() == HttpURLConnection.HTTP_MOVED_PERM) {
                 Request request = chain.request();
                 int tryCount = 0;
                 while (!response.isSuccessful() && tryCount < 1) {

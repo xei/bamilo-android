@@ -194,7 +194,7 @@ public class NavigationFragment extends BaseFragment implements OnClickListener{
             public void run() {
                 // Animations
                 if (animated)
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left, R.anim.slide_from_left, R.anim.slide_to_right);
             }
         });
 

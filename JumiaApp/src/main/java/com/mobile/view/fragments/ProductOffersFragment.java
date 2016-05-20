@@ -57,17 +57,6 @@ public class ProductOffersFragment extends BaseFragment implements OffersListAda
     private ProductOffer offerAddToCart;
 
     /**
-     * Get a new instance of {@link #ProductOffersFragment}.
-     * @param bundle The arguments
-     * @return ProductOffersFragment
-     */
-    public static ProductOffersFragment newInstance(Bundle bundle) {
-        ProductOffersFragment fragment = new ProductOffersFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public ProductOffersFragment() {

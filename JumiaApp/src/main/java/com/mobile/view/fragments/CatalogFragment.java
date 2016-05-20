@@ -53,8 +53,6 @@ import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.EnumSet;
 
@@ -93,7 +91,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
 
     private ContentValues mCurrentFilterValues = new ContentValues();
 
-    private CatalogSort mSelectedSort = CatalogSort.POPULARITY;
+    private CatalogSort mSelectedSort;
 
     private boolean mErrorLoading = false;
 
@@ -118,17 +116,6 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private int mLevel = CatalogGridAdapter.ITEM_VIEW_TYPE_LIST;
 
     private String mKey;
-
-    /**
-     * Create and return a new instance.
-     *
-     * @param bundle - arguments
-     */
-    public static CatalogFragment getInstance(Bundle bundle) {
-        CatalogFragment catalogFragment = new CatalogFragment();
-        catalogFragment.setArguments(bundle);
-        return catalogFragment;
-    }
 
     /**
      * Empty constructor
@@ -164,31 +151,21 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
             // Get title
             mTitle = arguments.getString(ConstantsIntentExtra.CONTENT_TITLE);
             // Get catalog type (Hash|Seller|Brand|Category|DeepLink)
-            FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
-            if(type == FragmentType.CATALOG_BRAND) mQueryValues.put(RestConstants.BRAND, mKey);
-            else if(type == FragmentType.CATALOG_SELLER) mQueryValues.put(RestConstants.SELLER, mKey);
-            else if(type == FragmentType.CATALOG_DEEPLINK) mQueryValues = arguments.getParcelable(ConstantsIntentExtra.DATA);
-            else if(type == FragmentType.CATALOG_CATEGORY) mQueryValues.put(RestConstants.CATEGORY, mKey);
-            else mQueryValues.put(RestConstants.HASH, mKey);
-            // Get sort
-            mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT, CatalogSort.POPULARITY.ordinal())];
-            mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
+            mQueryValues = UICatalogUtils.saveCatalogType(arguments, mQueryValues, mKey);
             // Default catalog values
             mQueryValues.put(RestConstants.MAX_ITEMS, IntConstants.MAX_ITEMS_PER_PAGE);
             // In case of searching by keyword
-            String query = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
-            if (TextUtils.isNotEmpty(query)) {
-                try {
-                    mQueryValues.put(RestConstants.QUERY, URLEncoder.encode(query, "UTF-8"));
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                    mQueryValues.put(RestConstants.QUERY, query);
-                }
-            }
+            UICatalogUtils.saveSearchQuery(arguments, mQueryValues);
             // Verify if catalog page was open via navigation drawer
             mCategoryTree = arguments.getString(ConstantsIntentExtra.CATEGORY_TREE_NAME);
             //Get category content/main category
             mMainCategory = arguments.getString(RestConstants.MAIN_CATEGORY);
+
+            // Get sort from Deep Link
+            if(arguments.containsKey(ConstantsIntentExtra.CATALOG_SORT)){
+                mSelectedSort = CatalogSort.values()[arguments.getInt(ConstantsIntentExtra.CATALOG_SORT)];
+            }
+
         }
 
         // Get data from saved instance
@@ -290,7 +267,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         outState.putParcelable(ConstantsIntentExtra.CATALOG_QUERY_VALUES, mQueryValues);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_PAGE, mCatalogPage);
         outState.putParcelable(ConstantsIntentExtra.CATALOG_FILTER_VALUES, mCurrentFilterValues);
-        outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort.ordinal());
+        outState.putInt(ConstantsIntentExtra.CATALOG_SORT, mSelectedSort != null ? mSelectedSort.ordinal() : CatalogSort.POPULARITY.ordinal());
         outState.putBoolean(ConstantsIntentExtra.CATALOG_CHANGES_APPLIED, mSortOrFilterApplied);
     }
 
@@ -362,7 +339,8 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
     private void onValidateDataState() {
         Print.i(TAG, "ON VALIDATE DATA STATE");
         // Case URL or QUERY is empty show continue shopping
-        if (!mQueryValues.containsKey(RestConstants.CATEGORY) && !mQueryValues.containsKey(RestConstants.QUERY) && TextUtils.isEmpty(mKey)) {
+        if (!mQueryValues.containsKey(RestConstants.CATEGORY) && !mQueryValues.containsKey(RestConstants.SELLER) &&
+            !mQueryValues.containsKey(RestConstants.QUERY) && TextUtils.isEmpty(mKey)) {
             showContinueShopping();
         }
         // Case catalog is null get catalog from URL
@@ -915,7 +893,7 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         // Get filters
         mQueryValues.putAll(mCurrentFilterValues);
         // Get Sort
-        if (TextUtils.isNotEmpty(mSelectedSort.path)) {
+        if (mSelectedSort != null && TextUtils.isNotEmpty(mSelectedSort.path)) {
             mQueryValues.put(RestConstants.SORT, mSelectedSort.path);
         }
         // Case initial request or load more
@@ -968,7 +946,13 @@ public class CatalogFragment extends BaseFragment implements IResponseCallback, 
         if (catalogPage != null && catalogPage.hasProducts()) {
             // Mark to reload an initial catalog
             mSortOrFilterApplied = false;
-            Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage());
+
+            // IF API is not retrieving the sort, and we already have a sort selected, keep it, otherwise use POPULARITY
+            mSelectedSort = TextUtils.isNotEmpty(catalogPage.getSort()) ?
+                    CatalogSort.valueOf(catalogPage.getSort()) :
+                    (mSelectedSort != null ? mSelectedSort : CatalogSort.POPULARITY);
+
+            Print.i(TAG, "CATALOG PAGE: " + catalogPage.getPage()+" "+mSelectedSort);
             onUpdateCatalogContainer(catalogPage);
             if (catalogPage.getPage() == 1) {
                 TrackerDelegator.trackCatalogPageContent(mCatalogPage, mCategoryTree, mMainCategory);

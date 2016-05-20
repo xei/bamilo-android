@@ -177,11 +177,11 @@
     <string name="share_checkout_this_product">ဤပစၥည္းကို ၾကည္႔ရႈမည္။</string>
     <string name="share_subject">%s မွ်ေ၀ျခင္း</string>
     <string name="shipping">သယ္ယူပို႕ေဆာင္မွဳ</string>
-    <string name="shoppingcart_alert_header">ျခင္းေတာင္း</string>
+    <string name="basket_label">ေစ်း၀ယ္လွည္း</string>
     <string name="shoppingcart_alert_message_no_items">ေစ်း၀ယ္လွည္းအလြတ္အတြင္း ပစၥည္းမ်ားထည္႔သြင္းပါ</string>
-    <string name="shoppingcart_choose_quantity">အေရအတြက္ေရြးခ်ယ္ပါ</string>
-    <string name="shoppingcart_item_btn_delete">ဖ်က္ရန္</string>
-    <string name="shoppingcart_quantity">အေရအတြက္</string>
+    <string name="choose_quantity">အေရအတြက္ေရြးခ်ယ္ပါ</string>
+    <string name="delete_label">ဖ်က္ရန္</string>
+    <string name="quantity_label">အေရအတြက္</string>
     <string name="sign_in">Sign In</string>
     <string name="sign_out">ထြက္ရန္</string>
     <string name="size_guide_label">အရြယ္အစားလမ္းညႊန္</string>
@@ -322,6 +322,8 @@
     <string name="billing">ေငြေခ်မည္႕လိပ္စာ</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
+    <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
+    <string name="first_x_second_placeholder">%1$s x  %2$s</string>
     <string name="qty_placeholder">အေရအတြက္: %s</string>
     <string name="reorder_label">ေအာ္ဒါထပ္မွာရန္</string>
     <string name="order_status_date">%1$s %2$s</string>
@@ -347,4 +349,47 @@
     <string name="visit_the_official_brand_store">တရား၀င္ %s စတိုးသို႕ ၀င္ေရာက္ၾကည္႕ရွဳရန္</string>
     <string name="free_shipping_possible">ပို႕ေဆာင္ခ အခမဲ့ ရရွိႏုိင္သည္</string>
     <string name="register_more_info">အေကာင့္ျပဳလုပ္ရန္ အခ်က္အလက္အနည္းငယ္ လိုအပ္ပါသည္</string>
+    <string name="go_label">သြားရန္</string>
+    <!-- Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
+    <string name="items_returned_on">ပစၥည္း %2$s တြင္ %1$s အား ျပန္လည္ပို႕ေဆာင္ၿပီးပါၿပီ \n</string>
+    <string name="return_selected_items">ေရြးခ်ယ္ထားေသာ ပစၥည္းမ်ားအား ျပန္လည္ပို႕ေဆာင္ရန္</string>
+    <string name="return_label">ျပန္လည္ပို႕ေဆာင္ရန္</string>
+    <string name="call_return_label">ပစၥည္းျပန္ပို႕ရန္အတြက္ဖုန္းေခၚဆုိရန္</string>
+    <string name="call_now_label">ဖုန္းေခၚရန္</string>
+    <string name="shipment_label">သယ္ယူပို႕ေဆာင္ျခင္း</string>
+    <string name="returns_label">ျပန္လည္ပို႕ေဆာင္ရန္</string>
+    <!-- Used in Online Returns when user tries to click on return selected without selecting any item -->
+    <string name="warning_no_items_selected">ျပန္လည္ပို႕ေဆာင္ရန္ ပစၥည္းေရြးခ်ယ္ထားျခင္းမရွိပါ</string>
+    <string name="ok_got_it">သိရွိပါသည္</string>
+    <!-- Used in Return item and Order Return Call Screen to show order number -->
+    <string name="order_number_placeholder">ေအာ္ဒါနံပါတ္ %s</string>
+    <!-- Used in Order Return Conditions Screen as title -->
+    <string name="order_return_conditions_title">၀ယ္ယူလိုက္ေသာ ကုန္ပစၥည္းအား စိတ္တုိင္းမက်ျဖစ္ရျခင္းအတြက္ ေတာင္းပန္အပ္ပါသည္</string>
+    <!-- Used as title for Online Return Step 1 (Return Reason) -->
+    <string name="order_return_reason_title">ပစၥည္းျပန္လည္ေပးပို႕လုိရျခင္းအေၾကာင္းအရင္းကို ေဖာ္ျပပါ</string>
+    <!-- Used as title for Online Return Step 2 (Return Method) -->
+    <string name="order_return_method_title">ပစၥည္းျပန္လည္ေပးပို႕လုိေသာနည္းလမ္းကိုေရြးပါ</string>
+    <!-- Used as title for Online Return Step 3 (Return Refund) -->
+    <string name="order_return_refund_title">ျပန္အမ္းေငြရယူမည္႕ နည္းလမ္းကိုေရြးခ်ယ္ပါ</string>
+    <string name="order_return_finish_title">ျပန္လည္ေပးပို႕လုိေသာေဖာင္ကို အတည္ျပဳပါ</string>
+    <string name="send_label">ပို႕ရန္</string>
+    <string name="quantity_to_return">ျပန္ပို႕မည္႕အေရအတြက္</string>
+    <!-- Used as to inform the user the number of items that are selected to return -->
+    <string name="quantity_to_return_placeholder">ျပန္လည္ေပးပို႕ရန္ အေရအတြက္: %s</string>
+    <string name="quantity_placeholder">အေရအတြက္ %s</string>
+    <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number -->
+    <string name="please_call_placeholder">%s သို႕ေခၚဆုိပါ</string>
+    <!-- Used as error message when user doesn't select any option and tries to proceed -->
+    <string name="warning_please_select_one">ေဆာင္ရြက္ရန္ အေၾကာင္းအရာကို ေရြးခ်ယ္ပါ</string>
+    <string name="everything_looks_good">ေသခ်ာစြာအတည္ျပဳၿပီးလွ်င္ "ပို႕ရန္"ကိုႏွိပ္ပါ</string>
+    <!-- Used as label for Return Reason in Online Return Details Screen -->
+    <string name="return_reason">ျပန္ပို႕လိုေသာအေၾကာင္းအရင္း</string>
+    <!-- Used as label for Return Method in Online Return Details Screen -->
+    <string name="return_method">ျပန္ပို႕လုိေသာနည္းလမ္း</string>
+    <!-- Used as label for Refund Method Online Return Details Screen -->
+    <string name="return_payment">ပစၥည္းျပန္ပို႕ျခင္းေငြေခ်ရန္နည္းလမ္း</string>
+    <!-- Used as error message warning when a Shipping or Billing address is not valid anymore -->
+    <string name="invalid_address_shipping_billing">လိပ္စာမွားယြင္းေနပါသည္။ ေက်းဇူးျပဳ၍ေျပာင္းလဲပါ။</string>
+    <!-- Used as error message warning when a Address is not valid anymore -->
+    <string name="invalid_address_other">လိပ္စာမွားယြင္းေနပါသည္။</string>
 </resources>

@@ -45,13 +45,6 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
     private View mButton;
 
     /**
-     * 
-     */
-    public static SessionForgotPasswordFragment getInstance() {
-        return new SessionForgotPasswordFragment();
-    }
-
-    /**
      * Empty constructor
      */
     public SessionForgotPasswordFragment() {
@@ -196,7 +189,7 @@ public class SessionForgotPasswordFragment extends BaseFragment implements IResp
      */
     private void displayForm(Form form) {
         Print.d(TAG, "DISPLAY FORM");
-        mDynamicForm = FormFactory.getSingleton().create(FormConstants.FORGET_PASSWORD_FORM, getActivity(), form);
+        mDynamicForm = FormFactory.create(FormConstants.FORGET_PASSWORD_FORM, getActivity(), form);
         DynamicFormItem item = mDynamicForm.getItemByKey(RestConstants.EMAIL);
         if (item == null)
             return;

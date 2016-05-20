@@ -88,12 +88,6 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
                 NO_ADJUST_CONTENT);
     }
 
-    public static FilterMainFragment getInstance(Bundle bundle) {
-        FilterMainFragment filterFragment = new FilterMainFragment();
-        filterFragment.setArguments(bundle);
-        return filterFragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -194,7 +188,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             public void run() {
                 // Animations
                 if (animated)
-                    fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+                    fragmentTransaction.setCustomAnimations(R.anim.slide_from_right, R.anim.slide_to_left, R.anim.slide_from_left, R.anim.slide_to_right);
             }
         });
 

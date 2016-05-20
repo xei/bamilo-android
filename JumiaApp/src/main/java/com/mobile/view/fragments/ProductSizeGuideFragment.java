@@ -36,17 +36,6 @@ public class ProductSizeGuideFragment extends BaseFragment {
     private View mWizard;
 
     private PhotoView mImageView;
-    
-    /**
-     * Get a instance of ProductSizeGuideFragment
-     * @return ProductSizeGuideFragment
-     * @author sergiopereira
-     */
-    public static ProductSizeGuideFragment newInstance(Bundle bundle) {
-        ProductSizeGuideFragment fragment = new ProductSizeGuideFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
     /**
      * Empty constructor

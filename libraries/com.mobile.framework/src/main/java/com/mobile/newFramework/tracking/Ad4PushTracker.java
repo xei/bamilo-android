@@ -28,7 +28,7 @@ import java.io.IOException;
  * @author nunocastro
  * @modified 
  */
-public class Ad4PushTracker {
+public class Ad4PushTracker extends AbcBaseTracker {
 
     private final static String TAG = Ad4PushTracker.class.getSimpleName();
 
@@ -55,6 +55,7 @@ public class Ad4PushTracker {
     private static final String LAST_VIEWED_CATEGORY_NAME = "lastViewedCategoryName";
     private static final String LAST_VIEWED_CATEGORY_KEY = "lastViewedCategoryKey";
     private static final String LAST_PRODUCT_VIEWED = "LastProductViewed";
+    private static final String LAST_PRODUCT_VIEWED_DATE = "last_product_viewed_date";
     private static final String LAST_SKU_VIEWED = "LastSKUViewed";
     private static final String LAST_BRAND_VIEWED_KEY = "LastBrandViewedKey";
     private static final String LAST_BRAND_VIEWED_NAME = "LastBrandViewedName";
@@ -91,6 +92,8 @@ public class Ad4PushTracker {
     private static final String LAST_CATEGORY_ADDED_TO_WISHLIST_NAME = "lastCategoryAddedToWishlistName";
     private static final String LAST_CATEGORY_ADDED_TO_WISHLIST_KEY = "lastCategoryAddedToWishlistKey";
     private static final String LAST_WISHLIST_SKU = "Last_Wishlist_SKU";
+    private static final String LAST_PRODUCT_WISHLISTED_DATE = "last_product_wishlisted_date";
+
 
     // Login_Registration :: User logs in to the app
     // User_Info_Edit :: User updates his info on the app
@@ -114,6 +117,9 @@ public class Ad4PushTracker {
     private static final int EVENT_LOGIN = 1001;
     private static final int EVENT_FACEBOOK = 1002;
     private static final int EVENT_FIRST_OPEN_APP = 1003;
+
+    // Last Time user openned a Push Notification
+    private static final String LAST_PN_OPEN_DATE = "Last_PN_Open_Date";
 
     /**
      * Get singleton instance of Ad4PushTracker.
@@ -176,6 +182,20 @@ public class Ad4PushTracker {
 
     private boolean isAvailable() {
         return isEnabled && mA4S != null;
+    }
+
+    /*
+     * ######### BASE TRACKER #########
+     */
+
+    @Override
+    public String getId() {
+        return mA4S.getAndroidId();
+    }
+
+    @Override
+    public void debugMode(@NonNull Context context, boolean enable) {
+        // ...
     }
 
     /*
@@ -311,6 +331,7 @@ public class Ad4PushTracker {
             bundle.putString(LAST_BRAND_VIEWED_NAME, product.getBrandName());
             bundle.putString(LAST_VIEWED_CATEGORY_KEY, product.getCategoryKey());
             bundle.putString(LAST_VIEWED_CATEGORY_NAME, product.getCategoryName());
+            bundle.putString(LAST_PRODUCT_VIEWED_DATE, DateTimeUtils.getCurrentDateTime());
             Print.i(TAG, "TRACK PRODUCT VIEW: " + bundle.toString());
             mA4S.updateDeviceInfo(bundle);
         }
@@ -363,6 +384,7 @@ public class Ad4PushTracker {
             bundle.putString(LAST_BRAND_ADDED_TO_WISHLIST_NAME, product.getBrandName());
             bundle.putString(LAST_CATEGORY_ADDED_TO_WISHLIST_KEY, product.getCategoryKey());
             bundle.putString(LAST_CATEGORY_ADDED_TO_WISHLIST_NAME, product.getCategoryName());
+            bundle.putString(LAST_PRODUCT_WISHLISTED_DATE,DateTimeUtils.getCurrentDateTime());
             Print.i(TAG, "TRACK ADD TO WISH LIST: " + bundle.toString());
             mA4S.updateDeviceInfo(bundle);
         }
@@ -454,5 +476,16 @@ public class Ad4PushTracker {
             }
         };
         new Thread(r).start();
+    }
+
+    /**
+     * Track when a user opens a Push Notification (PN)
+     */
+    public void trackPNOpened() {
+        if (isAvailable()) {
+            Bundle bundle = new Bundle();
+            bundle.putString(LAST_PN_OPEN_DATE, DateTimeUtils.getCurrentDateTime());
+            mA4S.updateDeviceInfo(bundle);
+        }
     }
 }

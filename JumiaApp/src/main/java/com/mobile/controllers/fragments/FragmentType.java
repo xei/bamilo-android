@@ -70,8 +70,12 @@ public enum FragmentType {
     LOGIN_EMAIL,
     CATALOG_SELLER,
     CATALOG_BRAND,
-    CATALOG_DEEPLINK,
-    CATALOG_CATEGORY;
+    CATALOG_DEEP_LINK,
+    CATALOG_CATEGORY,
+    ORDER_RETURN_CONDITIONS,
+    ORDER_RETURN_STEPS,
+    ORDER_RETURN_CALL,
+    STATIC_WEBVIEW_PAGE;
 
     private int id;
     private final static String DIVIDER = ":";

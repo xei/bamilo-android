@@ -72,6 +72,10 @@
         <item name="showDividers">beginning</item>
     </style>
 
+    <style name="ViewGroupCompat.Vertical.HeaderDivider.MiddleDivider">
+        <item name="showDividers">beginning|middle</item>
+    </style>
+
     <!-- GROUP: DIVIDER HORIZONTAL -->
 
     <style name="ViewGroupCompat.Horizontal">

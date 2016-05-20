@@ -12,7 +12,6 @@ public class GetExternalLinksHelper extends SuperBaseHelper {
     
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        // Request
         new BaseRequest(requestBundle, this).execute(AigApiInterface.getExternalLinks);
     }
 

@@ -1,15 +1,24 @@
 package com.mobile.utils.catalog;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
+import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.utils.TextUtils;
+import com.mobile.newFramework.utils.output.Print;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 
-import de.akquinet.android.androlog.Log;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 /**
  * Class used to help catalog UI.
@@ -17,8 +26,68 @@ import de.akquinet.android.androlog.Log;
  */
 public class UICatalogUtils {
 
-    private static final String TAG = UICatalogUtils.class.getSimpleName();
+    /**
+     * Get query param for category.
+     */
+    public static String getCategoryQueryParam() {
+        return "?" + RestConstants.CATEGORY + "=";
+    }
 
+    /**
+     * Get query param for seller.
+     */
+    public static String getSellerQueryParam() {
+        return "?" + RestConstants.SELLER + "=";
+    }
+
+    /**
+     * Get the catalog type and save the respective values into query values.<br>
+     * - Catalog types: Hash|Seller|Brand|Category|DeepLink
+     */
+    public static ContentValues saveCatalogType(@NonNull Bundle arguments, @NonNull ContentValues values, String contentId) {
+        FragmentType type = (FragmentType) arguments.getSerializable(ConstantsIntentExtra.TARGET_TYPE);
+        if (type != null) {
+            switch (type) {
+                case CATALOG_BRAND:
+                    values.put(RestConstants.BRAND, contentId);
+                    break;
+                case CATALOG_SELLER:
+                    values.put(RestConstants.SELLER, contentId);
+                    break;
+                case CATALOG_DEEP_LINK:
+                    ContentValues data = arguments.getParcelable(ConstantsIntentExtra.DATA);
+                    if (data != null) {
+                        values = data;
+                    }
+                    break;
+                case CATALOG_CATEGORY:
+                    values.put(RestConstants.CATEGORY, contentId);
+                    break;
+                default:
+                    values.put(RestConstants.HASH, contentId);
+                    break;
+            }
+        } else {
+            Print.e("ERROR: RECEIVED CATALOG TYPE IS NULL");
+        }
+        return values;
+    }
+
+
+    /**
+     * Get the search query and save the respective values into query values.<br>
+     */
+    public static void saveSearchQuery(@NonNull Bundle arguments, @NonNull ContentValues values) {
+        String query = arguments.getString(ConstantsIntentExtra.SEARCH_QUERY);
+        if (TextUtils.isNotEmpty(query)) {
+            try {
+                values.put(RestConstants.QUERY, URLEncoder.encode(query, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                Print.w("WARNING: SEARCH QUERY WITH UNSUPPORTED ENCODING");
+                values.put(RestConstants.QUERY, query);
+            }
+        }
+    }
 
     /**
      * Set the catalog title
@@ -33,7 +102,7 @@ public class UICatalogUtils {
      */
     public static void setFilterButtonState(@Nullable final View button, final boolean hasFilterValues) {
         if (button != null) {
-            Log.i(TAG, "SET FILTER BUTTON STATE: " + button.isSelected());
+            Print.i("SET FILTER BUTTON STATE: " + button.isSelected());
             button.post(new Runnable() {
                 @Override
                 public void run() {

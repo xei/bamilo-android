@@ -1,11 +1,8 @@
 package com.mobile.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
@@ -42,15 +39,11 @@ import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.preferences.CountryPersistentConfigs;
-import com.mobile.utils.HockeyStartup;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 /**
  * <p> This class creates a splash screen. It also initializes hockey and the backend </p> <p/> <p> Copyright (C) 2012 Rocket Internet - All Rights Reserved
@@ -206,7 +199,7 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
      * @return Class
      * @author sergiopereira
      */
-    private Class<?> getActivityClassForDevice() {
+    protected Class<?> getActivityClassForDevice() {
         return !getResources().getBoolean(R.bool.isTablet) ? MainFragmentActivity.class : MainFragmentTabletActivity.class;
     }
 
@@ -258,45 +251,15 @@ public class SplashScreenActivity extends FragmentActivity implements IResponseC
     }
 
     /**
-     *
+     * Show dev info
      */
-    @SuppressLint("NewApi")
     private void showDevInfo() {
-        if (!HockeyStartup.isSplashRequired(getApplicationContext())) {
-            return;
+        // Case dev
+        if (JumiaApplication.INSTANCE.isDebuggable()) {
+            String name = getString(getApplicationInfo().labelRes);
+            String text = getString(R.string.first_new_line_second_placeholder, name, AigRestContract.REQUEST_HOST);
+            ((TextView) findViewById(R.id.dev_text)).setText(text);
         }
-
-        PackageInfo pInfo;
-        try {
-            pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-        } catch (NameNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-        TextView devText = (TextView) findViewById(R.id.dev_text);
-        devText.append("Name: " + getString(getApplicationInfo().labelRes));
-        devText.append("\nPackage: " + getPackageName());
-
-        devText.append("\nVersion Name: " + pInfo.versionName);
-        devText.append("\nVersion Code: " + pInfo.versionCode);
-        devText.append("\nInstallation: " + java.text.DateFormat.getInstance().format(new java.util.Date(pInfo.firstInstallTime)));
-        devText.append("\nUpdate: " + java.text.DateFormat.getInstance().format(new java.util.Date(pInfo.lastUpdateTime)));
-
-
-        try {
-            ZipFile zf = new ZipFile(getApplicationInfo().sourceDir);
-            ZipEntry ze = zf.getEntry("classes.dex");
-            zf.close();
-            devText.append("\nBuild: " + java.text.DateFormat.getInstance().format(new java.util.Date(ze.getTime())));
-            //ze = null;
-            //zf = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        devText.append("\nServer: " + AigRestContract.REQUEST_HOST);
-        // Device info
-        devText.append("\nDevice Model: " + android.os.Build.MODEL);
-        devText.append("\nDevice Manufacturer: " + android.os.Build.MANUFACTURER);
     }
 
     /**

@@ -51,9 +51,8 @@
 
     <!-- Theme for ActionBar from support library compatibility -->
     <style name="Widget.Custom.ActionBar" parent="@style/ThemeOverlay.AppCompat.ActionBar">
-        <!-- Apply the color filter for AB -->
-        <item name="android:colorControlNormal">@color/white</item>
-        <item name="colorControlNormal">@color/white</item>
+        <!-- Apply the color filter for AB Options (Copy/Paste) -->
+        <item name="actionModeStyle">@style/Widget.Custom.ActionModeBar</item>
         <!-- Apply the ArrowStyle for AB -->
         <item name="drawerArrowStyle">@style/Widget.Custom.DrawerArrowStyle</item>
         <!-- To apply the color filter over indicator in Android v5.0.1 -->
@@ -66,6 +65,12 @@
         <item name="elevation">0dp</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:background">@color/tabBar</item>
+    </style>
+
+    <!-- Action Bar Action Mode -->
+    <style name="Widget.Custom.ActionModeBar" parent="Widget.AppCompat.ActionMode" >
+        <item name="background">@color/tabBar</item>
+        <item name="colorControlNormal">@color/white</item>
     </style>
 
     <!-- Action Bar Tab Layout -->

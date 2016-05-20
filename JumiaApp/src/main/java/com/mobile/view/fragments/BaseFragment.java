@@ -53,7 +53,7 @@ import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.maintenance.MaintenancePage;
 import com.mobile.utils.product.UIProductUtils;
 import com.mobile.utils.ui.ErrorLayoutFactory;
-import com.mobile.utils.ui.TabLayoutUtils;
+import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.utils.ui.WarningFactory;
 import com.mobile.view.BaseActivity;
@@ -162,7 +162,18 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         this.checkoutStep = titleCheckout;
     }
 
+    /*
+     * #### INSTANTIATE ####
+     */
+
     /**
+     * Create and return a new instance.
+     */
+    public static BaseFragment newInstance(@NonNull Context context, @NonNull Class<? extends BaseFragment> fragment, @Nullable Bundle arguments) {
+        return (BaseFragment) Fragment.instantiate(context, fragment.getName(), arguments);
+    }
+
+    /*
      * #### LIFE CYCLE ####
      */
 
@@ -247,7 +258,7 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
             Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems + " " + action);
             getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
             // Method used to set a bottom margin
-            TabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
+            UITabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
         }
     }
 
@@ -1027,12 +1038,10 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
         if (view.getId() == R.id.fragment_root_error_button) {
             int error = (int) view.getTag(R.id.fragment_root_error_button);
 
-            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT) {
+            if (error == ErrorLayoutFactory.NO_NETWORK_LAYOUT || error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT) {
                 // Case retry button from network
-                onClickRetryNoNetwork(view);
-            } else if (error == ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT) {
                 // Case retry button from error
-                onClickRetryUnexpectedError(view);
+                onClickRetryError(view);
             } else {
                 // Case continue button
                 onClickContinueButton();
@@ -1041,32 +1050,17 @@ public abstract class BaseFragment extends Fragment implements OnActivityFragmen
     }
 
     /**
-     * Process the click on retry button in no network.
+     * Process the click on retry button in unexpected error and no network.
      * @param view The clicked view
      */
-    protected void onClickRetryNoNetwork(View view) {
+    protected void onClickRetryError(View view) {
         try {
-            Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
             View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
-            retrySpinning.clearAnimation();
-            retrySpinning.setAnimation(animation);
-        } catch (NullPointerException e) {
-            Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
-        }
-        // Common method for retry buttons
-        onClickRetryButton(view);
-    }
-
-    /**
-     * Process the click on retry button in unexpected error.
-     * @param view The clicked view
-     */
-    protected void onClickRetryUnexpectedError(View view) {
-        try {
-            Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
-            View retrySpinning = view.findViewById(R.id.fragment_root_error_spinning);
-            retrySpinning.clearAnimation();
-            retrySpinning.setAnimation(animation);
+            if(retrySpinning.getVisibility() == View.VISIBLE) {
+                Animation animation = AnimationUtils.loadAnimation(getBaseActivity(), R.anim.anim_rotate);
+                retrySpinning.clearAnimation();
+                retrySpinning.setAnimation(animation);
+            }
         } catch (NullPointerException e) {
             Print.w(TAG, "WARNING: NPE ON SET RETRY BUTTON ANIMATION");
         }

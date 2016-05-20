@@ -56,17 +56,6 @@ public class ComboFragment extends BaseFragment implements IResponseCallback, On
                 NO_ADJUST_CONTENT);
     }
 
-    /**
-     * Create and return a new instance.
-     *
-     * @param bundle - arguments
-     */
-    public static ComboFragment getInstance(Bundle bundle) {
-        ComboFragment comboFragment = new ComboFragment();
-        comboFragment.setArguments(bundle);
-        return comboFragment;
-    }
-
      /*
      * ############ LIFE CYCLE ############
      */

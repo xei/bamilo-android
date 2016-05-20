@@ -177,11 +177,11 @@
     <string name="share_checkout_this_product">عرض هذا المنتج الذي وجدته:</string>
     <string name="share_subject">مشاركة %s</string>
     <string name="shipping">الشحن</string>
-    <string name="shoppingcart_alert_header">سلة التسوق</string>
+    <string name="basket_label">سلة التسوق</string>
     <string name="shoppingcart_alert_message_no_items">سلة التسوق فارغة! يُرجى إضافة المنتجات إلى عربة التسوق.</string>
-    <string name="shoppingcart_choose_quantity">اختر الكمية</string>
-    <string name="shoppingcart_item_btn_delete">مسح</string>
-    <string name="shoppingcart_quantity">الكمية</string>
+    <string name="choose_quantity">اختر الكمية</string>
+    <string name="delete_label">حذف</string>
+    <string name="quantity_label">عدد</string>
     <string name="sign_in">تسجيل الدخول</string>
     <string name="sign_out">تسجيل الخروج</string>
     <string name="size_guide_label">دليل المقاسات</string>
@@ -322,6 +322,8 @@
     <string name="billing">الفواتير</string>
     <string name="first_space_second_placeholder">%1$s %2$s</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
+    <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
+    <string name="first_x_second_placeholder">%2$s x  %1$s</string>
     <string name="qty_placeholder">الكمية: %s</string>
     <string name="reorder_label">إعادة الطلب</string>
     <string name="order_status_date">&lt;b>%1$s&lt;/b> \n%2$s</string>
@@ -347,4 +349,47 @@
     <string name="visit_the_official_brand_store">زيارة المخزن %s الرسمي</string>
     <string name="free_shipping_possible">إمكانية الشحن المجاني</string>
     <string name="register_more_info">نحتاج إلى المزيد من التفاصيل لإنشاء الحساب الخاص بك.</string>
+    <string name="go_label">نفّذ</string>
+    <!-- Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
+    <string name="items_returned_on">‎%1$s‎ البنود عاد في ‎%2$s‎ \n</string>
+    <string name="return_selected_items">ارجاع المنتجات المختارة</string>
+    <string name="return_label">ارجاع</string>
+    <string name="call_return_label">اتصل للارجاع</string>
+    <string name="call_now_label">اتصل الان</string>
+    <string name="shipment_label">ارسال</string>
+    <string name="returns_label">منتجات مرجعة</string>
+    <!-- Used in Online Returns when user tries to click on return selected without selecting any item -->
+    <string name="warning_no_items_selected">لا منتجات محددة للارجاع</string>
+    <string name="ok_got_it">نعم, موافق</string>
+    <!-- Used in Return item and Order Return Call Screen to show order number -->
+    <string name="order_number_placeholder">طلب رقم ‎%s‎</string>
+    <!-- Used in Order Return Conditions Screen as title -->
+    <string name="order_return_conditions_title">نحن نأسف أن كنت غير راض تماما مع المنتج الخاص بك</string>
+    <!-- Used as title for Online Return Step 1 (Return Reason) -->
+    <string name="order_return_reason_title">لماذا ترغب في ارجاع المنتج؟</string>
+    <!-- Used as title for Online Return Step 2 (Return Method) -->
+    <string name="order_return_method_title">كيف تريد ارجاع المنتج؟</string>
+    <!-- Used as title for Online Return Step 3 (Return Refund) -->
+    <string name="order_return_refund_title">ما هي وسيلة السداد المراد استخدامها ؟</string>
+    <string name="order_return_finish_title">تأكيد معلومات ارجاع المنتج</string>
+    <string name="send_label">ارسال</string>
+    <string name="quantity_to_return">العدد المرجع</string>
+    <!-- Used as to inform the user the number of items that are selected to return -->
+    <string name="quantity_to_return_placeholder">العدد المرجع: ‎%s‎</string>
+    <string name="quantity_placeholder">الكمية: ‎%s‎</string>
+    <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number -->
+    <string name="please_call_placeholder">المرجو الاتصال بـ ‎%s‎</string>
+    <!-- Used as error message when user doesn't select any option and tries to proceed -->
+    <string name="warning_please_select_one">المرجو تحديد خيار للاستمرار</string>
+    <string name="everything_looks_good">إذا كان كل شيء يبدو جيدا, اضغط \"ارسل\"</string>
+    <!-- Used as label for Return Reason in Online Return Details Screen -->
+    <string name="return_reason">سبب الارجاع</string>
+    <!-- Used as label for Return Method in Online Return Details Screen -->
+    <string name="return_method">طريقة الارجاع</string>
+    <!-- Used as label for Refund Method Online Return Details Screen -->
+    <string name="return_payment">وسيلة استرداد المال</string>
+    <!-- Used as error message warning when a Shipping or Billing address is not valid anymore -->
+    <string name="invalid_address_shipping_billing">هذا العنوان غير صحيح، يرجى تغييره</string>
+    <!-- Used as error message warning when a Address is not valid anymore -->
+    <string name="invalid_address_other">هذا العنوان غير صحيح</string>
 </resources>

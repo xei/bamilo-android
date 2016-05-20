@@ -30,16 +30,6 @@ public class MyAccountEditAddressFragment extends EditAddressFragment {
 
     private static final String TAG = MyAccountEditAddressFragment.class.getSimpleName();
 
-    /**
-     * Get instance
-     * @return MyAddressesFragment
-     */
-    public static MyAccountEditAddressFragment newInstance(Bundle bundle) {
-        MyAccountEditAddressFragment fragment = new MyAccountEditAddressFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     public MyAccountEditAddressFragment() {
         super(EnumSet.of(MyMenuItem.UP_BUTTON_BACK, MyMenuItem.SEARCH_VIEW, MyMenuItem.BASKET, MyMenuItem.MY_PROFILE),
                 NavigationAction.MY_ACCOUNT,

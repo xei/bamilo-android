@@ -31,19 +31,6 @@ public class VariationsFragment extends BaseFragment implements OnProductViewHol
 
     private ProductComplete mProductComplete;
 
-
-    /**
-     * Create and return a new instance.
-     *
-     * @param bundle - arguments
-     */
-    public static VariationsFragment getInstance(Bundle bundle) {
-        VariationsFragment variationsFragment = new VariationsFragment();
-        variationsFragment.setArguments(bundle);
-        return variationsFragment;
-    }
-
-
     /**
      * Empty constructor
      */

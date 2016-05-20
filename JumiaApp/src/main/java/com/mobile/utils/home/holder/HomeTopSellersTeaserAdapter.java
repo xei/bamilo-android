@@ -89,7 +89,7 @@ public class HomeTopSellersTeaserAdapter extends RecyclerView.Adapter<HomeTopSel
         holder.mName.setText(item.getTitle());
         // Set price
         double price = item.hasSpecialPrice() ? item.getSpecialPrice() : item.getPrice();
-        holder.mPrice.setText(CurrencyFormatter.formatCurrency(String.valueOf(price)));
+        holder.mPrice.setText(CurrencyFormatter.formatCurrency(price));
         // Set listener and tags
         TeaserViewFactory.setClickableView(holder.itemView, item, mOnClickListener, position);
     }

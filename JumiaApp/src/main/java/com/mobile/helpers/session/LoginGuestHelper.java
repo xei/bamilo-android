@@ -7,6 +7,7 @@ import com.mobile.app.JumiaApplication;
 import com.mobile.helpers.NextStepStruct;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
+import com.mobile.newFramework.objects.customer.Customer;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.requests.BaseRequest;
@@ -25,8 +26,6 @@ import com.mobile.newFramework.utils.output.Print;
  */
 public class LoginGuestHelper extends SuperBaseHelper {
     
-    private static String TAG = LoginGuestHelper.class.getSimpleName();
-
     boolean saveCredentials = true;
 
     @Override
@@ -49,19 +48,20 @@ public class LoginGuestHelper extends SuperBaseHelper {
         super.postSuccess(baseResponse);
         // Save credentials
         if (saveCredentials) {
-            Print.i(TAG, "SAVE CUSTOMER CREDENTIALS");
             mParameters.put(CustomerUtils.INTERNAL_AUTO_LOGIN_FLAG, true);
             mParameters.put(CustomerUtils.INTERNAL_PASSWORD_VALUE, "");
             mParameters.put(CustomerUtils.INTERNAL_EMAIL_VALUE, "");
             mParameters.put(CustomerUtils.INTERNAL_SIGN_UP_FLAG, true);
             mParameters.put(CustomerUtils.INTERNAL_FACEBOOK_FLAG, false);
             JumiaApplication.INSTANCE.getCustomerUtils().storeCredentials(mParameters);
-            Print.i(TAG, "GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
+            Print.i("GET CUSTOMER CREDENTIALS: " + JumiaApplication.INSTANCE.getCustomerUtils().getCredentials());
         }
         // Save customer
         CheckoutStepLogin loginCustomer = (CheckoutStepLogin) baseResponse.getContentData();
+        Customer customer = loginCustomer.getCustomer();
+        customer.setGuest(true);
         // Save customer
-        JumiaApplication.CUSTOMER = loginCustomer.getCustomer();
+        JumiaApplication.CUSTOMER = customer;
         NextStepStruct nextStepStruct = new NextStepStruct(loginCustomer);
         baseResponse.getMetadata().setData(nextStepStruct);
         // Save new wish list

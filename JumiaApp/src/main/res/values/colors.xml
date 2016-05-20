@@ -66,6 +66,7 @@
     <color name="red_2">#ad0000</color>
     <color name="green_1">#a3cf62</color>
     <color name="yellow_1">#ffdc2d</color>
+    <color name="yellow_2">#fff8d6</color>
 
     <!-- ANDROID 5.0: MATERIAL STYLE -->
     <color name="appBar">@color/black_900</color>

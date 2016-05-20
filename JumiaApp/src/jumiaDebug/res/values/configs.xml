@@ -6,8 +6,10 @@
     <string name="app_name">Jumia Dev</string>
 
     <!-- COUNTRIES -->
+    <!-- http://integration.jumia.com/mobapi/ventures.json -->
+    <!-- Agent -> "qa_automated_tests" -->
     <string name="countries_url">http://shareptcmobile.eu.pn/jtmobapi/</string>
-    
+
     <!-- GA -->
     <bool name="ga_debug_mode">false</bool>
     <!-- GA : Dispatch each hit immediately (seconds), default is 30 minutes. 

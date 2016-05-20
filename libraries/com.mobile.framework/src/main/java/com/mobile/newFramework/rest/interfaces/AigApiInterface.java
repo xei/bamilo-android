@@ -2,12 +2,14 @@ package com.mobile.newFramework.rest.interfaces;
 
 import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
+import com.mobile.newFramework.forms.ReturnReasonForm;
 import com.mobile.newFramework.objects.ExternalLinksSection;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
 import com.mobile.newFramework.objects.addresses.Addresses;
 import com.mobile.newFramework.objects.addresses.PhonePrefixes;
+import com.mobile.newFramework.objects.addresses.ReturnReasons;
 import com.mobile.newFramework.objects.campaign.Campaign;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.catalog.Catalog;
@@ -88,7 +90,7 @@ public interface AigApiInterface {
     @interface BODY_DELETE { String value(); }
 
     /*
-     * ########## HTTP GET ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0
+     * ########## HTTP GET ##########
      */
 
     @GET("/")
@@ -275,6 +277,22 @@ public interface AigApiInterface {
     void getMultiStepFinish(Callback<BaseResponse<PurchaseEntity>> callback);
     String getMultiStepFinish = "getMultiStepFinish";
 
+    @GET("/")
+    void getReturnReasonForm(Callback<BaseResponse<ReturnReasonForm>> callback);
+    String getReturnReasonForm = "getReturnReasonForm";
+
+    @GET("/")
+    void getReturnReasons(Callback<BaseResponse<ReturnReasons>> callback);
+    String getReturnReasons = "getReturnReasons";
+
+    @GET("/")
+    void getReturnMethodsForm(Callback<BaseResponse<Form>> callback);
+    String getReturnMethodsForm = "getReturnMethodsForm";
+
+    @GET("/")
+    void getReturnRefundForm(Callback<BaseResponse<Form>> callback);
+    String getReturnRefundForm = "getReturnRefundForm";
+
     /*
      * ########## HTTP POST ########## TODO : ADD HERE NEW MOB API INTERFACE v2.0
      */
@@ -393,6 +411,11 @@ public interface AigApiInterface {
     @POST("/")
     void submitFormAction(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String submitFormAction = "submitFormAction";
+
+    @FormUrlEncoded
+    @POST("/")
+    void setReturnFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<OrderStatus>> callback);
+    String setReturnFinish = "setReturnFinish";
 
     /*
      * ########## HTTP PUT ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0

@@ -1,9 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <com.mobile.components.customfontviews.TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/text2"
     style="@style/TextBase.List.Black"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dimen_48dp"
+    android:layout_height="wrap_content"
     android:background="@android:color/white"
     android:gravity="left|start|center_vertical"
-    android:paddingLeft="10dp"
-    android:paddingStart="10dp"/>
+    android:maxLines="3"
+    android:minHeight="@dimen/dimen_48dp"
+    android:paddingLeft="@dimen/margin_padding_l"
+    android:paddingStart="@dimen/margin_padding_l"
+    android:singleLine="false"
+    tools:text="DropDown Item" />

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.constants.FormConstants;
@@ -63,15 +62,6 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     private boolean isInCheckoutProcess;
 
     private FragmentType mParentFragmentType;
-
-    /**
-     * Get new instance of register fragment
-     */
-    public static SessionRegisterFragment getInstance(Bundle bundle) {
-        SessionRegisterFragment fragment = new SessionRegisterFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
     /**
      * Empty Constructor
@@ -215,8 +205,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
      */
     private void loadForm(Form form) {
         // Create form view
-        mDynamicForm = FormFactory.getSingleton()
-                .create(FormConstants.REGISTRATION_FORM, getActivity(), form)
+        mDynamicForm = FormFactory.create(FormConstants.REGISTRATION_FORM, getActivity(), form)
                 .addOnClickListener(this) // From FormInputType.checkBoxLink
                 .addRequestCallBack(this); // Form FormInputType.relatedNumber
         // Load saved state

@@ -13,6 +13,12 @@ public class AigErrorHandler implements ErrorHandler {
 
     private static final String TAG = AigErrorHandler.class.getSimpleName();
 
+    /**
+     * Error Code Normalizer is used to bypass the validation in DebugMobileApiModel Request implementation
+     * that retrieves an Exception if the error code is smaller then 200
+     */
+    public static final int ERROR_CODE_NORMALIZER = 600;
+
     @Override
     public Throwable handleError(RetrofitError cause) {
 
@@ -45,9 +51,11 @@ public class AigErrorHandler implements ErrorHandler {
                 } else if(statusCode == ErrorCode.SERVER_OVERLOAD){
                     Print.w(TAG, "HTTP SERVER OVERLOAD ERROR: " + cause.getMessage());
                     aigError.setCode(ErrorCode.SERVER_OVERLOAD);
-                } else {
+                } else if(statusCode < ERROR_CODE_NORMALIZER) {
                     Print.w(TAG, "HTTP STATUS ERROR: " + cause.getMessage());
                     aigError.setCode(ErrorCode.HTTP_STATUS);
+                } else { // Case DebugMobileApiModel usage
+                    aigError.setCode(statusCode - ERROR_CODE_NORMALIZER);
                 }
                 break;
             case UNEXPECTED:

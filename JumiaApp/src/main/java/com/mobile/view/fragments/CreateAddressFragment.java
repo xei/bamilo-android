@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.components.absspinner.PromptSpinnerAdapter;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsCheckout;
@@ -247,7 +248,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         Print.i(TAG, "LOAD CREATE ADDRESS FORM");
         // Shipping form
         if (shippingFormGenerator == null) {
-            shippingFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+            shippingFormGenerator = FormFactory.create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
             mShippingFormContainer.removeAllViews();
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
@@ -255,7 +256,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             // Have to create set a Dynamic form in order to not have the parent dependencies.
             // this happens when user goes from create address to another screen through the overflow menu, and presses back.
             // Error: The specified child already has a parent. You must call removeView() on the child's parent first.
-            shippingFormGenerator = FormFactory.getSingleton().create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
+            shippingFormGenerator = FormFactory.create(FormConstants.ADDRESS_FORM, getActivity(), mFormShipping);
             mShippingFormContainer.addView(shippingFormGenerator.getContainer());
             mShippingFormContainer.refreshDrawableState();
         }
@@ -279,48 +280,44 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     protected void setRegions(DynamicForm dynamicForm, ArrayList<AddressRegion> regions) {
         // Get region item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.REGION);
-        // Clean group
-        ViewGroup group = v.getControl();
-        group.removeAllViews();
-        // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
-        spinner.setLayoutParams(group.getLayoutParams());
-        //add place holder by default if value = ""; ignore if added already
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(regions) || regions.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
-            regions.add(IntConstants.DEFAULT_POSITION, new AddressRegion(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
-        }
-
+        // Get spinner
+        IcsSpinner spinner = (IcsSpinner) v.getDataControl();
+        spinner.setEnabled(true);
+        // Create adapter
         ArrayAdapter<AddressRegion> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, regions);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        if (mShippingFormSavedState == null) {
-            spinner.setSelection(getDefaultPosition(v, regions));
-        } else {
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
+        spinner.setAdapter(promptAdapter);
+        // Add listener
+        v.setOnItemSelectedListener(this);
+        // Case default value
+        if (CollectionUtils.isNotEmpty(mShippingFormSavedState)) {
             processSpinners(spinner, RestConstants.REGION);
         }
-
-        spinner.setOnItemSelectedListener(this);
-        v.setDataControl(spinner);
-        group.addView(spinner);
-        // Show invisible content to trigger spinner listeners
-        showGhostFragmentContentContainer();
-
+        // Case saved state
+        else if(TextUtils.isNotEmpty(v.getEntry().getValue())) {
+            spinner.setSelection(getDefaultPosition(v, regions));
+        }
+        // Show form (Zero is the prompt)
+        if(spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
+                mFormShipping.getFieldKeyMap().get(RestConstants.CITY) != null) {
+            showGhostFragmentContentContainer();
+        } else {
+            showFragmentContentContainer();
+        }
     }
-
 
     /**
      * Allows to update the spinners (regions/cities/postcodes) correctly with previous values when app goes to background or rotates
      */
-    private void processSpinners(IcsSpinner spinner, String restConstantsKey) {
-        if (mShippingFormSavedState != null && mShippingFormSavedState.getInt(restConstantsKey) <= spinner.getCount()) {
+    private boolean processSpinners(IcsSpinner spinner, String restConstantsKey) {
+        if (mShippingFormSavedState != null && mShippingFormSavedState.getInt(restConstantsKey) < spinner.getCount()) {
             spinner.setSelection(mShippingFormSavedState.getInt(restConstantsKey));
-
-        } else if (mShippingFormSavedState != null && mShippingFormSavedState.getInt(restConstantsKey) <= spinner.getCount()) {
-            spinner.setSelection(mShippingFormSavedState.getInt(restConstantsKey));
+            return true;
         }
+        return false;
     }
-
 
     /**
      * Get the position of the regions
@@ -331,14 +328,14 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             int regionValue = Integer.valueOf(formItem.getEntry().getValue());
             for (int i = 0; i < regions.size(); i++)
                 if (regionValue == regions.get(i).getValue()) {
-                    return i;
+                    // Zero position is the prompt
+                    return i + 1;
                 }
         } catch (NullPointerException | NumberFormatException e) {
             Print.e(TAG, e.getMessage());
         }
         return 0;
     }
-
 
     /**
      * Validate the current region selection and update the cities
@@ -364,19 +361,16 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private void setCities(DynamicForm dynamicForm, ArrayList<AddressCity> cities) {
         // Get city item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.CITY);
-        // Clean group
-        ViewGroup group = v.getControl();
-        group.removeAllViews();
-        // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
-        spinner.setLayoutParams(group.getLayoutParams());
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(cities) || cities.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
-            cities.add(IntConstants.DEFAULT_POSITION, new AddressCity(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
-        }
+        // Get spinner
+        IcsSpinner spinner = (IcsSpinner) v.getDataControl();
+        spinner.setEnabled(true);
         // Create adapter
         ArrayAdapter<AddressCity> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, cities);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
+        spinner.setAdapter(promptAdapter);
+
         setSavedSelectedCityPos(spinner);
 
         if (mShippingFormSavedState == null) {
@@ -384,12 +378,13 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         } else {
             processSpinners(spinner, RestConstants.CITY);
         }
-
-        spinner.setOnItemSelectedListener(this);
-        v.setDataControl(spinner);
-        group.addView(spinner);
-        // Validate if first position is the prompt
-        if (cities.get(IntConstants.DEFAULT_POSITION).getValue() == IntConstants.DEFAULT_POSITION) {
+        // Add listener
+        v.setOnItemSelectedListener(this);
+        // Show form (Zero is the prompt)
+        if(spinner.getSelectedItemPosition() != IntConstants.DEFAULT_POSITION &&
+                mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE) != null) {
+            showGhostFragmentContentContainer();
+        } else {
             showFragmentContentContainer();
         }
     }
@@ -400,29 +395,24 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
     private void setPostalCodes(DynamicForm dynamicForm, ArrayList<AddressPostalCode> postalCodes) {
         // Get city item
         DynamicFormItem v = dynamicForm.getItemByKey(RestConstants.POSTCODE);
-        // Clean group
-        ViewGroup group = v.getControl();
-        group.removeAllViews();
-        // Add a spinner
-        IcsSpinner spinner = (IcsSpinner) View.inflate(getBaseActivity(), R.layout.form_icsspinner, null);
-        spinner.setLayoutParams(group.getLayoutParams());
-        //add place holder from API by default if value = ""; ignore if added already
-        if (TextUtils.isEmpty(v.getEntry().getValue()) && (CollectionUtils.isEmpty(postalCodes) || postalCodes.get(IntConstants.DEFAULT_POSITION).getValue() != IntConstants.DEFAULT_POSITION)) {
-            postalCodes.add(IntConstants.DEFAULT_POSITION, new AddressPostalCode(IntConstants.DEFAULT_POSITION, v.getEntry().getPlaceHolder()));
-        }
+        // Get a spinner
+        IcsSpinner spinner = (IcsSpinner) v.getDataControl();
+        spinner.setEnabled(true);
         // Create adapter
         ArrayAdapter<AddressPostalCode> adapter = new ArrayAdapter<>(getBaseActivity(), R.layout.form_spinner_item, postalCodes);
         adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, getBaseActivity());
+        promptAdapter.setPrompt(v.getEntry().getPlaceHolder());
+        spinner.setAdapter(promptAdapter);
+
         setSavedSelectedPostalCodePos(spinner);
         if (mShippingFormSavedState == null) {
             spinner.setSelection(getDefaultPosition(v, postalCodes));
         } else {
             processSpinners(spinner, RestConstants.POSTCODE);
         }
-        spinner.setOnItemSelectedListener(this);
-        v.setDataControl(spinner);
-        group.addView(spinner);
+        // Add listener
+        v.setOnItemSelectedListener(this);
     }
 
     /**
@@ -434,7 +424,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             position = mSavedRegionCitiesPositions.getInt(RestConstants.CITY);
         }
 
-        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position < spinner.getCount()) {
             spinner.setSelection(position);
         }
     }
@@ -448,7 +438,7 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
             position = mSavedRegionCitiesPositions.getInt(RestConstants.POSTCODE);
         }
 
-        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position <= spinner.getCount()) {
+        if (position != IntConstants.INVALID_POSITION && spinner.getCount() > 0 && position < spinner.getCount()) {
             spinner.setSelection(position);
         }
 
@@ -677,11 +667,6 @@ public abstract class CreateAddressFragment extends BaseFragment implements IRes
         String requestedRegionAndField = cities.getCustomTag();
         Print.d(TAG, "REQUESTED REGION FROM FIELD: " + requestedRegionAndField);
         setCitiesOnSelectedRegion(requestedRegionAndField, cities);
-        FormField field = mFormShipping.getFieldKeyMap().get(RestConstants.POSTCODE);
-        if (field == null) {
-            showFragmentContentContainer();
-            Print.i(TAG, "DOES NOT HAVE POSTAL CODE");
-        }
     }
 
     protected void onGetPostalCodesSuccessEvent(BaseResponse baseResponse) {

@@ -19,8 +19,6 @@ import com.mobile.newFramework.utils.EventType;
  */
 public class EmailCheckHelper extends SuperBaseHelper {
     
-    public static String TAG = EmailCheckHelper.class.getSimpleName();
-
     @Override
     public EventType getEventType() {
         return EventType.EMAIL_CHECK;

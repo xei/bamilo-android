@@ -14,14 +14,13 @@
         android:id="@+id/item_text"
         style="@style/TextBase.Display_2.Black_800"
         android:layout_centerInParent="true"
-        android:gravity="center"
-        />
+        android:gravity="center" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/item_text_unavailable"
         style="@style/TextBase.Display_2.Black_400"
-        android:gravity="center"
         android:layout_centerInParent="true"
+        android:gravity="center"
         android:visibility="gone" />
 
     <CheckBox

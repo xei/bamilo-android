@@ -14,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.constants.FormConstants;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.forms.Form;
@@ -50,6 +51,7 @@ import java.util.Map;
  *          2012/06/15
  * 
  */
+@SuppressWarnings("unused")
 public class DynamicForm implements Iterable<DynamicFormItem> {
 
     public final static String TAG = DynamicForm.class.getSimpleName();
@@ -63,6 +65,8 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     private WeakReference<BaseActivity> mFragmentActivity;
     private WeakReference<CompoundButton.OnCheckedChangeListener> mCheckedChangeListener;
     private WeakReference<BaseFragment> mParentFragment;
+    private View mHeader;
+    private View mFooter;
 
     /**
      * The constructor for the DynamicForm.<br>
@@ -110,10 +114,62 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     @NonNull
     public DynamicForm addMarginTop(@DimenRes int dimension) {
-        int marginTop = base.getContext().getResources().getDimensionPixelSize(dimension);
+        int margin = base.getContext().getResources().getDimensionPixelSize(dimension);
         LinearLayoutCompat.LayoutParams params = (LinearLayoutCompat.LayoutParams) base.getLayoutParams();
-        params.setMargins(params.leftMargin, marginTop, params.rightMargin, params.bottomMargin);
+        params.setMargins(params.leftMargin, margin, params.rightMargin, params.bottomMargin);
         base.requestLayout();
+        return this;
+    }
+
+    /**
+     * Add a margin bottom.
+     */
+    @NonNull
+    public DynamicForm addMarginBottom(@DimenRes int dimension) {
+        int margin = base.getContext().getResources().getDimensionPixelSize(dimension);
+        LinearLayoutCompat.LayoutParams params = (LinearLayoutCompat.LayoutParams) base.getLayoutParams();
+        params.setMargins(params.leftMargin, params.topMargin, params.rightMargin, margin);
+        base.requestLayout();
+        return this;
+    }
+
+    /**
+     * Adds header
+     */
+    public DynamicForm addHeader(@Nullable View header) {
+        this.mHeader = header;
+        return this;
+    }
+
+    /**
+     * Adds header
+     */
+    public DynamicForm addFooter(@Nullable View footer) {
+        this.mFooter = footer;
+        return this;
+    }
+
+    /**
+     * Set the form as everything is mandatory, so hide the mandatory view (asterisks) for each form field
+     */
+    public DynamicForm isMandatory() {
+        this.form.hideAsterisks();
+        return this;
+    }
+
+    /**
+     * Show icon for each form field
+     */
+    public DynamicForm showIcons(@FormConstants.DynamicFormTypes int formType) {
+        this.form.setType(formType);
+        return this;
+    }
+
+    /**
+     * Save the form type.
+     */
+    public DynamicForm addType(@FormConstants.DynamicFormTypes int formType) {
+        this.form.setType(formType);
         return this;
     }
 
@@ -122,10 +178,19 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     @NonNull
     public DynamicForm build() {
+        // Add header
+        if(mHeader != null) {
+            base.addView(mHeader, base.getLayoutParams());
+        }
+        // Add fields
         for (IFormField entry : form.getFields()) {
             entry.setFormType(form.getType());
             Print.i(TAG, "FORM ITEM KEY:" + entry.getKey() + " TYPE:" + entry.getInputType());
             this.addControl(DynamicFormItem.newInstance(this, base.getContext(), entry));
+        }
+        // Add footer
+        if(mFooter != null) {
+            base.addView(mFooter, base.getLayoutParams());
         }
         return this;
     }
@@ -139,9 +204,26 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     private void addControl(DynamicFormItem ctrl) {
         View controlView = ctrl.getControl();
         if (null != controlView) {
+            // Add form
             controls.put(ctrl.getKey(), ctrl);
             base.addView(ctrl.getControl(), base.getLayoutParams());
         }
+    }
+
+    /**
+     * Get header
+     */
+    @Nullable
+    public View getHeader() {
+        return this.mHeader;
+    }
+
+    /**
+     * Get header
+     */
+    @Nullable
+    public View getFooter() {
+        return this.mFooter;
     }
 
     /**
@@ -204,6 +286,31 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
     }
 
     /**
+     * If Sub Forms have no message to display but parent form is not valid, show global message.
+     */
+    public boolean showGlobalMessage(){
+        boolean result = true;
+        for (DynamicFormItem dynamicFormItem : this) {
+            result &= dynamicFormItem.showGlobalMessage();
+        }
+        return result;
+    }
+
+    /**
+     * Get the error message of the first element.
+     * @return
+     */
+    public String getErrorMessage() {
+        String errorMessage = "";
+        for (DynamicFormItem dynamicFormItem : this) {
+            if(dynamicFormItem.validate()){
+                return dynamicFormItem.getMessage();
+            }
+        }
+        return errorMessage;
+    }
+
+    /**
      * Fills a ContentValues with the values from the form.
      * Only used to submit the form.
      *
@@ -261,6 +368,7 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
      */
     public void loadSaveFormState(@Nullable Bundle mFormSavedState) {
         if (mFormSavedState != null) {
+
             for (DynamicFormItem item : this) {
                 item.loadState(mFormSavedState);
             }
@@ -376,6 +484,10 @@ public class DynamicForm implements Iterable<DynamicFormItem> {
         if (mClickListener != null && mClickListener.get() != null) {
             mClickListener.get().onClick(view);
         }
+    }
+
+    public WeakReference<View.OnClickListener>  getClickListener(){
+        return mClickListener;
     }
 
     /*

@@ -92,15 +92,6 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
     private SharedPreferences mSharedPrefs;
 
     /**
-     * Get instance
-     */
-    public static ReviewWriteFragment getInstance(Bundle bundle) {
-        ReviewWriteFragment fragment = new ReviewWriteFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    /**
      * Empty constructor
      */
     public ReviewWriteFragment() {
@@ -328,7 +319,7 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
 
             if (getBaseActivity() == null) return;
 
-            mDynamicForm = FormFactory.getSingleton().create(FormConstants.RATING_FORM, getBaseActivity(), form);
+            mDynamicForm = FormFactory.create(FormConstants.RATING_FORM, getBaseActivity(), form);
             if(ratingContainer.getChildCount() > 0)
                 ratingContainer.removeAllViews();
 
@@ -466,9 +457,9 @@ public class ReviewWriteFragment extends BaseFragment implements IResponseCallba
                     return;
             } else if (ratingForm != null) {
                 if(isShowingRatingForm)
-                    mDynamicForm = FormFactory.getSingleton().create(FormConstants.RATING_FORM, getBaseActivity(), ratingForm);
+                    mDynamicForm = FormFactory.create(FormConstants.RATING_FORM, getBaseActivity(), ratingForm);
                 else if(reviewForm != null)
-                    mDynamicForm = FormFactory.getSingleton().create(FormConstants.RATING_FORM, getBaseActivity(), reviewForm);
+                    mDynamicForm = FormFactory.create(FormConstants.RATING_FORM, getBaseActivity(), reviewForm);
 
                 if(!mDynamicForm.validate())
                     return;

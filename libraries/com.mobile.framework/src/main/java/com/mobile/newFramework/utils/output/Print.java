@@ -90,6 +90,16 @@ public class Print {
         }
     }
 
+    public static void w(String message, Throwable exception) {
+        if (defaultLogMode == ANDROID_MODE) {
+            Log.w(message, exception);
+        } else {
+            System.out.println(message);
+            System.err.println(exception.toString());
+
+        }
+    }
+
     public static void w(String tag, String message, Throwable exception) {
         if (defaultLogMode == ANDROID_MODE) {
             Log.w(tag, message, exception);

@@ -66,6 +66,16 @@
             style="@style/TextBase.Caption"
             android:textColor="@color/black_700" />
 
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_invalid"
+            style="@style/TextBase.Caption"
+            android:drawableRight="@drawable/indicator_input_error"
+            android:drawablePadding="@dimen/margin_padding_m"
+            android:layout_marginTop="@dimen/margin_padding_xs"
+            android:textColor="@color/red_basic"
+            android:text="@string/invalid_address_shipping_billing"
+            android:visibility="gone"/>
+
     </LinearLayout>
 
 </RelativeLayout>

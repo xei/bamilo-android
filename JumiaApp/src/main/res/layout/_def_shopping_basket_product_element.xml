@@ -47,7 +47,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="@string/shoppingcart_quantity" />
+            android:text="@string/quantity_label" />
 
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/cart_item_button_quantity"
@@ -72,7 +72,7 @@
         android:layout_below="@id/cart_item_container_price"
         android:layout_marginEnd="@dimen/margin_padding_m"
         android:layout_marginRight="@dimen/margin_padding_m"
-        android:text="@string/size_label" />
+        tools:text="Size" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/cart_item_text_variation_value"

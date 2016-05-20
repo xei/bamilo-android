@@ -35,6 +35,7 @@ public class RestConstants {
     public static final String FORM = "form";
     public static final String FORMS = "forms";
     public static final String METHOD = "method";
+    public static final String REFUND = "refund";
     public static final String FIELDS = "fields";
     public static final String TYPE = "type";
     public static final String KEY = "key";
@@ -280,7 +281,6 @@ public class RestConstants {
     public static final String SELLER = "seller";
     public static final String MAX_ITEMS = "maxitems";
     public static final String SORT = "sort";
-    public static final String DIRECTION = "dir";
     public static final String HASH = "hash";
     public static final String RICH_RELEVANCE_ENABLED = "rich_relevance_enabled";
     public static final String REQ = "req";
@@ -335,4 +335,12 @@ public class RestConstants {
     public static final String REDIRECT_INFO = "redirect_info";
     public static final String EXTERNAL_LINKS = "external_links";
     public static final String EXTERNAL_LINK_ANDROID = "external_link_android";
+    public static final String RETURNS = "returns";
+    public static final String RETURNABLE_QUANTITY = "returnable_quantity";
+    public static final String TEXT_TITLE = "text_title";
+    public static final String TEXT_BODY1 = "text_body1";
+    public static final String TEXT_BODY2 = "text_body2";
+    public static final String ACTIONS = "actions";
+    public static final String SUBTEXT = "subtext";
+    public static final String IS_VALID = "is_valid";
 }

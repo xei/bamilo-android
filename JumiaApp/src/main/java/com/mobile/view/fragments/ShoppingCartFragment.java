@@ -103,17 +103,6 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
                 ADJUST_CONTENT);
     }
 
-    /**
-     * Get instance
-     *
-     * @return ShoppingCartFragment
-     */
-    public static ShoppingCartFragment getInstance(Bundle bundle) {
-        ShoppingCartFragment fragment = new ShoppingCartFragment();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -345,7 +334,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
         }
         // Case invalid cart
         else {
-            String title = getString(R.string.shoppingcart_alert_header);
+            String title = getString(R.string.basket_label);
             String message = getString(R.string.shoppingcart_alert_message_no_items);
             String buttonText = getString(R.string.ok_label);
             DialogGenericFragment.createInfoDialog(title, message, buttonText).show(getActivity().getSupportFragmentManager(), null);
@@ -818,7 +807,7 @@ public class ShoppingCartFragment extends BaseFragment implements IResponseCallb
             public void onDismiss() {
             }
         };
-        dialogList = DialogListFragment.newInstance(this, listener, getString(R.string.shoppingcart_choose_quantity), quantities, crrQuantity - 1);
+        dialogList = DialogListFragment.newInstance(this, listener, getString(R.string.choose_quantity), quantities, crrQuantity - 1);
         dialogList.show(getActivity().getSupportFragmentManager(), null);
     }
 

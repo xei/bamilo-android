@@ -18,7 +18,7 @@ public class NewsletterOption implements IJSONSerializable, Parcelable{
 
     public static final String TAG = NewsletterOption.class.getSimpleName();
     
-    public boolean isDefaut;
+    public boolean isDefault;
     
     public String key;
 
@@ -26,7 +26,7 @@ public class NewsletterOption implements IJSONSerializable, Parcelable{
 
     public String label;
 
-    public boolean isSubscrided;
+    public boolean isSubscribed;
     
     public String name;
 
@@ -44,11 +44,11 @@ public class NewsletterOption implements IJSONSerializable, Parcelable{
      */
     @Override
     public boolean initialize(JSONObject object) {
-        isDefaut = object.optBoolean(RestConstants.IS_DEFAULT);
+        isDefault = object.optBoolean(RestConstants.IS_DEFAULT);
         key = object.optString(RestConstants.KEY);
         value = object.optString(RestConstants.VALUE);
         label = object.optString(RestConstants.LABEL);
-        isSubscrided = object.optBoolean(RestConstants.USER_SUBSCRIBED);
+        isSubscribed = object.optBoolean(RestConstants.USER_SUBSCRIBED);
         return true;
     }
 
@@ -86,23 +86,22 @@ public class NewsletterOption implements IJSONSerializable, Parcelable{
      */
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeBooleanArray(new boolean[] {isDefaut});
+        dest.writeBooleanArray(new boolean[] {isDefault});
         dest.writeString(key);
         dest.writeString(value);
         dest.writeString(label);
-        dest.writeBooleanArray(new boolean[] {isSubscrided});
+        dest.writeBooleanArray(new boolean[] {isSubscribed});
     }
     
     /**
      * Parcel constructor
-     * @param in
      */
     private NewsletterOption(Parcel in) {
-        in.readBooleanArray( new boolean[] {isDefaut});
+        in.readBooleanArray( new boolean[] {isDefault});
         key = in.readString();
         value = in.readString();
         label = in.readString();
-        in.readBooleanArray( new boolean[] {isSubscrided});
+        in.readBooleanArray( new boolean[] {isSubscribed});
     }
     
     /**

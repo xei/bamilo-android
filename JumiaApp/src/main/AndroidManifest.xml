@@ -9,31 +9,28 @@
     <!-- ######################################## -->
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- Android 6.0 Dangerous Permission -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />     <!-- AD4Push | W:SDK6 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Android 6.0 Dangerous Permission -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- Android 6.0 Dangerous Permission -->
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /><!-- W:SDK6 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />      <!-- W:SDK6 -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />             <!-- AD4Push-->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"
+        android:required="false" />                                             <!-- LocationHelper | AD4Push | W:SDK6 -->
+
+    <!-- *W:SDK6 : Android 6.0 Dangerous Permission -->
 
     <!-- ############# AD4Push: MESSAGE (Receive) ############# -->
     <permission
         android:name="${applicationId}.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
-
     <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
 
     <permission
         android:name="${applicationId}.permission.A4S_SEND"
         android:protectionLevel="signature" />
-
     <uses-permission android:name="${applicationId}.permission.A4S_SEND" />
+
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-
-    <!-- ############# Location: LocationHelper and AD4Push ############# -->
-    <uses-permission
-        android:name="android.permission.ACCESS_FINE_LOCATION"
-        android:required="false" /> <!-- Android 6.0 Dangerous Permission -->
-
 
     <!-- ##################################### -->
     <!-- ############# Features ############## -->
@@ -62,6 +59,7 @@
     <!-- ######################################## -->
     <!-- ############# Application ############## -->
     <!-- ######################################## -->
+
     <application
         android:name="com.mobile.app.JumiaApplication"
         android:allowBackup="true"
@@ -144,7 +142,6 @@
         <!-- ######################################## -->
         <!-- ############# AD4Push GCM ############## -->
         <!-- ######################################## -->
-
 
         <!-- ############# AD4Push: A4SService ############# -->
         <service
@@ -244,6 +241,7 @@
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
+
     </application>
 
 </manifest>

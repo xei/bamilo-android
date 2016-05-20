@@ -23,6 +23,7 @@ public class PurchaseItem implements Parcelable {
     public String name;
     public String category;
     public int quantity = 0;
+    public double price = 0d;
     private double paidPriceConverted = 0d;
 
     /**
@@ -67,6 +68,7 @@ public class PurchaseItem implements Parcelable {
             sku = sku.split("-")[0];
         }
         name = itemJson.getString(RestConstants.NAME);
+        price = itemJson.optDouble(RestConstants.PRICE, 0d);
         paidPriceConverted = itemJson.optDouble(RestConstants.PAIDPRICE_CONVERTED, 0d);
         quantity = itemJson.optInt(RestConstants.QUANTITY, 0);
         category = itemJson.getString(RestConstants.CATEGORY);
@@ -85,8 +87,9 @@ public class PurchaseItem implements Parcelable {
             PurchaseItem mPurchaseItem = new PurchaseItem();
             mPurchaseItem.sku = item.getConfigSimpleSKU();
             mPurchaseItem.name = item.getName();
+            mPurchaseItem.price = item.getPrice();
             mPurchaseItem.paidPriceConverted = item.getPriceForTracking();
-            mPurchaseItem.quantity = (int) item.getQuantity();
+            mPurchaseItem.quantity = item.getQuantity();
             items.add(mPurchaseItem);
         }
         return items;

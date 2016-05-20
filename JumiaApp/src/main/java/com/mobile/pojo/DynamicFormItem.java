@@ -34,12 +34,14 @@ import android.widget.Spinner;
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.absspinner.IcsAdapterView;
 import com.mobile.components.absspinner.IcsSpinner;
+import com.mobile.components.absspinner.PromptSpinnerAdapter;
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.HoloFontLoader;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.FormConstants;
 import com.mobile.helpers.address.PhonePrefixesHelper;
+import com.mobile.helpers.order.GetReturnReasonsHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.Darwin;
 import com.mobile.newFramework.forms.FieldValidation;
@@ -52,18 +54,25 @@ import com.mobile.newFramework.forms.PaymentInfo;
 import com.mobile.newFramework.objects.addresses.FormListItem;
 import com.mobile.newFramework.objects.addresses.PhonePrefix;
 import com.mobile.newFramework.objects.addresses.PhonePrefixes;
+import com.mobile.newFramework.objects.addresses.ReturnReason;
+import com.mobile.newFramework.objects.addresses.ReturnReasons;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.pojo.RestConstants;
+import com.mobile.newFramework.rest.errors.ErrorCode;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.Constants;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.pojo.fields.CheckBoxField;
+import com.mobile.pojo.fields.ListNumberField;
+import com.mobile.pojo.fields.RadioExpandableField;
 import com.mobile.pojo.fields.ScreenRadioField;
 import com.mobile.pojo.fields.ScreenTitleField;
 import com.mobile.pojo.fields.SectionTitleField;
 import com.mobile.pojo.fields.SwitchRadioField;
+import com.mobile.utils.RadioGroupExpandable;
 import com.mobile.utils.RadioGroupLayout;
 import com.mobile.utils.RadioGroupLayoutVertical;
 import com.mobile.utils.Toast;
@@ -148,6 +157,10 @@ public class DynamicFormItem {
                 return new ScreenRadioField(parent, context, entry);
             case checkBox:
                 return new CheckBoxField(parent, context, entry);
+            case listNumber:
+                return new ListNumberField(parent, context, entry);
+            case radioExpandable:
+                return new RadioExpandableField(parent, context, entry);
             default:
                 return new DynamicFormItem(parent, context, entry);
         }
@@ -256,10 +269,7 @@ public class DynamicFormItem {
             this.control = new RelativeLayout(this.context);
             this.control.setLayoutParams(params);
             this.control.setId(parent.getNextId());
-            // TODO: Remove validation when all items are IDynamicFormItemField.
-            if (this instanceof IDynamicFormItemField) {
-                ((IDynamicFormItemField) this).build(params);
-            }
+            ((IDynamicFormItemField) this).build(params);
         }
     }
 
@@ -472,9 +482,11 @@ public class DynamicFormItem {
                 ((CheckBox) this.dataControl.findViewWithTag("checkbox")).setChecked(checkedList);
                 break;
             case list:
-                Print.i(TAG,"load List");
-                int listPosition = inStat.getInt(getName());
-                ((IcsSpinner) this.dataControl).setSelection(listPosition);
+                mPreSelectedPosition = inStat.getInt(getKey());
+                IcsSpinner spinner = (IcsSpinner) this.dataControl;
+                if(spinner.getAdapter() != null && spinner.getAdapter().getCount() > mPreSelectedPosition){
+                    spinner.setSelection(mPreSelectedPosition);
+                }
                 break;
             case radioGroup:
                 int position = inStat.getInt(getKey());
@@ -537,6 +549,7 @@ public class DynamicFormItem {
                 break;
             case hide:
                 break;
+
             default:
                 break;
         }
@@ -562,23 +575,27 @@ public class DynamicFormItem {
                 values.put(getName(), getValue());
                 break;
             case list:
-                View view = getControl().getChildAt(0);
-                if (view instanceof IcsSpinner) {
+                View view = this.dataControl;
+                if(view instanceof IcsSpinner){
                     IcsSpinner spinner = (IcsSpinner) view;
-                    FormListItem selectedItem = (FormListItem) spinner.getSelectedItem();
-                    if (selectedItem != null) {
-                        values.put(getName(), selectedItem.getValue());
+                    if (spinner.getSelectedItem() instanceof FormListItem) {
+
+                        FormListItem item = (FormListItem) spinner.getSelectedItem();
+                        if (item != null) {
+                            values.put(getName(), item.getValueAsString());
+                        }
                     }
-                }
-                // Case HomeNewsletter
-                else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
-                    for (String key : this.entry.getDataSet().keySet()) {
-                        if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) ((IcsSpinner) this.dataControl).getSelectedItem())) {
-                            values.put(getName(), key);
-                            break;
+                    // Case HomeNewsletter
+                    else if (com.mobile.newFramework.utils.TextUtils.isNotEmpty((String) spinner.getSelectedItem())) {
+                        for (String key : this.entry.getDataSet().keySet()) {
+                            if (com.mobile.newFramework.utils.TextUtils.equals(this.entry.getDataSet().get(key), (String) spinner.getSelectedItem())) {
+                                values.put(getName(), key);
+                                break;
+                            }
                         }
                     }
                 }
+
                 break;
             case relatedNumber:
                 // Get number
@@ -614,6 +631,7 @@ public class DynamicFormItem {
                     }
                 }
                 break;
+
             default:
                 getDefaultValue(values);
                 break;
@@ -795,9 +813,12 @@ public class DynamicFormItem {
                 outState.putBoolean(getKey(), ((CheckBox) this.dataControl.findViewWithTag("checkbox")).isChecked());
                 break;
             case list:
-                int selectedItem = ((IcsSpinner) this.dataControl).getSelectedItemPosition();
-                Print.i(TAG,"SAVE LIST:"+selectedItem);
-                outState.putInt(getKey(), selectedItem);
+                if (this.dataControl instanceof IcsSpinner) {
+                    IcsSpinner spinner = (IcsSpinner) this.dataControl;
+                    if (!(spinner.getAdapter() instanceof PromptSpinnerAdapter) || spinner.getSelectedItemPosition() > IntConstants.DEFAULT_POSITION) {
+                        outState.putInt(getKey(), spinner.getSelectedItemPosition());
+                    }
+                }
                 break;
             case radioGroup:
                 if (this.dataControl instanceof RadioGroupLayoutVertical) {
@@ -854,6 +875,7 @@ public class DynamicFormItem {
                     }
                 }
                 break;
+
             default:
                 break;
         }
@@ -902,7 +924,6 @@ public class DynamicFormItem {
                             }
                         }
                     } else {
-                        //Print.i(TAG, "code1validate validating  : instanceof RadioGroupLayout");
                         valid = ((RadioGroupLayout) this.dataControl.findViewById(R.id.radio_group_container)).getSelectedIndex() != RadioGroupLayout.NO_DEFAULT_SELECTION;
                     }
 
@@ -937,12 +958,36 @@ public class DynamicFormItem {
                     }
                     break;
                 case list:
-                    result = getControl().getChildAt(0) instanceof IcsSpinner;
+                    result = this.dataControl instanceof IcsSpinner;
+                    if (result) {
+                        IcsSpinner spinner = (IcsSpinner) this.dataControl;
+                        if (spinner.getAdapter() instanceof PromptSpinnerAdapter) {
+                            result = spinner.getSelectedItemPosition() > IntConstants.DEFAULT_POSITION;
+                        }
+                    }
                     break;
                 default:
                     break;
             }
             this.errorControl.setVisibility(!result ? View.VISIBLE : View.GONE);
+
+        }
+
+        return result;
+    }
+
+    /**
+     * If Sub Forms have no message to display but parent form is not valid, show global message.
+     */
+    public boolean showGlobalMessage() {
+        boolean result = false;
+        if (hasRules()) {
+
+            switch (this.entry.getInputType()) {
+                case radioExpandable:
+                    result = ((RadioGroupExpandable) this.dataControl).showGlobalMessage();
+                    break;
+            }
         }
 
         return result;
@@ -960,7 +1005,12 @@ public class DynamicFormItem {
         // Case empty
         if (TextUtils.isEmpty(text)) {
             result = !this.entry.getValidation().isRequired();
-            setErrorText(context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel() + space);
+            String errorMessage = this.entry.getValidation().getMessage();
+            if(TextUtils.isEmpty(errorMessage)){
+                errorMessage = context.getString(R.string.error_ismandatory) + " " + this.entry.getLabel();
+            }
+
+            setErrorText(errorMessage + space);
         }
         // Case too short
         else if (this.entry.getValidation().min > 0 && text.length() < this.entry.getValidation().min) {
@@ -1048,7 +1098,6 @@ public class DynamicFormItem {
         }
 
         TextView mLinkTextView = (TextView) this.dataControl.findViewById(R.id.textview_terms);
-        //Print.i(TAG, "code1link : " + this.entry.getLinkText());
         mLinkTextView.setText(this.entry.getLinkText());
         mLinkTextView.setTag(this.entry.getLinkTarget());
         mLinkTextView.setOnClickListener(new OnClickListener() {
@@ -1124,7 +1173,7 @@ public class DynamicFormItem {
 
         if (this.entry.isVerticalOrientation() ||
                 this.entry.getDataSet().size() > TWO_OPTIONS ||
-                this.parent.getForm().getFields().get(IntConstants.DEFAULT_POSITION).getPaymentMethodsField() != null) {
+                this.parent.getForm().getFields().get(IntConstants.DEFAULT_POSITION).getSubForms() != null) {
             Print.d("createRadioGroup", "createRadioGroup: Radio Group ORIENTATION_VERTICAL");
             createRadioGroupVertical(params, dataContainer);
         } else {
@@ -1223,7 +1272,6 @@ public class DynamicFormItem {
                     Date d = new Date(cal.getTimeInMillis());
                     String date = DateFormat.format(DATE_FORMAT, d).toString();
                     spinnerButton.setText(date);
-                    //Print.i(TAG, "code1date : date : " + date);
                     if(mandatoryControl != null)
                         DynamicFormItem.this.mandatoryControl.setVisibility(View.GONE);
 
@@ -1282,8 +1330,55 @@ public class DynamicFormItem {
         this.control.setVisibility(View.GONE);
     }
 
+
+    /**
+     * Spinner
+     */
+    private void createSpinnerRequester() {
+        // Get spinner
+        final IcsSpinner spinner = (IcsSpinner) this.dataControl;
+        // Get api call
+        String url = entry.getApiCall();
+        // Validate url
+        if (!TextUtils.isEmpty(url)) {
+            // Get prefixes
+            JumiaApplication.INSTANCE.sendRequest(new GetReturnReasonsHelper(), GetReturnReasonsHelper.createBundle(url), new IResponseCallback() {
+                @Override
+                public void onRequestComplete(BaseResponse baseResponse) {
+                    ReturnReasons items = (ReturnReasons) baseResponse.getContentData();
+                    ArrayAdapter<ReturnReason> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, items);
+                    adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+                    PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, context);
+                    promptAdapter.setPrompt(entry.getLabel());
+                    spinner.setAdapter(promptAdapter);
+                    if(mPreSelectedPosition > IntConstants.DEFAULT_POSITION) {
+                        spinner.setSelection(mPreSelectedPosition);
+                    }
+                    // Notify parent
+                    parent.onRequestComplete(baseResponse);
+                }
+                @Override
+                public void onRequestError(BaseResponse baseResponse) {
+                    // Notify parent
+                    parent.onRequestError(baseResponse);
+                }
+            });
+            // Set touch listener
+            spinner.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent event) {
+                    KeyboardUtils.hide(view);
+                    return false;
+                }
+            });
+        } else {
+            // Notify parent
+            parent.onRequestError(new BaseResponse<>(EventType.GET_RETURN_REASONS, ErrorCode.REQUEST_ERROR));
+        }
+    }
+
     private void createSpinnerForRadioGroup(final int MANDATORYSIGNALSIZE, RelativeLayout.LayoutParams params, RelativeLayout dataContainer, boolean isAlternativeLayout) {
-        this.dataControl = View.inflate(this.context, R.layout.form_icsspinner, null);
+        this.dataControl = View.inflate(this.context, R.layout._def_gen_form_spinner, null);
         this.dataControl.setId(parent.getNextId());
         this.dataControl.setLayoutParams(params);
 
@@ -1296,25 +1391,44 @@ public class DynamicFormItem {
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, layout, new ArrayList<>(this.entry.getDataSet().values()));
             adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-            ((IcsSpinner) this.dataControl).setAdapter(adapter);
+            PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, context);
+            promptAdapter.setPrompt(this.entry.getPlaceHolder());
+            ((IcsSpinner) this.dataControl).setAdapter(promptAdapter);
         }
         // Case Empty
         else {
-            ArrayList<String> default_string = new ArrayList<>();
-            default_string.add(this.entry.getPlaceHolder());
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
-            adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-            ((IcsSpinner) this.dataControl).setAdapter(adapter);
+            /**
+             * TODO: NAFAMZ-15492 - This should be a generic component for forms.
+             */
+            // Case ORDER_RETURN_REASON_FORM
+            if (this.parent.getForm().getType() == FormConstants.ORDER_RETURN_REASON_FORM) {
+                createSpinnerRequester();
+            }
+            // Case Others (CREATE ADDRESS)
+            else {
+                // Add a dummy item to show the prompt
+                ArrayList<String> array = new ArrayList<>();
+                array.add("");
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, array);
+                adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
+                PromptSpinnerAdapter promptAdapter = new PromptSpinnerAdapter(adapter, R.layout.form_spinner_prompt, context);
+                promptAdapter.setPrompt(this.entry.getPlaceHolder());
+                ((IcsSpinner) this.dataControl).setAdapter(promptAdapter);
+                // Disabled spinner that has a parent (regions->cities->postal)
+                this.dataControl.setEnabled(false);
+            }
         }
         // Sets the spinner value
-        ((IcsSpinner) this.dataControl).setSelection(0);
+        if(TextUtils.isEmpty(this.entry.getPlaceHolder())) {
+            ((IcsSpinner) this.dataControl).setSelection(IntConstants.DEFAULT_POSITION);
+        }
         // Case HomeNewsletter
         if (isAlternativeLayout) {
             int position = 0;
             if (CollectionUtils.isNotEmpty(((FormField) this.entry).getNewsletterOptions())) {
                 for (NewsletterOption item : ((FormField) this.entry).getNewsletterOptions()) {
                     position++;
-                    if (item.isDefaut) {
+                    if (item.isDefault) {
                         ((IcsSpinner) this.dataControl).setSelection(position);
                     }
                 }
@@ -1332,7 +1446,7 @@ public class DynamicFormItem {
         }
 
         params.addRule(RelativeLayout.CENTER_VERTICAL);
-        params.rightMargin = MANDATORYSIGNALMARGIN;
+        params.rightMargin = context.getResources().getDimensionPixelSize(R.dimen.margin_padding_xxl);
         this.mandatoryControl = new TextView(this.context);
         this.mandatoryControl.setLayoutParams(params);
         this.mandatoryControl.setText("*");
@@ -1378,37 +1492,6 @@ public class DynamicFormItem {
 
                 if (null != spinnerSelectedListener) {
                     spinnerSelectedListener.onNothingSelected(parent);
-                }
-            }
-        });
-
-        this.entry.setOnDataSetReceived(new FormField.OnDataSetReceived() {
-
-            @Override
-            public void DataSetReceived(Map<String, String> dataSet) {
-                if (dataSet.size() > 0) {
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, new ArrayList<>(dataSet.values()));
-                    adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-                    ((IcsSpinner) dataControl).setAdapter(adapter);
-
-                } else {
-                    ArrayList<String> default_string = new ArrayList<>();
-                    default_string.add("Empty");
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.form_spinner_item, default_string);
-                    adapter.setDropDownViewResource(R.layout.form_spinner_dropdown_item);
-                    ((IcsSpinner) dataControl).setAdapter(adapter);
-                }
-
-                // sets the spinner value
-                int position = 0;
-                if (null != entry.getValue() && !entry.getValue().trim().equals("")) {
-                    for (String item : new ArrayList<>(dataSet.values())) {
-                        if (item.equals(entry.getValue())) {
-                            ((IcsSpinner) dataControl).setSelection(position);
-                            break;
-                        }
-                    }
-                    //position++;
                 }
             }
         });
@@ -1529,7 +1612,7 @@ public class DynamicFormItem {
                 }
             }
             if (this.parent.getForm().getFields() != null && this.parent.getForm().getFields().size() > 0) {
-                HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getPaymentMethodsField();
+                HashMap<String, Form> paymentMethodsField = this.parent.getForm().getFields().get(0).getSubForms();
                 if (paymentMethodsField != null) {
                     if (paymentMethodsField.containsKey(key) && (paymentMethodsField.get(key).getFields().size() > 0 || paymentMethodsField.get(key).getSubFormsMap().size() > 0)) {
                         formsMap.put(key, paymentMethodsField.get(key));

@@ -186,6 +186,7 @@
     <item name="product_gallery_full_activity"          type="layout">@layout/_def_product_gallery_full_activity</item>
     <item name="voucher_insert_layout"                  type="layout">@layout/_def_voucher_insert_layout</item>
     <item name="form_spinner_item"                      type="layout">@layout/_def_form_spinner_item</item>
+    <item name="form_spinner_prompt"                    type="layout">@layout/_def_gen_form_spinner_prompt</item>
     <item name="form_alternative_spinner_item"          type="layout">@layout/_def_form_alternative_spinner_item</item>
     <item name="product_offers_main_new"                type="layout">@layout/_def_product_offers_main_new</item>
     <item name="other_sellers_list_item"                type="layout">@layout/_def_other_sellers_list_item</item>
@@ -210,6 +211,10 @@
     <item name="gen_product_list"                       type="layout">@layout/_def_gen_product_list</item>
     <item name="gen_product_two_prices"                 type="layout">@layout/_def_gen_product_two_prices</item>
     <item name="gen_product_rating_small"               type="layout">@layout/_def_gen_product_rating_small</item>
+
+    <!--ORDER RETURN-->
+    <item name="order_return_step_item"                 type="layout">@layout/_def_order_return_step_item</item>
+    <item name="order_return_step_item_info"            type="layout">@layout/_def_order_return_step_item_info</item>
 
 </resources>
 

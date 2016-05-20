@@ -177,11 +177,11 @@
     <string name="share_checkout_this_product">یہ چیز دیکھیں، جو مجھے ملی:</string>
     <string name="share_subject">‎%s‎ پھیلائیں</string>
     <string name="shipping">شِپنگ</string>
-    <string name="shoppingcart_alert_header">ٹوکری</string>
+    <string name="basket_label">ٹوکری</string>
     <string name="shoppingcart_alert_message_no_items">خالی ٹوکری! براہِ کرم ٹوکری میں اشیاء شامل کریں</string>
-    <string name="shoppingcart_choose_quantity">تعداد چُنیں</string>
-    <string name="shoppingcart_item_btn_delete">ڈِلیٹ</string>
-    <string name="shoppingcart_quantity">تعداد</string>
+    <string name="choose_quantity">تعداد چُنیں</string>
+    <string name="delete_label">ختم کریں</string>
+    <string name="quantity_label">تعداد ‎</string>
     <string name="sign_in">داخل ہوں</string>
     <string name="sign_out">باہر نکلیں</string>
     <string name="size_guide_label">شرحِ ناپ</string>
@@ -205,7 +205,7 @@
     <string name="upgrade_optional_text">ہمیں کچھ غلطیاں ملی ہیں جنہیں ‎%s‎ پر آپ کے خریداری کے تجربے کو مزید بہتربنانے کےلیے ٹھیک کرنا ضروری ہے۔ براہِ کرم ایپ کو اَپڈیٹ کریں۔</string>
     <string name="upgrade_optional_title">اَپگریڈ میسر ہے</string>
     <string name="upgrade_proceed">اَپگریڈ</string>
-    <string name="upgrade_remindmelater">بعد میں یاد دلائیں</string>
+    <string name="upgrade_remindmelater">بعد میں</string>
     <string name="validation_errortext">معلومات جمع کروانے کے دوران کوئی غلطی ہے، براہِ کرم تمام شعبوں میں درج کی ہوئی معلومات دوبارہ جانچیں۔</string>
     <string name="validation_title">داخل کی ہوئی معلومات میں غلطی</string>
     <string name="vat_string">VAT</string>
@@ -322,6 +322,8 @@
     <string name="billing">بِلنگ</string>
     <string name="first_space_second_placeholder">%1$s‎ ‎%2$s‎</string>
     <string name="first_slash_second_placeholder">%1$s / %2$s</string>
+    <string name="first_new_line_second_placeholder">%1$s\n%2$s</string>
+    <string name="first_x_second_placeholder">%2$s x  %1$s</string>
     <string name="qty_placeholder">مقدار:  %s</string>
     <string name="reorder_label">ترتیب</string>
     <string name="order_status_date">‎&lt;b>‎‎%1$s‎‎&lt;/b>\n‎‎%2$s‎</string>
@@ -347,4 +349,47 @@
     <string name="visit_the_official_brand_store">%s کے مکزی سٹور پہ تشریف لیجائیں</string>
     <string name="free_shipping_possible">مفت شِپنگ ممکن ہے</string>
     <string name="register_more_info">آپ کا اکاؤنٹ بنانے کے لئے ہمیں مزید تھوڑی سی معلومات کی ضرورت ہے</string>
+    <string name="go_label">جائیں</string>
+    <!-- Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
+    <string name="items_returned_on">%1$s اشیاء کی واپسی پہ %2$s </string>
+    <string name="return_selected_items">منتخب شدہ اشیاء واپس کریں</string>
+    <string name="return_label">واپس کریں</string>
+    <string name="call_return_label">واپس کرنے کے لیے ہمیں کال کریں</string>
+    <string name="call_now_label">ابھی کال کریں</string>
+    <string name="shipment_label">شِپمینٹ</string>
+    <string name="returns_label">واپس کردہ اشیاء</string>
+    <!-- Used in Online Returns when user tries to click on return selected without selecting any item -->
+    <string name="warning_no_items_selected">واپس کرنے کے لیے کوئی اشیاء منتخب نہیں.</string>
+    <string name="ok_got_it">ٹھیک ہے، سمجھ آگیا</string>
+    <!-- Used in Return item and Order Return Call Screen to show order number -->
+    <string name="order_number_placeholder">آرڈر ‎%s‎ Nº</string>
+    <!-- Used in Order Return Conditions Screen as title -->
+    <string name="order_return_conditions_title">ہمیں افسوس ہے کہ آپ منتخب شدہ مصنوعات کے ساتھ مکمل طور پر مطمئن نہیں</string>
+    <!-- Used as title for Online Return Step 1 (Return Reason) -->
+    <string name="order_return_reason_title">آپ یہ اشیاء کیوں واپس کرنا چاہتے ہیں؟</string>
+    <!-- Used as title for Online Return Step 2 (Return Method) -->
+    <string name="order_return_method_title">آپ یہ اشیاء کیسے واپس کرنا چاہتے ہیں؟</string>
+    <!-- Used as title for Online Return Step 3 (Return Refund) -->
+    <string name="order_return_refund_title">آپ کون سا ادائیگی کا طریقہ کار واپسی کے لئےانتخاب کرنا چاہتے ہیں؟</string>
+    <string name="order_return_finish_title">اپنی اشیاء کی واپسی کی درخواست کی تصدیق کریں</string>
+    <string name="send_label">بھیجیے</string>
+    <string name="quantity_to_return">تعدادِ واپسی</string>
+    <!-- Used as to inform the user the number of items that are selected to return -->
+    <string name="quantity_to_return_placeholder">تعدادِ واپسی: ‎%s‎</string>
+    <string name="quantity_placeholder">تعداد‎%s ‎</string>
+    <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number -->
+    <string name="please_call_placeholder">براۓ مہربانی کال کریں ‎%s‎</string>
+    <!-- Used as error message when user doesn't select any option and tries to proceed -->
+    <string name="warning_please_select_one">آگے بڑھنے کے لئے ایک آپشن کا انتخاب کریں.</string>
+    <string name="everything_looks_good">اگر سب کچھ ٹھیک لگ رہا ہے تو ٹیپ کریں \"SEND\".</string>
+    <!-- Used as label for Return Reason in Online Return Details Screen -->
+    <string name="return_reason">وجہِ واپسی</string>
+    <!-- Used as label for Return Method in Online Return Details Screen -->
+    <string name="return_method">طریقہِ واپسی</string>
+    <!-- Used as label for Refund Method Online Return Details Screen -->
+    <string name="return_payment">رقم کی واپسی کا طریقہ کار</string>
+    <!-- Used as error message warning when a Shipping or Billing address is not valid anymore -->
+    <string name="invalid_address_shipping_billing">یہ پتہ درست نہیں ہے، براۓ مہربانی اسے تبدیل کریں</string>
+    <!-- Used as error message warning when a Address is not valid anymore -->
+    <string name="invalid_address_other">یہ پتہ درست نہیں ہے</string>
 </resources>

@@ -14,12 +14,14 @@ import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.home.TeaserCampaign;
 import com.mobile.newFramework.rest.RestUrlUtils;
+import com.mobile.newFramework.tracking.Ad4PushTracker;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.preferences.ShopPreferences;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.catalog.CatalogSort;
+import com.mobile.utils.catalog.UICatalogUtils;
 import com.mobile.utils.location.LocationHelper;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
@@ -42,26 +44,22 @@ public class DeepLinkManager {
 
     public static final String EXTRA_GCM_PAYLOAD = "com.ad4screen.sdk.extra.GCM_PAYLOAD";
 
-    private static final String CATEGORY_KEY = "?category=";
-
-    private static final int PATH_CC_POS = 0;
-    private static final int PATH_VIEW_POS = 1;
-    private static final int PATH_DATA_POS = 2;
+    // ORIGIN
     public static final int FROM_GCM = 0;
     public static final int FROM_URI = 1;
     public static final int FROM_UNKNOWN = -1;
+    // PATH POSITION
+    private static final int PATH_CC_POS = 0;
+    private static final int PATH_VIEW_POS = 1;
+    private static final int PATH_DATA_POS = 2;
+    // SIZES
     private static final int CC_SIZE = 2;
     private static final int CATALOG_MIN_SEGMENTS = 3;
+    // LINK TYPES
     private static final String DEFAULT_TAG = "default";
     private static final String CATALOG_BRAND_TAG = "b";
+    private static final String CATALOG_SELLER_TAG = "sc";
     private static final String CATALOG_TAG = "c";
-    private static final String CATALOG_SORT_RATING_TAG = "cbr";
-    private static final String CATALOG_SORT_POPULARITY_TAG = "cp";
-    private static final String CATALOG_SORT_NEW_TAG = "cin";
-    private static final String CATALOG_SORT_PRICE_UP_TAG = "cpu";
-    private static final String CATALOG_SORT_PRICE_DOWN_TAG = "cpd";
-    private static final String CATALOG_SORT_NAME_TAG = "cn";
-    private static final String CATALOG_SORT_BRAND_TAG = "cb";
     private static final String CART_TAG = "cart";
     private static final String PDV_TAG = "d";
     private static final String SEARCH_TERM_TAG = "s";
@@ -75,7 +73,15 @@ public class DeepLinkManager {
     private static final String FAVORITES_TAG = "w";
     private static final String SHOPS_IN_SHOP_TAG = "ss";
     public static final String PDV_SIZE_TAG = "size";
-    public static final String COUNTRY_TAG = "country";
+    private static final String COUNTRY_TAG = "country";
+    // CATALOG SORT TYPES
+    private static final String SORT_RATING = "br";
+    private static final String SORT_POPULARITY = "p";
+    private static final String SORT_NEW = "in";
+    private static final String SORT_PRICE_UP = "pu";
+    private static final String SORT_PRICE_DOWN = "pd";
+    private static final String SORT_NAME = "n";
+    private static final String SORT_BRAND = "b";
 
     /**
      * Load the external deep link.<br>
@@ -161,7 +167,6 @@ public class DeepLinkManager {
         try {
             // Default case
             String tag = DEFAULT_TAG;
-
             // Validate current URI size
             if (CollectionUtils.isNotEmpty(segments) && segments.size() >= 2) {
                 tag = segments.get(PATH_VIEW_POS);
@@ -173,28 +178,48 @@ public class DeepLinkManager {
                     bundle = processCatalogBrandLink(segments.get(PATH_DATA_POS));
                     break;
                 case CATALOG_TAG:
-                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments);
+                case CATALOG_TAG + SORT_POPULARITY:
+                    bundle = processCatalogCategoryLink(CatalogSort.POPULARITY, segments);
                     break;
-                case CATALOG_SORT_RATING_TAG:
-                    bundle = processCatalogLink(CatalogSort.BEST_RATING, segments);
+                case CATALOG_TAG + SORT_RATING:
+                    bundle = processCatalogCategoryLink(CatalogSort.BEST_RATING, segments);
                     break;
-                case CATALOG_SORT_POPULARITY_TAG:
-                    bundle = processCatalogLink(CatalogSort.POPULARITY, segments);
+                case CATALOG_TAG + SORT_NEW:
+                    bundle = processCatalogCategoryLink(CatalogSort.NEW_IN, segments);
                     break;
-                case CATALOG_SORT_NEW_TAG:
-                    bundle = processCatalogLink(CatalogSort.NEW_IN, segments);
+                case CATALOG_TAG + SORT_PRICE_UP:
+                    bundle = processCatalogCategoryLink(CatalogSort.PRICE_UP, segments);
                     break;
-                case CATALOG_SORT_PRICE_UP_TAG:
-                    bundle = processCatalogLink(CatalogSort.PRICE_UP, segments);
+                case CATALOG_TAG + SORT_PRICE_DOWN:
+                    bundle = processCatalogCategoryLink(CatalogSort.PRICE_DOWN, segments);
                     break;
-                case CATALOG_SORT_PRICE_DOWN_TAG:
-                    bundle = processCatalogLink(CatalogSort.PRICE_DOWN, segments);
+                case CATALOG_TAG + SORT_NAME:
+                    bundle = processCatalogCategoryLink(CatalogSort.NAME, segments);
                     break;
-                case CATALOG_SORT_NAME_TAG:
-                    bundle = processCatalogLink(CatalogSort.NAME, segments);
+                case CATALOG_TAG + SORT_BRAND:
+                    bundle = processCatalogCategoryLink(CatalogSort.BRAND, segments);
                     break;
-                case CATALOG_SORT_BRAND_TAG:
-                    bundle = processCatalogLink(CatalogSort.BRAND, segments);
+                case CATALOG_SELLER_TAG:
+                case CATALOG_SELLER_TAG + SORT_POPULARITY:
+                    bundle = processCatalogSellerLink(CatalogSort.POPULARITY, segments);
+                    break;
+                case CATALOG_SELLER_TAG + SORT_RATING:
+                    bundle = processCatalogSellerLink(CatalogSort.BEST_RATING, segments);
+                    break;
+                case CATALOG_SELLER_TAG + SORT_NEW:
+                    bundle = processCatalogSellerLink(CatalogSort.NEW_IN, segments);
+                    break;
+                case CATALOG_SELLER_TAG + SORT_PRICE_UP:
+                    bundle = processCatalogSellerLink(CatalogSort.PRICE_UP, segments);
+                    break;
+                case CATALOG_SELLER_TAG + SORT_PRICE_DOWN:
+                    bundle = processCatalogSellerLink(CatalogSort.PRICE_DOWN, segments);
+                    break;
+                case CATALOG_SELLER_TAG + SORT_NAME:
+                    bundle = processCatalogSellerLink(CatalogSort.NAME, segments);
+                    break;
+                case CATALOG_SELLER_TAG + SORT_BRAND:
+                    bundle = processCatalogSellerLink(CatalogSort.BRAND, segments);
                     break;
                 case CART_TAG:
                     bundle = processCartLink(segments);
@@ -464,27 +489,46 @@ public class DeepLinkManager {
     }
 
     /**
+     * Class used to process the catalog category.
+     * - "<cc>/c/<category_key>"<br>
+     * - "<cc>/cbr/<category_key>"<br>
+     * ...
+     */
+    private static Bundle processCatalogCategoryLink(CatalogSort page, List<String> segments) {
+        return processCatalogLink(page, UICatalogUtils.getCategoryQueryParam(), segments);
+    }
+
+    /**
+     * Class used to process the catalog seller.<br>
+     * - "<cc>/sc/<seller_name>"<br>
+     * - "<cc>/scbr/<seller_name>"<br>
+     * ...
+     */
+    private static Bundle processCatalogSellerLink(CatalogSort page, List<String> segments) {
+        return processCatalogLink(page, UICatalogUtils.getSellerQueryParam(), segments);
+    }
+
+    /**
      * Method used to create a bundle for Catalog view with the respective catalog value.<br>
      * JUMIA://com.jumia.android/eg/c/surprise-your-guests?q=AKOZ--225&price=11720-53620&color_family=Noir--Bleu&size=38--40
      * @param segments The list of segments from URI.
      * @return {@link Bundle}
      * @author sergiopereira
      */
-    private static Bundle processCatalogLink(CatalogSort page, List<String> segments) {
+    private static Bundle processCatalogLink(CatalogSort page, String key, List<String> segments) {
         // Create bundle
         Bundle bundle = new Bundle();
         if (segments.size() >= CATALOG_MIN_SEGMENTS) {
-            String catalogUrlKey = CATEGORY_KEY + segments.get(PATH_DATA_POS);
-            Print.i(TAG, "DEEP LINK TO CATALOG: " + catalogUrlKey);
+            String query = key + segments.get(PATH_DATA_POS);
+            Print.i(TAG, "DEEP LINK TO CATALOG: " + query);
             ContentValues deepLinkValues = new ContentValues();
-            if (TextUtils.isNotEmpty(catalogUrlKey)) {
-                deepLinkValues = RestUrlUtils.getQueryParameters(catalogUrlKey);
+            if (TextUtils.isNotEmpty(query)) {
+                deepLinkValues = RestUrlUtils.getQueryParameters(query);
             }
             bundle.putParcelable(ConstantsIntentExtra.DATA, deepLinkValues);
             bundle.putInt(ConstantsIntentExtra.NAVIGATION_SOURCE, R.string.gpush_prefix);
-            bundle.putString(ConstantsIntentExtra.NAVIGATION_PATH, "");
             bundle.putInt(ConstantsIntentExtra.CATALOG_SORT, page.ordinal());
-            bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEPLINK);
+            bundle.putSerializable(ConstantsIntentExtra.FRAGMENT_TYPE, FragmentType.CATALOG_DEEP_LINK);
         }
         return bundle;
     }
@@ -621,10 +665,13 @@ public class DeepLinkManager {
         // Get intent action ACTION_VIEW
         String action = intent.getAction();
         // Get intent data
-        Uri data = intent.getData();
+        Uri uri = intent.getData();
         // ## DEEP LINK FROM EXTERNAL URIs ##
-        if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && data != null) {
-            bundle = loadDeepLink(data);
+        if (!TextUtils.isEmpty(action) && action.equals(Intent.ACTION_VIEW) && uri != null) {
+            // ReAttribution
+            TrackerDelegator.deepLinkReAttribution(uri);
+            // Load deep link
+            bundle = loadDeepLink(uri);
             Print.i(TAG, "DEEP LINK: RECEIVED FROM URI");
         }
         return bundle;
@@ -646,6 +693,8 @@ public class DeepLinkManager {
         if (null != payload) {
             // Get UTM
             String mUtm = payload.getString(ConstantsIntentExtra.UTM_STRING);
+
+            TrackerDelegator.trackOpenPushNotification();
             // ## Google Analytics "General Campaign Measurement" ##
             TrackerDelegator.trackGACampaign(JumiaApplication.INSTANCE.getApplicationContext(), mUtm);
             Print.i(TAG, "UTM FROM GCM: " + mUtm);
@@ -653,12 +702,14 @@ public class DeepLinkManager {
             String deepLink = payload.getString(DEEP_LINK_PAGE_INDICATION);
             Print.i(TAG, "DEEP LINK: GCM " + deepLink);
             // Validate deep link
-            if (!TextUtils.isEmpty(deepLink)) {
+            if (TextUtils.isNotEmpty(deepLink)) {
                 // Create uri from the value
-                Uri data = Uri.parse(deepLink);
-                Print.d(TAG, "DEEP LINK URI: " + data.toString() + " " + data.getPathSegments().toString());
+                Uri uri = Uri.parse(deepLink);
+                Print.d(TAG, "DEEP LINK URI: " + uri.toString() + " " + uri.getPathSegments().toString());
+                // ReAttribution
+                TrackerDelegator.deepLinkReAttribution(uri);
                 // Load deep link
-                bundle = loadDeepLink(data);
+                bundle = loadDeepLink(uri);
                 Print.i(TAG, "DEEP LINK: RECEIVED FROM GCM");
             }
         }
@@ -678,8 +729,6 @@ public class DeepLinkManager {
         boolean isDeepLinkLaunch = launchValidDeepLink(activity, mDeepLinkBundle);
         // Track open app event for all tracker but Adjust
         TrackerDelegator.trackAppOpen(activity.getApplicationContext(), isDeepLinkLaunch);
-        // Adjust reattribution
-        TrackerDelegator.deeplinkReattribution(intent);
         // return result
         return isDeepLinkLaunch;
     }

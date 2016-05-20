@@ -14,6 +14,11 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="HeaderStyle.Multiline">
+        <item name="android:singleLine">false</item>
+        <item name="android:layout_height">64dp</item>
+    </style>
+
     <style name="HeaderStyle.Center">
         <item name="android:gravity">center</item>
     </style>
@@ -22,6 +27,13 @@
     <style name="SingleLineGroupStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="SingleLineGroupStyle.Border_300">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:background">@drawable/_gen_background_border_black_300</item>
     </style>
 
     <!-- Single line item -->
@@ -42,6 +54,10 @@
 
     <style name="MultiLineStyle.Space_XS">
         <item name="android:lineSpacingExtra">@dimen/margin_padding_xs</item>
+    </style>
+
+    <style name="MultiLineStyle.Black">
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="WishListButtonStyle">
@@ -179,6 +195,22 @@
         <item name="android:paddingLeft">@dimen/margin_padding_xxl</item>
         <item name="android:paddingRight">@dimen/margin_padding_xxl</item>
         <item name="android:textColor">@drawable/selector_campaign_tab_text</item>
+    </style>
+
+    <!-- IMAGE STYLE: LIST|GRID|PAGE-->
+    <style name="ProductImageListStyle" >
+        <item name="android:layout_width">82dp</item>
+        <item name="android:layout_height">103dp</item>
+    </style>
+
+    <style name="ProductImageGridStyle" >
+        <item name="android:layout_width">98dp</item>
+        <item name="android:layout_height">123dp</item>
+    </style>
+
+    <style name="ProductImagePageStyle">
+        <item name="android:layout_width">228dp</item>
+        <item name="android:layout_height">287dp</item>
     </style>
 
     <!-- TODO : ADD HERE GENERIC COMPONENTS STYLES ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ ↑ -->
