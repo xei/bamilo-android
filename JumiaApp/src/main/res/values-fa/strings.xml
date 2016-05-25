@@ -69,7 +69,7 @@
     <string name="fallback_home_office">خانه و دفتر کار</string>
     <string name="fallback_maintenance">نگهداری</string>
     <string name="fallback_maintenance_text">در حال بروزرسانی است</string>
-    <string name="fallback_maintenance_text_bottom">ما به این موضوع رسیدگی خواهیم کرد، شما می توانید بعدا دوباره اقدام نمایید.</string>
+    <string name="fallback_maintenance_text_bottom">ما در حال بررسی مشکل هستیم، شما می توانید بعدا دوباره اقدام نمایید.</string>
     <string name="fallback_mobile">تلفن های همراه</string>
     <string name="fallback_welcome">خوش آمدید به</string>
     <string name="fgt_pass">آیا رمز عبور خود را فراموش کرده اید؟</string>
@@ -80,7 +80,7 @@
     <string name="forgotten_password_sub_text">به منظور تغییر رمز عبور لینکی برای شما ارسال خواهد شد.</string>
     <string name="forgotten_password_successtext">پست الکترونیکی ارسال شد.</string>
     <string name="form_passwordsnomatch">رمز عبور اشتباه است.</string>
-    <string name="form_texttolong">متن طولانی است.</string>
+    <string name="form_texttolong"> متن وارد شده طولانی است.</string>
     <string name="form_texttoshort">متن کوتاه است.</string>
     <string name="free_label">رایگان</string>
     <string name="got_it">متوجه شدم.</string>
@@ -177,7 +177,11 @@
     <string name="share_checkout_this_product">این کالاهایی که یافته ام را نیز مشاهده کنید:</string>
     <string name="share_subject">اشتراک گذاری %s</string>
     <string name="shipping">ارسال کالا</string>
+    <string name="basket_label">سبد خرید</string>
     <string name="shoppingcart_alert_message_no_items">سبد خرید خالی است! لطفا به آن کالا اضافه کنید.</string>
+    <string name="choose_quantity">تعداد را مشخص کنید</string>
+    <string name="delete_label">پاک کردن</string>
+    <string name="quantity_label">تعداد</string>
     <string name="sign_in">ورود</string>
     <string name="sign_out">خروج</string>
     <string name="size_guide_label">راهنمای انتخاب سایز</string>
@@ -271,7 +275,7 @@
     <string name="rating_placeholder">امتیازات (‎%s‎)</string>
     <string name="reviews_placeholder">نظرات کاربران (‎%s‎)</string>
     <string name="rating_average_placeholder">از نظر ‎%s‎ کاربران</string>
-    <string name="rat_rev">نظرات و پیشنهادها</string>
+    <string name="rat_rev">نظرات و پیشنهادات</string>
     <string name="fulfilled_by">تامین کننده: ‎%s‎</string>
     <string name="policy">قوانین و سیاست ها</string>
     <string name="shipment">روش ارسال ‎%1$d‎ از ‎%2$d‎</string>
@@ -345,8 +349,47 @@
     <string name="visit_the_official_brand_store">مشاهده محصولات ‎%s‎</string>
     <string name="free_shipping_possible">می توانید از ارسال رایگان بهره مند شوید</string>
     <string name="register_more_info">برای ایجاد حساب کاربری شما به اطلاعات بیشتری نیاز داریم.</string>
+    <string name="go_label">برو</string>
     <!-- Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
-    <string name="items_returned_on">‎%1$s‎ تعداد کالا در تاریخ ‎%2$s‎ برگشت داده شد\n</string>
+    <string name="items_returned_on">‎%1$s‎ تعداد کالا در تاریخ ‎%2$s‎ برگشت داده شد</string>
     <string name="return_selected_items">بازگشت کالاهای مشخص شده</string>
     <string name="return_label">بازگشت</string>
+    <string name="call_return_label">برای برگرداندن محصول تماس بگیرید.</string>
+    <string name="call_now_label">همین حالا تماس بگیرید</string>
+    <string name="shipment_label">وضعیت:</string>
+    <string name="returns_label">بازگشت:</string>
+    <!-- Used in Online Returns when user tries to click on return selected without selecting any item -->
+    <string name="warning_no_items_selected">لطفا کالاهایی را که میخواهید برگردانید، مشخص کنید:</string>
+    <string name="ok_got_it">تایید</string>
+    <!-- Used in Return item and Order Return Call Screen to show order number -->
+    <string name="order_number_placeholder">شماره سفارش: ‎%s‎</string>
+    <!-- Used in Order Return Conditions Screen as title -->
+    <string name="order_return_conditions_title">از اینکه از خریدتان راضی نبودید متاسفیم</string>
+    <!-- Used as title for Online Return Step 1 (Return Reason) -->
+    <string name="order_return_reason_title">چرا میخواهید خریدتان را برگردانید؟</string>
+    <!-- Used as title for Online Return Step 2 (Return Method) -->
+    <string name="order_return_method_title">چگونه می‌خواهید خریدتان را برگردانید؟</string>
+    <!-- Used as title for Online Return Step 3 (Return Refund) -->
+    <string name="order_return_refund_title">چگونه می‌خواهید مبلغ سفارشتان را پس بگیرید؟</string>
+    <string name="order_return_finish_title">جزئیات فرایند بازگشت سفارشتان را تایید کنید</string>
+    <string name="send_label">ارسال</string>
+    <string name="quantity_to_return">تعداد مورد نظر برای برگرداندن</string>
+    <!-- Used as to inform the user the number of items that are selected to return -->
+    <string name="quantity_to_return_placeholder">تعداد: ‎%s‎</string>
+    <string name="quantity_placeholder">تعداد: ‎%s‎</string>
+    <!-- Used as fallback when device has no SIM Card to inform the user of the Customer Service number -->
+    <string name="please_call_placeholder">تماس با ما با شماره ‎%s‎</string>
+    <!-- Used as error message when user doesn't select any option and tries to proceed -->
+    <string name="warning_please_select_one">لطفا یکی از گزینه ها را انتخاب کنید تا به مرحله بعد بروید</string>
+    <string name="everything_looks_good">اگر با تمام موارد موافقید، دکمه ارسال را فشار دهید.</string>
+    <!-- Used as label for Return Reason in Online Return Details Screen -->
+    <string name="return_reason">دلیل برگرداندن محصول</string>
+    <!-- Used as label for Return Method in Online Return Details Screen -->
+    <string name="return_method">روش برگرداندن محصول</string>
+    <!-- Used as label for Refund Method Online Return Details Screen -->
+    <string name="return_payment">روش برگرداندن مبلغ سفارش</string>
+    <!-- Used as error message warning when a Shipping or Billing address is not valid anymore -->
+    <string name="invalid_address_shipping_billing">نشانی وارد شده صحیح نمی‌باشد، لطفا نشانی را تغییر دهید.</string>
+    <!-- Used as error message warning when a Address is not valid anymore -->
+    <string name="invalid_address_other">نشانی وارد شده صحیح نمی‌باشد.</string>
 </resources>

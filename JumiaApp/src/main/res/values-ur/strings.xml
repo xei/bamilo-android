@@ -356,10 +356,10 @@
     <string name="return_label">واپس کریں</string>
     <string name="call_return_label">واپس کرنے کے لیے ہمیں کال کریں</string>
     <string name="call_now_label">ابھی کال کریں</string>
-    <string name="shipment_label">شِپمینٹ</string>
+    <string name="shipment_label">اِسٹیٹس:</string>
     <string name="returns_label">واپس کردہ اشیاء</string>
     <!-- Used in Online Returns when user tries to click on return selected without selecting any item -->
-    <string name="warning_no_items_selected">واپس کرنے کے لیے کوئی اشیاء منتخب نہیں.</string>
+    <string name="warning_no_items_selected">براۓ مہربانی واپس کرنے کے لیے اشیاء منتخب کریں.</string>
     <string name="ok_got_it">ٹھیک ہے، سمجھ آگیا</string>
     <!-- Used in Return item and Order Return Call Screen to show order number -->
     <string name="order_number_placeholder">آرڈر ‎%s‎ Nº</string>

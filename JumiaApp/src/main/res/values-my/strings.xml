@@ -351,15 +351,15 @@
     <string name="register_more_info">အေကာင့္ျပဳလုပ္ရန္ အခ်က္အလက္အနည္းငယ္ လိုအပ္ပါသည္</string>
     <string name="go_label">သြားရန္</string>
     <!-- Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
-    <string name="items_returned_on">ပစၥည္း %2$s တြင္ %1$s အား ျပန္လည္ပို႕ေဆာင္ၿပီးပါၿပီ \n</string>
+    <string name="items_returned_on">%2$s တြင္ %1$s ခုအား ျပန္လည္ပို႕ေဆာင္ၿပီးပါၿပီ </string>
     <string name="return_selected_items">ေရြးခ်ယ္ထားေသာ ပစၥည္းမ်ားအား ျပန္လည္ပို႕ေဆာင္ရန္</string>
     <string name="return_label">ျပန္လည္ပို႕ေဆာင္ရန္</string>
     <string name="call_return_label">ပစၥည္းျပန္ပို႕ရန္အတြက္ဖုန္းေခၚဆုိရန္</string>
     <string name="call_now_label">ဖုန္းေခၚရန္</string>
-    <string name="shipment_label">သယ္ယူပို႕ေဆာင္ျခင္း</string>
-    <string name="returns_label">ျပန္လည္ပို႕ေဆာင္ရန္</string>
+    <string name="shipment_label">အေျခအေန</string>
+    <string name="returns_label">ျပန္လည္ပို႕ေဆာင္ရန္:</string>
     <!-- Used in Online Returns when user tries to click on return selected without selecting any item -->
-    <string name="warning_no_items_selected">ျပန္လည္ပို႕ေဆာင္ရန္ ပစၥည္းေရြးခ်ယ္ထားျခင္းမရွိပါ</string>
+    <string name="warning_no_items_selected">ျပန္လည္ပို႕ေဆာင္ရန္ ပစၥည္းေရြးခ်ယ္ပါ</string>
     <string name="ok_got_it">သိရွိပါသည္</string>
     <!-- Used in Return item and Order Return Call Screen to show order number -->
     <string name="order_number_placeholder">ေအာ္ဒါနံပါတ္ %s</string>
@@ -387,7 +387,7 @@
     <!-- Used as label for Return Method in Online Return Details Screen -->
     <string name="return_method">ျပန္ပို႕လုိေသာနည္းလမ္း</string>
     <!-- Used as label for Refund Method Online Return Details Screen -->
-    <string name="return_payment">ပစၥည္းျပန္ပို႕ျခင္းေငြေခ်ရန္နည္းလမ္း</string>
+    <string name="return_payment">ျပန္အမ္းေငြရယူရန္နည္းလမ္း</string>
     <!-- Used as error message warning when a Shipping or Billing address is not valid anymore -->
     <string name="invalid_address_shipping_billing">လိပ္စာမွားယြင္းေနပါသည္။ ေက်းဇူးျပဳ၍ေျပာင္းလဲပါ။</string>
     <!-- Used as error message warning when a Address is not valid anymore -->
