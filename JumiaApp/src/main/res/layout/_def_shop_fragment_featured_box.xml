@@ -14,6 +14,6 @@
         android:id="@+id/shop_featured_box_horizontal_list"
         style="@style/HorizontalListStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/home_top_sellers_teaser_item_height" />
+        android:layout_height="@dimen/dimen_220dp" />
 
 </LinearLayout>
