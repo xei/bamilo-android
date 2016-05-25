@@ -57,8 +57,9 @@ public class SuperWebView extends WebView {
 
     /**
      * Load html data.
+     * The base url is "http://" because the target links with "_" are being interpreted as path of base url.
      */
     public void loadData(@Nullable String html) {
-        loadDataWithBaseURL(null, html, "text/html", "utf-8", null);
+        loadDataWithBaseURL("http://", html, "text/html", "utf-8", null);
     }
 }

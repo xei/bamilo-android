@@ -15,6 +15,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.webview.SuperWebView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
@@ -308,7 +309,10 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             Print.i(TAG, "SHOULD OVERRIDE URL LOADING: " + url);
             // Parse, validate and goto the deep link
-            processDeepLink(url);
+            if (!processDeepLink(url)) {
+                // Or external link
+                ActivitiesWorkFlow.startExternalWebActivity(getBaseActivity(), url, "");
+            }
             // Return link processed
             return true;
         }
@@ -319,13 +323,12 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      *
      * @param link The deep link
      */
-    private void processDeepLink(String link) {
+    private boolean processDeepLink(String link) {
         // Parse target link
-        new TargetLink(getWeakBaseActivity(), link)
+        return new TargetLink(getWeakBaseActivity(), link)
                 .addTitle(mTitle)
                 .setOrigin(mGroupType)
                 .retainBackStackEntries()
-                .enableWarningErrorMessage()
                 .run();
     }
 
