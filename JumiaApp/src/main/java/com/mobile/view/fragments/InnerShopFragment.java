@@ -23,6 +23,7 @@ import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.tracking.AbcBaseTracker;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -311,7 +312,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             // Parse, validate and goto the deep link
             if (!processDeepLink(url)) {
                 // Or external link
-                ActivitiesWorkFlow.startExternalWebActivity(getBaseActivity(), url, "");
+                ActivitiesWorkFlow.startExternalWebActivity(getBaseActivity(), url, AbcBaseTracker.NOT_AVAILABLE);
             }
             // Return link processed
             return true;
