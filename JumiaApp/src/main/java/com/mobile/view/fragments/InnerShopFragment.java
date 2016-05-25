@@ -33,6 +33,8 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.view.R;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.EnumSet;
 
 /**
@@ -306,9 +308,17 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             showContinueShopping();
         }
 
+        /**
+         * https://developer.android.com/guide/webapps/migrating.html#URLs
+         */
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Print.i(TAG, "SHOULD OVERRIDE URL LOADING: " + url);
+            Print.i("SHOULD OVERRIDE URL LOADING: " + url);
+            try {
+                url = URLDecoder.decode(url, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                Print.w("WARNING ON DECODE URL", e);
+            }
             // Parse, validate and goto the deep link
             if (!processDeepLink(url)) {
                 // Or external link
