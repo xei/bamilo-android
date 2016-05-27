@@ -351,7 +351,7 @@
     <string name="register_more_info">Nous avons juste besoin d\'un peu plus de détails pour créer votre compte.</string>
     <string name="go_label">Découvrir</string>
     <!-- Used in Order Details to show the number of items returned. eg. 3 items returned on 12-12-2016 -->
-    <string name="items_returned_on">%1$s article(s) retourné(s) le %2$s\n</string>
+    <string name="items_returned_on">%1$s article(s) retourné(s) le %2$s</string>
     <string name="return_selected_items">RETOURNER LES ARTICLES SÉLECTIONNÉS</string>
     <string name="return_label">RETOURNER</string>
     <string name="call_return_label">RETOUR PAR TÉLÉPHONE</string>

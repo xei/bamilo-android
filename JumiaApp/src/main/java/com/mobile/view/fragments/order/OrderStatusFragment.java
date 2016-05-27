@@ -318,10 +318,8 @@ public class OrderStatusFragment extends BaseFragmentAutoState implements IRespo
                 if(CollectionUtils.isNotEmpty(item.getOrderReturns())){
                     String orderReturns = "";
                     for (OrderReturn orderReturn : item.getOrderReturns() ) {
-                        orderReturns+=String.format(getString(R.string.items_returned_on),
-                                orderReturn.getQuantity(), orderReturn.getDate());
+                        orderReturns += String.format(getString(R.string.items_returned_on), orderReturn.getQuantity(), orderReturn.getDate()) + "\n";
                     }
-
                     holder.itemReturns.setText(orderReturns);
                     holder.itemReturnsLabel.setVisibility(View.VISIBLE);
                     holder.itemReturns.setVisibility(View.VISIBLE);

@@ -15,6 +15,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.components.recycler.HorizontalListView;
 import com.mobile.components.webview.SuperWebView;
 import com.mobile.constants.ConstantsIntentExtra;
+import com.mobile.controllers.ActivitiesWorkFlow;
 import com.mobile.helpers.configs.GetStaticPageHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.home.type.TeaserGroupType;
@@ -22,6 +23,7 @@ import com.mobile.newFramework.objects.statics.StaticFeaturedBox;
 import com.mobile.newFramework.objects.statics.StaticPage;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.tracking.AbcBaseTracker;
 import com.mobile.newFramework.utils.TextUtils;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.ShopSelector;
@@ -31,6 +33,8 @@ import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.home.holder.HomeTopSellersTeaserAdapter;
 import com.mobile.view.R;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.EnumSet;
 
 /**
@@ -304,11 +308,22 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             showContinueShopping();
         }
 
+        /**
+         * https://developer.android.com/guide/webapps/migrating.html#URLs
+         */
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            Print.i(TAG, "SHOULD OVERRIDE URL LOADING: " + url);
+            Print.i("SHOULD OVERRIDE URL LOADING: " + url);
+            try {
+                url = URLDecoder.decode(url, "utf-8");
+            } catch (UnsupportedEncodingException e) {
+                Print.w("WARNING ON DECODE URL", e);
+            }
             // Parse, validate and goto the deep link
-            processDeepLink(url);
+            if (!processDeepLink(url)) {
+                // Or external link
+                ActivitiesWorkFlow.startExternalWebActivity(getBaseActivity(), url, AbcBaseTracker.NOT_AVAILABLE);
+            }
             // Return link processed
             return true;
         }
@@ -319,13 +334,12 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
      *
      * @param link The deep link
      */
-    private void processDeepLink(String link) {
+    private boolean processDeepLink(String link) {
         // Parse target link
-        new TargetLink(getWeakBaseActivity(), link)
+        return new TargetLink(getWeakBaseActivity(), link)
                 .addTitle(mTitle)
                 .setOrigin(mGroupType)
                 .retainBackStackEntries()
-                .enableWarningErrorMessage()
                 .run();
     }
 
