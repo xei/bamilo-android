@@ -17,32 +17,13 @@ public class AvailableCountries extends ArrayList<CountryObject> implements IJSO
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-        JSONObject bamiloObject = new JSONObject();
-        JSONArray data = new JSONArray();
-        JSONObject jsonData = new JSONObject();
-        jsonData.put("name","staging sosis");
-        jsonData.put("url","staging.sosis.center/mobapi/");
-        jsonData.put("flag","http://img.freeflagicons.com/thumb/round_icon/iran/iran_256.png");
-        jsonData.put("user_agent","M_IRAMZ");
-        jsonData.put("country_iso","IR");
-        jsonData.put("force_https",false);
-        JSONArray languages = new JSONArray();
-        JSONObject lang_data = new JSONObject();
-        lang_data.put("code","fa_IR");
-        lang_data.put("name","fa_IR");
-        lang_data.put("default",true);
-        languages.put(lang_data);
-        jsonData.put("languages",languages);
-        data.put(jsonData);
-        bamiloObject.put("md5","98bed71d981997b8986a728f69edd509");
-        bamiloObject.put("data",data);
 
         JSONArray sessionJSONArray = null;
-        if (null != bamiloObject) {
-            sessionJSONArray = bamiloObject.optJSONArray(RestConstants.DATA);
+        if (null != jsonObject) {
+            sessionJSONArray = jsonObject.optJSONArray(RestConstants.DATA);
         }
 
-        if(sessionJSONArray != null){
+        if (sessionJSONArray != null) {
             for (int i = 0; i < sessionJSONArray.length(); i++) {
                 CountryObject mCountryObject = new CountryObject();
                 try {
