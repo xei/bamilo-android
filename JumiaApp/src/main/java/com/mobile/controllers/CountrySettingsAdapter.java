@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.configs.Languages;
+import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.ShopSelector;
 import com.mobile.utils.imageloader.RocketImageLoader;
 import com.mobile.view.R;
@@ -26,11 +27,11 @@ import com.mobile.view.fragments.MyAccountFragment;
  *
  */
 public class CountrySettingsAdapter extends BaseAdapter{
-
+    int i =0;
     public static class CountryLanguageInformation{
         public String countryName;
         public String countryFlag;
-        public Languages languages;
+
     }
 
     private final CountryLanguageInformation countryObject;
@@ -45,7 +46,7 @@ public class CountrySettingsAdapter extends BaseAdapter{
 
     @Override
     public int getCount() {
-        return mSingleShop ? 1 : 2;
+        return 1;
     }
 
     @Override
@@ -62,28 +63,21 @@ public class CountrySettingsAdapter extends BaseAdapter{
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         if(convertView == null){
-            view = mInflater.inflate((position == MyAccountFragment.POSITION_COUNTRY && !mSingleShop) ? R.layout.country_settings_list_item : R.layout._def_my_account_language_item, parent, false);
+
+            view = mInflater.inflate( R.layout.country_settings_list_item , parent, false);
         } else {
             view = convertView;
         }
 
         TextView country = (TextView) view.findViewById(R.id.option_name);
         TextView info = (TextView) view.findViewById(R.id.option_info);
-
+        ImageView img = (ImageView) view.findViewById(R.id.country_icon);
+        img.setImageDrawable(view.getResources().getDrawable(R.drawable.privacy_icons));
         if(!mSingleShop && position == MyAccountFragment.POSITION_COUNTRY){
             country.setText(R.string.country);
             info.setText(countryObject.countryName);
             ImageView flag = (ImageView)view.findViewById(R.id.flag);
             RocketImageLoader.instance.loadImage(countryObject.countryFlag, flag, null, R.drawable.no_image_small);
-        } else {
-            country.setText(R.string.language);
-            info.setText(countryObject.languages.getSelectedLanguage().getLangName());
-            if(countryObject.languages.size() <= 1){
-                country.setTextColor(view.getResources().getColor(R.color.black_700));
-                info.setTextColor(view.getResources().getColor(R.color.black_700));
-                view.setEnabled(false);
-                view.setOnClickListener(null);
-            }
         }
         return view;
     }

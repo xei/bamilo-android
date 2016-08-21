@@ -218,7 +218,9 @@
     <string name="writereview_send">ارسال نقد و بررسی</string>
     <string name="yes_label">آری</string>
     <string name="install_android">نصب نرم افزار ‎%s‎ در یک چشم بهم زدن</string>
-    <string name="share_the_app">برنامه را به اشتراک بگذار</string>
+    <string name="share_the_app">
+        برنامه را به اشتراک بگذار
+    </string>
     <string name="app_social">آیکون شبکه های اجتماعی</string>
     <string name="sort_by">مرتب سازی بر اساس</string>
     <string name="plurals_rating">%d امتیاز</string>
@@ -308,7 +310,9 @@
     <string name="cta_button_view_cart">مشاهده سبد کالا</string>
     <string name="cta_link_continue_shopping">ادامه خرید</string>
     <string name="up_to_date">برروز شده</string>
-    <string name="rate_the_app">به برنامه امتیاز بدهید</string>
+    <string name="rate_the_app">
+        به برنامه امتیاز بدهید
+    </string>
     <string name="order_track_check">از بخش "سفارشات من" می‌توانید وضعیت سفارش خود را پیگیری کنید.</string>
     <string name="select_city">لطفاً شهر خود را انتخاب کنید.</string>
     <string name="no_saved_items">کالای ذخیره‌ شده‌ای وجود ندارد.</string>
