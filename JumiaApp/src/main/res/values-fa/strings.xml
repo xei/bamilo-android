@@ -4,7 +4,7 @@
     <string name="account_name">حساب کاربری من ‎</string>
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
     <string name="action_label_basket">سبد کالا</string>
-    <string name="action_label_search_hint">جستجو در %s</string>
+    <string name="action_label_search_hint">جستجو در بامیلو</string>
     <string name="add_to_shopping_cart">افزودن به سبد خرید</string>
     <string name="added_bundle_to_shop_cart_dialog_text">کالاها به سبد خرید اضافه شدند.</string>
     <string name="added_to_shop_cart_dialog_text">کالا به سبد خرید شما اضافه شد.</string>
@@ -262,7 +262,9 @@
     <string name="buy_the_look">مجموعه پیشنهادی</string>
     <string name="buy_now_button">خرید کنید</string>
     <string name="pre_order">پیش سفارش</string>
-    <string name="saved">ذخیره شد</string>
+    <string name="saved">
+        علاقه مندی ها
+    </string>
     <string name="products_added_saved">کالا به موارد ذخیره شده افزوده شد</string>
     <string name="products_removed_saved">کالا از موارد ذخیره شده حذف شد</string>
     <string name="warranty">گارانتی : ‎%s‎</string>
