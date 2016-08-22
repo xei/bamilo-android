@@ -208,7 +208,7 @@ public class CountryPersistentConfigs {
         SharedPreferences settings = context.getSharedPreferences(Constants.SHARED_PREFERENCES, Activity.MODE_PRIVATE);
         countryLanguageInformation.countryName = settings.getString(Darwin.KEY_SELECTED_COUNTRY_NAME, null);
         countryLanguageInformation.countryFlag = settings.getString(Darwin.KEY_SELECTED_COUNTRY_FLAG, null);
-        countryLanguageInformation.languages = getLanguages(settings);
+       // countryLanguageInformation.languages = getLanguages(settings);
         return countryLanguageInformation;
     }
 

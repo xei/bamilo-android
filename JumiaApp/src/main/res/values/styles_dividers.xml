@@ -87,7 +87,8 @@
 
     <!-- MY ACCOUNT SECTION -->
 
-    <style name="MyAccountSection" parent="ViewGroupCompat.Vertical.MiddleDivider.EndDivider" />
+    <style name="MyAccountSection"
+        parent="ViewGroupCompat.Vertical.MiddleDivider.EndDivider" />
 
 
     <!-- CATALOG FILTER -->
