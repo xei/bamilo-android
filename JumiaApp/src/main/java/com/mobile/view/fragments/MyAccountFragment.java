@@ -272,17 +272,17 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
             getBaseActivity().onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
         }
         // Case language
-        else {
+       /* else {
             CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.shop_settings);
-            ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
+           *//* ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
                 public void run() {
                     // Clear Country Configs to force update.
                     clearCountryConfigs();
                     getBaseActivity().restartAppFlow();
                 }
-            });
-        }
+            });*//*
+        }*/
     }
 
 

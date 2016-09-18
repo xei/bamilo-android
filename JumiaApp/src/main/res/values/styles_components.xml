@@ -2,6 +2,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
     <!-- ################# GENERIC COMPONENTS STYLES ################# -->
+    <!--My Account Header-->
+    <style name="MyAccountHeaderStyle" parent="@style/TextBase.HeadLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:minHeight">1dp</item>
+        <item name="android:paddingLeft">@dimen/margin_padding_xl</item>
+        <item name="android:paddingRight">@dimen/margin_padding_xl</item>
+        <item name="android:background">@color/black_300</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 
     <!-- Header -->
     <style name="HeaderStyle" parent="@style/TextBase.HeadLine">
@@ -198,12 +209,12 @@
     </style>
 
     <!-- IMAGE STYLE: LIST|GRID|PAGE-->
-    <style name="ProductImageListStyle" >
+    <style name="ProductImageListStyle">
         <item name="android:layout_width">82dp</item>
         <item name="android:layout_height">103dp</item>
     </style>
 
-    <style name="ProductImageGridStyle" >
+    <style name="ProductImageGridStyle">
         <item name="android:layout_width">98dp</item>
         <item name="android:layout_height">123dp</item>
     </style>
