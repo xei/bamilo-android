@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.statics.TargetHelper;
@@ -44,7 +43,7 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
     @Override
     public int getCount() {
         // Has always at least one item
-        return 1 ;
+        return 1 + (staticPages != null ? staticPages.size(): 0);
     }
 
     @Override
@@ -73,8 +72,7 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
             optionsName.setText(R.string.app_version);
             TextView appVersionLabel = (TextView) view.findViewById(R.id.app_version_label);
             TextView updateLabel = (TextView) view.findViewById(R.id.update_label);
-            ImageView img = (ImageView) view.findViewById(R.id.app_version_icon);
-            img.setImageDrawable(view.getResources().getDrawable(R.drawable.app_ver_icons));
+
             appVersionLabel.setText(DeviceInfoHelper.getVersionName(view.getContext()));
 
             if(CheckVersion.needsToShowDialog()) {
@@ -86,7 +84,8 @@ public class MyAccountMoreInfoAdapter extends BaseAdapter{
             }
 
         } else {
-          return view;
+            TargetHelper targetHelper = staticPages.get(position - 1);
+            optionsName.setText(targetHelper.getTargetTitle());
         }
 
         return view;

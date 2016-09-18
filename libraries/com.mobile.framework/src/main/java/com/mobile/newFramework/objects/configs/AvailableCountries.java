@@ -17,13 +17,11 @@ public class AvailableCountries extends ArrayList<CountryObject> implements IJSO
 
     @Override
     public boolean initialize(JSONObject jsonObject) throws JSONException {
-
         JSONArray sessionJSONArray = null;
         if (null != jsonObject) {
             sessionJSONArray = jsonObject.optJSONArray(RestConstants.DATA);
         }
-
-        if (sessionJSONArray != null) {
+        if(sessionJSONArray != null){
             for (int i = 0; i < sessionJSONArray.length(); i++) {
                 CountryObject mCountryObject = new CountryObject();
                 try {

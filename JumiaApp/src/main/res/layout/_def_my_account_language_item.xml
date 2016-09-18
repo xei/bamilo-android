@@ -1,49 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:paddingTop="10dp">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/country_icon"
-        android:layout_width="@dimen/dimen_28dp"
-        android:layout_height="@dimen/dimen_43dp"
-        android:layout_centerVertical="true"
-        android:src="@mipmap/ic_launcher"
-        android:layout_alignParentLeft="false"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="20dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:gravity="left|start"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/margin_padding_xl"
+        android:paddingTop="@dimen/margin_padding_xl">
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/option_name"
-        style="@style/TextBase.List.Black"
-        android:text="Title"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="60dp" />
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/option_name"
+            style="@style/TextBase.List.Black"
+            android:text="Title"
+            />
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/option_info"
-        style="@style/TextBase.Body.Black_800"
-        android:text="Info"
-        android:layout_below="@+id/option_name"
-        android:layout_alignLeft="@+id/option_name"
-        android:layout_alignStart="@+id/option_name" />
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/option_info"
+            style="@style/TextBase.Body.Black_800"
+            android:text="Info"
+            />
+    </LinearLayout>
 
-    <ImageView
-        android:id="@+id/flag"
-        android:layout_width="@dimen/dimen_28dp"
-        android:layout_height="@dimen/dimen_43dp"
-        android:layout_centerVertical="true"
-        android:src="@mipmap/ic_launcher"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_alignParentRight="false"
-        android:layout_marginRight="20dp"  />
-
-</RelativeLayout>
+</LinearLayout>

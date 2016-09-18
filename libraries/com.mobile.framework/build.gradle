@@ -53,7 +53,7 @@ dependencies {
     // https://bintray.com/accengage/maven/A4SSDK/
     compile 'com.ad4screen.sdk:A4SSDK:3.3.0'
     // https://github.com/adjust/android_sdk
-    compile 'com.adjust.sdk:adjust-android:4.7.0'
+    compile 'com.adjust.sdk:adjust-android:4.1.2'
     // https://github.com/bitstadium/HockeySDK-Android
     compile 'net.hockeyapp.android:HockeySDK:3.6.0'
     /** ALGOLIA **/

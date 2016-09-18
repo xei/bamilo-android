@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/dimen_68dp">
 
     <include layout="@layout/_def_my_account_language_item" />
 
-
+    <ImageView
+        android:id="@+id/flag"
+        android:layout_width="@dimen/dimen_28dp"
+        android:layout_height="@dimen/dimen_43dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/margin_padding_xl"
+        android:layout_marginRight="@dimen/margin_padding_xl"
+        android:src="@mipmap/ic_launcher" />
 
 </RelativeLayout>

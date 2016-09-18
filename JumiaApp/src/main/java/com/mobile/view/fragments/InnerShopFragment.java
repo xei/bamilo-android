@@ -100,9 +100,8 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         mWebView = (SuperWebView) view.findViewById(R.id.shop_web_view);
         // Set the client
         mWebView.setWebViewClient(mInnerShopWebClient);
-
+        // Enable java script
         mWebView.enableJavaScript();
-
         // Validate the data (load/request/continue)
         onValidateDataState();
     }
@@ -189,7 +188,6 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             loadFeaturedBox(staticPage);
             // Load html and show container
             loadHtml(staticPage);
-            mWebView.requestFocus(View.FOCUS_DOWN);
             // Show container after load delay
             mScrollView.postDelayed(new Runnable() {
                 @Override
@@ -215,11 +213,9 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         if (staticPage.hasHtml()) {
             // Load the html response, striped two times
             mWebView.loadData(TextUtils.stripHtml(staticPage.getHtml()));
-            mWebView.requestFocus(View.FOCUS_DOWN);
         } else {
             // Hide web view
             mWebView.setVisibility(View.GONE);
-            mWebView.requestFocus(View.FOCUS_DOWN);
         }
     }
 

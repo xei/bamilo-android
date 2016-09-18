@@ -7,7 +7,6 @@
 
     <!-- WARNING: DISABLE SINGLE SHOP ONLY FOR DEV-->
     <bool name="is_single_shop_country">false</bool>
-    <!--<string name="countries_url">http://shareptcmobile.eu.pn/btmobapi/</string>-->
-    <string name="countries_url">http://staging.sosis.center/mobapi/v2.1/main/MobileConfig/</string>
+    <string name="countries_url">http://shareptcmobile.eu.pn/btmobapi/</string>
 
 </resources>

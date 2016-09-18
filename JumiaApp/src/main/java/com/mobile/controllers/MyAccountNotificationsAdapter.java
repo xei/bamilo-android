@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
@@ -41,7 +40,6 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
     private final String[] mOptions;
     private final int[] mCheckBoxes;
     Context mContext;
-    int i =0;
     private final LayoutInflater mInflater;
 
     /**
@@ -57,7 +55,6 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
         this.mOptions = options;
         this.mCheckBoxes = checkBoxes;
         this.mContext = context;
-
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -80,20 +77,11 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         // Recycle the convert view
         View view;
-        ImageView img;
         if (convertView != null) {
             view = convertView;
         } else {
             view = mInflater.inflate(R.layout._def_single_line_with_checkbox_component, parent, false);
-            //((SingleLineComponent) view).removeSelector();
-            if (mOptions[i].equals("اطلاعیه ها")) {
-                img = (ImageView) view.findViewById(R.id.country_icon);
-                img.setImageDrawable(view.getResources().getDrawable(R.drawable.announcements_icon));
-                i++;
-            } else {
-                img = (ImageView) view.findViewById(R.id.country_icon);
-                img.setImageDrawable(view.getResources().getDrawable(R.drawable.newsletter_icons));
-            }
+            ((SingleLineComponent) view).removeSelector();
         }
 
         // Get the Notification item name
