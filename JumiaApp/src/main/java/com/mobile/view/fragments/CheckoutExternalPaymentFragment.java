@@ -2,7 +2,9 @@ package com.mobile.view.fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,6 +36,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 import com.newrelic.agent.android.util.NetworkFailure;
@@ -45,8 +48,11 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.HttpCookie;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -58,6 +64,7 @@ import java.util.Set;
  * Web view to execute an external Payment
  *
  * @author Manuel Silva
+ * @edit Shahrooz Jahanshah
  */
 public class CheckoutExternalPaymentFragment extends BaseFragment implements IResponseCallback {
 
@@ -77,6 +84,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     private PaymentMethodForm mPaymentSubmitted;
 
+    String ResNum = null;
     /**
      * Empty constructor
      */
@@ -94,7 +102,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onAttach(android.app.Activity)
      */
     @Override
@@ -106,7 +114,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
      */
     @Override
@@ -123,7 +131,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.BaseFragment#onViewCreated(android.view.View,
      * android.os.Bundle)
      */
@@ -138,7 +146,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onStart()
      */
     @Override
@@ -149,7 +157,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onResume()
      */
     @Override
@@ -164,7 +172,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onPause()
      */
     @Override
@@ -175,7 +183,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see com.mobile.view.fragments.MyFragment#onStop()
      */
     @Override
@@ -186,7 +194,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see android.support.v4.app.Fragment#onDestroyView()
      */
     @Override
@@ -246,6 +254,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
     @SuppressWarnings("deprecation")
     private void startCheckout() {
+
         showFragmentLoading();
         webview.clearView();
         if (mPaymentSubmitted != null) {
@@ -265,24 +274,32 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
         if (mPaymentSubmitted.getContentValues() != null && mPaymentSubmitted.getMethod() == PaymentMethodForm.POST) {
             Set<Entry<String, Object>> mValues = mPaymentSubmitted.getContentValues().valueSet();
-            for (Entry<String, Object> entry : mValues) {
+            ResNum = (String) mPaymentSubmitted.getContentValues().get("ResNum");
+           /* for (Entry<String, Object> entry : mValues) {
                 if (entry.getKey().equalsIgnoreCase("tc")) {
                     parameters.add(new BasicNameValuePair(entry.getKey(), "1"));
                 } else {
                     parameters.add(new BasicNameValuePair(entry.getKey(), (String) entry.getValue()));
                 }
-            }
+            }*/
 
-            //Print.i(TAG, "code1content parameters: " + parameters);
-            UrlEncodedFormEntity entity;
-            try {
-                entity = new UrlEncodedFormEntity(parameters);
-                Print.d(TAG, "Loading Url complete: " + paymentUrl + "  " + parameters);
-                //setProxy();
-                webview.postUrl(paymentUrl, EntityUtils.toByteArray(entity));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+
+
+            Print.d(TAG, "Loading Url complete: " + ResNum + "  " );
+
+            String uri = Uri.parse("http://staging.sosis.center/androidpayment/sep/")
+                    .buildUpon()
+                    .appendQueryParameter("ResNum", ResNum)
+                    .appendQueryParameter("setDevice", "mobile")
+                    .build().toString();
+
+
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(String.valueOf(uri)));
+            startActivity(browserIntent);
+
+
+
         } else if (mPaymentSubmitted.getContentValues() != null) {
             Set<Entry<String, Object>> mValues = mPaymentSubmitted.getContentValues().valueSet();
             //setProxy();
@@ -369,7 +386,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see android.webkit.WebViewClient#onPageFinished(android.webkit.WebView,
          * java.lang.String)
          */
@@ -407,7 +424,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see android.webkit.WebViewClient#onLoadResource(android.webkit.WebView,
          * java.lang.String)
          */
@@ -425,7 +442,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see android.webkit.WebViewClient#onPageStarted(android.webkit.WebView, java.lang.String,
          * android.graphics.Bitmap)
          */
@@ -448,7 +465,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see android.webkit.WebViewClient#onReceivedSslError(android.webkit.WebView ,
          * android.webkit.SslErrorHandler, android.net.http.SslError)
          */
