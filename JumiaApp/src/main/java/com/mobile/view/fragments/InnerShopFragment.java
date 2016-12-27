@@ -187,6 +187,7 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
             // Load featured box
             loadFeaturedBox(staticPage);
             // Load html and show container
+            mWebView.requestFocus(View.FOCUS_DOWN);
             loadHtml(staticPage);
             // Show container after load delay
             mScrollView.postDelayed(new Runnable() {
@@ -212,9 +213,11 @@ public class InnerShopFragment extends BaseFragment implements IResponseCallback
         // Validate html
         if (staticPage.hasHtml()) {
             // Load the html response, striped two times
+            mWebView.requestFocus(View.FOCUS_DOWN);
             mWebView.loadData(TextUtils.stripHtml(staticPage.getHtml()));
         } else {
             // Hide web view
+            mWebView.requestFocus(View.FOCUS_DOWN);
             mWebView.setVisibility(View.GONE);
         }
     }
