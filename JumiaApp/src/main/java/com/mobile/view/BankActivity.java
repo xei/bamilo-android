@@ -8,6 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.a4s.sdk.plugins.annotations.UseA4S;
+import com.mobile.app.JumiaApplication;
+import com.mobile.helpers.SuperBaseHelper;
+import com.mobile.helpers.cart.ClearShoppingCartHelper;
+import com.mobile.interfaces.IResponseCallback;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.view.fragments.CheckoutThanksFragment;
 
 /**
  * for process bank payment from browser
@@ -16,7 +22,7 @@ import com.a4s.sdk.plugins.annotations.UseA4S;
 @UseA4S
 public class BankActivity extends Activity {
     private static final String LAUNCH_FROM_URL = "com.payment.browser";
-
+    private static final String TAG = BankActivity.class.getSimpleName();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,11 +51,21 @@ public class BankActivity extends Activity {
                 else
                 {
                     launchInfo.setText("پرداخت شما با موفقیت پرداخت شد");
+                    triggerClearCart();
                 }
             }
         }else{
             Intent myIntent = new Intent(BankActivity.this, MainFragmentActivity.class);
             startActivity(myIntent);
         }
+    }
+
+    private void triggerClearCart() {
+        Print.i(TAG, "TRIGGER: CLEAR CART FINISH");
+        triggerContentEventNoLoading(new ClearShoppingCartHelper(), null, null);
+    }
+    protected final void triggerContentEventNoLoading(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        // Request
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
 }
