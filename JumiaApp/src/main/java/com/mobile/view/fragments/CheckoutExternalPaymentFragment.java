@@ -288,7 +288,7 @@ public class CheckoutExternalPaymentFragment extends BaseFragment implements IRe
 
             Print.d(TAG, "Loading Url complete: " + ResNum + "  " );
 
-            String uri = Uri.parse("http://staging.sosis.center/androidpayment/sep/")
+            String uri = Uri.parse("http://www.bamilo.com/androidpayment/sep/")
                     .buildUpon()
                     .appendQueryParameter("ResNum", ResNum)
                     .appendQueryParameter("setDevice", "mobile")
