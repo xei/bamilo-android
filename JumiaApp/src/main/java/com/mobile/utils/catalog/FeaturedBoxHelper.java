@@ -1,20 +1,30 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FeaturedItemsAdapter;
+import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.newFramework.database.CategoriesTableHelper;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.FeaturedItem;
+import com.mobile.newFramework.objects.category.Categories;
+import com.mobile.newFramework.objects.category.Category;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
@@ -24,13 +34,17 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  *
  */
-public class FeaturedBoxHelper {
+public class FeaturedBoxHelper/* implements TargetLink.OnAppendDataListener*/{
     
     private static final String TAG = FeaturedBoxHelper.class.getSimpleName();
     
     private static final int ITEMS_PER_PAGE_PORTRAIT = 3;
     
     private static final int ITEMS_PER_PAGE_LANDSCAPE = 5;
+
+    private static Category mCategorySearch;
+
+    private static WeakReference<BaseFragment> mParentFragmentSearch;
 
     /**
      * Show the featured response.
@@ -80,11 +94,49 @@ public class FeaturedBoxHelper {
         String searchTips = featuredBox.getSearchTips();
         if (!TextUtils.isEmpty(searchTips)) {
             view.findViewById(R.id.no_results_search_tips_layout).setVisibility(View.VISIBLE);
-            TextView textViewSearchTips = (TextView) view.findViewById(R.id.no_results_search_tips_text);                
-            textViewSearchTips.setVisibility(View.VISIBLE);
-            textViewSearchTips.setText(searchTips);
+            Button btn1 = (Button) view.findViewById(R.id.listbutton1);
+            Button btn2 = (Button) view.findViewById(R.id.listbutton2);
+            Button btn3 = (Button) view.findViewById(R.id.listbutton3);
+            Button btn4 = (Button) view.findViewById(R.id.listbutton4);
+            Button btn5 = (Button) view.findViewById(R.id.listbutton5);
+            final Category cat = new Category();
+            cat.setIsExternalLinkType(false);
+            cat.setImage("");
+            cat.setName("تی شرت و پولوشرت");
+            cat.setTargetLink("catalog_category::men_tshirts_poloshirts");
+            btn1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToCatalog(v,cat,"men_tshirts_poloshirts");
+                }
+            });
         }
     }
+
+    public static void goToCatalog(final View v, Category category,String urlkey) {
+        // Update counter for tracking
+        CategoriesTableHelper.updateCategoryCounter(urlkey, category.getName());
+        // Close navigation
+        mParentFragmentSearch.get().getBaseActivity().closeNavigationDrawer();
+        mCategorySearch = category;
+        @TargetLink.Type String link = category.getTargetLink();
+
+        // Parse target link
+        new TargetLink(mParentFragmentSearch.get().getWeakBaseActivity(), link)
+                .addTitle(category.getName())
+                .addAppendListener(new TargetLink.OnAppendDataListener() {
+                    @Override
+                    public void onAppendData(FragmentType next, String title, String id, Bundle data) {
+                        Toast.makeText(v.getContext(),next+"",Toast.LENGTH_LONG).show();
+                        Toast.makeText(v.getContext(),title+"",Toast.LENGTH_LONG).show();
+                        Toast.makeText(v.getContext(),id+"",Toast.LENGTH_LONG).show();
+                        Toast.makeText(v.getContext(),data+"",Toast.LENGTH_LONG).show();
+                    }
+                })
+                .enableWarningErrorMessage()
+                .run();
+    }
+
 
     /**
      * Show view pager with products.
@@ -126,7 +178,7 @@ public class FeaturedBoxHelper {
     private static void showNoticeMessage(View view, FeaturedBox featuredBox) {
         String noticeMessage = featuredBox.getNoticeMessage();
         if (!TextUtils.isEmpty(noticeMessage)) {
-            ((TextView) view.findViewById(R.id.no_results_search_notice_message)).setText(noticeMessage);
+          /*  ((TextView) view.findViewById(R.id.no_results_search_notice_message)).setText(noticeMessage);*/
         }
     }
     
@@ -159,5 +211,6 @@ public class FeaturedBoxHelper {
         mFeaturedBrandsViewPager.setVisibility(View.VISIBLE);
         mLoadingFeaturedBrands.setVisibility(View.GONE);
     }
+
 
 }
