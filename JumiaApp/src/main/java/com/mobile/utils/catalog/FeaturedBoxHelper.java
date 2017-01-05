@@ -2,6 +2,7 @@ package com.mobile.utils.catalog;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,8 +19,11 @@ import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.FeaturedItem;
 import com.mobile.newFramework.objects.category.Categories;
 import com.mobile.newFramework.objects.category.Category;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
+import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
@@ -34,7 +38,7 @@ import de.akquinet.android.androlog.Log;
  * @author sergiopereira
  *
  */
-public class FeaturedBoxHelper/* implements TargetLink.OnAppendDataListener*/{
+public class FeaturedBoxHelper {
     
     private static final String TAG = FeaturedBoxHelper.class.getSimpleName();
     
@@ -42,10 +46,10 @@ public class FeaturedBoxHelper/* implements TargetLink.OnAppendDataListener*/{
     
     private static final int ITEMS_PER_PAGE_LANDSCAPE = 5;
 
-    private static Category mCategorySearch;
 
-    private static WeakReference<BaseFragment> mParentFragmentSearch;
+    private String mRichRelevanceHash ="";
 
+    static BaseFragment frag;
     /**
      * Show the featured response.
      * @return true or false - Case NPE returns false
@@ -53,6 +57,7 @@ public class FeaturedBoxHelper/* implements TargetLink.OnAppendDataListener*/{
      */
     public static boolean show(BaseFragment fragment, FeaturedBox featuredBox) {
         Log.i(TAG, "ON ERROR SEARCH RESULT");
+        frag = fragment;
         try {
             // define how many items will be displayed on the viewPager
             int partialSize = DeviceInfoHelper.isTabletInLandscape(fragment.getBaseActivity()) ? ITEMS_PER_PAGE_LANDSCAPE : ITEMS_PER_PAGE_PORTRAIT;
@@ -99,41 +104,86 @@ public class FeaturedBoxHelper/* implements TargetLink.OnAppendDataListener*/{
             Button btn3 = (Button) view.findViewById(R.id.listbutton3);
             Button btn4 = (Button) view.findViewById(R.id.listbutton4);
             Button btn5 = (Button) view.findViewById(R.id.listbutton5);
-            final Category cat = new Category();
-            cat.setIsExternalLinkType(false);
-            cat.setImage("");
-            cat.setName("تی شرت و پولوشرت");
-            cat.setTargetLink("catalog_category::men_tshirts_poloshirts");
+
             btn1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    goToCatalog(v,cat,"men_tshirts_poloshirts");
+                    onClickTeaserItem("","shop_in_shop::fashion-lp",TeaserGroupType.MAIN_TEASERS);
                 }
             });
+
+            btn2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickTeaserItem("","shop_in_shop::electronic_accessories_lp",TeaserGroupType.MAIN_TEASERS);
+                }
+            });
+
+            btn3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickTeaserItem("","shop_in_shop::home_furniture_lifestyle_lp",TeaserGroupType.MAIN_TEASERS);
+                }
+            });
+
+            btn4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickTeaserItem("","shop_in_shop::health_beauty_personal_care_lp",TeaserGroupType.MAIN_TEASERS);
+                }
+            });
+
+
+            btn5.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onClickTeaserItem("","shop_in_shop::smartphone_tablet_mobile_lp",TeaserGroupType.MAIN_TEASERS);
+                }
+            });
+
         }
     }
 
-    public static void goToCatalog(final View v, Category category,String urlkey) {
-        // Update counter for tracking
-        CategoriesTableHelper.updateCategoryCounter(urlkey, category.getName());
-        // Close navigation
-        mParentFragmentSearch.get().getBaseActivity().closeNavigationDrawer();
-        mCategorySearch = category;
-        @TargetLink.Type String link = category.getTargetLink();
+    private static void onClickTeaserItem(String Title, String Link, TeaserGroupType mGroupType) {
+        Print.i(TAG, "ON CLICK TEASER ITEM");
+        // Get title
+        String title = Title;
+        // Get target link
+        @TargetLink.Type String link = Link;
+
+        // Get teaser group type
+        TeaserGroupType origin = mGroupType;
+
 
         // Parse target link
-        new TargetLink(mParentFragmentSearch.get().getWeakBaseActivity(), link)
-                .addTitle(category.getName())
+        new TargetLink(frag.getWeakBaseActivity(), link)
+                .addTitle(title)
+                .setOrigin(origin)
                 .addAppendListener(new TargetLink.OnAppendDataListener() {
                     @Override
                     public void onAppendData(FragmentType next, String title, String id, Bundle data) {
-                        Toast.makeText(v.getContext(),next+"",Toast.LENGTH_LONG).show();
-                        Toast.makeText(v.getContext(),title+"",Toast.LENGTH_LONG).show();
-                        Toast.makeText(v.getContext(),id+"",Toast.LENGTH_LONG).show();
-                        Toast.makeText(v.getContext(),data+"",Toast.LENGTH_LONG).show();
+
                     }
                 })
+                .addCampaignListener(new TargetLink.OnCampaignListener() {
+                    @NonNull
+                    @Override
+                    public Bundle onTargetCampaign(String title, String id, TeaserGroupType mOrigin) {
+                        return null;
+                    }
+                })
+                .retainBackStackEntries()
                 .enableWarningErrorMessage()
+                .run();
+    }
+
+
+    private static boolean processDeepLink(String link, TeaserGroupType mGroupType) {
+        // Parse target link
+        return new TargetLink(frag.getWeakBaseActivity(), link)
+                .addTitle("test")
+                .setOrigin(mGroupType)
+                .retainBackStackEntries()
                 .run();
     }
 
