@@ -19,6 +19,7 @@
         style="@style/TextBase.Body.Blue_1"
         android:layout_marginLeft="@dimen/margin_mid"
         android:layout_marginStart="@dimen/margin_mid"
+        android:textSize="@dimen/pdv_fragment_rating_font_size"
         tools:text="9 ratings" />
 
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -162,6 +163,7 @@ public class CheckBoxField extends DynamicFormItem implements IDynamicFormItemFi
         this.dataControl.setFocusable(false);
         this.dataControl.setFocusableInTouchMode(false);
         checkBox.setText(this.entry.getLabel().length() > 0 ? this.entry.getLabel() : this.context.getString(R.string.register_text_terms_a) + " " + this.context.getString(R.string.register_text_terms_b));
+        checkBox.setTextSize(TypedValue.COMPLEX_UNIT_PX, this.context.getResources().getDimension(R.dimen.form_checkbox_text_size));
         // Set default value
         if (Boolean.parseBoolean(this.entry.getValue()) || entry.isChecked()) {
             checkBox.setChecked(true);

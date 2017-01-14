@@ -43,10 +43,17 @@ public class HoloFontLoader {
         TEXT_STYLE_BLACK = registerTextStyle("black");
         TEXT_STYLE_LIGHT = registerTextStyle("light");
         // Create fonts
-        sFontRegular = new RobotoRawFont(R.raw.roboto_regular).setFontStyle(TEXT_STYLE_NORMAL);
-        sFontBold = new RobotoRawFont(R.raw.roboto_bold).setFontStyle(TEXT_STYLE_BOLD);
-        sFontItalic = new RobotoRawFont(R.raw.roboto_italic).setFontStyle(TEXT_STYLE_ITALIC);
-        sFontLight = new RobotoRawFont(R.raw.roboto_light).setFontStyle(TEXT_STYLE_LIGHT);
+        //377 sFontRegular = new RobotoRawFont(R.raw.roboto_regular).setFontStyle(TEXT_STYLE_NORMAL);
+        //377 sFontBold = new RobotoRawFont(R.raw.roboto_bold).setFontStyle(TEXT_STYLE_BOLD);
+        //377 sFontItalic = new RobotoRawFont(R.raw.roboto_italic).setFontStyle(TEXT_STYLE_ITALIC);
+        //377 sFontLight = new RobotoRawFont(R.raw.roboto_light).setFontStyle(TEXT_STYLE_LIGHT);
+
+
+        sFontRegular = new BamiloRawFont(R.raw.bamilo_sans_regular).setFontStyle(TEXT_STYLE_NORMAL);
+        sFontBold = new BamiloRawFont(R.raw.bamilo_sans_bold).setFontStyle(TEXT_STYLE_BOLD);
+        sFontItalic = new BamiloRawFont(R.raw.bamilo_sans_ultra_light).setFontStyle(TEXT_STYLE_ITALIC);
+        sFontLight = new BamiloRawFont(R.raw.bamilo_sans_light).setFontStyle(TEXT_STYLE_LIGHT);
+
         //sFontBoldItalic = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
         // Create collector
         sDefaultFont = sFontCollector = new FontCollector().allowAnyFontFamily();
@@ -62,10 +69,16 @@ public class HoloFontLoader {
         if (isBurmese) {
             // Create fonts
             sDefaultFont = sFontCollector = new FontCollector().allowAnyFontFamily();
-            sFontRegular = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);
-            sFontBold = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_BOLD);
-            sFontLight = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_LIGHT);
-            sFontItalic = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_ITALIC);
+            //377 sFontRegular = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_NORMAL);
+            //377 sFontBold = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_BOLD);
+            //377 sFontLight = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_LIGHT);
+            //377 sFontItalic = new RobotoRawFont(R.raw.burmese_regular).setFontStyle(TEXT_STYLE_ITALIC);
+
+            sFontRegular = new BamiloRawFont(R.raw.bamilo_sans_regular).setFontStyle(TEXT_STYLE_NORMAL);
+            sFontBold = new BamiloRawFont(R.raw.bamilo_sans_bold).setFontStyle(TEXT_STYLE_BOLD);
+            sFontItalic = new BamiloRawFont(R.raw.bamilo_sans_ultra_light).setFontStyle(TEXT_STYLE_ITALIC);
+            sFontLight = new BamiloRawFont(R.raw.bamilo_sans_light).setFontStyle(TEXT_STYLE_LIGHT);
+
             //sFontBoldItalic = new RobotoRawFont(R.raw.roboto_bolditalic).setFontStyle(TEXT_STYLE_BOLD | TEXT_STYLE_ITALIC);
             // Create collector
             sFontCollector.register(sFontRegular).asDefaultFont();
@@ -474,4 +487,10 @@ public class HoloFontLoader {
         }
     }
 
+    private static final class BamiloRawFont extends RawFont {
+        public BamiloRawFont(int rawResourceId) {
+            super(rawResourceId);
+            setFontFamily("bamilo");
+        }
+    }
 }

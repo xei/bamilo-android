@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
 
     <!-- APP -->
-    <string name="app_name">بامیلو</string>
+    <string name="app_name">Bamilo</string>
     <item name="is_daraz_specific" type="bool">true</item>
 
     <!-- COUNTRIES -->

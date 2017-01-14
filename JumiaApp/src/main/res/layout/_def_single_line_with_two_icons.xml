@@ -26,6 +26,7 @@
         android:layout_toLeftOf="@+id/icon_end"
         android:layout_toRightOf="@+id/icon_start"
         android:layout_toStartOf="@+id/icon_end"
+        android:textSize="@dimen/tx_single_line_text_text_size"
         tools:text="Item" />
 
     <View
