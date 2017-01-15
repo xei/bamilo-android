@@ -86,9 +86,13 @@ public class FeaturedBoxHelper {
      */
     private static void showErrorMessage(View view, FeaturedBox featuredBox) {
         String message = featuredBox.getErrorMessage();
+        String guide = "از صحت نگارش عبارت مورد نظر خود اطمینان حاصل نموده و مجدد جستجو نمایید";
         if (!TextUtils.isEmpty(message)) {
             TextView textViewErrorMessage = (TextView) view.findViewById(R.id.no_results_search_error_message);
+            TextView textViewErrorMessageGuide = (TextView) view.findViewById(R.id.no_results_search_error_message_guide);
+
             textViewErrorMessage.setText(message);
+            textViewErrorMessageGuide.setText(guide);
         }
     }
     

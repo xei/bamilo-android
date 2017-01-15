@@ -27,7 +27,7 @@
             android:fontFamily="roboto"
             android:gravity="center"
             android:textColor="@color/grey_dark"
-            android:textSize="@dimen/text_l"
+            android:textSize="@dimen/search_title"
             android:visibility="visible" />
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_error_message_guide"
@@ -43,7 +43,7 @@
             android:fontFamily="roboto"
             android:gravity="center"
             android:textColor="@color/grey_middledark"
-            android:textSize="@dimen/text_l"
+            android:textSize="@dimen/search_title"
             android:visibility="visible" />
 
         <RelativeLayout
@@ -73,7 +73,8 @@
                     android:textColor="@color/black"
                     android:text="از صحت نگارش عبارت مورد نظر خود اطمینان حاصل نموده و مجدد جستجو نمایید."
                     android:layout_weight="0"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="10sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,7 +103,7 @@
                             android:id="@+id/item_icon"
                             android:layout_width="@dimen/list_icon_h"
                             android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/btn_eyeopen"
+                            android:src="@drawable/search_fashion"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
@@ -144,7 +145,7 @@
                             android:id="@+id/item_icon2"
                             android:layout_width="@dimen/list_icon_h"
                             android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/btn_eyeopen"
+                            android:src="@drawable/search_health_and_beauty"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
@@ -188,7 +189,7 @@
                             android:id="@+id/item_icon3"
                             android:layout_width="@dimen/list_icon_h"
                             android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/btn_eyeopen"
+                            android:src="@drawable/search_mobile_tablet"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
@@ -230,7 +231,7 @@
                             android:id="@+id/item_icon4"
                             android:layout_width="@dimen/list_icon_h"
                             android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/btn_eyeopen"
+                            android:src="@drawable/searh_elect_acc"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"
@@ -278,7 +279,7 @@
                             android:id="@+id/item_icon5"
                             android:layout_width="@dimen/list_icon_h"
                             android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/btn_eyeopen"
+                            android:src="@drawable/search_home_life_style"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true"

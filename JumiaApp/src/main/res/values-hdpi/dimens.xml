@@ -15,6 +15,8 @@
     <dimen name="text_16sp">16sp</dimen>
 
     <!--list size-->
+    <dimen name="search_icon_size">10sp</dimen>
+    <dimen name="search_title">12sp</dimen>
     <dimen name="list_icon_h">32sp</dimen>
     <dimen name="list_h">50sp</dimen>
 
