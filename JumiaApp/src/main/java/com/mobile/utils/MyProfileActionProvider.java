@@ -241,7 +241,7 @@ public class MyProfileActionProvider extends ActionProvider {
                     break;
                 case NavigationAction.FAQ:
                     title.setText(R.string.faq);
-                    //icon.setImageResource(R.drawable.ico_dropdown_order);
+                    icon.setImageResource(R.drawable.ico_dropdown_help);
                     break;
                 default:
                     Print.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");
