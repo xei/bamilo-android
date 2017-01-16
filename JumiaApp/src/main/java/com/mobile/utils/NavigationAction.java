@@ -36,7 +36,7 @@ public class NavigationAction {
     public static final int VARIATIONS = 23;
     public static final int UNKNOWN = 24;
     public static final int CAMPAIGN = 25;
-
+    public static final int FAQ = 26;
     @IntDef({
             LOGIN_OUT,
             BASKET,
@@ -63,7 +63,8 @@ public class NavigationAction {
             COMBOS,
             VARIATIONS,
             UNKNOWN,
-            CAMPAIGN
+            CAMPAIGN,
+            FAQ
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type{}

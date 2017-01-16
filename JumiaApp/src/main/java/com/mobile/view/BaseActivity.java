@@ -62,6 +62,7 @@ import com.mobile.interfaces.OnProductViewHolderClickListener;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.objects.checkout.CheckoutStepLogin;
 import com.mobile.newFramework.objects.customer.Customer;
+import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.objects.search.Suggestion;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
@@ -1358,6 +1359,20 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         break;
                     case NavigationAction.COUNTRY:
                         onSwitchFragment(FragmentType.CHOOSE_COUNTRY, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.FAQ:
+                        // FAQ
+                        @TargetLink.Type String link = TargetLink.SHOP_IN_SHOP.concat("::help");
+                        new TargetLink(getWeakBaseActivity(), link)
+                                .addTitle(R.string.faq)
+                                .setOrigin(TeaserGroupType.MAIN_TEASERS)
+                                //.addAppendListener(this)
+                                //.addCampaignListener(this)
+                                .retainBackStackEntries()
+                                .enableWarningErrorMessage()
+                                .run();
+                        //TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAQ);
+                        //onSwitchFragment(FragmentType.STATIC_PAGE, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     default:
                         Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");

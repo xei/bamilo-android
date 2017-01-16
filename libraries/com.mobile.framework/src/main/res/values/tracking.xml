@@ -41,6 +41,7 @@
     <string name="gtrackaddaddress">NewAddress</string>
     <string name="gtrackaddress">Addresses</string>
     <string name="gtrackmyorders">MyOrders</string>
+    <string name="gtrackfaq">FAQ</string>
 
     <!-- prefixes for page string encoding -->
     <string name="gbrand_prefix">brand</string>

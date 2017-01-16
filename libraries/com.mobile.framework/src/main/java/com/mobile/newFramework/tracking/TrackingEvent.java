@@ -54,6 +54,8 @@ public enum TrackingEvent {
 	AB_MENU_MY_ACCOUNT(R.string.goverflowmenu, R.string.gaccount),
 	
 	AB_MENU_TRACK_ORDER(R.string.goverflowmenu, R.string.gtrackorder),
+
+	AB_MENU_FAQ(R.string.goverflowmenu, R.string.gtrackfaq),
 	
 	//	### CATALOG EVENTS
 	
