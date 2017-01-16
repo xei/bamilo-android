@@ -132,7 +132,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     }
 
     /**
-     * ################## CONFIGS ################## 
+     * ################## CONFIGS ##################
      */
 
     /**
@@ -184,7 +184,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     }
 
     /*
-     * ################## BASE GA TRACKING (v4) ################## 
+     * ################## BASE GA TRACKING (v4) ##################
      */
 
     /**
@@ -334,7 +334,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     }
 
     /**
-     * ################## SPECIFIC TRACKING ################## 
+     * ################## SPECIFIC TRACKING ##################
      */
 
     /**
@@ -532,7 +532,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
     public void trackGenericPage(String page){
         // Validate
         if (!isEnabled) return;
-        // Data		
+        // Data
         trackPage(page);
     }
 

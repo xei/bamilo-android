@@ -8,6 +8,7 @@ import com.mobile.framework.R;
  */
 public enum TrackingPage {
 
+
     HOME(R.string.ghomepage),
     PRODUCT_LIST(R.string.gproductlist),
     PRODUCT_DETAIL(R.string.gproductdetail),

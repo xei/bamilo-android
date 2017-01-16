@@ -43,7 +43,7 @@ public class EmailCheckHelper extends SuperBaseHelper {
         ContentValues values = new ContentValues();
         values.put(RestConstants.EMAIL, email);
         Bundle bundle = new Bundle();
-        bundle.putParcelable(Constants.BUNDLE_PATH_KEY, values);
+        bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         return bundle;
     }
 

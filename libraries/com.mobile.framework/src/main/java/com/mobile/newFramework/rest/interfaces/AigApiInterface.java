@@ -217,10 +217,6 @@ public interface AigApiInterface {
     void getOrdersList(@Path(value="path", encode=false) String path, Callback<BaseResponse<MyOrder>> callback);
     String getOrdersList = "getOrdersList";
 
-    @GET("/{path}")
-    void emailCheck(@Path(value="path", encode=false) String path, Callback<BaseResponse<CustomerEmailCheck>> callback);
-    String emailCheck = "emailCheck";
-
     @GET("/")
     void getPhonePrefixes(Callback<BaseResponse<PhonePrefixes>> callback);
     String getPhonePrefixes = "getPhonePrefixes";
@@ -416,6 +412,11 @@ public interface AigApiInterface {
     @POST("/")
     void setReturnFinish(@FieldMap Map<String, String> data, Callback<BaseResponse<OrderStatus>> callback);
     String setReturnFinish = "setReturnFinish";
+
+    @FormUrlEncoded
+    @POST("/")
+    void emailCheck(@FieldMap Map<String, String> data, Callback<BaseResponse<CustomerEmailCheck>> callback);
+    String emailCheck = "emailCheck";
 
     /*
      * ########## HTTP PUT ##########  TODO : ADD HERE NEW MOB API INTERFACE v2.0
