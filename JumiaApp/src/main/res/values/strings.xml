@@ -397,4 +397,9 @@
 
     <string name="faq">FAQ</string>
 
+    <string name="bamilo_font">bamilo</string>
+    <string name="bamilo_regular_font">Bamilo-Sans</string>
+    <string name="bamilo_bold_font">bamilo_sans_bold</string>
+    <string name="bamilo_light_font">bamilo_sans_light</string>
+
 </resources>

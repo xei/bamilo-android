@@ -19,7 +19,7 @@
         android:layout_marginEnd="24dp"
         android:paddingTop="12dp"
         android:text="sdfsdfsdfsdfsdfsd"
-        android:fontFamily="roboto_regular"
+        android:fontFamily="@string/bamilo_regular_font"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_m" />
 
