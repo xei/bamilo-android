@@ -96,7 +96,7 @@
         <item name="android:layout_marginStart">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginEnd">@dimen/rounded_margin_mid</item>
         <item name="android:layout_marginTop">@dimen/rounded_margin_mid</item>
-        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
@@ -120,7 +120,7 @@
     <style name="text_regular">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
         <item name="android:textColor">@color/black_800</item>
     </style>
 
@@ -135,7 +135,7 @@
     </style>
 
     <style name="text_title" parent="_base_text">
-        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:fontFamily">@string/bamilo_bold_font</item>
         <item name="android:textSize">@dimen/text_title</item>
     </style>
 
@@ -148,12 +148,12 @@
     </style>
 
     <style name="text_header_light" parent="text_header">
-        <item name="android:fontFamily">roboto_light</item>
+        <item name="android:fontFamily">@string/bamilo_light_font</item>
     </style>
 
     <style name="text_price" parent="_base_text">
         <item name="android:textSize">@dimen/text_title</item>
-        <item name="android:fontFamily">roboto_bold</item>
+        <item name="android:fontFamily">@string/bamilo_bold_font</item>
         <item name="android:textColor">@color/red_basic</item>
         <item name="android:ellipsize">marquee</item>
     </style>
