@@ -2,29 +2,34 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="45dp"
-    android:background="#F3F3F3">
+    android:background="#FFF">
 
     <!-- icon -->
+
+    <!-- title -->
+
+
     <ImageView
         android:id="@+id/item_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
         android:src="@drawable/btn_home"
-        />
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp" />
 
-    <!-- title -->
     <TextView
-        android:id="@+id/item_title"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="15dp"
         android:layout_width="wrap_content"
-        android:layout_alignTop="@+id/item_icon"
-        android:layout_toRightOf="@+id/item_icon" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="34dp"
+        android:layout_marginEnd="34dp"
+        android:id="@+id/item_title"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/item_icon"
+        android:layout_alignEnd="@+id/item_icon"
+        android:textColor="#5a5a5a" />
 
 
 </RelativeLayout>

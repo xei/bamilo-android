@@ -16,9 +16,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.mobile.app.JumiaApplication;
 import com.mobile.components._unused_.scrollable.ExpandedListView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FeaturedItemsAdapter;
+import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
 import com.mobile.newFramework.objects.catalog.FeaturedBox;
 import com.mobile.newFramework.objects.catalog.FeaturedItem;
@@ -26,6 +28,7 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.search.NoResSearchAdapter;
 import com.mobile.utils.search.SearchModel;
@@ -90,29 +93,33 @@ public class FeaturedBoxHelper {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     switch (position){
                         case 1 :
-                            Toast.makeText(view.getContext(),"1",Toast.LENGTH_LONG).show();
+                            onClickBackToHome();
                             break;
                         case 2 :
-                            Toast.makeText(view.getContext(),"2",Toast.LENGTH_LONG).show();
+                            onClickNoSearchItem("","shop_in_shop::fashion-lp",TeaserGroupType.MAIN_TEASERS);
                             break;
-                        case 3 :Toast.makeText(view.getContext(),"3",Toast.LENGTH_LONG).show();
+                        case 3 :
+                            onClickNoSearchItem("","shop_in_shop::electronic_accessories_lp",TeaserGroupType.MAIN_TEASERS);
                             break;
-                        case 4 :Toast.makeText(view.getContext(),"4",Toast.LENGTH_LONG).show();
+                        case 4 :
+                            onClickNoSearchItem("","shop_in_shop::home_furniture_lifestyle_lp",TeaserGroupType.MAIN_TEASERS);
                             break;
-                        case 5 :Toast.makeText(view.getContext(),"5",Toast.LENGTH_LONG).show();
+                        case 5 :
+                            onClickNoSearchItem("","shop_in_shop::health_beauty_personal_care_lp",TeaserGroupType.MAIN_TEASERS);
                             break;
-                        case 6 :Toast.makeText(view.getContext(),"6",Toast.LENGTH_LONG).show();
+                        case 6 :
+                            onClickNoSearchItem("","shop_in_shop::smartphone_tablet_mobile_lp",TeaserGroupType.MAIN_TEASERS);
                             break;
 
                     }
                 }
             });
-            searchListView.setOnTouchListener(new View.OnTouchListener() {
+           /* searchListView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     return (event.getAction() == MotionEvent.ACTION_MOVE);
                 }
-            });
+            });*/
             return true;
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON SHOW FEATURED BOX", e);
@@ -120,6 +127,14 @@ public class FeaturedBoxHelper {
         }
     }
 
+
+    private static void onClickBackToHome(){
+        // Get user id
+        String userId = "";
+        if (JumiaApplication.CUSTOMER != null && JumiaApplication.CUSTOMER.getIdAsString() != null) userId = JumiaApplication.CUSTOMER.getIdAsString();
+        // Goto home
+        baseFragment.getBaseActivity().onSwitchFragment(FragmentType.HOME, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+    }
 
        private static ArrayList<SearchModel> searchGenerateData(){
         ArrayList<SearchModel> models = new ArrayList<SearchModel>();
@@ -160,7 +175,7 @@ public class FeaturedBoxHelper {
         }
     }
 
-    private static void onClickTeaserItem(String Title, String Link, TeaserGroupType mGroupType) {
+    private static void onClickNoSearchItem(String Title, String Link, TeaserGroupType mGroupType) {
         Print.i(TAG, "ON CLICK TEASER ITEM");
         // Get title
         String title = Title;
@@ -175,19 +190,6 @@ public class FeaturedBoxHelper {
         new TargetLink(baseFragment.getWeakBaseActivity(), link)
                 .addTitle(title)
                 .setOrigin(origin)
-                .addAppendListener(new TargetLink.OnAppendDataListener() {
-                    @Override
-                    public void onAppendData(FragmentType next, String title, String id, Bundle data) {
-
-                    }
-                })
-                .addCampaignListener(new TargetLink.OnCampaignListener() {
-                    @NonNull
-                    @Override
-                    public Bundle onTargetCampaign(String title, String id, TeaserGroupType mOrigin) {
-                        return null;
-                    }
-                })
                 .retainBackStackEntries()
                 .enableWarningErrorMessage()
                 .run();
