@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:fontFamily="roboto_light"
+        android:fontFamily="@string/bamilo_light_font"
         android:gravity="center"
         android:shadowColor="@color/wizard_text_shadow"
         android:text="@string/pinch_to_zoom_label"

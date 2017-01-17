@@ -11,7 +11,7 @@
         android:layout_alignParentRight="true"
         android:layout_toLeftOf="@+id/price_rules_value"
         android:ellipsize="end"
-        android:fontFamily="roboto_regular"
+        android:fontFamily="@string/bamilo_regular_font"
         android:singleLine="true"
         android:text="@string/vat_string"
         android:gravity="left"
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:fontFamily="roboto_regular"
+        android:fontFamily="@string/bamilo_regular_font"
         android:text="100"
         android:textColor="@color/grey_middle" />
 

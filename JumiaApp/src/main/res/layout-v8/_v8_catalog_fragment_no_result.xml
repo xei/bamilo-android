@@ -22,7 +22,7 @@
             android:layout_marginTop="@dimen/no_results_top_margin"
             android:drawablePadding="@dimen/no_results_bottom_margin"
             android:drawableTop="@drawable/ico_nosearchresults"
-            android:fontFamily="roboto"
+            android:fontFamily="@string/bamilo_font"
             android:gravity="center"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_l"
@@ -44,7 +44,7 @@
                 android:id="@+id/no_results_search_tips_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="roboto_bold"
+                android:fontFamily="@string/bamilo_bold_font"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_m"
                 android:textStyle="bold" />
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/no_results_search_tips_title"
-                android:fontFamily="roboto"
+                android:fontFamily="@string/bamilo_font"
                 android:textColor="@color/grey_middle"
                 android:textSize="@dimen/text_s" />
         </RelativeLayout>
@@ -130,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_veryhuge"
-            android:fontFamily="roboto"
+            android:fontFamily="@string/bamilo_font"
             android:gravity="center"
             android:textColor="@color/grey_middle"
             android:textSize="@dimen/text_s"

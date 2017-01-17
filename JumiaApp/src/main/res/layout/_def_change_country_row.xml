@@ -21,7 +21,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/flag"
         android:layout_toEndOf="@id/flag"
-        android:fontFamily="roboto_light"
+        android:fontFamily="@string/bamilo_light_font"
         android:text="@string/app_name"
         android:textColor="@color/grey_dark"
         android:textSize="@dimen/text_m" />

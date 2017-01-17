@@ -6,7 +6,7 @@
     <style name="TextBase">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:fontFamily">roboto_regular</item>
+        <item name="android:fontFamily">@string/bamilo_regular_font</item>
         <item name="android:gravity">right|center_vertical</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>

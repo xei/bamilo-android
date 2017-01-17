@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="35dp"
-        android:fontFamily="roboto_regular"
+        android:fontFamily="@string/bamilo_regular_font"
         android:gravity="center"
         android:text="@string/splash_slogan"
         android:textColor="@color/grey_middledark"

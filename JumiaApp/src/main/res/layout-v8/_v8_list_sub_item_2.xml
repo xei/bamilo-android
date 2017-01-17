@@ -40,7 +40,7 @@
         android:layout_centerVertical="true"
         android:singleLine="true"
         android:ellipsize="end"
-        android:fontFamily="roboto_regular"
+        android:fontFamily="@string/bamilo_regular_font"
         android:textSize="16sp" />
 
     <com.mobile.components.customfontviews.TextView
@@ -51,7 +51,7 @@
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/dialog_item_checkbox"
         android:layout_marginLeft="10dp"
-        android:fontFamily="roboto_regular"
+        android:fontFamily="@string/bamilo_regular_font"
         android:textSize="16sp" />
 
 </RelativeLayout>

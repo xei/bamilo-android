@@ -38,7 +38,7 @@
             android:layout_height="@dimen/campaign_item_offer_ended_height"
             android:layout_centerInParent="true"
             android:background="@drawable/background_soldout"
-            android:fontFamily="roboto_bold"
+            android:fontFamily="@string/bamilo_bold_font"
             android:gravity="center"
             android:text="@string/campaign_offer_ended"
             android:textColor="@color/grey_dark"
