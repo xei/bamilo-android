@@ -33,7 +33,7 @@
             android:id="@+id/no_results_search_error_message_guide"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="20dp"
             android:layout_marginEnd="@dimen/margin_veryhuge"
             android:layout_marginLeft="@dimen/margin_veryhuge"
             android:layout_marginRight="@dimen/margin_veryhuge"
@@ -56,268 +56,26 @@
             android:paddingLeft="0dp"
             android:paddingRight="0dp"
             android:paddingStart="0dp"
-            android:paddingTop="5dp"
+            android:paddingTop="0dp"
             android:visibility="visible">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/db1_root"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:gravity="center|bottom"
                 android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/no_results_search_error_message_guide_help"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textColor="@color/black"
-                    android:text="از صحت نگارش عبارت مورد نظر خود اطمینان حاصل نموده و مجدد جستجو نمایید."
-                    android:layout_weight="0"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textSize="10sp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dip"
-                    android:layout_weight="1"
-                    android:gravity="center|bottom"
-                    android:orientation="vertical" >
-
-                    <TextView
+                <com.mobile.utils.catalog.ExpandableHeightListView
+                        android:layout_weight="0.1"
                         android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_horizontal|center"
-                        android:textColor="@color/grey_middledark"
-                        android:background="@color/grey_light"
-                        android:paddingTop="10dp"
-                        android:text="مجموعه های منتخب"
-                        android:textStyle="normal|bold" />
-                    <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="@dimen/list_h"
-                        android:layout_gravity="center_horizontal|center"
-                        android:background="@drawable/list_item_border">
+                        android:layout_height="match_parent"
+                        android:id="@+id/search_listview"
+                        android:gravity="center|bottom"/>
 
-                        <!-- icon -->
 
-                        <ImageView
-                            android:id="@+id/item_icon"
-                            android:layout_width="@dimen/list_icon_h"
-                            android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/search_fashion"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginStart="15dp" />
-
-                        <TextView
-                            android:id="@+id/item_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/grey_middledark"
-                            android:textSize="@dimen/text_l"
-                            android:textAlignment="textEnd"
-                            android:layout_marginLeft="13dp"
-                            android:text="مد و لباس"
-                            android:layout_marginStart="13dp"
-                            android:layout_alignBottom="@+id/item_icon"
-                            android:layout_toRightOf="@+id/item_icon"
-                            android:layout_toEndOf="@+id/item_icon"
-                            android:layout_above="@+id/listbutton1"/>
-
-                        <Button
-                            android:id="@+id/listbutton1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:background="@color/transparent"
-                            />
-                    </RelativeLayout>
-                    <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="@dimen/list_h"
-                        android:layout_gravity="center_horizontal|center"
-                        android:background="@drawable/list_item_border">
-
-                        <!-- icon -->
-
-                        <ImageView
-                            android:id="@+id/item_icon2"
-                            android:layout_width="@dimen/list_icon_h"
-                            android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/search_health_and_beauty"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginStart="15dp" />
-
-                        <TextView
-                            android:id="@+id/item_title2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/grey_middledark"
-                            android:textSize="@dimen/text_l"
-                            android:text="ریبایی سلامت"
-                            android:textAlignment="textEnd"
-                            android:layout_marginLeft="13dp"
-                            android:layout_marginStart="13dp"
-                            android:layout_alignBottom="@+id/item_icon2"
-                            android:layout_toRightOf="@+id/item_icon2"
-
-                            android:layout_toEndOf="@+id/item_icon2"
-                            android:layout_above="@+id/listbutton2"/>
-
-                        <Button
-                            android:id="@+id/listbutton2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:background="@color/transparent"
-                            />
-
-                    </RelativeLayout>
-                    <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="@dimen/list_h"
-                        android:layout_gravity="center_horizontal|center"
-                        android:background="@drawable/list_item_border">
-
-                        <!-- icon -->
-
-                        <ImageView
-                            android:id="@+id/item_icon3"
-                            android:layout_width="@dimen/list_icon_h"
-                            android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/search_mobile_tablet"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginStart="15dp" />
-
-                        <TextView
-                            android:id="@+id/item_title3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/grey_middledark"
-                            android:textSize="@dimen/text_l"
-                            android:text="موبایل و تبلت"
-                            android:textAlignment="textEnd"
-                            android:layout_marginLeft="13dp"
-                            android:layout_marginStart="13dp"
-                            android:layout_alignBottom="@+id/item_icon3"
-                            android:layout_toRightOf="@+id/item_icon3"
-                            android:layout_above="@+id/listbutton3"
-                            android:layout_toEndOf="@+id/item_icon3" />
-
-                        <Button
-                            android:id="@+id/listbutton3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:background="@color/transparent"
-                            />
-                    </RelativeLayout>
-                    <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="@dimen/list_h"
-                        android:layout_gravity="center_horizontal|center"
-                        android:background="@drawable/list_item_border">
-
-                        <!-- icon -->
-
-                        <ImageView
-                            android:id="@+id/item_icon4"
-                            android:layout_width="@dimen/list_icon_h"
-                            android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/searh_elect_acc"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginStart="15dp" />
-
-                        <TextView
-                            android:id="@+id/item_title4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/grey_middledark"
-                            android:textSize="@dimen/text_l"
-                            android:textAlignment="textEnd"
-                            android:layout_marginLeft="13dp"
-                            android:layout_marginStart="13dp"
-                            android:layout_alignBottom="@+id/item_icon4"
-                            android:text="لوازم جانبی الکترونیکی"
-                            android:layout_toRightOf="@+id/item_icon4"
-
-                            android:layout_toEndOf="@+id/item_icon4"
-
-                            android:layout_above="@+id/listbutton4"/>
-
-                        <Button
-                            android:id="@+id/listbutton4"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:background="@color/transparent"
-                            />
-                        <!-- title -->
-
-                        <!-- counter -->
-
-                    </RelativeLayout>
-                    <RelativeLayout android:layout_width="match_parent"
-                        android:layout_height="@dimen/list_h"
-                        android:layout_gravity="center_horizontal|center"
-                        android:background="@drawable/list_item_border">
-
-                        <!-- icon -->
-
-                        <ImageView
-                            android:id="@+id/item_icon5"
-                            android:layout_width="@dimen/list_icon_h"
-                            android:layout_height="@dimen/list_icon_h"
-                            android:src="@drawable/search_home_life_style"
-                            android:layout_centerVertical="true"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_marginLeft="15dp"
-                            android:layout_marginStart="15dp" />
-
-                        <TextView
-                            android:id="@+id/item_title5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/grey_middledark"
-                            android:textSize="@dimen/text_l"
-                            android:textAlignment="textEnd"
-                            android:layout_marginLeft="13dp"
-                            android:text="کامپیوتر و تجیزات اداری"
-                            android:layout_marginStart="13dp"
-                            android:layout_alignBottom="@+id/item_icon5"
-                            android:layout_toRightOf="@+id/item_icon5"
-                            android:layout_above="@+id/listbutton5"
-                            android:layout_toEndOf="@+id/item_icon5" />
-
-                        <Button
-                            android:id="@+id/listbutton5"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_alignParentBottom="true"
-                            android:layout_centerHorizontal="true"
-                            android:background="@color/transparent"
-                            />
-                        <!-- title -->
-
-                        <!-- counter -->
-
-                    </RelativeLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
         </RelativeLayout>
 
         <!--  <View style="@style/DividerHorizontal.Black_400" />
