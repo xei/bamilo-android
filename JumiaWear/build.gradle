@@ -16,7 +16,7 @@ android {
     publishNonDefault true
 
     signingConfigs {
-        releaseJumiaSigning {
+/*        releaseJumiaSigning {
             storeFile file('../JumiaApp/keystores/jumia.keystore')
             storePassword 'jumia123'
             keyAlias 'jumia'
@@ -35,7 +35,7 @@ android {
             storePassword 'shopandroid'
             keyAlias 'shop_android'
             keyPassword 'shopandroid'
-        }
+        }*/
 
         releaseBamiloSigning {
             storeFile file('../JumiaApp/keystores/bamilo_android.keystore')
@@ -47,30 +47,30 @@ android {
 
     buildTypes {
 
-        debug {
+        /*debug {
             applicationIdSuffix '.dev'
             debuggable true
-        }
+        }*/
 
-        live {
+       /* live {
             applicationIdSuffix '.live'
             debuggable true
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
-        }
+        }*/
 
-        release {
+        /*release {
             debuggable false
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
-        }
+        }*/
     }
 
     productFlavors {
 
-        jumia {
+        /*jumia {
             applicationId 'com.jumia.android'
             signingConfig signingConfigs.releaseJumiaSigning
             resConfigs 'en', 'fr', 'pt'
@@ -86,19 +86,19 @@ android {
             applicationId 'com.daraz.android'
             signingConfig signingConfigs.releaseDarazSigning
             resConfigs 'en'
-        }
+        }*/
 
-        bamilo {
+       /* bamilo {
             applicationId 'com.bamilo.android'
             signingConfig signingConfigs.releaseBamiloSigning
             resConfigs 'en'
-        }
+        }*/
 
-        mtn {
+        /*mtn {
             applicationId 'com.jumia.mtnng'
             signingConfig signingConfigs.releaseJumiaSigning
             resConfigs 'en', 'fr', 'pt'
-        }
+        }*/
     }
 
     lintOptions {
