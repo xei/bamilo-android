@@ -404,6 +404,10 @@ public class MainFragmentActivity extends DebugActivity {
             case ORDER_RETURN_CALL:
                 fragment = newFragmentInstance(OrderReturnCallFragment.class, bundle);
                 break;
+            case ABOUT_US:
+                removeEntries = true;
+                fragment = newFragmentInstance(MyAccountAboutFragment.class, bundle);
+                break;
             default:
                 Print.w(TAG, "INVALID FRAGMENT TYPE");
                 return;

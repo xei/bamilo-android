@@ -26,17 +26,18 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 /**
- * A general Class with UI utils such as set the font <p/><br> 
+ * A general Class with UI utils such as set the font <p/><br>
  *
  * Copyright (C) 2012 Rocket Internet - All Rights Reserved <p/>
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited <br>
  * Proprietary and confidential.
- * 
+ *
  * @author Manuel Silva
  * @modified Andre Lopes
  *
@@ -48,8 +49,8 @@ public class UIUtils {
 
     public static int dpToPx(int dp, float density) {
         return Math.round((float)dp * density);
-    } 
-    
+    }
+
     public static float convertPixelsToDp(float px, Context context){
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
@@ -69,7 +70,7 @@ public class UIUtils {
     public static void showOrHideViews(int visibility, View... views) {
         for (View view : views) if (view != null) view.setVisibility(visibility);
     }
-    
+
     /**
      * Set the visibility
      * @param view The view that can be null
@@ -295,4 +296,33 @@ public class UIUtils {
         }
     }
 
+    public static void onClickEmailToCS(@NonNull Activity activity) {
+        // Tracking
+        TrackerDelegator.trackCall(activity);
+        // Get phone number
+        SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String mAddress2Email = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, "");
+        // Make a call
+
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"to@email.com"});
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
+
+/* Send it off to the Activity-Chooser */
+
+
+
+        if (emailIntent.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        }
+        else {
+            Toast.makeText(activity,"email nasb nadari",Toast.LENGTH_LONG).show();
+
+        }
+
+    }
 }

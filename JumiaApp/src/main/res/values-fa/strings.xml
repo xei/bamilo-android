@@ -394,5 +394,16 @@
     <string name="invalid_address_other">نشانی وارد شده صحیح نمی‌باشد.</string>
 
     <string name="faq">راهنما و سوالات متداول</string>
+    <string name="about_us_label">تماس با ما</string>
+
+    <!--about page-->
+    <string name="about_contactus_header">با ما در ارتباط باشید</string>
+    <string name="about_contactus_value">۷ روز هفته ۲۴ ساعته پاسخگوی شماییم</string>
+    <string name="about_address_header">نشانی</string>
+    <string name="about_address_value"> تهران، میدان ونک، بزرگراه حقانی، نرسیده به چهارراه جهان کودک، پلاک ۶۳، طبقه دوم</string>
+    <string name="about_call2cs">تماس با خدمات مشتریان</string>
+    <string name="about_bugreport">گزارش مشکلات برنامه</string>
+    <string name="account_about">درباره ما‎</string>
+    <string name="my_about_label">تماس با ما</string>
 
 </resources>
