@@ -41,35 +41,6 @@ android {
     }
 
     signingConfigs {
-
-        jumiaSigning {
-            storeFile file("keystores/jumia.keystore")
-            storePassword "jumia123"
-            keyAlias "jumia"
-            keyPassword "jumia123"
-        }
-
-        jumiaMtnngSigning {
-            storeFile file("keystores/jumia_mtnng.keystore")
-            storePassword "jumiamtnng"
-            keyAlias "jumia_mtnng"
-            keyPassword "jumiamtnng"
-        }
-
-        darazSigning {
-            storeFile file("keystores/daraz_android.keystore")
-            storePassword "darazandroid"
-            keyAlias "daraz_android"
-            keyPassword "darazandroid"
-        }
-
-        shopSigning {
-            storeFile file("keystores/shop_android.keystore")
-            storePassword "shopandroid"
-            keyAlias "shop_android"
-            keyPassword "shopandroid"
-        }
-
         bamiloSigning {
             storeFile file("keystores/bamilo_android.keystore")
             storePassword "bamiloandroid"
@@ -109,6 +80,16 @@ android {
             // # Building Apps with Over 65K Methods (multi dex support)
             multiDexEnabled true
         }
+        staging {
+            applicationIdSuffix ".staging"
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-project-pro.txt', 'proguard-project-market.txt'
+            android.sourceSets {
+                //staging.java.srcDirs = ['src/staging/java']
+                staging.res.srcDirs = ['src/staging/res']
+            }
+        }
         release {
             minifyEnabled true
             shrinkResources true
@@ -116,12 +97,20 @@ android {
         }
     }
 
-    productFlavors {
 
+
+        productFlavors {
+        bamilo {
+            applicationId "com.bamilo.android"
+            versionName "2.2.1"
+            versionCode getAppVersionCode(20)
+            signingConfig signingConfigs.bamiloSigning
+            resConfigs "fa"
+        }
         /**
          * #################### JUMIA ####################
          */
-        jumia {
+        /*jumia {
             applicationId "com.jumia.android"
             versionName "3.2.1"
             versionCode getAppVersionCode(66)
@@ -161,12 +150,12 @@ android {
             android.sourceSets {
                 jumiaMTNng.res.srcDirs = ['src/jumia/res', 'src/jumiaMTNng/res']
             }
-        }
+        }*/
 
         /**
          * #################### SHOP ####################
          */
-        shop {
+        /*shop {
             applicationId "com.shop.android"
             versionName "2.0.1"
             versionCode getAppVersionCode(18)
@@ -194,12 +183,12 @@ android {
             android.sourceSets {
                 shopNokiaX.res.srcDirs = ['src/shop/res', 'src/shopRelease/res', 'src/shopNokiaX/res']
             }
-        }
+        }*/
 
         /**
          * #################### DARAZ ####################
          */
-        daraz {
+       /* daraz {
             applicationId "com.daraz.android"
             versionName "2.0.1"
             versionCode getAppVersionCode(18)
@@ -228,17 +217,11 @@ android {
                 darazNokiaX.res.srcDirs = ['src/daraz/res', 'src/darazRelease/res', 'src/darazNokiaX/res']
             }
         }
-
+*/
         /**
          * #################### BAMILO ####################
          */
-        bamilo {
-            applicationId "com.bamilo.android"
-            versionName "2.2.1"
-            versionCode getAppVersionCode(20)
-            signingConfig signingConfigs.bamiloSigning
-            resConfigs "fa"
-        }
+
 
     }
 
@@ -265,10 +248,10 @@ android {
  *  > The main and the micro apps do not have the same package name.
  */
 configurations {
-    jumiaLiveWearApp
+    /*jumiaLiveWearApp
     shopLiveWearApp
     bamiloLiveWearApp
-    darazLiveWearApp
+    darazLiveWearApp*/
 }
 
 /**
@@ -291,6 +274,7 @@ List debugToolsDependencies = [
         'io.palaima.debugdrawer:debugdrawer-scalpel:0.7.0',
 ]
 
+
 dependencies {
     /** ############### LOCAL LIBS ############### **/
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -298,9 +282,10 @@ dependencies {
     /** ############### DEBUG TOOLS ############### **/
     debugCompile debugToolsDependencies
     liveCompile debugToolsDependencies
+    stagingCompile debugToolsDependencies
     /** ############### WEAR APP ############### **/
     // ### JUMIA WEAR APP
-    jumiaLiveWearApp project(path:':JumiaWear', configuration: 'jumiaLive')
+    /*jumiaLiveWearApp project(path:':JumiaWear', configuration: 'jumiaLive')
     jumiaWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaPreInstallWearApp project(path: ':JumiaWear', configuration: 'jumiaRelease')
     jumiaMTNngWearApp project(path: ':JumiaWear', configuration: 'mtnRelease')
@@ -314,7 +299,7 @@ dependencies {
     // ### DARAZ WEAR APP
     darazLiveWearApp project(path: ':JumiaWear', configuration: 'darazLive')
     darazWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
-    darazPreInstallWearApp project(path: ':JumiaWear', configuration: 'darazRelease')
+    darazPreInstallWearApp project(path: ':JumiaWear', configuration: 'darazRelease')*/
 }
 
 /**
@@ -464,3 +449,45 @@ def sendEmailToTeam(String subject, String content) {
     new File(TEMP_FILE).write(content)
     executeWaitAndPrintCmd(['sh', '-c', 'mail -s "[Jumia] - ' + subject + '" ' + recipients + ' < ' + TEMP_FILE])
 }
+
+
+/*
+signingConfigs {
+
+    */
+/*jumiaSigning {
+        storeFile file("keystores/jumia.keystore")
+        storePassword "jumia123"
+        keyAlias "jumia"
+        keyPassword "jumia123"
+    }
+
+    jumiaMtnngSigning {
+        storeFile file("keystores/jumia_mtnng.keystore")
+        storePassword "jumiamtnng"
+        keyAlias "jumia_mtnng"
+        keyPassword "jumiamtnng"
+    }
+
+    darazSigning {
+        storeFile file("keystores/daraz_android.keystore")
+        storePassword "darazandroid"
+        keyAlias "daraz_android"
+        keyPassword "darazandroid"
+    }
+
+    shopSigning {
+        storeFile file("keystores/shop_android.keystore")
+        storePassword "shopandroid"
+        keyAlias "shop_android"
+        keyPassword "shopandroid"
+    }
+
+    bamiloSigning {
+        storeFile file("keystores/bamilo_android.keystore")
+        storePassword "bamiloandroid"
+        keyAlias "bamilo_android"
+        keyPassword "bamiloandroid"
+    }
+
+}*/
