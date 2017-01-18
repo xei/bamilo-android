@@ -75,7 +75,7 @@ public class MyAccountSettingsAdapter extends BaseAdapter {
                 img = (ImageView) view.findViewById(R.id.country_icon);
                 img.setImageDrawable(view.getResources().getDrawable(R.drawable.user_information_icons));
                 i++;
-            }else if (mOptions[i].equals(mContext.getString(R.string.myaccount_userdata))) {
+            }else if (mOptions[i].equals(mContext.getString(R.string.share_the_app))) {
                 img = (ImageView) view.findViewById(R.id.country_icon);
                 img.setImageDrawable(view.getResources().getDrawable(R.drawable.share_icons));
                 i++;
@@ -83,7 +83,7 @@ public class MyAccountSettingsAdapter extends BaseAdapter {
                 img = (ImageView) view.findViewById(R.id.country_icon);
                 img.setImageDrawable(view.getResources().getDrawable(R.drawable.rate_icons));
                 i++;
-            } else {
+            } else if (mOptions[i].equals(mContext.getString(R.string.my_addresses))) {
                 img = (ImageView) view.findViewById(R.id.country_icon);
                 img.setImageDrawable(view.getResources().getDrawable(R.drawable.my_address_icon));
             }
