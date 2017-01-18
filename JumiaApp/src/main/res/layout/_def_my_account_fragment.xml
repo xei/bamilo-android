@@ -15,8 +15,7 @@
             style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/HeaderStyle"
-                android:text="@string/section_title_account" />
+                style="@style/MyAccountHeaderStyle"/>
 
         </android.support.v7.widget.LinearLayoutCompat>
 
@@ -27,8 +26,7 @@
             style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/HeaderStyle"
-                android:text="@string/section_title_notification" />
+                style="@style/MyAccountHeaderStyle"/>
 
         </android.support.v7.widget.LinearLayoutCompat>
 
@@ -39,8 +37,8 @@
             style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/HeaderStyle"
-                android:text="@string/shop_settings" />
+                style="@style/MyAccountHeaderStyle"
+                />
         </android.support.v7.widget.LinearLayoutCompat>
 
         <!-- MORE SETTINGS -->
@@ -50,10 +48,9 @@
             style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/HeaderStyle"
+                style="@style/MyAccountHeaderStyle"
                 android:text="@string/more" />
         </android.support.v7.widget.LinearLayoutCompat>
-
 
         <!-- SHARE SETTINGS -->
 
@@ -62,8 +59,7 @@
             style="@style/MyAccountSection">
 
             <com.mobile.components.customfontviews.TextView
-                style="@style/HeaderStyle"
-                android:text="@string/app_social" />
+                style="@style/MyAccountHeaderStyle"         />
 
         </android.support.v7.widget.LinearLayoutCompat>
 
