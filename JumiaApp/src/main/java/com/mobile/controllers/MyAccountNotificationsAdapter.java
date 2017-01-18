@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 
 import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
@@ -18,19 +19,19 @@ import com.mobile.view.R;
  * This Class is used to create an adapter for the list of account options. It is called by Home Activity.
  * <p/>
  * <br>
- * 
+ *
  * Copyright (C) 2012 Rocket Internet - All Rights Reserved
  * <p/>
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited <br>
  * Proprietary and confidential.
- * 
+ *
  * @author Sergio Pereira
- * 
+ *
  * @version 1.01
- * 
+ *
  *          2012/06/19
- * 
+ *
  */
 public class MyAccountNotificationsAdapter extends BaseAdapter {
     public static final String NOTIFICATION_CHECKBOX_TAG = "checkbox_notification_tag";
@@ -40,6 +41,7 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
     private final String[] mOptions;
     private final int[] mCheckBoxes;
     Context mContext;
+    int i =0;
     private final LayoutInflater mInflater;
 
     /**
@@ -55,6 +57,7 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
         this.mOptions = options;
         this.mCheckBoxes = checkBoxes;
         this.mContext = context;
+
         this.mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -77,11 +80,20 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         // Recycle the convert view
         View view;
+        ImageView img;
         if (convertView != null) {
             view = convertView;
         } else {
             view = mInflater.inflate(R.layout._def_single_line_with_checkbox_component, parent, false);
-            ((SingleLineComponent) view).removeSelector();
+            //((SingleLineComponent) view).removeSelector();
+            if (mOptions[i].equals(mContext.getString(R.string.notifications))) {
+                img = (ImageView) view.findViewById(R.id.country_icon);
+                img.setImageDrawable(view.getResources().getDrawable(R.drawable.announcements_icon));
+                i++;
+            } else {
+                img = (ImageView) view.findViewById(R.id.country_icon);
+                img.setImageDrawable(view.getResources().getDrawable(R.drawable.newsletter_icons));
+            }
         }
 
         // Get the Notification item name
@@ -120,12 +132,12 @@ public class MyAccountNotificationsAdapter extends BaseAdapter {
 
     /**
      * #FIX: java.lang.IllegalArgumentException: The observer is null.
-     * @solution from : https://code.google.com/p/android/issues/detail?id=22946 
+     * @solution from : https://code.google.com/p/android/issues/detail?id=22946
      */
     @Override
     public void unregisterDataSetObserver(DataSetObserver observer) {
         if(observer !=null){
-            super.unregisterDataSetObserver(observer);    
+            super.unregisterDataSetObserver(observer);
         }
     }
 }
