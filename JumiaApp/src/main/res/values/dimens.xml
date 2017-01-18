@@ -132,6 +132,11 @@
     <dimen name="text_xl">20sp</dimen>
     <dimen name="text_16sp">16sp</dimen>
 
+    <!--list size-->
+    <dimen name="list_icon_h">32sp</dimen>
+    <dimen name="list_h">50sp</dimen>
+
+
     <!-- MARGIN AND PADDING -->
     <dimen name="margin_padding_xxl">20dp</dimen>
     <dimen name="margin_padding_xl">16dp</dimen>
@@ -225,7 +230,7 @@
 
     <!-- NO RESULTS PAGE -->
     <dimen name="no_results_top_margin">40dp</dimen>
-    <dimen name="no_results_bottom_margin">33.33dp</dimen>
+    <dimen name="no_results_bottom_margin">25dp</dimen>
     <dimen name="no_results_search_tips_width">@dimen/match_parent</dimen>
     <dimen name="no_results_brands_height">147dp</dimen>
 

@@ -1,8 +1,10 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -39,8 +41,11 @@ import com.mobile.view.R;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 
 import de.akquinet.android.androlog.Log;
+
+import static com.mobile.newFramework.Darwin.context;
 
 /**
  * @author sergiopereira
@@ -111,7 +116,6 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-
         if(savedInstanceState != null){
             targets = savedInstanceState.getParcelableArrayList(TARGETS_TAG);
         } else {
@@ -131,7 +135,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         showMyAccount(view);
         showPreferences(view);
         showAppSharing(view);
-        showChooseLanguage(view);
+       // showChooseLanguage(view);
 
         moreInfoContainer = (ViewGroup)view.findViewById(R.id.more_info_container);
         if(targets != null){
@@ -273,7 +277,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
         }
         // Case language
         else {
-            CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.shop_settings);
+          /*  CountrySettingsAdapter.CountryLanguageInformation countryInformation = (CountrySettingsAdapter.CountryLanguageInformation) parent.getTag(R.string.shop_settings);
             ChooseLanguageController.chooseLanguageDialog(this, countryInformation.languages, new Runnable() {
                 @Override
                 public void run() {
@@ -281,7 +285,7 @@ public class MyAccountFragment extends BaseFragment implements AdapterBuilder.On
                     clearCountryConfigs();
                     getBaseActivity().restartAppFlow();
                 }
-            });
+            });*/
         }
     }
 
