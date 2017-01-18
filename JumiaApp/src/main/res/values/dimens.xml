@@ -230,7 +230,7 @@
 
     <!-- NO RESULTS PAGE -->
     <dimen name="no_results_top_margin">40dp</dimen>
-    <dimen name="no_results_bottom_margin">33.33dp</dimen>
+    <dimen name="no_results_bottom_margin">25dp</dimen>
     <dimen name="no_results_search_tips_width">@dimen/match_parent</dimen>
     <dimen name="no_results_brands_height">147dp</dimen>
 

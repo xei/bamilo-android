@@ -16,7 +16,7 @@
             android:id="@+id/no_results_search_error_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="@dimen/dimen_0dp"
             android:layout_marginEnd="@dimen/margin_veryhuge"
             android:layout_marginLeft="@dimen/margin_veryhuge"
             android:layout_marginRight="@dimen/margin_veryhuge"
@@ -27,7 +27,7 @@
             android:fontFamily="roboto"
             android:gravity="center"
             android:textColor="@color/grey_dark"
-            android:textSize="@dimen/search_title"
+            android:textSize="11sp"
             android:visibility="visible" />
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/no_results_search_error_message_guide"
@@ -38,12 +38,12 @@
             android:layout_marginLeft="@dimen/margin_veryhuge"
             android:layout_marginRight="@dimen/margin_veryhuge"
             android:layout_marginStart="@dimen/margin_veryhuge"
-            android:layout_marginTop="@dimen/dimen_10dp"
+            android:layout_marginTop="3dp"
             android:drawablePadding="@dimen/no_results_bottom_margin"
             android:fontFamily="roboto"
             android:gravity="center"
             android:textColor="@color/grey_middledark"
-            android:textSize="@dimen/search_title"
+            android:textSize="12sp"
             android:visibility="visible" />
 
         <RelativeLayout
