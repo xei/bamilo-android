@@ -65,13 +65,14 @@
                 android:layout_height="match_parent"
                 android:gravity="center|bottom"
                 android:orientation="vertical" >
-                <com.mobile.utils.catalog.ExpandableHeightListView
+                <com.mobile.view.ExpandableHeightListView
                     android:dividerHeight="@dimen/dimen_1dp"
                     android:divider="#D6D6D6"
                     android:footerDividersEnabled="true"
                     android:headerDividersEnabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/dimen_50dp"
                     android:id="@+id/search_listview"
                     android:gravity="center|bottom"/>
 
