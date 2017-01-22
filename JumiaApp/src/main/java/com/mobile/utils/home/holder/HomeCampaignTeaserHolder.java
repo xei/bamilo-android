@@ -1,7 +1,9 @@
 package com.mobile.utils.home.holder;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.os.CountDownTimer;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -51,6 +53,8 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         timer = (TextView) view.findViewById(R.id.home_teaser_campaign_timer);
         sub = (TextView) view.findViewById(R.id.home_teaser_campaign_subtitle);
         more = (TextView) view.findViewById(R.id.home_teaser_campaign_more);
+
+        timer.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
     }
 
     @Override
@@ -192,7 +196,7 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         counter = new CountDownTimer(timeInMilliSeconds, DateTimeUtils.UNIT_SEC_TO_MILLIS) {
             @Override
             public void onTick(long millisUntilFinished) {
-                timer.setText(DateTimeUtils.getTimeFromMillis(millisUntilFinished));
+                timer.setText(changeNumberChar(DateTimeUtils.getTimeFromMillis(millisUntilFinished).toString()));
             }
 
             @Override
@@ -202,5 +206,10 @@ public class HomeCampaignTeaserHolder extends BaseTeaserViewHolder {
         };
         counter.start();
     }
-
+    public String changeNumberChar(String enNumber)
+    {
+        return enNumber.replaceAll("0","۰").replaceAll("1","۱").replaceAll("2","۲").
+                replaceAll("3","۳").replaceAll("4","۴").replaceAll("5","۵").
+                replaceAll("6","۶").replaceAll("7","۷").replaceAll("8","۸").replaceAll("9","۹");
+    }
 }
