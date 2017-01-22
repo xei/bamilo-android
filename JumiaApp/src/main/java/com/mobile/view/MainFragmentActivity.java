@@ -36,6 +36,7 @@ import com.mobile.view.fragments.ComboFragment;
 import com.mobile.view.fragments.FilterMainFragment;
 import com.mobile.view.fragments.HomePageFragment;
 import com.mobile.view.fragments.InnerShopFragment;
+import com.mobile.view.fragments.MyAccountAboutFragment;
 import com.mobile.view.fragments.MyAccountAddressesFragment;
 import com.mobile.view.fragments.MyAccountCreateAddressFragment;
 import com.mobile.view.fragments.MyAccountEditAddressFragment;

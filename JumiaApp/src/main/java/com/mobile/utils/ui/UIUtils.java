@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
@@ -307,12 +308,23 @@ public class UIUtils {
         final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 
 
-        emailIntent.setType("plain/text");
-        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"to@email.com"});
-        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Subject");
-        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Text");
+        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
+        String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
+        String deviceName = android.os.Build.MODEL;
+        String deviceBrand = Build.BRAND;
+        String description = "لطفا برای پیگیری بهتر اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
 
-/* Send it off to the Activity-Chooser */
+
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"application@bamilo.com"});
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "گزارش مشکل در برنامه");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,  "\n\n\n\n\n\n\n "
+                + description+"\n"
+                + "android version : " + appVersion+"\n"
+                + "application version : " + sdkVersion+"\n"
+                + "device name : " + deviceBrand +"-"+deviceName
+
+        );
 
 
 
@@ -320,7 +332,7 @@ public class UIUtils {
             activity.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
         }
         else {
-            Toast.makeText(activity,"email nasb nadari",Toast.LENGTH_LONG).show();
+            Toast.makeText(activity,"لطفا ایمیل را نصب کنید",Toast.LENGTH_LONG).show();
 
         }
 

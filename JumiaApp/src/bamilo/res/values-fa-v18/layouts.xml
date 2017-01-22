@@ -140,7 +140,7 @@
     <item name="country_settings_list_item"             type="layout">@layout/_def_country_settings_list_item</item>
     <item name="my_account_app_version"                 type="layout">@layout/_def_my_account_app_version</item>
     <item name="my_account_fragment"                    type="layout">@layout/_def_my_account_fragment</item>
-    <item name="my_account_about_fragment"              type="layout">@layout/_def_my_account_about_fragment</item>
+    <item name="my_account_about_fragment"              type="layout">@layout/_def_about_fragment</item>
 
     <!-- DYNAMIC -->
     <item name="form_checkbox_terms"                    type="layout">@layout/_def_form_checkbox_terms</item>
