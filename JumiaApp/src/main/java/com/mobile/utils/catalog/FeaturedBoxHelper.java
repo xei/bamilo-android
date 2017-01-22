@@ -87,16 +87,16 @@ public class FeaturedBoxHelper {
                             onClickNoSearchItem("","shop_in_shop::fashion-lp",TeaserGroupType.MAIN_TEASERS);
                             break;
                         case 3 :
-                            onClickNoSearchItem("","shop_in_shop::electronic_accessories_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 4 :
-                            onClickNoSearchItem("","shop_in_shop::home_furniture_lifestyle_lp",TeaserGroupType.MAIN_TEASERS);
-                            break;
-                        case 5 :
                             onClickNoSearchItem("","shop_in_shop::health_beauty_personal_care_lp",TeaserGroupType.MAIN_TEASERS);
                             break;
-                        case 6 :
+                        case 4 :
                             onClickNoSearchItem("","shop_in_shop::smartphone_tablet_mobile_lp",TeaserGroupType.MAIN_TEASERS);
+                            break;
+                        case 5 :
+                            onClickNoSearchItem("","shop_in_shop::electronic_accessories_lp",TeaserGroupType.MAIN_TEASERS);
+                            break;
+                        case 6 :
+                            onClickNoSearchItem("","shop_in_shop::home_furniture_lifestyle_lp",TeaserGroupType.MAIN_TEASERS);
                             break;
 
                     }
