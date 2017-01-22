@@ -1,23 +1,13 @@
 package com.mobile.utils.catalog;
 
 import android.content.Context;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.mobile.app.JumiaApplication;
-import com.mobile.components._unused_.scrollable.ExpandedListView;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.FeaturedItemsAdapter;
 import com.mobile.controllers.fragments.FragmentController;
@@ -28,10 +18,10 @@ import com.mobile.newFramework.objects.home.type.TeaserGroupType;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.output.Print;
-import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.deeplink.TargetLink;
 import com.mobile.utils.search.NoResSearchAdapter;
 import com.mobile.utils.search.SearchModel;
+import com.mobile.view.ExpandableHeightListView;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
 
@@ -39,8 +29,6 @@ import java.util.ArrayList;
 
 import de.akquinet.android.androlog.Log;
 
-import static android.R.attr.width;
-import static android.support.design.R.attr.height;
 
 /**
  * Class used to show the featured box.
@@ -114,12 +102,7 @@ public class FeaturedBoxHelper {
                     }
                 }
             });
-           /* searchListView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return (event.getAction() == MotionEvent.ACTION_MOVE);
-                }
-            });*/
+
             return true;
         } catch (NullPointerException e) {
             Log.w(TAG, "WARNING: NPE ON SHOW FEATURED BOX", e);
@@ -281,58 +264,4 @@ public class FeaturedBoxHelper {
     }
 
 
-}
-
-class ExpandableHeightListView extends ListView
-{
-
-    boolean expanded = false;
-
-    public ExpandableHeightListView(Context context)
-    {
-        super(context);
-    }
-
-    public ExpandableHeightListView(Context context, AttributeSet attrs)
-    {
-        super(context, attrs);
-    }
-
-    public ExpandableHeightListView(Context context, AttributeSet attrs,
-                                    int defStyle)
-    {
-        super(context, attrs, defStyle);
-    }
-
-    public boolean isExpanded()
-    {
-        return expanded;
-    }
-
-    @Override
-    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec)
-    {
-        // HACK! TAKE THAT ANDROID!
-        if (isExpanded())
-        {
-            // Calculate entire height by providing a very large height hint.
-            // But do not use the highest 2 bits of this integer; those are
-            // reserved for the MeasureSpec mode.
-            int expandSpec = MeasureSpec.makeMeasureSpec(
-                    Integer.MAX_VALUE >> 2, MeasureSpec.AT_MOST);
-            super.onMeasure(widthMeasureSpec, expandSpec);
-
-            ViewGroup.LayoutParams params = getLayoutParams();
-            params.height = getMeasuredHeight();
-        }
-        else
-        {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        }
-    }
-
-    public void setExpanded(boolean expanded)
-    {
-        this.expanded = expanded;
-    }
 }

@@ -15,21 +15,24 @@
         android:layout_height="wrap_content"
         android:src="@drawable/btn_home"
         android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginEnd="15dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginStart="14dp" />
 
-    <TextView
+    <com.mobile.components.customfontviews.TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="34dp"
-        android:layout_marginEnd="34dp"
+        android:fontFamily="@string/bamilo_font"
         android:id="@+id/item_title"
+        android:textColor="#5a5a5a"
+        android:text="dfghdfghfgh"
         android:layout_centerVertical="true"
-        android:layout_alignRight="@+id/item_icon"
-        android:layout_alignEnd="@+id/item_icon"
-        android:textColor="#5a5a5a" />
+        android:layout_toRightOf="@+id/item_icon"
+        android:layout_toEndOf="@+id/item_icon"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:textSize="12sp" />
 
 
 </RelativeLayout>
