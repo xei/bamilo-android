@@ -37,6 +37,7 @@
                     android:id="@+id/home_teaser_campaign_timer"
                     style="@style/TextBase.Timer"
                     android:layout_marginBottom="@dimen/dimen_mat_8px"
+                    android:textSize="22sp"
                     android:gravity="center" />
 
                 <com.mobile.components.customfontviews.TextView
