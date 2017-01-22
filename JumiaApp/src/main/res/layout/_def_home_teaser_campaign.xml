@@ -51,8 +51,8 @@
 
                 <com.mobile.components.customfontviews.TextView
                     android:id="@+id/home_teaser_campaign_timer"
-                    style="@style/TextBase.Timer"
-                    android:textSize="22sp"
+                    style="@style/TextBase.Timer"                    android:text="22sp"
+                    android:fontFamily="@string/bamilo_font"
                     android:layout_marginBottom="@dimen/dimen_mat_8px"
                     android:gravity="center" />
 
