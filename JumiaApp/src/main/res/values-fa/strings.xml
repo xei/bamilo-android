@@ -394,5 +394,7 @@
     <string name="invalid_address_other">نشانی وارد شده صحیح نمی‌باشد.</string>
 
     <string name="faq">راهنما و سوالات متداول</string>
+    <string name="checkout_address_title">لطفا آدرس خود را انتخاب کنید.</string>
+    <string name="telephone">تلفن:</string>
 
 </resources>

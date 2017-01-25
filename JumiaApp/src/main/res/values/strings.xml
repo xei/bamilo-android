@@ -402,4 +402,6 @@
     <string name="bamilo_bold_font">bamilo_sans_bold</string>
     <string name="bamilo_light_font">bamilo_sans_light</string>
 
+    <string name="checkout_address_title">Please choose your address</string>
+    <string name="telephone">Tel:</string>
 </resources>

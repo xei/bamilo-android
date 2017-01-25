@@ -1,6 +1,8 @@
 package com.mobile.view;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -66,6 +68,8 @@ import com.mobile.view.fragments.order.OrderReturnCallFragment;
 import com.mobile.view.fragments.order.OrderReturnConditionsFragment;
 import com.mobile.view.fragments.order.OrderReturnStepsMain;
 import com.mobile.view.fragments.order.OrderStatusFragment;
+import com.mobile.view.newfragments.NewBaseFragment;
+import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -80,6 +84,8 @@ public class MainFragmentActivity extends DebugActivity {
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
 
     private BaseFragment fragment;
+    private NewBaseFragment newFragment;
+    private boolean isNewFragment = false;
 
     private FragmentType mCurrentFragmentType;
 
@@ -204,6 +210,7 @@ public class MainFragmentActivity extends DebugActivity {
      * com.slidingmenu.lib.app.SlidingFragmentActivity#onSaveInstanceState(android
      * .os.Bundle)
      */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -240,6 +247,7 @@ public class MainFragmentActivity extends DebugActivity {
         hideKeyboard();
         // Remove entries from back stack
         boolean removeEntries = false;
+        isNewFragment = false;
         // Validate fragment type
         switch (type) {
             case HOME:
@@ -334,7 +342,9 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);
                 break;
             case CHECKOUT_MY_ADDRESSES:
-                fragment = newFragmentInstance(CheckoutAddressesFragment.class, bundle);
+                isNewFragment = true;
+                newFragment = newNewFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
+               // fragment = newFragmentInstance(CheckoutAddressesFragment.class, bundle);
                 break;
             case CHECKOUT_CREATE_ADDRESS:
                 fragment = newFragmentInstance(CheckoutCreateAddressFragment.class, bundle);
@@ -422,7 +432,13 @@ public class MainFragmentActivity extends DebugActivity {
         mCurrentFragmentType = type;
 
         // Transition
-        fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
+        if (!isNewFragment) {
+            fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
+        }
+        else
+        {
+            fragmentManagerTransition(R.id.app_content, newFragment, type, addToBackStack);
+        }
     }
 
     /**
@@ -430,6 +446,10 @@ public class MainFragmentActivity extends DebugActivity {
      */
     private  BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass, @Nullable Bundle arguments) {
         return BaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
+    }
+
+    private  NewBaseFragment newNewFragmentInstance(@NonNull Class<? extends NewBaseFragment> fragmentClass, @Nullable Bundle arguments) {
+        return NewBaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
 
     /**

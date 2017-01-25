@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    >
+
+
+    <com.mobile.components.customfontviews.TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/dimen_16dp"
+        android:paddingBottom="@dimen/dimen_8dp"
+        android:textSize="@dimen/address_header_title"
+        android:textColor="@color/black_47"
+        android:background="@color/black_300"
+        android:text="@string/checkout_address_title"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/address_separator"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/address_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_below="@+id/title"
+            android:layout_above="@+id/footer"
+            android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        >
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/address_continue"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@color/color_accent"
+            android:text="@string/next_button"/>
+        <!--<include
+            layout="@layout/checkout_total_layout" />-->
+    </LinearLayout>
+</LinearLayout>
