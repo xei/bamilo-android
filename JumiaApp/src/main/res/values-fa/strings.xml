@@ -2,6 +2,7 @@
 <resources>
     <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">حساب کاربری من ‎</string>
+    <string name="new_account_name">حساب کاربری من 2‎</string>
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
     <string name="action_label_basket">سبد کالا</string>
     <string name="action_label_search_hint"> جستجو در بامیلو</string>

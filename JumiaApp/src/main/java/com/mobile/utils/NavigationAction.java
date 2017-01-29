@@ -37,12 +37,14 @@ public class NavigationAction {
     public static final int UNKNOWN = 24;
     public static final int CAMPAIGN = 25;
     public static final int FAQ = 26;
+    public static final int MY_NEW_ACCOUNT = 27;
     @IntDef({
             LOGIN_OUT,
             BASKET,
             CATEGORIES,
             HOME,
             MY_ACCOUNT,
+            MY_NEW_ACCOUNT,
             MY_ACCOUNT_USER_DATA,
             MY_ACCOUNT_MY_ADDRESSES,
             MY_ACCOUNT_EMAIL_NOTIFICATION,

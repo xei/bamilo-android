@@ -1352,6 +1352,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                         onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
+                    case NavigationAction.MY_NEW_ACCOUNT:
+                        // MY ACCOUNT
+                       // TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
+                        onSwitchFragment(FragmentType.MY_NEW_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
                     case NavigationAction.MY_ORDERS:
                         // TRACK ORDER
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
