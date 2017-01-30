@@ -50,7 +50,7 @@ import java.util.List;
  */
 public class MyNewAccountFragment extends BaseFragment implements  IResponseCallback{
 
-    private static final String TAG = MyAccountFragment.class.getSimpleName();
+    private static final String TAG = MyNewAccountFragment.class.getSimpleName();
     private static final String TARGETS_TAG = MobileAbout.class.getSimpleName();
     private RecyclerView mRecyclerView;
     private static List<AboutItem> movieList = new ArrayList<>();
@@ -83,6 +83,7 @@ public class MyNewAccountFragment extends BaseFragment implements  IResponseCall
                 NO_ADJUST_CONTENT);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater,container,savedInstanceState);
@@ -114,7 +115,6 @@ public class MyNewAccountFragment extends BaseFragment implements  IResponseCall
     public void onViewCreated(View view, Bundle savedInstanceState) {
        // super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));

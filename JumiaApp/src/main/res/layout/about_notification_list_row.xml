@@ -33,12 +33,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <CheckBox
+        <com.mobile.components.customfontviews.CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_alignParentLeft="false"
             android:layout_alignParentEnd="true"
+            style="@style/SingleLineListCheckBox"
+            android:layout_alignParentStart="false"
             android:id="@+id/notification_status" />
 </RelativeLayout>
 
