@@ -82,6 +82,15 @@
         <item name="tabIndicatorColor">@color/color_accent</item>
     </style>
 
+    <!-- Checkout Tab Layout -->
+    <style name="Widget.Custom.CheckoutTab" parent="Base.Widget.Design.TabLayout" >
+        <item name="android:background">@color/tabBar</item>
+        <item name="tabGravity">center</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabIndicatorColor">@color/tabBar</item>
+    </style>
+
     <!-- Sliding Tab Layout -->
     <style name="Widget.Custom.SlidingTabBar">
         <item name="android:background">@color/tabBar</item>
