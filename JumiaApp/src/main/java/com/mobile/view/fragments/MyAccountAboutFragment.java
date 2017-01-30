@@ -50,7 +50,7 @@ import de.akquinet.android.androlog.Log;
  * @author shahrooz
  *
  */
-public class MyAccountAboutFragment extends BaseFragment implements  IResponseCallback {
+public class MyAccountAboutFragment extends BaseFragment /*implements  IResponseCallback*/ {
 
     private static final String TAG = MyAccountAboutFragment.class.getSimpleName();
 
@@ -106,11 +106,16 @@ public class MyAccountAboutFragment extends BaseFragment implements  IResponseCa
         Print.i(TAG, "ON ATTACH");
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
     /*
-     * (non-Javadoc)
-     *
-     * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
-     */
+             * (non-Javadoc)
+             *
+             * @see android.support.v4.app.Fragment#onCreate(android.os.Bundle)
+             */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +136,7 @@ public class MyAccountAboutFragment extends BaseFragment implements  IResponseCa
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        Button call_btn = (Button) getBaseActivity().findViewById(R.id.about_call_btn);
+     /*   Button call_btn = (Button) getBaseActivity().findViewById(R.id.about_call_btn);
         call_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,7 +149,7 @@ public class MyAccountAboutFragment extends BaseFragment implements  IResponseCa
             public void onClick(View v) {
                 UIUtils.onClickEmailToCS(getBaseActivity());
             }
-        });
+        });*/
     }
 
 
@@ -217,9 +222,6 @@ public class MyAccountAboutFragment extends BaseFragment implements  IResponseCa
         super.onDestroy();
     }
 
-    private void triggerFaqAndTerms() {
-        triggerContentEvent(new GetFaqTermsHelper(), null, this);
-    }
 
     /**
      * Shows my account options
@@ -318,37 +320,7 @@ public class MyAccountAboutFragment extends BaseFragment implements  IResponseCa
         }
     }
 
-    @Override
-    public void onRequestComplete(BaseResponse baseResponse) {
-        EventType eventType = baseResponse.getEventType();
-        Print.d(TAG, "ON SUCCESS EVENT");
-        // Validate fragment visibility
-        if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return;
-        }
-        // Case GET_FAQ_TERMS
-        if (eventType == EventType.GET_FAQ_TERMS) {
-            setTargets((MobileAbout) baseResponse.getMetadata().getData());
-            //showMoreInfo();
-        }
-    }
 
-    @Override
-    public void onRequestError(BaseResponse baseResponse) {
-        Print.i(TAG, "ON ERROR EVENT");
-        EventType eventType = baseResponse.getEventType();
-        // Validate fragment visibility
-        if (isOnStoppingProcess || eventType == null) {
-            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
-            return ;
-        }
-        // Case GET_FAQ_TERMS
-        if (eventType == EventType.GET_FAQ_TERMS) {
-            //   showMoreInfo();
-            showFragmentContentContainer();
-        }
-    }
 
     private void onClickStaticPageButton(String key, String label) {
         Bundle bundle = new Bundle();
