@@ -178,7 +178,6 @@ public class CheckoutAddressesFragment extends BaseAddressesFragment {
     /**
      * ############# REQUESTS #############
      */
-
     @Override
     protected void triggerGetAddresses() {
         triggerContentEvent(new GetStepAddressesHelper(), null, this);
@@ -192,10 +191,9 @@ public class CheckoutAddressesFragment extends BaseAddressesFragment {
         triggerContentEvent(new SetStepAddressesHelper(), SetStepAddressesHelper.createBundle(billing, shipping), this);
     }
 
-    /**
+    /*
      * ############# RESPONSE #############
      */
-
     @Override
     public void onRequestComplete(BaseResponse baseResponse) {
         // Validate fragment visibility

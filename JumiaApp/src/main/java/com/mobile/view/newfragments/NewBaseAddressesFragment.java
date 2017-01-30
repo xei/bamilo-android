@@ -45,9 +45,11 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     private static final String TAG = BaseAddressesFragment.class.getSimpleName();
     protected Addresses mAddresses;
     RecyclerView mAddressView;
-    public NewBaseAddressesFragment()
+    private boolean mIsCheckout = false;
+    public NewBaseAddressesFragment(boolean isCheckout)
     {
         super();
+        mIsCheckout = isCheckout;
     }
 
     @Override
@@ -126,7 +128,7 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     /*
 
      */
-    protected void showAddresses(Addresses addresses) {
+    protected void showAddresses(Addresses addresses, int mSelectedAddressId) {
         // Save addresses
         mAddresses = addresses;
         ArrayList<Address> addressList = new ArrayList<Address>();
@@ -138,7 +140,7 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
         }
 
 
-        AddressAdapter mAddressAdapter = new AddressAdapter(addressList);
+        AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId);
         mAddressAdapter.baseFragment = this;
         mAddressView.setAdapter(mAddressAdapter);
 

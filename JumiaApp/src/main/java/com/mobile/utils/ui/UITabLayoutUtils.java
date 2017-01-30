@@ -83,6 +83,7 @@ public class UITabLayoutUtils {
         tab.setOnTabSelectedListener(listener);
     }
 
+
     public static boolean isNavigationActionWithTabLayout(@NavigationAction.Type int action) {
         return action == NavigationAction.HOME || action == NavigationAction.SAVED || action == NavigationAction.BASKET;
     }

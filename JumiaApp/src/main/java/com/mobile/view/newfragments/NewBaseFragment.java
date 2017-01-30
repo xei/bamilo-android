@@ -15,6 +15,7 @@ import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
@@ -173,5 +174,14 @@ public abstract class NewBaseFragment extends Fragment {
         }
     }*/
 
+/*
+     * (non-Javadoc)
+     *
+     * @see com.mobile.utils.BaseActivity.OnActivityFragmentInteraction#allowBackPressed()
+     */
+    public boolean allowBackPressed() {
 
+        // No intercept the back pressed
+        return false;
+    }
 }

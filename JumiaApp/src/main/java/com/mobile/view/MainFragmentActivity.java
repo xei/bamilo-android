@@ -492,28 +492,56 @@ public class MainFragmentActivity extends DebugActivity {
      * Process the back pressed
      */
     private void onProcessBackPressed() {
-        fragment = getActiveFragment();
+        Fragment frag = getActiveFragment();
+        if (frag instanceof BaseFragment) {
+            fragment = (BaseFragment) frag;
 
-        // Clear search term
-        if(fragment.getTag().equals(FragmentType.CATALOG.toString()))
-            JumiaApplication.INSTANCE.setSearchedTerm("");
+            // Clear search term
+            if (fragment.getTag().equals(FragmentType.CATALOG.toString()))
+                JumiaApplication.INSTANCE.setSearchedTerm("");
 
-        // Case navigation opened
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
-            Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
+            // Case navigation opened
+            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+                Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
+                mDrawerLayout.closeDrawer(mDrawerNavigation);
+            }
+            // Case fragment not allow back pressed
+            else if (fragment == null || !fragment.allowBackPressed()) {
+                Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
+                // Hide Keyboard
+                hideKeyboard();
+                // Back
+                fragmentManagerBackPressed();
+            }
+            // Case fragment allow back pressed
+            else {
+                Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
+            }
         }
-        // Case fragment not allow back pressed
-        else if (fragment == null || !fragment.allowBackPressed()) {
-            Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
-            // Hide Keyboard
-            hideKeyboard();
-            // Back
-            fragmentManagerBackPressed();
-        }
-        // Case fragment allow back pressed
-        else {
-            Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
+        else
+        {
+            newFragment = (NewBaseFragment) frag;
+            // Clear search term
+            if (newFragment.getTag().equals(FragmentType.CATALOG.toString()))
+                JumiaApplication.INSTANCE.setSearchedTerm("");
+
+            // Case navigation opened
+            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+                Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
+                mDrawerLayout.closeDrawer(mDrawerNavigation);
+            }
+            // Case fragment not allow back pressed
+            else if (newFragment == null || !newFragment.allowBackPressed()) {
+                Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
+                // Hide Keyboard
+                hideKeyboard();
+                // Back
+                fragmentManagerBackPressed();
+            }
+            // Case fragment allow back pressed
+            else {
+                Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
+            }
         }
     }
 
@@ -522,14 +550,14 @@ public class MainFragmentActivity extends DebugActivity {
      *
      * @return BaseFragment
      */
-    public BaseFragment getActiveFragment() {
+    public Fragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             Print.i("BACKSTACK", "getBackStackEntryCount is 0");
             return null;
         }
         String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
         Print.i("BACKSTACK", "getActiveFragment:" + tag);
-        return (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        return (Fragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     /**
@@ -547,5 +575,7 @@ public class MainFragmentActivity extends DebugActivity {
     public boolean isInMaintenance() {
         return isInMaintenance;
     }
+
+
 
 }

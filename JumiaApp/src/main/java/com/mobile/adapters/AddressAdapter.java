@@ -32,6 +32,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     private static RadioButton lastChecked = null;
     private static int lastCheckedPos = 0;
     public NewBaseFragment baseFragment;
+    private boolean mIsCheckout;
 
     public class AddressViewHolder extends RecyclerView.ViewHolder {
         public TextView name, street, phone;
@@ -49,13 +50,16 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     }
 
 
-    public AddressAdapter(List<Address> addressesList) {
+    public AddressAdapter(List<Address> addressesList, boolean isCheckout, int mSelectedAddressId) {
+        mIsCheckout = isCheckout;
         this.addressesList = addressesList;
         this.addressSelection = new ArrayList<>();
         for (int i=0;i<addressesList.size(); i++)
         {
             AdapterItemSelection tmp = new AdapterItemSelection();
             tmp.id=addressesList.get(i).getId();
+            if (i==0 && mSelectedAddressId == -1) tmp.setSelected(true);
+            if (tmp.id == mSelectedAddressId) tmp.setSelected(true);
             addressSelection.add(tmp);
         }
     }
@@ -75,44 +79,41 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         holder.street.setText(address.getAddress());
         holder.phone.setText(address.getPhone());
         holder.editButton.setOnClickListener(onClickEditAddressButton);
+        holder.editButton.setTag(address.getId());
 
-        holder.checkBox.setChecked(addressSelection.get(position).isSelected());
-        holder.checkBox.setTag(new Integer(position));
+        if (mIsCheckout) {
+            holder.checkBox.setVisibility(View.VISIBLE);
+            holder.checkBox.setChecked(addressSelection.get(position).isSelected());
+            holder.checkBox.setTag(new Integer(position));
 
-        //for default check in first item
-        if(position == 0 && addressSelection.get(0).isSelected() && holder.checkBox.isChecked())
-        {
-            lastChecked = holder.checkBox;
-            lastCheckedPos = 0;
-        }
-
-        holder.checkBox.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                RadioButton cb = (RadioButton)v;
-                int clickedPos = ((Integer)cb.getTag()).intValue();
-
-                if(cb.isChecked())
-                {
-                    if(lastChecked != null && clickedPos != lastCheckedPos)
-                    {
-                        lastChecked.setChecked(false);
-                        addressSelection.get(lastCheckedPos).setSelected(false);
-                    }
-
-                    lastChecked = cb;
-                    lastCheckedPos = clickedPos;
-                }
-                else
-                    lastChecked = null;
-
-                addressSelection.get(clickedPos).setSelected(cb.isChecked());
+            //for default check in first item
+            if (position == 0 && addressSelection.get(0).isSelected() && holder.checkBox.isChecked()) {
+                lastChecked = holder.checkBox;
+                lastCheckedPos = 0;
             }
-        });
 
+            holder.checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    RadioButton cb = (RadioButton) v;
+                    int clickedPos = ((Integer) cb.getTag()).intValue();
 
+                    if (cb.isChecked()) {
+                        if (lastChecked != null && clickedPos != lastCheckedPos) {
+                            lastChecked.setChecked(false);
+                            addressSelection.get(lastCheckedPos).setSelected(false);
+                        }
+
+                        lastChecked = cb;
+                        lastCheckedPos = clickedPos;
+                    } else
+                        lastChecked = null;
+
+                    addressSelection.get(clickedPos).setSelected(cb.isChecked());
+                }
+            });
+
+        }
 
     }
 

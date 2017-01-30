@@ -537,5 +537,6 @@
     <dimen name="address_header_title">14sp</dimen>
     <dimen name="address_header_street">12sp</dimen>
 
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

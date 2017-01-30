@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.mobile.adapters.AddressAdapter;
+import com.mobile.components.customfontviews.BamiloLinearLayoutManager;
 import com.mobile.constants.ConstantsCheckout;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
@@ -43,16 +48,16 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     private static final String TAG = CheckoutAddressesFragment.class.getSimpleName();
 
     private View mCheckoutTotalBar;
+    private FloatingActionButton fabNewAddress;
+    private int mSelectedAddress;
 
+    public NewCheckoutAddressesFragment() {
+        super(true);
+    }
 
-
-
-     /*
-     * ############# LIFE CYCLE #############
-     */
-
-
-
+    /*
+    * ############# LIFE CYCLE #############
+    */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,9 +84,14 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
         mCheckoutTotalBar = view.findViewById(R.id.address_continue);
+        fabNewAddress = (FloatingActionButton) view.findViewById(R.id.fab_new_address);
 
         getBaseActivity().updateBaseComponents(EnumSet.of(MyMenuItem.UP_BUTTON_BACK), NavigationAction.CHECKOUT, R.string.checkout_label, ConstantsCheckout.CHECKOUT_BILLING);
         mCheckoutTotalBar.setOnClickListener(onClickSubmitAddressesButton);
+        fabNewAddress.setOnClickListener(onClickCreateAddressButton);
+
+        mSelectedAddress = -1;
+
 
 
         // Get sections
@@ -95,6 +105,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     }
 
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -106,9 +117,10 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         super.onResume();
         Print.i(TAG, "ON RESUME");
         // Get addresses
-        if(mAddresses == null) {
+        //if(mAddresses == null) {
             triggerGetForm();
-        }/* else {
+        //}
+        /* else {
             showFragmentContentContainer();
         }*/
     }
@@ -157,9 +169,12 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
     /**
      * Process the click on add button.
      */
-    protected void onClickCreateAddressButton() {
-        getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
-    }
+    View.OnClickListener onClickCreateAddressButton = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_CREATE_ADDRESS, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+        }
+    };
 
 
     /**
@@ -194,7 +209,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 MultiStepAddresses multiStepAddresses = (MultiStepAddresses) baseResponse.getContentData();
                 //CheckoutStepManager.setTotalBar(mCheckoutTotalBar, multiStepAddresses.getOrderSummary());
                 //super.showOrderSummaryIfPresent(ConstantsCheckout.CHECKOUT_BILLING, multiStepAddresses.getOrderSummary());
-                super.showAddresses(multiStepAddresses.getAddresses());
+                super.showAddresses(multiStepAddresses.getAddresses(), mSelectedAddress);
                 break;
             case SET_MULTI_STEP_ADDRESSES:
                 // Get next step
