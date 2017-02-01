@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
@@ -16,6 +18,7 @@ import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.deeplink.DeepLinkManager;
+import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
@@ -32,6 +35,8 @@ public abstract class NewBaseFragment extends Fragment {
     protected long mLoadTime = 0; // For tacking
     private BaseActivity mainActivity;
     private ViewStub mLoadingView;
+    private View mErrorView;
+    private ErrorLayoutFactory mErrorLayoutFactory;
 
     public NewBaseFragment()
     {
@@ -59,6 +64,27 @@ public abstract class NewBaseFragment extends Fragment {
         Print.i(TAG, "ON CREATE");
     }
 
+    /*
+     * (non-Javadoc)
+     *
+     * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
+     * android.view.ViewGroup, android.os.Bundle)
+     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Get current time
+        mLoadTime = System.currentTimeMillis();
+       // if (hasLayoutToInflate()) {
+            //Print.i(TAG, "ON CREATE VIEW: HAS LAYOUT TO INFLATE");
+            View view = inflater.inflate(R.layout.fragment_root_layout, container, false);
+
+            return view;
+        /*} else {
+            Print.i(TAG, "ON CREATE VIEW: HAS NO LAYOUT TO INFLATE");
+            return super.onCreateView(inflater, container, savedInstanceState);
+        }*/
+    }
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -73,7 +99,7 @@ public abstract class NewBaseFragment extends Fragment {
         mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
        // mLoadingView.setOnInflateListener(this);
         // Get retry layout
-       // mErrorView =  view.findViewById(R.id.fragment_stub_retry);
+        mErrorView =  view.findViewById(R.id.fragment_stub_retry);
        // ((ViewStub) mErrorView).setOnInflateListener(this);
         // Get fall back layout
         //mFallBackView = (ViewStub) view.findViewById(R.id.fragment_stub_home_fall_back);
@@ -143,6 +169,7 @@ public abstract class NewBaseFragment extends Fragment {
         // Request
         JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
     }
+
     /**
      * Show the loading view from the root layout
      */
@@ -184,4 +211,44 @@ public abstract class NewBaseFragment extends Fragment {
         // No intercept the back pressed
         return false;
     }
+
+    /**
+     * Show the retry view from the root layout
+     * @author sergiopereira
+     */
+    protected void showFragmentErrorRetry() {
+        showErrorFragment(ErrorLayoutFactory.UNEXPECTED_ERROR_LAYOUT, null);
+    }
+
+    /**
+     * Show error layout based on type. if the view is not inflated, it will be in first place.
+     */
+    protected final void showErrorFragment(@ErrorLayoutFactory.LayoutErrorType int type, View.OnClickListener listener){
+        if(mErrorView instanceof ViewStub){
+            // If not inflated yet
+            mErrorView.setTag(mErrorView.getId(), type);
+            mErrorView.setTag(R.id.stub_listener, listener);
+            ((ViewStub) mErrorView).inflate();
+        } else {
+            //If already inflated
+            View retryButton = mErrorView.findViewById(R.id.fragment_root_error_button);
+            retryButton.setOnClickListener(listener);
+            retryButton.setTag(R.id.fragment_root_error_button, type);
+            //mErrorLayoutFactory.showErrorLayout(type);
+        }
+    }
+
+    /**
+     * Set no network view.
+     * @param inflated The inflated view
+     */
+    protected void onInflateErrorLayout(ViewStub viewStub, View inflated) {
+        Print.i(TAG, "ON INFLATE STUB: ERROR LAYOUT");
+        mErrorView = inflated;
+        // Init error factory
+        mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
+        @ErrorLayoutFactory.LayoutErrorType int type = (int) viewStub.getTag(viewStub.getId());
+        showErrorFragment(type, (View.OnClickListener) viewStub.getTag(R.id.stub_listener));
+    }
+
 }

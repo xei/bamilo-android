@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- CONFIGS: Bamilo -->
     <string name="single_shop_country_name">Bamilo</string>
-    <!--<string name="single_shop_country_url">www.bamilo.com</string>-->
+    <string name="single_shop_country_url">www.bamilo.com</string>
     <string name="single_shop_country_flag">""</string>
     <string name="single_shop_country_iso">IRR</string>
     <bool name="single_shop_country_force_https">false</bool>
     <bool name="single_shop_country_is_live">true</bool>
     <bool name="is_single_shop_country">true</bool>
-    
-	<!-- Global Country Configuration -->
+
+    <!-- Global Country Configuration -->
     <string name="global_server_shop_name">@string/single_shop_country_name</string>
     <string name="global_server_host">@string/single_shop_country_url</string>
-
 </resources>

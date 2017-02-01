@@ -299,6 +299,11 @@ public interface AigApiInterface {
     String getEditAddressForm = "getEditAddressForm";
 
     @FormUrlEncoded
+    @BODY_DELETE("/")
+    void removeCustomerAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
+    String removeCustomerAddressForm = "removeCustomerAddressForm";
+
+    @FormUrlEncoded
     @POST("/")
     void validateProducts(@Field("products[]") ArrayList<String> keys, Callback<BaseResponse<ValidProductList>> callback);
     String validateProducts = "validateProducts";

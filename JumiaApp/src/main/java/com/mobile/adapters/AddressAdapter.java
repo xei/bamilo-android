@@ -1,21 +1,32 @@
 package com.mobile.adapters;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TableRow;
 
 import com.mobile.components.customfontviews.RadioButton;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.constants.ConstantsIntentExtra;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.controllers.fragments.FragmentType;
+import com.mobile.helpers.address.GetFormDeleteAddressHelper;
+import com.mobile.helpers.address.GetFormEditAddressHelper;
+import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.AdapterItemSelection;
 import com.mobile.newFramework.objects.addresses.Address;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.Toast;
+import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
 import com.mobile.view.newfragments.NewBaseFragment;
 
@@ -26,18 +37,25 @@ import java.util.List;
  * Created by Arash on 1/24/2017.
  */
 
-public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder>  {
+public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressViewHolder> implements IResponseCallback {
     private List<Address> addressesList;
     private List<AdapterItemSelection> addressSelection;
     private static RadioButton lastChecked = null;
     private static int lastCheckedPos = 0;
     public NewBaseFragment baseFragment;
     private boolean mIsCheckout;
+    private View.OnClickListener mOnClickDeleteAddressButton;
+
+
 
     public class AddressViewHolder extends RecyclerView.ViewHolder {
         public TextView name, street, phone;
         public RadioButton checkBox;
         public ImageView editButton;
+        public ImageView deleteButton;
+        public RelativeLayout root;
+        public View vertical;
+        public View buttons;
 
         public AddressViewHolder(View view) {
             super(view);
@@ -46,12 +64,17 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             phone = (TextView) view.findViewById(R.id.checkout_address_item_phone);
             checkBox = (RadioButton) view.findViewById(R.id.checkout_address_item_radio_btn);
             editButton = (ImageView) view.findViewById(R.id.checkout_address_item_btn_edit);
+            deleteButton = (ImageView) view.findViewById(R.id.checkout_address_item_btn_delete);
+            root = (RelativeLayout)view.findViewById(R.id.checkout_address_item_content);
+            vertical = (View) view.findViewById(R.id.vertical_separator);
+            buttons = view.findViewById(R.id.checkout_address_item_delete);
         }
     }
 
 
-    public AddressAdapter(List<Address> addressesList, boolean isCheckout, int mSelectedAddressId) {
+    public AddressAdapter(List<Address> addressesList, boolean isCheckout, int mSelectedAddressId, View.OnClickListener onClickDeleteAddressButton) {
         mIsCheckout = isCheckout;
+        mOnClickDeleteAddressButton = onClickDeleteAddressButton;
         this.addressesList = addressesList;
         this.addressSelection = new ArrayList<>();
         for (int i=0;i<addressesList.size(); i++)
@@ -64,13 +87,19 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         }
     }
 
+
     @Override
     public AddressViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.new_checkout_address_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.new_checkout_address_item, parent, false);
 
-        return new AddressViewHolder(itemView);
+        AddressViewHolder holder = new AddressViewHolder(view);
+
+
+
+        return holder;
     }
+
+
 
     @Override
     public void onBindViewHolder(AddressViewHolder holder, int position) {
@@ -80,8 +109,16 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
         holder.phone.setText(address.getPhone());
         holder.editButton.setOnClickListener(onClickEditAddressButton);
         holder.editButton.setTag(address.getId());
+        holder.deleteButton.setOnClickListener(mOnClickDeleteAddressButton);
+        holder.deleteButton.setTag(address.getId());
+
+        if (position == 0)
+        {
+            holder.buttons.setVisibility(View.GONE);
+        }
 
         if (mIsCheckout) {
+            holder.buttons.setVisibility(View.GONE);
             holder.checkBox.setVisibility(View.VISIBLE);
             holder.checkBox.setChecked(addressSelection.get(position).isSelected());
             holder.checkBox.setTag(new Integer(position));
@@ -115,6 +152,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
         }
 
+
     }
 
     /**
@@ -129,9 +167,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
             // Goto edit address
             Bundle bundle = new Bundle();
             bundle.putInt(ConstantsIntentExtra.ARG_1, addressId);
-            baseFragment.getBaseActivity().onSwitchFragment(FragmentType.CHECKOUT_EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
+            baseFragment.getBaseActivity().onSwitchFragment(mIsCheckout?FragmentType.CHECKOUT_EDIT_ADDRESS:FragmentType.MY_ACCOUNT_EDIT_ADDRESS, bundle, FragmentController.ADD_TO_BACK_STACK);
         }
     } ;
+
+
 
     public int getSelectedId()
     {
@@ -142,4 +182,17 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     public int getItemCount() {
         return addressesList.size();
     }
+
+
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+
+    }
+
 }

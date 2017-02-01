@@ -15,12 +15,15 @@ import android.view.ViewGroup;
 
 import com.mobile.adapters.AddressAdapter;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.helpers.address.GetFormDeleteAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
@@ -140,35 +143,50 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
         }
 
 
-        AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId);
+        AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId, onClickDeleteAddressButton);
         mAddressAdapter.baseFragment = this;
         mAddressView.setAdapter(mAddressAdapter);
 
-        // Same address
-        /*boolean isSameAddress = addresses.hasDefaultShippingAndBillingAddress();
-        // Set shipping container
-        TextView shippingTitle = (TextView) mShippingView.findViewById(R.id.checkout_address_title);
-        shippingTitle.setText(getString(isSameAddress ? R.string.address_shipping_billing_label : R.string.address_shipping_label));
-        addAddress(mShippingView, addresses.getShippingAddress(), false);
-        // Set billing container
-        if (isSameAddress) {
-            mBillingView.setVisibility(View.GONE);
-        } else {
-            TextView billingTitle = (TextView) mBillingView.findViewById(R.id.checkout_address_title);
-            billingTitle.setText(getString(R.string.address_billing_label));
-            addAddress(mBillingView, addresses.getBillingAddress(), false);
-        }
-        // Show other container
-        if (CollectionUtils.isNotEmpty(addresses.getAddresses())) {
-            TextView othersTitle = (TextView) mOthersView.findViewById(R.id.checkout_address_title);
-            othersTitle.setText(getString(R.string.address_others_label));
-            addAddresses(mOthersView, addresses.getAddresses());
-        } else {
-            mOthersView.setVisibility(View.GONE);
-            mButtonBottom.setVisibility(View.GONE);
-        }
-        // Show container
-        showFragmentContentContainer();*/
+
     }
 
+    /**
+     * Process the click on edit button.</br>
+     * Gets the address id from view tag.
+     */
+    View.OnClickListener onClickDeleteAddressButton =  new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            int addressId = (int) view.getTag();
+            // Print.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
+            // Goto edit address
+            triggerDeleteAddressForm(addressId);
+        }
+    } ;
+
+    /**
+     * Trigger to get the address form
+     */
+    protected void triggerDeleteAddressForm(int mAddressId){
+        //Print.i(TAG, "TRIGGER: EDIT FORM");
+        triggerContentEvent(new GetFormDeleteAddressHelper(), GetFormDeleteAddressHelper.createBundle(mAddressId), this);
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        /*if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }*/
+        EventType eventType = baseResponse.getEventType();
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        switch (eventType) {
+
+            case GET_DELETE_ADDRESS_FORM_EVENT:
+                showAddresses((Addresses) baseResponse.getContentData(), -1);
+                break;
+            default:
+                break;
+        }
+    }
 }
