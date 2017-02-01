@@ -2,6 +2,8 @@ package com.mobile.utils.catalog.filters;
 
 import android.os.Bundle;
 import android.support.annotation.IntRange;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +12,19 @@ import android.widget.CompoundButton;
 import com.mobile.components.RangeSeekBar;
 import com.mobile.components.RangeSeekBar.OnRangeSeekBarChangeListener;
 import com.mobile.components.customfontviews.CheckBox;
+import com.mobile.components.customfontviews.EditText;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogPriceFilterOption;
+import com.mobile.newFramework.utils.NumberTextWatcher;
+import com.mobile.newFramework.utils.PersinConvertor;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.newFramework.utils.shop.CurrencyFormatter;
+import com.mobile.utils.Toast;
 import com.mobile.view.R;
 import com.mobile.view.fragments.FilterMainFragment;
+
+import java.text.DecimalFormat;
 
 /**
  * 
@@ -28,6 +36,8 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
     private static final String TAG = FilterPriceFragment.class.getSimpleName();
 
     private TextView mRangeValues;
+    private EditText mMinValueTxt;
+    private EditText mMaxValueTxt;
 
     private CheckBox mDiscountBox;
 
@@ -35,9 +45,9 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
 
     private int mMax;
 
-    private int mCurrMinValue;
+    private int mCurrMinValue ,mMinRang;
 
-    private int mCurrMaxValue;
+    private int mCurrMaxValue, mMaxRang;
 
     private RangeSeekBar<Integer> mRangeBar;
 
@@ -95,17 +105,52 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
 
         // Get check box
         mDiscountBox = (CheckBox) view.findViewById(R.id.dialog_filter_check_discount);
-        if(mFilter.getOption().getCheckBoxOption() != null){
-            mDiscountBox.setVisibility(View.VISIBLE);
-            mDiscountBox.setText(mFilter.getOption().getCheckBoxOption().getLabel());
-            mDiscountBox.setChecked(mFilter.getOption().getCheckBoxOption().isSelected());
-            mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    mFilter.getOption().getCheckBoxOption().setSelected(isChecked);
+        mMinValueTxt = (EditText) view.findViewById(R.id.min);
+        mMaxValueTxt = (EditText) view.findViewById(R.id.max);
+
+       mMinValueTxt.addTextChangedListener(new NumberTextWatcher(mMinValueTxt));
+        mMaxValueTxt.addTextChangedListener(new NumberTextWatcher(mMaxValueTxt));
+
+
+        mMaxValueTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Long mymax= Long.parseLong(PersinConvertor.toEnglishNumber(mMaxValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
+                if(!hasFocus){
+                    if (mymax<=mMaxRang &&Integer.MAX_VALUE>mymax) {
+
+                        //mMaxValueTxt.setText(PersinConvertor.toPersianNumber(mMaxValueTxt.getText().toString()).toString());
+                        setIntervalText(mCurrMaxValue,(int) mymax.longValue());
+                        mRangeBar.setSelectedMaxValue(getMaxIntervalValue((int) mymax.longValue()));
+                        mCurrMaxValue =mymax.intValue() ;
+                    }
+                    else {
+                        mCurrMaxValue = mMax;
+                    }
                 }
-            });
-        }
+
+            }
+        });
+
+        mMinValueTxt.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Long mymin= Long.parseLong(PersinConvertor.toEnglishNumber(mMinValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
+                Long mymax= Long.parseLong(PersinConvertor.toEnglishNumber(mMaxValueTxt.getText().toString()).replaceAll(",","").replaceAll("٬",""));
+                if(!hasFocus){
+                    if (mymin<=mMaxRang &&Integer.MAX_VALUE>mymin) {
+                        setIntervalText((int) mymin.longValue(),mCurrMaxValue);
+                        mRangeBar.setSelectedMinValue(getMaxIntervalValue((int) mymin.longValue()));
+                        mCurrMinValue =mymin.intValue() ;
+                    }
+                    else {
+                        mCurrMinValue = mMin;
+                    }
+                }
+
+            }
+        });
+
         // Get range text
         mRangeValues = (TextView) view.findViewById(R.id.dialog_filter_range_text);
         
@@ -117,8 +162,10 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         
         // Get range values from pre selection
 //        if(mFilter.hasRangeValues()) {
-            mCurrMinValue = filterOption.getRangeMin();
-            mCurrMaxValue = filterOption.getRangeMax();
+        mMinRang = mCurrMinValue = filterOption.getRangeMin();
+        mMaxRang = mCurrMaxValue = filterOption.getRangeMax();
+        mMinValueTxt.setText(( mCurrMinValue)+"");
+        mMaxValueTxt.setText(mCurrMaxValue+"");
 //        }
         // Set init range values
         mRangeBar.setSelectedMinValue(getMinIntervalValue(mCurrMinValue));
@@ -141,7 +188,8 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mCurrMinValue = getMinRealValue(minValue);
         mCurrMaxValue = getMaxRealValue(maxValue);
         setIntervalText(mCurrMinValue, mCurrMaxValue);
-
+        mMinValueTxt.setText(mCurrMinValue+"");
+        mMaxValueTxt.setText(mCurrMaxValue+"");
         processOnClickDone();
     }
 

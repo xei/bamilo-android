@@ -31,7 +31,7 @@
 
     <!-- CHECK DISCOUNT -->
 
-    <com.mobile.components.customfontviews.CheckBox
+ <!--   <com.mobile.components.customfontviews.CheckBox
         android:id="@+id/dialog_filter_check_discount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,5 +43,5 @@
         android:button="@null"
         android:drawableRight="@drawable/_gen_selector_check_box"
         android:drawablePadding="@dimen/margin_padding_s"
-        android:visibility="gone"/>
+        android:visibility="gone"/>-->
 </LinearLayout>

@@ -395,5 +395,7 @@
     <string name="invalid_address_other">نشانی وارد شده صحیح نمی‌باشد.</string>
 
     <string name="faq">راهنما و سوالات متداول</string>
+    <!--filter-->
+    <string name="filter_toggle_text">فقط با تخفیف ها</string>
 
 </resources>

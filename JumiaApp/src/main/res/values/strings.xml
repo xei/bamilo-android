@@ -403,4 +403,8 @@
     <string name="bamilo_bold_font">bamilo_sans_bold</string>
     <string name="bamilo_light_font">bamilo_sans_light</string>
 
+    <!--filter-->
+
+    <string name="filter_toggle_text">Search</string>
+
 </resources>

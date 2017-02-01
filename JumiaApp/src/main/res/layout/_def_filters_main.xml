@@ -16,10 +16,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.4"
-            android:background="@color/black_300"
+            android:background="@color/white"
             android:divider="@color/black_400"
             android:dividerHeight="1dp"
-            android:footerDividersEnabled="true" />
+            android:footerDividersEnabled="true"
+            android:scrollbars="none" />
 
         <View style="@style/DividerVertical.Black_400" />
 

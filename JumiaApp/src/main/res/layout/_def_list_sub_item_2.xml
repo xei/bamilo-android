@@ -23,6 +23,7 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
+        android:background="@color/red_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -36,7 +37,7 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:fontFamily="@string/bamilo_regular_font"
-        android:textSize="16sp"
+        android:textSize="13sp"
         />
 
     <com.mobile.components.customfontviews.TextView
@@ -50,7 +51,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@string/bamilo_regular_font"
-        android:textSize="16sp"
+        android:textSize="13sp"
         android:visibility="gone"
         />
 
@@ -61,8 +62,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:button="@drawable/selector_btn_check_filters"
         android:clickable="false"
         android:focusable="false"
+        android:button="@drawable/selector_btn_check_filters"
         />
+    <!--android:drawableLeft="@drawable/selector_btn_check_filters"-->
 </RelativeLayout>

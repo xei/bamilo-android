@@ -77,7 +77,7 @@ public enum TrackingEvent {
 
 	CATALOG_FILTER(R.string.gcatalog, R.string.gfilters),
 
-	CATALOG_SEARCH(R.string.gsearchresult, -1),
+	CATALOG_SEARCH(R.string.gcatalog, R.string.gsearch),
 
 	CATALOG_FROM_CATEGORIES(R.string.gcatalog, R.string.gcategories),
 

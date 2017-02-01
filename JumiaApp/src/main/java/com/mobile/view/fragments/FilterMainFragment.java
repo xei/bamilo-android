@@ -8,14 +8,18 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.mobile.components.customfontviews.CheckBox;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.fragments.FragmentController;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
@@ -58,6 +62,8 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
     private static final String TAG = FilterMainFragment.class.getSimpleName();
 
     private FilterSelectionController filterSelectionController;
+
+    private SwitchCompat mDiscountBox;
 
     private ArrayList<CatalogFilter> mFilters;
 
@@ -116,6 +122,7 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
         Print.i(TAG, "ON VIEW CREATED");
         filtersKey = (ListView)view.findViewById(R.id.filters_key);
         mTxFilterTitle = (TextView) view.findViewById(R.id.filter_title);
+        mDiscountBox = (SwitchCompat) view.findViewById(R.id.dialog_filter_check_discount);
         filtersKey.setAdapter(new FiltersArrayAdapter(this.getActivity(), mFilters));
         filtersKey.setSelection(currentFilterPosition);
         loadFilterFragment(currentFilterPosition);
@@ -125,8 +132,33 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
                 onFiltersKeyItemClick(position);
             }
         });
+        int y=0;
+        for (CatalogFilter x :mFilters)
+        {
+            if (x instanceof  CatalogPriceFilter)
+            {
+                break;
+            }
+            y++;
+        }
+
+
+      if(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption() != null){
+            mDiscountBox.setVisibility(View.VISIBLE);
+           /* mDiscountBox.setText(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().getLabel());*/
+            mDiscountBox.setChecked(((CatalogPriceFilter)mFilters.get(y)).getOption().getCheckBoxOption().isSelected());
+          final int finalY = y;
+          mDiscountBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    ((CatalogPriceFilter)mFilters.get(finalY)).getOption().getCheckBoxOption().setSelected(isChecked);
+                }
+            });
+        }
+
         view.findViewById(R.id.dialog_filter_button_cancel).setOnClickListener(this);
         view.findViewById(R.id.dialog_filter_button_done).setOnClickListener(this);
+
     }
 
     @Override
@@ -274,22 +306,23 @@ public class FilterMainFragment extends BaseFragment implements View.OnClickList
             TextView filtersNumberTextView = ((TextView) convertView.findViewById(R.id.dialog_item_count));
 
             if(filter.hasAppliedFilters()) {
-                filterTitleTextView.setTypeface(null, Typeface.BOLD);
+                //filterTitleTextView.setTypeface(null, Typeface.BOLD);
                 if(!(filter instanceof CatalogPriceFilter)){
                     filtersNumberTextView.setText(convertView.getResources().getString(R.string.parenthesis_placeholder, ((CatalogCheckFilter)filter).getSelectedFilterOptions().size()));
                     filtersNumberTextView.setVisibility(View.VISIBLE);
                 }
             } else {
                 filtersNumberTextView.setVisibility(View.GONE);
-                filterTitleTextView.setTypeface(null, Typeface.NORMAL);
+               // filterTitleTextView.setTypeface(null, Typeface.NORMAL);
             }
             // Set title
             filterTitleTextView.setText(filter.getName());
 
             if(position == FilterMainFragment.this.currentFilterPosition) {
-                convertView.setBackgroundColor(Color.WHITE);
-            } else {
                 convertView.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.black_400));
+
+            } else {
+                convertView.setBackgroundColor(Color.WHITE);
             }
 
             return convertView;
