@@ -38,6 +38,12 @@
         <item name="android:text">@string/clear_all_lowercase_label</item>
     </style>
 
+    <style name="DialogFilterSearch" parent="@style/Button_1.Secondary.Text_Black_800.Border_400">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+
+    </style>
+
     <style name="DialogButtonSizeGuide" parent="@style/Button_1.Secondary.Text_Black_800">
         <item name="android:text">@string/size_guide_label</item>
     </style>

@@ -8,6 +8,7 @@ import android.util.TypedValue;
 
 import com.mobile.components.customfontviews.HoloFontLoader.FontStyleProvider;
 import com.mobile.framework.R;
+import com.mobile.newFramework.utils.PersinConvertor;
 
 public class TextView extends android.widget.TextView implements FontStyleProvider {
     private String mFontFamily;
@@ -138,6 +139,8 @@ public class TextView extends android.widget.TextView implements FontStyleProvid
         mFontStyle = fontStyle;
         TextView.setFontStyle(this, fontFamily, fontStyle);
     }
+
+
 
     @Override
     public void setTextAppearance(Context context, int resid) {
