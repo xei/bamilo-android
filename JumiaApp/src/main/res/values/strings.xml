@@ -404,4 +404,6 @@
 
     <string name="checkout_address_title">Please choose your address</string>
     <string name="telephone">Tel:</string>
+    <string name="delete_address_question">Are you sure you want to delete this address?</string>
+    <string name="delete_address_label">Delete Address</string>
 </resources>

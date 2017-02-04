@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.mobile.adapters.AddressAdapter;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.controllers.LogOut;
 import com.mobile.helpers.address.GetFormDeleteAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
@@ -26,6 +27,7 @@ import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseAddressesFragment;
 import com.mobile.view.fragments.BaseFragment;
@@ -49,6 +51,9 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     protected Addresses mAddresses;
     RecyclerView mAddressView;
     private boolean mIsCheckout = false;
+    private DialogGenericFragment dialogLogout;
+
+
     public NewBaseAddressesFragment(boolean isCheckout)
     {
         super();
@@ -156,11 +161,29 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
      */
     View.OnClickListener onClickDeleteAddressButton =  new View.OnClickListener() {
         @Override
-        public void onClick(View view) {
-            int addressId = (int) view.getTag();
-            // Print.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
-            // Goto edit address
-            triggerDeleteAddressForm(addressId);
+        public void onClick(final View view) {
+
+            dialogLogout = DialogGenericFragment.newInstance(true, false,
+                    getString(R.string.delete_address_label),
+                    getString(R.string.delete_address_question),
+                    getString(R.string.no_label),
+                    getString(R.string.yes_label),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (v.getId() == R.id.button2) {
+                                int addressId = (int) view.getTag();
+                                // Print.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
+                                // Goto edit address
+                                triggerDeleteAddressForm(addressId);
+                            }
+                            dialogLogout.dismiss();
+                        }
+                    });
+            dialogLogout.show(getBaseActivity().getSupportFragmentManager(), null);
+
+
+
         }
     } ;
 
