@@ -108,7 +108,7 @@ public class FilterPriceFragment extends FilterFragment implements OnRangeSeekBa
         mMinValueTxt = (EditText) view.findViewById(R.id.min);
         mMaxValueTxt = (EditText) view.findViewById(R.id.max);
 
-       mMinValueTxt.addTextChangedListener(new NumberTextWatcher(mMinValueTxt));
+        mMinValueTxt.addTextChangedListener(new NumberTextWatcher(mMinValueTxt));
         mMaxValueTxt.addTextChangedListener(new NumberTextWatcher(mMaxValueTxt));
 
 
