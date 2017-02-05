@@ -55,35 +55,6 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     private static final String TAG = MyAccountAboutFragment.class.getSimpleName();
 
     private static final String TARGETS_TAG = MobileAbout.class.getSimpleName();
-
-    public final static int POSITION_USER_DATA = 0;
-
-    public final static int POSITION_MY_ADDRESSES = 1;
-
-    public final static int POSITION_EMAIL = 2;
-
-    public final static int POSITION_SHARE_APP = 0;
-
-    public final static int POSITION_RATE_APP = 1;
-
-    public final static int POSITION_COUNTRY = 0;
-
-    public final static int NOTIFICATION_STATUS = 0;
-
-    public final static int EMAIL_NOTIFICATION_STATUS = 1;
-
-    private ViewGroup optionsList;
-
-    private ViewGroup appSocialList;
-
-    private ViewGroup chooseLanguageList;
-
-    private ViewGroup moreInfoContainer;
-
-    private ViewGroup notificationList;
-
-    private ArrayList<TargetHelper> targets;
-
     /**
      * Empty constructor
      */
@@ -120,12 +91,6 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
-
-        if(savedInstanceState != null){
-            targets = savedInstanceState.getParcelableArrayList(TARGETS_TAG);
-        } else {
-            setTargets(CountryPersistentConfigs.getMoreInfo(this.getContext()));
-        }
     }
 
     /*
@@ -136,7 +101,7 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-     /*   Button call_btn = (Button) getBaseActivity().findViewById(R.id.about_call_btn);
+        Button call_btn = (Button) getBaseActivity().findViewById(R.id.about_call_btn);
         call_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +114,7 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
             public void onClick(View v) {
                 UIUtils.onClickEmailToCS(getBaseActivity());
             }
-        });*/
+        });
     }
 
 
@@ -180,7 +145,6 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Print.i(TAG, "ON SAVE INSTANCE");
-        outState.putParcelableArrayList(TARGETS_TAG, targets);
     }
 
     /*
@@ -223,127 +187,10 @@ public class MyAccountAboutFragment extends BaseFragment /*implements  IResponse
     }
 
 
-    /**
-     * Shows my account options
-     */
 
 
 
 
 
 
-
-
-
-
-
-
-
-    private void processOnClickMyAddresses() {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.PARENT_FRAGMENT_TYPE, FragmentType.MY_ACCOUNT);
-        bundle.putBoolean(ConstantsIntentExtra.GET_NEXT_STEP_FROM_MOB_API, true);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     *  Handles the item click of childs of app sharing list.
-     */
-    private void handleOnAppSocialListItemClick(int position) {
-        switch (position) {
-            case POSITION_SHARE_APP:
-                String text;
-                String preText = getString(R.string.install_android, getString(R.string.app_name_placeholder));
-                if(ShopSelector.isRtl()){
-                    text = getString(R.string.share_app_link) + " " + preText;
-                } else {
-                    text = preText + " " + getString(R.string.share_app_link);
-                }
-                ActivitiesWorkFlow.startActivitySendString(getBaseActivity(), getString(R.string.share_the_app), text);
-                AnalyticsGoogle.get().trackShareApp(TrackingEvent.SHARE_APP, (JumiaApplication.CUSTOMER != null) ? JumiaApplication.CUSTOMER.getId() + "" : "");
-                break;
-            case POSITION_RATE_APP:
-                goToMarketPage();
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     *  Handles the item click of childs of app sharing list.
-     */
-    private void handleOnNotificationListItemClick(ViewGroup parent, int position) {
-        switch (position) {
-            case NOTIFICATION_STATUS:
-                CheckBox m = (CheckBox) parent.findViewWithTag(MyAccountNotificationsAdapter.NOTIFICATION_CHECKBOX_TAG);
-                m.setChecked(!m.isChecked());
-                break;
-            case EMAIL_NOTIFICATION_STATUS:
-                processOnClickEmailNotification();
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     * Process the click on the user data
-     * @author sergiopereira
-     */
-    private void processOnClickUserData(){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.MY_USER_DATA);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    /**
-     * Process the click on the email notification
-     * @author sergiopereira
-     */
-    private void processOnClickEmailNotification(){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(ConstantsIntentExtra.NEXT_FRAGMENT_TYPE, FragmentType.EMAIL_NOTIFICATION);
-        getBaseActivity().onSwitchFragment(FragmentType.LOGIN, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-
-
-    private void handleOnMoreInfoItemClick(int position) {
-        if(position == MyAccountMoreInfoAdapter.APP_VERSION_POSITION){
-            goToMarketPage();
-        } else {
-            TargetHelper targetHelper = targets.get(position - 1);
-            if(targetHelper.getTargetType() == ITargeting.TargetType.SHOP) {
-                onClickStaticPageButton(targetHelper.getTargetValue(), targetHelper.getTargetTitle());
-            }
-        }
-    }
-
-
-
-    private void onClickStaticPageButton(String key, String label) {
-        Bundle bundle = new Bundle();
-        bundle.putString(ConstantsIntentExtra.CONTENT_ID, key);
-        bundle.putString(ConstantsIntentExtra.CONTENT_TITLE, label);
-        getBaseActivity().onSwitchFragment(FragmentType.STATIC_PAGE, bundle, FragmentController.ADD_TO_BACK_STACK);
-    }
-
-    private void setTargets(@Nullable List<TargetHelper> targetHelpers){
-        if(CollectionUtils.isNotEmpty(targetHelpers)) {
-            this.targets = new ArrayList<>();
-            for (TargetHelper targetHelper : targetHelpers) {
-                if (targetHelper.getTargetType() == ITargeting.TargetType.SHOP) {
-                    this.targets.add(targetHelper);
-                }
-            }
-        }
-    }
-
-    /**
-     * Method that re directs to app market or web page
-     */
-    private void goToMarketPage() {
-        ActivitiesWorkFlow.startMarketActivity(getActivity(), getString(R.string.id_market));
-    }
 }
