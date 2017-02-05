@@ -55,6 +55,8 @@ public enum TrackingEvent {
 
 	// ### ACTION BAR EVENTS
 
+	AB_MENU_MY_ABOUT(R.string.goverflowmenu, R.string.gabout),
+
 	AB_MENU_SIGN_IN(R.string.goverflowmenu, R.string.gsignin),
 
 	AB_MENU_HOME(R.string.goverflowmenu, R.string.ghomepage),

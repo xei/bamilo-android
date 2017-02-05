@@ -106,6 +106,7 @@ public class MyProfileActionProvider extends ActionProvider {
             mSubMenuItems.add(NavigationAction.RECENTLY_VIEWED);
             mSubMenuItems.add(NavigationAction.MY_ORDERS);
             mSubMenuItems.add(NavigationAction.FAQ);
+            mSubMenuItems.add(NavigationAction.ABOUT);
         }
         return mSubMenuItems;
     }
@@ -247,6 +248,10 @@ public class MyProfileActionProvider extends ActionProvider {
                 case NavigationAction.MY_NEW_ACCOUNT:
                     title.setText(R.string.new_account_name);
                     icon.setImageResource(R.drawable.ico_dropdown_myaccount);
+                case NavigationAction.ABOUT:
+                    title.setText(R.string.about_us_label);
+                    icon.setImageResource(R.drawable.ico_dropdown_order);
+
                     break;
                 default:
                     Print.w(TAG, "WARNING GETDROPDOWNVIEW UNKNOWN VIEW");

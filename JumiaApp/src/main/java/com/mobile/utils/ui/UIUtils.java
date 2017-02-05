@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.text.Spannable;
@@ -26,17 +27,18 @@ import com.mobile.newFramework.pojo.IntConstants;
 import com.mobile.newFramework.utils.Constants;
 import com.mobile.newFramework.utils.DeviceInfoHelper;
 import com.mobile.newFramework.utils.shop.ShopSelector;
+import com.mobile.utils.Toast;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.view.R;
 
 /**
- * A general Class with UI utils such as set the font <p/><br> 
+ * A general Class with UI utils such as set the font <p/><br>
  *
  * Copyright (C) 2012 Rocket Internet - All Rights Reserved <p/>
- * 
+ *
  * Unauthorized copying of this file, via any medium is strictly prohibited <br>
  * Proprietary and confidential.
- * 
+ *
  * @author Manuel Silva
  * @modified Andre Lopes
  *
@@ -48,8 +50,8 @@ public class UIUtils {
 
     public static int dpToPx(int dp, float density) {
         return Math.round((float)dp * density);
-    } 
-    
+    }
+
     public static float convertPixelsToDp(float px, Context context){
         Resources resources = context.getResources();
         DisplayMetrics metrics = resources.getDisplayMetrics();
@@ -69,7 +71,7 @@ public class UIUtils {
     public static void showOrHideViews(int visibility, View... views) {
         for (View view : views) if (view != null) view.setVisibility(visibility);
     }
-    
+
     /**
      * Set the visibility
      * @param view The view that can be null
@@ -295,4 +297,44 @@ public class UIUtils {
         }
     }
 
+    public static void onClickEmailToCS(@NonNull Activity activity) {
+        // Tracking
+        TrackerDelegator.trackCall(activity);
+        // Get phone number
+        SharedPreferences sharedPrefs = activity.getSharedPreferences(Constants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        String mAddress2Email = sharedPrefs.getString(Darwin.KEY_SELECTED_COUNTRY_CS_EMAIL, "");
+        // Make a call
+
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+
+        String appVersion = android.os.Build.VERSION.RELEASE; // e.g. myVersion := "1.6"
+        String sdkVersion = String.valueOf(android.os.Build.VERSION.SDK_INT);
+        String deviceName = android.os.Build.MODEL;
+        String deviceBrand = Build.BRAND;
+        String description = "لطفا برای پیگیری بهتر اطلاعات مندرج در انتهای ایمیل را پاک نکنید";
+
+
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"application@bamilo.com"});
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "گزارش مشکل در برنامه");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,  "\n\n\n\n\n\n\n "
+                + description+"\n"
+                + "android version : " + appVersion+"\n"
+                + "application version : " + sdkVersion+"\n"
+                + "device name : " + deviceBrand +"-"+deviceName
+
+        );
+
+
+
+        if (emailIntent.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+        }
+        else {
+            Toast.makeText(activity,"لطفا ایمیل را نصب کنید",Toast.LENGTH_LONG).show();
+
+        }
+
+    }
 }

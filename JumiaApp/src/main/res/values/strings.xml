@@ -397,6 +397,7 @@
 
 
     <string name="faq">FAQ</string>
+    <string name="about_us_label">About US</string>
 
     <string name="bamilo_font">bamilo</string>
     <string name="bamilo_regular_font">Bamilo-Sans</string>
@@ -408,5 +409,13 @@
     <string name="checkout_address_title">Please choose your address</string>
     <string name="telephone">Tel:</string>
     <string name="filter_toggle_text">Search</string>
-
+    <!--about page-->
+    <string name="about_contactus_header">با ما در ارتباط باشید</string>
+    <string name="about_contactus_value">۷ روز هفته ۲۴ ساعته پاسخگوی شماییم</string>
+    <string name="about_address_header">نشانی</string>
+    <string name="about_address_value">تهران، بلوار نلسون ماندلا (آفریقا)، خیابان عاطفی غربی، کوچه مهرداد، پلاک 1، طبقه اول</string>
+    <string name="about_call2cs">تماس با خدمات مشتریان</string>
+    <string name="about_bugreport">گزارش مشکلات برنامه</string>
+    <string name="account_about">درباره ما‎</string>
+    <string name="my_about_label">تماس با ما</string>
 </resources>
