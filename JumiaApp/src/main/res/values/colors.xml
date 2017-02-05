@@ -83,4 +83,9 @@
     <color name="form_text">@color/grey_middle</color>
     <color name="form_text_hint">@color/grey_middlelight</color>
 
+
+    <color name="black_47">#474747</color>
+    <color name="black_75">#757575</color>
+    <color name="address_separator">#D6D6D6</color>
+    <color name="address_border">#9C9C9C</color>
 </resources>

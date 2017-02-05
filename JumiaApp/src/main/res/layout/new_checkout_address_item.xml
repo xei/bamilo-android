@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/checkout_address_item_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    >
+
+    <!-- SELECTION RADIOBUTTON -->
+
+    <com.mobile.components.customfontviews.RadioButton
+        android:id="@+id/checkout_address_item_radio_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/dimen_16dp"
+        android:layout_marginLeft="@dimen/dimen_16dp"
+        android:layout_marginStart="@dimen/dimen_16dp"
+        android:theme="@style/RadioButtonTheme"
+        android:visibility="gone" />
+
+    <!-- EDIT BUTTON -->
+    <ImageView
+        android:id="@+id/checkout_address_item_btn_edit"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/dimen_16dp"
+        android:layout_marginEnd="@dimen/dimen_16dp"
+        android:src="@drawable/new_selector_btn_edit" />
+
+    <!-- ITEM -->
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_item_name"
+            style="@style/TextBase.Address"
+            android:textStyle="bold"
+            android:textSize="@dimen/address_header_title"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/checkout_address_item_radio_btn"
+            android:layout_toEndOf="@+id/checkout_address_item_radio_btn"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_item_street"
+            style="@style/TextBase.Address"
+            android:textSize="@dimen/address_header_street"
+            android:layout_below="@+id/checkout_address_item_name"
+            android:layout_alignLeft="@+id/checkout_address_item_name"
+            android:layout_alignStart="@+id/checkout_address_item_name"
+            android:layout_alignRight="@+id/vertical_separator"
+            android:layout_alignEnd="@+id/vertical_separator"
+            android:layout_marginTop="16dp"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:ellipsize="end"
+            android:gravity="start|left"
+            android:singleLine="false"
+            android:maxLines="2"
+             />
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_item_tel"
+            style="@style/TextBase.Address"
+            android:layout_width="wrap_content"
+            android:textSize="@dimen/address_header_street"
+            android:layout_below="@+id/checkout_address_item_street"
+            android:layout_alignLeft="@+id/checkout_address_item_name"
+            android:layout_alignStart="@+id/checkout_address_item_name"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/telephone"/>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_item_phone"
+            style="@style/TextBase.Address"
+            android:textSize="@dimen/address_header_street"
+            android:layout_below="@+id/checkout_address_item_street"
+            android:layout_toRightOf="@+id/checkout_address_item_tel"
+            android:layout_toEndOf="@+id/checkout_address_item_tel"
+            android:layout_alignRight="@+id/vertical_separator"
+            android:layout_alignEnd="@+id/vertical_separator"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:text="dsdcsdcs"
+            />
+    
+    <View
+        android:id="@+id/vertical_separator"
+        android:layout_width="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/dimen_48dp"
+        android:layout_marginEnd="@dimen/dimen_48dp"
+        android:background="@color/address_separator"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/address_separator"/>
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/checkout_address_invalid"
+            style="@style/TextBase.Address"
+            android:drawableLeft="@drawable/indicator_input_error"
+            android:drawableStart="@drawable/indicator_input_error"
+            android:drawablePadding="@dimen/margin_padding_m"
+            android:layout_marginTop="@dimen/margin_padding_xs"
+            android:textColor="@color/red_basic"
+            android:text="@string/invalid_address_shipping_billing"
+            android:visibility="gone"/>
+
+
+</RelativeLayout>
+

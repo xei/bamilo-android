@@ -405,6 +405,8 @@
 
     <!--filter-->
 
+    <string name="checkout_address_title">Please choose your address</string>
+    <string name="telephone">Tel:</string>
     <string name="filter_toggle_text">Search</string>
 
 </resources>

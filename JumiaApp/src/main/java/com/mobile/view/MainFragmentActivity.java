@@ -1,6 +1,8 @@
 package com.mobile.view;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -67,6 +69,8 @@ import com.mobile.view.fragments.order.OrderReturnCallFragment;
 import com.mobile.view.fragments.order.OrderReturnConditionsFragment;
 import com.mobile.view.fragments.order.OrderReturnStepsMain;
 import com.mobile.view.fragments.order.OrderStatusFragment;
+import com.mobile.view.newfragments.NewBaseFragment;
+import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -81,6 +85,8 @@ public class MainFragmentActivity extends DebugActivity {
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
 
     private BaseFragment fragment;
+    private NewBaseFragment newFragment;
+    private boolean isNewFragment = false;
 
     private FragmentType mCurrentFragmentType;
 
@@ -205,6 +211,7 @@ public class MainFragmentActivity extends DebugActivity {
      * com.slidingmenu.lib.app.SlidingFragmentActivity#onSaveInstanceState(android
      * .os.Bundle)
      */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -241,6 +248,7 @@ public class MainFragmentActivity extends DebugActivity {
         hideKeyboard();
         // Remove entries from back stack
         boolean removeEntries = false;
+        isNewFragment = false;
         // Validate fragment type
         switch (type) {
             case HOME:
@@ -339,7 +347,9 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);
                 break;
             case CHECKOUT_MY_ADDRESSES:
-                fragment = newFragmentInstance(CheckoutAddressesFragment.class, bundle);
+                isNewFragment = true;
+                newFragment = newNewFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
+               // fragment = newFragmentInstance(CheckoutAddressesFragment.class, bundle);
                 break;
             case CHECKOUT_CREATE_ADDRESS:
                 fragment = newFragmentInstance(CheckoutCreateAddressFragment.class, bundle);
@@ -427,7 +437,13 @@ public class MainFragmentActivity extends DebugActivity {
         mCurrentFragmentType = type;
 
         // Transition
-        fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
+        if (!isNewFragment) {
+            fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
+        }
+        else
+        {
+            fragmentManagerTransition(R.id.app_content, newFragment, type, addToBackStack);
+        }
     }
 
     /**
@@ -435,6 +451,10 @@ public class MainFragmentActivity extends DebugActivity {
      */
     private  BaseFragment newFragmentInstance(@NonNull Class<? extends BaseFragment> fragmentClass, @Nullable Bundle arguments) {
         return BaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
+    }
+
+    private  NewBaseFragment newNewFragmentInstance(@NonNull Class<? extends NewBaseFragment> fragmentClass, @Nullable Bundle arguments) {
+        return NewBaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
 
     /**
@@ -477,28 +497,56 @@ public class MainFragmentActivity extends DebugActivity {
      * Process the back pressed
      */
     private void onProcessBackPressed() {
-        fragment = getActiveFragment();
+        Fragment frag = getActiveFragment();
+        if (frag instanceof BaseFragment) {
+            fragment = (BaseFragment) frag;
 
-        // Clear search term
-        if(fragment.getTag().equals(FragmentType.CATALOG.toString()))
-            JumiaApplication.INSTANCE.setSearchedTerm("");
+            // Clear search term
+            if (fragment.getTag().equals(FragmentType.CATALOG.toString()))
+                JumiaApplication.INSTANCE.setSearchedTerm("");
 
-        // Case navigation opened
-        if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
-            Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
-            mDrawerLayout.closeDrawer(mDrawerNavigation);
+            // Case navigation opened
+            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+                Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
+                mDrawerLayout.closeDrawer(mDrawerNavigation);
+            }
+            // Case fragment not allow back pressed
+            else if (fragment == null || !fragment.allowBackPressed()) {
+                Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
+                // Hide Keyboard
+                hideKeyboard();
+                // Back
+                fragmentManagerBackPressed();
+            }
+            // Case fragment allow back pressed
+            else {
+                Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
+            }
         }
-        // Case fragment not allow back pressed
-        else if (fragment == null || !fragment.allowBackPressed()) {
-            Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
-            // Hide Keyboard
-            hideKeyboard();
-            // Back
-            fragmentManagerBackPressed();
-        }
-        // Case fragment allow back pressed
-        else {
-            Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
+        else
+        {
+            newFragment = (NewBaseFragment) frag;
+            // Clear search term
+            if (newFragment.getTag().equals(FragmentType.CATALOG.toString()))
+                JumiaApplication.INSTANCE.setSearchedTerm("");
+
+            // Case navigation opened
+            if (mDrawerLayout.isDrawerOpen(mDrawerNavigation) && !(mDrawerLayout.getDrawerLockMode(mDrawerNavigation) == DrawerLayout.LOCK_MODE_LOCKED_OPEN)) {
+                Print.i(TAG, "ON BACK PRESSED: NAV IS OPENED");
+                mDrawerLayout.closeDrawer(mDrawerNavigation);
+            }
+            // Case fragment not allow back pressed
+            else if (newFragment == null || !newFragment.allowBackPressed()) {
+                Print.i(TAG, "NOT ALLOW BACK PRESSED: FRAGMENT");
+                // Hide Keyboard
+                hideKeyboard();
+                // Back
+                fragmentManagerBackPressed();
+            }
+            // Case fragment allow back pressed
+            else {
+                Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
+            }
         }
     }
 
@@ -507,14 +555,14 @@ public class MainFragmentActivity extends DebugActivity {
      *
      * @return BaseFragment
      */
-    public BaseFragment getActiveFragment() {
+    public Fragment getActiveFragment() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
             Print.i("BACKSTACK", "getBackStackEntryCount is 0");
             return null;
         }
         String tag = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
         Print.i("BACKSTACK", "getActiveFragment:" + tag);
-        return (BaseFragment) getSupportFragmentManager().findFragmentByTag(tag);
+        return (Fragment) getSupportFragmentManager().findFragmentByTag(tag);
     }
 
     /**
@@ -532,5 +580,7 @@ public class MainFragmentActivity extends DebugActivity {
     public boolean isInMaintenance() {
         return isInMaintenance;
     }
+
+
 
 }

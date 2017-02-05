@@ -396,6 +396,9 @@
 
     <string name="faq">راهنما و سوالات متداول</string>
     <!--filter-->
+
+    <string name="checkout_address_title">لطفا آدرس خود را انتخاب کنید.</string>
+    <string name="telephone">تلفن:</string>
     <string name="filter_toggle_text">فقط با تخفیف ها</string>
 
 </resources>
