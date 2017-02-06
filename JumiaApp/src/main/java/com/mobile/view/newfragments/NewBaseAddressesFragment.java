@@ -62,14 +62,7 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        // Get sections
-        //mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
-        /*mBillingView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_billing);
-        mOthersView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_other);
-        // Set buttons
-        view.findViewById(R.id.checkout_addresses_button_add_top).setOnClickListener(this);
-        mButtonBottom = view.findViewById(R.id.checkout_addresses_button_add_bottom);
-        mButtonBottom.setOnClickListener(this);*/
+
     }
 
 
@@ -144,31 +137,7 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
         mAddressAdapter.baseFragment = this;
         mAddressView.setAdapter(mAddressAdapter);
 
-        // Same address
-        /*boolean isSameAddress = addresses.hasDefaultShippingAndBillingAddress();
-        // Set shipping container
-        TextView shippingTitle = (TextView) mShippingView.findViewById(R.id.checkout_address_title);
-        shippingTitle.setText(getString(isSameAddress ? R.string.address_shipping_billing_label : R.string.address_shipping_label));
-        addAddress(mShippingView, addresses.getShippingAddress(), false);
-        // Set billing container
-        if (isSameAddress) {
-            mBillingView.setVisibility(View.GONE);
-        } else {
-            TextView billingTitle = (TextView) mBillingView.findViewById(R.id.checkout_address_title);
-            billingTitle.setText(getString(R.string.address_billing_label));
-            addAddress(mBillingView, addresses.getBillingAddress(), false);
-        }
-        // Show other container
-        if (CollectionUtils.isNotEmpty(addresses.getAddresses())) {
-            TextView othersTitle = (TextView) mOthersView.findViewById(R.id.checkout_address_title);
-            othersTitle.setText(getString(R.string.address_others_label));
-            addAddresses(mOthersView, addresses.getAddresses());
-        } else {
-            mOthersView.setVisibility(View.GONE);
-            mButtonBottom.setVisibility(View.GONE);
-        }
-        // Show container
-        showFragmentContentContainer();*/
+
     }
 
 }

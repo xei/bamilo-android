@@ -141,6 +141,25 @@
     <!-- For load timing only -->
 
     <string name="gload">PageLoad</string>
+
     <!-- End of GA Tracking Parameters -->
+
+    <!-- New GA Parameters -->
+    <string name="gaScreen">Screen</string>
+    <string name="gaProductDetail">Product Detail</string>
+    <string name="gaShoppingCart">Shopping Cart</string>
+    <string name="gaRemoveItemFromShoppingCart">Remove Item From Shopping Cart</string>
+    <string name="gaSearchSuggestions">Search Suggestions</string>
+    <string name="gaMyOrders">My Orders</string>
+    <string name="gaChangeItemQuantityInShoppingCart">Change Item Quantity In Shopping Cart</string>
+    <string name="gaHome">Home</string>
+    <string name="gaCheckoutConfirmation">Checkout Confirmation</string>
+    <string name="gaStaticPage">Static Page</string>
+    <string name="gaCampaignPage">Campaign Page</string>
+    <string name="gaCatalog">Catalog</string>
+    <string name="gaLogin">Login</string>
+    <string name="gaRegister">Register</string>
+
+
 
 </resources>

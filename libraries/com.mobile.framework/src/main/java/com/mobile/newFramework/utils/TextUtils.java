@@ -5,6 +5,11 @@ import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 
+import com.mobile.newFramework.objects.cart.PurchaseCartItem;
+import com.mobile.newFramework.objects.cart.PurchaseEntity;
+
+import java.util.ArrayList;
+
 public class TextUtils {
 
     private static String[] EMPTY_STRING_ARRAY = new String[]{};
@@ -151,5 +156,18 @@ public class TextUtils {
      */
     public static String unEscape(String literal){
         return literal.replaceAll("\\\\n", "\n");
+    }
+
+    public static String joinCartItemSKUes(PurchaseEntity purchaseEntity)
+    {
+        String csv="";
+        if (purchaseEntity == null) return csv;
+        ArrayList<PurchaseCartItem> items = purchaseEntity.getCartItems();
+        if (items == null || items.size() == 0) return csv;
+        for (PurchaseCartItem item : items) {
+            csv = csv.concat(item.getSku()).concat(",");
+        }
+        csv = csv.substring(0, csv.length()-1);
+        return csv;
     }
 }

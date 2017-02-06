@@ -71,6 +71,9 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
 
     private String mRichRelevanceHash;
 
+    //DROID-10
+    private long mGABeginRequestMillis;
+
     /**
      * Empty constructor
      */
@@ -93,6 +96,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
+        mGABeginRequestMillis = System.currentTimeMillis();
     }
 
     /*
@@ -505,6 +509,7 @@ public class HomePageFragment extends BaseFragment implements IResponseCallback,
                     Print.i(TAG, "SHOW FALL BAK");
                     showFragmentFallBack();
                 }
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaHome, mGABeginRequestMillis, "");
                 break;
             case SUBMIT_FORM:// Newsletter Form Response
                 getBaseActivity().dismissProgress();

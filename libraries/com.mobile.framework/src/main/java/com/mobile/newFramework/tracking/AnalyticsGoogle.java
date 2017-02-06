@@ -414,6 +414,24 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         trackTiming(category, name, milliseconds, "duration for event");
     }
 
+    public void trackLoadTimingNew(int categoryId, long beginMillis, int nameId, String label) {
+        // Validation
+        if (!isEnabled) return;
+        // Data
+        long milliseconds = System.currentTimeMillis();
+        if ( milliseconds < beginMillis || beginMillis <= 0 ) {
+            Print.d(TAG, "trackTiming ERROR : start -> " + beginMillis);
+            return;
+        }
+        milliseconds = milliseconds - beginMillis;
+        //int nameId = R.string.gload;
+        // Data
+        String category = mContext.getString(categoryId);
+        String name = mContext.getString(nameId);
+        // Track
+        trackTiming(category, name, milliseconds, label);
+    }
+
     /**
      *
      */

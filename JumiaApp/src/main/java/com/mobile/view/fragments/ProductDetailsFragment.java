@@ -88,6 +88,7 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     private TextView mProductRatingCount;
     private ImageView mWishListButton;
     private long mBeginRequestMillis;
+    private long mGABeginRequestMillis;
     private String mNavPath;
     private String mNavSource;
     private TextView mSaveForLater;
@@ -129,6 +130,8 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        mGABeginRequestMillis = System.currentTimeMillis();
+
         // Get arguments
         Bundle arguments = savedInstanceState != null ? savedInstanceState : getArguments();
         if (arguments != null) {
@@ -1200,9 +1203,10 @@ public class ProductDetailsFragment extends BaseFragment implements IResponseCal
                 displayProduct(mProduct);
                 // Tracking
                 Bundle params = new Bundle();
-                params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gproductdetail);
+                /* DROID-10 params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gproductdetail);
                 params.putLong(TrackerDelegator.START_TIME_KEY, mBeginRequestMillis);
-                TrackerDelegator.trackLoadTiming(params);
+                TrackerDelegator.trackLoadTiming(params);*/
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaProductDetail, mGABeginRequestMillis, mProduct.getSku());
                 // Tracking
                 params = new Bundle();
                 params.putParcelable(AdjustTracker.PRODUCT, mProduct);
