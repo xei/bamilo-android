@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 public enum FragmentType {
     UNKNOWN,
     LOGIN,
+    ABOUT_US,
     REGISTER,
     FORGOT_PASSWORD,
     POPULARITY,
@@ -37,6 +38,7 @@ public enum FragmentType {
     CHECKOUT_THANKS,
     STATIC_PAGE,
     MY_ACCOUNT,
+    MY_NEW_ACCOUNT,
     MY_ACCOUNT_MY_ADDRESSES,
     MY_ACCOUNT_CREATE_ADDRESS,
     MY_ACCOUNT_EDIT_ADDRESS,

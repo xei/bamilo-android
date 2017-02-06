@@ -35,6 +35,7 @@
     <string name="grecentsearches">RecentSearches</string>
     <string name="grecentlyviewed">RecentlyViewed</string>
     <string name="goverflowmenu">ActionOverflow</string>
+    <string name="gabout">About</string>
     <string name="gtrackorder">TrackOrder</string>
     <string name="gtrackconfirmorder">ConfirmationOrder</string>
     <string name="gtrackpayment">Payment</string>

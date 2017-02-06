@@ -14,6 +14,7 @@ import com.mobile.components.customfontviews.TextView;
 import com.mobile.newFramework.objects.catalog.filters.CatalogCheckFilter;
 import com.mobile.newFramework.objects.catalog.filters.CatalogFilterOption;
 import com.mobile.newFramework.objects.catalog.filters.MultiFilterOptionInterface;
+import com.mobile.newFramework.utils.PersinConvertor;
 import com.mobile.view.R;
 
 /**
@@ -147,7 +148,7 @@ import com.mobile.view.R;
     protected void setProductsCount(TextView textView, MultiFilterOptionInterface option){
         if(option instanceof CatalogFilterOption) {
             textView.setVisibility(View.VISIBLE);
-            textView.setText(textView.getResources().getString(R.string.parenthesis_placeholder, ((CatalogFilterOption) option).getTotalProducts()));
+            textView.setText(PersinConvertor.toPersianNumber(textView.getResources().getString(R.string.parenthesis_placeholder, ((CatalogFilterOption) option).getTotalProducts())));
         } else {
             textView.setVisibility(View.GONE);
         }

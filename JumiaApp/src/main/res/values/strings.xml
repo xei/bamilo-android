@@ -2,6 +2,7 @@
 <resources>
     <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">My Account</string>
+    <string name="new_account_name">My Account 2</string>
     <string name="action_label_add_address">Add New Address</string>
     <string name="action_label_basket">Basket</string>
     <string name="action_label_search_hint">Search on %s</string>
@@ -396,12 +397,25 @@
 
 
     <string name="faq">FAQ</string>
+    <string name="about_us_label">About US</string>
 
     <string name="bamilo_font">bamilo</string>
     <string name="bamilo_regular_font">Bamilo-Sans</string>
     <string name="bamilo_bold_font">bamilo_sans_bold</string>
     <string name="bamilo_light_font">bamilo_sans_light</string>
 
+    <!--filter-->
+
     <string name="checkout_address_title">Please choose your address</string>
     <string name="telephone">Tel:</string>
+    <string name="filter_toggle_text">Search</string>
+    <!--about page-->
+    <string name="about_contactus_header">با ما در ارتباط باشید</string>
+    <string name="about_contactus_value">۷ روز هفته ۲۴ ساعته پاسخگوی شماییم</string>
+    <string name="about_address_header">نشانی</string>
+    <string name="about_address_value">تهران، بلوار نلسون ماندلا (آفریقا)، خیابان عاطفی غربی، کوچه مهرداد، پلاک 1، طبقه اول</string>
+    <string name="about_call2cs">تماس با خدمات مشتریان</string>
+    <string name="about_bugreport">گزارش مشکلات برنامه</string>
+    <string name="account_about">درباره ما‎</string>
+    <string name="my_about_label">تماس با ما</string>
 </resources>

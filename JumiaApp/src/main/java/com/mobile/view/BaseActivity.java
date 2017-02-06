@@ -1357,6 +1357,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
                         onSwitchFragment(FragmentType.MY_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
+                    case NavigationAction.MY_NEW_ACCOUNT:
+                        // MY ACCOUNT
+                       // TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
+                        onSwitchFragment(FragmentType.MY_NEW_ACCOUNT, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
                     case NavigationAction.MY_ORDERS:
                         // TRACK ORDER
                         TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_TRACK_ORDER);
@@ -1378,6 +1383,11 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
                                 .run();
                         //TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_FAQ);
                         //onSwitchFragment(FragmentType.STATIC_PAGE, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
+                        break;
+                    case NavigationAction.ABOUT:
+                        // MY ABOUT
+                        TrackerDelegator.trackOverflowMenu(TrackingEvent.AB_MENU_MY_ACCOUNT);
+                        onSwitchFragment(FragmentType.ABOUT_US, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                         break;
                     default:
                         Print.w(TAG, "WARNING ON CLICK UNKNOWN VIEW");

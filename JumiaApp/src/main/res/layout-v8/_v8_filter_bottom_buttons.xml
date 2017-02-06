@@ -4,15 +4,52 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layoutDirection="ltr"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     tools:ignore="UnusedAttribute">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:weightSum="2">
+
+        <com.mobile.components.customfontviews.TextView
+            android:id="@+id/dialog_filter_button_cancel"
+            style="@style/DialogFilterButtonCancel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            style="@style/DialogFilterSearch"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.SwitchCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dimen_5dp"
+                android:paddingTop="10dp"
+                android:checked="false"
+                android:id="@+id/dialog_filter_check_discount" />
+
+            <com.mobile.components.customfontviews.TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:paddingTop="10dp"
+                android:text="@string/filter_toggle_text"
+                android:textColor="@drawable/_gen_selector_text_secondary" />
+        </LinearLayout>
+
+    </LinearLayout>
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_filter_button_done"
-        style="@style/DialogFilterButtonSubmit" />
+        style="@style/DialogFilterButtonSubmit"
+        android:layout_width="match_parent" />
 
-    <com.mobile.components.customfontviews.TextView
-        android:id="@+id/dialog_filter_button_cancel"
-        style="@style/DialogFilterButtonCancel" />
 
 </LinearLayout>

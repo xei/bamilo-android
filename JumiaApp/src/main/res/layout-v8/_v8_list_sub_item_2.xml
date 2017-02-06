@@ -30,28 +30,39 @@
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_item_title"
-        android:layout_toRightOf="@+id/dialog_products_count"
-        android:layout_toLeftOf="@id/dialog_item_color_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignWithParentIfMissing="true"
-        android:textColor="@color/black"
-        android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right|end"
+        android:textColor="@color/black"
+        android:textDirection="rtl"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+
+        android:layout_marginEnd="10dp"
+        android:layout_toRightOf="@+id/dialog_products_count"
+        android:layout_toEndOf="@id/dialog_products_count"
+        android:layout_toLeftOf="@id/dialog_item_color_box"
+        android:layout_toStartOf="@id/dialog_item_color_box"
         android:singleLine="true"
         android:ellipsize="end"
         android:fontFamily="@string/bamilo_regular_font"
-        android:textSize="16sp" />
+        android:textSize="13sp" />
 
     <com.mobile.components.customfontviews.TextView
         android:id="@+id/dialog_products_count"
         android:layout_width="wrap_content"
+
+        android:layout_centerVertical="true"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:layout_centerVertical="true"
         android:layout_toRightOf="@id/dialog_item_checkbox"
-        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@id/dialog_item_checkbox"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:fontFamily="@string/bamilo_regular_font"
-        android:textSize="16sp" />
+        android:textSize="13sp"
+        android:visibility="gone" />
 
 </RelativeLayout>
