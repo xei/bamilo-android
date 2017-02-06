@@ -103,6 +103,9 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
 
     private CheckoutFinish mCheckoutFinish;
 
+    //DROID-10
+    private long mGABeginRequestMillis;
+
     /**
      * Empty constructor
      */
@@ -124,6 +127,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
+        mGABeginRequestMillis = System.currentTimeMillis();
     }
 
     /*
@@ -623,6 +627,7 @@ public class CheckoutFinishFragment extends BaseFragment implements IResponseCal
                     showFragmentErrorRetry();
                 } else {
                     showMyOrder();
+                    TrackerDelegator.trackScreenLoadTiming(R.string.gaCheckoutConfirmation, mGABeginRequestMillis, "");
                 }
                 break;
             case SET_MULTI_STEP_FINISH:
