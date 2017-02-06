@@ -62,7 +62,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     private boolean isInCheckoutProcess;
 
     private FragmentType mParentFragmentType;
-
+    //DROID-10
+    private long mGABeginRequestMillis;
     /**
      * Empty Constructor
      */
@@ -82,6 +83,7 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
+        mGABeginRequestMillis = System.currentTimeMillis();
     }
 
     @Override
@@ -329,6 +331,8 @@ public class SessionRegisterFragment extends BaseFragment implements IResponseCa
             case GET_REGISTRATION_FORM_EVENT:
                 mForm = (Form) baseResponse.getContentData();
                 loadForm(mForm);
+                //DROID-10
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaRegister, mGABeginRequestMillis, "");
                 break;
             default:
                 break;

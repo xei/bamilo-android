@@ -157,6 +157,9 @@
     <string name="gaStaticPage">Static Page</string>
     <string name="gaCampaignPage">Campaign Page</string>
     <string name="gaCatalog">Catalog</string>
+    <string name="gaLogin">Login</string>
+    <string name="gaRegister">Register</string>
+
 
 
 </resources>
