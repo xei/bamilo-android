@@ -149,6 +149,9 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
     private boolean initialCountry = false;
     private Menu mCurrentMenu;
     private long beginInMillis;
+    //DROID-10
+    private long mGABeginInMillis;
+
     private ActionBar mSupportActionBar;
     private boolean isBackButtonEnabled = false;
     private TabLayout mTabLayout;
@@ -1091,6 +1094,7 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
      */
     private void getSuggestions() {
         beginInMillis = System.currentTimeMillis();
+        mGABeginInMillis = System.currentTimeMillis();
         final String text = mSearchAutoComplete.getText().toString();
         Print.d(TAG, "SEARCH COMPONENT: GET SUG FOR " + text);
         SearchSuggestionClient mSearchSuggestionClient = new SearchSuggestionClient();
@@ -1191,7 +1195,8 @@ public abstract class BaseActivity extends BaseTrackerActivity implements TabLay
         Bundle params = new Bundle();
         params.putInt(TrackerDelegator.LOCATION_KEY, R.string.gsearchsuggestions);
         params.putLong(TrackerDelegator.START_TIME_KEY, beginInMillis);
-        TrackerDelegator.trackLoadTiming(params);
+        //DROID-10 TrackerDelegator.trackLoadTiming(params);
+        TrackerDelegator.trackScreenLoadTiming(R.string.gaSearchSuggestions, mGABeginInMillis, requestQuery);
         SearchDropDownAdapter searchSuggestionsAdapter = new SearchDropDownAdapter(getApplicationContext(), suggestionsStruct);
         searchSuggestionsAdapter.setOnViewHolderClickListener(this);
         mSearchListView.setAdapter(searchSuggestionsAdapter);

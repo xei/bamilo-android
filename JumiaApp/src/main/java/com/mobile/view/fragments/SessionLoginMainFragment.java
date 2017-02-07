@@ -66,6 +66,9 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
 
     private TextView mErrorMessage;
 
+    //DROID-10
+    private long mGABeginRequestMillis;
+
     /**
      * Empty constructor
      */
@@ -308,6 +311,8 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
 
     protected void onClickCheckEmail() {
         Print.i(TAG, "ON CLICK CHECK EMAIL");
+        mGABeginRequestMillis = System.currentTimeMillis();
+
         // Get email
         mCustomerEmail = mEmailView.getText().toString();
         // Trigger to check email
@@ -370,6 +375,9 @@ public class SessionLoginMainFragment extends BaseExternalLoginFragment implemen
         Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
         switch (eventType) {
             case EMAIL_CHECK:
+                //DROID-10
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaLogin, mGABeginRequestMillis, mCustomerEmail);
+
                 // Get value
                 boolean exist = ((CustomerEmailCheck) baseResponse.getMetadata().getData()).exist();
                 // Validate next login step

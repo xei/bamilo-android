@@ -24,6 +24,7 @@ import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.MyMenuItem;
 import com.mobile.utils.NavigationAction;
+import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseFragment;
@@ -40,6 +41,8 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
 
     private static final String TAG = MyOrdersFragment.class.getSimpleName();
 
+    //DROID-10
+    private long mGABeginRequestMillis;
     private ArrayList<Order> mOrdersList;
     private ListView mOrdersListView;
     private OrdersAdapter mOrdersAdapter;
@@ -69,6 +72,7 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Print.i(TAG, "ON CREATE");
+        mGABeginRequestMillis = System.currentTimeMillis();
         if (savedInstanceState != null) {
             mOrdersList = savedInstanceState.getParcelableArrayList(RestConstants.ORDERS);
             mPageIndex = savedInstanceState.getInt(RestConstants.PAGE);
@@ -292,6 +296,10 @@ public class MyOrdersFragment extends BaseFragment implements IResponseCallback,
                     isLoadingMore = false;
                 } else
                     showOrders(orderList);
+
+                //DROID-10
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaMyOrders, mGABeginRequestMillis,
+                        JumiaApplication.CUSTOMER==null?"":""+JumiaApplication.CUSTOMER.getId());
                 break;
             default:
                 break;

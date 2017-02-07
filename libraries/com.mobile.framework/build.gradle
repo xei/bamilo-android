@@ -40,7 +40,8 @@ dependencies {
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.squareup.okhttp:okhttp:2.6.0'
     /** GOOGLE PLAY SERVICE **/
-    compile "com.google.android.gms:play-services-analytics:$playServicesVersion"
+    compile 'com.google.android.gms:play-services-analytics:7.5.0'
+    /*compile "com.google.android.gms:play-services-analytics:$playServicesVersion"*/
     compile "com.google.android.gms:play-services-location:$playServicesVersion"
     compile "com.google.android.gms:play-services-ads:$playServicesVersion"
     compile "com.google.android.gms:play-services-wearable:$playServicesVersion"

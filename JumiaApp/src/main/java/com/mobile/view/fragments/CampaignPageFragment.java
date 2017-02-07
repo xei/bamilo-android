@@ -81,6 +81,8 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     private boolean isAddingProductToCart;
 
     private long mStartTimeInMilliseconds;
+    //DROID-10
+    private long mGABeginRequestMillis;
 
     @BannerVisibility
     private int bannerState;
@@ -120,6 +122,7 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         Print.i(TAG, "ON ATTACH");
+        mGABeginRequestMillis = System.currentTimeMillis();
     }
 
     /*
@@ -535,6 +538,9 @@ public class CampaignPageFragment extends BaseFragment implements IResponseCallb
                 // Set startTime after getting request
                 mStartTimeInMilliseconds = SystemClock.elapsedRealtime();
                 showCampaign();
+                //DROID-10
+                TrackerDelegator.trackScreenLoadTiming(R.string.gaCampaignPage, mGABeginRequestMillis, "");
+
                 break;
             case ADD_ITEM_TO_SHOPPING_CART_EVENT:
                 Print.d(TAG, "RECEIVED ADD_ITEM_TO_SHOPPING_CART_EVENT");
