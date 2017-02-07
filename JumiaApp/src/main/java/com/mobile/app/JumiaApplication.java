@@ -78,6 +78,9 @@ public class JumiaApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        //Remove Accengage Iran Ban config
+        getApplicationContext().deleteFile("com.ad4screen.sdk.common.Environment");
+
         // ON APPLICATION CREATE
         Print.i(TAG, "ON APPLICATION CREATE");
         // Save instance
