@@ -428,6 +428,7 @@ public class AnalyticsGoogle extends AbcBaseTracker {
         // Data
         String category = mContext.getString(categoryId);
         String name = mContext.getString(nameId);
+        if (label.trim().compareTo("") == 0) label = "Duration";
         // Track
         trackTiming(category, name, milliseconds, label);
     }
