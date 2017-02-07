@@ -539,4 +539,7 @@
 
     <dimen name="fab_margin">16dp</dimen>
 
+    <!-- Dialog -->
+    <dimen name="dialog_text_header">14sp</dimen>
+    <dimen name="dialog_text">14sp</dimen>
 </resources>

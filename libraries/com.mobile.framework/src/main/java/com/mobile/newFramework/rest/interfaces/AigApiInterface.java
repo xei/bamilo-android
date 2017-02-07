@@ -4,6 +4,7 @@ import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.ReturnReasonForm;
 import com.mobile.newFramework.objects.ExternalLinksSection;
+import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
@@ -297,6 +298,11 @@ public interface AigApiInterface {
     @POST("/")
     void getEditAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
     String getEditAddressForm = "getEditAddressForm";
+
+    @FormUrlEncoded
+    @BODY_DELETE("/")
+    void removeCustomerAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
+    String removeCustomerAddressForm = "removeCustomerAddressForm";
 
     @FormUrlEncoded
     @POST("/")

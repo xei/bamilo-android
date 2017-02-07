@@ -14,15 +14,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.adapters.AddressAdapter;
+import com.mobile.adapters.ISetDefaultAddress;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.controllers.LogOut;
+import com.mobile.helpers.address.GetFormDeleteAddressHelper;
+import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
+import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.tracking.TrackingEvent;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
+import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.TrackerDelegator;
+import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
 import com.mobile.view.fragments.BaseAddressesFragment;
 import com.mobile.view.fragments.BaseFragment;
@@ -40,12 +47,15 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by Arash on 1/22/2017.
  */
 
-public abstract class NewBaseAddressesFragment extends NewBaseFragment  implements IResponseCallback {
+public abstract class NewBaseAddressesFragment extends NewBaseFragment  implements IResponseCallback, ISetDefaultAddress {
 
     private static final String TAG = BaseAddressesFragment.class.getSimpleName();
     protected Addresses mAddresses;
     RecyclerView mAddressView;
     private boolean mIsCheckout = false;
+    private DialogGenericFragment dialogLogout;
+
+
     public NewBaseAddressesFragment(boolean isCheckout)
     {
         super();
@@ -133,11 +143,98 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
         }
 
 
-        AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId);
+        AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId, onClickDeleteAddressButton, this);
         mAddressAdapter.baseFragment = this;
         mAddressView.setAdapter(mAddressAdapter);
-
-
     }
 
+    /**
+     * Process the click on edit button.</br>
+     * Gets the address id from view tag.
+     */
+    View.OnClickListener onClickDeleteAddressButton =  new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+
+            dialogLogout = DialogGenericFragment.newInstance(true, false,
+                    getString(R.string.delete_address_label),
+                    getString(R.string.delete_address_question),
+                    getString(R.string.no_label),
+                    getString(R.string.yes_label),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (v.getId() == R.id.button2) {
+                                int addressId = (int) view.getTag();
+                                // Print.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
+                                // Goto edit address
+                                triggerDeleteAddressForm(addressId);
+                            }
+                            dialogLogout.dismiss();
+                        }
+                    });
+            dialogLogout.show(getBaseActivity().getSupportFragmentManager(), null);
+
+
+
+        }
+    } ;
+
+    public void setDefault(final int id)  {
+
+            dialogLogout = DialogGenericFragment.newInstance(true, false,
+                    getString(R.string.default_address_label),
+                    getString(R.string.default_address_question),
+                    getString(R.string.no_label),
+                    getString(R.string.yes_label),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (v.getId() == R.id.button2) {
+                                int addressId = id;
+                                // Print.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
+                                // Goto edit address
+                                triggerDefaultAddressForm(addressId);
+                            }
+                            dialogLogout.dismiss();
+                        }
+                    });
+            dialogLogout.show(getBaseActivity().getSupportFragmentManager(), null);
+    };
+
+    /**
+     * Trigger to get the address form
+     */
+    protected void triggerDeleteAddressForm(int mAddressId){
+        triggerContentEvent(new GetFormDeleteAddressHelper(), GetFormDeleteAddressHelper.createBundle(mAddressId), this);
+    }
+
+    protected void triggerDefaultAddressForm(int mAddressId){
+        triggerContentEvent(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(mAddressId), this);
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        /*if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }*/
+        EventType eventType = baseResponse.getEventType();
+        Print.i(TAG, "ON SUCCESS EVENT_: " + eventType);
+        switch (eventType) {
+            case SET_DEFAULT_SHIPPING_ADDRESS:
+                showAddresses((Addresses) baseResponse.getContentData(), -1);
+                break;
+            case GET_DELETE_ADDRESS_FORM_EVENT:
+                showAddresses((Addresses) baseResponse.getContentData(), -1);
+                break;
+            default:
+                break;
+        }
+    }
+
+    interface MyCallbackInterface {
+
+        void setDefault(String result);
+    }
 }

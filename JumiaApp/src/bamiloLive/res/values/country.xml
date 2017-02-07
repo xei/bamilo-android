@@ -6,7 +6,7 @@
     <!--<string name="single_shop_country_url">alice-staging.bamilo.com</string>-->
 
     <!-- WARNING: DISABLE SINGLE SHOP ONLY FOR DEV-->
-    <bool name="is_single_shop_country">false</bool>
+    <bool name="is_single_shop_country">true</bool>
     <string name="countries_url">http://bms.bamilo.com/mobile</string>
 
 </resources>

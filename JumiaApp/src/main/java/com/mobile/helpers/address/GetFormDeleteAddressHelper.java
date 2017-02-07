@@ -9,42 +9,35 @@ import com.mobile.newFramework.requests.BaseRequest;
 import com.mobile.newFramework.requests.RequestBundle;
 import com.mobile.newFramework.rest.interfaces.AigApiInterface;
 import com.mobile.newFramework.utils.Constants;
-import com.mobile.newFramework.utils.EventTask;
 import com.mobile.newFramework.utils.EventType;
 
 /**
- * Created by rsoares on 2/25/15.
+ * Helper used to get the form to edit an address 
+ * @author sergiopereira
  */
-public class SetDefaultShippingAddressHelper extends SuperBaseHelper {
+public class GetFormDeleteAddressHelper extends SuperBaseHelper {
+    
+    public static String TAG = GetFormDeleteAddressHelper.class.getSimpleName();
 
-    public static String TAG = SetDefaultShippingAddressHelper.class.getSimpleName();
-
-    public static final String ID = RestConstants.ID;
-
-    public static final String TYPE = RestConstants.TYPE;
+    public static final String SELECTED_ADDRESS_ID = RestConstants.ID;
 
     @Override
     public EventType getEventType() {
-        return EventType.SET_DEFAULT_SHIPPING_ADDRESS;
-    }
-
-    @Override
-    protected EventTask setEventTask() {
-        return EventTask.ACTION_TASK;
+        return EventType.GET_DELETE_ADDRESS_FORM_EVENT;
     }
 
     @Override
     public void onRequest(RequestBundle requestBundle) {
-        new BaseRequest(requestBundle, this).execute(AigApiInterface.setDefaultShippingAddress);
+        new BaseRequest(requestBundle, this).execute(AigApiInterface.removeCustomerAddressForm);
     }
 
     public static Bundle createBundle(int id) {
         ContentValues values = new ContentValues();
-        values.put(SetDefaultShippingAddressHelper.ID, id);
-        values.put(SetDefaultShippingAddressHelper.TYPE, "shipping");
+        values.put(GetFormDeleteAddressHelper.SELECTED_ADDRESS_ID, id);
         Bundle bundle = new Bundle();
         bundle.putParcelable(Constants.BUNDLE_DATA_KEY, values);
         return bundle;
     }
 
 }
+

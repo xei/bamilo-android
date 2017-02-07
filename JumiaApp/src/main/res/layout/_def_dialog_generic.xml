@@ -37,18 +37,18 @@
         android:orientation="horizontal">
 
         <com.mobile.components.customfontviews.Button
-            android:id="@+id/button1"
-            style="@style/DialogButtonStyle"
-            android:contentDescription="@string/cancel_label"
-            android:text="@string/cancel_label" />
-
-        <View style="@style/DividerVertical.Black_400" />
-
-        <com.mobile.components.customfontviews.Button
             android:id="@+id/button2"
             style="@style/DialogButtonStyle"
             android:contentDescription="@string/ok_label"
             android:text="@string/ok_label" />
+
+        <View style="@style/DividerVertical.Black_400" />
+
+        <com.mobile.components.customfontviews.Button
+            android:id="@+id/button1"
+            style="@style/DialogButtonStyle"
+            android:contentDescription="@string/cancel_label"
+            android:text="@string/cancel_label" />
 
     </android.support.v7.widget.LinearLayoutCompat>
 

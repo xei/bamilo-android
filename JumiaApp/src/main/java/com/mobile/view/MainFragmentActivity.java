@@ -72,6 +72,7 @@ import com.mobile.view.fragments.order.OrderReturnStepsMain;
 import com.mobile.view.fragments.order.OrderStatusFragment;
 import com.mobile.view.newfragments.NewBaseFragment;
 import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
+import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -397,7 +398,9 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(ProductOffersFragment.class, bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
-                fragment = newFragmentInstance(MyAccountAddressesFragment.class, bundle);
+                isNewFragment = true;
+                newFragment = newNewFragmentInstance(NewMyAccountAddressesFragment.class, bundle);
+                //fragment = newFragmentInstance(MyAccountAddressesFragment.class, bundle);
                 break;
             case MY_ACCOUNT_CREATE_ADDRESS:
                 fragment = newFragmentInstance(MyAccountCreateAddressFragment.class, bundle);

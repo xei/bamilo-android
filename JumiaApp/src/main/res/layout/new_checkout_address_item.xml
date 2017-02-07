@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    card_view:cardCornerRadius="4dp"
+    android:layout_margin="5dp">
+
+<RelativeLayout
     android:id="@+id/checkout_address_item_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
+    android:layout_height="match_parent"
     >
 
     <!-- SELECTION RADIOBUTTON -->
@@ -21,20 +29,58 @@
         android:theme="@style/RadioButtonTheme"
         android:visibility="gone" />
 
-    <!-- EDIT BUTTON -->
-    <ImageView
-        android:id="@+id/checkout_address_item_btn_edit"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_alignParentEnd="true"
+    <View
+        android:id="@+id/vertical_separator"
+        android:layout_width="1dp"
+        android:layout_height="200dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="@dimen/margin_48dp"
+        android:layout_marginEnd="@dimen/margin_48dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:background="@color/address_separator"/>
+
+    <LinearLayout
+        android:id="@+id/buttons"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/dimen_16dp"
-        android:layout_marginEnd="@dimen/dimen_16dp"
-        android:src="@drawable/new_selector_btn_edit" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingLeft="@dimen/margin_16dp"
+        android:paddingRight="@dimen/margin_16dp"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="16dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+            <ImageView
+                android:id="@+id/checkout_address_item_btn_edit"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/new_selector_btn_edit" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/checkout_address_item_delete"
+            android:layout_width="16dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+            <ImageView
+                android:id="@+id/checkout_address_item_btn_delete"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/trash" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <!-- ITEM -->
-
         <com.mobile.components.customfontviews.TextView
             android:id="@+id/checkout_address_item_name"
             style="@style/TextBase.Address"
@@ -43,9 +89,10 @@
             android:layout_alignParentTop="true"
             android:layout_toRightOf="@+id/checkout_address_item_radio_btn"
             android:layout_toEndOf="@+id/checkout_address_item_radio_btn"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginTop="@dimen/dimen_16dp"
+            android:layout_marginLeft="@dimen/dimen_16dp"
+            android:layout_marginRight="@dimen/dimen_16dp"
+            android:text="name"
             />
 
         <com.mobile.components.customfontviews.TextView
@@ -57,13 +104,15 @@
             android:layout_alignStart="@+id/checkout_address_item_name"
             android:layout_alignRight="@+id/vertical_separator"
             android:layout_alignEnd="@+id/vertical_separator"
+            android:layout_toRightOf="@+id/checkout_address_item_radio_btn"
+            android:layout_toEndOf="@+id/checkout_address_item_radio_btn"
             android:layout_marginTop="16dp"
-            android:paddingRight="8dp"
-            android:paddingLeft="8dp"
+            android:layout_marginRight="@dimen/margin_16dp"
+            android:layout_marginEnd="@dimen/margin_16dp"
             android:ellipsize="end"
-            android:gravity="start|left"
             android:singleLine="false"
-            android:maxLines="2"
+            android:maxLines="3"
+            android:text="street"
              />
 
         <com.mobile.components.customfontviews.TextView
@@ -75,8 +124,7 @@
             android:layout_alignLeft="@+id/checkout_address_item_name"
             android:layout_alignStart="@+id/checkout_address_item_name"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+
             android:text="@string/telephone"/>
 
         <com.mobile.components.customfontviews.TextView
@@ -89,19 +137,12 @@
             android:layout_alignRight="@+id/vertical_separator"
             android:layout_alignEnd="@+id/vertical_separator"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="@dimen/margin_16dp"
+            android:layout_marginStart="@dimen/margin_16dp"
             android:text="dsdcsdcs"
             />
     
-    <View
-        android:id="@+id/vertical_separator"
-        android:layout_width="10dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/dimen_48dp"
-        android:layout_marginEnd="@dimen/dimen_48dp"
-        android:background="@color/address_separator"/>
+
 
     <View
         android:layout_width="match_parent"
@@ -122,3 +163,4 @@
 
 </RelativeLayout>
 
+</android.support.v7.widget.CardView>
