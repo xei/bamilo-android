@@ -167,6 +167,7 @@
     <string name="register_text_terms_a">I agree with the</string>
     <string name="register_text_terms_b">Terms and Conditions</string>
     <string name="register_title">Create Account</string>
+    <string name="register_login_title">Login / SignUp</string>
     <string name="review">Review</string>
     <string name="save_changes_label">Save Changes</string>
     <string name="save_label">Save</string>
@@ -183,7 +184,7 @@
     <string name="choose_quantity">Choose Quantity</string>
     <string name="delete_label">Delete</string>
     <string name="quantity_label">Quantity</string>
-    <string name="sign_in">Sign In</string>
+    <string name="sign_in">Sign In / Register</string>
     <string name="sign_out">Sign Out</string>
     <string name="size_guide_label">Size Guide</string>
     <string name="size_label">Size</string>
@@ -418,4 +419,6 @@
     <string name="about_bugreport">گزارش مشکلات برنامه</string>
     <string name="account_about">درباره ما‎</string>
     <string name="my_about_label">تماس با ما</string>
+
+
 </resources>

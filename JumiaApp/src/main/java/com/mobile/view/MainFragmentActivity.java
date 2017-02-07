@@ -59,6 +59,7 @@ import com.mobile.view.fragments.ReviewsFragment;
 import com.mobile.view.fragments.SessionForgotPasswordFragment;
 import com.mobile.view.fragments.SessionLoginEmailFragment;
 import com.mobile.view.fragments.SessionLoginMainFragment;
+import com.mobile.view.fragments.SessionLoginNewMainFragment;
 import com.mobile.view.fragments.SessionRegisterFragment;
 import com.mobile.view.fragments.ShoppingCartFragment;
 import com.mobile.view.fragments.StaticPageFragment;
@@ -336,7 +337,8 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(ChooseCountryFragment.class, bundle);
                 break;
             case LOGIN:
-                fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
+                //fragment = newFragmentInstance(SessionLoginMainFragment.class, bundle);
+                fragment = newFragmentInstance(SessionLoginNewMainFragment.class, bundle);
                 break;
             case LOGIN_EMAIL:
                 fragment = newFragmentInstance(SessionLoginEmailFragment.class, bundle);

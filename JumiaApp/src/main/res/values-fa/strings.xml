@@ -75,9 +75,9 @@
     <string name="fallback_welcome">خوش آمدید به</string>
     <string name="fgt_pass">آیا رمز عبور خود را فراموش کرده اید؟</string>
     <string name="filters_label">فیلترها</string>
-    <string name="forgotpass_header">بازیابی رمز عبور</string>
+    <string name="forgotpass_header">بازیابی کلمه عبور</string>
     <string name="forgotten_password">لطفا پست الکترونیکی خود را وارد کنید</string>
-    <string name="forgotten_password_examplemail">abcd1234@example.com</string>
+    <string name="forgotten_password_examplemail">ایمیل</string>
     <string name="forgotten_password_sub_text">به منظور تغییر رمز عبور لینکی برای شما ارسال خواهد شد.</string>
     <string name="forgotten_password_successtext">پست الکترونیکی ارسال شد.</string>
     <string name="form_passwordsnomatch">رمز عبور اشتباه است.</string>
@@ -167,6 +167,7 @@
     <string name="register_text_terms_a">من موافقم با</string>
     <string name="register_text_terms_b">شرایط و ضوابط</string>
     <string name="register_title">ساخت حساب کاربری</string>
+    <string name="register_login_title">ورود / ثبت نام</string>
     <string name="review">نقد و بررسی</string>
     <string name="save_changes_label">ذخیره تغییرات</string>
     <string name="save_label">ذخیره</string>
@@ -183,7 +184,7 @@
     <string name="choose_quantity">تعداد را مشخص کنید</string>
     <string name="delete_label">پاک کردن</string>
     <string name="quantity_label">تعداد</string>
-    <string name="sign_in">ورود</string>
+    <string name="sign_in">ورود / ثبت نام</string>
     <string name="sign_out">خروج</string>
     <string name="size_guide_label">راهنمای انتخاب سایز</string>
     <string name="size_label">اندازه</string>
