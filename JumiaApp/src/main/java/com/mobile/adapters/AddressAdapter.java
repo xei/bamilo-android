@@ -45,6 +45,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     public NewBaseFragment baseFragment;
     private boolean mIsCheckout;
     private View.OnClickListener mOnClickDeleteAddressButton;
+    private ISetDefaultAddress mSetDefaultAddress;
 
 
 
@@ -72,9 +73,11 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     }
 
 
-    public AddressAdapter(List<Address> addressesList, boolean isCheckout, int mSelectedAddressId, View.OnClickListener onClickDeleteAddressButton) {
+    public AddressAdapter(List<Address> addressesList, boolean isCheckout, int mSelectedAddressId,
+                          View.OnClickListener onClickDeleteAddressButton, ISetDefaultAddress setDefaultAddress) {
         mIsCheckout = isCheckout;
         mOnClickDeleteAddressButton = onClickDeleteAddressButton;
+        mSetDefaultAddress = setDefaultAddress;
         this.addressesList = addressesList;
         this.addressSelection = new ArrayList<>();
         for (int i=0;i<addressesList.size(); i++)
@@ -114,14 +117,16 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
 
         if (position == 0)
         {
-            holder.buttons.setVisibility(View.GONE);
+            holder.buttons.setVisibility(View.INVISIBLE);
         }
 
         if (mIsCheckout) {
             holder.buttons.setVisibility(View.GONE);
+        }
             holder.checkBox.setVisibility(View.VISIBLE);
             holder.checkBox.setChecked(addressSelection.get(position).isSelected());
-            holder.checkBox.setTag(new Integer(position));
+            holder.checkBox.setTag(R.string.address_item_key_1, new Integer(position));
+            holder.checkBox.setTag(R.string.address_item_key_2, address.getId());
 
             //for default check in first item
             if (position == 0 && addressSelection.get(0).isSelected() && holder.checkBox.isChecked()) {
@@ -133,16 +138,19 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
                 @Override
                 public void onClick(View v) {
                     RadioButton cb = (RadioButton) v;
-                    int clickedPos = ((Integer) cb.getTag()).intValue();
+                    int clickedPos = ((Integer) cb.getTag(R.string.address_item_key_1)).intValue();
 
                     if (cb.isChecked()) {
                         if (lastChecked != null && clickedPos != lastCheckedPos) {
                             lastChecked.setChecked(false);
                             addressSelection.get(lastCheckedPos).setSelected(false);
+                            lastChecked = cb;
+                            lastCheckedPos = clickedPos;
+                            if (!mIsCheckout)
+                            {
+                                mSetDefaultAddress.setDefault((int)(cb.getTag(R.string.address_item_key_2)));
+                            }
                         }
-
-                        lastChecked = cb;
-                        lastCheckedPos = clickedPos;
                     } else
                         lastChecked = null;
 
@@ -150,7 +158,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
                 }
             });
 
-        }
+       // }
 
 
     }

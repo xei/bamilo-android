@@ -14,9 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobile.adapters.AddressAdapter;
+import com.mobile.adapters.ISetDefaultAddress;
 import com.mobile.components.customfontviews.TextView;
 import com.mobile.controllers.LogOut;
 import com.mobile.helpers.address.GetFormDeleteAddressHelper;
+import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.Addresses;
@@ -45,7 +47,7 @@ import static com.facebook.FacebookSdk.getApplicationContext;
  * Created by Arash on 1/22/2017.
  */
 
-public abstract class NewBaseAddressesFragment extends NewBaseFragment  implements IResponseCallback {
+public abstract class NewBaseAddressesFragment extends NewBaseFragment  implements IResponseCallback, ISetDefaultAddress {
 
     private static final String TAG = BaseAddressesFragment.class.getSimpleName();
     protected Addresses mAddresses;
@@ -70,14 +72,7 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        // Get sections
-        //mAddressView = (RecyclerView) view.findViewById(R.id.address_recycler_view);
-        /*mBillingView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_billing);
-        mOthersView = (ViewGroup) view.findViewById(R.id.checkout_addresses_section_other);
-        // Set buttons
-        view.findViewById(R.id.checkout_addresses_button_add_top).setOnClickListener(this);
-        mButtonBottom = view.findViewById(R.id.checkout_addresses_button_add_bottom);
-        mButtonBottom.setOnClickListener(this);*/
+
     }
 
 
@@ -148,7 +143,7 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
         }
 
 
-        AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId, onClickDeleteAddressButton);
+        AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId, onClickDeleteAddressButton, this);
         mAddressAdapter.baseFragment = this;
         mAddressView.setAdapter(mAddressAdapter);
 
@@ -187,12 +182,41 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
         }
     } ;
 
+    public void setDefault(final int id)  {
+
+            dialogLogout = DialogGenericFragment.newInstance(true, false,
+                    getString(R.string.default_address_label),
+                    getString(R.string.default_address_question),
+                    getString(R.string.no_label),
+                    getString(R.string.yes_label),
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (v.getId() == R.id.button2) {
+                                int addressId = id;
+                                // Print.i(TAG, "ON CLICK: EDIT ADDRESS " + addressId);
+                                // Goto edit address
+                                triggerDefaultAddressForm(addressId);
+                            }
+                            dialogLogout.dismiss();
+                        }
+                    });
+            dialogLogout.show(getBaseActivity().getSupportFragmentManager(), null);
+
+
+
+
+    };
+
     /**
      * Trigger to get the address form
      */
     protected void triggerDeleteAddressForm(int mAddressId){
-        //Print.i(TAG, "TRIGGER: EDIT FORM");
         triggerContentEvent(new GetFormDeleteAddressHelper(), GetFormDeleteAddressHelper.createBundle(mAddressId), this);
+    }
+
+    protected void triggerDefaultAddressForm(int mAddressId){
+        triggerContentEvent(new SetDefaultShippingAddressHelper(), SetDefaultShippingAddressHelper.createBundle(mAddressId), this);
     }
 
     @Override
@@ -202,14 +226,21 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
             return;
         }*/
         EventType eventType = baseResponse.getEventType();
-        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
+        Print.i(TAG, "ON SUCCESS EVENT_: " + eventType);
         switch (eventType) {
-
+            case SET_DEFAULT_SHIPPING_ADDRESS:
+                showAddresses((Addresses) baseResponse.getContentData(), -1);
+                break;
             case GET_DELETE_ADDRESS_FORM_EVENT:
                 showAddresses((Addresses) baseResponse.getContentData(), -1);
                 break;
             default:
                 break;
         }
+    }
+
+    interface MyCallbackInterface {
+
+        void setDefault(String result);
     }
 }

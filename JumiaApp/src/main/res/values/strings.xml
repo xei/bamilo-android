@@ -405,5 +405,13 @@
     <string name="checkout_address_title">Please choose your address</string>
     <string name="telephone">Tel:</string>
     <string name="delete_address_question">Are you sure you want to delete this address?</string>
-    <string name="delete_address_label">Delete Address</string>
+    <string name="delete_address_label">Delete address</string>
+
+    <string name="default_address_question">Are you sure you want to set this address to your default address?</string>
+    <string name="default_address_label">Set default address</string>
+
+    <string name="address_item_key_1"></string>
+    <string name="address_item_key_2"></string>
+
+
 </resources>

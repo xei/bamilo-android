@@ -396,7 +396,9 @@
     <string name="faq">راهنما و سوالات متداول</string>
     <string name="checkout_address_title">لطفا آدرس خود را انتخاب کنید.</string>
     <string name="telephone">تلفن:</string>
-    <string name="delete_address_question">آیا از حذف آدرس مطمئنید؟</string>
+    <string name="delete_address_question">آیا از حذف آدرس خود اطمینان دارید؟</string>
     <string name="delete_address_label">حذف آدرس</string>
 
+    <string name="default_address_question">این آدرس به عنوان آدرس پیش فرض ثبت شود؟</string>
+    <string name="default_address_label">تعیین آدرس پیش فرض</string>
 </resources>

@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import com.mobile.adapters.AddressAdapter;
 import com.mobile.constants.ConstantsCheckout;
@@ -35,7 +36,7 @@ import java.util.EnumSet;
 
 public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
 
-    private static final String TAG = CheckoutAddressesFragment.class.getSimpleName();
+    private static final String TAG = NewMyAccountAddressesFragment.class.getSimpleName();
 
     private View mCheckoutTotalBar;
     private FloatingActionButton fabNewAddress;
@@ -168,7 +169,10 @@ public class NewMyAccountAddressesFragment extends NewBaseAddressesFragment {
                 super.showAddresses((Addresses) baseResponse.getContentData(), -1);
                 break;
             case GET_DELETE_ADDRESS_FORM_EVENT:
-                super.showAddresses((Addresses) baseResponse.getContentData(), -1);
+                triggerGetAddresses();
+                break;
+            case SET_DEFAULT_SHIPPING_ADDRESS:
+                triggerGetAddresses();
                 break;
             default:
                 break;

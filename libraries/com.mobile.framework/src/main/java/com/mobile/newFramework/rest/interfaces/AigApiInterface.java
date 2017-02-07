@@ -4,6 +4,7 @@ import com.mobile.newFramework.forms.AddressForms;
 import com.mobile.newFramework.forms.Form;
 import com.mobile.newFramework.forms.ReturnReasonForm;
 import com.mobile.newFramework.objects.ExternalLinksSection;
+import com.mobile.newFramework.objects.addresses.Address;
 import com.mobile.newFramework.objects.addresses.AddressCities;
 import com.mobile.newFramework.objects.addresses.AddressPostalCodes;
 import com.mobile.newFramework.objects.addresses.AddressRegions;
@@ -300,7 +301,7 @@ public interface AigApiInterface {
 
     @FormUrlEncoded
     @BODY_DELETE("/")
-    void removeCustomerAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Form>> callback);
+    void removeCustomerAddressForm(@FieldMap Map<String, String> data, Callback<BaseResponse<Void>> callback);
     String removeCustomerAddressForm = "removeCustomerAddressForm";
 
     @FormUrlEncoded

@@ -76,7 +76,7 @@
                 android:layout_width="16dp"
                 android:layout_height="16dp"
                 android:layout_centerInParent="true"
-                android:src="@android:drawable/ic_delete" />
+                android:src="@drawable/trash" />
         </RelativeLayout>
     </LinearLayout>
 

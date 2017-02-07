@@ -98,7 +98,7 @@ public enum EventType {
 
     GET_EDIT_ADDRESS_FORM_EVENT("http:/forms/addressedit/", AigRestContract.MAX_CACHE_TIME),
 
-    GET_DELETE_ADDRESS_FORM_EVENT("http:/customer/addressremove/", AigRestContract.MAX_CACHE_TIME),
+    GET_DELETE_ADDRESS_FORM_EVENT("http:/customer/addressremove/"),
 
     GET_CUSTOMER_ADDRESSES_EVENT("https:/customer/getaddresslist/"),
 
