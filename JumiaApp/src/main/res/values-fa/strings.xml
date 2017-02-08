@@ -416,6 +416,10 @@
     <string name="delete_address_label">حذف آدرس</string>
 
 
-    <string name="default_address_question">این آدرس به عنوان آدرس پیش فرض ثبت شود؟</string>
+    <string name="default_address_question">از تغییر آدرس پیش فرض خود اطمینان دارید؟</string>
     <string name="default_address_label">تعیین آدرس پیش فرض</string>
+
+    <string name="checkout_address">آدرس</string>
+    <string name="checkout_review">بررسی</string>
+    <string name="checkout_payment">پرداخت</string>
 </resources>

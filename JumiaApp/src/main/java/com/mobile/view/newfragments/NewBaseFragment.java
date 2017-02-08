@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
+import com.mobile.components.customfontviews.TextView;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
@@ -249,6 +250,49 @@ public abstract class NewBaseFragment extends Fragment {
         mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
         @ErrorLayoutFactory.LayoutErrorType int type = (int) viewStub.getTag(viewStub.getId());
         showErrorFragment(type, (View.OnClickListener) viewStub.getTag(R.id.stub_listener));
+    }
+
+    protected void setCheckoutStep(View view, int step)
+    {
+        TextView tvStep1 = (TextView) view.findViewById(R.id.step1);
+        TextView tvStep2 = (TextView) view.findViewById(R.id.step2);
+        TextView tvStep3 = (TextView) view.findViewById(R.id.step3);
+        TextView tvStep1_title = (TextView) view.findViewById(R.id.step1_title);
+        TextView tvStep2_title = (TextView) view.findViewById(R.id.step2_title);
+        TextView tvStep3_title = (TextView) view.findViewById(R.id.step3_title);
+        tvStep1.setText("1");
+        tvStep2.setText("2");
+        tvStep3.setText("3");
+        switch (step)
+        {
+            case 1:
+                tvStep1_title.setVisibility(View.VISIBLE);
+                tvStep2_title.setVisibility(View.GONE);
+                tvStep3_title.setVisibility(View.GONE);
+                tvStep1.setBackgroundResource(R.drawable.new_checkout_steps_current);
+                tvStep2.setBackgroundResource(R.drawable.new_checkout_steps_next);
+                tvStep3.setBackgroundResource(R.drawable.new_checkout_steps_next);
+                break;
+            case 2:
+                tvStep1.setText("");
+                tvStep1_title.setVisibility(View.GONE);
+                tvStep2_title.setVisibility(View.VISIBLE);
+                tvStep3_title.setVisibility(View.GONE);
+                tvStep1.setBackgroundResource(R.drawable.new_checkout_steps_passed);
+                tvStep2.setBackgroundResource(R.drawable.new_checkout_steps_current);
+                tvStep3.setBackgroundResource(R.drawable.new_checkout_steps_next);
+                break;
+            case 3:
+                tvStep1.setText("");
+                tvStep2.setText("");
+                tvStep1_title.setVisibility(View.GONE);
+                tvStep2_title.setVisibility(View.GONE);
+                tvStep3_title.setVisibility(View.VISIBLE);
+                tvStep1.setBackgroundResource(R.drawable.new_checkout_steps_passed);
+                tvStep2.setBackgroundResource(R.drawable.new_checkout_steps_passed);
+                tvStep3.setBackgroundResource(R.drawable.new_checkout_steps_current);
+                break;
+        }
     }
 
 }

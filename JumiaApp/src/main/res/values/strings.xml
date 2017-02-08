@@ -430,5 +430,7 @@
     <string name="address_item_key_2"></string>
 
 
-
+    <string name="checkout_address">Address</string>
+    <string name="checkout_review">Review</string>
+    <string name="checkout_payment">Payment</string>
 </resources>
