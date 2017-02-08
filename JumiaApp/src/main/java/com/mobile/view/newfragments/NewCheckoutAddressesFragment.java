@@ -97,7 +97,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
         fabNewAddress.setOnClickListener(onClickCreateAddressButton);
 
         mSelectedAddress = -1;
-        super.setCheckoutStep(view, 3);
+        super.setCheckoutStep(view, 1);
 
     }
 
