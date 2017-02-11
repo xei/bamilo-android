@@ -67,7 +67,7 @@ import java.util.List;
  * @author sergiopereira
  *
  */
-public class NewShoppingCartFragment extends NewBaseFragment implements IResponseCallback {
+public class NewShoppingCartFragment extends BaseFragment implements IResponseCallback {
 
     private static final String TAG = NewShoppingCartFragment.class.getSimpleName();
 
@@ -102,7 +102,11 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
      * Empty constructor
      */
     public NewShoppingCartFragment() {
-        super();
+        super(EnumSet.of(MyMenuItem.SEARCH_VIEW, MyMenuItem.MY_PROFILE),
+                NavigationAction.BASKET,
+                R.layout.shopping_basket,
+                IntConstants.ACTION_BAR_NO_TITLE,
+                ADJUST_CONTENT);
     }
 
     @Override
@@ -138,7 +142,7 @@ public class NewShoppingCartFragment extends NewBaseFragment implements IRespons
         // Get and set views
         setAppContentLayout(view);
         // Set listeners
-        setListeners();
+        //377 setListeners();
     }
 
     @Override

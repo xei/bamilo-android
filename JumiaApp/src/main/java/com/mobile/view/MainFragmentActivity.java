@@ -87,8 +87,8 @@ public class MainFragmentActivity extends DebugActivity {
     private final static String TAG = MainFragmentActivity.class.getSimpleName();
 
     private BaseFragment fragment;
-    private NewBaseFragment newFragment;
-    private boolean isNewFragment = false;
+    //DROID-63 private NewBaseFragment newFragment;
+    //DROID-63 private boolean isNewFragment = false;
 
     private FragmentType mCurrentFragmentType;
 
@@ -250,7 +250,7 @@ public class MainFragmentActivity extends DebugActivity {
         hideKeyboard();
         // Remove entries from back stack
         boolean removeEntries = false;
-        isNewFragment = false;
+        //DROID-63 isNewFragment = false;
         // Validate fragment type
         switch (type) {
             case HOME:
@@ -349,9 +349,9 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(SessionForgotPasswordFragment.class, bundle);
                 break;
             case CHECKOUT_MY_ADDRESSES:
-                isNewFragment = true;
-                newFragment = newNewFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
-               // fragment = newFragmentInstance(CheckoutAddressesFragment.class, bundle);
+                //DROID-63 isNewFragment = true;
+                //DROID-63 newFragment = newNewFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
+                fragment = newFragmentInstance(NewCheckoutAddressesFragment.class, bundle);
                 break;
             case CHECKOUT_CREATE_ADDRESS:
                 fragment = newFragmentInstance(CheckoutCreateAddressFragment.class, bundle);
@@ -398,9 +398,9 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(ProductOffersFragment.class, bundle);
                 break;
             case MY_ACCOUNT_MY_ADDRESSES:
-                isNewFragment = true;
-                newFragment = newNewFragmentInstance(NewMyAccountAddressesFragment.class, bundle);
-                //fragment = newFragmentInstance(MyAccountAddressesFragment.class, bundle);
+                //DROID-63 isNewFragment = true;
+                //DROID-63 newFragment = newNewFragmentInstance(NewMyAccountAddressesFragment.class, bundle);
+                fragment = newFragmentInstance(NewMyAccountAddressesFragment.class, bundle);
                 break;
             case MY_ACCOUNT_CREATE_ADDRESS:
                 fragment = newFragmentInstance(MyAccountCreateAddressFragment.class, bundle);
@@ -444,6 +444,9 @@ public class MainFragmentActivity extends DebugActivity {
         // Save the current state
         mCurrentFragmentType = type;
 
+        fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
+
+/* DROID-63
         // Transition
         if (!isNewFragment) {
             fragmentManagerTransition(R.id.app_content, fragment, type, addToBackStack);
@@ -452,6 +455,7 @@ public class MainFragmentActivity extends DebugActivity {
         {
             fragmentManagerTransition(R.id.app_content, newFragment, type, addToBackStack);
         }
+*/
     }
 
     /**
@@ -461,9 +465,11 @@ public class MainFragmentActivity extends DebugActivity {
         return BaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
 
+/* DROID-63
     private  NewBaseFragment newNewFragmentInstance(@NonNull Class<? extends NewBaseFragment> fragmentClass, @Nullable Bundle arguments) {
         return NewBaseFragment.newInstance(getApplicationContext(), fragmentClass, arguments);
     }
+*/
 
     /**
      * Fragment communication.<br>
@@ -531,6 +537,7 @@ public class MainFragmentActivity extends DebugActivity {
                 Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
             }
         }
+/* DROID-63
         else
         {
             newFragment = (NewBaseFragment) frag;
@@ -556,6 +563,7 @@ public class MainFragmentActivity extends DebugActivity {
                 Print.i(TAG, "ALLOW BACK PRESSED: FRAGMENT");
             }
         }
+*/
     }
 
     /**
