@@ -161,6 +161,18 @@ public abstract class NewBaseFragment extends Fragment {
         Print.i(TAG, "ON DESTROY");
     }
 
+    protected long getLoadTime() {
+        return mLoadTime;
+    }
+    /**
+     * Process the click in continue shopping
+     * @param view The clicked view
+     * @author sergiopereira
+     */
+    protected void onClickRetryButton(View view) {
+        // ...
+    }
+
     /**
      * Send request showing the loading
      */
@@ -172,10 +184,38 @@ public abstract class NewBaseFragment extends Fragment {
     }
 
     /**
+     * Send request and show progress view
+     */
+    protected final void triggerContentEventProgress(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
+        // Show progress
+        showActivityProgress();
+        // Request
+        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+    }
+
+    /**
      * Show the loading view from the root layout
      */
     protected void showFragmentLoading() {
         UIUtils.showOrHideViews(View.VISIBLE, mLoadingView);
+    }
+
+    /**
+     * Show BaseActivity progress loading
+     */
+    protected void showActivityProgress() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().showProgress();
+        }
+    }
+
+    /**
+     * Hide BaseActivity progress loading
+     */
+    protected void hideActivityProgress() {
+        if(getBaseActivity() != null) {
+            getBaseActivity().dismissProgress();
+        }
     }
 
     /**
