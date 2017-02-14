@@ -73,6 +73,7 @@ import com.mobile.view.fragments.order.OrderStatusFragment;
 import com.mobile.view.newfragments.NewBaseFragment;
 import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
 import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
+import com.mobile.view.newfragments.NewShoppingCartFragment;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -302,7 +303,7 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(ReviewFragment.class, bundle);
                 break;
             case SHOPPING_CART:
-                fragment = newFragmentInstance(ShoppingCartFragment.class, bundle);
+                fragment = newFragmentInstance(NewShoppingCartFragment.class, bundle);
                 break;
             case STATIC_PAGE:
                 fragment = newFragmentInstance(StaticPageFragment.class, bundle);

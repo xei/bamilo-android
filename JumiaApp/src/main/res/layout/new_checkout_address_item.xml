@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="160dp"
+    android:layout_height="130dp"
     card_view:cardCornerRadius="4dp"
     android:layout_margin="5dp">
 
@@ -139,6 +139,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginLeft="@dimen/margin_16dp"
             android:layout_marginStart="@dimen/margin_16dp"
+            android:layout_marginBottom="@dimen/dimen_16dp"
             android:text="dsdcsdcs"
             />
     

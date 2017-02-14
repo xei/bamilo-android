@@ -53,4 +53,12 @@
 
     <!-- REVIEWS -->
     <item type="id" name="rating_bar_id"/>
+
+
+    <!--Cart item -->
+    <item type="id" name="item_max"/>
+    <item type="id" name="item_position"/>
+    <item type="id" name="item_quantity"/>
+    <item type="id" name="item_change"/>
+
 </resources>
