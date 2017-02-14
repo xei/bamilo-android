@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,7 @@ import android.view.ViewGroup;
 import com.mobile.adapters.AddressAdapter;
 import com.mobile.adapters.ISetDefaultAddress;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.controllers.LogOut;
 import com.mobile.helpers.address.GetFormDeleteAddressHelper;
 import com.mobile.helpers.address.SetDefaultShippingAddressHelper;
@@ -28,6 +30,8 @@ import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
 import com.mobile.newFramework.utils.EventType;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
 import com.mobile.utils.TrackerDelegator;
 import com.mobile.utils.dialogfragments.DialogGenericFragment;
 import com.mobile.view.R;
@@ -40,6 +44,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -56,11 +61,15 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
     private DialogGenericFragment dialogLogout;
 
 
-    public NewBaseAddressesFragment(boolean isCheckout)
+    public NewBaseAddressesFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @ConstantsCheckout.CheckoutType int titleCheckout, boolean isCheckout) {
+        super(enabledMenuItems, action, layoutResId, titleResId, ADJUST_CONTENT, titleCheckout);
+        mIsCheckout = isCheckout;
+    }
+   /* public NewBaseAddressesFragment(boolean isCheckout)
     {
         super();
         mIsCheckout = isCheckout;
-    }
+    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,6 +155,9 @@ public abstract class NewBaseAddressesFragment extends NewBaseFragment  implemen
         AddressAdapter mAddressAdapter = new AddressAdapter(addressList, mIsCheckout, mSelectedAddressId, onClickDeleteAddressButton, this);
         mAddressAdapter.baseFragment = this;
         mAddressView.setAdapter(mAddressAdapter);
+
+        showFragmentContentContainer();
+
     }
 
     /**

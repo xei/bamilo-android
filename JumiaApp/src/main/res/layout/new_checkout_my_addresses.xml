@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.LinearLayoutCompat
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <RelativeLayout
+    >
+<!--    <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
     android:layout_weight="1"
     android:orientation="vertical"
-    >
+    >-->
 
 
         <include
             layout="@layout/new_checkout_header"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_alignParentTop="true"
             />
 
         <com.mobile.components.customfontviews.TextView
@@ -34,20 +37,20 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/address_separator"/>
-        <LinearLayout
+<!--        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/title"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true">-->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/address_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
+                android:layout_alignParentBottom="true"
                  />
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 
         <android.support.design.widget.FloatingActionButton
@@ -56,11 +59,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_above="@+id/footer"
             app:fabSize="mini"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_add_white_48dp" />
+<!--
     </RelativeLayout>
+-->
     <LinearLayout
         android:id="@+id/footer"
         android:layout_width="match_parent"
@@ -81,4 +86,4 @@
         <!--<include
             layout="@layout/checkout_total_layout" />-->
     </LinearLayout>
-</android.support.v7.widget.LinearLayoutCompat>
+</RelativeLayout>

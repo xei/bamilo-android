@@ -3,8 +3,10 @@ package com.mobile.view.newfragments;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -14,23 +16,29 @@ import android.view.ViewStub;
 
 import com.mobile.app.JumiaApplication;
 import com.mobile.components.customfontviews.TextView;
+import com.mobile.constants.ConstantsCheckout;
 import com.mobile.helpers.SuperBaseHelper;
 import com.mobile.interfaces.IResponseCallback;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.utils.output.Print;
+import com.mobile.utils.MyMenuItem;
+import com.mobile.utils.NavigationAction;
 import com.mobile.utils.deeplink.DeepLinkManager;
 import com.mobile.utils.ui.ErrorLayoutFactory;
 import com.mobile.utils.ui.UITabLayoutUtils;
 import com.mobile.utils.ui.UIUtils;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
+import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CheckoutSummaryFragment;
+
+import java.util.Set;
 
 /**
  * Created by Arash on 1/23/2017.
  */
 
-public abstract class NewBaseFragment extends Fragment {
+public abstract class NewBaseFragment extends BaseFragment {
 
     protected static final String TAG = NewBaseFragment.class.getSimpleName();
     protected long mLoadTime = 0; // For tacking
@@ -39,14 +47,18 @@ public abstract class NewBaseFragment extends Fragment {
     private View mErrorView;
     private ErrorLayoutFactory mErrorLayoutFactory;
 
-    public NewBaseFragment()
-    {
-
+    public NewBaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState) {
+        super(enabledMenuItems, action, layoutResId, titleResId, adjustState);
     }
 
-    public static NewBaseFragment newInstance(@NonNull Context context, @NonNull Class<? extends NewBaseFragment> fragment, @Nullable Bundle arguments) {
-        return (NewBaseFragment) Fragment.instantiate(context, fragment.getName(), arguments);
+    public NewBaseFragment(Set<MyMenuItem> enabledMenuItems, @NavigationAction.Type int action, @LayoutRes int layoutResId, @StringRes int titleResId, @KeyboardState int adjustState, @ConstantsCheckout.CheckoutType int titleCheckout) {
+        super(enabledMenuItems, action, layoutResId, titleResId, adjustState, titleCheckout);
     }
+
+    public NewBaseFragment(Boolean isNestedFragment, @LayoutRes int layoutResId) {
+        super(isNestedFragment, layoutResId);
+    }
+
 
     public BaseActivity getBaseActivity() {
         if (mainActivity == null) {
@@ -71,50 +83,26 @@ public abstract class NewBaseFragment extends Fragment {
      * @see android.support.v4.app.Fragment#onCreateView(android.view.LayoutInflater,
      * android.view.ViewGroup, android.os.Bundle)
      */
-    @Override
+    /*@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Get current time
+        super.onCreateView(inflater, container, savedInstanceState);
+       *//* // Get current time
         mLoadTime = System.currentTimeMillis();
        // if (hasLayoutToInflate()) {
             //Print.i(TAG, "ON CREATE VIEW: HAS LAYOUT TO INFLATE");
             View view = inflater.inflate(R.layout.fragment_root_layout, container, false);
 
             return view;
-        /*} else {
+        *//**//*} else {
             Print.i(TAG, "ON CREATE VIEW: HAS NO LAYOUT TO INFLATE");
             return super.onCreateView(inflater, container, savedInstanceState);
-        }*/
-    }
+        }*//*
+    }*/
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Print.i(TAG, "ON VIEW CREATED");
-        mLoadTime = System.currentTimeMillis();
-        if(mLoadTime == 0) mLoadTime = System.currentTimeMillis();
-        // Set flag for requests
-        //isOnStoppingProcess = false;
-        // Exist order summary
-        //isOrderSummaryPresent = view.findViewById(ORDER_SUMMARY_CONTAINER) != null;
-        // Get loading layout
-        mLoadingView = (ViewStub) view.findViewById(R.id.fragment_stub_loading);
-       // mLoadingView.setOnInflateListener(this);
-        // Get retry layout
-        mErrorView =  view.findViewById(R.id.fragment_stub_retry);
-       // ((ViewStub) mErrorView).setOnInflateListener(this);
-        // Get fall back layout
-        //mFallBackView = (ViewStub) view.findViewById(R.id.fragment_stub_home_fall_back);
-        //mFallBackView.setOnInflateListener(this);
-        // Get maintenance layout
-        //mMaintenanceView = (ViewStub) view.findViewById(R.id.fragment_stub_maintenance);
-        //mMaintenanceView.setOnInflateListener(this);
-        // Update base components, like items on action bar
-        /*if (!isNestedFragment && enabledMenuItems != null) {
-            Print.i(TAG, "UPDATE BASE COMPONENTS: " + enabledMenuItems + " " + action);
-            getBaseActivity().updateBaseComponents(enabledMenuItems, action, titleResId, checkoutStep);
-            // Method used to set a bottom margin
-            UITabLayoutUtils.setViewWithoutNestedScrollView(mContentView, action);
-        }*/
 
     }
 
@@ -161,22 +149,21 @@ public abstract class NewBaseFragment extends Fragment {
         Print.i(TAG, "ON DESTROY");
     }
 
+    protected long getLoadTime() {
+        return mLoadTime;
+    }
     /**
-     * Send request showing the loading
+     * Process the click in continue shopping
+     * @param view The clicked view
+     * @author sergiopereira
      */
-    protected final void triggerContentEvent(final SuperBaseHelper helper, Bundle args, final IResponseCallback responseCallback) {
-        // Show loading
-        showFragmentLoading();
-        // Request
-        JumiaApplication.INSTANCE.sendRequest(helper, args, responseCallback);
+    protected void onClickRetryButton(View view) {
+        // ...
     }
 
-    /**
-     * Show the loading view from the root layout
-     */
-    protected void showFragmentLoading() {
-        UIUtils.showOrHideViews(View.VISIBLE, mLoadingView);
-    }
+
+
+
 
     /**
      * Show the summary order if the view is present
@@ -224,33 +211,8 @@ public abstract class NewBaseFragment extends Fragment {
     /**
      * Show error layout based on type. if the view is not inflated, it will be in first place.
      */
-    protected final void showErrorFragment(@ErrorLayoutFactory.LayoutErrorType int type, View.OnClickListener listener){
-        if(mErrorView instanceof ViewStub){
-            // If not inflated yet
-            mErrorView.setTag(mErrorView.getId(), type);
-            mErrorView.setTag(R.id.stub_listener, listener);
-            ((ViewStub) mErrorView).inflate();
-        } else {
-            //If already inflated
-            View retryButton = mErrorView.findViewById(R.id.fragment_root_error_button);
-            retryButton.setOnClickListener(listener);
-            retryButton.setTag(R.id.fragment_root_error_button, type);
-            //mErrorLayoutFactory.showErrorLayout(type);
-        }
-    }
 
-    /**
-     * Set no network view.
-     * @param inflated The inflated view
-     */
-    protected void onInflateErrorLayout(ViewStub viewStub, View inflated) {
-        Print.i(TAG, "ON INFLATE STUB: ERROR LAYOUT");
-        mErrorView = inflated;
-        // Init error factory
-        mErrorLayoutFactory = new ErrorLayoutFactory((ViewGroup)inflated);
-        @ErrorLayoutFactory.LayoutErrorType int type = (int) viewStub.getTag(viewStub.getId());
-        showErrorFragment(type, (View.OnClickListener) viewStub.getTag(R.id.stub_listener));
-    }
+
 
     protected void setCheckoutStep(View view, int step)
     {

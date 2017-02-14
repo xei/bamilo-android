@@ -28,7 +28,7 @@ import com.mobile.newFramework.utils.output.Print;
 import com.mobile.utils.Toast;
 import com.mobile.view.BaseActivity;
 import com.mobile.view.R;
-import com.mobile.view.newfragments.NewBaseFragment;
+import com.mobile.view.fragments.BaseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class AddressAdapter extends RecyclerView.Adapter<AddressAdapter.AddressV
     private List<AdapterItemSelection> addressSelection;
     private static RadioButton lastChecked = null;
     private static int lastCheckedPos = 0;
-    public NewBaseFragment baseFragment;
+    public BaseFragment baseFragment;
     private boolean mIsCheckout;
     private View.OnClickListener mOnClickDeleteAddressButton;
     private ISetDefaultAddress mSetDefaultAddress;

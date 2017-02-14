@@ -422,4 +422,21 @@
     <string name="checkout_address">آدرس</string>
     <string name="checkout_review">بررسی</string>
     <string name="checkout_payment">پرداخت</string>
+
+    <string name="rial_currency">ريال</string>
+    <string name="cart_total_quantity">جمع نهایی (%d کالا)</string>
+    <string name="cart_item_size">اندازه:</string>
+    <string name="cart_item_color">رنگ:</string>
+    <string name="cart_item_count">تعداد:</string>
+    <string name="cart_item_price">قیمت:</string>
+    <string name="favourite">علاقه مندی ها</string>
+    <string name="reached_max_quantity">سقف خرید این کالا در هر سفارش %d عدد است</string>
+    <string name="reached_min_quantity">حداقل تعداد قابل سفارش</string>
+    <string name="remove_item_from_cart_title">حذف از سبد خرید</string>
+    <string name="remove_item_from_cart_question"> از حذف کالا از سبد خریدتان اطمینان دارید؟</string>
+    <string name="cart_total_amount">مجموع خرید</string>
+    <string name="cart_total_discount">مجموع تخفیف</string>
+    <string name="cart_product_discount">تخفیف کالاها</string>
+
+
 </resources>
