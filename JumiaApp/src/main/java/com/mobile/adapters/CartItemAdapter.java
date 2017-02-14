@@ -189,7 +189,7 @@ public class CartItemAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         {
 
             DiscountViewHolder vh = (DiscountViewHolder) holder;
-
+            vh.root.removeAllViews();
             View totalView = LayoutInflater.from(mContext).inflate(R.layout.new_shopping_basket_discount_element, vh.root, false);
             TextView labelT = (TextView) totalView.findViewById(R.id.discount_label);
             TextView valueT = (TextView) totalView.findViewById(R.id.discount_amount);
