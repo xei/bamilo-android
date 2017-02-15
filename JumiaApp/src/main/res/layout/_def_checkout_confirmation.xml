@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.mobile.components.ScrollViewReachable xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shoppingcart_nested_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+<!--    <include
+        layout="@layout/new_checkout_header"
+        />-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <com.mobile.components.customfontviews.TextView
+        android:layout_width="match_parent"
+        android:background="@color/black_400"
+        android:textSize="13sp"
+        android:paddingTop="@dimen/dimen_15dp"
+        android:paddingBottom="@dimen/dimen_15dp"
+        android:paddingLeft="@dimen/dimen_10dp"
+        android:paddingRight="@dimen/dimen_10dp"
+        android:layout_height="wrap_content"
+        android:text="@string/checkout_sum_header"
+        android:textColor="@color/black"/>
+
+        <View style="@style/Divider" android:layout_marginTop="@dimen/dimen_3dp"/>
+
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dimen_5dp"
+                    android:paddingRight="@dimen/dimen_5dp"
+                    android:id="@+id/voucher_switch" />
+
+                <TextView
+                    android:text="@string/checkout_submit_voucher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView3"
+                    android:padding="@dimen/dimen_10dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/voucher_layout"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:visibility="gone"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:text="Name"
+                    android:ems="10"
+                    android:id="@+id/editText" />
+
+                <Button
+                    android:text="Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button4" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <com.mobile.components.customfontviews.Button
+            android:text="Next"
+            android:layout_width="match_parent"
+            style="@style/_base_text"
+            android:layout_height="wrap_content"
+            android:id="@+id/checkout_confirmation_btn" />
+    </LinearLayout>
+
+</com.mobile.components.ScrollViewReachable>
