@@ -26,6 +26,7 @@ import com.mobile.view.fragments.BaseFragment;
 import com.mobile.view.fragments.CampaignsFragment;
 import com.mobile.view.fragments.CatalogFragment;
 import com.mobile.view.fragments.CheckoutAddressesFragment;
+import com.mobile.view.fragments.CheckoutConfirmationFragment;
 import com.mobile.view.fragments.CheckoutCreateAddressFragment;
 import com.mobile.view.fragments.CheckoutEditAddressFragment;
 import com.mobile.view.fragments.CheckoutExternalPaymentFragment;
@@ -358,6 +359,9 @@ public class MainFragmentActivity extends DebugActivity {
                 break;
             case CHECKOUT_EDIT_ADDRESS:
                 fragment = newFragmentInstance(CheckoutEditAddressFragment.class, bundle);
+                break;
+            case CHECKOUT_CONFIRMATION:
+                fragment = newFragmentInstance(CheckoutConfirmationFragment.class, bundle);
                 break;
             case CHECKOUT_SHIPPING:
                 fragment = newFragmentInstance(CheckoutShippingMethodsFragment.class, bundle);

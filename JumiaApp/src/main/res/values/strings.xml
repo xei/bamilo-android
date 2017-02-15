@@ -3,6 +3,7 @@
     <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">My Account</string>
     <string name="new_account_name">My Account 2</string>
+    <string name="checkout_confirmation">Checkout Confirmation</string>
     <string name="action_label_add_address">Add New Address</string>
     <string name="action_label_basket">Basket</string>
     <string name="action_label_search_hint">Search on %s</string>
@@ -433,4 +434,13 @@
     <string name="checkout_address">Address</string>
     <string name="checkout_review">Review</string>
     <string name="checkout_payment">Payment</string>
+
+
+    <!--checkout confirm-->
+
+    <string name="checkout_sum_header">Sum</string>
+    <string name="checkout_voucher_title">Voucher Code</string>
+    <string name="checkout_submit_voucher">Submit Voucher</string>
+    <string name="checkout_confirmation_next_step">checkout order</string>
+
 </resources>

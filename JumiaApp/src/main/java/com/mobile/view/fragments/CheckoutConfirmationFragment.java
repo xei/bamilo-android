@@ -1,6 +1,7 @@
 package com.mobile.view.fragments;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -37,6 +38,7 @@ import com.mobile.newFramework.objects.cart.PurchaseCartItem;
 import com.mobile.newFramework.objects.cart.PurchaseEntity;
 import com.mobile.newFramework.pojo.BaseResponse;
 import com.mobile.newFramework.pojo.IntConstants;
+import com.mobile.newFramework.pojo.RestConstants;
 import com.mobile.newFramework.tracking.AdjustTracker;
 import com.mobile.newFramework.tracking.TrackingPage;
 import com.mobile.newFramework.utils.CollectionUtils;
@@ -73,10 +75,14 @@ import java.util.List;
  * @author sergiopereira
  *
  */
-public class CheckoutConfirmationFragment extends BaseFragment implements View.OnClickListener {
+public class CheckoutConfirmationFragment extends BaseFragment implements View.OnClickListener ,IResponseCallback{
  Button next;
     Switch voucher_switch;
     LinearLayout voucher_layer;
+    private EditText mVoucherView;
+    private Button couponButton;
+    private boolean removeVoucher = false;
+    private String mVoucherCode;
     private static final String TAG = CheckoutConfirmationFragment.class.getSimpleName();
 
 
@@ -110,6 +116,8 @@ public class CheckoutConfirmationFragment extends BaseFragment implements View.O
         next = (Button) view.findViewById(R.id.checkout_confirmation_btn);
         voucher_switch = (Switch) view.findViewById(R.id.voucher_switch);
         voucher_layer = (LinearLayout) view.findViewById(R.id.voucher_layout);
+        mVoucherView = (EditText) view.findViewById(R.id.voucher_name);
+        couponButton = (Button) view.findViewById(R.id.checkout_button_enter);
         next.setOnClickListener(this);
 
         voucher_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -128,6 +136,32 @@ public class CheckoutConfirmationFragment extends BaseFragment implements View.O
 
     }
 
+    private void validateCoupon() {
+        mVoucherCode = mVoucherView.getText().toString();
+        getBaseActivity().hideKeyboard();
+        if (!TextUtils.isEmpty(mVoucherCode)) {
+            if (TextUtils.equals(getString(R.string.use_label), couponButton.getText())) {
+                triggerSubmitVoucher(mVoucherCode);
+            } else {
+                triggerRemoveVoucher();
+            }
+        } else {
+            showWarningErrorMessage(getString(R.string.voucher_error_message));
+        }
+    }
+
+    private void triggerRemoveVoucher() {
+        triggerContentEventProgress(new RemoveVoucherHelper(), null, this);
+    }
+
+    private void triggerSubmitVoucher(String code) {
+        triggerContentEventProgress(new AddVoucherHelper(), AddVoucherHelper.createBundle(code), this);
+    }
+
+    private void onClickSubmitPaymentButton() {
+
+    }
+
     @Override
     public void onClick(View view) {
         int viewId = view.getId();
@@ -135,5 +169,45 @@ public class CheckoutConfirmationFragment extends BaseFragment implements View.O
         {
             Toast.makeText(getActivity(),"asdasdasdas",Toast.LENGTH_LONG).show();
         }
+        else if (viewId == R.id.checkout_button_enter) {
+            if (!TextUtils.isEmpty(mVoucherView.getText()) && !TextUtils.equals(couponButton.getText(), getString(R.string.remove_label))) {
+                validateCoupon();
+            } else {
+                onClickSubmitPaymentButton();
+            }
+            getBaseActivity().hideKeyboard();
+        }
+    }
+
+    @Override
+    public void onRequestComplete(BaseResponse baseResponse) {
+        // Validate fragment visibility
+        if (isOnStoppingProcess) {
+            Print.w(TAG, "RECEIVED CONTENT IN BACKGROUND WAS DISCARDED!");
+            return;
+        }
+
+        EventType eventType = baseResponse.getEventType();
+        Print.i(TAG, "ON SUCCESS EVENT: " + eventType);
+
+        switch (eventType) {
+            case REMOVE_VOUCHER:
+                mVoucherCode = null;
+            case ADD_VOUCHER:
+                couponButton.setText(getString(eventType == EventType.ADD_VOUCHER ? R.string.remove_label : R.string.use_label));
+                removeVoucher = eventType == EventType.ADD_VOUCHER;
+                hideActivityProgress();
+                // setOrderInfo((PurchaseEntity) baseResponse.getContentData());
+                // Case voucher removed and is showing no payment necessary
+       /* if(isShowingNoPaymentNecessary) {
+            isShowingNoPaymentNecessary = false;
+            triggerGetPaymentMethods();
+        }*/
+        }
+    }
+
+    @Override
+    public void onRequestError(BaseResponse baseResponse) {
+
     }
 }

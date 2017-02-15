@@ -202,7 +202,7 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 // Get next step
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextFragment = nextStepStruct.getFragmentType();
-                nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_SHIPPING;
+                nextFragment = FragmentType.CHECKOUT_CONFIRMATION;
                 getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             default:

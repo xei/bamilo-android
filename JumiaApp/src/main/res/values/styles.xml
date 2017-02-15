@@ -115,6 +115,14 @@
         <item name="android:paddingBottom">@dimen/rounded_margin_mid</item>
     </style>
 
+<!--divider-->
+    <style name="Divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/black_700</item>
+    </style>
+
+
     <!-- TEXT STYLES -->
 
     <style name="text_regular">

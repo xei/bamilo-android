@@ -3,6 +3,7 @@
     <string name="format_discount_percentage">-%1$s%%</string>
     <string name="account_name">حساب کاربری من ‎</string>
     <string name="new_account_name">حساب کاربری من 2‎</string>
+    <string name="checkout_confirmation">بررسی نهایی سفارش</string>
     <string name="action_label_add_address">اضافه کردن آدرس جدید</string>
     <string name="action_label_basket">سبد کالا</string>
     <string name="action_label_search_hint"> جستجو در بامیلو</string>
@@ -422,4 +423,13 @@
     <string name="checkout_address">آدرس</string>
     <string name="checkout_review">بررسی</string>
     <string name="checkout_payment">پرداخت</string>
+
+
+    <!--checkout confirm-->
+
+    <string name="checkout_sum_header">مجموع کل</string>
+    <string name="checkout_voucher_title">کد تخفیف</string>
+    <string name="checkout_submit_voucher">ثبت کد تخفیف</string>
+    <string name="checkout_confirmation_next_step">ثبت سفارش</string>
+
 </resources>
