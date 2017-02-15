@@ -212,7 +212,8 @@ public class NewCheckoutAddressesFragment extends NewBaseAddressesFragment {
                 // Get next step
                 NextStepStruct nextStepStruct = (NextStepStruct) baseResponse.getContentData();
                 FragmentType nextFragment = nextStepStruct.getFragmentType();
-                nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_SHIPPING;
+                //DROID-65 nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_SHIPPING;
+                nextFragment = (nextFragment != FragmentType.UNKNOWN) ? nextFragment : FragmentType.CHECKOUT_PAYMENT;
                 getBaseActivity().onSwitchFragment(nextFragment, FragmentController.NO_BUNDLE, FragmentController.ADD_TO_BACK_STACK);
                 break;
             default:

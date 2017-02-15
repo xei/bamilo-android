@@ -72,6 +72,7 @@ import com.mobile.view.fragments.order.OrderReturnStepsMain;
 import com.mobile.view.fragments.order.OrderStatusFragment;
 import com.mobile.view.newfragments.NewBaseFragment;
 import com.mobile.view.newfragments.NewCheckoutAddressesFragment;
+import com.mobile.view.newfragments.NewCheckoutPaymentMethodsFragment;
 import com.mobile.view.newfragments.NewMyAccountAddressesFragment;
 import com.mobile.view.newfragments.NewShoppingCartFragment;
 
@@ -364,7 +365,7 @@ public class MainFragmentActivity extends DebugActivity {
                 fragment = newFragmentInstance(CheckoutShippingMethodsFragment.class, bundle);
                 break;
             case CHECKOUT_PAYMENT:
-                fragment = newFragmentInstance(CheckoutPaymentMethodsFragment.class, bundle);
+                fragment = newFragmentInstance(NewCheckoutPaymentMethodsFragment.class, bundle);
                 break;
             case CHECKOUT_FINISH:
                 fragment = newFragmentInstance(CheckoutFinishFragment.class, bundle);
